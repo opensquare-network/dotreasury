@@ -1,0 +1,9 @@
+{
+  "name": "@dotreasury/scan",
+  "version": "1.0.0",
+  "license": "Apache 2.0",
+  "dependencies": {
+    "@polkadot/api": "^2.10.1",
+    "mongodb": "^3.6.3"
+  }
+}

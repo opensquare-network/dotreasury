@@ -1,0 +1,22 @@
+{
+  "name": "dotreasury",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "repository": "git@github.com:opensquare-network/dotreasury.git",
+  "author": "OpenSquare <https://www.opensquare.network/>",
+  "license": "Apache 2.0",
+  "devDependencies": {
+    "husky": "^4.3.5",
+    "pretty-quick": "^3.1.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "dependencies": {
+    "prettier": "^2.2.1"
+  }
+}
