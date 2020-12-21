@@ -1,6 +1,6 @@
 const { MongoClient } = require("mongodb");
 
-const dbName = "dotreasury";
+const dbName = process.env.MONGO_DB_NAME || "dotreasury";
 
 const statusCollectionName = "status";
 const blockCollectionName = "block";
