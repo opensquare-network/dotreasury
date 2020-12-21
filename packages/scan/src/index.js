@@ -1,3 +1,4 @@
+require("dotenv").config();
 const { getNextScanHeight, updateScanHeight } = require("./mongo/scanHeight");
 const { getApi } = require("./api");
 const { updateHeight } = require("./chain/latestHead");

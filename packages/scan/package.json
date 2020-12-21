@@ -8,6 +8,7 @@
   "dependencies": {
     "@polkadot/api": "^2.10.1",
     "@polkadot/util": "^5.1.1",
+    "dotenv": "^8.2.0",
     "mongodb": "^3.6.3"
   }
 }
