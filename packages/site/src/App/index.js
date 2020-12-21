@@ -1,16 +1,25 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch,
+} from "react-router-dom";
 
-import {testSelector, setTest} from "../store/reducers/testSlice";
+import Header from "../pages/Header";
+
+import TestA from "./TestA";
+import TestB from "./TestB";
 
 export default function App() {
-  const dispatch = useDispatch()
-  const test = useSelector(testSelector)
-  dispatch(setTest('test'))
   return (
-    <div>
-      OpenSquare dotreasury site {test.test}
-    </div>
+    <Router>
+      <Header />
+      <Switch>
+        <Route exact path="/" component={TestA} />
+        <Route exact path="/testb" component={TestB} />
+        <Redirect to="/" />
+      </Switch>
+    </Router>
   );
 }
-
