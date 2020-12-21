@@ -64,17 +64,6 @@ async function main() {
   }
 }
 
-async function test() {
-  const scanHeight = 714498;
-
-  const api = await getApi();
-  await deleteDataFrom(scanHeight);
-  const blockHash = await api.rpc.chain.getBlockHash(scanHeight);
-  const block = await api.rpc.chain.getBlock(blockHash);
-  const allEvents = await api.query.system.events.at(blockHash);
-  await handleBlockAndEvents(block, allEvents);
-}
-
 async function handleBlockAndEvents(block, allEvents) {
   const blockIndexer = getBlockIndexer(block.block);
 
@@ -86,5 +75,4 @@ async function handleBlockAndEvents(block, allEvents) {
 }
 
 // FIXME: log the error
-// main().catch(console.error);
-test().catch(console.error);
+main().catch(console.error);
