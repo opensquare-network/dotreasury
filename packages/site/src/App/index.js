@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 
 import Header from "../pages/Header";
+import Footer from "../pages/Footer";
 
 import TestA from "./TestA";
 import TestB from "./TestB";
@@ -20,6 +21,7 @@ export default function App() {
         <Route exact path="/testb" component={TestB} />
         <Redirect to="/" />
       </Switch>
+      <Footer />
     </Router>
   );
 }

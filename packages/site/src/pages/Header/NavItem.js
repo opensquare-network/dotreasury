@@ -22,6 +22,7 @@ const NavItem = ({ text, options }) => {
         <Dropdown.Menu>
           {options.map((item) => (
             <Dropdown.Item
+              key={item.text}
               icon={item.icon}
               text={item.text}
               description={item.description}
