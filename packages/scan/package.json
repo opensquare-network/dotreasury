@@ -4,6 +4,7 @@
   "license": "Apache 2.0",
   "dependencies": {
     "@polkadot/api": "^2.10.1",
+    "@polkadot/util": "^5.1.1",
     "mongodb": "^3.6.3"
   }
 }

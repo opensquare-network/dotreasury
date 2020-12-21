@@ -4,6 +4,10 @@ const { updateHeight } = require("./chain/latestHead");
 const { deleteDataFrom, findNonForkHeight } = require("./rollback");
 const { getLatestHeight } = require("./chain/latestHead");
 const { sleep } = require("./utils");
+const { getBlockIndexer } = require("./block/getBlockIndexer");
+const { handleBlock } = require("./block");
+const { handleExtrinsics } = require("./extrinsic");
+const { handleEvents } = require("./events");
 
 let preBlockHash = null;
 
@@ -50,9 +54,24 @@ async function main() {
       continue;
     }
 
+    preBlockHash = block.block.hash.toHex();
+
     const allEvents = await api.query.system.events.at(blockHash);
-    // TODO: handle the block and events data
+
+    await handleBlockAndEvents(block, allEvents);
+
+    await updateScanHeight(scanHeight++);
   }
+}
+
+async function handleBlockAndEvents(block, allEvents) {
+  const blockIndexer = getBlockIndexer(block.block);
+
+  await handleBlock(block, allEvents);
+  console.log(`block ${block.block.header.number.toNumber()} is saved to db`);
+
+  await handleEvents(allEvents, blockIndexer, block.block.extrinsics);
+  await handleExtrinsics(block.block.extrinsics, allEvents, blockIndexer);
 }
 
 // FIXME: log the error
