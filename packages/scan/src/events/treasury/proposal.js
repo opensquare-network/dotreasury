@@ -11,6 +11,10 @@ function isProposalEvent(method) {
 }
 
 async function handleProposalEvent(method, jsonData, indexer, sort) {
+  if (isProposalEvent(method)) {
+    return;
+  }
+
   if (method === "Proposed") {
     const [index] = jsonData;
   } else if (method === "Spending") {
@@ -29,6 +33,5 @@ async function handleProposalEvent(method, jsonData, indexer, sort) {
 }
 
 module.exports = {
-  isProposalEvent,
   handleProposalEvent,
 };

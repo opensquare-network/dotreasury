@@ -10,6 +10,10 @@ function isStateChange(method) {
 }
 
 async function handleTipEvent(method, jsonData, indexer, sort) {
+  if (!isTipEvent(method)) {
+    return;
+  }
+
   if (method === "NewTip") {
     const [hash] = jsonData;
     await saveNewTip(hash, indexer);
@@ -51,6 +55,5 @@ async function saveTipState(hash, state, indexer, sort) {
 }
 
 module.exports = {
-  isTipEvent,
   handleTipEvent,
 };

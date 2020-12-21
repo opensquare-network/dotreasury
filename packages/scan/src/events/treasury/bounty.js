@@ -11,6 +11,10 @@ function isBountyEvent(method) {
 }
 
 async function handleBountyEvent(method, jsonData, indexer, sort) {
+  if (isBountyEvent(method)) {
+    return;
+  }
+
   if (method === "BountyProposed") {
     const [index] = jsonData;
   } else if (method === "BountyRejected") {
@@ -29,6 +33,5 @@ async function handleBountyEvent(method, jsonData, indexer, sort) {
 }
 
 module.exports = {
-  isBountyEvent,
   handleBountyEvent,
 };

@@ -1,18 +1,14 @@
-const { isTipEvent, handleTipEvent } = require("./tip");
-const { isBountyEvent, handleBountyEvent } = require("./bounty");
-const { isProposalEvent, handleProposalEvent } = require("./proposal");
+const { handleTipEvent } = require("./tip");
+const { handleBountyEvent } = require("./bounty");
+const { handleProposalEvent } = require("./proposal");
 
 async function handleTreasuryEvent(event, indexer, eventSort) {
   const { method, data } = event;
   const jsonData = data.toJSON();
 
-  if (isTipEvent(method)) {
-    await handleTipEvent(method, jsonData, indexer, eventSort);
-  } else if (isBountyEvent(method)) {
-    await handleBountyEvent(method, jsonData, indexer, eventSort);
-  } else if (isProposalEvent(method)) {
-    await handleProposalEvent(method, jsonData, indexer, eventSort);
-  }
+  await handleTipEvent(method, jsonData, indexer, eventSort);
+  await handleBountyEvent(method, jsonData, indexer, eventSort);
+  await handleProposalEvent(method, jsonData, indexer, eventSort);
 }
 
 module.exports = {
