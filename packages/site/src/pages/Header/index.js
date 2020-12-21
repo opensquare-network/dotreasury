@@ -1,11 +1,21 @@
 import React from "react";
-import { Header } from "semantic-ui-react";
-// import styled from "styled-components"
+import styled from "styled-components";
 
-const HeaderExamplePage = () => (
-  <div>
-    <Header>HEADER</Header>
-  </div>
+import Container from "../../components/container";
+import MainHeader from "./MainHeader";
+
+const Wrapper = styled.header`
+  background: #fff;
+  height: 136px;
+  border-bottom: 1px solid #eee;
+`;
+
+const Header = () => (
+  <Wrapper>
+    <Container>
+      <MainHeader />
+    </Container>
+  </Wrapper>
 );
 
-export default HeaderExamplePage;
+export default Header;
