@@ -10,5 +10,8 @@
     "@polkadot/util": "^5.1.1",
     "dotenv": "^8.2.0",
     "mongodb": "^3.6.3"
+  },
+  "devDependencies": {
+    "pm2": "^4.5.1"
   }
 }
