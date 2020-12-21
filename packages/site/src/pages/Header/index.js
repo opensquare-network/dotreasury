@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import Container from "../../components/container";
 import MainHeader from "./MainHeader";
+import SubHeader from "./SubHeader";
 
 const Wrapper = styled.header`
   background: #fff;
@@ -14,6 +15,7 @@ const Header = () => (
   <Wrapper>
     <Container>
       <MainHeader />
+      <SubHeader />
     </Container>
   </Wrapper>
 );
