@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -9,6 +9,7 @@ const GlobalStyle = createGlobalStyle`
   #root {
     display: flex;
     flex-direction: column;
+    font-family: 'Inter', 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
   }
   
   ol, ul, li {
@@ -64,4 +65,4 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-export default GlobalStyle
+export default GlobalStyle;
