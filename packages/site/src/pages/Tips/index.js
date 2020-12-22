@@ -14,10 +14,44 @@ const Header = styled.div`
 `;
 
 const Tips = () => {
+  const testData = [
+    {
+      beneficiary: {
+        name: "FtvpME…nZXKLg",
+      },
+      finder: {
+        name: "DbJSgP…tbQ66r",
+      },
+      reason: "https://kusama.polkassembly.io/post/346",
+      balance: {
+        value: "50.00",
+      },
+      status: {
+        status: "Closed",
+        time: "12h 34min ago",
+      },
+    },
+    {
+      beneficiary: {
+        name: "FtvpME…nZXKLg",
+      },
+      finder: {
+        name: "Eleanor",
+      },
+      reason: "My second video about Kusama Network",
+      balance: {
+        value: "3.50",
+      },
+      status: {
+        status: "Tipping (2)",
+      },
+    },
+  ];
+
   return (
     <>
       <Header>Tips</Header>
-      <TipsTable />
+      <TipsTable data={testData} />
     </>
   );
 };

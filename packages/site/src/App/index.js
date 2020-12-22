@@ -12,9 +12,6 @@ import Tips from "../pages/Tips";
 import Container from "../components/Container";
 import { PageWrapper } from "./components";
 
-import TestA from "./TestA";
-import TestB from "./TestB";
-
 export default function App() {
   return (
     <Router>

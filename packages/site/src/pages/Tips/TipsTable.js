@@ -1,7 +1,12 @@
 import React from "react";
-import Table from "../../components/Table";
 
-const TipsTable = () => {
+import Table from "../../components/Table";
+import User from "../../components/User";
+import Balance from "../../components/Balance";
+import RightButton from "../../components/RightButton";
+import Status from "./Status";
+
+const TipsTable = ({ data }) => {
   return (
     <Table striped selectable>
       <Table.Header>
@@ -14,15 +19,31 @@ const TipsTable = () => {
           <Table.HeaderCell></Table.HeaderCell>
         </Table.Row>
       </Table.Header>
-
       <Table.Body>
-        <Table.Row>
-          <Table.Cell>FtvpME…nZXKLg</Table.Cell>
-          <Table.Cell>DbJSgP…tbQ66r</Table.Cell>
-          <Table.Cell>https://kusama.polkassembly.io/post/346</Table.Cell>
-          <Table.Cell textAlign={"right"}>50.00 KSM</Table.Cell>
-          <Table.Cell textAlign={"right"}>Tipping (2)</Table.Cell>
-        </Table.Row>
+        {data &&
+          data.map((item, index) => (
+            <Table.Row key={index}>
+              <Table.Cell className="user-cell">
+                <User name={item.beneficiary.name} />
+              </Table.Cell>
+              <Table.Cell className="user-cell">
+                <User name={item.finder.name} />
+              </Table.Cell>
+              <Table.Cell>{item.reason}</Table.Cell>
+              <Table.Cell className="balance-cell" textAlign={"right"}>
+                <Balance
+                  value={item.balance.value}
+                  currency={item.balance.currency}
+                />
+              </Table.Cell>
+              <Table.Cell className="status-cell" textAlign={"right"}>
+                <Status status={item.status.status} time={item.status.time} />
+              </Table.Cell>
+              <Table.Cell className="link-cell">
+                <RightButton />
+              </Table.Cell>
+            </Table.Row>
+          ))}
       </Table.Body>
     </Table>
   );

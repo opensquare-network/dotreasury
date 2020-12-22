@@ -13,5 +13,20 @@ const CustomTable = styled(Table)`
     border-bottom: 0 !important;
     color: rgba(29, 37, 60, 0.64) !important;
   }
+  .user-cell {
+    width: 172px !important;
+  }
+  .balance-cell {
+    width: 139px !important;
+  }
+  .status-cell {
+    width: 140px !important;
+  }
+  .link-cell {
+    width: 44px !important;
+  }
+  td:first-child {
+    font-weight: 400 !important;
+  }
 `;
 export default CustomTable;
