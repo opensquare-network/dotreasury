@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 import Table from "../../components/Table";
 import User from "../../components/User";
@@ -40,7 +41,9 @@ const TipsTable = ({ data }) => {
                 <Status status={item.status.status} time={item.status.time} />
               </Table.Cell>
               <Table.Cell className="link-cell">
-                <RightButton />
+                <NavLink to="/detail">
+                  <RightButton />
+                </NavLink>
               </Table.Cell>
             </Table.Row>
           ))}
