@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { Table } from "semantic-ui-react";
 
 const CustomTable = styled(Table)`
+  margin-top: 0 !important;
   td {
     border-top: 0 !important;
   }
