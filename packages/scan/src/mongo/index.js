@@ -8,6 +8,10 @@ const eventCollectionName = "event";
 const extrinsicCollectionName = "extrinsic";
 const tipCollectionName = "tip";
 const tipStateCollectionName = "tipState";
+const bountyCollectionName = "bounty";
+const bountyStateCollectionName = "bountyState";
+const proposalCollectionName = "proposal";
+const proposalStateCollectionName = "proposalState";
 
 let client = null;
 let db = null;
@@ -19,6 +23,10 @@ let eventCol = null;
 let extrinsicCol = null;
 let tipCol = null;
 let tipStateCol = null;
+let bountyCol = null;
+let bountyStateCol = null;
+let proposalCol = null;
+let proposalStateCol = null;
 
 async function initDb() {
   client = await MongoClient.connect(mongoUrl, {
@@ -32,6 +40,10 @@ async function initDb() {
   extrinsicCol = db.collection(extrinsicCollectionName);
   tipCol = db.collection(tipCollectionName);
   tipStateCol = db.collection(tipStateCollectionName);
+  bountyCol = db.collection(bountyCollectionName);
+  bountyStateCol = db.collection(bountyStateCollectionName);
+  proposalCol = db.collection(proposalCollectionName);
+  proposalStateCol = db.collection(proposalStateCollectionName);
 
   await _createIndexes();
 }
@@ -81,6 +93,26 @@ async function getTipStateCollection() {
   return tipStateCol;
 }
 
+async function getBountyCollection() {
+  await tryInit(bountyCol);
+  return bountyCol;
+}
+
+async function getBountyStateCollection() {
+  await tryInit(bountyStateCol);
+  return bountyStateCol;
+}
+
+async function getProposalCollection() {
+  await tryInit(proposalCol);
+  return proposalCol;
+}
+
+async function getProposalStateCollection() {
+  await tryInit(proposalStateCol);
+  return proposalStateCol;
+}
+
 module.exports = {
   getStatusCollection,
   getBlockCollection,
@@ -88,4 +120,8 @@ module.exports = {
   getEventCollection,
   getTipCollection,
   getTipStateCollection,
+  getBountyCollection,
+  getBountyStateCollection,
+  getProposalCollection,
+  getProposalStateCollection,
 };
