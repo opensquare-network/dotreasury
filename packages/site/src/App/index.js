@@ -8,6 +8,9 @@ import {
 
 import Header from "../pages/Header";
 import Footer from "../pages/Footer";
+import Tips from "../pages/Tips";
+import Container from "../components/Container";
+import { PageWrapper } from "./components";
 
 import TestA from "./TestA";
 import TestB from "./TestB";
@@ -16,11 +19,14 @@ export default function App() {
   return (
     <Router>
       <Header />
-      <Switch>
-        <Route exact path="/" component={TestA} />
-        <Route exact path="/testb" component={TestB} />
-        <Redirect to="/" />
-      </Switch>
+      <PageWrapper>
+        <Container>
+          <Switch>
+            <Route exact path="/" component={Tips} />
+            <Redirect to="/" />
+          </Switch>
+        </Container>
+      </PageWrapper>
       <Footer />
     </Router>
   );
