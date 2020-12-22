@@ -2,15 +2,13 @@ require("dotenv").config();
 const { getNextScanHeight, updateScanHeight } = require("./mongo/scanHeight");
 const { getApi } = require("./api");
 const { updateHeight } = require("./chain/latestHead");
-const { deleteDataFrom, findNonForkHeight } = require("./rollback");
+const { deleteDataFrom } = require("./clean");
 const { getLatestHeight } = require("./chain/latestHead");
 const { sleep } = require("./utils");
 const { getBlockIndexer } = require("./block/getBlockIndexer");
 const { handleBlock } = require("./block");
 const { handleExtrinsics } = require("./extrinsic");
 const { handleEvents } = require("./events");
-
-let preBlockHash = null;
 
 async function main() {
   const api = await getApi();
@@ -35,32 +33,9 @@ async function main() {
       continue;
     }
 
-    if (!blockHash) {
-      // Expect not happen
-      await sleep(1000);
-      continue;
-    }
-
     const block = await api.rpc.chain.getBlock(blockHash);
-    if (
-      preBlockHash &&
-      block.block.header.parentHash.toString("hex") !== preBlockHash
-    ) {
-      // There is a fork, and we have to rollback
-      const nonForkHeight = await findNonForkHeight(scanHeight);
-      await updateScanHeight(nonForkHeight);
-      scanHeight = nonForkHeight + 1;
-      preBlockHash = null;
-      await deleteDataFrom(scanHeight);
-      continue;
-    }
-
-    preBlockHash = block.block.hash.toHex();
-
     const allEvents = await api.query.system.events.at(blockHash);
-
     await handleBlockAndEvents(block, allEvents);
-
     await updateScanHeight(scanHeight++);
   }
 }
