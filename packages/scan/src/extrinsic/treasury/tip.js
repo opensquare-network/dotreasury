@@ -19,15 +19,15 @@ async function handleTipExtrinsic(
 
   // Tip methods
   if (name === "tipNew") {
-    handleTipNew(args, indexer, events);
+    await handleTipNew(args, indexer, events);
   } else if (name === "reportAwesome") {
-    handleReportAwesome(args, indexer, events);
+    await handleReportAwesome(args, indexer, events);
   } else if (name === "retractTip") {
-    handleRetractTip(args, indexer, events);
+    await handleRetractTip(args, indexer, events);
   } else if (name === "tip") {
-    handleTip(args, indexer, events);
+    await handleTip(args, indexer, events);
   } else if (name === "closeTip") {
-    handleCloseTip(args, indexer, events);
+    await handleCloseTip(args, indexer, events);
   }
 }
 
