@@ -5,9 +5,7 @@ function isTipEvent(method) {
   return ["NewTip", "TipClosing", "TipClosed", "TipRetracted"].includes(method);
 }
 
-function isStateChange(method) {
-  return ["NewTip", "TipClosing", "TipClosed", "TipRetracted"].includes(method);
-}
+isStateChange = isTipEvent;
 
 async function handleTipEvent(method, jsonData, indexer, sort) {
   if (!isTipEvent(method)) {

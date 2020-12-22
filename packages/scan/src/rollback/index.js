@@ -4,6 +4,10 @@ const { getEventCollection } = require("../mongo");
 const { getExtrinsicCollection } = require("../mongo");
 const { getTipCollection } = require("../mongo");
 const { getTipStateCollection } = require("../mongo");
+const { getBountyCollection } = require("../mongo");
+const { getBountyStateCollection } = require("../mongo");
+const { getProposalCollection } = require("../mongo");
+const { getProposalStateCollection } = require("../mongo");
 
 async function findNonForkHeight(nowHeight) {
   const api = await getApi();
@@ -30,6 +34,10 @@ async function deleteDataFrom(blockHeight) {
   await deleteEventsFrom(blockHeight);
   await deleteTipFrom(blockHeight);
   await deleteTipStateFrom(blockHeight);
+  await deleteBountyFrom(blockHeight);
+  await deleteBountyStateFrom(blockHeight);
+  await deleteProposalFrom(blockHeight);
+  await deleteProposalStateFrom(blockHeight);
 }
 
 async function deleteExtrinsicsFrom(blockHeight) {
@@ -49,6 +57,26 @@ async function deleteTipFrom(blockHeight) {
 
 async function deleteTipStateFrom(blockHeight) {
   const col = await getTipStateCollection();
+  await col.deleteMany({ "indexer.blockHeight": { $gte: blockHeight } });
+}
+
+async function deleteBountyFrom(blockHeight) {
+  const col = await getBountyCollection();
+  await col.deleteMany({ "indexer.blockHeight": { $gte: blockHeight } });
+}
+
+async function deleteBountyStateFrom(blockHeight) {
+  const col = await getBountyStateCollection();
+  await col.deleteMany({ "indexer.blockHeight": { $gte: blockHeight } });
+}
+
+async function deleteProposalFrom(blockHeight) {
+  const col = await getProposalCollection();
+  await col.deleteMany({ "indexer.blockHeight": { $gte: blockHeight } });
+}
+
+async function deleteProposalStateFrom(blockHeight) {
+  const col = await getProposalStateCollection();
   await col.deleteMany({ "indexer.blockHeight": { $gte: blockHeight } });
 }
 
