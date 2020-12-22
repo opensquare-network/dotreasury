@@ -38,8 +38,8 @@ async function saveNewProposal(proposalIndex, indexer) {
     proposalIndex
   );
 
-  const tipCol = await getProposalCollection();
-  await tipCol.insertOne({
+  const proposalCol = await getProposalCollection();
+  await proposalCol.insertOne({
     indexer,
     proposalIndex,
     meta: meta.toJSON(),
