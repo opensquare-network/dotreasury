@@ -45,12 +45,16 @@ async function saveNewTip(hash, indexer) {
 }
 
 async function saveTipState(hash, state, indexer, sort) {
+  const api = await getApi();
+  const meta = await api.query.treasury.tips.at(indexer.blockHash, hash);
+
   const tipStateCol = await getTipStateCollection();
   await tipStateCol.insertOne({
     indexer,
     sort,
     hash,
     state,
+    meta: meta.toJSON(),
   });
 }
 
