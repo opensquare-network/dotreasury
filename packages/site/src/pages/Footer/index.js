@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Icon } from "semantic-ui-react";
 
-import Container from "../../components/container";
+import Container from "../../components/Container";
 
 const Wrapper = styled.footer`
   background: #fff;

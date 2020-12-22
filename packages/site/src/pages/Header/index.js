@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import Container from "../../components/container";
+import Container from "../../components/Container";
 import MainHeader from "./MainHeader";
 import SubHeader from "./SubHeader";
 
