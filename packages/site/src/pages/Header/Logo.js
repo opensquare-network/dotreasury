@@ -9,18 +9,9 @@ const Wrapper = styled.div`
   gap: 12px;
 `;
 
-const Title = styled.span`
-  font-family: Montserrat;
-  font-weight: bold;
-  font-size: 18px;
-  line-height: 32px;
-  color: #df405d;
-`;
-
 const Logo = () => (
   <Wrapper>
-    <Image src="./imgs/logo.svg" />
-    <Title>doTreasury</Title>
+    <Image src="./imgs/al-logo.svg" />
   </Wrapper>
 );
 
