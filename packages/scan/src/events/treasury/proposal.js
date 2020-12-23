@@ -1,6 +1,6 @@
 const {
   getProposalCollection,
-  getProposalStateCollection,
+  getProposalTimelineCollection,
 } = require("../../mongo");
 const { getApi } = require("../../api");
 
@@ -27,7 +27,7 @@ async function handleProposalEvent(method, jsonData, indexer, sort) {
   if (isStateChange(method)) {
     const proposalIndex = jsonData[0];
     const state = method;
-    await saveProposalState(proposalIndex, state, indexer, sort);
+    await saveProposalTimeline(proposalIndex, state, indexer, sort);
   }
 }
 
@@ -46,15 +46,15 @@ async function saveNewProposal(proposalIndex, indexer) {
   });
 }
 
-async function saveProposalState(proposalIndex, state, indexer, sort) {
+async function saveProposalTimeline(proposalIndex, state, indexer, sort) {
   const api = await getApi();
   const meta = await api.query.treasury.proposals.at(
     indexer.blockHash,
     proposalIndex
   );
 
-  const proposalStateCol = await getProposalStateCollection();
-  await proposalStateCol.insertOne({
+  const proposalTimelineCol = await getProposalTimelineCollection();
+  await proposalTimelineCol.insertOne({
     indexer,
     sort,
     proposalIndex,

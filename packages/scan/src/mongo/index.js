@@ -7,11 +7,12 @@ const blockCollectionName = "block";
 const eventCollectionName = "event";
 const extrinsicCollectionName = "extrinsic";
 const tipCollectionName = "tip";
-const tipStateCollectionName = "tipState";
+const tipTimelineCollectionName = "tipTimeline";
 const bountyCollectionName = "bounty";
-const bountyStateCollectionName = "bountyState";
+const bountyTimelineCollectionName = "bountyTimeline";
 const proposalCollectionName = "proposal";
-const proposalStateCollectionName = "proposalState";
+const proposalTimelineCollectionName = "proposalTimeline";
+const councilProposalCollectionName = "councilProposal";
 
 let client = null;
 let db = null;
@@ -22,11 +23,12 @@ let blockCol = null;
 let eventCol = null;
 let extrinsicCol = null;
 let tipCol = null;
-let tipStateCol = null;
+let tipTimelineCol = null;
 let bountyCol = null;
-let bountyStateCol = null;
+let bountyTimelineCol = null;
 let proposalCol = null;
-let proposalStateCol = null;
+let proposalTimelineCol = null;
+let councilProposalCol = null;
 
 async function initDb() {
   client = await MongoClient.connect(mongoUrl, {
@@ -39,11 +41,12 @@ async function initDb() {
   eventCol = db.collection(eventCollectionName);
   extrinsicCol = db.collection(extrinsicCollectionName);
   tipCol = db.collection(tipCollectionName);
-  tipStateCol = db.collection(tipStateCollectionName);
+  tipTimelineCol = db.collection(tipTimelineCollectionName);
   bountyCol = db.collection(bountyCollectionName);
-  bountyStateCol = db.collection(bountyStateCollectionName);
+  bountyTimelineCol = db.collection(bountyTimelineCollectionName);
   proposalCol = db.collection(proposalCollectionName);
-  proposalStateCol = db.collection(proposalStateCollectionName);
+  proposalTimelineCol = db.collection(proposalTimelineCollectionName);
+  councilProposalCol = db.collection(councilProposalCollectionName);
 
   await _createIndexes();
 }
@@ -88,9 +91,9 @@ async function getTipCollection() {
   return tipCol;
 }
 
-async function getTipStateCollection() {
-  await tryInit(tipStateCol);
-  return tipStateCol;
+async function getTipTimelineCollection() {
+  await tryInit(tipTimelineCol);
+  return tipTimelineCol;
 }
 
 async function getBountyCollection() {
@@ -98,9 +101,9 @@ async function getBountyCollection() {
   return bountyCol;
 }
 
-async function getBountyStateCollection() {
-  await tryInit(bountyStateCol);
-  return bountyStateCol;
+async function getBountyTimelineCollection() {
+  await tryInit(bountyTimelineCol);
+  return bountyTimelineCol;
 }
 
 async function getProposalCollection() {
@@ -108,9 +111,14 @@ async function getProposalCollection() {
   return proposalCol;
 }
 
-async function getProposalStateCollection() {
-  await tryInit(proposalStateCol);
-  return proposalStateCol;
+async function getProposalTimelineCollection() {
+  await tryInit(proposalTimelineCol);
+  return proposalTimelineCol;
+}
+
+async function getCouncilProposalCollection() {
+  await tryInit(councilProposalCol);
+  return councilProposalCol;
 }
 
 module.exports = {
@@ -119,9 +127,10 @@ module.exports = {
   getExtrinsicCollection,
   getEventCollection,
   getTipCollection,
-  getTipStateCollection,
+  getTipTimelineCollection,
   getBountyCollection,
-  getBountyStateCollection,
+  getBountyTimelineCollection,
   getProposalCollection,
-  getProposalStateCollection,
+  getProposalTimelineCollection,
+  getCouncilProposalCollection,
 };

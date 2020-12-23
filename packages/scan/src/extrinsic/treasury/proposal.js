@@ -1,5 +1,5 @@
 const { getApi } = require("../../api");
-const { getProposalStateCollection } = require("../../mongo");
+const { getProposalTimelineCollection } = require("../../mongo");
 
 async function handleProposalExtrinsic(
   section,
@@ -38,18 +38,18 @@ async function handleRejectProposal(args, indexer, events) {
 async function handleApproveProposal(args, indexer, events) {
   const { proposal_id: proposalIndex } = args;
 
-  await saveProposalState(proposalIndex, "ApproveProposal", args, indexer);
+  await saveProposalTimeline(proposalIndex, "ApproveProposal", args, indexer);
 }
 
-async function saveProposalState(proposalIndex, state, args, indexer, sort) {
+async function saveProposalTimeline(proposalIndex, state, args, indexer, sort) {
   const api = await getApi();
   const meta = await api.query.treasury.proposals.at(
     indexer.blockHash,
     proposalIndex
   );
 
-  const tipStateCol = await getProposalStateCollection();
-  await tipStateCol.insertOne({
+  const proposalTimelineCol = await getProposalTimelineCollection();
+  await proposalTimelineCol.insertOne({
     indexer,
     sort,
     proposalIndex,
