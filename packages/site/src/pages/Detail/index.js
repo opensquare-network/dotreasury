@@ -5,6 +5,7 @@ import { NavLink } from "react-router-dom";
 
 import InformationTable from "./InformationTable";
 import TipLefeCycleTabel from "./TipLifeCycleTable";
+import Timeline from "../Timeline";
 
 const HeaderWrapper = styled.div`
   display: flex;
@@ -46,6 +47,7 @@ const Detail = () => {
         <InformationTable />
         <TipLefeCycleTabel />
       </TableWrapper>
+      <Timeline />
     </>
   );
 };
