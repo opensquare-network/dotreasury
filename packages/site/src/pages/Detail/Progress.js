@@ -7,7 +7,7 @@ const CustomProgress = styled(Progress)`
   margin: 0 !important;
   background: #ffecef !important;
   border-radius: 4px !important;
-  flex-grow: 1;
+  flex: 1 1 auto !important;
   .bar {
     height: inherit !important;
     background: #df405d !important;

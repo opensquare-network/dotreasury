@@ -25,7 +25,12 @@ const Header = styled.div`
 const TableWrapper = styled.div`
   display: grid;
   gap: 16px;
-  grid-template-columns: repeat(auto-fit, minmax(556px, 1fr));
+  @media screen and (min-width: 556px) {
+    grid-template-columns: repeat(auto-fit, minmax(556px, 1fr));
+  }
+  @media screen and (max-width: 556px) {
+    grid-template-columns: repeat(1fr);
+  }
 `;
 
 const Detail = () => {
