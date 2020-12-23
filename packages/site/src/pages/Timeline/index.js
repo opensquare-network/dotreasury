@@ -17,13 +17,13 @@ const ItemList = styled.div``;
 
 const Timeline = () => {
   return (
-    <>
+    <div>
       <Header>Timeline</Header>
       <ItemList>
         <Item />
         <Item />
       </ItemList>
-    </>
+    </div>
   );
 };
 

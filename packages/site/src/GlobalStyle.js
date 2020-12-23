@@ -19,23 +19,23 @@ const GlobalStyle = createGlobalStyle`
   }
   
   .ui.primary.button, .ui.primary.buttons .button {
-    background: #04D2C5;
+    background: #DF405D;
     
     &:hover, &:active, &:focus {
-      background: #40DDD3;
+      background: #DF405D;
     }
     
     &:focus {
-      background: #04B9AD;
+      background: #DF405D;
     }
   }
   
   .ui.input.focus>input, .ui.input>input:focus {
-    border-color: #04D2C5;
+    border-color: #DF405D;
   }
   
   .ui.input.error>input:focus {
-    border-color: #EC4730;;
+    border-color: #DF405D;
   }
   
   .ant-table.ant-table-small {

@@ -6,6 +6,7 @@ import { NavLink } from "react-router-dom";
 import InformationTable from "./InformationTable";
 import TipLefeCycleTabel from "./TipLifeCycleTable";
 import Timeline from "../Timeline";
+import Comment from "../Comment";
 
 const HeaderWrapper = styled.div`
   display: flex;
@@ -34,6 +35,21 @@ const TableWrapper = styled.div`
   }
 `;
 
+const TimelineCommentWrapper = styled.div`
+  margin-top: 20px;
+  display: grid;
+  gap: 24px;
+  @media screen and (min-width: 1128px) {
+    grid-template-columns: repeat(3, 1fr);
+    & > div:first-child {
+      grid-column: 1 / 2;
+    }
+    & > div:last-child {
+      grid-column: 2 / 4;
+    }
+  }
+`;
+
 const Detail = () => {
   return (
     <>
@@ -47,7 +63,10 @@ const Detail = () => {
         <InformationTable />
         <TipLefeCycleTabel />
       </TableWrapper>
-      <Timeline />
+      <TimelineCommentWrapper>
+        <Timeline />
+        <Comment />
+      </TimelineCommentWrapper>
     </>
   );
 };
