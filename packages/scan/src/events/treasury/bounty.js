@@ -1,6 +1,6 @@
 const {
   getBountyCollection,
-  getBountyStateCollection,
+  getBountyTimelineCollection,
 } = require("../../mongo");
 const { getApi } = require("../../api");
 
@@ -43,7 +43,7 @@ async function handleBountyEvent(method, jsonData, indexer, sort) {
   if (isStateChange(method)) {
     const bountyIndex = jsonData[0];
     const state = method;
-    await saveBountyState(bountyIndex, state, indexer, sort);
+    await saveBountyTimeline(bountyIndex, state, indexer, sort);
   }
 }
 
@@ -62,15 +62,15 @@ async function saveNewBounty(bountyIndex, indexer) {
   });
 }
 
-async function saveBountyState(bountyIndex, state, indexer, sort) {
+async function saveBountyTimeline(bountyIndex, state, indexer, sort) {
   const api = await getApi();
   const meta = await api.query.treasury.bounties.at(
     indexer.blockHash,
     bountyIndex
   );
 
-  const bountyStateCol = await getBountyStateCollection();
-  await bountyStateCol.insertOne({
+  const bountyTimelineCol = await getBountyTimelineCollection();
+  await bountyTimelineCol.insertOne({
     indexer,
     sort,
     bountyIndex,

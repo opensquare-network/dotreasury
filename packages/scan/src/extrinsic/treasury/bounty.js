@@ -1,4 +1,4 @@
-const { getBountyStateCollection } = require("../../mongo");
+const { getBountyTimelineCollection } = require("../../mongo");
 const { getApi } = require("../../api");
 
 async function handleBountyExtrinsic(
@@ -46,25 +46,25 @@ async function handleProposeBounty(args, indexer, events) {
 async function handleApproveBounty(args, indexer, events) {
   const { bounty_id: bountyIndex } = args;
 
-  await saveBountyState(bountyIndex, "ApproveBounty", args, indexer);
+  await saveBountyTimeline(bountyIndex, "ApproveBounty", args, indexer);
 }
 
 async function handleProposeCurator(args, indexer, events) {
   const { bounty_id: bountyIndex, curator, fee } = args;
 
-  await saveBountyState(bountyIndex, "ProposeCurator", args, indexer);
+  await saveBountyTimeline(bountyIndex, "ProposeCurator", args, indexer);
 }
 
 async function handleUnassignCurator(args, indexer, events) {
   const { bounty_id: bountyIndex } = args;
 
-  await saveBountyState(bountyIndex, "UnassignCurator", args, indexer);
+  await saveBountyTimeline(bountyIndex, "UnassignCurator", args, indexer);
 }
 
 async function handleAcceptCurator(args, indexer, events) {
   const { bounty_id: bountyIndex } = args;
 
-  await saveBountyState(bountyIndex, "AcceptCurator", args, indexer);
+  await saveBountyTimeline(bountyIndex, "AcceptCurator", args, indexer);
 }
 
 async function handleAwardBounty(args, indexer, events) {
@@ -83,15 +83,15 @@ async function handleExtendBountyExpiry(args, indexer, events) {
   const { bounty_id, remark } = args;
 }
 
-async function saveBountyState(bountyIndex, state, args, indexer, sort) {
+async function saveBountyTimeline(bountyIndex, state, args, indexer, sort) {
   const api = await getApi();
   const meta = await api.query.treasury.bounties.at(
     indexer.blockHash,
     bountyIndex
   );
 
-  const bountyStateCol = await getBountyStateCollection();
-  await bountyStateCol.insertOne({
+  const bountyTimelineCol = await getBountyTimelineCollection();
+  await bountyTimelineCol.insertOne({
     indexer,
     sort,
     bountyIndex,

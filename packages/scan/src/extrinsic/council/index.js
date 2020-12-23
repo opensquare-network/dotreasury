@@ -44,9 +44,10 @@ async function handleCouncilPropose(args, indexer, events) {
     return;
   }
 
+  callInfo.args = callArgs;
+
   await handleCouncilProposeApproveProposal(
     callInfo,
-    callArgs,
     threshold,
     indexer,
     events

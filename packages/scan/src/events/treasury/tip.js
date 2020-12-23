@@ -1,4 +1,4 @@
-const { getTipCollection, getTipStateCollection } = require("../../mongo");
+const { getTipCollection, getTipTimelineCollection } = require("../../mongo");
 const { getApi } = require("../../api");
 
 function isTipEvent(method) {
@@ -26,7 +26,7 @@ async function handleTipEvent(method, jsonData, indexer, sort) {
   if (isStateChange(method)) {
     const hash = jsonData[0];
     const state = method;
-    await saveTipState(hash, state, indexer, sort);
+    await saveTipTimeline(hash, state, indexer, sort);
   }
 }
 
@@ -42,12 +42,12 @@ async function saveNewTip(hash, indexer) {
   });
 }
 
-async function saveTipState(hash, state, indexer, sort) {
+async function saveTipTimeline(hash, state, indexer, sort) {
   const api = await getApi();
   const meta = await api.query.treasury.tips.at(indexer.blockHash, hash);
 
-  const tipStateCol = await getTipStateCollection();
-  await tipStateCol.insertOne({
+  const tipTimelineCol = await getTipTimelineCollection();
+  await tipTimelineCol.insertOne({
     indexer,
     sort,
     hash,
