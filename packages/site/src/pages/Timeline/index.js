@@ -13,12 +13,16 @@ const Header = styled.div`
   margin-bottom: 20px;
 `;
 
+const ItemList = styled.div``;
+
 const Timeline = () => {
   return (
     <>
       <Header>Timeline</Header>
-      <Item />
-      <Item />
+      <ItemList>
+        <Item />
+        <Item />
+      </ItemList>
     </>
   );
 };
