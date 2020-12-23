@@ -1,6 +1,7 @@
 const { handleTipExtrinsic } = require("./treasury/tip");
 const { handleBountyExtrinsic } = require("./treasury/bounty");
 const { handleProposalExtrinsic } = require("./treasury/proposal");
+const { handleCouncilExtrinsic } = require("./council");
 
 async function extractExtrinsicBusinessData(
   section,
@@ -20,6 +21,7 @@ async function extractExtrinsicBusinessData(
     indexer,
     events
   );
+  await handleCouncilExtrinsic(section, name, args, isSuccess, indexer, events);
 }
 
 module.exports = {
