@@ -2,10 +2,11 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 
 import Table from "../../components/Table";
-import User from "../../components/User";
+import User from "../../components/User/Index";
 import Balance from "../../components/Balance";
 import RightButton from "../../components/RightButton";
 import Status from "./Status";
+import ReasonText from "./ReasonText";
 
 const TipsTable = ({ data }) => {
   return (
@@ -25,12 +26,17 @@ const TipsTable = ({ data }) => {
           data.map((item, index) => (
             <Table.Row key={index}>
               <Table.Cell className="user-cell">
-                <User name={item.beneficiary.name} />
+                <User
+                  name={item.beneficiary.name}
+                  address={item.beneficiary.address}
+                />
               </Table.Cell>
               <Table.Cell className="user-cell">
-                <User name={item.finder.name} />
+                <User name={item.finder.name} address={item.finder.address} />
               </Table.Cell>
-              <Table.Cell>{item.reason}</Table.Cell>
+              <Table.Cell>
+                <ReasonText>{item.reason}</ReasonText>
+              </Table.Cell>
               <Table.Cell className="balance-cell" textAlign={"right"}>
                 <Balance
                   value={item.balance.value}

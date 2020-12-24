@@ -1,12 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 
-import User from "../../components/User";
+import User from "../../components/User/Index";
+import Card from "../../components/Card";
 import Circle from "./Circle";
 import Label from "./Label";
 import Bar from "./Bar";
-import Card from "./Card";
+
 import CardItem from "./CardItem";
+import ButtonList from "./ButtonList";
 
 const Wrapper = styled.div`
   &:last-child .bar {
@@ -26,6 +28,11 @@ const TimeLableWrapper = styled.div`
   justify-content: space-between;
 `;
 
+const CardWrapper = styled.div`
+  flex-grow: 1;
+  margin: 8px 0 40px;
+`;
+
 const Item = () => {
   return (
     <Wrapper>
@@ -38,14 +45,17 @@ const Item = () => {
       </FlexWrapper>
       <FlexWrapper>
         <Bar className="bar" />
-        <Card>
-          <CardItem title="Tipper">
-            <User name="Eleanor" />
-          </CardItem>
-          <CardItem title="Beneficiary">
-            <User name="Eleanor" />
-          </CardItem>
-        </Card>
+        <CardWrapper>
+          <Card>
+            <CardItem title="Tipper">
+              <User name="Eleanor" />
+            </CardItem>
+            <CardItem title="Beneficiary">
+              <User name="Eleanor" />
+            </CardItem>
+          </Card>
+          <ButtonList />
+        </CardWrapper>
       </FlexWrapper>
     </Wrapper>
   );
