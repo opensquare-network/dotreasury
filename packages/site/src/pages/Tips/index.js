@@ -13,10 +13,11 @@ const Tips = () => {
   const testData = [
     {
       beneficiary: {
-        name: "FtvpME…nZXKLg",
+        name: "Eleanor",
+        address: "HUfzjs5WNDNJfbP5kPUBpneAizE5yCprsX",
       },
       finder: {
-        name: "DbJSgP…tbQ66r",
+        address: "HUfzjs5WNDNJfbP5kPUBpneAizE5yCprsX",
       },
       reason: "https://kusama.polkassembly.io/post/346",
       balance: {
@@ -29,10 +30,11 @@ const Tips = () => {
     },
     {
       beneficiary: {
-        name: "FtvpME…nZXKLg",
+        address: "HUfzjs5WNDNJfbP5kPUBpneAizE5yCprsX",
       },
       finder: {
         name: "Eleanor",
+        address: "HUfzjs5WNDNJfbP5kPUBpneAizE5yCprsX",
       },
       reason: "My second video about Kusama Network",
       balance: {

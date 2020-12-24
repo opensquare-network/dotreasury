@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import User from "../../components/User";
+import User from "../../components/User/Index";
 import Card from "../../components/Card";
 import Circle from "./Circle";
 import Label from "./Label";

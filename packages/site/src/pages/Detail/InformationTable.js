@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import Table from "../../components/Table";
 import TableCell from "../../components/TableCell";
-import User from "../../components/User";
+import User from "../../components/User/Index";
 import Balance from "../../components/Balance";
 import PolygonLabel from "./PolygonLabel";
 
