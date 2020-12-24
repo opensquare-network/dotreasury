@@ -1,12 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import { Image } from "semantic-ui-react";
+import { Image, Divider } from "semantic-ui-react";
 import { NavLink } from "react-router-dom";
 
 import InformationTable from "./InformationTable";
 import TipLefeCycleTabel from "./TipLifeCycleTable";
 import Timeline from "../Timeline";
 import Comment from "../Comment";
+import RelatedLinks from "../RelatedLinks";
 
 const HeaderWrapper = styled.div`
   display: flex;
@@ -63,6 +64,8 @@ const Detail = () => {
         <InformationTable />
         <TipLefeCycleTabel />
       </TableWrapper>
+      <RelatedLinks />
+      <Divider />
       <TimelineCommentWrapper>
         <Timeline />
         <Comment />
