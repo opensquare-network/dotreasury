@@ -48,6 +48,7 @@ const BountyMethods = Object.freeze({
 });
 
 const CouncilEvents = Object.freeze({
+  Proposed: "Proposed",
   Voted: "Voted",
   Approved: "Approved",
   Disapproved: "Disapproved",

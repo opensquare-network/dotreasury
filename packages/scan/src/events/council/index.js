@@ -1,8 +1,13 @@
-const { CouncilEvents } = require("../../utils/constants");
+const { CouncilEvents, Modules } = require("../../utils/constants");
 const { saveTimeline } = require("../../store/council");
 
 async function handleCouncilEvent(event, indexer, eventSort) {
-  const { method, data } = event;
+  const { section, method, data } = event;
+
+  if (Modules.Council !== section) {
+    return;
+  }
+
   const jsonData = data.toJSON();
 
   await handleVoteEvent(method, jsonData, indexer, eventSort);
