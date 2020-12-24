@@ -1,3 +1,4 @@
+const { logger } = require("./logger");
 const sleep = (time) => {
   return new Promise((resolve) => {
     setTimeout(resolve, time);
@@ -19,4 +20,5 @@ module.exports = {
   isExtrinsicSuccess,
   extractExtrinsicEvents,
   sleep,
+  logger,
 };
