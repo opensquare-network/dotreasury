@@ -4,7 +4,7 @@ const { getApi } = require("./api");
 const { updateHeight } = require("./chain/latestHead");
 const { deleteDataFrom } = require("./clean");
 const { getLatestHeight } = require("./chain/latestHead");
-const { sleep } = require("./utils");
+const { sleep, logger } = require("./utils");
 const { getBlockIndexer } = require("./block/getBlockIndexer");
 const { handleBlock } = require("./block");
 const { handleExtrinsics } = require("./extrinsic");
@@ -44,7 +44,7 @@ async function handleBlockAndEvents(block, allEvents) {
   const blockIndexer = getBlockIndexer(block.block);
 
   await handleBlock(block, allEvents);
-  console.log(`block ${block.block.header.number.toNumber()} is saved to db`);
+  logger.info(`block ${block.block.header.number.toNumber()} is saved to db`);
 
   await handleEvents(allEvents, blockIndexer, block.block.extrinsics);
   await handleExtrinsics(block.block.extrinsics, allEvents, blockIndexer);
