@@ -8,11 +8,11 @@ import NoComment from "./NoComment";
 import Input from "./Input";
 
 const Header = styled.div`
-  font-family: Montserrat;
+  font-family: Inter;
   font-style: normal;
   font-weight: bold;
-  font-size: 28px;
-  line-height: 44px;
+  font-size: 18px;
+  line-height: 32px;
   color: #1d253c;
   margin-bottom: 20px;
 `;
