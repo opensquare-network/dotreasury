@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { Image } from "semantic-ui-react";
+
+import ImageButton from "./ImageButton";
 
 const Wrapper = styled.div`
   margin-top: 8px;
@@ -8,17 +9,11 @@ const Wrapper = styled.div`
   gap: 8px;
 `;
 
-const ImageWrapper = styled(Image)`
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-`;
-
 const ButtonList = () => {
   return (
     <Wrapper>
-      <ImageWrapper src={"./imgs/image-1.png"} />
-      <ImageWrapper src={"./imgs/image-2.png"} />
+      <ImageButton src={"./imgs/image-1.png"} />
+      <ImageButton src={"./imgs/image-2.png"} />
     </Wrapper>
   );
 };
