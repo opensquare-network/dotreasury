@@ -27,7 +27,7 @@ const Label = styled.div`
 
 const IconList = styled.div`
   display: inline-flex;
-  gap: 20px;
+  gap: 16px;
   i {
     font-size: 20px;
     color: rgba(29, 37, 60, 0.24);
