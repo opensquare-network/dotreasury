@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import TipsTable from "./TipsTable";
+import Pagination from "../../components/Pagination";
 
 const Header = styled.div`
   font-family: Montserrat;
@@ -52,6 +53,15 @@ const Tips = () => {
     <>
       <Header>Tips</Header>
       <TipsTable data={testData} />
+      <Pagination
+        boundaryRange={0}
+        defaultActivePage={1}
+        ellipsisItem={null}
+        firstItem={null}
+        lastItem={null}
+        siblingRange={1}
+        totalPages={3}
+      />
     </>
   );
 };
