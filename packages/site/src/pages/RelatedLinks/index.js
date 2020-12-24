@@ -2,17 +2,10 @@ import React from "react";
 import styled from "styled-components";
 
 import LinkItem from "./LinkItem";
+import SubTitle from "../../components/SubTitle";
 
 const Wrapper = styled.div`
   margin-top: 20px;
-`;
-
-const Header = styled.div`
-  font-family: Inter;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 18px;
-  line-height: 32px;
 `;
 
 const LinksWrapper = styled.div`
@@ -25,7 +18,7 @@ const LinksWrapper = styled.div`
 const RelatedLinks = () => {
   return (
     <Wrapper>
-      <Header>Ralated Links</Header>
+      <SubTitle>Ralated Links</SubTitle>
       <LinksWrapper>
         <LinkItem
           src={"./imgs/youtube-logo.png"}

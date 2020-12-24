@@ -5,7 +5,9 @@ import Table from "../../components/Table";
 import User from "../../components/User";
 import Balance from "../../components/Balance";
 import RightButton from "../../components/RightButton";
+import EllipsisText from "../../components/EllipsisText";
 import Status from "./Status";
+import ReasonText from "./ReasonText";
 
 const TipsTable = ({ data }) => {
   return (
@@ -30,7 +32,9 @@ const TipsTable = ({ data }) => {
               <Table.Cell className="user-cell">
                 <User name={item.finder.name} />
               </Table.Cell>
-              <Table.Cell>{item.reason}</Table.Cell>
+              <Table.Cell>
+                <ReasonText>{item.reason}</ReasonText>
+              </Table.Cell>
               <Table.Cell className="balance-cell" textAlign={"right"}>
                 <Balance
                   value={item.balance.value}

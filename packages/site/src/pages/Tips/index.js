@@ -3,14 +3,9 @@ import styled from "styled-components";
 
 import TipsTable from "./TipsTable";
 import Pagination from "../../components/Pagination";
+import Title from "../../components/Title";
 
-const Header = styled.div`
-  font-family: Montserrat;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 28px;
-  line-height: 44px;
-  color: #1d253c;
+const Header = styled(Title)`
   margin-bottom: 20px;
 `;
 

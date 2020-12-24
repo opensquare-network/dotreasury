@@ -8,21 +8,13 @@ import TipLefeCycleTabel from "./TipLifeCycleTable";
 import Timeline from "../Timeline";
 import Comment from "../Comment";
 import RelatedLinks from "../RelatedLinks";
+import Title from "../../components/Title";
 
 const HeaderWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 16px;
   margin-bottom: 20px;
-`;
-
-const Header = styled.div`
-  font-family: Montserrat;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 28px;
-  line-height: 44px;
-  color: #1d253c;
 `;
 
 const TableWrapper = styled.div`
@@ -58,7 +50,7 @@ const Detail = () => {
         <NavLink to="/">
           <Image src="./imgs/left-arrow.svg" width={"32px"} height={"32px"} />
         </NavLink>
-        <Header>Detail</Header>
+        <Title>Detail</Title>
       </HeaderWrapper>
       <TableWrapper>
         <InformationTable />
