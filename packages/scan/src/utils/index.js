@@ -20,9 +20,8 @@ function computeTipValue(tips) {
     return null;
   }
 
-  tips = tips.slice();
-  tips.sort((a, b) => a[1] - b[1]);
-  return tips[Math.floor(tips.length / 2)][1];
+  sortedTips = [...tips].sort((a, b) => a[1] - b[1]);
+  return sortedTips[Math.floor(sortedTips.length / 2)][1];
 }
 
 module.exports = {

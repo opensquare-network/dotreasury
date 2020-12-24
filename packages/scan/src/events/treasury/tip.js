@@ -36,7 +36,7 @@ async function saveNewTip(hash, indexer) {
   let meta = await api.query.treasury.tips.at(indexer.blockHash, hash);
   meta = meta.toJSON();
 
-  const medianValue = computeTipValue((meta && meta.tips) || []);
+  const medianValue = computeTipValue(meta?.tips ?? []);
 
   const tipCol = await getTipCollection();
   await tipCol.insertOne({
@@ -62,9 +62,13 @@ async function saveTipTimeline(hash, state, data, indexer, sort) {
     meta,
   });
 
+  await updateTip(hash, state, data, indexer);
+}
+
+async function updateTip(hash, state, data, indexer) {
   let updates = {};
   if ("TipClosed" !== state && "TipRetracted" !== state) {
-    const medianValue = computeTipValue((meta && meta.tips) || []);
+    const medianValue = computeTipValue(meta?.tips ?? []);
     updates = { meta, medianValue };
   }
 

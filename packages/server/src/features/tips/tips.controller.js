@@ -22,16 +22,16 @@ class TipsController {
       items: tips.map((tip) => ({
         hash: tip.hash,
         proposeTime: tip.indexer.blockTime,
-        beneficiary: tip.meta.who,
-        finder: Array.isArray(tip.meta.finder)
+        beneficiary: tip.meta?.who,
+        finder: Array.isArray(tip.meta?.finder)
           ? tip.meta.finder[0]
-          : tip.meta.finder,
-        reason: tip.meta.reason,
+          : tip.meta?.finder,
+        reason: tip.meta?.reason,
         latestState: {
-          state: tip.state && tip.state.state,
-          time: tip.state && tip.state.indexer.blockTime,
+          state: tip.state?.state,
+          time: tip.state?.indexer.blockTime,
         },
-        tipsCount: tip.meta.tips.length,
+        tipsCount: tip.meta?.tips.length,
         medianValue: tip.medianValue,
       })),
       page,

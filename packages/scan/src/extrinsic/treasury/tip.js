@@ -79,7 +79,11 @@ async function saveTipTimeline(hash, state, args, indexer, sort) {
     meta,
   });
 
-  const medianValue = computeTipValue((meta && meta.tips) || []);
+  await updateTip(hash, state, args, indexer);
+}
+
+async function updateTip(hash, state, args, indexer) {
+  const medianValue = computeTipValue(meta?.tips ?? []);
 
   const tipCol = await getTipCollection();
   await tipCol.updateOne(
