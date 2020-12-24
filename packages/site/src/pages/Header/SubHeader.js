@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { Divider, Tab, Menu, Label } from "semantic-ui-react";
 
+import { PRIMARY_THEME_COLOR, SECONDARY_THEME_COLOR } from "../../constants";
+
 const DividerWrapper = styled(Divider)`
   margin: 0 !important;
 `;
@@ -36,13 +38,13 @@ const TabWrapper = styled(Tab)`
       line-height: 20px !important;
       border-radius: 10px !important;
       margin-left: 8px !important;
-      color: #DF405D !important;
+      color: ${PRIMARY_THEME_COLOR} !important;
       font-weight: 400;
     }
     &.active {
       font-weight: normal !important;
       color: #1D253C !important;
-      border-color: #DF405D !important;
+      border-color: ${PRIMARY_THEME_COLOR} !important;
     }
     
   }
