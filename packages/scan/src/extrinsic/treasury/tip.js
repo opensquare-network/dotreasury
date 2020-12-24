@@ -1,5 +1,6 @@
 const { getApi } = require("../../api");
-const { getTipTimelineCollection } = require("../../mongo");
+const { getTipCollection, getTipTimelineCollection } = require("../../mongo");
+const { computeTipValue } = require("../../utils");
 
 async function handleTipExtrinsic(
   section,
@@ -65,7 +66,8 @@ async function handleCloseTip(args, indexer, events) {
 
 async function saveTipTimeline(hash, state, args, indexer, sort) {
   const api = await getApi();
-  const meta = await api.query.treasury.tips.at(indexer.blockHash, hash);
+  let meta = await api.query.treasury.tips.at(indexer.blockHash, hash);
+  meta = meta.toJSON();
 
   const tipTimelineCol = await getTipTimelineCollection();
   await tipTimelineCol.insertOne({
@@ -74,8 +76,26 @@ async function saveTipTimeline(hash, state, args, indexer, sort) {
     hash,
     args,
     state,
-    meta: meta.toJSON(),
+    meta,
   });
+
+  const medianValue = computeTipValue((meta && meta.tips) || []);
+
+  const tipCol = await getTipCollection();
+  await tipCol.updateOne(
+    { hash },
+    {
+      $set: {
+        medianValue,
+        meta,
+        state: {
+          indexer,
+          state,
+          args,
+        },
+      },
+    }
+  );
 }
 
 module.exports = {

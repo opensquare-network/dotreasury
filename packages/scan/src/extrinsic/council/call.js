@@ -1,4 +1,9 @@
 const callIndexs = {
+  "0x0e03": {
+    callIndex: "0x0e03",
+    module: "council",
+    method: "vote",
+  },
   "0x1200": {
     callIndex: "0x1200",
     module: "treasury",
