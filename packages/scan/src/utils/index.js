@@ -15,18 +15,22 @@ function isExtrinsicSuccess(events) {
   return events.some((e) => e.event.method === "ExtrinsicSuccess");
 }
 
-function computeTipValue(tips) {
-  if (!tips || !tips.length) {
+function median(values) {
+  if (!Array.isArray(values)) {
     return null;
   }
 
-  sortedTips = [...tips].sort((a, b) => a[1] - b[1]);
-  return sortedTips[Math.floor(sortedTips.length / 2)][1];
+  if (values.length === 0) {
+    return null;
+  }
+
+  const sorted = [...values].sort((a, b) => a - b);
+  return sorted[Math.floor(sorted.length / 2)];
 }
 
 module.exports = {
   isExtrinsicSuccess,
   extractExtrinsicEvents,
   sleep,
-  computeTipValue,
+  median,
 };

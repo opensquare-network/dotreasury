@@ -1,11 +1,11 @@
+const { ProposalEvents } = require("../../utils/constants");
 const {
-  getProposalCollection,
-  getProposalTimelineCollection,
-} = require("../../mongo");
-const { getApi } = require("../../api");
+  saveNewProposal,
+  saveProposalTimeline,
+} = require("../../store/proposal");
 
 function isProposalEvent(method) {
-  return ["Proposed", "Awarded", "Rejected"].includes(method);
+  return ProposalEvents.hasOwnProperty(method);
 }
 
 const isStateChange = isProposalEvent;
@@ -15,52 +15,16 @@ async function handleProposalEvent(method, jsonData, indexer, sort) {
     return;
   }
 
-  if (method === "Proposed") {
+  if (method === ProposalEvents.Proposed) {
     const [proposalIndex] = jsonData;
     await saveNewProposal(proposalIndex, indexer);
-  } else if (method === "Awarded") {
-    const [proposalIndex, balance, accountId] = jsonData;
-  } else if (method === "Rejected") {
-    const [proposalIndex, balance] = jsonData;
   }
 
   if (isStateChange(method)) {
     const proposalIndex = jsonData[0];
     const state = method;
-    await saveProposalTimeline(proposalIndex, state, indexer, sort);
+    await saveProposalTimeline(proposalIndex, state, jsonData, indexer, sort);
   }
-}
-
-async function saveNewProposal(proposalIndex, indexer) {
-  const api = await getApi();
-  const meta = await api.query.treasury.proposals.at(
-    indexer.blockHash,
-    proposalIndex
-  );
-
-  const proposalCol = await getProposalCollection();
-  await proposalCol.insertOne({
-    indexer,
-    proposalIndex,
-    meta: meta.toJSON(),
-  });
-}
-
-async function saveProposalTimeline(proposalIndex, state, indexer, sort) {
-  const api = await getApi();
-  const meta = await api.query.treasury.proposals.at(
-    indexer.blockHash,
-    proposalIndex
-  );
-
-  const proposalTimelineCol = await getProposalTimelineCollection();
-  await proposalTimelineCol.insertOne({
-    indexer,
-    sort,
-    proposalIndex,
-    state,
-    meta: meta.toJSON(),
-  });
 }
 
 module.exports = {
