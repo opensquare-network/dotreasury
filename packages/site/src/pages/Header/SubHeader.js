@@ -7,6 +7,15 @@ const DividerWrapper = styled(Divider)`
 `;
 
 const TabWrapper = styled(Tab)`
+  height: 65px;
+  overflow-x: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow-y: auto;
+
   background: transparent;
 
   div {
@@ -44,9 +53,15 @@ const panes = [
     menuItem: "Treasury Overview",
   },
   {
+    menuItem: "Proposal",
+  },
+  {
+    menuItem: "Bounties",
+  },
+  {
     menuItem: (
       <Menu.Item key="Tips">
-        Tips<Label>15</Label>
+        Tips<Label>12</Label>
       </Menu.Item>
     ),
   },
