@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { Image } from "semantic-ui-react";
 
+import Username from "./Username";
+
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
@@ -16,19 +18,11 @@ const UserImage = styled(Image)`
   height: 24px;
 `;
 
-const UserName = styled.span`
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-family: Roboto Mono;
-  font-size: 14px;
-  color: rgba(29, 37, 60, 0.64);
-`;
-
-const User = ({ name, src }) => {
+const User = ({ name, address, src }) => {
   return (
     <Wrapper>
       <UserImage src={src ? src : "./imgs/avatar.png"} />
-      <UserName>{name}</UserName>
+      <Username name={name} address={address} />
     </Wrapper>
   );
 };

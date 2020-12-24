@@ -2,14 +2,9 @@ import React from "react";
 import styled from "styled-components";
 
 import Item from "./Item";
+import SubTitle from "../../components/SubTitle";
 
-const Header = styled.div`
-  font-family: Montserrat;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 28px;
-  line-height: 44px;
-  color: #1d253c;
+const Header = styled(SubTitle)`
   margin-bottom: 20px;
 `;
 
