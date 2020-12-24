@@ -18,7 +18,7 @@ const getCurrent = (current) => {
 
 const Wrapper = styled.div`
   flex-grow: 1;
-  min-width: 228px;
+  min-width: 200px;
   height: 6px;
   display: flex;
   gap: 4px;

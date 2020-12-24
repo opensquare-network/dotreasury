@@ -14,6 +14,11 @@ const FooterWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  @media screen and (max-width: 1140px) {
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+  }
 `;
 
 const Label = styled.div`
@@ -22,7 +27,7 @@ const Label = styled.div`
 
 const IconList = styled.div`
   display: inline-flex;
-  gap: 20px;
+  gap: 16px;
   i {
     font-size: 20px;
     color: rgba(29, 37, 60, 0.24);
