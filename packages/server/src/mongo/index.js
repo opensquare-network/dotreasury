@@ -1,6 +1,7 @@
 const { MongoClient } = require("mongodb");
+const config = require("../../config");
 
-const dbName = process.env.MONGO_DB_NAME || "dotreasury";
+const dbName = config.mongo.dbName || "dotreasury";
 
 const statusCollectionName = "status";
 const blockCollectionName = "block";
