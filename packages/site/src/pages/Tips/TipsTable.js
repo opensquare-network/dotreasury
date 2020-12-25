@@ -29,7 +29,9 @@ const TableWrapper = styled.div`
 `;
 
 const Gap = styled.div`
-  flex: 0 0 16px;
+  @media screen and (max-width: 1140px) {
+    flex: 0 0 16px;
+  }
 `;
 
 const TipsTable = ({ data }) => {
