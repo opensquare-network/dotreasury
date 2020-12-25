@@ -5,7 +5,7 @@ function isTipEvent(method) {
   return TipEvents.hasOwnProperty(method);
 }
 
-isStateChange = isTipEvent;
+const isStateChange = isTipEvent;
 
 async function handleTipEvent(method, jsonData, indexer, sort) {
   if (!isTipEvent(method)) {
@@ -19,8 +19,7 @@ async function handleTipEvent(method, jsonData, indexer, sort) {
 
   if (isStateChange(method)) {
     const hash = jsonData[0];
-    const state = method;
-    await saveTipTimeline(hash, state, jsonData, indexer, sort);
+    await saveTipTimeline(hash, method, jsonData, indexer, sort);
   }
 }
 
