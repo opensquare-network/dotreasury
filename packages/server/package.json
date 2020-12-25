@@ -5,6 +5,10 @@
   "engines": {
     "node": ">=15.0.0"
   },
+  "scripts": {
+    "prod": "pm2 start ecosystem.config.js --env production",
+    "dev": "pm2 start ecosystem.config.js --env development"
+  },
   "dependencies": {
     "@koa/cors": "^3.1.0",
     "koa": "^2.13.0",
@@ -14,5 +18,8 @@
     "koa-router": "^10.0.0",
     "mongodb": "^3.6.3",
     "socket.io": "^3.0.4"
+  },
+  "devDependencies": {
+    "pm2": "^4.5.1"
   }
 }

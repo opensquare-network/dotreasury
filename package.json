@@ -8,7 +8,9 @@
   "author": "OpenSquare <https://www.opensquare.network/>",
   "license": "Apache 2.0",
   "scripts": {
-    "start": "yarn workspace @dotreasury/site start"
+    "start": "yarn workspace @dotreasury/site start",
+    "server-prod": "yarn workspace @dotreasury/server prod",
+    "scan-prod": "yarn workspace @dotreasury/scan prod"
   },
   "devDependencies": {
     "husky": "^4.3.5",
