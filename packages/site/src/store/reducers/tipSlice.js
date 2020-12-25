@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import tipsFakeData from "./tipsFakeData";
 
 const tipSlice = createSlice({
   name: "tips",
@@ -28,16 +27,8 @@ export const fetchTips = (page = 0, pageSize = 20) => async (dispatch) => {
   dispatch(setLoading(true));
 
   try {
-    dispatch(
-      setTips(
-        tipsFakeData || {
-          items: [],
-          page: 0,
-          pageSize: 10,
-          total: 0,
-        }
-      )
-    );
+    const resp = await window.fetch(`https://api.dotreasury.com/tips`);
+    dispatch(setTips(await resp.json()));
   } finally {
     dispatch(setLoading(false));
   }
