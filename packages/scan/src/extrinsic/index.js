@@ -1,4 +1,4 @@
-const { extractExtrinsicEvents } = require("../utils");
+const { extractExtrinsicEvents, getExtrinsicSigner } = require("../utils");
 const { getExtrinsicCollection } = require("../mongo");
 const { isExtrinsicSuccess } = require("../utils");
 const { u8aToHex } = require("@polkadot/util");
@@ -31,11 +31,7 @@ async function handleExtrinsic(extrinsic, indexer, events) {
   const { args } = extrinsic.method.toJSON();
   const name = extrinsic.method.methodName;
   const section = extrinsic.method.sectionName;
-  let signer = extrinsic._raw.signature.get("signer").toString();
-  //如果signer的解析长度不正确，则该交易是无签名交易
-  if (signer.length < 48) {
-    signer = "";
-  }
+  const signer = getExtrinsicSigner(extrinsic);
 
   const isSuccess = isExtrinsicSuccess(events);
 

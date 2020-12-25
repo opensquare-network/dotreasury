@@ -12,10 +12,11 @@ async function handleEvents(events, indexer, extrinsics) {
   for (let sort = 0; sort < events.length; sort++) {
     const { event, phase, topics } = events[sort];
     const phaseType = phase.type;
-    let [phaseValue, extrinsicHash] = [null, null];
+    let [phaseValue, extrinsicHash, extrinsic] = [null, null, null];
     if (!phase.isNull) {
-      phaseValue = phase.isNull ? null : phase.value.toNumber();
-      extrinsicHash = extrinsics[phaseValue].hash.toHex();
+      phaseValue = phase.value.toNumber();
+      extrinsic = extrinsics[phaseValue];
+      extrinsicHash = extrinsic.hash.toHex();
     }
 
     const index = parseInt(event.index);
@@ -24,7 +25,7 @@ async function handleEvents(events, indexer, extrinsics) {
     const method = event.method;
     const data = event.data.toJSON();
 
-    await extractEventBusinessData(event, indexer, sort);
+    await extractEventBusinessData(event, extrinsic, indexer, sort);
 
     bulk.insert({
       indexer,

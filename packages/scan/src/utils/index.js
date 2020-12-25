@@ -17,6 +17,11 @@ function isExtrinsicSuccess(events) {
   return events.some((e) => e.event.method === "ExtrinsicSuccess");
 }
 
+function getExtrinsicSigner(extrinsic) {
+  let signer = extrinsic._raw.signature.get("signer").toString();
+  return signer;
+}
+
 function median(values) {
   if (!Array.isArray(values)) {
     return null;
@@ -31,6 +36,7 @@ function median(values) {
 }
 
 module.exports = {
+  getExtrinsicSigner,
   isExtrinsicSuccess,
   extractExtrinsicEvents,
   sleep,

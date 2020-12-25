@@ -13,6 +13,13 @@ async function getTipMeta(blockHash, tipHash) {
     const reasonText = rawReasonText.toJSON();
     meta.reasonText = hexToString(reasonText);
   }
+  if (meta?.closes) {
+    meta.tipCountdown = api.consts.treasury.tipCountdown.toNumber();
+  }
+  if (meta?.tips) {
+    const members = await api.query.electionsPhragmen.members.at(blockHash);
+    meta.tippers = members.map(item => item[0]);
+  }
 
   return meta;
 }
@@ -22,7 +29,7 @@ function computeTipValue(tipMeta) {
   return median(tipValues);
 }
 
-async function saveNewTip(hash, indexer) {
+async function saveNewTip(hash, signer, indexer) {
   const meta = await getTipMeta(indexer.blockHash, hash);
   const medianValue = computeTipValue(meta);
 
@@ -32,6 +39,7 @@ async function saveNewTip(hash, indexer) {
     hash,
     medianValue,
     meta,
+    signer,
   });
 }
 

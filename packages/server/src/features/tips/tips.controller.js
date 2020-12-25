@@ -25,7 +25,7 @@ class TipsController {
         beneficiary: tip.meta?.who,
         finder: Array.isArray(tip.meta?.finder)
           ? tip.meta.finder[0]
-          : tip.meta?.finder,
+          : (tip.meta?.finder ?? tip.signer),
         reason: tip.meta?.reasonText,
         latestState: {
           state: tip.state?.state,
