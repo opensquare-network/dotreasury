@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useLayoutEffect, useRef } from "react";
 import styled from "styled-components";
 
 import TextMinor from "../TextMinor";
@@ -15,11 +15,9 @@ const TextUsername = styled(TextMinor)`
 
 const Username = ({ name, address }) => {
   const usernameRef = useRef(null);
-  useEffect(() => {
-    // only can change once not working when resized
+  useLayoutEffect(() => {
     // check if address is valid
     if (!name && usernameRef.current.clientWidth > 120 && address) {
-      console.log(usernameRef.current.innerHTML);
       usernameRef.current.innerHTML = `${address.substring(
         0,
         6
