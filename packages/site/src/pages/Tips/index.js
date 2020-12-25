@@ -1,9 +1,12 @@
-import React from "react";
+/* eslint-disable */
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import TipsTable from "./TipsTable";
 import Pagination from "../../components/Pagination";
 import Title from "../../components/Title";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTips, tipListSelector } from "../../store/reducers/tipSlice";
 
 const Header = styled(Title)`
   margin-bottom: 20px;
@@ -46,6 +49,16 @@ const Tips = () => {
     },
   ];
 
+  const [tablePage, setTablePage] = useState(1)
+  const [tablePageSize, setTablePageSize] = useState(20)
+
+  const dispatch = useDispatch()
+  const { items: tips, page, pageSize, total } = useSelector(tipListSelector)
+
+  useEffect(() => {
+    dispatch(fetchTips(tablePage - 1, tablePageSize))
+  }, [dispatch, tablePage, tablePageSize])
+
   return (
     <>
       <Header>Tips</Header>
@@ -57,7 +70,7 @@ const Tips = () => {
         firstItem={null}
         lastItem={null}
         siblingRange={1}
-        totalPages={3}
+        totalPages={total}
       />
     </>
   );
