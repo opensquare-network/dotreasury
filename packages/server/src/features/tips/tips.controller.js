@@ -70,7 +70,7 @@ class TipsController {
       ...(
         tip.meta?.closes ? {
           closeAtBlockHeight: tip.meta.closes,
-          countdownAtBlockHeight: tip.meta.closes - tip.meta.tipCountdown,
+          countdownFromBlockHeight: tip.meta.closes - tip.meta.tipCountdown,
         } : {})
     };
   }
