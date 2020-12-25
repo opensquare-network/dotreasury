@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
+import { useHistory } from "react-router";
 
 import Table from "../../components/Table";
 import User from "../../components/User/Index";
@@ -32,6 +33,14 @@ const Gap = styled.div`
 `;
 
 const TipsTable = ({ data }) => {
+  const history = useHistory();
+
+  const onClickRow = () => {
+    if (window.innerWidth < 1140) {
+      history.push("/detail");
+    }
+  };
+
   return (
     <Wrapper>
       <TableWrapper>
@@ -53,7 +62,7 @@ const TipsTable = ({ data }) => {
           <Table.Body>
             {data &&
               data.map((item, index) => (
-                <Table.Row key={index}>
+                <Table.Row key={index} onClick={onClickRow}>
                   <Table.Cell className="user-cell">
                     <User
                       name={item.beneficiary.name}
