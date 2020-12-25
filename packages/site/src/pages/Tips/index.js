@@ -23,7 +23,7 @@ const LoadingWrapper = styled.div`
 `;
 
 const Tips = () => {
-  const loading = true;
+  const loading = false;
   const testData = [
     {
       beneficiary: {
