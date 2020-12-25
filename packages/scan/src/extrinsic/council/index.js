@@ -1,5 +1,6 @@
-const { translate } = require("./call");
+const { translate } = require("../../utils/call");
 const { handleCouncilProposeApproveProposal } = require("./proposal");
+const { CouncilMethods, Modules } = require("../../utils/constants");
 
 async function handleCouncilExtrinsic(
   section,
@@ -9,7 +10,7 @@ async function handleCouncilExtrinsic(
   indexer,
   events
 ) {
-  if (section !== "council") {
+  if (section !== Modules.Council) {
     return;
   }
 
@@ -17,12 +18,8 @@ async function handleCouncilExtrinsic(
     return;
   }
 
-  if (name === "propose") {
+  if (name === CouncilMethods.propose) {
     await handleCouncilPropose(args, indexer, events);
-  } else if (name === "vote") {
-    await handleCouncilVote(args, indexer, events);
-  } else if (name === "close") {
-    await handleCouncilClose(args, indexer, events);
   }
 }
 
@@ -53,10 +50,6 @@ async function handleCouncilPropose(args, indexer, events) {
     events
   );
 }
-
-async function handleCouncilVote(args, indexer, events) {}
-
-async function handleCouncilClose(args, indexer, events) {}
 
 module.exports = {
   handleCouncilExtrinsic,

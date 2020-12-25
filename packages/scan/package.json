@@ -2,6 +2,9 @@
   "name": "@dotreasury/scan",
   "version": "1.0.0",
   "license": "Apache 2.0",
+  "engines": {
+    "node": ">=15.0.0"
+  },
   "scripts": {
     "prod": "pm2 start ecosystem.config.js --env production"
   },

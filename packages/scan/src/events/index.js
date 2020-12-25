@@ -45,7 +45,7 @@ async function handleEvents(events, indexer, extrinsics) {
 
   const result = await bulk.execute();
   if (result.result && !result.result.ok) {
-    // TODO: 处理插入不成功的情况
+    // TODO: Deal with db failura
   }
 }
 

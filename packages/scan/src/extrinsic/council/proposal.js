@@ -1,9 +1,10 @@
 const { retrieveCouncilProposalHash } = require("./utils");
+const { ProposalMethods, Modules } = require("../../utils/constants");
+const { saveNewCouncilProposal } = require("../../store/council");
 const {
-  getCouncilProposalCollection,
-  getProposalCollection,
-  getProposalTimelineCollection,
-} = require("../../mongo");
+  connectCouncilProposal,
+  saveProposalTimeline,
+} = require("../../store/proposal");
 
 async function handleCouncilProposeApproveProposal(
   callInfo,
@@ -11,11 +12,11 @@ async function handleCouncilProposeApproveProposal(
   indexer,
   events
 ) {
-  if (callInfo.module !== "treasury") {
+  if (callInfo.module !== Modules.Treasury) {
     return;
   }
 
-  if (callInfo.method !== "approveProposal") {
+  if (callInfo.method !== ProposalMethods.approveProposal) {
     return;
   }
 
@@ -25,42 +26,21 @@ async function handleCouncilProposeApproveProposal(
     return;
   }
 
+  await saveNewCouncilProposal(proposalHash, threshold, callInfo, indexer);
+
   const { proposal_id: proposalIndex } = callInfo.args;
 
-  const councilProposalCol = await getCouncilProposalCollection();
-  await councilProposalCol.insertOne({
-    proposalHash,
-    indexer,
-    threshold,
-    ...callInfo,
-  });
-
-  const proposalCol = await getProposalCollection();
-  await proposalCol.updateOne(
-    {
-      proposalIndex,
-    },
-    {
-      $push: {
-        councilProposals: {
-          indexer,
-          proposalHash,
-        },
-      },
-    }
-  );
-
-  const proposalTimelineCol = await getProposalTimelineCollection();
-  await proposalTimelineCol.insertOne({
-    indexer,
+  await connectCouncilProposal(proposalIndex, proposalHash, indexer);
+  await saveProposalTimeline(
     proposalIndex,
-    state: "CouncilProposed",
-    data: {
+    "CouncilProposed",
+    {
       proposalHash,
       threshold,
       ...callInfo,
     },
-  });
+    indexer
+  );
 }
 
 module.exports = {

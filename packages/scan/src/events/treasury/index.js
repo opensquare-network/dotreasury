@@ -1,9 +1,15 @@
+const { Modules } = require("../../utils/constants");
 const { handleTipEvent } = require("./tip");
 const { handleBountyEvent } = require("./bounty");
 const { handleProposalEvent } = require("./proposal");
 
 async function handleTreasuryEvent(event, indexer, eventSort) {
-  const { method, data } = event;
+  const { section, method, data } = event;
+
+  if (Modules.Treasury !== section) {
+    return;
+  }
+
   const jsonData = data.toJSON();
 
   await handleTipEvent(method, jsonData, indexer, eventSort);

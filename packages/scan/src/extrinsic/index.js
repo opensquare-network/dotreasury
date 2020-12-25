@@ -67,7 +67,7 @@ async function handleExtrinsic(extrinsic, indexer, events) {
   const exCol = await getExtrinsicCollection();
   const result = await exCol.insertOne(doc);
   if (result.result && !result.result.ok) {
-    // FIXME: 处理交易插入不成功的情况
+    // FIXME: Deal with db failura
   }
 }
 
