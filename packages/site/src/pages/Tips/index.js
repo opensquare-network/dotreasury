@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { Image } from "semantic-ui-react";
 
 import TipsTable from "./TipsTable";
 import Pagination from "../../components/Pagination";
@@ -9,7 +10,20 @@ const Header = styled(Title)`
   margin-bottom: 20px;
 `;
 
+const LoadingWrapper = styled.div`
+  background: white;
+  height: 100px;
+  display: flex;
+  align-item: center;
+  justify-content: center;
+  border: 1px solid rgba(34, 36, 38, 0.15);
+  border-top: 0;
+  border-bottom-left-radius: 0.285rem;
+  border-bottom-right-radius: 0.285rem;
+`;
+
 const Tips = () => {
+  const loading = true;
   const testData = [
     {
       beneficiary: {
@@ -50,6 +64,11 @@ const Tips = () => {
     <>
       <Header>Tips</Header>
       <TipsTable data={testData} />
+      {loading && (
+        <LoadingWrapper>
+          <Image src={"./imgs/loading.svg"} />
+        </LoadingWrapper>
+      )}
       <Pagination
         boundaryRange={0}
         defaultActivePage={1}
