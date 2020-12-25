@@ -18,6 +18,7 @@ const CustomTable = styled(Table)`
   }
   .user-cell {
     width: 172px !important;
+    max-width: 172px !important;
   }
   .balance-cell {
     width: 139px !important;

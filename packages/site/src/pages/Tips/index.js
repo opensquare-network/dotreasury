@@ -49,20 +49,21 @@ const Tips = () => {
     },
   ];
 
-  const [tablePage, setTablePage] = useState(1)
-  const [tablePageSize, setTablePageSize] = useState(20)
+  const [tablePage, setTablePage] = useState(1);
+  const [tablePageSize, setTablePageSize] = useState(20);
 
-  const dispatch = useDispatch()
-  const { items: tips, page, pageSize, total } = useSelector(tipListSelector)
+  const dispatch = useDispatch();
+  const { items: tips, page, pageSize, total } = useSelector(tipListSelector);
+  const tablePageTotal = Math.ceil(total / pageSize);
 
   useEffect(() => {
-    dispatch(fetchTips(tablePage - 1, tablePageSize))
-  }, [dispatch, tablePage, tablePageSize])
+    dispatch(fetchTips(tablePage - 1, tablePageSize));
+  }, [dispatch, tablePage, tablePageSize]);
 
   return (
     <>
       <Header>Tips</Header>
-      <TipsTable data={testData} />
+      <TipsTable data={tips} />
       <Pagination
         boundaryRange={0}
         defaultActivePage={1}
@@ -70,7 +71,11 @@ const Tips = () => {
         firstItem={null}
         lastItem={null}
         siblingRange={1}
-        totalPages={total}
+        totalPages={tablePageTotal}
+        onPageChange={(_, data) => {
+          setTablePage(data.activePage);
+          setTablePageSize(pageSize);
+        }}
       />
     </>
   );
