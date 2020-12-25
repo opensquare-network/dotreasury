@@ -39,6 +39,41 @@ class TipsController {
       total,
     };
   }
+
+  async getTipDetail(ctx) {
+    const { hash } = ctx.params;
+
+    const tipCol = await getTipCollection();
+    const tip = await tipCol.findOne({ hash });
+
+    if (!tip) {
+      ctx.status = 404;
+      return
+    }
+
+    ctx.body = {
+      hash: tip.hash,
+      proposeTime: tip.indexer.blockTime,
+      beneficiary: tip.meta?.who,
+      finder: Array.isArray(tip.meta?.finder)
+        ? tip.meta.finder[0]
+        : (tip.meta?.finder ?? tip.signer),
+      reason: tip.meta?.reasonText,
+      latestState: {
+        state: tip.state?.state,
+        time: tip.state?.indexer.blockTime,
+        blockHeight: tip.state?.indexer.blockHeight,
+      },
+      tips: tip.meta?.tips,
+      medianValue: tip.medianValue,
+      tippers: tip.meta?.tippers,
+      ...(
+        tip.meta?.closes ? {
+          closeAtBlockHeight: tip.meta.closes,
+          countdownAtBlockHeight: tip.meta.closes - tip.meta.tipCountdown,
+        } : {})
+    };
+  }
 }
 
 module.exports = new TipsController();

@@ -18,7 +18,7 @@ async function getTipMeta(blockHash, tipHash) {
   }
   if (meta?.tips) {
     const members = await api.query.electionsPhragmen.members.at(blockHash);
-    meta.tippers = members.map(item => item[0]);
+    meta.tippers = members.map(item => item[0].toJSON());
   }
 
   return meta;

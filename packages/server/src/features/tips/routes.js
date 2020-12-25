@@ -5,5 +5,6 @@ const router = new Router();
 
 // API for Explorer
 router.get("/tips", tipsController.getTips);
+router.get("/tips/:hash", tipsController.getTipDetail);
 
 module.exports = router;
