@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
@@ -13,47 +12,10 @@ const Header = styled(Title)`
 `;
 
 const Tips = () => {
-  const testData = [
-    {
-      beneficiary: {
-        name: "Eleanor",
-        address: "HUfzjs5WNDNJfbP5kPUBpneAizE5yCprsX",
-      },
-      finder: {
-        address: "HUfzjs5WNDNJfbP5kPUBpneAizE5yCprsX",
-      },
-      reason: "https://kusama.polkassembly.io/post/346",
-      balance: {
-        value: "50.00",
-      },
-      status: {
-        status: "Closed",
-        time: "12h 34min ago",
-      },
-    },
-    {
-      beneficiary: {
-        address: "HUfzjs5WNDNJfbP5kPUBpneAizE5yCprsX",
-      },
-      finder: {
-        name: "Eleanor",
-        address: "HUfzjs5WNDNJfbP5kPUBpneAizE5yCprsX",
-      },
-      reason: "My second video about Kusama Network",
-      balance: {
-        value: "3.50",
-      },
-      status: {
-        status: "Tipping (2)",
-      },
-    },
-  ];
-
   const [tablePage, setTablePage] = useState(1);
 
   const dispatch = useDispatch();
-  const { items: tips, page, pageSize, total } = useSelector(tipListSelector);
-  const tablePageTotal = Math.ceil(total / pageSize);
+  const { items: tips, total } = useSelector(tipListSelector);
 
   useEffect(() => {
     dispatch(fetchTips(tablePage - 1, 50));
@@ -62,18 +24,12 @@ const Tips = () => {
   return (
     <>
       <Header>Tips</Header>
-      <TipsTable data={tips} />
+      <TipsTable data={tips}/>
       <Pagination
-        boundaryRange={0}
-        defaultActivePage={1}
-        ellipsisItem={null}
-        firstItem={null}
-        lastItem={null}
-        siblingRange={1}
-        totalPages={tablePageTotal}
-        onPageChange={(_, data) => {
-          setTablePage(data.activePage);
-          setTablePageSize(pageSize);
+        activePage={tablePage}
+        totalPages={total}
+        onPageChange={(_, { activePage }) => {
+          setTablePage(activePage);
         }}
       />
     </>
