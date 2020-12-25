@@ -1,15 +1,17 @@
 const { getTipCollection, getTipTimelineCollection } = require("../mongo");
 const { getApi } = require("../api");
-const { median, hexToString } = require("../utils");
+const { median } = require("../utils");
+const { hexToString } = require("@polkadot/util");
+
 
 async function getTipMeta(blockHash, tipHash) {
   const api = await getApi();
-  let meta = await api.query.treasury.tips.at(blockHash, tipHash);
-  meta = meta.toJSON();
-  if (meta) {
-    let reasonText = await api.query.treasury.reasons.at(blockHash, meta.reason);
-    reasonText = reasonText.toJSON();
-    meta.reasonText = reasonText && hexToString(reasonText);
+  const rawMeta = await api.query.treasury.tips.at(blockHash, tipHash);
+  const meta = rawMeta.toJSON();
+  if (meta?.reason) {
+    const rawReasonText = await api.query.treasury.reasons.at(blockHash, meta.reason);
+    const reasonText = rawReasonText.toJSON();
+    meta.reasonText = hexToString(reasonText);
   }
 
   return meta;

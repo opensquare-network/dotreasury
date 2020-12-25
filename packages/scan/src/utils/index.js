@@ -1,4 +1,5 @@
 const { logger } = require("./logger");
+
 const sleep = (time) => {
   return new Promise((resolve) => {
     setTimeout(resolve, time);
@@ -29,25 +30,10 @@ function median(values) {
   return sorted[Math.floor(sorted.length / 2)];
 }
 
-function remove0xPrefix(str) {
-  if (str.startsWith("0x")) {
-    return str.substr(2);
-  }
-
-  return str;
-}
-
-function hexToString(hex) {
-  const buf = Buffer.from(remove0xPrefix(hex), "hex");
-  return buf.toString("utf8");
-}
-
 module.exports = {
   isExtrinsicSuccess,
   extractExtrinsicEvents,
   sleep,
   median,
   logger,
-  hexToString,
-  remove0xPrefix,
 };
