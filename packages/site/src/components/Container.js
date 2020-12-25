@@ -1,8 +1,9 @@
 import styled from "styled-components";
 
 const Container = styled.div`
+  box-sizing: border-box;
   height: 100%;
-  overflow-x: hidden;
+  overflow-x: visible;
   overflow-y: visible;
 
   @media screen and (min-width: 1128px) {
@@ -11,8 +12,8 @@ const Container = styled.div`
   }
 
   @media screen and (max-width: 1140px) {
-    padding: 0 16px;
-    width: 100%;
+    margin: 0 16px;
+    width: calc(100wd - 32px);
   }
 `;
 
