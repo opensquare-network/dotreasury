@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { Table } from "semantic-ui-react";
 
+import { TEXT_DARK_MINOR } from "../constants";
+
 const CustomTable = styled(Table)`
   margin-top: 0 !important;
   td {
@@ -12,7 +14,7 @@ const CustomTable = styled(Table)`
     font-weight: normal !important;
     font-size: 14px !important;
     border-bottom: 0 !important;
-    color: rgba(29, 37, 60, 0.64) !important;
+    color: ${TEXT_DARK_MINOR} !important;
   }
   .user-cell {
     width: 172px !important;

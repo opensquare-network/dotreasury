@@ -9,6 +9,7 @@ const Text = styled.p`
   font-size: 14px;
   line-height: 24px;
   color: ${TEXT_DARK_MAJOR};
+  margin: 0;
 `;
 
 export default Text;

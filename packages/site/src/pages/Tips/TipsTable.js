@@ -7,6 +7,7 @@ import Table from "../../components/Table";
 import User from "../../components/User/Index";
 import Balance from "../../components/Balance";
 import RightButton from "../../components/RightButton";
+import PairTextVertical from "../../components/PairTextVertical";
 import Status from "./Status";
 import ReasonText from "./ReasonText";
 
@@ -24,13 +25,13 @@ const Wrapper = styled.div`
   }
 `;
 
-const TableWrapper = styled.div`
-  display: flex;
-`;
+const TableWrapper = styled.div``;
 
-const Gap = styled.div`
-  flex: 0 0 16px;
-`;
+// const Gap = styled.div`
+//   @media screen and (max-width: 1140px) {
+//     flex: 0 0 16px;
+//   }
+// `;
 
 const TipsTable = ({ data }) => {
   const history = useHistory();
@@ -85,9 +86,9 @@ const TipsTable = ({ data }) => {
                     />
                   </Table.Cell>
                   <Table.Cell className="status-cell" textAlign={"right"}>
-                    <Status
-                      status={item.status.status}
-                      time={item.status.time}
+                    <PairTextVertical
+                      value={item.status.status}
+                      detail={item.status.time}
                     />
                   </Table.Cell>
                   <Table.Cell className="link-cell hidden">
@@ -99,7 +100,7 @@ const TipsTable = ({ data }) => {
               ))}
           </Table.Body>
         </Table>
-        <Gap />
+        {/* <Gap /> */}
       </TableWrapper>
     </Wrapper>
   );
