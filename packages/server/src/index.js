@@ -15,12 +15,6 @@ app.use(helmet());
 
 require("./routes")(app);
 const server = http.createServer(app.callback());
-const io = require("socket.io")(server, {
-  cors: {
-    origin: "*",
-    methods: ["GET", "POST"],
-  },
-});
 
 initDb()
   .then(async (db) => {
