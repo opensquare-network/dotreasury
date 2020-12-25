@@ -50,15 +50,14 @@ const Tips = () => {
   ];
 
   const [tablePage, setTablePage] = useState(1);
-  const [tablePageSize, setTablePageSize] = useState(20);
 
   const dispatch = useDispatch();
   const { items: tips, page, pageSize, total } = useSelector(tipListSelector);
   const tablePageTotal = Math.ceil(total / pageSize);
 
   useEffect(() => {
-    dispatch(fetchTips(tablePage - 1, tablePageSize));
-  }, [dispatch, tablePage, tablePageSize]);
+    dispatch(fetchTips(tablePage - 1, 50));
+  }, [dispatch, tablePage]);
 
   return (
     <>
