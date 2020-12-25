@@ -1,6 +1,19 @@
 const { getTipCollection, getTipTimelineCollection } = require("../mongo");
 const { getApi } = require("../api");
-const { median } = require("../utils");
+const { median, hexToString } = require("../utils");
+
+async function getTipMeta(blockHash, tipHash) {
+  const api = await getApi();
+  let meta = await api.query.treasury.tips.at(blockHash, tipHash);
+  meta = meta.toJSON();
+  if (meta) {
+    let reasonText = await api.query.treasury.reasons.at(blockHash, meta.reason);
+    reasonText = reasonText.toJSON();
+    meta.reasonText = reasonText && hexToString(reasonText);
+  }
+
+  return meta;
+}
 
 function computeTipValue(tipMeta) {
   const tipValues = (tipMeta?.tips ?? []).map((tip) => tip[1]);
@@ -8,10 +21,7 @@ function computeTipValue(tipMeta) {
 }
 
 async function saveNewTip(hash, indexer) {
-  const api = await getApi();
-  let meta = await api.query.treasury.tips.at(indexer.blockHash, hash);
-  meta = meta.toJSON();
-
+  const meta = await getTipMeta(indexer.blockHash, hash);
   const medianValue = computeTipValue(meta);
 
   const tipCol = await getTipCollection();
@@ -24,9 +34,7 @@ async function saveNewTip(hash, indexer) {
 }
 
 async function saveTipTimeline(hash, state, data, indexer, sort) {
-  const api = await getApi();
-  let meta = await api.query.treasury.tips.at(indexer.blockHash, hash);
-  meta = meta.toJSON();
+  const meta = await getTipMeta(indexer.blockHash, hash);
 
   const tipTimelineCol = await getTipTimelineCollection();
   await tipTimelineCol.insertOne({
