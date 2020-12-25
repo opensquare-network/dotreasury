@@ -14,7 +14,7 @@ const tipSlice = createSlice({
   },
   reducers: {
     setTips(state, { payload }) {
-      state.accounts = payload
+      state.tips = payload
     },
     setLoading(state, { payload }) {
       state.loading = payload
