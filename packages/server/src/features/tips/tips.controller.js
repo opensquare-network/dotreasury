@@ -26,7 +26,7 @@ class TipsController {
         finder: Array.isArray(tip.meta?.finder)
           ? tip.meta.finder[0]
           : tip.meta?.finder,
-        reason: tip.meta?.reason,
+        reason: tip.meta?.reasonText,
         latestState: {
           state: tip.state?.state,
           time: tip.state?.indexer.blockTime,
