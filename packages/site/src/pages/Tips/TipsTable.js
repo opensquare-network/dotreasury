@@ -39,12 +39,8 @@ const TipsTable = ({ data }) => {
       <Table striped selectable unstackable>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell textAlign={"center"}>
-              Beneficiary
-            </Table.HeaderCell>
-            <Table.HeaderCell textAlign={"center"} className="hidden">
-              Finder
-            </Table.HeaderCell>
+            <Table.HeaderCell>Beneficiary</Table.HeaderCell>
+            <Table.HeaderCell className="hidden">Finder</Table.HeaderCell>
             <Table.HeaderCell>Reason</Table.HeaderCell>
             <Table.HeaderCell textAlign={"right"}>Value</Table.HeaderCell>
             <Table.HeaderCell textAlign={"right"}>Status</Table.HeaderCell>

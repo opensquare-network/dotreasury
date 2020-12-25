@@ -20,7 +20,7 @@ const LoadingWrapper = styled.div`
   background: white;
   height: 100px;
   display: flex;
-  align-item: center;
+  align-items: center;
   justify-content: center;
   border: 1px solid rgba(34, 36, 38, 0.15);
   border-top: 0;
