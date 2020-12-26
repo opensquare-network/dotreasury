@@ -1,5 +1,6 @@
 const { getTipCollection } = require("../../mongo");
 const { extractPage } = require("../../utils");
+const { normalizeTip } = require("./utils");
 
 class TipsController {
   async getTips(ctx) {
@@ -19,21 +20,7 @@ class TipsController {
     const total = await tipCol.estimatedDocumentCount();
 
     ctx.body = {
-      items: tips.map((tip) => ({
-        hash: tip.hash,
-        proposeTime: tip.indexer.blockTime,
-        beneficiary: tip.meta?.who,
-        finder: Array.isArray(tip.meta?.finder)
-          ? tip.meta.finder[0]
-          : (tip.meta?.finder ?? tip.signer),
-        reason: tip.meta?.reasonText,
-        latestState: {
-          state: tip.state?.state,
-          time: tip.state?.indexer.blockTime,
-        },
-        tipsCount: tip.meta?.tips.length,
-        medianValue: tip.medianValue,
-      })),
+      items: tips.map(normalizeTip),
       page,
       pageSize,
       total,
@@ -48,7 +35,7 @@ class TipsController {
 
     if (!tip) {
       ctx.status = 404;
-      return
+      return;
     }
 
     ctx.body = {
@@ -57,7 +44,7 @@ class TipsController {
       beneficiary: tip.meta?.who,
       finder: Array.isArray(tip.meta?.finder)
         ? tip.meta.finder[0]
-        : (tip.meta?.finder ?? tip.signer),
+        : tip.meta?.finder ?? tip.signer,
       reason: tip.meta?.reasonText,
       latestState: {
         state: tip.state?.state,
@@ -67,11 +54,12 @@ class TipsController {
       tips: tip.meta?.tips,
       medianValue: tip.medianValue,
       tippers: tip.meta?.tippers,
-      ...(
-        tip.meta?.closes ? {
-          closeAtBlockHeight: tip.meta.closes,
-          countdownFromBlockHeight: tip.meta.closes - tip.meta.tipCountdown,
-        } : {})
+      ...(tip.meta?.closes
+        ? {
+            closeAtBlockHeight: tip.meta.closes,
+            countdownFromBlockHeight: tip.meta.closes - tip.meta.tipCountdown,
+          }
+        : {}),
     };
   }
 }

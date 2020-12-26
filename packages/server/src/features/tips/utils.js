@@ -1,18 +1,21 @@
-function normalizeTip(tip) {
+function normalizeTip(tipInDb) {
   return {
-    hash: tip.hash,
-    proposeTime: tip.indexer.blockTime,
-    beneficiary: tip.meta?.who,
-    finder: tip.finder,
-    finder: Array.isArray(tip.meta?.finder)
-      ? tip.meta.finder[0]
-      : tip.meta?.finder ?? tip.signer,
-    reason: tip.meta?.reasonText,
+    hash: tipInDb.hash,
+    proposeTime: tipInDb.indexer.blockTime,
+    beneficiary: tipInDb.meta?.who,
+    finder: Array.isArray(tipInDb.meta?.finder)
+      ? tipInDb.meta.finder[0]
+      : tipInDb.meta?.finder ?? tipInDb.signer,
+    reason: tipInDb.reason,
     latestState: {
-      state: tip.state?.state,
-      time: tip.state?.indexer.blockTime,
+      state: tipInDb.state?.state,
+      time: tipInDb.state?.indexer.blockTime,
     },
-    tipsCount: tip.meta?.tips.length,
-    medianValue: tip.medianValue,
+    tipsCount: tipInDb.meta?.tips.length,
+    medianValue: tipInDb.medianValue,
   };
 }
+
+module.exports = {
+  normalizeTip,
+};
