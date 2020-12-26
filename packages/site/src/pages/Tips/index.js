@@ -8,8 +8,8 @@ import Title from "../../components/Title";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchTips,
-  tipListSelector,
   loadingSelector,
+  normalizedTipListSelector,
 } from "../../store/reducers/tipSlice";
 
 const Header = styled(Title)`
@@ -32,7 +32,7 @@ const Tips = () => {
   const [tablePage, setTablePage] = useState(1);
 
   const dispatch = useDispatch();
-  const { items: tips, total } = useSelector(tipListSelector);
+  const { items: tips, total } = useSelector(normalizedTipListSelector);
   const loading = useSelector(loadingSelector);
 
   useEffect(() => {

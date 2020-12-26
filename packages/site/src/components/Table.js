@@ -9,12 +9,14 @@ const CustomTable = styled(Table)`
     border-top: 0 !important;
   }
   th {
-    font-family: Inter !important;
+    line-height: 20px;
     font-style: normal !important;
     font-weight: normal !important;
     font-size: 14px !important;
     border-bottom: 0 !important;
     color: ${TEXT_DARK_MINOR} !important;
+    padding-top: 14px !important;
+    padding-bottom: 14px !important;
   }
   .user-cell {
     width: 172px !important;

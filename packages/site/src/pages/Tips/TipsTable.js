@@ -25,6 +25,13 @@ const Wrapper = styled.div`
   }
 `;
 
+const StyledTable = styled(Table)`
+  .short-padding {
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+  }
+`;
+
 const TipsTable = ({ data }) => {
   const history = useHistory();
 
@@ -36,7 +43,7 @@ const TipsTable = ({ data }) => {
 
   return (
     <Wrapper>
-      <Table striped selectable unstackable>
+      <StyledTable striped selectable unstackable>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>Beneficiary</Table.HeaderCell>
@@ -63,7 +70,12 @@ const TipsTable = ({ data }) => {
                 <Table.Cell className="balance-cell" textAlign={"right"}>
                   <Balance value={item.medianValue} />
                 </Table.Cell>
-                <Table.Cell className="status-cell" textAlign={"right"}>
+                <Table.Cell
+                  className={`status-cell ${
+                    item.showTime ? "short-padding" : ""
+                  }`}
+                  textAlign={"right"}
+                >
                   <PairTextVertical
                     value={item.latestState.state}
                     detail={dayjs(item.latestState.time).format(
@@ -79,7 +91,7 @@ const TipsTable = ({ data }) => {
               </Table.Row>
             ))}
         </Table.Body>
-      </Table>
+      </StyledTable>
     </Wrapper>
   );
 };

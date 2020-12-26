@@ -3,9 +3,7 @@ function normalizeTip(tipInDb) {
     hash: tipInDb.hash,
     proposeTime: tipInDb.indexer.blockTime,
     beneficiary: tipInDb.meta?.who,
-    finder: Array.isArray(tipInDb.meta?.finder)
-      ? tipInDb.meta.finder[0]
-      : tipInDb.meta?.finder ?? tipInDb.signer,
+    finder: tipInDb.finder,
     reason: tipInDb.reason,
     latestState: {
       state: tipInDb.state?.state,

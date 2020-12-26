@@ -54,6 +54,11 @@ const GlobalStyle = createGlobalStyle`
     }
   }
   
+  .ui.table td {
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+  
   pre {
     background-color: whitesmoke;
     color: #4a4a4a;
