@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { useHistory } from "react-router";
+import dayjs from "dayjs";
 
 import Table from "../../components/Table";
 import User from "../../components/User/Index";
@@ -38,12 +39,8 @@ const TipsTable = ({ data }) => {
       <Table striped selectable unstackable>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell textAlign={"center"}>
-              Beneficiary
-            </Table.HeaderCell>
-            <Table.HeaderCell textAlign={"center"} className="hidden">
-              Finder
-            </Table.HeaderCell>
+            <Table.HeaderCell>Beneficiary</Table.HeaderCell>
+            <Table.HeaderCell className="hidden">Finder</Table.HeaderCell>
             <Table.HeaderCell>Reason</Table.HeaderCell>
             <Table.HeaderCell textAlign={"right"}>Value</Table.HeaderCell>
             <Table.HeaderCell textAlign={"right"}>Status</Table.HeaderCell>
@@ -55,27 +52,23 @@ const TipsTable = ({ data }) => {
             data.map((item, index) => (
               <Table.Row key={index} onClick={onClickRow}>
                 <Table.Cell className="user-cell">
-                  <User
-                    name={item.beneficiary.name}
-                    address={item.beneficiary.address}
-                  />
+                  <User address={item.beneficiary} />
                 </Table.Cell>
                 <Table.Cell className="user-cell hidden">
-                  <User name={item.finder.name} address={item.finder.address} />
+                  <User address={item.finder} />
                 </Table.Cell>
                 <Table.Cell>
                   <ReasonText>{item.reason}</ReasonText>
                 </Table.Cell>
                 <Table.Cell className="balance-cell" textAlign={"right"}>
-                  <Balance
-                    value={item.balance.value}
-                    currency={item.balance.currency}
-                  />
+                  <Balance value={item.medianValue} />
                 </Table.Cell>
                 <Table.Cell className="status-cell" textAlign={"right"}>
                   <PairTextVertical
-                    value={item.status.status}
-                    detail={item.status.time}
+                    value={item.latestState.state}
+                    detail={dayjs(item.latestState.time).format(
+                      "YYYY-MM-DD HH:mm"
+                    )}
                   />
                 </Table.Cell>
                 <Table.Cell className="link-cell hidden">

@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Image } from "semantic-ui-react";
 
 import TipsTable from "./TipsTable";
 import Pagination from "../../components/Pagination";
 import Title from "../../components/Title";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchTips,
+  tipListSelector,
+  loadingSelector,
+} from "../../store/reducers/tipSlice";
 
 const Header = styled(Title)`
   margin-bottom: 20px;
@@ -14,7 +20,7 @@ const LoadingWrapper = styled.div`
   background: white;
   height: 100px;
   display: flex;
-  align-item: center;
+  align-items: center;
   justify-content: center;
   border: 1px solid rgba(34, 36, 38, 0.15);
   border-top: 0;
@@ -23,60 +29,31 @@ const LoadingWrapper = styled.div`
 `;
 
 const Tips = () => {
-  const loading = false;
-  const testData = [
-    {
-      beneficiary: {
-        name: "Eleanor",
-        address: "HUfzjs5WNDNJfbP5kPUBpneAizE5yCprsX",
-      },
-      finder: {
-        address: "HUfzjs5WNDNJfbP5kPUBpneAizE5yCprsX",
-      },
-      reason: "https://kusama.polkassembly.io/post/346",
-      balance: {
-        value: "50.00",
-      },
-      status: {
-        status: "Closed",
-        time: "12h 34min ago",
-      },
-    },
-    {
-      beneficiary: {
-        address: "HUfzjs5WNDNJfbP5kPUBpneAizE5yCprsX",
-      },
-      finder: {
-        name: "Eleanor",
-        address: "HUfzjs5WNDNJfbP5kPUBpneAizE5yCprsX",
-      },
-      reason: "My second video about Kusama Network",
-      balance: {
-        value: "3.50",
-      },
-      status: {
-        status: "Tipping (2)",
-      },
-    },
-  ];
+  const [tablePage, setTablePage] = useState(1);
+
+  const dispatch = useDispatch();
+  const { items: tips, total } = useSelector(tipListSelector);
+  const loading = useSelector(loadingSelector);
+
+  useEffect(() => {
+    dispatch(fetchTips(tablePage - 1, 50));
+  }, [dispatch, tablePage]);
 
   return (
     <>
       <Header>Tips</Header>
-      <TipsTable data={testData} />
+      <TipsTable data={tips} />
       {loading && (
         <LoadingWrapper>
           <Image src={"./imgs/loading.svg"} />
         </LoadingWrapper>
       )}
       <Pagination
-        boundaryRange={0}
-        defaultActivePage={1}
-        ellipsisItem={null}
-        firstItem={null}
-        lastItem={null}
-        siblingRange={1}
-        totalPages={3}
+        activePage={tablePage}
+        totalPages={total}
+        onPageChange={(_, { activePage }) => {
+          setTablePage(activePage);
+        }}
       />
     </>
   );

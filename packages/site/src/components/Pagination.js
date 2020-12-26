@@ -1,5 +1,5 @@
 import React from "react";
-import { Pagination } from "semantic-ui-react";
+import { Icon, Pagination } from "semantic-ui-react";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
@@ -11,7 +11,17 @@ const Wrapper = styled.div`
 const CustomPagination = (props) => {
   return (
     <Wrapper>
-      <Pagination {...props} />
+      <Pagination
+        boundaryRange={1}
+        siblingRange={1}
+        ellipsisItem={{
+          content: <Icon name="ellipsis horizontal" />,
+          icon: true,
+        }}
+        firstItem={{ content: <Icon name="angle double left" />, icon: true }}
+        lastItem={{ content: <Icon name="angle double right" />, icon: true }}
+        {...props}
+      />
     </Wrapper>
   );
 };

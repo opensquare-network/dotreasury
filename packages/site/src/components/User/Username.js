@@ -17,7 +17,8 @@ const Username = ({ name, address }) => {
   const usernameRef = useRef(null);
   useLayoutEffect(() => {
     // check if address is valid
-    if (!name && usernameRef.current.clientWidth > 120 && address) {
+    // if (!name && usernameRef.current.clientWidth > 120 && address) {
+    if (address) {
       usernameRef.current.innerHTML = `${address.substring(
         0,
         6

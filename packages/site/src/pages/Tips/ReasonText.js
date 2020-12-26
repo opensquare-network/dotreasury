@@ -1,9 +1,10 @@
 import styled from "styled-components";
 
-import EllipsisText from "../../components/EllipsisText";
+import Text from "../../components/Text";
 
-const ReasonText = styled(EllipsisText)`
+const ReasonText = styled(Text)`
   max-width: 435px;
+  word-wrap: break-word;
 `;
 
 export default ReasonText;

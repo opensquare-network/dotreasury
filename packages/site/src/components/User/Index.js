@@ -14,7 +14,7 @@ const Wrapper = styled.div`
 const User = ({ name, address, src }) => {
   return (
     <Wrapper>
-      <Avatar address="EGVQCe73TpFyAZx5uKfE1222XfkT3BSKozjgcqzLBnc5eYo" />
+      <Avatar address={address} />
       <Username name={name} address={address} />
     </Wrapper>
   );
