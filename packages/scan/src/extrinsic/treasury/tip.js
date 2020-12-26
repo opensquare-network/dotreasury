@@ -1,5 +1,5 @@
 const { TipMethods, Modules } = require("../../utils/constants");
-const { saveTipTimeline } = require("../../store/tip");
+const { saveTipTimeline, updateTip } = require("../../store/tip");
 
 async function handleTipExtrinsic(
   section,
@@ -17,16 +17,16 @@ async function handleTipExtrinsic(
     return;
   }
 
-  // Tip methods
   if (name === TipMethods.tip) {
     await handleTip(args, indexer, events);
   }
 }
 
-async function handleTip(args, indexer, events) {
-  const { hash, tip_value: tipValue } = args;
+async function handleTip(args, indexer) {
+  const { hash } = args;
 
   await saveTipTimeline(hash, TipMethods.tip, args, indexer);
+  await updateTip(hash, TipMethods.tip, args, indexer);
 }
 
 module.exports = {

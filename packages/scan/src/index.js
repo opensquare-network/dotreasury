@@ -6,15 +6,33 @@ const { deleteDataFrom } = require("./clean");
 const { getLatestHeight } = require("./chain/latestHead");
 const { sleep, logger } = require("./utils");
 const { getBlockIndexer } = require("./block/getBlockIndexer");
-const { handleBlock } = require("./block");
 const { handleExtrinsics } = require("./extrinsic");
 const { handleEvents } = require("./events");
+const {
+  blocksWithTreasuryExtrinsics,
+  maxKnowHeightWithTreasuryExtrinsic,
+} = require("./block/knownTreasuryBlocks");
+
+async function scanKnowBlocks(toScanHeight) {
+  let index = blocksWithTreasuryExtrinsics.findIndex(
+    (height) => height >= toScanHeight
+  );
+  while (index < blocksWithTreasuryExtrinsics.length - 1) {
+    const height = blocksWithTreasuryExtrinsics[index];
+    await scanBlockByHeight(height);
+    await updateScanHeight(height);
+    index++;
+  }
+}
 
 async function main() {
-  const api = await getApi();
   await updateHeight();
   let scanHeight = await getNextScanHeight();
   await deleteDataFrom(scanHeight);
+
+  if (scanHeight < maxKnowHeightWithTreasuryExtrinsic) {
+    await scanKnowBlocks(scanHeight);
+  }
 
   while (true) {
     const chainHeight = getLatestHeight();
@@ -24,30 +42,23 @@ async function main() {
       continue;
     }
 
-    let blockHash;
-    try {
-      blockHash = await api.rpc.chain.getBlockHash(scanHeight);
-    } catch (e) {
-      console.log(e.message); // FIXME: logger
-      await sleep(1000);
-      continue;
-    }
-
-    const block = await api.rpc.chain.getBlock(blockHash);
-    const allEvents = await api.query.system.events.at(blockHash);
-    await handleBlockAndEvents(block, allEvents);
+    await scanBlockByHeight(scanHeight);
     await updateScanHeight(scanHeight++);
   }
 }
 
-async function handleBlockAndEvents(block, allEvents) {
-  const blockIndexer = getBlockIndexer(block.block);
+async function scanBlockByHeight(scanHeight) {
+  const api = await getApi();
 
-  await handleBlock(block, allEvents);
-  logger.info(`block ${block.block.header.number.toNumber()} is saved to db`);
+  const blockHash = await api.rpc.chain.getBlockHash(scanHeight);
+  const block = await api.rpc.chain.getBlock(blockHash);
+  const allEvents = await api.query.system.events.at(blockHash);
+
+  const blockIndexer = getBlockIndexer(block.block);
 
   await handleEvents(allEvents, blockIndexer, block.block.extrinsics);
   await handleExtrinsics(block.block.extrinsics, allEvents, blockIndexer);
+  logger.info(`block ${block.block.header.number.toNumber()} done`);
 }
 
 // FIXME: log the error
