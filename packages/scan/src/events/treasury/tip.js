@@ -1,6 +1,5 @@
 const { TipEvents } = require("../../utils/constants");
-const { saveNewTip, saveTipTimeline } = require("../../store/tip");
-const { getExtrinsicSigner } = require("../../utils");
+const { saveNewTip, saveTipTimeline, updateTip } = require("../../store/tip");
 
 function isTipEvent(method) {
   return TipEvents.hasOwnProperty(method);
@@ -15,13 +14,13 @@ async function handleTipEvent(method, jsonData, extrinsic, indexer, sort) {
 
   if (method === TipEvents.NewTip) {
     const [hash] = jsonData;
-    const tipSinger = getExtrinsicSigner(extrinsic);
-    await saveNewTip(hash, tipSinger, indexer);
+    await saveNewTip(hash, extrinsic, indexer);
   }
 
   if (isStateChange(method)) {
     const hash = jsonData[0];
     await saveTipTimeline(hash, method, jsonData, indexer, sort);
+    await updateTip(hash, method, jsonData, indexer);
   }
 }
 
