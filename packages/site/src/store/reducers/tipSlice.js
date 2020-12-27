@@ -23,11 +23,13 @@ const tipSlice = createSlice({
 
 export const { setTips, setLoading } = tipSlice.actions;
 
-export const fetchTips = (page = 0, pageSize = 20) => async (dispatch) => {
+export const fetchTips = (page = 0, pageSize = 30) => async (dispatch) => {
   dispatch(setLoading(true));
 
   try {
-    const resp = await window.fetch(`https://api.dotreasury.com/tips`);
+    const resp = await window.fetch(
+      `https://api.dotreasury.com/tips?page=${page}&page_size=${pageSize}`
+    );
     dispatch(setTips(await resp.json()));
   } finally {
     dispatch(setLoading(false));

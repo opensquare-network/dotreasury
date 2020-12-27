@@ -78,7 +78,7 @@ const TipsTable = ({ data }) => {
                 >
                   {item.showTime ? (
                     <PairTextVertical
-                      value={item.latestState.state}
+                      value={item.showStatus}
                       detail={dayjs(item.latestState.time).format(
                         "YYYY-MM-DD HH:mm"
                       )}
