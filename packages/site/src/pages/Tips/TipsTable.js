@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { useHistory } from "react-router";
 import dayjs from "dayjs";
+import { Dimmer, Segment, Image } from "semantic-ui-react";
 
 import Table from "../../components/Table";
 import User from "../../components/User/Index";
@@ -13,6 +14,11 @@ import ReasonText from "./ReasonText";
 
 const Wrapper = styled.div`
   overflow-x: scroll;
+
+  .ui.segment {
+    padding: 0;
+    border: 0;
+  }
 
   @media screen and (max-width: 1140px) {
     position: relative;
@@ -32,7 +38,7 @@ const StyledTable = styled(Table)`
   }
 `;
 
-const TipsTable = ({ data }) => {
+const TipsTable = ({ data, loading }) => {
   const history = useHistory();
 
   const onClickRow = () => {
@@ -43,59 +49,64 @@ const TipsTable = ({ data }) => {
 
   return (
     <Wrapper>
-      <StyledTable striped selectable unstackable>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell>Beneficiary</Table.HeaderCell>
-            <Table.HeaderCell className="hidden">Finder</Table.HeaderCell>
-            <Table.HeaderCell>Reason</Table.HeaderCell>
-            <Table.HeaderCell textAlign={"right"}>Value</Table.HeaderCell>
-            <Table.HeaderCell textAlign={"right"}>Status</Table.HeaderCell>
-            <Table.HeaderCell className="hidden" />
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {data &&
-            data.map((item, index) => (
-              <Table.Row key={index} onClick={onClickRow}>
-                <Table.Cell className="user-cell">
-                  <User address={item.beneficiary} />
-                </Table.Cell>
-                <Table.Cell className="user-cell hidden">
-                  <User address={item.finder} />
-                </Table.Cell>
-                <Table.Cell>
-                  <ReasonText>{item.reason}</ReasonText>
-                </Table.Cell>
-                <Table.Cell className="balance-cell" textAlign={"right"}>
-                  <Balance value={item.medianValue} />
-                </Table.Cell>
-                <Table.Cell
-                  className={`status-cell ${
-                    item.showTime ? "short-padding" : ""
-                  }`}
-                  textAlign={"right"}
-                >
-                  {item.showTime ? (
-                    <PairTextVertical
-                      value={item.showStatus}
-                      detail={dayjs(item.latestState.time).format(
-                        "YYYY-MM-DD HH:mm"
-                      )}
-                    />
-                  ) : (
-                    item.showStatus
-                  )}
-                </Table.Cell>
-                <Table.Cell className="link-cell hidden">
-                  <NavLink to="/detail">
-                    <RightButton />
-                  </NavLink>
-                </Table.Cell>
-              </Table.Row>
-            ))}
-        </Table.Body>
-      </StyledTable>
+      <Segment>
+        <Dimmer active={loading} inverted>
+          <Image src="/imgs/loading.svg" />
+        </Dimmer>
+        <StyledTable striped selectable unstackable>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell>Beneficiary</Table.HeaderCell>
+              <Table.HeaderCell className="hidden">Finder</Table.HeaderCell>
+              <Table.HeaderCell>Reason</Table.HeaderCell>
+              <Table.HeaderCell textAlign={"right"}>Value</Table.HeaderCell>
+              <Table.HeaderCell textAlign={"right"}>Status</Table.HeaderCell>
+              <Table.HeaderCell className="hidden" />
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {data &&
+              data.map((item, index) => (
+                <Table.Row key={index} onClick={onClickRow}>
+                  <Table.Cell className="user-cell">
+                    <User address={item.beneficiary} />
+                  </Table.Cell>
+                  <Table.Cell className="user-cell hidden">
+                    <User address={item.finder} />
+                  </Table.Cell>
+                  <Table.Cell>
+                    <ReasonText>{item.reason}</ReasonText>
+                  </Table.Cell>
+                  <Table.Cell className="balance-cell" textAlign={"right"}>
+                    <Balance value={item.medianValue} />
+                  </Table.Cell>
+                  <Table.Cell
+                    className={`status-cell ${
+                      item.showTime ? "short-padding" : ""
+                    }`}
+                    textAlign={"right"}
+                  >
+                    {item.showTime ? (
+                      <PairTextVertical
+                        value={item.showStatus}
+                        detail={dayjs(item.latestState.time).format(
+                          "YYYY-MM-DD HH:mm"
+                        )}
+                      />
+                    ) : (
+                      item.showStatus
+                    )}
+                  </Table.Cell>
+                  <Table.Cell className="link-cell hidden">
+                    <NavLink to="/detail">
+                      <RightButton />
+                    </NavLink>
+                  </Table.Cell>
+                </Table.Row>
+              ))}
+          </Table.Body>
+        </StyledTable>
+      </Segment>
     </Wrapper>
   );
 };
