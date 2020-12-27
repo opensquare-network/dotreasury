@@ -13,7 +13,10 @@ class TipsController {
     const tipCol = await getTipCollection();
     const tips = await tipCol
       .find({})
-      .sort({ "indexer.blockHeight": -1 })
+      .sort({
+        isClosedOrRetracted: 1,
+        "indexer.blockHeight": -1,
+      })
       .skip(page * pageSize)
       .limit(pageSize)
       .toArray();
