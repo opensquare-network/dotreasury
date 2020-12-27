@@ -55,8 +55,8 @@ const GlobalStyle = createGlobalStyle`
   }
   
   .ui.table td {
-    padding-top: 16px;
-    padding-bottom: 16px;
+    padding-top: 8px;
+    padding-bottom: 8px;
   }
   
   pre {

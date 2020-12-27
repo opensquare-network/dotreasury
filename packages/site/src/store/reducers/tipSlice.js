@@ -36,6 +36,7 @@ export const fetchTips = (page = 0, pageSize = 20) => async (dispatch) => {
 
 const tipFinalStates = ["TipRetracted", "TipClosed"];
 const showStatusMap = {
+  NewTip: "Tipping",
   tip: "Tipping",
   TipRetracted: "Retracted",
   TipClosed: "Closed",
@@ -44,14 +45,21 @@ const showStatusMap = {
 export const tipListSelector = (state) => state.tips.tips;
 export const normalizedTipListSelector = createSelector(
   tipListSelector,
-  (tip) => {
-    const showTime = tipFinalStates.includes(tip.state?.state);
-    const showStatus = showStatusMap[tip.state?.state];
+  (tips) => {
+    const items = tips.items.map((tip) => {
+      const showTime = tipFinalStates.includes(tip.latestState?.state);
+      const showStatus = showStatusMap[tip.latestState?.state];
+
+      return {
+        showTime,
+        showStatus,
+        ...tip,
+      };
+    });
 
     return {
-      showTime,
-      showStatus,
-      ...tip,
+      ...tips,
+      items,
     };
   }
 );

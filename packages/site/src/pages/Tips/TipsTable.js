@@ -76,12 +76,16 @@ const TipsTable = ({ data }) => {
                   }`}
                   textAlign={"right"}
                 >
-                  <PairTextVertical
-                    value={item.latestState.state}
-                    detail={dayjs(item.latestState.time).format(
-                      "YYYY-MM-DD HH:mm"
-                    )}
-                  />
+                  {item.showTime ? (
+                    <PairTextVertical
+                      value={item.latestState.state}
+                      detail={dayjs(item.latestState.time).format(
+                        "YYYY-MM-DD HH:mm"
+                      )}
+                    />
+                  ) : (
+                    item.showStatus
+                  )}
                 </Table.Cell>
                 <Table.Cell className="link-cell hidden">
                   <NavLink to="/detail">
