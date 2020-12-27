@@ -1,3 +1,4 @@
+const { TipEvents } = require("../utils/constants");
 const { hexToString } = require("@polkadot/util");
 const { getExtrinsicSigner } = require("../utils");
 const { getTipCollection, getTipTimelineCollection } = require("../mongo");
@@ -56,6 +57,7 @@ async function saveNewTip(hash, extrinsic, indexer) {
     finder,
     medianValue,
     meta,
+    isClosedOrRetracted: false,
   });
 }
 
@@ -78,15 +80,18 @@ async function saveTipTimeline(hash, state, data, indexer, sort) {
 async function updateTip(hash, state, data, indexer) {
   const meta = await getTipMeta(indexer.blockHash, hash);
 
-  let updates = {};
+  const updates = {};
+  if ([TipEvents.TipClosed, TipEvents.TipRetracted].includes(state)) {
+    Object.assign(updates, { isClosedOrRetracted: true });
+  }
   if (meta) {
     const medianValue = computeTipValue(meta);
-    updates = { meta, medianValue };
+    Object.assign(updates, { meta, medianValue });
   }
 
   const tipCol = await getTipCollection();
   await tipCol.updateOne(
-    { hash },
+    { hash, isClosedOrRetracted: false },
     {
       $set: {
         ...updates,
