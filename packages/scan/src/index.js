@@ -33,6 +33,7 @@ async function main() {
   if (scanHeight < maxKnowHeightWithTreasuryExtrinsic) {
     await scanKnowBlocks(scanHeight);
   }
+  scanHeight = maxKnowHeightWithTreasuryExtrinsic + 1;
 
   while (true) {
     const chainHeight = getLatestHeight();
