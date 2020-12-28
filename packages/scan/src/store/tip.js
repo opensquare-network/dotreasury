@@ -42,10 +42,10 @@ function computeTipValue(tipMeta) {
 async function saveNewTip(hash, extrinsic, indexer) {
   const signer = getExtrinsicSigner(extrinsic);
 
-  let reasonHex = null
+  let reasonHex;
   if (extrinsic.method.methodName === ProxyMethods.proxy) {
     reasonHex = extrinsic.method.args[2].toJSON().args.reason
-  } else if (extrinsic.method.methodName === '') {
+  } else {
     reasonHex = extrinsic.method.toJSON().args.reason
   }
 
