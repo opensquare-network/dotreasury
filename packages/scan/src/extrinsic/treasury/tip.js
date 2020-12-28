@@ -22,6 +22,23 @@ async function handleTipExtrinsic(
   }
 }
 
+// FIXME: not good to judge a tip proxy call
+function isTipProxy(callArgs) {
+  const keys = Object.keys(callArgs)
+  return keys.includes('hash') && keys.includes('tip_value') && keys.length === 2
+}
+
+async function handleTipByProxy(section, name, args, indexer) {
+  if (Modules.Proxy !== section) {
+    return
+  }
+
+  const callArgs = args.call.args
+  if (isTipProxy(callArgs)) {
+    await updateTip(callArgs.hash, TipMethods.tip, callArgs, indexer)
+  }
+}
+
 async function handleTip(args, indexer) {
   const { hash } = args;
 
@@ -31,4 +48,5 @@ async function handleTip(args, indexer) {
 
 module.exports = {
   handleTipExtrinsic,
+  handleTipByProxy,
 };

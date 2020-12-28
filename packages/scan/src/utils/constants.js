@@ -64,6 +64,7 @@ const CouncilMethods = Object.freeze({
 const Modules = Object.freeze({
   Treasury: "treasury",
   Council: "council",
+  Proxy: "proxy",
 });
 
 module.exports = {
