@@ -84,6 +84,7 @@ async function updateTip(hash, state, data, indexer) {
   if ([TipEvents.TipClosed, TipEvents.TipRetracted].includes(state)) {
     Object.assign(updates, { isClosedOrRetracted: true });
   }
+
   if (meta) {
     const medianValue = computeTipValue(meta);
     Object.assign(updates, { meta, medianValue });
