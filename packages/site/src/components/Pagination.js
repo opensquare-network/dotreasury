@@ -25,15 +25,13 @@ const CustomPagination = (props) => {
     <Wrapper>
       <Pagination
         boundaryRange={1}
-        siblingRange={0}
+        siblingRange={1}
         ellipsisItem={{
           content: <Icon name="ellipsis horizontal" />,
           icon: true,
         }}
-        // firstItem={{ content: <Icon name="angle double left" />, icon: true }}
-        // lastItem={{ content: <Icon name="angle double right" />, icon: true }}
-        firstItem={null}
-        lastItem={null}
+        firstItem={{ content: <Icon name="angle double left" />, icon: true }}
+        lastItem={{ content: <Icon name="angle double right" />, icon: true }}
         {...props}
       />
     </Wrapper>
