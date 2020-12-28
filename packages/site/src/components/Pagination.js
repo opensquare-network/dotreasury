@@ -32,6 +32,8 @@ const CustomPagination = (props) => {
         }}
         firstItem={{ content: <Icon name="angle double left" />, icon: true }}
         lastItem={{ content: <Icon name="angle double right" />, icon: true }}
+        prevItem={{ content: <Icon name="angle left" />, icon: true }}
+        nextItem={{ content: <Icon name="angle right" />, icon: true }}
         {...props}
       />
     </Wrapper>
