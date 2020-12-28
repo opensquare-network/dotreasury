@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Divider, Tab, Menu, Label } from "semantic-ui-react";
+import { NavLink } from "react-router-dom";
 
 import {
   TEXT_DARK_MAJOR,
@@ -51,26 +52,53 @@ const TabWrapper = styled(Tab)`
       color: ${TEXT_DARK_MAJOR} !important;
       border-color: ${PRIMARY_THEME_COLOR} !important;
     }
-    
   }
 `;
 
 const panes = [
   {
-    menuItem: "Treasury Overview",
+    menuItem: {
+      as: NavLink,
+      id: "homeTab",
+      content: "Treasury Overview",
+      to: "/",
+      exact: true,
+      key: "home"
+    },
   },
   {
-    menuItem: "Proposal",
+    menuItem: {
+      as: NavLink,
+      id: "proposalsTab",
+      content: "Proposals",
+      to: "/proposals",
+      exact: true,
+      key: "proposals"
+    },
   },
   {
-    menuItem: "Bounties",
+    menuItem: {
+      as: NavLink,
+      id: "bountiesTab",
+      content: "Bounties",
+      to: "/bounties",
+      exact: true,
+      key: "bounties"
+    },
   },
   {
-    menuItem: (
-      <Menu.Item key="Tips">
-        Tips<Label>12</Label>
-      </Menu.Item>
-    ),
+    menuItem: {
+      as: NavLink,
+      id: "tipsTab",
+      content: (
+        <Menu.Item key="Tips">
+          Tips<Label>12</Label>
+        </Menu.Item>
+        ),
+      to: "/tips",
+      exact: true,
+      key: "tips"
+    },
   },
 ];
 
