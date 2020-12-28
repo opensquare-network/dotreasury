@@ -111,7 +111,7 @@ const TipsTable = ({ data, loading }) => {
                 </Table.Row>
               ))) || (
               <Table.Row>
-                <Table.Cell className="no-data" colspan="6" textAlign="center">
+                <Table.Cell className="no-data" colSpan="6" textAlign="center">
                   No data
                 </Table.Cell>
               </Table.Row>
