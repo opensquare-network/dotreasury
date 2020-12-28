@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Image } from "semantic-ui-react";
 
 import TipsTable from "./TipsTable";
 import Pagination from "../../components/Pagination";
@@ -16,17 +15,17 @@ const Header = styled(Title)`
   margin-bottom: 20px;
 `;
 
-const LoadingWrapper = styled.div`
-  background: white;
-  height: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(34, 36, 38, 0.15);
-  border-top: 0;
-  border-bottom-left-radius: 0.285rem;
-  border-bottom-right-radius: 0.285rem;
-`;
+// const LoadingWrapper = styled.div`
+//   background: white;
+//   height: 100px;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   border: 1px solid rgba(34, 36, 38, 0.15);
+//   border-top: 0;
+//   border-bottom-left-radius: 0.285rem;
+//   border-bottom-right-radius: 0.285rem;
+// `;
 
 const Tips = () => {
   const [tablePage, setTablePage] = useState(1);
@@ -42,12 +41,7 @@ const Tips = () => {
   return (
     <>
       <Header>Tips</Header>
-      <TipsTable data={tips} />
-      {loading && (
-        <LoadingWrapper>
-          <Image src={"./imgs/loading.svg"} />
-        </LoadingWrapper>
-      )}
+      <TipsTable data={tips} loading={loading} />
       <Pagination
         activePage={tablePage}
         totalPages={total}
