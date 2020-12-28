@@ -11,6 +11,7 @@ import Balance from "../../components/Balance";
 import RightButton from "../../components/RightButton";
 import PairTextVertical from "../../components/PairTextVertical";
 import ReasonText from "./ReasonText";
+import { TipStatus } from "../../constants";
 
 const Wrapper = styled.div`
   overflow-x: scroll;
@@ -84,7 +85,9 @@ const TipsTable = ({ data, loading }) => {
                     <ReasonText>{item.reason}</ReasonText>
                   </Table.Cell>
                   <Table.Cell className="balance-cell" textAlign={"right"}>
-                    <Balance value={item.medianValue} />
+                    { item.showStatus === TipStatus.Retracted
+                        ? '--'
+                        : <Balance value={item.medianValue} /> }
                   </Table.Cell>
                   <Table.Cell
                     className={`status-cell ${
@@ -100,7 +103,9 @@ const TipsTable = ({ data, loading }) => {
                         )}
                       />
                     ) : (
-                      item.showStatus === 'Tipping' ? `Tipping (${item.tipsCount})` : item.showStatus
+                      item.showStatus === TipStatus.Tipping
+                        ? `${item.showStatus} (${item.tipsCount})`
+                        : item.showStatus
                     )}
                   </Table.Cell>
                   <Table.Cell className="link-cell hidden">
