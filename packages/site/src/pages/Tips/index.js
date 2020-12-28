@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import TipsTable from "./TipsTable";
-import Pagination from "../../components/Pagination";
+import ResponsivePagination from "../../components/ResponsivePagination";
 import Title from "../../components/Title";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -35,7 +35,7 @@ const Tips = () => {
     <>
       <Header>Tips</Header>
       <TipsTable data={tips} loading={loading} />
-      <Pagination
+      <ResponsivePagination
         activePage={tablePage}
         totalPages={totalPages}
         onPageChange={(_, { activePage }) => {
