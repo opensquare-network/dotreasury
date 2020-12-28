@@ -100,7 +100,7 @@ const TipsTable = ({ data, loading }) => {
                         )}
                       />
                     ) : (
-                      item.showStatus
+                      item.showStatus === 'Tipping' ? `Tipping (${item.tipsCount})` : item.showStatus
                     )}
                   </Table.Cell>
                   <Table.Cell className="link-cell hidden">
