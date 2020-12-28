@@ -15,7 +15,7 @@ const Header = styled(Title)`
   margin-bottom: 20px;
 `;
 
-const DEFAULT_PAGE_SIZE = 30;
+const DEFAULT_PAGE_SIZE = 20;
 
 
 const Tips = () => {
