@@ -1,4 +1,4 @@
-const { TipMethods, Modules } = require("../../utils/constants");
+const { TipMethods, Modules, ProxyMethods } = require("../../utils/constants");
 const { saveTipTimeline, updateTip } = require("../../store/tip");
 
 async function handleTipExtrinsic(
@@ -29,7 +29,7 @@ function isTipProxy(callArgs) {
 }
 
 async function handleTipByProxy(section, name, args, indexer) {
-  if (Modules.Proxy !== section) {
+  if (Modules.Proxy !== section || ProxyMethods.proxy !== name) {
     return
   }
 

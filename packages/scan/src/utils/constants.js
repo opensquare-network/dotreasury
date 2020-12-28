@@ -67,6 +67,10 @@ const Modules = Object.freeze({
   Proxy: "proxy",
 });
 
+const ProxyMethods = Object.freeze({
+  proxy: "proxy"
+})
+
 module.exports = {
   Modules,
   BountyMethods,
@@ -77,4 +81,5 @@ module.exports = {
   TipEvents,
   CouncilEvents,
   CouncilMethods,
+  ProxyMethods,
 };
