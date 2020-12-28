@@ -34,7 +34,7 @@ async function handleTipByProxy(section, name, args, indexer) {
   }
 
   const callArgs = args.call.args
-  if (!isTipProxy(callArgs)) {
+  if (isTipProxy(callArgs)) {
     await updateTip(callArgs.hash, TipMethods.tip, callArgs, indexer)
   }
 }
