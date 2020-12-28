@@ -1,4 +1,5 @@
 import { createSlice, createSelector } from "@reduxjs/toolkit";
+import api from "../../services/scanApi";
 
 const tipSlice = createSlice({
   name: "tips",
@@ -9,6 +10,7 @@ const tipSlice = createSlice({
       pageSize: 10,
       total: 0,
     },
+    tipsCount: 0,
     loading: false,
   },
   reducers: {
@@ -18,22 +20,32 @@ const tipSlice = createSlice({
     setLoading(state, { payload }) {
       state.loading = payload;
     },
+    setTipsCount(state, { payload }) {
+      state.tipsCount = payload;
+    },
   },
 });
 
-export const { setTips, setLoading } = tipSlice.actions;
+export const {
+  setTips,
+  setLoading,
+  setTipsCount,
+} = tipSlice.actions;
 
 export const fetchTips = (page = 0, pageSize = 30) => async (dispatch) => {
   dispatch(setLoading(true));
 
   try {
-    const resp = await window.fetch(
-      `https://api.dotreasury.com/tips?page=${page}&page_size=${pageSize}`
-    );
-    dispatch(setTips(await resp.json()));
+    const { result } = await api.fetch('/tips', { page, pageSize });
+    dispatch(setTips(result));
   } finally {
     dispatch(setLoading(false));
   }
+};
+
+export const fetchTipsCount = () => async (dispatch) => {
+  const { result } = await api.fetch('/tips/count');
+  dispatch(setTipsCount(result || 0));
 };
 
 const tipFinalStates = ["TipRetracted", "TipClosed"];
@@ -66,4 +78,5 @@ export const normalizedTipListSelector = createSelector(
   }
 );
 export const loadingSelector = (state) => state.tips.loading;
+export const tipsCountSelector = (state) => state.tips.tipsCount;
 export default tipSlice.reducer;

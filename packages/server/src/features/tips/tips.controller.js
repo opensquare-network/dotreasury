@@ -30,6 +30,12 @@ class TipsController {
     };
   }
 
+  async getTipsCount(ctx) {
+    const tipCol = await getTipCollection();
+    const tipsCount = await tipCol.estimatedDocumentCount();
+    ctx.body = tipsCount;
+  }
+
   async getTipDetail(ctx) {
     const { hash } = ctx.params;
 

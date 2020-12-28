@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { Divider, Tab, Menu, Label } from "semantic-ui-react";
+import { Divider, Tab } from "semantic-ui-react";
 import { NavLink } from "react-router-dom";
+import TipsMenu from "./TipsMenu";
 
 import {
   TEXT_DARK_MAJOR,
@@ -90,11 +91,7 @@ const panes = [
     menuItem: {
       as: NavLink,
       id: "tipsTab",
-      content: (
-        <Menu.Item key="Tips">
-          Tips<Label>12</Label>
-        </Menu.Item>
-        ),
+      content: <TipsMenu />,
       to: "/tips",
       exact: true,
       key: "tips"
