@@ -3,7 +3,7 @@ import { createGlobalStyle } from "styled-components";
 const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'Montserrat';
-    src: local('Montserrat'), url(./fonts/Montserrat.ttf) format('truetype');
+    src: local('Montserrat'), url(/fonts/Montserrat.ttf) format('truetype');
   }
 
   body {

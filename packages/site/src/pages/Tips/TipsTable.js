@@ -47,11 +47,13 @@ const StyledTable = styled(Table)`
 const TipsTable = ({ data, loading }) => {
   const history = useHistory();
 
-  const onClickRow = () => {
-    if (window.innerWidth < 1140) {
-      history.push("/detail");
+  const onClickRow = (height, hash) => {
+    if (height && hash) {
+      if (window.innerWidth < 1140) {
+        history.push(`/tips/${height}_${hash}`);
+      }
     }
-  };
+  }
 
   return (
     <Wrapper>
@@ -74,7 +76,7 @@ const TipsTable = ({ data, loading }) => {
             {(data &&
               data.length > 0 &&
               data.map((item, index) => (
-                <Table.Row key={index} onClick={onClickRow}>
+                <Table.Row key={index} onClick={() => onClickRow(item.proposeAtBlockHeight, item.hash)}>
                   <Table.Cell className="user-cell">
                     <User address={item.beneficiary} />
                   </Table.Cell>
