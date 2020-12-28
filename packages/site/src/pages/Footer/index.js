@@ -3,6 +3,9 @@ import styled from "styled-components";
 import { Icon } from "semantic-ui-react";
 
 import Container from "../../components/Container";
+import TextMinor from "../../components/TextMinor";
+import {TEXT_DARK_MAJOR} from "../../constants"
+import {TEXT_DARK_MINOR} from "../../constants"
 
 const Wrapper = styled.footer`
   background: #fff;
@@ -14,16 +17,28 @@ const FooterWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  .link {
+    cursor: pointer;
+    :hover {
+      color: ${TEXT_DARK_MAJOR};
+      text-decoration: underline;
+    }
+  }
   @media screen and (max-width: 1140px) {
     flex-direction: column;
     justify-content: center;
-    gap: 8px;
+    gap: 4px;
+    .hidden {
+      display: none;
+    }
   }
 `;
 
-const Label = styled.div`
-  color: rgba(29, 37, 60, 0.24);
-`;
+const TextWrapper = styled.div`
+  display: flex;
+  gap: 32px;
+  align-items: center;
+`
 
 const IconList = styled.div`
   display: inline-flex;
@@ -33,7 +48,7 @@ const IconList = styled.div`
     color: rgba(29, 37, 60, 0.24);
 
     &:hover {
-      color: rgba(29, 37, 60, 0.64);
+      color: ${TEXT_DARK_MINOR};
     }
   }
 `;
@@ -43,9 +58,22 @@ const Footer = () => {
     <Wrapper>
       <Container>
         <FooterWrapper>
-          <Label>
-            © {new Date().getFullYear()} dotreasury. All Rights Reserved.
-          </Label>
+          <TextWrapper>
+            <TextMinor>
+              doTreasury © {new Date().getFullYear()} - Powered By OpenSquare
+            </TextMinor>
+            <TextWrapper className="hidden">
+              <TextMinor className="link">
+                Version history
+              </TextMinor>
+              <TextMinor className="link">
+                Privacy policy
+              </TextMinor>
+              <TextMinor className="link">
+                Terms of use
+              </TextMinor>
+            </TextWrapper>
+          </TextWrapper>
           <IconList>
             <a
               href="mailto:yongfeng@opensquare.network"
