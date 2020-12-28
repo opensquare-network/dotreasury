@@ -18,6 +18,8 @@ const Wrapper = styled.div`
   .ui.segment {
     padding: 0;
     border: 0;
+    width: fit-content;
+    min-width: 100%;
   }
 
   @media screen and (max-width: 1140px) {
