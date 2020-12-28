@@ -11,7 +11,10 @@ import { PageWrapper } from "./components";
 import Header from "../pages/Header";
 import Footer from "../pages/Footer";
 import Tips from "../pages/Tips";
+import Proposals from "../pages/Proposals";
+import Bounties from "../pages/Bounties";
 import Detail from "../pages/Detail";
+import Overview from "../pages/Overview";
 
 export default function App() {
   return (
@@ -20,7 +23,10 @@ export default function App() {
       <PageWrapper>
         <Container>
           <Switch>
-            <Route exact path="/" component={Tips} />
+            <Route exact path="/" component={Overview} />
+            <Route exact path="/tips" component={Tips} />
+            <Route exact path="/proposals" component={Proposals} />
+            <Route exact path="/bounties" component={Bounties} />
             <Route exact path="/detail" component={Detail} />
             <Redirect to="/" />
           </Switch>

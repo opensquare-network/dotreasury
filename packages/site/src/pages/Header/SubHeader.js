@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Divider, Tab, Menu, Label } from "semantic-ui-react";
+import { NavLink, useLocation } from "react-router-dom";
 
 import {
   TEXT_DARK_MAJOR,
@@ -34,9 +35,15 @@ const TabWrapper = styled(Tab)`
     padding-left: 0 !important;
     padding-right: 0 !important;
     border-width: 4px !important;
+    font-family: Inter !important;
     color: ${TEXT_DARK_MINOR} !important;
     margin-right: 32px !important;
-    & > div.ui.label {
+    & > div.item {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+      color: ${TEXT_DARK_MINOR} !important;
+    }
+    & > div.ui.label, & > div > div.ui.label {
       background: ${SECONDARY_THEME_COLOR} !important;
       height: 20px !important;
       padding 0 8px !important;
@@ -46,39 +53,74 @@ const TabWrapper = styled(Tab)`
       color: ${PRIMARY_THEME_COLOR} !important;
       font-weight: 400;
     }
-    &.active {
+    &.active, &.active > div {
       font-weight: normal !important;
       color: ${TEXT_DARK_MAJOR} !important;
       border-color: ${PRIMARY_THEME_COLOR} !important;
     }
-    
   }
 `;
 
-const panes = [
-  {
-    menuItem: "Treasury Overview",
-  },
-  {
-    menuItem: "Proposal",
-  },
-  {
-    menuItem: "Bounties",
-  },
-  {
-    menuItem: (
-      <Menu.Item key="Tips">
-        Tips<Label>12</Label>
-      </Menu.Item>
-    ),
-  },
-];
 
-const TabExampleSecondaryPointing = () => (
-  <>
+
+const TabExampleSecondaryPointing = () => {
+  const {pathname} = useLocation();
+
+  const panes = [
+    {
+      menuItem: {
+        as: NavLink,
+        id: "homeTab",
+        content: "Treasury Overview",
+        to: "/",
+        exact: true,
+        key: "home",
+        active: "/" === pathname
+      },
+    },
+    {
+      menuItem: {
+        as: NavLink,
+        id: "proposalsTab",
+        content: "Proposals",
+        to: "/proposals",
+        exact: true,
+        key: "proposals",
+        active: "/proposals" === pathname
+      },
+    },
+    {
+      menuItem: {
+        as: NavLink,
+        id: "bountiesTab",
+        content: "Bounties",
+        to: "/bounties",
+        exact: true,
+        key: "bounties",
+        active: "/bounties" === pathname
+      },
+    },
+    {
+      menuItem: {
+        as: NavLink,
+        id: "tipsTab",
+        content: (
+          <Menu.Item key="Tips">
+            Tips<Label>12</Label>
+          </Menu.Item>
+          ),
+        to: "/tips",
+        exact: true,
+        key: "tips",
+        active: "/tips" === pathname
+      }
+    },
+  ];
+
+  return (<>
     <DividerWrapper />
-    <TabWrapper menu={{ secondary: true, pointing: true }} panes={panes} />
-  </>
-);
+    <TabWrapper menu={{ secondary: true, pointing: true }} panes={panes} activeIndex={"tipsTab"} />
+  </>)
+};
 
 export default TabExampleSecondaryPointing;
