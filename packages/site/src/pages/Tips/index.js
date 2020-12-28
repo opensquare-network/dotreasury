@@ -15,17 +15,8 @@ const Header = styled(Title)`
   margin-bottom: 20px;
 `;
 
-// const LoadingWrapper = styled.div`
-//   background: white;
-//   height: 100px;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   border: 1px solid rgba(34, 36, 38, 0.15);
-//   border-top: 0;
-//   border-bottom-left-radius: 0.285rem;
-//   border-bottom-right-radius: 0.285rem;
-// `;
+const DEFAULT_PAGE_SIZE = 30;
+
 
 const Tips = () => {
   const [tablePage, setTablePage] = useState(1);
@@ -35,8 +26,10 @@ const Tips = () => {
   const loading = useSelector(loadingSelector);
 
   useEffect(() => {
-    dispatch(fetchTips(tablePage - 1, 30));
+    dispatch(fetchTips(tablePage - 1, DEFAULT_PAGE_SIZE));
   }, [dispatch, tablePage]);
+
+  const totalPages = Math.ceil(total / DEFAULT_PAGE_SIZE);
 
   return (
     <>
@@ -44,7 +37,7 @@ const Tips = () => {
       <TipsTable data={tips} loading={loading} />
       <Pagination
         activePage={tablePage}
-        totalPages={total}
+        totalPages={totalPages}
         onPageChange={(_, { activePage }) => {
           setTablePage(activePage);
         }}
