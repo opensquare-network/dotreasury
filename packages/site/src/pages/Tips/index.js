@@ -35,7 +35,7 @@ const Tips = () => {
   const loading = useSelector(loadingSelector);
 
   useEffect(() => {
-    dispatch(fetchTips(tablePage - 1, 30));
+    dispatch(fetchTips(tablePage - 1, 20));
   }, [dispatch, tablePage]);
 
   return (
