@@ -2,6 +2,7 @@ function normalizeTip(tipInDb) {
   return {
     hash: tipInDb.hash,
     proposeTime: tipInDb.indexer.blockTime,
+    proposeAtBlockHeight: tipInDb.indexer.blockHeight,
     beneficiary: tipInDb.meta?.who,
     finder: tipInDb.finder,
     reason: tipInDb.reason,
