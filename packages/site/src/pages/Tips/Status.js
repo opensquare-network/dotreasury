@@ -1,33 +1,25 @@
 import React from "react";
 import styled from "styled-components";
 
+import Text from "../../components/Text";
+import TextMinor from "../../components/Text";
+
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  span:first-child {
-    font-family: Inter;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 24px;
-    color: #1d253c;
-  }
-  span:last-child {
-    font-family: Inter;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 12px;
-    line-height: 20px;
-    color: rgba(29, 37, 60, 0.64);
-  }
 `;
+
+const SmallTextMinor = styled(TextMinor)`
+  font-size: 12px;
+  line-height: 20px;
+`
 
 const Status = ({ status, time }) => {
   return (
     <Wrapper>
-      <span>{status}</span>
-      <span>{time}</span>
+      <Text>{status}</Text>
+      <SmallTextMinor>{time}</SmallTextMinor>
     </Wrapper>
   );
 };

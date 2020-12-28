@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import Logo from "./Logo";
-import Nav from "./Nav";
+// import Nav from "./Nav";
 
 const Wrapper = styled.header`
   height: 68px;
@@ -14,7 +14,7 @@ const Wrapper = styled.header`
 const HeaderExamplePage = () => (
   <Wrapper>
     <Logo />
-    <Nav />
+    {/* <Nav /> */}
   </Wrapper>
 );
 
