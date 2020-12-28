@@ -50,6 +50,7 @@ class TipsController {
     ctx.body = {
       hash: tip.hash,
       proposeTime: tip.indexer.blockTime,
+      proposeAtBlockHeight: tip.indexer.blockHeight,
       beneficiary: tip.meta?.who,
       finder: Array.isArray(tip.meta?.finder)
         ? tip.meta.finder[0]
