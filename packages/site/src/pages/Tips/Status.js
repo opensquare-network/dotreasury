@@ -12,6 +12,7 @@ const Wrapper = styled.div`
 
 const SmallTextMinor = styled(TextMinor)`
   font-size: 12px;
+  line-height: 20px;
 `
 
 const Status = ({ status, time }) => {
