@@ -36,6 +36,9 @@ const StyledTable = styled(Table)`
     padding-top: 4px !important;
     padding-bottom: 4px !important;
   }
+  .no-data {
+    height: 120px !important;
+  }
 `;
 
 const TipsTable = ({ data, loading }) => {
@@ -65,7 +68,8 @@ const TipsTable = ({ data, loading }) => {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {data &&
+            {(data &&
+              data.length > 0 &&
               data.map((item, index) => (
                 <Table.Row key={index} onClick={onClickRow}>
                   <Table.Cell className="user-cell">
@@ -103,7 +107,13 @@ const TipsTable = ({ data, loading }) => {
                     </NavLink>
                   </Table.Cell>
                 </Table.Row>
-              ))}
+              ))) || (
+              <Table.Row>
+                <Table.Cell className="no-data" colspan="6" textAlign="center">
+                  No data
+                </Table.Cell>
+              </Table.Row>
+            )}
           </Table.Body>
         </StyledTable>
       </Segment>

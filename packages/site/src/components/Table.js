@@ -35,5 +35,4 @@ const CustomTable = styled(Table)`
     font-weight: 400 !important;
   }
 `;
-
-export default CustomTable;
+export default Table;
