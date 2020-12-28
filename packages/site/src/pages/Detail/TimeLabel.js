@@ -20,7 +20,7 @@ const Label = styled.span`
 const TimeLabel = ({ value }) => {
   return (
     <Wrapper>
-      <Image src={"./imgs/time.svg"} />
+      <Image src={"/imgs/time.svg"} />
       <Label>{value}</Label>
     </Wrapper>
   );

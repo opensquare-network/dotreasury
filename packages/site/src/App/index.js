@@ -27,7 +27,7 @@ export default function App() {
             <Route exact path="/tips" component={Tips} />
             <Route exact path="/proposals" component={Proposals} />
             <Route exact path="/bounties" component={Bounties} />
-            <Route exact path="/detail" component={Detail} />
+            <Route exact path="/tips/:hash" component={Detail} />
             <Redirect to="/" />
           </Switch>
         </Container>
