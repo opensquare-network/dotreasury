@@ -104,7 +104,7 @@ const TipsTable = ({ data, loading }) => {
                     )}
                   </Table.Cell>
                   <Table.Cell className="link-cell hidden">
-                    <NavLink to="/detail">
+                    <NavLink to={`/tips/${item.proposeAtBlockHeight}_${item.hash}`}>
                       <RightButton />
                     </NavLink>
                   </Table.Cell>

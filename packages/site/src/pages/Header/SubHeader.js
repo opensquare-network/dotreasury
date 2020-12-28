@@ -109,7 +109,7 @@ const TabExampleSecondaryPointing = () => {
         to: "/tips",
         exact: true,
         key: "tips",
-        active: "/tips" === pathname
+        active: "/tips" === pathname || pathname.indexOf("/tips") === 0
       }
     },
   ];

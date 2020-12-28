@@ -11,7 +11,7 @@ const Wrapper = styled.div`
 
 const Logo = () => (
   <Wrapper>
-    <Image src="./imgs/al-logo.svg" />
+    <Image src="/imgs/al-logo.svg" />
   </Wrapper>
 );
 

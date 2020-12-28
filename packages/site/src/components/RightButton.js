@@ -9,7 +9,7 @@ const Wrapper = styled.div`
 const RightButton = () => {
   return (
     <Wrapper>
-      <Image src="./imgs/right-arrow.svg" width={"24px"} height={"24px"} />
+      <Image src="/imgs/right-arrow.svg" width={"24px"} height={"24px"} />
     </Wrapper>
   );
 };

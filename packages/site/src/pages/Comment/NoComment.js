@@ -19,7 +19,7 @@ const NoComment = () => {
   return (
     <Wrapper>
       <div>
-        <Image src={"./imgs/comment.png"} />
+        <Image src={"/imgs/comment.png"} />
         <p>There is no comment here.</p>
       </div>
     </Wrapper>

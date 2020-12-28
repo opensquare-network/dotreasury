@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Image, Divider } from "semantic-ui-react";
-import { NavLink } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 import InformationTable from "./InformationTable";
 import TipLefeCycleTabel from "./TipLifeCycleTable";
@@ -15,6 +15,9 @@ const HeaderWrapper = styled.div`
   align-items: center;
   gap: 16px;
   margin-bottom: 20px;
+  div:first-child {
+    cursor: pointer;
+  }
 `;
 
 const TableWrapper = styled.div`
@@ -44,12 +47,13 @@ const TimelineCommentWrapper = styled.div`
 `;
 
 const Detail = () => {
+  const history = useHistory();
   return (
     <>
       <HeaderWrapper>
-        <NavLink to="/">
-          <Image src="./imgs/left-arrow.svg" width={"32px"} height={"32px"} />
-        </NavLink>
+        <div onClick={() => history.goBack()}>
+          <Image src="/imgs/left-arrow.svg" width={"32px"} height={"32px"} />
+        </div>
         <Title>Detail</Title>
       </HeaderWrapper>
       <TableWrapper>

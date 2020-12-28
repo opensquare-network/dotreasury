@@ -20,7 +20,7 @@ const Label = styled.span`
 const PolygonLabel = ({ value }) => {
   return (
     <Wrapper>
-      <Image src={"./imgs/polygon.svg"} />
+      <Image src={"/imgs/polygon.svg"} />
       <Label>{value}</Label>
     </Wrapper>
   );
