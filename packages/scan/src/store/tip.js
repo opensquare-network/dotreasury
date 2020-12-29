@@ -60,6 +60,11 @@ async function saveNewTip(hash, extrinsic, blockIndexer) {
     medianValue,
     meta,
     isClosedOrRetracted: false,
+    state: {
+      indexer: extrinsic.extrinsicIndexer,
+      state: TipEvents.NewTip,
+      data: [hash]
+    },
     timeline: [
       {
         type: 'extrinsic',
