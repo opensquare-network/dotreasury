@@ -1,9 +1,13 @@
 const { Modules } = require("../../utils/constants");
 const { handleTipEvent } = require("./tip");
-const { handleBountyEvent } = require("./bounty");
-const { handleProposalEvent } = require("./proposal");
 
-async function handleTreasuryEvent(event, extrinsic, indexer, eventSort) {
+async function handleTreasuryEvent(
+  event,
+  extrinsic,
+  blockIndexer,
+  extrinsicIndexer,
+  eventSort
+) {
   const { section, method, data } = event;
 
   if (Modules.Treasury !== section) {
@@ -12,9 +16,9 @@ async function handleTreasuryEvent(event, extrinsic, indexer, eventSort) {
 
   const jsonData = data.toJSON();
 
-  await handleTipEvent(method, jsonData, extrinsic, indexer, eventSort);
-  await handleBountyEvent(method, jsonData, indexer, eventSort);
-  await handleProposalEvent(method, jsonData, indexer, eventSort);
+  await handleTipEvent(method, jsonData, extrinsic, blockIndexer, eventSort);
+  // await handleBountyEvent(method, jsonData, blockIndexer, eventSort);
+  // await handleProposalEvent(method, jsonData, blockIndexer, eventSort);
 }
 
 module.exports = {

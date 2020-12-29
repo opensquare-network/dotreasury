@@ -20,12 +20,11 @@ async function handleExtrinsics(extrinsics = [], allEvents = [], indexer) {
   }
 }
 
-/**
- *
- * 解析并处理交易
- *
- */
-async function handleExtrinsic(extrinsic, indexer, events) {
+function normalizeExtrinsic(extrinsic, events) {
+  if (!extrinsic) {
+    throw new Error('Invalid extrinsic object')
+  }
+
   const hash = extrinsic.hash.toHex();
   const callIndex = u8aToHex(extrinsic.callIndex);
   const { args } = extrinsic.method.toJSON();
@@ -34,6 +33,31 @@ async function handleExtrinsic(extrinsic, indexer, events) {
   const signer = getExtrinsicSigner(extrinsic);
 
   const isSuccess = isExtrinsicSuccess(events);
+
+  const version = extrinsic.version;
+  const data = u8aToHex(extrinsic.data); // 原始数据
+
+  return {
+    hash,
+    signer,
+    section,
+    name,
+    callIndex,
+    version,
+    args,
+    data,
+    isSuccess,
+  };
+}
+
+/**
+ *
+ * 解析并处理交易
+ *
+ */
+async function handleExtrinsic(extrinsic, indexer, events) {
+  const normalized = normalizeExtrinsic(extrinsic, events);
+  const { section, name, args, isSuccess } = normalized
 
   await extractExtrinsicBusinessData(
     section,
@@ -44,20 +68,9 @@ async function handleExtrinsic(extrinsic, indexer, events) {
     events
   );
 
-  const version = extrinsic.version;
-  const data = u8aToHex(extrinsic.data); // 原始数据
-
   const doc = {
-    hash,
     indexer,
-    signer,
-    section,
-    name,
-    callIndex,
-    version,
-    args,
-    data,
-    isSuccess,
+    ...normalized
   };
 
   const exCol = await getExtrinsicCollection();
@@ -69,4 +82,5 @@ async function handleExtrinsic(extrinsic, indexer, events) {
 
 module.exports = {
   handleExtrinsics,
+  normalizeExtrinsic
 };

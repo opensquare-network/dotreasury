@@ -5,22 +5,24 @@ function isTipEvent(method) {
   return TipEvents.hasOwnProperty(method);
 }
 
-const isStateChange = isTipEvent;
+function tipStateChange(eventName) {
+  return [TipEvents.TipClosed, TipEvents.TipClosing, TipEvents.TipRetracted].includes(eventName)
+}
 
-async function handleTipEvent(method, jsonData, extrinsic, indexer, sort) {
+async function handleTipEvent(method, jsonData, extrinsic, blockIndexer, sort) {
   if (!isTipEvent(method)) {
     return;
   }
 
   if (method === TipEvents.NewTip) {
     const [hash] = jsonData;
-    await saveNewTip(hash, extrinsic, indexer);
+    await saveNewTip(hash, extrinsic, blockIndexer);
   }
 
-  if (isStateChange(method)) {
+  if (tipStateChange(method)) {
     const hash = jsonData[0];
-    await saveTipTimeline(hash, method, jsonData, indexer, sort);
-    await updateTip(hash, method, jsonData, indexer);
+    await updateTip(hash, method, jsonData, blockIndexer);
+    await saveTipTimeline(hash, method, jsonData, blockIndexer, sort);
   }
 }
 
