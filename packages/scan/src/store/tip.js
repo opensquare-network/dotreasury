@@ -1,4 +1,4 @@
-const { TipEvents, ProxyMethods } = require("../utils/constants");
+const { TipEvents, ProxyMethods, TipMethods } = require("../utils/constants");
 const { hexToString } = require("@polkadot/util");
 const { getTipCollection, getTipTimelineCollection } = require("../mongo");
 const { getApi } = require("../api");
@@ -94,7 +94,7 @@ async function updateTip(hash, state, data, indexer, extrinsic) {
   const meta = await getTipMeta(indexer.blockHash, hash);
 
   const updates = {};
-  if ([TipEvents.TipClosed, TipEvents.TipRetracted].includes(state)) {
+  if ([TipEvents.TipClosed, TipEvents.TipRetracted].includes(state) || state === TipMethods.closeTip) {
     Object.assign(updates, { isClosedOrRetracted: true });
   }
 
@@ -111,7 +111,7 @@ async function updateTip(hash, state, data, indexer, extrinsic) {
         ...updates,
         state: {
           indexer,
-          state,
+          state: state === TipMethods.closeTip ? TipEvents.TipClosed : state,
           data,
         },
       },
