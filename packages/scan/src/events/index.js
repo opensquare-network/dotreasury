@@ -1,7 +1,8 @@
 const { extractEventBusinessData } = require("./extractBusiness");
 const { getEventCollection } = require("../mongo");
+const { normalizeExtrinsic } = require("../extrinsic/index")
 
-async function handleEvents(events, indexer, extrinsics) {
+async function handleEvents(events, blockIndexer, extrinsics) {
   if (events.length <= 0) {
     return;
   }
@@ -17,6 +18,17 @@ async function handleEvents(events, indexer, extrinsics) {
       phaseValue = phase.value.toNumber();
       extrinsic = extrinsics[phaseValue];
       extrinsicHash = extrinsic.hash.toHex();
+
+      const normalizedExtrinsic = {
+        extrinsicIndexer: { ...blockIndexer, index: phaseValue },
+        ...normalizeExtrinsic(extrinsic, events)
+      }
+      await extractEventBusinessData(
+        event,
+        normalizedExtrinsic,
+        blockIndexer,
+        sort
+      );
     }
 
     const index = parseInt(event.index);
@@ -25,10 +37,8 @@ async function handleEvents(events, indexer, extrinsics) {
     const method = event.method;
     const data = event.data.toJSON();
 
-    await extractEventBusinessData(event, extrinsic, indexer, sort);
-
     bulk.insert({
-      indexer,
+      indexer: blockIndexer,
       extrinsicHash,
       phase: {
         type: phaseType,

@@ -1,7 +1,17 @@
 const { handleTreasuryEvent } = require("./treasury");
 
-async function extractEventBusinessData(event, extrinsic, indexer, eventSort) {
-  await handleTreasuryEvent(event, extrinsic, indexer, eventSort);
+async function extractEventBusinessData(
+  event,
+  extrinsic,
+  blockIndexer,
+  eventSort
+) {
+  await handleTreasuryEvent(
+    event,
+    extrinsic,
+    blockIndexer,
+    eventSort
+  );
   // await handleCouncilEvent(event, indexer, eventSort);
 }
 

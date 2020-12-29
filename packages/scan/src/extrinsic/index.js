@@ -20,12 +20,11 @@ async function handleExtrinsics(extrinsics = [], allEvents = [], indexer) {
   }
 }
 
-/**
- *
- * 解析并处理交易
- *
- */
-async function handleExtrinsic(extrinsic, indexer, events) {
+function normalizeExtrinsic(extrinsic, events) {
+  if (!extrinsic) {
+    throw new Error('Invalid extrinsic object')
+  }
+
   const hash = extrinsic.hash.toHex();
   const callIndex = u8aToHex(extrinsic.callIndex);
   const { args } = extrinsic.method.toJSON();
@@ -35,21 +34,11 @@ async function handleExtrinsic(extrinsic, indexer, events) {
 
   const isSuccess = isExtrinsicSuccess(events);
 
-  await extractExtrinsicBusinessData(
-    section,
-    name,
-    args,
-    isSuccess,
-    indexer,
-    events
-  );
-
   const version = extrinsic.version;
   const data = u8aToHex(extrinsic.data); // 原始数据
 
-  const doc = {
+  return {
     hash,
-    indexer,
     signer,
     section,
     name,
@@ -59,9 +48,21 @@ async function handleExtrinsic(extrinsic, indexer, events) {
     data,
     isSuccess,
   };
+}
+
+async function handleExtrinsic(extrinsic, indexer, events) {
+  const normalized = normalizeExtrinsic(extrinsic, events);
+  await extractExtrinsicBusinessData(
+    normalized,
+    indexer,
+    events,
+  );
 
   const exCol = await getExtrinsicCollection();
-  const result = await exCol.insertOne(doc);
+  const result = await exCol.insertOne({
+    indexer,
+    ...normalized
+  });
   if (result.result && !result.result.ok) {
     // FIXME: Deal with db failura
   }
@@ -69,4 +70,5 @@ async function handleExtrinsic(extrinsic, indexer, events) {
 
 module.exports = {
   handleExtrinsics,
+  normalizeExtrinsic
 };
