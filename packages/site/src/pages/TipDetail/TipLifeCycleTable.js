@@ -62,8 +62,8 @@ const TipLefeCycleTabel = () => {
           <Table.Cell>
             <TableCell title="Tippers">
               <FlexWrapper>
-                <TippersProgress total={tippersCount} current={tipDetail.tips?.length} />
-                <TippersLabel>{tipDetail.tips?.length}/{tippersCount}</TippersLabel>
+                <TippersProgress total={tippersCount} current={tipDetail.tipsCount} />
+                <TippersLabel>{tipDetail.tipsCount}/{tippersCount}</TippersLabel>
               </FlexWrapper>
             </TableCell>
           </Table.Cell>
