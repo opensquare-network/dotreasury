@@ -60,6 +60,12 @@ async function saveNewTip(hash, extrinsic, blockIndexer) {
     medianValue,
     meta,
     isClosedOrRetracted: false,
+    timeline: [
+      {
+        type: 'extrinsic',
+        extrinsic
+      },
+    ]
   });
 }
 
@@ -79,7 +85,7 @@ async function saveTipTimeline(hash, state, data, indexer, sort) {
   // await updateTip(hash, state, data, indexer, meta);
 }
 
-async function updateTip(hash, state, data, indexer) {
+async function updateTip(hash, state, data, indexer, extrinsic) {
   const meta = await getTipMeta(indexer.blockHash, hash);
 
   const updates = {};
@@ -104,6 +110,12 @@ async function updateTip(hash, state, data, indexer) {
           data,
         },
       },
+      $push: {
+        timeline: {
+          type: 'extrinsic',
+          extrinsic
+        }
+      }
     }
   );
 }

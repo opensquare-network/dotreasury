@@ -50,31 +50,19 @@ function normalizeExtrinsic(extrinsic, events) {
   };
 }
 
-/**
- *
- * 解析并处理交易
- *
- */
 async function handleExtrinsic(extrinsic, indexer, events) {
   const normalized = normalizeExtrinsic(extrinsic, events);
-  const { section, name, args, isSuccess } = normalized
-
   await extractExtrinsicBusinessData(
-    section,
-    name,
-    args,
-    isSuccess,
+    normalized,
     indexer,
-    events
+    events,
   );
 
-  const doc = {
+  const exCol = await getExtrinsicCollection();
+  const result = await exCol.insertOne({
     indexer,
     ...normalized
-  };
-
-  const exCol = await getExtrinsicCollection();
-  const result = await exCol.insertOne(doc);
+  });
   if (result.result && !result.result.ok) {
     // FIXME: Deal with db failura
   }

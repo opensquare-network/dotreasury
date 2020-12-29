@@ -21,8 +21,8 @@ async function handleTipEvent(method, jsonData, extrinsic, blockIndexer, sort) {
 
   if (tipStateChange(method)) {
     const hash = jsonData[0];
-    await updateTip(hash, method, jsonData, blockIndexer);
-    await saveTipTimeline(hash, method, jsonData, blockIndexer, sort);
+    await updateTip(hash, method, jsonData, blockIndexer, extrinsic);
+    // await saveTipTimeline(hash, method, jsonData, blockIndexer, sort);
   }
 }
 

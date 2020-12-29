@@ -5,11 +5,9 @@ async function handleTreasuryEvent(
   event,
   extrinsic,
   blockIndexer,
-  extrinsicIndexer,
   eventSort
 ) {
   const { section, method, data } = event;
-
   if (Modules.Treasury !== section) {
     return;
   }

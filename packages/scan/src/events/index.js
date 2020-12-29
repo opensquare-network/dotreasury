@@ -19,13 +19,14 @@ async function handleEvents(events, blockIndexer, extrinsics) {
       extrinsic = extrinsics[phaseValue];
       extrinsicHash = extrinsic.hash.toHex();
 
-      const extrinsicIndexer = { ...blockIndexer, index: phaseValue };
-      const normalizedExtrinsic = normalizeExtrinsic(extrinsic, events)
+      const normalizedExtrinsic = {
+        extrinsicIndexer: { ...blockIndexer, index: phaseValue },
+        ...normalizeExtrinsic(extrinsic, events)
+      }
       await extractEventBusinessData(
         event,
         normalizedExtrinsic,
         blockIndexer,
-        extrinsicIndexer,
         sort
       );
     }
