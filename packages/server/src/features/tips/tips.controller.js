@@ -75,6 +75,14 @@ class TipsController {
         : {}),
     };
   }
+
+  async getTipTimeline(ctx) {
+    const { blockHeight, tipHash } = ctx.params;
+
+    ctx.status = 404;
+    return;
+
+  }
 }
 
 module.exports = new TipsController();
