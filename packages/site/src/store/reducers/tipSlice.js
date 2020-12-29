@@ -12,6 +12,8 @@ const tipSlice = createSlice({
     },
     tipsCount: 0,
     loading: false,
+    tipDetail: {},
+    loadingTipDetail: false,
   },
   reducers: {
     setTips(state, { payload }) {
@@ -23,6 +25,12 @@ const tipSlice = createSlice({
     setTipsCount(state, { payload }) {
       state.tipsCount = payload;
     },
+    setTipDetail(state, { payload }) {
+      state.tipDetail = payload;
+    },
+    setLoadingTipDetail(state, { payload }) {
+      state.loadingTipDetail = payload;
+    },
   },
 });
 
@@ -30,6 +38,8 @@ export const {
   setTips,
   setLoading,
   setTipsCount,
+  setTipDetail,
+  setLoadingTipDetail,
 } = tipSlice.actions;
 
 export const fetchTips = (page = 0, pageSize = 30) => async (dispatch) => {
@@ -48,6 +58,16 @@ export const fetchTipsCount = () => async (dispatch) => {
   dispatch(setTipsCount(result || 0));
 };
 
+export const fetchTipDetail = (tipId) => async (dispatch) => {
+  dispatch(setLoadingTipDetail(true));
+  try {
+    const { result } = await api.fetch(`/tips/${tipId}`);
+    dispatch(setTipDetail(result || {}));
+  } finally {
+    dispatch(setLoadingTipDetail(false));
+  }
+};
+
 const tipFinalStates = ["TipRetracted", "TipClosed"];
 const showStatusMap = {
   NewTip: "Tipping",
@@ -56,21 +76,22 @@ const showStatusMap = {
   TipClosed: "Closed",
 };
 
+function normalizeTip(tip) {
+  const showTime = tipFinalStates.includes(tip.latestState?.state);
+  const showStatus = showStatusMap[tip.latestState?.state];
+
+  return {
+    showTime,
+    showStatus,
+    ...tip,
+  };
+}
+
 export const tipListSelector = (state) => state.tips.tips;
 export const normalizedTipListSelector = createSelector(
   tipListSelector,
   (tips) => {
-    const items = tips.items.map((tip) => {
-      const showTime = tipFinalStates.includes(tip.latestState?.state);
-      const showStatus = showStatusMap[tip.latestState?.state];
-
-      return {
-        showTime,
-        showStatus,
-        ...tip,
-      };
-    });
-
+    const items = tips.items.map(normalizeTip);
     return {
       ...tips,
       items,
@@ -79,4 +100,14 @@ export const normalizedTipListSelector = createSelector(
 );
 export const loadingSelector = (state) => state.tips.loading;
 export const tipsCountSelector = (state) => state.tips.tipsCount;
+export const tipDetailSelector = (state) => state.tips.tipDetail;
+export const normalizedTipDetailSelector = createSelector(
+  tipDetailSelector,
+  (tip) => ({
+    ...tip,
+    ...normalizeTip(tip),
+  })
+);
+export const loadingTipDetailSelector = (state) => state.tips.loadingTipDetail;
+
 export default tipSlice.reducer;

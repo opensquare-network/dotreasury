@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 
 import Table from "../../components/Table";
 import TableCell from "../../components/TableCell";
@@ -7,6 +8,11 @@ import TimeLabel from "./TimeLabel";
 import Progress from "./Progress";
 import TipCountDownLabel from "./TipCountDownLabel";
 import TippersProgress from "./TippersProgress";
+import TimeElapsed from "../../components/TimeElapsed";
+
+import {
+  normalizedTipDetailSelector,
+} from "../../store/reducers/tipSlice";
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -22,6 +28,15 @@ const TippersLabel = styled.div`
 `;
 
 const TipLefeCycleTabel = () => {
+  const tipDetail = useSelector(normalizedTipDetailSelector);
+  const tippersCount = 13;
+  const tipCountdown = 20000;
+  const closeAtBlockHeight = 28840;
+  const currentBlockHeight = 22840;
+  const progressBlockHeight = Math.min(closeAtBlockHeight, currentBlockHeight);
+  const reminingCountdown = closeAtBlockHeight - progressBlockHeight;
+  const precent = 1 - reminingCountdown / tipCountdown;
+
   return (
     <Table striped selectable>
       <Table.Header>
@@ -32,37 +47,37 @@ const TipLefeCycleTabel = () => {
       <Table.Body>
         <Table.Row>
           <Table.Cell>
-            <TableCell title={"Created"}>
+            <TableCell title="Status">
               <FlexWrapper>
-                <div>Closed</div>
-                <TimeLabel value={"12h 34m"} />
+                <div>{tipDetail.showStatus}</div>
+                <TimeLabel value={<TimeElapsed from={tipDetail.latestState?.time} />} />
               </FlexWrapper>
             </TableCell>
           </Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>
-            <TableCell title={"Tippers"}>
+            <TableCell title="Tippers">
               <FlexWrapper>
-                <TippersProgress total={8} current={3} />
-                <TippersLabel>3/8</TippersLabel>
+                <TippersProgress total={tippersCount} current={tipDetail.tips?.length} />
+                <TippersLabel>{tipDetail.tips?.length}/{tippersCount}</TippersLabel>
               </FlexWrapper>
             </TableCell>
           </Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>
-            <TableCell title={"Tip Count Down"}>
+            <TableCell title="Tip Count Down">
               <FlexWrapper>
-                <Progress percent={50} />
-                <TipCountDownLabel value={14400} />
+                <Progress percent={precent * 100} />
+                <TipCountDownLabel value={reminingCountdown} />
               </FlexWrapper>
             </TableCell>
           </Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>
-            <TableCell title={"Finders Fee"}>
+            <TableCell title="Finders Fee">
               <div>20.00%</div>
             </TableCell>
           </Table.Cell>

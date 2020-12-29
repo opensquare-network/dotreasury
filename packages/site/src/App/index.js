@@ -13,7 +13,7 @@ import Footer from "../pages/Footer";
 import Tips from "../pages/Tips";
 import Proposals from "../pages/Proposals";
 import Bounties from "../pages/Bounties";
-import Detail from "../pages/Detail";
+import TipDetail from "../pages/TipDetail";
 import Overview from "../pages/Overview";
 
 export default function App() {
@@ -27,7 +27,7 @@ export default function App() {
             <Route exact path="/tips" component={Tips} />
             <Route exact path="/proposals" component={Proposals} />
             <Route exact path="/bounties" component={Bounties} />
-            <Route exact path="/tips/:hash" component={Detail} />
+            <Route exact path="/tips/:tipId" component={TipDetail} />
             <Redirect to="/" />
           </Switch>
         </Container>

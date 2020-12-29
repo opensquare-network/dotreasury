@@ -37,10 +37,13 @@ class TipsController {
   }
 
   async getTipDetail(ctx) {
-    const { hash } = ctx.params;
+    const { blockHeight, tipHash } = ctx.params;
 
     const tipCol = await getTipCollection();
-    const tip = await tipCol.findOne({ hash });
+    const tip = await tipCol.findOne({
+      hash: tipHash,
+      'indexer.blockHeight': parseInt(blockHeight),
+    });
 
     if (!tip) {
       ctx.status = 404;

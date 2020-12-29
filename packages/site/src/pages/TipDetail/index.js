@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useParams } from 'react-router'
 import styled from "styled-components";
 import { Image, Divider } from "semantic-ui-react";
 import { useHistory } from "react-router-dom";
+import {
+  fetchTipDetail,
+} from "../../store/reducers/tipSlice";
 
 import InformationTable from "./InformationTable";
-import TipLefeCycleTabel from "./TipLifeCycleTable";
+import TipLefeCycleTable from "./TipLifeCycleTable";
 import Timeline from "../Timeline";
 import Comment from "../Comment";
 import RelatedLinks from "../RelatedLinks";
@@ -46,8 +51,15 @@ const TimelineCommentWrapper = styled.div`
   }
 `;
 
-const Detail = () => {
+const TipDetail = () => {
   const history = useHistory();
+  const { tipId } = useParams()
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(fetchTipDetail(tipId));
+  }, [dispatch, tipId]);
+
   return (
     <>
       <HeaderWrapper>
@@ -58,7 +70,7 @@ const Detail = () => {
       </HeaderWrapper>
       <TableWrapper>
         <InformationTable />
-        <TipLefeCycleTabel />
+        <TipLefeCycleTable />
       </TableWrapper>
       <RelatedLinks />
       <Divider />
@@ -70,4 +82,4 @@ const Detail = () => {
   );
 };
 
-export default Detail;
+export default TipDetail;
