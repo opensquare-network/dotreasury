@@ -58,7 +58,7 @@ const InformationTable = () => {
         <Table.Row>
           <Table.Cell>
             <TableCell title={"Value"}>
-              <Balance value={tipDetail.medianValule} />
+              <Balance value={tipDetail.medianValue} />
             </TableCell>
           </Table.Cell>
         </Table.Row>

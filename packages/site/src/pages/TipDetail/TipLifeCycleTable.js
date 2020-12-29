@@ -12,6 +12,8 @@ import TimeElapsed from "../../components/TimeElapsed";
 
 import {
   normalizedTipDetailSelector,
+  tipCountdownSelector,
+  tipFindersFeeSelector,
 } from "../../store/reducers/tipSlice";
 
 const FlexWrapper = styled.div`
@@ -29,8 +31,9 @@ const TippersLabel = styled.div`
 
 const TipLefeCycleTabel = () => {
   const tipDetail = useSelector(normalizedTipDetailSelector);
+  const tipFindersFee = useSelector(tipFindersFeeSelector);
   const tippersCount = 13;
-  const tipCountdown = 20000;
+  const tipCountdown = useSelector(tipCountdownSelector);
   const closeAtBlockHeight = 28840;
   const currentBlockHeight = 22840;
   const progressBlockHeight = Math.min(closeAtBlockHeight, currentBlockHeight);
@@ -78,7 +81,7 @@ const TipLefeCycleTabel = () => {
         <Table.Row>
           <Table.Cell>
             <TableCell title="Finders Fee">
-              <div>20.00%</div>
+              <div>{tipFindersFee.toFixed(2)}%</div>
             </TableCell>
           </Table.Cell>
         </Table.Row>

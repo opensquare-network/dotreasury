@@ -6,6 +6,8 @@ import { Image, Divider } from "semantic-ui-react";
 import { useHistory } from "react-router-dom";
 import {
   fetchTipDetail,
+  fetchTipFindersFee,
+  fetchTipCountdown,
 } from "../../store/reducers/tipSlice";
 
 import InformationTable from "./InformationTable";
@@ -58,6 +60,8 @@ const TipDetail = () => {
 
   useEffect(() => {
     dispatch(fetchTipDetail(tipId));
+    dispatch(fetchTipFindersFee());
+    dispatch(fetchTipCountdown());
   }, [dispatch, tipId]);
 
   return (
