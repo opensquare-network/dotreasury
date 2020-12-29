@@ -30,6 +30,12 @@ const TippersLabel = styled.div`
 const TipLefeCycleTabel = () => {
   const tipDetail = useSelector(normalizedTipDetailSelector);
   const tippersCount = 13;
+  const tipCountdown = 20000;
+  const closeAtBlockHeight = 28840;
+  const currentBlockHeight = 22840;
+  const progressBlockHeight = Math.min(closeAtBlockHeight, currentBlockHeight);
+  const reminingCountdown = closeAtBlockHeight - progressBlockHeight;
+  const precent = 1 - reminingCountdown / tipCountdown;
 
   return (
     <Table striped selectable>
@@ -63,8 +69,8 @@ const TipLefeCycleTabel = () => {
           <Table.Cell>
             <TableCell title="Tip Count Down">
               <FlexWrapper>
-                <Progress percent={50} />
-                <TipCountDownLabel value={14400} />
+                <Progress percent={precent * 100} />
+                <TipCountDownLabel value={reminingCountdown} />
               </FlexWrapper>
             </TableCell>
           </Table.Cell>
