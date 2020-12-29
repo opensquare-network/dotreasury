@@ -4,8 +4,8 @@ import duration from 'dayjs/plugin/duration';
 
 dayjs.extend(duration);
 
-export function durationToStr(d, maxSection = 2) {
-  let str = '';
+function durationToStr(d, maxSection = 2) {
+  let str = "";
   const append = (orig, tail) => orig + (orig ? " " : "") + tail;
 
   const sections = [
@@ -13,8 +13,7 @@ export function durationToStr(d, maxSection = 2) {
     d.months() && `${d.months()}mon`,
     d.days() && `${d.days()}d`,
     d.hours() && `${d.hours()}h`,
-    d.minutes() && `${d.minutes()}m`,
-    `${d.seconds()}s`,
+    d.minutes() && `${d.minutes()}min`,
   ];
 
   for (let i = 0, j = 0; i < sections.length && j < maxSection; i++) {
@@ -28,6 +27,10 @@ export function durationToStr(d, maxSection = 2) {
     }
 
     j++;
+  }
+
+  if (str === "") {
+    str = `${d.seconds()}s`;
   }
 
   return str;
