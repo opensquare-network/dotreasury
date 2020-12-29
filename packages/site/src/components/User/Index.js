@@ -5,7 +5,7 @@ import Username from "./Username";
 import Avatar from "./Avatar";
 import Badge from "./Badge";
 import ExplorerLink from "../../components/ExplorerLink";
-import {getIndentity} from "../../services/getApi";
+import {getIndentity} from "../../services/chainApi";
 
 const Wrapper = styled.div`
   display: flex;

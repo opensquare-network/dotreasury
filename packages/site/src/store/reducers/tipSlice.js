@@ -1,5 +1,6 @@
 import { createSlice, createSelector } from "@reduxjs/toolkit";
 import api from "../../services/scanApi";
+import { getTipCountdown, getTipFindersFee } from "../../services/chainApi";
 
 const tipSlice = createSlice({
   name: "tips",
@@ -14,6 +15,8 @@ const tipSlice = createSlice({
     loading: false,
     tipDetail: {},
     loadingTipDetail: false,
+    tipCountdown: 14400,
+    tipFindersFee: 20,
   },
   reducers: {
     setTips(state, { payload }) {
@@ -31,6 +34,12 @@ const tipSlice = createSlice({
     setLoadingTipDetail(state, { payload }) {
       state.loadingTipDetail = payload;
     },
+    setTipCountdown(state, { payload }) {
+      state.tipCountdown = payload;
+    },
+    setTipFindersFee(state, { payload }) {
+      state.tipFindersFee = payload;
+    },
   },
 });
 
@@ -40,6 +49,8 @@ export const {
   setTipsCount,
   setTipDetail,
   setLoadingTipDetail,
+  setTipCountdown,
+  setTipFindersFee,
 } = tipSlice.actions;
 
 export const fetchTips = (page = 0, pageSize = 30) => async (dispatch) => {
@@ -66,6 +77,16 @@ export const fetchTipDetail = (tipId) => async (dispatch) => {
   } finally {
     dispatch(setLoadingTipDetail(false));
   }
+};
+
+export const fetchTipCountdown = () => async (dispatch) => {
+  const tipCountdown = await getTipCountdown();
+  dispatch(setTipCountdown(tipCountdown || 14400));
+};
+
+export const fetchTipFindersFee = () => async (dispatch) => {
+  const tipFindersFee = await getTipFindersFee();
+  dispatch(setTipFindersFee(tipFindersFee || 20));
 };
 
 const tipFinalStates = ["TipRetracted", "TipClosed"];
@@ -109,5 +130,7 @@ export const normalizedTipDetailSelector = createSelector(
   })
 );
 export const loadingTipDetailSelector = (state) => state.tips.loadingTipDetail;
+export const tipCountdownSelector = (state) => state.tips.tipCountdown;
+export const tipFindersFeeSelector = (state) => state.tips.tipFindersFee;
 
 export default tipSlice.reducer;

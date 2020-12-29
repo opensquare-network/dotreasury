@@ -16,3 +16,13 @@ export const getIndentity = async (address) => {
   const {identity} = await api.derive.accounts.info(address);
   return identity;
 }
+
+export const getTipCountdown = async () => {
+  const api = await getApi();
+  return api.consts.treasury.tipCountdown.toNumber();
+}
+
+export const getTipFindersFee = async () => {
+  const api = await getApi();
+  return api.consts.treasury.tipFindersFee.toNumber();
+}
