@@ -31,7 +31,7 @@ const User = ({ address, ellipsis = true }) => {
         setName((identity.displayParent ? `${identity.displayParent}/${identity.display}` : identity.display).toUpperCase())
         setBadgeData({
           isNull: false,
-          isParent: identity.displayParent,
+          hasParent: !!identity.displayParent,
           isJuge: identity.judgements?.length > 0
         })
       } else {
