@@ -28,7 +28,7 @@ const User = ({ address, ellipsis = true }) => {
     const fetchIdentity = async () => {
       const identity = await getIndentity(address);
       if (identity && identity.display) {
-        setName((identity.displayParent ? `${identity.displayParent}/${identity.display}` : identity.display).toUpperCase())
+        setName(identity.displayParent ? `${identity.displayParent}/${identity.display}` : identity.display)
         setBadgeData({
           isNull: false,
           hasParent: !!identity.displayParent,

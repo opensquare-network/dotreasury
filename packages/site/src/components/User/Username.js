@@ -6,7 +6,6 @@ import { TEXT_DARK_MAJOR } from "../../constants";
 
 const TextUsername = styled(TextMinor)`
   white-space: nowrap;
-  overflow: hidden;
   cursor: pointer;
   flex-grow: 1;
   &:hover {
