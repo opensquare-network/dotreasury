@@ -21,14 +21,14 @@ const BadgeWrapper = styled.div`
   gap: 3px;
 `
 
-const User = ({ address, ellipsis = true }) => {
+const User = ({ address, ellipsis = true, popup = true }) => {
   const [name, setName] = useState(null)
   const [badgeData, setBadgeData] = useState(null)
   useEffect(() => {
     const fetchIdentity = async () => {
       const identity = await getIndentity(address);
       if (identity && identity.display) {
-        setName((identity.displayParent ? `${identity.displayParent}/${identity.display}` : identity.display).toUpperCase())
+        setName(identity.displayParent ? `${identity.displayParent}/${identity.display}` : identity.display)
         setBadgeData({
           isNull: false,
           hasParent: !!identity.displayParent,
@@ -49,7 +49,7 @@ const User = ({ address, ellipsis = true }) => {
       <BadgeWrapper>
         <Badge {...badgeData} />
         <ExplorerLink href={`/account/${address}`}>
-          <Username name={name} address={address} ellipsis={ellipsis} />
+          <Username name={name} address={address} ellipsis={ellipsis} popup={popup} />
         </ExplorerLink>
       </BadgeWrapper>
     </Wrapper>
