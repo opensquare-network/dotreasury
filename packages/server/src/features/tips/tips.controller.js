@@ -64,7 +64,7 @@ class TipsController {
       },
       tipsCount: tip.meta?.tips.length,
       medianValue: tip.medianValue,
-      tippersCount: tip.tippers?.length,
+      tippersCount: tip.tippersCount,
       closeFromBlockHeight: tip.meta?.closes,
       timeline: tip.timeline,
     };
