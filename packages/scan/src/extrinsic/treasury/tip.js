@@ -1,4 +1,4 @@
-const { TipMethods, Modules, ProxyMethods } = require("../../utils/constants");
+const { TipMethods, Modules, ProxyMethods, ksmFirstTipClosedHeight } = require("../../utils/constants");
 const { updateTip } = require("../../store/tip");
 
 async function handleTipExtrinsic(normalizedExtrinsic, extrinsicIndexer) {
@@ -8,8 +8,12 @@ async function handleTipExtrinsic(normalizedExtrinsic, extrinsicIndexer) {
     return;
   }
 
-  if (name === TipMethods.tip) {
-    await updateTip(args.hash, TipMethods.tip, args, extrinsicIndexer, {
+  const noEventTipClose = name === TipMethods.closeTip && extrinsicIndexer.blockHeight < ksmFirstTipClosedHeight
+  if (noEventTipClose) {
+    console.log('hhh')
+  }
+  if (name === TipMethods.tip || noEventTipClose) {
+    await updateTip(args.hash, name, args, extrinsicIndexer, {
       ...normalizedExtrinsic,
       extrinsicIndexer
     });
