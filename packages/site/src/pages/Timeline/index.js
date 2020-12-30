@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import Item from "./Item";
+import FoldableItem from "./FoldableItem";
 import SubTitle from "../../components/SubTitle";
 
 const Wrapper = styled.div`
@@ -12,15 +13,15 @@ const Header = styled(SubTitle)`
   margin-bottom: 20px;
 `;
 
-const ItemList = styled.div``;
-
 const Timeline = ({ data, contentBuilder }) => {
   return (
     <Wrapper>
       <Header>Timeline</Header>
-      <ItemList>
-        { (data || []).map((item, index) => <Item key={index} data={item} contentBuilder={contentBuilder} />) }
-      </ItemList>
+      {/* <FoldableItem> */}
+        <>
+          { (data || []).map((item, index) => <Item key={index} data={item} contentBuilder={contentBuilder} />) }
+        </>
+      {/* </FoldableItem> */}
     </Wrapper>
   );
 };

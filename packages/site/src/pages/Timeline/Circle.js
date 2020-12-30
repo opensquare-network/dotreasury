@@ -14,6 +14,7 @@ const Wrapper = styled.div`
     border: 3px solid ${PRIMARY_THEME_COLOR};
     border-radius: 50%;
   }
+  flex: 0 0 auto;
 `;
 
 const Circle = () => {

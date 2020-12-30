@@ -12,7 +12,6 @@ import DateShow from "../../components/DateShow";
 import TextMinor from "../../components/TextMinor";
 
 const Wrapper = styled.div`
-  max-width: 100%;
   &:last-child .bar {
     visibility: hidden;
   }
@@ -28,12 +27,22 @@ const TimeLableWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
 `;
 
 const CardWrapper = styled.div`
   flex-grow: 1;
-  margin: 8px 0 40px;
+  margin: 8px 0 32px;
 `;
+
+const UnfoldButton = styled.img`
+  cursor: pointer;
+  display: none;
+`
+
+const TextMinorWrapper = styled(TextMinor)`
+  white-space: nowrap;
+`
 
 const Item = ({ data, contentBuilder }) => {
   return (
@@ -41,9 +50,10 @@ const Item = ({ data, contentBuilder }) => {
       <FlexWrapper>
         <Circle />
         <TimeLableWrapper>
-          <TextMinor><DateShow value={data.extrinsic.extrinsicIndexer.blockTime} /></TextMinor>
+          <TextMinorWrapper><DateShow value={data.extrinsic.extrinsicIndexer.blockTime} /></TextMinorWrapper>
           <Label text={data.extrinsic.name} />
         </TimeLableWrapper>
+        <UnfoldButton src="/imgs/btn-unfold.svg" className="unfold-btn"  />
       </FlexWrapper>
       <FlexWrapper>
         <Bar className="bar" />
