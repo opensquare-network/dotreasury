@@ -10,6 +10,7 @@ const ImageButton = styled(GrayImage)`
     cursor: pointer;
     -webkit-filter: grayscale(0);
     filter: grayscale(0);
+    opacity: 1;
   }
 `;
 
