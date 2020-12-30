@@ -14,23 +14,6 @@ async function handleEvents(events, blockIndexer, extrinsics) {
     const { event, phase, topics } = events[sort];
     const phaseType = phase.type;
     let [phaseValue, extrinsicHash, extrinsic] = [null, null, null];
-    if (!phase.isNull) {
-      phaseValue = phase.value.toNumber();
-      extrinsic = extrinsics[phaseValue];
-      extrinsicHash = extrinsic.hash.toHex();
-
-      const normalizedExtrinsic = {
-        extrinsicIndexer: { ...blockIndexer, index: phaseValue },
-        ...normalizeExtrinsic(extrinsic, events)
-      }
-      await extractEventBusinessData(
-        event,
-        normalizedExtrinsic,
-        blockIndexer,
-        sort
-      );
-    }
-
     const index = parseInt(event.index);
     const meta = event.meta.toJSON();
     const section = event.section;
@@ -52,6 +35,22 @@ async function handleEvents(events, blockIndexer, extrinsics) {
       data,
       topics,
     });
+
+    if (!phase.isNull) {
+      phaseValue = phase.value.toNumber();
+      extrinsic = extrinsics[phaseValue];
+
+      const normalizedExtrinsic = {
+        extrinsicIndexer: { ...blockIndexer, index: phaseValue },
+        ...normalizeExtrinsic(extrinsic, events)
+      }
+      await extractEventBusinessData(
+        event,
+        normalizedExtrinsic,
+        blockIndexer,
+        sort
+      );
+    }
   }
 
   const result = await bulk.execute();
