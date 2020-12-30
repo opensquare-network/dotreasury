@@ -19,7 +19,7 @@ const Timeline = ({ data, contentBuilder }) => {
     <Wrapper>
       <Header>Timeline</Header>
       <ItemList>
-        { (data || []).map((item, index) => <Item key={index} data={item} contentBuilder={contentBuilder} />) }
+        { (data || []).map((item, index) => <Item key={index} data={contentBuilder(item)} />) }
       </ItemList>
     </Wrapper>
   );
