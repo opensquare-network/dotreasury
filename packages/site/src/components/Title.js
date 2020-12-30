@@ -5,7 +5,7 @@ import { TEXT_DARK_MAJOR } from "../constants";
 const Title = styled.header`
   font-family: Montserrat;
   font-style: normal;
-  font-weight: 2000;
+  font-weight: bold;
   font-size: 28px;
   line-height: 44px;
   color: ${TEXT_DARK_MAJOR};
