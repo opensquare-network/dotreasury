@@ -9,6 +9,9 @@ import {
   fetchTipFindersFee,
   fetchTipCountdown,
 } from "../../store/reducers/tipSlice";
+import {
+  fetchCurrentBlockHeight,
+} from "../../store/reducers/chainSlice";
 
 import InformationTable from "./InformationTable";
 import TipLefeCycleTable from "./TipLifeCycleTable";
@@ -62,6 +65,7 @@ const TipDetail = () => {
     dispatch(fetchTipDetail(tipId));
     dispatch(fetchTipFindersFee());
     dispatch(fetchTipCountdown());
+    dispatch(fetchCurrentBlockHeight());
   }, [dispatch, tipId]);
 
   return (

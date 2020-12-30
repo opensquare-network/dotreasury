@@ -15,6 +15,9 @@ import {
   tipCountdownSelector,
   tipFindersFeeSelector,
 } from "../../store/reducers/tipSlice";
+import {
+  currentBlockHeightSelector,
+} from "../../store/reducers/chainSlice";
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -32,12 +35,12 @@ const TippersLabel = styled.div`
 const TipLefeCycleTabel = () => {
   const tipDetail = useSelector(normalizedTipDetailSelector);
   const tipFindersFee = useSelector(tipFindersFeeSelector);
-  const tippersCount = 13;
   const tipCountdown = useSelector(tipCountdownSelector);
-  const closeAtBlockHeight = 28840;
-  const currentBlockHeight = 22840;
-  const progressBlockHeight = Math.min(closeAtBlockHeight, currentBlockHeight);
-  const reminingCountdown = closeAtBlockHeight - progressBlockHeight;
+  const currentBlockHeight = useSelector(currentBlockHeightSelector);
+  const tippersCount = 13;
+  const closeFromBlockHeight = tipDetail.closeFromBlockHeight;
+  const progressBlockHeight = Math.min(closeFromBlockHeight, currentBlockHeight);
+  const reminingCountdown = closeFromBlockHeight - progressBlockHeight;
   const precent = 1 - reminingCountdown / tipCountdown;
 
   return (
@@ -71,10 +74,13 @@ const TipLefeCycleTabel = () => {
         <Table.Row>
           <Table.Cell>
             <TableCell title="Tip Count Down">
-              <FlexWrapper>
-                <Progress percent={precent * 100} />
-                <TipCountDownLabel value={reminingCountdown} />
-              </FlexWrapper>
+            { closeFromBlockHeight
+                ? <FlexWrapper>
+                    <Progress percent={precent * 100} />
+                    <TipCountDownLabel value={reminingCountdown} />
+                  </FlexWrapper>
+                : "N/A"
+            }
             </TableCell>
           </Table.Cell>
         </Table.Row>
