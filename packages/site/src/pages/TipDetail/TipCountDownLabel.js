@@ -10,11 +10,10 @@ const Wrapper = styled.div`
   }
 `;
 
-const TipCountDownLabel = ({ value }) => {
+const TipCountDownLabel = ({ value, total }) => {
   return (
     <Wrapper>
-      {value}
-      <span>Blocks</span>
+      {value}/{total}
     </Wrapper>
   );
 };
