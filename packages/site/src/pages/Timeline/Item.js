@@ -34,23 +34,23 @@ const CardWrapper = styled.div`
   margin: 8px 0 40px;
 `;
 
-const Item = ({ data, contentBuilder }) => {
+const Item = ({ data }) => {
   return (
     <Wrapper>
       <FlexWrapper>
         <Circle />
         <TimeLableWrapper>
-          <div><DateShow value={data.extrinsic.extrinsicIndexer.blockTime} /></div>
-          <Label text={data.extrinsic.name} />
+          <div><DateShow value={data.extrinsicIndexer.blockTime} /></div>
+          <Label text={data.name} />
         </TimeLableWrapper>
       </FlexWrapper>
       <FlexWrapper>
         <Bar className="bar" />
         <CardWrapper>
           <Card>
-            { contentBuilder(data).map(({ title, value }, index) => <CardItem key={index} title={title}>{value}</CardItem>) }
+            { data.fields.map(({ title, value }, index) => <CardItem key={index} title={title}>{value}</CardItem>) }
           </Card>
-          <ButtonList indexer={data.extrinsic.extrinsicIndexer} />
+          <ButtonList indexer={data.extrinsicIndexer} />
         </CardWrapper>
       </FlexWrapper>
     </Wrapper>

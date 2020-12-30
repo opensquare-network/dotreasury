@@ -14,12 +14,12 @@ const Header = styled(SubTitle)`
 
 const ItemList = styled.div``;
 
-const Timeline = ({ data, contentBuilder }) => {
+const Timeline = ({ data }) => {
   return (
     <Wrapper>
       <Header>Timeline</Header>
       <ItemList>
-        { (data || []).map((item, index) => <Item key={index} data={item} contentBuilder={contentBuilder} />) }
+        { (data || []).map((item, index) => <Item key={index} data={item} />) }
       </ItemList>
     </Wrapper>
   );

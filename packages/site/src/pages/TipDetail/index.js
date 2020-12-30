@@ -60,13 +60,56 @@ const TimelineCommentWrapper = styled.div`
   }
 `;
 
-function createContentBuilder(tipDetail) {
-  return (timelineItem) => {
-    if (timelineItem.extrinsic.name === 'reportAwesome') {
-      const { reason, who: beneficiary } = timelineItem.extrinsic.args;
-      const finder = timelineItem.extrinsic.signer;
+function getProxyMethod(callArgs) {
+  const methodsMapping = [
+    [["hash", "tip_value"], "tip"],
+    [["reason", "who"], "reportAwesome"],
+  ];
+
+  for (const [expectArgs, method] of methodsMapping) {
+    if (JSON.stringify(Object.keys(callArgs)) === JSON.stringify(expectArgs)) {
+      return method;
+    }
+  }
+
+  return "";
+}
+
+function processProxyExtrinsic(extrinsic) {
+  if (extrinsic.section !== 'proxy' || extrinsic.name !== 'proxy') {
+    return extrinsic;
+  }
+
+  const { signer, args: { call: { callIndex, args } }, extrinsicIndexer } = extrinsic;
+
+  const name = getProxyMethod(args);
+  if (name) {
+    return {
+      name,
+      args,
+      signer,
+      extrinsicIndexer,
+    }
+  }
+
+  return {
+    name: `Proxy(${callIndex})`,
+    args,
+    signer,
+    extrinsicIndexer,
+  }
+}
+
+function processTimeline(tipDetail) {
+  return (tipDetail.timeline || []).map(timelineItem => {
+    const extrinsic = processProxyExtrinsic(timelineItem.extrinsic);
+    let fields = [];
+
+    if (extrinsic.name === 'reportAwesome') {
+      const { reason, who: beneficiary } = extrinsic.args;
+      const finder = extrinsic.signer;
       const reasonText = hexToString(reason);
-      return [{
+      fields = [{
         title: "Finder",
         value: <User address={finder} />,
       }, {
@@ -76,11 +119,11 @@ function createContentBuilder(tipDetail) {
         title: "Reason",
         value: reasonText,
       }]
-    } else if (timelineItem.extrinsic.name === 'tipNew') {
-      const { tip_value: tipValue, who: beneficiary, reason } = timelineItem.extrinsic.args;
-      const finder = timelineItem.extrinsic.signer;
+    } else if (extrinsic.name === 'tipNew') {
+      const { tip_value: tipValue, who: beneficiary, reason } = extrinsic.args;
+      const finder = extrinsic.signer;
       const reasonText = hexToString(reason);
-      return [{
+      fields = [{
         title: "Funder",
         value: <User address={finder} />,
       }, {
@@ -93,19 +136,19 @@ function createContentBuilder(tipDetail) {
         title: "Reason",
         value: reasonText,
       }]
-    } else if (timelineItem.extrinsic.name === 'tip') {
-      const { tip_value: tipValue } = timelineItem.extrinsic.args;
-      const funder = timelineItem.extrinsic.signer;
-      return [{
+    } else if (extrinsic.name === 'tip') {
+      const { tip_value: tipValue } = extrinsic.args;
+      const funder = extrinsic.signer;
+      fields = [{
         title: "Funder",
         value: <User address={funder} />,
       }, {
         title: "Tip value",
         value: <Balance value={tipValue} />,
       }]
-    } else if (timelineItem.extrinsic.name === 'closeTip') {
-      const who = timelineItem.extrinsic.signer;
-      return [{
+    } else if (extrinsic.name === 'closeTip') {
+      const who = extrinsic.signer;
+      fields = [{
         title: "Close by",
         value: <User address={who} />,
       }, {
@@ -115,16 +158,19 @@ function createContentBuilder(tipDetail) {
         title: "Final tip value",
         value: <Balance value={tipDetail.medianValue} />,
       }]
-    } else if (timelineItem.extrinsic.name === 'retractTip') {
-      const who = timelineItem.extrinsic.signer;
-      return [{
+    } else if (extrinsic.name === 'retractTip') {
+      const who = extrinsic.signer;
+      fields = [{
         title: "Retract by",
         value: <User address={who} />,
       }]
     }
 
-    return [];
-  }
+    return {
+      ...extrinsic,
+      fields,
+    }
+  });
 }
 
 const TipDetail = () => {
@@ -156,7 +202,7 @@ const TipDetail = () => {
       <RelatedLinks />
       <Divider />
       <TimelineCommentWrapper>
-        <Timeline data={tipDetail.timeline} contentBuilder={createContentBuilder(tipDetail)} />
+        <Timeline data={processTimeline(tipDetail)} />
         <Comment />
       </TimelineCommentWrapper>
     </>
