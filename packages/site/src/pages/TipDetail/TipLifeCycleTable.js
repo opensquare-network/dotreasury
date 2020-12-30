@@ -37,7 +37,7 @@ const TipLefeCycleTabel = () => {
   const tipFindersFee = useSelector(tipFindersFeeSelector);
   const tipCountdown = useSelector(tipCountdownSelector);
   const currentBlockHeight = useSelector(currentBlockHeightSelector);
-  const tippersCount = 13;
+  const tippersCount = tipDetail.tippersCount;
   const closeFromBlockHeight = tipDetail.closeFromBlockHeight;
   const progressBlockHeight = Math.min(closeFromBlockHeight, currentBlockHeight);
   const reminingCountdown = closeFromBlockHeight - progressBlockHeight;
@@ -63,7 +63,7 @@ const TipLefeCycleTabel = () => {
         </Table.Row>
         <Table.Row>
           <Table.Cell>
-            <TableCell title="Tippers">
+            <TableCell title="Threshold">
               <FlexWrapper>
                 <TippersProgress total={tippersCount} current={tipDetail.tipsCount} />
                 <TippersLabel>{tipDetail.tipsCount}/{tippersCount}</TippersLabel>
@@ -77,9 +77,12 @@ const TipLefeCycleTabel = () => {
             { closeFromBlockHeight
                 ? <FlexWrapper>
                     <Progress percent={precent * 100} />
-                    <TipCountDownLabel value={reminingCountdown} />
+                    <TipCountDownLabel value={tipCountdown - reminingCountdown} total={tipCountdown} />
                   </FlexWrapper>
-                : "N/A"
+                : <FlexWrapper>
+                    <Progress percent={0} />
+                    <TipCountDownLabel value={0} total={tipCountdown} />
+                  </FlexWrapper>
             }
             </TableCell>
           </Table.Cell>
