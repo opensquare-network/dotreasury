@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from 'react-router'
 import styled from "styled-components";
 import { Image, Divider } from "semantic-ui-react";
@@ -8,6 +8,7 @@ import {
   fetchTipDetail,
   fetchTipFindersFee,
   fetchTipCountdown,
+  tipDetailSelector,
 } from "../../store/reducers/tipSlice";
 import {
   fetchCurrentBlockHeight,
@@ -56,6 +57,16 @@ const TimelineCommentWrapper = styled.div`
   }
 `;
 
+function contentBuilder(timelineItem) {
+  return [{
+    title: "Tipper",
+    value: ""
+  }, {
+    title: "Beneficiary",
+    value: ""
+  }]
+}
+
 const TipDetail = () => {
   const history = useHistory();
   const { tipId } = useParams()
@@ -67,6 +78,8 @@ const TipDetail = () => {
     dispatch(fetchTipCountdown());
     dispatch(fetchCurrentBlockHeight());
   }, [dispatch, tipId]);
+
+  const tipDetail = useSelector(tipDetailSelector);
 
   return (
     <>
@@ -83,7 +96,7 @@ const TipDetail = () => {
       <RelatedLinks />
       <Divider />
       <TimelineCommentWrapper>
-        <Timeline />
+        <Timeline data={tipDetail.timeline} contentBuilder={contentBuilder} />
         <Comment />
       </TimelineCommentWrapper>
     </>

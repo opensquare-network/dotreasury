@@ -8,7 +8,7 @@ export default memo(function DateShow(props) {
 
   return (
     <span className={className} style={style}>
-      {nValue ? dayjs(nValue).format(format) : nValue}
+      {nValue ? dayjs(nValue).format(format) : ""}
     </span>
   )
 })
