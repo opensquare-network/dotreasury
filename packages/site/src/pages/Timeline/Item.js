@@ -49,7 +49,7 @@ const Item = ({ data, contentBuilder }) => {
           <Card>
             { contentBuilder(data).map(({ title, value }, index) => <CardItem key={index} title={title}>{value}</CardItem>) }
           </Card>
-          <ButtonList />
+          <ButtonList indexer={data.extrinsic.extrinsicIndexer} />
         </CardWrapper>
       </FlexWrapper>
     </Wrapper>
