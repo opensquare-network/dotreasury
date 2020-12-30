@@ -9,6 +9,7 @@
   "license": "Apache 2.0",
   "scripts": {
     "start": "yarn workspace @dotreasury/site start",
+    "block-scan": "yarn workspace @dotreasury/block-scan prod",
     "server-prod": "yarn workspace @dotreasury/server prod",
     "scan-prod": "yarn workspace @dotreasury/scan prod"
   },
