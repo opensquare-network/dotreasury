@@ -7,6 +7,7 @@ import { PRIMARY_THEME_COLOR, SECONDARY_THEME_COLOR } from "../../constants";
 const Wrapper = styled.div`
   display: flex;
   gap: 8px;
+  white-space: nowrap;
 `;
 
 const TipLabel = styled.span`
