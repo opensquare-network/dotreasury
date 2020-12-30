@@ -1,10 +1,9 @@
 module.exports = function extractBlockTime(extrinsics) {
   const setTimeExtrinsic = extrinsics.find(
-    ex =>
-      ex.method.sectionName === 'timestamp' && ex.method.methodName === 'set'
-  )
+    (ex) => ex.method.section === "timestamp" && ex.method.method === "set"
+  );
   if (setTimeExtrinsic) {
-    const { args } = setTimeExtrinsic.method.toJSON()
-    return args.now
+    const { args } = setTimeExtrinsic.method.toJSON();
+    return args.now;
   }
-}
+};
