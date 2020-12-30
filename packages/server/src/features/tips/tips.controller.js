@@ -66,6 +66,7 @@ class TipsController {
       medianValue: tip.medianValue,
       tippersCount: tip.tippers?.length,
       closeFromBlockHeight: tip.meta?.closes,
+      timeline: tip.timeline,
     };
   }
 
@@ -74,7 +75,6 @@ class TipsController {
 
     ctx.status = 404;
     return;
-
   }
 }
 

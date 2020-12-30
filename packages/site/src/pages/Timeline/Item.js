@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 
-import User from "../../components/User/Index";
 import Card from "../../components/Card";
 import Circle from "./Circle";
 import Label from "./Label";
@@ -9,6 +8,7 @@ import Bar from "./Bar";
 
 import CardItem from "./CardItem";
 import ButtonList from "./ButtonList";
+import DateShow from "../../components/DateShow";
 
 const Wrapper = styled.div`
   &:last-child .bar {
@@ -33,26 +33,21 @@ const CardWrapper = styled.div`
   margin: 8px 0 40px;
 `;
 
-const Item = () => {
+const Item = ({ data, contentBuilder }) => {
   return (
     <Wrapper>
       <FlexWrapper>
         <Circle />
         <TimeLableWrapper>
-          <div>2020-12-12 09:43:41</div>
-          <Label />
+          <div><DateShow value={data.extrinsic.extrinsicIndexer.blockTime} /></div>
+          <Label text={data.extrinsic.name} />
         </TimeLableWrapper>
       </FlexWrapper>
       <FlexWrapper>
         <Bar className="bar" />
         <CardWrapper>
           <Card>
-            <CardItem title="Tipper">
-              <User name="Eleanor" />
-            </CardItem>
-            <CardItem title="Beneficiary">
-              <User name="Eleanor" />
-            </CardItem>
+            { contentBuilder(data).map(({ title, value }, index) => <CardItem key={index} title={title}>{value}</CardItem>) }
           </Card>
           <ButtonList />
         </CardWrapper>
