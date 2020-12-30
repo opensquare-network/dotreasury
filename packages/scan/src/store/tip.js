@@ -33,6 +33,12 @@ async function getReasonStorageReasonText(reasonHash, blockHash) {
   return rawReasonText.toHuman();
 }
 
+async function getTippersCount(blockHash) {
+  const api = await getApi();
+  const members = await api.query.electionsPhragmen.members.at(blockHash);
+  return members.length
+}
+
 function computeTipValue(tipMeta) {
   const tipValues = (tipMeta?.tips ?? []).map((tip) => tip[1]);
   return median(tipValues);
@@ -46,10 +52,12 @@ async function saveNewTip(hash, extrinsic, blockIndexer) {
     reasonHex = extrinsic.args.reason;
   }
 
-  const meta = await getTipMeta(blockIndexer.blockHash, hash);
   const reason = hexToString(reasonHex);
   const finder = extrinsic.signer;
+  const meta = await getTipMeta(blockIndexer.blockHash, hash);
   const medianValue = computeTipValue(meta);
+
+  const tippersCount = await getTippersCount(blockIndexer.blockHash);
 
   const tipCol = await getTipCollection();
   await tipCol.insertOne({
@@ -59,6 +67,7 @@ async function saveNewTip(hash, extrinsic, blockIndexer) {
     finder,
     medianValue,
     meta,
+    tippersCount,
     isClosedOrRetracted: false,
     state: {
       indexer: extrinsic.extrinsicIndexer,
@@ -91,13 +100,17 @@ async function saveTipTimeline(hash, state, data, indexer, sort) {
 }
 
 async function updateTip(hash, state, data, indexer, extrinsic) {
-  const meta = await getTipMeta(indexer.blockHash, hash);
-
   const updates = {};
   if ([TipEvents.TipClosed, TipEvents.TipRetracted].includes(state) || state === TipMethods.closeTip) {
     Object.assign(updates, { isClosedOrRetracted: true });
   }
 
+  const tippersCount = await getTippersCount(indexer.blockHash);
+  if (tippersCount) {
+    Object.assign(updates, { tippersCount })
+  }
+
+  const meta = await getTipMeta(indexer.blockHash, hash);
   if (meta) {
     const medianValue = computeTipValue(meta);
     Object.assign(updates, { meta, medianValue });
