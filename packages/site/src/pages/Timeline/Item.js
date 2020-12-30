@@ -9,6 +9,7 @@ import Bar from "./Bar";
 import CardItem from "./CardItem";
 import ButtonList from "./ButtonList";
 import DateShow from "../../components/DateShow";
+import TextMinor from "../../components/TextMinor";
 
 const Wrapper = styled.div`
   max-width: 100%;
@@ -40,7 +41,7 @@ const Item = ({ data, contentBuilder }) => {
       <FlexWrapper>
         <Circle />
         <TimeLableWrapper>
-          <div><DateShow value={data.extrinsic.extrinsicIndexer.blockTime} /></div>
+          <TextMinor><DateShow value={data.extrinsic.extrinsicIndexer.blockTime} /></TextMinor>
           <Label text={data.extrinsic.name} />
         </TimeLableWrapper>
       </FlexWrapper>

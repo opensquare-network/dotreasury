@@ -11,14 +11,15 @@ const Wrapper = styled.div`
   flex-wrap: wrap;
   & > div:first-child {
     width: 120px;
-    color: ${TEXT_DARK_MAJOR}
+    color: ${TEXT_DARK_MAJOR};
     font-weight: 500;
     line-height: 24px;
     flex-shrink: 0;
   }
   & > div:last-child {
     flex-grow: 1 1 auto;
-    color: ${TEXT_DARK_MINOR}
+    color: ${TEXT_DARK_MINOR};
+    word-break: break-word;
   }
 `;
 
