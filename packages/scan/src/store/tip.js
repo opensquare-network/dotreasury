@@ -3,6 +3,7 @@ const { hexToString } = require("@polkadot/util");
 const { getTipCollection } = require("../mongo");
 const { getApi } = require("../api");
 const { median } = require("../utils");
+const { logger } = require("../utils");
 
 async function getTipMeta(blockHash, tipHash) {
   const api = await getApi();
@@ -36,7 +37,7 @@ async function getReasonStorageReasonText(reasonHash, blockHash) {
 async function getTippersCount(blockHash) {
   const api = await getApi();
   const members = await api.query.electionsPhragmen.members.at(blockHash);
-  return members.length
+  return members.length;
 }
 
 function computeTipValue(tipMeta) {
@@ -72,26 +73,29 @@ async function saveNewTip(hash, extrinsic, blockIndexer) {
     state: {
       indexer: extrinsic.extrinsicIndexer,
       state: TipEvents.NewTip,
-      data: [hash]
+      data: [hash],
     },
     timeline: [
       {
-        type: 'extrinsic',
-        extrinsic
+        type: "extrinsic",
+        extrinsic,
       },
-    ]
+    ],
   });
 }
 
 async function updateTip(hash, state, data, indexer, extrinsic) {
   const updates = {};
-  if ([TipEvents.TipClosed, TipEvents.TipRetracted].includes(state) || state === TipMethods.closeTip) {
+  if (
+    [TipEvents.TipClosed, TipEvents.TipRetracted].includes(state) ||
+    state === TipMethods.closeTip
+  ) {
     Object.assign(updates, { isClosedOrRetracted: true });
   }
 
   if (state === TipMethods.tip) {
     const tippersCount = await getTippersCount(indexer.blockHash);
-    Object.assign(updates, { tippersCount })
+    Object.assign(updates, { tippersCount });
   }
 
   const meta = await getTipMeta(indexer.blockHash, hash);
@@ -100,6 +104,7 @@ async function updateTip(hash, state, data, indexer, extrinsic) {
     Object.assign(updates, { meta, medianValue });
   }
 
+  logger.info(`update tip with extrinsic ${extrinsic.hash}`);
   const tipCol = await getTipCollection();
   await tipCol.updateOne(
     { hash, isClosedOrRetracted: false },
@@ -114,10 +119,10 @@ async function updateTip(hash, state, data, indexer, extrinsic) {
       },
       $push: {
         timeline: {
-          type: 'extrinsic',
-          extrinsic
-        }
-      }
+          type: "extrinsic",
+          extrinsic,
+        },
+      },
     }
   );
 }
