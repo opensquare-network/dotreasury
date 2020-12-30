@@ -19,6 +19,7 @@ const ButtonList = ({ indexer }) => {
       <ExplorerLink base="https://kusama.subscan.io/" href={`extrinsic/${indexer.blockHeight}-${indexer.index}`}>
         <ImageButton src={"/imgs/subscan-logo.png"} />
       </ExplorerLink>
+      <ImageButton src={"/imgs/polkassembly-logo.png"} />
     </Wrapper>
   );
 };

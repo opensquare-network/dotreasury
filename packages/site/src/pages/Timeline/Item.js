@@ -11,6 +11,7 @@ import ButtonList from "./ButtonList";
 import DateShow from "../../components/DateShow";
 
 const Wrapper = styled.div`
+  max-width: 100%;
   &:last-child .bar {
     visibility: hidden;
   }
