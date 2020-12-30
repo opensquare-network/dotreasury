@@ -44,14 +44,14 @@ const TextMinorWrapper = styled(TextMinor)`
   white-space: nowrap;
 `
 
-const Item = ({ data, contentBuilder }) => {
+const Item = ({ data }) => {
   return (
     <Wrapper>
       <FlexWrapper>
         <Circle />
         <TimeLableWrapper>
-          <TextMinorWrapper><DateShow value={data.extrinsic.extrinsicIndexer.blockTime} /></TextMinorWrapper>
-          <Label text={data.extrinsic.name} />
+          <TextMinorWrapper><DateShow value={data.extrinsicIndexer.blockTime} /></TextMinorWrapper>
+          <Label text={data.name} />
         </TimeLableWrapper>
         <UnfoldButton src="/imgs/btn-unfold.svg" className="unfold-btn"  />
       </FlexWrapper>
@@ -59,9 +59,9 @@ const Item = ({ data, contentBuilder }) => {
         <Bar className="bar" />
         <CardWrapper>
           <Card>
-            { contentBuilder(data).map(({ title, value }, index) => <CardItem key={index} title={title}>{value}</CardItem>) }
+            { data.fields.map(({ title, value }, index) => <CardItem key={index} title={title}>{value}</CardItem>) }
           </Card>
-          <ButtonList />
+          <ButtonList indexer={data.extrinsicIndexer} />
         </CardWrapper>
       </FlexWrapper>
     </Wrapper>

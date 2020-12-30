@@ -1,5 +1,4 @@
 const { extractExtrinsicEvents, getExtrinsicSigner } = require("../utils");
-const { getExtrinsicCollection } = require("../mongo");
 const { isExtrinsicSuccess } = require("../utils");
 const { u8aToHex } = require("@polkadot/util");
 const { extractExtrinsicBusinessData } = require("./extractBusiness");
@@ -57,15 +56,6 @@ async function handleExtrinsic(extrinsic, indexer, events) {
     indexer,
     events,
   );
-
-  const exCol = await getExtrinsicCollection();
-  const result = await exCol.insertOne({
-    indexer,
-    ...normalized
-  });
-  if (result.result && !result.result.ok) {
-    // FIXME: Deal with db failura
-  }
 }
 
 module.exports = {
