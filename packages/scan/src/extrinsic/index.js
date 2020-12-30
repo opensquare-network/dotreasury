@@ -21,14 +21,14 @@ async function handleExtrinsics(extrinsics = [], allEvents = [], indexer) {
 
 function normalizeExtrinsic(extrinsic, events) {
   if (!extrinsic) {
-    throw new Error('Invalid extrinsic object')
+    throw new Error("Invalid extrinsic object");
   }
 
   const hash = extrinsic.hash.toHex();
   const callIndex = u8aToHex(extrinsic.callIndex);
   const { args } = extrinsic.method.toJSON();
-  const name = extrinsic.method.methodName;
-  const section = extrinsic.method.sectionName;
+  const name = extrinsic.method.method;
+  const section = extrinsic.method.section;
   const signer = getExtrinsicSigner(extrinsic);
 
   const isSuccess = isExtrinsicSuccess(events);
@@ -51,14 +51,10 @@ function normalizeExtrinsic(extrinsic, events) {
 
 async function handleExtrinsic(extrinsic, indexer, events) {
   const normalized = normalizeExtrinsic(extrinsic, events);
-  await extractExtrinsicBusinessData(
-    normalized,
-    indexer,
-    events,
-  );
+  await extractExtrinsicBusinessData(normalized, indexer, events);
 }
 
 module.exports = {
   handleExtrinsics,
-  normalizeExtrinsic
+  normalizeExtrinsic,
 };
