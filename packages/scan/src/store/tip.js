@@ -105,8 +105,8 @@ async function updateTip(hash, state, data, indexer, extrinsic) {
     Object.assign(updates, { isClosedOrRetracted: true });
   }
 
-  const tippersCount = await getTippersCount(indexer.blockHash);
-  if (tippersCount) {
+  if (state === TipMethods.tip) {
+    const tippersCount = await getTippersCount(indexer.blockHash);
     Object.assign(updates, { tippersCount })
   }
 
