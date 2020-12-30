@@ -1,4 +1,5 @@
 const { handleTipExtrinsic, handleTipByProxy } = require("./treasury/tip");
+const { logger } = require("../utils");
 
 async function extractExtrinsicBusinessData(
   normalizedExtrinsic,
@@ -6,9 +7,10 @@ async function extractExtrinsicBusinessData(
   events
 ) {
   if (!normalizedExtrinsic.isSuccess) {
-    return
+    return;
   }
 
+  logger.info(`begin handleTipExtrinsic and handleTipByProxy`);
   await handleTipExtrinsic(normalizedExtrinsic, extrinsicIndexer, events);
   await handleTipByProxy(normalizedExtrinsic, extrinsicIndexer, events);
   // await handleBountyExtrinsic(section, name, args, isSuccess, indexer, events);

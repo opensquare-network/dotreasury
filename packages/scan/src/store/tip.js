@@ -104,7 +104,7 @@ async function updateTip(hash, state, data, indexer, extrinsic) {
     Object.assign(updates, { meta, medianValue });
   }
 
-  logger.info(`update tip with extrinsic ${extrinsic.hash}`);
+  logger.info(`update tip with ${state} extrinsic ${extrinsic.hash}`);
   const tipCol = await getTipCollection();
   await tipCol.updateOne(
     { hash, isClosedOrRetracted: false },

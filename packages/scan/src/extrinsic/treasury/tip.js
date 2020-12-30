@@ -1,40 +1,51 @@
-const { TipMethods, Modules, ProxyMethods, ksmFirstTipClosedHeight } = require("../../utils/constants");
+const {
+  TipMethods,
+  Modules,
+  ProxyMethods,
+  ksmFirstTipClosedHeight,
+} = require("../../utils/constants");
 const { updateTip } = require("../../store/tip");
 
 async function handleTipExtrinsic(normalizedExtrinsic, extrinsicIndexer) {
-  const { section, name, args, } = normalizedExtrinsic
+  const { section, name, args } = normalizedExtrinsic;
 
   if (section !== Modules.Treasury) {
     return;
   }
 
-  const noEventTipClose = name === TipMethods.closeTip && extrinsicIndexer.blockHeight < ksmFirstTipClosedHeight
+  const noEventTipClose =
+    name === TipMethods.closeTip &&
+    extrinsicIndexer.blockHeight < ksmFirstTipClosedHeight;
   if (name === TipMethods.tip || noEventTipClose) {
+    logger.info(`update tip with tip or closeTip call ${name}`);
     await updateTip(args.hash, name, args, extrinsicIndexer, {
       ...normalizedExtrinsic,
-      extrinsicIndexer
+      extrinsicIndexer,
     });
   }
 }
 
 // FIXME: not good to judge a tip proxy call
 function isTipProxy(callArgs) {
-  const keys = Object.keys(callArgs)
-  return keys.includes('hash') && keys.includes('tip_value') && keys.length === 2
+  const keys = Object.keys(callArgs);
+  return (
+    keys.includes("hash") && keys.includes("tip_value") && keys.length === 2
+  );
 }
 
 async function handleTipByProxy(normalizedExtrinsic, extrinsicIndexer) {
-  const { section, name, args } = normalizedExtrinsic
+  const { section, name, args } = normalizedExtrinsic;
   if (Modules.Proxy !== section || ProxyMethods.proxy !== name) {
-    return
+    return;
   }
 
-  const callArgs = args.call.args
+  const callArgs = args.call.args;
   if (isTipProxy(callArgs)) {
+    logger.info(`update tip with proxy call ${JSON.stringify(callArgs)}`);
     await updateTip(callArgs.hash, TipMethods.tip, callArgs, extrinsicIndexer, {
       ...normalizedExtrinsic,
-      extrinsicIndexer
-    })
+      extrinsicIndexer,
+    });
   }
 }
 
