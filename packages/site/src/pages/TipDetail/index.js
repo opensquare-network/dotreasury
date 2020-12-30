@@ -202,7 +202,7 @@ const TipDetail = () => {
       <RelatedLinks />
       <Divider />
       <TimelineCommentWrapper>
-        <Timeline data={processTimeline(tipDetail)} />
+        <Timeline data={processTimeline(tipDetail)} polkassembly={false} />
         <Comment />
       </TimelineCommentWrapper>
     </>

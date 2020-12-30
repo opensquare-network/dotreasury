@@ -44,7 +44,7 @@ const TextMinorWrapper = styled(TextMinor)`
   white-space: nowrap;
 `
 
-const Item = ({ data }) => {
+const Item = ({ data, polkassembly }) => {
   return (
     <Wrapper>
       <FlexWrapper>
@@ -61,7 +61,7 @@ const Item = ({ data }) => {
           <Card>
             { data.fields.map(({ title, value }, index) => <CardItem key={index} title={title}>{value}</CardItem>) }
           </Card>
-          <ButtonList indexer={data.extrinsicIndexer} />
+          <ButtonList indexer={data.extrinsicIndexer} polkassembly={polkassembly} />
         </CardWrapper>
       </FlexWrapper>
     </Wrapper>
