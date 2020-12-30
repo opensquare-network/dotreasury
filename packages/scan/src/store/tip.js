@@ -1,6 +1,6 @@
 const { TipEvents, ProxyMethods, TipMethods } = require("../utils/constants");
 const { hexToString } = require("@polkadot/util");
-const { getTipCollection, getTipTimelineCollection } = require("../mongo");
+const { getTipCollection } = require("../mongo");
 const { getApi } = require("../api");
 const { median } = require("../utils");
 
@@ -83,22 +83,6 @@ async function saveNewTip(hash, extrinsic, blockIndexer) {
   });
 }
 
-async function saveTipTimeline(hash, state, data, indexer, sort) {
-  const meta = await getTipMeta(indexer.blockHash, hash);
-
-  const tipTimelineCol = await getTipTimelineCollection();
-  await tipTimelineCol.insertOne({
-    indexer,
-    sort,
-    hash,
-    state,
-    data,
-    meta,
-  });
-
-  // await updateTip(hash, state, data, indexer, meta);
-}
-
 async function updateTip(hash, state, data, indexer, extrinsic) {
   const updates = {};
   if ([TipEvents.TipClosed, TipEvents.TipRetracted].includes(state) || state === TipMethods.closeTip) {
@@ -141,5 +125,4 @@ async function updateTip(hash, state, data, indexer, extrinsic) {
 module.exports = {
   saveNewTip,
   updateTip,
-  saveTipTimeline,
 };
