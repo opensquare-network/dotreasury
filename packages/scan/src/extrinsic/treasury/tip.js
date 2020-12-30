@@ -5,6 +5,7 @@ const {
   ksmFirstTipClosedHeight,
 } = require("../../utils/constants");
 const { updateTip } = require("../../store/tip");
+const { logger } = require("../../utils");
 
 async function handleTipExtrinsic(normalizedExtrinsic, extrinsicIndexer) {
   const { section, name, args } = normalizedExtrinsic;
