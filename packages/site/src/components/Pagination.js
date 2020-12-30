@@ -21,6 +21,8 @@ const Wrapper = styled.div`
 `;
 
 const CustomPagination = (props) => {
+  const totalPages = props.totalPages;
+  if (!totalPages || totalPages === 1) return null;
   return (
     <Wrapper>
       <Pagination

@@ -14,6 +14,7 @@ const ButtonList = () => {
     <Wrapper>
       <ImageButton src={"/imgs/polkascan-logo.png"} />
       <ImageButton src={"/imgs/subscan-logo.png"} />
+      <ImageButton src={"/imgs/polkassembly-logo.png"} />
     </Wrapper>
   );
 };

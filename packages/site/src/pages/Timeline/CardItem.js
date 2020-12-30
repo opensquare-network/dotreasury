@@ -1,19 +1,24 @@
 import React from "react";
 import styled from "styled-components";
 
+import {TEXT_DARK_MAJOR, TEXT_DARK_MINOR} from "../../constants"
+
 const Wrapper = styled.div`
   display: flex;
   padding: 4px 16px;
   align-item: center;
   gap: 8px;
-  div:first-child {
+  flex-wrap: wrap;
+  & > div:first-child {
     width: 120px;
-    color: #1d253c;
+    color: ${TEXT_DARK_MAJOR}
     font-weight: 500;
     line-height: 24px;
+    flex-shrink: 0;
   }
-  div:last-child {
-    flex-grow: 1;
+  & > div:last-child {
+    flex-grow: 1 1 auto;
+    color: ${TEXT_DARK_MINOR}
   }
 `;
 
