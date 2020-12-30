@@ -12,9 +12,9 @@ async function handleTreasuryEvent(
     return;
   }
 
-  const jsonData = data.toJSON();
+  const eventData = data.toJSON();
 
-  await handleTipEvent(method, jsonData, extrinsic, blockIndexer, eventSort);
+  await handleTipEvent(method, eventData, extrinsic, blockIndexer, eventSort);
   // await handleBountyEvent(method, jsonData, blockIndexer, eventSort);
   // await handleProposalEvent(method, jsonData, blockIndexer, eventSort);
 }
