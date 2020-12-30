@@ -4,6 +4,7 @@ import { useParams } from 'react-router'
 import styled from "styled-components";
 import { Image, Divider } from "semantic-ui-react";
 import { useHistory } from "react-router-dom";
+import { hexToString } from "@polkadot/util";
 import {
   fetchTipDetail,
   fetchTipFindersFee,
@@ -20,6 +21,8 @@ import Timeline from "../Timeline";
 import Comment from "../Comment";
 import RelatedLinks from "../RelatedLinks";
 import Title from "../../components/Title";
+import User from "../../components/User/Index";
+import Balance from "../../components/Balance";
 
 const HeaderWrapper = styled.div`
   display: flex;
@@ -57,14 +60,71 @@ const TimelineCommentWrapper = styled.div`
   }
 `;
 
-function contentBuilder(timelineItem) {
-  return [{
-    title: "Tipper",
-    value: ""
-  }, {
-    title: "Beneficiary",
-    value: ""
-  }]
+function createContentBuilder(tipDetail) {
+  return (timelineItem) => {
+    if (timelineItem.extrinsic.name === 'reportAwesome') {
+      const { reason, who: beneficiary } = timelineItem.extrinsic.args;
+      const finder = timelineItem.extrinsic.signer;
+      const reasonText = hexToString(reason);
+      return [{
+        title: "Finder",
+        value: <User address={finder} />,
+      }, {
+        title: "Beneficiary",
+        value: <User address={beneficiary} />,
+      }, {
+        title: "Reason",
+        value: reasonText,
+      }]
+    } else if (timelineItem.extrinsic.name === 'tipNew') {
+      const { tip_value: tipValue, who: beneficiary, reason } = timelineItem.extrinsic.args;
+      const finder = timelineItem.extrinsic.signer;
+      const reasonText = hexToString(reason);
+      return [{
+        title: "Funder",
+        value: <User address={finder} />,
+      }, {
+        title: "Beneficiary",
+        value: <User address={beneficiary} />,
+      }, {
+        title: "Tip value",
+        value: <Balance value={tipValue} />,
+      }, {
+        title: "Reason",
+        value: reasonText,
+      }]
+    } else if (timelineItem.extrinsic.name === 'tip') {
+      const { tip_value: tipValue } = timelineItem.extrinsic.args;
+      const funder = timelineItem.extrinsic.signer;
+      return [{
+        title: "Funder",
+        value: <User address={funder} />,
+      }, {
+        title: "Tip value",
+        value: <Balance value={tipValue} />,
+      }]
+    } else if (timelineItem.extrinsic.name === 'closeTip') {
+      const who = timelineItem.extrinsic.signer;
+      return [{
+        title: "Close by",
+        value: <User address={who} />,
+      }, {
+        title: "Beneficiary",
+        value: <User address={tipDetail.beneficiary} />,
+      }, {
+        title: "Final tip value",
+        value: <Balance value={tipDetail.medianValue} />,
+      }]
+    } else if (timelineItem.extrinsic.name === 'retractTip') {
+      const who = timelineItem.extrinsic.signer;
+      return [{
+        title: "Retract by",
+        value: <User address={who} />,
+      }]
+    }
+
+    return [];
+  }
 }
 
 const TipDetail = () => {
@@ -96,7 +156,7 @@ const TipDetail = () => {
       <RelatedLinks />
       <Divider />
       <TimelineCommentWrapper>
-        <Timeline data={tipDetail.timeline} contentBuilder={contentBuilder} />
+        <Timeline data={tipDetail.timeline} contentBuilder={createContentBuilder(tipDetail)} />
         <Comment />
       </TimelineCommentWrapper>
     </>

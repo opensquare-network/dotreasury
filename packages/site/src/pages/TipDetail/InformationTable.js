@@ -8,9 +8,10 @@ import User from "../../components/User/Index";
 import Balance from "../../components/Balance";
 import DateShow from "../../components/DateShow";
 import PolygonLabel from "./PolygonLabel";
+import { TipStatus } from "../../constants";
 
 import {
-  tipDetailSelector,
+  normalizedTipDetailSelector,
 } from "../../store/reducers/tipSlice";
 
 const FlexWrapper = styled.div`
@@ -21,7 +22,7 @@ const FlexWrapper = styled.div`
 `;
 
 const InformationTable = () => {
-  const tipDetail = useSelector(tipDetailSelector);
+  const tipDetail = useSelector(normalizedTipDetailSelector);
 
   return (
     <Table striped selectable>
@@ -58,7 +59,11 @@ const InformationTable = () => {
         <Table.Row>
           <Table.Cell>
             <TableCell title={"Value"}>
-              <Balance value={tipDetail.medianValue} />
+              {
+                tipDetail.showStatus === TipStatus.Retracted
+                  ? "--"
+                  : <Balance value={tipDetail.medianValue} />
+              }
             </TableCell>
           </Table.Cell>
         </Table.Row>
