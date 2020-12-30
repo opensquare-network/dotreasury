@@ -5,7 +5,6 @@ const {
   ksmFirstTipClosedHeight,
 } = require("../../utils/constants");
 const { updateTip } = require("../../store/tip");
-const { logger } = require("../../utils");
 
 async function handleTipExtrinsic(normalizedExtrinsic, extrinsicIndexer) {
   const { section, name, args } = normalizedExtrinsic;
@@ -18,7 +17,6 @@ async function handleTipExtrinsic(normalizedExtrinsic, extrinsicIndexer) {
     name === TipMethods.closeTip &&
     extrinsicIndexer.blockHeight < ksmFirstTipClosedHeight;
   if (name === TipMethods.tip || noEventTipClose) {
-    logger.info(`update tip with tip or closeTip call ${name}`);
     await updateTip(args.hash, name, args, extrinsicIndexer, {
       ...normalizedExtrinsic,
       extrinsicIndexer,
@@ -42,7 +40,6 @@ async function handleTipByProxy(normalizedExtrinsic, extrinsicIndexer) {
 
   const callArgs = args.call.args;
   if (isTipProxy(callArgs)) {
-    logger.info(`update tip with proxy call ${JSON.stringify(callArgs)}`);
     await updateTip(callArgs.hash, TipMethods.tip, callArgs, extrinsicIndexer, {
       ...normalizedExtrinsic,
       extrinsicIndexer,

@@ -7,11 +7,7 @@ function isTipEvent(method) {
 }
 
 function tipStateChange(eventName) {
-  return [
-    TipEvents.TipClosed,
-    TipEvents.TipClosing,
-    TipEvents.TipRetracted,
-  ].includes(eventName);
+  return [TipEvents.TipClosed, TipEvents.TipRetracted].includes(eventName);
 }
 
 async function handleTipEvent(method, eventData, extrinsic, blockIndexer) {
