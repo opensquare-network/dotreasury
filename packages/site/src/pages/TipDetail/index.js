@@ -75,7 +75,7 @@ function getProxyMethod(callArgs) {
   return "";
 }
 
-function converProxyExtrinsic(extrinsic) {
+function processProxyExtrinsic(extrinsic) {
   if (extrinsic.section !== 'proxy' || extrinsic.name !== 'proxy') {
     return extrinsic;
   }
@@ -100,9 +100,9 @@ function converProxyExtrinsic(extrinsic) {
   }
 }
 
-function createContentBuilder(tipDetail) {
-  return (timelineItem) => {
-    const extrinsic = converProxyExtrinsic(timelineItem.extrinsic);
+function processTimeline(tipDetail) {
+  return (tipDetail.timeline || []).map(timelineItem => {
+    const extrinsic = processProxyExtrinsic(timelineItem.extrinsic);
     let fields = [];
 
     if (extrinsic.name === 'reportAwesome') {
@@ -170,7 +170,7 @@ function createContentBuilder(tipDetail) {
       ...extrinsic,
       fields,
     }
-  }
+  });
 }
 
 const TipDetail = () => {
@@ -202,7 +202,7 @@ const TipDetail = () => {
       <RelatedLinks />
       <Divider />
       <TimelineCommentWrapper>
-        <Timeline data={tipDetail.timeline} contentBuilder={createContentBuilder(tipDetail)} />
+        <Timeline data={processTimeline(tipDetail)} />
         <Comment />
       </TimelineCommentWrapper>
     </>
