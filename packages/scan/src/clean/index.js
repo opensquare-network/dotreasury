@@ -1,7 +1,6 @@
 const { getBlockCollection } = require("../mongo");
 const { getExtrinsicCollection } = require("../mongo");
 const { getTipCollection } = require("../mongo");
-const { getTipTimelineCollection } = require("../mongo");
 const { getBountyCollection } = require("../mongo");
 const { getBountyTimelineCollection } = require("../mongo");
 const { getProposalCollection } = require("../mongo");
@@ -12,9 +11,7 @@ async function deleteDataFrom(blockHeight) {
   const blockCol = await getBlockCollection();
   await blockCol.deleteMany({ "header.number": { $gte: blockHeight } });
 
-  await deleteExtrinsicsFrom(blockHeight);
   await deleteTipFrom(blockHeight);
-  await deleteTipTimelineFrom(blockHeight);
   await deleteBountyFrom(blockHeight);
   await deleteBountyTimelineFrom(blockHeight);
   await deleteProposalFrom(blockHeight);
@@ -29,11 +26,6 @@ async function deleteExtrinsicsFrom(blockHeight) {
 
 async function deleteTipFrom(blockHeight) {
   const col = await getTipCollection();
-  await col.deleteMany({ "indexer.blockHeight": { $gte: blockHeight } });
-}
-
-async function deleteTipTimelineFrom(blockHeight) {
-  const col = await getTipTimelineCollection();
   await col.deleteMany({ "indexer.blockHeight": { $gte: blockHeight } });
 }
 
