@@ -9,9 +9,6 @@ async function handleTipExtrinsic(normalizedExtrinsic, extrinsicIndexer) {
   }
 
   const noEventTipClose = name === TipMethods.closeTip && extrinsicIndexer.blockHeight < ksmFirstTipClosedHeight
-  if (noEventTipClose) {
-    console.log('hhh')
-  }
   if (name === TipMethods.tip || noEventTipClose) {
     await updateTip(args.hash, name, args, extrinsicIndexer, {
       ...normalizedExtrinsic,
