@@ -26,3 +26,10 @@ export const getTipFindersFee = async () => {
   const api = await getApi();
   return api.consts.treasury.tipFindersFee.toNumber();
 }
+
+export const getCurrentBlockHeight = async () => {
+  const api = await getApi();
+  const hash = await api.rpc.chain.getFinalizedHead();
+  const block = await api.rpc.chain.getBlock(hash);
+  return block.block.header.number.toNumber();
+}

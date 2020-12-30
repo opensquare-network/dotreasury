@@ -40,7 +40,8 @@ export default function TimeElapsed({ from }) {
   let elapsedStr = "";
 
   if (from) {
-    const d = dayjs.duration(dayjs().diff(from))
+    const nFrom = parseInt(from);
+    const d = dayjs.duration(dayjs().diff(nFrom))
     elapsedStr = durationToStr(d);
   }
 
