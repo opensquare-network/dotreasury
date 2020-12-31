@@ -14,12 +14,12 @@ const ButtonList = ({ indexer, polkassembly }) => {
   return (
     <Wrapper>
       <ExplorerLink base="https://polkascan.io/kusama/" href={`transaction/${indexer.blockHeight}-${indexer.index}`}>
-        <ImageButton src={"/imgs/polkascan-logo.png"} />
+        <ImageButton src={"/imgs/polkascan-logo.svg"} />
       </ExplorerLink>
       <ExplorerLink base="https://kusama.subscan.io/" href={`extrinsic/${indexer.blockHeight}-${indexer.index}`}>
-        <ImageButton src={"/imgs/subscan-logo.png"} />
+        <ImageButton src={"/imgs/subscan-logo.svg"} />
       </ExplorerLink>
-      { polkassembly !== false && <ImageButton src={"/imgs/polkassembly-logo.png"} /> }
+      { polkassembly !== false && <ImageButton src={"/imgs/polkassembly-logo.svg"} /> }
     </Wrapper>
   );
 };

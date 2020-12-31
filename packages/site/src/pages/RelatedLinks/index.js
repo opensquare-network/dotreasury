@@ -28,7 +28,7 @@ const RelatedLinks = () => {
           }
         />
         <LinkItem src={"/imgs/medium-logo.png"} text={"Medium"} />
-        <LinkItem src={"/imgs/polkassembly-logo.png"} text={"Polkassembly"} />
+        <LinkItem src={"/imgs/polkassembly-logo.svg"} text={"Polkassembly"} />
       </LinksWrapper>
     </Wrapper>
   );
