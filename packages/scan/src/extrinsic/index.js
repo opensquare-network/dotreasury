@@ -8,12 +8,16 @@ async function handleExtrinsics(extrinsics = [], allEvents = [], indexer) {
   for (const extrinsic of extrinsics) {
     const events = extractExtrinsicEvents(allEvents, index);
     const normalized = normalizeExtrinsic(extrinsic, events);
+    const extrinsicIndexer = {
+      ...indexer,
+      index: index++,
+    };
     await extractExtrinsicBusinessData(
-      normalized,
       {
-        ...indexer,
-        index: index++,
+        ...normalized,
+        extrinsicIndexer,
       },
+      extrinsicIndexer,
       events
     );
   }

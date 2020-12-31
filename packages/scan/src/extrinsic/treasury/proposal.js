@@ -1,5 +1,9 @@
 const { saveProposalTimeline } = require("../../store/proposal");
-const { ProposalMethods, Modules } = require("../../utils/constants");
+const {
+  ProposalMethods,
+  Modules,
+  ksmFirstRejectedEventHeight,
+} = require("../../utils/constants");
 
 async function handleProposalExtrinsic(
   section,
@@ -32,6 +36,19 @@ async function handleApproveProposal(args, indexer, events) {
     args,
     indexer
   );
+}
+
+// FIXME: reject_proposal is wrapped by motion
+async function handleRejectProposal(normalizedExtrinsic) {
+  const { section, name, args, extrinsicIndexer } = normalizedExtrinsic;
+
+  if (section !== Modules.Treasury) {
+    return;
+  }
+
+  const noEventRejectProposal =
+    name === ProposalMethods.rejectProposal &&
+    extrinsicIndexer.blockHeight < ksmFirstRejectedEventHeight;
 }
 
 module.exports = {

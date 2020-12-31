@@ -1,4 +1,5 @@
 const ksmFirstTipClosedHeight = 2192357;
+const ksmFirstRejectedEventHeight = 1164233;
 
 const ProposalState = Object.freeze({
   Proposed: "Proposed",
@@ -95,4 +96,5 @@ module.exports = {
   ProxyMethods,
   ksmFirstTipClosedHeight,
   ProposalState,
+  ksmFirstRejectedEventHeight,
 };
