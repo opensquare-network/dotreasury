@@ -1,8 +1,10 @@
-import React from "react";
-import styled from "styled-components";
+import React, {useState} from "react";
+import styled, {css} from "styled-components";
 
 import Circle from "./Circle"
 import Bar from "./Bar"
+import Item from "./Item"
+import {PRIMARY_THEME_COLOR} from "../../constants"
 
 
 const Wrapper = styled.div`
@@ -31,13 +33,32 @@ const HorizontalBar = styled(Bar)`
 
 const VerticalBar = styled(Bar)`
   height: 100%;
+  background-color: ${p => p.isUnfold ? "#FFE1E7" : PRIMARY_THEME_COLOR};
+  opacity: ${p => p.isUnfold ? "1" : "0.5"};
 `
 
-const ChildrenWrapper = styled.div`
+const ItemWrapper = styled.div`
   flex-grow: 1;
+  & > div:first-child .unfold-btn {
+    display: block;
+  }
+
+  ${p => !p.isUnfold && css`
+    & > div:not(:first-child) {
+      display: none;
+    }
+    & > div:first-child .bar {
+      visibility: hidden;
+    }
+  `}
 `
 
-const FoldableItem = ({children}) => {
+const FoldableItem = ({data, polkassembly}) => {
+  const [isUnfold, setIsUnfold] = useState(true);
+  if (!data || data.length === 0) return null;
+  const onUnfoldBtnClick = () => {
+    setIsUnfold(!isUnfold);
+  }
   return (
     <Wrapper>
       <VerticalWrapper>
@@ -46,12 +67,12 @@ const FoldableItem = ({children}) => {
           <HorizontalBar />
         </FlexWrapper>
         <FlexWrapper>
-          <VerticalBar className="bar" />
+          <VerticalBar className="bar" isUnfold={isUnfold} />
         </FlexWrapper>
       </VerticalWrapper>
-      <ChildrenWrapper>
-        {children}
-      </ChildrenWrapper>
+      <ItemWrapper isUnfold={isUnfold}>
+        { (data || []).map((item, index) => <Item key={index} data={item} polkassembly={polkassembly} onUnfoldBtnClick={onUnfoldBtnClick} />) }
+      </ItemWrapper>
     </Wrapper>
   )
 }
