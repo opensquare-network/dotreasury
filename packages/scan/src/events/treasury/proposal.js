@@ -3,6 +3,7 @@ const {
   saveNewProposal,
   updateProposalStateByEvent,
 } = require("../../store/proposal");
+const { Modules } = require("../../utils/constants");
 
 function isProposalEvent(method) {
   return ProposalEvents.hasOwnProperty(method);
@@ -21,7 +22,11 @@ async function handleProposalEvent(
   const eventData = data.toJSON();
   const proposalIndex = eventData[0];
   if (method === ProposalEvents.Proposed) {
-    await saveNewProposal(proposalIndex, blockIndexer);
+    await saveNewProposal(
+      proposalIndex,
+      blockIndexer,
+      nullableNormalizedExtrinsic
+    );
   } else if (
     [ProposalEvents.Rejected, ProposalEvents.Awarded].includes(method)
   ) {
