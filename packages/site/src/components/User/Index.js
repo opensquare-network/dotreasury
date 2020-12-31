@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, memo} from "react";
 import styled from "styled-components";
 
 import Username from "./Username";
@@ -27,21 +27,15 @@ const User = ({ address, ellipsis = true, popup = true }) => {
   useEffect(() => {
     let isMounted = true;
     const fetchIdentity = async () => {
+      console.log("start fetch identity")
       const identity = await getIndentity(address);
-      if (identity && identity.display) {
-        if (isMounted) {
-          setName(identity.displayParent ? `${identity.displayParent}/${identity.display}` : identity.display)
-          setBadgeData({
-            isNull: false,
-            hasParent: !!identity.displayParent,
-            isJuge: identity.judgements?.length > 0
-          })
-        }
-      } else {
-        if (isMounted) {
-          setName(null)
-          setBadgeData(null)
-        }
+      if (isMounted && identity && identity.display) {
+        setName(identity.displayParent ? `${identity.displayParent}/${identity.display}` : identity.display)
+        setBadgeData({
+          isDisplay: !!identity.display,
+          hasParent: !!identity.displayParent,
+          hasJudgement: identity.judgements?.length > 0
+        })
       }
     }
     setName(null)
@@ -64,4 +58,4 @@ const User = ({ address, ellipsis = true, popup = true }) => {
   );
 };
 
-export default User;
+export default memo(User);
