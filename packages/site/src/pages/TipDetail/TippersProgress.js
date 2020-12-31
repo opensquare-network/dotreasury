@@ -41,6 +41,7 @@ const ProgressItem = styled.div`
 `;
 
 const TippersProgress = ({ current, total }) => {
+  if (!total || isNaN(total)) return null;
   const progress = [...Array(total).keys()].map((item) => (
     <ProgressItem key={item} />
   ));

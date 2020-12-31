@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { Form, TextArea, Button } from "semantic-ui-react";
+import { Form, Button } from "semantic-ui-react";
+
+import TextArea from "../../components/TextArea"
 
 const Wrapper = styled.div`
   margin-top: 12px;
@@ -15,11 +17,10 @@ const Input = () => {
         <TextArea
           placeholder="Please text here"
           rows={5}
-          style={{ minHeight: 100 }}
         />
       </Form>
       <Wrapper>
-        <Button primary>Confirm</Button>
+        <Button primary disabled>Confirm</Button>
       </Wrapper>
     </>
   );
