@@ -1,8 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import { Button, Icon, Modal, Form } from "semantic-ui-react";
+import queryString from 'query-string';
+import { NavLink, useLocation } from "react-router-dom"
 
 import LinkItem from "./LinkItem";
 import SubTitle from "../../components/SubTitle";
+import {
+  fetchLinks,
+  linksSelector,
+  addLink,
+  removeLink,
+} from "../../store/reducers/linkSlice";
 
 const Wrapper = styled.div`
   margin-top: 20px;
@@ -15,21 +25,115 @@ const LinksWrapper = styled.div`
   flex-direction: column;
 `;
 
-const RelatedLinks = () => {
+const LinkWrapper = styled.div`
+  display: flex;
+  gap: 8px;
+`;
+
+const IconButton = styled(Icon)`
+  margin-left: 6px !important;
+  cursor: pointer;
+`
+
+const RelatedLinks = ({ type, index }) => {
+  const dispatch = useDispatch()
+  const location = useLocation();
+
+  useEffect(() => {
+    dispatch(fetchLinks(type, index));
+  }, [dispatch, type, index]);
+
+  const links = useSelector(linksSelector);
+
+  const [openAddLinkModal, setOpenAddLinkModal] = useState(false);
+  const [openRemoveLinkModal, setOpenRemoveLinkModal] = useState(false);
+  const [link, setLink] = useState("");
+  const [description, setDescription] = useState("");
+  const [linkIndex, setLinkIndex] = useState(null);
+
+  const addRelatedLink = async (link, description) => {
+    setOpenAddLinkModal(false);
+    dispatch(addLink(type, index, link, description));
+  };
+
+  const removeRelatedLink = async (linkIndex) => {
+    setOpenRemoveLinkModal(false);
+    dispatch(removeLink(type, index, linkIndex));
+  };
+
+  let isAdmin = false;
+  const q = queryString.parse(location.search);
+  if (q.admin === "true") {
+    isAdmin = true
+  }
+
   return (
     <Wrapper>
-      <SubTitle>Ralated Links</SubTitle>
+      <SubTitle>Ralated Links
+        { isAdmin
+            ? <IconButton name="plus" onClick={() => setOpenAddLinkModal(true)} />
+            : <NavLink to="?admin=true"><IconButton name="edit" color="black" /></NavLink>
+        }
+      </SubTitle>
       <LinksWrapper>
-        <LinkItem
-          src={"/imgs/youtube-logo.png"}
-          text={"Youtube"}
-          description={
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eu integer integer a dolor placerat quis ultrices tortor quis."
-          }
-        />
-        <LinkItem src={"/imgs/medium-logo.png"} text={"Medium"} />
-        <LinkItem src={"/imgs/polkassembly-logo.png"} text={"Polkassembly"} />
+        {
+          links.map((link, linkIndex) => <LinkWrapper key={linkIndex}>
+            { isAdmin
+                && <IconButton name="minus" onClick={() => {
+                      setLinkIndex(linkIndex);
+                      setOpenRemoveLinkModal(true);
+                    }} />
+            }
+            <LinkItem text={link.description} link={link.link} />
+          </LinkWrapper>)
+        }
       </LinksWrapper>
+
+      <Modal
+        size="small"
+        open={openAddLinkModal}
+        onClose={() => setOpenAddLinkModal(false)}
+      >
+        <Modal.Header>Add Link</Modal.Header>
+        <Modal.Content>
+          <Form>
+            <Form.Input fluid label='Link' placeholder='https://'
+              onChange={(_, { value }) => setLink(value)}
+            />
+            <Form.Input fluid label='Description' placeholder='The description of the link'
+              onChange={(_, { value }) => setDescription(value)}
+            />
+          </Form>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button onClick={() => setOpenAddLinkModal(false)}>
+            Cancel
+          </Button>
+          <Button onClick={() => addRelatedLink(link, description)}>
+            OK
+          </Button>
+        </Modal.Actions>
+      </Modal>
+
+      <Modal
+        size="mini"
+        open={openRemoveLinkModal}
+        onClose={() => setOpenRemoveLinkModal(false)}
+      >
+        <Modal.Header>Remove Link</Modal.Header>
+        <Modal.Content>
+          Are you sure want to remove this link?
+        </Modal.Content>
+        <Modal.Actions>
+          <Button onClick={() => setOpenRemoveLinkModal(false)}>
+            Cancel
+          </Button>
+          <Button onClick={() => removeRelatedLink(linkIndex)}>
+            OK
+          </Button>
+        </Modal.Actions>
+      </Modal>
+
     </Wrapper>
   );
 };

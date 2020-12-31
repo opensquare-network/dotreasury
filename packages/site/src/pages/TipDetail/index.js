@@ -199,7 +199,7 @@ const TipDetail = () => {
         <InformationTable />
         <TipLefeCycleTable />
       </TableWrapper>
-      <RelatedLinks />
+      <RelatedLinks type="tips" index={tipId} />
       <Divider />
       <TimelineCommentWrapper>
         <Timeline data={processTimeline(tipDetail)} polkassembly={false} />

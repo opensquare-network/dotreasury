@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Image } from "semantic-ui-react";
+import { stringUpperFirst } from "@polkadot/util";
 
 const Wrapper = styled.div`
   display: flex;
@@ -18,14 +19,32 @@ const Text = styled.div`
   color: rgba(29, 37, 60, 0.64);
 `;
 
-const Link = ({ src, text, description }) => {
+const Link = ({ link, text }) => {
+  const url = new URL(link);
+
+  let src = "";
+  if (url.host.endsWith("youtube.com")) {
+    src = "/imgs/youtube-logo.png";
+  } else if (url.host.endsWith("github.com")) {
+    src = "/imgs/youtube-logo.png";
+  } else if (url.host.endsWith("medium.com")) {
+    src = "/imgs/medium-logo.png";
+  } else if (url.host.endsWith("polkassembly.io")) {
+    src = "/imgs/polkassembly-logo.png";
+  } else {
+    src = "/imgs/youtube-logo.png";
+  }
+
+  let [, name] = url.host.match(/([^.]*)\.[a-z]+$/);
+  name = stringUpperFirst(name);
+
   return (
     <Wrapper>
       <LinkWrapper>
         <Image src={src} />
-        <Text>{text}</Text>
+        <Text>{name}</Text>
       </LinkWrapper>
-      <Text>{description}</Text>
+      <Text>{text}</Text>
     </Wrapper>
   );
 };

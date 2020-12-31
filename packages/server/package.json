@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@koa/cors": "^3.1.0",
+    "@polkadot/util": "^5.2.2",
+    "@polkadot/util-crypto": "^5.2.2",
     "koa": "^2.13.0",
     "koa-bodyparser": "^4.3.0",
     "koa-helmet": "^6.0.0",

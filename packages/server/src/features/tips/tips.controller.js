@@ -1,5 +1,6 @@
 const { getTipCollection } = require("../../mongo");
-const { extractPage } = require("../../utils");
+const { getLinkCollection } = require("../../mongo-admin");
+const { extractPage, isValidSignature } = require("../../utils");
 const { normalizeTip } = require("./utils");
 
 class TipsController {
@@ -70,11 +71,91 @@ class TipsController {
     };
   }
 
-  async getTipTimeline(ctx) {
+  async getTipLinks(ctx) {
     const { blockHeight, tipHash } = ctx.params;
 
-    ctx.status = 404;
-    return;
+    const linkCol = await getLinkCollection();
+    const tipLinks = await linkCol.findOne({
+      type: "tip",
+      indexer: {
+        blockHeight,
+        tipHash,
+      },
+    });
+
+    ctx.body = tipLinks?.links ?? [];
+  }
+
+  async createTipLink(ctx) {
+    const { blockHeight, tipHash } = ctx.params;
+    const { link, description } = ctx.request.body;
+
+    if (!ctx.request.headers.signature) {
+      ctx.status = 400;
+      return;
+    }
+
+    const isValid = isValidSignature(JSON.stringify({
+      type: "tips",
+      index: `${blockHeight}_${tipHash}`,
+      link,
+      description,
+    }), ctx.request.headers.signature, "2ck7Ffrom1wmewMWUuQQYcw5tgTxiLj3c8foQ1hgc5dL2N3P");
+
+    if (!isValid) {
+      ctx.status = 400;
+      return;
+    }
+
+    const linkCol = await getLinkCollection();
+    await linkCol.updateOne({
+      type: "tip",
+      indexer: {
+        blockHeight,
+        tipHash,
+      },
+    }, {
+      $push: {
+        links: {
+          link,
+          description,
+          inReasons: false,
+        }
+      }
+    }, { upsert: true });
+
+    ctx.body = true;
+  }
+
+  async deleteTipLink(ctx) {
+    const { blockHeight, tipHash, linkIndex } = ctx.params;
+
+    const linkCol = await getLinkCollection();
+    await linkCol.updateOne({
+      type: "tip",
+      indexer: {
+        blockHeight,
+        tipHash,
+      },
+    }, {
+      $unset: {
+        [`links.${linkIndex}`]: 1
+      }
+    });
+
+    await linkCol.updateOne({
+      type: "tip",
+      indexer: {
+        blockHeight,
+        tipHash,
+      },
+    }, {
+      $pull: {
+        links: null
+      }
+    });
+
+    ctx.body = true;
   }
 }
 
