@@ -43,7 +43,7 @@ const TipLefeCycleTabel = () => {
   const reminingCountdown = closeFromBlockHeight - progressBlockHeight;
   const precent = 1 - reminingCountdown / tipCountdown;
 
-  const thresholdTotalCount = (tippersCount + 1) / 2;
+  const thresholdTotalCount = tippersCount ? (tippersCount + 1) / 2 : 0;
 
   return (
     <Table striped selectable>

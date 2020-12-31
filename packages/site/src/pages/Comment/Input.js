@@ -8,18 +8,22 @@ const Wrapper = styled.div`
   justify-content: flex-end;
 `;
 
+const CustomTextArea = styled(TextArea)`
+  min-height: 100px;
+  background: red;
+`
+
 const Input = () => {
   return (
     <>
       <Form>
-        <TextArea
+        <CustomTextArea
           placeholder="Please text here"
           rows={5}
-          style={{ minHeight: 100 }}
         />
       </Form>
       <Wrapper>
-        <Button primary>Confirm</Button>
+        <Button primary disabled>Confirm</Button>
       </Wrapper>
     </>
   );
