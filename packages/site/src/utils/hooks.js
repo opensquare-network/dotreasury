@@ -14,8 +14,6 @@ export const useWindowSize = () => {
   return size;
 }
 
-const indentityCache = {current: {}};
-
 export const useIndentity = (address) => {
   const [name, setName] = useState(null)
   const [badgeData, setBadgeData] = useState(null)
@@ -23,11 +21,11 @@ export const useIndentity = (address) => {
     let isMounted = true;
     const fetchIdentity = async () => {
       let identity;
-      if (indentityCache.current[address]) {
-        identity = indentityCache.current[address];
+      if (sessionStorage.getItem(`identity_${address}`)) {
+        identity = JSON.parse(sessionStorage.getItem(`identity_${address}`));
       } else {
         identity = await getIndentity(address);
-        indentityCache.current[address] = identity;
+        sessionStorage.setItem(`identity_${address}`, JSON.stringify(identity));
       }
       if (isMounted && identity && identity.display) {
         setName(identity.displayParent ? `${identity.displayParent}/${identity.display}` : identity.display)
