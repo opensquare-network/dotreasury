@@ -9,7 +9,7 @@ import {
 } from "../../store/reducers/accountSlice";
 import Addr from "../../components/Address";
 import queryString from 'query-string';
-import { useLocation } from "react-router-dom"
+import { useLocation, useHistory } from "react-router-dom"
 
 const SignInModal = styled(Modal)`
   .account-select-content {
@@ -28,6 +28,7 @@ const SignInModal = styled(Modal)`
 
 const AdminLogin = () => {
   const location = useLocation();
+  const history = useHistory();
 
   const [noExtensionModalOpen, setNoExtensionModalOpen] = useState(false)
   const [accountsModalOpen, setAccountsModalOpen] = useState(false)
@@ -39,7 +40,7 @@ const AdminLogin = () => {
   const isAdmin = q.admin === "true";
 
   useEffect(() => {
-    if (!isLogin && isAdmin) {
+    if (!isLogin && isAdmin && !accountsModalOpen) {
 
       (async function login() {
         await web3Enable("doTreasury");
@@ -58,8 +59,7 @@ const AdminLogin = () => {
         setAccountsModalOpen(true);
       })();
     }
-  }, [isAdmin, isLogin]);
-
+  }, [isAdmin, isLogin, accountsModalOpen]);
 
   const loginAccount = async (account) => {
     setAccountsModalOpen(false);
@@ -70,10 +70,11 @@ const AdminLogin = () => {
     <>
       <SignInModal
         size="mini"
-        open={accountsModalOpen}
-        onClose={() =>
-          dispatch(setAccountsModalOpen(false))
-        }
+        open={isAdmin && accountsModalOpen}
+        onClose={() => {
+          setAccountsModalOpen(false);
+          history.goBack();
+        }}
       >
         <Modal.Header>Select accounts</Modal.Header>
         <Modal.Content className="account-select-content">
@@ -96,8 +97,11 @@ const AdminLogin = () => {
 
       <Modal
         size="mini"
-        open={noExtensionModalOpen}
-        onClose={() => setNoExtensionModalOpen(false)}
+        open={isAdmin && noExtensionModalOpen}
+        onClose={() => {
+          setNoExtensionModalOpen(false);
+          history.goBack();
+        }}
       >
         <Modal.Header>Sign in</Modal.Header>
         <Modal.Content>
