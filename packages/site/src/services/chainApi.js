@@ -37,7 +37,7 @@ export const getCurrentBlockHeight = async () => {
 }
 
 export const signMessage = async (text, address) => {
-  if (!isWeb3Injected) {
+  if (!isWeb3Injected || !address) {
     return "";
   }
 

@@ -36,7 +36,7 @@ export const addLink = (type, index, link, description, address) => async (dispa
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Signature': `${address}/${signature}`,
+      'Signature': address ? `${address}/${signature}` : "",
     },
     body: JSON.stringify({ link, description }),
   });
@@ -55,7 +55,7 @@ export const removeLink = (type, index, linkIndex, address) => async (dispatch) 
   await api.fetch(`/${type}/${index}/links/${linkIndex}`, {}, {
     method: 'DELETE',
     headers: {
-      'Signature': `${address}/${signature}`,
+      'Signature': address ? `${address}/${signature}` : "",
     },
   });
   dispatch(fetchLinks(type, index));
