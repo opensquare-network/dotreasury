@@ -10,21 +10,21 @@ function tipStateChange(eventName) {
   return [TipEvents.TipClosed, TipEvents.TipRetracted].includes(eventName);
 }
 
-async function handleTipEvent(method, eventData, extrinsic, blockIndexer) {
-  if (!isTipEvent(method)) {
+async function handleTipEvent(event, extrinsic, blockIndexer) {
+  const { section, method, data } = event;
+  if (Modules.Treasury !== section || !isTipEvent(method)) {
     return;
   }
 
+  const eventData = data.toJSON();
+  const hash = eventData[0];
   if (method === TipEvents.NewTip) {
-    const [hash] = eventData;
     await saveNewTip(hash, extrinsic, blockIndexer);
   }
 
   if (tipStateChange(method)) {
-    const hash = eventData[0];
     logger.info(`update tip with event ${method}`);
     await updateTip(hash, method, eventData, blockIndexer, extrinsic);
-    // await saveTipTimeline(hash, method, jsonData, blockIndexer, sort);
   }
 }
 
