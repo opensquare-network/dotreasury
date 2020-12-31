@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { Form, TextArea, Button } from "semantic-ui-react";
+import { Form, Button } from "semantic-ui-react";
+
+import TextArea from "../../components/TextArea"
 
 const Wrapper = styled.div`
   margin-top: 12px;
@@ -8,16 +10,11 @@ const Wrapper = styled.div`
   justify-content: flex-end;
 `;
 
-const CustomTextArea = styled(TextArea)`
-  min-height: 100px;
-  background: red;
-`
-
 const Input = () => {
   return (
     <>
       <Form>
-        <CustomTextArea
+        <TextArea
           placeholder="Please text here"
           rows={5}
         />
