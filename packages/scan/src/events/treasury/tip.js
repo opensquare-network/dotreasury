@@ -1,30 +1,28 @@
 const { TipEvents } = require("../../utils/constants");
-const { saveNewTip, updateTip } = require("../../store/tip");
-const { logger } = require("../../utils");
-
-function isTipEvent(method) {
-  return TipEvents.hasOwnProperty(method);
-}
-
-function tipStateChange(eventName) {
-  return [TipEvents.TipClosed, TipEvents.TipRetracted].includes(eventName);
-}
+const {
+  saveNewTip,
+  updateTipByFinalEvent,
+  updateTipByClosingEvent,
+} = require("../../store/tip");
 
 async function handleTipEvent(method, eventData, extrinsic, blockIndexer) {
-  if (!isTipEvent(method)) {
+  if (!TipEvents.hasOwnProperty(method)) {
     return;
   }
 
+  const [hash] = eventData;
   if (method === TipEvents.NewTip) {
-    const [hash] = eventData;
     await saveNewTip(hash, extrinsic, blockIndexer);
-  }
-
-  if (tipStateChange(method)) {
-    const hash = eventData[0];
-    logger.info(`update tip with event ${method}`);
-    await updateTip(hash, method, eventData, blockIndexer, extrinsic);
-    // await saveTipTimeline(hash, method, jsonData, blockIndexer, sort);
+  } else if (method === TipEvents.TipClosing) {
+    // TODO: remove this logic when we can analyse all the tip extrinsic
+    await updateTipByClosingEvent(
+      hash,
+      TipEvents.TipClosing,
+      eventData,
+      extrinsic
+    );
+  } else if ([TipEvents.TipClosed, TipEvents.TipRetracted].includes(method)) {
+    await updateTipByFinalEvent(hash, method, eventData, extrinsic);
   }
 }
 

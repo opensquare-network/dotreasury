@@ -51,7 +51,10 @@ function normalizeExtrinsic(extrinsic, events) {
 
 async function handleExtrinsic(extrinsic, indexer, events) {
   const normalized = normalizeExtrinsic(extrinsic, events);
-  await extractExtrinsicBusinessData(normalized, indexer, events);
+  await extractExtrinsicBusinessData({
+    ...normalized,
+    extrinsicIndexer: indexer,
+  });
 }
 
 module.exports = {
