@@ -14,6 +14,7 @@ const CustomProgress = styled(Progress)`
     height: inherit !important;
     background: ${PRIMARY_THEME_COLOR} !important;
     border-radius: 4px !important;
+    min-width: 0 !important;
   }
 `;
 
