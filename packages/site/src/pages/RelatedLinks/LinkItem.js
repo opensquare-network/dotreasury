@@ -30,7 +30,7 @@ const Link = ({ link, text }) => {
   } else if (url.host.endsWith("medium.com")) {
     src = "/imgs/medium-logo.png";
   } else if (url.host.endsWith("polkassembly.io")) {
-    src = "/imgs/polkassembly-logo.png";
+    src = "/imgs/polkassembly-logo.svg";
   } else {
     src = "/imgs/youtube-logo.png";
   }

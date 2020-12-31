@@ -24,13 +24,20 @@ export const fetchLinks = (type, index) => async (dispatch) => {
 };
 
 export const addLink = (type, index, link, description) => async (dispatch) => {
-  const signature = await signMessage(JSON.stringify({type, index, link, description}), "5DDFyTwHkagfiTsa2kH2N3r8hJBc976aWb5DPnRWeK61LopK");
+  const address = "5DDFyTwHkagfiTsa2kH2N3r8hJBc976aWb5DPnRWeK61LopK";
+  const signature = await signMessage(
+    JSON.stringify({
+      type,
+      index,
+      link,
+      description
+    }), address);
 
   await api.fetch(`/${type}/${index}/links`, {}, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Signature': signature,
+      'Signature': `${address}/${signature}`,
     },
     body: JSON.stringify({ link, description }),
   });

@@ -3,6 +3,10 @@ const { getLinkCollection } = require("../../mongo-admin");
 const { extractPage, isValidSignature } = require("../../utils");
 const { normalizeTip } = require("./utils");
 
+async function checkAdmin(address) {
+  return true;
+}
+
 class TipsController {
   async getTips(ctx) {
     const { page, pageSize } = extractPage(ctx);
@@ -95,12 +99,24 @@ class TipsController {
       return;
     }
 
+    const [address, signature] = ctx.request.headers.signature.split("/");
+    if (!address || !signature) {
+      ctx.status = 400;
+      return;
+    }
+
+    const isAdmin = await checkAdmin(address);
+    if (!isAdmin) {
+      ctx.status = 401;
+      return;
+    }
+
     const isValid = isValidSignature(JSON.stringify({
       type: "tips",
       index: `${blockHeight}_${tipHash}`,
       link,
       description,
-    }), ctx.request.headers.signature, "2ck7Ffrom1wmewMWUuQQYcw5tgTxiLj3c8foQ1hgc5dL2N3P");
+    }), signature, address);
 
     if (!isValid) {
       ctx.status = 400;
