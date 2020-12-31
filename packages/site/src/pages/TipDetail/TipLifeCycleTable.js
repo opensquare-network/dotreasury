@@ -34,6 +34,7 @@ const TippersLabel = styled.div`
 
 const TipLefeCycleTabel = () => {
   const tipDetail = useSelector(normalizedTipDetailSelector);
+  console.log({tipDetail})
   const tipFindersFee = useSelector(tipFindersFeeSelector);
   const tipCountdown = useSelector(tipCountdownSelector);
   const currentBlockHeight = useSelector(currentBlockHeightSelector);
@@ -44,6 +45,7 @@ const TipLefeCycleTabel = () => {
   const precent = 1 - reminingCountdown / tipCountdown;
 
   const thresholdTotalCount = tippersCount ? (tippersCount + 1) / 2 : 0;
+  const findersFee = tipDetail?.timeline?.[0]?.extrinsic?.name === "tipNew" ? 0 : `${tipFindersFee.toFixed(2)}%`;
 
   return (
     <Table striped selectable>
@@ -92,7 +94,7 @@ const TipLefeCycleTabel = () => {
         <Table.Row>
           <Table.Cell>
             <TableCell title="Finders Fee">
-              <div>{tipFindersFee.toFixed(2)}%</div>
+              <div>{findersFee}</div>
             </TableCell>
           </Table.Cell>
         </Table.Row>
