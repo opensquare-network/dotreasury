@@ -44,7 +44,7 @@ const TextMinorWrapper = styled(TextMinor)`
   white-space: nowrap;
 `
 
-const Item = ({ data, polkassembly }) => {
+const Item = ({ data, polkassembly, onUnfoldBtnClick }) => {
   return (
     <Wrapper>
       <FlexWrapper>
@@ -53,7 +53,7 @@ const Item = ({ data, polkassembly }) => {
           <TextMinorWrapper><DateShow value={data.extrinsicIndexer.blockTime} /></TextMinorWrapper>
           <Label text={data.name} />
         </TimeLableWrapper>
-        <UnfoldButton src="/imgs/btn-unfold.svg" className="unfold-btn"  />
+        <UnfoldButton src="/imgs/btn-unfold.svg" className="unfold-btn" onClick={onUnfoldBtnClick}  />
       </FlexWrapper>
       <FlexWrapper>
         <Bar className="bar" />
