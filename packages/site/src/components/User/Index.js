@@ -22,29 +22,6 @@ const BadgeWrapper = styled.div`
 `
 
 const User = ({ address, ellipsis = true, popup = true }) => {
-  // const [name, setName] = useState(null)
-  // const [badgeData, setBadgeData] = useState(null)
-  // useEffect(() => {
-  //   let isMounted = true;
-  //   const fetchIdentity = async () => {
-  //     console.log("start fetch identity")
-  //     const identity = await getIndentity(address);
-  //     if (isMounted && identity && identity.display) {
-  //       setName(identity.displayParent ? `${identity.displayParent}/${identity.display}` : identity.display)
-  //       setBadgeData({
-  //         isDisplay: !!identity.display,
-  //         hasParent: !!identity.displayParent,
-  //         hasJudgement: identity.judgements?.length > 0
-  //       })
-  //     }
-  //   }
-  //   setName(null)
-  //   setBadgeData(null)
-  //   fetchIdentity()
-  //   return () => {
-  //     isMounted = false;
-  //   }
-  // }, [address])
   const {name, badgeData} = useIndentity(address)
   return (
     <Wrapper>
