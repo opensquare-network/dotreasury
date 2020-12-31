@@ -10,6 +10,7 @@ import {
   fetchTipFindersFee,
   fetchTipCountdown,
   tipDetailSelector,
+  loadingTipDetailSelector,
 } from "../../store/reducers/tipSlice";
 import {
   fetchCurrentBlockHeight,
@@ -186,6 +187,7 @@ const TipDetail = () => {
   }, [dispatch, tipId]);
 
   const tipDetail = useSelector(tipDetailSelector);
+  const loadingTipDetail = useSelector(loadingTipDetailSelector);
 
   return (
     <>
@@ -202,7 +204,7 @@ const TipDetail = () => {
       <RelatedLinks type="tips" index={tipId} />
       <Divider />
       <TimelineCommentWrapper>
-        <Timeline data={processTimeline(tipDetail)} polkassembly={false} />
+        <Timeline data={processTimeline(tipDetail)} polkassembly={false} loading={loadingTipDetail} />
         <Comment />
       </TimelineCommentWrapper>
     </>

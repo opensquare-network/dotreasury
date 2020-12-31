@@ -20,7 +20,19 @@ const Wrapper = styled.div`
 const FlexWrapper = styled.div`
   display: flex;
   gap: 12px;
+  & > div:last-child {
+    flex-grow: 1;
+  }
 `;
+
+const VerticalWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: sketch;
+  & > div:last-child {
+    flex-grow: 1;
+  }
+`
 
 const TimeLableWrapper = styled.div`
   flex-grow: 1;
@@ -44,25 +56,29 @@ const TextMinorWrapper = styled(TextMinor)`
   white-space: nowrap;
 `
 
-const Item = ({ data, polkassembly }) => {
+const Item = ({ data, polkassembly, onUnfoldBtnClick }) => {
   return (
     <Wrapper>
       <FlexWrapper>
-        <Circle />
-        <TimeLableWrapper>
-          <TextMinorWrapper><DateShow value={data.extrinsicIndexer.blockTime} /></TextMinorWrapper>
-          <Label text={data.name} />
-        </TimeLableWrapper>
-        <UnfoldButton src="/imgs/btn-unfold.svg" className="unfold-btn"  />
-      </FlexWrapper>
-      <FlexWrapper>
-        <Bar className="bar" />
-        <CardWrapper>
-          <Card>
-            { data.fields.map(({ title, value }, index) => <CardItem key={index} title={title}>{value}</CardItem>) }
-          </Card>
-          <ButtonList indexer={data.extrinsicIndexer} polkassembly={polkassembly} />
-        </CardWrapper>
+        <VerticalWrapper>
+          <Circle />
+          <Bar className="bar" />
+        </VerticalWrapper>
+        <VerticalWrapper className="flex-grow">
+        <FlexWrapper>
+          <TimeLableWrapper>
+            <TextMinorWrapper><DateShow value={data.extrinsicIndexer.blockTime} /></TextMinorWrapper>
+            <Label text={data.name} />
+          </TimeLableWrapper>
+          <UnfoldButton src="/imgs/btn-unfold.svg" className="unfold-btn" onClick={onUnfoldBtnClick}  />
+        </FlexWrapper>
+          <CardWrapper>
+            <Card>
+              { data.fields.map(({ title, value }, index) => <CardItem key={index} title={title}>{value}</CardItem>) }
+            </Card>
+            <ButtonList indexer={data.extrinsicIndexer} polkassembly={polkassembly} />
+          </CardWrapper>
+        </VerticalWrapper>
       </FlexWrapper>
     </Wrapper>
   );
