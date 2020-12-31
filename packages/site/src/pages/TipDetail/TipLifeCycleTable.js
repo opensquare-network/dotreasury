@@ -34,7 +34,6 @@ const TippersLabel = styled.div`
 
 const TipLefeCycleTabel = () => {
   const tipDetail = useSelector(normalizedTipDetailSelector);
-  console.log({tipDetail})
   const tipFindersFee = useSelector(tipFindersFeeSelector);
   const tipCountdown = useSelector(tipCountdownSelector);
   const currentBlockHeight = useSelector(currentBlockHeightSelector);
