@@ -1,11 +1,11 @@
-import React, {useState, useEffect} from "react";
+import React from "react";
 import styled from "styled-components";
 
 import Username from "./Username";
 import Avatar from "./Avatar";
 import Badge from "./Badge";
 import ExplorerLink from "../../components/ExplorerLink";
-import {getIndentity} from "../../services/chainApi";
+import {useIndentity} from "../../utils/hooks";
 
 const Wrapper = styled.div`
   display: flex;
@@ -22,27 +22,30 @@ const BadgeWrapper = styled.div`
 `
 
 const User = ({ address, ellipsis = true, popup = true }) => {
-  const [name, setName] = useState(null)
-  const [badgeData, setBadgeData] = useState(null)
-  useEffect(() => {
-    const fetchIdentity = async () => {
-      const identity = await getIndentity(address);
-      if (identity && identity.display) {
-        setName(identity.displayParent ? `${identity.displayParent}/${identity.display}` : identity.display)
-        setBadgeData({
-          isNull: false,
-          hasParent: !!identity.displayParent,
-          isJuge: identity.judgements?.length > 0
-        })
-      } else {
-        setName(null)
-        setBadgeData(null)
-      }
-    }
-    setName(null)
-    setBadgeData(null)
-    fetchIdentity()
-  }, [address])
+  // const [name, setName] = useState(null)
+  // const [badgeData, setBadgeData] = useState(null)
+  // useEffect(() => {
+  //   let isMounted = true;
+  //   const fetchIdentity = async () => {
+  //     console.log("start fetch identity")
+  //     const identity = await getIndentity(address);
+  //     if (isMounted && identity && identity.display) {
+  //       setName(identity.displayParent ? `${identity.displayParent}/${identity.display}` : identity.display)
+  //       setBadgeData({
+  //         isDisplay: !!identity.display,
+  //         hasParent: !!identity.displayParent,
+  //         hasJudgement: identity.judgements?.length > 0
+  //       })
+  //     }
+  //   }
+  //   setName(null)
+  //   setBadgeData(null)
+  //   fetchIdentity()
+  //   return () => {
+  //     isMounted = false;
+  //   }
+  // }, [address])
+  const {name, badgeData} = useIndentity(address)
   return (
     <Wrapper>
       <Avatar address={address} />
