@@ -3,6 +3,7 @@ const {
   getProposalCollection,
 } = require("../mongo");
 const { getApi } = require("../api");
+const { ProposalState } = require("../utils/constants");
 
 async function saveNewProposal(proposalIndex, indexer) {
   const api = await getApi();
@@ -16,7 +17,35 @@ async function saveNewProposal(proposalIndex, indexer) {
     indexer,
     proposalIndex,
     meta: meta.toJSON(),
+    state: {
+      name: ProposalState.Proposed,
+    },
   });
+}
+
+async function updateProposalStateByEvent(
+  event,
+  blockIndexer,
+  nullableNormalizedExtrinsic
+) {
+  const { method, data } = event;
+  const eventData = data.toJSON();
+  const proposalIndex = eventData[0];
+
+  const col = await getProposalCollection();
+  await col.updateOne(
+    { proposalIndex },
+    {
+      $set: {
+        state: {
+          name: method,
+          data: eventData,
+          indexer:
+            nullableNormalizedExtrinsic?.extrinsicIndexer || blockIndexer,
+        },
+      },
+    }
+  );
 }
 
 async function connectCouncilProposal(proposalIndex, proposalHash, indexer) {
@@ -58,4 +87,5 @@ module.exports = {
   saveNewProposal,
   saveProposalTimeline,
   connectCouncilProposal,
+  updateProposalStateByEvent,
 };
