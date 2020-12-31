@@ -2887,7 +2887,6 @@ const heightsWithProposalEvents = [
   5356800,
   5433475,
   5443854,
-  5529600,
 ];
 
 const knownHeights = [
