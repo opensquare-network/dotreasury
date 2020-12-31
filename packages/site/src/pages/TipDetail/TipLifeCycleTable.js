@@ -43,6 +43,8 @@ const TipLefeCycleTabel = () => {
   const reminingCountdown = closeFromBlockHeight - progressBlockHeight;
   const precent = 1 - reminingCountdown / tipCountdown;
 
+  const thresholdTotalCount = (tippersCount + 1) / 2;
+
   return (
     <Table striped selectable>
       <Table.Header>
@@ -65,8 +67,8 @@ const TipLefeCycleTabel = () => {
           <Table.Cell>
             <TableCell title="Threshold">
               <FlexWrapper>
-                <TippersProgress total={tippersCount} current={tipDetail.tipsCount} />
-                <TippersLabel>{tipDetail.tipsCount}/{tippersCount}</TippersLabel>
+                <TippersProgress total={thresholdTotalCount} current={tipDetail.tipsCount} />
+                <TippersLabel>{tipDetail.tipsCount}/{thresholdTotalCount}</TippersLabel>
               </FlexWrapper>
             </TableCell>
           </Table.Cell>
