@@ -9,6 +9,7 @@ import Balance from "../../components/Balance";
 import DateShow from "../../components/DateShow";
 import PolygonLabel from "./PolygonLabel";
 import { TipStatus } from "../../constants";
+import ExplorerLink from "../../components/ExplorerLink";
 
 import {
   normalizedTipDetailSelector,
@@ -37,7 +38,9 @@ const InformationTable = () => {
             <TableCell title={"Created"}>
               <FlexWrapper>
                 <div><DateShow value={tipDetail.proposeTime}/></div>
-                <PolygonLabel value={tipDetail.proposeAtBlockHeight} />
+                <ExplorerLink href={`/block/${tipDetail.proposeAtBlockHeight}`}>
+                  <PolygonLabel value={tipDetail.proposeAtBlockHeight} />
+                </ExplorerLink>
               </FlexWrapper>
             </TableCell>
           </Table.Cell>

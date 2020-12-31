@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { Image } from "semantic-ui-react";
 
+import {TEXT_DARK_MAJOR, TEXT_DARK_MINOR} from "../../constants"
+
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
@@ -14,7 +16,11 @@ const Label = styled.span`
   font-weight: normal;
   font-size: 14px;
   line-height: 24px;
-  color: rgba(29, 37, 60, 0.64);
+  color: ${TEXT_DARK_MINOR};
+  &:hover {
+    color: ${TEXT_DARK_MAJOR};
+    text-decoration-line: underline;
+  }
 `;
 
 const PolygonLabel = ({ value }) => {

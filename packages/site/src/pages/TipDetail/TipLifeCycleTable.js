@@ -43,6 +43,9 @@ const TipLefeCycleTabel = () => {
   const reminingCountdown = closeFromBlockHeight - progressBlockHeight;
   const precent = 1 - reminingCountdown / tipCountdown;
 
+  const thresholdTotalCount = tippersCount ? (tippersCount + 1) / 2 : 0;
+  const findersFee = tipDetail?.timeline?.[0]?.extrinsic?.name === "tipNew" ? 0 : `${tipFindersFee.toFixed(2)}%`;
+
   return (
     <Table striped selectable>
       <Table.Header>
@@ -65,8 +68,8 @@ const TipLefeCycleTabel = () => {
           <Table.Cell>
             <TableCell title="Threshold">
               <FlexWrapper>
-                <TippersProgress total={tippersCount} current={tipDetail.tipsCount} />
-                <TippersLabel>{tipDetail.tipsCount}/{tippersCount}</TippersLabel>
+                <TippersProgress total={thresholdTotalCount} current={tipDetail.tipsCount} />
+                <TippersLabel>{tipDetail.tipsCount}/{thresholdTotalCount}</TippersLabel>
               </FlexWrapper>
             </TableCell>
           </Table.Cell>
@@ -90,7 +93,7 @@ const TipLefeCycleTabel = () => {
         <Table.Row>
           <Table.Cell>
             <TableCell title="Finders Fee">
-              <div>{tipFindersFee.toFixed(2)}%</div>
+              <div>{findersFee}</div>
             </TableCell>
           </Table.Cell>
         </Table.Row>
