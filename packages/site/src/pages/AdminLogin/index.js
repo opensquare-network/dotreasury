@@ -40,7 +40,7 @@ const AdminLogin = () => {
   const isAdmin = q.admin === "true";
 
   useEffect(() => {
-    if (!isLogin && isAdmin && !accountsModalOpen) {
+    if (!isLogin && isAdmin && !accountsModalOpen && !noExtensionModalOpen) {
 
       (async function login() {
         await web3Enable("doTreasury");
@@ -59,7 +59,7 @@ const AdminLogin = () => {
         setAccountsModalOpen(true);
       })();
     }
-  }, [isAdmin, isLogin, accountsModalOpen]);
+  }, [isAdmin, isLogin, accountsModalOpen, noExtensionModalOpen]);
 
   const loginAccount = async (account) => {
     setAccountsModalOpen(false);
