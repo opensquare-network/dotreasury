@@ -33,7 +33,12 @@ function isValidSignature(signedMessage, signature, address) {
   return result.isValid;
 }
 
+function handler(obj, method) {
+  return obj[method].bind(obj);
+}
+
 module.exports = {
   extractPage,
   isValidSignature,
+  handler,
 };

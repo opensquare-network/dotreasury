@@ -90,36 +90,45 @@ class TipsController {
     ctx.body = tipLinks?.links ?? [];
   }
 
-  async createTipLink(ctx) {
-    const { blockHeight, tipHash } = ctx.params;
-    const { link, description } = ctx.request.body;
-
+  async verifySignature(ctx, message) {
     if (!ctx.request.headers.signature) {
       ctx.status = 400;
-      return;
+      return false;
     }
 
     const [address, signature] = ctx.request.headers.signature.split("/");
     if (!address || !signature) {
       ctx.status = 400;
-      return;
+      return false;
     }
 
     const isAdmin = await checkAdmin(address);
     if (!isAdmin) {
       ctx.status = 401;
-      return;
+      return false;
     }
 
-    const isValid = isValidSignature(JSON.stringify({
+    const isValid = isValidSignature(message, signature, address);
+
+    if (!isValid) {
+      ctx.status = 400;
+      return false;
+    }
+
+    return true;
+  }
+
+  async createTipLink(ctx) {
+    const { blockHeight, tipHash } = ctx.params;
+    const { link, description } = ctx.request.body;
+
+    const success = await this.verifySignature(ctx, JSON.stringify({
       type: "tips",
       index: `${blockHeight}_${tipHash}`,
       link,
       description,
-    }), signature, address);
-
-    if (!isValid) {
-      ctx.status = 400;
+    }));
+    if (!success) {
       return;
     }
 
@@ -145,6 +154,15 @@ class TipsController {
 
   async deleteTipLink(ctx) {
     const { blockHeight, tipHash, linkIndex } = ctx.params;
+
+    const success = await this.verifySignature(ctx, JSON.stringify({
+      type: "tips",
+      index: `${blockHeight}_${tipHash}`,
+      linkIndex,
+    }));
+    if (!success) {
+      return;
+    }
 
     const linkCol = await getLinkCollection();
     await linkCol.updateOne({

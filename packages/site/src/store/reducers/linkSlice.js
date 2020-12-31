@@ -23,14 +23,13 @@ export const fetchLinks = (type, index) => async (dispatch) => {
   dispatch(setLinks(result || []));
 };
 
-export const addLink = (type, index, link, description) => async (dispatch) => {
-  const address = "5DDFyTwHkagfiTsa2kH2N3r8hJBc976aWb5DPnRWeK61LopK";
+export const addLink = (type, index, link, description, address) => async (dispatch) => {
   const signature = await signMessage(
     JSON.stringify({
       type,
       index,
       link,
-      description
+      description,
     }), address);
 
   await api.fetch(`/${type}/${index}/links`, {}, {
@@ -45,9 +44,19 @@ export const addLink = (type, index, link, description) => async (dispatch) => {
   dispatch(fetchLinks(type, index));
 }
 
-export const removeLink = (type, index, linkIndex) => async (dispatch) => {
+export const removeLink = (type, index, linkIndex, address) => async (dispatch) => {
+  const signature = await signMessage(
+    JSON.stringify({
+      type,
+      index,
+      linkIndex: linkIndex.toString(),
+    }), address);
+
   await api.fetch(`/${type}/${index}/links/${linkIndex}`, {}, {
     method: 'DELETE',
+    headers: {
+      'Signature': `${address}/${signature}`,
+    },
   });
   dispatch(fetchLinks(type, index));
 }

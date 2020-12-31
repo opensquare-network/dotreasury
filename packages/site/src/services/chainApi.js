@@ -1,8 +1,7 @@
 
 import { ApiPromise, WsProvider } from '@polkadot/api';
-import { isWeb3Injected, web3Enable, web3FromAddress } from '@polkadot/extension-dapp'
-import { decodeAddress, encodeAddress } from '@polkadot/keyring';
-import { stringToHex, hexToU8a, isHex } from '@polkadot/util';
+import { isWeb3Injected, web3FromAddress } from '@polkadot/extension-dapp'
+import { stringToHex } from '@polkadot/util';
 
 let api = null;
 const wsProvider = new WsProvider('wss://kusama.elara.patract.io/');
@@ -38,7 +37,6 @@ export const getCurrentBlockHeight = async () => {
 }
 
 export const signMessage = async (text, address) => {
-  await web3Enable("doTreasury");
   if (!isWeb3Injected) {
     return "";
   }

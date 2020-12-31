@@ -13,6 +13,10 @@ import {
   addLink,
   removeLink,
 } from "../../store/reducers/linkSlice";
+import AdminLogin from "../AdminLogin";
+import {
+  nowAddressSelector,
+} from "../../store/reducers/accountSlice";
 
 const Wrapper = styled.div`
   margin-top: 20px;
@@ -44,6 +48,7 @@ const RelatedLinks = ({ type, index }) => {
   }, [dispatch, type, index]);
 
   const links = useSelector(linksSelector);
+  const nowAddress = useSelector(nowAddressSelector);
 
   const [openAddLinkModal, setOpenAddLinkModal] = useState(false);
   const [openRemoveLinkModal, setOpenRemoveLinkModal] = useState(false);
@@ -53,22 +58,21 @@ const RelatedLinks = ({ type, index }) => {
 
   const addRelatedLink = async (link, description) => {
     setOpenAddLinkModal(false);
-    dispatch(addLink(type, index, link, description));
+    dispatch(addLink(type, index, link, description, nowAddress));
   };
 
   const removeRelatedLink = async (linkIndex) => {
     setOpenRemoveLinkModal(false);
-    dispatch(removeLink(type, index, linkIndex));
+    dispatch(removeLink(type, index, linkIndex, nowAddress));
   };
 
-  let isAdmin = false;
   const q = queryString.parse(location.search);
-  if (q.admin === "true") {
-    isAdmin = true
-  }
+  const isAdmin = q.admin === "true";
 
   return (
     <Wrapper>
+      <AdminLogin />
+
       <SubTitle>Ralated Links
         { isAdmin
             ? <IconButton name="plus" onClick={() => setOpenAddLinkModal(true)} />
