@@ -5,21 +5,23 @@ const {
 const { getApi } = require("../api");
 const { ProposalState } = require("../utils/constants");
 
-async function saveNewProposal(
-  proposalIndex,
-  indexer,
-  nullableNormalizedExtrinsic
-) {
+async function saveNewProposal(proposalIndex, indexer, extrinsic) {
   const api = await getApi();
   const meta = await api.query.treasury.proposals.at(
     indexer.blockHash,
     proposalIndex
   );
 
-  const {
+  let {
     signer: proposer,
     args: { value, beneficiary },
-  } = nullableNormalizedExtrinsic;
+  } = extrinsic;
+
+  if (meta) {
+    proposer = meta.proposer;
+    value = meta.value;
+    beneficiary = meta.beneficiary;
+  }
 
   const proposalCol = await getProposalCollection();
   await proposalCol.insertOne({
