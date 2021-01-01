@@ -1,4 +1,4 @@
-const { TipEvents } = require("../../utils/constants");
+const { TipEvents, Modules } = require("../../utils/constants");
 const {
   saveNewTip,
   updateTipFinalState,
