@@ -103,7 +103,7 @@ async function updateTipByClosingEvent(hash, state, data, extrinsic) {
   );
 }
 
-async function updateTipByFinalEvent(hash, state, data, extrinsic) {
+async function updateTipFinalState(hash, state, data, extrinsic) {
   const indexer = extrinsic.extrinsicIndexer;
   const meta = await getTipMetaByBlockHeight(indexer.blockHeight - 1, hash);
   const updates = {
@@ -150,6 +150,6 @@ async function updateDbTipData(hash, updates, extrinsic) {
 module.exports = {
   saveNewTip,
   updateTipByTipExtrinsic,
-  updateTipByFinalEvent,
+  updateTipFinalState,
   updateTipByClosingEvent,
 };
