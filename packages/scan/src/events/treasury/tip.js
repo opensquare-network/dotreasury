@@ -1,7 +1,7 @@
 const { TipEvents } = require("../../utils/constants");
 const {
   saveNewTip,
-  updateTipByFinalEvent,
+  updateTipFinalState,
   updateTipByClosingEvent,
 } = require("../../store/tip");
 
@@ -22,7 +22,7 @@ async function handleTipEvent(method, eventData, extrinsic, blockIndexer) {
       extrinsic
     );
   } else if ([TipEvents.TipClosed, TipEvents.TipRetracted].includes(method)) {
-    await updateTipByFinalEvent(hash, method, eventData, extrinsic);
+    await updateTipFinalState(hash, method, eventData, extrinsic);
   }
 }
 

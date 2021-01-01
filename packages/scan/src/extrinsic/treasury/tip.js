@@ -7,7 +7,7 @@ const {
 } = require("../../utils/constants");
 const {
   updateTipByTipExtrinsic,
-  updateTipByFinalEvent,
+  updateTipFinalState,
 } = require("../../store/tip");
 
 async function handleTipExtrinsic(normalizedExtrinsic) {
@@ -20,7 +20,7 @@ async function handleTipExtrinsic(normalizedExtrinsic) {
     name === TipMethods.closeTip &&
     normalizedExtrinsic.extrinsicIndexer.blockHeight < ksmFirstTipClosedHeight
   ) {
-    await updateTipByFinalEvent(
+    await updateTipFinalState(
       args.hash,
       TipEvents.TipClosed,
       args,
