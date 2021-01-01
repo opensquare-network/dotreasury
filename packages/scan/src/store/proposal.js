@@ -11,16 +11,17 @@ async function saveNewProposal(proposalIndex, indexer, extrinsic) {
     indexer.blockHash,
     proposalIndex
   );
+  const metaJson = meta.toJSON();
 
   let {
     signer: proposer,
     args: { value, beneficiary },
   } = extrinsic;
 
-  if (meta) {
-    proposer = meta.proposer;
-    value = meta.value;
-    beneficiary = meta.beneficiary;
+  if (metaJson) {
+    proposer = metaJson.proposer;
+    value = metaJson.value;
+    beneficiary = metaJson.beneficiary;
   }
 
   const proposalCol = await getProposalCollection();
@@ -30,7 +31,7 @@ async function saveNewProposal(proposalIndex, indexer, extrinsic) {
     proposer,
     value,
     beneficiary,
-    meta: meta.toJSON(),
+    meta: metaJson,
     state: {
       name: ProposalState.Proposed,
     },
