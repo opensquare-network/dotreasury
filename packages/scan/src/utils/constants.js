@@ -1,4 +1,14 @@
-const ksmFirstTipClosedHeight = 2192357
+const ksmFirstTipClosedHeight = 2192357;
+const ksmFirstRejectedEventHeight = 1164233;
+
+const ProposalState = Object.freeze({
+  Proposed: "Proposed",
+  ApproveVoting: "ApproveVoting",
+  RejectVoting: "RejectVoting",
+  Rejected: "Rejected",
+  Approved: "Approved",
+  Awarded: "Awarded",
+});
 
 const TipEvents = Object.freeze({
   NewTip: "NewTip",
@@ -70,8 +80,8 @@ const Modules = Object.freeze({
 });
 
 const ProxyMethods = Object.freeze({
-  proxy: "proxy"
-})
+  proxy: "proxy",
+});
 
 module.exports = {
   Modules,
@@ -85,4 +95,6 @@ module.exports = {
   CouncilMethods,
   ProxyMethods,
   ksmFirstTipClosedHeight,
+  ProposalState,
+  ksmFirstRejectedEventHeight,
 };
