@@ -5,11 +5,13 @@ const {
   updateTipByClosingEvent,
 } = require("../../store/tip");
 
-async function handleTipEvent(method, eventData, extrinsic, blockIndexer) {
-  if (!TipEvents.hasOwnProperty(method)) {
+async function handleTipEvent(event, extrinsic, blockIndexer) {
+  const { section, method, data } = event;
+  if (Modules.Treasury !== section || !TipEvents.hasOwnProperty(method)) {
     return;
   }
 
+  const eventData = data.toJSON();
   const [hash] = eventData;
   if (method === TipEvents.NewTip) {
     await saveNewTip(hash, extrinsic, blockIndexer);
