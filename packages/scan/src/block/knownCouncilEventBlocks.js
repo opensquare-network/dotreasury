@@ -2345,4 +2345,5 @@ const heights = [
 
 module.exports = {
   knownCouncilEventHeights: heights,
+  maxKnownCouncilHeight: heights[heights.length - 1],
 };

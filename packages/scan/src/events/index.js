@@ -1,6 +1,7 @@
 const { normalizeExtrinsic } = require("../extrinsic/index");
 const { handleTipEvent } = require("./treasury/tip");
 const { handleProposalEvent } = require("./treasury/proposal");
+const { handleCouncilEvent } = require("./council/index");
 
 async function handleEvents(events, blockIndexer, extrinsics) {
   if (events.length <= 0) {
@@ -19,10 +20,11 @@ async function handleEvents(events, blockIndexer, extrinsics) {
         ...normalizeExtrinsic(extrinsic, events),
       };
 
-      await handleTipEvent(event, normalizedExtrinsic, blockIndexer);
+      // await handleTipEvent(event, normalizedExtrinsic, blockIndexer);
+      await handleCouncilEvent(event, normalizedExtrinsic);
     }
 
-    await handleProposalEvent(event, blockIndexer, normalizedExtrinsic);
+    // await handleProposalEvent(event, blockIndexer, normalizedExtrinsic);
   }
 }
 

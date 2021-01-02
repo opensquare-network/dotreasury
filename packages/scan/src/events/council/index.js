@@ -1,19 +1,26 @@
 const { CouncilEvents, Modules } = require("../../utils/constants");
 const { saveTimeline } = require("../../store/council");
 
-async function handleCouncilEvent(event, indexer, eventSort) {
+async function handleCouncilEvent(event, normalizedExtrinsic) {
   const { section, method, data } = event;
-
   if (Modules.Council !== section) {
     return;
   }
 
-  const jsonData = data.toJSON();
+  if (method === CouncilEvents.Proposed) {
+    await handleProposed(event, normalizedExtrinsic);
+  }
 
-  await handleVoteEvent(method, jsonData, indexer, eventSort);
-  await handleApprovedEvent(method, jsonData, indexer, eventSort);
-  await handleDisapprovedEvent(method, jsonData, indexer, eventSort);
-  await handleExecutedEvent(method, jsonData, indexer, eventSort);
+  const eventData = data.toJSON();
+  // await handleVoteEvent(method, jsonData, indexer, eventSort);
+  // await handleApprovedEvent(method, jsonData, indexer, eventSort);
+  // await handleDisapprovedEvent(method, jsonData, indexer, eventSort);
+  // await handleExecutedEvent(method, jsonData, indexer, eventSort);
+}
+
+async function handleProposed(event, normalizedExtrinsic) {
+  console.log(event);
+  console.log(normalizedExtrinsic);
 }
 
 async function handleVoteEvent(method, jsonData, indexer, eventSort) {
