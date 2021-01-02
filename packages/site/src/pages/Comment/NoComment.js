@@ -20,7 +20,7 @@ const NoComment = () => {
     <Wrapper>
       <div>
         <Image src={"/imgs/comment.png"} />
-        <p>There is no comment here.</p>
+        <p>Comment will be supported soon.</p>
       </div>
     </Wrapper>
   );
