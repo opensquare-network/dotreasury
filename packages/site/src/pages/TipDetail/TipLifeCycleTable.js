@@ -36,13 +36,10 @@ const TipLifeCycleTable = () => {
   const tipCountdown = useSelector(tipCountdownSelector);
   const currentBlockHeight = useSelector(currentBlockHeightSelector);
   const tippersCount = tipDetail.tippersCount;
-  const closeFromBlockHeight = tipDetail.closeFromBlockHeight;
-  const progressBlockHeight = Math.min(
-    closeFromBlockHeight,
-    currentBlockHeight
-  );
-  const reminingCountdown = closeFromBlockHeight - progressBlockHeight;
-  const precent = 1 - reminingCountdown / tipCountdown;
+
+  const begin = tipDetail.closeFromBlockHeight - tipCountdown;
+  const goneBlocks = currentBlockHeight - begin;
+  const percentage = goneBlocks > tipCountdown ? 1 : goneBlocks / tipCountdown;
 
   const thresholdTotalCount = tippersCount ? (tippersCount + 1) / 2 : 0;
   const findersFee =
@@ -88,13 +85,10 @@ const TipLifeCycleTable = () => {
         <Table.Row>
           <Table.Cell>
             <TableCell title="Tip Count Down">
-              {closeFromBlockHeight ? (
+              {tipDetail.closeFromBlockHeight ? (
                 <FlexWrapper>
-                  <Progress percent={precent * 100} />
-                  <TipCountDownLabel
-                    value={tipCountdown - reminingCountdown}
-                    total={tipCountdown}
-                  />
+                  <Progress percent={percentage * 100} />
+                  <TipCountDownLabel value={goneBlocks} total={tipCountdown} />
                 </FlexWrapper>
               ) : (
                 <FlexWrapper>
