@@ -15,7 +15,7 @@ import {
   tipCountdownSelector,
   tipFindersFeeSelector,
 } from "../../store/reducers/tipSlice";
-import { currentBlockHeightSelector } from "../../store/reducers/chainSlice";
+import { scanHeightSelector } from "../../store/reducers/chainSlice";
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -34,15 +34,12 @@ const TipLifeCycleTable = () => {
   const tipDetail = useSelector(normalizedTipDetailSelector);
   const tipFindersFee = useSelector(tipFindersFeeSelector);
   const tipCountdown = useSelector(tipCountdownSelector);
-  const currentBlockHeight = useSelector(currentBlockHeightSelector);
+  const scanHeight = useSelector(scanHeightSelector);
   const tippersCount = tipDetail.tippersCount;
-  const closeFromBlockHeight = tipDetail.closeFromBlockHeight;
-  const progressBlockHeight = Math.min(
-    closeFromBlockHeight,
-    currentBlockHeight
-  );
-  const reminingCountdown = closeFromBlockHeight - progressBlockHeight;
-  const precent = 1 - reminingCountdown / tipCountdown;
+
+  const begin = tipDetail.closeFromBlockHeight - tipCountdown;
+  const goneBlocks = Math.max(scanHeight - begin, 0);
+  const percentage = goneBlocks > tipCountdown ? 1 : goneBlocks / tipCountdown;
 
   const thresholdTotalCount = tippersCount ? (tippersCount + 1) / 2 : 0;
   const findersFee =
@@ -88,13 +85,10 @@ const TipLifeCycleTable = () => {
         <Table.Row>
           <Table.Cell>
             <TableCell title="Tip Count Down">
-              {closeFromBlockHeight ? (
+              {tipDetail.closeFromBlockHeight ? (
                 <FlexWrapper>
-                  <Progress percent={precent * 100} />
-                  <TipCountDownLabel
-                    value={tipCountdown - reminingCountdown}
-                    total={tipCountdown}
-                  />
+                  <Progress percent={percentage * 100} />
+                  <TipCountDownLabel value={goneBlocks} total={tipCountdown} />
                 </FlexWrapper>
               ) : (
                 <FlexWrapper>

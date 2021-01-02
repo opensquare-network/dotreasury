@@ -6,6 +6,7 @@ const http = require("http");
 const cors = require("@koa/cors");
 const config = require("../config");
 const { initDb } = require("./mongo");
+const { listenAndEmitInfo } = require("./websocket");
 const app = new Koa();
 
 app.use(cors());
@@ -15,9 +16,17 @@ app.use(helmet());
 
 require("./routes")(app);
 const server = http.createServer(app.callback());
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
+});
 
 initDb()
   .then(async (db) => {
+    await listenAndEmitInfo(io);
+
     app.context.db = db;
     const port = config.server.port || 3213;
 
