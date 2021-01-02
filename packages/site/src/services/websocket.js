@@ -7,7 +7,6 @@ const socket = io(process.env.REACT_APP_SOCKET_IO_URL || "api.dotreasury.com");
 socket.connect();
 
 socket.on("connect", () => {
-  console.log("cccc");
   socket.emit("subscribe", chainStatusRoom);
 
   socket.on("scanStatus", ({ height }) => {
