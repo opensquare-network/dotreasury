@@ -15,7 +15,7 @@ import {
   tipCountdownSelector,
   tipFindersFeeSelector,
 } from "../../store/reducers/tipSlice";
-import { currentBlockHeightSelector } from "../../store/reducers/chainSlice";
+import { scanHeightSelector } from "../../store/reducers/chainSlice";
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -34,11 +34,11 @@ const TipLifeCycleTable = () => {
   const tipDetail = useSelector(normalizedTipDetailSelector);
   const tipFindersFee = useSelector(tipFindersFeeSelector);
   const tipCountdown = useSelector(tipCountdownSelector);
-  const currentBlockHeight = useSelector(currentBlockHeightSelector);
+  const scanHeight = useSelector(scanHeightSelector);
   const tippersCount = tipDetail.tippersCount;
 
   const begin = tipDetail.closeFromBlockHeight - tipCountdown;
-  const goneBlocks = currentBlockHeight - begin;
+  const goneBlocks = Math.max(scanHeight - begin, 0);
   const percentage = goneBlocks > tipCountdown ? 1 : goneBlocks / tipCountdown;
 
   const thresholdTotalCount = tippersCount ? (tippersCount + 1) / 2 : 0;

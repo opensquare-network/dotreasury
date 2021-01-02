@@ -2,17 +2,16 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import styled from "styled-components";
-import { Image, Divider } from "semantic-ui-react";
+import { Divider, Image } from "semantic-ui-react";
 import { useHistory } from "react-router-dom";
 import { hexToString } from "@polkadot/util";
 import {
+  fetchTipCountdown,
   fetchTipDetail,
   fetchTipFindersFee,
-  fetchTipCountdown,
-  tipDetailSelector,
   loadingTipDetailSelector,
+  tipDetailSelector,
 } from "../../store/reducers/tipSlice";
-import { fetchCurrentBlockHeight } from "../../store/reducers/chainSlice";
 
 import InformationTable from "./InformationTable";
 import Timeline from "../Timeline";
@@ -205,7 +204,6 @@ const TipDetail = () => {
     dispatch(fetchTipDetail(tipId));
     dispatch(fetchTipFindersFee());
     dispatch(fetchTipCountdown());
-    dispatch(fetchCurrentBlockHeight());
   }, [dispatch, tipId]);
 
   const tipDetail = useSelector(tipDetailSelector);

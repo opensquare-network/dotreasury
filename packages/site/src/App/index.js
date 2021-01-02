@@ -5,6 +5,7 @@ import {
   Route,
   Switch,
 } from "react-router-dom";
+import "../services/websocket";
 
 import Container from "../components/Container";
 import { PageWrapper } from "./components";
