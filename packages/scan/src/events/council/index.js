@@ -1,8 +1,19 @@
-const { CouncilEvents, Modules } = require("../../utils/constants");
+const { getApi } = require("../../api");
+const {
+  CouncilEvents,
+  Modules,
+  ProposalMethods,
+} = require("../../utils/constants");
 const { saveTimeline } = require("../../store/council");
+const {
+  treasuryProposalCouncilIndexes,
+  approveProposalIndex,
+} = require("../../utils/call");
+const { getMotionCollection } = require("../../mongo");
+const { motionActions } = require("./constants");
 
-async function handleCouncilEvent(event, normalizedExtrinsic) {
-  const { section, method, data } = event;
+async function handleCouncilEvent(event, normalizedExtrinsic, extrinsic) {
+  const { section, method } = event;
   if (Modules.Council !== section) {
     return;
   }
@@ -10,17 +21,57 @@ async function handleCouncilEvent(event, normalizedExtrinsic) {
   if (method === CouncilEvents.Proposed) {
     await handleProposed(event, normalizedExtrinsic);
   }
+}
 
-  const eventData = data.toJSON();
-  // await handleVoteEvent(method, jsonData, indexer, eventSort);
-  // await handleApprovedEvent(method, jsonData, indexer, eventSort);
-  // await handleDisapprovedEvent(method, jsonData, indexer, eventSort);
-  // await handleExecutedEvent(method, jsonData, indexer, eventSort);
+async function getMotionVoting(blockHash, motionHash) {
+  const api = await getApi();
+  const votingObject = await api.query.council.voting.at(blockHash, motionHash);
+  return votingObject.toJSON();
 }
 
 async function handleProposed(event, normalizedExtrinsic) {
-  console.log(event);
-  console.log(normalizedExtrinsic);
+  const {
+    args: {
+      proposal: { callIndex, args },
+    },
+  } = normalizedExtrinsic;
+  if (!treasuryProposalCouncilIndexes.includes(callIndex)) {
+    return;
+  }
+
+  const { proposal_id: treasuryProposalId } = args;
+  const method =
+    approveProposalIndex === callIndex
+      ? ProposalMethods.approveProposal
+      : ProposalMethods.rejectProposal;
+  const eventData = event.data.toJSON();
+  const [proposer, index, hash] = eventData;
+  const voting = await getMotionVoting(
+    normalizedExtrinsic.extrinsicIndexer.blockHash,
+    hash
+  );
+  // TODO: get MotionDuration
+
+  const timeline = [
+    {
+      action: motionActions.Propose,
+      eventData,
+      extrinsic: normalizedExtrinsic,
+    },
+  ];
+
+  const col = await getMotionCollection();
+  await col.insertOne({
+    hash,
+    index,
+    proposer,
+    method,
+    treasuryProposalId,
+    eventData,
+    extrinsic: normalizedExtrinsic,
+    voting,
+    timeline,
+  });
 }
 
 async function handleVoteEvent(method, jsonData, indexer, eventSort) {
