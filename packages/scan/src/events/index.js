@@ -20,11 +20,11 @@ async function handleEvents(events, blockIndexer, extrinsics) {
         ...normalizeExtrinsic(extrinsic, events),
       };
 
-      // await handleTipEvent(event, normalizedExtrinsic, blockIndexer);
+      await handleTipEvent(event, normalizedExtrinsic, blockIndexer);
       await handleCouncilEvent(event, normalizedExtrinsic, extrinsic);
     }
 
-    // await handleProposalEvent(event, blockIndexer, normalizedExtrinsic);
+    await handleProposalEvent(event, blockIndexer, normalizedExtrinsic);
   }
 }
 
