@@ -1,3 +1,5 @@
+const firstKnowCouncilCloseEventHeight = 1975694;
+
 const heights = [
   52631,
   52671,
@@ -2346,4 +2348,5 @@ const heights = [
 module.exports = {
   knownCouncilEventHeights: heights,
   maxKnownCouncilHeight: heights[heights.length - 1],
+  firstKnowCouncilCloseEventHeight,
 };

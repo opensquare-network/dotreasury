@@ -4,15 +4,17 @@ const {
   Modules,
   ProposalMethods,
 } = require("../../utils/constants");
-const { saveTimeline } = require("../../store/council");
 const {
   treasuryProposalCouncilIndexes,
   approveProposalIndex,
 } = require("../../utils/call");
 const { getMotionCollection } = require("../../mongo");
 const { motionActions } = require("./constants");
+const {
+  firstKnowCouncilCloseEventHeight,
+} = require("../../block/knownCouncilEventBlocks");
 
-async function handleCouncilEvent(event, normalizedExtrinsic, extrinsic) {
+async function handleCouncilEvent(event, normalizedExtrinsic) {
   const { section, method } = event;
   if (Modules.Council !== section) {
     return;
@@ -22,6 +24,12 @@ async function handleCouncilEvent(event, normalizedExtrinsic, extrinsic) {
     await handleProposed(event, normalizedExtrinsic);
   } else if (method === CouncilEvents.Voted) {
     await handleVoteEvent(event, normalizedExtrinsic);
+  } else if (method === CouncilEvents.Approved) {
+    await handleApprovedEvent(event, normalizedExtrinsic);
+  } else if (method === CouncilEvents.Disapproved) {
+    await handleDisapprovedEvent(event, normalizedExtrinsic);
+  } else if (method === CouncilEvents.Executed) {
+    await handleExecutedEvent(event);
   } else if (method === CouncilEvents.Closed) {
     await handleClosedEvent(event, normalizedExtrinsic);
   }
@@ -161,48 +169,111 @@ async function handleClosedEvent(event, normalizedExtrinsic) {
   );
 }
 
-async function handleApprovedEvent(method, jsonData, indexer, eventSort) {
-  if (method !== CouncilEvents.Approved) {
-    return;
+async function handleApprovedEvent(event, normalizedExtrinsic) {
+  const eventData = event.data.toJSON();
+  const hash = eventData[0];
+  const voting = await getMotionVoting(
+    normalizedExtrinsic.extrinsicIndexer.blockHash,
+    hash
+  );
+
+  let updateObj;
+  // We will insert timeline with Closed event handling when >= firstKnowCouncilCloseEventHeight
+  if (
+    normalizedExtrinsic.extrinsicIndexer.blockHeight <
+    firstKnowCouncilCloseEventHeight
+  ) {
+    updateObj = {
+      $set: {
+        voting,
+        result: CouncilEvents.Approved,
+        state: {
+          state: CouncilEvents.Closed,
+          event: {
+            name: CouncilEvents.Approved,
+            data: eventData,
+          },
+          extrinsic: normalizedExtrinsic,
+        },
+      },
+      $push: {
+        timeline: {
+          action: motionActions.Close,
+          eventData,
+          extrinsic: normalizedExtrinsic,
+        },
+      },
+    };
+  } else {
+    updateObj = {
+      $set: { voting, result: CouncilEvents.Approved },
+    };
   }
 
-  const [proposalHash] = jsonData;
-
-  await saveTimeline(
-    proposalHash,
-    "CouncilApproved",
-    { proposalHash },
-    indexer
-  );
+  const col = await getMotionCollection();
+  await col.updateOne({ hash }, updateObj);
 }
 
-async function handleDisapprovedEvent(method, jsonData, indexer, eventSort) {
-  if (method !== CouncilEvents.Disapproved) {
-    return;
+async function handleDisapprovedEvent(event, normalizedExtrinsic) {
+  const eventData = event.data.toJSON();
+  const hash = eventData[0];
+  const voting = await getMotionVoting(
+    normalizedExtrinsic.extrinsicIndexer.blockHash,
+    hash
+  );
+
+  let updateObj;
+  // We will insert timeline with Closed event handling when >= firstKnowCouncilCloseEventHeight
+  if (
+    normalizedExtrinsic.extrinsicIndexer.blockHeight <
+    firstKnowCouncilCloseEventHeight
+  ) {
+    updateObj = {
+      $set: {
+        voting,
+        result: CouncilEvents.Disapproved,
+        state: {
+          state: CouncilEvents.Closed,
+          event: {
+            name: CouncilEvents.Disapproved,
+            data: eventData,
+          },
+          extrinsic: normalizedExtrinsic,
+        },
+      },
+      $push: {
+        timeline: {
+          action: motionActions.Close,
+          eventData,
+          extrinsic: normalizedExtrinsic,
+        },
+      },
+    };
+  } else {
+    updateObj = {
+      $set: { voting, result: CouncilEvents.Disapproved },
+    };
   }
 
-  const [proposalHash] = jsonData;
-
-  await saveTimeline(
-    proposalHash,
-    "CouncilDisapproved",
-    { proposalHash },
-    indexer
-  );
+  const col = await getMotionCollection();
+  await col.updateOne({ hash }, updateObj);
 }
 
-async function handleExecutedEvent(method, jsonData, indexer, eventSort) {
-  if (method !== CouncilEvents.Executed) {
-    return;
-  }
+async function handleExecutedEvent(event) {
+  const eventData = event.data.toJSON();
+  const [hash, result] = eventData;
 
-  const [proposalHash, result] = jsonData;
-
-  await saveTimeline(
-    proposalHash,
-    "CouncilExecuted",
-    { proposalHash, result },
-    indexer
+  const col = await getMotionCollection();
+  await col.updateOne(
+    { hash },
+    {
+      $set: {
+        executed: {
+          result,
+          eventData,
+        },
+      },
+    }
   );
 }
 
