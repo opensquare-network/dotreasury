@@ -28,10 +28,11 @@ async function main() {
   let scanHeight = await getNextScanHeight();
   await deleteDataFrom(scanHeight);
 
-  if (scanHeight < maxKnowHeightWithTreasuryOrProxyExtrinsic) {
+  const maxHeight = maxKnowHeightWithTreasuryOrProxyExtrinsic;
+  if (scanHeight < maxHeight) {
     await scanKnowBlocks(scanHeight);
   }
-  scanHeight = maxKnowHeightWithTreasuryOrProxyExtrinsic + 1;
+  scanHeight = maxHeight + 1;
 
   while (true) {
     const chainHeight = getLatestHeight();

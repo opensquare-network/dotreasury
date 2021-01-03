@@ -65,6 +65,7 @@ const CouncilEvents = Object.freeze({
   Approved: "Approved",
   Disapproved: "Disapproved",
   Executed: "Executed",
+  Closed: "Closed",
 });
 
 const CouncilMethods = Object.freeze({

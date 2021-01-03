@@ -1,3 +1,5 @@
+const { knownCouncilEventHeights } = require("./knownCouncilEventBlocks");
+
 const blocksWithTreasuryOrProxyExtrinsics = [
   27815,
   41650,
@@ -2893,6 +2895,7 @@ const knownHeights = [
   ...new Set([
     ...blocksWithTreasuryOrProxyExtrinsics,
     ...heightsWithProposalEvents,
+    ...knownCouncilEventHeights,
   ]),
 ].sort((a, b) => a - b);
 
