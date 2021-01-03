@@ -29,12 +29,30 @@ async function getMotionVoting(blockHash, motionHash) {
   return votingObject.toJSON();
 }
 
+function extractCallIndexAndArgs(normalizedExtrinsic) {
+  // TODO: handle proxy extrinsic
+  const { section, name, args } = normalizedExtrinsic;
+  if ("utility" === section && "asMulti" === name) {
+    const {
+      call: {
+        args: {
+          proposal: { callIndex, args: proposalArgs },
+        },
+      },
+    } = args;
+    return [callIndex, proposalArgs];
+  } else {
+    const {
+      args: {
+        proposal: { callIndex, args },
+      },
+    } = normalizedExtrinsic;
+    return [callIndex, args];
+  }
+}
+
 async function handleProposed(event, normalizedExtrinsic) {
-  const {
-    args: {
-      proposal: { callIndex, args },
-    },
-  } = normalizedExtrinsic;
+  const [callIndex, args] = extractCallIndexAndArgs(normalizedExtrinsic);
   if (!treasuryProposalCouncilIndexes.includes(callIndex)) {
     return;
   }
