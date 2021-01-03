@@ -20,6 +20,10 @@ async function handleCouncilEvent(event, normalizedExtrinsic, extrinsic) {
 
   if (method === CouncilEvents.Proposed) {
     await handleProposed(event, normalizedExtrinsic);
+  } else if (method === CouncilEvents.Voted) {
+    await handleVoteEvent(event, normalizedExtrinsic);
+  } else if (method === CouncilEvents.Closed) {
+    await handleClosedEvent(event, normalizedExtrinsic);
   }
 }
 
@@ -85,25 +89,75 @@ async function handleProposed(event, normalizedExtrinsic) {
     proposer,
     method,
     treasuryProposalId,
-    eventData,
-    extrinsic: normalizedExtrinsic,
     voting,
+    state: {
+      state: CouncilEvents.Proposed,
+      eventData,
+      extrinsic: normalizedExtrinsic,
+    },
     timeline,
   });
 }
 
-async function handleVoteEvent(method, jsonData, indexer, eventSort) {
-  if (method !== CouncilEvents.Voted) {
-    return;
-  }
+async function handleVoteEvent(event, normalizedExtrinsic) {
+  const eventData = event.data.toJSON();
+  const hash = eventData[1];
+  const voting = await getMotionVoting(
+    normalizedExtrinsic.extrinsicIndexer.blockHash,
+    hash
+  );
 
-  const [account, proposalHash, voted, yes, no] = jsonData;
+  const col = await getMotionCollection();
+  await col.updateOne(
+    { hash },
+    {
+      $set: {
+        voting,
+        state: {
+          state: CouncilEvents.Voted,
+          eventData,
+          extrinsic: normalizedExtrinsic,
+        },
+      },
+      $push: {
+        timeline: {
+          action: motionActions.Vote,
+          eventData,
+          extrinsic: normalizedExtrinsic,
+        },
+      },
+    }
+  );
+}
 
-  await saveTimeline(
-    proposalHash,
-    "CouncilVoted",
-    { account, proposalHash, voted, yes, no },
-    indexer
+async function handleClosedEvent(event, normalizedExtrinsic) {
+  const eventData = event.data.toJSON();
+  const hash = eventData[0];
+  const voting = await getMotionVoting(
+    normalizedExtrinsic.extrinsicIndexer.blockHash,
+    hash
+  );
+
+  const col = await getMotionCollection();
+  await col.updateOne(
+    { hash },
+    {
+      $set: {
+        voting,
+        state: {
+          state: CouncilEvents.Closed,
+          eventData,
+          extrinsic: normalizedExtrinsic,
+        },
+      },
+      $push: {
+        timeline: {
+          action: motionActions.Close,
+          eventData,
+          extrinsic: normalizedExtrinsic,
+        },
+      },
+    }
   );
 }
 
