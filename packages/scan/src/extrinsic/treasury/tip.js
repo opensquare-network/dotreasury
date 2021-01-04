@@ -37,7 +37,11 @@ async function handleCloseTipExtrinsic(normalizedExtrinsic) {
 }
 
 async function handleTip(normalizedExtrinsic) {
-  const { section, name, args } = normalizedExtrinsic;
+  const {
+    section,
+    name,
+    args: { hash, tip_value: tipValue },
+  } = normalizedExtrinsic;
   if (section !== Modules.Treasury || name !== TipMethods.tip) {
     return;
   }
@@ -47,7 +51,6 @@ async function handleTip(normalizedExtrinsic) {
     hash
   );
   const tipper = normalizedExtrinsic.signer;
-  const { tip_value: tipValue } = args;
   await updateTipInDB(updates, tipper, tipValue, normalizedExtrinsic);
 }
 
