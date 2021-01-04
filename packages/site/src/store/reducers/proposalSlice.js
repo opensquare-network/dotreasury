@@ -1,4 +1,4 @@
-import { createSlice, createSelector } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import api from "../../services/scanApi";
 
 const proposalSlice = createSlice({
@@ -58,10 +58,10 @@ export const fetchProposalsCount = () => async (dispatch) => {
   dispatch(setProposalsCount(result || 0));
 };
 
-export const fetchProposalDetail = (proposalId) => async (dispatch) => {
+export const fetchProposalDetail = (proposalIndex) => async (dispatch) => {
   dispatch(setLoadingProposalDetail(true));
   try {
-    const { result } = await api.fetch(`/proposals/${proposalId}`);
+    const { result } = await api.fetch(`/proposals/${proposalIndex}`);
     dispatch(setProposalDetail(result || {}));
   } finally {
     dispatch(setLoadingProposalDetail(false));
@@ -71,5 +71,7 @@ export const fetchProposalDetail = (proposalId) => async (dispatch) => {
 export const proposalListSelector = (state) => state.proposals.proposals;
 export const loadingSelector = (state) => state.proposals.loading;
 export const proposalsCountSelector = (state) => state.proposals.proposalsCount;
+export const proposalDetailSelector = (state) => state.proposals.proposalDetail;
+export const loadingProposalDetailSelector = (state) => state.proposals.loadingProposalDetail;
 
 export default proposalSlice.reducer;

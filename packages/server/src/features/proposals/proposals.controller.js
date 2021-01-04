@@ -44,6 +44,31 @@ class ProposalsController {
     const proposalsCount = await proposalCol.estimatedDocumentCount();
     ctx.body = proposalsCount;
   }
+
+  async getProposalDetail(ctx) {
+    const proposalIndex = parseInt(ctx.params.proposalIndex);
+
+    const proposalCol = await getProposalCollection();
+    const proposal = await proposalCol.findOne({ proposalIndex });
+
+    if (!proposal) {
+      ctx.status = 404;
+      return;
+    }
+
+    ctx.body = {
+      proposalIndex: proposal.proposalIndex,
+      proposeTime: proposal.indexer.blockTime,
+      proposeAtBlockHeight: proposal.indexer.blockHeight,
+      proposer: proposal.proposer,
+      value: proposal.value,
+      beneficiary: proposal.beneficiary,
+      latestState: {
+        state: proposal.state?.name,
+        time: null, // TODO: Missing
+      },
+    };
+  }
 }
 
 module.exports = new ProposalsController();

@@ -5,5 +5,6 @@ const router = new Router();
 
 router.get("/proposals", proposalsController.getProposals);
 router.get("/proposals/count", proposalsController.getProposalsCount);
+router.get("/proposals/:proposalIndex", proposalsController.getProposalDetail);
 
 module.exports = router;

@@ -15,6 +15,7 @@ import Tips from "../pages/Tips";
 import Proposals from "../pages/Proposals";
 import Bounties from "../pages/Bounties";
 import TipDetail from "../pages/TipDetail";
+import ProposalDetail from "../pages/ProposalDetail";
 import Overview from "../pages/Overview";
 
 export default function App() {
@@ -29,6 +30,7 @@ export default function App() {
             <Route exact path="/proposals" component={Proposals} />
             <Route exact path="/bounties" component={Bounties} />
             <Route exact path="/tips/:tipId" component={TipDetail} />
+            <Route exact path="/proposals/:proposalIndex" component={ProposalDetail} />
             <Redirect to="/" />
           </Switch>
         </Container>
