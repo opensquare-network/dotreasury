@@ -51,10 +51,16 @@ async function handleTip(normalizedExtrinsic) {
     hash
   );
   const tipper = normalizedExtrinsic.signer;
-  await updateTipInDB(updates, tipper, tipValue, normalizedExtrinsic);
+  await updateTipInDB(hash, updates, tipper, tipValue, normalizedExtrinsic);
 }
 
-async function updateTipInDB(updates, tipper, value, normalizedExtrinsic) {
+async function updateTipInDB(
+  hash,
+  updates,
+  tipper,
+  value,
+  normalizedExtrinsic
+) {
   const tipCol = await getTipCollection();
   await tipCol.updateOne(
     { hash, isClosedOrRetracted: false },
@@ -98,7 +104,7 @@ async function handleTipByProxy(normalizedExtrinsic, extrinsic) {
     hash
   );
   const tipper = args.real;
-  await updateTipInDB(updates, tipper, tipValue, normalizedExtrinsic);
+  await updateTipInDB(hash, updates, tipper, tipValue, normalizedExtrinsic);
 }
 
 async function getCall(blockHash, callHex) {
@@ -139,7 +145,7 @@ async function handleTipByMultiSig(normalizedExtrinsic, extrinsic) {
   const multiAddresses = [normalizedExtrinsic.signer, ...otherSignatories];
   const multiPub = createKeyMulti(multiAddresses, threshold);
   const tipper = encodeAddress(multiPub, registry.registry.chainSS58);
-  await updateTipInDB(updates, tipper, tipValue, normalizedExtrinsic);
+  await updateTipInDB(hash, updates, tipper, tipValue, normalizedExtrinsic);
 }
 
 module.exports = {
