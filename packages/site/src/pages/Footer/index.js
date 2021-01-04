@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Icon } from "semantic-ui-react";
+import { Icon, Image } from "semantic-ui-react";
 
 import Container from "../../components/Container";
 import TextMinor from "../../components/TextMinor";
@@ -12,6 +12,7 @@ const Wrapper = styled.footer`
   height: 64px;
   border-top: 1px solid #eee;
 `;
+
 const FooterWrapper = styled.div`
   height: 100%;
   display: flex;
@@ -24,12 +25,18 @@ const FooterWrapper = styled.div`
       text-decoration: underline;
     }
   }
+  .small {
+    display: none;
+  }
   @media screen and (max-width: 1140px) {
     flex-direction: column;
     justify-content: center;
     gap: 4px;
     .hidden {
       display: none;
+    }
+    .small {
+      display: block;
     }
   }
 `;
@@ -53,27 +60,34 @@ const IconList = styled.div`
   }
 `;
 
+const ImageLogoWrapper = styled.div`
+  display: flex;
+  gap: 8px;
+  align-items: center;
+`
+
 const Footer = () => {
   return (
     <Wrapper>
       <Container>
         <FooterWrapper>
-          <TextWrapper>
-            <TextMinor>
-              doTreasury © {new Date().getFullYear()} - Powered By OpenSquare
-            </TextMinor>
-            <TextWrapper className="hidden">
-              <TextMinor className="link">
-                Version history
+          <TextWrapper className="hidden">
+            <ImageLogoWrapper>
+              <TextMinor>
+                doTreasury © {new Date().getFullYear()} - Powered By
               </TextMinor>
-              <TextMinor className="link">
-                Privacy policy
+              <Image src="/imgs/opensquare-logo.svg" />
+            </ImageLogoWrapper>
+            <ImageLogoWrapper>
+              <TextMinor>
+                Funded by
               </TextMinor>
-              <TextMinor className="link">
-                Terms of use
-              </TextMinor>
-            </TextWrapper>
+              <Image src="/imgs/kusama-treasury-logo.svg" />
+            </ImageLogoWrapper>
           </TextWrapper>
+          <TextMinor className="small">
+            doTreasury © {new Date().getFullYear()} - Powered By OpenSquare
+          </TextMinor>
           <IconList>
             <a
               href="mailto:yongfeng@opensquare.network"
