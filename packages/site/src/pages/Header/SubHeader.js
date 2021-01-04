@@ -88,7 +88,7 @@ const TabExampleSecondaryPointing = () => {
         to: "/proposals",
         exact: true,
         key: "proposals",
-        active: "/proposals" === pathname
+        active: "/proposals" === pathname || pathname.indexOf("/proposals") === 0
       },
     },
     {
@@ -99,7 +99,7 @@ const TabExampleSecondaryPointing = () => {
         to: "/bounties",
         exact: true,
         key: "bounties",
-        active: "/bounties" === pathname
+        active: "/bounties" === pathname || pathname.indexOf("/bounties") === 0
       },
     },
     {
