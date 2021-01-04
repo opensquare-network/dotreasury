@@ -1,4 +1,4 @@
-const { getProposalCollection } = require("../../mongo");
+const { getProposalCollection, getMotionCollection } = require("../../mongo");
 const { extractPage } = require("../../utils");
 
 class ProposalsController {
@@ -51,6 +51,9 @@ class ProposalsController {
     const proposalCol = await getProposalCollection();
     const proposal = await proposalCol.findOne({ proposalIndex });
 
+    const motionCol = await getMotionCollection();
+    const proposalMotions = await motionCol.find({ treasuryProposalId: proposalIndex }).toArray();
+
     if (!proposal) {
       ctx.status = 404;
       return;
@@ -67,6 +70,7 @@ class ProposalsController {
         state: proposal.state?.name,
         time: null, // TODO: Missing
       },
+      motions: proposalMotions,
     };
   }
 }

@@ -58,14 +58,15 @@ const TimelineCommentWrapper = styled.div`
   }
 `;
 
-function getProxyMethod(callArgs) {
+function getProxyMethod(callIndex) {
   const methodsMapping = [
-    [["hash", "tip_value"], "tip"],
-    [["reason", "who"], "reportAwesome"],
+    ["0x1206", ["hash", "tip_value"], "tip"],
+    ["0x1203", ["reason", "who"], "reportAwesome"],
+    ["0x1207", ["hash"], "closeTip"],
   ];
 
-  for (const [expectArgs, method] of methodsMapping) {
-    if (JSON.stringify(Object.keys(callArgs)) === JSON.stringify(expectArgs)) {
+  for (const [expectCallIndex, , method] of methodsMapping) {
+    if (expectCallIndex === callIndex) {
       return method;
     }
   }
@@ -86,7 +87,7 @@ function processProxyExtrinsic(extrinsic) {
     extrinsicIndexer,
   } = extrinsic;
 
-  const name = getProxyMethod(args);
+  const name = getProxyMethod(callIndex);
   if (name) {
     return {
       name,
