@@ -7,7 +7,6 @@ import Table from "../../components/Table";
 import User from "../../components/User/Index";
 import Balance from "../../components/Balance";
 import RightButton from "../../components/RightButton";
-import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
 import PairTextVertical from "../../components/PairTextVertical";
 

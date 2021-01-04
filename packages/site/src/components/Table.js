@@ -38,6 +38,15 @@ const CustomTable = styled(Table)`
   .index-cell {
     width: 60px !important;
   }
+  .title-cell {
+    min-width: 208px !important;
+  }
+  .update-due-cell {
+    min-width: 100px !important;
+  }
+  .payout-due-cell {
+    min-width: 100px !important;
+  }
   td:first-child {
     font-weight: 400 !important;
   }
