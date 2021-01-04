@@ -29,7 +29,7 @@ const proposalSlice = createSlice({
       state.proposalDetail = payload;
     },
     setLoadingProposalDetail(state, { payload }) {
-      state.loadingproposalDetail = payload;
+      state.loadingProposalDetail = payload;
     },
   },
 });
