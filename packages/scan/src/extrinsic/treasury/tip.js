@@ -7,7 +7,6 @@ const {
   MultisigMethods,
 } = require("../../utils/constants");
 const {
-  updateTipByTipExtrinsic,
   updateTipFinalState,
   getTippersCount,
   getTipMeta,
@@ -18,7 +17,7 @@ const { GenericCall } = require("@polkadot/types");
 const { getTipCollection } = require("../../mongo");
 const { createKeyMulti, encodeAddress } = require("@polkadot/util-crypto");
 
-async function handleTipExtrinsic(normalizedExtrinsic) {
+async function handleCloseTipExtrinsic(normalizedExtrinsic) {
   const { section, name, args } = normalizedExtrinsic;
   if (section !== Modules.Treasury) {
     return;
@@ -34,14 +33,43 @@ async function handleTipExtrinsic(normalizedExtrinsic) {
       args,
       normalizedExtrinsic
     );
-  } else if (name === TipMethods.tip) {
-    await updateTipByTipExtrinsic(
-      args.hash,
-      TipMethods.tip,
-      args,
-      normalizedExtrinsic
-    );
   }
+}
+
+async function handleTip(normalizedExtrinsic) {
+  const { section, name, args } = normalizedExtrinsic;
+  if (section !== Modules.Treasury || name !== TipMethods.tip) {
+    return;
+  }
+
+  const updates = await getCommonTipUpdates(
+    normalizedExtrinsic.extrinsicIndexer.blockHash,
+    hash
+  );
+  const tipper = normalizedExtrinsic.signer;
+  const { tip_value: tipValue } = args;
+  await updateTipInDB(updates, tipper, tipValue, normalizedExtrinsic);
+}
+
+async function updateTipInDB(updates, tipper, value, normalizedExtrinsic) {
+  const tipCol = await getTipCollection();
+  await tipCol.updateOne(
+    { hash, isClosedOrRetracted: false },
+    {
+      $set: updates,
+      $push: {
+        timeline: {
+          type: "extrinsic",
+          method: TipMethods.tip,
+          args: {
+            tipper,
+            value,
+          },
+          extrinsic: normalizedExtrinsic,
+        },
+      },
+    }
+  );
 }
 
 async function handleTipByProxy(normalizedExtrinsic, extrinsic) {
@@ -67,25 +95,7 @@ async function handleTipByProxy(normalizedExtrinsic, extrinsic) {
     hash
   );
   const tipper = args.real;
-
-  const tipCol = await getTipCollection();
-  await tipCol.updateOne(
-    { hash, isClosedOrRetracted: false },
-    {
-      $set: updates,
-      $push: {
-        timeline: {
-          type: "extrinsic",
-          method: TipMethods.tip,
-          args: {
-            tipper,
-            value: tipValue,
-          },
-          extrinsic: normalizedExtrinsic,
-        },
-      },
-    }
-  );
+  await updateTipInDB(updates, tipper, tipValue, normalizedExtrinsic);
 }
 
 async function getCall(blockHash, callHex) {
@@ -126,29 +136,12 @@ async function handleTipByMultiSig(normalizedExtrinsic, extrinsic) {
   const multiAddresses = [normalizedExtrinsic.signer, ...otherSignatories];
   const multiPub = createKeyMulti(multiAddresses, threshold);
   const tipper = encodeAddress(multiPub, registry.registry.chainSS58);
-
-  const tipCol = await getTipCollection();
-  await tipCol.updateOne(
-    { hash, isClosedOrRetracted: false },
-    {
-      $set: updates,
-      $push: {
-        timeline: {
-          type: "extrinsic",
-          method: TipMethods.tip,
-          args: {
-            tipper,
-            value: tipValue,
-          },
-          extrinsic: normalizedExtrinsic,
-        },
-      },
-    }
-  );
+  await updateTipInDB(updates, tipper, tipValue, normalizedExtrinsic);
 }
 
 module.exports = {
-  handleTipExtrinsic,
+  handleCloseTipExtrinsic,
   handleTipByProxy,
   handleTipByMultiSig,
+  handleTip,
 };

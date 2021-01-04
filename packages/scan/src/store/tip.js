@@ -3,7 +3,6 @@ const { hexToString } = require("@polkadot/util");
 const { getTipCollection } = require("../mongo");
 const { getApi } = require("../api");
 const { median } = require("../utils");
-const { logger } = require("../utils");
 
 async function getTipMetaByBlockHeight(height, tipHash) {
   const api = await getApi();
@@ -114,23 +113,6 @@ async function updateTipFinalState(hash, state, data, extrinsic) {
   await updateDbTipData(hash, updates, extrinsic);
 }
 
-async function updateTipByTipExtrinsic(hash, state, data, extrinsic) {
-  const indexer = extrinsic.extrinsicIndexer;
-  const tippersCount = await getTippersCount(indexer.blockHash);
-  const meta = await getTipMeta(indexer.blockHash, hash);
-  const updates = { tippersCount, meta, medianValue: computeTipValue(meta) };
-
-  logger.info(`update tip with ${state} extrinsic ${extrinsic.hash}`);
-  await updateDbTipData(
-    hash,
-    {
-      ...updates,
-      state: { indexer, state, data },
-    },
-    extrinsic
-  );
-}
-
 async function updateDbTipData(hash, updates, extrinsic) {
   const tipCol = await getTipCollection();
   await tipCol.updateOne(
@@ -149,7 +131,6 @@ async function updateDbTipData(hash, updates, extrinsic) {
 
 module.exports = {
   saveNewTip,
-  updateTipByTipExtrinsic,
   updateTipFinalState,
   updateTipByClosingEvent,
   getTippersCount,
