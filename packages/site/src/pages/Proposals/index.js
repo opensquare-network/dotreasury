@@ -1,41 +1,47 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import Title from "../../components/Title";
 import ResponsivePagination from "../../components/ResponsivePagination";
 import ProposalsTable from "./ProposalsTable";
+import { useDispatch, useSelector } from "react-redux";
+
+import {
+  fetchProposals,
+  loadingSelector,
+  proposalListSelector,
+} from "../../store/reducers/proposalSlice";
 
 const Header = styled(Title)`
   margin-bottom: 20px;
 `;
 
+const DEFAULT_PAGE_SIZE = 20;
+
 const Proposals = () => {
-  const testData = [
-    {
-      beneficiary: "Gfazop6biSFdPJtCxGeVyJzTYprB1Us77Lx8Jww51fyTq5a",
-      proposalBy: "Gfazop6biSFdPJtCxGeVyJzTYprB1Us77Lx8Jww51fyTq5a",
-      proposalId: "1",
-      time: "2020-12-12 09:43:41",
-      value: 1000000000000,
-      status: "Proposed"
-    },
-    {
-      beneficiary: "Gfazop6biSFdPJtCxGeVyJzTYprB1Us77Lx8Jww51fyTq5a",
-      proposalBy: "Gfazop6biSFdPJtCxGeVyJzTYprB1Us77Lx8Jww51fyTq5a",
-      proposalId: "2",
-      time: "2020-12-12 09:43:41",
-      value: 1000000000000,
-      status: "Proposed"
-    },
-  ]
+  const [tablePage, setTablePage] = useState(1);
+
+  const dispatch = useDispatch();
+  const { items: proposals, total } = useSelector(proposalListSelector);
+  const loading = useSelector(loadingSelector);
+
+  useEffect(() => {
+    dispatch(fetchProposals(tablePage - 1, DEFAULT_PAGE_SIZE));
+  }, [dispatch, tablePage]);
+
+  const totalPages = Math.ceil(total / DEFAULT_PAGE_SIZE);
 
   return (
     <>
       <Header>Proposals</Header>
-      <ProposalsTable data={testData} />
+      <ProposalsTable data={proposals} loading={loading} />
       <ResponsivePagination
-        activePage={1}
-        totalPages={3} />
+        activePage={tablePage}
+        totalPages={totalPages}
+        onPageChange={(_, { activePage }) => {
+          setTablePage(activePage);
+        }}
+      />
     </>
   );
 };
