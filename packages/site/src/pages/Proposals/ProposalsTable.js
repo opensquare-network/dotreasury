@@ -9,6 +9,7 @@ import Balance from "../../components/Balance";
 import RightButton from "../../components/RightButton";
 import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
+import PairTextVertical from "../../components/PairTextVertical";
 
 const Wrapper = styled.div`
   overflow-x: scroll;
@@ -56,10 +57,9 @@ const ProposalsTable = ({ data, loading }) => {
         <StyledTable striped selectable unstackable>
           <Table.Header>
             <Table.Row>
+              <Table.HeaderCell>Index</Table.HeaderCell>
               <Table.HeaderCell>Beneficiary</Table.HeaderCell>
               <Table.HeaderCell>Proposal by</Table.HeaderCell>
-              <Table.HeaderCell className="hidden">Proposal ID</Table.HeaderCell>
-              <Table.HeaderCell>Time</Table.HeaderCell>
               <Table.HeaderCell textAlign={"right"}>Value</Table.HeaderCell>
               <Table.HeaderCell textAlign={"right"}>Status</Table.HeaderCell>
               <Table.HeaderCell className="hidden" />
@@ -70,23 +70,23 @@ const ProposalsTable = ({ data, loading }) => {
               data.length > 0 &&
               data.map((item, index) => (
                 <Table.Row key={index} onClick={() => onClickRow()}>
+                  <Table.Cell className="index-cell">
+                    <TextMinor>{`#${item.proposalId}`}</TextMinor>
+                  </Table.Cell>
                   <Table.Cell className="user-cell">
                     <User address={item.beneficiary} />
                   </Table.Cell>
                   <Table.Cell className="user-cell">
                     <User address={item.proposalBy} />
                   </Table.Cell>
-                  <Table.Cell className="hidden">
-                    <TextMinor>{`#${item.proposalId}`}</TextMinor>
-                  </Table.Cell>
-                  <Table.Cell className="time-cell">
-                    <TextMinor>{item.time}</TextMinor>
-                  </Table.Cell>
-                  <Table.Cell className="balance-cell" textAlign={"right"}>
+                  <Table.Cell textAlign={"right"}>
                     <Balance value={item.value} />
                   </Table.Cell>
-                  <Table.Cell textAlign={"right"}>
-                    <Text>{item.status}</Text>
+                  <Table.Cell className="status-cell" textAlign={"right"}>
+                    <PairTextVertical
+                        value={item.status}
+                        detail={item.time}
+                      />
                   </Table.Cell>
                   <Table.Cell className="link-cell hidden">
                     <NavLink to={`/proposals`}>

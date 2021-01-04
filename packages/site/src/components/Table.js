@@ -35,6 +35,9 @@ const CustomTable = styled(Table)`
   .time-cell {
     min-width: 180px !important;
   }
+  .index-cell {
+    width: 60px !important;
+  }
   td:first-child {
     font-weight: 400 !important;
   }
