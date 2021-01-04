@@ -152,4 +152,7 @@ module.exports = {
   updateTipByTipExtrinsic,
   updateTipFinalState,
   updateTipByClosingEvent,
+  getTippersCount,
+  getTipMeta,
+  computeTipValue,
 };

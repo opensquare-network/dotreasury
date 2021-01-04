@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "@polkadot/api": "^3.2.3",
+    "@polkadot/types": "^3.2.3",
     "@polkadot/util": "^5.2.2",
+    "@polkadot/util-crypto": "^5.2.2",
     "dotenv": "^8.2.0",
     "log4js": "^6.3.0",
     "mongodb": "^3.6.3"

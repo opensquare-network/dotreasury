@@ -4,11 +4,19 @@ const {
   Modules,
   ProxyMethods,
   ksmFirstTipClosedHeight,
+  MultisigMethods,
 } = require("../../utils/constants");
 const {
   updateTipByTipExtrinsic,
   updateTipFinalState,
+  getTippersCount,
+  getTipMeta,
+  computeTipValue,
 } = require("../../store/tip");
+const { getApi } = require("../../api");
+const { GenericCall } = require("@polkadot/types");
+const { getTipCollection } = require("../../mongo");
+const { createKeyMulti, encodeAddress } = require("@polkadot/util-crypto");
 
 async function handleTipExtrinsic(normalizedExtrinsic) {
   const { section, name, args } = normalizedExtrinsic;
@@ -61,7 +69,59 @@ async function handleTipByProxy(normalizedExtrinsic) {
   }
 }
 
+async function handleTipByMultiSig(normalizedExtrinsic, extrinsic) {
+  const { section, name, args } = normalizedExtrinsic;
+  if (Modules.Multisig !== section || MultisigMethods.asMulti !== name) {
+    return;
+  }
+
+  const indexer = normalizedExtrinsic.extrinsicIndexer;
+  const {
+    threshold,
+    other_signatories: otherSignatories,
+    call: rawCall,
+  } = args;
+
+  const api = await getApi();
+  const registry = await api.getBlockRegistry(indexer.blockHash);
+  const call = new GenericCall(registry.registry, rawCall);
+  if (Modules.Treasury !== call.section || TipMethods.tip !== call.method) {
+    return;
+  }
+
+  const {
+    args: { hash, tip_value: tipValue },
+  } = call.toJSON();
+  const tippersCount = await getTippersCount(indexer.blockHash);
+  const meta = await getTipMeta(indexer.blockHash, hash);
+  const updates = { tippersCount, meta, medianValue: computeTipValue(meta) };
+
+  const multiAddresses = [normalizedExtrinsic.signer, ...otherSignatories];
+  const multiPub = createKeyMulti(multiAddresses, threshold);
+  const tipper = encodeAddress(multiPub, registry.registry.chainSS58);
+
+  const tipCol = await getTipCollection();
+  await tipCol.updateOne(
+    { hash, isClosedOrRetracted: false },
+    {
+      $set: updates,
+      $push: {
+        timeline: {
+          type: "extrinsic",
+          method: TipMethods.tip,
+          args: {
+            tipper,
+            value: tipValue,
+          },
+          extrinsic,
+        },
+      },
+    }
+  );
+}
+
 module.exports = {
   handleTipExtrinsic,
   handleTipByProxy,
+  handleTipByMultiSig,
 };
