@@ -1,26 +1,38 @@
 const {
+  TipEvents,
   TipMethods,
   Modules,
   ProxyMethods,
   ksmFirstTipClosedHeight,
 } = require("../../utils/constants");
-const { updateTip } = require("../../store/tip");
+const {
+  updateTipByTipExtrinsic,
+  updateTipFinalState,
+} = require("../../store/tip");
 
-async function handleTipExtrinsic(normalizedExtrinsic, extrinsicIndexer) {
+async function handleTipExtrinsic(normalizedExtrinsic) {
   const { section, name, args } = normalizedExtrinsic;
-
   if (section !== Modules.Treasury) {
     return;
   }
 
-  const noEventTipClose =
+  if (
     name === TipMethods.closeTip &&
-    extrinsicIndexer.blockHeight < ksmFirstTipClosedHeight;
-  if (name === TipMethods.tip || noEventTipClose) {
-    await updateTip(args.hash, name, args, extrinsicIndexer, {
-      ...normalizedExtrinsic,
-      extrinsicIndexer,
-    });
+    normalizedExtrinsic.extrinsicIndexer.blockHeight < ksmFirstTipClosedHeight
+  ) {
+    await updateTipFinalState(
+      args.hash,
+      TipEvents.TipClosed,
+      args,
+      normalizedExtrinsic
+    );
+  } else if (name === TipMethods.tip) {
+    await updateTipByTipExtrinsic(
+      args.hash,
+      TipMethods.tip,
+      args,
+      normalizedExtrinsic
+    );
   }
 }
 
@@ -32,7 +44,7 @@ function isTipProxy(callArgs) {
   );
 }
 
-async function handleTipByProxy(normalizedExtrinsic, extrinsicIndexer) {
+async function handleTipByProxy(normalizedExtrinsic) {
   const { section, name, args } = normalizedExtrinsic;
   if (Modules.Proxy !== section || ProxyMethods.proxy !== name) {
     return;
@@ -40,10 +52,12 @@ async function handleTipByProxy(normalizedExtrinsic, extrinsicIndexer) {
 
   const callArgs = args.call.args;
   if (isTipProxy(callArgs)) {
-    await updateTip(callArgs.hash, TipMethods.tip, callArgs, extrinsicIndexer, {
-      ...normalizedExtrinsic,
-      extrinsicIndexer,
-    });
+    await updateTipByTipExtrinsic(
+      callArgs.hash,
+      TipMethods.tip,
+      callArgs,
+      normalizedExtrinsic
+    );
   }
 }
 

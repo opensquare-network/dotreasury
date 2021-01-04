@@ -9,16 +9,14 @@ const { getBlockIndexer } = require("./block/getBlockIndexer");
 const { handleExtrinsics } = require("./extrinsic");
 const { handleEvents } = require("./events");
 const {
-  blocksWithTreasuryOrProxyExtrinsics,
+  knownHeights,
   maxKnowHeightWithTreasuryOrProxyExtrinsic,
 } = require("./block/knownTreasuryBlocks");
 
 async function scanKnowBlocks(toScanHeight) {
-  let index = blocksWithTreasuryOrProxyExtrinsics.findIndex(
-    (height) => height >= toScanHeight
-  );
-  while (index < blocksWithTreasuryOrProxyExtrinsics.length - 1) {
-    const height = blocksWithTreasuryOrProxyExtrinsics[index];
+  let index = knownHeights.findIndex((height) => height >= toScanHeight);
+  while (index < knownHeights.length - 1) {
+    const height = knownHeights[index];
     await scanBlockByHeight(height);
     await updateScanHeight(height);
     index++;
@@ -30,10 +28,11 @@ async function main() {
   let scanHeight = await getNextScanHeight();
   await deleteDataFrom(scanHeight);
 
-  if (scanHeight < maxKnowHeightWithTreasuryOrProxyExtrinsic) {
+  const maxHeight = maxKnowHeightWithTreasuryOrProxyExtrinsic;
+  if (scanHeight < maxHeight) {
     await scanKnowBlocks(scanHeight);
   }
-  scanHeight = maxKnowHeightWithTreasuryOrProxyExtrinsic + 1;
+  scanHeight = maxHeight + 1;
 
   while (true) {
     const chainHeight = getLatestHeight();

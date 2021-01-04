@@ -7,13 +7,17 @@ async function handleExtrinsics(extrinsics = [], allEvents = [], indexer) {
   let index = 0;
   for (const extrinsic of extrinsics) {
     const events = extractExtrinsicEvents(allEvents, index);
-
-    await handleExtrinsic(
-      extrinsic,
+    const normalized = normalizeExtrinsic(extrinsic, events);
+    const extrinsicIndexer = {
+      ...indexer,
+      index: index++,
+    };
+    await extractExtrinsicBusinessData(
       {
-        ...indexer,
-        index: index++,
+        ...normalized,
+        extrinsicIndexer,
       },
+      extrinsicIndexer,
       events
     );
   }
@@ -47,11 +51,6 @@ function normalizeExtrinsic(extrinsic, events) {
     data,
     isSuccess,
   };
-}
-
-async function handleExtrinsic(extrinsic, indexer, events) {
-  const normalized = normalizeExtrinsic(extrinsic, events);
-  await extractExtrinsicBusinessData(normalized, indexer, events);
 }
 
 module.exports = {

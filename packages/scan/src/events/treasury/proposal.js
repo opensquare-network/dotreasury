@@ -1,30 +1,45 @@
 const { ProposalEvents } = require("../../utils/constants");
 const {
   saveNewProposal,
-  saveProposalTimeline,
+  updateProposalStateByEvent,
 } = require("../../store/proposal");
+const { Modules } = require("../../utils/constants");
 
 function isProposalEvent(method) {
   return ProposalEvents.hasOwnProperty(method);
 }
 
-const isStateChange = isProposalEvent;
-
-async function handleProposalEvent(method, jsonData, indexer, sort) {
-  if (!isProposalEvent(method)) {
+async function handleProposalEvent(
+  event,
+  blockIndexer,
+  nullableNormalizedExtrinsic
+) {
+  const { section, method, data } = event;
+  if (Modules.Treasury !== section || !isProposalEvent(method)) {
     return;
   }
 
+  const eventData = data.toJSON();
+  const proposalIndex = eventData[0];
   if (method === ProposalEvents.Proposed) {
-    const [proposalIndex] = jsonData;
-    await saveNewProposal(proposalIndex, indexer);
+    await saveNewProposal(
+      proposalIndex,
+      blockIndexer,
+      nullableNormalizedExtrinsic
+    );
+  } else if (
+    [ProposalEvents.Rejected, ProposalEvents.Awarded].includes(method)
+  ) {
+    await updateProposalStateByEvent(
+      event,
+      blockIndexer,
+      nullableNormalizedExtrinsic
+    );
   }
 
-  if (isStateChange(method)) {
-    const proposalIndex = jsonData[0];
-    const state = method;
-    await saveProposalTimeline(proposalIndex, state, jsonData, indexer, sort);
-  }
+  // if (isStateChange(method)) {
+  //   await saveProposalTimeline(proposalIndex, method, eventData, indexer, sort);
+  // }
 }
 
 module.exports = {

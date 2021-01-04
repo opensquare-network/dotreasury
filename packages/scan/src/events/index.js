@@ -1,5 +1,7 @@
-const { extractEventBusinessData } = require("./extractBusiness");
-const { normalizeExtrinsic } = require("../extrinsic/index")
+const { normalizeExtrinsic } = require("../extrinsic/index");
+const { handleTipEvent } = require("./treasury/tip");
+const { handleProposalEvent } = require("./treasury/proposal");
+const { handleCouncilEvent } = require("./council/index");
 
 async function handleEvents(events, blockIndexer, extrinsics) {
   if (events.length <= 0) {
@@ -9,21 +11,20 @@ async function handleEvents(events, blockIndexer, extrinsics) {
   for (let sort = 0; sort < events.length; sort++) {
     const { event, phase } = events[sort];
 
+    let normalizedExtrinsic;
     if (!phase.isNull) {
       const phaseValue = phase.value.toNumber();
       const extrinsic = extrinsics[phaseValue];
-
-      const normalizedExtrinsic = {
+      normalizedExtrinsic = {
         extrinsicIndexer: { ...blockIndexer, index: phaseValue },
-        ...normalizeExtrinsic(extrinsic, events)
-      }
-      await extractEventBusinessData(
-        event,
-        normalizedExtrinsic,
-        blockIndexer,
-        sort
-      );
+        ...normalizeExtrinsic(extrinsic, events),
+      };
+
+      await handleTipEvent(event, normalizedExtrinsic, blockIndexer);
+      await handleCouncilEvent(event, normalizedExtrinsic, extrinsic);
     }
+
+    await handleProposalEvent(event, blockIndexer, normalizedExtrinsic);
   }
 }
 

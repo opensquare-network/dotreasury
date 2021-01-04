@@ -22,6 +22,7 @@
     "redux": "^4.0.5",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^2.0.1",
+    "socket.io-client": "^3.0.4",
     "styled-components": "^5.2.1",
     "web-vitals": "^0.2.4"
   },
@@ -50,6 +51,7 @@
     ]
   },
   "devDependencies": {
+    "@types/socket.io-client": "^1.4.34",
     "react-app-rewired": "^2.1.8"
   }
 }

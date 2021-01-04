@@ -15,9 +15,7 @@ import {
   tipCountdownSelector,
   tipFindersFeeSelector,
 } from "../../store/reducers/tipSlice";
-import {
-  currentBlockHeightSelector,
-} from "../../store/reducers/chainSlice";
+import { scanHeightSelector } from "../../store/reducers/chainSlice";
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -32,19 +30,22 @@ const TippersLabel = styled.div`
   color: rgba(29, 37, 60, 0.64);
 `;
 
-const TipLefeCycleTabel = () => {
+const TipLifeCycleTable = () => {
   const tipDetail = useSelector(normalizedTipDetailSelector);
   const tipFindersFee = useSelector(tipFindersFeeSelector);
   const tipCountdown = useSelector(tipCountdownSelector);
-  const currentBlockHeight = useSelector(currentBlockHeightSelector);
+  const scanHeight = useSelector(scanHeightSelector);
   const tippersCount = tipDetail.tippersCount;
-  const closeFromBlockHeight = tipDetail.closeFromBlockHeight;
-  const progressBlockHeight = Math.min(closeFromBlockHeight, currentBlockHeight);
-  const reminingCountdown = closeFromBlockHeight - progressBlockHeight;
-  const precent = 1 - reminingCountdown / tipCountdown;
+
+  const begin = tipDetail.closeFromBlockHeight - tipCountdown;
+  const goneBlocks = Math.max(scanHeight - begin, 0);
+  const percentage = goneBlocks > tipCountdown ? 1 : goneBlocks / tipCountdown;
 
   const thresholdTotalCount = tippersCount ? (tippersCount + 1) / 2 : 0;
-  const findersFee = tipDetail?.timeline?.[0]?.extrinsic?.name === "tipNew" ? 0 : `${tipFindersFee.toFixed(2)}%`;
+  const findersFee =
+    tipDetail?.timeline?.[0]?.extrinsic?.name === "tipNew"
+      ? 0
+      : `${tipFindersFee.toFixed(2)}%`;
 
   return (
     <Table striped selectable>
@@ -59,7 +60,9 @@ const TipLefeCycleTabel = () => {
             <TableCell title="Status">
               <FlexWrapper>
                 <div>{tipDetail.showStatus}</div>
-                <TimeLabel value={<TimeElapsed from={tipDetail.latestState?.time} />} />
+                <TimeLabel
+                  value={<TimeElapsed from={tipDetail.latestState?.time} />}
+                />
               </FlexWrapper>
             </TableCell>
           </Table.Cell>
@@ -68,8 +71,13 @@ const TipLefeCycleTabel = () => {
           <Table.Cell>
             <TableCell title="Threshold">
               <FlexWrapper>
-                <TippersProgress total={thresholdTotalCount} current={tipDetail.tipsCount} />
-                <TippersLabel>{tipDetail.tipsCount}/{thresholdTotalCount}</TippersLabel>
+                <TippersProgress
+                  total={thresholdTotalCount}
+                  current={tipDetail.tipsCount}
+                />
+                <TippersLabel>
+                  {tipDetail.tipsCount}/{thresholdTotalCount}
+                </TippersLabel>
               </FlexWrapper>
             </TableCell>
           </Table.Cell>
@@ -77,16 +85,17 @@ const TipLefeCycleTabel = () => {
         <Table.Row>
           <Table.Cell>
             <TableCell title="Tip Count Down">
-            { closeFromBlockHeight
-                ? <FlexWrapper>
-                    <Progress percent={precent * 100} />
-                    <TipCountDownLabel value={tipCountdown - reminingCountdown} total={tipCountdown} />
-                  </FlexWrapper>
-                : <FlexWrapper>
-                    <Progress percent={0} />
-                    <TipCountDownLabel value={0} total={tipCountdown} />
-                  </FlexWrapper>
-            }
+              {tipDetail.closeFromBlockHeight ? (
+                <FlexWrapper>
+                  <Progress percent={percentage * 100} />
+                  <TipCountDownLabel value={goneBlocks} total={tipCountdown} />
+                </FlexWrapper>
+              ) : (
+                <FlexWrapper>
+                  <Progress percent={0} />
+                  <TipCountDownLabel value={0} total={tipCountdown} />
+                </FlexWrapper>
+              )}
             </TableCell>
           </Table.Cell>
         </Table.Row>
@@ -102,4 +111,4 @@ const TipLefeCycleTabel = () => {
   );
 };
 
-export default TipLefeCycleTabel;
+export default TipLifeCycleTable;

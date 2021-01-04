@@ -1,9 +1,15 @@
-const { TipEvents, ProxyMethods, TipMethods } = require("../utils/constants");
+const { TipEvents, ProxyMethods } = require("../utils/constants");
 const { hexToString } = require("@polkadot/util");
 const { getTipCollection } = require("../mongo");
 const { getApi } = require("../api");
 const { median } = require("../utils");
 const { logger } = require("../utils");
+
+async function getTipMetaByBlockHeight(height, tipHash) {
+  const api = await getApi();
+  const blockHash = await api.rpc.chain.getBlockHash(height);
+  return await getTipMeta(blockHash, tipHash);
+}
 
 async function getTipMeta(blockHash, tipHash) {
   const api = await getApi();
@@ -84,39 +90,53 @@ async function saveNewTip(hash, extrinsic, blockIndexer) {
   });
 }
 
-async function updateTip(hash, state, data, indexer, extrinsic) {
-  const updates = {};
-  if (
-    [TipEvents.TipClosed, TipEvents.TipRetracted].includes(state) ||
-    state === TipMethods.closeTip
-  ) {
-    Object.assign(updates, { isClosedOrRetracted: true });
-  }
+async function updateTipByClosingEvent(hash, state, data, extrinsic) {
+  const blockHash = extrinsic.extrinsicIndexer.blockHash;
+  const meta = await getTipMeta(blockHash, hash);
+  const tippersCount = await getTippersCount(blockHash);
+  const updates = { tippersCount, meta, medianValue: computeTipValue(meta) };
 
-  if (state === TipMethods.tip) {
-    const tippersCount = await getTippersCount(indexer.blockHash);
-    Object.assign(updates, { tippersCount });
-  }
+  const tipCol = await getTipCollection();
+  await tipCol.updateOne(
+    { hash, isClosedOrRetracted: false },
+    { $set: updates }
+  );
+}
 
+async function updateTipFinalState(hash, state, data, extrinsic) {
+  const indexer = extrinsic.extrinsicIndexer;
+  const meta = await getTipMetaByBlockHeight(indexer.blockHeight - 1, hash);
+  const updates = {
+    isClosedOrRetracted: true,
+    meta,
+    state: { indexer, state, data },
+  };
+  await updateDbTipData(hash, updates, extrinsic);
+}
+
+async function updateTipByTipExtrinsic(hash, state, data, extrinsic) {
+  const indexer = extrinsic.extrinsicIndexer;
+  const tippersCount = await getTippersCount(indexer.blockHash);
   const meta = await getTipMeta(indexer.blockHash, hash);
-  if (meta) {
-    const medianValue = computeTipValue(meta);
-    Object.assign(updates, { meta, medianValue });
-  }
+  const updates = { tippersCount, meta, medianValue: computeTipValue(meta) };
 
   logger.info(`update tip with ${state} extrinsic ${extrinsic.hash}`);
+  await updateDbTipData(
+    hash,
+    {
+      ...updates,
+      state: { indexer, state, data },
+    },
+    extrinsic
+  );
+}
+
+async function updateDbTipData(hash, updates, extrinsic) {
   const tipCol = await getTipCollection();
   await tipCol.updateOne(
     { hash, isClosedOrRetracted: false },
     {
-      $set: {
-        ...updates,
-        state: {
-          indexer,
-          state: state === TipMethods.closeTip ? TipEvents.TipClosed : state,
-          data,
-        },
-      },
+      $set: updates,
       $push: {
         timeline: {
           type: "extrinsic",
@@ -129,5 +149,7 @@ async function updateTip(hash, state, data, indexer, extrinsic) {
 
 module.exports = {
   saveNewTip,
-  updateTip,
+  updateTipByTipExtrinsic,
+  updateTipFinalState,
+  updateTipByClosingEvent,
 };

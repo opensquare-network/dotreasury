@@ -7,6 +7,7 @@ const blockCollectionName = "block";
 const eventCollectionName = "event";
 const extrinsicCollectionName = "extrinsic";
 const tipCollectionName = "tip";
+const motionCollectionName = "motion";
 const tipTimelineCollectionName = "tipTimeline";
 const bountyCollectionName = "bounty";
 const bountyTimelineCollectionName = "bountyTimeline";
@@ -29,6 +30,7 @@ let bountyTimelineCol = null;
 let proposalCol = null;
 let proposalTimelineCol = null;
 let councilProposalCol = null;
+let motionCol = null;
 
 async function initDb() {
   client = await MongoClient.connect(mongoUrl, {
@@ -47,6 +49,7 @@ async function initDb() {
   proposalCol = db.collection(proposalCollectionName);
   proposalTimelineCol = db.collection(proposalTimelineCollectionName);
   councilProposalCol = db.collection(councilProposalCollectionName);
+  motionCol = db.collection(motionCollectionName);
 
   await _createIndexes();
 }
@@ -64,6 +67,11 @@ async function tryInit(col) {
   if (!col) {
     await initDb();
   }
+}
+
+async function getMotionCollection() {
+  await tryInit(statusCol);
+  return motionCol;
 }
 
 async function getStatusCollection() {
@@ -133,4 +141,5 @@ module.exports = {
   getProposalCollection,
   getProposalTimelineCollection,
   getCouncilProposalCollection,
+  getMotionCollection,
 };

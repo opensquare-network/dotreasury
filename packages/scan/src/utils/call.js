@@ -6,6 +6,10 @@ const {
   BountyMethods,
 } = require("./constants");
 
+const treasuryProposalCouncilIndexes = ["0x1201", "0x1202"];
+const approveProposalIndex = "0x1202";
+const rejectProposalIndex = "0x1201";
+
 const callIndexs = {
   "0x0e03": {
     callIndex: "0x0e03",
@@ -48,4 +52,7 @@ module.exports = {
   translate(callIndex) {
     return callIndexs[callIndex];
   },
+  treasuryProposalCouncilIndexes,
+  approveProposalIndex,
+  rejectProposalIndex,
 };
