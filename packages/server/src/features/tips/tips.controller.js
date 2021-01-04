@@ -76,7 +76,8 @@ class TipsController {
   }
 
   async getTipLinks(ctx) {
-    const { blockHeight, tipHash } = ctx.params;
+    const tipHash = ctx.params.tipHash;
+    const blockHeight = parseInt(ctx.params.blockHeight);
 
     const linkCol = await getLinkCollection();
     const tipLinks = await linkCol.findOne({
@@ -87,7 +88,78 @@ class TipsController {
       },
     });
 
-    ctx.body = tipLinks?.links ?? [];
+    if (tipLinks && tipLinks.inReasonExtracted) {
+      ctx.body = tipLinks?.links ?? [];
+      return;
+    }
+
+    const tipCol = await getTipCollection();
+    const tip = await tipCol.findOne({ hash: tipHash, 'indexer.blockHeight': blockHeight });
+    if (!tip) {
+      ctx.status = 404;
+      return;
+    }
+
+    // Pull existing inReason links before re-push
+    await linkCol.updateOne({
+      type: "tip",
+      indexer: {
+        blockHeight,
+        tipHash,
+      },
+    }, {
+      $pull: {
+        links: {
+          inReasons: true,
+        }
+      }
+    });
+
+    // Extract all links that present in reason text
+    const urlRegex = /(https?:\/\/[^ ]*)/g;
+    let match;
+    while (match = urlRegex.exec(tip.reason)) {
+      const inReasonLink = match[1];
+
+      await linkCol.updateOne({
+        type: "tip",
+        indexer: {
+          blockHeight,
+          tipHash,
+        },
+      }, {
+        $push: {
+          links: {
+            link: inReasonLink,
+            description: "",
+            inReasons: true,
+          }
+        }
+      }, { upsert: true });
+    }
+
+    // Remember that the inReason links has been processed
+    await linkCol.updateOne({
+      type: "tip",
+      indexer: {
+        blockHeight,
+        tipHash,
+      },
+    }, {
+      $set: {
+        inReasonExtracted: true,
+      },
+    }, { upsert: true });
+
+    const updatedTipLinks = await linkCol.findOne({
+      type: "tip",
+      indexer: {
+        blockHeight,
+        tipHash,
+      },
+    });
+
+    ctx.body = updatedTipLinks?.links ?? [];
   }
 
   async verifySignature(ctx, message) {
@@ -119,7 +191,9 @@ class TipsController {
   }
 
   async createTipLink(ctx) {
-    const { blockHeight, tipHash } = ctx.params;
+    const tipHash = ctx.params.tipHash;
+    const blockHeight = parseInt(ctx.params.blockHeight);
+
     const { link, description } = ctx.request.body;
 
     const success = await this.verifySignature(ctx, JSON.stringify({
@@ -153,7 +227,8 @@ class TipsController {
   }
 
   async deleteTipLink(ctx) {
-    const { blockHeight, tipHash, linkIndex } = ctx.params;
+    const { tipHash, linkIndex } = ctx.params;
+    const blockHeight = parseInt(ctx.params.blockHeight);
 
     const success = await this.verifySignature(ctx, JSON.stringify({
       type: "tips",

@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Image } from "semantic-ui-react";
 import { stringUpperFirst } from "@polkadot/util";
+import ExternalLink from "../../components/ExplorerLink";
 
 const Wrapper = styled.div`
   display: flex;
@@ -40,10 +41,12 @@ const Link = ({ link, text }) => {
 
   return (
     <Wrapper>
-      <LinkWrapper>
-        <Image src={src} />
-        <Text>{name}</Text>
-      </LinkWrapper>
+      <ExternalLink href={link}>
+        <LinkWrapper>
+          <Image src={src} />
+          <Text>{name}</Text>
+        </LinkWrapper>
+      </ExternalLink>
       <Text>{text}</Text>
     </Wrapper>
   );
