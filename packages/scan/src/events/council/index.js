@@ -41,6 +41,13 @@ async function getMotionVoting(blockHash, motionHash) {
   return votingObject.toJSON();
 }
 
+async function getMotionVotingByHeight(height, motionHash) {
+  const api = await getApi();
+  const blockHash = await api.rpc.chain.getBlockHash(height);
+
+  return await getMotionVoting(blockHash, motionHash);
+}
+
 function extractCallIndexAndArgs(normalizedExtrinsic) {
   // TODO: handle proxy extrinsic
   const { section, name, args } = normalizedExtrinsic;
@@ -141,8 +148,8 @@ async function handleVoteEvent(event, normalizedExtrinsic) {
 async function handleClosedEvent(event, normalizedExtrinsic) {
   const eventData = event.data.toJSON();
   const hash = eventData[0];
-  const voting = await getMotionVoting(
-    normalizedExtrinsic.extrinsicIndexer.blockHash,
+  const voting = await getMotionVotingByHeight(
+    normalizedExtrinsic.extrinsicIndexer.blockHeight - 1,
     hash
   );
 
@@ -172,8 +179,8 @@ async function handleClosedEvent(event, normalizedExtrinsic) {
 async function handleApprovedEvent(event, normalizedExtrinsic) {
   const eventData = event.data.toJSON();
   const hash = eventData[0];
-  const voting = await getMotionVoting(
-    normalizedExtrinsic.extrinsicIndexer.blockHash,
+  const voting = await getMotionVotingByHeight(
+    normalizedExtrinsic.extrinsicIndexer.blockHeight - 1,
     hash
   );
 
@@ -217,8 +224,8 @@ async function handleApprovedEvent(event, normalizedExtrinsic) {
 async function handleDisapprovedEvent(event, normalizedExtrinsic) {
   const eventData = event.data.toJSON();
   const hash = eventData[0];
-  const voting = await getMotionVoting(
-    normalizedExtrinsic.extrinsicIndexer.blockHash,
+  const voting = await getMotionVotingByHeight(
+    normalizedExtrinsic.extrinsicIndexer.blockHeight - 1,
     hash
   );
 
