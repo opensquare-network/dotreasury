@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Divider, Tab } from "semantic-ui-react";
 import { NavLink, useLocation } from "react-router-dom";
 import TipsMenu from "./TipsMenu";
+import ProposalsMenu from "./ProposalsMenu";
 
 import {
   TEXT_DARK_MAJOR,
@@ -83,7 +84,7 @@ const TabExampleSecondaryPointing = () => {
       menuItem: {
         as: NavLink,
         id: "proposalsTab",
-        content: "Proposals",
+        content: <ProposalsMenu />,
         to: "/proposals",
         exact: true,
         key: "proposals",

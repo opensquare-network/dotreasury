@@ -1,7 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
+import { useHistory } from "react-router";
 import { Dimmer, Segment, Image } from "semantic-ui-react";
+import dayjs from "dayjs";
 
 import Table from "../../components/Table";
 import User from "../../components/User/Index";
@@ -42,9 +44,12 @@ const StyledTable = styled(Table)`
 `;
 
 const ProposalsTable = ({ data, loading }) => {
+  const history = useHistory();
 
-  const onClickRow = (height, hash) => {
-
+  const onClickRow = (proposalIndex) => {
+    if (window.innerWidth < 1140) {
+      history.push(`/proposals/${proposalIndex}`);
+    }
   }
 
   return (
@@ -58,7 +63,7 @@ const ProposalsTable = ({ data, loading }) => {
             <Table.Row>
               <Table.HeaderCell>Index</Table.HeaderCell>
               <Table.HeaderCell>Beneficiary</Table.HeaderCell>
-              <Table.HeaderCell>Proposal by</Table.HeaderCell>
+              <Table.HeaderCell>Proposer</Table.HeaderCell>
               <Table.HeaderCell textAlign={"right"}>Value</Table.HeaderCell>
               <Table.HeaderCell textAlign={"right"}>Status</Table.HeaderCell>
               <Table.HeaderCell className="hidden" />
@@ -68,27 +73,29 @@ const ProposalsTable = ({ data, loading }) => {
             {(data &&
               data.length > 0 &&
               data.map((item, index) => (
-                <Table.Row key={index} onClick={() => onClickRow()}>
+                <Table.Row key={index} onClick={() => onClickRow(item.proposalIndex)}>
                   <Table.Cell className="index-cell">
-                    <TextMinor>{`#${item.proposalId}`}</TextMinor>
+                    <TextMinor>{`#${item.proposalIndex}`}</TextMinor>
                   </Table.Cell>
                   <Table.Cell className="user-cell">
                     <User address={item.beneficiary} />
                   </Table.Cell>
                   <Table.Cell className="user-cell">
-                    <User address={item.proposalBy} />
+                    <User address={item.proposer} />
                   </Table.Cell>
                   <Table.Cell textAlign={"right"}>
                     <Balance value={item.value} />
                   </Table.Cell>
                   <Table.Cell className="status-cell" textAlign={"right"}>
                     <PairTextVertical
-                        value={item.status}
-                        detail={item.time}
+                        value={item.latestState.state}
+                        detail={dayjs(parseInt(item.proposeTime)).format(
+                          "YYYY-MM-DD HH:mm"
+                        )}
                       />
                   </Table.Cell>
                   <Table.Cell className="link-cell hidden">
-                    <NavLink to={`/proposals`}>
+                    <NavLink to={`/proposals/${item.proposalIndex}`}>
                       <RightButton />
                     </NavLink>
                   </Table.Cell>
