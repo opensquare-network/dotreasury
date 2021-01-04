@@ -56,14 +56,10 @@ async function scanBlockByHeight(scanHeight) {
 
   const blockIndexer = getBlockIndexer(block.block);
 
-  // await handleEvents(allEvents, blockIndexer, block.block.extrinsics);
+  await handleEvents(allEvents, blockIndexer, block.block.extrinsics);
   await handleExtrinsics(block.block.extrinsics, allEvents, blockIndexer);
   logger.info(`block ${block.block.header.number.toNumber()} done`);
 }
 
-async function test() {
-  await scanBlockByHeight(5379799);
-}
-
 // FIXME: log the error
-test().catch(console.error);
+main().catch(console.error);

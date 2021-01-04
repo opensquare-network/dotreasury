@@ -9,8 +9,8 @@ async function extractExtrinsicBusinessData(normalizedExtrinsic, extrinsic) {
     return;
   }
 
-  // await handleTipExtrinsic(normalizedExtrinsic);
-  // await handleTipByProxy(normalizedExtrinsic);
+  await handleTipExtrinsic(normalizedExtrinsic);
+  await handleTipByProxy(normalizedExtrinsic, extrinsic);
   await handleTipByMultiSig(normalizedExtrinsic, extrinsic);
   // await handleBountyExtrinsic(section, name, args, isSuccess, indexer, events);
   // await handleProposalExtrinsic(
