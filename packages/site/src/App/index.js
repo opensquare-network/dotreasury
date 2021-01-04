@@ -9,6 +9,7 @@ import "../services/websocket";
 
 import Container from "../components/Container";
 import { PageWrapper } from "./components";
+import ScrollToTop from "../components/ScrollToTop";
 import Header from "../pages/Header";
 import Footer from "../pages/Footer";
 import Tips from "../pages/Tips";
@@ -24,6 +25,7 @@ export default function App() {
       <Header />
       <PageWrapper>
         <Container>
+          <ScrollToTop />
           <Switch>
             <Route exact path="/" component={Overview} />
             <Route exact path="/tips" component={Tips} />
