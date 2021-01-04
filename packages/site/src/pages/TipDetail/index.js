@@ -218,8 +218,8 @@ const TipDetail = () => {
         <Title>Detail</Title>
       </HeaderWrapper>
       <TableWrapper>
-        <InformationTable />
-        <TipLifeCycleTable />
+        <InformationTable loading={loadingTipDetail} />
+        <TipLifeCycleTable loading={loadingTipDetail} />
       </TableWrapper>
       <RelatedLinks />
       <Divider />

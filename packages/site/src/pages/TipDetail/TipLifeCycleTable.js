@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 
 import Table from "../../components/Table";
+import TableLoading from "../../components/TableLoading";
 import TableCell from "../../components/TableCell";
 import TimeLabel from "./TimeLabel";
 import Progress from "./Progress";
@@ -30,7 +31,7 @@ const TippersLabel = styled.div`
   color: rgba(29, 37, 60, 0.64);
 `;
 
-const TipLifeCycleTable = () => {
+const TipLifeCycleTable = ({ loading }) => {
   const tipDetail = useSelector(normalizedTipDetailSelector);
   const tipFindersFee = useSelector(tipFindersFeeSelector);
   const tipCountdown = useSelector(tipCountdownSelector);
@@ -48,66 +49,68 @@ const TipLifeCycleTable = () => {
       : `${tipFindersFee.toFixed(2)}%`;
 
   return (
-    <Table striped selectable>
-      <Table.Header>
-        <Table.Row>
-          <Table.HeaderCell>Tip Life Cycle</Table.HeaderCell>
-        </Table.Row>
-      </Table.Header>
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell>
-            <TableCell title="Status">
-              <FlexWrapper>
-                <div>{tipDetail.showStatus}</div>
-                <TimeLabel
-                  value={<TimeElapsed from={tipDetail.latestState?.time} />}
-                />
-              </FlexWrapper>
-            </TableCell>
-          </Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>
-            <TableCell title="Threshold">
-              <FlexWrapper>
-                <TippersProgress
-                  total={thresholdTotalCount}
-                  current={tipDetail.tipsCount}
-                />
-                <TippersLabel>
-                  {tipDetail.tipsCount}/{thresholdTotalCount}
-                </TippersLabel>
-              </FlexWrapper>
-            </TableCell>
-          </Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>
-            <TableCell title="Tip Count Down">
-              {tipDetail.closeFromBlockHeight ? (
+    <TableLoading loading={loading}>
+      <Table striped selectable>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell>Tip Life Cycle</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          <Table.Row>
+            <Table.Cell>
+              <TableCell title="Status">
                 <FlexWrapper>
-                  <Progress percent={percentage * 100} />
-                  <TipCountDownLabel value={goneBlocks} total={tipCountdown} />
+                  <div>{tipDetail.showStatus}</div>
+                  <TimeLabel
+                    value={<TimeElapsed from={tipDetail.latestState?.time} />}
+                  />
                 </FlexWrapper>
-              ) : (
+              </TableCell>
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>
+              <TableCell title="Threshold">
                 <FlexWrapper>
-                  <Progress percent={0} />
-                  <TipCountDownLabel value={0} total={tipCountdown} />
+                  <TippersProgress
+                    total={thresholdTotalCount}
+                    current={tipDetail.tipsCount}
+                  />
+                  <TippersLabel>
+                    {tipDetail.tipsCount}/{thresholdTotalCount}
+                  </TippersLabel>
                 </FlexWrapper>
-              )}
-            </TableCell>
-          </Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>
-            <TableCell title="Finders Fee">
-              <div>{findersFee}</div>
-            </TableCell>
-          </Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    </Table>
+              </TableCell>
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>
+              <TableCell title="Tip Count Down">
+                {tipDetail.closeFromBlockHeight ? (
+                  <FlexWrapper>
+                    <Progress percent={percentage * 100} />
+                    <TipCountDownLabel value={goneBlocks} total={tipCountdown} />
+                  </FlexWrapper>
+                ) : (
+                  <FlexWrapper>
+                    <Progress percent={0} />
+                    <TipCountDownLabel value={0} total={tipCountdown} />
+                  </FlexWrapper>
+                )}
+              </TableCell>
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>
+              <TableCell title="Finders Fee">
+                <div>{findersFee}</div>
+              </TableCell>
+            </Table.Cell>
+          </Table.Row>
+        </Table.Body>
+      </Table>
+    </TableLoading>
   );
 };
 
