@@ -133,8 +133,8 @@ const ProposalDetail = () => {
         <Title>Detail</Title>
       </HeaderWrapper>
       <TableWrapper>
-        <InformationTable />
-        <ProposalLifeCycleTable />
+        <InformationTable loading={loadingProposalDetail} />
+        <ProposalLifeCycleTable loading={loadingProposalDetail} />
       </TableWrapper>
       <RelatedLinks />
       <Divider />
