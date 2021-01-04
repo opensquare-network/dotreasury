@@ -20,7 +20,9 @@ const DEFAULT_PAGE_SIZE = 20;
 const DEDAULT_QUERY_PAGE = 1;
 
 const Tips = () => {
-  const queryPage = useQuery().get("page") || DEDAULT_QUERY_PAGE;
+  const searchPage = parseInt(useQuery().get("page"));
+  const queryPage = searchPage && !isNaN(searchPage) && searchPage > 0 ? searchPage : DEDAULT_QUERY_PAGE;
+
   const [tablePage, setTablePage] = useState(queryPage);
 
   const dispatch = useDispatch();
@@ -28,11 +30,12 @@ const Tips = () => {
   const { items: tips, total } = useSelector(normalizedTipListSelector);
   const loading = useSelector(loadingSelector);
 
+  const totalPages = Math.ceil(total / DEFAULT_PAGE_SIZE);
+
   useEffect(() => {
     dispatch(fetchTips(tablePage - 1, DEFAULT_PAGE_SIZE));
   }, [dispatch, tablePage]);
 
-  const totalPages = Math.ceil(total / DEFAULT_PAGE_SIZE);
 
   return (
     <>
