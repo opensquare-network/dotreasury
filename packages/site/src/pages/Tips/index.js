@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-
 import TipsTable from "./TipsTable";
 import ResponsivePagination from "../../components/ResponsivePagination";
 import Title from "../../components/Title";
@@ -10,18 +9,22 @@ import {
   loadingSelector,
   normalizedTipListSelector,
 } from "../../store/reducers/tipSlice";
+import { useQuery } from "../../utils/hooks";
+import { useHistory } from "react-router";
 
 const Header = styled(Title)`
   margin-bottom: 20px;
 `;
 
 const DEFAULT_PAGE_SIZE = 20;
-
+const DEDAULT_QUERY_PAGE = 1;
 
 const Tips = () => {
-  const [tablePage, setTablePage] = useState(1);
+  const queryPage = useQuery().get("page") || DEDAULT_QUERY_PAGE;
+  const [tablePage, setTablePage] = useState(queryPage);
 
   const dispatch = useDispatch();
+  const history = useHistory();
   const { items: tips, total } = useSelector(normalizedTipListSelector);
   const loading = useSelector(loadingSelector);
 
@@ -39,6 +42,9 @@ const Tips = () => {
         activePage={tablePage}
         totalPages={totalPages}
         onPageChange={(_, { activePage }) => {
+          history.push({
+            search: activePage === DEDAULT_QUERY_PAGE ? null : `?page=${activePage}`
+          });
           setTablePage(activePage);
         }}
       />
