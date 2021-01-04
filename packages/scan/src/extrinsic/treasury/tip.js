@@ -140,7 +140,8 @@ async function handleTipByMultiSig(normalizedExtrinsic, extrinsic) {
 
   const multiAddresses = [normalizedExtrinsic.signer, ...otherSignatories];
   const multiPub = createKeyMulti(multiAddresses, threshold);
-  const tipper = encodeAddress(multiPub, registry.registry.chainSS58);
+  const api = await getApi();
+  const tipper = encodeAddress(multiPub, api.registry.chainSS58);
   await updateTipInDB(hash, updates, tipper, tipValue, normalizedExtrinsic);
 }
 
