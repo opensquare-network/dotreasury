@@ -54,7 +54,7 @@ export const fetchProposals = (page = 0, pageSize = 30) => async (dispatch) => {
 };
 
 export const fetchProposalsCount = () => async (dispatch) => {
-  const { result } = await api.fetch('/proposals/count');
+  const { result } = await api.fetch("/proposals/count");
   dispatch(setProposalsCount(result || 0));
 };
 

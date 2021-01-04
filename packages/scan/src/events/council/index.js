@@ -8,7 +8,7 @@ const {
   treasuryProposalCouncilIndexes,
   approveProposalIndex,
 } = require("../../utils/call");
-const { getMotionCollection } = require("../../mongo");
+const { getMotionCollection, getProposalCollection } = require("../../mongo");
 const { motionActions } = require("./constants");
 const {
   firstKnowCouncilCloseEventHeight,
@@ -112,6 +112,36 @@ async function handleProposed(event, normalizedExtrinsic) {
     },
     timeline,
   });
+
+  await updateProposalStateByProposeOrVote(hash);
+}
+
+async function updateProposalStateByProposeOrVote(hash) {
+  const col = await getMotionCollection();
+  const motion = await col.findOne({ hash });
+  if (!motion) {
+    // it means this motion hash is not a treasury proposal motion hash
+    return;
+  }
+
+  const motionState = motion.state;
+  const motionVoting = motion.voting;
+  const name =
+    motion.method === "approveProposal" ? "ApproveVoting" : "RejectVoting";
+
+  const proposalCol = await getProposalCollection();
+  await proposalCol.findOneAndUpdate(
+    { proposalIndex: motion.treasuryProposalId },
+    {
+      $set: {
+        state: {
+          name,
+          motionState,
+          motionVoting,
+        },
+      },
+    }
+  );
 }
 
 async function handleVoteEvent(event, normalizedExtrinsic) {
@@ -143,6 +173,8 @@ async function handleVoteEvent(event, normalizedExtrinsic) {
       },
     }
   );
+
+  await updateProposalStateByProposeOrVote(hash);
 }
 
 async function handleClosedEvent(event, normalizedExtrinsic) {
@@ -172,6 +204,30 @@ async function handleClosedEvent(event, normalizedExtrinsic) {
           extrinsic: normalizedExtrinsic,
         },
       },
+    }
+  );
+}
+
+async function updateProposalStateByVoteResult(hash, isApproved) {
+  const col = await getMotionCollection();
+  const motion = await col.findOne({ hash });
+  if (!motion) {
+    // it means this motion hash is not a treasury proposal motion hash
+    return;
+  }
+
+  let name;
+  if ("approveProposal" === motion.method) {
+    name = isApproved ? "Approved" : "Proposed";
+  } else if ("rejectProposal" === motion.method && !isApproved) {
+    name = "Proposed";
+  }
+
+  const proposalCol = await getProposalCollection();
+  await proposalCol.findOneAndUpdate(
+    { proposalIndex: motion.treasuryProposalId },
+    {
+      $set: { state: { name } },
     }
   );
 }
@@ -219,6 +275,8 @@ async function handleApprovedEvent(event, normalizedExtrinsic) {
 
   const col = await getMotionCollection();
   await col.updateOne({ hash }, updateObj);
+
+  await updateProposalStateByVoteResult(hash, true);
 }
 
 async function handleDisapprovedEvent(event, normalizedExtrinsic) {
@@ -264,6 +322,8 @@ async function handleDisapprovedEvent(event, normalizedExtrinsic) {
 
   const col = await getMotionCollection();
   await col.updateOne({ hash }, updateObj);
+
+  await updateProposalStateByVoteResult(hash, false);
 }
 
 async function handleExecutedEvent(event) {

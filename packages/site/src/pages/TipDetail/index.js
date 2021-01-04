@@ -80,8 +80,8 @@ function processProxyExtrinsic(extrinsic) {
   }
 
   const {
-    signer,
     args: {
+      real,
       call: { callIndex, args },
     },
     extrinsicIndexer,
@@ -92,7 +92,7 @@ function processProxyExtrinsic(extrinsic) {
     return {
       name,
       args,
-      signer,
+      signer: real,
       extrinsicIndexer,
     };
   }
@@ -100,7 +100,7 @@ function processProxyExtrinsic(extrinsic) {
   return {
     name: `Proxy(${callIndex})`,
     args,
-    signer,
+    signer: real,
     extrinsicIndexer,
   };
 }
@@ -219,8 +219,8 @@ const TipDetail = () => {
         <Title>Detail</Title>
       </HeaderWrapper>
       <TableWrapper>
-        <InformationTable />
-        <TipLifeCycleTable />
+        <InformationTable loading={loadingTipDetail} />
+        <TipLifeCycleTable loading={loadingTipDetail} />
       </TableWrapper>
       <RelatedLinks />
       <Divider />
