@@ -126,12 +126,8 @@ async function handleTipByMultiSig(normalizedExtrinsic, extrinsic) {
   }
 
   const indexer = normalizedExtrinsic.extrinsicIndexer;
-  const {
-    threshold,
-    other_signatories: otherSignatories,
-    call: rawCall,
-  } = args;
-
+  const { threshold, other_signatories: otherSignatories } = args;
+  const rawCall = extrinsic.method.args[3].toHex();
   const call = await getCall(indexer.blockHash, rawCall);
   if (Modules.Treasury !== call.section || TipMethods.tip !== call.method) {
     return;
