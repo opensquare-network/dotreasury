@@ -78,10 +78,15 @@ const Modules = Object.freeze({
   Treasury: "treasury",
   Council: "council",
   Proxy: "proxy",
+  Multisig: "multisig",
 });
 
 const ProxyMethods = Object.freeze({
   proxy: "proxy",
+});
+
+const MultisigMethods = Object.freeze({
+  asMulti: "asMulti",
 });
 
 module.exports = {
@@ -95,6 +100,7 @@ module.exports = {
   CouncilEvents,
   CouncilMethods,
   ProxyMethods,
+  MultisigMethods,
   ksmFirstTipClosedHeight,
   ProposalState,
   ksmFirstRejectedEventHeight,

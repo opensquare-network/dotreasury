@@ -17,8 +17,7 @@ async function handleExtrinsics(extrinsics = [], allEvents = [], indexer) {
         ...normalized,
         extrinsicIndexer,
       },
-      extrinsicIndexer,
-      events
+      extrinsic
     );
   }
 }
