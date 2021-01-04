@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Image } from "semantic-ui-react";
 
-import {TEXT_DARK_MAJOR, TEXT_DARK_MINOR} from "../../constants"
+import {TEXT_DARK_MAJOR, TEXT_DARK_MINOR} from "../constants"
 
 const Wrapper = styled.div`
   display: flex;

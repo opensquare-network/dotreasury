@@ -7,7 +7,7 @@ import TableCell from "../../components/TableCell";
 import User from "../../components/User/Index";
 import Balance from "../../components/Balance";
 import DateShow from "../../components/DateShow";
-import PolygonLabel from "./PolygonLabel";
+import PolygonLabel from "../../components/PolygonLabel";
 import { TipStatus } from "../../constants";
 import ExplorerLink from "../../components/ExplorerLink";
 

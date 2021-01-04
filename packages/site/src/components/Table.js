@@ -47,6 +47,9 @@ const CustomTable = styled(Table)`
   .payout-due-cell {
     min-width: 100px !important;
   }
+  .propose-time-cell {
+    width: 280px !important;
+  }
   td:first-child {
     font-weight: 400 !important;
   }
