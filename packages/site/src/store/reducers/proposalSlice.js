@@ -47,7 +47,7 @@ export const fetchProposals = (page = 0, pageSize = 30) => async (dispatch) => {
 
   try {
     const { result } = await api.fetch('/proposals', { page, pageSize });
-    dispatch(setProposals(result));
+    dispatch(setProposals(result || {}));
   } finally {
     dispatch(setLoading(false));
   }

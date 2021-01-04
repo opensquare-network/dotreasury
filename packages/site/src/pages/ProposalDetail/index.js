@@ -6,6 +6,7 @@ import { Divider, Image } from "semantic-ui-react";
 import { useHistory } from "react-router-dom";
 import {
   fetchProposalDetail,
+  proposalDetailSelector,
   loadingProposalDetailSelector,
 } from "../../store/reducers/proposalSlice";
 
@@ -15,6 +16,8 @@ import Comment from "../Comment";
 import RelatedLinks from "../RelatedLinks";
 import Title from "../../components/Title";
 import ProposalLifeCycleTable from "./ProposalLifeCycleTable";
+import User from "../../components/User/Index";
+import Balance from "../../components/Balance";
 
 const HeaderWrapper = styled.div`
   display: flex;
@@ -52,6 +55,63 @@ const TimelineCommentWrapper = styled.div`
   }
 `;
 
+function processTimeline(proposalDetail) {
+  return [{
+    name: "Proposed",
+    extrinsicIndexer: {
+      blockTime: proposalDetail.proposeTime,
+    },
+    fields: [{
+      title: "Proposer",
+      value: <User address={proposalDetail.proposer} />
+    }, {
+      title: "Beneficiary",
+      value: <User address={proposalDetail.beneficiary} />
+    }, {
+      title: "Value",
+      value: <Balance value={proposalDetail.value} />
+    }]
+  },
+  ...(proposalDetail.motions || []).map(motion => ({
+    subTimeline: (motion.timeline || []).map(item => ({
+      name: (item.action === "Propose" ? motion.method : (item.action === "Close" ? motion.result : item.action)),
+      extrinsicIndexer: item.extrinsic.extrinsicIndexer,
+      fields: (() => {
+        if (item.action === "Propose") {
+          const [proposer, , , threshold] = item.eventData;
+          return [{
+            title: "Proposer",
+            value: <User address={proposer} />
+          }, {
+            title: "Threshold",
+            value: threshold
+          }];
+        } else if (item.action === "Vote") {
+          const [voter, , agree] = item.eventData;
+          return [{
+            title: "Voter",
+            value: <User address={voter} />
+          }, {
+            title: "Agree",
+            value: agree ? "Yes" : "No",
+          }];
+        } else if (item.action === "Close") {
+          const [, aye, nay] = item.eventData;
+          return [{
+            title: "Aye",
+            value: aye
+          }, {
+            title: "Nay",
+            value: nay,
+          }];
+        } else {
+          return [];
+        }
+      })(),
+    }))
+  }))]
+}
+
 const ProposalDetail = () => {
   const history = useHistory();
   const { proposalIndex } = useParams();
@@ -62,6 +122,7 @@ const ProposalDetail = () => {
   }, [dispatch, proposalIndex]);
 
   const loadingProposalDetail = useSelector(loadingProposalDetailSelector);
+  const proposalDetail = useSelector(proposalDetailSelector);
 
   return (
     <>
@@ -79,7 +140,7 @@ const ProposalDetail = () => {
       <Divider />
       <TimelineCommentWrapper>
         <Timeline
-          data={[]}
+          data={processTimeline(proposalDetail)}
           loading={loadingProposalDetail}
         />
         <Comment />
