@@ -5,6 +5,8 @@ import Title from "../../components/Title";
 import ResponsivePagination from "../../components/ResponsivePagination";
 import ProposalsTable from "./ProposalsTable";
 import { useDispatch, useSelector } from "react-redux";
+import { useQuery } from "../../utils/hooks";
+import { useHistory } from "react-router";
 
 import {
   fetchProposals,
@@ -17,11 +19,15 @@ const Header = styled(Title)`
 `;
 
 const DEFAULT_PAGE_SIZE = 20;
+const DEDAULT_QUERY_PAGE = 1;
 
 const Proposals = () => {
-  const [tablePage, setTablePage] = useState(1);
+  const searchPage = parseInt(useQuery().get("page"));
+  const queryPage = searchPage && !isNaN(searchPage) && searchPage > 0 ? searchPage : DEDAULT_QUERY_PAGE;
+  const [tablePage, setTablePage] = useState(queryPage);
 
   const dispatch = useDispatch();
+  const history = useHistory();
   const { items: proposals, total } = useSelector(proposalListSelector);
   const loading = useSelector(loadingSelector);
 
@@ -39,6 +45,9 @@ const Proposals = () => {
         activePage={tablePage}
         totalPages={totalPages}
         onPageChange={(_, { activePage }) => {
+          history.push({
+            search: activePage === DEDAULT_QUERY_PAGE ? null : `?page=${activePage}`
+          });
           setTablePage(activePage);
         }}
       />

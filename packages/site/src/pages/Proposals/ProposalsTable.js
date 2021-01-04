@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { useHistory } from "react-router";
-import { Dimmer, Segment, Image } from "semantic-ui-react";
 import dayjs from "dayjs";
 
 import Table from "../../components/Table";
