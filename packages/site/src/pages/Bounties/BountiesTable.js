@@ -78,13 +78,13 @@ const ProposalsTable = ({ data, loading }) => {
                   <Table.Cell className="user-cell">
                     <User address={item.beneficiary} />
                   </Table.Cell>
-                  <Table.Cell className="user-cell">
+                  <Table.Cell className="title-cell">
                     <Text>{item.title}</Text>
                   </Table.Cell>
-                  <Table.Cell>
+                  <Table.Cell className="update-due-cell" textAlign={"right"}>
                     <PairTextVertical value={item.update.time} detail={`${item.update.blocks} blocks`} />
                   </Table.Cell>
-                  <Table.Cell textAlign={"right"}>
+                  <Table.Cell className="payout-due-cell" textAlign={"right"}>
                     <TextMinor>{item.payout}</TextMinor>
                   </Table.Cell>
                   <Table.Cell className="balance-cell" textAlign={"right"}>

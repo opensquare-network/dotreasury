@@ -1,4 +1,6 @@
 import { useLayoutEffect, useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+
 import {getIndentity} from "../services/chainApi";
 
 export const useWindowSize = () => {
@@ -44,4 +46,8 @@ export const useIndentity = (address) => {
     }
   }, [address]);
   return {name, badgeData}
+}
+
+export function useQuery() {
+  return new URLSearchParams(useLocation().search);
 }

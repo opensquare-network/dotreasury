@@ -35,6 +35,21 @@ const CustomTable = styled(Table)`
   .time-cell {
     min-width: 180px !important;
   }
+  .index-cell {
+    width: 60px !important;
+  }
+  .title-cell {
+    min-width: 208px !important;
+  }
+  .update-due-cell {
+    min-width: 100px !important;
+  }
+  .payout-due-cell {
+    min-width: 100px !important;
+  }
+  .propose-time-cell {
+    width: 280px !important;
+  }
   td:first-child {
     font-weight: 400 !important;
   }

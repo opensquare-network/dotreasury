@@ -65,13 +65,13 @@ const Item = ({ data, polkassembly, onUnfoldBtnClick }) => {
           <Bar className="bar" />
         </VerticalWrapper>
         <VerticalWrapper className="flex-grow">
-        <FlexWrapper>
-          <TimeLableWrapper>
-            <TextMinorWrapper><DateShow value={data.extrinsicIndexer.blockTime} /></TextMinorWrapper>
-            <Label text={data.name} />
-          </TimeLableWrapper>
-          <UnfoldButton src="/imgs/btn-unfold.svg" className="unfold-btn" onClick={onUnfoldBtnClick}  />
-        </FlexWrapper>
+          <FlexWrapper>
+            <TimeLableWrapper>
+              <TextMinorWrapper><DateShow value={data.extrinsicIndexer.blockTime} /></TextMinorWrapper>
+              <Label text={data.name} />
+            </TimeLableWrapper>
+            <UnfoldButton src="/imgs/btn-unfold.svg" className="unfold-btn" onClick={onUnfoldBtnClick}  />
+          </FlexWrapper>
           <CardWrapper>
             <Card>
               { data.fields.map(({ title, value }, index) => <CardItem key={index} title={title}>{value}</CardItem>) }

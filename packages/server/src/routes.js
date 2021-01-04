@@ -1,4 +1,7 @@
-const featureRouters = [require("./features/tips/routes")];
+const featureRouters = [
+  require("./features/tips/routes"),
+  require("./features/proposals/routes"),
+];
 
 module.exports = (app) => {
   for (const router of featureRouters) {

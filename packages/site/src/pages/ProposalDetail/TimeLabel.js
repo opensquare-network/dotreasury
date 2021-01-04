@@ -2,8 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { Image } from "semantic-ui-react";
 
-import {TEXT_DARK_MAJOR, TEXT_DARK_MINOR} from "../../constants"
-
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
@@ -16,20 +14,16 @@ const Label = styled.span`
   font-weight: normal;
   font-size: 14px;
   line-height: 24px;
-  color: ${TEXT_DARK_MINOR};
-  &:hover {
-    color: ${TEXT_DARK_MAJOR};
-    text-decoration-line: underline;
-  }
+  color: rgba(29, 37, 60, 0.64);
 `;
 
-const PolygonLabel = ({ value }) => {
+const TimeLabel = ({ value }) => {
   return (
     <Wrapper>
-      <Image src={"/imgs/polygon.svg"} />
+      <Image src={"/imgs/time.svg"} />
       <Label>{value}</Label>
     </Wrapper>
   );
 };
 
-export default PolygonLabel;
+export default TimeLabel;

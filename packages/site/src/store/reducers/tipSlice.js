@@ -58,7 +58,7 @@ export const fetchTips = (page = 0, pageSize = 30) => async (dispatch) => {
 
   try {
     const { result } = await api.fetch('/tips', { page, pageSize });
-    dispatch(setTips(result));
+    dispatch(setTips(result || {}));
   } finally {
     dispatch(setLoading(false));
   }
