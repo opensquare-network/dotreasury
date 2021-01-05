@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Progress } from "semantic-ui-react";
 
-import { PRIMARY_THEME_COLOR, SECONDARY_THEME_COLOR } from "../../constants";
+import { PRIMARY_THEME_COLOR, SECONDARY_THEME_COLOR } from "../constants";
 
 const CustomProgress = styled(Progress)`
   min-width: 200px;

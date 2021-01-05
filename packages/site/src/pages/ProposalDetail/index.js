@@ -18,6 +18,8 @@ import Title from "../../components/Title";
 import ProposalLifeCycleTable from "./ProposalLifeCycleTable";
 import User from "../../components/User/Index";
 import Balance from "../../components/Balance";
+import VoterItem from "./Voter";
+import Proposer from "./Proposer";
 
 const HeaderWrapper = styled.div`
   display: flex;
@@ -79,31 +81,19 @@ function processTimeline(proposalDetail) {
       fields: (() => {
         if (item.action === "Propose") {
           const [proposer, , , threshold] = item.eventData;
+          const ayes = motion.voting?.ayes?.length || 0;
           return [{
-            title: "Proposer",
-            value: <User address={proposer} />
-          }, {
-            title: "Threshold",
-            value: threshold
-          }];
+            value: <Proposer address={proposer} agree={true} value="approveProposal" threshold={threshold} ayes={ayes} />
+          }]
         } else if (item.action === "Vote") {
           const [voter, , agree] = item.eventData;
           return [{
-            title: "Voter",
-            value: <User address={voter} />
-          }, {
-            title: "Agree",
-            value: agree ? "Yes" : "No",
-          }];
+            value: <VoterItem address={voter} agree={agree} value={agree ? "Aye" : "Nay"} />
+          }]
         } else if (item.action === "Close") {
-          const [, aye, nay] = item.eventData;
           return [{
-            title: "Aye",
-            value: aye
-          }, {
-            title: "Nay",
-            value: nay,
-          }];
+            title: "Close"
+          }]
         } else {
           return [];
         }
