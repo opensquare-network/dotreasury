@@ -10,10 +10,10 @@ const Wrapper = styled.div`
   }
 `;
 
-const TipCountDownLabel = ({ value, total }) => {
+const TipCountDownLabel = ({ scanHeight, closes }) => {
   return (
     <Wrapper>
-      {value}/{total}
+      {scanHeight > closes ? closes : `${scanHeight}/${closes}`}
     </Wrapper>
   );
 };

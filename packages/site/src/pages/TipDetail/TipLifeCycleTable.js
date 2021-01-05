@@ -86,16 +86,22 @@ const TipLifeCycleTable = ({ loading }) => {
           </Table.Row>
           <Table.Row>
             <Table.Cell>
-              <TableCell title="Tip Count Down">
+              <TableCell title="Closes">
                 {tipDetail.closeFromBlockHeight ? (
                   <FlexWrapper>
                     <Progress percent={percentage * 100} />
-                    <TipCountDownLabel value={goneBlocks} total={tipCountdown} />
+                    <TipCountDownLabel
+                      scanHeight={scanHeight}
+                      closes={tipDetail.closeFromBlockHeight}
+                    />
                   </FlexWrapper>
                 ) : (
                   <FlexWrapper>
                     <Progress percent={0} />
-                    <TipCountDownLabel value={0} total={tipCountdown} />
+                    <TipCountDownLabel
+                      scanHeight={scanHeight}
+                      closes={tipDetail.closeFromBlockHeight}
+                    />
                   </FlexWrapper>
                 )}
               </TableCell>
