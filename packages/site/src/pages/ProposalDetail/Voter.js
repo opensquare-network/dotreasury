@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Image } from "semantic-ui-react";
 
-import User from "../../components/User/Index";
+import User from "../../components/User";
 import Text from "../../components/Text";
 
 const Wrapper = styled.div`
