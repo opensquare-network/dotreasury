@@ -59,8 +59,8 @@ const TimelineCommentWrapper = styled.div`
   }
 `;
 
-async function getProxyMethod(blockHash, callIndex) {
-  const call = await getCall(blockHash, callIndex);
+async function getProxyMethod(blockHash, hexCallIndex) {
+  const call = await getCall(blockHash, hexCallIndex);
   return call.method;
 }
 
@@ -72,12 +72,12 @@ async function processProxyExtrinsic(extrinsic) {
   const {
     args: {
       real,
-      call: { callIndex, args },
+      call: { callIndex: hexCallIndex, args },
     },
     extrinsicIndexer,
   } = extrinsic;
 
-  const name = await getProxyMethod(extrinsicIndexer.blockHash, callIndex);
+  const name = await getProxyMethod(extrinsicIndexer.blockHash, hexCallIndex);
   if (name) {
     return {
       name,
@@ -88,7 +88,7 @@ async function processProxyExtrinsic(extrinsic) {
   }
 
   return {
-    name: `Proxy(${callIndex})`,
+    name: `Proxy(${hexCallIndex})`,
     args,
     signer: real,
     extrinsicIndexer,
