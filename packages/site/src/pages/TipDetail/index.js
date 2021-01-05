@@ -22,6 +22,7 @@ import User from "../../components/User/Index";
 import Balance from "../../components/Balance";
 import TipLifeCycleTable from "./TipLifeCycleTable";
 import { getCall } from "../../services/metadata";
+import Funder from "./Funder";
 
 const HeaderWrapper = styled.div`
   display: flex;
@@ -146,13 +147,8 @@ async function processTimeline(tipDetail) {
         const funder = extrinsic.signer;
         fields = [
           {
-            title: "Funder",
-            value: <User address={funder} />,
-          },
-          {
-            title: "Tip value",
-            value: <Balance value={tipValue} />,
-          },
+            value: <Funder address={funder} value={tipValue} />
+          }
         ];
       } else if (extrinsic.name === "closeTip") {
         const who = extrinsic.signer;
