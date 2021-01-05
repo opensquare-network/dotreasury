@@ -18,7 +18,7 @@ import Title from "../../components/Title";
 import ProposalLifeCycleTable from "./ProposalLifeCycleTable";
 import User from "../../components/User";
 import Balance from "../../components/Balance";
-import VoterItem from "./Voter";
+import Voter from "./Voter";
 import Proposer from "./Proposer";
 
 const HeaderWrapper = styled.div`
@@ -88,7 +88,7 @@ function processTimeline(proposalDetail) {
         } else if (item.action === "Vote") {
           const [voter] = item.eventData;
           return [{
-            value: <VoterItem address={voter} result={motion.result} value={motion.result === "Approved" ? "Aye" : "Nay"} />
+            value: <Voter address={voter} agree={motion.result === "Approved"} value={motion.result === "Approved" ? "Aye" : "Nay"} />
           }]
         } else if (item.action === "Close") {
           return [{

@@ -24,7 +24,7 @@ const ImageWrapper = styled.div`
   height: 16px;
 `
 
-const VoterItem = ({address, agree, value}) => {
+const Voter = ({address, agree, value}) => {
   return (
     <Wrapper>
       <User address={address} />
@@ -42,4 +42,4 @@ const VoterItem = ({address, agree, value}) => {
   )
 }
 
-export default VoterItem;
+export default Voter;

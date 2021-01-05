@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import User from "../../components/User/Index";
+import User from "../../components/User";
 import Balance from "../../components/Balance";
 
 const Wrapper = styled.div`
@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   flex-wrap: wrap;
 `
 
-const VoterItem = ({address, value}) => {
+const Funer = ({address, value}) => {
   return (
     <Wrapper>
       <User address={address} />
@@ -20,4 +20,4 @@ const VoterItem = ({address, value}) => {
   )
 }
 
-export default VoterItem;
+export default Funer;

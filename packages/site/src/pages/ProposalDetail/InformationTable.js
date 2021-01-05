@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import Table from "../../components/Table";
 import TableLoading from "../../components/TableLoading";
 import TableCell from "../../components/TableCell";
-import User from "../../components/User/Index";
+import User from "../../components/User";
 import Balance from "../../components/Balance";
 import DateShow from "../../components/DateShow";
 import PolygonLabel from "../../components/PolygonLabel";
