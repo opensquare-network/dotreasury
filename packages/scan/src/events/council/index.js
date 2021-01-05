@@ -3,6 +3,7 @@ const {
   CouncilEvents,
   Modules,
   ProposalMethods,
+  ProposalEvents,
 } = require("../../utils/constants");
 const {
   treasuryProposalCouncilIndexes,
@@ -225,9 +226,16 @@ async function updateProposalStateByVoteResult(hash, isApproved, indexer) {
 
   let name;
   if ("approveProposal" === motion.method) {
-    name = isApproved ? "Approved" : "Proposed";
-  } else if ("rejectProposal" === motion.method && !isApproved) {
-    name = "Proposed";
+    name = isApproved ? "Approved" : ProposalEvents.Proposed;
+  } else if ("rejectProposal" === motion.method) {
+    if (!isApproved) {
+      name = ProposalEvents.Proposed;
+    } else if (indexer.blockHeight >= 1164233) {
+      // There is no Rejected event emitted before 1164233 for Kusama
+      return;
+    } else {
+      name = ProposalEvents.Rejected;
+    }
   }
 
   const proposalCol = await getProposalCollection();
