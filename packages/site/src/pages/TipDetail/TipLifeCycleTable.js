@@ -6,9 +6,9 @@ import Table from "../../components/Table";
 import TableLoading from "../../components/TableLoading";
 import TableCell from "../../components/TableCell";
 import TimeLabel from "./TimeLabel";
-import Progress from "./Progress";
+import Progress from "../../components/Progress";
 import TipCountDownLabel from "./TipCountDownLabel";
-import TippersProgress from "./TippersProgress";
+import BarProgress from "../../components/BarProgress";
 import TimeElapsed from "../../components/TimeElapsed";
 
 import {
@@ -73,7 +73,7 @@ const TipLifeCycleTable = ({ loading }) => {
             <Table.Cell>
               <TableCell title="Threshold">
                 <FlexWrapper>
-                  <TippersProgress
+                  <BarProgress
                     total={thresholdTotalCount}
                     current={tipDetail.tipsCount}
                   />
