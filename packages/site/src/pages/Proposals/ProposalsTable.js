@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 
 import Table from "../../components/Table";
 import TableLoading from "../../components/TableLoading";
-import User from "../../components/User/Index";
+import User from "../../components/User";
 import Balance from "../../components/Balance";
 import RightButton from "../../components/RightButton";
 import TextMinor from "../../components/TextMinor";

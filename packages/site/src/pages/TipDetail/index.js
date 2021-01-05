@@ -18,7 +18,7 @@ import Timeline from "../Timeline";
 import Comment from "../Comment";
 import RelatedLinks from "../RelatedLinks";
 import Title from "../../components/Title";
-import User from "../../components/User/Index";
+import User from "../../components/User";
 import Balance from "../../components/Balance";
 import TipLifeCycleTable from "./TipLifeCycleTable";
 import { getCall } from "../../services/metadata";

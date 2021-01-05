@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import { Dimmer, Segment, Image } from "semantic-ui-react";
 
 import Table from "../../components/Table";
-import User from "../../components/User/Index";
+import User from "../../components/User";
 import Balance from "../../components/Balance";
 import RightButton from "../../components/RightButton";
 import Text from "../../components/Text";
