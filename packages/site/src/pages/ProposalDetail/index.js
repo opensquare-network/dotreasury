@@ -86,9 +86,9 @@ function processTimeline(proposalDetail) {
             value: <Proposer address={proposer} result={motion.result} value={motion.method} threshold={threshold} ayes={ayes} />
           }]
         } else if (item.action === "Vote") {
-          const [voter, , agree] = item.eventData;
+          const [voter] = item.eventData;
           return [{
-            value: <VoterItem address={voter} agree={agree} value={agree ? "Aye" : "Nay"} />
+            value: <VoterItem address={voter} result={motion.result} value={motion.result === "Approved" ? "Aye" : "Nay"} />
           }]
         } else if (item.action === "Close") {
           return [{
