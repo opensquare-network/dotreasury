@@ -26,7 +26,7 @@ const Wrapper = styled.div`
 const CardItem = ({ title, children }) => {
   return (
     <Wrapper>
-      <div>{title}</div>
+      {title && <div>{title}</div>}
       <div>{children}</div>
     </Wrapper>
   );
