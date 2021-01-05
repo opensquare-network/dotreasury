@@ -22,10 +22,10 @@ const CustomText = styled(TextMinor)`
   white-space: nowrap;
 `
 
-const Proposer = ({address, agree, value, threshold, ayes }) => {
+const Proposer = ({address, result, value, threshold, ayes }) => {
   return (
     <Wrapper>
-      <Voter address={address} agree={agree} value={value} />
+      <Voter address={address} result={result} value={value} />
       <BarProgressWrapper>
         <BarProgress current={ayes} total={threshold} />
         <CustomText>{`${ayes}/${threshold}`}</CustomText>
