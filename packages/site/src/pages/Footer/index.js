@@ -76,13 +76,19 @@ const Footer = () => {
               <TextMinor>
                 doTreasury © {new Date().getFullYear()} - Powered By
               </TextMinor>
-              <Image src="/imgs/opensquare-logo.svg" />
+                <a
+                  href="https://www.opensquare.network/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Image src="/imgs/opensquare-logo.svg" />
+                </a>
             </ImageLogoWrapper>
             <ImageLogoWrapper>
               <TextMinor>
                 Funded by
               </TextMinor>
-              <Image src="/imgs/kusama-treasury-logo.svg" />
+                <Image src="/imgs/kusama-treasury-logo.svg" />
             </ImageLogoWrapper>
           </TextWrapper>
           <TextMinor className="small">
