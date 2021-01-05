@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { Icon, Image } from "semantic-ui-react";
-import { NavLink } from "react-router-dom";
 
 import Container from "../../components/Container";
 import TextMinor from "../../components/TextMinor";

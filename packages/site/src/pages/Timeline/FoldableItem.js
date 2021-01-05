@@ -9,7 +9,7 @@ import {PRIMARY_THEME_COLOR} from "../../constants"
 
 const Wrapper = styled.div`
   display: flex;
-  div:last-child {
+  &:last-child {
     .bar {
       ${p => !p.isUnfold && css`
         visibility: hidden;
