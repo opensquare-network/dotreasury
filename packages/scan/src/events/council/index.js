@@ -113,10 +113,13 @@ async function handleProposed(event, normalizedExtrinsic) {
     timeline,
   });
 
-  await updateProposalStateByProposeOrVote(hash);
+  await updateProposalStateByProposeOrVote(
+    hash,
+    normalizedExtrinsic.extrinsicIndexer
+  );
 }
 
-async function updateProposalStateByProposeOrVote(hash) {
+async function updateProposalStateByProposeOrVote(hash, indexer) {
   const col = await getMotionCollection();
   const motion = await col.findOne({ hash });
   if (!motion) {
@@ -136,6 +139,7 @@ async function updateProposalStateByProposeOrVote(hash) {
       $set: {
         state: {
           name,
+          indexer,
           motionState,
           motionVoting,
         },
@@ -174,7 +178,10 @@ async function handleVoteEvent(event, normalizedExtrinsic) {
     }
   );
 
-  await updateProposalStateByProposeOrVote(hash);
+  await updateProposalStateByProposeOrVote(
+    hash,
+    normalizedExtrinsic.extrinsicIndexer
+  );
 }
 
 async function handleClosedEvent(event, normalizedExtrinsic) {
@@ -208,7 +215,7 @@ async function handleClosedEvent(event, normalizedExtrinsic) {
   );
 }
 
-async function updateProposalStateByVoteResult(hash, isApproved) {
+async function updateProposalStateByVoteResult(hash, isApproved, indexer) {
   const col = await getMotionCollection();
   const motion = await col.findOne({ hash });
   if (!motion) {
@@ -227,7 +234,7 @@ async function updateProposalStateByVoteResult(hash, isApproved) {
   await proposalCol.findOneAndUpdate(
     { proposalIndex: motion.treasuryProposalId },
     {
-      $set: { state: { name } },
+      $set: { state: { name, indexer } },
     }
   );
 }
@@ -276,7 +283,11 @@ async function handleApprovedEvent(event, normalizedExtrinsic) {
   const col = await getMotionCollection();
   await col.updateOne({ hash }, updateObj);
 
-  await updateProposalStateByVoteResult(hash, true);
+  await updateProposalStateByVoteResult(
+    hash,
+    true,
+    normalizedExtrinsic.extrinsicIndexer
+  );
 }
 
 async function handleDisapprovedEvent(event, normalizedExtrinsic) {
@@ -323,7 +334,11 @@ async function handleDisapprovedEvent(event, normalizedExtrinsic) {
   const col = await getMotionCollection();
   await col.updateOne({ hash }, updateObj);
 
-  await updateProposalStateByVoteResult(hash, false);
+  await updateProposalStateByVoteResult(
+    hash,
+    false,
+    normalizedExtrinsic.extrinsicIndexer
+  );
 }
 
 async function handleExecutedEvent(event) {
