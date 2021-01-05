@@ -24,16 +24,16 @@ const ImageWrapper = styled.div`
   height: 16px;
 `
 
-const VoterItem = ({address, result, value}) => {
+const VoterItem = ({address, agree, value}) => {
   return (
     <Wrapper>
       <User address={address} />
       <PassWrapper>
         <Text>{value}</Text>
         {
-          result && (
+          (agree !== null && agree !== undefined) && (
             <ImageWrapper>
-              <Image src={result === "Approved" ? "/imgs/circle-pass.svg" : (result === "Disapproved" ? "/imgs/circle-reject.svg": "")} />
+              <Image src={agree === true ? "/imgs/circle-pass.svg" : (agree === false ? "/imgs/circle-reject.svg": "")} />
             </ImageWrapper>
           )
         }
