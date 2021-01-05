@@ -16,7 +16,7 @@ import Comment from "../Comment";
 import RelatedLinks from "../RelatedLinks";
 import Title from "../../components/Title";
 import ProposalLifeCycleTable from "./ProposalLifeCycleTable";
-import User from "../../components/User/Index";
+import User from "../../components/User";
 import Balance from "../../components/Balance";
 import VoterItem from "./Voter";
 import Proposer from "./Proposer";
