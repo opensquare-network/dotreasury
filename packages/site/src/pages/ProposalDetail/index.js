@@ -76,14 +76,14 @@ function processTimeline(proposalDetail) {
   },
   ...(proposalDetail.motions || []).map(motion => ({
     subTimeline: (motion.timeline || []).map(item => ({
-      name: (item.action === "Propose" ? motion.method : (item.action === "Close" ? motion.result : item.action)),
+      name: item.action,
       extrinsicIndexer: item.extrinsic.extrinsicIndexer,
       fields: (() => {
         if (item.action === "Propose") {
           const [proposer, , , threshold] = item.eventData;
           const ayes = motion.voting?.ayes?.length || 0;
           return [{
-            value: <Proposer address={proposer} agree={true} value="approveProposal" threshold={threshold} ayes={ayes} />
+            value: <Proposer address={proposer} result={motion.result} value={motion.method} threshold={threshold} ayes={ayes} />
           }]
         } else if (item.action === "Vote") {
           const [voter, , agree] = item.eventData;
@@ -92,7 +92,7 @@ function processTimeline(proposalDetail) {
           }]
         } else if (item.action === "Close") {
           return [{
-            title: "Close"
+            title: motion.result
           }]
         } else {
           return [];
