@@ -146,14 +146,6 @@ async function processTimeline(tipDetail) {
         const { tip_value: tipValue } = extrinsic.args;
         const funder = extrinsic.signer;
         fields = [
-          // {
-          //   title: "Funder",
-          //   value: <User address={funder} />,
-          // },
-          // {
-          //   title: "Tip value",
-          //   value: <Balance value={tipValue} />,
-          // },
           {
             value: <Funder address={funder} value={tipValue} />
           }

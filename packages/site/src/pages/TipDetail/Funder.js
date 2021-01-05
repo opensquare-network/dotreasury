@@ -11,16 +11,10 @@ const Wrapper = styled.div`
   flex-wrap: wrap;
 `
 
-const CustomUser = styled(User)`
-    overflow: visible !important;
-    background: red !importnat;
-    width: 500px !importnat;
-`
-
 const VoterItem = ({address, value}) => {
   return (
     <Wrapper>
-      <CustomUser address={address} />
+      <User address={address} />
       <Balance value={value} />
     </Wrapper>
   )
