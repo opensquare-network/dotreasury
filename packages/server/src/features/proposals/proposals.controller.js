@@ -30,7 +30,7 @@ class ProposalsController {
         beneficiary: item.beneficiary,
         latestState: {
           state: item.state?.name,
-          time: null, // TODO: Missing
+          time: item.state?.indexer.blockTime,
         },
       })),
       page,
@@ -68,7 +68,7 @@ class ProposalsController {
       beneficiary: proposal.beneficiary,
       latestState: {
         state: proposal.state?.name,
-        time: null, // TODO: Missing
+        time: proposal.state?.indexer.blockTime,
       },
       motions: proposalMotions,
     };

@@ -35,9 +35,9 @@ const ProposalLifeCycleTable = ({loading}) => {
             <Table.Cell>
               <TableCell title="Status">
                 <FlexWrapper>
-                  <div>{proposalDetail.latestState?.state}</div>
+                  <div>{proposalDetail.latestState.state}</div>
                   <TimeLabel
-                    value={<TimeElapsed from={proposalDetail.latestState?.time} />}
+                    value={<TimeElapsed from={proposalDetail.latestState.time} />}
                   />
                 </FlexWrapper>
               </TableCell>

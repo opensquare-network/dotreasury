@@ -100,7 +100,7 @@ const ProposalsTable = ({ data, loading }) => {
                   <Table.Cell className="status-cell" textAlign={"right"}>
                     <PairTextVertical
                         value={item.latestState.state}
-                        detail={dayjs(parseInt(item.proposeTime)).format(
+                        detail={dayjs(parseInt(item.latestState.time)).format(
                           "YYYY-MM-DD HH:mm"
                         )}
                       />
