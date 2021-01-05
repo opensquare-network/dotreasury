@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Icon, Image } from "semantic-ui-react";
+import { NavLink } from "react-router-dom";
 
 import Container from "../../components/Container";
 import TextMinor from "../../components/TextMinor";
@@ -76,13 +77,19 @@ const Footer = () => {
               <TextMinor>
                 doTreasury © {new Date().getFullYear()} - Powered By
               </TextMinor>
-              <Image src="/imgs/opensquare-logo.svg" />
+                <a
+                  href="https://www.opensquare.network/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Image src="/imgs/opensquare-logo.svg" />
+                </a>
             </ImageLogoWrapper>
             <ImageLogoWrapper>
               <TextMinor>
                 Funded by
               </TextMinor>
-              <Image src="/imgs/kusama-treasury-logo.svg" />
+                <Image src="/imgs/kusama-treasury-logo.svg" />
             </ImageLogoWrapper>
           </TextWrapper>
           <TextMinor className="small">
