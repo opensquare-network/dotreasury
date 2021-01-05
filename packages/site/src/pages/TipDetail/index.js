@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import styled from "styled-components";
@@ -21,6 +21,7 @@ import Title from "../../components/Title";
 import User from "../../components/User/Index";
 import Balance from "../../components/Balance";
 import TipLifeCycleTable from "./TipLifeCycleTable";
+import { getCall } from "../../services/metadata";
 
 const HeaderWrapper = styled.div`
   display: flex;
@@ -58,23 +59,12 @@ const TimelineCommentWrapper = styled.div`
   }
 `;
 
-function getProxyMethod(callIndex) {
-  const methodsMapping = [
-    ["0x1206", ["hash", "tip_value"], "tip"],
-    ["0x1203", ["reason", "who"], "reportAwesome"],
-    ["0x1207", ["hash"], "closeTip"],
-  ];
-
-  for (const [expectCallIndex, , method] of methodsMapping) {
-    if (expectCallIndex === callIndex) {
-      return method;
-    }
-  }
-
-  return "";
+async function getProxyMethod(blockHash, hexCallIndex) {
+  const call = await getCall(blockHash, hexCallIndex);
+  return call.method;
 }
 
-function processProxyExtrinsic(extrinsic) {
+async function processProxyExtrinsic(extrinsic) {
   if (extrinsic.section !== "proxy" || extrinsic.name !== "proxy") {
     return extrinsic;
   }
@@ -82,12 +72,12 @@ function processProxyExtrinsic(extrinsic) {
   const {
     args: {
       real,
-      call: { callIndex, args },
+      call: { callIndex: hexCallIndex, args },
     },
     extrinsicIndexer,
   } = extrinsic;
 
-  const name = getProxyMethod(callIndex);
+  const name = await getProxyMethod(extrinsicIndexer.blockHash, hexCallIndex);
   if (name) {
     return {
       name,
@@ -98,108 +88,111 @@ function processProxyExtrinsic(extrinsic) {
   }
 
   return {
-    name: `Proxy(${callIndex})`,
+    name: `Proxy(${hexCallIndex})`,
     args,
     signer: real,
     extrinsicIndexer,
   };
 }
 
-function processTimeline(tipDetail) {
-  return (tipDetail.timeline || []).map((timelineItem) => {
-    const extrinsic = processProxyExtrinsic(timelineItem.extrinsic);
-    let fields = [];
+async function processTimeline(tipDetail) {
+  return await Promise.all(
+    (tipDetail.timeline || []).map(async (timelineItem) => {
+      const extrinsic = await processProxyExtrinsic(timelineItem.extrinsic);
+      let fields = [];
 
-    if (extrinsic.name === "reportAwesome") {
-      const { reason, who: beneficiary } = extrinsic.args;
-      const finder = extrinsic.signer;
-      const reasonText = hexToString(reason);
-      fields = [
-        {
-          title: "Finder",
-          value: <User address={finder} />,
-        },
-        {
-          title: "Beneficiary",
-          value: <User address={beneficiary} />,
-        },
-        {
-          title: "Reason",
-          value: reasonText,
-        },
-      ];
-    } else if (extrinsic.name === "tipNew") {
-      const { tip_value: tipValue, who: beneficiary, reason } = extrinsic.args;
-      const finder = extrinsic.signer;
-      const reasonText = hexToString(reason);
-      fields = [
-        {
-          title: "Funder",
-          value: <User address={finder} />,
-        },
-        {
-          title: "Beneficiary",
-          value: <User address={beneficiary} />,
-        },
-        {
-          title: "Tip value",
-          value: <Balance value={tipValue} />,
-        },
-        {
-          title: "Reason",
-          value: reasonText,
-        },
-      ];
-    } else if (extrinsic.name === "tip") {
-      const { tip_value: tipValue } = extrinsic.args;
-      const funder = extrinsic.signer;
-      fields = [
-        {
-          title: "Funder",
-          value: <User address={funder} />,
-        },
-        {
-          title: "Tip value",
-          value: <Balance value={tipValue} />,
-        },
-      ];
-    } else if (extrinsic.name === "closeTip") {
-      const who = extrinsic.signer;
-      fields = [
-        {
-          title: "Close by",
-          value: <User address={who} />,
-        },
-        {
-          title: "Beneficiary",
-          value: <User address={tipDetail.beneficiary} />,
-        },
-        {
-          title: "Final tip value",
-          value: <Balance value={tipDetail.medianValue} />,
-        },
-      ];
-    } else if (extrinsic.name === "retractTip") {
-      const who = extrinsic.signer;
-      fields = [
-        {
-          title: "Retract by",
-          value: <User address={who} />,
-        },
-      ];
-    }
+      if (extrinsic.name === "reportAwesome") {
+        const { reason, who: beneficiary } = extrinsic.args;
+        const finder = extrinsic.signer;
+        const reasonText = hexToString(reason);
+        fields = [
+          {
+            title: "Finder",
+            value: <User address={finder} />,
+          },
+          {
+            title: "Beneficiary",
+            value: <User address={beneficiary} />,
+          },
+          {
+            title: "Reason",
+            value: reasonText,
+          },
+        ];
+      } else if (extrinsic.name === "tipNew") {
+        const { tip_value: tipValue, who: beneficiary, reason } = extrinsic.args;
+        const finder = extrinsic.signer;
+        const reasonText = hexToString(reason);
+        fields = [
+          {
+            title: "Funder",
+            value: <User address={finder} />,
+          },
+          {
+            title: "Beneficiary",
+            value: <User address={beneficiary} />,
+          },
+          {
+            title: "Tip value",
+            value: <Balance value={tipValue} />,
+          },
+          {
+            title: "Reason",
+            value: reasonText,
+          },
+        ];
+      } else if (extrinsic.name === "tip") {
+        const { tip_value: tipValue } = extrinsic.args;
+        const funder = extrinsic.signer;
+        fields = [
+          {
+            title: "Funder",
+            value: <User address={funder} />,
+          },
+          {
+            title: "Tip value",
+            value: <Balance value={tipValue} />,
+          },
+        ];
+      } else if (extrinsic.name === "closeTip") {
+        const who = extrinsic.signer;
+        fields = [
+          {
+            title: "Close by",
+            value: <User address={who} />,
+          },
+          {
+            title: "Beneficiary",
+            value: <User address={tipDetail.beneficiary} />,
+          },
+          {
+            title: "Final tip value",
+            value: <Balance value={tipDetail.medianValue} />,
+          },
+        ];
+      } else if (extrinsic.name === "retractTip") {
+        const who = extrinsic.signer;
+        fields = [
+          {
+            title: "Retract by",
+            value: <User address={who} />,
+          },
+        ];
+      }
 
-    return {
-      ...extrinsic,
-      fields,
-    };
-  });
+      return {
+        ...extrinsic,
+        fields,
+      };
+    })
+  );
 }
 
 const TipDetail = () => {
   const history = useHistory();
   const { tipId } = useParams();
   const dispatch = useDispatch();
+  const [timelineData, setTimelineData] = useState([]);
 
   useEffect(() => {
     dispatch(fetchTipDetail(tipId));
@@ -209,6 +202,12 @@ const TipDetail = () => {
 
   const tipDetail = useSelector(tipDetailSelector);
   const loadingTipDetail = useSelector(loadingTipDetailSelector);
+
+  useEffect(() => {
+    (async () => {
+      setTimelineData(await processTimeline(tipDetail));
+    })();
+  }, [tipDetail]);
 
   return (
     <>
@@ -226,7 +225,7 @@ const TipDetail = () => {
       <Divider />
       <TimelineCommentWrapper>
         <Timeline
-          data={processTimeline(tipDetail)}
+          data={timelineData}
           polkassembly={false}
           loading={loadingTipDetail}
         />
