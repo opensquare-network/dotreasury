@@ -110,7 +110,7 @@ const Footer = () => {
               <Icon name="github" />
             </a>
             <a
-              href="https://t.me/opensquare"
+              href="https://t.me/dotreasury"
               target="_blank"
               rel="noopener noreferrer"
             >
