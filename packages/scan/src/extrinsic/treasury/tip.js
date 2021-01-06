@@ -12,10 +12,8 @@ const {
   getTipMeta,
   computeTipValue,
 } = require("../../store/tip");
-const { getApi } = require("../../api");
-const { GenericCall } = require("@polkadot/types");
 const { getTipCollection } = require("../../mongo");
-const { createKeyMulti, encodeAddress } = require("@polkadot/util-crypto");
+const { getCall, getMultiSigExtrinsicAddress } = require("../../utils/call");
 
 async function handleCloseTipExtrinsic(normalizedExtrinsic) {
   const { section, name, args } = normalizedExtrinsic;
@@ -107,12 +105,6 @@ async function handleTipByProxy(normalizedExtrinsic, extrinsic) {
   await updateTipInDB(hash, updates, tipper, tipValue, normalizedExtrinsic);
 }
 
-async function getCall(blockHash, callHex) {
-  const api = await getApi();
-  const registry = await api.getBlockRegistry(blockHash);
-  return new GenericCall(registry.registry, callHex);
-}
-
 async function getCommonTipUpdates(blockHash, tipHash) {
   const tippersCount = await getTippersCount(blockHash);
   const meta = await getTipMeta(blockHash, tipHash);
@@ -125,10 +117,9 @@ async function handleTipByMultiSig(normalizedExtrinsic, extrinsic) {
     return;
   }
 
-  const indexer = normalizedExtrinsic.extrinsicIndexer;
-  const { threshold, other_signatories: otherSignatories } = args;
+  const blockHash = normalizedExtrinsic.extrinsicIndexer.blockHash;
   const rawCall = extrinsic.method.args[3].toHex();
-  const call = await getCall(indexer.blockHash, rawCall);
+  const call = await getCall(blockHash, rawCall);
   if (Modules.Treasury !== call.section || TipMethods.tip !== call.method) {
     return;
   }
@@ -136,12 +127,11 @@ async function handleTipByMultiSig(normalizedExtrinsic, extrinsic) {
   const {
     args: { hash, tip_value: tipValue },
   } = call.toJSON();
-  const updates = await getCommonTipUpdates(indexer.blockHash, hash);
-
-  const multiAddresses = [normalizedExtrinsic.signer, ...otherSignatories];
-  const multiPub = createKeyMulti(multiAddresses, threshold);
-  const api = await getApi();
-  const tipper = encodeAddress(multiPub, api.registry.chainSS58);
+  const updates = await getCommonTipUpdates(blockHash, hash);
+  const tipper = await getMultiSigExtrinsicAddress(
+    args,
+    normalizedExtrinsic.signer
+  );
   await updateTipInDB(hash, updates, tipper, tipValue, normalizedExtrinsic);
 }
 
