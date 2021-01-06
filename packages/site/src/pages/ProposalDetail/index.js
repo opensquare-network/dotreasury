@@ -132,6 +132,7 @@ const ProposalDetail = () => {
         <Timeline
           data={processTimeline(proposalDetail)}
           loading={loadingProposalDetail}
+          polkassembly={false}
         />
         <Comment />
       </TimelineCommentWrapper>
