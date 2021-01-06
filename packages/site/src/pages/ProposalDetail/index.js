@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import styled from "styled-components";
@@ -20,6 +20,7 @@ import User from "../../components/User";
 import Balance from "../../components/Balance";
 import Voter from "./Voter";
 import Proposer from "./Proposer";
+import polkassemblyApi from "../../services/polkassembly";
 
 const HeaderWrapper = styled.div`
   display: flex;
@@ -57,7 +58,7 @@ const TimelineCommentWrapper = styled.div`
   }
 `;
 
-function processTimeline(proposalDetail) {
+async function processTimeline(proposalDetail) {
   return [{
     name: "Proposed",
     extrinsicIndexer: {
@@ -74,38 +75,42 @@ function processTimeline(proposalDetail) {
       value: <Balance value={proposalDetail.value} />
     }]
   },
-  ...(proposalDetail.motions || []).map(motion => ({
-    subTimeline: (motion.timeline || []).map(item => ({
-      name: item.action,
-      extrinsicIndexer: item.extrinsic.extrinsicIndexer,
-      fields: (() => {
-        if (item.action === "Propose") {
-          const [proposer, , , threshold] = item.eventData;
-          const ayes = motion.voting?.ayes?.length || 0;
-          return [{
-            value: <Proposer address={proposer} agree={motion.result && motion.result === "Approved"} value={motion.method} threshold={threshold} ayes={ayes} />
-          }]
-        } else if (item.action === "Vote") {
-          const [voter, , agree] = item.eventData;
-          return [{
-            value: <Voter address={voter} agree={agree} value={agree ? "Aye" : "Nay"} />
-          }]
-        } else if (item.action === "Close") {
-          return [{
-            title: motion.result
-          }]
-        } else {
-          return [];
-        }
-      })(),
+  ...await Promise.all(
+    (proposalDetail.motions || []).map(async (motion) => ({
+      polkassembly: (await polkassemblyApi.getMotionUrl(motion.index)),
+      subTimeline: (motion.timeline || []).map(item => ({
+        name: item.action,
+        extrinsicIndexer: item.extrinsic.extrinsicIndexer,
+        fields: (() => {
+          if (item.action === "Propose") {
+            const [proposer, , , threshold] = item.eventData;
+            const ayes = motion.voting?.ayes?.length || 0;
+            return [{
+              value: <Proposer address={proposer} agree={motion.result && motion.result === "Approved"} value={motion.method} threshold={threshold} ayes={ayes} />
+            }]
+          } else if (item.action === "Vote") {
+            const [voter, , agree] = item.eventData;
+            return [{
+              value: <Voter address={voter} agree={agree} value={agree ? "Aye" : "Nay"} />
+            }]
+          } else if (item.action === "Close") {
+            return [{
+              title: motion.result
+            }]
+          } else {
+            return [];
+          }
+        })(),
+      }))
     }))
-  }))]
+  )]
 }
 
 const ProposalDetail = () => {
   const history = useHistory();
   const { proposalIndex } = useParams();
   const dispatch = useDispatch();
+  const [timelineData, setTimelineData] = useState([]);
 
   useEffect(() => {
     dispatch(fetchProposalDetail(proposalIndex));
@@ -113,6 +118,12 @@ const ProposalDetail = () => {
 
   const loadingProposalDetail = useSelector(loadingProposalDetailSelector);
   const proposalDetail = useSelector(proposalDetailSelector);
+
+  useEffect(() => {
+    (async () => {
+      setTimelineData(await processTimeline(proposalDetail));
+    })();
+  }, [proposalDetail]);
 
   return (
     <>
@@ -130,9 +141,8 @@ const ProposalDetail = () => {
       <Divider />
       <TimelineCommentWrapper>
         <Timeline
-          data={processTimeline(proposalDetail)}
+          data={timelineData}
           loading={loadingProposalDetail}
-          polkassembly={false}
         />
         <Comment />
       </TimelineCommentWrapper>

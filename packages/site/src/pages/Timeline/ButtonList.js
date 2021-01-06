@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import ImageButton from "./ImageButton";
 import ExplorerLink from "../../components/ExplorerLink";
+import ExternalLink from "../../components/ExternalLink";
 
 const Wrapper = styled.div`
   margin-top: 8px;
@@ -19,7 +20,11 @@ const ButtonList = ({ indexer, polkassembly }) => {
       <ExplorerLink base="https://kusama.subscan.io/" href={`extrinsic/${indexer.blockHeight}-${indexer.index}`}>
         <ImageButton src={"/imgs/subscan-logo.svg"} />
       </ExplorerLink>
-      { polkassembly !== false && <ImageButton src={"/imgs/polkassembly-logo.svg"} /> }
+      { polkassembly && (
+          <ExternalLink href={polkassembly}>
+            <ImageButton src={"/imgs/polkassembly-logo.svg"} />
+          </ExternalLink>
+        ) }
     </Wrapper>
   );
 };
