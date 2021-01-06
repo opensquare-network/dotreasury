@@ -8,12 +8,9 @@ const eventCollectionName = "event";
 const extrinsicCollectionName = "extrinsic";
 const tipCollectionName = "tip";
 const motionCollectionName = "motion";
-const tipTimelineCollectionName = "tipTimeline";
 const bountyCollectionName = "bounty";
 const bountyTimelineCollectionName = "bountyTimeline";
 const proposalCollectionName = "proposal";
-const proposalTimelineCollectionName = "proposalTimeline";
-const councilProposalCollectionName = "councilProposal";
 
 let client = null;
 let db = null;
@@ -24,12 +21,9 @@ let blockCol = null;
 let eventCol = null;
 let extrinsicCol = null;
 let tipCol = null;
-let tipTimelineCol = null;
 let bountyCol = null;
 let bountyTimelineCol = null;
 let proposalCol = null;
-let proposalTimelineCol = null;
-let councilProposalCol = null;
 let motionCol = null;
 
 async function initDb() {
@@ -43,12 +37,9 @@ async function initDb() {
   eventCol = db.collection(eventCollectionName);
   extrinsicCol = db.collection(extrinsicCollectionName);
   tipCol = db.collection(tipCollectionName);
-  tipTimelineCol = db.collection(tipTimelineCollectionName);
   bountyCol = db.collection(bountyCollectionName);
   bountyTimelineCol = db.collection(bountyTimelineCollectionName);
   proposalCol = db.collection(proposalCollectionName);
-  proposalTimelineCol = db.collection(proposalTimelineCollectionName);
-  councilProposalCol = db.collection(councilProposalCollectionName);
   motionCol = db.collection(motionCollectionName);
 
   await _createIndexes();
@@ -99,11 +90,6 @@ async function getTipCollection() {
   return tipCol;
 }
 
-async function getTipTimelineCollection() {
-  await tryInit(tipTimelineCol);
-  return tipTimelineCol;
-}
-
 async function getBountyCollection() {
   await tryInit(bountyCol);
   return bountyCol;
@@ -119,27 +105,14 @@ async function getProposalCollection() {
   return proposalCol;
 }
 
-async function getProposalTimelineCollection() {
-  await tryInit(proposalTimelineCol);
-  return proposalTimelineCol;
-}
-
-async function getCouncilProposalCollection() {
-  await tryInit(councilProposalCol);
-  return councilProposalCol;
-}
-
 module.exports = {
   getStatusCollection,
   getBlockCollection,
   getExtrinsicCollection,
   getEventCollection,
   getTipCollection,
-  getTipTimelineCollection,
   getBountyCollection,
   getBountyTimelineCollection,
   getProposalCollection,
-  getProposalTimelineCollection,
-  getCouncilProposalCollection,
   getMotionCollection,
 };
