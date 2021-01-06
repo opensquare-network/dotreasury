@@ -29,7 +29,13 @@ async function handleTipEvent(
       normalizedExtrinsic
     );
   } else if ([TipEvents.TipClosed, TipEvents.TipRetracted].includes(method)) {
-    await updateTipFinalState(hash, method, eventData, normalizedExtrinsic);
+    await updateTipFinalState(
+      hash,
+      method,
+      eventData,
+      normalizedExtrinsic,
+      extrinsic
+    );
   }
 }
 
