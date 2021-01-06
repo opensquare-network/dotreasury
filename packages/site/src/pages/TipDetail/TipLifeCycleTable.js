@@ -5,11 +5,10 @@ import { useSelector } from "react-redux";
 import Table from "../../components/Table";
 import TableLoading from "../../components/TableLoading";
 import TableCell from "../../components/TableCell";
-import TimeLabel from "./TimeLabel";
 import Progress from "../../components/Progress";
 import TipCountDownLabel from "./TipCountDownLabel";
 import BarProgress from "../../components/BarProgress";
-import TimeElapsed from "../../components/TimeElapsed";
+import TimeLabel from "../../components/TimeLabel";
 
 import {
   normalizedTipDetailSelector,
@@ -62,9 +61,7 @@ const TipLifeCycleTable = ({ loading }) => {
               <TableCell title="Status">
                 <FlexWrapper>
                   <div>{tipDetail.showStatus}</div>
-                  <TimeLabel
-                    value={<TimeElapsed from={tipDetail.latestState?.time} />}
-                  />
+                  <TimeLabel value={tipDetail.latestState?.time} />
                 </FlexWrapper>
               </TableCell>
             </Table.Cell>
