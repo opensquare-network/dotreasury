@@ -1,4 +1,3 @@
-const { saveProposalTimeline } = require("../../store/proposal");
 const {
   ProposalMethods,
   Modules,
@@ -29,13 +28,6 @@ async function handleProposalExtrinsic(
 
 async function handleApproveProposal(args, indexer, events) {
   const { proposal_id: proposalIndex } = args;
-
-  await saveProposalTimeline(
-    proposalIndex,
-    ProposalMethods.approveProposal,
-    args,
-    indexer
-  );
 }
 
 // FIXME: reject_proposal is wrapped by motion
