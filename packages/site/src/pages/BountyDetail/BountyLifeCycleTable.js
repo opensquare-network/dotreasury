@@ -8,8 +8,8 @@ import TableCell from "../../components/TableCell";
 import TimeLabel from "../../components/TimeLabel";
 
 import {
-  proposalDetailSelector,
-} from "../../store/reducers/proposalSlice";
+  bountyDetailSelector,
+} from "../../store/reducers/bountySlice";
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -18,15 +18,15 @@ const FlexWrapper = styled.div`
   gap: 16px;
 `;
 
-const ProposalLifeCycleTable = ({loading}) => {
-  const proposalDetail = useSelector(proposalDetailSelector);
+const BountyLifeCycleTable = ({loading}) => {
+  const bountyDetail = useSelector(bountyDetailSelector);
 
   return (
     <TableLoading loading={loading}>
       <Table striped selectable>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell>Proposal Life Cycle</Table.HeaderCell>
+            <Table.HeaderCell>Bounty Life Cycle</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -34,8 +34,8 @@ const ProposalLifeCycleTable = ({loading}) => {
             <Table.Cell>
               <TableCell title="Status">
                 <FlexWrapper>
-                  <div>{proposalDetail.latestState?.state}</div>
-                  <TimeLabel value={proposalDetail.latestState?.time} />
+                  <div>{bountyDetail.latestState?.state}</div>
+                  <TimeLabel value={bountyDetail.latestState?.time} />
                 </FlexWrapper>
               </TableCell>
             </Table.Cell>
@@ -46,4 +46,4 @@ const ProposalLifeCycleTable = ({loading}) => {
   );
 };
 
-export default ProposalLifeCycleTable;
+export default BountyLifeCycleTable;
