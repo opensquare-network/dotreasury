@@ -1,7 +1,4 @@
-const {
-  getProposalTimelineCollection,
-  getProposalCollection,
-} = require("../mongo");
+const { getProposalCollection } = require("../mongo");
 const { getApi } = require("../api");
 const { ProposalState } = require("../utils/constants");
 
@@ -64,44 +61,7 @@ async function updateProposalStateByEvent(
   );
 }
 
-async function connectCouncilProposal(proposalIndex, proposalHash, indexer) {
-  const proposalCol = await getProposalCollection();
-  await proposalCol.updateOne(
-    {
-      proposalIndex,
-    },
-    {
-      $push: {
-        councilProposals: {
-          indexer,
-          proposalHash,
-        },
-      },
-    }
-  );
-}
-
-async function saveProposalTimeline(proposalIndex, state, data, indexer, sort) {
-  const api = await getApi();
-  const meta = await api.query.treasury.proposals.at(
-    indexer.blockHash,
-    proposalIndex
-  );
-
-  const proposalTimelineCol = await getProposalTimelineCollection();
-  await proposalTimelineCol.insertOne({
-    indexer,
-    sort,
-    proposalIndex,
-    state,
-    data,
-    meta: meta.toJSON(),
-  });
-}
-
 module.exports = {
   saveNewProposal,
-  saveProposalTimeline,
-  connectCouncilProposal,
   updateProposalStateByEvent,
 };

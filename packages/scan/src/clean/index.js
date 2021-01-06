@@ -5,7 +5,6 @@ const { getBountyCollection } = require("../mongo");
 const { getBountyTimelineCollection } = require("../mongo");
 const { getProposalCollection } = require("../mongo");
 const { getProposalTimelineCollection } = require("../mongo");
-const { getCouncilProposalCollection } = require("../mongo");
 
 async function deleteDataFrom(blockHeight) {
   const blockCol = await getBlockCollection();
@@ -16,7 +15,6 @@ async function deleteDataFrom(blockHeight) {
   await deleteBountyTimelineFrom(blockHeight);
   await deleteProposalFrom(blockHeight);
   await deleteProposalTimelineFrom(blockHeight);
-  await deleteCouncilProposalFrom(blockHeight);
 }
 
 async function deleteExtrinsicsFrom(blockHeight) {
@@ -47,47 +45,6 @@ async function deleteProposalFrom(blockHeight) {
 async function deleteProposalTimelineFrom(blockHeight) {
   const col = await getProposalTimelineCollection();
   await col.deleteMany({ "indexer.blockHeight": { $gte: blockHeight } });
-}
-
-async function deleteCouncilProposalFrom(blockHeight) {
-  let col = await getCouncilProposalCollection();
-  await col.deleteMany({ "indexer.blockHeight": { $gte: blockHeight } });
-
-  col = await getTipCollection();
-  await col.updateMany(
-    {},
-    {
-      $pull: {
-        councilProposals: {
-          "indexer.blockHeight": { $gte: blockHeight },
-        },
-      },
-    }
-  );
-
-  col = await getBountyCollection();
-  await col.updateMany(
-    {},
-    {
-      $pull: {
-        councilProposals: {
-          "indexer.blockHeight": { $gte: blockHeight },
-        },
-      },
-    }
-  );
-
-  col = await getProposalCollection();
-  await col.updateMany(
-    {},
-    {
-      $pull: {
-        councilProposals: {
-          "indexer.blockHeight": { $gte: blockHeight },
-        },
-      },
-    }
-  );
 }
 
 module.exports = {
