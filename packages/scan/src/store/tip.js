@@ -1,4 +1,4 @@
-const { TipEvents, ProxyMethods } = require("../utils/constants");
+const { TipEvents, ProxyMethods, TipMethods } = require("../utils/constants");
 const { hexToString } = require("@polkadot/util");
 const { getTipCollection } = require("../mongo");
 const { getApi } = require("../api");
@@ -50,16 +50,25 @@ function computeTipValue(tipMeta) {
   return median(tipValues);
 }
 
-async function saveNewTip(hash, extrinsic, blockIndexer) {
-  let reasonHex;
-  if (extrinsic.name === ProxyMethods.proxy) {
-    reasonHex = extrinsic.args.call.args.reason;
-  } else {
-    reasonHex = extrinsic.args.reason;
+async function getTipReasonHex(normalizedExtrinsic, blockIndexer) {
+  if (normalizedExtrinsic.name === ProxyMethods.proxy) {
+    return normalizedExtrinsic.args.call.args.reason;
+  } else if (
+    [TipMethods.tipNew, TipMethods.reportAwesome].includes(
+      normalizedExtrinsic.name
+    )
+  ) {
+    return normalizedExtrinsic.args.reason;
   }
 
+  return null;
+}
+
+async function saveNewTip(hash, normalizedExtrinsic, blockIndexer) {
+  const reasonHex = getTipReasonHex(normalizedExtrinsic, blockIndexer);
+
   const reason = hexToString(reasonHex);
-  const finder = extrinsic.signer;
+  const finder = normalizedExtrinsic.signer;
   const meta = await getTipMeta(blockIndexer.blockHash, hash);
   const medianValue = computeTipValue(meta);
 
@@ -76,14 +85,14 @@ async function saveNewTip(hash, extrinsic, blockIndexer) {
     tippersCount,
     isClosedOrRetracted: false,
     state: {
-      indexer: extrinsic.extrinsicIndexer,
+      indexer: normalizedExtrinsic.extrinsicIndexer,
       state: TipEvents.NewTip,
       data: [hash],
     },
     timeline: [
       {
         type: "extrinsic",
-        extrinsic,
+        extrinsic: normalizedExtrinsic,
       },
     ],
   });
