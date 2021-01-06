@@ -34,6 +34,7 @@ async function saveNewProposal(proposalIndex, indexer, extrinsic) {
     meta: metaJson,
     state: {
       name: ProposalState.Proposed,
+      indexer,
     },
   });
 }

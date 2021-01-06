@@ -36,10 +36,6 @@ async function handleProposalEvent(
       nullableNormalizedExtrinsic
     );
   }
-
-  // if (isStateChange(method)) {
-  //   await saveProposalTimeline(proposalIndex, method, eventData, indexer, sort);
-  // }
 }
 
 module.exports = {
