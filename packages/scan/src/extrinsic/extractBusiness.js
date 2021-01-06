@@ -15,15 +15,6 @@ async function extractExtrinsicBusinessData(normalizedExtrinsic, extrinsic) {
   await handleTipByProxy(normalizedExtrinsic, extrinsic);
   await handleTipByMultiSig(normalizedExtrinsic, extrinsic);
   // await handleBountyExtrinsic(section, name, args, isSuccess, indexer, events);
-  // await handleProposalExtrinsic(
-  //   section,
-  //   name,
-  //   args,
-  //   isSuccess,
-  //   indexer,
-  //   events
-  // );
-  // await handleCouncilExtrinsic(section, name, args, isSuccess, indexer, events);
 }
 
 module.exports = {
