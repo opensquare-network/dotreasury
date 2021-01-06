@@ -78,7 +78,7 @@ const FoldableItem = ({data, polkassembly}) => {
         </FlexWrapper>
       </VerticalWrapper>
       <ItemWrapper isUnfold={isUnfold}>
-        { (data || []).map((item, index) => <Item key={index} data={item} polkassembly={polkassembly} onUnfoldBtnClick={onUnfoldBtnClick} isUnfold={isUnfold} />) }
+        { (data || []).map((item, index) => <Item key={index} data={item} polkassembly={(index === 0) && polkassembly} onUnfoldBtnClick={onUnfoldBtnClick} isUnfold={isUnfold} />) }
       </ItemWrapper>
     </Wrapper>
   )

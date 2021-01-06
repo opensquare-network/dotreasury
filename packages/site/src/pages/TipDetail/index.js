@@ -222,7 +222,6 @@ const TipDetail = () => {
       <TimelineCommentWrapper>
         <Timeline
           data={timelineData}
-          polkassembly={false}
           loading={loadingTipDetail}
         />
         <Comment />

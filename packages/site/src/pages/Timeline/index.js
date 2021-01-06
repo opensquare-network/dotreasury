@@ -21,15 +21,15 @@ const LoadingWrapper = styled.div`
   justify-content: center;
 `
 
-const Timeline = ({ data, polkassembly, loading }) => {
+const Timeline = ({ data, loading }) => {
   return (
     <Wrapper>
       <Header>Timeline</Header>
       { (loading && <LoadingWrapper><Image src="/imgs/loading.svg" /></LoadingWrapper>) ||
       <>
         { (data || []).map((item, index) => (item.subTimeline
-            ? <FoldableItem key={index} data={item.subTimeline} polkassembly={polkassembly} />
-            : <Item key={index} data={item} polkassembly={polkassembly} />
+            ? <FoldableItem key={index} data={item.subTimeline} polkassembly={item.polkassembly} />
+            : <Item key={index} data={item} />
           )) }
       </>
       }
