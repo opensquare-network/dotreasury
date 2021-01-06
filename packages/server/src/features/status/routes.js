@@ -3,6 +3,6 @@ const statusController = require("./status.controller");
 
 const router = new Router();
 
-router.get("/status/:name", statusController.getStatus);
+router.get("/status", statusController.getStatus);
 
 module.exports = router;
