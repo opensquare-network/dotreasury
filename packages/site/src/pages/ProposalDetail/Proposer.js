@@ -8,18 +8,18 @@ import TextMinor from "../../components/TextMinor";
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 21px;
+  gap: 8px;
 `
 
 const BarProgressWrapper = styled.div`
   display: flex;
   gap: 8px;
-  margin-bottom: 9px;
   align-items: center;
 `
 
 const CustomText = styled(TextMinor)`
   white-space: nowrap;
+  font-size: 12px;
 `
 
 const Proposer = ({address, agree, value, threshold, ayes }) => {

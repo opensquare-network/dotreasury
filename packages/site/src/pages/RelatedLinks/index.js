@@ -21,13 +21,13 @@ const RelatedLinks = () => {
       <SubTitle>Ralated Links</SubTitle>
       <LinksWrapper>
         <LinkItem
-          src={"/imgs/youtube-logo.png"}
+          src={"/imgs/youtube-logo.svg"}
           text={"Youtube"}
           description={
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eu integer integer a dolor placerat quis ultrices tortor quis."
           }
         />
-        <LinkItem src={"/imgs/medium-logo.png"} text={"Medium"} />
+        <LinkItem src={"/imgs/medium-logo.svg"} text={"Medium"} />
         <LinkItem src={"/imgs/polkassembly-logo.svg"} text={"Polkassembly"} />
       </LinksWrapper>
     </Wrapper>
