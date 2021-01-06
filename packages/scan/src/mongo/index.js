@@ -11,7 +11,6 @@ const motionCollectionName = "motion";
 const bountyCollectionName = "bounty";
 const bountyTimelineCollectionName = "bountyTimeline";
 const proposalCollectionName = "proposal";
-const councilProposalCollectionName = "councilProposal";
 
 let client = null;
 let db = null;
@@ -25,7 +24,6 @@ let tipCol = null;
 let bountyCol = null;
 let bountyTimelineCol = null;
 let proposalCol = null;
-let councilProposalCol = null;
 let motionCol = null;
 
 async function initDb() {
@@ -42,7 +40,6 @@ async function initDb() {
   bountyCol = db.collection(bountyCollectionName);
   bountyTimelineCol = db.collection(bountyTimelineCollectionName);
   proposalCol = db.collection(proposalCollectionName);
-  councilProposalCol = db.collection(councilProposalCollectionName);
   motionCol = db.collection(motionCollectionName);
 
   await _createIndexes();
@@ -108,11 +105,6 @@ async function getProposalCollection() {
   return proposalCol;
 }
 
-async function getCouncilProposalCollection() {
-  await tryInit(councilProposalCol);
-  return councilProposalCol;
-}
-
 module.exports = {
   getStatusCollection,
   getBlockCollection,
@@ -122,6 +114,5 @@ module.exports = {
   getBountyCollection,
   getBountyTimelineCollection,
   getProposalCollection,
-  getCouncilProposalCollection,
   getMotionCollection,
 };
