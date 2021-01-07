@@ -20,6 +20,5 @@ async function saveBountyTimeline(bountyIndex, state, data, indexer, sort) {
 }
 
 module.exports = {
-  saveNewBounty,
   saveBountyTimeline,
 };

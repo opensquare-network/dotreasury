@@ -4,6 +4,7 @@ const {
   handleTipByMultiSig,
   handleTip,
 } = require("./treasury/tip");
+const { handleBountyAcceptCurator } = require("./treasury/bounty");
 
 async function extractExtrinsicBusinessData(normalizedExtrinsic, extrinsic) {
   if (!normalizedExtrinsic.isSuccess) {
@@ -14,7 +15,8 @@ async function extractExtrinsicBusinessData(normalizedExtrinsic, extrinsic) {
   await handleTip(normalizedExtrinsic);
   await handleTipByProxy(normalizedExtrinsic, extrinsic);
   await handleTipByMultiSig(normalizedExtrinsic, extrinsic);
-  // await handleBountyExtrinsic(section, name, args, isSuccess, indexer, events);
+
+  await handleBountyAcceptCurator(normalizedExtrinsic);
 }
 
 module.exports = {

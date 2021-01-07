@@ -16,7 +16,7 @@ const { knownBountyHeights } = require("./block/knownBountyBlocks");
 
 async function scanKnowBlocks(toScanHeight) {
   let index = knownHeights.findIndex((height) => height >= toScanHeight);
-  while (index < knownHeights.length - 1) {
+  while (index < knownHeights.length) {
     const height = knownHeights[index];
     await scanBlockByHeight(height);
     await updateScanHeight(height);
@@ -58,13 +58,13 @@ async function scanBlockByHeight(scanHeight) {
   const blockIndexer = getBlockIndexer(block.block);
 
   await handleEvents(allEvents, blockIndexer, block.block.extrinsics);
-  // await handleExtrinsics(block.block.extrinsics, allEvents, blockIndexer);
+  await handleExtrinsics(block.block.extrinsics, allEvents, blockIndexer);
   logger.info(`block ${block.block.header.number.toNumber()} done`);
 }
 
 async function test() {
   let index = 0;
-  while (index < knownBountyHeights.length - 1) {
+  while (index < knownBountyHeights.length) {
     const height = knownBountyHeights[index];
     await scanBlockByHeight(height);
     index++;

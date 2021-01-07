@@ -4,7 +4,7 @@ const {
   BountyMethods,
 } = require("../../utils/constants");
 const { getBountyCollection } = require("../../mongo");
-const { getApi } = require("../../api");
+const { getBountyMeta } = require("../../utils/bounty");
 
 function isBountyEvent(method) {
   return BountyEvents.hasOwnProperty(method);
@@ -25,12 +25,6 @@ async function handleBountyEventWithExtrinsic(
   if (method === BountyEvents.BountyProposed) {
     await handleProposedEvent(event, normalizedExtrinsic);
   }
-}
-
-async function getBountyMeta(blockHash, bountyIndex) {
-  const api = await getApi();
-  const meta = await api.query.treasury.bounties.at(blockHash, bountyIndex);
-  return meta.toJSON();
 }
 
 async function handleBountyBecameActiveEvent(event, eventIndexer) {
