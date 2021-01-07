@@ -21,7 +21,6 @@ import Title from "../../components/Title";
 import User from "../../components/User";
 import Balance from "../../components/Balance";
 import TipLifeCycleTable from "./TipLifeCycleTable";
-import { getCall } from "../../services/metadata";
 import Funder from "./Funder";
 
 const HeaderWrapper = styled.div`
@@ -60,51 +59,13 @@ const TimelineCommentWrapper = styled.div`
   }
 `;
 
-async function getProxyMethod(blockHash, hexCallIndex) {
-  const call = await getCall(blockHash, hexCallIndex);
-  return call.method;
-}
-
-async function processProxyExtrinsic(extrinsic) {
-  if (extrinsic.section !== "proxy" || extrinsic.name !== "proxy") {
-    return extrinsic;
-  }
-
-  const {
-    args: {
-      real,
-      call: { callIndex: hexCallIndex, args },
-    },
-    extrinsicIndexer,
-  } = extrinsic;
-
-  const name = await getProxyMethod(extrinsicIndexer.blockHash, hexCallIndex);
-  if (name) {
-    return {
-      name,
-      args,
-      signer: real,
-      extrinsicIndexer,
-    };
-  }
-
-  return {
-    name: `Proxy(${hexCallIndex})`,
-    args,
-    signer: real,
-    extrinsicIndexer,
-  };
-}
-
 async function processTimeline(tipDetail) {
   return await Promise.all(
     (tipDetail.timeline || []).map(async (timelineItem) => {
-      const extrinsic = await processProxyExtrinsic(timelineItem.extrinsic);
       let fields = [];
 
-      if (extrinsic.name === "reportAwesome") {
-        const { reason, who: beneficiary } = extrinsic.args;
-        const finder = extrinsic.signer;
+      if (timelineItem.method === "reportAwesome") {
+        const { reason, who: beneficiary, finder } = timelineItem.args;
         const reasonText = hexToString(reason);
         fields = [
           {
@@ -120,9 +81,8 @@ async function processTimeline(tipDetail) {
             value: reasonText,
           },
         ];
-      } else if (extrinsic.name === "tipNew") {
-        const { tip_value: tipValue, who: beneficiary, reason } = extrinsic.args;
-        const finder = extrinsic.signer;
+      } else if (timelineItem.method === "tipNew") {
+        const { tip_value: tipValue, who: beneficiary, reason, finder } = timelineItem.args;
         const reasonText = hexToString(reason);
         fields = [
           {
@@ -142,16 +102,15 @@ async function processTimeline(tipDetail) {
             value: reasonText,
           },
         ];
-      } else if (extrinsic.name === "tip") {
-        const { tip_value: tipValue } = extrinsic.args;
-        const funder = extrinsic.signer;
+      } else if (timelineItem.method === "tip") {
+        const { value: tipValue, tipper: funder } = timelineItem.args;
         fields = [
           {
             value: <Funder address={funder} value={tipValue} />
           }
         ];
-      } else if (extrinsic.name === "closeTip") {
-        const who = extrinsic.signer;
+      } else if (timelineItem.method === "closeTip") {
+        const { terminator: who } = timelineItem.args;
         fields = [
           {
             title: "Close by",
@@ -166,8 +125,8 @@ async function processTimeline(tipDetail) {
             value: <Balance value={tipDetail.medianValue} />,
           },
         ];
-      } else if (extrinsic.name === "retractTip") {
-        const who = extrinsic.signer;
+      } else if (timelineItem.method === "retractTip") {
+        const who = timelineItem.extrinsic.signer;
         fields = [
           {
             title: "Retract by",
@@ -177,7 +136,8 @@ async function processTimeline(tipDetail) {
       }
 
       return {
-        ...extrinsic,
+        extrinsicIndexer: timelineItem.extrinsic.extrinsicIndexer,
+        name: timelineItem.method,
         fields,
       };
     })
