@@ -110,7 +110,7 @@ async function processTimeline(tipDetail) {
           }
         ];
       } else if (timelineItem.method === "closeTip") {
-        const who = timelineItem.extrinsic.signer;
+        const who = timelineItem.args.terminator;
         fields = [
           {
             title: "Close by",
@@ -126,7 +126,7 @@ async function processTimeline(tipDetail) {
           },
         ];
       } else if (timelineItem.method === "retractTip") {
-        const who = timelineItem.extrinsic.signer;
+        const who = timelineItem.args.terminator;
         fields = [
           {
             title: "Retract by",
