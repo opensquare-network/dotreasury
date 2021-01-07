@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
+import Text from "../Text";
+
 const CircleWrapper = styled.div`
   position: relative;
   width: 63px;
@@ -22,50 +24,35 @@ const InnerCircleWrapper = styled.div`
   height: 100%;
 `
 
-const InnerCircleLeft = styled.div`
+const InnerCircle = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.25);
   border-radius: 50%;
   border: 5px solid rgba(0, 0, 0);
+`
+
+const InnerCircleLeft = styled(InnerCircle)`
   clip-path: polygon(0px 0px, 50% 0px, 50% 100%, 0 100%);
   transform: rotate(${p => p.turn}turn);
 `
-const InnerCircleRight = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.25);
-  border-radius: 50%;
-  border: 5px solid rgba(0, 0, 0);
+const InnerCircleRight = styled(InnerCircle)`
   clip-path: polygon(50% 0px, 100% 0px, 100% 100%, 50% 100%);
   visibility: ${p => p.overHalf ? "visible" : "hidden"};
 `
 
-const InnerCircleMaskLeft = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  border: 5px solid rgba(0, 0, 0, 0.25);
-  background: white;
+const InnerCircleMaskLeft = styled(BackCircle)`
   clip-path: polygon(0px 0px, 50% 0px, 50% 100%, 0 100%);
   visibility: ${p => p.overHalf ? "hidden" : "visible"};
 `
 
-const InnerCircleMaskRight = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  border: 5px solid rgba(0, 0, 0, 0.25);
-  background: white;
+const InnerCircleMaskRight = styled(BackCircle)`
   clip-path: polygon(50% 0px, 100% 0px, 100% 100%, 50% 100%);
   visibility: ${p => p.overHalf ? "visible" : "hidden"};
 `
 
-const PercentLable = styled.div`
+const PercentLable = styled(Text)`
   position: absolute;
   transform: translate(-50%, -50%);
   top: 50%;
@@ -73,7 +60,7 @@ const PercentLable = styled.div`
   font-size: 16px;
 `
 
-const CountDown = ({percent = 0}) => {
+const Circle = ({percent = 0}) => {
   const turn = percent / 100;
   const overHalf = percent > 50;
   return (
@@ -90,4 +77,4 @@ const CountDown = ({percent = 0}) => {
   )
 }
 
-export default CountDown;
+export default Circle;
