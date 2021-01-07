@@ -11,6 +11,7 @@ const motionCollectionName = "motion";
 const bountyCollectionName = "bounty";
 const bountyTimelineCollectionName = "bountyTimeline";
 const proposalCollectionName = "proposal";
+const burntCollectionName = "burnt";
 
 let client = null;
 let db = null;
@@ -25,6 +26,7 @@ let bountyCol = null;
 let bountyTimelineCol = null;
 let proposalCol = null;
 let motionCol = null;
+let burntCol = null;
 
 async function initDb() {
   client = await MongoClient.connect(mongoUrl, {
@@ -41,6 +43,7 @@ async function initDb() {
   bountyTimelineCol = db.collection(bountyTimelineCollectionName);
   proposalCol = db.collection(proposalCollectionName);
   motionCol = db.collection(motionCollectionName);
+  burntCol = db.collection(burntCollectionName);
 
   await _createIndexes();
 }
@@ -105,6 +108,11 @@ async function getProposalCollection() {
   return proposalCol;
 }
 
+async function getBurntCollection() {
+  await tryInit(burntCol);
+  return burntCol;
+}
+
 module.exports = {
   getStatusCollection,
   getBlockCollection,
@@ -115,4 +123,5 @@ module.exports = {
   getBountyTimelineCollection,
   getProposalCollection,
   getMotionCollection,
+  getBurntCollection,
 };

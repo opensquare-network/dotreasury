@@ -12,7 +12,8 @@ function isProposalEvent(method) {
 async function handleProposalEvent(
   event,
   blockIndexer,
-  nullableNormalizedExtrinsic
+  nullableNormalizedExtrinsic,
+  eventSort
 ) {
   const { section, method, data } = event;
   if (Modules.Treasury !== section || !isProposalEvent(method)) {
@@ -29,7 +30,8 @@ async function handleProposalEvent(
     await updateProposalStateByEvent(
       event,
       blockIndexer,
-      nullableNormalizedExtrinsic
+      nullableNormalizedExtrinsic,
+      eventSort
     );
   }
 }
