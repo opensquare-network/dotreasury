@@ -22,6 +22,7 @@ class ProposalsController {
 
     ctx.body = {
       items: proposals.map(item => ({
+        indexer: item.indexer,
         proposalIndex: item.proposalIndex,
         proposeTime: item.indexer.blockTime,
         proposeAtBlockHeight: item.indexer.blockHeight,
@@ -60,6 +61,7 @@ class ProposalsController {
     }
 
     ctx.body = {
+      indexer: proposal.indexer,
       proposalIndex: proposal.proposalIndex,
       proposeTime: proposal.indexer.blockTime,
       proposeAtBlockHeight: proposal.indexer.blockHeight,
