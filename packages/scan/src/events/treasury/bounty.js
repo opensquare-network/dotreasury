@@ -12,11 +12,7 @@ function isBountyEvent(method) {
 
 // const isStateChange = isBountyEvent;
 
-async function handleBountyEventWithExtrinsic(
-  event,
-  normalizedExtrinsic,
-  extrinsic
-) {
+async function handleBountyEventWithExtrinsic(event, normalizedExtrinsic) {
   const { section, method } = event;
   if (Modules.Treasury !== section || !isBountyEvent(method)) {
     return;
@@ -24,7 +20,39 @@ async function handleBountyEventWithExtrinsic(
 
   if (method === BountyEvents.BountyProposed) {
     await handleProposedEvent(event, normalizedExtrinsic);
+  } else if (
+    [
+      BountyEvents.BountyAwarded,
+      BountyEvents.BountyCanceled,
+      BountyEvents.BountyClaimed,
+      BountyEvents.BountyExtended,
+      BountyEvents.BountyRejected,
+    ].includes(method)
+  ) {
+    await handleBountyStateUpdateEvent(event, normalizedExtrinsic);
   }
+}
+
+async function handleBountyStateUpdateEvent(event, normalizedExtrinsic) {
+  const indexer = normalizedExtrinsic.extrinsicIndexer;
+  const eventData = event.data.toJSON();
+  const bountyIndex = eventData[0];
+  const meta = await getBountyMeta(indexer.blockHash, bountyIndex);
+
+  const timelineItem = {
+    name: event.method,
+    eventData,
+    extrinsic: normalizedExtrinsic,
+  };
+
+  const bountyCol = await getBountyCollection();
+  await bountyCol.findOneAndUpdate(
+    { bountyIndex },
+    {
+      $set: { meta, state: timelineItem },
+      $push: { timeline: timelineItem },
+    }
+  );
 }
 
 async function handleBountyBecameActiveEvent(event, eventIndexer) {
