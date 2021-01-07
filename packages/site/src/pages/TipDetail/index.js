@@ -110,7 +110,7 @@ async function processTimeline(tipDetail) {
           }
         ];
       } else if (timelineItem.method === "closeTip") {
-        const { terminator: who } = timelineItem.args;
+        const who = timelineItem.extrinsic.signer;
         fields = [
           {
             title: "Close by",
