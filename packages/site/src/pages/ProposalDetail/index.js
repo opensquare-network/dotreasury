@@ -61,9 +61,7 @@ const TimelineCommentWrapper = styled.div`
 async function processTimeline(proposalDetail) {
   return [{
     name: "Proposed",
-    extrinsicIndexer: {
-      blockTime: proposalDetail.proposeTime,
-    },
+    extrinsicIndexer: proposalDetail.indexer || {},
     fields: [{
       title: "Proposer",
       value: <User address={proposalDetail.proposer} />
