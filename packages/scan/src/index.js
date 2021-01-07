@@ -13,6 +13,7 @@ const {
   maxKnowHeightWithTreasuryOrProxyExtrinsic,
 } = require("./block/knownTreasuryBlocks");
 const { knownBountyHeights } = require("./block/knownBountyBlocks");
+const { knownCouncilEventHeights } = require("./block/knownCouncilEventBlocks");
 
 async function scanKnowBlocks(toScanHeight) {
   let index = knownHeights.findIndex((height) => height >= toScanHeight);
@@ -64,8 +65,8 @@ async function scanBlockByHeight(scanHeight) {
 
 async function test() {
   let index = 0;
-  while (index < knownBountyHeights.length) {
-    const height = knownBountyHeights[index];
+  while (index < knownCouncilEventHeights.length) {
+    const height = knownCouncilEventHeights[index];
     await scanBlockByHeight(height);
     index++;
   }

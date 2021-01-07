@@ -25,8 +25,8 @@ async function handleEvents(events, blockIndexer, extrinsics) {
         ...normalizeExtrinsic(extrinsic, events),
       };
 
-      // await handleTipEvent(event, normalizedExtrinsic, blockIndexer, extrinsic);
-      // await handleCouncilEvent(event, normalizedExtrinsic, extrinsic);
+      await handleTipEvent(event, normalizedExtrinsic, blockIndexer, extrinsic);
+      await handleCouncilEvent(event, normalizedExtrinsic, extrinsic);
       await handleBountyEventWithExtrinsic(
         event,
         normalizedExtrinsic,

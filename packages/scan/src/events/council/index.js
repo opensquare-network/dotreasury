@@ -4,25 +4,23 @@ const {
   Modules,
   ProposalMethods,
   ProposalEvents,
+  BountyMethods,
 } = require("../../utils/constants");
-const {
-  treasuryProposalCouncilIndexes,
-  approveProposalIndex,
-} = require("../../utils/call");
+const { getCall } = require("../../utils/call");
 const { getMotionCollection, getProposalCollection } = require("../../mongo");
 const { motionActions } = require("./constants");
 const {
   firstKnowCouncilCloseEventHeight,
 } = require("../../block/knownCouncilEventBlocks");
 
-async function handleCouncilEvent(event, normalizedExtrinsic) {
+async function handleCouncilEvent(event, normalizedExtrinsic, extrinsic) {
   const { section, method } = event;
   if (Modules.Council !== section) {
     return;
   }
 
   if (method === CouncilEvents.Proposed) {
-    await handleProposed(event, normalizedExtrinsic);
+    await handleProposed(event, normalizedExtrinsic, extrinsic);
   } else if (method === CouncilEvents.Voted) {
     await handleVoteEvent(event, normalizedExtrinsic);
   } else if (method === CouncilEvents.Approved) {
@@ -49,39 +47,53 @@ async function getMotionVotingByHeight(height, motionHash) {
   return await getMotionVoting(blockHash, motionHash);
 }
 
-function extractCallIndexAndArgs(normalizedExtrinsic) {
+async function extractCallIndexAndArgs(normalizedExtrinsic, extrinsic) {
   // TODO: handle proxy extrinsic
+  const blockHash = normalizedExtrinsic.extrinsicIndexer.blockHash;
   const { section, name, args } = normalizedExtrinsic;
   if ("utility" === section && "asMulti" === name) {
     const {
       call: {
         args: {
-          proposal: { callIndex, args: proposalArgs },
+          proposal: { args: proposalArgs },
         },
       },
     } = args;
-    return [callIndex, proposalArgs];
-  } else {
-    const {
-      args: {
-        proposal: { callIndex, args },
-      },
-    } = normalizedExtrinsic;
-    return [callIndex, args];
+    const call = await getCall(blockHash, extrinsic.method.args[3].toHex());
+    return [call.section, call.method, proposalArgs];
   }
+
+  const {
+    args: {
+      proposal: { args: proposalArgs },
+    },
+  } = normalizedExtrinsic;
+  const call = await getCall(blockHash, extrinsic.args[1].toHex());
+  return [call.section, call.method, proposalArgs];
 }
 
-async function handleProposed(event, normalizedExtrinsic) {
-  const [callIndex, args] = extractCallIndexAndArgs(normalizedExtrinsic);
-  if (!treasuryProposalCouncilIndexes.includes(callIndex)) {
+async function handleProposed(event, normalizedExtrinsic, extrinsic) {
+  const [section, method, args] = await extractCallIndexAndArgs(
+    normalizedExtrinsic,
+    extrinsic
+  );
+  if (section !== Modules.Treasury) {
+    return;
+  }
+
+  if (
+    ![
+      ProposalMethods.approveProposal,
+      ProposalMethods.rejectProposal,
+      BountyMethods.approveBounty,
+      BountyMethods.proposeCurator,
+      BountyMethods.unassignCurator,
+    ].includes(method)
+  ) {
     return;
   }
 
   const { proposal_id: treasuryProposalId } = args;
-  const method =
-    approveProposalIndex === callIndex
-      ? ProposalMethods.approveProposal
-      : ProposalMethods.rejectProposal;
   const eventData = event.data.toJSON();
   const [proposer, index, hash] = eventData;
   const voting = await getMotionVoting(
