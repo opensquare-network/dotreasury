@@ -10,6 +10,7 @@ import RightButton from "../../components/RightButton";
 import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
 import PairTextVertical from "../../components/PairTextVertical";
+import TableNoDataCell from "../../components/TableNoDataCell";
 
 const Wrapper = styled.div`
   overflow-x: scroll;
@@ -100,11 +101,7 @@ const ProposalsTable = ({ data, loading }) => {
                   </Table.Cell>
                 </Table.Row>
               ))) || (
-              <Table.Row>
-                <Table.Cell className="no-data" colSpan="6" textAlign="center">
-                  No data
-                </Table.Cell>
-              </Table.Row>
+                <TableNoDataCell />
             )}
           </Table.Body>
         </StyledTable>

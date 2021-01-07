@@ -12,6 +12,7 @@ import RightButton from "../../components/RightButton";
 import PairTextVertical from "../../components/PairTextVertical";
 import ReasonText from "./ReasonText";
 import { TipStatus } from "../../constants";
+import TableNoDataCell from "../../components/TableNoDataCell";
 
 const Wrapper = styled.div`
   overflow-x: scroll;
@@ -107,11 +108,7 @@ const TipsTable = ({ data, loading }) => {
                   </Table.Cell>
                 </Table.Row>
               ))) || (
-              <Table.Row>
-                <Table.Cell className="no-data" colSpan="6" textAlign="center">
-                  No data
-                </Table.Cell>
-              </Table.Row>
+                <TableNoDataCell />
             )}
           </Table.Body>
         </StyledTable>
