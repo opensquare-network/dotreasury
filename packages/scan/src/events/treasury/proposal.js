@@ -22,11 +22,7 @@ async function handleProposalEvent(
   const eventData = data.toJSON();
   const proposalIndex = eventData[0];
   if (method === ProposalEvents.Proposed) {
-    await saveNewProposal(
-      proposalIndex,
-      blockIndexer,
-      nullableNormalizedExtrinsic
-    );
+    await saveNewProposal(proposalIndex, nullableNormalizedExtrinsic);
   } else if (
     [ProposalEvents.Rejected, ProposalEvents.Awarded].includes(method)
   ) {

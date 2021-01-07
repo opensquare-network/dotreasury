@@ -2,8 +2,9 @@ const { getProposalCollection } = require("../mongo");
 const { getApi } = require("../api");
 const { ProposalState } = require("../utils/constants");
 
-async function saveNewProposal(proposalIndex, indexer, extrinsic) {
+async function saveNewProposal(proposalIndex, nullableNormalizedExtrinsic) {
   const api = await getApi();
+  const indexer = nullableNormalizedExtrinsic.extrinsicIndexer;
   const meta = await api.query.treasury.proposals.at(
     indexer.blockHash,
     proposalIndex
@@ -13,7 +14,7 @@ async function saveNewProposal(proposalIndex, indexer, extrinsic) {
   let {
     signer: proposer,
     args: { value, beneficiary },
-  } = extrinsic;
+  } = nullableNormalizedExtrinsic;
 
   if (metaJson) {
     proposer = metaJson.proposer;
