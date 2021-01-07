@@ -92,15 +92,11 @@ async function getTipReason(normalizedExtrinsic, extrinsic) {
   return null;
 }
 
-async function getFinder(normalizedExtrinsic) {
+async function getRealSigner(normalizedExtrinsic) {
   const { section, name, args, signer } = normalizedExtrinsic;
 
   if (name === ProxyMethods.proxy) {
     return args.real;
-  }
-
-  if ([TipMethods.tipNew, TipMethods.reportAwesome].includes(name)) {
-    return signer;
   }
 
   if (Modules.Multisig === section || MultisigMethods.asMulti === name) {
@@ -108,14 +104,14 @@ async function getFinder(normalizedExtrinsic) {
     return await getMultiSigExtrinsicAddress(args, signer);
   }
 
-  return null;
+  return signer;
 }
 
 async function saveNewTip(hash, normalizedExtrinsic, extrinsic) {
   const indexer = normalizedExtrinsic.extrinsicIndexer;
 
   const reason = await getTipReason(normalizedExtrinsic, extrinsic);
-  const finder = await getFinder(normalizedExtrinsic);
+  const finder = await getRealSigner(normalizedExtrinsic);
   const meta = await getTipMeta(indexer.blockHash, hash);
   const medianValue = computeTipValue(meta);
   const tippersCount = await getTippersCount(indexer.blockHash);
@@ -186,7 +182,7 @@ async function updateTipFinalState(
     normalizedExtrinsic,
     extrinsic
   );
-  const terminator = await getFinder(normalizedExtrinsic);
+  const terminator = await getRealSigner(normalizedExtrinsic);
 
   const tipCol = await getTipCollection();
   await tipCol.updateOne(
