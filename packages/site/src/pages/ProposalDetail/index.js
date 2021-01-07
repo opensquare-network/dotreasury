@@ -77,7 +77,7 @@ async function processTimeline(proposalDetail) {
   },
   ...await Promise.all(
     (proposalDetail.motions || []).map(async (motion) => ({
-      polkassembly: (await polkassemblyApi.getMotionUrl(motion.index)),
+      polkassembly: polkassemblyApi.getMotionUrl(motion.index),
       subTimeline: (motion.timeline || []).map(item => ({
         name: item.action,
         extrinsicIndexer: item.extrinsic.extrinsicIndexer,

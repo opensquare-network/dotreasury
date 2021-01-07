@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import ImageButton from "./ImageButton";
@@ -12,6 +12,16 @@ const Wrapper = styled.div`
 `;
 
 const ButtonList = ({ indexer, polkassembly }) => {
+  const [motionUrl, setMotionUrl] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      if (polkassembly) {
+        setMotionUrl(await polkassembly);
+      }
+    })();
+  }, [polkassembly]);
+
   return (
     <Wrapper>
       <ExplorerLink base="https://polkascan.io/kusama/" href={`transaction/${indexer.blockHeight}-${indexer.index}`}>
@@ -20,8 +30,8 @@ const ButtonList = ({ indexer, polkassembly }) => {
       <ExplorerLink base="https://kusama.subscan.io/" href={`extrinsic/${indexer.blockHeight}-${indexer.index}`}>
         <ImageButton src={"/imgs/subscan-logo.svg"} />
       </ExplorerLink>
-      { polkassembly && (
-          <ExternalLink href={polkassembly}>
+      { motionUrl && (
+          <ExternalLink href={motionUrl}>
             <ImageButton src={"/imgs/polkassembly-logo.svg"} />
           </ExternalLink>
         ) }
