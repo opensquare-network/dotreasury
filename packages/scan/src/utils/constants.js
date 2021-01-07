@@ -1,6 +1,8 @@
 const ksmFirstTipClosedHeight = 2192357;
 const ksmFirstRejectedEventHeight = 1164233;
 
+const TreasuryAccount = "F3opxRbN5ZbjJNU511Kj2TLuzFcDq9BGduA9TgiECafpg29";
+
 const ProposalState = Object.freeze({
   Proposed: "Proposed",
   ApproveVoting: "ApproveVoting",
@@ -89,6 +91,10 @@ const MultisigMethods = Object.freeze({
   asMulti: "asMulti",
 });
 
+const TreasuryEvent = Object.freeze({
+  Burnt: "Burnt",
+});
+
 module.exports = {
   Modules,
   BountyMethods,
@@ -97,6 +103,7 @@ module.exports = {
   ProposalEvents,
   TipMethods,
   TipEvents,
+  TreasuryEvent,
   CouncilEvents,
   CouncilMethods,
   ProxyMethods,
@@ -104,4 +111,5 @@ module.exports = {
   ksmFirstTipClosedHeight,
   ProposalState,
   ksmFirstRejectedEventHeight,
+  TreasuryAccount,
 };
