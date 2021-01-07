@@ -23,10 +23,12 @@ async function handleEvents(events, blockIndexer, extrinsics) {
 
       await handleTipEvent(event, normalizedExtrinsic, blockIndexer, extrinsic);
       await handleCouncilEvent(event, normalizedExtrinsic, extrinsic);
+    } else {
+      const eventIndexer = { ...blockIndexer, sort };
+      await handleBurntEvent(event, eventIndexer);
     }
 
     await handleProposalEvent(event, blockIndexer, normalizedExtrinsic);
-    await handleBurntEvent(event, blockIndexer);
   }
 }
 

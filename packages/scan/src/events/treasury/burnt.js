@@ -3,7 +3,7 @@ const { saveNewBurnt } = require("../../store/burnt");
 
 async function handleBurntEvent(
   event,
-  blockIndexer,
+  eventIndexer,
 ) {
   const { section, method, data } = event;
   if (Modules.Treasury !== section || TreasuryEvent.Burnt !== method) {
@@ -13,7 +13,7 @@ async function handleBurntEvent(
   const eventData = data.toJSON();
   const [balance] = eventData;
 
-  await saveNewBurnt(balance, blockIndexer);
+  await saveNewBurnt(balance, eventIndexer);
 }
 
 module.exports = {
