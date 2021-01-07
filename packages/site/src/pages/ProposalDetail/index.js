@@ -75,11 +75,10 @@ async function processTimeline(proposalDetail) {
       value: <Balance value={proposalDetail.value} />
     }]
   },
-  ...await Promise.all(
-    (proposalDetail.motions || []).map(async (motion) => ({
+  ...(proposalDetail.motions || []).map(motion => ({
       polkassembly: polkassemblyApi.getMotionUrl(motion.index),
       subTimeline: (motion.timeline || []).map(item => ({
-        name: item.action,
+        name: (item.action === "Propose" ? `Motion #${motion.index}` : item.action),
         extrinsicIndexer: item.extrinsic.extrinsicIndexer,
         fields: (() => {
           if (item.action === "Propose") {
@@ -103,7 +102,7 @@ async function processTimeline(proposalDetail) {
         })(),
       }))
     }))
-  )]
+  ]
 }
 
 const ProposalDetail = () => {
