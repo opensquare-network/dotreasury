@@ -28,7 +28,7 @@ async function handleEvents(events, blockIndexer, extrinsics) {
       await handleBurntEvent(event, eventIndexer);
     }
 
-    await handleProposalEvent(event, blockIndexer, normalizedExtrinsic);
+    await handleProposalEvent(event, blockIndexer, normalizedExtrinsic, sort);
   }
 }
 

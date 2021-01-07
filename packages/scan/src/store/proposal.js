@@ -40,11 +40,13 @@ async function saveNewProposal(proposalIndex, nullableNormalizedExtrinsic) {
 async function updateProposalStateByEvent(
   event,
   blockIndexer,
-  nullableNormalizedExtrinsic
+  nullableNormalizedExtrinsic,
+  eventSort
 ) {
   const { method, data } = event;
   const eventData = data.toJSON();
   const proposalIndex = eventData[0];
+  const eventIndexer = { ...blockIndexer, eventSort };
 
   const col = await getProposalCollection();
   await col.updateOne(
@@ -55,7 +57,7 @@ async function updateProposalStateByEvent(
           name: method,
           data: eventData,
           indexer:
-            nullableNormalizedExtrinsic?.extrinsicIndexer || blockIndexer,
+            nullableNormalizedExtrinsic?.extrinsicIndexer || eventIndexer,
         },
       },
     }
