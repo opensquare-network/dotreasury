@@ -48,8 +48,11 @@ const Link = ({ link, text }) => {
   } else if (url.host.endsWith("twitter.com")) {
     src = "/imgs/twitter-logo.svg";
     name = "Twitter";
+  } else if (url.host.endsWith("t.me")) {
+    src = "/imgs/link-icon.svg";
+    name = "Telegram";
   } else {
-    src = "/imgs/youtube-logo.svg";
+    src = "/imgs/link-icon.svg";
   }
 
   if (!name) {
