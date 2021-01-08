@@ -1,25 +1,16 @@
-const { getApi } = require("../../api");
-const {
-  CouncilEvents,
-  Modules,
-  ProposalMethods,
-  ProposalEvents,
-} = require("../../utils/constants");
-const { getCall } = require("../../utils/call");
-const {
-  getMotionCollection,
-  getProposalCollection,
-  getBountyCollection,
-} = require("../../mongo");
+const { CouncilEvents, Modules } = require("../../utils/constants");
+const { getMotionCollection } = require("../../mongo");
 const { motionActions } = require("./constants");
 const {
   firstKnowCouncilCloseEventHeight,
 } = require("../../block/knownCouncilEventBlocks");
+const { getMotionVoting, getMotionVotingByHeight } = require("./utils");
 const {
-  isProposalMotion,
-  isBountyMotion,
-  getBountyVotingName,
-} = require("./utils");
+  updateProposalStateByProposeOrVote,
+  handleProposedForProposal,
+  updateProposalStateByVoteResult,
+} = require("./proposalMotion");
+const { handleProposedForBounty } = require("./bountyMotion");
 
 async function handleCouncilEvent(event, normalizedExtrinsic, extrinsic) {
   const { section, method } = event;
@@ -29,6 +20,7 @@ async function handleCouncilEvent(event, normalizedExtrinsic, extrinsic) {
 
   if (method === CouncilEvents.Proposed) {
     await handleProposedForProposal(event, normalizedExtrinsic, extrinsic);
+    await handleProposedForBounty(event, normalizedExtrinsic, extrinsic);
   } else if (method === CouncilEvents.Voted) {
     await handleVoteEvent(event, normalizedExtrinsic);
   } else if (method === CouncilEvents.Approved) {
@@ -40,144 +32,6 @@ async function handleCouncilEvent(event, normalizedExtrinsic, extrinsic) {
   } else if (method === CouncilEvents.Closed) {
     await handleClosedEvent(event, normalizedExtrinsic);
   }
-}
-
-async function getMotionVoting(blockHash, motionHash) {
-  const api = await getApi();
-  const votingObject = await api.query.council.voting.at(blockHash, motionHash);
-  return votingObject.toJSON();
-}
-
-async function getMotionVotingByHeight(height, motionHash) {
-  const api = await getApi();
-  const blockHash = await api.rpc.chain.getBlockHash(height);
-
-  return await getMotionVoting(blockHash, motionHash);
-}
-
-async function extractCallIndexAndArgs(normalizedExtrinsic, extrinsic) {
-  // TODO: handle proxy extrinsic
-  const blockHash = normalizedExtrinsic.extrinsicIndexer.blockHash;
-  const { section, name, args } = normalizedExtrinsic;
-  if ("utility" === section && "asMulti" === name) {
-    const {
-      call: {
-        args: {
-          proposal: { args: proposalArgs },
-        },
-      },
-    } = args;
-    const call = await getCall(blockHash, extrinsic.method.args[3].toHex());
-    return [call.section, call.method, proposalArgs];
-  }
-
-  const {
-    args: {
-      proposal: { args: proposalArgs },
-    },
-  } = normalizedExtrinsic;
-  const call = await getCall(blockHash, extrinsic.args[1].toHex());
-  return [call.section, call.method, proposalArgs];
-}
-
-async function handleProposedForProposal(
-  event,
-  normalizedExtrinsic,
-  extrinsic
-) {
-  const [section, method, args] = await extractCallIndexAndArgs(
-    normalizedExtrinsic,
-    extrinsic
-  );
-
-  if (section !== Modules.Treasury || !isProposalMotion(method)) {
-    return;
-  }
-
-  const { proposal_id: treasuryProposalId } = args;
-  const eventData = event.data.toJSON();
-  const [proposer, index, hash] = eventData;
-  const voting = await getMotionVoting(
-    normalizedExtrinsic.extrinsicIndexer.blockHash,
-    hash
-  );
-  // TODO: get MotionDuration
-
-  const timeline = [
-    {
-      action: motionActions.Propose,
-      eventData,
-      extrinsic: normalizedExtrinsic,
-    },
-  ];
-
-  const col = await getMotionCollection();
-  await col.insertOne({
-    hash,
-    index,
-    proposer,
-    method,
-    treasuryProposalId,
-    voting,
-    state: {
-      state: CouncilEvents.Proposed,
-      eventData,
-      extrinsic: normalizedExtrinsic,
-    },
-    timeline,
-  });
-
-  await updateProposalStateByProposeOrVote(
-    hash,
-    normalizedExtrinsic.extrinsicIndexer
-  );
-}
-
-async function updateBountyStateByProposeOrVote(hash, indexer) {
-  const col = await getMotionCollection();
-  const motion = await col.findOne({ hash });
-  if (!motion || !isBountyMotion(motion.method)) {
-    // it means this motion hash is not a treasury proposal motion hash
-    return;
-  }
-
-  const motionState = motion.state;
-  const motionVoting = motion.voting;
-  const name = getBountyVotingName(motion.method);
-
-  const bountyCol = await getBountyCollection();
-  await bountyCol.findOneAndUpdate({}, {});
-}
-
-async function updateProposalStateByProposeOrVote(hash, indexer) {
-  const col = await getMotionCollection();
-  const motion = await col.findOne({ hash });
-  if (!motion || !isProposalMotion(motion.method)) {
-    // it means this motion hash is not a treasury proposal motion hash
-    return;
-  }
-
-  const motionState = motion.state;
-  const motionVoting = motion.voting;
-  const name =
-    motion.method === ProposalMethods.approveProposal
-      ? "ApproveVoting"
-      : "RejectVoting";
-
-  const proposalCol = await getProposalCollection();
-  await proposalCol.findOneAndUpdate(
-    { proposalIndex: motion.treasuryProposalId },
-    {
-      $set: {
-        state: {
-          name,
-          indexer,
-          motionState,
-          motionVoting,
-        },
-      },
-    }
-  );
 }
 
 async function handleVoteEvent(event, normalizedExtrinsic) {
@@ -210,10 +64,8 @@ async function handleVoteEvent(event, normalizedExtrinsic) {
     }
   );
 
-  await updateProposalStateByProposeOrVote(
-    hash,
-    normalizedExtrinsic.extrinsicIndexer
-  );
+  const indexer = normalizedExtrinsic.extrinsicIndexer;
+  await updateProposalStateByProposeOrVote(hash, indexer);
 }
 
 async function handleClosedEvent(event, normalizedExtrinsic) {
@@ -243,37 +95,6 @@ async function handleClosedEvent(event, normalizedExtrinsic) {
           extrinsic: normalizedExtrinsic,
         },
       },
-    }
-  );
-}
-
-async function updateProposalStateByVoteResult(hash, isApproved, indexer) {
-  const col = await getMotionCollection();
-  const motion = await col.findOne({ hash });
-  if (!motion) {
-    // it means this motion hash is not a treasury proposal motion hash
-    return;
-  }
-
-  let name;
-  if ("approveProposal" === motion.method) {
-    name = isApproved ? "Approved" : ProposalEvents.Proposed;
-  } else if ("rejectProposal" === motion.method) {
-    if (!isApproved) {
-      name = ProposalEvents.Proposed;
-    } else if (indexer.blockHeight >= 1164233) {
-      // There is no Rejected event emitted before 1164233 for Kusama
-      return;
-    } else {
-      name = ProposalEvents.Rejected;
-    }
-  }
-
-  const proposalCol = await getProposalCollection();
-  await proposalCol.findOneAndUpdate(
-    { proposalIndex: motion.treasuryProposalId },
-    {
-      $set: { state: { name, indexer } },
     }
   );
 }
