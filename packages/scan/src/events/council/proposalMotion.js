@@ -5,7 +5,11 @@ const {
   extractCallIndexAndArgs,
 } = require("./utils");
 const { motionActions } = require("./constants");
-const { Modules } = require("../../utils/constants");
+const {
+  Modules,
+  CouncilEvents,
+  ProposalEvents,
+} = require("../../utils/constants");
 
 async function handleProposedForProposal(
   event,

@@ -5,6 +5,7 @@ const {
   getMotionVoting,
 } = require("./utils");
 const { Modules } = require("../../utils/constants");
+const { motionActions } = require("./constants");
 
 async function handleProposedForBounty(event, normalizedExtrinsic, extrinsic) {
   const [section, method, args] = await extractCallIndexAndArgs(
