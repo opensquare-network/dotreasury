@@ -4,7 +4,7 @@ const {
   BountyMethods,
 } = require("../../utils/constants");
 const { getBountyCollection } = require("../../mongo");
-const { getBountyMeta } = require("../../utils/bounty");
+const { getBountyMeta, getBountyDescription } = require("../../utils/bounty");
 
 function isBountyEvent(method) {
   return BountyEvents.hasOwnProperty(method);
@@ -90,6 +90,10 @@ async function handleProposedEvent(event, normalizedExtrinsic) {
 
   const indexer = normalizedExtrinsic.extrinsicIndexer;
   const meta = await getBountyMeta(indexer.blockHash, bountyIndex);
+  const description = await getBountyDescription(
+    indexer.blockHash,
+    bountyIndex
+  );
 
   const timeline = [
     {
@@ -103,6 +107,7 @@ async function handleProposedEvent(event, normalizedExtrinsic) {
   await bountyCol.insertOne({
     indexer,
     bountyIndex,
+    description,
     meta,
     state: {
       name: event.method,
