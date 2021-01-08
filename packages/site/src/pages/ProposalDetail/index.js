@@ -99,7 +99,18 @@ async function processTimeline(proposalDetail) {
           }
         })(),
       }))
-    }))
+    })),
+    ...(proposalDetail.latestState?.state === "Awarded" ? [{
+      name: "Awarded",
+      eventIndexer: proposalDetail.latestState?.indexer || {},
+      fields: [{
+        title: "Beneficiary",
+        value: <User address={proposalDetail.latestState?.data[2]} />
+      }, {
+        title: "Balance",
+        value: <Balance value={proposalDetail.latestState?.data[1]} />
+      }]
+    }] : [])
   ]
 }
 

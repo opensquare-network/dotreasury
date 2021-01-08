@@ -15,3 +15,5 @@ export function toPrecision(value, precision = 0, paddingZero = true) {
 export function stringCamlToWords(str) {
   return stringUpperFirst(str).replace(/(.)([A-Z])/g, "$1 $2");
 }
+
+export const nil = (val) => val === undefined || val === null;

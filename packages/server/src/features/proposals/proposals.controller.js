@@ -53,7 +53,7 @@ class ProposalsController {
     const proposal = await proposalCol.findOne({ proposalIndex });
 
     const motionCol = await getMotionCollection();
-    const proposalMotions = await motionCol.find({ treasuryProposalId: proposalIndex }).toArray();
+    const proposalMotions = await motionCol.find({ treasuryProposalId: proposalIndex }).sort({ index: 1 }).toArray();
 
     if (!proposal) {
       ctx.status = 404;
@@ -71,6 +71,8 @@ class ProposalsController {
       latestState: {
         state: proposal.state?.name,
         time: proposal.state?.indexer.blockTime,
+        indexer: proposal.state?.indexer,
+        data: proposal.state?.data,
       },
       motions: proposalMotions,
     };
