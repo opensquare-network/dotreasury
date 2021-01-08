@@ -2,6 +2,7 @@ const featureRouters = [
   require("./features/tips/routes"),
   require("./features/proposals/routes"),
   require("./features/status/routes"),
+  require("./features/burnt/routes"),
 ];
 
 module.exports = (app) => {
