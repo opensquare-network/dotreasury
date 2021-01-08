@@ -177,7 +177,7 @@ const TipDetail = () => {
         <InformationTable loading={loadingTipDetail} />
         <TipLifeCycleTable loading={loadingTipDetail} />
       </TableWrapper>
-      <RelatedLinks />
+      <RelatedLinks type="tips" index={tipId} />
       <Divider />
       <TimelineCommentWrapper>
         <Timeline

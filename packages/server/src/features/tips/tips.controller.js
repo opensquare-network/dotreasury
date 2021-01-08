@@ -1,6 +1,11 @@
 const { getTipCollection } = require("../../mongo");
-const { extractPage } = require("../../utils");
+const { getLinkCollection } = require("../../mongo-admin");
+const { extractPage, isValidSignature } = require("../../utils");
 const { normalizeTip } = require("./utils");
+
+async function checkAdmin(address) {
+  return true;
+}
 
 class TipsController {
   async getTips(ctx) {
@@ -70,11 +75,196 @@ class TipsController {
     };
   }
 
-  async getTipTimeline(ctx) {
-    const { blockHeight, tipHash } = ctx.params;
+  async getTipLinks(ctx) {
+    const tipHash = ctx.params.tipHash;
+    const blockHeight = parseInt(ctx.params.blockHeight);
 
-    ctx.status = 404;
-    return;
+    const linkCol = await getLinkCollection();
+    const tipLinks = await linkCol.findOne({
+      type: "tip",
+      indexer: {
+        blockHeight,
+        tipHash,
+      },
+    });
+
+    if (tipLinks && tipLinks.inReasonExtracted) {
+      ctx.body = tipLinks?.links ?? [];
+      return;
+    }
+
+    const tipCol = await getTipCollection();
+    const tip = await tipCol.findOne({ hash: tipHash, 'indexer.blockHeight': blockHeight });
+    if (!tip) {
+      ctx.status = 404;
+      return;
+    }
+
+    // Pull existing inReason links before re-push
+    await linkCol.updateOne({
+      type: "tip",
+      indexer: {
+        blockHeight,
+        tipHash,
+      },
+    }, {
+      $pull: {
+        links: {
+          inReasons: true,
+        }
+      }
+    });
+
+    // Extract all links that present in reason text
+    const urlRegex = /(https?:\/\/[^ ]*)/g;
+    let match;
+    while (match = urlRegex.exec(tip.reason)) {
+      const inReasonLink = match[1];
+
+      await linkCol.updateOne({
+        type: "tip",
+        indexer: {
+          blockHeight,
+          tipHash,
+        },
+      }, {
+        $push: {
+          links: {
+            link: inReasonLink,
+            description: "",
+            inReasons: true,
+          }
+        }
+      }, { upsert: true });
+    }
+
+    // Remember that the inReason links has been processed
+    await linkCol.updateOne({
+      type: "tip",
+      indexer: {
+        blockHeight,
+        tipHash,
+      },
+    }, {
+      $set: {
+        inReasonExtracted: true,
+      },
+    }, { upsert: true });
+
+    const updatedTipLinks = await linkCol.findOne({
+      type: "tip",
+      indexer: {
+        blockHeight,
+        tipHash,
+      },
+    });
+
+    ctx.body = updatedTipLinks?.links ?? [];
+  }
+
+  async verifySignature(ctx, message) {
+    if (!ctx.request.headers.signature) {
+      ctx.status = 400;
+      return false;
+    }
+
+    const [address, signature] = ctx.request.headers.signature.split("/");
+    if (!address || !signature) {
+      ctx.status = 400;
+      return false;
+    }
+
+    const isAdmin = await checkAdmin(address);
+    if (!isAdmin) {
+      ctx.status = 401;
+      return false;
+    }
+
+    const isValid = isValidSignature(message, signature, address);
+
+    if (!isValid) {
+      ctx.status = 400;
+      return false;
+    }
+
+    return true;
+  }
+
+  async createTipLink(ctx) {
+    const tipHash = ctx.params.tipHash;
+    const blockHeight = parseInt(ctx.params.blockHeight);
+
+    const { link, description } = ctx.request.body;
+
+    const success = await this.verifySignature(ctx, JSON.stringify({
+      type: "tips",
+      index: `${blockHeight}_${tipHash}`,
+      link,
+      description,
+    }));
+    if (!success) {
+      return;
+    }
+
+    const linkCol = await getLinkCollection();
+    await linkCol.updateOne({
+      type: "tip",
+      indexer: {
+        blockHeight,
+        tipHash,
+      },
+    }, {
+      $push: {
+        links: {
+          link,
+          description,
+          inReasons: false,
+        }
+      }
+    }, { upsert: true });
+
+    ctx.body = true;
+  }
+
+  async deleteTipLink(ctx) {
+    const { tipHash, linkIndex } = ctx.params;
+    const blockHeight = parseInt(ctx.params.blockHeight);
+
+    const success = await this.verifySignature(ctx, JSON.stringify({
+      type: "tips",
+      index: `${blockHeight}_${tipHash}`,
+      linkIndex,
+    }));
+    if (!success) {
+      return;
+    }
+
+    const linkCol = await getLinkCollection();
+    await linkCol.updateOne({
+      type: "tip",
+      indexer: {
+        blockHeight,
+        tipHash,
+      },
+    }, {
+      $unset: {
+        [`links.${linkIndex}`]: 1
+      }
+    });
+
+    await linkCol.updateOne({
+      type: "tip",
+      indexer: {
+        blockHeight,
+        tipHash,
+      },
+    }, {
+      $pull: {
+        links: null
+      }
+    });
+
+    ctx.body = true;
   }
 }
 

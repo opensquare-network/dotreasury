@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { Image } from "semantic-ui-react";
+import { stringUpperFirst } from "@polkadot/util";
+import ExternalLink from "../../components/ExplorerLink";
 
 import TextMinor from "../../components/TextMinor"
 import { TEXT_DARK_MAJOR } from "../../constants";
@@ -26,14 +28,34 @@ const LinkText = styled(TextMinor)`
   }
 `;
 
-const Link = ({ src, text, description }) => {
+const Link = ({ link, text }) => {
+  const url = new URL(link);
+
+  let src = "";
+  if (url.host.endsWith("youtube.com")) {
+    src = "/imgs/youtube-logo.svg";
+  } else if (url.host.endsWith("github.com")) {
+    src = "/imgs/youtube-logo.svg";
+  } else if (url.host.endsWith("medium.com")) {
+    src = "/imgs/medium-logo.svg";
+  } else if (url.host.endsWith("polkassembly.io")) {
+    src = "/imgs/polkassembly-logo.svg";
+  } else {
+    src = "/imgs/youtube-logo.svg";
+  }
+
+  let [, name] = url.host.match(/([^.]*)\.[a-z]+$/);
+  name = stringUpperFirst(name);
+
   return (
     <Wrapper>
-      <LinkWrapper>
-        <Image src={src} />
-        <TextMinor>{text}</TextMinor>
-      </LinkWrapper>
-      <LinkText>{description}</LinkText>
+      <ExternalLink href={link}>
+        <LinkWrapper>
+          <Image src={src} />
+          <TextMinor>{name}</TextMinor>
+        </LinkWrapper>
+      </ExternalLink>
+      <LinkText>{text}</LinkText>
     </Wrapper>
   );
 };

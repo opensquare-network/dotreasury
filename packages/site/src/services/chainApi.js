@@ -1,5 +1,7 @@
 
 import { ApiPromise, WsProvider } from '@polkadot/api';
+import { isWeb3Injected, web3FromAddress } from '@polkadot/extension-dapp'
+import { stringToHex } from '@polkadot/util';
 
 let api = null;
 const wsProvider = new WsProvider('wss://kusama.elara.patract.io/');
@@ -32,4 +34,21 @@ export const getCurrentBlockHeight = async () => {
   const hash = await api.rpc.chain.getFinalizedHead();
   const block = await api.rpc.chain.getBlock(hash);
   return block.block.header.number.toNumber();
+}
+
+export const signMessage = async (text, address) => {
+  if (!isWeb3Injected || !address) {
+    return "";
+  }
+
+  const injector = await web3FromAddress(address);
+
+  const data = stringToHex(text);
+  const result = await injector.signer.signRaw({
+    type: 'bytes',
+    data,
+    address,
+  });
+
+  return result.signature;
 }
