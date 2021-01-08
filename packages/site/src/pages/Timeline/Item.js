@@ -70,7 +70,7 @@ const Item = ({ data, polkassembly, onUnfoldBtnClick, isUnfold }) => {
         <VerticalWrapper className="flex-grow">
           <FlexWrapper>
             <TimeLableWrapper>
-              <TextMinorWrapper><DateShow value={data.extrinsicIndexer.blockTime} /></TextMinorWrapper>
+              <TextMinorWrapper><DateShow value={(data.extrinsicIndexer || data.eventIndexer).blockTime} /></TextMinorWrapper>
               <Label text={data.name} />
             </TimeLableWrapper>
             <UnfoldButton src="/imgs/btn-unfold.svg" className="unfold-btn" onClick={onUnfoldBtnClick} isUnfold={isUnfold} />
@@ -79,7 +79,7 @@ const Item = ({ data, polkassembly, onUnfoldBtnClick, isUnfold }) => {
             <Card>
               { data.fields.map(({ title, value }, index) => <CardItem key={index} title={title}>{value}</CardItem>) }
             </Card>
-            <ButtonList indexer={data.extrinsicIndexer} polkassembly={polkassembly} />
+            <ButtonList extrinsicIndexer={data.extrinsicIndexer} eventIndexer={data.eventIndexer} polkassembly={polkassembly} />
           </CardWrapper>
         </VerticalWrapper>
       </FlexWrapper>
