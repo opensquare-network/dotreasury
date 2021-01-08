@@ -52,10 +52,10 @@ const Link = ({ link, text }) => {
       <ExternalLink href={link}>
         <LinkWrapper>
           <Image src={src} />
-          <Text>{name}</Text>
+          <TextMinor>{name}</TextMinor>
         </LinkWrapper>
       </ExternalLink>
-      <Text>{text}</Text>
+      <LinkText>{text}</LinkText>
     </Wrapper>
   );
 };
