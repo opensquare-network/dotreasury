@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Icon, Modal, Form } from "semantic-ui-react";
 import queryString from 'query-string';
-import { NavLink, useLocation } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 
 import LinkItem from "./LinkItem";
 import SubTitle from "../../components/SubTitle";
@@ -75,8 +75,7 @@ const RelatedLinks = ({ type, index }) => {
 
       <SubTitle>Ralated Links
         { isAdmin
-            ? <IconButton name="plus" onClick={() => setOpenAddLinkModal(true)} />
-            : <NavLink to="?admin=true"><IconButton name="edit" color="black" /></NavLink>
+            && <IconButton name="plus" onClick={() => setOpenAddLinkModal(true)} />
         }
       </SubTitle>
       <LinksWrapper>
