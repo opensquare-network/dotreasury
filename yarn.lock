@@ -1596,10 +1596,19 @@
   dependencies:
     "@babel/runtime" "^7.12.5"
 
-"@polkadot/keyring@^5.1.1", "@polkadot/keyring@^5.2.2":
+"@polkadot/keyring@^5.1.1":
   version "5.2.2"
   resolved "https://registry.npm.taobao.org/@polkadot/keyring/download/@polkadot/keyring-5.2.2.tgz#1b011d9ad96ce142ee21183c2e76cbc0c7c5c39b"
   integrity sha1-GwEdmtls4ULuIRg8LnbLwMfFw5s=
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+    "@polkadot/util" "5.2.2"
+    "@polkadot/util-crypto" "5.2.2"
+
+"@polkadot/keyring@^5.2.3":
+  version "5.2.3"
+  resolved "https://registry.npm.taobao.org/@polkadot/keyring/download/@polkadot/keyring-5.2.3.tgz#b555424a553b945893b107d7cf6dd1cf8599465f"
+  integrity sha1-tVVCSlU7lFiTsQfXz23Rz4WZRl8=
   dependencies:
     "@babel/runtime" "^7.12.5"
     "@polkadot/util" "5.2.3"
@@ -1624,7 +1633,14 @@
   dependencies:
     "@babel/runtime" "^7.12.5"
 
-"@polkadot/networks@5.2.2", "@polkadot/networks@^5.1.1":
+"@polkadot/networks@5.2.3":
+  version "5.2.3"
+  resolved "https://registry.npm.taobao.org/@polkadot/networks/download/@polkadot/networks-5.2.3.tgz#c14de05995636391514220c40f4e0373ffacbaa9"
+  integrity sha1-wU3gWZVjY5FRQiDED04Dc/+suqk=
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+
+"@polkadot/networks@^5.1.1":
   version "5.2.2"
   resolved "https://registry.npm.taobao.org/@polkadot/networks/download/@polkadot/networks-5.2.2.tgz#465fd0984f1a161803c4c605d6931f90ad0b966f"
   integrity sha1-Rl/QmE8aFhgDxMYF1pMfkK0Llm8=
@@ -1716,10 +1732,10 @@
     "@babel/runtime" "^7.12.5"
     color "^3.1.3"
 
-"@polkadot/util-crypto@5.2.2", "@polkadot/util-crypto@^5.1.1", "@polkadot/util-crypto@^5.2.2":
-  version "5.2.2"
-  resolved "https://registry.yarnpkg.com/@polkadot/util-crypto/-/util-crypto-5.2.2.tgz#103d6ccda64c72c2e971028b0ec7e74ffb4acd8c"
-  integrity sha512-U/QX5cwhFQgd448LVbJRP8IR9UeUNOH//Dv+ZhoCcqLXkVxMotF8BJjRUzkQVrORIlP0miWlwxygb4xzNsYhsw==
+"@polkadot/util-crypto@5.2.3", "@polkadot/util-crypto@^5.2.3":
+  version "5.2.3"
+  resolved "https://registry.npm.taobao.org/@polkadot/util-crypto/download/@polkadot/util-crypto-5.2.3.tgz#36dd46c6a494da36a6994d92a93f7974d47b1a4f"
+  integrity sha1-Nt1GxqSU2jammU2SqT95dNR7Gk8=
   dependencies:
     "@babel/runtime" "^7.12.5"
     "@polkadot/networks" "5.2.3"
@@ -1758,6 +1774,27 @@
     tweetnacl "^1.0.3"
     xxhashjs "^0.2.2"
 
+"@polkadot/util-crypto@^5.1.1", "@polkadot/util-crypto@^5.2.2":
+  version "5.2.2"
+  resolved "https://registry.yarnpkg.com/@polkadot/util-crypto/-/util-crypto-5.2.2.tgz#103d6ccda64c72c2e971028b0ec7e74ffb4acd8c"
+  integrity sha512-U/QX5cwhFQgd448LVbJRP8IR9UeUNOH//Dv+ZhoCcqLXkVxMotF8BJjRUzkQVrORIlP0miWlwxygb4xzNsYhsw==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+    "@polkadot/networks" "5.2.2"
+    "@polkadot/util" "5.2.2"
+    "@polkadot/wasm-crypto" "^3.1.1"
+    "@polkadot/x-randomvalues" "5.2.2"
+    base-x "^3.0.8"
+    blakejs "^1.1.0"
+    bn.js "^4.11.9"
+    create-hash "^1.2.0"
+    elliptic "^6.5.3"
+    hash.js "^1.1.7"
+    js-sha3 "^0.8.0"
+    scryptsy "^2.1.0"
+    tweetnacl "^1.0.3"
+    xxhashjs "^0.2.2"
+
 "@polkadot/util@4.2.1", "@polkadot/util@^4.2.1":
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/@polkadot/util/-/util-4.2.1.tgz#1845d03be7e418a14ec2ef929d6288f326f2145d"
@@ -1771,14 +1808,27 @@
     camelcase "^5.3.1"
     ip-regex "^4.2.0"
 
-"@polkadot/util@5.2.2", "@polkadot/util@^5.1.1", "@polkadot/util@^5.2.2":
+"@polkadot/util@5.2.3", "@polkadot/util@^5.2.3":
+  version "5.2.3"
+  resolved "https://registry.npm.taobao.org/@polkadot/util/download/@polkadot/util-5.2.3.tgz#843712ca10456c1036b3a3cc01281709e5e58e97"
+  integrity sha1-hDcSyhBFbBA2s6PMASgXCeXljpc=
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+    "@polkadot/x-textdecoder" "5.2.3"
+    "@polkadot/x-textencoder" "5.2.3"
+    "@types/bn.js" "^4.11.6"
+    bn.js "^4.11.9"
+    camelcase "^5.3.1"
+    ip-regex "^4.2.0"
+
+"@polkadot/util@^5.1.1", "@polkadot/util@^5.2.2":
   version "5.2.2"
   resolved "https://registry.yarnpkg.com/@polkadot/util/-/util-5.2.2.tgz#c673a8b260fa29eadb4a95748cd675325b22e3b1"
   integrity sha512-kUtQ3Jv+9xCMZOoXwFXVv7xHc5idPCIerbXN44406lvB3dF7G4sMUIG6fx2kCuarL+lF4RK8F4o14SpctK3wCA==
   dependencies:
     "@babel/runtime" "^7.12.5"
-    "@polkadot/x-textdecoder" "5.2.3"
-    "@polkadot/x-textencoder" "5.2.3"
+    "@polkadot/x-textdecoder" "5.2.2"
+    "@polkadot/x-textencoder" "5.2.2"
     "@types/bn.js" "^4.11.6"
     bn.js "^4.11.9"
     camelcase "^5.3.1"
@@ -1828,10 +1878,10 @@
   dependencies:
     "@babel/runtime" "^7.12.5"
 
-"@polkadot/x-randomvalues@5.2.2":
-  version "5.2.2"
-  resolved "https://registry.npm.taobao.org/@polkadot/x-randomvalues/download/@polkadot/x-randomvalues-5.2.2.tgz#c44e5ea967eac347525604dd43500ae2fb6ec418"
-  integrity sha1-xE5eqWfqw0dSVgTdQ1AK4vtuxBg=
+"@polkadot/x-randomvalues@5.2.3":
+  version "5.2.3"
+  resolved "https://registry.npm.taobao.org/@polkadot/x-randomvalues/download/@polkadot/x-randomvalues-5.2.3.tgz#139fbddf8a0dbc2be050a487c9850314afe94bdc"
+  integrity sha1-E5+934oNvCvgUKSHyYUDFK/pS9w=
   dependencies:
     "@babel/runtime" "^7.12.5"
 
@@ -1850,10 +1900,10 @@
   dependencies:
     "@babel/runtime" "^7.12.5"
 
-"@polkadot/x-textdecoder@5.2.2":
-  version "5.2.2"
-  resolved "https://registry.npm.taobao.org/@polkadot/x-textdecoder/download/@polkadot/x-textdecoder-5.2.2.tgz#0b412c275107485c36c70dffe67f0cfee8f1e786"
-  integrity sha1-C0EsJ1EHSFw2xw3/5n8M/ujx54Y=
+"@polkadot/x-textdecoder@5.2.3":
+  version "5.2.3"
+  resolved "https://registry.npm.taobao.org/@polkadot/x-textdecoder/download/@polkadot/x-textdecoder-5.2.3.tgz#479a4f56ecab14ec6ddf006f02238a598694a2b4"
+  integrity sha1-R5pPVuyrFOxt3wBvAiOKWYaUorQ=
   dependencies:
     "@babel/runtime" "^7.12.5"
 
@@ -1864,10 +1914,10 @@
   dependencies:
     "@babel/runtime" "^7.12.5"
 
-"@polkadot/x-textencoder@5.2.2":
-  version "5.2.2"
-  resolved "https://registry.npm.taobao.org/@polkadot/x-textencoder/download/@polkadot/x-textencoder-5.2.2.tgz#2c58b9093e33ae3628a8feb1d0bcd25e0c25fcb7"
-  integrity sha1-LFi5CT4zrjYoqP6x0LzSXgwl/Lc=
+"@polkadot/x-textencoder@5.2.3":
+  version "5.2.3"
+  resolved "https://registry.npm.taobao.org/@polkadot/x-textencoder/download/@polkadot/x-textencoder-5.2.3.tgz#40d2cd2a9bc4adb3304e5ae9e04a27d670b85edc"
+  integrity sha1-QNLNKpvErbMwTlrp4Eon1nC4Xtw=
   dependencies:
     "@babel/runtime" "^7.12.5"
 

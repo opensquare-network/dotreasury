@@ -3,6 +3,10 @@ const { handleTipEvent } = require("./treasury/tip");
 const { handleProposalEvent } = require("./treasury/proposal");
 const { handleBurntEvent } = require("./treasury/burnt");
 const { handleCouncilEvent } = require("./council/index");
+const {
+  handleBountyEventWithExtrinsic,
+  handleBountyBecameActiveEvent,
+} = require("./treasury/bounty");
 
 async function handleEvents(events, blockIndexer, extrinsics) {
   if (events.length <= 0) {
@@ -23,8 +27,14 @@ async function handleEvents(events, blockIndexer, extrinsics) {
 
       await handleTipEvent(event, normalizedExtrinsic, blockIndexer, extrinsic);
       await handleCouncilEvent(event, normalizedExtrinsic, extrinsic);
+      await handleBountyEventWithExtrinsic(
+        event,
+        normalizedExtrinsic,
+        extrinsic
+      );
     } else {
       const eventIndexer = { ...blockIndexer, sort };
+      await handleBountyBecameActiveEvent(event, eventIndexer);
       await handleBurntEvent(event, eventIndexer);
     }
 
