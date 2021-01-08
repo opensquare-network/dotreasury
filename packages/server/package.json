@@ -22,6 +22,7 @@
     "socket.io": "^3.0.4"
   },
   "devDependencies": {
+    "@types/koa-router": "^7.4.1",
     "pm2": "^4.5.1"
   }
 }
