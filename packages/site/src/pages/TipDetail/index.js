@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import styled from "styled-components";
-import { Divider, Image } from "semantic-ui-react";
+import { Image } from "semantic-ui-react";
 import { useHistory } from "react-router-dom";
 import { hexToString } from "@polkadot/util";
 import {
@@ -186,7 +186,6 @@ const TipDetail = () => {
         <TipLifeCycleTable loading={loadingTipDetail} />
       </TableWrapper>
       <RelatedLinks type="tips" index={tipId} />
-      <Divider />
       <TimelineCommentWrapper>
         <Timeline
           data={timelineData}
