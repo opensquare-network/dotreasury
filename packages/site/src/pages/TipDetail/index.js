@@ -12,6 +12,10 @@ import {
   loadingTipDetailSelector,
   tipDetailSelector,
 } from "../../store/reducers/tipSlice";
+import {
+  fetchLinks,
+  linksSelector
+} from "../../store/reducers/linkSlice";
 
 import InformationTable from "./InformationTable";
 import Timeline from "../Timeline";
@@ -22,6 +26,7 @@ import User from "../../components/User";
 import Balance from "../../components/Balance";
 import TipLifeCycleTable from "./TipLifeCycleTable";
 import Funder from "./Funder";
+import ClickableLink from "../../components/ClickableLink";
 
 const HeaderWrapper = styled.div`
   display: flex;
@@ -59,7 +64,7 @@ const TimelineCommentWrapper = styled.div`
   }
 `;
 
-async function processTimeline(tipDetail) {
+async function processTimeline(tipDetail, links) {
   return await Promise.all(
     (tipDetail.timeline || []).map(async (timelineItem) => {
       let fields = [];
@@ -78,7 +83,7 @@ async function processTimeline(tipDetail) {
           },
           {
             title: "Reason",
-            value: reasonText,
+            value: <ClickableLink links={links}>{reasonText}</ClickableLink>,
           },
         ];
       } else if (timelineItem.method === "tipNew") {
@@ -99,7 +104,7 @@ async function processTimeline(tipDetail) {
           },
           {
             title: "Reason",
-            value: reasonText,
+            value: <ClickableLink links={links}>{reasonText}</ClickableLink>,
           },
         ];
       } else if (timelineItem.method === "tip") {
@@ -154,16 +159,19 @@ const TipDetail = () => {
     dispatch(fetchTipDetail(tipId));
     dispatch(fetchTipFindersFee());
     dispatch(fetchTipCountdown());
+    dispatch(fetchLinks("tips", tipId));
   }, [dispatch, tipId]);
 
   const tipDetail = useSelector(tipDetailSelector);
   const loadingTipDetail = useSelector(loadingTipDetailSelector);
 
+  const links = useSelector(linksSelector);
+
   useEffect(() => {
     (async () => {
-      setTimelineData(await processTimeline(tipDetail));
+      setTimelineData(await processTimeline(tipDetail, links));
     })();
-  }, [tipDetail]);
+  }, [tipDetail, links]);
 
   return (
     <>

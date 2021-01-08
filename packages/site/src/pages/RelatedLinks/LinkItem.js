@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { Image } from "semantic-ui-react";
-import { stringUpperFirst } from "@polkadot/util";
 import ExternalLink from "../../components/ExplorerLink";
 
 import TextMinor from "../../components/TextMinor"
 import { TEXT_DARK_MAJOR } from "../../constants";
+import { getLinkNameAndSrc } from "../../utils";
 
 const Wrapper = styled.div`
   display: flex;
@@ -29,36 +29,7 @@ const LinkText = styled(TextMinor)`
 `;
 
 const Link = ({ link, text }) => {
-  const url = new URL(link);
-
-  let src = "";
-  let name = "";
-  if (url.host.endsWith("youtube.com") || url.host.endsWith("youtu.be")) {
-    src = "/imgs/youtube-logo.svg";
-    name = "YouTube";
-  } else if (url.host.endsWith("github.com") || url.host.endsWith("github.io")) {
-    src = "/imgs/github-logo.svg";
-    name = "GitHub";
-  } else if (url.host.endsWith("medium.com")) {
-    src = "/imgs/medium-logo.svg";
-    name = "Medium";
-  } else if (url.host.endsWith("polkassembly.io")) {
-    src = "/imgs/polkassembly-logo.svg";
-    name = "Polkassembly";
-  } else if (url.host.endsWith("twitter.com")) {
-    src = "/imgs/twitter-logo.svg";
-    name = "Twitter";
-  } else if (url.host.endsWith("t.me")) {
-    src = "/imgs/link-icon.svg";
-    name = "Telegram";
-  } else {
-    src = "/imgs/link-icon.svg";
-  }
-
-  if (!name) {
-    [, name] = url.host.match(/([^.]*)\.[a-z]+$/);
-    name = stringUpperFirst(name);
-  }
+  const [name, src] = getLinkNameAndSrc(link);
 
   return (
     <Wrapper>
