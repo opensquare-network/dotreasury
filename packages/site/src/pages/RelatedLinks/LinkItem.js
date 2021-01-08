@@ -33,15 +33,15 @@ const Link = ({ link, text }) => {
 
   let src = "";
   if (url.host.endsWith("youtube.com")) {
-    src = "/imgs/youtube-logo.png";
+    src = "/imgs/youtube-logo.svg";
   } else if (url.host.endsWith("github.com")) {
-    src = "/imgs/youtube-logo.png";
+    src = "/imgs/youtube-logo.svg";
   } else if (url.host.endsWith("medium.com")) {
-    src = "/imgs/medium-logo.png";
+    src = "/imgs/medium-logo.svg";
   } else if (url.host.endsWith("polkassembly.io")) {
     src = "/imgs/polkassembly-logo.svg";
   } else {
-    src = "/imgs/youtube-logo.png";
+    src = "/imgs/youtube-logo.svg";
   }
 
   let [, name] = url.host.match(/([^.]*)\.[a-z]+$/);
