@@ -6,6 +6,7 @@ const dbName = config.mongo.dbName || "dotreasury";
 const statusCollectionName = "status";
 const tipCollectionName = "tip";
 const proposalCollectionName = "proposal";
+const bountyCollectionName = "bounty";
 const motionCollectionName = "motion";
 const burntCollectionName = "burnt";
 
@@ -16,6 +17,7 @@ const mongoUrl = process.env.MONGO_URL || "mongodb://localhost:27017";
 let statusCol = null;
 let tipCol = null;
 let proposalCol = null;
+let bountyCol = null;
 let motionCol = null;
 let burntCol = null;
 
@@ -28,6 +30,7 @@ async function initDb() {
   statusCol = db.collection(statusCollectionName);
   tipCol = db.collection(tipCollectionName);
   proposalCol = db.collection(proposalCollectionName);
+  bountyCol = db.collection(bountyCollectionName);
   motionCol = db.collection(motionCollectionName);
   burntCol = db.collection(burntCollectionName);
 
@@ -64,6 +67,11 @@ async function getProposalCollection() {
   return proposalCol;
 }
 
+async function getBountyCollection() {
+  await tryInit(bountyCol);
+  return bountyCol;
+}
+
 async function getMotionCollection() {
   await tryInit(motionCol);
   return motionCol;
@@ -79,6 +87,7 @@ module.exports = {
   getStatusCollection,
   getTipCollection,
   getProposalCollection,
+  getBountyCollection,
   getMotionCollection,
   getBurntCollection,
 };
