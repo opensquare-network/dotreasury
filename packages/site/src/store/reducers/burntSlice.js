@@ -32,11 +32,11 @@ export const {
   setBurntListCount,
 } = burntSlice.actions;
 
-export const fetchBurntList = () => async (dispatch) => {
+export const fetchBurntList = (page = 0, pageSize = 30) => async (dispatch) => {
   dispatch(setLoadingBurntList(true));
 
   try {
-    const { result } = await api.fetch(`/burnt`);
+    const { result } = await api.fetch(`/burnt`, { page, pageSize });
     dispatch(setBurntList(result || {
       items: [],
       page: 0,
