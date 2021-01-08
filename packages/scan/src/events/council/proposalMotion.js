@@ -9,6 +9,7 @@ const {
   Modules,
   CouncilEvents,
   ProposalEvents,
+  ProposalMethods,
 } = require("../../utils/constants");
 
 async function handleProposedForProposal(
