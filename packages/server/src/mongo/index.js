@@ -7,6 +7,7 @@ const statusCollectionName = "status";
 const tipCollectionName = "tip";
 const proposalCollectionName = "proposal";
 const motionCollectionName = "motion";
+const burntCollectionName = "burnt";
 
 let client = null;
 let db = null;
@@ -16,6 +17,7 @@ let statusCol = null;
 let tipCol = null;
 let proposalCol = null;
 let motionCol = null;
+let burntCol = null;
 
 async function initDb() {
   client = await MongoClient.connect(mongoUrl, {
@@ -27,6 +29,7 @@ async function initDb() {
   tipCol = db.collection(tipCollectionName);
   proposalCol = db.collection(proposalCollectionName);
   motionCol = db.collection(motionCollectionName);
+  burntCol = db.collection(burntCollectionName);
 
   await _createIndexes();
 }
@@ -66,10 +69,16 @@ async function getMotionCollection() {
   return motionCol;
 }
 
+async function getBurntCollection() {
+  await tryInit(burntCol);
+  return burntCol;
+}
+
 module.exports = {
   initDb,
   getStatusCollection,
   getTipCollection,
   getProposalCollection,
   getMotionCollection,
+  getBurntCollection,
 };
