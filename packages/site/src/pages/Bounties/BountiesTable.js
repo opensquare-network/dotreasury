@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import { Dimmer, Segment, Image } from "semantic-ui-react";
+import { useSelector } from "react-redux";
 
 import Table from "../../components/Table";
 import User from "../../components/User";
@@ -11,6 +12,8 @@ import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
 import PairTextVertical from "../../components/PairTextVertical";
 import TableNoDataCell from "../../components/TableNoDataCell";
+import TimeElapsed from "../../components/TimeElapsed";
+import { scanHeightSelector } from "../../store/reducers/chainSlice";
 
 const Wrapper = styled.div`
   overflow-x: scroll;
@@ -43,11 +46,17 @@ const StyledTable = styled(Table)`
   }
 `;
 
-const ProposalsTable = ({ data, loading }) => {
+const BountiesTable = ({ data, loading }) => {
+  const history = useHistory();
+  const scanHeight = useSelector(scanHeightSelector);
 
-  const onClickRow = (height, hash) => {
-
+  const onClickRow = (bountyIndex) => {
+    if (window.innerWidth < 1140) {
+      history.push(`/bounties/${bountyIndex}`);
+    }
   }
+
+  const indexer = (bounty) => (bounty.latestState?.indexer ?? bounty.latestState?.eventIndexer);
 
   return (
     <Wrapper>
@@ -58,7 +67,7 @@ const ProposalsTable = ({ data, loading }) => {
         <StyledTable striped selectable unstackable>
           <Table.Header>
             <Table.Row>
-              <Table.HeaderCell>Creator</Table.HeaderCell>
+              <Table.HeaderCell>Curator</Table.HeaderCell>
               <Table.HeaderCell>Beneficiary</Table.HeaderCell>
               <Table.HeaderCell>Title</Table.HeaderCell>
               <Table.HeaderCell textAlign={"right"}>Update due</Table.HeaderCell>
@@ -72,30 +81,33 @@ const ProposalsTable = ({ data, loading }) => {
             {(data &&
               data.length > 0 &&
               data.map((item, index) => (
-                <Table.Row key={index} onClick={() => onClickRow()}>
+                <Table.Row key={index} onClick={() => onClickRow(item.bountyIndex)}>
                   <Table.Cell className="user-cell">
-                    <User address={item.creator} />
+                    { item.curator ? <User address={item.curator} /> : "--" }
                   </Table.Cell>
                   <Table.Cell className="user-cell">
-                    <User address={item.beneficiary} />
+                    { item.beneficiary ? <User address={item.beneficiary} /> : "--" }
                   </Table.Cell>
                   <Table.Cell className="title-cell">
                     <Text>{item.title}</Text>
                   </Table.Cell>
                   <Table.Cell className="update-due-cell" textAlign={"right"}>
-                    <PairTextVertical value={item.update.time} detail={`${item.update.blocks} blocks`} />
+                    <PairTextVertical
+                      value={<TimeElapsed from={indexer(item)?.blockTime}/>}
+                      detail={`${scanHeight - indexer(item)?.blockHeight} blocks`}
+                      />
                   </Table.Cell>
                   <Table.Cell className="payout-due-cell" textAlign={"right"}>
-                    <TextMinor>{item.payout}</TextMinor>
+                    <TextMinor>{"--"}</TextMinor>
                   </Table.Cell>
                   <Table.Cell className="balance-cell" textAlign={"right"}>
                     <Balance value={item.value} />
                   </Table.Cell>
                   <Table.Cell textAlign={"right"}>
-                    <Text>{item.status}</Text>
+                    <Text>{item.latestState?.state}</Text>
                   </Table.Cell>
                   <Table.Cell className="link-cell hidden">
-                    <NavLink to={`/proposals`}>
+                    <NavLink to={`/bounties/${item.bountyIndex}`}>
                       <RightButton />
                     </NavLink>
                   </Table.Cell>
@@ -110,4 +122,4 @@ const ProposalsTable = ({ data, loading }) => {
   );
 };
 
-export default ProposalsTable;
+export default BountiesTable;

@@ -1,6 +1,7 @@
 const featureRouters = [
   require("./features/tips/routes"),
   require("./features/proposals/routes"),
+  require("./features/bounties/routes"),
   require("./features/status/routes"),
   require("./features/burnt/routes"),
 ];
