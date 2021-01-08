@@ -1,4 +1,5 @@
 const { knownCouncilEventHeights } = require("./knownCouncilEventBlocks");
+const { knownBountyHeights } = require("./knownBountyBlocks");
 
 const blocksWithTreasuryOrProxyExtrinsics = [
   27815,
@@ -2891,18 +2892,21 @@ const heightsWithProposalEvents = [
   5443854,
 ];
 
+const maxKnowHeightWithTreasuryOrProxyExtrinsic =
+  blocksWithTreasuryOrProxyExtrinsics[
+    blocksWithTreasuryOrProxyExtrinsics.length - 1
+  ];
+
 const knownHeights = [
   ...new Set([
     ...blocksWithTreasuryOrProxyExtrinsics,
     ...heightsWithProposalEvents,
     ...knownCouncilEventHeights,
+    ...knownBountyHeights,
   ]),
-].sort((a, b) => a - b);
-
-const maxKnowHeightWithTreasuryOrProxyExtrinsic =
-  blocksWithTreasuryOrProxyExtrinsics[
-    blocksWithTreasuryOrProxyExtrinsics.length - 1
-  ];
+]
+  .sort((a, b) => a - b)
+  .filter((height) => height <= maxKnowHeightWithTreasuryOrProxyExtrinsic);
 
 module.exports = {
   blocksWithTreasuryOrProxyExtrinsics,

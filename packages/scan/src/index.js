@@ -12,8 +12,6 @@ const {
   knownHeights,
   maxKnowHeightWithTreasuryOrProxyExtrinsic,
 } = require("./block/knownTreasuryBlocks");
-const { knownBountyHeights } = require("./block/knownBountyBlocks");
-const { knownCouncilEventHeights } = require("./block/knownCouncilEventBlocks");
 
 async function scanKnowBlocks(toScanHeight) {
   let index = knownHeights.findIndex((height) => height >= toScanHeight);
@@ -63,14 +61,5 @@ async function scanBlockByHeight(scanHeight) {
   logger.info(`block ${block.block.header.number.toNumber()} done`);
 }
 
-async function test() {
-  let index = 0;
-  while (index < knownCouncilEventHeights.length) {
-    const height = knownCouncilEventHeights[index];
-    await scanBlockByHeight(height);
-    index++;
-  }
-}
-
 // FIXME: log the error
-test().catch(console.error);
+main().catch(console.error);
