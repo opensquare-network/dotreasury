@@ -3,6 +3,7 @@ import testReducer from './testSlice'
 import tipsReducer from './tipSlice'
 import proposalsReducer from './proposalSlice'
 import bountiesReducer from './bountySlice'
+import burntReducer from './burntSlice'
 import chainReducer from './chainSlice'
 import linksReducer from './linkSlice'
 import accountReducer from './accountSlice'
@@ -13,6 +14,7 @@ export default combineReducers({
   links: linksReducer,
   proposals: proposalsReducer,
   bounties: bountiesReducer,
+  burnt: burntReducer,
   chain: chainReducer,
   account: accountReducer,
 })

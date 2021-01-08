@@ -5,6 +5,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import TipsMenu from "./TipsMenu";
 import ProposalsMenu from "./ProposalsMenu";
 import BountiesMenu from "./BountiesMenu";
+import BurntMenu from "./BurntMenu";
 
 import {
   TEXT_DARK_MAJOR,
@@ -112,6 +113,17 @@ const TabExampleSecondaryPointing = () => {
         exact: true,
         key: "tips",
         active: "/tips" === pathname || pathname.indexOf("/tips") === 0
+      }
+    },
+    {
+      menuItem: {
+        as: NavLink,
+        id: "burntTab",
+        content: <BurntMenu />,
+        to: "/burnt",
+        exact: true,
+        key: "burnt",
+        active: "/burnt" === pathname || pathname.indexOf("/burnt") === 0
       }
     },
   ];
