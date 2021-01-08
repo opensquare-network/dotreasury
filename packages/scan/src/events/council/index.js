@@ -3,12 +3,13 @@ const {
   CouncilEvents,
   Modules,
   ProposalMethods,
+  ProposalEvents,
 } = require("../../utils/constants");
 const {
   treasuryProposalCouncilIndexes,
   approveProposalIndex,
 } = require("../../utils/call");
-const { getMotionCollection } = require("../../mongo");
+const { getMotionCollection, getProposalCollection } = require("../../mongo");
 const { motionActions } = require("./constants");
 const {
   firstKnowCouncilCloseEventHeight,
@@ -39,6 +40,13 @@ async function getMotionVoting(blockHash, motionHash) {
   const api = await getApi();
   const votingObject = await api.query.council.voting.at(blockHash, motionHash);
   return votingObject.toJSON();
+}
+
+async function getMotionVotingByHeight(height, motionHash) {
+  const api = await getApi();
+  const blockHash = await api.rpc.chain.getBlockHash(height);
+
+  return await getMotionVoting(blockHash, motionHash);
 }
 
 function extractCallIndexAndArgs(normalizedExtrinsic) {
@@ -105,6 +113,40 @@ async function handleProposed(event, normalizedExtrinsic) {
     },
     timeline,
   });
+
+  await updateProposalStateByProposeOrVote(
+    hash,
+    normalizedExtrinsic.extrinsicIndexer
+  );
+}
+
+async function updateProposalStateByProposeOrVote(hash, indexer) {
+  const col = await getMotionCollection();
+  const motion = await col.findOne({ hash });
+  if (!motion) {
+    // it means this motion hash is not a treasury proposal motion hash
+    return;
+  }
+
+  const motionState = motion.state;
+  const motionVoting = motion.voting;
+  const name =
+    motion.method === "approveProposal" ? "ApproveVoting" : "RejectVoting";
+
+  const proposalCol = await getProposalCollection();
+  await proposalCol.findOneAndUpdate(
+    { proposalIndex: motion.treasuryProposalId },
+    {
+      $set: {
+        state: {
+          name,
+          indexer,
+          motionState,
+          motionVoting,
+        },
+      },
+    }
+  );
 }
 
 async function handleVoteEvent(event, normalizedExtrinsic) {
@@ -136,13 +178,18 @@ async function handleVoteEvent(event, normalizedExtrinsic) {
       },
     }
   );
+
+  await updateProposalStateByProposeOrVote(
+    hash,
+    normalizedExtrinsic.extrinsicIndexer
+  );
 }
 
 async function handleClosedEvent(event, normalizedExtrinsic) {
   const eventData = event.data.toJSON();
   const hash = eventData[0];
-  const voting = await getMotionVoting(
-    normalizedExtrinsic.extrinsicIndexer.blockHash,
+  const voting = await getMotionVotingByHeight(
+    normalizedExtrinsic.extrinsicIndexer.blockHeight - 1,
     hash
   );
 
@@ -169,11 +216,42 @@ async function handleClosedEvent(event, normalizedExtrinsic) {
   );
 }
 
+async function updateProposalStateByVoteResult(hash, isApproved, indexer) {
+  const col = await getMotionCollection();
+  const motion = await col.findOne({ hash });
+  if (!motion) {
+    // it means this motion hash is not a treasury proposal motion hash
+    return;
+  }
+
+  let name;
+  if ("approveProposal" === motion.method) {
+    name = isApproved ? "Approved" : ProposalEvents.Proposed;
+  } else if ("rejectProposal" === motion.method) {
+    if (!isApproved) {
+      name = ProposalEvents.Proposed;
+    } else if (indexer.blockHeight >= 1164233) {
+      // There is no Rejected event emitted before 1164233 for Kusama
+      return;
+    } else {
+      name = ProposalEvents.Rejected;
+    }
+  }
+
+  const proposalCol = await getProposalCollection();
+  await proposalCol.findOneAndUpdate(
+    { proposalIndex: motion.treasuryProposalId },
+    {
+      $set: { state: { name, indexer } },
+    }
+  );
+}
+
 async function handleApprovedEvent(event, normalizedExtrinsic) {
   const eventData = event.data.toJSON();
   const hash = eventData[0];
-  const voting = await getMotionVoting(
-    normalizedExtrinsic.extrinsicIndexer.blockHash,
+  const voting = await getMotionVotingByHeight(
+    normalizedExtrinsic.extrinsicIndexer.blockHeight - 1,
     hash
   );
 
@@ -212,13 +290,19 @@ async function handleApprovedEvent(event, normalizedExtrinsic) {
 
   const col = await getMotionCollection();
   await col.updateOne({ hash }, updateObj);
+
+  await updateProposalStateByVoteResult(
+    hash,
+    true,
+    normalizedExtrinsic.extrinsicIndexer
+  );
 }
 
 async function handleDisapprovedEvent(event, normalizedExtrinsic) {
   const eventData = event.data.toJSON();
   const hash = eventData[0];
-  const voting = await getMotionVoting(
-    normalizedExtrinsic.extrinsicIndexer.blockHash,
+  const voting = await getMotionVotingByHeight(
+    normalizedExtrinsic.extrinsicIndexer.blockHeight - 1,
     hash
   );
 
@@ -257,6 +341,12 @@ async function handleDisapprovedEvent(event, normalizedExtrinsic) {
 
   const col = await getMotionCollection();
   await col.updateOne({ hash }, updateObj);
+
+  await updateProposalStateByVoteResult(
+    hash,
+    false,
+    normalizedExtrinsic.extrinsicIndexer
+  );
 }
 
 async function handleExecutedEvent(event) {

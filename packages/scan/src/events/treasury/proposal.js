@@ -12,7 +12,8 @@ function isProposalEvent(method) {
 async function handleProposalEvent(
   event,
   blockIndexer,
-  nullableNormalizedExtrinsic
+  nullableNormalizedExtrinsic,
+  eventSort
 ) {
   const { section, method, data } = event;
   if (Modules.Treasury !== section || !isProposalEvent(method)) {
@@ -22,24 +23,17 @@ async function handleProposalEvent(
   const eventData = data.toJSON();
   const proposalIndex = eventData[0];
   if (method === ProposalEvents.Proposed) {
-    await saveNewProposal(
-      proposalIndex,
-      blockIndexer,
-      nullableNormalizedExtrinsic
-    );
+    await saveNewProposal(proposalIndex, nullableNormalizedExtrinsic);
   } else if (
     [ProposalEvents.Rejected, ProposalEvents.Awarded].includes(method)
   ) {
     await updateProposalStateByEvent(
       event,
       blockIndexer,
-      nullableNormalizedExtrinsic
+      nullableNormalizedExtrinsic,
+      eventSort
     );
   }
-
-  // if (isStateChange(method)) {
-  //   await saveProposalTimeline(proposalIndex, method, eventData, indexer, sort);
-  // }
 }
 
 module.exports = {

@@ -4,12 +4,13 @@ import { NavLink } from "react-router-dom";
 import { Dimmer, Segment, Image } from "semantic-ui-react";
 
 import Table from "../../components/Table";
-import User from "../../components/User/Index";
+import User from "../../components/User";
 import Balance from "../../components/Balance";
 import RightButton from "../../components/RightButton";
 import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
 import PairTextVertical from "../../components/PairTextVertical";
+import TableNoDataCell from "../../components/TableNoDataCell";
 
 const Wrapper = styled.div`
   overflow-x: scroll;
@@ -78,13 +79,13 @@ const ProposalsTable = ({ data, loading }) => {
                   <Table.Cell className="user-cell">
                     <User address={item.beneficiary} />
                   </Table.Cell>
-                  <Table.Cell className="user-cell">
+                  <Table.Cell className="title-cell">
                     <Text>{item.title}</Text>
                   </Table.Cell>
-                  <Table.Cell>
+                  <Table.Cell className="update-due-cell" textAlign={"right"}>
                     <PairTextVertical value={item.update.time} detail={`${item.update.blocks} blocks`} />
                   </Table.Cell>
-                  <Table.Cell textAlign={"right"}>
+                  <Table.Cell className="payout-due-cell" textAlign={"right"}>
                     <TextMinor>{item.payout}</TextMinor>
                   </Table.Cell>
                   <Table.Cell className="balance-cell" textAlign={"right"}>
@@ -100,11 +101,7 @@ const ProposalsTable = ({ data, loading }) => {
                   </Table.Cell>
                 </Table.Row>
               ))) || (
-              <Table.Row>
-                <Table.Cell className="no-data" colSpan="6" textAlign="center">
-                  No data
-                </Table.Cell>
-              </Table.Row>
+                <TableNoDataCell />
             )}
           </Table.Body>
         </StyledTable>

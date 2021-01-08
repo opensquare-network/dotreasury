@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Image } from "semantic-ui-react";
+import TimeElapsed from "./TimeElapsed";
 
 const Wrapper = styled.div`
   display: flex;
@@ -21,7 +22,7 @@ const TimeLabel = ({ value }) => {
   return (
     <Wrapper>
       <Image src={"/imgs/time.svg"} />
-      <Label>{value}</Label>
+      <Label><TimeElapsed from={value} /></Label>
     </Wrapper>
   );
 };

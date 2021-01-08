@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 
 import Card from "../../components/Card";
 import Circle from "./Circle";
@@ -50,13 +50,16 @@ const CardWrapper = styled.div`
 const UnfoldButton = styled.img`
   cursor: pointer;
   display: none;
+  ${p => p.isUnfold && css`
+    transform: rotate(0.5turn);
+  `}
 `
 
 const TextMinorWrapper = styled(TextMinor)`
   white-space: nowrap;
 `
 
-const Item = ({ data, polkassembly, onUnfoldBtnClick }) => {
+const Item = ({ data, polkassembly, onUnfoldBtnClick, isUnfold }) => {
   return (
     <Wrapper>
       <FlexWrapper>
@@ -65,18 +68,18 @@ const Item = ({ data, polkassembly, onUnfoldBtnClick }) => {
           <Bar className="bar" />
         </VerticalWrapper>
         <VerticalWrapper className="flex-grow">
-        <FlexWrapper>
-          <TimeLableWrapper>
-            <TextMinorWrapper><DateShow value={data.extrinsicIndexer.blockTime} /></TextMinorWrapper>
-            <Label text={data.name} />
-          </TimeLableWrapper>
-          <UnfoldButton src="/imgs/btn-unfold.svg" className="unfold-btn" onClick={onUnfoldBtnClick}  />
-        </FlexWrapper>
+          <FlexWrapper>
+            <TimeLableWrapper>
+              <TextMinorWrapper><DateShow value={(data.extrinsicIndexer || data.eventIndexer).blockTime} /></TextMinorWrapper>
+              <Label text={data.name} />
+            </TimeLableWrapper>
+            <UnfoldButton src="/imgs/btn-unfold.svg" className="unfold-btn" onClick={onUnfoldBtnClick} isUnfold={isUnfold} />
+          </FlexWrapper>
           <CardWrapper>
             <Card>
               { data.fields.map(({ title, value }, index) => <CardItem key={index} title={title}>{value}</CardItem>) }
             </Card>
-            <ButtonList indexer={data.extrinsicIndexer} polkassembly={polkassembly} />
+            <ButtonList extrinsicIndexer={data.extrinsicIndexer} eventIndexer={data.eventIndexer} polkassembly={polkassembly} />
           </CardWrapper>
         </VerticalWrapper>
       </FlexWrapper>

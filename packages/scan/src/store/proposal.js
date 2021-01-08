@@ -1,12 +1,10 @@
-const {
-  getProposalTimelineCollection,
-  getProposalCollection,
-} = require("../mongo");
+const { getProposalCollection } = require("../mongo");
 const { getApi } = require("../api");
 const { ProposalState } = require("../utils/constants");
 
-async function saveNewProposal(proposalIndex, indexer, extrinsic) {
+async function saveNewProposal(proposalIndex, nullableNormalizedExtrinsic) {
   const api = await getApi();
+  const indexer = nullableNormalizedExtrinsic.extrinsicIndexer;
   const meta = await api.query.treasury.proposals.at(
     indexer.blockHash,
     proposalIndex
@@ -16,7 +14,7 @@ async function saveNewProposal(proposalIndex, indexer, extrinsic) {
   let {
     signer: proposer,
     args: { value, beneficiary },
-  } = extrinsic;
+  } = nullableNormalizedExtrinsic;
 
   if (metaJson) {
     proposer = metaJson.proposer;
@@ -34,6 +32,7 @@ async function saveNewProposal(proposalIndex, indexer, extrinsic) {
     meta: metaJson,
     state: {
       name: ProposalState.Proposed,
+      indexer,
     },
   });
 }
@@ -41,11 +40,13 @@ async function saveNewProposal(proposalIndex, indexer, extrinsic) {
 async function updateProposalStateByEvent(
   event,
   blockIndexer,
-  nullableNormalizedExtrinsic
+  nullableNormalizedExtrinsic,
+  eventSort
 ) {
   const { method, data } = event;
   const eventData = data.toJSON();
   const proposalIndex = eventData[0];
+  const eventIndexer = { ...blockIndexer, eventSort };
 
   const col = await getProposalCollection();
   await col.updateOne(
@@ -56,51 +57,14 @@ async function updateProposalStateByEvent(
           name: method,
           data: eventData,
           indexer:
-            nullableNormalizedExtrinsic?.extrinsicIndexer || blockIndexer,
+            nullableNormalizedExtrinsic?.extrinsicIndexer || eventIndexer,
         },
       },
     }
   );
-}
-
-async function connectCouncilProposal(proposalIndex, proposalHash, indexer) {
-  const proposalCol = await getProposalCollection();
-  await proposalCol.updateOne(
-    {
-      proposalIndex,
-    },
-    {
-      $push: {
-        councilProposals: {
-          indexer,
-          proposalHash,
-        },
-      },
-    }
-  );
-}
-
-async function saveProposalTimeline(proposalIndex, state, data, indexer, sort) {
-  const api = await getApi();
-  const meta = await api.query.treasury.proposals.at(
-    indexer.blockHash,
-    proposalIndex
-  );
-
-  const proposalTimelineCol = await getProposalTimelineCollection();
-  await proposalTimelineCol.insertOne({
-    indexer,
-    sort,
-    proposalIndex,
-    state,
-    data,
-    meta: meta.toJSON(),
-  });
 }
 
 module.exports = {
   saveNewProposal,
-  saveProposalTimeline,
-  connectCouncilProposal,
   updateProposalStateByEvent,
 };

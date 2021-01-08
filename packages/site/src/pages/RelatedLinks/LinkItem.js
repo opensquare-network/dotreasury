@@ -4,9 +4,12 @@ import { Image } from "semantic-ui-react";
 import { stringUpperFirst } from "@polkadot/util";
 import ExternalLink from "../../components/ExplorerLink";
 
+import TextMinor from "../../components/TextMinor"
+import { TEXT_DARK_MAJOR } from "../../constants";
+
 const Wrapper = styled.div`
   display: flex;
-  align-items: center;
+  align-items: start;
   gap: 32px;
 `;
 
@@ -16,8 +19,13 @@ const LinkWrapper = styled.div`
   gap: 8px;
 `;
 
-const Text = styled.div`
-  color: rgba(29, 37, 60, 0.64);
+const LinkText = styled(TextMinor)`
+  cursor: pointer;
+  line-height: 24px;
+  &:hover {
+    color: ${TEXT_DARK_MAJOR};
+    text-decoration-line: underline;
+  }
 `;
 
 const Link = ({ link, text }) => {

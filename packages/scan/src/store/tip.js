@@ -1,9 +1,16 @@
-const { TipEvents, ProxyMethods } = require("../utils/constants");
+const {
+  TipEvents,
+  ProxyMethods,
+  TipMethods,
+  Modules,
+  MultisigMethods,
+} = require("../utils/constants");
 const { hexToString } = require("@polkadot/util");
 const { getTipCollection } = require("../mongo");
 const { getApi } = require("../api");
 const { median } = require("../utils");
-const { logger } = require("../utils");
+const { getCall, getMultiSigExtrinsicAddress } = require("../utils/call");
+const { getTipMethodNameAndArgs } = require("./utils");
 
 async function getTipMetaByBlockHeight(height, tipHash) {
   const api = await getApi();
@@ -51,24 +58,72 @@ function computeTipValue(tipMeta) {
   return median(tipValues);
 }
 
-async function saveNewTip(hash, extrinsic, blockIndexer) {
-  let reasonHex;
-  if (extrinsic.name === ProxyMethods.proxy) {
-    reasonHex = extrinsic.args.call.args.reason;
-  } else {
-    reasonHex = extrinsic.args.reason;
+async function getTipReason(normalizedExtrinsic, extrinsic) {
+  const { section, name, args } = normalizedExtrinsic;
+
+  if (name === ProxyMethods.proxy) {
+    return hexToString(args.call.args.reason);
   }
 
-  const reason = hexToString(reasonHex);
-  const finder = extrinsic.signer;
-  const meta = await getTipMeta(blockIndexer.blockHash, hash);
-  const medianValue = computeTipValue(meta);
+  if ([TipMethods.tipNew, TipMethods.reportAwesome].includes(name)) {
+    return hexToString(args.reason);
+  }
 
-  const tippersCount = await getTippersCount(blockIndexer.blockHash);
+  if (Modules.Multisig === section || MultisigMethods.asMulti === name) {
+    // handle multisig transaction
+    const rawCall = extrinsic.method.args[3].toHex();
+    const call = await getCall(
+      normalizedExtrinsic.extrinsicIndexer.blockHash,
+      rawCall
+    );
+    if (
+      Modules.Treasury !== call.section ||
+      [TipMethods.tipNew, TipMethods.reportAwesome].includes(call.method)
+    ) {
+      return;
+    }
+
+    const {
+      args: { reason },
+    } = call.toJSON();
+    return hexToString(reason);
+  }
+
+  return null;
+}
+
+async function getRealSigner(normalizedExtrinsic) {
+  const { section, name, args, signer } = normalizedExtrinsic;
+
+  if (name === ProxyMethods.proxy) {
+    return args.real;
+  }
+
+  if (Modules.Multisig === section || MultisigMethods.asMulti === name) {
+    // handle multisig transaction
+    return await getMultiSigExtrinsicAddress(args, signer);
+  }
+
+  return signer;
+}
+
+async function saveNewTip(hash, normalizedExtrinsic, extrinsic) {
+  const indexer = normalizedExtrinsic.extrinsicIndexer;
+
+  const reason = await getTipReason(normalizedExtrinsic, extrinsic);
+  const finder = await getRealSigner(normalizedExtrinsic);
+  const meta = await getTipMeta(indexer.blockHash, hash);
+  const medianValue = computeTipValue(meta);
+  const tippersCount = await getTippersCount(indexer.blockHash);
+
+  const [method, args] = await getTipMethodNameAndArgs(
+    normalizedExtrinsic,
+    extrinsic
+  );
 
   const tipCol = await getTipCollection();
   await tipCol.insertOne({
-    indexer: blockIndexer,
+    indexer,
     hash,
     reason,
     finder,
@@ -77,14 +132,19 @@ async function saveNewTip(hash, extrinsic, blockIndexer) {
     tippersCount,
     isClosedOrRetracted: false,
     state: {
-      indexer: extrinsic.extrinsicIndexer,
+      indexer: normalizedExtrinsic.extrinsicIndexer,
       state: TipEvents.NewTip,
       data: [hash],
     },
     timeline: [
       {
         type: "extrinsic",
-        extrinsic,
+        method,
+        args: {
+          ...args,
+          finder,
+        },
+        extrinsic: normalizedExtrinsic,
       },
     ],
   });
@@ -103,35 +163,27 @@ async function updateTipByClosingEvent(hash, state, data, extrinsic) {
   );
 }
 
-async function updateTipFinalState(hash, state, data, extrinsic) {
-  const indexer = extrinsic.extrinsicIndexer;
+async function updateTipFinalState(
+  hash,
+  eventMethod,
+  data,
+  normalizedExtrinsic,
+  extrinsic
+) {
+  const indexer = normalizedExtrinsic.extrinsicIndexer;
   const meta = await getTipMetaByBlockHeight(indexer.blockHeight - 1, hash);
   const updates = {
     isClosedOrRetracted: true,
     meta,
-    state: { indexer, state, data },
+    state: { indexer, state: eventMethod, data },
   };
-  await updateDbTipData(hash, updates, extrinsic);
-}
 
-async function updateTipByTipExtrinsic(hash, state, data, extrinsic) {
-  const indexer = extrinsic.extrinsicIndexer;
-  const tippersCount = await getTippersCount(indexer.blockHash);
-  const meta = await getTipMeta(indexer.blockHash, hash);
-  const updates = { tippersCount, meta, medianValue: computeTipValue(meta) };
-
-  logger.info(`update tip with ${state} extrinsic ${extrinsic.hash}`);
-  await updateDbTipData(
-    hash,
-    {
-      ...updates,
-      state: { indexer, state, data },
-    },
+  const [method, args] = await getTipMethodNameAndArgs(
+    normalizedExtrinsic,
     extrinsic
   );
-}
+  const terminator = await getRealSigner(normalizedExtrinsic);
 
-async function updateDbTipData(hash, updates, extrinsic) {
   const tipCol = await getTipCollection();
   await tipCol.updateOne(
     { hash, isClosedOrRetracted: false },
@@ -140,7 +192,12 @@ async function updateDbTipData(hash, updates, extrinsic) {
       $push: {
         timeline: {
           type: "extrinsic",
-          extrinsic,
+          method,
+          args: {
+            ...args,
+            terminator,
+          },
+          extrinsic: normalizedExtrinsic,
         },
       },
     }
@@ -149,7 +206,9 @@ async function updateDbTipData(hash, updates, extrinsic) {
 
 module.exports = {
   saveNewTip,
-  updateTipByTipExtrinsic,
   updateTipFinalState,
   updateTipByClosingEvent,
+  getTippersCount,
+  getTipMeta,
+  computeTipValue,
 };

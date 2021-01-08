@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import { PRIMARY_THEME_COLOR, SECONDARY_THEME_COLOR } from "../../constants";
+import { PRIMARY_THEME_COLOR, SECONDARY_THEME_COLOR } from "../constants";
 
 const getCurrent = (current) => {
   let str = "";

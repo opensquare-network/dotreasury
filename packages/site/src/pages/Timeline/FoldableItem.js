@@ -9,6 +9,13 @@ import {PRIMARY_THEME_COLOR} from "../../constants"
 
 const Wrapper = styled.div`
   display: flex;
+  &:last-child {
+    .bar {
+      ${p => !p.isUnfold && css`
+        visibility: hidden;
+      `}
+    }
+  }
 `
 
 const FlexWrapper = styled.div`
@@ -60,7 +67,7 @@ const FoldableItem = ({data, polkassembly}) => {
     setIsUnfold(!isUnfold);
   }
   return (
-    <Wrapper>
+    <Wrapper isUnfold={isUnfold}>
       <VerticalWrapper>
         <FlexWrapper>
           <Circle />
@@ -71,7 +78,7 @@ const FoldableItem = ({data, polkassembly}) => {
         </FlexWrapper>
       </VerticalWrapper>
       <ItemWrapper isUnfold={isUnfold}>
-        { (data || []).map((item, index) => <Item key={index} data={item} polkassembly={polkassembly} onUnfoldBtnClick={onUnfoldBtnClick} />) }
+        { (data || []).map((item, index) => <Item key={index} data={item} polkassembly={(index === 0) && polkassembly} onUnfoldBtnClick={onUnfoldBtnClick} isUnfold={isUnfold} />) }
       </ItemWrapper>
     </Wrapper>
   )

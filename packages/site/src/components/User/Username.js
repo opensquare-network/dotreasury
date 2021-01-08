@@ -29,7 +29,7 @@ const Username = ({ address, name, ellipsis, popup }) => {
   const displayName = name ? name : displayAddress;
   return (
     <Popup
-      content={address}
+      content={name ? `${name} ${address}` : address}
       size='mini'
       disabled={disabledPopup}
       trigger={<TextUsername>{displayName}</TextUsername>}

@@ -4,7 +4,7 @@ import {Image} from "semantic-ui-react";
 
 import Item from "./Item";
 import SubTitle from "../../components/SubTitle";
-// import FoldableItem from "./FoldableItem";
+import FoldableItem from "./FoldableItem";
 
 const Wrapper = styled.div`
   max-width: 100%;
@@ -21,16 +21,16 @@ const LoadingWrapper = styled.div`
   justify-content: center;
 `
 
-const Timeline = ({ data, polkassembly, loading }) => {
+const Timeline = ({ data, loading }) => {
   return (
     <Wrapper>
       <Header>Timeline</Header>
       { (loading && <LoadingWrapper><Image src="/imgs/loading.svg" /></LoadingWrapper>) ||
       <>
-        { (data || []).map((item, index) => <Item key={index} data={item} polkassembly={polkassembly} />) }
-        {/* FoldableItem example */}
-        {/* <FoldableItem data={data} polkassembly={polkassembly} />
-        { (data || []).map((item, index) => <Item key={index} data={item} polkassembly={polkassembly} />) } */}
+        { (data || []).map((item, index) => (item.subTimeline
+            ? <FoldableItem key={index} data={item.subTimeline} polkassembly={item.polkassembly} />
+            : <Item key={index} data={item} />
+          )) }
       </>
       }
     </Wrapper>

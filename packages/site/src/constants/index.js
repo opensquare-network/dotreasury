@@ -9,3 +9,8 @@ export const TipStatus = {
   Closed: "Closed",
   Retracted: "Retracted",
 };
+
+export const ProposalStatus = {
+  Approved: "Approved",
+  Rejected: "Rejected",
+};

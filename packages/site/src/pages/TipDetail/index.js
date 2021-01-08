@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import styled from "styled-components";
@@ -18,9 +18,10 @@ import Timeline from "../Timeline";
 import Comment from "../Comment";
 import RelatedLinks from "../RelatedLinks";
 import Title from "../../components/Title";
-import User from "../../components/User/Index";
+import User from "../../components/User";
 import Balance from "../../components/Balance";
 import TipLifeCycleTable from "./TipLifeCycleTable";
+import Funder from "./Funder";
 
 const HeaderWrapper = styled.div`
   display: flex;
@@ -58,147 +59,96 @@ const TimelineCommentWrapper = styled.div`
   }
 `;
 
-function getProxyMethod(callArgs) {
-  const methodsMapping = [
-    [["hash", "tip_value"], "tip"],
-    [["reason", "who"], "reportAwesome"],
-  ];
+async function processTimeline(tipDetail) {
+  return await Promise.all(
+    (tipDetail.timeline || []).map(async (timelineItem) => {
+      let fields = [];
 
-  for (const [expectArgs, method] of methodsMapping) {
-    if (JSON.stringify(Object.keys(callArgs)) === JSON.stringify(expectArgs)) {
-      return method;
-    }
-  }
+      if (timelineItem.method === "reportAwesome") {
+        const { reason, who: beneficiary, finder } = timelineItem.args;
+        const reasonText = hexToString(reason);
+        fields = [
+          {
+            title: "Finder",
+            value: <User address={finder} />,
+          },
+          {
+            title: "Beneficiary",
+            value: <User address={beneficiary} />,
+          },
+          {
+            title: "Reason",
+            value: reasonText,
+          },
+        ];
+      } else if (timelineItem.method === "tipNew") {
+        const { tip_value: tipValue, who: beneficiary, reason, finder } = timelineItem.args;
+        const reasonText = hexToString(reason);
+        fields = [
+          {
+            title: "Funder",
+            value: <User address={finder} />,
+          },
+          {
+            title: "Beneficiary",
+            value: <User address={beneficiary} />,
+          },
+          {
+            title: "Tip value",
+            value: <Balance value={tipValue} />,
+          },
+          {
+            title: "Reason",
+            value: reasonText,
+          },
+        ];
+      } else if (timelineItem.method === "tip") {
+        const { value: tipValue, tipper: funder } = timelineItem.args;
+        fields = [
+          {
+            value: <Funder address={funder} value={tipValue} />
+          }
+        ];
+      } else if (timelineItem.method === "closeTip") {
+        const who = timelineItem.args.terminator;
+        fields = [
+          {
+            title: "Close by",
+            value: <User address={who} />,
+          },
+          {
+            title: "Beneficiary",
+            value: <User address={tipDetail.beneficiary} />,
+          },
+          {
+            title: "Final tip value",
+            value: <Balance value={tipDetail.medianValue} />,
+          },
+        ];
+      } else if (timelineItem.method === "retractTip") {
+        const who = timelineItem.args.terminator;
+        fields = [
+          {
+            title: "Retract by",
+            value: <User address={who} />,
+          },
+        ];
+      }
 
-  return "";
-}
-
-function processProxyExtrinsic(extrinsic) {
-  if (extrinsic.section !== "proxy" || extrinsic.name !== "proxy") {
-    return extrinsic;
-  }
-
-  const {
-    signer,
-    args: {
-      call: { callIndex, args },
-    },
-    extrinsicIndexer,
-  } = extrinsic;
-
-  const name = getProxyMethod(args);
-  if (name) {
-    return {
-      name,
-      args,
-      signer,
-      extrinsicIndexer,
-    };
-  }
-
-  return {
-    name: `Proxy(${callIndex})`,
-    args,
-    signer,
-    extrinsicIndexer,
-  };
-}
-
-function processTimeline(tipDetail) {
-  return (tipDetail.timeline || []).map((timelineItem) => {
-    const extrinsic = processProxyExtrinsic(timelineItem.extrinsic);
-    let fields = [];
-
-    if (extrinsic.name === "reportAwesome") {
-      const { reason, who: beneficiary } = extrinsic.args;
-      const finder = extrinsic.signer;
-      const reasonText = hexToString(reason);
-      fields = [
-        {
-          title: "Finder",
-          value: <User address={finder} />,
-        },
-        {
-          title: "Beneficiary",
-          value: <User address={beneficiary} />,
-        },
-        {
-          title: "Reason",
-          value: reasonText,
-        },
-      ];
-    } else if (extrinsic.name === "tipNew") {
-      const { tip_value: tipValue, who: beneficiary, reason } = extrinsic.args;
-      const finder = extrinsic.signer;
-      const reasonText = hexToString(reason);
-      fields = [
-        {
-          title: "Funder",
-          value: <User address={finder} />,
-        },
-        {
-          title: "Beneficiary",
-          value: <User address={beneficiary} />,
-        },
-        {
-          title: "Tip value",
-          value: <Balance value={tipValue} />,
-        },
-        {
-          title: "Reason",
-          value: reasonText,
-        },
-      ];
-    } else if (extrinsic.name === "tip") {
-      const { tip_value: tipValue } = extrinsic.args;
-      const funder = extrinsic.signer;
-      fields = [
-        {
-          title: "Funder",
-          value: <User address={funder} />,
-        },
-        {
-          title: "Tip value",
-          value: <Balance value={tipValue} />,
-        },
-      ];
-    } else if (extrinsic.name === "closeTip") {
-      const who = extrinsic.signer;
-      fields = [
-        {
-          title: "Close by",
-          value: <User address={who} />,
-        },
-        {
-          title: "Beneficiary",
-          value: <User address={tipDetail.beneficiary} />,
-        },
-        {
-          title: "Final tip value",
-          value: <Balance value={tipDetail.medianValue} />,
-        },
-      ];
-    } else if (extrinsic.name === "retractTip") {
-      const who = extrinsic.signer;
-      fields = [
-        {
-          title: "Retract by",
-          value: <User address={who} />,
-        },
-      ];
-    }
-
-    return {
-      ...extrinsic,
-      fields,
-    };
-  });
+      return {
+        extrinsicIndexer: timelineItem.extrinsic.extrinsicIndexer,
+        name: timelineItem.method,
+        fields,
+      };
+    })
+  );
 }
 
 const TipDetail = () => {
   const history = useHistory();
   const { tipId } = useParams();
   const dispatch = useDispatch();
+  const [timelineData, setTimelineData] = useState([]);
 
   useEffect(() => {
     dispatch(fetchTipDetail(tipId));
@@ -209,6 +159,12 @@ const TipDetail = () => {
   const tipDetail = useSelector(tipDetailSelector);
   const loadingTipDetail = useSelector(loadingTipDetailSelector);
 
+  useEffect(() => {
+    (async () => {
+      setTimelineData(await processTimeline(tipDetail));
+    })();
+  }, [tipDetail]);
+
   return (
     <>
       <HeaderWrapper>
@@ -218,15 +174,14 @@ const TipDetail = () => {
         <Title>Detail</Title>
       </HeaderWrapper>
       <TableWrapper>
-        <InformationTable />
-        <TipLifeCycleTable />
+        <InformationTable loading={loadingTipDetail} />
+        <TipLifeCycleTable loading={loadingTipDetail} />
       </TableWrapper>
       <RelatedLinks type="tips" index={tipId} />
       <Divider />
       <TimelineCommentWrapper>
         <Timeline
-          data={processTimeline(tipDetail)}
-          polkassembly={false}
+          data={timelineData}
           loading={loadingTipDetail}
         />
         <Comment />

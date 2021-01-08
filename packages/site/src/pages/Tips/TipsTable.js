@@ -3,25 +3,19 @@ import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { useHistory } from "react-router";
 import dayjs from "dayjs";
-import { Dimmer, Segment, Image } from "semantic-ui-react";
 
 import Table from "../../components/Table";
-import User from "../../components/User/Index";
+import TableLoading from "../../components/TableLoading.js"
+import User from "../../components/User";
 import Balance from "../../components/Balance";
 import RightButton from "../../components/RightButton";
 import PairTextVertical from "../../components/PairTextVertical";
 import ReasonText from "./ReasonText";
 import { TipStatus } from "../../constants";
+import TableNoDataCell from "../../components/TableNoDataCell";
 
 const Wrapper = styled.div`
   overflow-x: scroll;
-
-  .ui.segment {
-    padding: 0;
-    border: 0;
-    width: fit-content;
-    min-width: 100%;
-  }
 
   @media screen and (max-width: 1140px) {
     position: relative;
@@ -57,10 +51,7 @@ const TipsTable = ({ data, loading }) => {
 
   return (
     <Wrapper>
-      <Segment>
-        <Dimmer active={loading} inverted>
-          <Image src="/imgs/loading.svg" />
-        </Dimmer>
+      <TableLoading loading={loading}>
         <StyledTable striped selectable unstackable>
           <Table.Header>
             <Table.Row>
@@ -117,15 +108,11 @@ const TipsTable = ({ data, loading }) => {
                   </Table.Cell>
                 </Table.Row>
               ))) || (
-              <Table.Row>
-                <Table.Cell className="no-data" colSpan="6" textAlign="center">
-                  No data
-                </Table.Cell>
-              </Table.Row>
+                <TableNoDataCell />
             )}
           </Table.Body>
         </StyledTable>
-      </Segment>
+      </TableLoading>
     </Wrapper>
   );
 };
