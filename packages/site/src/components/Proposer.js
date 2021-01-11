@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { Image } from "semantic-ui-react";
 
 import Voter from "./Voter";
 import BarProgress from "./BarProgress";
@@ -13,22 +14,51 @@ const Wrapper = styled.div`
 
 const BarProgressWrapper = styled.div`
   display: flex;
+  flex-direction: column;
   gap: 8px;
-  align-items: center;
 `
 
 const CustomText = styled(TextMinor)`
   white-space: nowrap;
-  font-size: 12px;
 `
 
-const Proposer = ({address, agree, value, threshold, ayes }) => {
+const TextWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+
+const AyeNayWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+`
+
+const ItemWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`
+
+const Proposer = ({address, agree, value, threshold, ayes, nays }) => {
   return (
     <Wrapper>
       <Voter address={address} agree={agree} value={value} />
       <BarProgressWrapper>
         <BarProgress current={ayes} total={threshold} />
-        <CustomText>{`${ayes}/${threshold}`}</CustomText>
+        <TextWrapper>
+          <CustomText>{`${ayes}/${threshold}`}</CustomText>
+          <AyeNayWrapper>
+            <ItemWrapper>
+              <CustomText>Aye ({ayes})</CustomText>
+              <Image src="/imgs/aye.svg" />
+            </ItemWrapper>
+            <ItemWrapper>
+            <CustomText>Nays ({nays})</CustomText>
+              <Image src="/imgs/nay.svg" />
+            </ItemWrapper>
+          </AyeNayWrapper>
+        </TextWrapper>
       </BarProgressWrapper>
     </Wrapper>
   )
