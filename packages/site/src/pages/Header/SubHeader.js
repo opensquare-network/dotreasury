@@ -5,13 +5,12 @@ import { NavLink, useLocation } from "react-router-dom";
 import TipsMenu from "./TipsMenu";
 import ProposalsMenu from "./ProposalsMenu";
 import BountiesMenu from "./BountiesMenu";
-import BurntMenu from "./BurntMenu";
 
 import {
-  TEXT_DARK_MAJOR,
-  TEXT_DARK_MINOR,
   PRIMARY_THEME_COLOR,
   SECONDARY_THEME_COLOR,
+  TEXT_DARK_MAJOR,
+  TEXT_DARK_MINOR,
 } from "../../constants";
 
 const DividerWrapper = styled(Divider)`
@@ -47,17 +46,19 @@ const TabWrapper = styled(Tab)`
       padding-right: 0 !important;
       color: ${TEXT_DARK_MINOR} !important;
     }
-    & > div.ui.label, & > div > div.ui.label {
+    & > div.ui.label,
+    & > div > div.ui.label {
       background: ${SECONDARY_THEME_COLOR} !important;
       height: 20px !important;
-      padding 0 8px !important;
+      padding: 0 8px !important;
       line-height: 20px !important;
       border-radius: 10px !important;
       margin-left: 8px !important;
       color: ${PRIMARY_THEME_COLOR} !important;
       font-weight: 400;
     }
-    &.active, &.active > div {
+    &.active,
+    &.active > div {
       font-weight: normal !important;
       color: ${TEXT_DARK_MAJOR} !important;
       border-color: ${PRIMARY_THEME_COLOR} !important;
@@ -65,10 +66,8 @@ const TabWrapper = styled(Tab)`
   }
 `;
 
-
-
 const TabExampleSecondaryPointing = () => {
-  const {pathname} = useLocation();
+  const { pathname } = useLocation();
 
   const panes = [
     {
@@ -79,7 +78,7 @@ const TabExampleSecondaryPointing = () => {
         to: "/",
         exact: true,
         key: "home",
-        active: "/" === pathname
+        active: "/" === pathname,
       },
     },
     {
@@ -90,7 +89,8 @@ const TabExampleSecondaryPointing = () => {
         to: "/proposals",
         exact: true,
         key: "proposals",
-        active: "/proposals" === pathname || pathname.indexOf("/proposals") === 0
+        active:
+          "/proposals" === pathname || pathname.indexOf("/proposals") === 0,
       },
     },
     {
@@ -101,7 +101,7 @@ const TabExampleSecondaryPointing = () => {
         to: "/bounties",
         exact: true,
         key: "bounties",
-        active: "/bounties" === pathname || pathname.indexOf("/bounties") === 0
+        active: "/bounties" === pathname || pathname.indexOf("/bounties") === 0,
       },
     },
     {
@@ -112,26 +112,32 @@ const TabExampleSecondaryPointing = () => {
         to: "/tips",
         exact: true,
         key: "tips",
-        active: "/tips" === pathname || pathname.indexOf("/tips") === 0
-      }
+        active: "/tips" === pathname || pathname.indexOf("/tips") === 0,
+      },
     },
-    {
-      menuItem: {
-        as: NavLink,
-        id: "burntTab",
-        content: <BurntMenu />,
-        to: "/burnt",
-        exact: true,
-        key: "burnt",
-        active: "/burnt" === pathname || pathname.indexOf("/burnt") === 0
-      }
-    },
+    // {
+    //   menuItem: {
+    //     as: NavLink,
+    //     id: "burntTab",
+    //     content: <BurntMenu />,
+    //     to: "/burnt",
+    //     exact: true,
+    //     key: "burnt",
+    //     active: "/burnt" === pathname || pathname.indexOf("/burnt") === 0
+    //   }
+    // },
   ];
 
-  return (<>
-    <DividerWrapper />
-    <TabWrapper menu={{ secondary: true, pointing: true }} panes={panes} activeIndex={"tipsTab"} />
-  </>)
+  return (
+    <>
+      <DividerWrapper />
+      <TabWrapper
+        menu={{ secondary: true, pointing: true }}
+        panes={panes}
+        activeIndex={"tipsTab"}
+      />
+    </>
+  );
 };
 
 export default TabExampleSecondaryPointing;
