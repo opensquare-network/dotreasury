@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { NavLink, useHistory } from "react-router-dom";
 import { Dimmer, Segment, Image } from "semantic-ui-react";
-import { useSelector } from "react-redux";
 import dayjs from "dayjs";
 
 import Table from "../../components/Table";
@@ -11,9 +10,7 @@ import Balance from "../../components/Balance";
 import RightButton from "../../components/RightButton";
 import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
-import PairTextVertical from "../../components/PairTextVertical";
 import TableNoDataCell from "../../components/TableNoDataCell";
-import { scanHeightSelector } from "../../store/reducers/chainSlice";
 import PolygonLabel from "../../components/PolygonLabel";
 import ExplorerLink from "../../components/ExplorerLink";
 
@@ -58,7 +55,6 @@ const ProposeTimeWrapper = styled.div`
 
 const BountiesTable = ({ data, loading }) => {
   const history = useHistory();
-  const scanHeight = useSelector(scanHeightSelector);
 
   const onClickRow = (bountyIndex) => {
     if (window.innerWidth < 1140) {
