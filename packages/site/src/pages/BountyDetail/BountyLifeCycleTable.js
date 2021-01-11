@@ -6,6 +6,7 @@ import Table from "../../components/Table";
 import TableLoading from "../../components/TableLoading";
 import TableCell from "../../components/TableCell";
 import TimeLabel from "../../components/TimeLabel";
+import User from "../../components/User";
 
 import {
   bountyDetailSelector,
@@ -37,6 +38,20 @@ const BountyLifeCycleTable = ({loading}) => {
                   <div>{bountyDetail.latestState?.state}</div>
                   <TimeLabel value={bountyDetail.latestState?.indexer?.blockTime} />
                 </FlexWrapper>
+              </TableCell>
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>
+              <TableCell title={"Curator"}>
+                { bountyDetail.curator ? <User address={bountyDetail.curator} /> : "--" }
+              </TableCell>
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>
+              <TableCell title={"Beneficiary"}>
+                { bountyDetail.beneficiary ? <User address={bountyDetail.beneficiary} /> : "--" }
               </TableCell>
             </Table.Cell>
           </Table.Row>

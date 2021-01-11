@@ -1,6 +1,8 @@
 const { getBountyCollection, getMotionCollection } = require("../../mongo");
 const { extractPage } = require("../../utils");
 
+const bountyStatus = (bounty) => bounty.status?.CuratorProposed || bounty.status?.Active || bounty.status?.PendingPayout;
+
 class BountiesController {
   async getBounties(ctx) {
     const { page, pageSize } = extractPage(ctx);
@@ -23,8 +25,8 @@ class BountiesController {
     ctx.body = {
       items: bounties.map(item => ({
         bountyIndex: item.bountyIndex,
-        curator: item.meta?.status?.Active?.curator,
-        beneficiary: null, // TODO: there are no available beneficiary at present.
+        curator: bountyStatus(item.meta)?.curator,
+        beneficiary: bountyStatus(item.meta)?.beneficiary,
         title: item.description,
         value: item.meta?.value,
         latestState: {
@@ -64,8 +66,8 @@ class BountiesController {
       proposeTime: bounty.indexer.blockTime,
       proposeAtBlockHeight: bounty.indexer.blockHeight,
       proposer: bounty.meta?.proposer,
-      curator: bounty.meta?.status?.Active?.curator,
-      beneficiary: null, // TODO: there are no available beneficiary at present.
+      curator: bountyStatus(bounty.meta)?.curator,
+      beneficiary: bountyStatus(bounty.meta)?.beneficiary,
       title: bounty.description,
       value: bounty.meta?.value,
       latestState: {
@@ -73,6 +75,7 @@ class BountiesController {
         indexer: bounty.state?.indexer || bounty.state?.eventIndexer,
         data: bounty.state?.data,
       },
+      timeline: bounty.timeline,
       motions: bountyMotions,
     };
   }
