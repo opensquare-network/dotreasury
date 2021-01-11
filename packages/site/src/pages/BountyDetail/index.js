@@ -16,6 +16,11 @@ import Comment from "../Comment";
 import RelatedLinks from "../RelatedLinks";
 import Title from "../../components/Title";
 import BountyLifeCycleTable from "./BountyLifeCycleTable";
+import User from "../../components/User";
+import Balance from "../../components/Balance";
+import Voter from "../../components/Voter";
+import Proposer from "../../components/Proposer";
+import polkassemblyApi from "../../services/polkassembly";
 
 const HeaderWrapper = styled.div`
   display: flex;
@@ -54,7 +59,59 @@ const TimelineCommentWrapper = styled.div`
 `;
 
 function processTimeline(bountyDetail) {
-  return [];
+  return [{
+    name: "Proposed",
+    extrinsicIndexer: bountyDetail.indexer || {},
+    fields: [{
+      title: "Proposer",
+      value: <User address={bountyDetail.proposer} />
+    }, {
+      title: "Beneficiary",
+      value: bountyDetail.beneficiary ? <User address={bountyDetail.beneficiary} /> : "--"
+    }, {
+      title: "Value",
+      value: <Balance value={bountyDetail.value} />
+    }]
+  },
+  ...(bountyDetail.motions || []).map(motion => ({
+      polkassembly: polkassemblyApi.getMotionUrl(motion.index),
+      subTimeline: (motion.timeline || []).map(item => ({
+        name: (item.action === "Propose" ? `Motion #${motion.index}` : item.action),
+        extrinsicIndexer: item.extrinsic.extrinsicIndexer,
+        fields: (() => {
+          if (item.action === "Propose") {
+            const [proposer, , , threshold] = item.eventData;
+            const ayes = motion.voting?.ayes?.length || 0;
+            return [{
+              value: <Proposer address={proposer} agree={motion.result && motion.result === "Approved"} value={motion.method} threshold={threshold} ayes={ayes} />
+            }]
+          } else if (item.action === "Vote") {
+            const [voter, , agree] = item.eventData;
+            return [{
+              value: <Voter address={voter} agree={agree} value={agree ? "Aye" : "Nay"} />
+            }]
+          } else if (item.action === "Close") {
+            return [{
+              title: motion.result
+            }]
+          } else {
+            return [];
+          }
+        })(),
+      }))
+    })),
+    ...(bountyDetail.latestState?.state === "Awarded" ? [{
+      name: "Awarded",
+      eventIndexer: bountyDetail.latestState?.indexer || {},
+      fields: [{
+        title: "Beneficiary",
+        value: <User address={bountyDetail.latestState?.data[2]} />
+      }, {
+        title: "Balance",
+        value: <Balance value={bountyDetail.latestState?.data[1]} />
+      }]
+    }] : [])
+  ]
 }
 
 const BountyDetail = () => {
@@ -81,7 +138,7 @@ const BountyDetail = () => {
         <InformationTable loading={loadingBountyDetail} />
         <BountyLifeCycleTable loading={loadingBountyDetail} />
       </TableWrapper>
-      <RelatedLinks />
+      <RelatedLinks type="bounties" index={bountyIndex} />
       <Divider />
       <TimelineCommentWrapper>
         <Timeline

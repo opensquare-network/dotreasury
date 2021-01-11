@@ -2,8 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { Image } from "semantic-ui-react";
 
-import User from "../../components/User";
-import Text from "../../components/Text";
+import User from "./User";
+import Text from "./Text";
 
 const Wrapper = styled.div`
   display: flex;
