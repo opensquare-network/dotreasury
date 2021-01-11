@@ -44,48 +44,44 @@ const BountyLifeCycleTable = ({loading}) => {
               </TableCell>
             </Table.Cell>
           </Table.Row>
-          { bountyDetail.curator &&
-            <Table.Row>
-              <Table.Cell>
-                <TableCell title={"Curator"}>
-                  <User address={bountyDetail.curator} />
-                </TableCell>
-              </Table.Cell>
-            </Table.Row>
-          }
-          { bountyDetail.updateDue &&
-            <Table.Row>
-              <Table.Cell>
-                <TableCell title={"Update Due"}>
-                  <FlexWrapper>
-                    <div>{bountyDetail.updateDue}</div>
-                    <Label>{`${bountyDetail.updateDue - scanHeight} blocks`}</Label>
-                  </FlexWrapper>
-                </TableCell>
-              </Table.Cell>
-            </Table.Row>
-          }
-          { bountyDetail.beneficiary &&
-            <Table.Row>
-              <Table.Cell>
-                <TableCell title={"Beneficiary"}>
-                  <User address={bountyDetail.beneficiary} />
-                </TableCell>
-              </Table.Cell>
-            </Table.Row>
-          }
-          { bountyDetail.unlockAt &&
-            <Table.Row>
-              <Table.Cell>
-                <TableCell title={"Unlock At"}>
-                  <FlexWrapper>
-                    <div>{bountyDetail.unlockAt}</div>
-                    <Label>{`${bountyDetail.unlockAt - scanHeight} blocks`}</Label>
-                  </FlexWrapper>
-                </TableCell>
-              </Table.Cell>
-            </Table.Row>
-          }
+          <Table.Row>
+            <Table.Cell>
+              <TableCell title={"Curator"}>
+                { bountyDetail.curator ? <User address={bountyDetail.curator} /> : "--" }
+              </TableCell>
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>
+              <TableCell title={"Update Due"}>
+                { bountyDetail.updateDue
+                    ? <FlexWrapper>
+                        <div>{bountyDetail.updateDue}</div>
+                        <Label>{`${bountyDetail.updateDue - scanHeight} blocks`}</Label>
+                      </FlexWrapper>
+                    : "--" }
+              </TableCell>
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>
+              <TableCell title={"Beneficiary"}>
+                { bountyDetail.beneficiary ? <User address={bountyDetail.beneficiary} /> : "--" }
+              </TableCell>
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>
+              <TableCell title={"Unlock At"}>
+                { bountyDetail.unlockAt
+                    ? <FlexWrapper>
+                        <div>{bountyDetail.unlockAt}</div>
+                        <Label>{`${bountyDetail.unlockAt - scanHeight} blocks`}</Label>
+                      </FlexWrapper>
+                    : "--" }
+              </TableCell>
+            </Table.Cell>
+          </Table.Row>
         </Table.Body>
       </Table>
     </TableLoading>

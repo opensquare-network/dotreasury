@@ -72,6 +72,13 @@ const InformationTable = ({ loading }) => {
               </TableCell>
             </Table.Cell>
           </Table.Row>
+          <Table.Row>
+            <Table.Cell>
+              <TableCell title={"Reason"}>
+                { tipDetail.reason }
+              </TableCell>
+            </Table.Cell>
+          </Table.Row>
         </Table.Body>
       </Table>
     </TableLoading>

@@ -26,6 +26,8 @@ class BountiesController {
     ctx.body = {
       items: bounties.map(item => ({
         bountyIndex: item.bountyIndex,
+        proposeTime: item.indexer.blockTime,
+        proposeAtBlockHeight: item.indexer.blockHeight,
         curator: bountyStatus(item.meta)?.curator,
         updateDue: item.meta?.status.Active?.updateDue,
         beneficiary: bountyStatus(item.meta)?.beneficiary,
@@ -69,6 +71,9 @@ class BountiesController {
       proposeTime: bounty.indexer.blockTime,
       proposeAtBlockHeight: bounty.indexer.blockHeight,
       proposer: bounty.meta?.proposer,
+      bond: bounty.meta?.bond,
+      fee: bounty.meta?.fee,
+      curatorDeposit: bounty.meta?.curatorDeposit,
       curator: bountyStatus(bounty.meta)?.curator,
       updateDue: bounty.meta?.status.Active?.updateDue,
       beneficiary: bountyStatus(bounty.meta)?.beneficiary,
