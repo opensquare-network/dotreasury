@@ -82,8 +82,9 @@ async function processTimeline(proposalDetail) {
           if (item.action === "Propose") {
             const [proposer, , , threshold] = item.eventData;
             const ayes = motion.voting?.ayes?.length || 0;
+            const nays = motion.voting?.nays?.length || 0;
             return [{
-              value: <Proposer address={proposer} agree={motion.result && motion.result === "Approved"} value={motion.method} threshold={threshold} ayes={ayes} />
+              value: <Proposer address={proposer} agree={motion.result && motion.result === "Approved"} value={motion.method} threshold={threshold} ayes={ayes} nays={nays} />
             }]
           } else if (item.action === "Vote") {
             const [voter, , agree] = item.eventData;
