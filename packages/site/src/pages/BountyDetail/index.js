@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import styled from "styled-components";
-import { Divider, Image } from "semantic-ui-react";
+import { Image } from "semantic-ui-react";
 import { useHistory } from "react-router-dom";
 import {
   fetchBountyDetail,
@@ -21,6 +21,7 @@ import Balance from "../../components/Balance";
 import Voter from "../../components/Voter";
 import Proposer from "../../components/Proposer";
 import polkassemblyApi from "../../services/polkassembly";
+import TimelineCommentWrapper from "../../components/TimelineCommentWrapper";
 import { hexToString } from "@polkadot/util";
 
 const HeaderWrapper = styled.div`
@@ -41,21 +42,6 @@ const TableWrapper = styled.div`
   }
   @media screen and (max-width: 556px) {
     grid-template-columns: repeat(1fr);
-  }
-`;
-
-const TimelineCommentWrapper = styled.div`
-  margin-top: 20px;
-  display: grid;
-  gap: 24px;
-  @media screen and (min-width: 1128px) {
-    grid-template-columns: repeat(3, 1fr);
-    & > div:first-child {
-      grid-column: 1 / 2;
-    }
-    & > div:last-child {
-      grid-column: 2 / 4;
-    }
   }
 `;
 
@@ -172,7 +158,6 @@ const BountyDetail = () => {
         <BountyLifeCycleTable loading={loadingBountyDetail} />
       </TableWrapper>
       <RelatedLinks type="bounties" index={bountyIndex} />
-      <Divider />
       <TimelineCommentWrapper>
         <Timeline
           data={processTimeline(bountyDetail)}
