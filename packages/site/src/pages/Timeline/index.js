@@ -28,7 +28,7 @@ const Timeline = ({ data, loading }) => {
       { (loading && <LoadingWrapper><Image src="/imgs/loading.svg" /></LoadingWrapper>) ||
       <>
         { (data || []).map((item, index) => (item.subTimeline
-            ? <FoldableItem key={index} data={item.subTimeline} polkassembly={item.polkassembly} />
+            ? <FoldableItem key={item.index} data={item.subTimeline} polkassembly={item.polkassembly} defaultUnfold={item.defaultUnfold} />
             : <Item key={index} data={item} />
           )) }
       </>

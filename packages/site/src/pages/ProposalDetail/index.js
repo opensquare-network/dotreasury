@@ -60,7 +60,9 @@ async function processTimeline(proposalDetail) {
     }]
   },
   ...(proposalDetail.motions || []).map(motion => ({
+      index: motion.index,
       polkassembly: polkassemblyApi.getMotionUrl(motion.index),
+      defaultUnfold: !motion.result,
       subTimeline: (motion.timeline || []).map(item => ({
         name: (item.action === "Propose" ? `Motion #${motion.index}` : item.action),
         extrinsicIndexer: item.extrinsic.extrinsicIndexer,

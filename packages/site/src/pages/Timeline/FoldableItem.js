@@ -60,8 +60,8 @@ const ItemWrapper = styled.div`
   `}
 `
 
-const FoldableItem = ({data, polkassembly}) => {
-  const [isUnfold, setIsUnfold] = useState(true);
+const FoldableItem = ({data, polkassembly, defaultUnfold}) => {
+  const [isUnfold, setIsUnfold] = useState(defaultUnfold || false);
   if (!data || data.length === 0) return null;
   const onUnfoldBtnClick = () => {
     setIsUnfold(!isUnfold);
