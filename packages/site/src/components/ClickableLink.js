@@ -6,14 +6,17 @@ import { getLinkNameAndSrc } from "../utils";
 
 const CustomImage = styled.img`
   position: relative;
-  top: 3px;
-  width: 16px;
+  top: 4px;
+  width: 20px;
 `
 
-const Wrapper = styled.div`
+const Wrapper = styled.span`
   display: inline-flex;
   align-items: center;
-  margin: 0 2px;
+  margin-left: 8px;
+  &:first-child {
+    margin-left: 15px;
+  }
 `
 
 const ClickableLink = ({children, links}) => {
@@ -24,8 +27,8 @@ const ClickableLink = ({children, links}) => {
         links && links.filter(item => item.inReasons).map((item, index) => {
           const [, src] = getLinkNameAndSrc(item.link);
           return(
-            <Wrapper>
-              <ExternalLink href={item.link} key={index}><CustomImage src={src} /></ExternalLink>
+            <Wrapper key={index}>
+              <ExternalLink href={item.link}><CustomImage src={src} /></ExternalLink>
             </Wrapper>
           )
         })
