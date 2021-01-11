@@ -46,7 +46,7 @@ const TableWrapper = styled.div`
 `;
 
 function mergeExtrinsicsAndMotions(extrinsics, motions) {
-  const result = [...extrinsics, ...motions];
+  const result = [...extrinsics.filter(item => item.extrinsic), ...motions];
   const indexer = (item) => (item.extrinsic || item.timeline?.[0].extrinsic)?.extrinsicIndexer;
   result.sort((a, b) => indexer(a)?.blockHeight - indexer(b)?.blockHeight)
   return result;
