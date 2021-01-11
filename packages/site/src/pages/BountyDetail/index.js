@@ -21,6 +21,7 @@ import Balance from "../../components/Balance";
 import Voter from "../../components/Voter";
 import Proposer from "../../components/Proposer";
 import polkassemblyApi from "../../services/polkassembly";
+import { hexToString } from "@polkadot/util";
 
 const HeaderWrapper = styled.div`
   display: flex;
@@ -58,22 +59,16 @@ const TimelineCommentWrapper = styled.div`
   }
 `;
 
+function mergeExtrinsicsAndMotions(extrinsics, motions) {
+  const result = [...extrinsics, ...motions];
+  const indexer = (item) => (item.extrinsic || item.timeline?.[0].extrinsic)?.extrinsicIndexer;
+  result.sort((a, b) => indexer(a)?.blockHeight - indexer(b)?.blockHeight)
+  return result;
+}
+
 function processTimeline(bountyDetail) {
-  return [{
-    name: "Proposed",
-    extrinsicIndexer: bountyDetail.indexer || {},
-    fields: [{
-      title: "Proposer",
-      value: <User address={bountyDetail.proposer} />
-    }, {
-      title: "Beneficiary",
-      value: bountyDetail.beneficiary ? <User address={bountyDetail.beneficiary} /> : "--"
-    }, {
-      title: "Value",
-      value: <Balance value={bountyDetail.value} />
-    }]
-  },
-  ...(bountyDetail.motions || []).map(motion => ({
+  return mergeExtrinsicsAndMotions(bountyDetail.timeline || [], bountyDetail.motions || []).map(item =>
+    item.timeline ? (motion => ({
       polkassembly: polkassemblyApi.getMotionUrl(motion.index),
       subTimeline: (motion.timeline || []).map(item => ({
         name: (item.action === "Propose" ? `Motion #${motion.index}` : item.action),
@@ -99,19 +94,56 @@ function processTimeline(bountyDetail) {
           }
         })(),
       }))
-    })),
-    ...(bountyDetail.latestState?.state === "Awarded" ? [{
-      name: "Awarded",
-      eventIndexer: bountyDetail.latestState?.indexer || {},
-      fields: [{
-        title: "Beneficiary",
-        value: <User address={bountyDetail.latestState?.data[2]} />
-      }, {
-        title: "Balance",
-        value: <Balance value={bountyDetail.latestState?.data[1]} />
-      }]
-    }] : [])
-  ]
+    }))(item) : (extrinsic => {
+      let fields = [];
+
+      if (extrinsic.name === "proposeBounty") {
+        const proposer = extrinsic.signer;
+        const { value, description } = extrinsic.args;
+        const title = hexToString(description);
+        fields = [
+          {
+            title: "Proposer",
+            value: <User address={proposer} />,
+          },
+          {
+            title: "Value",
+            value: <Balance value={value} />,
+          },
+          {
+            title: "Title",
+            value: title,
+          },
+        ];
+      } else if (extrinsic.name === "acceptCurator") {
+        const curator = extrinsic.signer;
+        fields = [
+          {
+            title: "Curator",
+            value: <User address={curator} />,
+          },
+        ];
+      } else if (extrinsic.name === "awardBounty") {
+        const curator = extrinsic.signer;
+        const { beneficiary } = extrinsic.args;
+        fields = [
+          {
+            title: "Curator",
+            value: <User address={curator} />,
+          }, {
+            title: "Beneficiary",
+            value: <User address={beneficiary} />,
+          },
+        ];
+      }
+
+      return {
+        extrinsicIndexer: extrinsic.extrinsicIndexer,
+        name: extrinsic.name,
+        fields,
+      };
+    })(item.extrinsic)
+  )
 }
 
 const BountyDetail = () => {
