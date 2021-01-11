@@ -15,7 +15,7 @@ const Wrapper = styled.div`
     flex: 0 0 auto;
   }
   & > div:last-child {
-    flex: 1 0 auto;
+    flex: 1;
   }
   @media screen and (max-width: 1140px) {
     flex-direction: column;

@@ -10,6 +10,7 @@ import Balance from "../../components/Balance";
 import DateShow from "../../components/DateShow";
 import PolygonLabel from "../../components/PolygonLabel";
 import ExplorerLink from "../../components/ExplorerLink";
+import Label from "../../components/Label";
 
 import {
   bountyDetailSelector,
@@ -21,6 +22,19 @@ const FlexWrapper = styled.div`
   justify-content: space-between;
   gap: 16px;
 `;
+
+const bountyStates = [
+  'Proposed',
+  'Approved',
+  'Funded',
+  'CuratorProposed',
+  'Active',
+  'PendingPayout',
+];
+
+function indexBountyState(bountyDetail) {
+  return bountyStates.indexOf(bountyDetail.latestState?.state);
+}
 
 const InformationTable = ({loading}) => {
   const bountyDetail = useSelector(bountyDetailSelector);
@@ -56,6 +70,37 @@ const InformationTable = ({loading}) => {
             <Table.Cell>
               <TableCell title={"Value"}>
                 <Balance value={bountyDetail.value} />
+              </TableCell>
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>
+              <TableCell title={"Bond"}>
+                <FlexWrapper>
+                  <Balance value={bountyDetail.bond} />
+                  <Label>{indexBountyState(bountyDetail) > 0 ? "has returned to the proposer" : "" }</Label>
+                </FlexWrapper>
+              </TableCell>
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>
+              <TableCell title={"Fee"}>
+                <Balance value={bountyDetail.fee} />
+              </TableCell>
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>
+              <TableCell title={"Curator Deposit"}>
+                <Balance value={bountyDetail.curatorDeposit} />
+              </TableCell>
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>
+              <TableCell title={"Title"}>
+                {bountyDetail.title}
               </TableCell>
             </Table.Cell>
           </Table.Row>

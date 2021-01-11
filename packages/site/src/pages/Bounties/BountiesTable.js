@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { NavLink, useHistory } from "react-router-dom";
 import { Dimmer, Segment, Image } from "semantic-ui-react";
-import { useSelector } from "react-redux";
+import dayjs from "dayjs";
 
 import Table from "../../components/Table";
 import User from "../../components/User";
@@ -10,9 +10,9 @@ import Balance from "../../components/Balance";
 import RightButton from "../../components/RightButton";
 import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
-import PairTextVertical from "../../components/PairTextVertical";
 import TableNoDataCell from "../../components/TableNoDataCell";
-import { scanHeightSelector } from "../../store/reducers/chainSlice";
+import PolygonLabel from "../../components/PolygonLabel";
+import ExplorerLink from "../../components/ExplorerLink";
 
 const Wrapper = styled.div`
   overflow-x: scroll;
@@ -45,9 +45,16 @@ const StyledTable = styled(Table)`
   }
 `;
 
+const ProposeTimeWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  p:first-child {
+    min-width: 154px;
+  }
+`
+
 const BountiesTable = ({ data, loading }) => {
   const history = useHistory();
-  const scanHeight = useSelector(scanHeightSelector);
 
   const onClickRow = (bountyIndex) => {
     if (window.innerWidth < 1140) {
@@ -64,11 +71,10 @@ const BountiesTable = ({ data, loading }) => {
         <StyledTable striped selectable unstackable>
           <Table.Header>
             <Table.Row>
+              <Table.HeaderCell>Index</Table.HeaderCell>
+              <Table.HeaderCell>Propose Time</Table.HeaderCell>
               <Table.HeaderCell>Curator</Table.HeaderCell>
-              <Table.HeaderCell>Beneficiary</Table.HeaderCell>
               <Table.HeaderCell>Title</Table.HeaderCell>
-              <Table.HeaderCell textAlign={"right"}>Update due</Table.HeaderCell>
-              <Table.HeaderCell textAlign={"right"}>Payout due</Table.HeaderCell>
               <Table.HeaderCell textAlign={"right"}>Value</Table.HeaderCell>
               <Table.HeaderCell textAlign={"right"}>Status</Table.HeaderCell>
               <Table.HeaderCell className="hidden" />
@@ -79,26 +85,24 @@ const BountiesTable = ({ data, loading }) => {
               data.length > 0 &&
               data.map((item, index) => (
                 <Table.Row key={index} onClick={() => onClickRow(item.bountyIndex)}>
+                  <Table.Cell className="index-cell">
+                    <TextMinor>{`#${item.bountyIndex}`}</TextMinor>
+                  </Table.Cell>
+                  <Table.Cell className="propose-time-cell">
+                    <ProposeTimeWrapper>
+                      <TextMinor>{dayjs(parseInt(item.proposeTime)).format(
+                        "YYYY-MM-DD HH:mm:ss"
+                      )}</TextMinor>
+                      <ExplorerLink href={`/block/${item.proposeAtBlockHeight}`}>
+                        <PolygonLabel value={item.proposeAtBlockHeight} />
+                      </ExplorerLink>
+                    </ProposeTimeWrapper>
+                  </Table.Cell>
                   <Table.Cell className="user-cell">
                     { item.curator ? <User address={item.curator} /> : "--" }
                   </Table.Cell>
-                  <Table.Cell className="user-cell">
-                    { item.beneficiary ? <User address={item.beneficiary} /> : "--" }
-                  </Table.Cell>
                   <Table.Cell className="title-cell">
                     <Text>{item.title}</Text>
-                  </Table.Cell>
-                  <Table.Cell className="update-due-cell" textAlign={"right"}>
-                    { item.updateDue
-                        ? <PairTextVertical
-                            value={item.updateDue}
-                            detail={`${item.updateDue - scanHeight} blocks`}
-                            />
-                        : "--"
-                    }
-                  </Table.Cell>
-                  <Table.Cell className="payout-due-cell" textAlign={"right"}>
-                    <TextMinor>{"--"}</TextMinor>
                   </Table.Cell>
                   <Table.Cell className="balance-cell" textAlign={"right"}>
                     <Balance value={item.value} />
