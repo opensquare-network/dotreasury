@@ -12,7 +12,6 @@ import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
 import PairTextVertical from "../../components/PairTextVertical";
 import TableNoDataCell from "../../components/TableNoDataCell";
-import TimeElapsed from "../../components/TimeElapsed";
 import { scanHeightSelector } from "../../store/reducers/chainSlice";
 
 const Wrapper = styled.div`
@@ -90,10 +89,13 @@ const BountiesTable = ({ data, loading }) => {
                     <Text>{item.title}</Text>
                   </Table.Cell>
                   <Table.Cell className="update-due-cell" textAlign={"right"}>
-                    <PairTextVertical
-                      value={<TimeElapsed from={item.latestState?.indexer?.blockTime}/>}
-                      detail={`${scanHeight - item.latestState?.indexer?.blockHeight} blocks`}
-                      />
+                    { item.updateDue
+                        ? <PairTextVertical
+                            value={item.updateDue}
+                            detail={`${item.updateDue - scanHeight} blocks`}
+                            />
+                        : "--"
+                    }
                   </Table.Cell>
                   <Table.Cell className="payout-due-cell" textAlign={"right"}>
                     <TextMinor>{"--"}</TextMinor>

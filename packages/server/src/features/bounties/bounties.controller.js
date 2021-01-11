@@ -2,6 +2,7 @@ const { getBountyCollection, getMotionCollection } = require("../../mongo");
 const { extractPage } = require("../../utils");
 
 const bountyStatus = (bounty) => bounty.status?.CuratorProposed || bounty.status?.Active || bounty.status?.PendingPayout;
+const bountyStatusName = (bounty) => Object.keys(bounty.status)[0];
 
 class BountiesController {
   async getBounties(ctx) {
@@ -26,11 +27,13 @@ class BountiesController {
       items: bounties.map(item => ({
         bountyIndex: item.bountyIndex,
         curator: bountyStatus(item.meta)?.curator,
+        updateDue: item.meta?.status.Active?.updateDue,
         beneficiary: bountyStatus(item.meta)?.beneficiary,
+        unlockAt: item.meta?.status.PendingPayout?.unlockAt,
         title: item.description,
         value: item.meta?.value,
         latestState: {
-          state: item.state?.name,
+          state: bountyStatusName(item.meta) || item.state?.name,
           indexer: item.state?.indexer || item.state?.eventIndexer,
         }
       })),
@@ -67,11 +70,13 @@ class BountiesController {
       proposeAtBlockHeight: bounty.indexer.blockHeight,
       proposer: bounty.meta?.proposer,
       curator: bountyStatus(bounty.meta)?.curator,
+      updateDue: bounty.meta?.status.Active?.updateDue,
       beneficiary: bountyStatus(bounty.meta)?.beneficiary,
+      unlockAt: bounty.meta?.status.PendingPayout?.unlockAt,
       title: bounty.description,
       value: bounty.meta?.value,
       latestState: {
-        state: bounty.state?.name,
+        state: bountyStatusName(bounty.meta) || bounty.state?.name,
         indexer: bounty.state?.indexer || bounty.state?.eventIndexer,
         data: bounty.state?.data,
       },
