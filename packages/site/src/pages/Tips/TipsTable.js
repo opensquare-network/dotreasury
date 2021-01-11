@@ -13,6 +13,7 @@ import PairTextVertical from "../../components/PairTextVertical";
 import ReasonText from "./ReasonText";
 import { TipStatus } from "../../constants";
 import TableNoDataCell from "../../components/TableNoDataCell";
+import ReasonLink from "./ReasonLink";
 
 const Wrapper = styled.div`
   overflow-x: scroll;
@@ -75,7 +76,9 @@ const TipsTable = ({ data, loading }) => {
                     <User address={item.finder} />
                   </Table.Cell>
                   <Table.Cell>
-                    <ReasonText>{item.reason}</ReasonText>
+                    <ReasonText>
+                      <ReasonLink text={item.reason} />
+                    </ReasonText>
                   </Table.Cell>
                   <Table.Cell className="balance-cell" textAlign={"right"}>
                     { item.showStatus === TipStatus.Retracted

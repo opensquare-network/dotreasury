@@ -5,10 +5,15 @@ import ExternalLink from "./ExternalLink";
 import { getLinkNameAndSrc } from "../utils";
 
 const CustomImage = styled.img`
-  display: inline;
-  width: 14px;
-  height: 14px;
-  margin-left: 2px;
+  position: relative;
+  top: 3px;
+  width: 16px;
+`
+
+const Wrapper = styled.div`
+  display: inline-flex;
+  align-items: center;
+  margin: 0 2px;
 `
 
 const ClickableLink = ({children, links}) => {
@@ -18,7 +23,11 @@ const ClickableLink = ({children, links}) => {
       {
         links && links.filter(item => item.inReasons).map((item, index) => {
           const [, src] = getLinkNameAndSrc(item.link);
-          return(<ExternalLink href={item.link} key={index}><CustomImage src={src} /></ExternalLink>)
+          return(
+            <Wrapper>
+              <ExternalLink href={item.link} key={index}><CustomImage src={src} /></ExternalLink>
+            </Wrapper>
+          )
         })
       }
     </>
