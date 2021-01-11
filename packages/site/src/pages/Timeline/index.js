@@ -11,7 +11,7 @@ const Wrapper = styled.div`
 `
 
 const Header = styled(SubTitle)`
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 `;
 
 const LoadingWrapper = styled.div`

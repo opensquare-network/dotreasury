@@ -9,7 +9,7 @@ import NoComment from "./NoComment";
 import Input from "./Input";
 
 const Header = styled(SubTitle)`
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 `;
 
 const Body = styled(Card)`
