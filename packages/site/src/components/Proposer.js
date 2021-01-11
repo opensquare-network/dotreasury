@@ -2,8 +2,8 @@ import React from "react";
 import styled from "styled-components";
 
 import Voter from "./Voter";
-import BarProgress from "../../components/BarProgress";
-import TextMinor from "../../components/TextMinor";
+import BarProgress from "./BarProgress";
+import TextMinor from "./TextMinor";
 
 const Wrapper = styled.div`
   display: flex;

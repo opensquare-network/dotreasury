@@ -1,4 +1,4 @@
-const { getBountyCollection } = require("../../mongo");
+const { getBountyCollection, getMotionCollection } = require("../../mongo");
 const { extractPage } = require("../../utils");
 
 class BountiesController {
@@ -47,7 +47,34 @@ class BountiesController {
   async getBountyDetail(ctx) {
     const bountyIndex = parseInt(ctx.params.bountyIndex);
 
-    ctx.status = 404;
+    const bountyCol = await getBountyCollection();
+    const bounty = await bountyCol.findOne({ bountyIndex });
+
+    const motionCol = await getMotionCollection();
+    const bountyMotions = await motionCol.find({ treasuryBountyId: bountyIndex }).sort({ index: 1 }).toArray();
+
+    if (!bounty) {
+      ctx.status = 404;
+      return;
+    }
+
+    ctx.body = {
+      bountyIndex: bounty.bountyIndex,
+      indexer: bounty.indexer,
+      proposeTime: bounty.indexer.blockTime,
+      proposeAtBlockHeight: bounty.indexer.blockHeight,
+      proposer: bounty.meta?.proposer,
+      curator: bounty.meta?.status?.Active?.curator,
+      beneficiary: null, // TODO: there are no available beneficiary at present.
+      title: bounty.description,
+      value: bounty.meta?.value,
+      latestState: {
+        state: bounty.state?.name,
+        indexer: bounty.state?.indexer || bounty.state?.eventIndexer,
+        data: bounty.state?.data,
+      },
+      motions: bountyMotions,
+    };
   }
 }
 

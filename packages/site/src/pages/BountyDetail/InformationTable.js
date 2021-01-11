@@ -55,7 +55,7 @@ const InformationTable = ({loading}) => {
           <Table.Row>
             <Table.Cell>
               <TableCell title={"Beneficiary"}>
-                <User address={bountyDetail.beneficiary} />
+                { bountyDetail.beneficiary ? <User address={bountyDetail.beneficiary} /> : "--" }
               </TableCell>
             </Table.Cell>
           </Table.Row>

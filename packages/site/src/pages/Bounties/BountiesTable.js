@@ -56,8 +56,6 @@ const BountiesTable = ({ data, loading }) => {
     }
   }
 
-  const indexer = (bounty) => (bounty.latestState?.indexer ?? bounty.latestState?.eventIndexer);
-
   return (
     <Wrapper>
       <Segment>
@@ -93,8 +91,8 @@ const BountiesTable = ({ data, loading }) => {
                   </Table.Cell>
                   <Table.Cell className="update-due-cell" textAlign={"right"}>
                     <PairTextVertical
-                      value={<TimeElapsed from={indexer(item)?.blockTime}/>}
-                      detail={`${scanHeight - indexer(item)?.blockHeight} blocks`}
+                      value={<TimeElapsed from={item.latestState?.indexer?.blockTime}/>}
+                      detail={`${scanHeight - item.latestState?.indexer?.blockHeight} blocks`}
                       />
                   </Table.Cell>
                   <Table.Cell className="payout-due-cell" textAlign={"right"}>

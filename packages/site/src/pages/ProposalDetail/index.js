@@ -18,8 +18,8 @@ import Title from "../../components/Title";
 import ProposalLifeCycleTable from "./ProposalLifeCycleTable";
 import User from "../../components/User";
 import Balance from "../../components/Balance";
-import Voter from "./Voter";
-import Proposer from "./Proposer";
+import Voter from "../../components/Voter";
+import Proposer from "../../components/Proposer";
 import polkassemblyApi from "../../services/polkassembly";
 
 const HeaderWrapper = styled.div`
@@ -145,7 +145,7 @@ const ProposalDetail = () => {
         <InformationTable loading={loadingProposalDetail} />
         <ProposalLifeCycleTable loading={loadingProposalDetail} />
       </TableWrapper>
-      <RelatedLinks />
+      <RelatedLinks type="proposals" index={proposalIndex} />
       <Divider />
       <TimelineCommentWrapper>
         <Timeline
