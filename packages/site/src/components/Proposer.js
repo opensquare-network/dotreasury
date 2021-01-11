@@ -54,7 +54,7 @@ const Proposer = ({address, agree, value, threshold, ayes, nays }) => {
               <Image src="/imgs/aye.svg" />
             </ItemWrapper>
             <ItemWrapper>
-            <CustomText>Nays ({nays})</CustomText>
+            <CustomText>Nay ({nays})</CustomText>
               <Image src="/imgs/nay.svg" />
             </ItemWrapper>
           </AyeNayWrapper>
