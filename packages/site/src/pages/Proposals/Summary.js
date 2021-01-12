@@ -1,16 +1,20 @@
-import React, { useEffect } from "react";
+import React, { useEffect, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 
 import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
 import CountDown from "../../components/CountDown";
+import TimePeriod from "../../components/TimePeriod";
 
 import {
   fetchProposalsSummary,
   proposalSummarySelector,
 } from "../../store/reducers/proposalSlice";
-
+import {
+  fetchSpendPeriod,
+  spendPeriodSelector,
+} from "../../store/reducers/chainSlice";
 
 const Wrapper = styled.div`
   background: #F8F8F8;
@@ -45,7 +49,7 @@ const Item = styled.div`
   & > div:last-child {
     justify-content: flex-end;
   }
-  
+
   @media screen and (max-width: 556px) {
     &.grow {
       flex-grow: 0;
@@ -91,9 +95,11 @@ const Summary = () => {
 
   useEffect(() => {
     dispatch(fetchProposalsSummary());
+    dispatch(fetchSpendPeriod());
   }, [dispatch]);
 
   const summary = useSelector(proposalSummarySelector);
+  const spendPeriod = useSelector(spendPeriodSelector);
 
   return (
     <Wrapper>
@@ -125,15 +131,16 @@ const Summary = () => {
       </Item>
       <Item className="right spend-period">
         <Title>Spend period</Title>
-        <ValueWrapper>
-          <Value>4</Value>
-          <Unit>Days</Unit>
-          <Value>10</Value>
-          <Unit>hrs</Unit>
-        </ValueWrapper>
+          <TimePeriod time={spendPeriod.restTime}
+            ValueWrapper={Value}
+            UnitWrapper={Unit}
+            SectionWrapper={Fragment}
+            TimeWrapper={ValueWrapper}
+            unitMapper={{d: "Days", h: "hrs"}}
+          />
       </Item>
       <Item className="countdown">
-        <CountDown percent={25} />
+        <CountDown percent={spendPeriod.progress} />
       </Item>
     </Wrapper>
   )
