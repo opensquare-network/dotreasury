@@ -96,23 +96,23 @@ const TabExampleSecondaryPointing = () => {
     {
       menuItem: {
         as: NavLink,
-        id: "bountiesTab",
-        content: <BountiesMenu />,
-        to: "/bounties",
-        exact: true,
-        key: "bounties",
-        active: "/bounties" === pathname || pathname.indexOf("/bounties") === 0,
-      },
-    },
-    {
-      menuItem: {
-        as: NavLink,
         id: "tipsTab",
         content: <TipsMenu />,
         to: "/tips",
         exact: true,
         key: "tips",
         active: "/tips" === pathname || pathname.indexOf("/tips") === 0,
+      },
+    },
+    {
+      menuItem: {
+        as: NavLink,
+        id: "bountiesTab",
+        content: <BountiesMenu />,
+        to: "/bounties",
+        exact: true,
+        key: "bounties",
+        active: "/bounties" === pathname || pathname.indexOf("/bounties") === 0,
       },
     },
     // {
