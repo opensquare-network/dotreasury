@@ -7,6 +7,7 @@ import ResponsivePagination from "../../components/ResponsivePagination";
 import ProposalsTable from "./ProposalsTable";
 import { useDispatch, useSelector } from "react-redux";
 import { useQuery } from "../../utils/hooks";
+import Summary from "./Summary";
 
 import {
   fetchProposals,
