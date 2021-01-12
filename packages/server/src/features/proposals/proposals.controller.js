@@ -1,5 +1,6 @@
 const { getProposalCollection, getMotionCollection } = require("../../mongo");
 const { extractPage } = require("../../utils");
+const linkService = require("../../services/link.services");
 
 class ProposalsController {
   async getProposals(ctx) {
@@ -76,6 +77,38 @@ class ProposalsController {
       },
       motions: proposalMotions,
     };
+  }
+
+  async getProposalLinks(ctx) {
+    const proposalIndex = parseInt(ctx.params.proposalIndex);
+
+    return await linkService.getLinks(ctx, {
+      type: "proposals",
+      indexer: proposalIndex,
+    });
+  }
+
+  async createProposalLink(ctx) {
+    const proposalIndex = parseInt(ctx.params.proposalIndex);
+    const { link, description } = ctx.request.body;
+
+    return await linkService.createLink(ctx, {
+      type: "proposals",
+      indexer: proposalIndex,
+      link,
+      description,
+    })
+  }
+
+  async deleteProposalLink(ctx) {
+    const proposalIndex = parseInt(ctx.params.proposalIndex);
+    const linkIndex = parseInt(ctx.params.linkIndex);
+
+    return await linkService.deleteLink(ctx, {
+      type: "proposals",
+      indexer: proposalIndex,
+      linkIndex,
+    })
   }
 }
 

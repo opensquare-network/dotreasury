@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import useDeepCompareEffect from 'use-deep-compare-effect'
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Icon, Modal, Form, Divider } from "semantic-ui-react";
@@ -43,7 +44,7 @@ const RelatedLinks = ({ type, index }) => {
   const dispatch = useDispatch()
   const location = useLocation();
 
-  useEffect(() => {
+  useDeepCompareEffect(() => {
     dispatch(fetchLinks(type, index));
   }, [dispatch, type, index]);
 

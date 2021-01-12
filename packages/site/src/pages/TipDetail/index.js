@@ -14,7 +14,8 @@ import {
 } from "../../store/reducers/tipSlice";
 import {
   fetchLinks,
-  linksSelector
+  linksSelector,
+  TipIndex,
 } from "../../store/reducers/linkSlice";
 
 import InformationTable from "./InformationTable";
@@ -171,7 +172,7 @@ const TipDetail = () => {
         <InformationTable loading={loadingTipDetail} />
         <TipLifeCycleTable loading={loadingTipDetail} />
       </TableWrapper>
-      <RelatedLinks type="tips" index={tipId} />
+      <RelatedLinks type="tips" index={new TipIndex(tipId)} />
       <TimelineCommentWrapper>
         <Timeline
           data={timelineData}

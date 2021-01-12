@@ -7,4 +7,8 @@ router.get("/proposals", proposalsController.getProposals);
 router.get("/proposals/count", proposalsController.getProposalsCount);
 router.get("/proposals/:proposalIndex", proposalsController.getProposalDetail);
 
+router.get("/proposals/:proposalIndex/links", proposalsController.getProposalLinks);
+router.post("/proposals/:proposalIndex/links", proposalsController.createProposalLink);
+router.delete("/proposals/:proposalIndex/links/:linkIndex", proposalsController.deleteProposalLink);
+
 module.exports = router;
