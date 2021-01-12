@@ -6,7 +6,7 @@
   ],
   "repository": "git@github.com:opensquare-network/dotreasury.git",
   "author": "OpenSquare <https://www.opensquare.network/>",
-  "license": "Apache 2.0",
+  "license": "Apache-2.0",
   "scripts": {
     "start": "yarn workspace @dotreasury/site start",
     "block-scan": "yarn workspace @dotreasury/block-scan prod",
