@@ -21,7 +21,11 @@ const Wrapper = styled.div`
   align-items: center;
   gap: 16px;
   justify-content: space-between;
-  overflow: scroll;
+  flex-wrap: wrap;
+  @media screen and (max-width: 556px) {
+    justify-content: space-around;
+    gap: 8px;
+  }
 `
 
 const Item = styled.div`
@@ -40,6 +44,24 @@ const Item = styled.div`
   }
   & > div:last-child {
     justify-content: flex-end;
+  }
+  
+  @media screen and (max-width: 556px) {
+    &.grow {
+      flex-grow: 0;
+    }
+    &.countdown {
+      display: none;
+    }
+    &.right {
+      text-align: left;
+    }
+    &.spend-period {
+      min-width: 120px;
+    }
+    & > div:last-child {
+      justify-content: flex-start;
+    }
   }
 `
 
