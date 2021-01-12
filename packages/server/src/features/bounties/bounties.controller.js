@@ -1,5 +1,6 @@
 const { getBountyCollection, getMotionCollection } = require("../../mongo");
 const { extractPage } = require("../../utils");
+const linkService = require("../../services/link.services");
 
 const bountyStatus = (bounty) => bounty.status?.CuratorProposed || bounty.status?.Active || bounty.status?.PendingPayout;
 const bountyStatusName = (bounty) => Object.keys(bounty.status)[0];
@@ -88,6 +89,38 @@ class BountiesController {
       timeline: bounty.timeline,
       motions: bountyMotions,
     };
+  }
+
+  async getBountyLinks(ctx) {
+    const bountyIndex = parseInt(ctx.params.bountyIndex);
+
+    ctx.body = await linkService.getLinks({
+      type: "bounties",
+      indexer: bountyIndex,
+    });
+  }
+
+  async createBountyLink(ctx) {
+    const bountyIndex = parseInt(ctx.params.bountyIndex);
+    const { link, description } = ctx.request.body;
+
+    ctx.body = await linkService.createLink({
+      type: "bounties",
+      indexer: bountyIndex,
+      link,
+      description,
+    }, ctx.request.headers.signature)
+  }
+
+  async deleteBountyLink(ctx) {
+    const bountyIndex = parseInt(ctx.params.bountyIndex);
+    const linkIndex = parseInt(ctx.params.linkIndex);
+
+    ctx.body = await linkService.deleteLink({
+      type: "bounties",
+      indexer: bountyIndex,
+      linkIndex,
+    }, ctx.request.headers.signature)
   }
 }
 
