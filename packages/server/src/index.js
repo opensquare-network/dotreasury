@@ -14,6 +14,17 @@ app.use(logger());
 app.use(bodyParser());
 app.use(helmet());
 
+app.use(async (ctx, next) => {
+  try {
+    await next();
+  } catch (err) {
+    ctx.status = err.statusCode || err.status || 500;
+    ctx.body = {
+      message: err.message
+    };
+  }
+});
+
 require("./routes")(app);
 const server = http.createServer(app.callback());
 const io = require("socket.io")(server, {
