@@ -124,6 +124,7 @@ class LinkService {
     await linkCol.updateOne({
       type,
       indexer,
+      [`links.${linkIndex}.inReasons`]: false
     }, {
       $unset: {
         [`links.${linkIndex}`]: 1
