@@ -17,6 +17,7 @@ const LinkWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+  min-width: 120px;
 `;
 
 const LinkText = styled(TextMinor)`
