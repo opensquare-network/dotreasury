@@ -75,7 +75,7 @@ const RelatedLinks = ({ type, index }) => {
       <Wrapper>
         <AdminLogin />
 
-        <SubTitle>Ralated Links
+        <SubTitle>Related Links
           { isAdmin
               && <IconButton name="plus" onClick={() => setOpenAddLinkModal(true)} />
           }
