@@ -18,6 +18,23 @@ export const {
   setLinks,
 } = linkSlice.actions;
 
+
+export class TipIndex {
+  constructor(tipIndex) {
+    const match = tipIndex.match(/^(\d+)_(0x[0-9a-f]+)$/);
+    if (!match) {
+      throw new Error("Invaild tip index");
+    }
+
+    this.blockHeight = parseInt(match[1]);
+    this.tipHash = match[2];
+  }
+
+  toString() {
+    return `${this.blockHeight}_${this.tipHash}`;
+  }
+}
+
 export const fetchLinks = (type, index) => async (dispatch) => {
   const { result } = await api.fetch(`/${type}/${index}/links`);
   dispatch(setLinks(result || []));
@@ -49,7 +66,7 @@ export const removeLink = (type, index, linkIndex, address) => async (dispatch) 
     JSON.stringify({
       type,
       index,
-      linkIndex: linkIndex.toString(),
+      linkIndex,
     }), address);
 
   await api.fetch(`/${type}/${index}/links/${linkIndex}`, {}, {
