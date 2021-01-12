@@ -1,36 +1,39 @@
 import React from "react";
 import styled from "styled-components";
 
-import Text from "../Text";
+import Text from "./Text";
+import { PRIMARY_THEME_COLOR, SECONDARY_THEME_COLOR } from "../constants";
 
 const CircleWrapper = styled.div`
   position: relative;
-  width: 63px;
-  height: 63px;
+  width: 56px;
+  height: 56px;
 `
 
 const BackCircle = styled.div`
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
-  border: 5px solid rgba(0, 0, 0, 0.25);
+  border: 8px solid ${SECONDARY_THEME_COLOR};
   background: white;
 `
 
 const InnerCircleWrapper = styled.div`
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 56px;
+  height: 56px;
 `
 
 const InnerCircle = styled.div`
   position: absolute;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.25);
+  width: 54px;
+  height: 54px;
+  left: 1px;
+  top: 1px;
+  background: white;
   border-radius: 50%;
-  border: 5px solid rgba(0, 0, 0);
+  border: 7px solid ${PRIMARY_THEME_COLOR};
 `
 
 const InnerCircleLeft = styled(InnerCircle)`
@@ -43,7 +46,7 @@ const InnerCircleRight = styled(InnerCircle)`
 `
 
 const InnerCircleMaskLeft = styled(BackCircle)`
-  clip-path: polygon(0px 0px, 50% 0px, 50% 100%, 0 100%);
+  clip-path: polygon(0px 0px, 51% 0px, 51% 100%, 0 100%);
   visibility: ${p => p.overHalf ? "hidden" : "visible"};
 `
 
@@ -60,9 +63,16 @@ const PercentLable = styled(Text)`
   font-size: 16px;
 `
 
-const Circle = ({percent = 0}) => {
-  const turn = percent / 100;
-  const overHalf = percent > 50;
+const CountDown = ({percent = 0}) => {
+  let percentInt = parseInt(percent);
+  if (isNaN(percentInt) || percentInt < 0) {
+    percentInt = 0;
+  }
+  let turn = percentInt / 100;
+  if (percentInt > 100) {
+    turn = 1;
+  }
+  const overHalf = percentInt > 50;
   return (
     <CircleWrapper>
       <BackCircle />
@@ -72,9 +82,9 @@ const Circle = ({percent = 0}) => {
         <InnerCircleMaskRight overHalf={overHalf} />
         <InnerCircleRight overHalf={overHalf} />
       </InnerCircleWrapper>
-      <PercentLable>{`${percent}%`}</PercentLable>
+      <PercentLable>{`${percentInt}%`}</PercentLable>
     </CircleWrapper>
   )
 }
 
-export default Circle;
+export default CountDown;
