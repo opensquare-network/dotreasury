@@ -1,5 +1,6 @@
-const { decodeAddress, signatureVerify } = require('@polkadot/util-crypto');
-const { u8aToHex } = require('@polkadot/util');
+const { decodeAddress, signatureVerify } = require("@polkadot/util-crypto");
+const { u8aToHex } = require("@polkadot/util");
+const BigNumber = require("bignumber.js");
 
 function extractPage(ctx) {
   const { page_size: queryPageSize, page: queryPage } = ctx.query;
@@ -37,8 +38,13 @@ function handler(obj, method) {
   return obj[method].bind(obj);
 }
 
+function bigAdd(v1, v2) {
+  return new BigNumber(v1).plus(v2).toString();
+}
+
 module.exports = {
   extractPage,
   isValidSignature,
   handler,
+  bigAdd,
 };
