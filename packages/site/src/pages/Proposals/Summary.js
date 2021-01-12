@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 
 import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
 import CountDown from "../../components/CountDown";
+
+import {
+  fetchProposalsSummary,
+  proposalSummarySelector,
+} from "../../store/reducers/proposalSlice";
 
 
 const Wrapper = styled.div`
@@ -59,19 +65,27 @@ const ValueWrapper = styled.div`
 `
 
 const Summary = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchProposalsSummary());
+  }, [dispatch]);
+
+  const summary = useSelector(proposalSummarySelector);
+
   return (
     <Wrapper>
       <Item>
         <Title>Proposal</Title>
-        <Value>3</Value>
+        <Value>{summary.numOfNewProposals}</Value>
       </Item>
       <Item>
         <Title>Total</Title>
-        <Value>106</Value>
+        <Value>{summary.total}</Value>
       </Item>
       <Item className="grow">
-        <Title>Approved</Title>
-        <Value>12</Value>
+        <Title>Awarded</Title>
+        <Value>{summary.numOfAwarded}</Value>
       </Item>
       <Item className="right">
         <Title>Available</Title>
