@@ -75,7 +75,7 @@ class TipsController {
     const tipHash = ctx.params.tipHash;
     const blockHeight = parseInt(ctx.params.blockHeight);
 
-    return await linkService.getLinks(ctx, {
+    ctx.body = await linkService.getLinks({
       type: "tips",
       indexer: {
         blockHeight,
@@ -95,7 +95,7 @@ class TipsController {
 
     const { link, description } = ctx.request.body;
 
-    return await linkService.createLink(ctx, {
+    ctx.body = await linkService.createLink({
       type: "tips",
       indexer: {
         blockHeight,
@@ -103,7 +103,7 @@ class TipsController {
       },
       link,
       description,
-    })
+    }, ctx.request.headers.signature)
   }
 
   async deleteTipLink(ctx) {
@@ -111,14 +111,14 @@ class TipsController {
     const blockHeight = parseInt(ctx.params.blockHeight);
     const linkIndex = parseInt(ctx.params.linkIndex);
 
-    return await linkService.deleteLink(ctx, {
+    ctx.body = await linkService.deleteLink({
       type: "tips",
       indexer: {
         blockHeight,
         tipHash,
       },
       linkIndex,
-    })
+    }, ctx.request.headers.signature)
   }
 }
 

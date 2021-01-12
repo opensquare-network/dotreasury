@@ -82,7 +82,7 @@ class ProposalsController {
   async getProposalLinks(ctx) {
     const proposalIndex = parseInt(ctx.params.proposalIndex);
 
-    return await linkService.getLinks(ctx, {
+    ctx.body = await linkService.getLinks({
       type: "proposals",
       indexer: proposalIndex,
     });
@@ -92,23 +92,23 @@ class ProposalsController {
     const proposalIndex = parseInt(ctx.params.proposalIndex);
     const { link, description } = ctx.request.body;
 
-    return await linkService.createLink(ctx, {
+    ctx.body = await linkService.createLink({
       type: "proposals",
       indexer: proposalIndex,
       link,
       description,
-    })
+    }, ctx.request.headers.signature)
   }
 
   async deleteProposalLink(ctx) {
     const proposalIndex = parseInt(ctx.params.proposalIndex);
     const linkIndex = parseInt(ctx.params.linkIndex);
 
-    return await linkService.deleteLink(ctx, {
+    ctx.body = await linkService.deleteLink({
       type: "proposals",
       indexer: proposalIndex,
       linkIndex,
-    })
+    }, ctx.request.headers.signature)
   }
 }
 

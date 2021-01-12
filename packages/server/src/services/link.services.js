@@ -1,12 +1,13 @@
 const { getLinkCollection } = require("../mongo-admin");
 const { isValidSignature } = require("../utils");
+const { HttpError } = require("../exc");
 
 async function checkAdmin(address) {
   return true;
 }
 
 class LinkService {
-  async getLinks(ctx, { type, indexer, getReason }) {
+  async getLinks({ type, indexer, getReason }) {
     const linkCol = await getLinkCollection();
     const links = await linkCol.findOne({
       type,
@@ -14,8 +15,7 @@ class LinkService {
     });
 
     if (links && links.inReasonExtracted) {
-      ctx.body = links?.links ?? [];
-      return;
+      return links?.links ?? [];
     }
 
     if (getReason) {
@@ -71,42 +71,34 @@ class LinkService {
       indexer,
     });
 
-    ctx.body = updatedTipLinks?.links ?? [];
+    return updatedTipLinks?.links ?? [];
   }
 
-  async verifySignature(ctx, message) {
-    if (!ctx.request.headers.signature) {
-      ctx.status = 400;
-      return false;
+  async verifySignature(addressAndSignature, message) {
+    if (!addressAndSignature) {
+      throw new HttpError(400, "Signature is missing");
     }
 
-    const [address, signature] = ctx.request.headers.signature.split("/");
+    const [address, signature] = addressAndSignature.split("/");
     if (!address || !signature) {
-      ctx.status = 400;
-      return false;
+      throw new HttpError(400, "Signature is invalid");
     }
 
     const isAdmin = await checkAdmin(address);
     if (!isAdmin) {
-      ctx.status = 401;
-      return false;
+      throw new HttpError(401, "Unauthorized");
     }
 
     const isValid = isValidSignature(message, signature, address);
-
     if (!isValid) {
-      ctx.status = 400;
-      return false;
+      throw new HttpError(400, "Signature is invalid");
     }
 
     return true;
   }
 
-  async createLink(ctx, { type, indexer, link, description }) {
-    const success = await this.verifySignature(ctx, JSON.stringify({ type, index: indexer, link, description }));
-    if (!success) {
-      return;
-    }
+  async createLink({ type, indexer, link, description }, addressAndSignature) {
+    await this.verifySignature(addressAndSignature, JSON.stringify({ type, index: indexer, link, description }));
 
     const linkCol = await getLinkCollection();
     await linkCol.updateOne({
@@ -122,14 +114,11 @@ class LinkService {
       }
     }, { upsert: true });
 
-    ctx.body = true;
+    return true;
   }
 
-  async deleteLink(ctx, { type, indexer, linkIndex }) {
-    const success = await this.verifySignature(ctx, JSON.stringify({ type, index: indexer, linkIndex }));
-    if (!success) {
-      return;
-    }
+  async deleteLink({ type, indexer, linkIndex }, addressAndSignature) {
+    await this.verifySignature(addressAndSignature, JSON.stringify({ type, index: indexer, linkIndex }));
 
     const linkCol = await getLinkCollection();
     await linkCol.updateOne({
@@ -150,7 +139,7 @@ class LinkService {
       }
     });
 
-    ctx.body = true;
+    return true;
   }
 }
 
