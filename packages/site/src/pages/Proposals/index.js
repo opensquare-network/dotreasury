@@ -40,6 +40,7 @@ const Proposals = () => {
   return (
     <>
       <Header>Proposals</Header>
+      <Summary />
       <ProposalsTable data={proposals} loading={loading} />
       <ResponsivePagination
         activePage={tablePage}

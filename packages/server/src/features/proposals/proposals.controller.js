@@ -79,6 +79,19 @@ class ProposalsController {
     };
   }
 
+  async getProposalSummary(ctx) {
+    const proposalCol = await getProposalCollection();
+    const total = await proposalCol.estimatedDocumentCount();
+    const numOfNewProposals = await proposalCol.countDocuments({"state.name": "Proposed"});
+    const numOfAwarded = await proposalCol.countDocuments({"state.name": "Awarded"});
+
+    ctx.body = {
+      total,
+      numOfNewProposals,
+      numOfAwarded,
+    }
+  }
+
   async getProposalLinks(ctx) {
     const proposalIndex = parseInt(ctx.params.proposalIndex);
 

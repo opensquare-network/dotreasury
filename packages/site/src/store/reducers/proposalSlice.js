@@ -14,6 +14,11 @@ const proposalSlice = createSlice({
     loading: false,
     proposalDetail: {},
     loadingProposalDetail: false,
+    proposalSummary: {
+      total: 0,
+      numOfNewProposals: 0,
+      numOfAwarded: 0,
+    }
   },
   reducers: {
     setProposals(state, { payload }) {
@@ -31,6 +36,9 @@ const proposalSlice = createSlice({
     setLoadingProposalDetail(state, { payload }) {
       state.loadingProposalDetail = payload;
     },
+    setProposalSummary(state, { payload }) {
+      state.proposalSummary = payload;
+    }
   },
 });
 
@@ -40,6 +48,7 @@ export const {
   setProposalsCount,
   setProposalDetail,
   setLoadingProposalDetail,
+  setProposalSummary,
 } = proposalSlice.actions;
 
 export const fetchProposals = (page = 0, pageSize = 30) => async (dispatch) => {
@@ -68,10 +77,20 @@ export const fetchProposalDetail = (proposalIndex) => async (dispatch) => {
   }
 };
 
+export const fetchProposalsSummary = () => async (dispatch) => {
+  const { result } = await api.fetch("/proposals/summary");
+  dispatch(setProposalSummary(result || {
+    total: 0,
+    numOfNewProposals: 0,
+    numOfAwarded: 0,
+  }));
+};
+
 export const proposalListSelector = (state) => state.proposals.proposals;
 export const loadingSelector = (state) => state.proposals.loading;
 export const proposalsCountSelector = (state) => state.proposals.proposalsCount;
 export const proposalDetailSelector = (state) => state.proposals.proposalDetail;
 export const loadingProposalDetailSelector = (state) => state.proposals.loadingProposalDetail;
+export const proposalSummarySelector = (state) => state.proposals.proposalSummary;
 
 export default proposalSlice.reducer;
