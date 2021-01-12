@@ -10,11 +10,15 @@ import DateShow from "../../components/DateShow";
 import PolygonLabel from "../../components/PolygonLabel";
 import { TipStatus } from "../../constants";
 import ExplorerLink from "../../components/ExplorerLink";
+import TableLoading from "../../components/TableLoading";
+import ClickableLink from "../../components/ClickableLink";
 
 import {
   normalizedTipDetailSelector,
 } from "../../store/reducers/tipSlice";
-import TableLoading from "../../components/TableLoading";
+import {
+  linksSelector,
+} from "../../store/reducers/linkSlice";
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -25,6 +29,7 @@ const FlexWrapper = styled.div`
 
 const InformationTable = ({ loading }) => {
   const tipDetail = useSelector(normalizedTipDetailSelector);
+  const links = useSelector(linksSelector);
 
   return (
     <TableLoading loading={loading} >
@@ -75,7 +80,7 @@ const InformationTable = ({ loading }) => {
           <Table.Row>
             <Table.Cell>
               <TableCell title={"Reason"}>
-                { tipDetail.reason }
+                <ClickableLink links={links}>{tipDetail.reason}</ClickableLink>
               </TableCell>
             </Table.Cell>
           </Table.Row>
