@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useHistory } from "react-router";
 
 import Title from "../../components/Title";
 import ResponsivePagination from "../../components/ResponsivePagination";
 import ProposalsTable from "./ProposalsTable";
 import { useDispatch, useSelector } from "react-redux";
 import { useQuery } from "../../utils/hooks";
-import { useHistory } from "react-router";
+import Summary from "./Summary";
 
 import {
   fetchProposals,
