@@ -74,7 +74,7 @@ const TabExampleSecondaryPointing = () => {
       menuItem: {
         as: NavLink,
         id: "homeTab",
-        content: "Treasury Overview",
+        content: "Overview",
         to: "/",
         exact: true,
         key: "home",
