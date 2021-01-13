@@ -4,9 +4,9 @@ import styled, {css} from "styled-components";
 import Circle from "./Circle"
 import Bar from "./Bar"
 import Item from "./Item"
-import {PRIMARY_THEME_COLOR} from "../../constants"
-
+import { PRIMARY_THEME_COLOR } from "../../constants"
 import { getBlockTime } from "../../services/chainApi"
+import { useIsMounted } from "../../utils/hooks"
 
 const Wrapper = styled.div`
   display: flex;
@@ -64,21 +64,18 @@ const ItemWrapper = styled.div`
 const FoldableItem = ({data, polkassembly, defaultUnfold, expired, end}) => {
   const [isUnfold, setIsUnfold] = useState(defaultUnfold || false);
   const [expiredTime, setExpiredTime] = useState(0);
+  const isMounted = useIsMounted();
   useEffect(() => {
-    let isMounted = true;
     if (expired && end) {
       const getTime = async () => {
         const time = await getBlockTime(end);
-        if (isMounted) {
+        if (isMounted.current) {
           setExpiredTime(time)
         }
       }
       getTime();
     }
-    return () => {
-      isMounted = false;
-    }
-  }, [expired, end])
+  }, [expired, end, isMounted])
   if (!data || data.length === 0) return null;
   const onUnfoldBtnClick = () => {
     setIsUnfold(!isUnfold);
