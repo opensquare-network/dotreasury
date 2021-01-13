@@ -7,6 +7,9 @@ const cors = require("@koa/cors");
 const config = require("../config");
 const { initDb } = require("./mongo");
 const { listenAndEmitInfo } = require("./websocket");
+
+require('dotenv').config();
+
 const app = new Koa();
 
 app.use(cors());
