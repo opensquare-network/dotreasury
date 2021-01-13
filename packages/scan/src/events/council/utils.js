@@ -1,6 +1,7 @@
 const { ProposalMethods, BountyMethods } = require("../../utils/constants");
 const { getCall } = require("../../utils/call");
 const { getApi } = require("../../api");
+const { getMotionCollection } = require("../../mongo");
 
 function isProposalMotion(method) {
   return [
@@ -69,6 +70,17 @@ async function getMotionVotingByHeight(height, motionHash) {
   return await getMotionVoting(blockHash, motionHash);
 }
 
+async function getMotionLatestIndex(hash) {
+  const motion = await getLatestMotionByHash(hash);
+  return motion.index;
+}
+
+async function getLatestMotionByHash(hash) {
+  const motionCol = await getMotionCollection();
+  const motions = await motionCol.find({ hash }).sort({ index: -1 }).toArray();
+  return motions[0];
+}
+
 module.exports = {
   isProposalMotion,
   isBountyMotion,
@@ -76,4 +88,6 @@ module.exports = {
   extractCallIndexAndArgs,
   getMotionVoting,
   getMotionVotingByHeight,
+  getLatestMotionByHash,
+  getMotionLatestIndex,
 };
