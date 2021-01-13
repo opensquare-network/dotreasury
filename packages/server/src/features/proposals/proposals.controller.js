@@ -82,14 +82,17 @@ class ProposalsController {
   async getProposalSummary(ctx) {
     const proposalCol = await getProposalCollection();
     const total = await proposalCol.estimatedDocumentCount();
-    const numOfNewProposals = await proposalCol.countDocuments({"state.name": "Proposed"});
-    const numOfAwarded = await proposalCol.countDocuments({"state.name": "Awarded"});
+    const countByStates = await proposalCol.aggregate([{
+      $group: {
+        _id: '$state.name',
+        count: { $sum: 1 }
+      }
+    }]).toArray();
 
-    ctx.body = {
-      total,
-      numOfNewProposals,
-      numOfAwarded,
-    }
+    const result = { total };
+    countByStates.forEach(item => result[item._id] = item.count);
+
+    ctx.body = result;
   }
 
   async getProposalLinks(ctx) {

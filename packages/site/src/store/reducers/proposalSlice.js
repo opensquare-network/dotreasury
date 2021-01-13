@@ -16,9 +16,10 @@ const proposalSlice = createSlice({
     loadingProposalDetail: false,
     proposalSummary: {
       total: 0,
-      numOfNewProposals: 0,
+      numOfOngoing: 0,
+      numOfApproved: 0,
       numOfAwarded: 0,
-    }
+    },
   },
   reducers: {
     setProposals(state, { payload }) {
@@ -79,11 +80,19 @@ export const fetchProposalDetail = (proposalIndex) => async (dispatch) => {
 
 export const fetchProposalsSummary = () => async (dispatch) => {
   const { result } = await api.fetch("/proposals/summary");
-  dispatch(setProposalSummary(result || {
+  const summary = {
     total: 0,
-    numOfNewProposals: 0,
+    numOfOngoing: 0,
+    numOfApproved: 0,
     numOfAwarded: 0,
-  }));
+  };
+  if (result) {
+    summary.total = result.total;
+    summary.numOfOngoing = (result.Proposed || 0) + (result.ApproveVoting || 0) + (result.RejectVoting || 0);
+    summary.numOfApproved = (result.Approved || 0) + (result.Awarded || 0);
+    summary.numOfAwarded = result.Awarded || 0;
+  }
+  dispatch(setProposalSummary(summary));
 };
 
 export const proposalListSelector = (state) => state.proposals.proposals;
