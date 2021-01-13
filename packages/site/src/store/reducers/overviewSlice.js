@@ -35,4 +35,12 @@ const overviewSlice = createSlice({
 });
 
 export const { setOverview } = overviewSlice.actions;
+
+export const totalProposalCountSelector = (state) =>
+  state.overview.overview.count.proposal.all;
+export const totalTipCountSelector = (state) =>
+  state.overview.overview.count.tip.all;
+export const totalBountyCountSelector = (state) =>
+  state.overview.overview.count.bounty.all;
+
 export default overviewSlice.reducer;

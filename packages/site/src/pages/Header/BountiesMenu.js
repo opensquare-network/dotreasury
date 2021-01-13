@@ -1,24 +1,16 @@
-import React, { useEffect } from "react";
-import { Menu, Label } from "semantic-ui-react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchBountiesCount,
-  bountiesCountSelector,
-} from "../../store/reducers/bountySlice";
+import React from "react";
+import { Label, Menu } from "semantic-ui-react";
+import { useSelector } from "react-redux";
+import { totalBountyCountSelector } from "../../store/reducers/overviewSlice";
 
 function BountiesMenu() {
-  const dispatch = useDispatch()
-  useEffect(() => {
-    dispatch(fetchBountiesCount())
-  }, [dispatch])
-
-  const bountiesCount = useSelector(bountiesCountSelector);
+  const bountiesCount = useSelector(totalBountyCountSelector);
 
   return (
     <Menu.Item key="Bounties">
       Bounties<Label>{bountiesCount}</Label>
     </Menu.Item>
-    );
+  );
 }
 
 export default BountiesMenu;

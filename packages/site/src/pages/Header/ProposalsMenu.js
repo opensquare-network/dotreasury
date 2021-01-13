@@ -1,24 +1,16 @@
-import React, { useEffect } from "react";
-import { Menu, Label } from "semantic-ui-react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchProposalsCount,
-  proposalsCountSelector,
-} from "../../store/reducers/proposalSlice";
+import React from "react";
+import { Label, Menu } from "semantic-ui-react";
+import { useSelector } from "react-redux";
+import { totalProposalCountSelector } from "../../store/reducers/overviewSlice";
 
 function ProposalsMenu() {
-  const dispatch = useDispatch()
-  useEffect(() => {
-    dispatch(fetchProposalsCount())
-  }, [dispatch])
-
-  const proposalsCount = useSelector(proposalsCountSelector);
+  const proposalsCount = useSelector(totalProposalCountSelector);
 
   return (
     <Menu.Item key="Proposals">
       Proposals<Label>{proposalsCount}</Label>
     </Menu.Item>
-    );
+  );
 }
 
 export default ProposalsMenu;

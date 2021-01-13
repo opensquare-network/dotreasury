@@ -1,24 +1,16 @@
-import React, { useEffect } from "react";
-import { Menu, Label } from "semantic-ui-react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchTipsCount,
-  tipsCountSelector,
-} from "../../store/reducers/tipSlice";
+import React from "react";
+import { Label, Menu } from "semantic-ui-react";
+import { useSelector } from "react-redux";
+import { totalTipCountSelector } from "../../store/reducers/overviewSlice";
 
 function TipsMenu() {
-  const dispatch = useDispatch()
-  useEffect(() => {
-    dispatch(fetchTipsCount())
-  }, [dispatch])
-
-  const tipsCount = useSelector(tipsCountSelector);
+  const tipsCount = useSelector(totalTipCountSelector);
 
   return (
     <Menu.Item key="Tips">
       Tips<Label>{tipsCount}</Label>
     </Menu.Item>
-    );
+  );
 }
 
 export default TipsMenu;
