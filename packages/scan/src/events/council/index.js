@@ -1,4 +1,5 @@
 const { CouncilEvents, Modules } = require("../../utils/constants");
+const { getMotionLatestIndex } = require("./utils");
 const { getMotionCollection } = require("../../mongo");
 const { motionActions } = require("./constants");
 const {
@@ -43,8 +44,9 @@ async function handleVoteEvent(event, normalizedExtrinsic) {
   );
 
   const col = await getMotionCollection();
+  const index = await getMotionLatestIndex(hash);
   await col.updateOne(
-    { hash },
+    { index },
     {
       $set: {
         voting,
@@ -77,8 +79,9 @@ async function handleClosedEvent(event, normalizedExtrinsic) {
   );
 
   const col = await getMotionCollection();
+  const index = await getMotionLatestIndex(hash);
   await col.updateOne(
-    { hash },
+    { index },
     {
       $set: {
         voting,
@@ -141,7 +144,8 @@ async function handleApprovedEvent(event, normalizedExtrinsic) {
   }
 
   const col = await getMotionCollection();
-  await col.updateOne({ hash }, updateObj);
+  const index = await getMotionLatestIndex(hash);
+  await col.updateOne({ index }, updateObj);
 
   await updateProposalStateByVoteResult(
     hash,
@@ -192,7 +196,8 @@ async function handleDisapprovedEvent(event, normalizedExtrinsic) {
   }
 
   const col = await getMotionCollection();
-  await col.updateOne({ hash }, updateObj);
+  const index = await getMotionLatestIndex(hash);
+  await col.updateOne({ index }, updateObj);
 
   await updateProposalStateByVoteResult(
     hash,
@@ -206,8 +211,9 @@ async function handleExecutedEvent(event) {
   const [hash, result] = eventData;
 
   const col = await getMotionCollection();
+  const index = await getMotionLatestIndex(hash);
   await col.updateOne(
-    { hash },
+    { index },
     {
       $set: {
         executed: {
