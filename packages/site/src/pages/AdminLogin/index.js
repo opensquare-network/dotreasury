@@ -40,12 +40,16 @@ const AdminLogin = () => {
   const isAdmin = q.admin === "true";
 
   useEffect(() => {
+    let isMounted = true;
     if (!isLogin && isAdmin && !accountsModalOpen && !noExtensionModalOpen) {
 
       (async function login() {
         await web3Enable("doTreasury");
         if (!isWeb3Injected) {
-          return setNoExtensionModalOpen(true);
+          if (isMounted) {
+            setNoExtensionModalOpen(true);
+          }
+          return;
         }
         const extensionAccounts = await web3Accounts();
         const accounts = extensionAccounts.map(({ address, meta: { name } }) => {
@@ -55,9 +59,14 @@ const AdminLogin = () => {
           };
         });
 
-        setAccounts(accounts);
-        setAccountsModalOpen(true);
+        if (isMounted) {
+          setAccounts(accounts);
+          setAccountsModalOpen(true);
+        }
       })();
+    }
+    return () => {
+      isMounted = false;
     }
   }, [isAdmin, isLogin, accountsModalOpen, noExtensionModalOpen]);
 

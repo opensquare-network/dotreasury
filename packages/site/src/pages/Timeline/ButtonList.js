@@ -18,8 +18,11 @@ const ButtonList = ({ extrinsicIndexer, eventIndexer, polkassembly }) => {
   useEffect(() => {
     let isMounted = true;
     (async () => {
-      if (polkassembly && isMounted) {
-        setMotionUrl(await polkassembly);
+      if (polkassembly) {
+        const url = await polkassembly;
+        if (isMounted) {
+          setMotionUrl(url);
+        }
       }
     })();
     return () => {
