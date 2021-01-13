@@ -22,7 +22,7 @@ class ProposalsController {
     const total = await proposalCol.estimatedDocumentCount();
 
     ctx.body = {
-      items: proposals.map(item => ({
+      items: proposals.map((item) => ({
         indexer: item.indexer,
         proposalIndex: item.proposalIndex,
         proposeTime: item.indexer.blockTime,
@@ -30,6 +30,7 @@ class ProposalsController {
         proposer: item.proposer,
         value: item.value,
         beneficiary: item.beneficiary,
+        links: item.links || [],
         latestState: {
           state: item.state?.name,
           time: item.state?.indexer.blockTime,
@@ -54,7 +55,10 @@ class ProposalsController {
     const proposal = await proposalCol.findOne({ proposalIndex });
 
     const motionCol = await getMotionCollection();
-    const proposalMotions = await motionCol.find({ treasuryProposalId: proposalIndex }).sort({ index: 1 }).toArray();
+    const proposalMotions = await motionCol
+      .find({ treasuryProposalId: proposalIndex })
+      .sort({ index: 1 })
+      .toArray();
 
     if (!proposal) {
       ctx.status = 404;
@@ -82,15 +86,19 @@ class ProposalsController {
   async getProposalSummary(ctx) {
     const proposalCol = await getProposalCollection();
     const total = await proposalCol.estimatedDocumentCount();
-    const countByStates = await proposalCol.aggregate([{
-      $group: {
-        _id: '$state.name',
-        count: { $sum: 1 }
-      }
-    }]).toArray();
+    const countByStates = await proposalCol
+      .aggregate([
+        {
+          $group: {
+            _id: "$state.name",
+            count: { $sum: 1 },
+          },
+        },
+      ])
+      .toArray();
 
     const result = { total };
-    countByStates.forEach(item => result[item._id] = item.count);
+    countByStates.forEach((item) => (result[item._id] = item.count));
 
     ctx.body = result;
   }
@@ -108,23 +116,29 @@ class ProposalsController {
     const proposalIndex = parseInt(ctx.params.proposalIndex);
     const { link, description } = ctx.request.body;
 
-    ctx.body = await linkService.createLink({
-      type: "proposals",
-      indexer: proposalIndex,
-      link,
-      description,
-    }, ctx.request.headers.signature)
+    ctx.body = await linkService.createLink(
+      {
+        type: "proposals",
+        indexer: proposalIndex,
+        link,
+        description,
+      },
+      ctx.request.headers.signature
+    );
   }
 
   async deleteProposalLink(ctx) {
     const proposalIndex = parseInt(ctx.params.proposalIndex);
     const linkIndex = parseInt(ctx.params.linkIndex);
 
-    ctx.body = await linkService.deleteLink({
-      type: "proposals",
-      indexer: proposalIndex,
-      linkIndex,
-    }, ctx.request.headers.signature)
+    ctx.body = await linkService.deleteLink(
+      {
+        type: "proposals",
+        indexer: proposalIndex,
+        linkIndex,
+      },
+      ctx.request.headers.signature
+    );
   }
 }
 
