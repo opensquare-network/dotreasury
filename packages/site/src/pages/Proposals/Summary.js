@@ -111,12 +111,16 @@ const Summary = () => {
   return (
     <Wrapper>
       <Item>
-        <Title>Proposal</Title>
-        <Value>{summary.numOfNewProposals}</Value>
+        <Title>Ongoing</Title>
+        <Value>{summary.numOfOngoing}</Value>
       </Item>
       <Item>
         <Title>Total</Title>
         <Value>{summary.total}</Value>
+      </Item>
+      <Item>
+        <Title>Approved</Title>
+        <Value>{summary.numOfApproved}</Value>
       </Item>
       <Item className="grow">
         <Title>Awarded</Title>
