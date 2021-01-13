@@ -51,6 +51,9 @@ const CustomTable = styled(Table)`
   .propose-time-cell {
     width: 280px !important;
   }
+  .related-links-cell {
+    min-width: 120px !important;
+  }
   td:first-child {
     font-weight: 400 !important;
   }

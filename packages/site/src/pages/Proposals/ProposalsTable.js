@@ -14,6 +14,7 @@ import PairTextVertical from "../../components/PairTextVertical";
 import PolygonLabel from "../../components/PolygonLabel";
 import ExplorerLink from "../../components/ExplorerLink";
 import TableNoDataCell from "../../components/TableNoDataCell";
+import RelatedLInks from "./RelatedLinks";
 
 const Wrapper = styled.div`
   overflow-x: scroll;
@@ -63,9 +64,10 @@ const ProposalsTable = ({ data, loading }) => {
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell>Index</Table.HeaderCell>
-              <Table.HeaderCell>Propose Time</Table.HeaderCell>
+              <Table.HeaderCell>Propose time</Table.HeaderCell>
               <Table.HeaderCell>Beneficiary</Table.HeaderCell>
               <Table.HeaderCell>Proposer</Table.HeaderCell>
+              <Table.HeaderCell>Related links</Table.HeaderCell>
               <Table.HeaderCell textAlign={"right"}>Value</Table.HeaderCell>
               <Table.HeaderCell textAlign={"right"}>Status</Table.HeaderCell>
               <Table.HeaderCell className="hidden" />
@@ -94,6 +96,9 @@ const ProposalsTable = ({ data, loading }) => {
                   </Table.Cell>
                   <Table.Cell className="user-cell">
                     <User address={item.proposer} />
+                  </Table.Cell>
+                  <Table.Cell className="related-links-cell">
+                    <RelatedLInks links={item.links} />
                   </Table.Cell>
                   <Table.Cell textAlign={"right"}>
                     <Balance value={item.value} />
