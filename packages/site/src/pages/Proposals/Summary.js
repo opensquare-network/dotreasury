@@ -21,7 +21,8 @@ import {
 } from "../../store/reducers/burntSlice";
 
 const Wrapper = styled.div`
-  background: #F8F8F8;
+  background: #FFF;
+  border: 1px solid #EEE;
   padding: 16px 20px;
   border-radius: 8px;
   margin-bottom: 16px;

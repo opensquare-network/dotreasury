@@ -6,7 +6,7 @@ import {TEXT_DARK_MAJOR, TEXT_DARK_MINOR} from "../../constants"
 const Wrapper = styled.div`
   display: flex;
   padding: 4px 16px;
-  align-item: center;
+  align-items: center;
   gap: 8px;
   flex-wrap: wrap;
   & > .title {
