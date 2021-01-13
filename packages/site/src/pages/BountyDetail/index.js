@@ -23,6 +23,7 @@ import Proposer from "../../components/Proposer";
 import polkassemblyApi from "../../services/polkassembly";
 import TimelineCommentWrapper from "../../components/TimelineCommentWrapper";
 import { hexToString } from "@polkadot/util";
+import { stringToWords } from "../../utils";
 
 const HeaderWrapper = styled.div`
   display: flex;
@@ -66,8 +67,31 @@ function processTimeline(bountyDetail) {
             const [proposer, , , threshold] = item.eventData;
             const ayes = motion.voting?.ayes?.length || 0;
             const nays = motion.voting?.nays?.length || 0;
+            const proposalArgs = item.extrinsic?.args?.proposal?.args ?? {};
+            const argItems = Object.keys(proposalArgs).filter(key => key !== "bounty_id").map(key => {
+              const val = proposalArgs[key];
+              return {
+                title: stringToWords(key),
+                value: (() => {
+                  if (key === "curator") {
+                    return <User address={val} />;
+                  } else if (key === "fee") {
+                    return <Balance value={val} />;
+                  } else {
+                    return val;
+                  }
+                })(),
+              }
+            })
             return [{
-              value: <Proposer address={proposer} agree={motion.result && motion.result === "Approved"} value={motion.method} threshold={threshold} ayes={ayes} nays={nays} />
+              value: <Proposer address={proposer}
+                        agree={motion.result && motion.result === "Approved"}
+                        value={motion.method}
+                        args={argItems}
+                        threshold={threshold}
+                        ayes={ayes}
+                        nays={nays}
+                        />
             }]
           } else if (item.action === "Vote") {
             const [voter, , agree] = item.eventData;

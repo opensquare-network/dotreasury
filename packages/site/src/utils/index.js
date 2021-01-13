@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js";
-import { stringUpperFirst } from "@polkadot/util";
+import { stringUpperFirst, stringCamelCase } from "@polkadot/util";
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration';
 
@@ -18,6 +18,10 @@ export function toPrecision(value, precision = 0, paddingZero = true) {
 
 export function stringCamlToWords(str) {
   return stringUpperFirst(str).replace(/(.)([A-Z])/g, "$1 $2");
+}
+
+export function stringToWords(str) {
+  return stringCamlToWords(stringCamelCase(str));
 }
 
 export const nil = (val) => val === undefined || val === null;

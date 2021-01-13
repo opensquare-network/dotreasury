@@ -5,6 +5,7 @@ import { Image } from "semantic-ui-react";
 import Voter from "./Voter";
 import BarProgress from "./BarProgress";
 import TextMinor from "./TextMinor";
+import {TEXT_DARK_MAJOR, TEXT_DARK_MINOR} from "../constants"
 
 const Wrapper = styled.div`
   display: flex;
@@ -40,10 +41,47 @@ const ItemWrapper = styled.div`
   gap: 8px;
 `
 
-const Proposer = ({address, agree, value, threshold, ayes, nays }) => {
+const ProposalArgsWrapper = styled.div`
+  padding: 4px 16px;
+  display: flex;
+  flex-direction: column;
+  background-color: #fbfbfb;
+`
+
+const ProposalArgsItemWrapper = styled.div`
+  padding: 4px 0px;
+  display: flex;
+  align-item: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  & > .title {
+    width: 120px;
+    color: ${TEXT_DARK_MAJOR};
+    font-weight: 500;
+    line-height: 24px;
+    flex-shrink: 0;
+  }
+  & > .value {
+    flex: 1 1 auto;
+    color: ${TEXT_DARK_MINOR};
+    word-break: break-word;
+  }
+`
+
+const Proposer = ({address, agree, value, args, threshold, ayes, nays }) => {
   return (
     <Wrapper>
       <Voter address={address} agree={agree} value={value} />
+
+      <ProposalArgsWrapper>
+      { args.map(({title, value}) => (
+          <ProposalArgsItemWrapper>
+            <div className="title">{title}</div>
+            <div className="value">{value}</div>
+          </ProposalArgsItemWrapper>
+        ))}
+      </ProposalArgsWrapper>
+
       <BarProgressWrapper>
         <BarProgress current={ayes} total={threshold} />
         <TextWrapper>
