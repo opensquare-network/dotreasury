@@ -49,6 +49,13 @@ const InformationTable = ({loading}) => {
         <Table.Body>
           <Table.Row>
             <Table.Cell>
+              <TableCell title={"Index"}>
+                {`#${bountyDetail.bountyIndex}`}
+              </TableCell>
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>
               <TableCell title={"Created"}>
                 <FlexWrapper>
                   <div><DateShow value={bountyDetail.proposeTime}/></div>
