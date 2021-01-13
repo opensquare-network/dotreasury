@@ -45,7 +45,7 @@ const TableWrapper = styled.div`
   }
 `;
 
-async function processTimeline(proposalDetail, currentBlockHeight) {
+function processTimeline(proposalDetail, currentBlockHeight) {
   return [{
     name: "Proposed",
     extrinsicIndexer: proposalDetail.indexer || {},
@@ -122,9 +122,7 @@ const ProposalDetail = () => {
   const currentBlockHeight = useSelector(currentBlockHeightSelector);
 
   useEffect(() => {
-    (async () => {
-      setTimelineData(await processTimeline(proposalDetail, currentBlockHeight));
-    })();
+    setTimelineData(processTimeline(proposalDetail, currentBlockHeight));
   }, [proposalDetail, currentBlockHeight]);
 
   return (
