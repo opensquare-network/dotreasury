@@ -72,7 +72,7 @@ async function getMotionVotingByHeight(height, motionHash) {
 
 async function getMotionLatestIndex(hash) {
   const motion = await getLatestMotionByHash(hash);
-  return motion.index;
+  return motion?.index;
 }
 
 async function getLatestMotionByHash(hash) {
