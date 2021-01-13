@@ -73,14 +73,16 @@ const Proposer = ({address, agree, value, args, threshold, ayes, nays }) => {
     <Wrapper>
       <Voter address={address} agree={agree} value={value} />
 
-      <ProposalArgsWrapper>
-      { args.map(({title, value}) => (
-          <ProposalArgsItemWrapper>
-            <div className="title">{title}</div>
-            <div className="value">{value}</div>
-          </ProposalArgsItemWrapper>
-        ))}
-      </ProposalArgsWrapper>
+      { (args && args.length > 0) &&
+          <ProposalArgsWrapper>
+          { args.map(({title, value}) => (
+              <ProposalArgsItemWrapper key={title}>
+                <div className="title">{title}</div>
+                <div className="value">{value}</div>
+              </ProposalArgsItemWrapper>
+            ))}
+          </ProposalArgsWrapper>
+      }
 
       <BarProgressWrapper>
         <BarProgress current={ayes} total={threshold} />
