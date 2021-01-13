@@ -51,89 +51,87 @@ const TableWrapper = styled.div`
   }
 `;
 
-async function processTimeline(tipDetail, links) {
-  return await Promise.all(
-    (tipDetail.timeline || []).map(async (timelineItem) => {
-      let fields = [];
+function processTimeline(tipDetail, links) {
+  return (tipDetail.timeline || []).map((timelineItem) => {
+    let fields = [];
 
-      if (timelineItem.method === "reportAwesome") {
-        const { reason, who: beneficiary, finder } = timelineItem.args;
-        const reasonText = hexToString(reason);
-        fields = [
-          {
-            title: "Finder",
-            value: <User address={finder} />,
-          },
-          {
-            title: "Beneficiary",
-            value: <User address={beneficiary} />,
-          },
-          {
-            title: "Reason",
-            value: <ClickableLink links={links}>{reasonText}</ClickableLink>,
-          },
-        ];
-      } else if (timelineItem.method === "tipNew") {
-        const { tip_value: tipValue, who: beneficiary, reason, finder } = timelineItem.args;
-        const reasonText = hexToString(reason);
-        fields = [
-          {
-            title: "Funder",
-            value: <User address={finder} />,
-          },
-          {
-            title: "Beneficiary",
-            value: <User address={beneficiary} />,
-          },
-          {
-            title: "Tip value",
-            value: <Balance value={tipValue} />,
-          },
-          {
-            title: "Reason",
-            value: <ClickableLink links={links}>{reasonText}</ClickableLink>,
-          },
-        ];
-      } else if (timelineItem.method === "tip") {
-        const { value: tipValue, tipper: funder } = timelineItem.args;
-        fields = [
-          {
-            value: <Funder address={funder} value={tipValue} />
-          }
-        ];
-      } else if (timelineItem.method === "closeTip") {
-        const who = timelineItem.args.terminator;
-        fields = [
-          {
-            title: "Close by",
-            value: <User address={who} />,
-          },
-          {
-            title: "Beneficiary",
-            value: <User address={tipDetail.beneficiary} />,
-          },
-          {
-            title: "Final tip value",
-            value: <Balance value={tipDetail.medianValue} />,
-          },
-        ];
-      } else if (timelineItem.method === "retractTip") {
-        const who = timelineItem.args.terminator;
-        fields = [
-          {
-            title: "Retract by",
-            value: <User address={who} />,
-          },
-        ];
-      }
+    if (timelineItem.method === "reportAwesome") {
+      const { reason, who: beneficiary, finder } = timelineItem.args;
+      const reasonText = hexToString(reason);
+      fields = [
+        {
+          title: "Finder",
+          value: <User address={finder} />,
+        },
+        {
+          title: "Beneficiary",
+          value: <User address={beneficiary} />,
+        },
+        {
+          title: "Reason",
+          value: <ClickableLink links={links}>{reasonText}</ClickableLink>,
+        },
+      ];
+    } else if (timelineItem.method === "tipNew") {
+      const { tip_value: tipValue, who: beneficiary, reason, finder } = timelineItem.args;
+      const reasonText = hexToString(reason);
+      fields = [
+        {
+          title: "Funder",
+          value: <User address={finder} />,
+        },
+        {
+          title: "Beneficiary",
+          value: <User address={beneficiary} />,
+        },
+        {
+          title: "Tip value",
+          value: <Balance value={tipValue} />,
+        },
+        {
+          title: "Reason",
+          value: <ClickableLink links={links}>{reasonText}</ClickableLink>,
+        },
+      ];
+    } else if (timelineItem.method === "tip") {
+      const { value: tipValue, tipper: funder } = timelineItem.args;
+      fields = [
+        {
+          value: <Funder address={funder} value={tipValue} />
+        }
+      ];
+    } else if (timelineItem.method === "closeTip") {
+      const who = timelineItem.args.terminator;
+      fields = [
+        {
+          title: "Close by",
+          value: <User address={who} />,
+        },
+        {
+          title: "Beneficiary",
+          value: <User address={tipDetail.beneficiary} />,
+        },
+        {
+          title: "Final tip value",
+          value: <Balance value={tipDetail.medianValue} />,
+        },
+      ];
+    } else if (timelineItem.method === "retractTip") {
+      const who = timelineItem.args.terminator;
+      fields = [
+        {
+          title: "Retract by",
+          value: <User address={who} />,
+        },
+      ];
+    }
 
-      return {
-        extrinsicIndexer: timelineItem.extrinsic.extrinsicIndexer,
-        name: timelineItem.method,
-        fields,
-      };
-    })
-  );
+    return {
+      extrinsicIndexer: timelineItem.extrinsic.extrinsicIndexer,
+      name: timelineItem.method,
+      fields,
+    };
+  });
 }
 
 const TipDetail = () => {
@@ -155,9 +153,7 @@ const TipDetail = () => {
   const links = useSelector(linksSelector);
 
   useEffect(() => {
-    (async () => {
-      setTimelineData(await processTimeline(tipDetail, links));
-    })();
+    setTimelineData(processTimeline(tipDetail, links));
   }, [tipDetail, links]);
 
   return (

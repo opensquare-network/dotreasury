@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import styled from "styled-components";
@@ -163,6 +163,7 @@ const BountyDetail = () => {
   const history = useHistory();
   const { bountyIndex } = useParams();
   const dispatch = useDispatch();
+  const [timelineData, setTimelineData] = useState([]);
 
   useEffect(() => {
     dispatch(fetchBountyDetail(bountyIndex));
@@ -170,6 +171,10 @@ const BountyDetail = () => {
 
   const loadingBountyDetail = useSelector(loadingBountyDetailSelector);
   const bountyDetail = useSelector(bountyDetailSelector);
+
+  useEffect(() => {
+    setTimelineData(processTimeline(bountyDetail));
+  }, [bountyDetail]);
 
   return (
     <>
@@ -186,7 +191,7 @@ const BountyDetail = () => {
       <RelatedLinks type="bounties" index={parseInt(bountyIndex)} />
       <TimelineCommentWrapper>
         <Timeline
-          data={processTimeline(bountyDetail)}
+          data={timelineData}
           loading={loadingBountyDetail}
         />
         <Comment />
