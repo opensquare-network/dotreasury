@@ -39,7 +39,7 @@ export const getLinkNameAndSrc = (link) => {
     src = "/imgs/twitter-logo.svg";
     name = "Twitter";
   } else if (url.host.endsWith("t.me")) {
-    src = "/imgs/link-icon.svg";
+    src = "/imgs/telegram-logo.svg";
     name = "Telegram";
   } else {
     src = "/imgs/link-icon.svg";
