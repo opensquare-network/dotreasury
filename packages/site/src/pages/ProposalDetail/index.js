@@ -64,7 +64,8 @@ function processTimeline(proposalDetail, currentBlockHeight) {
       index: motion.index,
       polkassembly: polkassemblyApi.getMotionUrl(motion.index),
       defaultUnfold: !motion.result && motion.voting?.end >= currentBlockHeight,
-      expired: !motion.result && motion.voting?.end < currentBlockHeight,
+      // FIXME: && motion.treasuryProposalId !== 15
+      expired: !motion.result && motion.voting?.end < currentBlockHeight && motion.treasuryProposalId !== 15,
       end: motion.voting?.end,
       subTimeline: (motion.timeline || []).map(item => ({
         name: (item.action === "Propose" ? `Motion #${motion.index}` : item.action),
