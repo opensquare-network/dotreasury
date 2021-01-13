@@ -16,11 +16,15 @@ const ButtonList = ({ extrinsicIndexer, eventIndexer, polkassembly }) => {
   const [motionUrl, setMotionUrl] = useState(null);
 
   useEffect(() => {
+    let isMounted = true;
     (async () => {
-      if (polkassembly) {
+      if (polkassembly && isMounted) {
         setMotionUrl(await polkassembly);
       }
     })();
+    return () => {
+      isMounted = false;
+    }
   }, [polkassembly]);
 
   const blockHeight = extrinsicIndexer?.blockHeight ?? eventIndexer?.blockHeight;
