@@ -1,12 +1,13 @@
-import { combineReducers } from '@reduxjs/toolkit'
-import testReducer from './testSlice'
-import tipsReducer from './tipSlice'
-import proposalsReducer from './proposalSlice'
-import bountiesReducer from './bountySlice'
-import burntReducer from './burntSlice'
-import chainReducer from './chainSlice'
-import linksReducer from './linkSlice'
-import accountReducer from './accountSlice'
+import { combineReducers } from "@reduxjs/toolkit";
+import testReducer from "./testSlice";
+import tipsReducer from "./tipSlice";
+import proposalsReducer from "./proposalSlice";
+import bountiesReducer from "./bountySlice";
+import burntReducer from "./burntSlice";
+import chainReducer from "./chainSlice";
+import linksReducer from "./linkSlice";
+import accountReducer from "./accountSlice";
+import overviewReducer from "./overviewSlice";
 
 export default combineReducers({
   test: testReducer,
@@ -17,4 +18,5 @@ export default combineReducers({
   burnt: burntReducer,
   chain: chainReducer,
   account: accountReducer,
-})
+  overview: overviewReducer,
+});

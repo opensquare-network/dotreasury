@@ -6,6 +6,8 @@ const { feedOverview } = require("./overview");
 async function listenAndEmitInfo(io) {
   io.on("connection", (socket) => {
     socket.on("subscribe", (room) => {
+      socket.join(room);
+
       if (room === chainStatusRoom) {
         const scanHeight = getScanHeight();
         io.to(chainStatusRoom).emit("scanStatus", { height: scanHeight });
@@ -13,8 +15,6 @@ async function listenAndEmitInfo(io) {
         const overview = getOverview();
         io.to(overviewRoom).emit("overview", overview);
       }
-
-      socket.join(room);
     });
 
     socket.on("unsubscribe", (room) => {
