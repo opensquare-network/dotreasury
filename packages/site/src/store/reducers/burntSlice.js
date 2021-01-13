@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import api from "../../services/scanApi";
 import { getApi } from "../../services/chainApi";
-import { TreasuryAccount } from "../../utils/constants";
+import { TreasuryAccount } from "../../constants";
 import { toPrecision } from "../../utils";
 
 const burntSlice = createSlice({
