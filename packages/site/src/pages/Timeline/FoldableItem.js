@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import styled, {css} from "styled-components";
 
 import Circle from "./Circle"
@@ -6,6 +6,7 @@ import Bar from "./Bar"
 import Item from "./Item"
 import {PRIMARY_THEME_COLOR} from "../../constants"
 
+import { getBlockTime } from "../../services/chainApi"
 
 const Wrapper = styled.div`
   display: flex;
@@ -60,8 +61,24 @@ const ItemWrapper = styled.div`
   `}
 `
 
-const FoldableItem = ({data, polkassembly, defaultUnfold}) => {
+const FoldableItem = ({data, polkassembly, defaultUnfold, expired, end}) => {
   const [isUnfold, setIsUnfold] = useState(defaultUnfold || false);
+  const [expiredTime, setExpiredTime] = useState(0);
+  useEffect(() => {
+    let isMounted = true;
+    if (expired && end) {
+      const getTime = async () => {
+        const time = await getBlockTime(end);
+        if (isMounted) {
+          setExpiredTime(time)
+        }
+      }
+      getTime();
+    }
+    return () => {
+      isMounted = false;
+    }
+  }, [expired, end])
   if (!data || data.length === 0) return null;
   const onUnfoldBtnClick = () => {
     setIsUnfold(!isUnfold);
@@ -79,6 +96,7 @@ const FoldableItem = ({data, polkassembly, defaultUnfold}) => {
       </VerticalWrapper>
       <ItemWrapper isUnfold={isUnfold}>
         { (data || []).map((item, index) => <Item key={index} data={item} polkassembly={(index === 0) && polkassembly} onUnfoldBtnClick={onUnfoldBtnClick} isUnfold={isUnfold} />) }
+        { expired && <Item data={{extrinsicIndexer: { blockTime: expiredTime }, name: "Expired", fields: [{ title: "Expired" }]}} hideButtonList={true} /> }
       </ItemWrapper>
     </Wrapper>
   )

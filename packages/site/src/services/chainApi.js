@@ -52,3 +52,21 @@ export const signMessage = async (text, address) => {
 
   return result.signature;
 }
+
+const extractBlockTime = (extrinsics) => {
+  const setTimeExtrinsic = extrinsics.find(
+    (ex) => ex.method.section === "timestamp" && ex.method.method === "set"
+  );
+  if (setTimeExtrinsic) {
+    const { args } = setTimeExtrinsic.method.toJSON();
+    return args.now;
+  }
+};
+
+export const getBlockTime = async (number) => {
+  const api = await getApi();
+  const hash = await api.rpc.chain.getBlockHash(number);
+  const block = await api.rpc.chain.getBlock(hash);
+  const time = extractBlockTime(block.block.extrinsics);
+  return time;
+}

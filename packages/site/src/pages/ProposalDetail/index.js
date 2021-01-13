@@ -9,6 +9,7 @@ import {
   proposalDetailSelector,
   loadingProposalDetailSelector,
 } from "../../store/reducers/proposalSlice";
+import { fetchCurrentBlockHeight, currentBlockHeightSelector } from "../../store/reducers/chainSlice";
 
 import InformationTable from "./InformationTable";
 import Timeline from "../Timeline";
@@ -44,7 +45,7 @@ const TableWrapper = styled.div`
   }
 `;
 
-async function processTimeline(proposalDetail) {
+async function processTimeline(proposalDetail, currentBlockHeight) {
   return [{
     name: "Proposed",
     extrinsicIndexer: proposalDetail.indexer || {},
@@ -62,7 +63,9 @@ async function processTimeline(proposalDetail) {
   ...(proposalDetail.motions || []).map(motion => ({
       index: motion.index,
       polkassembly: polkassemblyApi.getMotionUrl(motion.index),
-      defaultUnfold: !motion.result,
+      defaultUnfold: !motion.result && motion.voting?.end >= currentBlockHeight,
+      expired: !motion.result && motion.voting?.end < currentBlockHeight,
+      end: motion.voting?.end,
       subTimeline: (motion.timeline || []).map(item => ({
         name: (item.action === "Propose" ? `Motion #${motion.index}` : item.action),
         extrinsicIndexer: item.extrinsic.extrinsicIndexer,
@@ -111,16 +114,18 @@ const ProposalDetail = () => {
 
   useEffect(() => {
     dispatch(fetchProposalDetail(proposalIndex));
+    dispatch(fetchCurrentBlockHeight());
   }, [dispatch, proposalIndex]);
 
   const loadingProposalDetail = useSelector(loadingProposalDetailSelector);
   const proposalDetail = useSelector(proposalDetailSelector);
+  const currentBlockHeight = useSelector(currentBlockHeightSelector);
 
   useEffect(() => {
     (async () => {
-      setTimelineData(await processTimeline(proposalDetail));
+      setTimelineData(await processTimeline(proposalDetail, currentBlockHeight));
     })();
-  }, [proposalDetail]);
+  }, [proposalDetail, currentBlockHeight]);
 
   return (
     <>

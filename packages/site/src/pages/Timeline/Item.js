@@ -59,7 +59,7 @@ const TextMinorWrapper = styled(TextMinor)`
   white-space: nowrap;
 `
 
-const Item = ({ data, polkassembly, onUnfoldBtnClick, isUnfold }) => {
+const Item = ({ data, polkassembly, onUnfoldBtnClick, isUnfold, hideButtonList = false }) => {
   return (
     <Wrapper>
       <FlexWrapper>
@@ -79,7 +79,7 @@ const Item = ({ data, polkassembly, onUnfoldBtnClick, isUnfold }) => {
             <Card>
               { data.fields.map(({ title, value }, index) => <CardItem key={index} title={title}>{value}</CardItem>) }
             </Card>
-            <ButtonList extrinsicIndexer={data.extrinsicIndexer} eventIndexer={data.eventIndexer} polkassembly={polkassembly} />
+            { !hideButtonList && <ButtonList extrinsicIndexer={data.extrinsicIndexer} eventIndexer={data.eventIndexer} polkassembly={polkassembly} />}
           </CardWrapper>
         </VerticalWrapper>
       </FlexWrapper>
