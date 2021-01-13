@@ -13,12 +13,10 @@ socket.on("connect", () => {
   socket.emit("subscribe", overviewRoom);
 
   socket.on("scanStatus", ({ height }) => {
-    console.log("height", height);
     store.dispatch(setScanHeight(height));
   });
 
   socket.on("overview", (overview) => {
-    console.log(overview);
     store.dispatch(setOverview(overview));
   });
 });
