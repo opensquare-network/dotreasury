@@ -107,6 +107,11 @@ const RelatedLinks = ({ type, index }) => {
               />
               <Form.Input fluid label='Description' placeholder='The description of the link'
                 onChange={(_, { value }) => setDescription(value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    addRelatedLink(link, description);
+                  }
+                }}
               />
             </Form>
           </Modal.Content>
