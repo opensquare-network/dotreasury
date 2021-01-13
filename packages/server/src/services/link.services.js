@@ -1,9 +1,18 @@
 const { getLinkCollection } = require("../mongo-admin");
 const { isValidSignature } = require("../utils");
 const { HttpError } = require("../exc");
+const { decodeAddress } = require("@polkadot/util-crypto");
 
+let admins = null;
 async function checkAdmin(address) {
-  return true;
+  if (!admins) {
+    admins = (process.env.ADMINS || "")
+      .split("|")
+      .filter(addr => addr !== "")
+      .map(addr => decodeAddress(addr));
+  }
+  const lookup = decodeAddress(address);
+  return admins.some(admin => Buffer.compare(admin, lookup) === 0);
 }
 
 class LinkService {
