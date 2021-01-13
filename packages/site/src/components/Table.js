@@ -5,6 +5,7 @@ import { TEXT_DARK_MINOR } from "../constants";
 
 const CustomTable = styled(Table)`
   margin-top: 0 !important;
+  border-color: #EEE !important;
   td {
     border-top: 0 !important;
   }
