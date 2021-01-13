@@ -8,5 +8,5 @@ export default function TimeElapsed({ from }) {
     return <TimePeriod time={dayjs().diff(nFrom)} />;
   }
 
-  return <span />;
+  return <div />;
 }

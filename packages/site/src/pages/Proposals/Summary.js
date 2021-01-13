@@ -15,6 +15,10 @@ import {
   fetchSpendPeriod,
   spendPeriodSelector,
 } from "../../store/reducers/chainSlice";
+import {
+  fetchTreasury,
+  treasurySelector,
+} from "../../store/reducers/burntSlice";
 
 const Wrapper = styled.div`
   background: #F8F8F8;
@@ -96,10 +100,12 @@ const Summary = () => {
   useEffect(() => {
     dispatch(fetchProposalsSummary());
     dispatch(fetchSpendPeriod());
+    dispatch(fetchTreasury());
   }, [dispatch]);
 
   const summary = useSelector(proposalSummarySelector);
   const spendPeriod = useSelector(spendPeriodSelector);
+  const treasury = useSelector(treasurySelector);
 
   return (
     <Wrapper>
@@ -118,14 +124,14 @@ const Summary = () => {
       <Item className="right">
         <Title>Available</Title>
         <ValueWrapper>
-          <Value>50.00</Value>
+          <Value>{treasury.free?.toFixed(0)}</Value>
           <Unit>KSM</Unit>
         </ValueWrapper>
       </Item>
       <Item className="right">
         <Title>Next burn</Title>
         <ValueWrapper>
-          <Value>3</Value>
+          <Value>{(treasury.burnPercent * treasury.free)?.toFixed(4)}</Value>
           <Unit>KSM</Unit>
         </ValueWrapper>
       </Item>
