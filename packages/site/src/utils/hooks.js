@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState, useEffect } from "react";
+import { useLayoutEffect, useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 
 import {getIndentity} from "../services/chainApi";
@@ -59,3 +59,15 @@ export const useLinks = (text) => {
   }
   return null;
 } 
+
+export function useIsMounted() {
+  const isMounted = useRef(true)
+
+  useEffect(() => {
+    return () => {
+      isMounted.current = false
+    }
+  }, [])
+
+  return isMounted // returning "isMounted.current" wouldn't work because we would return unmutable primitive
+}

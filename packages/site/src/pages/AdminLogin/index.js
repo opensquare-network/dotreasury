@@ -9,7 +9,8 @@ import {
 } from "../../store/reducers/accountSlice";
 import Addr from "../../components/Address";
 import queryString from 'query-string';
-import { useLocation, useHistory } from "react-router-dom"
+import { useLocation, useHistory } from "react-router-dom";
+import { useIsMounted } from "../../utils/hooks";
 
 const SignInModal = styled(Modal)`
   .account-select-content {
@@ -29,6 +30,7 @@ const SignInModal = styled(Modal)`
 const AdminLogin = () => {
   const location = useLocation();
   const history = useHistory();
+  const isMounted = useIsMounted();
 
   const [noExtensionModalOpen, setNoExtensionModalOpen] = useState(false)
   const [accountsModalOpen, setAccountsModalOpen] = useState(false)
@@ -40,13 +42,12 @@ const AdminLogin = () => {
   const isAdmin = q.admin === "true";
 
   useEffect(() => {
-    let isMounted = true;
     if (!isLogin && isAdmin && !accountsModalOpen && !noExtensionModalOpen) {
 
       (async function login() {
         await web3Enable("doTreasury");
         if (!isWeb3Injected) {
-          if (isMounted) {
+          if (isMounted.current) {
             setNoExtensionModalOpen(true);
           }
           return;
@@ -59,16 +60,13 @@ const AdminLogin = () => {
           };
         });
 
-        if (isMounted) {
+        if (isMounted.current) {
           setAccounts(accounts);
           setAccountsModalOpen(true);
         }
       })();
     }
-    return () => {
-      isMounted = false;
-    }
-  }, [isAdmin, isLogin, accountsModalOpen, noExtensionModalOpen]);
+  }, [isAdmin, isLogin, accountsModalOpen, noExtensionModalOpen, isMounted]);
 
   const loginAccount = async (account) => {
     setAccountsModalOpen(false);
