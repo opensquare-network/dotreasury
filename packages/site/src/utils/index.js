@@ -1,5 +1,9 @@
 import BigNumber from "bignumber.js";
 import { stringUpperFirst } from "@polkadot/util";
+import dayjs from 'dayjs'
+import duration from 'dayjs/plugin/duration';
+
+dayjs.extend(duration);
 
 export function toPrecision(value, precision = 0, paddingZero = true) {
   precision = Number(precision);
@@ -50,4 +54,36 @@ export const getLinkNameAndSrc = (link) => {
     name = stringUpperFirst(name);
   }
   return [name, src];
+}
+
+export function normalizeTimeDuration(time, maxSection = 2) {
+  const duration = dayjs.duration(time)
+
+  const result = [];
+
+  const sections = [
+    duration.years() && [duration.years(), 'y'],
+    duration.months() && [duration.months(), 'mon'],
+    duration.days() && [duration.days(), 'd'],
+    duration.hours() && [duration.hours(), 'h'],
+    duration.minutes() && [duration.minutes(), 'min'],
+  ];
+  for (let i = 0, j = 0; i < sections.length && j < maxSection; i++) {
+    const sec = sections[i];
+    if (!sec && !j) {
+      continue;
+    }
+
+    if (sec) {
+      result.push(sec);
+    }
+
+    j++;
+  }
+
+  if (result.length === 0) {
+    result.push([duration.seconds(), 's']);
+  }
+
+  return result;
 }
