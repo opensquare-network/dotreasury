@@ -6,6 +6,7 @@ import Table from "../../components/Table";
 import User from "../../components/User";
 import Balance from "../../components/Balance";
 import Text from "../../components/Text";
+import TableNoDataCell from "../../components/TableNoDataCell";
 import { overviewSelector } from "../../store/reducers/overviewSlice";
 
 const Title = styled(Text)`
@@ -17,6 +18,7 @@ const Title = styled(Text)`
 
 const BeneficiaryTable = () => {
   const overview = useSelector(overviewSelector);
+  const data = overview.bestProposalBeneficiaries || [];
 
   return (
     <div>
@@ -31,7 +33,9 @@ const BeneficiaryTable = () => {
         </Table.Header>
         <Table.Body>
           {
-            (overview.bestProposalBeneficiaries || []).map(item => (
+            data &&
+            data.length > 0 &&
+            data.map((item) => (
               <Table.Row>
                 <Table.Cell>
                   <User address={item.beneficiary} />
@@ -43,7 +47,7 @@ const BeneficiaryTable = () => {
                   <Text>{item.count}</Text>
                 </Table.Cell>
               </Table.Row>
-            ))
+            )) || <TableNoDataCell />
           }
         </Table.Body>
       </Table>

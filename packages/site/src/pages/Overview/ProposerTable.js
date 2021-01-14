@@ -6,6 +6,7 @@ import Table from "../../components/Table";
 import User from "../../components/User";
 import Balance from "../../components/Balance";
 import Text from "../../components/Text";
+import TableNoDataCell from "../../components/TableNoDataCell";
 import { overviewSelector } from "../../store/reducers/overviewSlice";
 
 const Title = styled(Text)`
@@ -17,6 +18,7 @@ const Title = styled(Text)`
 
 const ProposerTable = () => {
   const overview = useSelector(overviewSelector);
+  const data = overview.bestTipFinders || [];
 
   return (
     <div>
@@ -31,7 +33,9 @@ const ProposerTable = () => {
         </Table.Header>
         <Table.Body>
           {
-            (overview.bestTipFinders || []).map(item => (
+            data &&
+            data.length > 0 &&
+            data.map((item) => (
               <Table.Row>
                 <Table.Cell>
                   <User address={item.finder} />
@@ -43,7 +47,7 @@ const ProposerTable = () => {
                   <Balance value={item.value} />
                 </Table.Cell>
               </Table.Row>
-            ))
+            )) || <TableNoDataCell />
           }
         </Table.Body>
       </Table>
