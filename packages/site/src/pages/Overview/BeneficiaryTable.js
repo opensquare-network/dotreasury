@@ -14,7 +14,7 @@ const Title = styled(Text)`
   line-height: 32px;
   font-weight: 700;
   margin-bottom: 16px;
-`
+`;
 
 const BeneficiaryTable = () => {
   const overview = useSelector(overviewSelector);
@@ -28,14 +28,14 @@ const BeneficiaryTable = () => {
           <Table.Row>
             <Table.HeaderCell>Beneficiary</Table.HeaderCell>
             <Table.HeaderCell textAlign={"right"}>Total value</Table.HeaderCell>
-            <Table.HeaderCell textAlign={"right"}>Proposal count</Table.HeaderCell>
+            <Table.HeaderCell textAlign={"right"}>
+              Proposal count
+            </Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {
-            data &&
-            data.length > 0 &&
-            (data.map((item, index) => (
+          {data && data.length > 0 ? (
+            data.map((item, index) => (
               <Table.Row key={index}>
                 <Table.Cell>
                   <User address={item.beneficiary} />
@@ -47,8 +47,10 @@ const BeneficiaryTable = () => {
                   <Text>{item.count}</Text>
                 </Table.Cell>
               </Table.Row>
-            )) || <TableNoDataCell />)
-          }
+            ))
+          ) : (
+            <TableNoDataCell />
+          )}
         </Table.Body>
       </Table>
     </div>

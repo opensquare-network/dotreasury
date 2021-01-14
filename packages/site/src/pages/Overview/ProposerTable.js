@@ -14,7 +14,7 @@ const Title = styled(Text)`
   line-height: 32px;
   font-weight: 700;
   margin-bottom: 16px;
-`
+`;
 
 const ProposerTable = () => {
   const overview = useSelector(overviewSelector);
@@ -22,7 +22,7 @@ const ProposerTable = () => {
 
   return (
     <div>
-      <Title>Top Tip Funders</Title>
+      <Title>Top Tip Finders</Title>
       <Table striped selectable unstackable>
         <Table.Header>
           <Table.Row>
@@ -32,10 +32,8 @@ const ProposerTable = () => {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {
-            data &&
-            data.length > 0 &&
-            (data.map((item, index) => (
+          {data && data.length > 0 ? (
+            data.map((item, index) => (
               <Table.Row key={index}>
                 <Table.Cell>
                   <User address={item.finder} />
@@ -47,8 +45,10 @@ const ProposerTable = () => {
                   <Balance value={item.value} />
                 </Table.Cell>
               </Table.Row>
-            )) || <TableNoDataCell />)
-          }
+            ))
+          ) : (
+            <TableNoDataCell />
+          )}
         </Table.Body>
       </Table>
     </div>
