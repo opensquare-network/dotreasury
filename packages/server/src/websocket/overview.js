@@ -125,6 +125,12 @@ function sortByValue(arr) {
   });
 }
 
+function sortByCount(arr) {
+  return arr.sort((a, b) => {
+    return Number(b.count) - Number(a.count);
+  });
+}
+
 function calcBestProposalBeneficiary(proposals = []) {
   const spentProposals = proposals.filter(
     ({ state: { name } }) => name === "Awarded"
@@ -172,7 +178,7 @@ function calcBestTipProposers(tips = []) {
     };
   });
 
-  return sortByValue(finders).slice(0, 10);
+  return sortByCount(finders).slice(0, 10);
 }
 
 module.exports = {
