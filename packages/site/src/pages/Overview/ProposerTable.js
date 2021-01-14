@@ -16,6 +16,10 @@ const Title = styled(Text)`
   margin-bottom: 16px;
 `;
 
+const TableRow = styled(Table.Row)`
+  height: 50px;
+`;
+
 const ProposerTable = () => {
   const overview = useSelector(overviewSelector);
   const data = overview.bestTipFinders || [];
@@ -34,7 +38,7 @@ const ProposerTable = () => {
         <Table.Body>
           {data && data.length > 0 ? (
             data.map((item, index) => (
-              <Table.Row key={index}>
+              <TableRow key={index}>
                 <Table.Cell>
                   <User address={item.finder} />
                 </Table.Cell>
@@ -44,7 +48,7 @@ const ProposerTable = () => {
                 <Table.Cell textAlign={"right"}>
                   <Balance value={item.value} />
                 </Table.Cell>
-              </Table.Row>
+              </TableRow>
             ))
           ) : (
             <TableNoDataCell />

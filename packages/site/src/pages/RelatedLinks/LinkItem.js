@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Image } from "semantic-ui-react";
-import ExternalLink from "../../components/ExplorerLink";
+import ExternalLink from "../../components/ExternalLink";
 
 import TextMinor from "../../components/TextMinor"
 import { TEXT_DARK_MAJOR } from "../../constants";
@@ -40,7 +40,9 @@ const Link = ({ link, text }) => {
           <TextMinor>{name}</TextMinor>
         </LinkWrapper>
       </ExternalLink>
-      <LinkText>{text}</LinkText>
+      <ExternalLink href={link}>
+        <LinkText>{text}</LinkText>
+      </ExternalLink>
     </Wrapper>
   );
 };
