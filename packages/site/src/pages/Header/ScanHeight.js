@@ -4,12 +4,15 @@ import { useSelector } from "react-redux";
 import { Image } from "semantic-ui-react";
 import ExplorerLink from "../../components/ExplorerLink";
 
-import {TEXT_DARK_MAJOR, TEXT_DARK_MINOR} from "../../constants"
+import { TEXT_DARK_MAJOR, TEXT_DARK_MINOR } from "../../constants";
 import { scanHeightSelector } from "../../store/reducers/chainSlice";
 
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
+
+  background: #fbfbfb;
+  padding: 2px 16px;
 `;
 
 const Label = styled.div`
@@ -18,7 +21,7 @@ const Label = styled.div`
   font-weight: normal;
   font-size: 12px;
   line-height: 24px;
-`
+`;
 
 const DarkMinorLabel = styled(Label)`
   color: ${TEXT_DARK_MINOR};
@@ -39,7 +42,7 @@ const Polygon = styled(Image)`
   width: 12px;
   height: 12px;
   margin: 4px;
-`
+`;
 
 const ScanHeight = () => {
   const scanHeight = useSelector(scanHeightSelector);
@@ -52,7 +55,7 @@ const ScanHeight = () => {
         <DarkMajorLabel>{`#${scanHeight}`}</DarkMajorLabel>
       </ExplorerLink>
     </Wrapper>
-  )
+  );
 };
 
 export default ScanHeight;
