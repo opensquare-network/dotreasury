@@ -22,7 +22,7 @@ const BeneficiaryTable = () => {
 
   return (
     <div>
-      <Title>Proposal Beneficiary</Title>
+      <Title>Top Proposal Beneficiaries</Title>
       <Table striped selectable unstackable>
         <Table.Header>
           <Table.Row>
@@ -35,8 +35,8 @@ const BeneficiaryTable = () => {
           {
             data &&
             data.length > 0 &&
-            data.map((item) => (
-              <Table.Row>
+            (data.map((item, index) => (
+              <Table.Row key={index}>
                 <Table.Cell>
                   <User address={item.beneficiary} />
                 </Table.Cell>
@@ -47,7 +47,7 @@ const BeneficiaryTable = () => {
                   <Text>{item.count}</Text>
                 </Table.Cell>
               </Table.Row>
-            )) || <TableNoDataCell />
+            )) || <TableNoDataCell />)
           }
         </Table.Body>
       </Table>

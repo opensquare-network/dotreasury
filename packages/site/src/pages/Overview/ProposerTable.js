@@ -22,11 +22,11 @@ const ProposerTable = () => {
 
   return (
     <div>
-      <Title>Top proposer</Title>
+      <Title>Top Tip Funders</Title>
       <Table striped selectable unstackable>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell>Proposer</Table.HeaderCell>
+            <Table.HeaderCell>Finder</Table.HeaderCell>
             <Table.HeaderCell textAlign={"right"}>Count</Table.HeaderCell>
             <Table.HeaderCell textAlign={"right"}>Total value</Table.HeaderCell>
           </Table.Row>
@@ -35,8 +35,8 @@ const ProposerTable = () => {
           {
             data &&
             data.length > 0 &&
-            data.map((item) => (
-              <Table.Row>
+            (data.map((item, index) => (
+              <Table.Row key={index}>
                 <Table.Cell>
                   <User address={item.finder} />
                 </Table.Cell>
@@ -47,7 +47,7 @@ const ProposerTable = () => {
                   <Balance value={item.value} />
                 </Table.Cell>
               </Table.Row>
-            )) || <TableNoDataCell />
+            )) || <TableNoDataCell />)
           }
         </Table.Body>
       </Table>
