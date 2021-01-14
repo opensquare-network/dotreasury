@@ -22,11 +22,11 @@ const ProposerTable = () => {
 
   return (
     <div>
-      <Title>Top tip finders</Title>
+      <Title>Top Tip Finders</Title>
       <Table striped selectable unstackable>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell>Proposer</Table.HeaderCell>
+            <Table.HeaderCell>Finder</Table.HeaderCell>
             <Table.HeaderCell textAlign={"right"}>Count</Table.HeaderCell>
             <Table.HeaderCell textAlign={"right"}>Total value</Table.HeaderCell>
           </Table.Row>

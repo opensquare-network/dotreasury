@@ -4,6 +4,7 @@ import Title from "../../components/Title";
 import Summary from "./Summary";
 import ProposerTable from "./ProposerTable";
 import BeneficiaryTable from "./BeneficiaryTable";
+import DoughnutCard from "./DoughnutCard";
 
 const Header = styled(Title)`
   margin-bottom: 20px;
@@ -26,6 +27,7 @@ const Overview = () => {
     <>
       <Header>Overview</Header>
       <Summary />
+      <DoughnutCard proposals={1} tips={1.1} bounties={1.2} />
       <TableWrapper>
         <BeneficiaryTable />
         <ProposerTable />

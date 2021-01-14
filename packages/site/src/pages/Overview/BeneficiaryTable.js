@@ -22,7 +22,7 @@ const BeneficiaryTable = () => {
 
   return (
     <div>
-      <Title>Top proposal Beneficiaries</Title>
+      <Title>Top Proposal Beneficiaries</Title>
       <Table striped selectable unstackable>
         <Table.Header>
           <Table.Row>
