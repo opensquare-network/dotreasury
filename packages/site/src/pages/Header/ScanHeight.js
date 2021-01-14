@@ -30,6 +30,9 @@ const DarkMinorLabel = styled(Label)`
 
 const DarkMajorLabel = styled(Label)`
   color: ${TEXT_DARK_MAJOR};
+  &:hover {
+    text-decoration-line: underline;
+  }
 `;
 
 const Polygon = styled(Image)`
