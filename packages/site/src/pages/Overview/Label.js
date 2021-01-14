@@ -1,5 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
+import Balance from "../../components/Balance"
 
 import Text from "../../components/Text";
 
@@ -29,11 +30,20 @@ const LabelText = styled(Text)`
   `}
 `
 
-const Label = ({ name, color, disabled, onToggleDisabled }) => {
+const ValueText = styled(Text)`
+  font-weight: 300;
+  font-size: 0.8em;
+  ${p => p.disabled&&css`
+    color: rgba(29, 37, 60, 0.24);
+  `}
+`
+
+const Label = ({ name, value, color, disabled, onToggleDisabled }) => {
   return (
     <Wrapper onClick={onToggleDisabled}>
       <Circle color={color} disabled={disabled} />
       <LabelText disabled={disabled}>{name}</LabelText>
+      <ValueText disabled={disabled}>{`${parseInt(value)} KSM`}</ValueText>
     </Wrapper>
   )
 }

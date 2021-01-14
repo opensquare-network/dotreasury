@@ -47,9 +47,9 @@ const DoughnutCard = ({proposals, tips, bounties}) => {
       <Total total={total} />
       <Doughnut proposals={proposalsDisabled ? 0 : proposals} tips={tipsDisabled ? 0 : tips} bounties={bountiesDisabled ? 0 : bounties} />
       <LabelList>
-        <Label name="Proposals" color={OVERVIEW_PROPOSALS_COLOR} disabled={proposalsDisabled} onToggleDisabled={onToggleProposals} />
-        <Label name="Tips" color={OVERVIEW_TIPS_COLOR} disabled={tipsDisabled} onToggleDisabled={onToggleTips} />
-        <Label name="Bounties" color={OVERVIEW_BOUNTIES_COLOR} disabled={bountiesDisabled} onToggleDisabled={onToggleBouties} />
+        <Label name="Proposals" value={proposals} color={OVERVIEW_PROPOSALS_COLOR} disabled={proposalsDisabled} onToggleDisabled={onToggleProposals} />
+        <Label name="Tips" value={tips} color={OVERVIEW_TIPS_COLOR} disabled={tipsDisabled} onToggleDisabled={onToggleTips} />
+        <Label name="Bounties" value={bounties} color={OVERVIEW_BOUNTIES_COLOR} disabled={bountiesDisabled} onToggleDisabled={onToggleBouties} />
       </LabelList>
     </CardWrapper>
   )
