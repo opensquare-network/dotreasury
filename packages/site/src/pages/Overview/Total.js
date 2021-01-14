@@ -34,6 +34,10 @@ const TextMinorBold = styled(TextMinor)`
   line-height: 32px;
 `
 
+const TotalText = styled(TextMinor)`
+  text-align: center;
+`
+
 const Total = ({total}) => {
   return (
     <Wrapper>
@@ -42,7 +46,7 @@ const Total = ({total}) => {
           <TextBold>{total}</TextBold>
           <TextMinorBold>KSM</TextMinorBold>
         </TextWrapper>
-        <TextMinor>Total amount</TextMinor>
+        <TotalText>Total amount</TotalText>
       </div>
     </Wrapper>
   )

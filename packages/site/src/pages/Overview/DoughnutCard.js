@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import Card from "../../components/Card";
@@ -23,14 +23,22 @@ const DoughnutCard = ({proposals, tips, bounties}) => {
   const [proposalsDisabled, setProposalsDisabled] = useState(false);
   const [tipsDisabled, setTipsDisabled] = useState(false);
   const [bountiesDisabled, setBountiesDisabled] = useState(false);
-  const total = proposals + tips + bounties;
+  const [total, setTotal] = useState(0);
+  useEffect(() => {
+    const total = (proposalsDisabled ? 0 : proposals) + (tipsDisabled ? 0 : tips) + (bountiesDisabled ? 0 : bounties);
+    setTotal(total.toFixed(2).replace(/\D00/, ""))
+  }, [proposals, tips, bounties, proposalsDisabled, tipsDisabled, bountiesDisabled])
+
   const onToggleProposals = () => {
+    if (!proposalsDisabled && tipsDisabled && bountiesDisabled) return;
     setProposalsDisabled(!proposalsDisabled);
   }
   const onToggleTips = () => {
+    if (proposalsDisabled && !tipsDisabled && bountiesDisabled) return;
     setTipsDisabled(!tipsDisabled);
   }
   const onToggleBouties = () => {
+    if (proposalsDisabled && tipsDisabled && !bountiesDisabled) return;
     setBountiesDisabled(!bountiesDisabled);
   }
 
