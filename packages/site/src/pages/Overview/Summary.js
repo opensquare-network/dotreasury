@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, Fragment } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { Image } from "semantic-ui-react";
 
@@ -6,6 +7,13 @@ import Card from "../../components/Card";
 import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
 import CountDown from "../../components/CountDown";
+import TimePeriod from "../../components/TimePeriod";
+
+import { overviewSelector } from "../../store/reducers/overviewSlice";
+import {
+  fetchSpendPeriod,
+  spendPeriodSelector
+} from "../../store/reducers/chainSlice";
 
 const Wrapper = styled.div`
   display: grid;
@@ -46,6 +54,15 @@ const ValueWrapper = styled.div`
 `
 
 const Summary = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchSpendPeriod());
+  }, [dispatch]);
+
+  const overview = useSelector(overviewSelector);
+  const spendPeriod = useSelector(spendPeriodSelector);
+
   return (
     <Wrapper>
       <CustomCard>
@@ -54,9 +71,9 @@ const Summary = () => {
           <div>
             <Title>Proposals</Title>
             <ValueWrapper>
-              <TextBold>10</TextBold>
+              <TextBold>{overview.count.proposal.unFinished}</TextBold>
               <TextMinorBold>/</TextMinorBold>
-              <TextMinorBold>108</TextMinorBold>
+              <TextMinorBold>{overview.count.proposal.all}</TextMinorBold>
             </ValueWrapper>
           </div>
         </ItemWrapper>
@@ -67,9 +84,9 @@ const Summary = () => {
           <div>
             <Title>Tips</Title>
             <ValueWrapper>
-              <TextBold>9</TextBold>
+              <TextBold>{overview.count.tip.unFinished}</TextBold>
               <TextMinorBold>/</TextMinorBold>
-              <TextMinorBold>183</TextMinorBold>
+              <TextMinorBold>{overview.count.tip.all}</TextMinorBold>
             </ValueWrapper>
           </div>
         </ItemWrapper>
@@ -80,24 +97,25 @@ const Summary = () => {
           <div>
             <Title>Bounties</Title>
             <ValueWrapper>
-              <TextBold>1</TextBold>
+              <TextBold>{overview.count.bounty.unFinished}</TextBold>
               <TextMinorBold>/</TextMinorBold>
-              <TextMinorBold>10</TextMinorBold>
+              <TextMinorBold>{overview.count.bounty.all}</TextMinorBold>
             </ValueWrapper>
           </div>
         </ItemWrapper>
       </CustomCard>
       <CustomCard>
         <ItemWrapper>
-          <CountDown percent={25} />
+          <CountDown percent={spendPeriod.progress} />
             <div>
               <Title>Spend period</Title>
-              <ValueWrapper>
-                <TextBold>4</TextBold>
-                <TextMinorBold>Days</TextMinorBold>
-                <TextBold>10</TextBold>
-                <TextMinorBold>hrs</TextMinorBold>
-              </ValueWrapper>
+              <TimePeriod time={spendPeriod.restTime}
+                  ValueWrapper={TextBold}
+                  UnitWrapper={TextMinorBold}
+                  SectionWrapper={Fragment}
+                  TimeWrapper={ValueWrapper}
+                  unitMapper={{d: "Days", h: "hrs"}}
+                />
             </div>
         </ItemWrapper>
       </CustomCard>

@@ -1,10 +1,12 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 
 import Table from "../../components/Table";
 import User from "../../components/User";
 import Balance from "../../components/Balance";
 import Text from "../../components/Text";
+import { overviewSelector } from "../../store/reducers/overviewSlice";
 
 const Title = styled(Text)`
   font-size: 18px;
@@ -14,6 +16,8 @@ const Title = styled(Text)`
 `
 
 const BeneficiaryTable = () => {
+  const overview = useSelector(overviewSelector);
+
   return (
     <div>
       <Title>Proposal Beneficiary</Title>
@@ -26,17 +30,21 @@ const BeneficiaryTable = () => {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          <Table.Row>
-            <Table.Cell>
-              <User address="DeFR1kGwiAYp1mqCpozD5h6ARZrrMgMykBCcJVPaLFYgSmk" />
-            </Table.Cell>
-            <Table.Cell textAlign={"right"}>
-              <Balance value="1000000000000" />
-            </Table.Cell>
-            <Table.Cell textAlign={"right"}>
-              <Text>50</Text>
-            </Table.Cell>
-          </Table.Row>
+          {
+            (overview.bestProposalBeneficiaries || []).map(item => (
+              <Table.Row>
+                <Table.Cell>
+                  <User address={item.beneficiary} />
+                </Table.Cell>
+                <Table.Cell textAlign={"right"}>
+                  <Balance value={item.value} />
+                </Table.Cell>
+                <Table.Cell textAlign={"right"}>
+                  <Text>{item.count}</Text>
+                </Table.Cell>
+              </Table.Row>
+            ))
+          }
         </Table.Body>
       </Table>
     </div>
