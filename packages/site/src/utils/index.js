@@ -46,9 +46,18 @@ export const getLinkNameAndSrc = (link) => {
   } else if (url.host.endsWith("twitter.com")) {
     src = "/imgs/twitter-logo.svg";
     name = "Twitter";
-  } else if (url.host.endsWith("t.me")) {
+  } else if (url === "t.me") {
     src = "/imgs/telegram-logo.svg";
     name = "Telegram";
+  } else if (url.host.endsWith("docs.google.com")) {
+    src = "/imgs/googledoc-logo.svg";
+    name = "Google Docs";
+  } else if (url.host.endsWith("opensquare.network")) {
+    src = "/imgs/opensquare-icon-logo.svg";
+    name = "OpenSquare";
+  } else if (url.host.endsWith("dotreasury.com")) {
+    src = "/imgs/dotreasury-logo.svg";
+    name = "doTreasury";
   } else {
     src = "/imgs/link-icon.svg";
   }
