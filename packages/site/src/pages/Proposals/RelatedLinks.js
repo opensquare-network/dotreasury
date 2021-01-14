@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import { Image } from "semantic-ui-react";
+import { Image, Popup } from "semantic-ui-react";
 
 import ExternalLink from "../../components/ExternalLink";
 import { getLinkNameAndSrc } from "../../utils";
+import { useDisablePopup } from "../../utils/hooks";
 
 const Wrapper = styled.div`
   display: flex;
@@ -16,12 +17,19 @@ const CustomImage = styled(Image)`
 `
 
 const RelatedLinks = ({links}) => {
+  const disabledPopup = useDisablePopup()
   return (
     <Wrapper>
       {(links || []).map((item, index) => {
         const [, src] = getLinkNameAndSrc(item.link)
         return (
-          <ExternalLink href={item.link} key={index}><CustomImage src={src} /></ExternalLink>
+          <Popup
+            content={item.description}
+            size='mini'
+            disabled={disabledPopup || !item.description}
+            trigger={<div><ExternalLink href={item.link}><CustomImage src={src} /></ExternalLink></div>}
+            key={index}
+          />
         )
       })}
     </Wrapper>
