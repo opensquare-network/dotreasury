@@ -42,5 +42,6 @@ export const totalTipCountSelector = (state) =>
   state.overview.overview.count.tip.all;
 export const totalBountyCountSelector = (state) =>
   state.overview.overview.count.bounty.all;
+export const overviewSelector = (state) => state.overview.overview;
 
 export default overviewSlice.reducer;
