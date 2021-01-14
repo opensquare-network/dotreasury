@@ -1,6 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import Balance from "../../components/Balance"
+import {Popup} from "semantic-ui-react";
 
 import Text from "../../components/Text";
 
@@ -43,7 +44,11 @@ const Label = ({ name, value, color, disabled, onToggleDisabled }) => {
     <Wrapper onClick={onToggleDisabled}>
       <Circle color={color} disabled={disabled} />
       <LabelText disabled={disabled}>{name}</LabelText>
-      <ValueText disabled={disabled}>{`${parseInt(value)} KSM`}</ValueText>
+      <Popup
+        content={`${value} KSM`}
+        size='mini'
+        trigger={<ValueText disabled={disabled}>{`${parseInt(value) === value ? "" : "≈ "}${parseInt(value)} KSM`}</ValueText>}
+        />
     </Wrapper>
   )
 }
