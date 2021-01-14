@@ -33,21 +33,21 @@ const BeneficiaryTable = () => {
         </Table.Header>
         <Table.Body>
           {
-            data &&
-            data.length > 0 &&
-            data.map((item) => (
-              <Table.Row>
-                <Table.Cell>
-                  <User address={item.beneficiary} />
-                </Table.Cell>
-                <Table.Cell textAlign={"right"}>
-                  <Balance value={item.value} />
-                </Table.Cell>
-                <Table.Cell textAlign={"right"}>
-                  <Text>{item.count}</Text>
-                </Table.Cell>
-              </Table.Row>
-            )) || <TableNoDataCell />
+            (data && data.length > 0)
+              ? data.map((item, index) => (
+                  <Table.Row key={index}>
+                    <Table.Cell>
+                      <User address={item.beneficiary} />
+                    </Table.Cell>
+                    <Table.Cell textAlign={"right"}>
+                      <Balance value={item.value} />
+                    </Table.Cell>
+                    <Table.Cell textAlign={"right"}>
+                      <Text>{item.count}</Text>
+                    </Table.Cell>
+                  </Table.Row>
+                ))
+              : <TableNoDataCell />
           }
         </Table.Body>
       </Table>
