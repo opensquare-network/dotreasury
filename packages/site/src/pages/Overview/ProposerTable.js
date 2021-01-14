@@ -9,6 +9,14 @@ import Text from "../../components/Text";
 import TableNoDataCell from "../../components/TableNoDataCell";
 import { overviewSelector } from "../../store/reducers/overviewSlice";
 
+const Wrapper = styled.div`
+  overflow: hidden;
+`
+
+const TableWrapper = styled.div`
+  overflow: scroll;
+`
+
 const Title = styled(Text)`
   font-size: 18px;
   line-height: 32px;
@@ -25,37 +33,39 @@ const ProposerTable = () => {
   const data = overview.bestTipFinders || [];
 
   return (
-    <div>
+    <Wrapper>
       <Title>Top Tip Finders</Title>
-      <Table striped selectable unstackable>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell>Finder</Table.HeaderCell>
-            <Table.HeaderCell textAlign={"right"}>Count</Table.HeaderCell>
-            <Table.HeaderCell textAlign={"right"}>Total value</Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {data && data.length > 0 ? (
-            data.map((item, index) => (
-              <TableRow key={index}>
-                <Table.Cell>
-                  <User address={item.finder} />
-                </Table.Cell>
-                <Table.Cell textAlign={"right"}>
-                  <Text>{item.count}</Text>
-                </Table.Cell>
-                <Table.Cell textAlign={"right"}>
-                  <Balance value={item.value} />
-                </Table.Cell>
-              </TableRow>
-            ))
-          ) : (
-            <TableNoDataCell />
-          )}
-        </Table.Body>
-      </Table>
-    </div>
+        <TableWrapper>
+        <Table striped selectable unstackable>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell>Finder</Table.HeaderCell>
+              <Table.HeaderCell textAlign={"right"}>Count</Table.HeaderCell>
+              <Table.HeaderCell textAlign={"right"}>Total value</Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {data && data.length > 0 ? (
+              data.map((item, index) => (
+                <TableRow key={index}>
+                  <Table.Cell>
+                    <User address={item.finder} />
+                  </Table.Cell>
+                  <Table.Cell textAlign={"right"}>
+                    <Text>{item.count}</Text>
+                  </Table.Cell>
+                  <Table.Cell textAlign={"right"}>
+                    <Balance value={item.value} />
+                  </Table.Cell>
+                </TableRow>
+              ))
+            ) : (
+              <TableNoDataCell />
+            )}
+          </Table.Body>
+        </Table>
+      </TableWrapper>
+    </Wrapper>
   );
 };
 
