@@ -71,3 +71,12 @@ export function useIsMounted() {
 
   return isMounted // returning "isMounted.current" wouldn't work because we would return unmutable primitive
 }
+
+export const useDisablePopup = () => {
+  const [disabledPopup, setDisabledPopup] = useState(true)
+  const [width] = useWindowSize();
+  useEffect(() => {
+    setDisabledPopup(width < 1128)
+  }, [width])
+  return disabledPopup;
+}
