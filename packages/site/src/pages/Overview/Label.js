@@ -47,7 +47,7 @@ const Label = ({ name, value, color, disabled, onToggleDisabled }) => {
       <Popup
         content={`${value} KSM`}
         size='mini'
-        trigger={<ValueText disabled={disabled}>{`${parseInt(value) === value ? "" : "≈ "}${parseInt(value)} KSM`}</ValueText>}
+        trigger={<ValueText disabled={disabled}>{`${Math.round(value) === value ? "" : "≈ "}${Math.round(value)} KSM`}</ValueText>}
         />
     </Wrapper>
   )
