@@ -16,7 +16,7 @@ const Header = styled(Title)`
 const TableWrapper = styled.div`
   margin-top: 32px;
   display: grid;
-  gap: 32px;
+  gap: 24px;
   @media screen and (min-width: 556px) {
     grid-template-columns: repeat(auto-fit, minmax(556px, 1fr));
   }

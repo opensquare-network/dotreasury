@@ -31,9 +31,9 @@ const Wrapper = styled.div`
   gap: 16px;
   justify-content: space-between;
   flex-wrap: wrap;
-  @media screen and (max-width: 556px) {
-    justify-content: space-around;
-    gap: 8px;
+  @media screen and (max-width: 1140px) {
+    justify-content: flex-start;
+    row-gap: 8px;
   }
 `
 
@@ -55,7 +55,7 @@ const Item = styled.div`
     justify-content: flex-end;
   }
 
-  @media screen and (max-width: 556px) {
+  @media screen and (max-width: 1140px) {
     &.grow {
       flex-grow: 0;
     }
