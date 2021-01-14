@@ -22,17 +22,20 @@ const Label = styled.div`
 
 const DarkMinorLabel = styled(Label)`
   color: ${TEXT_DARK_MINOR};
-  margin-left: 4px;
+  margin-right: 8px;
+  @media screen and (max-width: 640px) {
+    display: none;
+  }
 `;
 
 const DarkMajorLabel = styled(Label)`
   color: ${TEXT_DARK_MAJOR};
-  margin-left: 8px;
 `;
 
 const Polygon = styled(Image)`
   width: 12px;
   height: 12px;
+  margin: 4px;
 `
 
 const ScanHeight = () => {
