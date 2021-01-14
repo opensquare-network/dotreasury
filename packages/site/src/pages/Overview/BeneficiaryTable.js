@@ -16,6 +16,10 @@ const Title = styled(Text)`
   margin-bottom: 16px;
 `;
 
+const TableRow = styled(Table.Row)`
+  height: 50px;
+`;
+
 const BeneficiaryTable = () => {
   const overview = useSelector(overviewSelector);
   const data = overview.bestProposalBeneficiaries || [];
@@ -36,7 +40,7 @@ const BeneficiaryTable = () => {
         <Table.Body>
           {data && data.length > 0 ? (
             data.map((item, index) => (
-              <Table.Row key={index}>
+              <TableRow key={index}>
                 <Table.Cell>
                   <User address={item.beneficiary} />
                 </Table.Cell>
@@ -46,7 +50,7 @@ const BeneficiaryTable = () => {
                 <Table.Cell textAlign={"right"}>
                   <Text>{item.count}</Text>
                 </Table.Cell>
-              </Table.Row>
+              </TableRow>
             ))
           ) : (
             <TableNoDataCell />
