@@ -8,7 +8,8 @@
   "scripts": {
     "prod": "pm2 start ecosystem.config.js --env production",
     "dev": "pm2 start ecosystem.config.js --env development",
-    "mig": "node src/migration"
+    "mig:prod": "pm2 start migration.config.js --env production",
+    "mig:dev": "pm2 start migration.config.js --env development"
   },
   "dependencies": {
     "@koa/cors": "^3.1.0",
