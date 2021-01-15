@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useSelector } from "react-redux";
 
 import Table from "../../components/Table";
@@ -11,6 +11,7 @@ import DateShow from "../../components/DateShow";
 import PolygonLabel from "../../components/PolygonLabel";
 import ExplorerLink from "../../components/ExplorerLink";
 import Label from "../../components/Label";
+import { mrgap } from "../../styles";
 
 import {
   bountyDetailSelector,
@@ -20,7 +21,7 @@ const FlexWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  ${css`${mrgap("16px")}`}
 `;
 
 const bountyStates = [

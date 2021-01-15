@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react'
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { normalizeTimeDuration } from "../utils";
+import { mrgap } from "../styles";
 
 const DefaultValueWrapper = Fragment;
 
@@ -9,8 +10,8 @@ const DefaultUnitWrapper = Fragment;
 const DefaultSectionWrapper = styled.span`
 `
 const DefaultTimeWrapper = styled.div`
-display: flex;
-gap: 4px;
+  display: flex;
+  ${css`${mrgap("4px")}`}
 `
 const defaultUnitMapper = { y: "y", mon: "mon", d: "d", h: "h", min: "min", s: "s" };
 

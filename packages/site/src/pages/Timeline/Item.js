@@ -10,6 +10,7 @@ import CardItem from "./CardItem";
 import ButtonList from "./ButtonList";
 import DateShow from "../../components/DateShow";
 import TextMinor from "../../components/TextMinor";
+import { mrgap } from "../../styles";
 
 const Wrapper = styled.div`
   &:last-child .bar {
@@ -19,7 +20,7 @@ const Wrapper = styled.div`
 
 const FlexWrapper = styled.div`
   display: flex;
-  gap: 12px;
+  ${css`${mrgap("12px")}`}
   & > div:last-child {
     flex-grow: 1;
   }

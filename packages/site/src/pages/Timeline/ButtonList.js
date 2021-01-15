@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 import ImageButton from "./ImageButton";
 import ExplorerLink from "../../components/ExplorerLink";
 import ExternalLink from "../../components/ExternalLink";
 import { nil } from "../../utils";
 import { useIsMounted } from "../../utils/hooks";
+import { mrgap } from "../../styles";
 
 const Wrapper = styled.div`
   margin-top: 8px;
   display: flex;
-  gap: 8px;
+  ${css`${mrgap("8px")}`}
 `;
 
 const ButtonList = ({ extrinsicIndexer, eventIndexer, polkassembly }) => {

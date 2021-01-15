@@ -30,7 +30,9 @@ import TimelineCommentWrapper from "../../components/TimelineCommentWrapper";
 const HeaderWrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 16px;
+  img {
+    margin-right: 16px;
+  }
   margin-bottom: 20px;
   div:first-child {
     cursor: pointer;

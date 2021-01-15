@@ -3,13 +3,14 @@ import styled, { css } from "styled-components";
 import { Popup } from "semantic-ui-react";
 
 import Text from "../../components/Text";
+import { mrgap } from "../../styles";
 
 const Wrapper = styled.div`
   background: #fbfbfb;
   padding: 4px 16px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  ${css`${mrgap("8px")}`}
   border-radius: 4px;
   :hover {
     cursor: pointer;

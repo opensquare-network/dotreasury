@@ -6,7 +6,6 @@ const Wrapper = styled.div`
   height: 32px;
   display: flex;
   align-items: center;
-  gap: 12px;
 `;
 
 const Logo = () => (

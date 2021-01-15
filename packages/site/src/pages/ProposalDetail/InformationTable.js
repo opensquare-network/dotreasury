@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useSelector } from "react-redux";
 
 import Table from "../../components/Table";
@@ -14,12 +14,13 @@ import ExplorerLink from "../../components/ExplorerLink";
 import {
   proposalDetailSelector,
 } from "../../store/reducers/proposalSlice";
+import { mrgap } from "../../styles";
 
 const FlexWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  ${css`${mrgap("16px")}`}
 `;
 
 const InformationTable = ({loading}) => {

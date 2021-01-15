@@ -1,6 +1,6 @@
 import React, { useEffect, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Image } from "semantic-ui-react";
 
 import Card from "../../components/Card";
@@ -14,6 +14,7 @@ import {
   fetchSpendPeriod,
   spendPeriodSelector
 } from "../../store/reducers/chainSlice";
+import { mrgap } from "../../styles";
 
 const Wrapper = styled.div`
   display: grid;
@@ -28,7 +29,9 @@ const CustomCard = styled(Card)`
 const ItemWrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 20px;
+  & > *:first-child {
+    margin-right: 20px;
+  }
 `
 
 const Title = styled(TextMinor)`
@@ -50,7 +53,7 @@ const TextMinorBold = styled(TextMinor)`
 const ValueWrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 4px;
+  ${css`${mrgap("4px")}`}
 `
 
 const Summary = () => {

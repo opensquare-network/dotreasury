@@ -1,6 +1,7 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
+import { mrgap } from "../styles";
 import { PRIMARY_THEME_COLOR, SECONDARY_THEME_COLOR } from "../constants";
 
 const getCurrent = (current) => {
@@ -21,7 +22,7 @@ const Wrapper = styled.div`
   min-width: 200px;
   height: 6px;
   display: flex;
-  gap: 4px;
+  ${css`${mrgap("4px")}`}
   align-items: center;
   div:first-child {
     border-top-left-radius: 4px;

@@ -1,13 +1,14 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-import {TEXT_DARK_MAJOR, TEXT_DARK_MINOR} from "../../constants"
+import {TEXT_DARK_MAJOR, TEXT_DARK_MINOR} from "../../constants";
+import { mrgap } from "../../styles";
 
 const Wrapper = styled.div`
   display: flex;
   padding: 4px 16px;
   align-items: center;
-  gap: 8px;
+  ${css`${mrgap("8px")}`}
   flex-wrap: wrap;
   & > .title {
     width: 120px;
