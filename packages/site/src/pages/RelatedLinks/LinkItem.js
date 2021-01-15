@@ -1,22 +1,23 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Image } from "semantic-ui-react";
 import ExternalLink from "../../components/ExternalLink";
 
 import TextMinor from "../../components/TextMinor"
 import { TEXT_DARK_MAJOR } from "../../constants";
 import { getLinkNameAndSrc } from "../../utils";
+import { mrgap } from "../../styles";
 
 const Wrapper = styled.div`
   display: flex;
   align-items: start;
-  gap: 32px;
+  ${css`${mrgap("32px")}`}
 `;
 
 const LinkWrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 8px;
+  ${css`${mrgap("8px")}`}
   min-width: 140px;
 `;
 
