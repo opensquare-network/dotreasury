@@ -7,7 +7,9 @@ import Label from "./Label";
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 4px;
+  img {
+    margin-right: 4px;
+  }
 `;
 
 const TimeLabel = ({ value }) => {

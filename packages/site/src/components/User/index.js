@@ -1,23 +1,24 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 import Username from "./Username";
 import Avatar from "./Avatar";
 import Badge from "./Badge";
 import ExplorerLink from "../../components/ExplorerLink";
 import {useIndentity} from "../../utils/hooks";
+import { mrgap } from "../../styles";
 
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 8px;
+  ${css`${mrgap("8px")}`}
   overflow: hidden;
 `;
 
 const BadgeWrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 3px;
+  ${css`${mrgap("3px")}`}
 `
 
 const User = ({ address, ellipsis = true, popup = true }) => {

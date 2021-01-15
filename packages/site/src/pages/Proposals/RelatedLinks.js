@@ -1,14 +1,15 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Image, Popup } from "semantic-ui-react";
 
 import ExternalLink from "../../components/ExternalLink";
 import { getLinkNameAndSrc } from "../../utils";
 import { useDisablePopup } from "../../utils/hooks";
+import { mrgap } from "../../styles";
 
 const Wrapper = styled.div`
   display: flex;
-  gap: 8px;
+  ${css`${mrgap("8px")}`}
   align-items: center;
 `
 

@@ -52,7 +52,7 @@ const ProposalArgsWrapper = styled.div`
 const ProposalArgsItemWrapper = styled.div`
   padding: 4px 0px;
   display: flex;
-  align-item: center;
+  align-items: center;
   gap: 8px;
   flex-wrap: wrap;
   & > .title {

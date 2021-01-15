@@ -1,9 +1,10 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Image } from "semantic-ui-react";
 
 import User from "./User";
 import Text from "./Text";
+import { mrgap } from "../styles";
 
 const Wrapper = styled.div`
   display: flex;
@@ -16,7 +17,7 @@ const PassWrapper = styled.div`
   display: flex;
   align-items: center;
   word-break: normal;
-  gap: 8px;
+  ${css`${mrgap("8px")}`}
 `
 
 const ImageWrapper = styled.div`

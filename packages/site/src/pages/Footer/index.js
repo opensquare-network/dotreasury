@@ -1,11 +1,11 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Icon, Image } from "semantic-ui-react";
 
 import Container from "../../components/Container";
 import TextMinor from "../../components/TextMinor";
-import {TEXT_DARK_MAJOR} from "../../constants"
-import {TEXT_DARK_MINOR} from "../../constants"
+import {TEXT_DARK_MAJOR, TEXT_DARK_MINOR} from "../../constants";
+import { mrgap } from "../../styles";
 
 const Wrapper = styled.footer`
   background: #fff;
@@ -43,13 +43,13 @@ const FooterWrapper = styled.div`
 
 const TextWrapper = styled.div`
   display: flex;
-  gap: 32px;
+  ${css`${mrgap("32px")}`}
   align-items: center;
 `
 
 const IconList = styled.div`
   display: inline-flex;
-  gap: 16px;
+  ${css`${mrgap("16px")}`}
   i {
     font-size: 20px;
     color: rgba(29, 37, 60, 0.24);
@@ -62,7 +62,7 @@ const IconList = styled.div`
 
 const ImageLogoWrapper = styled.div`
   display: flex;
-  gap: 8px;
+  ${css`${mrgap("8px")}`}
   align-items: center;
 `
 

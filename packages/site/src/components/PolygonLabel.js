@@ -7,10 +7,10 @@ import {TEXT_DARK_MAJOR, TEXT_DARK_MINOR} from "../constants"
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 4px;
 `;
 
 const Label = styled.span`
+  margin-left: 4px;
   font-family: Inter;
   font-style: normal;
   font-weight: normal;

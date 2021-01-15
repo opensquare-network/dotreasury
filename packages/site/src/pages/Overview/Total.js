@@ -19,7 +19,6 @@ const Wrapper = styled.div`
 const TextWrapper = styled.div`
   display: flex;
   align-items:center;
-  gap: 8px;
 `
 
 const TextBold = styled(Text)`
@@ -32,6 +31,7 @@ const TextMinorBold = styled(TextMinor)`
   font-size: 18px;
   font-weight: 700;
   line-height: 32px;
+  margin-left: 8px;
 `
 
 const TotalText = styled(TextMinor)`

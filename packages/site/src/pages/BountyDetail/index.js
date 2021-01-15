@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Image } from "semantic-ui-react";
 import { useHistory } from "react-router-dom";
 import {
@@ -24,11 +24,12 @@ import polkassemblyApi from "../../services/polkassembly";
 import TimelineCommentWrapper from "../../components/TimelineCommentWrapper";
 import { hexToString } from "@polkadot/util";
 import { stringToWords } from "../../utils";
+import { mrgap } from "../../styles";
 
 const HeaderWrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 16px;
+  ${css`${mrgap("16px")}`}
   margin-bottom: 20px;
   div:first-child {
     cursor: pointer;
