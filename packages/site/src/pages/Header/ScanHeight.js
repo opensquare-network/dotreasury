@@ -44,11 +44,18 @@ const Polygon = styled(Image)`
   margin: 4px;
 `;
 
+const Kusama = styled(Image)`
+  position: relative;
+  top: -1px;
+  margin-right: 8px;
+`;
+
 const ScanHeight = () => {
   const scanHeight = useSelector(scanHeightSelector);
 
   return (
     <Wrapper>
+      <Kusama src="/imgs/logo-kusama.svg" />
       <Polygon src={"/imgs/polygon.svg"} />
       <DarkMinorLabel>Scan height</DarkMinorLabel>
       <ExplorerLink href={`/block/${scanHeight}`}>
