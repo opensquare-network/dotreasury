@@ -2,6 +2,7 @@
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { isWeb3Injected, web3FromAddress } from '@polkadot/extension-dapp'
 import { stringToHex } from '@polkadot/util';
+import BigNumber from "bignumber.js";
 
 let api = null;
 const wsProvider = new WsProvider('wss://kusama.elara.patract.io/');
@@ -15,7 +16,7 @@ export const getApi = async () => {
 
 export const getIndentity = async (address) => {
   const api = await getApi();
-  const {identity} = await api.derive.accounts.info(address);
+  const { identity } = await api.derive.accounts.info(address);
   return identity;
 }
 
@@ -69,4 +70,10 @@ export const getBlockTime = async (number) => {
   const block = await api.rpc.chain.getBlock(hash);
   const time = extractBlockTime(block.block.extrinsics);
   return time;
+}
+
+export const estimateBlocksTime = async (blocks) => {
+  const api = await getApi();
+  const nsPerBlock = api.consts.babe.expectedBlockTime;
+  return nsPerBlock.mul(new BigNumber(blocks)).toNumber();
 }

@@ -6,6 +6,7 @@ import Table from "../../components/Table";
 import TableLoading from "../../components/TableLoading";
 import TableCell from "../../components/TableCell";
 import TimeLabel from "../../components/TimeLabel";
+import TimePeriod from "../../components/TimePeriod";
 import DateShow from "../../components/DateShow";
 import PolygonLabel from "../../components/PolygonLabel";
 import ExplorerLink from "../../components/ExplorerLink";
@@ -13,10 +14,12 @@ import RelatedLInks from "../../components/RelatedLinks";
 
 import { useIsMounted } from "../../utils/hooks"
 import polkaassemblyApi from "../../services/polkassembly";
+import { estimateBlocksTime } from "../../services/chainApi";
 
 import {
   proposalDetailSelector,
 } from "../../store/reducers/proposalSlice";
+import { scanHeightSelector } from "../../store/reducers/chainSlice";
 
 import { mrgap } from "../../styles";
 
@@ -44,6 +47,30 @@ const ProposalLifeCycleTable = ({ loading }) => {
       }
     })();
   }, [proposalDetail, isMounted]);
+
+  const scanHeight = useSelector(scanHeightSelector);
+
+  const [votingEnd, setVotingEnd] = useState(null);
+  useEffect(() => {
+    if (proposalDetail && scanHeight > 0) {
+      const ongoingMotions = (proposalDetail.motions || []).filter(m => !m.result && m.voting?.end > scanHeight);
+      ongoingMotions.sort((a, b) => a.voting?.end - b.voting?.end);
+      const firstOngoingMotion = ongoingMotions[0];
+
+      if (firstOngoingMotion) {
+        estimateBlocksTime(firstOngoingMotion.voting?.end - scanHeight).then(blocksTime => {
+          if (isMounted.current) {
+            setVotingEnd({
+              atBlock: firstOngoingMotion.voting?.end,
+              duration: blocksTime
+            });
+          }
+        });
+      } else {
+        setVotingEnd(null);
+      }
+    }
+  }, [proposalDetail, scanHeight, isMounted]);
 
   return (
     <TableLoading loading={loading}>
@@ -87,6 +114,19 @@ const ProposalLifeCycleTable = ({ loading }) => {
                       description: "Treasury proposal discusssion"
                     }
                   ]} />
+                </TableCell>
+              </Table.Cell>
+            </Table.Row>
+          }
+          {
+            votingEnd
+            && <Table.Row>
+              <Table.Cell>
+                <TableCell title="Voting End">
+                  <FlexWrapper>
+                    <div>{`#${votingEnd.atBlock}`}</div>
+                    <TimePeriod time={votingEnd.duration} />
+                  </FlexWrapper>
                 </TableCell>
               </Table.Cell>
             </Table.Row>
