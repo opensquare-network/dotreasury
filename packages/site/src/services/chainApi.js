@@ -74,6 +74,6 @@ export const getBlockTime = async (number) => {
 
 export const estimateBlocksTime = async (blocks) => {
   const api = await getApi();
-  const nsPerBlock = api.consts.babe.expectedBlockTime;
-  return nsPerBlock.mul(new BigNumber(blocks)).toNumber();
+  const nsPerBlock = api.consts.babe.expectedBlockTime.toNumber();
+  return nsPerBlock * blocks;
 }
