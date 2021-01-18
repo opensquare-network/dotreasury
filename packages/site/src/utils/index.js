@@ -52,6 +52,9 @@ export const getLinkNameAndSrc = (link) => {
   } else if (url.host.endsWith("docs.google.com")) {
     src = "/imgs/googledoc-logo.svg";
     name = "Google Docs";
+  } else if (url.host.endsWith("drive.google.com")) {
+    src = "/imgs/googledrive-logo.svg";
+    name = "Google Drive";
   } else if (url.host.endsWith("opensquare.network")) {
     src = "/imgs/opensquare-icon-logo.svg";
     name = "OpenSquare";
