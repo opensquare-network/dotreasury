@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getApi, getCurrentBlockHeight } from "../../services/chainApi";
+import { getApi, getCurrentBlockHeight, estimateBlocksTime } from "../../services/chainApi";
 
 const chainSlice = createSlice({
   name: "chain",
@@ -38,11 +38,10 @@ export const fetchSpendPeriod = () => async (dispatch) => {
   const bestNumber = await api.derive.chain.bestNumber();
   const spendPeriod = api.consts.treasury.spendPeriod;
   const goneBlocks = bestNumber.mod(spendPeriod);
-  const msPerBlock = api.consts.babe.expectedBlockTime;
   dispatch(setSpendPeriod({
     blockNumber: spendPeriod.toNumber(),
-    periodTime: spendPeriod.mul(msPerBlock).toNumber(),
-    restTime: spendPeriod.sub(goneBlocks).mul(msPerBlock).toNumber(),
+    periodTime: await estimateBlocksTime(spendPeriod),
+    restTime: await estimateBlocksTime(spendPeriod.sub(goneBlocks)),
     progress: goneBlocks.muln(100).div(spendPeriod).toNumber(),
   }));
 };
