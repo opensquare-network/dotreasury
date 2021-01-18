@@ -10,13 +10,17 @@ import {TEXT_DARK_MAJOR, TEXT_DARK_MINOR} from "../constants"
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  & > :not(:last-child) {
+    margin-bottom: 8px;
+  }
 `
 
 const BarProgressWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  & > :not(:last-child) {
+    margin-bottom: 8px;
+  }
   margin-top: 8px;
 `
 
@@ -33,13 +37,17 @@ const TextWrapper = styled.div`
 const AyeNayWrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 16px;
+  & > :not(:last-child) {
+    margin-right: 16px;
+  }
 `
 
 const ItemWrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 8px;
+  & > :not(:last-child) {
+    margin-right: 8px;
+  }
 `
 
 const ProposalArgsWrapper = styled.div`
@@ -53,7 +61,9 @@ const ProposalArgsItemWrapper = styled.div`
   padding: 4px 0px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  & > :not(:last-child) {
+    margin-right: 8px;
+  }
   flex-wrap: wrap;
   & > .title {
     width: 120px;

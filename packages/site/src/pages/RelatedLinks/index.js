@@ -26,13 +26,17 @@ const Wrapper = styled.div`
 const LinksWrapper = styled.div`
   margin-top: 16px;
   display: flex;
-  gap: 8px;
+  & > :not(:last-child) {
+    margin-bottom: 8px;
+  };
   flex-direction: column;
 `;
 
 const LinkWrapper = styled.div`
   display: flex;
-  gap: 8px;
+  & > :first-child:not(:last-child) {
+    margin-right: 10px;
+  }
 `;
 
 const IconButton = styled(Icon)`

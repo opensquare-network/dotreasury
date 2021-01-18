@@ -1,11 +1,12 @@
 import React, { useEffect, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
 import CountDown from "../../components/CountDown";
 import TimePeriod from "../../components/TimePeriod";
+import { mrgap } from "../../styles";
 
 import {
   fetchProposalsSummary,
@@ -23,17 +24,21 @@ import {
 const Wrapper = styled.div`
   background: #FFF;
   border: 1px solid #EEE;
-  padding: 16px 20px;
+  padding: 16px 20px 8px;
   border-radius: 8px;
   margin-bottom: 16px;
   display: flex;
   align-items: center;
-  gap: 16px;
+  & > div:not(:last-child) {
+    margin-right: 16px;
+  };
+  & > div {
+    margin-bottom: 8px;
+  };
   justify-content: space-between;
   flex-wrap: wrap;
   @media screen and (max-width: 1140px) {
     justify-content: flex-start;
-    row-gap: 8px;
   }
 `
 
@@ -92,7 +97,7 @@ const Unit = styled(TextMinor)`
 
 const ValueWrapper = styled.div`
   display: flex;
-  gap: 4px;
+  ${css`${mrgap("4px")}`}
 `
 
 const Summary = () => {

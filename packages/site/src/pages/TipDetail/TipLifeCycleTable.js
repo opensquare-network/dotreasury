@@ -23,7 +23,9 @@ const FlexWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  :first-child {
+    margin-right: 16px;
+  }
 `;
 
 const TippersLabel = styled.div`
