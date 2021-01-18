@@ -14,7 +14,7 @@ import PairTextVertical from "../../components/PairTextVertical";
 import PolygonLabel from "../../components/PolygonLabel";
 import ExplorerLink from "../../components/ExplorerLink";
 import TableNoDataCell from "../../components/TableNoDataCell";
-import RelatedLInks from "./RelatedLinks";
+import RelatedLInks from "../../components/RelatedLinks";
 
 const Wrapper = styled.div`
   overflow-x: scroll;
@@ -105,11 +105,11 @@ const ProposalsTable = ({ data, loading }) => {
                   </Table.Cell>
                   <Table.Cell className="status-cell" textAlign={"right"}>
                     <PairTextVertical
-                        value={item.latestState.state}
-                        detail={dayjs(parseInt(item.latestState.time)).format(
-                          "YYYY-MM-DD HH:mm"
-                        )}
-                      />
+                      value={item.latestState.state}
+                      detail={dayjs(parseInt(item.latestState.time)).format(
+                        "YYYY-MM-DD HH:mm"
+                      )}
+                    />
                   </Table.Cell>
                   <Table.Cell className="link-cell hidden">
                     <NavLink to={`/proposals/${item.proposalIndex}`}>
@@ -119,7 +119,7 @@ const ProposalsTable = ({ data, loading }) => {
                 </Table.Row>
               ))) || (
                 <TableNoDataCell />
-            )}
+              )}
           </Table.Body>
         </StyledTable>
       </TableLoading>

@@ -2,10 +2,10 @@ import React from "react";
 import styled, { css } from "styled-components";
 import { Image, Popup } from "semantic-ui-react";
 
-import ExternalLink from "../../components/ExternalLink";
-import { getLinkNameAndSrc } from "../../utils";
-import { useDisablePopup } from "../../utils/hooks";
-import { mrgap } from "../../styles";
+import ExternalLink from "./ExternalLink";
+import { getLinkNameAndSrc } from "../utils";
+import { useDisablePopup } from "../utils/hooks";
+import { mrgap } from "../styles";
 
 const Wrapper = styled.div`
   display: flex;
@@ -17,7 +17,7 @@ const CustomImage = styled(Image)`
   width: 20px;
 `
 
-const RelatedLinks = ({links}) => {
+const RelatedLinks = ({ links }) => {
   const disabledPopup = useDisablePopup()
   return (
     <Wrapper>
