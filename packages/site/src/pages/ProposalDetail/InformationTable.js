@@ -1,5 +1,4 @@
 import React from "react";
-import styled, { css } from "styled-components";
 import { useSelector } from "react-redux";
 
 import Table from "../../components/Table";
@@ -7,23 +6,12 @@ import TableLoading from "../../components/TableLoading";
 import TableCell from "../../components/TableCell";
 import User from "../../components/User";
 import Balance from "../../components/Balance";
-import DateShow from "../../components/DateShow";
-import PolygonLabel from "../../components/PolygonLabel";
-import ExplorerLink from "../../components/ExplorerLink";
 
 import {
   proposalDetailSelector,
 } from "../../store/reducers/proposalSlice";
-import { mrgap } from "../../styles";
 
-const FlexWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  ${css`${mrgap("16px")}`}
-`;
-
-const InformationTable = ({loading}) => {
+const InformationTable = ({ loading }) => {
   const proposalDetail = useSelector(proposalDetailSelector);
   return (
     <TableLoading loading={loading}>
@@ -38,18 +26,6 @@ const InformationTable = ({loading}) => {
             <Table.Cell>
               <TableCell title={"Index"}>
                 {`#${proposalDetail.proposalIndex}`}
-              </TableCell>
-            </Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>
-              <TableCell title={"Created"}>
-                <FlexWrapper>
-                  <div><DateShow value={proposalDetail.proposeTime}/></div>
-                  <ExplorerLink href={`/block/${proposalDetail.proposeAtBlockHeight}`}>
-                    <PolygonLabel value={proposalDetail.proposeAtBlockHeight} />
-                  </ExplorerLink>
-                </FlexWrapper>
               </TableCell>
             </Table.Cell>
           </Table.Row>
