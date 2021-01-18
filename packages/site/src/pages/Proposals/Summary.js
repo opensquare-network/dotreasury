@@ -115,16 +115,16 @@ const Summary = () => {
         <Value>{summary.numOfOngoing}</Value>
       </Item>
       <Item>
-        <Title>Total</Title>
-        <Value>{summary.total}</Value>
-      </Item>
-      <Item>
         <Title>Approved</Title>
         <Value>{summary.numOfApproved}</Value>
       </Item>
-      <Item className="grow">
+      <Item>
         <Title>Awarded</Title>
         <Value>{summary.numOfAwarded}</Value>
+      </Item>
+      <Item className="grow">
+        <Title>Total</Title>
+        <Value>{summary.total}</Value>
       </Item>
       <Item className="right">
         <Title>Available</Title>
@@ -142,13 +142,13 @@ const Summary = () => {
       </Item>
       <Item className="right spend-period">
         <Title>Spend period</Title>
-          <TimePeriod time={spendPeriod.restTime}
-            ValueWrapper={Value}
-            UnitWrapper={Unit}
-            SectionWrapper={Fragment}
-            TimeWrapper={ValueWrapper}
-            unitMapper={{d: "Days", h: "hrs"}}
-          />
+        <TimePeriod time={spendPeriod.restTime}
+          ValueWrapper={Value}
+          UnitWrapper={Unit}
+          SectionWrapper={Fragment}
+          TimeWrapper={ValueWrapper}
+          unitMapper={{ d: "Days", h: "hrs" }}
+        />
       </Item>
       <Item className="countdown">
         <CountDown percent={spendPeriod.progress} />

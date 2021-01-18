@@ -89,7 +89,7 @@ export const fetchProposalsSummary = () => async (dispatch) => {
   if (result) {
     summary.total = result.total;
     summary.numOfOngoing = (result.Proposed || 0) + (result.ApproveVoting || 0) + (result.RejectVoting || 0);
-    summary.numOfApproved = (result.Approved || 0) + (result.Awarded || 0);
+    summary.numOfApproved = result.Approved || 0;
     summary.numOfAwarded = result.Awarded || 0;
   }
   dispatch(setProposalSummary(summary));
