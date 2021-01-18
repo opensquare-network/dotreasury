@@ -2,7 +2,6 @@
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { isWeb3Injected, web3FromAddress } from '@polkadot/extension-dapp'
 import { stringToHex } from '@polkadot/util';
-import BigNumber from "bignumber.js";
 
 let api = null;
 const wsProvider = new WsProvider('wss://kusama.elara.patract.io/');
