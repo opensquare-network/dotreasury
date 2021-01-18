@@ -11,12 +11,10 @@ import PolygonLabel from "../../components/PolygonLabel";
 import ExplorerLink from "../../components/ExplorerLink";
 import RelatedLInks from "../../components/RelatedLinks";
 
-import { useIsMounted } from "../../utils/hooks"
+import { useIsMounted } from "../../utils/hooks";
 import polkaassemblyApi from "../../services/polkassembly";
 
-import {
-  proposalDetailSelector,
-} from "../../store/reducers/proposalSlice";
+import { proposalDetailSelector } from "../../store/reducers/proposalSlice";
 
 import { mrgap } from "../../styles";
 
@@ -24,18 +22,22 @@ const FlexWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  ${css`${mrgap("16px")}`}
+  ${css`
+    ${mrgap("16px")}
+  `}
 `;
 
 const ProposalLifeCycleTable = ({ loading }) => {
   const proposalDetail = useSelector(proposalDetailSelector);
   const [proposalUrl, setProposalUrl] = useState(null);
-  const isMounted = useIsMounted()
+  const isMounted = useIsMounted();
 
   useEffect(() => {
     (async () => {
       if (proposalDetail) {
-        const url = await polkaassemblyApi.getProposalUrl(proposalDetail.proposalIndex);
+        const url = await polkaassemblyApi.getProposalUrl(
+          proposalDetail.proposalIndex
+        );
         if (isMounted.current) {
           setProposalUrl(url);
         }
@@ -58,8 +60,12 @@ const ProposalLifeCycleTable = ({ loading }) => {
             <Table.Cell>
               <TableCell title={"Created"}>
                 <FlexWrapper>
-                  <div><DateShow value={proposalDetail.proposeTime} /></div>
-                  <ExplorerLink href={`/block/${proposalDetail.proposeAtBlockHeight}`}>
+                  <div>
+                    <DateShow value={proposalDetail.proposeTime} />
+                  </div>
+                  <ExplorerLink
+                    href={`/block/${proposalDetail.proposeAtBlockHeight}`}
+                  >
                     <PolygonLabel value={proposalDetail.proposeAtBlockHeight} />
                   </ExplorerLink>
                 </FlexWrapper>
@@ -76,21 +82,22 @@ const ProposalLifeCycleTable = ({ loading }) => {
               </TableCell>
             </Table.Cell>
           </Table.Row>
-          {
-            proposalUrl
-            && <Table.Row>
+          {proposalUrl && (
+            <Table.Row>
               <Table.Cell>
-                <TableCell title="Discusssion">
-                  <RelatedLInks links={[
-                    {
-                      link: proposalUrl,
-                      description: "Treasury proposal discusssion"
-                    }
-                  ]} />
+                <TableCell title="Proposal Page">
+                  <RelatedLInks
+                    links={[
+                      {
+                        link: proposalUrl,
+                        description: "Treasury proposal discusssion",
+                      },
+                    ]}
+                  />
                 </TableCell>
               </Table.Cell>
             </Table.Row>
-          }
+          )}
         </Table.Body>
       </Table>
     </TableLoading>
