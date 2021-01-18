@@ -7,9 +7,6 @@ import TableLoading from "../../components/TableLoading";
 import TableCell from "../../components/TableCell";
 import User from "../../components/User";
 import Balance from "../../components/Balance";
-import DateShow from "../../components/DateShow";
-import PolygonLabel from "../../components/PolygonLabel";
-import ExplorerLink from "../../components/ExplorerLink";
 import Label from "../../components/Label";
 import { mrgap } from "../../styles";
 
@@ -37,7 +34,7 @@ function indexBountyState(bountyDetail) {
   return bountyStates.indexOf(bountyDetail.latestState?.state);
 }
 
-const InformationTable = ({loading}) => {
+const InformationTable = ({ loading }) => {
   const bountyDetail = useSelector(bountyDetailSelector);
   return (
     <TableLoading loading={loading}>
@@ -52,18 +49,6 @@ const InformationTable = ({loading}) => {
             <Table.Cell>
               <TableCell title={"Index"}>
                 {`#${bountyDetail.bountyIndex}`}
-              </TableCell>
-            </Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>
-              <TableCell title={"Created"}>
-                <FlexWrapper>
-                  <div><DateShow value={bountyDetail.proposeTime}/></div>
-                  <ExplorerLink href={`/block/${bountyDetail.proposeAtBlockHeight}`}>
-                    <PolygonLabel value={bountyDetail.proposeAtBlockHeight} />
-                  </ExplorerLink>
-                </FlexWrapper>
               </TableCell>
             </Table.Cell>
           </Table.Row>
@@ -86,7 +71,7 @@ const InformationTable = ({loading}) => {
               <TableCell title={"Bond"}>
                 <FlexWrapper>
                   <Balance value={bountyDetail.bond} />
-                  <Label>{indexBountyState(bountyDetail) > 0 ? "has returned to the proposer" : "" }</Label>
+                  <Label>{indexBountyState(bountyDetail) > 0 ? "has returned to the proposer" : ""}</Label>
                 </FlexWrapper>
               </TableCell>
             </Table.Cell>

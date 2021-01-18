@@ -27,11 +27,11 @@ const FooterWrapper = styled.div`
   }
   .small {
     display: none;
+    margin-bottom: 4px;
   }
   @media screen and (max-width: 1140px) {
     flex-direction: column;
     justify-content: center;
-    gap: 4px;
     .hidden {
       display: none;
     }

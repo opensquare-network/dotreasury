@@ -9,11 +9,13 @@ import Progress from "../../components/Progress";
 import TipCountDownLabel from "./TipCountDownLabel";
 import BarProgress from "../../components/BarProgress";
 import TimeLabel from "../../components/TimeLabel";
+import DateShow from "../../components/DateShow";
+import PolygonLabel from "../../components/PolygonLabel";
+import ExplorerLink from "../../components/ExplorerLink";
 
 import {
   normalizedTipDetailSelector,
   tipCountdownSelector,
-  tipFindersFeeSelector,
 } from "../../store/reducers/tipSlice";
 import { scanHeightSelector } from "../../store/reducers/chainSlice";
 
@@ -21,7 +23,9 @@ const FlexWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  :first-child {
+    margin-right: 16px;
+  }
 `;
 
 const TippersLabel = styled.div`
@@ -32,7 +36,6 @@ const TippersLabel = styled.div`
 
 const TipLifeCycleTable = ({ loading }) => {
   const tipDetail = useSelector(normalizedTipDetailSelector);
-  const tipFindersFee = useSelector(tipFindersFeeSelector);
   const tipCountdown = useSelector(tipCountdownSelector);
   const scanHeight = useSelector(scanHeightSelector);
   const tippersCount = tipDetail.tippersCount;
@@ -42,10 +45,6 @@ const TipLifeCycleTable = ({ loading }) => {
   const percentage = goneBlocks > tipCountdown ? 1 : goneBlocks / tipCountdown;
 
   const thresholdTotalCount = tippersCount ? (tippersCount + 1) / 2 : 0;
-  const findersFee =
-    tipDetail?.timeline?.[0]?.extrinsic?.name === "tipNew"
-      ? 0
-      : `${tipFindersFee.toFixed(2)}%`;
 
   return (
     <TableLoading loading={loading}>
@@ -56,6 +55,18 @@ const TipLifeCycleTable = ({ loading }) => {
           </Table.Row>
         </Table.Header>
         <Table.Body>
+          <Table.Row>
+            <Table.Cell>
+              <TableCell title={"Created"}>
+                <FlexWrapper>
+                  <div><DateShow value={tipDetail.proposeTime} /></div>
+                  <ExplorerLink href={`/block/${tipDetail.proposeAtBlockHeight}`}>
+                    <PolygonLabel value={tipDetail.proposeAtBlockHeight} />
+                  </ExplorerLink>
+                </FlexWrapper>
+              </TableCell>
+            </Table.Cell>
+          </Table.Row>
           <Table.Row>
             <Table.Cell>
               <TableCell title="Status">
@@ -93,21 +104,14 @@ const TipLifeCycleTable = ({ loading }) => {
                     />
                   </FlexWrapper>
                 ) : (
-                  <FlexWrapper>
-                    <Progress percent={0} />
-                    <TipCountDownLabel
-                      scanHeight={scanHeight}
-                      closes={tipDetail.closeFromBlockHeight}
-                    />
-                  </FlexWrapper>
-                )}
-              </TableCell>
-            </Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>
-              <TableCell title="Finders Fee">
-                <div>{findersFee}</div>
+                    <FlexWrapper>
+                      <Progress percent={0} />
+                      <TipCountDownLabel
+                        scanHeight={scanHeight}
+                        closes={tipDetail.closeFromBlockHeight}
+                      />
+                    </FlexWrapper>
+                  )}
               </TableCell>
             </Table.Cell>
           </Table.Row>
