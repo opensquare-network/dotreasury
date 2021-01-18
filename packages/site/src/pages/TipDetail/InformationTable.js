@@ -1,35 +1,30 @@
 import React from "react";
-import styled from "styled-components";
 import { useSelector } from "react-redux";
 
 import Table from "../../components/Table";
 import TableCell from "../../components/TableCell";
 import User from "../../components/User";
 import Balance from "../../components/Balance";
-import DateShow from "../../components/DateShow";
-import PolygonLabel from "../../components/PolygonLabel";
 import { TipStatus } from "../../constants";
-import ExplorerLink from "../../components/ExplorerLink";
 import TableLoading from "../../components/TableLoading";
 import ClickableLink from "../../components/ClickableLink";
 
 import {
   normalizedTipDetailSelector,
+  tipFindersFeeSelector,
 } from "../../store/reducers/tipSlice";
 import {
   linksSelector,
 } from "../../store/reducers/linkSlice";
 
-const FlexWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-`;
-
 const InformationTable = ({ loading }) => {
   const tipDetail = useSelector(normalizedTipDetailSelector);
   const links = useSelector(linksSelector);
+  const tipFindersFee = useSelector(tipFindersFeeSelector);
+  const findersFee =
+    tipDetail?.timeline?.[0]?.extrinsic?.name === "tipNew"
+      ? 0
+      : `${tipFindersFee.toFixed(2)}%`;
 
   return (
     <TableLoading loading={loading} >
@@ -40,18 +35,6 @@ const InformationTable = ({ loading }) => {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          <Table.Row>
-            <Table.Cell>
-              <TableCell title={"Created"}>
-                <FlexWrapper>
-                  <div><DateShow value={tipDetail.proposeTime}/></div>
-                  <ExplorerLink href={`/block/${tipDetail.proposeAtBlockHeight}`}>
-                    <PolygonLabel value={tipDetail.proposeAtBlockHeight} />
-                  </ExplorerLink>
-                </FlexWrapper>
-              </TableCell>
-            </Table.Cell>
-          </Table.Row>
           <Table.Row>
             <Table.Cell>
               <TableCell title={"Finder"}>
@@ -74,6 +57,13 @@ const InformationTable = ({ loading }) => {
                     ? "--"
                     : <Balance value={tipDetail.medianValue} />
                 }
+              </TableCell>
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>
+              <TableCell title="Finders Fee">
+                <div>{findersFee}</div>
               </TableCell>
             </Table.Cell>
           </Table.Row>
