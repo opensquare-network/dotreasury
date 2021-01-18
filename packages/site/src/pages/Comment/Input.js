@@ -1,8 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { Form, Button } from "semantic-ui-react";
-
-import TextArea from "../../components/TextArea"
+import { Button } from "semantic-ui-react";
+import MarkdownEditor from "../../components/MarkdownEditor";
 
 const Wrapper = styled.div`
   margin-top: 12px;
@@ -13,12 +12,7 @@ const Wrapper = styled.div`
 const Input = () => {
   return (
     <>
-      <Form>
-        <TextArea
-          placeholder="Please text here"
-          rows={5}
-        />
-      </Form>
+      <MarkdownEditor />
       <Wrapper>
         <Button primary disabled>Confirm</Button>
       </Wrapper>
