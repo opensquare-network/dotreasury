@@ -1,33 +1,59 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import { useSelector } from "react-redux";
 
 import Table from "../../components/Table";
 import TableLoading from "../../components/TableLoading";
 import TableCell from "../../components/TableCell";
-import TimeLabel from "../../components/TimeLabel";
 import User from "../../components/User";
 import { scanHeightSelector } from "../../store/reducers/chainSlice";
 import Label from "../../components/Label";
 import DateShow from "../../components/DateShow";
 import PolygonLabel from "../../components/PolygonLabel";
 import ExplorerLink from "../../components/ExplorerLink";
+import { useIsMounted } from "../../utils/hooks";
+import { estimateBlocksTime } from "../../services/chainApi";
 
-import {
-  bountyDetailSelector,
-} from "../../store/reducers/bountySlice";
+import { bountyDetailSelector } from "../../store/reducers/bountySlice";
 import { mrgap } from "../../styles";
 
 const FlexWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  ${css`${mrgap("16px")}`}
+  ${css`
+    ${mrgap("16px")}
+  `}
 `;
 
 const BountyLifeCycleTable = ({ loading }) => {
   const bountyDetail = useSelector(bountyDetailSelector);
   const scanHeight = useSelector(scanHeightSelector);
+  const [updateDueTimeLeft, setUpdateDueTimeLeft] = useState("");
+  const isMounted = useIsMounted();
+
+  useEffect(() => {
+    if (bountyDetail.updateDue) {
+      estimateBlocksTime(bountyDetail.updateDue - scanHeight).then(blocksTime => {
+        let timeLeft = "";
+        const oneMinute = 60 * 1000;
+        const oneHour = 60 * oneMinute;
+        const oneDay = 24 * oneHour;
+        if (blocksTime > oneDay) {
+          timeLeft = `${parseInt(blocksTime/oneDay)} days`;
+        } else if (blocksTime > oneHour) {
+          timeLeft = `${parseInt(blocksTime/oneHour)} hours`;
+        } else if (blocksTime > oneMinute) {
+          timeLeft = `${parseInt(blocksTime/oneMinute)} minutes`;
+        } else {
+          timeLeft = 'less then 1 minute';
+        }
+        if (isMounted.current) {
+          setUpdateDueTimeLeft(timeLeft);
+        }
+      })
+    }
+  }, [bountyDetail, scanHeight, isMounted]);
 
   return (
     <TableLoading loading={loading}>
@@ -42,8 +68,12 @@ const BountyLifeCycleTable = ({ loading }) => {
             <Table.Cell>
               <TableCell title={"Created"}>
                 <FlexWrapper>
-                  <div><DateShow value={bountyDetail.proposeTime} /></div>
-                  <ExplorerLink href={`/block/${bountyDetail.proposeAtBlockHeight}`}>
+                  <div>
+                    <DateShow value={bountyDetail.proposeTime} />
+                  </div>
+                  <ExplorerLink
+                    href={`/block/${bountyDetail.proposeAtBlockHeight}`}
+                  >
                     <PolygonLabel value={bountyDetail.proposeAtBlockHeight} />
                   </ExplorerLink>
                 </FlexWrapper>
@@ -55,7 +85,8 @@ const BountyLifeCycleTable = ({ loading }) => {
               <TableCell title="Status">
                 <FlexWrapper>
                   <div>{bountyDetail.latestState?.state}</div>
-                  <TimeLabel value={bountyDetail.latestState?.indexer?.blockTime} />
+                  {/* <ElapsedTimeLabel time={bountyDetail.latestState?.indexer?.blockTime} /> */}
+                  <div />
                 </FlexWrapper>
               </TableCell>
             </Table.Cell>
@@ -63,38 +94,52 @@ const BountyLifeCycleTable = ({ loading }) => {
           <Table.Row>
             <Table.Cell>
               <TableCell title={"Curator"}>
-                {bountyDetail.curator ? <User address={bountyDetail.curator} /> : "--"}
+                {bountyDetail.curator ? (
+                  <User address={bountyDetail.curator} />
+                ) : (
+                  "--"
+                )}
               </TableCell>
             </Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.Cell>
               <TableCell title={"Update Due"}>
-                {bountyDetail.updateDue
-                  ? <FlexWrapper>
-                    <div>{bountyDetail.updateDue}</div>
-                    <Label>{`${bountyDetail.updateDue - scanHeight} blocks`}</Label>
+                {bountyDetail.updateDue ? (
+                  <FlexWrapper>
+                    <div>{updateDueTimeLeft ? `${updateDueTimeLeft} left` : "--"}</div>
+                    <PolygonLabel value={bountyDetail.updateDue} noHover={true} />
                   </FlexWrapper>
-                  : "--"}
+                ) : (
+                  "--"
+                )}
               </TableCell>
             </Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.Cell>
               <TableCell title={"Beneficiary"}>
-                {bountyDetail.beneficiary ? <User address={bountyDetail.beneficiary} /> : "--"}
+                {bountyDetail.beneficiary ? (
+                  <User address={bountyDetail.beneficiary} />
+                ) : (
+                  "--"
+                )}
               </TableCell>
             </Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.Cell>
               <TableCell title={"Unlock At"}>
-                {bountyDetail.unlockAt
-                  ? <FlexWrapper>
+                {bountyDetail.unlockAt ? (
+                  <FlexWrapper>
                     <div>{bountyDetail.unlockAt}</div>
-                    <Label>{`${bountyDetail.unlockAt - scanHeight} blocks`}</Label>
+                    <Label>{`${
+                      bountyDetail.unlockAt - scanHeight
+                    } blocks`}</Label>
                   </FlexWrapper>
-                  : "--"}
+                ) : (
+                  "--"
+                )}
               </TableCell>
             </Table.Cell>
           </Table.Row>

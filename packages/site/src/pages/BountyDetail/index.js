@@ -20,11 +20,15 @@ import User from "../../components/User";
 import Balance from "../../components/Balance";
 import Voter from "../../components/Voter";
 import Proposer from "../../components/Proposer";
+import BlocksTime from "../../components/BlocksTime";
 import polkassemblyApi from "../../services/polkassembly";
 import TimelineCommentWrapper from "../../components/TimelineCommentWrapper";
 import { hexToString } from "@polkadot/util";
 import { stringToWords } from "../../utils";
 import { mrgap } from "../../styles";
+
+import { scanHeightSelector } from "../../store/reducers/chainSlice";
+
 
 const HeaderWrapper = styled.div`
   display: flex;
@@ -35,6 +39,14 @@ const HeaderWrapper = styled.div`
     cursor: pointer;
   }
 `;
+
+const ValueWrapper = styled.span`
+margin-right: 4px;
+color: #1D253C;
+`
+const UnitWrapper = styled.span`
+color: #1D253C;
+`
 
 const TableWrapper = styled.div`
   display: grid;
@@ -54,7 +66,7 @@ function mergeExtrinsicsAndMotions(extrinsics, motions) {
   return result;
 }
 
-function processTimeline(bountyDetail) {
+function processTimeline(bountyDetail, scanHeight) {
   return mergeExtrinsicsAndMotions(bountyDetail.timeline || [], bountyDetail.motions || []).map(item =>
     item.timeline ? (motion => ({
       index: motion.index,
@@ -83,16 +95,29 @@ function processTimeline(bountyDetail) {
                   }
                 })(),
               }
-            })
+            });
+
+            if (scanHeight > 0 && !motion.result && motion.voting?.end > scanHeight) {
+              const blocks = motion.voting?.end - scanHeight;
+              argItems.push({
+                title: "Voting end",
+                value: <BlocksTime
+                  blocks={blocks}
+                  ValueWrapper={ValueWrapper}
+                  UnitWrapper={UnitWrapper}
+                />,
+              });
+            }
+
             return [{
               value: <Proposer address={proposer}
-                        agree={motion.result && motion.result === "Approved"}
-                        value={motion.method}
-                        args={argItems}
-                        threshold={threshold}
-                        ayes={ayes}
-                        nays={nays}
-                        />
+                agree={motion.result && motion.result === "Approved"}
+                value={motion.method}
+                args={argItems}
+                threshold={threshold}
+                ayes={ayes}
+                nays={nays}
+              />
             }]
           } else if (item.action === "Vote") {
             const [voter, , agree] = item.eventData;
@@ -149,6 +174,18 @@ function processTimeline(bountyDetail) {
             value: <User address={beneficiary} />,
           },
         ];
+      } else if (extrinsic.name === "extendBountyExpiry") {
+        const signer = extrinsic.signer;
+        const { _remark } = extrinsic.args;
+        fields = [
+          {
+            title: "Signer",
+            value: <User address={signer} />,
+          }, {
+            title: "Remark",
+            value: hexToString(_remark),
+          },
+        ];
       }
 
       return {
@@ -172,10 +209,11 @@ const BountyDetail = () => {
 
   const loadingBountyDetail = useSelector(loadingBountyDetailSelector);
   const bountyDetail = useSelector(bountyDetailSelector);
+  const scanHeight = useSelector(scanHeightSelector);
 
   useEffect(() => {
-    setTimelineData(processTimeline(bountyDetail));
-  }, [bountyDetail]);
+    setTimelineData(processTimeline(bountyDetail, scanHeight));
+  }, [bountyDetail, scanHeight]);
 
   return (
     <>
