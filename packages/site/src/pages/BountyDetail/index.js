@@ -174,6 +174,18 @@ function processTimeline(bountyDetail, scanHeight) {
             value: <User address={beneficiary} />,
           },
         ];
+      } else if (extrinsic.name === "extendBountyExpiry") {
+        const signer = extrinsic.signer;
+        const { _remark } = extrinsic.args;
+        fields = [
+          {
+            title: "Signer",
+            value: <User address={signer} />,
+          }, {
+            title: "Remark",
+            value: hexToString(_remark),
+          },
+        ];
       }
 
       return {
