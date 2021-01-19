@@ -142,6 +142,10 @@ export const StyledTextArea = styled.div`
 	  }
 	}
 
+	.mde-text {
+		min-height: 100px;
+	}
+
 `;
 
 const MarkdownEditor = (props) => {
@@ -150,7 +154,7 @@ const MarkdownEditor = (props) => {
 
   const loadSuggestions = async (text) => {
 		return new Promise((accept) => {
-			const users = ["qiyisi"]
+			const users = ["user1", "user2"];
 
 			const suggestions = users.map(user => ({
 				preview: user,
