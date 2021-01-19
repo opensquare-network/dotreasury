@@ -125,11 +125,7 @@ function processTimeline(proposalDetail, scanHeight) {
                   unitMapper={{ d: "Days", h: "hrs" }}
                   ValueWrapper={ValueWrapper}
                   UnitWrapper={UnitWrapper}
-                />,
-              });
-              argItems.push({
-                title: "Blocks",
-                value: <ValueWrapper>{blocks}</ValueWrapper>,
+                />
               });
             }
 

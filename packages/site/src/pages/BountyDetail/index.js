@@ -108,10 +108,6 @@ function processTimeline(bountyDetail, scanHeight) {
                   UnitWrapper={UnitWrapper}
                 />,
               });
-              argItems.push({
-                title: "Blocks",
-                value: <ValueWrapper>{blocks}</ValueWrapper>,
-              });
             }
 
             return [{
