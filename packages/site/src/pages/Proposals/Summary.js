@@ -5,7 +5,7 @@ import styled, { css } from "styled-components";
 import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
 import CountDown from "../../components/CountDown";
-import TimePeriod from "../../components/TimePeriod";
+import BlocksTime from "../../components/BlocksTime";
 import { mrgap } from "../../styles";
 
 import {
@@ -147,12 +147,13 @@ const Summary = () => {
       </Item>
       <Item className="right spend-period">
         <Title>Spend period</Title>
-        <TimePeriod time={spendPeriod.restTime}
+        <BlocksTime blocks={spendPeriod.restBlocks}
           ValueWrapper={Value}
           UnitWrapper={Unit}
           SectionWrapper={Fragment}
           TimeWrapper={ValueWrapper}
-          unitMapper={{ d: "Days", h: "hrs" }}
+          unitMapper={{ d: "Day" }}
+          pluralUnitMapper={{ d: "Days" }}
         />
       </Item>
       <Item className="countdown">

@@ -122,7 +122,6 @@ function processTimeline(proposalDetail, scanHeight) {
                 title: "Voting end",
                 value: <BlocksTime
                   blocks={blocks}
-                  unitMapper={{ d: "Days", h: "hrs" }}
                   ValueWrapper={ValueWrapper}
                   UnitWrapper={UnitWrapper}
                 />

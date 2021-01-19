@@ -7,7 +7,7 @@ import Card from "../../components/Card";
 import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
 import CountDown from "../../components/CountDown";
-import TimePeriod from "../../components/TimePeriod";
+import BlocksTime from "../../components/BlocksTime";
 
 import { overviewSelector } from "../../store/reducers/overviewSlice";
 import {
@@ -110,16 +110,17 @@ const Summary = () => {
       <CustomCard>
         <ItemWrapper>
           <CountDown percent={spendPeriod.progress} />
-            <div>
-              <Title>Spend period</Title>
-              <TimePeriod time={spendPeriod.restTime}
-                  ValueWrapper={TextBold}
-                  UnitWrapper={TextMinorBold}
-                  SectionWrapper={Fragment}
-                  TimeWrapper={ValueWrapper}
-                  unitMapper={{d: "Days", h: "hrs"}}
-                />
-            </div>
+          <div>
+            <Title>Spend period</Title>
+            <BlocksTime blocks={spendPeriod.restBlocks}
+              ValueWrapper={TextBold}
+              UnitWrapper={TextMinorBold}
+              SectionWrapper={Fragment}
+              TimeWrapper={ValueWrapper}
+              unitMapper={{ d: "Day" }}
+              pluralUnitMapper={{ d: "Days" }}
+            />
+          </div>
         </ItemWrapper>
       </CustomCard>
     </Wrapper>
