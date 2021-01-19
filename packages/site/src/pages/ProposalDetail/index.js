@@ -10,8 +10,7 @@ import {
   loadingProposalDetailSelector,
 } from "../../store/reducers/proposalSlice";
 import {
-  fetchCurrentBlockHeight,
-  currentBlockHeightSelector,
+  scanHeightSelector,
 } from "../../store/reducers/chainSlice";
 
 import InformationTable from "./InformationTable";
@@ -24,6 +23,7 @@ import User from "../../components/User";
 import Balance from "../../components/Balance";
 import Voter from "../../components/Voter";
 import Proposer from "../../components/Proposer";
+import BlocksTime from "../../components/BlocksTime";
 import polkassemblyApi from "../../services/polkassembly";
 import TimelineCommentWrapper from "../../components/TimelineCommentWrapper";
 
@@ -39,6 +39,14 @@ const HeaderWrapper = styled.div`
   }
 `;
 
+const ValueWrapper = styled.span`
+margin-right: 4px;
+color: #1D253C;
+`
+const UnitWrapper = styled.span`
+color: #1D253C;
+`
+
 const TableWrapper = styled.div`
   display: grid;
   gap: 16px;
@@ -50,7 +58,7 @@ const TableWrapper = styled.div`
   }
 `;
 
-function processTimeline(proposalDetail, currentBlockHeight) {
+function processTimeline(proposalDetail, scanHeight) {
   return [
     {
       name: "Proposed",
@@ -73,11 +81,11 @@ function processTimeline(proposalDetail, currentBlockHeight) {
     ...(proposalDetail.motions || []).map((motion) => ({
       index: motion.index,
       polkassembly: polkassemblyApi.getMotionUrl(motion.index),
-      defaultUnfold: !motion.result && motion.voting?.end >= currentBlockHeight,
+      defaultUnfold: !motion.result && motion.voting?.end >= scanHeight,
       // FIXME: && motion.treasuryProposalId !== 15
       expired:
         !motion.result &&
-        motion.voting?.end < currentBlockHeight &&
+        motion.voting?.end < scanHeight &&
         motion.treasuryProposalId !== 15,
       end: motion.voting?.end,
       subTimeline: (motion.timeline || []).map((item) => ({
@@ -106,12 +114,32 @@ function processTimeline(proposalDetail, currentBlockHeight) {
               ayes = values.filter((v) => v).length;
               nays = values.length - ayes;
             }
+
+            const argItems = [];
+            if (scanHeight > 0 && !motion.result && motion.voting?.end > scanHeight) {
+              const blocks = motion.voting?.end - scanHeight;
+              argItems.push({
+                title: "Voting end",
+                value: <BlocksTime
+                  blocks={blocks}
+                  unitMapper={{ d: "Days", h: "hrs" }}
+                  ValueWrapper={ValueWrapper}
+                  UnitWrapper={UnitWrapper}
+                />,
+              });
+              argItems.push({
+                title: "Blocks",
+                value: <ValueWrapper>{blocks}</ValueWrapper>,
+              });
+            }
+
             return [
               {
                 value: (
                   <Proposer
                     address={proposer}
                     agree={motion.result && motion.result === "Approved"}
+                    args={argItems}
                     value={motion.method}
                     threshold={threshold}
                     ayes={ayes}
@@ -146,22 +174,20 @@ function processTimeline(proposalDetail, currentBlockHeight) {
       })),
     })),
     ...(proposalDetail.latestState?.state === "Awarded"
-      ? [
+      ? [{
+        name: "Awarded",
+        eventIndexer: proposalDetail.latestState?.indexer || {},
+        fields: [
           {
-            name: "Awarded",
-            eventIndexer: proposalDetail.latestState?.indexer || {},
-            fields: [
-              {
-                title: "Beneficiary",
-                value: <User address={proposalDetail.latestState?.data[2]} />,
-              },
-              {
-                title: "Balance",
-                value: <Balance value={proposalDetail.latestState?.data[1]} />,
-              },
-            ],
+            title: "Beneficiary",
+            value: <User address={proposalDetail.latestState?.data[2]} />,
           },
-        ]
+          {
+            title: "Balance",
+            value: <Balance value={proposalDetail.latestState?.data[1]} />,
+          },
+        ],
+      }]
       : []),
   ];
 }
@@ -174,16 +200,15 @@ const ProposalDetail = () => {
 
   useEffect(() => {
     dispatch(fetchProposalDetail(proposalIndex));
-    dispatch(fetchCurrentBlockHeight());
   }, [dispatch, proposalIndex]);
 
   const loadingProposalDetail = useSelector(loadingProposalDetailSelector);
   const proposalDetail = useSelector(proposalDetailSelector);
-  const currentBlockHeight = useSelector(currentBlockHeightSelector);
+  const scanHeight = useSelector(scanHeightSelector);
 
   useEffect(() => {
-    setTimelineData(processTimeline(proposalDetail, currentBlockHeight));
-  }, [proposalDetail, currentBlockHeight]);
+    setTimelineData(processTimeline(proposalDetail, scanHeight));
+  }, [proposalDetail, scanHeight]);
 
   return (
     <>
