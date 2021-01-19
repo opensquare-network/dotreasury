@@ -108,7 +108,7 @@ const BountyLifeCycleTable = ({ loading }) => {
                 {bountyDetail.updateDue ? (
                   <FlexWrapper>
                     <div>{updateDueTimeLeft ? `${updateDueTimeLeft} left` : "--"}</div>
-                    <PolygonLabel value={bountyDetail.updateDue} />
+                    <PolygonLabel value={bountyDetail.updateDue} noHover={true} />
                   </FlexWrapper>
                 ) : (
                   "--"
