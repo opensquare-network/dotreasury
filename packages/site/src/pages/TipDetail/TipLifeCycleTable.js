@@ -8,7 +8,7 @@ import TableCell from "../../components/TableCell";
 import Progress from "../../components/Progress";
 import TipCountDownLabel from "./TipCountDownLabel";
 import BarProgress from "../../components/BarProgress";
-import TimeLabel from "../../components/TimeLabel";
+import ElapsedTimeLabel from "../../components/ElapsedTimeLabel";
 import DateShow from "../../components/DateShow";
 import PolygonLabel from "../../components/PolygonLabel";
 import ExplorerLink from "../../components/ExplorerLink";
@@ -72,7 +72,7 @@ const TipLifeCycleTable = ({ loading }) => {
               <TableCell title="Status">
                 <FlexWrapper>
                   <div>{tipDetail.showStatus}</div>
-                  <TimeLabel value={tipDetail.latestState?.time} />
+                  <ElapsedTimeLabel time={tipDetail.latestState?.time} />
                 </FlexWrapper>
               </TableCell>
             </Table.Cell>

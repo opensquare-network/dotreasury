@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import Table from "../../components/Table";
 import TableLoading from "../../components/TableLoading";
 import TableCell from "../../components/TableCell";
-import TimeLabel from "../../components/TimeLabel";
+import ElapsedTimeLabel from "../../components/ElapsedTimeLabel";
 import User from "../../components/User";
 import { scanHeightSelector } from "../../store/reducers/chainSlice";
 import Label from "../../components/Label";
@@ -55,7 +55,7 @@ const BountyLifeCycleTable = ({ loading }) => {
               <TableCell title="Status">
                 <FlexWrapper>
                   <div>{bountyDetail.latestState?.state}</div>
-                  <TimeLabel value={bountyDetail.latestState?.indexer?.blockTime} />
+                  <ElapsedTimeLabel time={bountyDetail.latestState?.indexer?.blockTime} />
                 </FlexWrapper>
               </TableCell>
             </Table.Cell>
