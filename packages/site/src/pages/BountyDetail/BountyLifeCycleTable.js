@@ -29,13 +29,13 @@ const FlexWrapper = styled.div`
 const BountyLifeCycleTable = ({ loading }) => {
   const bountyDetail = useSelector(bountyDetailSelector);
   const scanHeight = useSelector(scanHeightSelector);
-  const [updateDueTimeLeft, setUpdateDueTimeLeft] = useState(0);
+  const [updateDueTimeLeft, setUpdateDueTimeLeft] = useState("");
   const isMounted = useIsMounted();
 
   useEffect(() => {
     if (bountyDetail.updateDue) {
       estimateBlocksTime(bountyDetail.updateDue - scanHeight).then(blocksTime => {
-        let timeLeft = "Unknown";
+        let timeLeft = "";
         const oneMinute = 60 * 1000;
         const oneHour = 60 * oneMinute;
         const oneDay = 24 * oneHour;
@@ -107,7 +107,7 @@ const BountyLifeCycleTable = ({ loading }) => {
               <TableCell title={"Update Due"}>
                 {bountyDetail.updateDue ? (
                   <FlexWrapper>
-                    <div>{updateDueTimeLeft} left</div>
+                    <div>{updateDueTimeLeft ? `${updateDueTimeLeft} left` : "--"}</div>
                     <PolygonLabel value={bountyDetail.updateDue} />
                   </FlexWrapper>
                 ) : (
