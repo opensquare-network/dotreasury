@@ -10,7 +10,7 @@ const {
 
 async function handleEvents(events, blockIndexer, extrinsics) {
   if (events.length <= 0) {
-    return;
+    return false;
   }
 
   let hasTargetEvents = false;

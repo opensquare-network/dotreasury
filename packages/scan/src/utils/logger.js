@@ -26,6 +26,10 @@ log4js.configure({
       appenders: [isProduction ? scanFileCategory : "out", "errors"],
       level: logLevel,
     },
+    [knownHeightsCategory]: {
+      appenders: [knownHeightsCategory, "errors"],
+      level: logLevel,
+    },
   },
 });
 
