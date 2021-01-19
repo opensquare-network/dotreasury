@@ -13,7 +13,7 @@ async function handleTipEvent(
 ) {
   const { section, method, data } = event;
   if (Modules.Treasury !== section || !TipEvents.hasOwnProperty(method)) {
-    return;
+    return false;
   }
 
   const eventData = data.toJSON();
@@ -37,6 +37,8 @@ async function handleTipEvent(
       extrinsic
     );
   }
+
+  return true;
 }
 
 module.exports = {

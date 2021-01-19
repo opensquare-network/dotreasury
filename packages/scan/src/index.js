@@ -4,14 +4,11 @@ const { getApi } = require("./api");
 const { updateHeight } = require("./chain/latestHead");
 const { deleteDataFrom } = require("./clean");
 const { getLatestHeight } = require("./chain/latestHead");
-const { sleep, logger } = require("./utils");
+const { sleep, logger, knownHeightsLogger } = require("./utils");
 const { getBlockIndexer } = require("./block/getBlockIndexer");
 const { handleExtrinsics } = require("./extrinsic");
 const { handleEvents } = require("./events");
-const {
-  knownHeights,
-  maxKnowHeightWithTreasuryOrProxyExtrinsic,
-} = require("./block/knownTreasuryBlocks");
+const { knownHeights, maxKnownHeight } = require("./block/known");
 
 async function scanKnowBlocks(toScanHeight) {
   let index = knownHeights.findIndex((height) => height >= toScanHeight);
@@ -28,11 +25,11 @@ async function main() {
   let scanHeight = await getNextScanHeight();
   await deleteDataFrom(scanHeight);
 
-  const maxHeight = maxKnowHeightWithTreasuryOrProxyExtrinsic;
-  if (scanHeight < maxHeight) {
+  const useKnowHeights = !!process.env.USE_KNOWN_HEIGHTS;
+  if (scanHeight < maxKnownHeight && useKnowHeights) {
     await scanKnowBlocks(scanHeight);
+    scanHeight = maxKnownHeight + 1;
   }
-  scanHeight = maxHeight + 1;
 
   while (true) {
     const chainHeight = getLatestHeight();
@@ -56,8 +53,20 @@ async function scanBlockByHeight(scanHeight) {
 
   const blockIndexer = getBlockIndexer(block.block);
 
-  await handleEvents(allEvents, blockIndexer, block.block.extrinsics);
-  await handleExtrinsics(block.block.extrinsics, allEvents, blockIndexer);
+  const hasTargetEvents = await handleEvents(
+    allEvents,
+    blockIndexer,
+    block.block.extrinsics
+  );
+  const hasTargetEx = await handleExtrinsics(
+    block.block.extrinsics,
+    allEvents,
+    blockIndexer
+  );
+  if (hasTargetEvents || hasTargetEx) {
+    knownHeightsLogger.info(scanHeight);
+  }
+
   logger.info(`block ${block.block.header.number.toNumber()} done`);
 }
 
