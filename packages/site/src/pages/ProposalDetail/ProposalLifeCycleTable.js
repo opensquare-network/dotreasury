@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 import Table from "../../components/Table";
 import TableLoading from "../../components/TableLoading";
 import TableCell from "../../components/TableCell";
-import ElapsedTimeLabel from "../../components/ElapsedTimeLabel";
 import DateShow from "../../components/DateShow";
 import PolygonLabel from "../../components/PolygonLabel";
 import ExplorerLink from "../../components/ExplorerLink";
@@ -76,7 +75,7 @@ const ProposalLifeCycleTable = ({ loading }) => {
               <TableCell title="Status">
                 <FlexWrapper>
                   <div>{proposalDetail.latestState?.state}</div>
-                  <ElapsedTimeLabel time={proposalDetail.latestState?.time} />
+                  <div />
                 </FlexWrapper>
               </TableCell>
             </Table.Cell>
