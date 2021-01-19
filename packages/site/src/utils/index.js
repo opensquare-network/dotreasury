@@ -66,7 +66,7 @@ export const getLinkNameAndSrc = (link) => {
   }
 
   if (!name) {
-    [, name] = url.host.match(/([^.]*)\.[a-z]+$/);
+    [, name] = url.host.match(/([^.]*)(?:\.[a-z]+)?$/);
     name = stringUpperFirst(name);
   }
   return [name, src];
