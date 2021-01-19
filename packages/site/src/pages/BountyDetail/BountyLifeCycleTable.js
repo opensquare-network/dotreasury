@@ -55,7 +55,8 @@ const BountyLifeCycleTable = ({ loading }) => {
               <TableCell title="Status">
                 <FlexWrapper>
                   <div>{bountyDetail.latestState?.state}</div>
-                  <ElapsedTimeLabel time={bountyDetail.latestState?.indexer?.blockTime} />
+                  {/* <ElapsedTimeLabel time={bountyDetail.latestState?.indexer?.blockTime} /> */}
+                  <div />
                 </FlexWrapper>
               </TableCell>
             </Table.Cell>
