@@ -1,19 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import { useSelector } from "react-redux";
 
 import Table from "../../components/Table";
 import TableLoading from "../../components/TableLoading";
 import TableCell from "../../components/TableCell";
-import ElapsedTimeLabel from "../../components/ElapsedTimeLabel";
-import TimeLabel from "../../components/TimeLabel";
-import BlocksTimeDefaultUnit from "../../components/BlocksTimeDefaultUnit";
 import User from "../../components/User";
 import { scanHeightSelector } from "../../store/reducers/chainSlice";
 import Label from "../../components/Label";
 import DateShow from "../../components/DateShow";
 import PolygonLabel from "../../components/PolygonLabel";
 import ExplorerLink from "../../components/ExplorerLink";
+import { useIsMounted } from "../../utils/hooks";
+import { estimateBlocksTime } from "../../services/chainApi";
 
 import { bountyDetailSelector } from "../../store/reducers/bountySlice";
 import { mrgap } from "../../styles";
@@ -30,6 +29,31 @@ const FlexWrapper = styled.div`
 const BountyLifeCycleTable = ({ loading }) => {
   const bountyDetail = useSelector(bountyDetailSelector);
   const scanHeight = useSelector(scanHeightSelector);
+  const [updateDueTimeLeft, setUpdateDueTimeLeft] = useState(0);
+  const isMounted = useIsMounted();
+
+  useEffect(() => {
+    if (bountyDetail.updateDue) {
+      estimateBlocksTime(bountyDetail.updateDue - scanHeight).then(blocksTime => {
+        let timeLeft = "Unknown";
+        const oneMinute = 60 * 1000;
+        const oneHour = 60 * oneMinute;
+        const oneDay = 24 * oneHour;
+        if (blocksTime > oneDay) {
+          timeLeft = `${parseInt(blocksTime/oneDay)} days`;
+        } else if (blocksTime > oneHour) {
+          timeLeft = `${parseInt(blocksTime/oneHour)} hours`;
+        } else if (blocksTime > oneMinute) {
+          timeLeft = `${parseInt(blocksTime/oneMinute)} minutes`;
+        } else {
+          timeLeft = 'less then 1 minute';
+        }
+        if (isMounted.current) {
+          setUpdateDueTimeLeft(timeLeft);
+        }
+      })
+    }
+  }, [bountyDetail, scanHeight, isMounted]);
 
   return (
     <TableLoading loading={loading}>
@@ -83,14 +107,8 @@ const BountyLifeCycleTable = ({ loading }) => {
               <TableCell title={"Update Due"}>
                 {bountyDetail.updateDue ? (
                   <FlexWrapper>
-                    <div>{bountyDetail.updateDue}</div>
-                    <TimeLabel
-                      value={
-                        <BlocksTimeDefaultUnit
-                          blocks={bountyDetail.updateDue - scanHeight}
-                        />
-                      }
-                    />
+                    <div>{updateDueTimeLeft} left</div>
+                    <PolygonLabel value={bountyDetail.updateDue} />
                   </FlexWrapper>
                 ) : (
                   "--"
