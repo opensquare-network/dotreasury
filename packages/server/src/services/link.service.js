@@ -43,7 +43,7 @@ class LinkService {
         });
 
         // Extract all links that present in reason text
-        const urlRegex = /(https?:\/\/[^ ]*)/g;
+        const urlRegex = /(https?:\/\/[^ ]+)/g;
         let match;
         while (match = urlRegex.exec(reason)) {
           const inReasonLink = match[1];

@@ -16,15 +16,18 @@
     "@koa/cors": "^3.1.0",
     "@polkadot/util": "^5.2.2",
     "@polkadot/util-crypto": "^5.2.2",
+    "argon2": "^0.27.1",
     "bignumber.js": "^9.0.1",
     "dotenv": "^8.2.0",
+    "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.0",
     "koa-bodyparser": "^4.3.0",
     "koa-helmet": "^6.0.0",
     "koa-logger": "^3.2.1",
     "koa-router": "^10.0.0",
     "mongodb": "^3.6.3",
-    "socket.io": "^3.0.4"
+    "socket.io": "^3.0.4",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/koa-router": "^7.4.1",

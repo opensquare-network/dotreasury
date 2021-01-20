@@ -1,7 +1,9 @@
 const { getTipCollection } = require("../../mongo");
-const linkService = require("../../services/link.services");
+const linkService = require("../../services/link.service");
+const commentService = require("../../services/comment.service");
 const { extractPage } = require("../../utils");
 const { normalizeTip } = require("./utils");
+const { HttpError } = require("../../exc");
 
 class TipsController {
   async getTips(ctx) {
@@ -119,6 +121,76 @@ class TipsController {
       },
       linkIndex,
     }, ctx.request.headers.signature)
+  }
+
+  // Comments API
+  async getTipComments(ctx) {
+    const tipHash = ctx.params.tipHash;
+    const blockHeight = parseInt(ctx.params.blockHeight);
+
+    const validator = async () => {
+      const tipCol = await getTipCollection();
+      const tip = await tipCol.findOne({ hash: tipHash, 'indexer.blockHeight': blockHeight });
+      if (!tip) {
+        throw new HttpError(404, "Tip not found");
+      }
+    };
+
+    ctx.body = await commentService.getComments({
+      treasuryTipId: {
+        tipHash,
+        blockHeight,
+      }
+    }, validator);
+  }
+
+  async postTipComment(ctx) {
+    const tipHash = ctx.params.tipHash;
+    const blockHeight = parseInt(ctx.params.blockHeight);
+    const { content } = ctx.request.body;
+    const user = ctx.request.user;
+    if (!content) {
+      throw new HttpError(400, "Comment content is missing");
+    }
+
+    ctx.body = await commentService.postComment({
+      treasuryTipId: {
+        tipHash,
+        blockHeight,
+      }
+    }, content, user._id);
+  }
+
+  async updateTipComment(ctx) {
+    const tipHash = ctx.params.tipHash;
+    const blockHeight = parseInt(ctx.params.blockHeight);
+    const commentId = ctx.params.commentId;
+    const { content } = ctx.request.body;
+    const user = ctx.request.user;
+    if (!content) {
+      throw new HttpError(400, "Comment content is missing");
+    }
+
+    ctx.body = await commentService.updateComment({
+      treasuryTipId: {
+        tipHash,
+        blockHeight,
+      }
+    }, commentId, content, user._id);
+  }
+
+  async deleteTipComment(ctx) {
+    const tipHash = ctx.params.tipHash;
+    const blockHeight = parseInt(ctx.params.blockHeight);
+    const commentId = ctx.params.commentId;
+    const user = ctx.request.user;
+
+    ctx.body = await commentService.deleteComment({
+      treasuryTipId: {
+        tipHash,
+        blockHeight,
+      }
+    }, commentId, user._id);
   }
 }
 
