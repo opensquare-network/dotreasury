@@ -17,11 +17,14 @@ const Header = styled(Title)`
 `;
 
 const DEFAULT_PAGE_SIZE = 20;
-const DEDAULT_QUERY_PAGE = 1;
+const DEFAULT_QUERY_PAGE = 1;
 
 const Tips = () => {
   const searchPage = parseInt(useQuery().get("page"));
-  const queryPage = searchPage && !isNaN(searchPage) && searchPage > 0 ? searchPage : DEDAULT_QUERY_PAGE;
+  const queryPage =
+    searchPage && !isNaN(searchPage) && searchPage > 0
+      ? searchPage
+      : DEFAULT_QUERY_PAGE;
 
   const [tablePage, setTablePage] = useState(queryPage);
 
@@ -36,7 +39,6 @@ const Tips = () => {
     dispatch(fetchTips(tablePage - 1, DEFAULT_PAGE_SIZE));
   }, [dispatch, tablePage]);
 
-
   return (
     <>
       <Header>Tips</Header>
@@ -46,7 +48,8 @@ const Tips = () => {
         totalPages={totalPages}
         onPageChange={(_, { activePage }) => {
           history.push({
-            search: activePage === DEDAULT_QUERY_PAGE ? null : `?page=${activePage}`
+            search:
+              activePage === DEFAULT_QUERY_PAGE ? null : `?page=${activePage}`,
           });
           setTablePage(activePage);
         }}
