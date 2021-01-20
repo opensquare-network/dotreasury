@@ -27,7 +27,8 @@
     "koa-router": "^10.0.0",
     "mongodb": "^3.6.3",
     "socket.io": "^3.0.4",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "validator": "^13.5.2"
   },
   "devDependencies": {
     "@types/koa-router": "^7.4.1",

@@ -1,5 +1,6 @@
 const argon2 = require("argon2");
 const { randomBytes } = require("crypto");
+const validator = require('validator');
 const authService = require("../../services/auth.service");
 const { getUserCollection } = require("../../mongo-admin");
 const { HttpError } = require("../../exc");
@@ -7,6 +8,26 @@ const { HttpError } = require("../../exc");
 class AuthController {
   async signup(ctx) {
     const { username, email, password } = ctx.request.body;
+
+    if (!username) {
+      throw new HttpError(400, "Username is missing");
+    }
+
+    if (!email) {
+      throw new HttpError(400, "Email is missing");
+    }
+
+    if (!password) {
+      throw new HttpError(400, "Password is missing");
+    }
+
+    if (!username.match(/^[a-z][a-z0-9_]{2,15}$/)) {
+      throw new HttpError(400, "Invalid username. It should start with alpha, and only contains alpha, numeric and underscore. The length must between 3 to 16");
+    }
+
+    if (!validator.isEmail(email)) {
+      throw new HttpError(400, "Invaild email");
+    }
 
     const userCol = await getUserCollection();
 
