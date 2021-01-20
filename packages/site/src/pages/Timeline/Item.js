@@ -1,5 +1,5 @@
 import React from "react";
-import styled, {css} from "styled-components";
+import styled, { css } from "styled-components";
 
 import Card from "../../components/Card";
 import Circle from "./Circle";
@@ -20,7 +20,9 @@ const Wrapper = styled.div`
 
 const FlexWrapper = styled.div`
   display: flex;
-  ${css`${mrgap("12px")}`}
+  ${css`
+    ${mrgap("12px")}
+  `}
   & > div:last-child {
     flex-grow: 1;
   }
@@ -29,11 +31,11 @@ const FlexWrapper = styled.div`
 const VerticalWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: sketch;
+  justify-content: stretch;
   & > div:last-child {
     flex-grow: 1;
   }
-`
+`;
 
 const TimeLableWrapper = styled.div`
   flex-grow: 1;
@@ -51,16 +53,24 @@ const CardWrapper = styled.div`
 const UnfoldButton = styled.img`
   cursor: pointer;
   display: none;
-  ${p => p.isUnfold && css`
-    transform: rotate(0.5turn);
-  `}
-`
+  ${(p) =>
+    p.isUnfold &&
+    css`
+      transform: rotate(0.5turn);
+    `}
+`;
 
 const TextMinorWrapper = styled(TextMinor)`
   white-space: nowrap;
-`
+`;
 
-const Item = ({ data, polkassembly, onUnfoldBtnClick, isUnfold, hideButtonList = false }) => {
+const Item = ({
+  data,
+  polkassembly,
+  onUnfoldBtnClick,
+  isUnfold,
+  hideButtonList = false,
+}) => {
   return (
     <Wrapper>
       <FlexWrapper>
@@ -71,16 +81,35 @@ const Item = ({ data, polkassembly, onUnfoldBtnClick, isUnfold, hideButtonList =
         <VerticalWrapper className="flex-grow">
           <FlexWrapper>
             <TimeLableWrapper>
-              <TextMinorWrapper><DateShow value={(data.extrinsicIndexer || data.eventIndexer).blockTime} /></TextMinorWrapper>
+              <TextMinorWrapper>
+                <DateShow
+                  value={(data.extrinsicIndexer || data.eventIndexer).blockTime}
+                />
+              </TextMinorWrapper>
               <Label text={data.name} />
             </TimeLableWrapper>
-            <UnfoldButton src="/imgs/btn-unfold.svg" className="unfold-btn" onClick={onUnfoldBtnClick} isUnfold={isUnfold} />
+            <UnfoldButton
+              src="/imgs/btn-unfold.svg"
+              className="unfold-btn"
+              onClick={onUnfoldBtnClick}
+              isUnfold={isUnfold}
+            />
           </FlexWrapper>
           <CardWrapper>
             <Card>
-              { data.fields.map(({ title, value }, index) => <CardItem key={index} title={title}>{value}</CardItem>) }
+              {data.fields.map(({ title, value }, index) => (
+                <CardItem key={index} title={title}>
+                  {value}
+                </CardItem>
+              ))}
             </Card>
-            { !hideButtonList && <ButtonList extrinsicIndexer={data.extrinsicIndexer} eventIndexer={data.eventIndexer} polkassembly={polkassembly} />}
+            {!hideButtonList && (
+              <ButtonList
+                extrinsicIndexer={data.extrinsicIndexer}
+                eventIndexer={data.eventIndexer}
+                polkassembly={polkassembly}
+              />
+            )}
           </CardWrapper>
         </VerticalWrapper>
       </FlexWrapper>
