@@ -97,7 +97,7 @@ function processTimeline(tipDetail, links) {
       const who = timelineItem.args.terminator;
       fields = [
         {
-          title: "Close by",
+          title: "Closed by",
           value: <User address={who} />,
         },
         {
@@ -113,7 +113,7 @@ function processTimeline(tipDetail, links) {
       const who = timelineItem.args.terminator;
       fields = [
         {
-          title: "Retract by",
+          title: "Retracted by",
           value: <User address={who} />,
         },
       ];
