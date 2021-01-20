@@ -2,22 +2,17 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import styled from "styled-components";
-import { Image } from "semantic-ui-react";
-import { useHistory } from "react-router-dom";
 import {
   fetchProposalDetail,
-  proposalDetailSelector,
   loadingProposalDetailSelector,
+  proposalDetailSelector,
 } from "../../store/reducers/proposalSlice";
-import {
-  scanHeightSelector,
-} from "../../store/reducers/chainSlice";
+import { scanHeightSelector } from "../../store/reducers/chainSlice";
 
 import InformationTable from "./InformationTable";
 import Timeline from "../Timeline";
 import Comment from "../Comment";
 import RelatedLinks from "../RelatedLinks";
-import Title from "../../components/Title";
 import ProposalLifeCycleTable from "./ProposalLifeCycleTable";
 import User from "../../components/User";
 import Balance from "../../components/Balance";
@@ -26,26 +21,15 @@ import Proposer from "../../components/Proposer";
 import BlocksTime from "../../components/BlocksTime";
 import polkassemblyApi from "../../services/polkassembly";
 import TimelineCommentWrapper from "../../components/TimelineCommentWrapper";
-
-const HeaderWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  img {
-    margin-right: 16px;
-  }
-  margin-bottom: 20px;
-  div:first-child {
-    cursor: pointer;
-  }
-`;
+import DetailGoBack from "../components/DetailGoBack";
 
 const ValueWrapper = styled.span`
-margin-right: 4px;
-color: #1D253C;
-`
+  margin-right: 4px;
+  color: #1d253c;
+`;
 const UnitWrapper = styled.span`
-color: #1D253C;
-`
+  color: #1d253c;
+`;
 
 const TableWrapper = styled.div`
   display: grid;
@@ -116,15 +100,21 @@ function processTimeline(proposalDetail, scanHeight) {
             }
 
             const argItems = [];
-            if (scanHeight > 0 && !motion.result && motion.voting?.end > scanHeight) {
+            if (
+              scanHeight > 0 &&
+              !motion.result &&
+              motion.voting?.end > scanHeight
+            ) {
               const blocks = motion.voting?.end - scanHeight;
               argItems.push({
                 title: "Voting end",
-                value: <BlocksTime
-                  blocks={blocks}
-                  ValueWrapper={ValueWrapper}
-                  UnitWrapper={UnitWrapper}
-                />
+                value: (
+                  <BlocksTime
+                    blocks={blocks}
+                    ValueWrapper={ValueWrapper}
+                    UnitWrapper={UnitWrapper}
+                  />
+                ),
               });
             }
 
@@ -169,26 +159,27 @@ function processTimeline(proposalDetail, scanHeight) {
       })),
     })),
     ...(proposalDetail.latestState?.state === "Awarded"
-      ? [{
-        name: "Awarded",
-        eventIndexer: proposalDetail.latestState?.indexer || {},
-        fields: [
+      ? [
           {
-            title: "Beneficiary",
-            value: <User address={proposalDetail.latestState?.data[2]} />,
+            name: "Awarded",
+            eventIndexer: proposalDetail.latestState?.indexer || {},
+            fields: [
+              {
+                title: "Beneficiary",
+                value: <User address={proposalDetail.latestState?.data[2]} />,
+              },
+              {
+                title: "Balance",
+                value: <Balance value={proposalDetail.latestState?.data[1]} />,
+              },
+            ],
           },
-          {
-            title: "Balance",
-            value: <Balance value={proposalDetail.latestState?.data[1]} />,
-          },
-        ],
-      }]
+        ]
       : []),
   ];
 }
 
 const ProposalDetail = () => {
-  const history = useHistory();
   const { proposalIndex } = useParams();
   const dispatch = useDispatch();
   const [timelineData, setTimelineData] = useState([]);
@@ -207,12 +198,7 @@ const ProposalDetail = () => {
 
   return (
     <>
-      <HeaderWrapper>
-        <div onClick={() => history.goBack()}>
-          <Image src="/imgs/left-arrow.svg" width={"32px"} height={"32px"} />
-        </div>
-        <Title>Detail</Title>
-      </HeaderWrapper>
+      <DetailGoBack />
       <TableWrapper>
         <InformationTable loading={loadingProposalDetail} />
         <ProposalLifeCycleTable loading={loadingProposalDetail} />
