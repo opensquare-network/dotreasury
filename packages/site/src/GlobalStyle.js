@@ -12,7 +12,9 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Inter', 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
   }
   
-  ol, ul, li {
+  ol:not(.mde-preview-content > *),
+  ul:not(.mde-preview-content > *),
+  li:not(.mde-preview-content > *) {
     list-style: none;
     margin: 0;
     padding: 0;
