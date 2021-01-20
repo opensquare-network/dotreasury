@@ -1,5 +1,6 @@
 const Router = require("koa-router");
 const proposalsController = require("./proposals.controller");
+const requireAuth = require("../../middleware/require-auth");
 
 const router = new Router();
 
@@ -11,5 +12,10 @@ router.get("/proposals/:proposalIndex", proposalsController.getProposalDetail);
 router.get("/proposals/:proposalIndex/links", proposalsController.getProposalLinks);
 router.post("/proposals/:proposalIndex/links", proposalsController.createProposalLink);
 router.delete("/proposals/:proposalIndex/links/:linkIndex", proposalsController.deleteProposalLink);
+
+router.get("/proposals/:proposalIndex/comments", proposalsController.getProposalComments);
+router.post("/proposals/:proposalIndex/comments", requireAuth, proposalsController.postProposalComment);
+router.patch("/proposals/:proposalIndex/comments/:commentId", requireAuth, proposalsController.updateProposalComment);
+router.delete("/proposals/:proposalIndex/comments/:commentId", requireAuth, proposalsController.deleteProposalComment);
 
 module.exports = router;
