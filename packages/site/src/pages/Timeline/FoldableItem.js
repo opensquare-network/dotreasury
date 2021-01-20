@@ -27,7 +27,7 @@ const FlexWrapper = styled.div`
 const VerticalWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: sketch;
+  justify-content: stretch;
   & > div:last-child {
     flex-grow: 1;
   }
