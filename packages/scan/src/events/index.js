@@ -10,9 +10,10 @@ const {
 
 async function handleEvents(events, blockIndexer, extrinsics) {
   if (events.length <= 0) {
-    return;
+    return false;
   }
 
+  let hasTargetEvents = false;
   for (let sort = 0; sort < events.length; sort++) {
     const { event, phase } = events[sort];
 
@@ -25,21 +26,50 @@ async function handleEvents(events, blockIndexer, extrinsics) {
         ...normalizeExtrinsic(extrinsic, events),
       };
 
-      await handleTipEvent(event, normalizedExtrinsic, blockIndexer, extrinsic);
-      await handleCouncilEvent(event, normalizedExtrinsic, extrinsic);
-      await handleBountyEventWithExtrinsic(
+      const hasTipEvents = await handleTipEvent(
+        event,
+        normalizedExtrinsic,
+        blockIndexer,
+        extrinsic
+      );
+      const hasCouncilEvents = await handleCouncilEvent(
         event,
         normalizedExtrinsic,
         extrinsic
       );
+      const hasBountyEvents = await handleBountyEventWithExtrinsic(
+        event,
+        normalizedExtrinsic,
+        extrinsic
+      );
+
+      if (hasTipEvents || hasCouncilEvents || hasBountyEvents) {
+        hasTargetEvents = true;
+      }
     } else {
       const eventIndexer = { ...blockIndexer, sort };
-      await handleBountyBecameActiveEvent(event, eventIndexer);
-      await handleBurntEvent(event, eventIndexer);
+      const hasBountyEvents = await handleBountyBecameActiveEvent(
+        event,
+        eventIndexer
+      );
+      const hasBurntEvents = await handleBurntEvent(event, eventIndexer);
+      if (hasBountyEvents || hasBurntEvents) {
+        hasTargetEvents = true;
+      }
     }
 
-    await handleProposalEvent(event, blockIndexer, normalizedExtrinsic, sort);
+    const hasProposalEvents = await handleProposalEvent(
+      event,
+      blockIndexer,
+      normalizedExtrinsic,
+      sort
+    );
+    if (hasProposalEvents) {
+      hasTargetEvents = true;
+    }
   }
+
+  return hasTargetEvents;
 }
 
 module.exports = {

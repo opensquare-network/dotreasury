@@ -2,9 +2,7 @@ const { CouncilEvents, Modules } = require("../../utils/constants");
 const { getMotionLatestIndex } = require("./utils");
 const { getMotionCollection } = require("../../mongo");
 const { motionActions } = require("./constants");
-const {
-  firstKnowCouncilCloseEventHeight,
-} = require("../../block/knownCouncilEventBlocks");
+const { firstKnowCouncilCloseEventHeight } = require("../../block/known");
 const { getMotionVoting, getMotionVotingByHeight } = require("./utils");
 const {
   updateProposalStateByProposeOrVote,
@@ -16,7 +14,7 @@ const { handleProposedForBounty } = require("./bountyMotion");
 async function handleCouncilEvent(event, normalizedExtrinsic, extrinsic) {
   const { section, method } = event;
   if (Modules.Council !== section) {
-    return;
+    return false;
   }
 
   if (method === CouncilEvents.Proposed) {
@@ -33,6 +31,8 @@ async function handleCouncilEvent(event, normalizedExtrinsic, extrinsic) {
   } else if (method === CouncilEvents.Closed) {
     await handleClosedEvent(event, normalizedExtrinsic);
   }
+
+  return true;
 }
 
 async function handleVoteEvent(event, normalizedExtrinsic) {

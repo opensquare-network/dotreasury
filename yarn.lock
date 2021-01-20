@@ -2134,6 +2134,13 @@
   resolved "https://registry.npm.taobao.org/@types/cors/download/@types/cors-2.8.9.tgz#4bd1fcac72eca8d5bec93e76c7fdcbdc1bc2cd4a"
   integrity sha1-S9H8rHLsqNW+yT52x/3L3BvCzUo=
 
+"@types/engine.io@*":
+  version "3.1.5"
+  resolved "https://registry.npm.taobao.org/@types/engine.io/download/@types/engine.io-3.1.5.tgz#ed280bec61d6226c0bfcb03f2820c4e65391dac2"
+  integrity sha1-7SgL7GHWImwL/LA/KCDE5lOR2sI=
+  dependencies:
+    "@types/node" "*"
+
 "@types/eslint@^7.2.4":
   version "7.2.6"
   resolved "https://registry.npm.taobao.org/@types/eslint/download/@types/eslint-7.2.6.tgz?cache=0&sync_timestamp=1606904828220&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Feslint%2Fdownload%2F%40types%2Feslint-7.2.6.tgz#5e9aff555a975596c03a98b59ecd103decc70c3c"
@@ -2356,6 +2363,22 @@
   version "1.4.34"
   resolved "https://registry.npm.taobao.org/@types/socket.io-client/download/@types/socket.io-client-1.4.34.tgz#8ca5f5732a9ad92b79aba71083cda5e5821e3ed9"
   integrity sha1-jKX1cyqa2St5q6cQg82l5YIePtk=
+
+"@types/socket.io-parser@*":
+  version "2.2.1"
+  resolved "https://registry.npm.taobao.org/@types/socket.io-parser/download/@types/socket.io-parser-2.2.1.tgz#dc94aed303839487f4975249a32a548109ea3647"
+  integrity sha1-3JSu0wODlIf0l1JJoypUgQnqNkc=
+  dependencies:
+    "@types/node" "*"
+
+"@types/socket.io@^2.1.12":
+  version "2.1.12"
+  resolved "https://registry.npm.taobao.org/@types/socket.io/download/@types/socket.io-2.1.12.tgz#91187f826a5dd2ed1113e935815bbaf9627e5cb0"
+  integrity sha1-kRh/gmpd0u0RE+k1gVu6+WJ+XLA=
+  dependencies:
+    "@types/engine.io" "*"
+    "@types/node" "*"
+    "@types/socket.io-parser" "*"
 
 "@types/source-list-map@*":
   version "0.1.2"
