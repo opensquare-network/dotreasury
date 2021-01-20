@@ -6,6 +6,7 @@ const {
   handleTipByProxy,
   handleTipByMultiSig,
   handleTip,
+  handleTipByBatch,
 } = require("./treasury/tip");
 const { handleBountyAcceptCurator } = require("./treasury/bounty");
 
@@ -36,6 +37,7 @@ async function handleExtrinsics(extrinsics = [], allEvents = [], indexer) {
       normalizedExtrinsic,
       extrinsic
     );
+    const isBatch = await handleTipByBatch(normalizedExtrinsic, extrinsic);
 
     const isAcceptCurator = await handleBountyAcceptCurator(
       normalizedExtrinsic
@@ -46,6 +48,7 @@ async function handleExtrinsics(extrinsics = [], allEvents = [], indexer) {
       isTipEx ||
       isProxyTip ||
       isMultisigTip ||
+      isBatch ||
       isAcceptCurator
     ) {
       hasTargetEx = true;
