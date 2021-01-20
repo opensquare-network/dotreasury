@@ -22,16 +22,19 @@ export default function TimePeriod({
   UnitWrapper = DefaultUnitWrapper,
   SectionWrapper = DefaultSectionWrapper,
   TimeWrapper = DefaultTimeWrapper,
-  unitMapper = {}
+  unitMapper = {},
+  pluralUnitMapper = {}
 }) {
   unitMapper = Object.assign({}, defaultUnitMapper, unitMapper)
   const nornalizedTime = normalizeTimeDuration(time, maxSection);
-  return <TimeWrapper>
-    { nornalizedTime.map(sec =>
+  return (
+    <TimeWrapper>
+      {nornalizedTime.map(sec =>
         <SectionWrapper key={sec[1]}>
           <ValueWrapper>{sec[0]}</ValueWrapper>
-          <UnitWrapper>{unitMapper[sec[1]]}</UnitWrapper>
+          <UnitWrapper>{(sec[0] > 1 && pluralUnitMapper[sec[1]]) || unitMapper[sec[1]]}</UnitWrapper>
         </SectionWrapper>
-      ) }
+      )}
     </TimeWrapper>
+  )
 }

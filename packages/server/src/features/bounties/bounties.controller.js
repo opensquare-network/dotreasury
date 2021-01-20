@@ -1,6 +1,6 @@
 const { getBountyCollection, getMotionCollection } = require("../../mongo");
 const { extractPage } = require("../../utils");
-const linkService = require("../../services/link.services");
+const linkService = require("../../services/link.service");
 
 const bountyStatus = (bounty) => bounty.status?.CuratorProposed || bounty.status?.Active || bounty.status?.PendingPayout;
 const bountyStatusName = (bounty) => Object.keys(bounty.status)[0];

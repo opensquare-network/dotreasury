@@ -5,7 +5,7 @@ const { getBountyCollection } = require("../../mongo");
 async function handleBountyAcceptCurator(normalizedExtrinsic) {
   const { section, name, args } = normalizedExtrinsic;
   if (section !== Modules.Treasury || BountyMethods.acceptCurator !== name) {
-    return;
+    return false;
   }
 
   const { bounty_id: bountyIndex } = args;
@@ -27,6 +27,8 @@ async function handleBountyAcceptCurator(normalizedExtrinsic) {
       $push: { timeline: timelineItem },
     }
   );
+
+  return true;
 }
 
 module.exports = {

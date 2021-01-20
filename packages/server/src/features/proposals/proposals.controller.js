@@ -1,6 +1,8 @@
 const { getProposalCollection, getMotionCollection } = require("../../mongo");
 const { extractPage } = require("../../utils");
-const linkService = require("../../services/link.services");
+const linkService = require("../../services/link.service");
+const commentService = require("../../services/comment.service");
+const { HttpError } = require("../../exc");
 
 class ProposalsController {
   async getProposals(ctx) {
@@ -139,6 +141,51 @@ class ProposalsController {
       },
       ctx.request.headers.signature
     );
+  }
+
+  // Comments API
+  async getProposalComments(ctx) {
+    const proposalIndex = parseInt(ctx.params.proposalIndex);
+
+    const validator = async () => {
+      const proposalCol = await getProposalCollection();
+      const proposal = await proposalCol.findOne({ proposalIndex });
+      if (!proposal) {
+        throw new HttpError(404, "Proposal not found");
+      }
+    };
+
+    ctx.body = await commentService.getComments({ treasuryProposalId: proposalIndex }, validator);
+  }
+
+  async postProposalComment(ctx) {
+    const proposalIndex = parseInt(ctx.params.proposalIndex);
+    const { content } = ctx.request.body;
+    const user = ctx.request.user;
+    if (!content) {
+      throw new HttpError(400, "Comment content is missing");
+    }
+    ctx.body = await commentService.postComment({ treasuryProposalId: proposalIndex }, content, user._id);
+  }
+
+  async updateProposalComment(ctx) {
+    const proposalIndex = parseInt(ctx.params.proposalIndex);
+    const commentId = ctx.params.commentId;
+    const { content } = ctx.request.body;
+    const user = ctx.request.user;
+    if (!content) {
+      throw new HttpError(400, "Comment content is missing");
+    }
+    ctx.body = await commentService.updateComment(
+      { treasuryProposalId: proposalIndex }, commentId, content, user._id);
+  }
+
+  async deleteProposalComment(ctx) {
+    const proposalIndex = parseInt(ctx.params.proposalIndex);
+    const commentId = ctx.params.commentId;
+    const user = ctx.request.user;
+    ctx.body = await commentService.deleteComment(
+      { treasuryProposalId: proposalIndex }, commentId, user._id);
   }
 }
 

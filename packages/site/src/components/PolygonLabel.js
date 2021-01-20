@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Image } from "semantic-ui-react";
 
 import {TEXT_DARK_MAJOR, TEXT_DARK_MINOR} from "../constants"
@@ -17,17 +17,19 @@ const Label = styled.span`
   font-size: 14px;
   line-height: 24px;
   color: ${TEXT_DARK_MINOR};
-  &:hover {
-    color: ${TEXT_DARK_MAJOR};
-    text-decoration-line: underline;
-  }
+  ${p => (!p.noHover) && css`
+    &:hover {
+      color: ${TEXT_DARK_MAJOR};
+      text-decoration-line: underline;
+    }
+  `}
 `;
 
-const PolygonLabel = ({ value }) => {
+const PolygonLabel = ({ value, noHover }) => {
   return (
     <Wrapper>
       <Image src={"/imgs/polygon.svg"} />
-      <Label>{value}</Label>
+      <Label noHover={noHover}>{value}</Label>
     </Wrapper>
   );
 };

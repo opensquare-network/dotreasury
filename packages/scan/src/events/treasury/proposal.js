@@ -17,7 +17,7 @@ async function handleProposalEvent(
 ) {
   const { section, method, data } = event;
   if (Modules.Treasury !== section || !isProposalEvent(method)) {
-    return;
+    return false;
   }
 
   const eventData = data.toJSON();
@@ -34,6 +34,8 @@ async function handleProposalEvent(
       eventSort
     );
   }
+
+  return true;
 }
 
 module.exports = {

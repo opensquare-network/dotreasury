@@ -1,4 +1,4 @@
-const { logger } = require("./logger");
+const { logger, knownHeightsLogger } = require("./logger");
 
 const sleep = (time) => {
   return new Promise((resolve) => {
@@ -42,4 +42,5 @@ module.exports = {
   sleep,
   median,
   logger,
+  knownHeightsLogger,
 };

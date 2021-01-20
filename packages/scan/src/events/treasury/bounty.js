@@ -15,7 +15,7 @@ function isBountyEvent(method) {
 async function handleBountyEventWithExtrinsic(event, normalizedExtrinsic) {
   const { section, method } = event;
   if (Modules.Treasury !== section || !isBountyEvent(method)) {
-    return;
+    return false;
   }
 
   if (method === BountyEvents.BountyProposed) {
@@ -31,6 +31,8 @@ async function handleBountyEventWithExtrinsic(event, normalizedExtrinsic) {
   ) {
     await handleBountyStateUpdateEvent(event, normalizedExtrinsic);
   }
+
+  return true;
 }
 
 async function handleBountyStateUpdateEvent(event, normalizedExtrinsic) {
@@ -61,7 +63,7 @@ async function handleBountyBecameActiveEvent(event, eventIndexer) {
     Modules.Treasury !== section ||
     method !== BountyEvents.BountyBecameActive
   ) {
-    return;
+    return false;
   }
 
   const eventData = event.data.toJSON();
@@ -82,6 +84,8 @@ async function handleBountyBecameActiveEvent(event, eventIndexer) {
       $push: { timeline: timelineItem },
     }
   );
+
+  return true;
 }
 
 async function handleProposedEvent(event, normalizedExtrinsic) {

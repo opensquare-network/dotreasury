@@ -1,10 +1,18 @@
 const { extractExtrinsicEvents, getExtrinsicSigner } = require("../utils");
 const { isExtrinsicSuccess } = require("../utils");
 const { u8aToHex } = require("@polkadot/util");
-const { extractExtrinsicBusinessData } = require("./extractBusiness");
+const {
+  handleCloseTipExtrinsic,
+  handleTipByProxy,
+  handleTipByMultiSig,
+  handleTip,
+  handleTipByBatch,
+} = require("./treasury/tip");
+const { handleBountyAcceptCurator } = require("./treasury/bounty");
 
 async function handleExtrinsics(extrinsics = [], allEvents = [], indexer) {
   let index = 0;
+  let hasTargetEx = false;
   for (const extrinsic of extrinsics) {
     const events = extractExtrinsicEvents(allEvents, index);
     const normalized = normalizeExtrinsic(extrinsic, events);
@@ -12,14 +20,42 @@ async function handleExtrinsics(extrinsics = [], allEvents = [], indexer) {
       ...indexer,
       index: index++,
     };
-    await extractExtrinsicBusinessData(
-      {
-        ...normalized,
-        extrinsicIndexer,
-      },
+
+    if (!normalized.isSuccess) {
+      continue;
+    }
+
+    const normalizedExtrinsic = {
+      ...normalized,
+      extrinsicIndexer,
+    };
+
+    const isCloseTipEx = await handleCloseTipExtrinsic(normalizedExtrinsic);
+    const isTipEx = await handleTip(normalizedExtrinsic);
+    const isProxyTip = await handleTipByProxy(normalizedExtrinsic, extrinsic);
+    const isMultisigTip = await handleTipByMultiSig(
+      normalizedExtrinsic,
       extrinsic
     );
+    const isBatch = await handleTipByBatch(normalizedExtrinsic, extrinsic);
+
+    const isAcceptCurator = await handleBountyAcceptCurator(
+      normalizedExtrinsic
+    );
+
+    if (
+      isCloseTipEx ||
+      isTipEx ||
+      isProxyTip ||
+      isMultisigTip ||
+      isBatch ||
+      isAcceptCurator
+    ) {
+      hasTargetEx = true;
+    }
   }
+
+  return hasTargetEx;
 }
 
 function normalizeExtrinsic(extrinsic, events) {

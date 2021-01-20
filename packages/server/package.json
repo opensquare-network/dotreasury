@@ -6,7 +6,8 @@
     "node": ">=15.0.0"
   },
   "scripts": {
-    "prod": "pm2 start ecosystem.config.js --env production",
+    "prod": "pm2 start ecosystem.config.js --only doTreasury-api --env production",
+    "staging": "pm2 start ecosystem.config.js --only doTreasury-staging-api --env production",
     "dev": "pm2 start ecosystem.config.js --env development",
     "mig:prod": "pm2 start migration.config.js --env production",
     "mig:dev": "pm2 start migration.config.js --env development"
@@ -15,18 +16,22 @@
     "@koa/cors": "^3.1.0",
     "@polkadot/util": "^5.2.2",
     "@polkadot/util-crypto": "^5.2.2",
+    "argon2": "^0.27.1",
     "bignumber.js": "^9.0.1",
     "dotenv": "^8.2.0",
+    "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.0",
     "koa-bodyparser": "^4.3.0",
     "koa-helmet": "^6.0.0",
     "koa-logger": "^3.2.1",
     "koa-router": "^10.0.0",
     "mongodb": "^3.6.3",
-    "socket.io": "^3.0.4"
+    "socket.io": "^3.0.4",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/koa-router": "^7.4.1",
+    "@types/socket.io": "^2.1.12",
     "pm2": "^4.5.1"
   }
 }

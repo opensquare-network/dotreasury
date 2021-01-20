@@ -10,6 +10,7 @@ const chainSlice = createSlice({
       blockNumber: 0,
       periodTime: 0,
       restTime: 0,
+      restBlocks: 0,
       progress: 0,
     }
   },
@@ -41,6 +42,7 @@ export const fetchSpendPeriod = () => async (dispatch) => {
   dispatch(setSpendPeriod({
     blockNumber: spendPeriod.toNumber(),
     periodTime: await estimateBlocksTime(spendPeriod),
+    restBlocks: spendPeriod.sub(goneBlocks).toNumber(),
     restTime: await estimateBlocksTime(spendPeriod.sub(goneBlocks)),
     progress: goneBlocks.muln(100).div(spendPeriod).toNumber(),
   }));
