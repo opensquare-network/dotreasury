@@ -59,13 +59,11 @@ export const StyledTextArea = styled.div`
     .grip {
 			border-top: none;
 			color: #A6ACB3;
-
 			.icon {
 				margin-bottom: 1rem;
 			}
 		}
 
-	  
 	  .mde-header {
 	    display: flex;
 	    justify-content: space-between;

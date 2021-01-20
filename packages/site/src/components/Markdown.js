@@ -5,7 +5,6 @@ import ReactMarkdown from "react-markdown";
 const Wrapper = styled.div`
 
   &, &.mde-preview-content {
-    
     /* font-size: md; */
     margin-bottom: 2rem;
     overflow-wrap: break-word;
