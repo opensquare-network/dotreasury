@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { Button } from "semantic-ui-react";
@@ -20,18 +20,18 @@ const Wrapper = styled.div`
 `;
 
 const Input = ({ type, index }) => {
+  const [content, setContent] = useState("");
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(isLoggedInSelector);
   const accessToken = useSelector(accessTokenSelector);
 
   const post = () => {
-    const content = 'test string';
     dispatch(postComment(type, index, content, accessToken));
   };
 
   return (
     <>
-      <MarkdownEditor />
+      <MarkdownEditor md={content} onChange={setContent} />
       <Wrapper>
         <Button primary disabled={!isLoggedIn} onClick={post}>Confirm</Button>
       </Wrapper>

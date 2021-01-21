@@ -146,8 +146,7 @@ export const StyledTextArea = styled.div`
 
 `;
 
-const MarkdownEditor = (props) => {
-  const [value, setValue] = React.useState("");
+const MarkdownEditor = ({ md, onChange }) => {
   const [selectedTab, setSelectedTab] = React.useState('write');
 
   const loadSuggestions = async (text) => {
@@ -166,14 +165,14 @@ const MarkdownEditor = (props) => {
   return (
     <StyledTextArea className="container">
       <ReactMde 
-        value={value}
-        onChange={setValue}
+        value={md}
+        onChange={onChange}
         generateMarkdownPreview={markdown => Promise.resolve(<Markdown isPreview={true} md={markdown} />) }
         onTabChange={setSelectedTab}
         selectedTab={selectedTab}
         loadSuggestions={loadSuggestions}
         toolbarCommands={[['bold', 'header', 'link', 'quote', 'strikethrough', 'code', 'image', 'ordered-list', 'unordered-list']]}
-        {...props}
+        // {...props}
       />
     </StyledTextArea>
   )
