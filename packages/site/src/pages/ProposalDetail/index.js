@@ -208,7 +208,7 @@ const ProposalDetail = () => {
   return (
     <>
       <HeaderWrapper>
-        <div onClick={() => history.goBack()}>
+        <div onClick={() => history.push("/proposals")}>
           <Image src="/imgs/left-arrow.svg" width={"32px"} height={"32px"} />
         </div>
         <Title>Detail</Title>
