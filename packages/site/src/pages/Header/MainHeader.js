@@ -1,14 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
 
 import Logo from "./Logo";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import ScanHeight from "./ScanHeight";
-import {
-  isLoggedInSelector,
-  setLoggedInUser,
-} from "../../store/reducers/userSlice";
+import UserLogin from "./UserLogin";
 
 const Wrapper = styled.header`
   height: 68px;
@@ -30,9 +26,6 @@ margin-left: 24px;
 `
 
 const HeaderExamplePage = () => {
-  const dispatch = useDispatch();
-  const isLoggedIn = useSelector(isLoggedInSelector);
-
   return (
     <Wrapper>
       <Left>
@@ -44,22 +37,7 @@ const HeaderExamplePage = () => {
         </ScanHeightWrapper>
       </Left>
       <Right>
-        {
-          isLoggedIn
-          ? (
-            <Link to="?#" onClick={(e) => {
-              e.preventDefault();
-              dispatch(setLoggedInUser(null));
-            }}>
-              Logout
-            </Link>
-          )
-          : (
-            <NavLink to="/login">
-              Login
-            </NavLink>
-          )
-        }
+        <UserLogin />
       </Right>
     </Wrapper>
   )
