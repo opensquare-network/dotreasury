@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import styled from "styled-components";
-import { Image } from "semantic-ui-react";
-import { useHistory } from "react-router-dom";
 import { hexToString } from "@polkadot/util";
 import {
   fetchTipCountdown,
@@ -22,25 +20,13 @@ import InformationTable from "./InformationTable";
 import Timeline from "../Timeline";
 import Comment from "../Comment";
 import RelatedLinks from "../RelatedLinks";
-import Title from "../../components/Title";
 import User from "../../components/User";
 import Balance from "../../components/Balance";
 import TipLifeCycleTable from "./TipLifeCycleTable";
 import Funder from "./Funder";
 import ClickableLink from "../../components/ClickableLink";
 import TimelineCommentWrapper from "../../components/TimelineCommentWrapper";
-
-const HeaderWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  img {
-    margin-right: 16px;
-  }
-  margin-bottom: 20px;
-  div:first-child {
-    cursor: pointer;
-  }
-`;
+import DetailGoBack from "../components/DetailGoBack";
 
 const TableWrapper = styled.div`
   display: grid;
@@ -75,7 +61,12 @@ function processTimeline(tipDetail, links) {
         },
       ];
     } else if (timelineItem.method === "tipNew") {
-      const { tip_value: tipValue, who: beneficiary, reason, finder } = timelineItem.args;
+      const {
+        tip_value: tipValue,
+        who: beneficiary,
+        reason,
+        finder,
+      } = timelineItem.args;
       const reasonText = hexToString(reason);
       fields = [
         {
@@ -99,14 +90,14 @@ function processTimeline(tipDetail, links) {
       const { value: tipValue, tipper: funder } = timelineItem.args;
       fields = [
         {
-          value: <Funder address={funder} value={tipValue} />
-        }
+          value: <Funder address={funder} value={tipValue} />,
+        },
       ];
     } else if (timelineItem.method === "closeTip") {
       const who = timelineItem.args.terminator;
       fields = [
         {
-          title: "Close by",
+          title: "Closed by",
           value: <User address={who} />,
         },
         {
@@ -122,7 +113,7 @@ function processTimeline(tipDetail, links) {
       const who = timelineItem.args.terminator;
       fields = [
         {
-          title: "Retract by",
+          title: "Retracted by",
           value: <User address={who} />,
         },
       ];
@@ -137,7 +128,6 @@ function processTimeline(tipDetail, links) {
 }
 
 const TipDetail = () => {
-  const history = useHistory();
   const { tipId } = useParams();
   const dispatch = useDispatch();
   const [timelineData, setTimelineData] = useState([]);
@@ -160,22 +150,14 @@ const TipDetail = () => {
 
   return (
     <>
-      <HeaderWrapper>
-        <div onClick={() => history.goBack()}>
-          <Image src="/imgs/left-arrow.svg" width={"32px"} height={"32px"} />
-        </div>
-        <Title>Detail</Title>
-      </HeaderWrapper>
+      <DetailGoBack />
       <TableWrapper>
         <InformationTable loading={loadingTipDetail} />
         <TipLifeCycleTable loading={loadingTipDetail} />
       </TableWrapper>
       <RelatedLinks type="tips" index={new TipIndex(tipId)} />
       <TimelineCommentWrapper>
-        <Timeline
-          data={timelineData}
-          loading={loadingTipDetail}
-        />
+        <Timeline data={timelineData} loading={loadingTipDetail} />
         <Comment />
       </TimelineCommentWrapper>
     </>
