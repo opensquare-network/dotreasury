@@ -38,14 +38,12 @@ export const fetchComments = (type, index) => async (dispatch) => {
   dispatch(setComments(result || []));
 };
 
-const getAccessToken = () => localStorage.getItem('token');
-
-export const postComment = (type, index, content) => async (dispatch) => {
+export const postComment = (type, index, content, accessToken) => async (dispatch) => {
   await api.fetch(`/${type}/${index}/comments`, {}, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${getAccessToken()}`
+      'Authorization': `Bearer ${accessToken}`
     },
     body: JSON.stringify({ content }),
   });
@@ -53,12 +51,12 @@ export const postComment = (type, index, content) => async (dispatch) => {
   dispatch(fetchComments(type, index));
 }
 
-export const updateComment = (type, index, content) => async (dispatch) => {
+export const updateComment = (type, index, content, accessToken) => async (dispatch) => {
   await api.fetch(`/${type}/${index}/comments`, {}, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${getAccessToken()}`
+      'Authorization': `Bearer ${accessToken}`
     },
     body: JSON.stringify({ content }),
   });
@@ -66,11 +64,11 @@ export const updateComment = (type, index, content) => async (dispatch) => {
   dispatch(fetchComments(type, index));
 }
 
-export const removeComment = (type, index, commentId) => async (dispatch) => {
+export const removeComment = (type, index, commentId, accessToken) => async (dispatch) => {
   await api.fetch(`/${type}/${index}/comments/${commentId}`, {}, {
     method: 'DELETE',
     headers: {
-      'Authorization': `Bearer ${getAccessToken()}`
+      'Authorization': `Bearer ${accessToken}`
     },
   });
   dispatch(fetchComments(type, index));

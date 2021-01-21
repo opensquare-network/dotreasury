@@ -3,15 +3,15 @@ import { createSelector, createSlice } from '@reduxjs/toolkit'
 const userSlice = createSlice({
   name: 'users',
   initialState: {
-    loggedInUser: null
+    loggedInUser: JSON.parse(localStorage.getItem('loggedInUser'))
   },
   reducers: {
     setLoggedInUser(state, { payload }) {
       state.loggedInUser = payload;
       if (payload === null) {
-        localStorage.removeItem('token');
+        localStorage.removeItem('loggedInUser');
       } else {
-        localStorage.setItem('token', payload.accessToken);
+        localStorage.setItem('loggedInUser', JSON.stringify(payload));
       }
     },
   }
@@ -22,6 +22,7 @@ export const {
 } = userSlice.actions
 
 export const loggedInUserSelector = state => state.users.loggedInUser;
-export const isLoggedInSelector = createSelector(loggedInUserSelector, loggedInUser => !!loggedInUser);
+export const accessTokenSelector = createSelector(loggedInUserSelector, user => user?.accessToken);
+export const isLoggedInSelector = createSelector(loggedInUserSelector, user => !!user);
 
 export default userSlice.reducer;

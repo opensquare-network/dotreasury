@@ -10,6 +10,7 @@ import {
 } from "../../store/reducers/commentSlice";
 import {
   isLoggedInSelector,
+  accessTokenSelector,
 } from "../../store/reducers/userSlice";
 
 const Wrapper = styled.div`
@@ -21,10 +22,11 @@ const Wrapper = styled.div`
 const Input = ({ type, index }) => {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(isLoggedInSelector);
+  const accessToken = useSelector(accessTokenSelector);
 
   const post = () => {
     const content = 'test string';
-    dispatch(postComment(type, index, content));
+    dispatch(postComment(type, index, content, accessToken));
   };
 
   return (
