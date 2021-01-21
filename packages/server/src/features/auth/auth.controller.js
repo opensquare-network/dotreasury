@@ -58,11 +58,14 @@ class AuthController {
     }
 
     const insertedUser = result.ops[0];
-    const accessToken = authService.getSignedToken(insertedUser);
+    const accessToken = await authService.getSignedToken(insertedUser);
+    const refreshToken = await authService.getRefreshToken(insertedUser);
+
     ctx.body = {
       username: insertedUser.username,
       email: insertedUser.email,
       accessToken,
+      refreshToken,
     };
   }
 
@@ -95,15 +98,29 @@ class AuthController {
       throw new HttpError(401, "Incorrect password.");
     }
 
-    const accessToken = authService.getSignedToken(user);
+    const accessToken = await authService.getSignedToken(user);
+    const refreshToken = await authService.getRefreshToken(user);
 
     ctx.body = {
       username: user.username,
       email: user.email,
       accessToken,
+      refreshToken,
     }
   }
 
+  async refresh(ctx) {
+    const { refreshToken } = ctx.request.body;
+
+    if (!refreshToken) {
+      throw new HttpError(400, "Refresh token is missing");
+    }
+
+    const accessToken = await authService.refresh(refreshToken);
+    ctx.body = {
+      accessToken
+    };
+  }
 }
 
 module.exports = new AuthController();
