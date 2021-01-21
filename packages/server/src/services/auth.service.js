@@ -22,16 +22,16 @@ class AuthService {
   getSignedToken(user) {
     const content = {
       id: user._id,
-			email: user.email,
-			username: user.username,
-			iat: Math.floor(Date.now() / 1000),
-		};
+      email: user.email,
+      username: user.username,
+      iat: Math.floor(Date.now() / 1000),
+    };
 
-		return jwt.sign(
-			content,
-			process.env.JWT_SECRET_KEY,
-			{ expiresIn: '1h' }
-		);
+    return jwt.sign(
+      content,
+      process.env.JWT_SECRET_KEY,
+      { expiresIn: '1h' }
+    );
   }
 }
 
