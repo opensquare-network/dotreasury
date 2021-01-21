@@ -67,7 +67,7 @@ export const getLinkNameAndSrc = (link) => {
     }
 
     if (!name) {
-      [, name] = url.host.match(/([^.]*)(\.[a-z]+)?$/);
+      [, name] = url.host.match(/([^.]*)(?:\.[a-z]+)?$/);
       if (['co', 'com'].includes(name)) {
         const m = url.host.match(/([^.]*)(?:\.[a-z]+){2}$/);
         if (m) {
