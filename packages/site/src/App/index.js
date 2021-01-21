@@ -20,6 +20,8 @@ import TipDetail from "../pages/TipDetail";
 import ProposalDetail from "../pages/ProposalDetail";
 import BountyDetail from "../pages/BountyDetail";
 import Overview from "../pages/Overview";
+import Login from "../pages/Login";
+import Register from "../pages/Register";
 
 export default function App() {
   return (
@@ -37,6 +39,8 @@ export default function App() {
             <Route exact path="/proposals/:proposalIndex" component={ProposalDetail} />
             <Route exact path="/bounties/:bountyIndex" component={BountyDetail} />
             <Route exact path="/burnt" component={Burnt} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/register" component={Register} />
             <Redirect to="/" />
           </Switch>
         </Container>

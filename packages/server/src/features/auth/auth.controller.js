@@ -60,12 +60,22 @@ class AuthController {
     const insertedUser = result.ops[0];
     const accessToken = authService.getSignedToken(insertedUser);
     ctx.body = {
+      username: insertedUser.username,
+      email: insertedUser.email,
       accessToken,
     };
   }
 
   async login(ctx) {
     const { username, email, password } = ctx.request.body;
+
+    if (!email && !username) {
+      throw new HttpError(400, "Email or username must be provided");
+    }
+
+    if (!password) {
+      throw new HttpError(400, "Password is missing");
+    }
 
     const userCol = await getUserCollection();
 
@@ -88,6 +98,8 @@ class AuthController {
     const accessToken = authService.getSignedToken(user);
 
     ctx.body = {
+      username: user.username,
+      email: user.email,
       accessToken,
     }
   }
