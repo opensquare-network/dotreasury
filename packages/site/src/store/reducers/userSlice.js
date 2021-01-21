@@ -1,13 +1,18 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit'
 
 const userSlice = createSlice({
-  name: 'user',
+  name: 'users',
   initialState: {
-    user: null,
+    loggedInUser: null
   },
   reducers: {
     setLoggedInUser(state, { payload }) {
-      state.user = payload;
+      state.loggedInUser = payload;
+      if (payload === null) {
+        localStorage.removeItem('token');
+      } else {
+        localStorage.setItem('token', payload.accessToken);
+      }
     },
   }
 });
@@ -16,7 +21,7 @@ export const {
   setLoggedInUser,
 } = userSlice.actions
 
-export const loggedInUserSelector = state => state.user.user;
-export const isLoggedInSelector = createSelector(userSelector, user => !!user);
+export const loggedInUserSelector = state => state.users.loggedInUser;
+export const isLoggedInSelector = createSelector(loggedInUserSelector, loggedInUser => !!loggedInUser);
 
 export default userSlice.reducer;

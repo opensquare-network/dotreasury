@@ -9,6 +9,7 @@ import linksReducer from "./linkSlice";
 import accountReducer from "./accountSlice";
 import overviewReducer from "./overviewSlice";
 import userReducer from "./userSlice";
+import commentReducer from "./commentSlice";
 
 export default combineReducers({
   test: testReducer,
@@ -20,5 +21,6 @@ export default combineReducers({
   chain: chainReducer,
   account: accountReducer,
   overview: overviewReducer,
-  user: userReducer,
+  users: userReducer,
+  comments: commentReducer,
 });

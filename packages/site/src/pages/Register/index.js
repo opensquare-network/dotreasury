@@ -1,48 +1,52 @@
 import React from 'react';
-import { useDispatch, useSelector } from "react-redux";
-import { Link, Redirect } from 'react-router-dom';
-import queryString from 'query-string';
+import { useDispatch } from "react-redux";
 import { useForm } from 'react-hook-form';
 
-import { loggedInUserSelector, setLoggedInUser } from "../../store/reducers/userSlice";
+import { setLoggedInUser } from "../../store/reducers/userSlice";
 import scanApi from "../../services/scanApi";
 import { useIsMounted } from "../../utils/hooks"
 
-
-function Login({ location }) {
-  const loggedInUser = useSelector(loggedInUserSelector);
+function Register({ history }) {
   const { register, handleSubmit, errors } = useForm();
   const isMounted = useIsMounted();
   const dispatch = useDispatch();
 
-  // Redirect out of here if user has already logged in
-  if (loggedInUser) {
-    const q = queryString.parse(location.search);
-    return <Redirect to={q.returnUrl || '/'} />;
-  }
-
   // Do login
   const onSubmit = async (formData) => {
-    const loginResult = await scanApi.login(formData.username, formData.password);
+    const signupResult = await scanApi.signup(formData.username, formData.email, formData.password);
+    console.log(signupResult);
     if (isMounted.current) {
-      dispatch(setLoggedInUser(loginResult));
+      dispatch(setLoggedInUser(signupResult));
     }
+    history.push('/login');
   };
 
   return (
     <div>
-      <h1>Login</h1>
+      <h1>Register</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
+      <div>
           <div>
             <label htmlFor="username">Username
               { errors.username
-                && <span>
+                && <span className="text-danger">
                     <span>*</span>
                   </span>
               }
             </label>
             <input name="username" type="text" ref={register({required: true})} />
+          </div>
+        </div>
+        <div>
+          <div>
+            <label htmlFor="email">Email
+              { errors.email
+                && <span className="text-danger">
+                    <span>*</span>
+                  </span>
+              }
+            </label>
+            <input name="email" type="text" ref={register({required: true})} />
           </div>
         </div>
         <div>
@@ -57,9 +61,9 @@ function Login({ location }) {
             <input name="password" type="password" ref={register({required: true})} />
           </div>
         </div>
-        <div>
-          <div>
-            <input type="submit" value="Login" />/<Link to="/register">Register new user</Link>
+        <div className="row mt-4">
+          <div className="col">
+            <input className="btn btn-primary mr-3" type="submit" value="Register" />
           </div>
         </div>
       </form>
@@ -67,4 +71,4 @@ function Login({ location }) {
   );
 }
 
-export default Login;
+export default Register;
