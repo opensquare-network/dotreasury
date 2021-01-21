@@ -9,8 +9,7 @@ import {
   postComment,
 } from "../../store/reducers/commentSlice";
 import {
-  isLoggedInSelector,
-  accessTokenSelector,
+  loggedInUserSelector
 } from "../../store/reducers/userSlice";
 
 const Wrapper = styled.div`
@@ -22,18 +21,17 @@ const Wrapper = styled.div`
 const Input = ({ type, index }) => {
   const [content, setContent] = useState("");
   const dispatch = useDispatch();
-  const isLoggedIn = useSelector(isLoggedInSelector);
-  const accessToken = useSelector(accessTokenSelector);
+  const loggedInUser = useSelector(loggedInUserSelector);
 
   const post = () => {
-    dispatch(postComment(type, index, content, accessToken));
+    dispatch(postComment(type, index, content, loggedInUser));
   };
 
   return (
     <>
       <MarkdownEditor md={content} onChange={setContent} />
       <Wrapper>
-        <Button primary disabled={!isLoggedIn} onClick={post}>Confirm</Button>
+        <Button primary disabled={!loggedInUser} onClick={post}>Confirm</Button>
       </Wrapper>
     </>
   );

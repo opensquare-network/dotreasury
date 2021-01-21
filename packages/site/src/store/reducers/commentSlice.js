@@ -38,39 +38,35 @@ export const fetchComments = (type, index) => async (dispatch) => {
   dispatch(setComments(result || []));
 };
 
-export const postComment = (type, index, content, accessToken) => async (dispatch) => {
-  await api.fetch(`/${type}/${index}/comments`, {}, {
+export const postComment = (type, index, content, user) => async (dispatch) => {
+  await api.authFetch(`/${type}/${index}/comments`, {}, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${accessToken}`
     },
     body: JSON.stringify({ content }),
-  });
+  }, user);
 
   dispatch(fetchComments(type, index));
 }
 
-export const updateComment = (type, index, content, accessToken) => async (dispatch) => {
-  await api.fetch(`/${type}/${index}/comments`, {}, {
+export const updateComment = (type, index, content, user) => async (dispatch) => {
+  await api.authFetch(`/${type}/${index}/comments`, {}, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${accessToken}`
     },
     body: JSON.stringify({ content }),
-  });
+  }, user);
 
   dispatch(fetchComments(type, index));
 }
 
-export const removeComment = (type, index, commentId, accessToken) => async (dispatch) => {
-  await api.fetch(`/${type}/${index}/comments/${commentId}`, {}, {
+export const removeComment = (type, index, commentId, user) => async (dispatch) => {
+  await api.authFetch(`/${type}/${index}/comments/${commentId}`, {}, {
     method: 'DELETE',
-    headers: {
-      'Authorization': `Bearer ${accessToken}`
-    },
-  });
+  }, user);
+
   dispatch(fetchComments(type, index));
 }
 
