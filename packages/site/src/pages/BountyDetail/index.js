@@ -18,7 +18,6 @@ import Balance from "../../components/Balance";
 import Voter from "../../components/Voter";
 import Proposer from "../../components/Proposer";
 import BlocksTime from "../../components/BlocksTime";
-import polkassemblyApi from "../../services/polkassembly";
 import TimelineCommentWrapper from "../../components/TimelineCommentWrapper";
 import { hexToString } from "@polkadot/util";
 import { stringToWords } from "../../utils";
@@ -61,7 +60,6 @@ function processTimeline(bountyDetail, scanHeight) {
     item.timeline
       ? ((motion) => ({
           index: motion.index,
-          polkassembly: polkassemblyApi.getMotionUrl(motion.index),
           defaultUnfold: !motion.result,
           subTimeline: (motion.timeline || []).map((item) => ({
             name:

@@ -7,6 +7,7 @@ import ExternalLink from "../../components/ExternalLink";
 import { nil } from "../../utils";
 import { useIsMounted } from "../../utils/hooks";
 import { mrgap } from "../../styles";
+import polkassemblyApi from "../../services/polkassembly";
 
 const Wrapper = styled.div`
   margin-top: 8px;
@@ -20,8 +21,8 @@ const ButtonList = ({ extrinsicIndexer, eventIndexer, polkassembly }) => {
 
   useEffect(() => {
     (async () => {
-      if (polkassembly) {
-        const url = await polkassembly;
+      if (polkassembly !== undefined) {
+        const url = await polkassemblyApi.getMotionUrl(polkassembly);
         if (isMounted.current) {
           setMotionUrl(url);
         }
