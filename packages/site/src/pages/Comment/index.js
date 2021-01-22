@@ -29,7 +29,6 @@ const Comment = ({ type, index }) => {
   }, [dispatch, type, index]);
 
   const comments = useSelector(commentsSelector);
-  console.log(comments);
 
   return (
     <div>
