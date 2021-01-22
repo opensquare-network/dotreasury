@@ -34,6 +34,7 @@ jobs:
         run: yarn build
         env:
           REACT_APP_SCAN_SERVER: ${{ secrets.REACT_APP_SCAN_SERVER }}
+          REACT_APP_SOCKET_IO_URL: ${{ secrets.REACT_APP_SOCKET_IO_URL }}
         working-directory: ./packages/site
 
       - name: Deploy
