@@ -1,0 +1,80 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Link changes the class when hovered 1`] = `
+<div
+  className="sc-eCssSg cuEDbh"
+>
+  <div
+    className="sc-jSgupP bkzPYG"
+  >
+    <img
+      className="ui image sc-gKsewC eCXYcQ"
+      src="/imgs/avatar.png"
+    />
+    <p
+      className="sc-bdfBwQ sc-gsTCUz sc-iBPRYJ inRAOv hiVGgR daatUr"
+    >
+      600920dc78f01c6de39a9d5c
+    </p>
+    <p
+      className="sc-bdfBwQ sc-dlfnbm inRAOv iVpTwC"
+    >
+      2021-01-21 14:36:34
+    </p>
+    <p
+      className="sc-bdfBwQ sc-gsTCUz sc-fubCfw inRAOv hiVGgR hNEeEJ"
+    >
+      #
+      2
+    </p>
+  </div>
+  <div
+    className="sc-pFZIQ wgauA"
+  >
+    <div
+      className="sc-hKgILt hYsYlF"
+    >
+      <div
+        className="mde-preview-content"
+      >
+        <p>
+          test string
+        </p>
+      </div>
+    </div>
+    <div
+      className="sc-jrAGrp bykmwW"
+    >
+      <div
+        className="sc-kEjbxe sc-iqHYGH dsjNsK fSCLBs"
+      >
+        <img
+          className="ui image"
+          src="/imgs/reply.svg"
+        />
+        <p
+          className="sc-bdfBwQ inRAOv"
+        >
+          Reply
+        </p>
+      </div>
+      <div
+        className="sc-kEjbxe dsjNsK"
+      >
+        <img
+          className="ui image"
+          src="/imgs/thumb-up.svg"
+        />
+      </div>
+      <div
+        className="sc-kEjbxe dsjNsK"
+      >
+        <img
+          className="ui image"
+          src="/imgs/thumb-down.svg"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;

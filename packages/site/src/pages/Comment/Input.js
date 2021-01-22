@@ -13,6 +13,10 @@ import {
 } from "../../store/reducers/userSlice";
 
 const Wrapper = styled.div`
+  padding: 32px;
+`
+
+const ButtonWrapper = styled.div`
   margin-top: 12px;
   display: flex;
   justify-content: flex-end;
@@ -28,12 +32,12 @@ const Input = ({ type, index }) => {
   };
 
   return (
-    <>
+    <Wrapper>
       <MarkdownEditor md={content} onChange={setContent} />
-      <Wrapper>
+      <ButtonWrapper>
         <Button primary disabled={!loggedInUser} onClick={post}>Confirm</Button>
-      </Wrapper>
-    </>
+      </ButtonWrapper>
+    </Wrapper>
   );
 };
 
