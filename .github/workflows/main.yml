@@ -21,11 +21,14 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Set Node.js
+        uses: actions/setup-node@master
+        with:
+          version: 15.x
+
       - name: Install
         run: yarn
         working-directory: ./packages/site
-        with:
-          node-version: '15.x'
 
       - name: Build
         run: yarn build
