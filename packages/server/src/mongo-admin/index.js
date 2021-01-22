@@ -6,6 +6,7 @@ const dbName = config.mongo.adminDbName || "dotreasury-admin";
 const linkCollectionName = "link";
 const userCollectionName = "user";
 const discussionCollectionName = "discussion";
+const loginCollectionName = "login";
 
 let client = null;
 let db = null;
@@ -14,6 +15,7 @@ const mongoUrl = process.env.MONGO_URL || "mongodb://localhost:27017";
 let linkCol = null;
 let userCol = null;
 let discussionCol = null;
+let loginCol = null;
 
 async function initDb() {
   client = await MongoClient.connect(mongoUrl, {
@@ -24,6 +26,7 @@ async function initDb() {
   linkCol = db.collection(linkCollectionName);
   userCol = db.collection(userCollectionName);
   discussionCol = db.collection(discussionCollectionName);
+  loginCol = db.collection(loginCollectionName);
 
   await _createIndexes();
 }
@@ -58,9 +61,15 @@ async function getDiscussionCollection() {
   return discussionCol;
 }
 
+async function getLoginCollection() {
+  await tryInit(loginCol);
+  return loginCol;
+}
+
 module.exports = {
   initDb,
   getLinkCollection,
   getUserCollection,
   getDiscussionCollection,
+  getLoginCollection,
 };

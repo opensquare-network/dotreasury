@@ -2,8 +2,9 @@ const argon2 = require("argon2");
 const { randomBytes } = require("crypto");
 const validator = require('validator');
 const authService = require("../../services/auth.service");
-const { getUserCollection } = require("../../mongo-admin");
+const { getUserCollection, getLoginCollection } = require("../../mongo-admin");
 const { HttpError } = require("../../exc");
+const { isValidSignature } = require("../../utils");
 
 class AuthController {
   async signup(ctx) {
@@ -120,6 +121,74 @@ class AuthController {
     ctx.body = {
       accessToken
     };
+  }
+
+  async addressLoginStart(ctx) {
+    const { address } = ctx.params;
+
+    const userCol = await getUserCollection();
+    const user = await userCol.findOne({
+      addresses: {
+        $elemMatch: {
+          address,
+          verified: true,
+        }
+      }
+    });
+
+    if (!user) {
+      throw new HttpError(400, "The address is not linked to any account.");
+    }
+
+    const challenge = randomBytes(12).toString('hex');
+    const loginCol = await getLoginCollection();
+    const result = await loginCol.insertOne({
+      address,
+      challenge,
+    });
+
+    ctx.body = {
+      challenge: user.addresses[0].challenge
+    }
+  }
+
+  async addressLoginConfirm(ctx) {
+    const { address } = ctx.params;
+    const { challengeAnswer } = ctx.request.body;
+
+    if (!challengeAnswer) {
+      throw new HttpError(400, "Challenge answer is not provided.");
+    }
+
+    const userCol = await getUserCollection();
+    const user = await userCol.findOne({
+      addresses: {
+        $elemMatch: {
+          address,
+          verified: true,
+        }
+      }
+    }, {
+      username: 1,
+      email: 1,
+      "addresses.$": 1
+    });
+
+    const addrItem = user.addresses[0];
+    const success = isValidSignature(addrItem.challenge, challengeAnswer, addrItem.address);
+    if (!success) {
+      throw new HttpError(401, "Incorrect signature.");
+    }
+
+    const accessToken = await authService.getSignedToken(user);
+    const refreshToken = await authService.getRefreshToken(user);
+
+    ctx.body = {
+      username: user.username,
+      email: user.email,
+      accessToken,
+      refreshToken,
+    }
   }
 }
 
