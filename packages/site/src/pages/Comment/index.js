@@ -2,13 +2,11 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useDeepCompareEffect from 'use-deep-compare-effect'
 import styled from "styled-components";
-import { Divider } from "semantic-ui-react";
 
 import Card from "../../components/Card";
 import SubTitle from "../../components/SubTitle";
-import CommentArea from "./CommentArea";
-import NoComment from "./NoComment";
 import Input from "./Input";
+import CommentList from "./CommentList";
 
 import {
   fetchComments,
@@ -19,8 +17,8 @@ const Header = styled(SubTitle)`
   margin-bottom: 16px;
 `;
 
-const Body = styled(Card)`
-  padding: 20px;
+const Wrapper = styled(Card)`
+  padding: 0;
 `;
 
 const Comment = ({ type, index }) => {
@@ -36,13 +34,10 @@ const Comment = ({ type, index }) => {
   return (
     <div>
       <Header>Comment</Header>
-      <Body>
-        <CommentArea>
-          <NoComment />
-        </CommentArea>
-        <Divider />
+      <Wrapper>
         <Input type={type} index={index} />
-      </Body>
+        <CommentList comments={comments.comments} />
+      </Wrapper>
     </div>
   );
 };
