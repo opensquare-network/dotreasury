@@ -92,8 +92,25 @@ const FoldableItem = ({data, polkassembly, defaultUnfold, expired, end}) => {
         </FlexWrapper>
       </VerticalWrapper>
       <ItemWrapper isUnfold={isUnfold}>
-        { (data || []).map((item, index) => <Item key={index} data={item} polkassembly={(index === 0) && polkassembly} onUnfoldBtnClick={onUnfoldBtnClick} isUnfold={isUnfold} />) }
-        { expired && <Item data={{extrinsicIndexer: { blockTime: expiredTime }, name: "Expired", fields: [{ title: "Expired" }]}} hideButtonList={true} /> }
+        {(data || []).map((item, index) => (
+          <Item
+            key={index}
+            data={item}
+            polkassembly={index === 0 ? polkassembly : undefined}
+            onUnfoldBtnClick={onUnfoldBtnClick}
+            isUnfold={isUnfold}
+          />
+        ))}
+        {expired && (
+          <Item
+            data={{
+              extrinsicIndexer: { blockTime: expiredTime },
+              name: "Expired",
+              fields: [{ title: "Expired" }],
+            }}
+            hideButtonList={true}
+          />
+        )}
       </ItemWrapper>
     </Wrapper>
   )

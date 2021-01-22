@@ -25,14 +25,28 @@ const Timeline = ({ data, loading }) => {
   return (
     <Wrapper>
       <Header>Timeline</Header>
-      { (loading && <LoadingWrapper><Image src="/imgs/loading.svg" /></LoadingWrapper>) ||
-      <>
-        { (data || []).map((item, index) => (item.subTimeline
-            ? <FoldableItem key={item.index} data={item.subTimeline} polkassembly={item.polkassembly} defaultUnfold={item.defaultUnfold} expired={item.expired} end={item.end} />
-            : <Item key={index} data={item} />
-          )) }
-      </>
-      }
+      {(loading && (
+        <LoadingWrapper>
+          <Image src="/imgs/loading.svg" />
+        </LoadingWrapper>
+      )) || (
+        <>
+          {(data || []).map((item, index) =>
+            item.subTimeline ? (
+              <FoldableItem
+                key={item.index}
+                data={item.subTimeline}
+                polkassembly={item.index}
+                defaultUnfold={item.defaultUnfold}
+                expired={item.expired}
+                end={item.end}
+              />
+            ) : (
+              <Item key={index} data={item} />
+            )
+          )}
+        </>
+      )}
     </Wrapper>
   );
 };

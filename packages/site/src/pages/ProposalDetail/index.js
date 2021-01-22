@@ -24,7 +24,6 @@ import Balance from "../../components/Balance";
 import Voter from "../../components/Voter";
 import Proposer from "../../components/Proposer";
 import BlocksTime from "../../components/BlocksTime";
-import polkassemblyApi from "../../services/polkassembly";
 import TimelineCommentWrapper from "../../components/TimelineCommentWrapper";
 
 const HeaderWrapper = styled.div`
@@ -80,7 +79,6 @@ function processTimeline(proposalDetail, scanHeight) {
     },
     ...(proposalDetail.motions || []).map((motion) => ({
       index: motion.index,
-      polkassembly: polkassemblyApi.getMotionUrl(motion.index),
       defaultUnfold: !motion.result && motion.voting?.end >= scanHeight,
       // FIXME: && motion.treasuryProposalId !== 15
       expired:
