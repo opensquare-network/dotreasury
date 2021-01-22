@@ -1,8 +1,9 @@
+const { ObjectId } = require("mongodb");
 const argon2 = require("argon2");
 const { randomBytes } = require("crypto");
 const validator = require('validator');
 const authService = require("../../services/auth.service");
-const { getUserCollection, getLoginCollection } = require("../../mongo-admin");
+const { getUserCollection, getLoginAttemptCollection } = require("../../mongo-admin");
 const { HttpError } = require("../../exc");
 const { isValidSignature } = require("../../utils");
 
@@ -140,44 +141,49 @@ class AuthController {
       throw new HttpError(400, "The address is not linked to any account.");
     }
 
-    const challenge = randomBytes(12).toString('hex');
-    const loginCol = await getLoginCollection();
-    const result = await loginCol.insertOne({
+    const loginAttemptCol = await getLoginAttemptCollection();
+    const result = await loginAttemptCol.insertOne({
+      userId: user._id,
       address,
-      challenge,
+      challenge: randomBytes(12).toString('hex'),
+      createdAt: new Date(),
     });
 
+    if (!result.result.ok) {
+      throw new HttpError(500, "Db error: start address login.");
+    }
+
+    const loginAttempt = result.ops[0];
+
     ctx.body = {
-      challenge: user.addresses[0].challenge
+      attemptId: loginAttempt._id,
+      challenge: loginAttempt.challenge,
     }
   }
 
   async addressLoginConfirm(ctx) {
-    const { address } = ctx.params;
+    const { attemptId } = ctx.params;
     const { challengeAnswer } = ctx.request.body;
 
     if (!challengeAnswer) {
       throw new HttpError(400, "Challenge answer is not provided.");
     }
 
-    const userCol = await getUserCollection();
-    const user = await userCol.findOne({
-      addresses: {
-        $elemMatch: {
-          address,
-          verified: true,
-        }
-      }
-    }, {
-      username: 1,
-      email: 1,
-      "addresses.$": 1
-    });
+    const loginAttemptCol = await getLoginAttemptCollection();
+    const loginAttempt = await loginAttemptCol.findOne({ _id: ObjectId(attemptId) });
+    if (!loginAttempt) {
+      throw new HttpError(400, "Incorrect login attempt id");
+    }
 
-    const addrItem = user.addresses[0];
-    const success = isValidSignature(addrItem.challenge, challengeAnswer, addrItem.address);
+    const success = isValidSignature(loginAttempt.challenge, challengeAnswer, loginAttempt.address);
     if (!success) {
       throw new HttpError(401, "Incorrect signature.");
+    }
+
+    const userCol = await getUserCollection();
+    const user = await userCol.findOne({ _id: loginAttempt.userId });
+    if (!user) {
+      throw new HttpError(500, "Account has been deleted.");
     }
 
     const accessToken = await authService.getSignedToken(user);
