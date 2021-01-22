@@ -3,9 +3,13 @@ on:
   push:
     branches:
       - release-1.0.0
+    paths:
+      - 'packages/site/**'
   pull_request:
     branches:
       - release-1.0.0
+    paths:
+      - 'packages/site/**'
     types: [closed]
 
 jobs:
@@ -19,16 +23,18 @@ jobs:
 
       - name: Install
         run: yarn
+        working-directory: ./packages/site
 
       - name: Build
         run: yarn build
         env:
           REACT_APP_SCAN_SERVER: ${{ secrets.REACT_APP_SCAN_SERVER }}
+        working-directory: ./packages/site
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages
-          FOLDER: build
+          FOLDER: ./packages/site/build
           CLEAN: true
