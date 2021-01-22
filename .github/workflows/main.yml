@@ -21,16 +21,20 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Set Node.js
+        uses: actions/setup-node@master
+        with:
+          version: 15.x
+
       - name: Install
         run: yarn
         working-directory: ./packages/site
-        with:
-          node-version: '15.x'
 
       - name: Build
         run: yarn build
         env:
           REACT_APP_SCAN_SERVER: ${{ secrets.REACT_APP_SCAN_SERVER }}
+          REACT_APP_SOCKET_IO_URL: ${{ secrets.REACT_APP_SOCKET_IO_URL }}
         working-directory: ./packages/site
 
       - name: Deploy
