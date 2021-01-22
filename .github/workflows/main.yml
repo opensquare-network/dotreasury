@@ -24,6 +24,8 @@ jobs:
       - name: Install
         run: yarn
         working-directory: ./packages/site
+        with:
+          node-version: '15.x'
 
       - name: Build
         run: yarn build
