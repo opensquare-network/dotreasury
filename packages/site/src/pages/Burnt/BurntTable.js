@@ -46,6 +46,10 @@ const TimeWrapper = styled.div`
   }
 `;
 
+const EventID = styled(Text)`
+white-space: nowrap;
+`
+
 const BurntTable = ({ data, loading }) => {
   return (
     <Wrapper>
@@ -69,7 +73,7 @@ const BurntTable = ({ data, loading }) => {
                     <ExplorerLink
                       href={`/extrinsic/${item.indexer.blockHeight}-0?event=${item.indexer.blockHeight}-${item.indexer.sort}`}
                     >
-                      <Text>{`${item.indexer.blockHeight}-${item.indexer.sort}`}</Text>
+                      <EventID>{`${item.indexer.blockHeight}-${item.indexer.sort}`}</EventID>
                     </ExplorerLink>
                   </Table.Cell>
                   <Table.Cell>
