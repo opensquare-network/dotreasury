@@ -71,7 +71,7 @@ const CommentItem = ({comment, index}) => {
   return (<Wrapper>
     <HeaderWrapper>
       <Avatar src="/imgs/avatar.png" />
-      <Username>{comment.authorId}</Username>
+      <Username>{comment.author.username}</Username>
       <TextDisable>{dayjs(comment.createdAt).format(
         "YYYY-MM-DD HH:mm:ss"
       )}</TextDisable>

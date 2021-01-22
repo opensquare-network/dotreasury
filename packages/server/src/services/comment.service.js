@@ -6,9 +6,59 @@ class CommentService {
   async getComments(indexer, validateBeforeCreate) {
     const discuCol = await getDiscussionCollection();
 
-    let discussion = await discuCol.findOne({ indexer });
-    if (discussion) {
-      return discussion;
+    let discussion = await discuCol.aggregate([
+      { $match: { indexer } },
+      { $unwind: "$comments" },
+      {
+        $lookup: {
+          from: "user",
+          localField: "comments.authorId",
+          foreignField: "_id",
+          as: "comments.author"
+        }
+      },
+      {
+        $addFields: {
+          "comments.author": { $arrayElemAt: [
+            {
+              $map: {
+                input: "$comments.author",
+                in: {
+                  username: "$$this.username",
+                  email: "$$this.email"
+                }
+              }
+            }, 0]
+          },
+        }
+      },
+      {
+        $project: {
+          "comments.authorId": 0,
+        }
+      },
+      {
+        $group: {
+          _id: {
+            _id: "$_id",
+            indexer: "$indexer",
+          },
+          comments: {
+            $push: "$comments"
+          }
+        }
+      },
+      {
+        $project: {
+          _id: "$_id._id",
+          indexer: "$_id.indexer",
+          comments: "$comments"
+        }
+      }
+    ]).toArray();
+
+    if (discussion[0]) {
+      return discussion[0];
     }
 
     // If the discussion record is not created yet, then validate and create
