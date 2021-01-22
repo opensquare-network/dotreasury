@@ -25,7 +25,6 @@ class CommentService {
                 input: "$comments.author",
                 in: {
                   username: "$$this.username",
-                  email: "$$this.email"
                 }
               }
             }, 0]
