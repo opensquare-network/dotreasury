@@ -26,7 +26,7 @@ async function main() {
   await deleteDataFrom(scanHeight);
 
   const useKnowHeights = !!process.env.USE_KNOWN_HEIGHTS;
-  if (scanHeight < maxKnownHeight && useKnowHeights) {
+  if (scanHeight <= maxKnownHeight && useKnowHeights) {
     await scanKnowBlocks(scanHeight);
     scanHeight = maxKnownHeight + 1;
   }
