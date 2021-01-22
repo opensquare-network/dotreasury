@@ -104,7 +104,7 @@ const FoldableItem = ({ data, polkassembly, defaultUnfold, expired, end }) => {
           <Item
             key={index}
             data={item}
-            polkassembly={index === 0 && polkassembly}
+            polkassembly={index === 0 ? polkassembly : undefined}
             onUnfoldBtnClick={onUnfoldBtnClick}
             isUnfold={isUnfold}
           />
