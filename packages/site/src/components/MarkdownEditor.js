@@ -1,13 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import ReactMde from "react-mde";
+import { Image } from "semantic-ui-react";
 import 'react-mde/lib/styles/css/react-mde-all.css';
 
-import Markdown from "./Markdown";
 import { PRIMARY_THEME_COLOR } from "../constants";
 
 export const StyledTextArea = styled.div`
-  /* margin-top: 20px; */
   
   & > section {
     margin-bottom: 8px;
@@ -15,43 +14,22 @@ export const StyledTextArea = styled.div`
   
 	textarea {
 		border-radius: 0rem;
-		border: none!important;
+		border: none !important;
 		color: #53595C !important;
-		padding: 1rem 1.2rem!important;
-		line-height: 1.4!important;
+		padding: 1rem 1.2rem !important;
+		line-height: 1.4 !important;
 		
 		&:focus {
 		  outline-color: ${PRIMARY_THEME_COLOR} !important;
 		}
 	}
-	
-	/* .mde-tabs {
-	  display: none;
-	} */
-	
-  @media only screen and (max-width: 768px) {
-		.react-mde {
-			.mde-header {
-				.mde-header-group {
-					margin-left: 0!important;
-					padding: 1rem 0.5rem;
-					background-color: white;
-					width: 100%;
 
-					&.hidden {
-						visibility: hidden;
-						display: none;
-					  }
+	.mde-tabs {
+	  display: none !important;
+	}
 
-					.mde-header-item {
-						button {
-							font-size: 1.3rem!important;
-						}
-					}
-				}
-
-			}
-		}
+	.react-mde > .mde-header {
+		background: white !important;
 	}
 	
 	.react-mde {
@@ -147,7 +125,6 @@ export const StyledTextArea = styled.div`
 `;
 
 const MarkdownEditor = ({ md, onChange }) => {
-  const [selectedTab, setSelectedTab] = React.useState('write');
 
   const loadSuggestions = async (text) => {
 		return new Promise((accept) => {
@@ -167,12 +144,13 @@ const MarkdownEditor = ({ md, onChange }) => {
       <ReactMde 
         value={md}
         onChange={onChange}
-        generateMarkdownPreview={markdown => Promise.resolve(<Markdown isPreview={true} md={markdown} />) }
-        onTabChange={setSelectedTab}
-        selectedTab={selectedTab}
         loadSuggestions={loadSuggestions}
-        toolbarCommands={[['bold', 'header', 'link', 'quote', 'strikethrough', 'code', 'image', 'ordered-list', 'unordered-list']]}
-        // {...props}
+        toolbarCommands={[['header', 'bold', 'italic', 'quote', 'ordered-list', 'unordered-list', 'checked-list']]}
+        getIcon={(commandName) => {
+					return (
+						<Image src={`/imgs/md-icons/${commandName}.svg`} />
+					)
+				}}
       />
     </StyledTextArea>
   )
