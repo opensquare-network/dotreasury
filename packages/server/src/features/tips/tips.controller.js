@@ -45,7 +45,7 @@ class TipsController {
     const tipCol = await getTipCollection();
     const tip = await tipCol.findOne({
       hash: tipHash,
-      'indexer.blockHeight': parseInt(blockHeight),
+      "indexer.blockHeight": parseInt(blockHeight),
     });
 
     if (!tip) {
@@ -85,10 +85,13 @@ class TipsController {
       },
       getReason: async () => {
         const tipCol = await getTipCollection();
-        const tip = await tipCol.findOne({ hash: tipHash, 'indexer.blockHeight': blockHeight });
+        const tip = await tipCol.findOne({
+          hash: tipHash,
+          "indexer.blockHeight": blockHeight,
+        });
         return tip?.reason;
-      }
-    })
+      },
+    });
   }
 
   async createTipLink(ctx) {
@@ -97,15 +100,18 @@ class TipsController {
 
     const { link, description } = ctx.request.body;
 
-    ctx.body = await linkService.createLink({
-      type: "tips",
-      indexer: {
-        blockHeight,
-        tipHash,
+    ctx.body = await linkService.createLink(
+      {
+        type: "tips",
+        indexer: {
+          blockHeight,
+          tipHash,
+        },
+        link,
+        description,
       },
-      link,
-      description,
-    }, ctx.request.headers.signature)
+      ctx.request.headers.signature
+    );
   }
 
   async deleteTipLink(ctx) {
@@ -113,14 +119,17 @@ class TipsController {
     const blockHeight = parseInt(ctx.params.blockHeight);
     const linkIndex = parseInt(ctx.params.linkIndex);
 
-    ctx.body = await linkService.deleteLink({
-      type: "tips",
-      indexer: {
-        blockHeight,
-        tipHash,
+    ctx.body = await linkService.deleteLink(
+      {
+        type: "tips",
+        indexer: {
+          blockHeight,
+          tipHash,
+        },
+        linkIndex,
       },
-      linkIndex,
-    }, ctx.request.headers.signature)
+      ctx.request.headers.signature
+    );
   }
 
   // Comments API
@@ -130,18 +139,24 @@ class TipsController {
 
     const validator = async () => {
       const tipCol = await getTipCollection();
-      const tip = await tipCol.findOne({ hash: tipHash, 'indexer.blockHeight': blockHeight });
+      const tip = await tipCol.findOne({
+        hash: tipHash,
+        "indexer.blockHeight": blockHeight,
+      });
       if (!tip) {
         throw new HttpError(404, "Tip not found");
       }
     };
 
-    ctx.body = await commentService.getComments({
-      treasuryTipId: {
-        tipHash,
-        blockHeight,
-      }
-    }, validator);
+    ctx.body = await commentService.getComments(
+      {
+        treasuryTipId: {
+          tipHash,
+          blockHeight,
+        },
+      },
+      validator
+    );
   }
 
   async postTipComment(ctx) {
@@ -153,44 +168,16 @@ class TipsController {
       throw new HttpError(400, "Comment content is missing");
     }
 
-    ctx.body = await commentService.postComment({
-      treasuryTipId: {
-        tipHash,
-        blockHeight,
-      }
-    }, content, user._id);
-  }
-
-  async updateTipComment(ctx) {
-    const tipHash = ctx.params.tipHash;
-    const blockHeight = parseInt(ctx.params.blockHeight);
-    const commentId = ctx.params.commentId;
-    const { content } = ctx.request.body;
-    const user = ctx.request.user;
-    if (!content) {
-      throw new HttpError(400, "Comment content is missing");
-    }
-
-    ctx.body = await commentService.updateComment({
-      treasuryTipId: {
-        tipHash,
-        blockHeight,
-      }
-    }, commentId, content, user._id);
-  }
-
-  async deleteTipComment(ctx) {
-    const tipHash = ctx.params.tipHash;
-    const blockHeight = parseInt(ctx.params.blockHeight);
-    const commentId = ctx.params.commentId;
-    const user = ctx.request.user;
-
-    ctx.body = await commentService.deleteComment({
-      treasuryTipId: {
-        tipHash,
-        blockHeight,
-      }
-    }, commentId, user._id);
+    ctx.body = await commentService.postComment(
+      {
+        treasuryTipId: {
+          tipHash,
+          blockHeight,
+        },
+      },
+      content,
+      user._id
+    );
   }
 }
 

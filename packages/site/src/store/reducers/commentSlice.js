@@ -13,9 +13,7 @@ const commentSlice = createSlice({
   },
 });
 
-export const {
-  setComments,
-} = commentSlice.actions;
+export const { setComments } = commentSlice.actions;
 
 export class TipIndex {
   constructor(tipIndex) {
@@ -39,36 +37,86 @@ export const fetchComments = (type, index) => async (dispatch) => {
 };
 
 export const postComment = (type, index, content) => async (dispatch) => {
-  await api.authFetch(`/${type}/${index}/comments`, {}, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ content }),
-  });
+  await api.authFetch(
+    `/${type}/${index}/comments`,
+    {},
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ content }),
+    }
+  );
 
   dispatch(fetchComments(type, index));
-}
+};
 
-export const updateComment = (type, index, content) => async (dispatch) => {
-  await api.authFetch(`/${type}/${index}/comments`, {}, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ content }),
-  });
+export const updateComment = (type, index, commentId, content) => async (
+  dispatch
+) => {
+  await api.authFetch(
+    `/comments/${commentId}`,
+    {},
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ content }),
+    }
+  );
 
   dispatch(fetchComments(type, index));
-}
+};
 
 export const removeComment = (type, index, commentId) => async (dispatch) => {
-  await api.authFetch(`/${type}/${index}/comments/${commentId}`, {}, {
-    method: 'DELETE',
-  });
+  await api.authFetch(
+    `/comments/${commentId}`,
+    {},
+    {
+      method: "DELETE",
+    }
+  );
 
   dispatch(fetchComments(type, index));
-}
+};
+
+export const setCommentThumbUp = (type, index, commentId) => async (
+  dispatch
+) => {
+  await api.authFetch(
+    `/comments/${commentId}/reaction`,
+    {},
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ reaction: 1 }),
+    }
+  );
+
+  dispatch(fetchComments(type, index));
+};
+
+export const setCommentThumbDown = (type, index, commentId) => async (
+  dispatch
+) => {
+  await api.authFetch(
+    `/comments/${commentId}/reaction`,
+    {},
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ reaction: 2 }),
+    }
+  );
+
+  dispatch(fetchComments(type, index));
+};
 
 export const commentsSelector = (state) => state.comments.comments;
 

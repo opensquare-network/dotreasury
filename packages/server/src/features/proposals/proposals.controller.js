@@ -155,7 +155,10 @@ class ProposalsController {
       }
     };
 
-    ctx.body = await commentService.getComments({ treasuryProposalId: proposalIndex }, validator);
+    ctx.body = await commentService.getComments(
+      { treasuryProposalId: proposalIndex },
+      validator
+    );
   }
 
   async postProposalComment(ctx) {
@@ -165,27 +168,11 @@ class ProposalsController {
     if (!content) {
       throw new HttpError(400, "Comment content is missing");
     }
-    ctx.body = await commentService.postComment({ treasuryProposalId: proposalIndex }, content, user._id);
-  }
-
-  async updateProposalComment(ctx) {
-    const proposalIndex = parseInt(ctx.params.proposalIndex);
-    const commentId = ctx.params.commentId;
-    const { content } = ctx.request.body;
-    const user = ctx.request.user;
-    if (!content) {
-      throw new HttpError(400, "Comment content is missing");
-    }
-    ctx.body = await commentService.updateComment(
-      { treasuryProposalId: proposalIndex }, commentId, content, user._id);
-  }
-
-  async deleteProposalComment(ctx) {
-    const proposalIndex = parseInt(ctx.params.proposalIndex);
-    const commentId = ctx.params.commentId;
-    const user = ctx.request.user;
-    ctx.body = await commentService.deleteComment(
-      { treasuryProposalId: proposalIndex }, commentId, user._id);
+    ctx.body = await commentService.postComment(
+      { treasuryProposalId: proposalIndex },
+      content,
+      user._id
+    );
   }
 }
 

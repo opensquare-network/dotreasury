@@ -9,13 +9,27 @@ router.get("/proposals/count", proposalsController.getProposalsCount);
 router.get("/proposals/summary", proposalsController.getProposalSummary);
 router.get("/proposals/:proposalIndex", proposalsController.getProposalDetail);
 
-router.get("/proposals/:proposalIndex/links", proposalsController.getProposalLinks);
-router.post("/proposals/:proposalIndex/links", proposalsController.createProposalLink);
-router.delete("/proposals/:proposalIndex/links/:linkIndex", proposalsController.deleteProposalLink);
+router.get(
+  "/proposals/:proposalIndex/links",
+  proposalsController.getProposalLinks
+);
+router.post(
+  "/proposals/:proposalIndex/links",
+  proposalsController.createProposalLink
+);
+router.delete(
+  "/proposals/:proposalIndex/links/:linkIndex",
+  proposalsController.deleteProposalLink
+);
 
-router.get("/proposals/:proposalIndex/comments", proposalsController.getProposalComments);
-router.post("/proposals/:proposalIndex/comments", requireAuth, proposalsController.postProposalComment);
-router.patch("/proposals/:proposalIndex/comments/:commentId", requireAuth, proposalsController.updateProposalComment);
-router.delete("/proposals/:proposalIndex/comments/:commentId", requireAuth, proposalsController.deleteProposalComment);
+router.get(
+  "/proposals/:proposalIndex/comments",
+  proposalsController.getProposalComments
+);
+router.post(
+  "/proposals/:proposalIndex/comments",
+  requireAuth,
+  proposalsController.postProposalComment
+);
 
 module.exports = router;

@@ -8,19 +8,26 @@ const Wrapper = styled.div`
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
   }
-`
+`;
 
-const CommentList = ({ comments }) => {
+const CommentList = ({ type, index, comments }) => {
   if (comments && comments.length > 0) {
     return (
       <Wrapper>
-        { comments.map((item, index) => <CommentItem comment={item} index={index} key={index} />) }
+        {comments.map((item, position) => (
+          <CommentItem
+            type={type}
+            index={index}
+            comment={item}
+            position={position}
+            key={position}
+          />
+        ))}
       </Wrapper>
-    )
+    );
   } else {
     return null;
   }
-
-}
+};
 
 export default CommentList;
