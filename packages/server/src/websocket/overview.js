@@ -2,6 +2,7 @@ const {
   getProposalCollection,
   getBountyCollection,
   getTipCollection,
+  getBurntCollection,
 } = require("../mongo");
 const { bigAdd } = require("../utils");
 const { setOverview, getOverview } = require("./store");
@@ -40,15 +41,29 @@ async function calcOverview() {
   const bountyCol = await getBountyCollection();
   const bounties = await bountyCol.find({}, { meta: 1, state: 1 }).toArray();
 
-  const count = await calcCount(proposals, tips, bounties);
-  const spent = await calcSpent(proposals, tips, bounties);
+  const burntCol = await getBurntCollection();
+  const burntList = await burntCol.find({}, { balance: 1 }).toArray();
+
+  const count = await calcCount(proposals, tips, bounties, burntList);
+  const output = await calcOutput(proposals, tips, bounties, burntList);
   const bestProposalBeneficiaries = calcBestProposalBeneficiary(proposals);
   const bestTipFinders = calcBestTipProposers(tips);
 
-  return { count, spent, bestProposalBeneficiaries, bestTipFinders };
+  return {
+    count,
+    spent: output,
+    output,
+    bestProposalBeneficiaries,
+    bestTipFinders,
+  };
 }
 
-async function calcCount(proposals = [], tips = [], bounties = []) {
+async function calcCount(
+  proposals = [],
+  tips = [],
+  bounties = [],
+  burntList = []
+) {
   const unFinishedProposals = proposals.filter(
     ({ state: { name } }) => name !== "Awarded" && name !== "Rejected"
   );
@@ -76,7 +91,11 @@ async function calcCount(proposals = [], tips = [], bounties = []) {
     all: bounties.length,
   };
 
-  return { proposal, tip, bounty };
+  const burnt = {
+    all: burntList.length,
+  };
+
+  return { proposal, tip, bounty, burnt };
 }
 
 const bountyStatuses = [
@@ -88,7 +107,12 @@ const bountyStatuses = [
   "PendingPayout",
 ];
 
-async function calcSpent(proposals = [], tips = [], bounties = []) {
+async function calcOutput(
+  proposals = [],
+  tips = [],
+  bounties = [],
+  burntList = []
+) {
   const spentProposals = proposals.filter(
     ({ state: { name } }) => name === "Awarded"
   );
@@ -112,10 +136,15 @@ async function calcSpent(proposals = [], tips = [], bounties = []) {
     return index >= 2 ? bigAdd(result, value) : result;
   }, 0);
 
+  const burntTotal = burntList.reduce((result, { balance }) => {
+    return bigAdd(result, balance);
+  }, 0);
+
   return {
     proposal: proposalSpent,
     tip: tipSpent,
     bounty: bountySpent,
+    burnt: burntTotal,
   };
 }
 
