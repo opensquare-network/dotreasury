@@ -82,7 +82,7 @@ const BurntTable = ({ data, loading }) => {
               data.length > 0 &&
               data.map((item, index) => (
                 <TableRow key={index}>
-                  <Table.Cell>
+                  <Table.Cell className="propose-time-cell">
                     <TimeWrapper>
                       <Text>
                         {dayjs(parseInt(item.indexer.blockTime)).format(
@@ -104,13 +104,13 @@ const BurntTable = ({ data, loading }) => {
                       </EventWrapper>
                     </ExplorerLink>
                   </Table.Cell>
-                  <Table.Cell textAlign={"right"}>
+                  <Table.Cell textAlign={"right"} className="balance-cell">
                     <Balance value={item.balance} />
                   </Table.Cell>
-                  <Table.Cell textAlign={"right"}>
+                  <Table.Cell textAlign={"right"} className="balance-cell">
                     {item.burnPrecent}
                   </Table.Cell>
-                  <Table.Cell textAlign={"right"}>
+                  <Table.Cell textAlign={"right"} className="balance-cell">
                     <Balance value={item.treasury.free} />
                   </Table.Cell>
                 </TableRow>
