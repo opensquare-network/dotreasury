@@ -22,7 +22,10 @@ const Right = styled.div`
 `
 
 const ScanHeightWrapper = styled.div`
-margin-left: 24px;
+  margin-left: 24px;
+  @media screen and (max-width: 556px) {
+    display: none;
+  }
 `
 
 const HeaderExamplePage = () => {
