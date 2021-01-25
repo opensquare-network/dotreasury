@@ -22,7 +22,6 @@ export const {
 } = userSlice.actions
 
 export const loggedInUserSelector = state => state.users.loggedInUser;
-export const accessTokenSelector = createSelector(loggedInUserSelector, user => user?.accessToken);
 export const isLoggedInSelector = createSelector(loggedInUserSelector, user => !!user);
 
 export default userSlice.reducer;

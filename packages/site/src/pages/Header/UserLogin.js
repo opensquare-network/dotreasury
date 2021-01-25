@@ -40,11 +40,12 @@ const UserLogin = () => {
             <Dropdown
               text={loggedInUser.username}
             >
-              
+
               <Dropdown.Menu direction="left">
                 <Dropdown.Item icon="setting" text="Settings" />
                 <Dropdown.Item icon="log out" text="Logout" onClick={() => {
                   dispatch(setLoggedInUser(null));
+                  localStorage.removeItem("token");
                 }} />
               </Dropdown.Menu>
             </Dropdown>

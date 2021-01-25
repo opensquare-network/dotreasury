@@ -53,7 +53,18 @@ function Login({ location }) {
   // Do login
   const onSubmit = async (formData) => {
     const loginResult = await scanApi.login(formData.username, formData.password);
-    dispatch(setLoggedInUser(loginResult));
+    if (loginResult) {
+      const loggedInUser = {
+        username: loginResult.username,
+        email: loginResult.email,
+      };
+      dispatch(setLoggedInUser(loggedInUser));
+
+      localStorage.setItem("token", JSON.stringify({
+        accessToken: loginResult.accessToken,
+        refreshToken: loginResult.refreshToken,
+      }));
+    }
   };
 
   return (

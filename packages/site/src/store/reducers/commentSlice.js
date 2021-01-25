@@ -38,34 +38,34 @@ export const fetchComments = (type, index) => async (dispatch) => {
   dispatch(setComments(result || []));
 };
 
-export const postComment = (type, index, content, user) => async (dispatch) => {
+export const postComment = (type, index, content) => async (dispatch) => {
   await api.authFetch(`/${type}/${index}/comments`, {}, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ content }),
-  }, user);
+  });
 
   dispatch(fetchComments(type, index));
 }
 
-export const updateComment = (type, index, content, user) => async (dispatch) => {
+export const updateComment = (type, index, content) => async (dispatch) => {
   await api.authFetch(`/${type}/${index}/comments`, {}, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ content }),
-  }, user);
+  });
 
   dispatch(fetchComments(type, index));
 }
 
-export const removeComment = (type, index, commentId, user) => async (dispatch) => {
+export const removeComment = (type, index, commentId) => async (dispatch) => {
   await api.authFetch(`/${type}/${index}/comments/${commentId}`, {}, {
     method: 'DELETE',
-  }, user);
+  });
 
   dispatch(fetchComments(type, index));
 }

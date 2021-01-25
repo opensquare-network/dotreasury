@@ -28,7 +28,7 @@ const Input = ({ type, index }) => {
   const loggedInUser = useSelector(loggedInUserSelector);
 
   const post = () => {
-    dispatch(postComment(type, index, content, loggedInUser));
+    dispatch(postComment(type, index, content));
   };
 
   return (
