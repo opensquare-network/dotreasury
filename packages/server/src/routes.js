@@ -6,6 +6,7 @@ const featureRouters = [
   require("./features/burnt/routes"),
   require("./features/auth/routes"),
   require("./features/users/routes"),
+  require("./features/comments/routes"),
 ];
 
 module.exports = (app) => {

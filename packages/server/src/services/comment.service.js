@@ -113,13 +113,12 @@ class CommentService {
     return true;
   }
 
-  async updateComment(indexer, commentId, newContent, authorId) {
+  async updateComment(commentId, newContent, authorId) {
     const discuCol = await getDiscussionCollection();
 
     const now = new Date();
     const result = await discuCol.updateOne(
       {
-        indexer,
         comments: {
           $elemMatch: {
             commentId: ObjectId(commentId),
@@ -146,10 +145,12 @@ class CommentService {
     return true;
   }
 
-  async deleteComment(indexer, commentId, authorId) {
+  async deleteComment(commentId, authorId) {
     const discuCol = await getDiscussionCollection();
     let result = await discuCol.updateOne(
-      { indexer },
+      {
+        "comments.commentId": ObjectId(commentId),
+      },
       {
         $pull: {
           comments: {
@@ -171,12 +172,11 @@ class CommentService {
     return true;
   }
 
-  async unsetCommentReaction(indexer, commentId, userId) {
+  async unsetCommentReaction(commentId, userId) {
     const discuCol = await getDiscussionCollection();
 
     const result = await discuCol.updateOne(
       {
-        indexer,
         "comments.commentId": ObjectId(commentId),
       },
       {
@@ -199,13 +199,12 @@ class CommentService {
     return true;
   }
 
-  async setCommentReaction(indexer, commentId, reaction, userId) {
+  async setCommentReaction(commentId, reaction, userId) {
     const discuCol = await getDiscussionCollection();
 
     const now = new Date();
     let result = await discuCol.updateOne(
       {
-        indexer,
         comments: {
           $elemMatch: {
             commentId: ObjectId(commentId),
@@ -238,7 +237,6 @@ class CommentService {
 
     result = await discuCol.updateOne(
       {
-        indexer,
         comments: {
           $elemMatch: {
             commentId: ObjectId(commentId),

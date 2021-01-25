@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import useDeepCompareEffect from 'use-deep-compare-effect'
+import useDeepCompareEffect from "use-deep-compare-effect";
 import styled from "styled-components";
 
 import Card from "../../components/Card";
@@ -22,7 +22,7 @@ const Wrapper = styled(Card)`
 `;
 
 const Comment = ({ type, index }) => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useDeepCompareEffect(() => {
     dispatch(fetchComments(type, index));
@@ -34,7 +34,7 @@ const Comment = ({ type, index }) => {
     <div>
       <Header>Comment</Header>
       <Wrapper>
-        <CommentList comments={comments.comments} />
+        <CommentList type={type} index={index} comments={comments.comments} />
         <Input type={type} index={index} />
       </Wrapper>
     </div>
