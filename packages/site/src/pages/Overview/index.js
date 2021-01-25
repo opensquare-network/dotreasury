@@ -30,12 +30,18 @@ const Overview = () => {
   const bountySpent = toPrecision(overview.spent.bounty || 0, 12, false);
   const proposalSpent = toPrecision(overview.spent.proposal || 0, 12, false);
   const tipSpent = toPrecision(overview.spent.tip || 0, 12, false);
+  const burntTotal = toPrecision(overview.burnt || 0, 12, false);
 
   return (
     <>
       <Header>Overview</Header>
       <Summary />
-      <DoughnutCard proposals={proposalSpent} tips={tipSpent} bounties={bountySpent} />
+      <DoughnutCard
+        proposals={proposalSpent}
+        tips={tipSpent}
+        bounties={bountySpent}
+        burnt={burntTotal}
+      />
       <TableWrapper>
         <BeneficiaryTable />
         <ProposerTable />
