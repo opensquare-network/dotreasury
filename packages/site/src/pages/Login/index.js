@@ -21,6 +21,7 @@ import TextMinor from "../../components/TextMinor";
 const CardWrapper = styled(Card)`
   max-width: 424px;
   margin: auto;
+  margin-top: 28px;
   padding: 32px;
   .ui.form input:focus {
     border-color: ${PRIMARY_THEME_COLOR} !important;
@@ -34,7 +35,7 @@ const CardWrapper = styled(Card)`
   .field:first-child {
     margin-bottom: 24px !important;
   }
-  .field:last-child {
+  .field:nth-child(2) {
     margin-bottom: 8px !important;
   }
   @media screen and (max-width: 408px) {
@@ -179,7 +180,7 @@ function Login({ location }) {
         <StyledButton>Login with web3 address</StyledButton>
         <StyledDivider />
         <SignUpWrapper>
-          Don't have a account?
+          Don't have an account?
           <StyledLink to="/register">Sign up</StyledLink>
         </SignUpWrapper>
       </Form>
