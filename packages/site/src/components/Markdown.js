@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import ReactMarkdown from "react-markdown";
 
+import { PRIMARY_THEME_COLOR } from "../constants";
+
 const Wrapper = styled.div`
 
   &, &.mde-preview-content {
@@ -41,14 +43,9 @@ const Wrapper = styled.div`
       }
     }
 
-    /* a {
-      color: pink_primary;
-
-      &:hover {
-        text-decoration: none;
-        color: pink_secondary;
-      }
-    } */
+    a {
+      color: ${PRIMARY_THEME_COLOR};
+    }
 
     /* blockquote {
       margin-left: 0;

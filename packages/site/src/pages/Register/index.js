@@ -1,34 +1,116 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from "react-redux";
 import { useForm } from 'react-hook-form';
-import styled from "styled-components";
-import { Button, Form } from "semantic-ui-react";
+import styled, { css } from "styled-components";
+import { Form, Divider } from "semantic-ui-react";
+import { Link } from 'react-router-dom';
 
 import { setLoggedInUser } from "../../store/reducers/userSlice";
 import scanApi from "../../services/scanApi";
 import Card from "../../components/Card";
 import Text from "../../components/Text";
-import { TEXT_DARK_MAJOR, PRIMARY_THEME_COLOR } from "../../constants";
+import { TEXT_DARK_MAJOR, TEXT_DARK_MINOR, PRIMARY_THEME_COLOR } from "../../constants";
+import FormInput from "../../components/FormInput";
+import FormPasswordWrapper from "../../components/FormPasswordWrapper";
+import ButtonPrimary from "../../components/ButtonPrimary";
+import Button from "../../components/Button";
+import GrayImage from "../../components/GrayImage";
+import TextMinor from "../../components/TextMinor";
+
 
 const CardWrapper = styled(Card)`
-  max-width: 450px;
+  max-width: 424px;
   margin: auto;
+  margin-top: 28px;
   padding: 20px;
+  padding: 32px;
   .ui.form input:focus {
     border-color: ${PRIMARY_THEME_COLOR} !important;
   }
   label {
     color: ${TEXT_DARK_MAJOR} !important;
+    font-weight: 500 !important;
+    line-height: 24px !important;
+    margin-bottom: 8px !important;
+  }
+  .field:not(:last-child) {
+    margin-bottom: 24px !important;
+  }
+  .field:nth-child(3) {
+    margin-bottom: 8px !important;
+  }
+  @media screen and (max-width: 408px) {
+    padding: 32px 16px;
   }
 `
 
 const Header = styled(Text)`
-  font-size: 24px;
+  font-family: "Montserrat";
+  font-size: 28px;
   font-weight: bold;
-  margin-bottom: 30px;
+  line-height: 44px;
+  margin-bottom: 24px;
+  text-align: center;
+`
+
+const HelperWrapper = styled.div`
+  display: flex;
+  align-items: start;
+  margin-bottom: 24px;
+  & > div > * {
+    margin-bottom: 0;
+    display: inline;
+    word-wrap: break-word;
+  } 
+`
+
+const StyledTextMnor = styled(TextMinor)`
+  text-decoration: underline;
+  display: inline;
+`
+
+const CheckImage = styled(GrayImage)`
+  padding: 4px 8px 4px 0;
+  ${p => p.active && css`
+    -webkit-filter: grayscale(0);
+    filter: grayscale(0);
+    opacity: 1;
+  `}
+  cursor: pointer;
+`
+
+const StyledButtonPrimary = styled(ButtonPrimary)`
+  width: 100%;
+  margin-bottom: 16px !important;
+`
+
+const StyledButton = styled(Button)`
+  width: 100%;
+  margin-bottom: 24px !important;
+`
+
+const StyledDivider = styled(Divider)`
+  margin: 0 !important;
+`
+
+const LoginWrapper = styled.div`
+  margin-top: 16px;
+  line-height: 24px;
+  text-align: center;
+  color: ${TEXT_DARK_MINOR};
+`
+
+const StyledLink = styled(Link)`
+  margin-left: 8px;
+  color: ${PRIMARY_THEME_COLOR};
+  :hover {
+    color: ${PRIMARY_THEME_COLOR};
+  }
 `
 
 function Register({ history }) {
+  const [showPassword, setShowPassword] = useState(false);
+  const [isAgree, setIsAgree] = useState(false);
   const { register, handleSubmit, errors } = useForm();
   const dispatch = useDispatch();
 
@@ -41,7 +123,7 @@ function Register({ history }) {
 
   return (
     <CardWrapper>
-      <Header>Register</Header>
+      <Header>Sign up</Header>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Form.Field>
           <label htmlFor="username">Username
@@ -51,7 +133,7 @@ function Register({ history }) {
                 </span>
             }
           </label>
-          <input name="username" type="text" ref={register({required: true})} />
+          <FormInput name="username" type="text" ref={register({required: true})} />
         </Form.Field>
         <Form.Field>
           <label htmlFor="email">Email
@@ -61,7 +143,7 @@ function Register({ history }) {
                 </span>
             }
           </label>
-          <input name="email" type="text" ref={register({required: true})} />
+          <FormInput name="email" type="text" ref={register({required: true})} />
         </Form.Field>
         <Form.Field>
           <label htmlFor="password">Password
@@ -71,9 +153,30 @@ function Register({ history }) {
                 </span>
             }
           </label>
-          <input name="password" type="password" ref={register({required: true})} />
+          <FormPasswordWrapper show={showPassword} toggleClick={() => setShowPassword(!showPassword)}>
+            <FormInput name="password" type="password" ref={register({required: true})} />
+          </FormPasswordWrapper>
         </Form.Field>
-        <Button primary type="submit">Register</Button>
+        <HelperWrapper>
+          <CheckImage src="/imgs/circle-pass.svg" active={isAgree} onClick={() => setIsAgree(!isAgree)} />
+          <div>
+            <p>I have read and agree to the terms of the </p>
+            <Link>
+              <StyledTextMnor>User Agreement</StyledTextMnor>
+            </Link>
+            <p> and </p>
+            <Link>
+              <StyledTextMnor>Privacy Notice.</StyledTextMnor>
+            </Link>
+          </div>
+        </HelperWrapper>
+        <StyledButtonPrimary type="submit" >Sign up</StyledButtonPrimary>
+        <StyledButton>Sign up with web3 address</StyledButton>
+        <StyledDivider />
+        <LoginWrapper>
+          Already have an account?
+          <StyledLink to="/login">Login</StyledLink>
+        </LoginWrapper>
       </Form>
     </CardWrapper>
   );
