@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import dayjs from "dayjs";
+import { Image } from "semantic-ui-react";
 
 import Table from "../../components/Table";
 import TableLoading from "../../components/TableLoading";
@@ -53,6 +54,15 @@ const EventID = styled(Text)`
   }
 `;
 
+const EventWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  & > img {
+    margin-right: 4px;
+  }
+`;
+
+
 const BurntTable = ({ data, loading }) => {
   return (
     <Wrapper>
@@ -60,8 +70,8 @@ const BurntTable = ({ data, loading }) => {
         <StyledTable striped selectable unstackable>
           <Table.Header>
             <Table.Row>
-              <Table.HeaderCell>Event ID</Table.HeaderCell>
               <Table.HeaderCell>Time</Table.HeaderCell>
+              <Table.HeaderCell>Event ID</Table.HeaderCell>
               <Table.HeaderCell textAlign={"right"}>Value</Table.HeaderCell>
               <Table.HeaderCell textAlign={"right"}>Per</Table.HeaderCell>
               <Table.HeaderCell textAlign={"right"}>Remnant</Table.HeaderCell>
@@ -73,13 +83,6 @@ const BurntTable = ({ data, loading }) => {
               data.map((item, index) => (
                 <TableRow key={index}>
                   <Table.Cell>
-                    <ExplorerLink
-                      href={`/extrinsic/${item.indexer.blockHeight}-0?event=${item.indexer.blockHeight}-${item.indexer.sort}`}
-                    >
-                      <EventID>{`${item.indexer.blockHeight}-${item.indexer.sort}`}</EventID>
-                    </ExplorerLink>
-                  </Table.Cell>
-                  <Table.Cell>
                     <TimeWrapper>
                       <Text>
                         {dayjs(parseInt(item.indexer.blockTime)).format(
@@ -90,6 +93,16 @@ const BurntTable = ({ data, loading }) => {
                         <PolygonLabel value={item.indexer.blockHeight} />
                       </ExplorerLink>
                     </TimeWrapper>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <ExplorerLink
+                        href={`/extrinsic/${item.indexer.blockHeight}-0?event=${item.indexer.blockHeight}-${item.indexer.sort}`}
+                      >
+                      <EventWrapper>
+                        <Image src={"/imgs/event.svg"} />
+                        <EventID>{`${item.indexer.blockHeight}-${item.indexer.sort}`}</EventID>
+                      </EventWrapper>
+                    </ExplorerLink>
                   </Table.Cell>
                   <Table.Cell textAlign={"right"}>
                     <Balance value={item.balance} />
