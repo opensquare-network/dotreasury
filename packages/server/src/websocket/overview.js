@@ -51,6 +51,7 @@ async function calcOverview() {
 
   return {
     count,
+    spent: output,
     output,
     bestProposalBeneficiaries,
     bestTipFinders,
@@ -128,15 +129,12 @@ async function calcOutput(
     return bigAdd(result, medianValue);
   }, 0);
 
-  const bountySpent = bounties.reduce(
-    (result, { meta: { status, value } }) => {
-      const statusKey = Object.keys(status)[0];
+  const bountySpent = bounties.reduce((result, { meta: { status, value } }) => {
+    const statusKey = Object.keys(status)[0];
 
-      const index = bountyStatuses.findIndex((item) => item === statusKey);
-      return index >= 2 ? bigAdd(result, value) : result;
-    },
-    0
-  );
+    const index = bountyStatuses.findIndex((item) => item === statusKey);
+    return index >= 2 ? bigAdd(result, value) : result;
+  }, 0);
 
   const burntTotal = burntList.reduce((result, { balance }) => {
     return bigAdd(result, balance);
