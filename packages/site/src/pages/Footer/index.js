@@ -88,7 +88,13 @@ const Footer = () => {
               <TextMinor>
                 Funded by
               </TextMinor>
-                <Image src="/imgs/kusama-treasury-logo.svg" />
+                <a
+                  href="https://kusama.network/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Image src="/imgs/kusama-treasury-logo.svg" />
+                </a>
             </ImageLogoWrapper>
           </TextWrapper>
           <TextMinor className="small">

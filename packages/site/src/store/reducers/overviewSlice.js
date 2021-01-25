@@ -19,11 +19,15 @@ const overviewSlice = createSlice({
           unFinished: 0,
           all: 0,
         },
+        burnt: {
+          all: 0,
+        },
       },
-      spent: {
+      output: {
         bounty: 0,
         proposal: 0,
         tip: 0,
+        burnt: 0,
       },
     },
   },
@@ -42,6 +46,8 @@ export const totalTipCountSelector = (state) =>
   state.overview.overview.count.tip.all;
 export const totalBountyCountSelector = (state) =>
   state.overview.overview.count.bounty.all;
+export const totalBurntCountSelector = (state) =>
+  state.overview.overview.count.burnt.all;
 export const overviewSelector = (state) => state.overview.overview;
 
 export default overviewSlice.reducer;
