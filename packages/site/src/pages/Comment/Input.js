@@ -14,6 +14,7 @@ import {
 
 const Wrapper = styled.div`
   padding: 32px;
+  border-top: 1px solid #EEEEEE;
 `
 
 const ButtonWrapper = styled.div`

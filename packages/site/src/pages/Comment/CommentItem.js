@@ -7,6 +7,7 @@ import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
 import TextDisable from "../../components/TextDisable";
 import Markdown from "../../components/Markdown";
+import { PRIMARY_THEME_COLOR, SECONDARY_THEME_COLOR } from "../../constants";
 
 const Wrapper = styled.div`
   padding: 32px 32px 16px;
@@ -36,6 +37,17 @@ const Index = styled(TextMinor)`
   padding: 0 8px;
   line-height: 20px;
   margin-left: auto;
+  font-size: 12px;
+`
+
+const TopLabel = styled(Text)`
+  background: ${SECONDARY_THEME_COLOR};
+  color: ${PRIMARY_THEME_COLOR};
+  line-height: 20px;
+  font-size: 12px;
+  padding: 0 8px;
+  border-radius: 10px;
+  margin-left: 8px;
 `
 
 const ContnetWrapper = styled.div`
@@ -68,6 +80,7 @@ const ReplayButton = styled(Button)`
 `
 
 const CommentItem = ({comment, index}) => {
+  const isTop = false;
   return (<Wrapper>
     <HeaderWrapper>
       <Avatar src="/imgs/avatar.png" />
@@ -76,6 +89,7 @@ const CommentItem = ({comment, index}) => {
         "YYYY-MM-DD HH:mm:ss"
       )}</TextDisable>
       <Index>#{index + 1}</Index>
+      { isTop && <TopLabel>top</TopLabel> }
     </HeaderWrapper>
     <ContnetWrapper>
       <Markdown md={comment.content} />

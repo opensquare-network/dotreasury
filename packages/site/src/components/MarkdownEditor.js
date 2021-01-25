@@ -7,7 +7,7 @@ import Markdown from "./Markdown";
 import { PRIMARY_THEME_COLOR } from "../constants";
 
 export const StyledTextArea = styled.div`
-  margin-top: 20px;
+  /* margin-top: 20px; */
   
   & > section {
     margin-bottom: 8px;

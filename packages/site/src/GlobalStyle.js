@@ -21,13 +21,10 @@ const GlobalStyle = createGlobalStyle`
   }
   
   .ui.primary.button, .ui.primary.buttons .button {
+    font-size: 14px;
+    font-weight: normal;
     background: #DF405D;
-    
     &:hover, &:active, &:focus {
-      background: #DF405D;
-    }
-    
-    &:focus {
       background: #DF405D;
     }
   }
