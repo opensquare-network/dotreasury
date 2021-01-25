@@ -48,6 +48,9 @@ const TimeWrapper = styled.div`
 
 const EventID = styled(Text)`
 white-space: nowrap;
+&:hover {
+  text-decoration-line: underline;
+}
 `
 
 const BurntTable = ({ data, loading }) => {
