@@ -12,6 +12,7 @@ import {
   TEXT_DARK_MAJOR,
   TEXT_DARK_MINOR,
 } from "../../constants";
+import BurntMenu from "./BurntMenu";
 
 const DividerWrapper = styled(Divider)`
   margin: 0 !important;
@@ -115,17 +116,17 @@ const TabExampleSecondaryPointing = () => {
         active: "/bounties" === pathname || pathname.indexOf("/bounties") === 0,
       },
     },
-    // {
-    //   menuItem: {
-    //     as: NavLink,
-    //     id: "burntTab",
-    //     content: <BurntMenu />,
-    //     to: "/burnt",
-    //     exact: true,
-    //     key: "burnt",
-    //     active: "/burnt" === pathname || pathname.indexOf("/burnt") === 0,
-    //   },
-    // },
+    {
+      menuItem: {
+        as: NavLink,
+        id: "burntTab",
+        content: <BurntMenu />,
+        to: "/burnt",
+        exact: true,
+        key: "burnt",
+        active: "/burnt" === pathname || pathname.indexOf("/burnt") === 0,
+      },
+    },
   ];
 
   return (
