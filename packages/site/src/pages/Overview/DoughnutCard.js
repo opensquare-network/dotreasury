@@ -24,7 +24,7 @@ const DoughnutCard = ({ proposals, tips, bounties, burnt }) => {
   const [proposalsDisabled, setProposalsDisabled] = useState(false);
   const [tipsDisabled, setTipsDisabled] = useState(false);
   const [bountiesDisabled, setBountiesDisabled] = useState(false);
-  const [burntDisabled, setBurntDisabled] = useState(true);
+  const [burntDisabled, setBurntDisabled] = useState(false);
   const total = (
     (proposalsDisabled ? 0 : proposals) +
     (tipsDisabled ? 0 : tips) +

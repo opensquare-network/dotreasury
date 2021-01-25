@@ -23,12 +23,12 @@ const overviewSlice = createSlice({
           all: 0,
         },
       },
-      spent: {
+      output: {
         bounty: 0,
         proposal: 0,
         tip: 0,
+        burnt: 0,
       },
-      burnt: 0,
     },
   },
   reducers: {

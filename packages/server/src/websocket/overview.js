@@ -44,19 +44,14 @@ async function calcOverview() {
   const burntCol = await getBurntCollection();
   const burntList = await burntCol.find({}, { balance: 1 }).toArray();
 
-  const burntTotal = burntList.reduce((result, { balance }) => {
-    return bigAdd(result, balance);
-  }, 0);
-
   const count = await calcCount(proposals, tips, bounties, burntList);
-  const spent = await calcSpent(proposals, tips, bounties);
+  const output = await calcOutput(proposals, tips, bounties, burntList);
   const bestProposalBeneficiaries = calcBestProposalBeneficiary(proposals);
   const bestTipFinders = calcBestTipProposers(tips);
 
   return {
     count,
-    spent,
-    burnt: burntTotal,
+    output,
     bestProposalBeneficiaries,
     bestTipFinders,
   };
@@ -111,7 +106,12 @@ const bountyStatuses = [
   "PendingPayout",
 ];
 
-async function calcSpent(proposals = [], tips = [], bounties = []) {
+async function calcOutput(
+  proposals = [],
+  tips = [],
+  bounties = [],
+  burntList = []
+) {
   const spentProposals = proposals.filter(
     ({ state: { name } }) => name === "Awarded"
   );
@@ -128,17 +128,25 @@ async function calcSpent(proposals = [], tips = [], bounties = []) {
     return bigAdd(result, medianValue);
   }, 0);
 
-  const bountySpent = bounties.reduce((result, { meta: { status, value } }) => {
-    const statusKey = Object.keys(status)[0];
+  const bountySpent = bounties.reduce(
+    (result, { meta: { status, value } }) => {
+      const statusKey = Object.keys(status)[0];
 
-    const index = bountyStatuses.findIndex((item) => item === statusKey);
-    return index >= 2 ? bigAdd(result, value) : result;
+      const index = bountyStatuses.findIndex((item) => item === statusKey);
+      return index >= 2 ? bigAdd(result, value) : result;
+    },
+    0
+  );
+
+  const burntTotal = burntList.reduce((result, { balance }) => {
+    return bigAdd(result, balance);
   }, 0);
 
   return {
     proposal: proposalSpent,
     tip: tipSpent,
     bounty: bountySpent,
+    burnt: burntTotal,
   };
 }
 

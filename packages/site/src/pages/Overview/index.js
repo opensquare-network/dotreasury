@@ -27,10 +27,10 @@ const TableWrapper = styled.div`
 
 const Overview = () => {
   const overview = useSelector(overviewSelector);
-  const bountySpent = toPrecision(overview.spent.bounty || 0, 12, false);
-  const proposalSpent = toPrecision(overview.spent.proposal || 0, 12, false);
-  const tipSpent = toPrecision(overview.spent.tip || 0, 12, false);
-  const burntTotal = toPrecision(overview.burnt || 0, 12, false);
+  const bountySpent = toPrecision(overview.output.bounty || 0, 12, false);
+  const proposalSpent = toPrecision(overview.output.proposal || 0, 12, false);
+  const tipSpent = toPrecision(overview.output.tip || 0, 12, false);
+  const burntTotal = toPrecision(overview.output.burnt || 0, 12, false);
 
   return (
     <>
