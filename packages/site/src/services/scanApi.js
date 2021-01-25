@@ -42,7 +42,7 @@ class ScanApi extends Api {
       return { result };
     }
 
-    if (error.status === 401 && error.message === "jwt expired") {
+    if (error?.status === 401 && error?.message === "jwt expired") {
       console.warn("Access token expired, tring to refresh token.");
       // jwt expire
       const { result: refreshResult } = await this.fetch('/auth/refresh', {}, {
