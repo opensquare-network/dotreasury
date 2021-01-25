@@ -2,13 +2,14 @@ import React from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Dropdown, Image } from "semantic-ui-react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import {
   isLoggedInSelector,
   setLoggedInUser,
   loggedInUserSelector
 } from "../../store/reducers/userSlice";
-import { PRIMARY_THEME_COLOR } from "../../constants";
+import ButtonPrimary from "../../components/ButtonPrimary";
+import Button from "../../components/Button";
 
 const Wrapper = styled.div`
   display: flex;
@@ -18,11 +19,9 @@ const Wrapper = styled.div`
   }
 `
 
-const ColoredLink = styled(Link)`
-  color: ${PRIMARY_THEME_COLOR};
-  :hover {
-    color: ${PRIMARY_THEME_COLOR};
-  }
+const SignUpButton = styled(Button)`
+  border: 0 !important;
+  margin-right: 16px !important;
 `
 
 const UserLogin = () => {
@@ -52,9 +51,14 @@ const UserLogin = () => {
           </Wrapper>
         )
         : (
-          <ColoredLink to="/login">
-            Login
-          </ColoredLink>
+          <>
+            <NavLink to="/register">
+              <SignUpButton>Sign up</SignUpButton>
+            </NavLink>
+            <NavLink to="/login">
+              <ButtonPrimary>Login</ButtonPrimary>
+            </NavLink>
+          </>
         )
       }
     </>
