@@ -5,9 +5,10 @@ import dayjs from "dayjs";
 import Table from "../../components/Table";
 import TableLoading from "../../components/TableLoading";
 import Balance from "../../components/Balance";
-import TextMinor from "../../components/TextMinor";
+import Text from "../../components/Text";
 import ExplorerLink from "../../components/ExplorerLink";
 import TableNoDataCell from "../../components/TableNoDataCell";
+import PolygonLabel from "../../components/PolygonLabel";
 
 const Wrapper = styled.div`
   overflow-x: scroll;
@@ -33,6 +34,25 @@ const StyledTable = styled(Table)`
   }
 `;
 
+const TableRow = styled(Table.Row)`
+  height: 50px;
+`;
+
+const TimeWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  p:first-child {
+    min-width: 154px;
+  }
+`;
+
+const EventID = styled(Text)`
+  white-space: nowrap;
+  &:hover {
+    text-decoration-line: underline;
+  }
+`;
+
 const BurntTable = ({ data, loading }) => {
   return (
     <Wrapper>
@@ -40,27 +60,36 @@ const BurntTable = ({ data, loading }) => {
         <StyledTable striped selectable unstackable>
           <Table.Header>
             <Table.Row>
-              <Table.HeaderCell>Index</Table.HeaderCell>
-              <Table.HeaderCell>Burnt Time</Table.HeaderCell>
-              <Table.HeaderCell textAlign={"right"}>Burnt Balance</Table.HeaderCell>
-              <Table.HeaderCell textAlign={"right"}>Burnt Precentage</Table.HeaderCell>
-              <Table.HeaderCell textAlign={"right"}>Treasury Balance</Table.HeaderCell>
+              <Table.HeaderCell>Event ID</Table.HeaderCell>
+              <Table.HeaderCell>Time</Table.HeaderCell>
+              <Table.HeaderCell textAlign={"right"}>Value</Table.HeaderCell>
+              <Table.HeaderCell textAlign={"right"}>Per</Table.HeaderCell>
+              <Table.HeaderCell textAlign={"right"}>Remnant</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
           <Table.Body>
             {(data &&
               data.length > 0 &&
               data.map((item, index) => (
-                <Table.Row key={index}>
+                <TableRow key={index}>
                   <Table.Cell>
-                    <ExplorerLink href={`/extrinsic/${item.indexer.blockHeight}-0?event=${item.indexer.blockHeight}-${item.indexer.sort}`}>
-                      {`${item.indexer.blockHeight}-${item.indexer.sort}`}
+                    <ExplorerLink
+                      href={`/extrinsic/${item.indexer.blockHeight}-0?event=${item.indexer.blockHeight}-${item.indexer.sort}`}
+                    >
+                      <EventID>{`${item.indexer.blockHeight}-${item.indexer.sort}`}</EventID>
                     </ExplorerLink>
                   </Table.Cell>
                   <Table.Cell>
-                    <TextMinor>{dayjs(parseInt(item.indexer.blockTime)).format(
-                      "YYYY-MM-DD HH:mm:ss"
-                    )}</TextMinor>
+                    <TimeWrapper>
+                      <Text>
+                        {dayjs(parseInt(item.indexer.blockTime)).format(
+                          "YYYY-MM-DD HH:mm:ss"
+                        )}
+                      </Text>
+                      <ExplorerLink href={`/block/${item.indexer.blockHeight}`}>
+                        <PolygonLabel value={item.indexer.blockHeight} />
+                      </ExplorerLink>
+                    </TimeWrapper>
                   </Table.Cell>
                   <Table.Cell textAlign={"right"}>
                     <Balance value={item.balance} />
@@ -71,10 +100,8 @@ const BurntTable = ({ data, loading }) => {
                   <Table.Cell textAlign={"right"}>
                     <Balance value={item.treasury.free} />
                   </Table.Cell>
-                </Table.Row>
-              ))) || (
-                <TableNoDataCell />
-            )}
+                </TableRow>
+              ))) || <TableNoDataCell />}
           </Table.Body>
         </StyledTable>
       </TableLoading>
