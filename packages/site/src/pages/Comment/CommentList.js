@@ -4,7 +4,10 @@ import styled from "styled-components";
 import CommentItem from "./CommentItem";
 
 const Wrapper = styled.div`
-  border-top: 1px solid #EEEEEE;
+  div:first-child {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
 `
 
 const CommentList = ({ comments }) => {

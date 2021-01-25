@@ -5,13 +5,12 @@ import ReactMarkdown from "react-markdown";
 const Wrapper = styled.div`
 
   &, &.mde-preview-content {
-    /* font-size: md; */
-    margin-bottom: 2rem;
+    margin-bottom: 8px;
     overflow-wrap: break-word;
 
     p, blockquote, ul, ol, dl, table {
       line-height: 150%;
-      margin: 0 0 1.5rem 0;
+      /* margin: 0 0 1.5rem 0; */
     }
 
     h1 {

@@ -34,8 +34,8 @@ const Comment = ({ type, index }) => {
     <div>
       <Header>Comment</Header>
       <Wrapper>
-        <Input type={type} index={index} />
         <CommentList comments={comments.comments} />
+        <Input type={type} index={index} />
       </Wrapper>
     </div>
   );
