@@ -13,6 +13,8 @@ const CustomButton = styled(Button)`
   background: white !important;
   border: 1px solid #E1E1E1 !important;
   border-radius: 4px !important;
+  line-height: 24px !important;
+  padding: 8px 16px !important;
 `
 
 export default CustomButton;
