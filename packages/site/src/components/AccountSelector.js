@@ -23,7 +23,7 @@ const DropdownWrapper = styled.div`
 
 const StyledDropdown = styled(Dropdown)`
   width: 100%;
-  height: 64px;
+  height: 64px !important;
   :active,
   :focus {
     border-color: ${PRIMARY_THEME_COLOR} !important;
@@ -40,10 +40,6 @@ const StyledDropdown = styled(Dropdown)`
     transform: translate(0, -9px) !important;
     opacity: 0.24 !important;
   }
-`;
-
-const StyledDropdownItem = styled(Dropdown.Item)`
-  padding: 0 !important;
 `;
 
 const ItemWrapper = styled.div`
@@ -83,28 +79,21 @@ const AccountSelector = ({ accounts, onSelect = () => {} }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   useEffect(() => {
     onSelect(accounts[selectedIndex]);
-  }, [selectedIndex]);
+  }, [accounts, onSelect, selectedIndex]);
+  const options = accounts.map((item, index) => ({
+    key: index,
+    value: index,
+    content: (
+      <AccountItem accountName={item.name} accountAddress={item.address} />
+    )
+  }))
   return (
     <Wrapper>
       <Label>Choose linked account</Label>
       <DropdownWrapper>
-        <StyledDropdown selection labeled>
-          <Dropdown.Menu>
-            {(accounts || []).map((account, index) => (
-              <StyledDropdownItem
-                key={index}
-                onClick={() => {
-                  setSelectedIndex(index);
-                }}
-              >
-                <AccountItem
-                  accountName={account.name}
-                  accountAddress={account.address}
-                />
-              </StyledDropdownItem>
-            ))}
-          </Dropdown.Menu>
-        </StyledDropdown>
+        <StyledDropdown selection options={options} onChange={(_, { value }) => {
+            setSelectedIndex(value)
+          }} />
         <AccountItem
           accountName={accounts?.[selectedIndex]?.name}
           accountAddress={accounts?.[selectedIndex]?.address}

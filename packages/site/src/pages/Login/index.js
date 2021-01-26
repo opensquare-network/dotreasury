@@ -94,7 +94,7 @@ const StyledTextMnor = styled(TextMinor)`
 const CheckImage = styled(GrayImage)`
   margin-right: 8px;
   ${(p) =>
-    p.active &&
+    p.checked &&
     css`
       -webkit-filter: grayscale(0);
       filter: grayscale(0);
@@ -271,7 +271,7 @@ function Login({ location }) {
           </Form.Field>
           <HelperWrapper>
             <RememberMe onClick={() => setIsRememberMe(!isRememberMe)}>
-              <CheckImage src="/imgs/circle-pass.svg" active={isRememberMe} />
+              <CheckImage src="/imgs/circle-pass.svg" checked={isRememberMe} />
               <p>Remember me</p>
             </RememberMe>
             <Link to="?#">
