@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import useDeepCompareEffect from "use-deep-compare-effect";
 import styled, { css } from "styled-components";
 import { Dropdown, Image } from "semantic-ui-react";
 
@@ -81,9 +82,9 @@ const AccountItem = ({ header, accountName, accountAddress }) => {
 
 const AccountSelector = ({ accounts, onSelect = () => {} }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  useEffect(() => {
+  useDeepCompareEffect(() => {
     onSelect(accounts[selectedIndex]);
-  }, [selectedIndex]);
+  }, [accounts, selectedIndex]);
   return (
     <Wrapper>
       <Label>Choose linked account</Label>
