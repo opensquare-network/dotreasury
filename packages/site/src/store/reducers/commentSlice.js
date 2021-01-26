@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { REACTION_THUMBDOWN, REACTION_THUMBUP } from "../../constants";
 import api from "../../services/scanApi";
 
 const commentSlice = createSlice({
@@ -93,7 +94,7 @@ export const setCommentThumbUp = (type, index, commentId) => async (
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ reaction: 1 }),
+      body: JSON.stringify({ reaction: REACTION_THUMBUP }),
     }
   );
 
@@ -111,7 +112,24 @@ export const setCommentThumbDown = (type, index, commentId) => async (
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ reaction: 2 }),
+      body: JSON.stringify({ reaction: REACTION_THUMBDOWN }),
+    }
+  );
+
+  dispatch(fetchComments(type, index));
+};
+
+export const unsetCommentReaction = (type, index, commentId) => async (
+  dispatch
+) => {
+  await api.authFetch(
+    `/comments/${commentId}/reaction`,
+    {},
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
     }
   );
 
