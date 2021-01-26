@@ -16,7 +16,8 @@ import ButtonPrimary from "../../components/ButtonPrimary";
 import Button from "../../components/Button";
 import GrayImage from "../../components/GrayImage";
 import TextMinor from "../../components/TextMinor";
-
+import DownloadPolkadot from "../../components/DownloadPolkadot";
+import AccountSelector from "../../components/AccountSelector";
 
 const CardWrapper = styled(Card)`
   max-width: 424px;
@@ -108,7 +109,27 @@ const StyledLink = styled(Link)`
   }
 `
 
+const Helper = ({isAgree, setIsAgree}) => {
+  return (
+    <HelperWrapper>
+      <CheckImage src="/imgs/circle-pass.svg" active={isAgree} onClick={() => setIsAgree(!isAgree)} />
+      <div>
+        <p>I have read and agree to the terms of the </p>
+        <Link>
+          <StyledTextMnor>User Agreement</StyledTextMnor>
+        </Link>
+        <p> and </p>
+        <Link>
+          <StyledTextMnor>Privacy Notice.</StyledTextMnor>
+        </Link>
+      </div>
+    </HelperWrapper>
+  )
+}
+
 function Register({ history }) {
+  const [web3Login, setWeb3Login] = useState(false);
+  const [hasExtension] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [isAgree, setIsAgree] = useState(false);
   const { register, handleSubmit, errors } = useForm();
@@ -124,7 +145,7 @@ function Register({ history }) {
   return (
     <CardWrapper>
       <Header>Sign up</Header>
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      {!web3Login && <Form onSubmit={handleSubmit(onSubmit)}>
         <Form.Field>
           <label htmlFor="username">Username
             { errors.username
@@ -157,27 +178,23 @@ function Register({ history }) {
             <FormInput name="password" type="password" ref={register({required: true})} />
           </FormPasswordWrapper>
         </Form.Field>
-        <HelperWrapper>
-          <CheckImage src="/imgs/circle-pass.svg" active={isAgree} onClick={() => setIsAgree(!isAgree)} />
-          <div>
-            <p>I have read and agree to the terms of the </p>
-            <Link>
-              <StyledTextMnor>User Agreement</StyledTextMnor>
-            </Link>
-            <p> and </p>
-            <Link>
-              <StyledTextMnor>Privacy Notice.</StyledTextMnor>
-            </Link>
-          </div>
-        </HelperWrapper>
+        <Helper isAgree={isAgree} setIsAgree={setIsAgree} />
         <StyledButtonPrimary type="submit" >Sign up</StyledButtonPrimary>
-        <StyledButton>Sign up with web3 address</StyledButton>
-        <StyledDivider />
-        <LoginWrapper>
-          Already have an account?
-          <StyledLink to="/login">Login</StyledLink>
-        </LoginWrapper>
-      </Form>
+        <StyledButton onClick={() => setWeb3Login(true)}>Sign up with web3 address</StyledButton>
+      </Form>}
+      {web3Login && <div>
+        {hasExtension && <div>
+          <AccountSelector />
+          <Helper isAgree={isAgree} setIsAgree={setIsAgree} />
+        </div>}
+        {!hasExtension && <DownloadPolkadot />}
+        <StyledButton onClick={() => setWeb3Login(false)}>Sign up with username</StyledButton>
+      </div>}
+      <StyledDivider />
+      <LoginWrapper>
+        Already have an account?
+        <StyledLink to="/login">Login</StyledLink>
+      </LoginWrapper>
     </CardWrapper>
   );
 }
