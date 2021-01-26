@@ -145,7 +145,7 @@ const MarkdownEditor = ({ md, onChange }) => {
         value={md}
         onChange={onChange}
         loadSuggestions={loadSuggestions}
-        toolbarCommands={[['header', 'bold', 'italic', 'quote', 'ordered-list', 'unordered-list', 'checked-list']]}
+        toolbarCommands={[['header', 'bold', 'italic', 'quote', 'ordered-list', 'unordered-list', 'link', 'image', 'code']]}
         getIcon={(commandName) => {
 					return (
 						<Image src={`/imgs/md-icons/${commandName}.svg`} />
