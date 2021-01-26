@@ -10,4 +10,7 @@ router.post("/auth/refresh", authController.refresh);
 router.get("/auth/login/:address", authController.addressLoginStart);
 router.post("/auth/login/:attemptId", authController.addressLoginConfirm);
 
+router.post("/auth/forget", authController.forgotPassword);
+router.post("/auth/reset", authController.resetPassword);
+
 module.exports = router;

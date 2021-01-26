@@ -1,9 +1,12 @@
 const { ObjectId } = require("mongodb");
 const argon2 = require("argon2");
 const { randomBytes } = require("crypto");
-const validator = require('validator');
+const validator = require("validator");
 const authService = require("../../services/auth.service");
-const { getUserCollection, getLoginAttemptCollection } = require("../../mongo-admin");
+const {
+  getUserCollection,
+  getLoginAttemptCollection,
+} = require("../../mongo-admin");
 const { HttpError } = require("../../exc");
 const { isValidSignature } = require("../../utils");
 
@@ -24,7 +27,10 @@ class AuthController {
     }
 
     if (!username.match(/^[a-z][a-z0-9_]{2,15}$/)) {
-      throw new HttpError(400, "Invalid username. It should start with alpha, and only contains alpha, numeric and underscore. The length must between 3 to 16");
+      throw new HttpError(
+        400,
+        "Invalid username. It should start with alpha, and only contains alpha, numeric and underscore. The length must between 3 to 16"
+      );
     }
 
     if (!validator.isEmail(email)) {
@@ -46,7 +52,7 @@ class AuthController {
     const salt = randomBytes(32);
     const hashedPassword = await argon2.hash(password, { salt });
 
-    const hexSalt = salt.toString('hex');
+    const hexSalt = salt.toString("hex");
 
     const result = await userCol.insertOne({
       username,
@@ -63,11 +69,13 @@ class AuthController {
     const accessToken = await authService.getSignedToken(insertedUser);
     const refreshToken = await authService.getRefreshToken(insertedUser);
 
+    const now = new Date();
     ctx.body = {
       username: insertedUser.username,
       email: insertedUser.email,
       accessToken,
       refreshToken,
+      createdAt: now,
     };
   }
 
@@ -85,10 +93,7 @@ class AuthController {
     const userCol = await getUserCollection();
 
     const user = await userCol.findOne({
-      $or: [
-        { email },
-        { username },
-      ]
+      $or: [{ email }, { username }],
     });
 
     if (!user) {
@@ -108,7 +113,7 @@ class AuthController {
       email: user.email,
       accessToken,
       refreshToken,
-    }
+    };
   }
 
   async refresh(ctx) {
@@ -120,7 +125,7 @@ class AuthController {
 
     const accessToken = await authService.refresh(refreshToken);
     ctx.body = {
-      accessToken
+      accessToken,
     };
   }
 
@@ -133,8 +138,8 @@ class AuthController {
         $elemMatch: {
           address,
           verified: true,
-        }
-      }
+        },
+      },
     });
 
     if (!user) {
@@ -145,7 +150,7 @@ class AuthController {
     const result = await loginAttemptCol.insertOne({
       userId: user._id,
       address,
-      challenge: randomBytes(12).toString('hex'),
+      challenge: randomBytes(12).toString("hex"),
       createdAt: new Date(),
     });
 
@@ -158,7 +163,7 @@ class AuthController {
     ctx.body = {
       attemptId: loginAttempt._id,
       challenge: loginAttempt.challenge,
-    }
+    };
   }
 
   async addressLoginConfirm(ctx) {
@@ -170,12 +175,18 @@ class AuthController {
     }
 
     const loginAttemptCol = await getLoginAttemptCollection();
-    const loginAttempt = await loginAttemptCol.findOne({ _id: ObjectId(attemptId) });
+    const loginAttempt = await loginAttemptCol.findOne({
+      _id: ObjectId(attemptId),
+    });
     if (!loginAttempt) {
       throw new HttpError(400, "Incorrect login attempt id");
     }
 
-    const success = isValidSignature(loginAttempt.challenge, challengeAnswer, loginAttempt.address);
+    const success = isValidSignature(
+      loginAttempt.challenge,
+      challengeAnswer,
+      loginAttempt.address
+    );
     if (!success) {
       throw new HttpError(401, "Incorrect signature.");
     }
@@ -194,7 +205,107 @@ class AuthController {
       email: user.email,
       accessToken,
       refreshToken,
+    };
+  }
+
+  async forgotPassword(ctx) {
+    const { email } = ctx.request.body;
+    if (!email) {
+      throw new HttpError(400, "Email is not provided.");
     }
+
+    const userCol = await getUserCollection();
+    const user = await userCol.findOne({ email });
+    if (!user) {
+      throw new HttpError(400, "The email is not associated with any account.");
+    }
+
+    if (user.reset?.expires.getTime() > Date.now()) {
+      ctx.body = true;
+      return;
+    }
+
+    const oneDay = 24 * 60 * 60 * 1000;
+    const expires = new Date(Date.now() + oneDay);
+    const token = randomBytes(12).toString("hex");
+    const result = await userCol.updateOne(
+      { _id: user._id },
+      {
+        $set: {
+          reset: {
+            expires,
+            token,
+          },
+        },
+      }
+    );
+
+    if (!result.result.ok) {
+      throw new HttpError(500, "Db error: request password reset.");
+    }
+
+    if (result.result.nModified === 0) {
+      ctx.body = false;
+      return;
+    }
+
+    // TODO: Send password reset email
+
+    ctx.body = true;
+  }
+
+  async resetPassword(ctx) {
+    const { email, token, newPassword } = ctx.request.body;
+    if (!email) {
+      throw new HttpError(400, "Email is not provided.");
+    }
+
+    if (!token) {
+      throw new HttpError(400, "Reset token is not provided.");
+    }
+
+    if (!newPassword) {
+      throw new HttpError(400, "New password is not provided.");
+    }
+
+    const userCol = await getUserCollection();
+    const user = await userCol.findOne({ email, "reset.token": token });
+    if (!user) {
+      throw new HttpError(400, "Incorrect reset information.");
+    }
+
+    if (user.reset.expires.getTime() < Date.now()) {
+      throw new HttpError(400, "The reset token has expired.");
+    }
+
+    const salt = randomBytes(32);
+    const hashedPassword = await argon2.hash(newPassword, { salt });
+
+    const hexSalt = salt.toString("hex");
+
+    const result = await userCol.updateOne(
+      { _id: user._id },
+      {
+        $set: {
+          hashedPassword,
+          salt: hexSalt,
+        },
+        $unset: {
+          reset: true,
+        },
+      }
+    );
+
+    if (!result.result.ok) {
+      throw new HttpError(500, "Db error: request password reset.");
+    }
+
+    if (result.result.nModified === 0) {
+      ctx.body = false;
+      return;
+    }
+
+    ctx.body = true;
   }
 }
 

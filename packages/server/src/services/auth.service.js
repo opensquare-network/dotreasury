@@ -30,37 +30,36 @@ class AuthService {
       iat: Math.floor(Date.now() / 1000),
     };
 
-    return jwt.sign(
-      content,
-      process.env.JWT_SECRET_KEY,
-      { expiresIn: '1h' }
-    );
+    return jwt.sign(content, process.env.JWT_SECRET_KEY, { expiresIn: "1h" });
   }
 
   async getRefreshToken(user) {
-    const randHex = randomBytes(12).toString('hex');
+    const randHex = randomBytes(12).toString("hex");
     const token = `${user._id}-${randHex}`;
-		const valid = true;
+    const valid = true;
 
     const oneMonth = 30 * 24 * 60 * 60 * 1000;
     const expires = new Date(Date.now() + oneMonth);
 
     const userCol = await getUserCollection();
-    const result = await userCol.updateOne({ _id: user._id }, {
-      $set: {
-        refreshToken: {
-          expires,
-          token,
-          valid
-        }
+    const result = await userCol.updateOne(
+      { _id: user._id },
+      {
+        $set: {
+          refreshToken: {
+            expires,
+            token,
+            valid,
+          },
+        },
       }
-    });
+    );
 
     if (!result.result.ok) {
       throw new HttpError(500, "Error in generating refresh token");
     }
 
-		return token;
+    return token;
   }
 
   async refresh(refreshToken) {
@@ -83,4 +82,4 @@ class AuthService {
   }
 }
 
-module.exports = new AuthService;
+module.exports = new AuthService();
