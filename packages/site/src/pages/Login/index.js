@@ -17,6 +17,8 @@ import ButtonPrimary from "../../components/ButtonPrimary";
 import Button from "../../components/Button";
 import GrayImage from "../../components/GrayImage";
 import TextMinor from "../../components/TextMinor";
+import DownloadPolkadot from "../../components/DownloadPolkadot";
+import AccountSelector from "../../components/AccountSelector";
 
 const CardWrapper = styled(Card)`
   max-width: 424px;
@@ -112,6 +114,8 @@ const StyledLink = styled(Link)`
 `
 
 function Login({ location }) {
+  const [web3Login, setWeb3Login] = useState(false);
+  const [hasExtension] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [isRememberMe, setIsRememberMe] = useState(false);
   const loggedInUser = useSelector(loggedInUserSelector);
@@ -144,7 +148,7 @@ function Login({ location }) {
   return (
     <CardWrapper>
       <Header>Login</Header>
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      {!web3Login && <Form onSubmit={handleSubmit(onSubmit)}>
           <Form.Field>
             <label htmlFor="username">Username
               { errors.username
@@ -177,13 +181,18 @@ function Login({ location }) {
           </Link>
         </HelperWrapper>
         <StyledButtonPrimary type="submit" >Login</StyledButtonPrimary>
-        <StyledButton>Login with web3 address</StyledButton>
-        <StyledDivider />
-        <SignUpWrapper>
-          Don't have an account?
-          <StyledLink to="/register">Sign up</StyledLink>
-        </SignUpWrapper>
-      </Form>
+        <StyledButton onClick={() => setWeb3Login(true)}>Login with web3 address</StyledButton>
+      </Form>}
+      {web3Login && <div>
+        {hasExtension && <AccountSelector />}
+        {!hasExtension && <DownloadPolkadot />}
+        <StyledButton onClick={() => setWeb3Login(false)}>Login with username</StyledButton>
+      </div>}
+      <StyledDivider />
+      <SignUpWrapper>
+        Don't have an account?
+        <StyledLink to="/register">Sign up</StyledLink>
+      </SignUpWrapper>
     </CardWrapper>
   );
 }
