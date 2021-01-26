@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import useDeepCompareEffect from "use-deep-compare-effect";
+import React, { useState, useEffect } from "react";
 import styled, { css } from "styled-components";
-import { Dropdown, Image } from "semantic-ui-react";
+import { Dropdown } from "semantic-ui-react";
 
 import Text from "./Text";
 import TextMinor from "./TextMinor";
 import { PRIMARY_THEME_COLOR } from "../constants";
+import UserAvatar from "./User/Avatar";
 
 import Address from "./Address";
 
@@ -24,7 +24,7 @@ const DropdownWrapper = styled.div`
 
 const StyledDropdown = styled(Dropdown)`
   width: 100%;
-  height: 64px;
+  height: 64px !important;
   :active,
   :focus {
     border-color: ${PRIMARY_THEME_COLOR} !important;
@@ -43,16 +43,12 @@ const StyledDropdown = styled(Dropdown)`
   }
 `;
 
-const StyledDropdownItem = styled(Dropdown.Item)`
-  padding: 0 !important;
-`;
-
 const ItemWrapper = styled.div`
   height: 64px;
   padding: 8px 16px;
   display: flex;
   align-items: center;
-  img {
+  & > div:first-child {
     margin-right: 16px;
   }
   ${(p) =>
@@ -69,7 +65,7 @@ const ItemWrapper = styled.div`
 const AccountItem = ({ header, accountName, accountAddress }) => {
   return (
     <ItemWrapper header={header}>
-      <Image src="/imgs/avatar.png" width="40px" />
+      <UserAvatar address={accountAddress} size={40} />
       <div>
         <Text>{accountName}</Text>
         <TextMinor>
@@ -82,30 +78,23 @@ const AccountItem = ({ header, accountName, accountAddress }) => {
 
 const AccountSelector = ({ accounts, onSelect = () => {} }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  useDeepCompareEffect(() => {
+  useEffect(() => {
     onSelect(accounts[selectedIndex]);
-  }, [accounts, selectedIndex]);
+  }, [accounts, onSelect, selectedIndex]);
+  const options = accounts.map((item, index) => ({
+    key: index,
+    value: index,
+    content: (
+      <AccountItem accountName={item.name} accountAddress={item.address} />
+    )
+  }))
   return (
     <Wrapper>
       <Label>Choose linked account</Label>
       <DropdownWrapper>
-        <StyledDropdown selection labeled>
-          <Dropdown.Menu>
-            {(accounts || []).map((account, index) => (
-              <StyledDropdownItem
-                key={index}
-                onClick={() => {
-                  setSelectedIndex(index);
-                }}
-              >
-                <AccountItem
-                  accountName={account.name}
-                  accountAddress={account.address}
-                />
-              </StyledDropdownItem>
-            ))}
-          </Dropdown.Menu>
-        </StyledDropdown>
+        <StyledDropdown selection options={options} onChange={(_, { value }) => {
+            setSelectedIndex(value)
+          }} />
         <AccountItem
           accountName={accounts?.[selectedIndex]?.name}
           accountAddress={accounts?.[selectedIndex]?.address}

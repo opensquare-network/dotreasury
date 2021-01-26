@@ -18,6 +18,7 @@ import GrayImage from "../../components/GrayImage";
 import TextMinor from "../../components/TextMinor";
 import DownloadPolkadot from "../../components/DownloadPolkadot";
 import AccountSelector from "../../components/AccountSelector";
+import FormError from "../../components/FormError";
 
 const CardWrapper = styled(Card)`
   max-width: 424px;
@@ -72,7 +73,7 @@ const StyledTextMnor = styled(TextMinor)`
 
 const CheckImage = styled(GrayImage)`
   padding: 4px 8px 4px 0;
-  ${p => p.active && css`
+  ${p => p.checked && css`
     -webkit-filter: grayscale(0);
     filter: grayscale(0);
     opacity: 1;
@@ -112,14 +113,14 @@ const StyledLink = styled(Link)`
 const Helper = ({isAgree, setIsAgree}) => {
   return (
     <HelperWrapper>
-      <CheckImage src="/imgs/circle-pass.svg" active={isAgree} onClick={() => setIsAgree(!isAgree)} />
+      <CheckImage src="/imgs/circle-pass.svg" checked={isAgree} onClick={() => setIsAgree(!isAgree)} />
       <div>
         <p>I have read and agree to the terms of the </p>
-        <Link>
+        <Link to="/register">
           <StyledTextMnor>User Agreement</StyledTextMnor>
         </Link>
         <p> and </p>
-        <Link>
+        <Link to="/register">
           <StyledTextMnor>Privacy Notice.</StyledTextMnor>
         </Link>
       </div>
@@ -154,7 +155,8 @@ function Register({ history }) {
                 </span>
             }
           </label>
-          <FormInput name="username" type="text" ref={register({required: true})} />
+          <FormInput name="username" type="text" ref={register({required: true})} error={errors.username} />
+          {errors.username && <FormError>error message</FormError>}
         </Form.Field>
         <Form.Field>
           <label htmlFor="email">Email
@@ -164,7 +166,8 @@ function Register({ history }) {
                 </span>
             }
           </label>
-          <FormInput name="email" type="text" ref={register({required: true})} />
+          <FormInput name="email" type="text" ref={register({required: true})} error={errors.email} />
+          {errors.email && <FormError>error message</FormError>}
         </Form.Field>
         <Form.Field>
           <label htmlFor="password">Password
@@ -175,19 +178,21 @@ function Register({ history }) {
             }
           </label>
           <FormPasswordWrapper show={showPassword} toggleClick={() => setShowPassword(!showPassword)}>
-            <FormInput name="password" type="password" ref={register({required: true})} />
+            <FormInput name="password" type={showPassword ? "text" : "password"} ref={register({required: true})} autocomplete="off" error={errors.password} />
           </FormPasswordWrapper>
+          {errors.password && <FormError>error message</FormError>}
         </Form.Field>
         <Helper isAgree={isAgree} setIsAgree={setIsAgree} />
         <StyledButtonPrimary type="submit" >Sign up</StyledButtonPrimary>
-        <StyledButton onClick={() => setWeb3Login(true)}>Sign up with web3 address</StyledButton>
+        {/* <StyledButton onClick={() => setWeb3Login(true)}>Sign up with web3 address</StyledButton> */}
       </Form>}
       {web3Login && <div>
         {hasExtension && <div>
-          <AccountSelector />
+          <AccountSelector accounts={[]} />
           <Helper isAgree={isAgree} setIsAgree={setIsAgree} />
         </div>}
         {!hasExtension && <DownloadPolkadot />}
+        <StyledButtonPrimary>Sign up</StyledButtonPrimary>
         <StyledButton onClick={() => setWeb3Login(false)}>Sign up with username</StyledButton>
       </div>}
       <StyledDivider />

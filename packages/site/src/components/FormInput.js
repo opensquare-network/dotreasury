@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 import { TEXT_DARK_MAJOR } from "../constants";
 
@@ -9,6 +9,9 @@ const FormInput = styled.input`
   font-family: "Inter" !important;
   font-size: 14px !important;
   color: ${TEXT_DARK_MAJOR} !important;
+  ${p => p.error && css`
+    border-color: #EC4730 !important;
+  `}
 `
 
 export default FormInput;

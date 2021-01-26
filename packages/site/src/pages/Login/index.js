@@ -26,6 +26,7 @@ import GrayImage from "../../components/GrayImage";
 import TextMinor from "../../components/TextMinor";
 import DownloadPolkadot from "../../components/DownloadPolkadot";
 import AccountSelector from "../../components/AccountSelector";
+import FormError from "../../components/FormError";
 
 import api from "../../services/scanApi";
 import { signMessage } from "../../services/chainApi";
@@ -94,7 +95,7 @@ const StyledTextMnor = styled(TextMinor)`
 const CheckImage = styled(GrayImage)`
   margin-right: 8px;
   ${(p) =>
-    p.active &&
+    p.checked &&
     css`
       -webkit-filter: grayscale(0);
       filter: grayscale(0);
@@ -168,7 +169,7 @@ function Login({ location }) {
         }
       })();
     }
-  }, [web3Login]);
+  }, [web3Login, isMounted]);
 
   // Redirect out of here if user has already logged in
   if (loggedInUser) {
@@ -197,7 +198,7 @@ function Login({ location }) {
     const loginResult = await scanApi.login(
       formData.username,
       formData.password
-    );
+    )
     if (loginResult) {
       saveLoggedInResult(loginResult);
     }
@@ -247,7 +248,9 @@ function Login({ location }) {
               name="username"
               type="text"
               ref={register({ required: true })}
+              error={errors.username}
             />
+            {errors.username && <FormError>error message</FormError>}
           </Form.Field>
           <Form.Field>
             <label htmlFor="password">
@@ -266,12 +269,15 @@ function Login({ location }) {
                 name="password"
                 type={showPassword ? "text" : "password"}
                 ref={register({ required: true })}
+                autocomplete="off"
+                error={errors.password}
               />
             </FormPasswordWrapper>
+            {errors.password && <FormError>error message</FormError>}
           </Form.Field>
           <HelperWrapper>
             <RememberMe onClick={() => setIsRememberMe(!isRememberMe)}>
-              <CheckImage src="/imgs/circle-pass.svg" active={isRememberMe} />
+              <CheckImage src="/imgs/circle-pass.svg" checked={isRememberMe} />
               <p>Remember me</p>
             </RememberMe>
             <Link to="?#">
