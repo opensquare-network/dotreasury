@@ -2,25 +2,33 @@ import Api from "./api";
 
 class ScanApi extends Api {
   async login(username, password) {
-    const { result } = await this.fetch("/auth/login", {}, {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password }),
-    });
+    const { result } = await this.fetch(
+      "/auth/login",
+      {},
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      }
+    );
 
     return result;
   }
 
   async signup(username, email, password) {
-    const { result } = await this.fetch("/auth/signup", {}, {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, email, password }),
-    });
+    const { result } = await this.fetch(
+      "/auth/signup",
+      {},
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, email, password }),
+      }
+    );
 
     return result;
   }
@@ -32,9 +40,12 @@ class ScanApi extends Api {
       return {};
     }
 
-    options.headers = {
-      ...options.headers,
-      Authorization: `Bearer ${token.accessToken}`
+    options = {
+      ...options,
+      headers: {
+        ...options?.headers,
+        Authorization: `Bearer ${token.accessToken}`,
+      },
     };
     const { result, error } = await this.fetch(url, params, options);
 
@@ -45,25 +56,34 @@ class ScanApi extends Api {
     if (error?.status === 401 && error?.message === "jwt expired") {
       console.warn("Access token expired, tring to refresh token.");
       // jwt expire
-      const { result: refreshResult } = await this.fetch('/auth/refresh', {}, {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ refreshToken: token.refreshToken })
-      });
+      const { result: refreshResult } = await this.fetch(
+        "/auth/refresh",
+        {},
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ refreshToken: token.refreshToken }),
+        }
+      );
 
       if (refreshResult) {
         console.log("New access token is acquired.");
-        localStorage.setItem("token", JSON.stringify({
-          accessToken: refreshResult.accessToken,
-          refreshToken: token.refreshToken,
-        }));
+        localStorage.setItem(
+          "token",
+          JSON.stringify({
+            accessToken: refreshResult.accessToken,
+            refreshToken: token.refreshToken,
+          })
+        );
 
-        options.headers['Authorization'] = `Bearer ${refreshResult.accessToken}`;
+        options.headers[
+          "Authorization"
+        ] = `Bearer ${refreshResult.accessToken}`;
         return await this.fetch(url, params, options);
       } else {
-        console.error("Failed to refresh access token.")
+        console.error("Failed to refresh access token.");
       }
     }
 
@@ -71,4 +91,6 @@ class ScanApi extends Api {
   }
 }
 
-export default new ScanApi(process.env.REACT_APP_SCAN_SERVER || "https://api.dotreasury.com/")
+export default new ScanApi(
+  process.env.REACT_APP_SCAN_SERVER || "https://api.dotreasury.com/"
+);

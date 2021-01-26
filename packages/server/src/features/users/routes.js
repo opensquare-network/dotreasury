@@ -4,7 +4,21 @@ const requireAuth = require("../../middleware/require-auth");
 
 const router = new Router();
 
-router.get("/user/linkaddr/:address", requireAuth, userController.linkAddressStart);
-router.post("/user/linkaddr/:address", requireAuth, userController.linkAddressConfirm);
+router.get(
+  "/user/linkaddr/:address",
+  requireAuth,
+  userController.linkAddressStart
+);
+router.post(
+  "/user/linkaddr/:address",
+  requireAuth,
+  userController.linkAddressConfirm
+);
+router.delete(
+  "/user/linkaddr/:address",
+  requireAuth,
+  userController.unlinkAddress
+);
+router.get("/user/profile", requireAuth, userController.getUserProfile);
 
 module.exports = router;
