@@ -43,7 +43,7 @@ class AuthService {
 		const valid = true;
 
     const oneMonth = 30 * 24 * 60 * 60 * 1000;
-    const expires = new Date(Date.now() + oneMonth).toISOString();
+    const expires = new Date(Date.now() + oneMonth);
 
     const userCol = await getUserCollection();
     const result = await userCol.updateOne({ _id: user._id }, {
@@ -75,7 +75,7 @@ class AuthService {
       throw new HttpError(400, "Invaild refresh token");
     }
 
-    if (user.refreshToken.expires < Date.now()) {
+    if (user.refreshToken.expires.getTime() < Date.now()) {
       throw new HttpError(400, "The refresh token has expired.");
     }
 
