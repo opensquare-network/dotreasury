@@ -16,6 +16,7 @@ const Wrapper = styled.div`
   :not(:last-child) {
     margin-bottom: 8px;
   }
+  cursor: pointer;
 `
 
 const CheckItem = styled.div`
@@ -38,13 +39,14 @@ const Detail = styled(Text)`
   color: #3ABC3F;
 `
 
-const SettingItem = () => {
+const SettingItem = ({node: {name, url, delay}, selectedNode, setSelectedNode}) => {
+  const checked = url === selectedNode;
   return (
-    <Wrapper>
-      <CheckItem />
-      {false && <CheckedItem />}
-      <Text className="grow">Hosted by Parity</Text>
-      <Detail>50 ms</Detail>
+    <Wrapper onClick={() => setSelectedNode(url)}>
+      {!checked && <CheckItem />}
+      {checked && <CheckedItem />}
+      <Text className="grow">Hosted by {name}</Text>
+      {delay && <Detail>{delay} ms</Detail>}
     </Wrapper>
   )
 }

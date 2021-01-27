@@ -3,14 +3,26 @@ import { ApiPromise, WsProvider } from '@polkadot/api';
 import { isWeb3Injected, web3FromAddress } from '@polkadot/extension-dapp'
 import { stringToHex } from '@polkadot/util';
 
-let api = null;
-const wsProvider = new WsProvider('wss://kusama.elara.patract.io/');
+import { DEFAULT_NODE_URL, DEFAULT_NODES } from "../constants";
 
-export const getApi = async () => {
-  if (!api) {
-    api = ApiPromise.create({ provider: wsProvider });
+const apiInstance = new Map();
+
+let nodeUrl = (() => {
+  const localNodeUrl = localStorage.getItem("nodeUrl");
+  if (!localNodeUrl || !DEFAULT_NODES.find(item => item.url === localNodeUrl)) {
+    return DEFAULT_NODE_URL;
   }
-  return api;
+  return localNodeUrl;
+})();
+
+export const getNodeUrl = () => nodeUrl;
+
+export const getApi = async (queryUrl) => {
+  const url = queryUrl || nodeUrl;
+  if (!apiInstance.has(url)) {
+    apiInstance.set(url, ApiPromise.create({ provider: new WsProvider(url) }));
+  }
+  return apiInstance.get(url);
 }
 
 export const getIndentity = async (address) => {

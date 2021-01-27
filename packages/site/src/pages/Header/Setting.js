@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Image, Modal } from "semantic-ui-react";
+import { useDispatch, useSelector } from "react-redux";
 
 import Card from "../../components/Card";
 import Title from "../../components/Title";
@@ -8,6 +9,13 @@ import Text from "../../components/Text";
 import Button from "../../components/Button";
 import ButtonPrimary from "../../components/ButtonPrimary";
 import SettingItem from "./SettingItem";
+import { getApi } from "../../services/chainApi";
+import {
+  currentNodeSelector,
+  setCurrentNode,
+  nodesSelector,
+  setNodeDelay,
+} from "../../store/reducers/nodeSlice";
 
 
 const Wrapper = styled.div`
@@ -61,10 +69,40 @@ const StyledButtonPrimary = styled(ButtonPrimary)`
 `
 
 const Setting = () => {
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = React.useState(false);
+  const dispatch = useDispatch();
+  const currentNode = useSelector(currentNodeSelector);
+  const [selectedNode, setSelectedNode] = useState(currentNode);
+  const nodes = useSelector(nodesSelector);
+
+  const closeModal = () => {
+    setOpen(false);
+    setSelectedNode(currentNode);
+  }
+
+  useEffect(() => {
+    const updateNodeDelay = async (url) => {
+      const api = await getApi(url);
+      const startTime = Date.now();
+      await api.rpc.system.chain();
+      const endTime = Date.now();
+      const delay = endTime - startTime;
+      dispatch(setNodeDelay({url: url, delay: delay}));
+    }
+
+    const tiemoutId = setTimeout(() => {
+      nodes.map(item => {
+        updateNodeDelay(item.url);
+        return null;
+      })
+    }, 10000);
+
+    return () => clearTimeout(tiemoutId);
+  }, [nodes, dispatch]);
+
   return (
     <StyledModal
-      onClose={() => setOpen(false)}
+      onClose={() => closeModal()}
       onOpen={() => setOpen(true)}
       open={open}
       trigger={
@@ -77,15 +115,21 @@ const Setting = () => {
       }
     >
       <StyledCard>
-        <CloseButton src="/imgs/close.svg" />
+        <CloseButton src="/imgs/close.svg" onClick={() => closeModal()} />
         <StyledTitle>Setting</StyledTitle>
         <StyledText>Kusama nodes</StyledText>
         <SettingList>
-          <SettingItem />
-          <SettingItem />
-          <SettingItem />
+          {(nodes || []).map((item, index) => (<SettingItem
+            key={index}
+            node={item}
+            selectedNode={selectedNode}
+            setSelectedNode={setSelectedNode} />)
+          )}
         </SettingList>
-        <StyledButtonPrimary>Switch</StyledButtonPrimary>
+        <StyledButtonPrimary onClick={() => {
+          dispatch(setCurrentNode(selectedNode));
+          closeModal();
+        }}>Switch</StyledButtonPrimary>
       </StyledCard>
     </StyledModal>
   )
