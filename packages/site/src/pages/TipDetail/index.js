@@ -158,7 +158,7 @@ const TipDetail = () => {
       <RelatedLinks type="tips" index={new TipIndex(tipId)} />
       <TimelineCommentWrapper>
         <Timeline data={timelineData} loading={loadingTipDetail} />
-        <Comment />
+        <Comment type="tips" index={new TipIndex(tipId)} />
       </TimelineCommentWrapper>
     </>
   );

@@ -1,0 +1,25 @@
+{{#*inline "commentUrl"}}https://dotreasury.com/{{#if (isdefined indexer.treasuryTipId)}}tips/{{indexer.treasuryTipId.blockHeight}}_{{indexer.treasuryTipId.tipHash}}{{/if}}{{#if (isdefined indexer.treasuryProposalId)}}proposals/{{indexer.treasuryProposalId}}{{/if}}{{#if (isdefined indexer.treasuryBountyId)}}bounties/{{indexer.treasuryBountyId}}{{/if}}#{{commentId}}{{/inline}}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style type="text/css">
+    </style>
+  </head>
+  <body>
+    <div>
+      <p>
+        Hi {{mentioned}}!<br/><br/>
+
+        <br />
+        {{author}} has mentioned you in comment: <a href="{{> commentUrl}}">{{> commentUrl}}</a>.<br /><br />
+
+        comment: {{{content}}}<br /><br />
+
+        Dotreasury Team
+      </p>
+    </div>
+  </body>
+</html>

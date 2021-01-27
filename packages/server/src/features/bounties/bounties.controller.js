@@ -1,8 +1,12 @@
 const { getBountyCollection, getMotionCollection } = require("../../mongo");
 const { extractPage } = require("../../utils");
 const linkService = require("../../services/link.service");
+const commentService = require("../../services/comment.service");
 
-const bountyStatus = (bounty) => bounty.status?.CuratorProposed || bounty.status?.Active || bounty.status?.PendingPayout;
+const bountyStatus = (bounty) =>
+  bounty.status?.CuratorProposed ||
+  bounty.status?.Active ||
+  bounty.status?.PendingPayout;
 const bountyStatusName = (bounty) => Object.keys(bounty.status)[0];
 
 class BountiesController {
@@ -25,7 +29,7 @@ class BountiesController {
     const total = await bountyCol.estimatedDocumentCount();
 
     ctx.body = {
-      items: bounties.map(item => ({
+      items: bounties.map((item) => ({
         bountyIndex: item.bountyIndex,
         proposeTime: item.indexer.blockTime,
         proposeAtBlockHeight: item.indexer.blockHeight,
@@ -38,7 +42,7 @@ class BountiesController {
         latestState: {
           state: bountyStatusName(item.meta) || item.state?.name,
           indexer: item.state?.indexer || item.state?.eventIndexer,
-        }
+        },
       })),
       page,
       pageSize,
@@ -59,7 +63,10 @@ class BountiesController {
     const bounty = await bountyCol.findOne({ bountyIndex });
 
     const motionCol = await getMotionCollection();
-    const bountyMotions = await motionCol.find({ treasuryBountyId: bountyIndex }).sort({ index: 1 }).toArray();
+    const bountyMotions = await motionCol
+      .find({ treasuryBountyId: bountyIndex })
+      .sort({ index: 1 })
+      .toArray();
 
     if (!bounty) {
       ctx.status = 404;
@@ -104,23 +111,61 @@ class BountiesController {
     const bountyIndex = parseInt(ctx.params.bountyIndex);
     const { link, description } = ctx.request.body;
 
-    ctx.body = await linkService.createLink({
-      type: "bounties",
-      indexer: bountyIndex,
-      link,
-      description,
-    }, ctx.request.headers.signature)
+    ctx.body = await linkService.createLink(
+      {
+        type: "bounties",
+        indexer: bountyIndex,
+        link,
+        description,
+      },
+      ctx.request.headers.signature
+    );
   }
 
   async deleteBountyLink(ctx) {
     const bountyIndex = parseInt(ctx.params.bountyIndex);
     const linkIndex = parseInt(ctx.params.linkIndex);
 
-    ctx.body = await linkService.deleteLink({
-      type: "bounties",
-      indexer: bountyIndex,
-      linkIndex,
-    }, ctx.request.headers.signature)
+    ctx.body = await linkService.deleteLink(
+      {
+        type: "bounties",
+        indexer: bountyIndex,
+        linkIndex,
+      },
+      ctx.request.headers.signature
+    );
+  }
+
+  // Comments API
+  async getBountyComments(ctx) {
+    const bountyIndex = parseInt(ctx.params.bountyIndex);
+
+    const validator = async () => {
+      const bountyCol = await getBountyCollection();
+      const bounty = await bountyCol.findOne({ bountyIndex });
+      if (!bounty) {
+        throw new HttpError(404, "Bounty not found");
+      }
+    };
+
+    ctx.body = await commentService.getComments(
+      { treasuryBountyId: bountyIndex },
+      validator
+    );
+  }
+
+  async postBountyComment(ctx) {
+    const bountyIndex = parseInt(ctx.params.bountyIndex);
+    const { content } = ctx.request.body;
+    const user = ctx.request.user;
+    if (!content) {
+      throw new HttpError(400, "Comment content is missing");
+    }
+    ctx.body = await commentService.postComment(
+      { treasuryBountyId: bountyIndex },
+      content,
+      user
+    );
   }
 }
 

@@ -171,7 +171,7 @@ class ProposalsController {
     ctx.body = await commentService.postComment(
       { treasuryProposalId: proposalIndex },
       content,
-      user._id
+      user
     );
   }
 }
