@@ -30,7 +30,7 @@ class MailService {
   }
 
   sendResetPasswordEmail({ username, email, token }) {
-    const text = templates.resetpassword({
+    const text = templates.resetPassword({
       username,
       email,
       token,
@@ -57,7 +57,7 @@ class MailService {
     mentioned,
     content,
   }) {
-    const text = templates.commentmention({
+    const text = templates.commentMention({
       author,
       mentioned,
       content,

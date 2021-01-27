@@ -150,7 +150,7 @@ class CommentService {
     const discuCol = await getDiscussionCollection();
 
     const now = new Date();
-    const result = await discuCol.updateOne(
+    const result = await discuCol.findOneAndUpdate(
       {
         comments: {
           $elemMatch: {
@@ -164,16 +164,26 @@ class CommentService {
           "comments.$.content": newContent,
           "comments.$.updatedAt": now,
         },
+      },
+      {
+        projection: {
+          indexer: 1,
+        },
       }
     );
 
-    if (!result.result.ok) {
+    if (!result.ok) {
       throw new HttpError(500, "Update comment error.");
     }
 
-    if (result.result.nModified === 0) {
+    if (!result.value) {
       return false;
     }
+
+    const { indexer } = result.value;
+
+    // Send notification email to mentioned users
+    this.processMetions(indexer, commentId, newContent, author);
 
     return true;
   }
