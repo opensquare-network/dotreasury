@@ -93,7 +93,7 @@ class CommentService {
       return false;
     }
 
-    // Send notification email to metion users
+    // Send notification email to mentioned users
     this.processMetions(indexer, commentId, content, author);
 
     return true;
@@ -110,34 +110,36 @@ class CommentService {
       }
     }
 
-    if (metions.size > 0) {
-      const userCol = await getUserCollection();
-      const users = await userCol
-        .find(
-          {
-            username: {
-              $in: Array.from(metions),
-            },
-          },
-          {
-            projection: {
-              username: 1,
-              email: 1,
-            },
-          }
-        )
-        .toArray();
+    if (metions.size === 0) {
+      return;
+    }
 
-      for (const user of users) {
-        mailService.sendCommentMetionEmail({
-          email: user.email,
-          author: author.username,
-          mentioned: user.username,
-          content,
-          indexer,
-          commentId,
-        });
-      }
+    const userCol = await getUserCollection();
+    const users = await userCol
+      .find(
+        {
+          username: {
+            $in: Array.from(metions),
+          },
+        },
+        {
+          projection: {
+            username: 1,
+            email: 1,
+          },
+        }
+      )
+      .toArray();
+
+    for (const user of users) {
+      mailService.sendCommentMetionEmail({
+        email: user.email,
+        author: author.username,
+        mentioned: user.username,
+        content,
+        indexer,
+        commentId,
+      });
     }
   }
 
