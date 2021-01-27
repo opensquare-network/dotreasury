@@ -121,6 +121,7 @@ class CommentService {
           },
           {
             projection: {
+              username: 1,
               email: 1,
             },
           }
