@@ -22,7 +22,9 @@ const Wrapper = styled.div`
 
 const SignUpButton = styled(Button)`
   border: 0 !important;
-  margin-right: 16px !important;
+  margin-right: 32px !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 `;
 
 const UserLogin = () => {
