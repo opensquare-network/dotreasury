@@ -45,6 +45,9 @@ const Wrapper = styled.div`
 
     a {
       color: ${PRIMARY_THEME_COLOR};
+      :hover {
+        color: ${PRIMARY_THEME_COLOR};
+      }
     }
 
     /* blockquote {
