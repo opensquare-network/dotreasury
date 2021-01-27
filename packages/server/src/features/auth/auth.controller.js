@@ -3,6 +3,7 @@ const argon2 = require("argon2");
 const { randomBytes } = require("crypto");
 const validator = require("validator");
 const authService = require("../../services/auth.service");
+const mailService = require("../../services/mail.service");
 const {
   getUserCollection,
   getLoginAttemptCollection,
@@ -249,7 +250,11 @@ class AuthController {
       return;
     }
 
-    // TODO: Send password reset email
+    mailService.sendResetPasswordEmail({
+      username: user.username,
+      email: user.email,
+      token,
+    });
 
     ctx.body = true;
   }
