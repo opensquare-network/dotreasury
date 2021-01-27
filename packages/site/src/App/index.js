@@ -8,7 +8,7 @@ import {
 import "../services/websocket";
 
 import Container from "../components/Container";
-import { PageWrapper } from "./components";
+import { Wrapper, PageWrapper } from "./components";
 import ScrollToTop from "../components/ScrollToTop";
 import Header from "../pages/Header";
 import Footer from "../pages/Footer";
@@ -27,35 +27,37 @@ import UserSetting from "../pages/UserSetting";
 export default function App() {
   return (
     <Router>
-      <Header />
-      <PageWrapper>
-        <Container>
-          <ScrollToTop />
-          <Switch>
-            <Route exact path="/" component={Overview} />
-            <Route exact path="/tips" component={Tips} />
-            <Route exact path="/proposals" component={Proposals} />
-            <Route exact path="/bounties" component={Bounties} />
-            <Route exact path="/tips/:tipId" component={TipDetail} />
-            <Route
-              exact
-              path="/proposals/:proposalIndex"
-              component={ProposalDetail}
-            />
-            <Route
-              exact
-              path="/bounties/:bountyIndex"
-              component={BountyDetail}
-            />
-            <Route exact path="/burnt" component={Burnt} />
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/register" component={Register} />
-            <Route exact path="/settings" component={UserSetting} />
-            <Redirect to="/" />
-          </Switch>
-        </Container>
-      </PageWrapper>
-      <Footer />
+      <Wrapper>
+        <Header />
+        <PageWrapper>
+          <Container>
+            <ScrollToTop />
+            <Switch>
+              <Route exact path="/" component={Overview} />
+              <Route exact path="/tips" component={Tips} />
+              <Route exact path="/proposals" component={Proposals} />
+              <Route exact path="/bounties" component={Bounties} />
+              <Route exact path="/tips/:tipId" component={TipDetail} />
+              <Route
+                exact
+                path="/proposals/:proposalIndex"
+                component={ProposalDetail}
+              />
+              <Route
+                exact
+                path="/bounties/:bountyIndex"
+                component={BountyDetail}
+              />
+              <Route exact path="/burnt" component={Burnt} />
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/register" component={Register} />
+              <Route exact path="/settings" component={UserSetting} />
+              <Redirect to="/" />
+            </Switch>
+          </Container>
+        </PageWrapper>
+        <Footer />
+      </Wrapper>
     </Router>
   );
 }
