@@ -7,11 +7,13 @@ import Card from "../../components/Card";
 import SubTitle from "../../components/SubTitle";
 import Input from "./Input";
 import CommentList from "./CommentList";
-
+import { unique } from "../../utils/index";
 import {
   fetchComments,
   commentsSelector,
 } from "../../store/reducers/commentSlice";
+
+import { useLocation } from "react-router-dom";
 
 const Header = styled(SubTitle)`
   margin-bottom: 16px;
@@ -29,13 +31,17 @@ const Comment = ({ type, index }) => {
   }, [dispatch, type, index]);
 
   const comments = useSelector(commentsSelector);
+  const authors = unique((comments.comments || []).map(item => item.author.username));
+
+  const { hash } = useLocation();
+  const refCommentId = hash && hash.slice(1);
 
   return (
     <div>
       <Header>Comment</Header>
       <Wrapper>
-        <CommentList type={type} index={index} comments={comments.comments} />
-        <Input type={type} index={index} />
+        <CommentList type={type} index={index} comments={comments.comments} refCommentId={refCommentId} />
+        <Input  type={type} index={index} authors={authors} />
       </Wrapper>
     </div>
   );

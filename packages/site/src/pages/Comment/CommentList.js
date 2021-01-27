@@ -10,7 +10,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const CommentList = ({ type, index, comments }) => {
+const CommentList = ({ type, index, comments, refCommentId }) => {
   if (comments && comments.length > 0) {
     return (
       <Wrapper>
@@ -21,6 +21,7 @@ const CommentList = ({ type, index, comments }) => {
             comment={item}
             position={position}
             key={position}
+            refCommentId={refCommentId}
           />
         ))}
       </Wrapper>

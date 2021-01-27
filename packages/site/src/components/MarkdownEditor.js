@@ -124,17 +124,14 @@ export const StyledTextArea = styled.div`
 
 `;
 
-const MarkdownEditor = ({ md, onChange }) => {
+const MarkdownEditor = ({ md, authors, onChange }) => {
 
   const loadSuggestions = async (text) => {
 		return new Promise((accept) => {
-			const users = ["user1", "user2"];
-
-			const suggestions = users.map(user => ({
+			const suggestions = (authors || []).map(user => ({
 				preview: user,
 				value: `[@${user}](${global.window.location.origin}/user/${user})`
 			})).filter(i => i.preview.toLowerCase().includes(text.toLowerCase()));
-
 			accept(suggestions);
 		});
 	};
