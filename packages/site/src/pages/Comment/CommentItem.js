@@ -108,13 +108,13 @@ const CommentItem = ({ type, index, comment, position, refCommentId }) => {
   const isTop = false;
   useEffect(() => {
     setTimeout(() => {
-      if (isMounted && (commentId === refCommentId)) {
+      if (isMounted.current && (commentId === refCommentId)) {
         commentRef.current.scrollIntoView();
         setHighLight(true);
       }
     }, 1000);
     setTimeout(() => {
-      if (isMounted) {
+      if (isMounted.current) {
         setHighLight(false);
       }
     }, 4000);
