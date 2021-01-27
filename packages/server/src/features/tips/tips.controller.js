@@ -176,7 +176,7 @@ class TipsController {
         },
       },
       content,
-      user._id
+      user
     );
   }
 }

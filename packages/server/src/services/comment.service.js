@@ -1,4 +1,5 @@
 const { ObjectId } = require("mongodb");
+const mailService = require("./mail.service");
 const {
   getDiscussionCollection,
   getUserCollection,
@@ -64,17 +65,18 @@ class CommentService {
     return discussion;
   }
 
-  async postComment(indexer, content, authorId) {
+  async postComment(indexer, content, author) {
     const discuCol = await getDiscussionCollection();
 
+    const commentId = new ObjectId();
     const now = new Date();
     const result = await discuCol.updateOne(
       { indexer },
       {
         $push: {
           comments: {
-            commentId: new ObjectId(),
-            authorId,
+            commentId,
+            authorId: author._id,
             content,
             createdAt: now,
             updatedAt: now,
@@ -91,10 +93,54 @@ class CommentService {
       return false;
     }
 
+    // Send notification email to metion users
+    this.processMetions(indexer, commentId, content, author);
+
     return true;
   }
 
-  async updateComment(commentId, newContent, authorId) {
+  async processMetions(indexer, commentId, content, author) {
+    const metions = new Set();
+    const reMetion = /\[@(\w+)\]\(https:\/\/dotreasury.com\/user\/(\w+)\)/g;
+    let match;
+    while ((match = reMetion.exec(content)) !== null) {
+      const [, u1, u2] = match;
+      if (u1 === u2) {
+        metions.add(u1);
+      }
+    }
+
+    if (metions.size > 0) {
+      const userCol = await getUserCollection();
+      const users = await userCol
+        .find(
+          {
+            username: {
+              $in: Array.from(metions),
+            },
+          },
+          {
+            projection: {
+              email: 1,
+            },
+          }
+        )
+        .toArray();
+
+      for (const user of users) {
+        mailService.sendCommentMetionEmail({
+          email: user.email,
+          author: author.username,
+          mentioned: user.username,
+          content,
+          indexer,
+          commentId,
+        });
+      }
+    }
+  }
+
+  async updateComment(commentId, newContent, author) {
     const discuCol = await getDiscussionCollection();
 
     const now = new Date();
@@ -103,7 +149,7 @@ class CommentService {
         comments: {
           $elemMatch: {
             commentId: ObjectId(commentId),
-            authorId,
+            authorId: author._id,
           },
         },
       },
@@ -126,7 +172,7 @@ class CommentService {
     return true;
   }
 
-  async deleteComment(commentId, authorId) {
+  async deleteComment(commentId, author) {
     const discuCol = await getDiscussionCollection();
     let result = await discuCol.updateOne(
       {
@@ -136,7 +182,7 @@ class CommentService {
         $pull: {
           comments: {
             commentId: ObjectId(commentId),
-            authorId,
+            authorId: author._id,
           },
         },
       }
@@ -153,7 +199,7 @@ class CommentService {
     return true;
   }
 
-  async unsetCommentReaction(commentId, userId) {
+  async unsetCommentReaction(commentId, user) {
     const discuCol = await getDiscussionCollection();
 
     const result = await discuCol.updateOne(
@@ -163,7 +209,7 @@ class CommentService {
       {
         $pull: {
           "comments.$.reactions": {
-            userId,
+            userId: user._id,
           },
         },
       }
@@ -180,7 +226,7 @@ class CommentService {
     return true;
   }
 
-  async setCommentReaction(commentId, reaction, userId) {
+  async setCommentReaction(commentId, reaction, user) {
     const discuCol = await getDiscussionCollection();
 
     const now = new Date();
@@ -189,7 +235,7 @@ class CommentService {
         comments: {
           $elemMatch: {
             commentId: ObjectId(commentId),
-            "reactions.userId": userId,
+            "reactions.userId": user._id,
           },
         },
       },
@@ -202,7 +248,7 @@ class CommentService {
       {
         arrayFilters: [
           {
-            "reaction.userId": userId,
+            "reaction.userId": user._id,
           },
         ],
       }
@@ -221,14 +267,14 @@ class CommentService {
         comments: {
           $elemMatch: {
             commentId: ObjectId(commentId),
-            authorId: { $ne: userId },
+            authorId: { $ne: user._id },
           },
         },
       },
       {
         $push: {
           "comments.$.reactions": {
-            userId,
+            userId: user._id,
             reaction,
             createdAt: now,
             updatedAt: now,

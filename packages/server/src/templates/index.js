@@ -2,6 +2,8 @@ const fs = require("fs");
 const path = require("path");
 const Handlebars = require("handlebars");
 
+Handlebars.registerHelper("isdefined", (v) => v !== undefined);
+
 const templates = fs
   .readdirSync(__dirname)
   .filter((f) => f.endsWith(".hbs"))

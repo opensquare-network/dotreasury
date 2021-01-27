@@ -9,13 +9,13 @@ class CommentController {
     if (!content) {
       throw new HttpError(400, "Comment content is missing");
     }
-    ctx.body = await commentService.updateComment(commentId, content, user._id);
+    ctx.body = await commentService.updateComment(commentId, content, user);
   }
 
   async deleteComment(ctx) {
     const commentId = ctx.params.commentId;
     const user = ctx.request.user;
-    ctx.body = await commentService.deleteComment(commentId, user._id);
+    ctx.body = await commentService.deleteComment(commentId, user);
   }
 
   async setCommentReaction(ctx) {
@@ -25,14 +25,14 @@ class CommentController {
     ctx.body = await commentService.setCommentReaction(
       commentId,
       reaction,
-      user._id
+      user
     );
   }
 
   async unsetCommentReaction(ctx) {
     const commentId = ctx.params.commentId;
     const user = ctx.request.user;
-    ctx.body = await commentService.unsetCommentReaction(commentId, user._id);
+    ctx.body = await commentService.unsetCommentReaction(commentId, user);
   }
 }
 

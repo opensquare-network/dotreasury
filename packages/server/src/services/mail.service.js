@@ -32,9 +32,8 @@ class MailService {
   sendResetPasswordEmail({ username, email, token }) {
     const text = templates.resetpassword({
       username,
-      resetUrl: `https://dotreasury.com/resetpassword?email=${encodeURIComponent(
-        email
-      )}&token=${token}`,
+      email,
+      token,
     });
 
     const msg = {
@@ -47,6 +46,35 @@ class MailService {
 
     this.send(msg).catch((e) =>
       console.error("Reset password Email not sent", e)
+    );
+  }
+
+  sendCommentMetionEmail({
+    email,
+    indexer,
+    commentId,
+    author,
+    mentioned,
+    content,
+  }) {
+    const text = templates.commentmention({
+      author,
+      mentioned,
+      content,
+      indexer,
+      commentId,
+    });
+
+    const msg = {
+      from: this.from,
+      html: text,
+      subject: "Someone mention you in comment",
+      text,
+      to: email,
+    };
+
+    this.send(msg).catch((e) =>
+      console.error("Comment metion Email not sent", e)
     );
   }
 }
