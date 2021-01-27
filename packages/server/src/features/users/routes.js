@@ -19,6 +19,11 @@ router.delete(
   requireAuth,
   userController.unlinkAddress
 );
+router.post(
+  "/user/notification",
+  requireAuth,
+  userController.setUserNotification
+);
 router.get("/user/profile", requireAuth, userController.getUserProfile);
 
 module.exports = router;

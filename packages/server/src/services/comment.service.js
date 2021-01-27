@@ -126,20 +126,23 @@ class CommentService {
           projection: {
             username: 1,
             email: 1,
+            notification: 1,
           },
         }
       )
       .toArray();
 
     for (const user of users) {
-      mailService.sendCommentMetionEmail({
-        email: user.email,
-        author: author.username,
-        mentioned: user.username,
-        content,
-        indexer,
-        commentId,
-      });
+      if (user.notification?.mentioned ?? true) {
+        mailService.sendCommentMetionEmail({
+          email: user.email,
+          author: author.username,
+          mentioned: user.username,
+          content,
+          indexer,
+          commentId,
+        });
+      }
     }
   }
 

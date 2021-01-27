@@ -59,9 +59,6 @@ class UserController {
     const { challengeAnswer } = ctx.request.body;
     const user = ctx.request.user;
 
-    console.log(ctx.request.body);
-    console.log(challengeAnswer);
-
     if (!challengeAnswer) {
       throw new HttpError(400, "Challenge answer is not provided.");
     }
@@ -137,8 +134,6 @@ class UserController {
     const { address } = ctx.params;
     const user = ctx.request.user;
 
-    console.log(address);
-
     const userCol = await getUserCollection();
     const result = await userCol.updateOne(
       { _id: user._id },
@@ -152,7 +147,34 @@ class UserController {
       }
     );
 
-    console.log(result);
+    if (!result.result.ok) {
+      throw new HttpError(500, "Db error, clean reaction.");
+    }
+
+    if (result.result.nModified === 0) {
+      ctx.body = false;
+      return;
+    }
+
+    ctx.body = true;
+  }
+
+  async setUserNotification(ctx) {
+    const { participated, mentioned } = ctx.request.body;
+    const user = ctx.request.user;
+
+    const userCol = await getUserCollection();
+    const result = await userCol.updateOne(
+      { _id: user._id },
+      {
+        $set: {
+          notification: {
+            participated,
+            mentioned,
+          },
+        },
+      }
+    );
 
     if (!result.result.ok) {
       throw new HttpError(500, "Db error, clean reaction.");
@@ -175,6 +197,7 @@ class UserController {
       addresses: user.addresses
         ?.filter((addr) => addr.verified)
         .map((addr) => addr.address),
+      notification: user.notification,
     };
   }
 }
