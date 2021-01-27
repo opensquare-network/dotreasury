@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from "react-redux";
 import { useForm } from 'react-hook-form';
 import styled, { css } from "styled-components";
-import { Form, Divider } from "semantic-ui-react";
+import { Form } from "semantic-ui-react";
 import { Link } from 'react-router-dom';
 
 import { setLoggedInUser } from "../../store/reducers/userSlice";
@@ -19,6 +19,7 @@ import TextMinor from "../../components/TextMinor";
 import DownloadPolkadot from "../../components/DownloadPolkadot";
 import AccountSelector from "../../components/AccountSelector";
 import FormError from "../../components/FormError";
+import Divider from "../../components/Divider";
 
 const CardWrapper = styled(Card)`
   max-width: 424px;

@@ -24,6 +24,7 @@ const Wrapper = styled.div`
 
 const CustomCard = styled(Card)`
   padding: 16px 20px;
+  border-color: #EEE;
 `
 
 const ItemWrapper = styled.div`

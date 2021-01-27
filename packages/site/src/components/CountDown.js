@@ -60,7 +60,7 @@ const PercentLable = styled(Text)`
   transform: translate(-50%, -50%);
   top: 50%;
   left: 50%;
-  font-size: 16px;
+  font-size: 12px;
 `
 
 const CountDown = ({percent = 0}) => {

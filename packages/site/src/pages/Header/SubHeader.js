@@ -1,11 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import { Divider, Tab } from "semantic-ui-react";
+import { Tab } from "semantic-ui-react";
 import { NavLink, useLocation } from "react-router-dom";
 import TipsMenu from "./TipsMenu";
 import ProposalsMenu from "./ProposalsMenu";
 import BountiesMenu from "./BountiesMenu";
 import BurntMenu from "./BurntMenu";
+import Divider from "../../components/Divider";
 
 import {
   PRIMARY_THEME_COLOR,

@@ -53,6 +53,9 @@ const Item = styled.div`
   &.right {
     text-align: right;
   }
+  &.available, &.next-burn {
+    min-width: 160px;
+  }
   &.spend-period {
     min-width: 180px;
   }
@@ -69,6 +72,9 @@ const Item = styled.div`
     }
     &.right {
       text-align: left;
+    }
+    &.available, &.next-burn {
+      min-width: 120px;
     }
     &.spend-period {
       min-width: 120px;
@@ -131,14 +137,14 @@ const Summary = () => {
         <Title>Total</Title>
         <Value>{summary.total}</Value>
       </Item>
-      <Item className="right">
+      <Item className="right available">
         <Title>Available</Title>
         <ValueWrapper>
           <Value>{treasury.free?.toFixed(0)}</Value>
           <Unit>KSM</Unit>
         </ValueWrapper>
       </Item>
-      <Item className="right">
+      <Item className="right next-burn">
         <Title>Next burn</Title>
         <ValueWrapper>
           <Value>{(treasury.burnPercent * treasury.free)?.toFixed(4)}</Value>

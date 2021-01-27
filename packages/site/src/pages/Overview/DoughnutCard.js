@@ -18,6 +18,7 @@ const CardWrapper = styled(Card)`
   margin-top: 24px;
   height: 304px;
   padding: 32px 20px;
+  border-color: #EEE;
 `;
 
 const DoughnutCard = ({ proposals, tips, bounties, burnt }) => {

@@ -4,7 +4,7 @@ import { Link, Redirect } from "react-router-dom";
 import queryString from "query-string";
 import { useForm } from "react-hook-form";
 import styled, { css } from "styled-components";
-import { Form, Divider } from "semantic-ui-react";
+import { Form } from "semantic-ui-react";
 
 import {
   loggedInUserSelector,
@@ -27,6 +27,7 @@ import TextMinor from "../../components/TextMinor";
 import DownloadPolkadot from "../../components/DownloadPolkadot";
 import AccountSelector from "../../components/AccountSelector";
 import FormError from "../../components/FormError";
+import Divider from "../../components/Divider";
 
 import api from "../../services/scanApi";
 import { signMessage } from "../../services/chainApi";

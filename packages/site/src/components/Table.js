@@ -4,6 +4,8 @@ import { Table } from "semantic-ui-react";
 import { TEXT_DARK_MINOR } from "../constants";
 
 const CustomTable = styled(Table)`
+  overflow: hidden !important;
+  border-radius: 8px !important;
   margin-top: 0 !important;
   border-color: #EEE !important;
   td {
