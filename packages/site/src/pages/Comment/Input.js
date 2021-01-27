@@ -43,7 +43,7 @@ const PreviewButton = styled(Button)`
   `}
 `
 
-const Input = ({ type, index }) => {
+const Input = ({ type, index, authors }) => {
   const [content, setContent] = useState("");
   const [isPreview, setIsPreview] = useState(false);
   const dispatch = useDispatch();
@@ -55,7 +55,7 @@ const Input = ({ type, index }) => {
 
   return (
     <Wrapper>
-      {!isPreview && <MarkdownEditor md={content} onChange={setContent} />}
+      {!isPreview && <MarkdownEditor md={content} onChange={setContent} authors={authors} />}
       {isPreview && <MarkdownWrapper>
         <Markdown md={content || "Nothing to preview"} />
       </MarkdownWrapper>}

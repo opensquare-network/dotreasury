@@ -118,3 +118,7 @@ export function normalizeTimeDuration(time, maxSection = 2) {
 
   return result;
 }
+
+export function unique(arr) {
+  return Array.from(new Set(arr));
+}

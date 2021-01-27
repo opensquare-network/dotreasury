@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Image } from "semantic-ui-react";
 import dayjs from "dayjs";
 
@@ -9,6 +9,7 @@ import TextMinor from "../../components/TextMinor";
 import TextDisable from "../../components/TextDisable";
 import Markdown from "../../components/Markdown";
 import { PRIMARY_THEME_COLOR, SECONDARY_THEME_COLOR } from "../../constants";
+import { useIsMounted } from "../../utils/hooks";
 
 import {
   setCommentThumbUp,
@@ -21,6 +22,9 @@ const Wrapper = styled.div`
   :hover {
     background: #fbfbfb;
   }
+  ${p => p.highLight && css`
+    background: #fbfbfb;
+  `}
 `;
 
 const HeaderWrapper = styled.div`
@@ -86,9 +90,12 @@ const ReplayButton = styled(Button)`
   }
 `;
 
-const CommentItem = ({ type, index, comment, position }) => {
+const CommentItem = ({ type, index, comment, position, refCommentId }) => {
+  const [highLight, setHighLight] = useState(false);
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(isLoggedInSelector);
+  const commentRef = useRef(null);
+  const isMounted = useIsMounted();
 
   const commentId = comment.commentId;
   const thumbUp = () => {
@@ -98,10 +105,23 @@ const CommentItem = ({ type, index, comment, position }) => {
   const thumbDown = () => {
     dispatch(setCommentThumbDown(type, index, commentId));
   };
-
   const isTop = false;
+  useEffect(() => {
+    setTimeout(() => {
+      if (isMounted.current && (commentId === refCommentId)) {
+        commentRef.current.scrollIntoView();
+        setHighLight(true);
+      }
+    }, 1000);
+    setTimeout(() => {
+      if (isMounted.current) {
+        setHighLight(false);
+      }
+    }, 4000);
+  }, [commentId, refCommentId, isMounted]);
+
   return (
-    <Wrapper>
+    <Wrapper id={comment.commentId} ref={commentRef} highLight={highLight}>
       <HeaderWrapper>
         <Avatar src="/imgs/avatar.png" />
         <Username>{comment.author.username}</Username>
