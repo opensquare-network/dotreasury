@@ -118,3 +118,10 @@ export function normalizeTimeDuration(time, maxSection = 2) {
 
   return result;
 }
+
+
+export const sleep = time => {
+  return new Promise(resolve => {
+    setTimeout(resolve, time);
+  })
+}

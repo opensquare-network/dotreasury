@@ -22,3 +22,19 @@ export const ProposalStatus = {
 
 export const TreasuryAccount =
   "F3opxRbN5ZbjJNU511Kj2TLuzFcDq9BGduA9TgiECafpg29";
+
+export const DEFAULT_NODE_URL = "wss://kusama.elara.patract.io";
+export const DEFAULT_NODES = [
+  {
+    name: "Parity",
+    url: "wss://kusama-rpc.polkadot.io"
+  },
+  {
+    name: "OnFinality",
+    url: "wss://kusama.api.onfinality.io/public-ws"
+  },
+  {
+    name: "Patract Elara",
+    url: "wss://kusama.elara.patract.io"
+  }
+];

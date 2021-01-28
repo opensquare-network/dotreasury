@@ -74,6 +74,10 @@ const GlobalStyle = createGlobalStyle`
   }
   -ms-overflow-style: none;
   scrollbar-width: none;
+  
+  div.modals.dimmer {
+    background-color: rgba(0, 0, 0, .48) !important;
+  }
 `;
 
 export default GlobalStyle;
