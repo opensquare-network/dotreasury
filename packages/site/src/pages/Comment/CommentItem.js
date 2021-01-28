@@ -8,23 +8,32 @@ import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
 import TextDisable from "../../components/TextDisable";
 import Markdown from "../../components/Markdown";
-import { PRIMARY_THEME_COLOR, SECONDARY_THEME_COLOR } from "../../constants";
+import {
+  PRIMARY_THEME_COLOR,
+  SECONDARY_THEME_COLOR,
+  REACTION_THUMBUP,
+} from "../../constants";
 import { useIsMounted } from "../../utils/hooks";
 
 import {
   setCommentThumbUp,
-  setCommentThumbDown,
+  unsetCommentReaction,
 } from "../../store/reducers/commentSlice";
-import { isLoggedInSelector } from "../../store/reducers/userSlice";
+import {
+  isLoggedInSelector,
+  loggedInUserSelector,
+} from "../../store/reducers/userSlice";
 
 const Wrapper = styled.div`
   padding: 32px 32px 16px;
   :hover {
     background: #fbfbfb;
   }
-  ${p => p.highLight && css`
-    background: #fbfbfb;
-  `}
+  ${(p) =>
+    p.highLight &&
+    css`
+      background: #fbfbfb;
+    `}
 `;
 
 const HeaderWrapper = styled.div`
@@ -72,22 +81,60 @@ const ButtonList = styled.div`
 
 const Button = styled.div`
   cursor: pointer;
-  opacity: 0.24;
   :not(:last-child) {
     margin-right: 8px;
-  }
-  :hover {
-    opacity: 0.64;
   }
 `;
 
 const ReplayButton = styled(Button)`
   display: flex;
+  opacity: 0.24;
+  :hover {
+    opacity: 0.64;
+  }
   align-items: center;
   margin-right: 16px !important;
   & > :first-child {
     margin-right: 5px;
   }
+`;
+
+const VoteWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  & > :first-child {
+    margin-right: 4px;
+  }
+  &:hover {
+    opacity: 0.64;
+  }
+  ${(p) =>
+    p.highlight
+      ? css`
+          opacity: 1;
+        `
+      : css`
+          opacity: 0.24;
+        `}
+`;
+
+const VoteButton = styled(Button)`
+  display: flex;
+  align-items: center;
+  & > :first-child {
+    margin-right: 5px;
+  }
+`;
+
+const VoteText = styled(Text)`
+  ${(p) =>
+    p.highlight
+      ? css`
+          color: rgba(223, 64, 93);
+        `
+      : css`
+          color: rgba(29, 37, 60);
+        `}
 `;
 
 const CommentItem = ({ type, index, comment, position, refCommentId }) => {
@@ -96,19 +143,30 @@ const CommentItem = ({ type, index, comment, position, refCommentId }) => {
   const isLoggedIn = useSelector(isLoggedInSelector);
   const commentRef = useRef(null);
   const isMounted = useIsMounted();
+  const loggedInUser = useSelector(loggedInUserSelector);
+
+  const upCount =
+    comment.reactions?.filter((r) => r.reaction === REACTION_THUMBUP).length ||
+    0;
+  const highlight = comment.reactions?.some(
+    (r) => r.user.username === loggedInUser?.username
+  );
 
   const commentId = comment.commentId;
   const thumbUp = () => {
-    dispatch(setCommentThumbUp(type, index, commentId));
+    if (isLoggedIn) {
+      if (highlight) {
+        dispatch(unsetCommentReaction(type, index, commentId));
+      } else {
+        dispatch(setCommentThumbUp(type, index, commentId));
+      }
+    }
   };
 
-  const thumbDown = () => {
-    dispatch(setCommentThumbDown(type, index, commentId));
-  };
   const isTop = false;
   useEffect(() => {
     setTimeout(() => {
-      if (isMounted.current && (commentId === refCommentId)) {
+      if (isMounted.current && commentId === refCommentId) {
         commentRef.current.scrollIntoView();
         setHighLight(true);
       }
@@ -138,12 +196,19 @@ const CommentItem = ({ type, index, comment, position, refCommentId }) => {
             <Image src="/imgs/reply.svg" />
             <Text>Reply</Text>
           </ReplayButton>
-          <Button onClick={thumbUp} disabled={isLoggedIn}>
-            <Image src="/imgs/thumb-up.svg" />
-          </Button>
-          <Button onClick={thumbDown} disabled={isLoggedIn}>
-            <Image src="/imgs/thumb-down.svg" />
-          </Button>
+          <VoteWrapper highlight={highlight}>
+            <VoteButton onClick={thumbUp}>
+              <Image
+                src={
+                  highlight
+                    ? "/imgs/thumb-up-highlight.svg"
+                    : "/imgs/thumb-up.svg"
+                }
+              />
+              <VoteText highlight={highlight}>Up</VoteText>
+            </VoteButton>
+            <VoteText highlight={highlight}>({upCount})</VoteText>
+          </VoteWrapper>
         </ButtonList>
       </ContnetWrapper>
     </Wrapper>
