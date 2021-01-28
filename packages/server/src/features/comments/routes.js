@@ -14,7 +14,7 @@ router.delete(
   requireAuth,
   commentsController.deleteComment
 );
-router.post(
+router.put(
   "/comments/:commentId/reaction",
   requireAuth,
   commentsController.setCommentReaction

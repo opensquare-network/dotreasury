@@ -60,7 +60,7 @@ export const updateComment = (type, index, commentId, content) => async (
     `/comments/${commentId}`,
     {},
     {
-      method: "POST",
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
@@ -90,7 +90,7 @@ export const setCommentThumbUp = (type, index, commentId) => async (
     `/comments/${commentId}/reaction`,
     {},
     {
-      method: "POST",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
@@ -108,7 +108,7 @@ export const setCommentThumbDown = (type, index, commentId) => async (
     `/comments/${commentId}/reaction`,
     {},
     {
-      method: "POST",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },

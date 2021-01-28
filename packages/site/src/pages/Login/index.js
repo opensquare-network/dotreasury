@@ -199,7 +199,7 @@ function Login({ location }) {
     const loginResult = await scanApi.login(
       formData.username,
       formData.password
-    )
+    );
     if (loginResult) {
       saveLoggedInResult(loginResult);
     }
@@ -281,7 +281,7 @@ function Login({ location }) {
               <CheckImage src="/imgs/circle-pass.svg" checked={isRememberMe} />
               <p>Remember me</p>
             </RememberMe>
-            <Link to="?#">
+            <Link to="/forget">
               <StyledTextMnor>Forgot password?</StyledTextMnor>
             </Link>
           </HelperWrapper>
