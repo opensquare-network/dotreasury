@@ -5,7 +5,7 @@ import { stringToHex } from '@polkadot/util';
 
 import { DEFAULT_NODE_URL, DEFAULT_NODES } from "../constants";
 
-const apiInstance = new Map();
+const apiInstanceMap = new Map();
 
 let nodeUrl = (() => {
   const localNodeUrl = localStorage.getItem("nodeUrl");
@@ -19,10 +19,10 @@ export const getNodeUrl = () => nodeUrl;
 
 export const getApi = async (queryUrl) => {
   const url = queryUrl || nodeUrl;
-  if (!apiInstance.has(url)) {
-    apiInstance.set(url, ApiPromise.create({ provider: new WsProvider(url) }));
+  if (!apiInstanceMap.has(url)) {
+    apiInstanceMap.set(url, ApiPromise.create({ provider: new WsProvider(url) }));
   }
-  return apiInstance.get(url);
+  return apiInstanceMap.get(url);
 }
 
 export const getIndentity = async (address) => {

@@ -38,10 +38,10 @@ const CheckedItem = styled.div`
 const Detail = styled(Text)`
   font-weight: 500;
   color: #3ABC3F;
-  ${p => p.delay && typeof p.delay === 'number' && p.delay > 100 && css`
+  ${p => p.delay && typeof p.delay === 'number' && p.delay >= 100 && css`
     color: #EE7735;
   `}
-  ${p => p.delay && typeof p.delay === 'number' && p.delay > 300 && css`
+  ${p => p.delay && typeof p.delay === 'number' && p.delay >= 300 && css`
     color: #EC4730;
   `}
   ${p => p.delay && typeof p.delay === 'string' && css`
@@ -56,7 +56,7 @@ const SettingItem = ({node: {name, url, delay}, selectedNode, setSelectedNode}) 
       {!checked && <CheckItem />}
       {checked && <CheckedItem />}
       <Text className="grow">Hosted by {name}</Text>
-      {delay && <Detail delay={delay}>{delay} ms</Detail>}
+      {delay && <Detail delay={delay}>{typeof delay === "number" ? `${delay} ms` : delay}</Detail>}
     </Wrapper>
   )
 }

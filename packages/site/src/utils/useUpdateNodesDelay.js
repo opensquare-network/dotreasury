@@ -8,6 +8,7 @@ import {
 } from "../store/reducers/nodeSlice";
 import { sleep } from "./index";
 
+let isFirstTime = true;
 const TIMEOUT = 1000;
 
 const fetchApiTime = async api => {
@@ -34,14 +35,14 @@ const useUpdateNodesDelay = () => {
       const api = await getApi(url);
       const delay = await testNet(api);
       return {url, delay}
-
     }
 
-    const tiemoutId = setTimeout(async () => {
+    const timeoutId = setTimeout(async () => {
+      isFirstTime = false;
       const results = await Promise.all((nodes || []).map(item => updateNodeDelay(item.url)));
       dispatch(setNodesDelay(results));
-    }, 10000);
-    return () => clearTimeout(tiemoutId);
+    }, isFirstTime ? 3000 : 10000);
+    return () => clearTimeout(timeoutId);
   }, [nodes, dispatch]);
 }
 

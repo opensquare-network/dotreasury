@@ -14,10 +14,9 @@ const nodeSlice = createSlice({
       window.location.reload();
     },
     setNodesDelay(state, { payload }) {
-      (payload || []).map(item => {
+      (payload || []).forEach(item => {
         const node = state.nodes.find(node => item.url === node.url);
         if (node) node.delay = item.delay;
-        return null;
       })
     }
   }

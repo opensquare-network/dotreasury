@@ -15,16 +15,20 @@ import {
   nodesSelector,
 } from "../../store/reducers/nodeSlice";
 import useUpdateNodesDelay from "../../utils/useUpdateNodesDelay";
+import GrayImage from "../../components/GrayImage";
+import { PRIMARY_THEME_COLOR } from "../../constants";
 
 
 const Wrapper = styled.div`
-  margin-right: 32px;
+  :not(:last-child) {
+    margin-right: 32px;
+  }
 `
 
 const StyledModal = styled(Modal)`
   width: 424px !important;
   border-radius: 8px !important;
-  top: 112px;
+  /* top: 112px; */
 `
 
 const StyledTitle = styled(Title)`
@@ -49,6 +53,14 @@ const StyledButton = styled(Button)`
   padding-right: 0 !important;
   & > :first-child {
     margin-right: 8px;
+  }
+  &:hover {
+    color: ${PRIMARY_THEME_COLOR} !important;
+    & > :first-child {
+      -webkit-filter: grayscale(0);
+      filter: grayscale(0);
+      opacity: 1;
+    }
   }
 `
 
@@ -89,7 +101,7 @@ const Setting = () => {
       trigger={
         <Wrapper>
           <StyledButton open={open}>
-            <Image src="/imgs/setting.svg" />
+            <GrayImage src="/imgs/setting-red.svg" />
             Setting
           </StyledButton>
         </Wrapper>
