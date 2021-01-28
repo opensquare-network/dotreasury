@@ -79,6 +79,7 @@ function ForgetPassword({ history }) {
   const isMounted = useIsMounted();
   const [requested, setRequested] = useState(false);
   const [countdown, setCountdown] = useState(10);
+  const [serverError, setServerError] = useState("");
 
   if (requested) {
     if (countdown !== 0) {
@@ -92,7 +93,7 @@ function ForgetPassword({ history }) {
 
   // Request reset
   const onSubmit = async (formData) => {
-    const { error } = await scanApi.fetch(
+    const { result, error } = await scanApi.fetch(
       "/auth/forget",
       {},
       {
@@ -104,9 +105,14 @@ function ForgetPassword({ history }) {
       }
     );
 
-    if (!error) {
+    if (result) {
       if (isMounted.current) {
         setRequested(true);
+      }
+    }
+    if (error) {
+      if (isMounted.current) {
+        setServerError(error.message);
       }
     }
   };
@@ -161,6 +167,7 @@ function ForgetPassword({ history }) {
             />
             {errors.email && <FormError>{errors.email?.message}</FormError>}
           </Form.Field>
+          {serverError && <FormError>{serverError}</FormError>}
           <StyledButtonPrimary type="submit">Request reset</StyledButtonPrimary>
         </Form>
       )}

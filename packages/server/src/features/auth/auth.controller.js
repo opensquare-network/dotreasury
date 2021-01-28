@@ -329,11 +329,11 @@ class AuthController {
     const userCol = await getUserCollection();
     const user = await userCol.findOne({ email, "reset.token": token });
     if (!user) {
-      throw new HttpError(400, "Incorrect reset information.");
+      throw new HttpError(400, "Invalid reset request.");
     }
 
     if (user.reset.expires.getTime() < Date.now()) {
-      throw new HttpError(400, "The reset token has expired.");
+      throw new HttpError(400, "The reset token is expired.");
     }
 
     const salt = randomBytes(32);

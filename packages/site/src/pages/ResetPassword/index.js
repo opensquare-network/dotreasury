@@ -82,6 +82,7 @@ function ResetPassword({ history, location }) {
   const [reset, setReset] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [countdown, setCountdown] = useState(10);
+  const [serverError, setServerError] = useState("");
 
   if (reset) {
     if (countdown !== 0) {
@@ -100,7 +101,7 @@ function ResetPassword({ history, location }) {
 
   // Reset password
   const onSubmit = async (formData) => {
-    const { error } = await scanApi.fetch(
+    const { result, error } = await scanApi.fetch(
       "/auth/reset",
       {},
       {
@@ -116,9 +117,14 @@ function ResetPassword({ history, location }) {
       }
     );
 
-    if (!error) {
+    if (result) {
       if (isMounted.current) {
         setReset(true);
+      }
+    }
+    if (error) {
+      if (isMounted.current) {
+        setServerError(error.message);
       }
     }
   };
@@ -151,7 +157,7 @@ function ResetPassword({ history, location }) {
         <Form onSubmit={handleSubmit(onSubmit)}>
           <Form.Field>
             <label htmlFor="password">
-              Password
+              New password
               {errors.password && (
                 <span>
                   <span>*</span>
@@ -172,6 +178,7 @@ function ResetPassword({ history, location }) {
             </FormPasswordWrapper>
             {errors.password && <FormError>error message</FormError>}
           </Form.Field>
+          {serverError && <FormError>{serverError}</FormError>}
           <StyledButtonPrimary type="submit">Confirm</StyledButtonPrimary>
         </Form>
       )}
