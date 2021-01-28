@@ -127,13 +127,14 @@ class CommentService {
             username: 1,
             email: 1,
             notification: 1,
+            emailVerified: 1,
           },
         }
       )
       .toArray();
 
     for (const user of users) {
-      if (user.notification?.mentioned ?? true) {
+      if (user.emailVerified && (user.notification?.mentioned ?? true)) {
         mailService.sendCommentMetionEmail({
           email: user.email,
           author: author.username,
