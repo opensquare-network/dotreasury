@@ -50,34 +50,83 @@ class AuthController {
       throw new HttpError(403, "Username already exists.");
     }
 
-    const salt = randomBytes(32);
+    const salt = randomBytes(12);
     const hashedPassword = await argon2.hash(password, { salt });
 
     const hexSalt = salt.toString("hex");
 
+    const now = new Date();
     const result = await userCol.insertOne({
       username,
       email,
       hashedPassword,
       salt: hexSalt,
+      createdAt: now,
     });
 
     if (!result.result.ok) {
       throw new HttpError(500, "Signup error, cannot create user.");
     }
 
+    mailService.sendVerificationEmail({ username, email, token: hexSalt });
+
     const insertedUser = result.ops[0];
     const accessToken = await authService.getSignedToken(insertedUser);
     const refreshToken = await authService.getRefreshToken(insertedUser);
 
-    const now = new Date();
     ctx.body = {
       username: insertedUser.username,
       email: insertedUser.email,
       accessToken,
       refreshToken,
-      createdAt: now,
     };
+  }
+
+  async verify(ctx) {
+    const { email, token } = ctx.request.body;
+
+    if (!email) {
+      throw new HttpError(400, "Email is missing");
+    }
+
+    if (!token) {
+      throw new HttpError(400, "Token is missing");
+    }
+
+    const userCol = await getUserCollection();
+
+    const user = await userCol.findOne({ email });
+    if (!user) {
+      throw new HttpError(404, "Email does not exists.");
+    }
+
+    if (user.emailVerified) {
+      throw new HttpError(400, "Email is already verified.");
+    }
+
+    if (user.salt !== token) {
+      throw new HttpError(400, "Incorrect token.");
+    }
+
+    const result = await userCol.updateOne(
+      { _id: user._id },
+      {
+        $set: {
+          emailVerified: true,
+        },
+      }
+    );
+
+    if (!result.result.ok) {
+      throw new HttpError(500, "Db error: email verification.");
+    }
+
+    if (result.result.nModified === 0) {
+      ctx.body = false;
+      return;
+    }
+
+    ctx.body = true;
   }
 
   async login(ctx) {
@@ -219,6 +268,10 @@ class AuthController {
     const user = await userCol.findOne({ email });
     if (!user) {
       throw new HttpError(400, "The email is not associated with any account.");
+    }
+
+    if (!user.emailVerified) {
+      throw new HttpError(400, "The email address is not verified yet.");
     }
 
     if (user.reset?.expires.getTime() > Date.now()) {

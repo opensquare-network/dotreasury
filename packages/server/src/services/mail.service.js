@@ -77,6 +77,26 @@ class MailService {
       console.error("Comment metion Email not sent", e)
     );
   }
+
+  sendVerificationEmail({ username, email, token }) {
+    const text = templates.emailVerification({
+      username,
+      email,
+      token,
+    });
+
+    const msg = {
+      from: this.from,
+      html: text,
+      subject: "Please verify your email",
+      text,
+      to: email,
+    };
+
+    this.send(msg).catch((e) =>
+      console.error("Verification Email not sent", e)
+    );
+  }
 }
 
 module.exports = new MailService(
