@@ -196,7 +196,7 @@ function Login({ location }) {
 
   // Do login
   const onSubmit = async (formData) => {
-    const loginResult = await scanApi.login(
+    const {loginResult, loginError} = await scanApi.login(
       formData.username,
       formData.password
     );
