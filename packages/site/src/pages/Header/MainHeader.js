@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Logo from "./Logo";
 import { NavLink } from "react-router-dom";
 import ScanHeight from "./ScanHeight";
+import Setting from "./Setting";
 
 const Wrapper = styled.header`
   height: 68px;
@@ -13,11 +14,13 @@ const Wrapper = styled.header`
 `;
 
 const Left = styled.div`
-display: flex;
-align-items: center;
+  display: flex;
+  align-items: center;
 `
 
 const Right = styled.div`
+  display: flex;
+  align-items: center;
 `
 
 const ScanHeightWrapper = styled.div`
@@ -36,7 +39,9 @@ const HeaderExamplePage = () => {
           <ScanHeight />
         </ScanHeightWrapper>
       </Left>
-      <Right></Right>
+      <Right>
+        <Setting />
+      </Right>
     </Wrapper>
   )
 };
