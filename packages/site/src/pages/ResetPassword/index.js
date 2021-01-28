@@ -125,7 +125,7 @@ function ResetPassword({ history, location }) {
 
   return (
     <CardWrapper>
-      <Header>Reset password</Header>
+      <Header>{reset ? "Congrats" : "Reset password"}</Header>
       {reset ? (
         <>
           <TextWrapper>
