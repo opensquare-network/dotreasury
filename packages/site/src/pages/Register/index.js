@@ -146,16 +146,21 @@ function Register({ history }) {
   const [isAgree, setIsAgree] = useState(false);
   const { register, handleSubmit, errors } = useForm();
   const dispatch = useDispatch();
+  const [serverError, setServerError] = useState("");
 
   // Do login
   const onSubmit = async (formData) => {
-    const signupResult = await scanApi.signup(
+    const {result: signupResult, error: signupError} = await scanApi.signup(
       formData.username,
       formData.email,
       formData.password
     );
-    saveLoggedInResult(signupResult);
-    history.push("/login");
+    if (signupError) {
+      setServerError(signupError.message);
+    } else {
+      saveLoggedInResult(signupResult);
+      history.push("/login");
+    }
   };
 
   const saveLoggedInResult = (loginResult) => {
@@ -182,11 +187,6 @@ function Register({ history }) {
           <Form.Field>
             <label htmlFor="username">
               Username
-              {errors.username && (
-                <span className="text-danger">
-                  <span>*</span>
-                </span>
-              )}
             </label>
             <FormInput
               name="username"
@@ -194,16 +194,11 @@ function Register({ history }) {
               ref={register({ required: true })}
               error={errors.username}
             />
-            {errors.username && <FormError>error message</FormError>}
+            {errors.password && <FormError>This field is required</FormError>}
           </Form.Field>
           <Form.Field>
             <label htmlFor="email">
               Email
-              {errors.email && (
-                <span className="text-danger">
-                  <span>*</span>
-                </span>
-              )}
             </label>
             <FormInput
               name="email"
@@ -211,16 +206,11 @@ function Register({ history }) {
               ref={register({ required: true })}
               error={errors.email}
             />
-            {errors.email && <FormError>error message</FormError>}
+            {errors.password && <FormError>This field is required</FormError>}
           </Form.Field>
           <Form.Field>
             <label htmlFor="password">
               Password
-              {errors.password && (
-                <span>
-                  <span>*</span>
-                </span>
-              )}
             </label>
             <FormPasswordWrapper
               show={showPassword}
@@ -234,9 +224,10 @@ function Register({ history }) {
                 error={errors.password}
               />
             </FormPasswordWrapper>
-            {errors.password && <FormError>error message</FormError>}
+            {errors.password && <FormError>This field is required</FormError>}
           </Form.Field>
           <Helper isAgree={isAgree} setIsAgree={setIsAgree} />
+          {serverError && <FormError>{serverError}</FormError>}
           <StyledButtonPrimary type="submit">Sign up</StyledButtonPrimary>
           {/* <StyledButton onClick={() => setWeb3Login(true)}>Sign up with web3 address</StyledButton> */}
         </Form>

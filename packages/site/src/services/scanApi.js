@@ -2,7 +2,7 @@ import Api from "./api";
 
 class ScanApi extends Api {
   async login(username, password) {
-    const { result } = await this.fetch(
+    const { result, error } = await this.fetch(
       "/auth/login",
       {},
       {
@@ -14,11 +14,11 @@ class ScanApi extends Api {
       }
     );
 
-    return result;
+    return {result, error};
   }
 
   async signup(username, email, password) {
-    const { result } = await this.fetch(
+    const { result, error } = await this.fetch(
       "/auth/signup",
       {},
       {
@@ -30,7 +30,7 @@ class ScanApi extends Api {
       }
     );
 
-    return result;
+    return {result, error};
   }
 
   async authFetch(url, params, options) {
