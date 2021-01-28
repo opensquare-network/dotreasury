@@ -17,6 +17,7 @@ const ButtonPrimary = styled(Button)`
     background: #DF405D !important;
   }
   &.ui.button:disabled {
+    color: white !important;
     background: #E1E1E1 !important;
     opacity: 1 !important;
   }

@@ -27,9 +27,9 @@ const CardWrapper = styled(Card)`
   margin-top: 28px;
   padding: 20px;
   padding: 32px;
-  .ui.form input:focus {
+  /* .ui.form input:focus {
     border-color: ${PRIMARY_THEME_COLOR} !important;
-  }
+  } */
   label {
     color: ${TEXT_DARK_MAJOR} !important;
     font-weight: 500 !important;

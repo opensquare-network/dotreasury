@@ -20,12 +20,11 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
   }
   
-  .ui.input.focus>input, .ui.input>input:focus {
-    border-color: #DF405D;
-  }
-  
-  .ui.input.error>input:focus {
-    border-color: #DF405D;
+  .ui.input input:hover,
+  .ui.form input:hover,
+  .ui.input input:focus,
+  .ui.form input:focus {
+    border-color: #CCCCCC !important;
   }
   
   .ant-table.ant-table-small {
