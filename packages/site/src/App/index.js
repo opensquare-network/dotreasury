@@ -23,6 +23,8 @@ import Overview from "../pages/Overview";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import UserSetting from "../pages/UserSetting";
+import ForgetPassword from "../pages/ForgetPassword";
+import ResetPassword from "../pages/ResetPassword";
 
 export default function App() {
   return (
@@ -52,6 +54,8 @@ export default function App() {
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
               <Route exact path="/settings" component={UserSetting} />
+              <Route exact path="/forget" component={ForgetPassword} />
+              <Route exact path="/resetpassword" component={ResetPassword} />
               <Redirect to="/" />
             </Switch>
           </Container>

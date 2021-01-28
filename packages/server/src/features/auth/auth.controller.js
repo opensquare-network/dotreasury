@@ -209,7 +209,7 @@ class AuthController {
     };
   }
 
-  async forgotPassword(ctx) {
+  async forgetPassword(ctx) {
     const { email } = ctx.request.body;
     if (!email) {
       throw new HttpError(400, "Email is not provided.");
