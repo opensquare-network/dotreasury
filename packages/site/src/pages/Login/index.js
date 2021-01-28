@@ -144,6 +144,7 @@ function Login({ location }) {
   const dispatch = useDispatch();
   const [selectedAccount, setSelectedAccount] = useState(null);
   const isMounted = useIsMounted();
+  const [serverError, setServerError] = useState("");
 
   useEffect(() => {
     if (web3Login) {
@@ -196,17 +197,20 @@ function Login({ location }) {
 
   // Do login
   const onSubmit = async (formData) => {
-    const {loginResult, loginError} = await scanApi.login(
+    const {result: loginResult, error: loginError} = await scanApi.login(
       formData.username,
       formData.password
     );
     if (loginResult) {
       saveLoggedInResult(loginResult);
     }
+    if (loginError) {
+      setServerError(loginError.message);
+    }
   };
 
   const doWeb3Login = async () => {
-    const { result } = await api.fetch(
+    const { result, error } = await api.fetch(
       `/auth/login/${selectedAccount.address}`
     );
     if (result?.challenge) {
@@ -214,7 +218,7 @@ function Login({ location }) {
         result?.challenge,
         selectedAccount.address
       );
-      const { result: loginResult } = await api.fetch(
+      const { result: loginResult, error: loginError } = await api.fetch(
         `/auth/login/${result?.attemptId}`,
         {},
         {
@@ -228,6 +232,12 @@ function Login({ location }) {
       if (loginResult) {
         saveLoggedInResult(loginResult);
       }
+      if (loginError) {
+        setServerError(loginError.message);
+      }
+    }
+    if (error) {
+      setServerError(error.message);
     }
   };
 
@@ -239,11 +249,6 @@ function Login({ location }) {
           <Form.Field>
             <label htmlFor="username">
               Username
-              {errors.username && (
-                <span>
-                  <span>*</span>
-                </span>
-              )}
             </label>
             <FormInput
               name="username"
@@ -251,16 +256,11 @@ function Login({ location }) {
               ref={register({ required: true })}
               error={errors.username}
             />
-            {errors.username && <FormError>error message</FormError>}
+            {errors.username && <FormError>This field is required</FormError>}
           </Form.Field>
           <Form.Field>
             <label htmlFor="password">
               Password
-              {errors.password && (
-                <span>
-                  <span>*</span>
-                </span>
-              )}
             </label>
             <FormPasswordWrapper
               show={showPassword}
@@ -274,7 +274,7 @@ function Login({ location }) {
                 error={errors.password}
               />
             </FormPasswordWrapper>
-            {errors.password && <FormError>error message</FormError>}
+            {errors.password && <FormError>This field is required</FormError>}
           </Form.Field>
           <HelperWrapper>
             <RememberMe onClick={() => setIsRememberMe(!isRememberMe)}>
@@ -285,8 +285,12 @@ function Login({ location }) {
               <StyledTextMnor>Forgot password?</StyledTextMnor>
             </Link>
           </HelperWrapper>
+          {serverError && <FormError>{serverError}</FormError>}
           <StyledButtonPrimary type="submit">Login</StyledButtonPrimary>
-          <StyledButton onClick={() => setWeb3Login(true)}>
+          <StyledButton onClick={() => {
+            setWeb3Login(true);
+            setServerError("");
+          }}>
             Login with web3 address
           </StyledButton>
         </Form>
@@ -300,8 +304,12 @@ function Login({ location }) {
             />
           )}
           {!hasExtension && <DownloadPolkadot />}
+          {serverError && <FormError>{serverError}</FormError>}
           <StyledButtonPrimary onClick={doWeb3Login}>Login</StyledButtonPrimary>
-          <StyledButton onClick={() => setWeb3Login(false)}>
+          <StyledButton onClick={() => {
+            setWeb3Login(false);
+            setServerError("");
+          }}>
             Login with username
           </StyledButton>
         </div>

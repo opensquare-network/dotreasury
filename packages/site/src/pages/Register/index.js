@@ -136,12 +136,18 @@ function Register({ history }) {
   const [isAgree, setIsAgree] = useState(false);
   const { register, handleSubmit, errors } = useForm();
   const dispatch = useDispatch();
+  const [serverError, setServerError] = useState("");
 
   // Do login
   const onSubmit = async (formData) => {
-    const signupResult = await scanApi.signup(formData.username, formData.email, formData.password);
-    dispatch(setLoggedInUser(signupResult));
-    history.push('/login');
+    const {result: signupResult, error: signupError} = await scanApi.signup(formData.username, formData.email, formData.password);
+    if (signupResult) {
+      dispatch(setLoggedInUser(signupResult));
+      history.push('/login');
+    }
+    if (signupError) {
+      setServerError(signupError.message);
+    }
   };
 
   return (
@@ -149,41 +155,24 @@ function Register({ history }) {
       <Header>Sign up</Header>
       {!web3Login && <Form onSubmit={handleSubmit(onSubmit)}>
         <Form.Field>
-          <label htmlFor="username">Username
-            { errors.username
-              && <span className="text-danger">
-                  <span>*</span>
-                </span>
-            }
-          </label>
+          <label htmlFor="username">Username</label>
           <FormInput name="username" type="text" ref={register({required: true})} error={errors.username} />
-          {errors.username && <FormError>error message</FormError>}
+          {errors.username && <FormError>This field is required</FormError>}
         </Form.Field>
         <Form.Field>
-          <label htmlFor="email">Email
-            { errors.email
-              && <span className="text-danger">
-                  <span>*</span>
-                </span>
-            }
-          </label>
+          <label htmlFor="email">Email</label>
           <FormInput name="email" type="text" ref={register({required: true})} error={errors.email} />
-          {errors.email && <FormError>error message</FormError>}
+          {errors.email && <FormError>This field is required</FormError>}
         </Form.Field>
         <Form.Field>
-          <label htmlFor="password">Password
-            { errors.password
-              && <span>
-                  <span>*</span>
-                </span>
-            }
-          </label>
+          <label htmlFor="password">Password</label>
           <FormPasswordWrapper show={showPassword} toggleClick={() => setShowPassword(!showPassword)}>
             <FormInput name="password" type={showPassword ? "text" : "password"} ref={register({required: true})} autocomplete="off" error={errors.password} />
           </FormPasswordWrapper>
-          {errors.password && <FormError>error message</FormError>}
+          {errors.password && <FormError>This field is required</FormError>}
         </Form.Field>
         <Helper isAgree={isAgree} setIsAgree={setIsAgree} />
+        {serverError && <FormError>{serverError}</FormError>}
         <StyledButtonPrimary type="submit" >Sign up</StyledButtonPrimary>
         {/* <StyledButton onClick={() => setWeb3Login(true)}>Sign up with web3 address</StyledButton> */}
       </Form>}
