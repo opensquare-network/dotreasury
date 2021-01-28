@@ -119,9 +119,11 @@ const Setting = () => {
             setSelectedNode={setSelectedNode} />)
           )}
         </SettingList>
-        <StyledButtonPrimary onClick={() => {
-          dispatch(setCurrentNode(selectedNode));
-          closeModal();
+        <StyledButtonPrimary
+          disabled={selectedNode === currentNode}
+          onClick={() => {
+            dispatch(setCurrentNode(selectedNode));
+            closeModal();
         }}>Switch</StyledButtonPrimary>
       </StyledCard>
     </StyledModal>
