@@ -40,6 +40,9 @@ const PreviewButton = styled(Button)`
   ${p => p.active && css`
     color: ${PRIMARY_THEME_COLOR} !important;
     border-color: ${PRIMARY_THEME_COLOR} !important;
+    &.ui.button:focus {
+      border-color: ${PRIMARY_THEME_COLOR} !important;
+    }
   `}
 `
 

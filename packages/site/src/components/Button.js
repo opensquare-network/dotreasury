@@ -15,6 +15,13 @@ const CustomButton = styled(Button)`
   border-radius: 4px !important;
   line-height: 24px !important;
   padding: 8px 16px !important;
+  &.ui.button:hover, &.ui.button:active, &.ui.button:focus {
+    border-color: #CCCCCC !important;
+  }
+  &.ui.button:disabled {
+    color: rgba(29, 37, 60, 0.24) !important;
+    opacity: 1 !important;
+  }
 `
 
 export default CustomButton;
