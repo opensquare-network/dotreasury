@@ -10,7 +10,7 @@ import CommentList from "./CommentList";
 import { unique } from "../../utils/index";
 import {
   fetchComments,
-  commentsSelector,
+  commentsSelector
 } from "../../store/reducers/commentSlice";
 
 import { useLocation } from "react-router-dom";

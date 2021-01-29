@@ -23,6 +23,7 @@ import {
   isLoggedInSelector,
   loggedInUserSelector,
 } from "../../store/reducers/userSlice";
+import TimeElapsed from "../../components/TimeElapsed";
 
 const Wrapper = styled.div`
   padding: 32px 32px 16px;
@@ -142,6 +143,14 @@ const VoteText = styled(Text)`
         `}
 `;
 
+const FlexWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  & > :last-child {
+    margin-left: 4px;
+  }
+`
+
 const CommentItem = ({ type, index, comment, position, refCommentId }) => {
   const [highLight, setHighLight] = useState(false);
   const dispatch = useDispatch();
@@ -190,7 +199,14 @@ const CommentItem = ({ type, index, comment, position, refCommentId }) => {
         <Avatar src="/imgs/avatar.png" />
         <Username>{comment.author.username}</Username>
         <TextDisable>
-          {dayjs(comment.createdAt).format("YYYY-MM-DD HH:mm:ss")}
+          {
+            (dayjs().diff(dayjs(comment.createdAt), "day") >= 1) ?
+            dayjs(comment.createdAt).format("YYYY-MM-DD HH:mm:ss") :
+            <FlexWrapper>
+              <TimeElapsed from={dayjs(comment.createdAt).valueOf()} />
+              <span>ago</span>
+            </FlexWrapper>
+          }
         </TextDisable>
         <Index>#{position + 1}</Index>
         {isTop && <TopLabel>top</TopLabel>}
