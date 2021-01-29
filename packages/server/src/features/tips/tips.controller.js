@@ -137,26 +137,12 @@ class TipsController {
     const tipHash = ctx.params.tipHash;
     const blockHeight = parseInt(ctx.params.blockHeight);
 
-    const validator = async () => {
-      const tipCol = await getTipCollection();
-      const tip = await tipCol.findOne({
-        hash: tipHash,
-        "indexer.blockHeight": blockHeight,
-      });
-      if (!tip) {
-        throw new HttpError(404, "Tip not found");
-      }
-    };
-
-    ctx.body = await commentService.getComments(
-      {
-        treasuryTipId: {
-          tipHash,
-          blockHeight,
-        },
+    ctx.body = await commentService.getComments({
+      treasuryTipId: {
+        tipHash,
+        blockHeight,
       },
-      validator
-    );
+    });
   }
 
   async postTipComment(ctx) {
@@ -166,6 +152,15 @@ class TipsController {
     const user = ctx.request.user;
     if (!content) {
       throw new HttpError(400, "Comment content is missing");
+    }
+
+    const tipCol = await getTipCollection();
+    const tip = await tipCol.findOne({
+      hash: tipHash,
+      "indexer.blockHeight": blockHeight,
+    });
+    if (!tip) {
+      throw new HttpError(404, "Tip not found");
     }
 
     ctx.body = await commentService.postComment(

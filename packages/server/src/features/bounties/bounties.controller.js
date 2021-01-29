@@ -140,18 +140,9 @@ class BountiesController {
   async getBountyComments(ctx) {
     const bountyIndex = parseInt(ctx.params.bountyIndex);
 
-    const validator = async () => {
-      const bountyCol = await getBountyCollection();
-      const bounty = await bountyCol.findOne({ bountyIndex });
-      if (!bounty) {
-        throw new HttpError(404, "Bounty not found");
-      }
-    };
-
-    ctx.body = await commentService.getComments(
-      { treasuryBountyId: bountyIndex },
-      validator
-    );
+    ctx.body = await commentService.getComments({
+      treasuryBountyId: bountyIndex,
+    });
   }
 
   async postBountyComment(ctx) {
@@ -161,6 +152,13 @@ class BountiesController {
     if (!content) {
       throw new HttpError(400, "Comment content is missing");
     }
+
+    const bountyCol = await getBountyCollection();
+    const bounty = await bountyCol.findOne({ bountyIndex });
+    if (!bounty) {
+      throw new HttpError(404, "Bounty not found");
+    }
+
     ctx.body = await commentService.postComment(
       { treasuryBountyId: bountyIndex },
       content,

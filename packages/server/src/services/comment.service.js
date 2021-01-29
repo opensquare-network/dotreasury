@@ -1,19 +1,25 @@
 const { ObjectId } = require("mongodb");
 const mailService = require("./mail.service");
-const {
-  getDiscussionCollection,
-  getUserCollection,
-} = require("../mongo-admin");
+const { getCommentCollection, getUserCollection } = require("../mongo-admin");
 const { HttpError } = require("../exc");
 
 class CommentService {
-  async getComments(indexer, validateBeforeCreate) {
-    const discuCol = await getDiscussionCollection();
-    let discussion = await discuCol.findOne({ indexer });
+  async getComments(indexer) {
+    const commentCol = await getCommentCollection();
+    let comments = await commentCol
+      .find(
+        { indexer },
+        {
+          projection: {
+            indexer: 0,
+          },
+        }
+      )
+      .toArray();
 
-    if (discussion) {
+    if (comments.length > 0) {
       const userIds = new Set();
-      discussion.comments?.forEach((comment) => {
+      comments?.forEach((comment) => {
         userIds.add(comment.authorId.toString());
         comment.reactions?.forEach((reaction) => {
           userIds.add(reaction.userId.toString());
@@ -32,7 +38,7 @@ class CommentService {
         userMap[user._id.toString()] = user;
       });
 
-      discussion.comments?.forEach((comment) => {
+      comments?.forEach((comment) => {
         comment.author = userMap[comment.authorId.toString()];
         delete comment.authorId;
         comment.reactions?.forEach((reaction) => {
@@ -44,54 +50,28 @@ class CommentService {
       users.forEach((user) => {
         delete user._id;
       });
-    } else {
-      // If the discussion record is not created yet, then validate and create
-      if (validateBeforeCreate) {
-        await validateBeforeCreate();
-      }
-
-      const result = await discuCol.insertOne({
-        indexer,
-        comments: [],
-      });
-
-      if (!result.result.ok) {
-        throw new HttpError(500, "Cannot initialize discussion.");
-      }
-
-      discussion = result.ops[0];
     }
 
-    return discussion;
+    return comments;
   }
 
   async postComment(indexer, content, author) {
-    const discuCol = await getDiscussionCollection();
+    const commentCol = await getCommentCollection();
 
-    const commentId = new ObjectId();
     const now = new Date();
-    const result = await discuCol.updateOne(
-      { indexer },
-      {
-        $push: {
-          comments: {
-            commentId,
-            authorId: author._id,
-            content,
-            createdAt: now,
-            updatedAt: now,
-          },
-        },
-      }
-    );
+    const result = await commentCol.insertOne({
+      indexer,
+      authorId: author._id,
+      content,
+      createdAt: now,
+      updatedAt: now,
+    });
 
     if (!result.result.ok) {
       throw new HttpError(500, "Post comment error.");
     }
 
-    if (result.result.nModified === 0) {
-      return false;
-    }
+    const commentId = result.ops[0]._id;
 
     // Send notification email to mentioned users
     this.processMetions(indexer, commentId, content, author);
@@ -148,22 +128,18 @@ class CommentService {
   }
 
   async updateComment(commentId, newContent, author) {
-    const discuCol = await getDiscussionCollection();
+    const commentCol = await getCommentCollection();
 
     const now = new Date();
-    const result = await discuCol.findOneAndUpdate(
+    const result = await commentCol.findOneAndUpdate(
       {
-        comments: {
-          $elemMatch: {
-            commentId: ObjectId(commentId),
-            authorId: author._id,
-          },
-        },
+        _id: ObjectId(commentId),
+        authorId: author._id,
       },
       {
         $set: {
-          "comments.$.content": newContent,
-          "comments.$.updatedAt": now,
+          content: newContent,
+          updatedAt: now,
         },
       },
       {
@@ -190,42 +166,29 @@ class CommentService {
   }
 
   async deleteComment(commentId, author) {
-    const discuCol = await getDiscussionCollection();
-    let result = await discuCol.updateOne(
-      {
-        "comments.commentId": ObjectId(commentId),
-      },
-      {
-        $pull: {
-          comments: {
-            commentId: ObjectId(commentId),
-            authorId: author._id,
-          },
-        },
-      }
-    );
+    const commentCol = await getCommentCollection();
+    let result = await commentCol.deleteOne({
+      _id: ObjectId(commentId),
+      authorId: author._id,
+    });
 
     if (!result.result.ok) {
       throw new HttpError(500, "Delete comment error.");
-    }
-
-    if (result.result.nModified === 0) {
-      return false;
     }
 
     return true;
   }
 
   async unsetCommentReaction(commentId, user) {
-    const discuCol = await getDiscussionCollection();
+    const commentCol = await getCommentCollection();
 
-    const result = await discuCol.updateOne(
+    const result = await commentCol.updateOne(
       {
-        "comments.commentId": ObjectId(commentId),
+        _id: ObjectId(commentId),
       },
       {
         $pull: {
-          "comments.$.reactions": {
+          reactions: {
             userId: user._id,
           },
         },
@@ -244,30 +207,19 @@ class CommentService {
   }
 
   async setCommentReaction(commentId, reaction, user) {
-    const discuCol = await getDiscussionCollection();
+    const commentCol = await getCommentCollection();
 
     const now = new Date();
-    let result = await discuCol.updateOne(
+    let result = await commentCol.updateOne(
       {
-        comments: {
-          $elemMatch: {
-            commentId: ObjectId(commentId),
-            "reactions.userId": user._id,
-          },
-        },
+        _id: ObjectId(commentId),
+        "reactions.userId": user._id,
       },
       {
         $set: {
-          "comments.$.reactions.$[reaction].reaction": reaction,
-          "comments.$.reactions.$[reaction].updatedAt": now,
+          "reactions.$.reaction": reaction,
+          "reactions.$.updatedAt": now,
         },
-      },
-      {
-        arrayFilters: [
-          {
-            "reaction.userId": user._id,
-          },
-        ],
       }
     );
 
@@ -279,18 +231,14 @@ class CommentService {
       return true;
     }
 
-    result = await discuCol.updateOne(
+    result = await commentCol.updateOne(
       {
-        comments: {
-          $elemMatch: {
-            commentId: ObjectId(commentId),
-            authorId: { $ne: user._id },
-          },
-        },
+        _id: ObjectId(commentId),
+        authorId: { $ne: user._id },
       },
       {
         $push: {
-          "comments.$.reactions": {
+          reactions: {
             userId: user._id,
             reaction,
             createdAt: now,

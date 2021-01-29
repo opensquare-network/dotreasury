@@ -31,7 +31,7 @@ const Comment = ({ type, index }) => {
   }, [dispatch, type, index]);
 
   const comments = useSelector(commentsSelector);
-  const authors = unique((comments.comments || []).map(item => item.author.username));
+  const authors = unique((comments || []).map((item) => item.author.username));
 
   const { hash } = useLocation();
   const refCommentId = hash && hash.slice(1);
@@ -40,8 +40,13 @@ const Comment = ({ type, index }) => {
     <div>
       <Header>Comment</Header>
       <Wrapper>
-        <CommentList type={type} index={index} comments={comments.comments} refCommentId={refCommentId} />
-        <Input  type={type} index={index} authors={authors} />
+        <CommentList
+          type={type}
+          index={index}
+          comments={comments}
+          refCommentId={refCommentId}
+        />
+        <Input type={type} index={index} authors={authors} />
       </Wrapper>
     </div>
   );

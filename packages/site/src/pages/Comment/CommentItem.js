@@ -152,7 +152,7 @@ const CommentItem = ({ type, index, comment, position, refCommentId }) => {
     (r) => r.user.username === loggedInUser?.username
   );
 
-  const commentId = comment.commentId;
+  const commentId = comment._id;
   const thumbUp = () => {
     if (isLoggedIn) {
       if (highlight) {
@@ -179,7 +179,7 @@ const CommentItem = ({ type, index, comment, position, refCommentId }) => {
   }, [commentId, refCommentId, isMounted]);
 
   return (
-    <Wrapper id={comment.commentId} ref={commentRef} highLight={highLight}>
+    <Wrapper id={comment._id} ref={commentRef} highLight={highLight}>
       <HeaderWrapper>
         <Avatar src="/imgs/avatar.png" />
         <Username>{comment.author.username}</Username>
