@@ -197,8 +197,8 @@ function Login({ location }) {
 
   // Do login
   const onSubmit = async (formData) => {
-    const {result: loginResult, error: loginError} = await scanApi.login(
-      formData.username,
+    const { result: loginResult, error: loginError } = await scanApi.login(
+      formData.usernameOrEmail,
       formData.password
     );
     if (loginResult) {
@@ -247,21 +247,19 @@ function Login({ location }) {
       {!web3Login && (
         <Form onSubmit={handleSubmit(onSubmit)}>
           <Form.Field>
-            <label htmlFor="username">
-              Username
-            </label>
+            <label htmlFor="usernameOrEmail">Username / Email</label>
             <FormInput
-              name="username"
+              name="usernameOrEmail"
               type="text"
               ref={register({ required: true })}
-              error={errors.username}
+              error={errors.usernameOrEmail}
             />
-            {errors.username && <FormError>This field is required</FormError>}
+            {errors.usernameOrEmail && (
+              <FormError>This field is required</FormError>
+            )}
           </Form.Field>
           <Form.Field>
-            <label htmlFor="password">
-              Password
-            </label>
+            <label htmlFor="password">Password</label>
             <FormPasswordWrapper
               show={showPassword}
               toggleClick={() => setShowPassword(!showPassword)}
@@ -287,10 +285,12 @@ function Login({ location }) {
           </HelperWrapper>
           {serverError && <FormError>{serverError}</FormError>}
           <StyledButtonPrimary type="submit">Login</StyledButtonPrimary>
-          <StyledButton onClick={() => {
-            setWeb3Login(true);
-            setServerError("");
-          }}>
+          <StyledButton
+            onClick={() => {
+              setWeb3Login(true);
+              setServerError("");
+            }}
+          >
             Login with web3 address
           </StyledButton>
         </Form>
@@ -306,11 +306,13 @@ function Login({ location }) {
           {!hasExtension && <DownloadPolkadot />}
           {serverError && <FormError>{serverError}</FormError>}
           <StyledButtonPrimary onClick={doWeb3Login}>Login</StyledButtonPrimary>
-          <StyledButton onClick={() => {
-            setWeb3Login(false);
-            setServerError("");
-          }}>
-            Login with username
+          <StyledButton
+            onClick={() => {
+              setWeb3Login(false);
+              setServerError("");
+            }}
+          >
+            Login with username or email
           </StyledButton>
         </div>
       )}
