@@ -10,7 +10,7 @@ import {
   loggedInUserSelector,
 } from "../../store/reducers/userSlice";
 import ButtonPrimary from "../../components/ButtonPrimary";
-import Button from "../../components/Button";
+import ButtonLabel from "../../components/ButtonLabel";
 
 const Wrapper = styled.div`
   display: flex;
@@ -20,9 +20,8 @@ const Wrapper = styled.div`
   }
 `;
 
-const SignUpButton = styled(Button)`
-  border: 0 !important;
-  margin-right: 16px !important;
+const SignUpButton = styled(ButtonLabel)`
+  margin-right: 32px !important;
 `;
 
 const UserLogin = () => {
