@@ -19,7 +19,8 @@ const Header = () => {
     "/register",
     "/forget",
     "/resetpassword",
-    "/settings"
+    "/settings",
+    "/verifyemail",
   ].includes(location.pathname);
 
   return (

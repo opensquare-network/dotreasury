@@ -25,6 +25,7 @@ import Register from "../pages/Register";
 import UserSetting from "../pages/UserSetting";
 import ForgetPassword from "../pages/ForgetPassword";
 import ResetPassword from "../pages/ResetPassword";
+import VerifyEmail from "../pages/VerifyEmail";
 
 export default function App() {
   return (
@@ -56,6 +57,7 @@ export default function App() {
               <Route exact path="/settings" component={UserSetting} />
               <Route exact path="/forget" component={ForgetPassword} />
               <Route exact path="/resetpassword" component={ResetPassword} />
+              <Route exact path="/verifyemail" component={VerifyEmail} />
               <Redirect to="/" />
             </Switch>
           </Container>
