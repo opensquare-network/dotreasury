@@ -110,12 +110,10 @@ function VerifyEmail({ history, location }) {
       };
 
       doVerify(email, token);
+    } else {
+      setServerError("Email or token is missing.");
     }
   }, [email, token, isMounted]);
-
-  if (!q.email || !q.token) {
-    return <Redirect to="/" />;
-  }
 
   if (verified) {
     if (countdown !== 0) {
@@ -144,6 +142,7 @@ function VerifyEmail({ history, location }) {
         </TextMinor>
       </TextWrapper>
       <StyledButtonPrimary
+        disabled={!verified && !serverError}
         onClick={() => {
           history.push("/");
         }}
