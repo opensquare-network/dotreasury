@@ -55,6 +55,8 @@ const TextWrapper = styled.div`
   align-items: center;
   justify-content: center;
   padding: 12px 20px;
+  background: rgba(251, 251, 251, 1);
+  margin-bottom: 24px;
 `;
 
 const StyledDivider = styled(Divider)`
