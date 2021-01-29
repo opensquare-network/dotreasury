@@ -136,6 +136,6 @@ export const unsetCommentReaction = (type, index, commentId) => async (
   dispatch(fetchComments(type, index));
 };
 
-export const commentsSelector = (state) => state.comments.comments;
+export const commentsSelector = (state) => state.comments.comments.comments;
 
 export default commentSlice.reducer;
