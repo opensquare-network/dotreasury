@@ -105,9 +105,14 @@ const VoteWrapper = styled.div`
   & > :first-child {
     margin-right: 4px;
   }
-  &:hover {
-    opacity: 0.64;
-  }
+  ${(p) =>
+    p.noHover
+      ? undefined
+      : css`
+          &:hover {
+            opacity: 0.64;
+          }
+        `}
   ${(p) =>
     p.highlight
       ? css`
@@ -151,6 +156,7 @@ const CommentItem = ({ type, index, comment, position, refCommentId }) => {
   const highlight = comment.reactions?.some(
     (r) => r.user.username === loggedInUser?.username
   );
+  const ownComment = comment.author.username === loggedInUser?.username;
 
   const commentId = comment.commentId;
   const thumbUp = () => {
@@ -196,7 +202,7 @@ const CommentItem = ({ type, index, comment, position, refCommentId }) => {
             <Image src="/imgs/reply.svg" />
             <Text>Reply</Text>
           </ReplayButton>
-          <VoteWrapper highlight={highlight}>
+          <VoteWrapper highlight={highlight} noHover={ownComment}>
             <VoteButton onClick={thumbUp}>
               <Image
                 src={
