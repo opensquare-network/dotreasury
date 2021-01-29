@@ -6,15 +6,19 @@ const commentSlice = createSlice({
   name: "comments",
   initialState: {
     comments: [],
+    clearComment: false
   },
   reducers: {
     setComments(state, { payload }) {
       state.comments = payload;
     },
+    setClearComment(state, { payload }) {
+      state.clearComment = payload;
+    }
   },
 });
 
-export const { setComments } = commentSlice.actions;
+export const { setComments, setClearComment } = commentSlice.actions;
 
 export class TipIndex {
   constructor(tipIndex) {
@@ -38,7 +42,7 @@ export const fetchComments = (type, index) => async (dispatch) => {
 };
 
 export const postComment = (type, index, content) => async (dispatch) => {
-  await api.authFetch(
+  const { result } =  await api.authFetch(
     `/${type}/${index}/comments`,
     {},
     {
@@ -50,6 +54,7 @@ export const postComment = (type, index, content) => async (dispatch) => {
     }
   );
 
+  result && dispatch(setClearComment(true));
   dispatch(fetchComments(type, index));
 };
 
@@ -137,5 +142,6 @@ export const unsetCommentReaction = (type, index, commentId) => async (
 };
 
 export const commentsSelector = (state) => state.comments.comments;
+export const clearCommentSelector = (state) => state.comments.clearComment;
 
 export default commentSlice.reducer;
