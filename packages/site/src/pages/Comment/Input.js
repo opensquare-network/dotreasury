@@ -49,7 +49,7 @@ const PreviewButton = styled(Button)`
   `}
 `
 
-const Input = ({ type, index, authors }) => {
+const Input = ({ type, index, authors, reply, setReply }) => {
   const [content, setContent] = useState("");
   const [isPreview, setIsPreview] = useState(false);
   const dispatch = useDispatch();
@@ -66,6 +66,13 @@ const Input = ({ type, index, authors }) => {
       dispatch(setClearComment(false));
     }
   }, [clearComment, dispatch]);
+
+  useEffect(() => {
+    if (reply) {
+      setContent(`[@${reply}](https://dotreasury.com/user/${reply}) `);
+      setReply("");
+    }
+  }, [reply, setReply]);
 
   return (
     <Wrapper>

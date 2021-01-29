@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useDeepCompareEffect from "use-deep-compare-effect";
 import styled from "styled-components";
@@ -24,6 +24,7 @@ const Wrapper = styled(Card)`
 `;
 
 const Comment = ({ type, index }) => {
+  const [reply, setReply] = useState(null);
   const dispatch = useDispatch();
 
   useDeepCompareEffect(() => {
@@ -45,8 +46,9 @@ const Comment = ({ type, index }) => {
           index={index}
           comments={comments}
           refCommentId={refCommentId}
+          setReply={setReply}
         />
-        <Input type={type} index={index} authors={authors} />
+        <Input type={type} index={index} authors={authors} reply={reply} setReply={setReply} />
       </Wrapper>
     </div>
   );
