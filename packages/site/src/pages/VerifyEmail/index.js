@@ -70,7 +70,7 @@ function VerifyEmail({ history, location }) {
   const isMounted = useIsMounted();
   const [verified, setVerified] = useState(false);
   const [countdown, setCountdown] = useState(10);
-  const [serverError, setServerError] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
   const q = queryString.parse(location.search);
   const { email, token } = q;
@@ -98,14 +98,14 @@ function VerifyEmail({ history, location }) {
         }
         if (error) {
           if (isMounted.current) {
-            setServerError(error.message);
+            setErrorMsg(error.message);
           }
         }
       };
 
       doVerify(email, token);
     } else {
-      setServerError("Email or token is missing.");
+      setErrorMsg("Email or token is missing.");
     }
   }, [email, token, isMounted]);
 
@@ -122,21 +122,17 @@ function VerifyEmail({ history, location }) {
   return (
     <CardWrapper>
       <Header>
-        {verified
-          ? "Congrats"
-          : serverError
-          ? "Verify email"
-          : "Verifying email"}
+        {verified ? "Congrats" : errorMsg ? "Verify email" : "Verifying email"}
       </Header>
       <TextWrapper>
         <TextMinor>
           {verified
             ? "You email has been successfully verified."
-            : serverError || "Please wait..."}
+            : errorMsg || "Please wait..."}
         </TextMinor>
       </TextWrapper>
       <StyledButtonPrimary
-        disabled={!verified && !serverError}
+        disabled={!verified && !errorMsg}
         onClick={() => {
           history.push("/");
         }}
