@@ -50,17 +50,16 @@ class AuthController {
       throw new HttpError(403, "Username already exists.");
     }
 
-    const salt = randomBytes(12);
-    const hashedPassword = await argon2.hash(password, { salt });
+    const hashedPassword = await argon2.hash(password);
 
-    const hexSalt = salt.toString("hex");
+    const verifyToken = randomBytes(12).toString("hex");
 
     const now = new Date();
     const result = await userCol.insertOne({
       username,
       email,
       hashedPassword,
-      salt: hexSalt,
+      verifyToken,
       createdAt: now,
     });
 
@@ -68,7 +67,7 @@ class AuthController {
       throw new HttpError(500, "Signup error, cannot create user.");
     }
 
-    mailService.sendVerificationEmail({ username, email, token: hexSalt });
+    mailService.sendVerificationEmail({ username, email, token: verifyToken });
 
     const insertedUser = result.ops[0];
     const accessToken = await authService.getSignedToken(insertedUser);
@@ -104,7 +103,7 @@ class AuthController {
       throw new HttpError(400, "Email is already verified.");
     }
 
-    if (user.salt !== token) {
+    if (user.verifyToken !== token) {
       throw new HttpError(400, "Incorrect token.");
     }
 
@@ -336,17 +335,13 @@ class AuthController {
       throw new HttpError(400, "The reset token is expired.");
     }
 
-    const salt = randomBytes(32);
-    const hashedPassword = await argon2.hash(newPassword, { salt });
-
-    const hexSalt = salt.toString("hex");
+    const hashedPassword = await argon2.hash(newPassword);
 
     const result = await userCol.updateOne(
       { _id: user._id },
       {
         $set: {
           hashedPassword,
-          salt: hexSalt,
         },
         $unset: {
           reset: true,

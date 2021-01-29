@@ -20,7 +20,7 @@ class CommentService {
 
     if (comments.length > 0) {
       const userIds = new Set();
-      comments?.forEach((comment) => {
+      comments.forEach((comment) => {
         userIds.add(comment.authorId.toString());
         comment.reactions?.forEach((reaction) => {
           userIds.add(reaction.userId.toString());
@@ -39,7 +39,7 @@ class CommentService {
         userMap[user._id.toString()] = user;
       });
 
-      comments?.forEach((comment) => {
+      comments.forEach((comment) => {
         comment.author = userMap[comment.authorId.toString()];
         delete comment.authorId;
         comment.reactions?.forEach((reaction) => {
