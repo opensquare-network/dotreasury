@@ -130,9 +130,9 @@ class AuthController {
   }
 
   async login(ctx) {
-    const { username, email, password } = ctx.request.body;
+    const { usernameOrEmail, password } = ctx.request.body;
 
-    if (!email && !username) {
+    if (!usernameOrEmail) {
       throw new HttpError(400, "Email or username must be provided");
     }
 
@@ -143,7 +143,7 @@ class AuthController {
     const userCol = await getUserCollection();
 
     const user = await userCol.findOne({
-      $or: [{ email }, { username }],
+      $or: [{ email: usernameOrEmail }, { username: usernameOrEmail }],
     });
 
     if (!user) {
