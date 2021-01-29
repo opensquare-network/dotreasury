@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled, { css } from "styled-components";
 
@@ -8,6 +8,8 @@ import Button from "../../components/Button";
 import ButtonPrimary from "../../components/ButtonPrimary";
 import {
   postComment,
+  clearCommentSelector,
+  setClearComment
 } from "../../store/reducers/commentSlice";
 import {
   loggedInUserSelector
@@ -25,6 +27,7 @@ const MarkdownWrapper = styled.div`
   padding: 12px 20px;
   background: #FBFBFB;
   border-radius: 8px;
+  min-height: 245px;
 `
 
 const ButtonWrapper = styled.div`
@@ -51,10 +54,18 @@ const Input = ({ type, index, authors }) => {
   const [isPreview, setIsPreview] = useState(false);
   const dispatch = useDispatch();
   const loggedInUser = useSelector(loggedInUserSelector);
+  const clearComment = useSelector(clearCommentSelector);
 
   const post = () => {
     dispatch(postComment(type, index, content));
   };
+
+  useEffect(() => {
+    if (clearComment) {
+      setContent("");
+      dispatch(setClearComment(false));
+    }
+  }, [clearComment, dispatch]);
 
   return (
     <Wrapper>
@@ -64,7 +75,7 @@ const Input = ({ type, index, authors }) => {
       </MarkdownWrapper>}
       <ButtonWrapper>
         <PreviewButton active={isPreview} onClick={() => setIsPreview(!isPreview)} >Preview</PreviewButton>
-        <ButtonPrimary disabled={!loggedInUser} onClick={post}>Confirm</ButtonPrimary>
+        <ButtonPrimary disabled={!loggedInUser} onClick={post}>Comment</ButtonPrimary>
       </ButtonWrapper>
     </Wrapper>
   );
