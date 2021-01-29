@@ -1,4 +1,4 @@
-{{#*inline "commentUrl"}}https://dotreasury.com/{{#if (isdefined indexer.treasuryTipId)}}tips/{{indexer.treasuryTipId.blockHeight}}_{{indexer.treasuryTipId.tipHash}}{{/if}}{{#if (isdefined indexer.treasuryProposalId)}}proposals/{{indexer.treasuryProposalId}}{{/if}}{{#if (isdefined indexer.treasuryBountyId)}}bounties/{{indexer.treasuryBountyId}}{{/if}}#{{commentId}}{{/inline}}
+{{#*inline "commentUrl"}}{{siteUrl}}/{{#if (isdefined indexer.tipId)}}tips/{{indexer.tipId.blockHeight}}_{{indexer.tipId.tipHash}}{{/if}}{{#if (isdefined indexer.proposalId)}}proposals/{{indexer.proposalId}}{{/if}}{{#if (isdefined indexer.bountyId)}}bounties/{{indexer.bountyId}}{{/if}}#{{commentId}}{{/inline}}
 
 <!DOCTYPE html>
 <html lang="en">

@@ -34,6 +34,7 @@ class MailService {
       username,
       email,
       token,
+      siteUrl: process.env.SITE_URL,
     });
 
     const msg = {
@@ -63,6 +64,7 @@ class MailService {
       content,
       indexer,
       commentId,
+      siteUrl: process.env.SITE_URL,
     });
 
     const msg = {
@@ -83,6 +85,7 @@ class MailService {
       username,
       email,
       token,
+      siteUrl: process.env.SITE_URL,
     });
 
     const msg = {

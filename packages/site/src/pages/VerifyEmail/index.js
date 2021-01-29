@@ -8,7 +8,6 @@ import Card from "../../components/Card";
 import Text from "../../components/Text";
 import { TEXT_DARK_MAJOR, PRIMARY_THEME_COLOR } from "../../constants";
 import ButtonPrimary from "../../components/ButtonPrimary";
-import FormError from "../../components/FormError";
 import { useIsMounted } from "../../utils/hooks";
 import TextMinor from "../../components/TextMinor";
 import Divider from "../../components/Divider";
