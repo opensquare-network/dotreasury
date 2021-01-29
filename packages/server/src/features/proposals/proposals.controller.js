@@ -147,18 +147,9 @@ class ProposalsController {
   async getProposalComments(ctx) {
     const proposalIndex = parseInt(ctx.params.proposalIndex);
 
-    const validator = async () => {
-      const proposalCol = await getProposalCollection();
-      const proposal = await proposalCol.findOne({ proposalIndex });
-      if (!proposal) {
-        throw new HttpError(404, "Proposal not found");
-      }
-    };
-
-    ctx.body = await commentService.getComments(
-      { treasuryProposalId: proposalIndex },
-      validator
-    );
+    ctx.body = await commentService.getComments({
+      treasuryProposalId: proposalIndex,
+    });
   }
 
   async postProposalComment(ctx) {
@@ -168,6 +159,13 @@ class ProposalsController {
     if (!content) {
       throw new HttpError(400, "Comment content is missing");
     }
+
+    const proposalCol = await getProposalCollection();
+    const proposal = await proposalCol.findOne({ proposalIndex });
+    if (!proposal) {
+      throw new HttpError(404, "Proposal not found");
+    }
+
     ctx.body = await commentService.postComment(
       { treasuryProposalId: proposalIndex },
       content,
