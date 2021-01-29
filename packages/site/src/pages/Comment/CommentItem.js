@@ -6,7 +6,6 @@ import dayjs from "dayjs";
 
 import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
-import TextDisable from "../../components/TextDisable";
 import Markdown from "../../components/Markdown";
 import {
   PRIMARY_THEME_COLOR,
@@ -24,6 +23,7 @@ import {
   loggedInUserSelector,
 } from "../../store/reducers/userSlice";
 import TimeElapsed from "../../components/TimeElapsed";
+import { TEXT_DARK_DISABLE } from "../../constants";
 
 const Wrapper = styled.div`
   padding: 32px 32px 16px;
@@ -108,7 +108,11 @@ const VoteWrapper = styled.div`
   }
   ${(p) =>
     p.noHover
-      ? undefined
+      ? css`
+          & * {
+            cursor: auto;
+          }
+        `
       : css`
           &:hover {
             opacity: 0.64;
@@ -151,7 +155,11 @@ const FlexWrapper = styled.div`
   }
 `
 
-const CommentItem = ({ type, index, comment, position, refCommentId }) => {
+const TimeWrapper = styled.div`
+  color: ${TEXT_DARK_DISABLE};
+`
+
+const CommentItem = ({ type, index, comment, position, refCommentId, setReply }) => {
   const [highLight, setHighLight] = useState(false);
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(isLoggedInSelector);
@@ -198,7 +206,7 @@ const CommentItem = ({ type, index, comment, position, refCommentId }) => {
       <HeaderWrapper>
         <Avatar src="/imgs/avatar.png" />
         <Username>{comment.author.username}</Username>
-        <TextDisable>
+        <TimeWrapper>
           {
             (dayjs().diff(dayjs(comment.createdAt), "day") >= 1) ?
             dayjs(comment.createdAt).format("YYYY-MM-DD HH:mm:ss") :
@@ -207,14 +215,14 @@ const CommentItem = ({ type, index, comment, position, refCommentId }) => {
               <span>ago</span>
             </FlexWrapper>
           }
-        </TextDisable>
+        </TimeWrapper>
         <Index>#{position + 1}</Index>
         {isTop && <TopLabel>top</TopLabel>}
       </HeaderWrapper>
       <ContnetWrapper>
         <Markdown md={comment.content} />
         <ButtonList>
-          <ReplayButton>
+          <ReplayButton onClick={() => setReply(comment.author.username)}>
             <Image src="/imgs/reply.svg" />
             <Text>Reply</Text>
           </ReplayButton>
