@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Redirect } from "react-router-dom";
 import queryString from "query-string";
@@ -6,7 +6,7 @@ import queryString from "query-string";
 import scanApi from "../../services/scanApi";
 import Card from "../../components/Card";
 import Text from "../../components/Text";
-import { TEXT_DARK_MAJOR, PRIMARY_THEME_COLOR } from "../../constants";
+import { PRIMARY_THEME_COLOR, TEXT_DARK_MAJOR } from "../../constants";
 import ButtonPrimary from "../../components/ButtonPrimary";
 import { useIsMounted } from "../../utils/hooks";
 import TextMinor from "../../components/TextMinor";
@@ -14,9 +14,7 @@ import Divider from "../../components/Divider";
 
 const CardWrapper = styled(Card)`
   max-width: 424px;
-  margin: auto;
-  margin-top: 28px;
-  padding: 20px;
+  margin: 28px auto auto;
   padding: 32px;
   .ui.form input:focus {
     border-color: ${PRIMARY_THEME_COLOR} !important;
@@ -39,7 +37,7 @@ const CardWrapper = styled(Card)`
 `;
 
 const Header = styled(Text)`
-  font-family: "Montserrat";
+  font-family: "Montserrat", serif;
   font-size: 28px;
   font-weight: bold;
   line-height: 44px;
@@ -56,10 +54,7 @@ const TextWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding: 12px 20px;
 `;
 
 const StyledDivider = styled(Divider)`
@@ -75,7 +70,7 @@ function VerifyEmail({ history, location }) {
   const isMounted = useIsMounted();
   const [verified, setVerified] = useState(false);
   const [countdown, setCountdown] = useState(10);
-  const [serverError, setServerError] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
   const q = queryString.parse(location.search);
   const { email, token } = q;
@@ -103,14 +98,14 @@ function VerifyEmail({ history, location }) {
         }
         if (error) {
           if (isMounted.current) {
-            setServerError(error.message);
+            setErrorMsg(error.message);
           }
         }
       };
 
       doVerify(email, token);
     } else {
-      setServerError("Email or token is missing.");
+      setErrorMsg("Email or token is missing.");
     }
   }, [email, token, isMounted]);
 
@@ -127,29 +122,25 @@ function VerifyEmail({ history, location }) {
   return (
     <CardWrapper>
       <Header>
-        {verified
-          ? "Congrats"
-          : serverError
-          ? "Verify email"
-          : "Verifying email"}
+        {verified ? "Congrats" : errorMsg ? "Verify email" : "Verifying email"}
       </Header>
       <TextWrapper>
         <TextMinor>
           {verified
             ? "You email has been successfully verified."
-            : serverError || "Please wait..."}
+            : errorMsg || "Please wait..."}
         </TextMinor>
       </TextWrapper>
       <StyledButtonPrimary
-        disabled={!verified && !serverError}
+        disabled={!verified && !errorMsg}
         onClick={() => {
           history.push("/");
         }}
       >
         Got it
       </StyledButtonPrimary>
-      {
-        verified && <>
+      {verified && (
+        <>
           <StyledDivider />
           <TextWrapper>
             The page will be re-directed in
@@ -157,7 +148,7 @@ function VerifyEmail({ history, location }) {
           </TextWrapper>
           {countdown === 0 && <Redirect to="/" />}
         </>
-      }
+      )}
     </CardWrapper>
   );
 }
