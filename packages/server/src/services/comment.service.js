@@ -13,6 +13,7 @@ class CommentService {
           projection: {
             indexer: 0,
           },
+          sort: [["createdAt", 1]],
         }
       )
       .toArray();
