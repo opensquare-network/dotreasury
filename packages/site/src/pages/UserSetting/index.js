@@ -21,9 +21,21 @@ import {
 
 import api from "../../services/scanApi";
 import { signMessage } from "../../services/chainApi";
+import Card from "../../components/Card";
+import Username from "./Username";
+import Email from "./Email";
+import Password from "./Password";
+import Notification from "./Notifications";
+import DeleteAccount from "./DeleteAccount";
+
+const CardWrapper = styled(Card)`
+  max-width: 424px;
+  margin: 28px auto 0;
+  padding: 32px;
+`
 
 const Header = styled(Title)`
-  margin-bottom: 20px;
+  text-align: center;
 `;
 
 const UserSetting = () => {
@@ -32,6 +44,7 @@ const UserSetting = () => {
   const isMounted = useIsMounted();
 
   const username = loggedInUser?.username;
+  const email = loggedInUser?.email;
   useEffect(() => {
     if (username) {
       dispatch(fetchUserProfile());
@@ -104,35 +117,44 @@ const UserSetting = () => {
 
   return (
     <>
-      <Header>Settings</Header>
-      {mergedAccounts.map((account, index) => (
-        <div key={index}>
-          <Address>{account.address}</Address>
-          {userProfile.addresses?.includes(account.address) ? (
-            <Button
-              size="mini"
-              onClick={() => {
-                unlinkAddress(account.address);
-              }}
-            >
-              Unlink
-            </Button>
-          ) : (
-            <Button
-              size="mini"
-              color="green"
-              onClick={() => {
-                linkAddress(account.address);
-              }}
-            >
-              Link
-            </Button>
-          )}
+      <CardWrapper>
+        <Header>Settings</Header>
+        <div>
+          <Username username={username} />
+          <Email email={email} />
+          <Password />
+          <Notification />
+          <DeleteAccount />
         </div>
-      ))}
-      <ButtonPrimary onClick={loadExtensionAddresses}>
-        Show avaliable addresses
-      </ButtonPrimary>
+      </CardWrapper>
+      {mergedAccounts.map((account, index) => (
+          <div key={index}>
+            <Address>{account.address}</Address>
+            {userProfile.addresses?.includes(account.address) ? (
+              <Button
+                size="mini"
+                onClick={() => {
+                  unlinkAddress(account.address);
+                }}
+              >
+                Unlink
+              </Button>
+            ) : (
+              <Button
+                size="mini"
+                color="green"
+                onClick={() => {
+                  linkAddress(account.address);
+                }}
+              >
+                Link
+              </Button>
+            )}
+          </div>
+        ))}
+        <ButtonPrimary onClick={loadExtensionAddresses}>
+          Show avaliable addresses
+        </ButtonPrimary>
     </>
   );
 };
