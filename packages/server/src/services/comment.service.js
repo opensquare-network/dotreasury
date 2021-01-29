@@ -116,7 +116,7 @@ class CommentService {
 
     for (const user of users) {
       if (user.emailVerified && (user.notification?.mentioned ?? true)) {
-        mailService.sendCommentMetionEmail({
+        mailService.sendCommentMentionEmail({
           email: user.email,
           author: author.username,
           mentioned: user.username,
