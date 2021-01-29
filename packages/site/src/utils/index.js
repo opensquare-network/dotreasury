@@ -122,3 +122,9 @@ export function normalizeTimeDuration(time, maxSection = 2) {
 export function unique(arr) {
   return Array.from(new Set(arr));
 }
+
+export const sleep = time => {
+  return new Promise(resolve => {
+    setTimeout(resolve, time);
+  })
+}
