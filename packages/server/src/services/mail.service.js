@@ -49,7 +49,7 @@ class MailService {
     );
   }
 
-  sendCommentMetionEmail({
+  sendCommentMentionEmail({
     email,
     indexer,
     commentId,
@@ -100,6 +100,6 @@ class MailService {
 }
 
 module.exports = new MailService(
-  "noreply@dotreasury.com",
+  process.env.MAIL_FROM,
   mailSender || sgMail
 );

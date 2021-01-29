@@ -165,7 +165,7 @@ class TipsController {
 
     ctx.body = await commentService.postComment(
       {
-        treasuryTipId: {
+        tipId: {
           tipHash,
           blockHeight,
         },

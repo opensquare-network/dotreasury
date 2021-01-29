@@ -141,7 +141,7 @@ class BountiesController {
     const bountyIndex = parseInt(ctx.params.bountyIndex);
 
     ctx.body = await commentService.getComments({
-      treasuryBountyId: bountyIndex,
+      bountyId: bountyIndex,
     });
   }
 
@@ -160,7 +160,7 @@ class BountiesController {
     }
 
     ctx.body = await commentService.postComment(
-      { treasuryBountyId: bountyIndex },
+      { bountyId: bountyIndex },
       content,
       user
     );

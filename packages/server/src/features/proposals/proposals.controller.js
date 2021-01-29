@@ -148,7 +148,7 @@ class ProposalsController {
     const proposalIndex = parseInt(ctx.params.proposalIndex);
 
     ctx.body = await commentService.getComments({
-      treasuryProposalId: proposalIndex,
+      proposalId: proposalIndex,
     });
   }
 
@@ -167,7 +167,7 @@ class ProposalsController {
     }
 
     ctx.body = await commentService.postComment(
-      { treasuryProposalId: proposalIndex },
+      { proposalId: proposalIndex },
       content,
       user
     );
