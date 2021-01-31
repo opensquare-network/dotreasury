@@ -9,7 +9,10 @@ const {
   handleProposedForProposal,
   updateProposalStateByVoteResult,
 } = require("./proposalMotion");
-const { handleProposedForBounty } = require("./bountyMotion");
+const {
+  handleProposedForBounty,
+  updateBountyByVoteResult,
+} = require("./bountyMotion");
 
 async function handleCouncilEvent(event, normalizedExtrinsic, extrinsic) {
   const { section, method } = event;
@@ -152,6 +155,11 @@ async function handleApprovedEvent(event, normalizedExtrinsic) {
     true,
     normalizedExtrinsic.extrinsicIndexer
   );
+  await updateBountyByVoteResult(
+    hash,
+    true,
+    normalizedExtrinsic.extrinsicIndexer
+  );
 }
 
 async function handleDisapprovedEvent(event, normalizedExtrinsic) {
@@ -202,6 +210,11 @@ async function handleDisapprovedEvent(event, normalizedExtrinsic) {
   await updateProposalStateByVoteResult(
     hash,
     false,
+    normalizedExtrinsic.extrinsicIndexer
+  );
+  await updateBountyByVoteResult(
+    hash,
+    true,
     normalizedExtrinsic.extrinsicIndexer
   );
 }
