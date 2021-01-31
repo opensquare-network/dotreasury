@@ -149,7 +149,8 @@ function processTimeline(bountyDetail, scanHeight) {
             })(),
           })),
         }))(item)
-      : ((extrinsic) => {
+      : ((item) => {
+          const extrinsic = item.extrinsic;
           let fields = [];
 
           if (extrinsic.name === "proposeBounty") {
@@ -204,6 +205,14 @@ function processTimeline(bountyDetail, scanHeight) {
                 value: hexToString(_remark),
               },
             ];
+          } else if (item.name === "BountyRejected") {
+            const signer = extrinsic.signer;
+            fields = [
+              {
+                title: "Close by",
+                value: <User address={signer} />,
+              },
+            ];
           }
 
           return {
@@ -211,7 +220,7 @@ function processTimeline(bountyDetail, scanHeight) {
             name: extrinsic.name,
             fields,
           };
-        })(item.extrinsic)
+        })(item)
   );
 }
 
