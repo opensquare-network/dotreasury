@@ -4,7 +4,11 @@ const {
   BountyMethods,
 } = require("../../utils/constants");
 const { getBountyCollection } = require("../../mongo");
-const { getBountyMeta, getBountyDescription } = require("../../utils/bounty");
+const {
+  getBountyMeta,
+  getBountyDescription,
+  getBountyMetaByBlockHeight,
+} = require("../../utils/bounty");
 
 function isBountyEvent(method) {
   return BountyEvents.hasOwnProperty(method);
@@ -29,17 +33,33 @@ async function handleBountyEventWithExtrinsic(event, normalizedExtrinsic) {
       BountyEvents.BountyRejected,
     ].includes(method)
   ) {
-    await handleBountyStateUpdateEvent(event, normalizedExtrinsic);
+    await handleBountyStateUpdateEvent(
+      event,
+      normalizedExtrinsic,
+      method === BountyEvents.BountyRejected
+    );
   }
 
   return true;
 }
 
-async function handleBountyStateUpdateEvent(event, normalizedExtrinsic) {
+async function handleBountyStateUpdateEvent(
+  event,
+  normalizedExtrinsic,
+  fetchPreBlockMeta = false
+) {
   const indexer = normalizedExtrinsic.extrinsicIndexer;
   const eventData = event.data.toJSON();
   const bountyIndex = eventData[0];
-  const meta = await getBountyMeta(indexer.blockHash, bountyIndex);
+  let meta;
+  if (fetchPreBlockMeta) {
+    meta = await getBountyMetaByBlockHeight(
+      indexer.blockHeight - 1,
+      bountyIndex
+    );
+  } else {
+    meta = await getBountyMeta(indexer.blockHash, bountyIndex);
+  }
 
   const timelineItem = {
     name: event.method,
