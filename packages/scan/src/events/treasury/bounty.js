@@ -36,7 +36,8 @@ async function handleBountyEventWithExtrinsic(event, normalizedExtrinsic) {
     await handleBountyStateUpdateEvent(
       event,
       normalizedExtrinsic,
-      method === BountyEvents.BountyRejected
+      method === BountyEvents.BountyRejected ||
+        method === BountyEvents.BountyCanceled
     );
   }
 
