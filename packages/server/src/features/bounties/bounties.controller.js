@@ -7,10 +7,16 @@ const bountyStatus = (bounty) =>
   bounty.status?.CuratorProposed ||
   bounty.status?.Active ||
   bounty.status?.PendingPayout;
-const bountyStatusName = (bounty) =>
-  ["BountyRejected", "BountyAccepted"].includes(bounty.state?.name)
-    ? bounty.state?.name
-    : Object.keys(bounty.meta.status)[0];
+
+const bountyStatusName = (bounty) => {
+  if (bounty.state?.name === "BountyRejected") {
+    return "Rejected";
+  } else if (bounty.state?.name === "BountyCanceled") {
+    return "Canceled";
+  }
+
+  return Object.keys(bounty.meta.status)[0];
+}
 
 class BountiesController {
   async getBounties(ctx) {
