@@ -6,15 +6,16 @@ const bountyStatus = (bounty) =>
   bounty.status?.CuratorProposed ||
   bounty.status?.Active ||
   bounty.status?.PendingPayout;
-const bountyStatusName = (meta, stateName) => {
-  if (stateName === "BountyRejected") {
+
+const bountyStatusName = (bounty) => {
+  if (bounty.state?.name === "BountyRejected") {
     return "Rejected";
-  } else if (stateName === "BountyCanceled") {
+  } else if (bounty.state?.name === "BountyCanceled") {
     return "Canceled";
   }
 
-  return Object.keys(meta.status)[0];
-};
+  return Object.keys(bounty.meta.status)[0];
+}
 
 class BountiesController {
   async getBounties(ctx) {
@@ -47,8 +48,7 @@ class BountiesController {
         title: item.description,
         value: item.meta?.value,
         latestState: {
-          state:
-            bountyStatusName(item.meta, item.state?.name) || item.state?.name,
+          state: bountyStatusName(item),
           indexer: item.state?.indexer || item.state?.eventIndexer,
         },
       })),
@@ -97,7 +97,7 @@ class BountiesController {
       title: bounty.description,
       value: bounty.meta?.value,
       latestState: {
-        state: bountyStatusName(bounty.meta) || bounty.state?.name,
+        state: bountyStatusName(bounty),
         indexer: bounty.state?.indexer || bounty.state?.eventIndexer,
         data: bounty.state?.data,
       },
