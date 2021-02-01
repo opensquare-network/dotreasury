@@ -1,14 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Form } from "semantic-ui-react";
+import api from "../../services/scanApi";
 
 import { StyledItem, StyledTitle, EditWrapper, EditButton, StyledFormInput } from "./components";
+import FormError from "../../components/FormError";
 
 const Password = () => {
   const { register, handleSubmit } = useForm();
+  const [serverError, setServerError] = useState("");
 
   const onSubmit = async (formData) => {
-    console.log(formData);
+    const { result, error } = await api.authFetch(
+      `/user/changepassword`,
+      {},
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          oldPassword: formData.currentPassword,
+          newPassword: formData.newPassword,
+        }),
+      }
+    );
+
+    if (result) {
+      setServerError("");
+    }
+
+    if (error) {
+      setServerError(error.message);
+    }
   };
 
   return (
@@ -42,6 +66,7 @@ const Password = () => {
           </EditWrapper>
         </Form.Field>
       </Form>
+      {serverError && <FormError>{serverError}</FormError>}
     </StyledItem>
   )
 }
