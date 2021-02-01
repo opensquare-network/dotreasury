@@ -116,7 +116,7 @@ const LinkedAddress = ({ username }) => {
       .filter((address) => !accounts.some((acc) => acc.address === address))
       .map((address) => ({
         address,
-        name: "unamed",
+        name: "--",
       })),
   ];
 

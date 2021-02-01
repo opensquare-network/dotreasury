@@ -61,7 +61,7 @@ const UserSetting = () => {
         )}
         {tab === LINKED_ADDRESSES && (
           <div>
-            <LinkedAddresses />
+            <LinkedAddresses username={username} />
           </div>
         )}
       </CardWrapper>
