@@ -24,7 +24,7 @@ const Wrapper = styled(Card)`
 `;
 
 const Comment = ({ type, index }) => {
-  const [reply, setReply] = useState(null);
+  const [content, setContent] = useState("");
   const dispatch = useDispatch();
 
   useDeepCompareEffect(() => {
@@ -37,6 +37,10 @@ const Comment = ({ type, index }) => {
   const { hash } = useLocation();
   const refCommentId = hash && hash.slice(1);
 
+  const onReplyButton = (reply) => {
+    setContent(reply);
+  }
+
   return (
     <div>
       <Header>Comment</Header>
@@ -46,9 +50,9 @@ const Comment = ({ type, index }) => {
           index={index}
           comments={comments}
           refCommentId={refCommentId}
-          setReply={setReply}
+          onReplyButton={onReplyButton}
         />
-        <Input type={type} index={index} authors={authors} reply={reply} setReply={setReply} />
+        <Input type={type} index={index} authors={authors} content={content} setContent={setContent} />
       </Wrapper>
     </div>
   );

@@ -92,6 +92,10 @@ const ReplayButton = styled(Button)`
   opacity: 0.24;
   :hover {
     opacity: 0.64;
+    ${p => p.noHover && css`
+      opacity: 0.24;
+      cursor: auto;
+    `}
   }
   align-items: center;
   margin-right: 16px !important;
@@ -100,7 +104,7 @@ const ReplayButton = styled(Button)`
   }
 `;
 
-const VoteWrapper = styled.div`
+const VoteWrapper = styled(Button)`
   display: flex;
   align-items: center;
   & > :first-child {
@@ -159,7 +163,7 @@ const TimeWrapper = styled.div`
   color: ${TEXT_DARK_DISABLE};
 `
 
-const CommentItem = ({ type, index, comment, position, refCommentId, setReply }) => {
+const CommentItem = ({ type, index, comment, position, refCommentId, onReplyButton }) => {
   const [highLight, setHighLight] = useState(false);
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(isLoggedInSelector);
@@ -222,11 +226,13 @@ const CommentItem = ({ type, index, comment, position, refCommentId, setReply })
       <ContnetWrapper>
         <Markdown md={comment.content} />
         <ButtonList>
-          <ReplayButton onClick={() => setReply(comment.author.username)}>
+          <ReplayButton onClick={() => (!ownComment && isLoggedIn) && 
+            onReplyButton(`[@${comment.author.username}](https://dotreasury.com/user/${comment.author.username}) `)}
+            noHover={ownComment || !isLoggedIn}>
             <Image src="/imgs/reply.svg" />
             <Text>Reply</Text>
           </ReplayButton>
-          <VoteWrapper highlight={highlight} noHover={ownComment}>
+          <VoteWrapper highlight={highlight} noHover={ownComment || !isLoggedIn}>
             <VoteButton onClick={thumbUp}>
               <Image
                 src={
