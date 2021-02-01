@@ -49,8 +49,7 @@ const PreviewButton = styled(Button)`
   `}
 `
 
-const Input = ({ type, index, authors, reply, setReply }) => {
-  const [content, setContent] = useState("");
+const Input = ({ type, index, authors, content, setContent }) => {
   const [isPreview, setIsPreview] = useState(false);
   const dispatch = useDispatch();
   const loggedInUser = useSelector(loggedInUserSelector);
@@ -65,14 +64,7 @@ const Input = ({ type, index, authors, reply, setReply }) => {
       setContent("");
       dispatch(setClearComment(false));
     }
-  }, [clearComment, dispatch]);
-
-  useEffect(() => {
-    if (reply) {
-      setContent(`[@${reply}](https://dotreasury.com/user/${reply}) `);
-      setReply("");
-    }
-  }, [reply, setReply]);
+  }, [clearComment, dispatch, setContent]);
 
   return (
     <Wrapper>

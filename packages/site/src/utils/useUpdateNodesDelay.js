@@ -26,9 +26,13 @@ const useUpdateNodesDelay = () => {
 
   useEffect(() => {
     const updateNodeDelay = async (url) => {
-      const api = await getApi(url);
-      const delay = await testNet(api);
-      return { url, delay };
+      try {
+        const api = await getApi(url);
+        const delay = await testNet(api);
+        return { url, delay };
+      } catch {
+        return { url, delay: "" };
+      }
     };
 
     const timeoutId = setTimeout(

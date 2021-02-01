@@ -3,6 +3,7 @@ export const TEXT_DARK_MINOR = "rgba(29, 37, 60, 0.64)";
 export const TEXT_DARK_DISABLE = "rgba(29, 37, 60, 0.24)";
 export const PRIMARY_THEME_COLOR = "#DF405D";
 export const SECONDARY_THEME_COLOR = "#FFEEF1";
+export const WARNING_COLOR = "#EC4730";
 
 export const OVERVIEW_PROPOSALS_COLOR = "#DF405D";
 export const OVERVIEW_TIPS_COLOR = "#F1AC26";

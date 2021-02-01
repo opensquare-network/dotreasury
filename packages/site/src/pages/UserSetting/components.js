@@ -4,9 +4,12 @@ import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
+import FormInput from "../../components/FormInput";
 
 export const StyledItem = styled.div`
-  padding-top: 24px;
+  :not(:first-child) {
+    padding-top: 24px;
+  }
   :not(:last-child) {
     padding-bottom: 24px;
     border-bottom: 1px solid #EEEEEE;
@@ -30,7 +33,7 @@ export const StyledText = styled(TextMinor)`
   background: #FBFBFB;
   border-radius: 4px;
   flex-grow: 1;
-  max-width: 268px;
+  max-width: calc(100% - 92px);
   overflow: hidden;
   text-overflow: ellipsis;
 `
@@ -41,6 +44,11 @@ export const EditButton = styled(Button)`
 `
 
 export const StyledInput = styled(Input)`
+  flex-grow: 1;
+  max-width: calc(100% - 92px);
+`
+
+export const StyledFormInput = styled(FormInput)`
   flex-grow: 1;
   max-width: calc(100% - 92px);
 `
