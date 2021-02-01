@@ -2,6 +2,7 @@ const { ObjectId } = require("mongodb");
 const mailService = require("./mail.service");
 const { getCommentCollection, getUserCollection } = require("../mongo-admin");
 const { HttpError } = require("../exc");
+const { DefaultUserNotification } = require("../contants");
 
 class CommentService {
   async getComments(indexer) {
@@ -115,7 +116,10 @@ class CommentService {
       .toArray();
 
     for (const user of users) {
-      if (user.emailVerified && (user.notification?.mentioned ?? true)) {
+      if (
+        user.emailVerified &&
+        (user.notification?.mentioned ?? DefaultUserNotification.mentioned)
+      ) {
         mailService.sendCommentMentionEmail({
           email: user.email,
           author: author.username,

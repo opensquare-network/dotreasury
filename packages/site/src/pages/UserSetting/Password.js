@@ -3,12 +3,20 @@ import { useForm } from "react-hook-form";
 import { Form } from "semantic-ui-react";
 import api from "../../services/scanApi";
 
-import { StyledItem, StyledTitle, EditWrapper, EditButton, StyledFormInput } from "./components";
+import {
+  StyledItem,
+  StyledTitle,
+  EditWrapper,
+  EditButton,
+  StyledFormInput,
+} from "./components";
 import FormError from "../../components/FormError";
+import { useIsMounted } from "../../utils/hooks";
 
 const Password = () => {
   const { register, handleSubmit } = useForm();
   const [serverError, setServerError] = useState("");
+  const isMounted = useIsMounted();
 
   const onSubmit = async (formData) => {
     const { result, error } = await api.authFetch(
@@ -27,11 +35,15 @@ const Password = () => {
     );
 
     if (result) {
-      setServerError("");
+      if (isMounted.current) {
+        setServerError("");
+      }
     }
 
     if (error) {
-      setServerError(error.message);
+      if (isMounted.current) {
+        setServerError(error.message);
+      }
     }
   };
 
@@ -39,27 +51,23 @@ const Password = () => {
     <StyledItem>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Form.Field>
-          <StyledTitle>
-            Current password
-          </StyledTitle>
+          <StyledTitle>Current password</StyledTitle>
           <EditWrapper>
             <StyledFormInput
               name="currentPassword"
               type="password"
               ref={register({
-                required: true
+                required: true,
               })}
             />
           </EditWrapper>
-          <StyledTitle>
-            New password
-          </StyledTitle>
+          <StyledTitle>New password</StyledTitle>
           <EditWrapper>
             <StyledFormInput
               name="newPassword"
               type="password"
               ref={register({
-                required: true
+                required: true,
               })}
             />
             <EditButton type="submit">Change</EditButton>
@@ -68,7 +76,7 @@ const Password = () => {
       </Form>
       {serverError && <FormError>{serverError}</FormError>}
     </StyledItem>
-  )
-}
+  );
+};
 
 export default Password;
