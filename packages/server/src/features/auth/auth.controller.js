@@ -6,6 +6,7 @@ const authService = require("../../services/auth.service");
 const mailService = require("../../services/mail.service");
 const {
   getUserCollection,
+  getAddressCollection,
   getLoginAttemptCollection,
 } = require("../../mongo-admin");
 const { HttpError } = require("../../exc");
@@ -181,16 +182,27 @@ class AuthController {
   async addressLoginStart(ctx) {
     const { address } = ctx.params;
 
-    const userCol = await getUserCollection();
-    const user = await userCol.findOne({
-      addresses: {
-        $elemMatch: {
-          address,
-          verified: true,
+    const addressCol = await getAddressCollection();
+    const addresses = await addressCol
+      .aggregate([
+        {
+          $match: {
+            address,
+            verified: true,
+          },
         },
-      },
-    });
+        {
+          $lookup: {
+            from: "user",
+            localField: "userId",
+            foreignField: "_id",
+            as: "user",
+          },
+        },
+      ])
+      .toArray();
 
+    const user = addresses[0]?.user[0];
     if (!user) {
       throw new HttpError(400, "The address is not linked to any account.");
     }
@@ -332,7 +344,7 @@ class AuthController {
     }
 
     if (user.reset.expires.getTime() < Date.now()) {
-      throw new HttpError(400, "The reset token is expired.");
+      throw new HttpError(400, "The reset token has expired.");
     }
 
     const hashedPassword = await argon2.hash(newPassword);
