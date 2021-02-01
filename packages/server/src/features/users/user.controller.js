@@ -1,5 +1,9 @@
 const { randomBytes } = require("crypto");
-const { getUserCollection } = require("../../mongo-admin");
+const argon2 = require("argon2");
+const {
+  getUserCollection,
+  getAddressCollection,
+} = require("../../mongo-admin");
 const { HttpError } = require("../../exc");
 const { isValidSignature } = require("../../utils");
 
@@ -8,42 +12,30 @@ class UserController {
     const { address } = ctx.params;
     const user = ctx.request.user;
 
-    if (!user.addresses) {
-      user.addresses = [];
-    }
+    const addressCol = await getAddressCollection();
+    const addresses = await addressCol
+      .find({ userId: user._id, address })
+      .toArray();
 
-    let addrItem;
-    for (const item of user.addresses) {
-      if (item.address === address) {
-        if (item.verified) {
-          throw new HttpError(
-            400,
-            "The address is already linked with this account."
-          );
-        }
+    let addrItem = addresses[0];
 
-        addrItem = item;
-        break;
-      }
+    if (addrItem?.verified) {
+      throw new HttpError(
+        400,
+        "The address is already linked with this account."
+      );
     }
 
     if (!addrItem) {
       const challenge = randomBytes(12).toString("hex");
       addrItem = {
+        userId: user._id,
         address,
         challenge,
         verified: false,
       };
 
-      const userCol = await getUserCollection();
-      const result = await userCol.updateOne(
-        { _id: user._id },
-        {
-          $push: {
-            addresses: addrItem,
-          },
-        }
-      );
+      const result = await addressCol.insertOne(addrItem);
       if (!result.result.ok) {
         throw new HttpError(500, "Db error: save address.");
       }
@@ -63,13 +55,12 @@ class UserController {
       throw new HttpError(400, "Challenge answer is not provided.");
     }
 
-    let addrItem;
-    for (const item of user.addresses || []) {
-      if (item.address === address && item.verified === false) {
-        addrItem = item;
-        break;
-      }
-    }
+    const addressCol = await getAddressCollection();
+    const addresses = await addressCol
+      .find({ userId: user._id, address, verified: false })
+      .toArray();
+
+    const addrItem = addresses[0];
 
     if (!addrItem) {
       throw new HttpError(404, "The linking address is not found");
@@ -85,36 +76,23 @@ class UserController {
       return;
     }
 
-    const userCol = await getUserCollection();
-    const existing = await userCol.findOne({
-      addresses: {
-        $elemMatch: {
-          address,
-          verified: true,
-        },
-      },
-    });
-
+    const existing = await addressCol.findOne({ address, verified: true });
     if (existing) {
       throw new HttpError(
         400,
-        "The address is already linked with one account."
+        "The address is already linked with existing account."
       );
     }
 
-    const result = await userCol.updateOne(
+    const result = await addressCol.updateOne(
       {
-        _id: user._id,
-        addresses: {
-          $elemMatch: {
-            address,
-            verified: false,
-          },
-        },
+        userId: user._id,
+        address,
+        verified: false,
       },
       {
         $set: {
-          "addresses.$.verified": true,
+          verified: true,
         },
       }
     );
@@ -124,7 +102,7 @@ class UserController {
     }
 
     if (!result.result.nModified === 0) {
-      throw new HttpError(500, "Address is not updated.");
+      throw new HttpError(500, "Address is not linked.");
     }
 
     ctx.body = true;
@@ -134,24 +112,18 @@ class UserController {
     const { address } = ctx.params;
     const user = ctx.request.user;
 
-    const userCol = await getUserCollection();
-    const result = await userCol.updateOne(
-      { _id: user._id },
-      {
-        $pull: {
-          addresses: {
-            address,
-            verified: true,
-          },
-        },
-      }
-    );
+    const addressCol = await getAddressCollection();
+    const result = await addressCol.deleteOne({
+      userId: user._id,
+      address,
+      verified: true,
+    });
 
     if (!result.result.ok) {
-      throw new HttpError(500, "Db error, clean reaction.");
+      throw new HttpError(500, "Db error, unlink address.");
     }
 
-    if (result.result.nModified === 0) {
+    if (result.result.n === 0) {
       ctx.body = false;
       return;
     }
@@ -191,14 +163,151 @@ class UserController {
   async getUserProfile(ctx) {
     const user = ctx.request.user;
 
+    const addressCol = await getAddressCollection();
+    const addresses = await addressCol
+      .find({ userId: user._id, verified: true })
+      .toArray();
+
     ctx.body = {
       username: user.username,
       email: user.email,
-      addresses: user.addresses
-        ?.filter((addr) => addr.verified)
-        .map((addr) => addr.address),
+      addresses: addresses.map((addr) => addr.address),
       notification: user.notification,
     };
+  }
+
+  async changePassword(ctx) {
+    const { oldPassword, newPassword } = ctx.request.body;
+    const user = ctx.request.user;
+
+    if (!oldPassword) {
+      throw new HttpError(400, "Old password must be provided.");
+    }
+
+    if (!newPassword) {
+      throw new HttpError(400, "New password must be provided.");
+    }
+
+    if (newPassword === oldPassword) {
+      throw new HttpError(
+        400,
+        "The new password must be different from the old one."
+      );
+    }
+
+    const correct = await argon2.verify(user.hashedPassword, oldPassword);
+    if (!correct) {
+      throw new HttpError(401, "Incorrect old password.");
+    }
+
+    const hashedPassword = await argon2.hash(newPassword);
+
+    const userCol = await getUserCollection();
+    const result = await userCol.updateOne(
+      { _id: user._id },
+      {
+        $set: {
+          hashedPassword,
+        },
+      }
+    );
+
+    if (!result.result.ok) {
+      throw new HttpError(500, "DB error: change password.");
+    }
+
+    if (result.result.nModified === 0) {
+      ctx.body = false;
+      return;
+    }
+
+    ctx.body = true;
+  }
+
+  async changeEmail(ctx) {
+    const { password, newEmail } = ctx.request.body;
+    const user = ctx.request.user;
+
+    if (!password) {
+      throw new HttpError(400, "Password must be provided.");
+    }
+
+    if (newEmail === user.email) {
+      throw new HttpError(
+        400,
+        "The new email address must be different from the old one."
+      );
+    }
+
+    const correct = await argon2.verify(user.hashedPassword, password);
+    if (!correct) {
+      throw new HttpError(401, "Incorrect password.");
+    }
+
+    const userCol = await getUserCollection();
+
+    const existing = await userCol.findOne({ email: newEmail });
+    if (existing) {
+      throw new HttpError(
+        409,
+        "The email address has been used by another account."
+      );
+    }
+
+    const result = await userCol.updateOne(
+      { _id: user._id },
+      {
+        $set: {
+          email: newEmail,
+        },
+      }
+    );
+
+    if (!result.result.ok) {
+      throw new HttpError(500, "DB error: change email.");
+    }
+
+    if (result.result.nModified === 0) {
+      ctx.body = false;
+      return;
+    }
+
+    ctx.body = true;
+  }
+
+  async deleteAccount(ctx) {
+    const { password } = ctx.request.body;
+    const user = ctx.request.user;
+
+    if (!password) {
+      throw new HttpError(400, "Password must be provided.");
+    }
+
+    const correct = await argon2.verify(user.hashedPassword, password);
+    if (!correct) {
+      throw new HttpError(401, "Incorrect password.");
+    }
+
+    const addressCol = await getAddressCollection();
+    let result = await addressCol.deleteMany({ userId: user._id });
+
+    if (!result.result.ok) {
+      throw new HttpError(500, "DB error: clean linked addresses.");
+    }
+
+    const userCol = await getUserCollection();
+    result = await userCol.deleteOne({ _id: user._id });
+
+    if (!result.result.ok) {
+      throw new HttpError(500, "DB error: delete account.");
+    }
+
+    if (result.result.n === 0) {
+      ctx.body = false;
+      return;
+    }
+
+    ctx.body = true;
   }
 }
 
