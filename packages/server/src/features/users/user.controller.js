@@ -6,6 +6,7 @@ const {
 } = require("../../mongo-admin");
 const { HttpError } = require("../../exc");
 const { isValidSignature } = require("../../utils");
+const { DefaultUserNotification } = require("../../contants");
 
 class UserController {
   async linkAddressStart(ctx) {
@@ -135,15 +136,18 @@ class UserController {
     const { participated, mentioned } = ctx.request.body;
     const user = ctx.request.user;
 
+    const notification = Object.assign(
+      { ...DefaultUserNotification },
+      mentioned !== undefined && { mentioned },
+      participated !== undefined && { participated }
+    );
+
     const userCol = await getUserCollection();
     const result = await userCol.updateOne(
       { _id: user._id },
       {
         $set: {
-          notification: {
-            participated,
-            mentioned,
-          },
+          notification,
         },
       }
     );
@@ -172,7 +176,7 @@ class UserController {
       username: user.username,
       email: user.email,
       addresses: addresses.map((addr) => addr.address),
-      notification: user.notification,
+      notification: { ...DefaultUserNotification, ...user.notification },
     };
   }
 

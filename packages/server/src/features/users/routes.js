@@ -19,7 +19,7 @@ router.delete(
   requireAuth,
   userController.unlinkAddress
 );
-router.post(
+router.patch(
   "/user/notification",
   requireAuth,
   userController.setUserNotification

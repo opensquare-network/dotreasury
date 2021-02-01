@@ -3,9 +3,7 @@ import { useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import styled from "styled-components";
 
-import {
-  loggedInUserSelector,
-} from "../../store/reducers/userSlice";
+import { loggedInUserSelector } from "../../store/reducers/userSlice";
 import Card from "../../components/Card";
 import Username from "./Username";
 import Email from "./Email";
@@ -21,24 +19,23 @@ const Wrapper = styled.div`
   margin: 28px;
   justify-content: center;
   align-items: flex-start;
-`
+`;
 
 const CardWrapper = styled(Card)`
   width: 648px;
   padding: 48px 64px;
-`
+`;
 
 export const ACCOUNT_SETTING = "account_setting";
 export const NOTIFICATION = "notification";
 export const LINKED_ADDRESSES = "linked_addresses";
-
 
 const UserSetting = () => {
   const [tab, setTab] = useState(ACCOUNT_SETTING);
   const loggedInUser = useSelector(loggedInUserSelector);
 
   if (!loggedInUser) {
-    return <Redirect to="/" />
+    return <Redirect to="/" />;
   }
 
   const username = loggedInUser?.username;
@@ -46,21 +43,27 @@ const UserSetting = () => {
 
   return (
     <Wrapper>
-      <Menu tab={tab} setTab={setTab}/>
+      <Menu tab={tab} setTab={setTab} />
       <CardWrapper>
-        {tab === ACCOUNT_SETTING && <div>
-          <Username username={username} />
-          <Email email={email} />
-          <Password />
-          <Logout />
-          <DeleteAccount />
-        </div>}
-        {tab === NOTIFICATION && <div>
-          <Notification />
-        </div>}
-        {tab === LINKED_ADDRESSES && <div>
-          <LinkedAddresses />
-        </div>}
+        {tab === ACCOUNT_SETTING && (
+          <div>
+            <Username username={username} />
+            <Email email={email} />
+            <Password />
+            <Logout />
+            <DeleteAccount />
+          </div>
+        )}
+        {tab === NOTIFICATION && (
+          <div>
+            <Notification username={username} />
+          </div>
+        )}
+        {tab === LINKED_ADDRESSES && (
+          <div>
+            <LinkedAddresses />
+          </div>
+        )}
       </CardWrapper>
     </Wrapper>
   );
