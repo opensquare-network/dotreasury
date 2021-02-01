@@ -6,7 +6,7 @@ import Text from "../../components/Text";
 const Wrapper = styled.div`
   position: absolute;
   top: 16px;
-  @media screen and (max-width: 556px) {
+  @media screen and (max-width: 695px) {
     display: none;
   }
 `
