@@ -62,7 +62,6 @@ const EventWrapper = styled.div`
   }
 `;
 
-
 const BurntTable = ({ data, loading }) => {
   return (
     <Wrapper>
@@ -96,8 +95,8 @@ const BurntTable = ({ data, loading }) => {
                   </Table.Cell>
                   <Table.Cell>
                     <ExplorerLink
-                        href={`/extrinsic/${item.indexer.blockHeight}-0?event=${item.indexer.blockHeight}-${item.indexer.sort}`}
-                      >
+                      href={`/extrinsic/${item.indexer.blockHeight}-0?event=${item.indexer.blockHeight}-${item.indexer.sort}`}
+                    >
                       <EventWrapper>
                         <Image src={"/imgs/event.svg"} />
                         <EventID>{`${item.indexer.blockHeight}-${item.indexer.sort}`}</EventID>
@@ -108,7 +107,7 @@ const BurntTable = ({ data, loading }) => {
                     <Balance value={item.balance} />
                   </Table.Cell>
                   <Table.Cell textAlign={"right"} className="balance-cell">
-                    {item.burnPrecent}
+                    {item.burnPercent}
                   </Table.Cell>
                   <Table.Cell textAlign={"right"} className="balance-cell">
                     <Balance value={item.treasury.free} />

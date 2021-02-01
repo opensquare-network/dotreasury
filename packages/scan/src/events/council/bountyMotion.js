@@ -1,11 +1,13 @@
-const { getMotionCollection } = require("../../mongo");
+const { getMotionCollection, getBountyCollection } = require("../../mongo");
 const {
   isBountyMotion,
   extractCallIndexAndArgs,
   getMotionVoting,
+  getLatestMotionByHash,
 } = require("./utils");
 const { Modules, CouncilEvents } = require("../../utils/constants");
 const { motionActions } = require("./constants");
+const { getBountyMeta } = require("../../utils/bounty");
 
 async function handleProposedForBounty(event, normalizedExtrinsic, extrinsic) {
   const [section, method, args] = await extractCallIndexAndArgs(
@@ -49,6 +51,23 @@ async function handleProposedForBounty(event, normalizedExtrinsic, extrinsic) {
   });
 }
 
+async function updateBountyByVoteResult(hash, isApproved, indexer) {
+  const motion = await getLatestMotionByHash(hash);
+  if (!motion || !isBountyMotion(motion.method)) {
+    // it means this motion hash is not a treasury bounty motion hash
+    return;
+  }
+
+  const meta = await getBountyMeta(indexer.blockHash, motion.treasuryBountyId);
+
+  const bountyCol = await getBountyCollection();
+  await bountyCol.findOneAndUpdate(
+    { bountyIndex: motion.treasuryBountyId },
+    { $set: { meta } }
+  );
+}
+
 module.exports = {
   handleProposedForBounty,
+  updateBountyByVoteResult,
 };
