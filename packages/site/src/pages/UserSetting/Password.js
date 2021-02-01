@@ -1,47 +1,47 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React from "react";
+import { useForm } from "react-hook-form";
+import { Form } from "semantic-ui-react";
 
-import { StyledItem, StyledTitle, EditWrapper, EditButton, StyledInput } from "./components";
-
-const StyledDiv = styled.div`
-  margin-bottom: 24px;
-`
+import { StyledItem, StyledTitle, EditWrapper, EditButton, StyledFormInput } from "./components";
 
 const Password = () => {
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
+  const { register, handleSubmit } = useForm();
+
+  const onSubmit = async (formData) => {
+    console.log(formData);
+  };
 
   return (
     <StyledItem>
-      <StyledTitle>
-        Current password
-      </StyledTitle>
-      <StyledDiv>
-        <EditWrapper>
-          <StyledInput
-            type="password"
-            placeholder="Please fill current password"
-            value={currentPassword}
-            onChange={({target: { value }}) => {
-              setCurrentPassword(value)
-            }} />
-        </EditWrapper>
-      </StyledDiv>
-      <StyledTitle>
-        New password
-      </StyledTitle>
-      <div>
-        <EditWrapper>
-          <StyledInput
-            type="password"
-            placeholder="Please fill new password"
-            value={newPassword}
-            onChange={({target: { value }}) => {
-              setNewPassword(value)
-            }} />
-          <EditButton>Change</EditButton>
-        </EditWrapper>
-      </div>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <Form.Field>
+          <StyledTitle>
+            Current password
+          </StyledTitle>
+          <EditWrapper>
+            <StyledFormInput
+              name="currentPassword"
+              type="password"
+              ref={register({
+                required: true
+              })}
+            />
+          </EditWrapper>
+          <StyledTitle>
+            New password
+          </StyledTitle>
+          <EditWrapper>
+            <StyledFormInput
+              name="newPassword"
+              type="password"
+              ref={register({
+                required: true
+              })}
+            />
+            <EditButton type="submit">Change</EditButton>
+          </EditWrapper>
+        </Form.Field>
+      </Form>
     </StyledItem>
   )
 }

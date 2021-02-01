@@ -1,12 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useForm } from "react-hook-form";
+import { Form } from "semantic-ui-react";
 
-import { StyledItem, StyledTitle, EditWrapper, StyledText, EditButton, StyledInput } from "./components";
+import { StyledItem, StyledTitle, EditWrapper, StyledText, EditButton, StyledFormInput } from "./components";
 
 const Email = ({ email }) => {
   const [isChange, setIsChange] = useState(false);
-  const [editEmail, setEditEmail] = useState(email);
-  const [password, setPassword] = useState("");
   const inputRef = useRef(null);
+  const { register, handleSubmit } = useForm();
+
+  const onSubmit = async (formData) => {
+    console.log(formData);
+  };
 
   useEffect(() => {
     isChange && inputRef?.current?.focus();
@@ -25,19 +30,30 @@ const Email = ({ email }) => {
           }}>Edit</EditButton>
         </EditWrapper>
       </div>}
-      {isChange && <div>
-        <EditWrapper>
-          <StyledInput ref={inputRef} placeholder="Email" value={editEmail} onChange={({target: { value }}) => {
-            setEditEmail(value)
-          }} />
-        </EditWrapper>
-        <EditWrapper>
-          <StyledInput type="password" placeholder="Please fill password" value={password} onChange={({target: { value }}) => {
-            setPassword(value)
-          }} />
-          <EditButton>Change</EditButton>
-        </EditWrapper>
-      </div>}
+      {isChange && <Form onSubmit={handleSubmit(onSubmit)}>
+        <Form.Field>
+          <EditWrapper>
+            <StyledFormInput
+              name="email"
+              type="text"
+              defaultValue={email}
+              ref={register({
+                required: true
+              })}
+            />
+          </EditWrapper>
+          <EditWrapper>
+            <StyledFormInput
+              name="password"
+              type="password"
+              ref={register({
+                required: true
+              })}
+            />
+            <EditButton type="submit">Change</EditButton>
+          </EditWrapper>
+        </Form.Field>
+      </Form>}
     </StyledItem>
   )
 }
