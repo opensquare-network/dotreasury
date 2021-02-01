@@ -14,7 +14,6 @@ import {
   TEXT_DARK_MAJOR,
   TEXT_DARK_MINOR,
 } from "../../constants";
-import BurntMenu from "./BurntMenu";
 
 const DividerWrapper = styled(Divider)`
   margin: 0 !important;
