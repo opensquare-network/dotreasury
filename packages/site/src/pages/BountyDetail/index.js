@@ -209,7 +209,7 @@ function processTimeline(bountyDetail, scanHeight) {
             const signer = extrinsic.signer;
             fields = [
               {
-                title: "Close by",
+                title: "Closed by",
                 value: <User address={signer} />,
               },
             ];
