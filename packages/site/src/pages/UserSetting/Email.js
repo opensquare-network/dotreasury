@@ -2,15 +2,31 @@ import React, { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { Form } from "semantic-ui-react";
 import api from "../../services/scanApi";
+import { useDispatch, useSelector } from "react-redux";
 
-import { StyledItem, StyledTitle, EditWrapper, StyledText, EditButton, StyledFormInput } from "./components";
+import {
+  StyledItem,
+  StyledTitle,
+  EditWrapper,
+  StyledText,
+  EditButton,
+  StyledFormInput,
+} from "./components";
 import FormError from "../../components/FormError";
+import {
+  loggedInUserSelector,
+  setLoggedInUser,
+} from "../../store/reducers/userSlice";
+import { useIsMounted } from "../../utils/hooks";
 
 const Email = ({ email }) => {
+  const dispatch = useDispatch();
   const [isChange, setIsChange] = useState(false);
   const inputRef = useRef(null);
   const { register, handleSubmit } = useForm();
   const [serverError, setServerError] = useState("");
+  const loggedInUser = useSelector(loggedInUserSelector);
+  const isMounted = useIsMounted();
 
   const onSubmit = async (formData) => {
     const { result, error } = await api.authFetch(
@@ -29,32 +45,47 @@ const Email = ({ email }) => {
     );
 
     if (result) {
-      setServerError("");
-      setIsChange(false);
+      if (isMounted.current) {
+        setServerError("");
+        setIsChange(false);
+      }
+
+      dispatch(
+        setLoggedInUser({
+          username: loggedInUser.username,
+          email: formData.email,
+        })
+      );
     }
 
     if (error) {
-      setServerError(error.message);
+      if (isMounted.current) {
+        setServerError(error.message);
+      }
     }
   };
 
   useEffect(() => {
     isChange && inputRef?.current?.focus();
-  }, [isChange])
+  }, [isChange]);
 
   return (
     <StyledItem>
-      <StyledTitle>
-        Email
-      </StyledTitle>
-      {!isChange && <div>
-        <EditWrapper>
-          <StyledText>{email}</StyledText>
-          <EditButton onClick={() => {
-            setIsChange(true);
-          }}>Edit</EditButton>
-        </EditWrapper>
-      </div>}
+      <StyledTitle>Email</StyledTitle>
+      {!isChange && (
+        <div>
+          <EditWrapper>
+            <StyledText>{email}</StyledText>
+            <EditButton
+              onClick={() => {
+                setIsChange(true);
+              }}
+            >
+              Edit
+            </EditButton>
+          </EditWrapper>
+        </div>
+      )}
       {isChange && (
         <>
           <Form onSubmit={handleSubmit(onSubmit)}>
@@ -66,7 +97,7 @@ const Email = ({ email }) => {
                   placeholder="Email"
                   defaultValue={email}
                   ref={register({
-                    required: true
+                    required: true,
                   })}
                 />
               </EditWrapper>
@@ -76,7 +107,7 @@ const Email = ({ email }) => {
                   type="password"
                   placeholder="Please fill password"
                   ref={register({
-                    required: true
+                    required: true,
                   })}
                 />
                 <EditButton type="submit">Change</EditButton>
@@ -87,7 +118,7 @@ const Email = ({ email }) => {
         </>
       )}
     </StyledItem>
-  )
-}
+  );
+};
 
 export default Email;
