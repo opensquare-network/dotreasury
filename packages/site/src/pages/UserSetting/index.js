@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import { Redirect } from "react-router-dom";
 import styled from "styled-components";
 
 import {
@@ -35,10 +36,14 @@ export const LINKED_ADDRESSES = "linked_addresses";
 const UserSetting = () => {
   const [tab, setTab] = useState(ACCOUNT_SETTING);
   const loggedInUser = useSelector(loggedInUserSelector);
-  
+
+  if (!loggedInUser) {
+    return <Redirect to="/" />
+  }
+
   const username = loggedInUser?.username;
   const email = loggedInUser?.email;
-  
+
   return (
     <Wrapper>
       <Menu tab={tab} setTab={setTab}/>

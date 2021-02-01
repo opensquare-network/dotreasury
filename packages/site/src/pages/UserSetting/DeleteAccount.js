@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Modal, Image } from "semantic-ui-react";
 import { useForm } from "react-hook-form";
 import { Form } from "semantic-ui-react";
+import { useDispatch } from "react-redux";
 
 import { StyledItem, StyledTitle } from "./components";
 import TextMinor from "../../components/TextMinor";
@@ -12,6 +13,11 @@ import Card from "../../components/Card";
 import Title from "../../components/Title";
 import Text from "../../components/Text";
 import FormInput from "../../components/FormInput";
+import api from "../../services/scanApi";
+import FormError from "../../components/FormError";
+import {
+  setLoggedInUser
+} from "../../store/reducers/userSlice";
 
 const StyledTextMinor = styled(TextMinor)`
   margin-bottom: 16px;
@@ -60,14 +66,38 @@ const StyledModalButtonPrimary = styled(ButtonPrimary)`
 `
 
 const DeleteAccount = () => {
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const closeModal = () => {
     setOpen(false);
   }
   const { register, handleSubmit } = useForm();
+  const [serverError, setServerError] = useState("");
 
   const onSubmit = async (formData) => {
-    console.log(formData);
+    const { result, error } = await api.authFetch(
+      `/user/deleteaccount`,
+      {},
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          password: formData.password,
+        }),
+      }
+    );
+
+    if (result) {
+      setServerError("");
+      localStorage.removeItem("token");
+      dispatch(setLoggedInUser(null));
+    }
+
+    if (error) {
+      setServerError(error.message);
+    }
   };
 
   return (
@@ -93,15 +123,16 @@ const DeleteAccount = () => {
               <StyledTitle>
                 Password
               </StyledTitle>
-                <FormInput
-                  name="password"
-                  type="password"
-                  placeholder="Please fill password"
-                  ref={register({
-                    required: true
-                  })}
-                />
-                <StyledModalButtonPrimary type="submit">Delete my account</StyledModalButtonPrimary>
+              <FormInput
+                name="password"
+                type="password"
+                placeholder="Please fill password"
+                ref={register({
+                  required: true
+                })}
+              />
+              {serverError && <FormError>{serverError}</FormError>}
+              <StyledModalButtonPrimary type="submit">Delete my account</StyledModalButtonPrimary>
             </Form.Field>
           </Form>
         </StyledCard>
