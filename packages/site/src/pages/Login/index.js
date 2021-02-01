@@ -275,10 +275,10 @@ function Login({ location }) {
             {errors.password && <FormError>This field is required</FormError>}
           </Form.Field>
           <HelperWrapper>
-            <RememberMe onClick={() => setIsRememberMe(!isRememberMe)}>
+            {false && <RememberMe onClick={() => setIsRememberMe(!isRememberMe)}>
               <CheckImage src="/imgs/circle-pass.svg" checked={isRememberMe} />
               <p>Remember me</p>
-            </RememberMe>
+            </RememberMe>}
             <Link to="/forget">
               <StyledTextMnor>Forgot password?</StyledTextMnor>
             </Link>

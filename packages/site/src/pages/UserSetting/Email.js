@@ -94,6 +94,7 @@ const Email = ({ email }) => {
                 <StyledFormInput
                   name="email"
                   type="text"
+                  placeholder="Email"
                   defaultValue={email}
                   ref={register({
                     required: true,
@@ -104,6 +105,7 @@ const Email = ({ email }) => {
                 <StyledFormInput
                   name="password"
                   type="password"
+                  placeholder="Please fill password"
                   ref={register({
                     required: true,
                   })}

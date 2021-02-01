@@ -57,7 +57,7 @@ const BountyLifeCycleTable = ({ loading }) => {
 
   return (
     <TableLoading loading={loading}>
-      <Table striped selectable>
+      <Table striped selectable unstackable>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>Bounty Life Cycle</Table.HeaderCell>

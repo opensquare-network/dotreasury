@@ -1,22 +1,30 @@
 import React from "react";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
-import { Dropdown, Image } from "semantic-ui-react";
+import { useSelector } from "react-redux";
+import { Image } from "semantic-ui-react";
 import { NavLink } from "react-router-dom";
 import { useHistory } from "react-router";
 import {
   isLoggedInSelector,
-  setLoggedInUser,
   loggedInUserSelector,
 } from "../../store/reducers/userSlice";
 import ButtonPrimary from "../../components/ButtonPrimary";
 import ButtonLabel from "../../components/ButtonLabel";
+import TextMinor from "../../components/TextMinor";
+import { TEXT_DARK_MAJOR } from "../../constants";
 
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
   & > img {
     margin-right: 8px;
+  }
+  :hover {
+    cursor: pointer;
+    p {
+      color: ${TEXT_DARK_MAJOR};
+      text-decoration: underline;
+    }
   }
 `;
 
@@ -26,34 +34,17 @@ const SignUpButton = styled(ButtonLabel)`
 
 const UserLogin = () => {
   const history = useHistory();
-  const dispatch = useDispatch();
   const isLoggedIn = useSelector(isLoggedInSelector);
   const loggedInUser = useSelector(loggedInUserSelector);
 
   return (
     <>
       {isLoggedIn ? (
-        <Wrapper>
+        <Wrapper onClick={() => {
+          history.push("/settings");
+        }}>
           <Image src="/imgs/avatar.png" width="20px" height="20px" />
-          <Dropdown text={loggedInUser.username}>
-            <Dropdown.Menu direction="left">
-              <Dropdown.Item
-                icon="setting"
-                text="Settings"
-                onClick={() => {
-                  history.push("/settings");
-                }}
-              />
-              <Dropdown.Item
-                icon="log out"
-                text="Logout"
-                onClick={() => {
-                  dispatch(setLoggedInUser(null));
-                  localStorage.removeItem("token");
-                }}
-              />
-            </Dropdown.Menu>
-          </Dropdown>
+          <TextMinor>{loggedInUser.username}</TextMinor>
         </Wrapper>
       ) : (
         <>

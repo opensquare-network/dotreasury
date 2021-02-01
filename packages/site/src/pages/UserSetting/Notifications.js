@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { Checkbox } from "semantic-ui-react";
-import { useDispatch, useSelector } from "react-redux";
 
 import { StyledItem, StyledTitle } from "./components";
 import TextMinor from "../../components/TextMinor";
+import Toggle from "../../components/Toggle";
+import { useDispatch, useSelector } from "react-redux";
 import api from "../../services/scanApi";
 import {
   userProfileSelector,
@@ -56,8 +56,7 @@ const Notifications = ({ username }) => {
       <StyledTitle>Email notifications</StyledTitle>
       <Wrapper>
         <TextMinor>Subscribe to reply your comment.</TextMinor>
-        <Checkbox
-          toggle
+        <Toggle
           checked={userProfile.notification?.mentioned}
           onClick={toggleMentionNotification}
         />
