@@ -2,15 +2,22 @@ import React, { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { Form } from "semantic-ui-react";
 import api from "../../services/scanApi";
+import { useDispatch, useSelector } from "react-redux";
 
 import { StyledItem, StyledTitle, EditWrapper, StyledText, EditButton, StyledFormInput } from "./components";
 import FormError from "../../components/FormError";
+import {
+  loggedInUserSelector,
+  setLoggedInUser,
+} from "../../store/reducers/userSlice";
 
 const Email = ({ email }) => {
+  const dispatch = useDispatch();
   const [isChange, setIsChange] = useState(false);
   const inputRef = useRef(null);
   const { register, handleSubmit } = useForm();
   const [serverError, setServerError] = useState("");
+  const loggedInUser = useSelector(loggedInUserSelector);
 
   const onSubmit = async (formData) => {
     const { result, error } = await api.authFetch(
@@ -31,6 +38,10 @@ const Email = ({ email }) => {
     if (result) {
       setServerError("");
       setIsChange(false);
+      dispatch(setLoggedInUser({
+        username: loggedInUser.username,
+        email: formData.email,
+      }))
     }
 
     if (error) {
