@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
+import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { Button } from "semantic-ui-react";
 import {
   isWeb3Injected,
   web3Accounts,
@@ -15,8 +15,37 @@ import {
   userProfileSelector
 } from "../../store/reducers/userSlice";
 import ButtonPrimary from "../../components/ButtonPrimary";
-import Address from "../../components/Address";
+import { StyledItem, StyledTitle } from "./components";
+import TextMinor from "../../components/TextMinor";
+import Divider from "../../components/Divider";
+import AccountItem from "../../components/AccountItem";
+import ButtonImage from "../../components/ButtonImage";
 
+const StyledTextMinor = styled(TextMinor)`
+  margin-bottom: 16px;
+`
+
+const StyledButtonPrimary = styled(ButtonPrimary)`
+  width: 100%;
+`
+
+const StyledDivider = styled(Divider)`
+  margin: 24px 0;
+`
+
+const AccountWrapper = styled.div`
+  padding: 4px 0;
+  display: flex;
+  background: #FBFBFB;
+  align-items: center;
+  justify-content: space-between;
+  :not(:last-child) {
+    margin-bottom: 8px;
+  }
+  & > :last-child {
+    padding-right: 16px !important;
+  }
+`
 
 const LinkedAddress = ({ username }) => {
   const isMounted = useIsMounted();
@@ -92,36 +121,41 @@ const LinkedAddress = ({ username }) => {
   ];
 
   return (
-    <>
-      {mergedAccounts.map((account, index) => (
-          <div key={index}>
-            <Address>{account.address}</Address>
+    <StyledItem>
+      <StyledTitle>Linked addresses</StyledTitle>
+      <StyledTextMinor>{`Associate your account with an on-chain address using the Polkadot{.js} extension.`}</StyledTextMinor>
+        <StyledButtonPrimary onClick={loadExtensionAddresses}>
+          Show avaliable addresses
+        </StyledButtonPrimary>
+        {mergedAccounts && mergedAccounts.length > 0 && <div>
+        <StyledDivider />
+        <StyledTitle>Linked addresses</StyledTitle>
+        {mergedAccounts.map((account, index) => (
+          <AccountWrapper key={index}>
+            <AccountItem accountName={account.name} accountAddress={account.address} />
             {userProfile.addresses?.includes(account.address) ? (
-              <Button
-                size="mini"
+              <ButtonImage
+                src="/imgs/linked.svg"
                 onClick={() => {
                   unlinkAddress(account.address);
                 }}
               >
                 Unlink
-              </Button>
+              </ButtonImage>
             ) : (
-              <Button
-                size="mini"
-                color="green"
+              <ButtonImage
+                src="/imgs/linked.svg"
                 onClick={() => {
                   linkAddress(account.address);
                 }}
               >
                 Link
-              </Button>
+              </ButtonImage>
             )}
-          </div>
+          </AccountWrapper>
         ))}
-        <ButtonPrimary onClick={loadExtensionAddresses}>
-          Show avaliable addresses
-        </ButtonPrimary>
-    </>
+      </div>}
+    </StyledItem>
   )
 }
 

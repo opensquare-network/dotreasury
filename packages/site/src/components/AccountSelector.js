@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { Dropdown } from "semantic-ui-react";
 
 import Text from "./Text";
-import TextMinor from "./TextMinor";
 import { PRIMARY_THEME_COLOR } from "../constants";
-import UserAvatar from "./User/Avatar";
 
-import Address from "./Address";
+import AccountItem from "./AccountItem";
 
 const Wrapper = styled.div`
   margin-bottom: 24px;
@@ -43,38 +41,6 @@ const StyledDropdown = styled(Dropdown)`
   }
 `;
 
-const ItemWrapper = styled.div`
-  height: 64px;
-  padding: 8px 16px;
-  display: flex;
-  align-items: center;
-  & > div:first-child {
-    margin-right: 16px;
-  }
-  ${(p) =>
-    p.header &&
-    css`
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 99;
-      pointer-events: none;
-    `}
-`;
-
-const AccountItem = ({ header, accountName, accountAddress }) => {
-  return (
-    <ItemWrapper header={header}>
-      <UserAvatar address={accountAddress} size={40} />
-      <div>
-        <Text>{accountName}</Text>
-        <TextMinor>
-          <Address>{accountAddress}</Address>
-        </TextMinor>
-      </div>
-    </ItemWrapper>
-  );
-};
 
 const AccountSelector = ({ accounts, onSelect = () => {} }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
