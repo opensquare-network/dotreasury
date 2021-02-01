@@ -110,15 +110,18 @@ async function getRealSigner(normalizedExtrinsic) {
 async function saveNewTip(hash, normalizedExtrinsic, extrinsic) {
   const indexer = normalizedExtrinsic.extrinsicIndexer;
 
-  const reason = await getTipReason(normalizedExtrinsic, extrinsic);
   const finder = await getRealSigner(normalizedExtrinsic);
   const meta = await getTipMeta(indexer.blockHash, hash);
+  const reason =
+    (await getTipReason(normalizedExtrinsic, extrinsic)) ||
+    (await getReasonStorageReasonText(meta?.reason, indexer.blockHash));
   const medianValue = computeTipValue(meta);
   const tippersCount = await getTippersCount(indexer.blockHash);
 
   const [method, args] = await getTipMethodNameAndArgs(
     normalizedExtrinsic,
-    extrinsic
+    extrinsic,
+    reason
   );
 
   const tipCol = await getTipCollection();
