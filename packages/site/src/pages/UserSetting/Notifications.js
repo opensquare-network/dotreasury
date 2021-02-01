@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Checkbox } from 'semantic-ui-react'
 
 import { StyledItem, StyledTitle } from "./components";
 import TextMinor from "../../components/TextMinor";
+import Toggle from "../../components/Toggle";
 
 const Wrapper = styled.div`
   display: flex;
@@ -21,7 +21,7 @@ const Notifications = () => {
       </StyledTitle>
       <Wrapper>
         <TextMinor>Subscribe to reply your comment.</TextMinor>
-        <Checkbox toggle checked={isChecked} onClick={() => setIsChecked(!isChecked)} />
+        <Toggle checked={isChecked} onClick={() => setIsChecked(!isChecked)} />
       </Wrapper>
     </StyledItem>
   )
