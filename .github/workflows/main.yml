@@ -2,12 +2,12 @@ name: Build and Deploy
 on:
   push:
     branches:
-      - release-1.0.2
+      - release-1.0.3
     paths:
       - "packages/site/**"
   pull_request:
     branches:
-      - release-1.0.2
+      - release-1.0.3
     paths:
       - "packages/site/**"
     types: [closed]
