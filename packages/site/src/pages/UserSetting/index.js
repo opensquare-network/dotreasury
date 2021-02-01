@@ -13,6 +13,7 @@ import Notification from "./Notifications";
 import DeleteAccount from "./DeleteAccount";
 import Menu from "./Menu";
 import LinkedAddresses from "./LinkedAddresses";
+import Logout from "./Logout";
 
 const Wrapper = styled.div`
   display: flex;
@@ -22,7 +23,7 @@ const Wrapper = styled.div`
 `
 
 const CardWrapper = styled(Card)`
-  max-width: 648px;
+  width: 648px;
   padding: 48px 64px;
 `
 
@@ -46,6 +47,7 @@ const UserSetting = () => {
           <Username username={username} />
           <Email email={email} />
           <Password />
+          <Logout />
           <DeleteAccount />
         </div>}
         {tab === NOTIFICATION && <div>
