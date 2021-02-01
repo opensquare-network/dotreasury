@@ -46,6 +46,7 @@ const Password = () => {
             <StyledFormInput
               name="currentPassword"
               type="password"
+              placeholder="Please fill current password"
               ref={register({
                 required: true
               })}
@@ -58,6 +59,7 @@ const Password = () => {
             <StyledFormInput
               name="newPassword"
               type="password"
+              placeholder="Please fill new password"
               ref={register({
                 required: true
               })}
