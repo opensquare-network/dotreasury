@@ -9,26 +9,24 @@ import ButtonPrimary from "../../components/ButtonPrimary";
 import {
   postComment,
   clearCommentSelector,
-  setClearComment
+  setClearComment,
 } from "../../store/reducers/commentSlice";
-import {
-  loggedInUserSelector
-} from "../../store/reducers/userSlice";
+import { loggedInUserSelector } from "../../store/reducers/userSlice";
 import { PRIMARY_THEME_COLOR } from "../../constants";
 
 const Wrapper = styled.div`
   padding: 32px;
   :not(:first-child) {
-    border-top: 1px solid #EEEEEE;
+    border-top: 1px solid #eeeeee;
   }
-`
+`;
 
 const MarkdownWrapper = styled.div`
   padding: 12px 20px;
-  background: #FBFBFB;
+  background: #fbfbfb;
   border-radius: 8px;
   min-height: 245px;
-`
+`;
 
 const ButtonWrapper = styled.div`
   margin-top: 12px;
@@ -40,14 +38,16 @@ const ButtonWrapper = styled.div`
 `;
 
 const PreviewButton = styled(Button)`
-  ${p => p.active && css`
-    color: ${PRIMARY_THEME_COLOR} !important;
-    border-color: ${PRIMARY_THEME_COLOR} !important;
-    &.ui.button:focus {
+  ${(p) =>
+    p.active &&
+    css`
+      color: ${PRIMARY_THEME_COLOR} !important;
       border-color: ${PRIMARY_THEME_COLOR} !important;
-    }
-  `}
-`
+      &.ui.button:focus {
+        border-color: ${PRIMARY_THEME_COLOR} !important;
+      }
+    `}
+`;
 
 const Input = ({ type, index, authors, content, setContent }) => {
   const [isPreview, setIsPreview] = useState(false);
@@ -68,13 +68,24 @@ const Input = ({ type, index, authors, content, setContent }) => {
 
   return (
     <Wrapper>
-      {!isPreview && <MarkdownEditor md={content} onChange={setContent} authors={authors} />}
-      {isPreview && <MarkdownWrapper>
-        <Markdown md={content || "Nothing to preview"} />
-      </MarkdownWrapper>}
+      {!isPreview && (
+        <MarkdownEditor md={content} onChange={setContent} authors={authors} />
+      )}
+      {isPreview && (
+        <MarkdownWrapper>
+          <Markdown md={content || ""} />
+        </MarkdownWrapper>
+      )}
       <ButtonWrapper>
-        <PreviewButton active={isPreview} onClick={() => setIsPreview(!isPreview)} >Preview</PreviewButton>
-        <ButtonPrimary disabled={!loggedInUser} onClick={post}>Comment</ButtonPrimary>
+        <PreviewButton
+          active={isPreview}
+          onClick={() => setIsPreview(!isPreview)}
+        >
+          Preview
+        </PreviewButton>
+        <ButtonPrimary disabled={!loggedInUser} onClick={post}>
+          Comment
+        </ButtonPrimary>
       </ButtonWrapper>
     </Wrapper>
   );
