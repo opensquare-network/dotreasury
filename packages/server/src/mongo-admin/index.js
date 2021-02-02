@@ -56,7 +56,7 @@ async function _createIndexes() {
 
   loginAttemptCol.createIndex({ createdAt: 1 }, { expireAfterSeconds: 3600 });
 
-  commentCol.createIndex({ indexer: 1 });
+  commentCol.createIndex({ indexer: 1, createdAt: 1 });
 }
 
 async function tryInit(col) {

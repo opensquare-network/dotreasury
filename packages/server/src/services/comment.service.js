@@ -5,18 +5,14 @@ const { HttpError } = require("../exc");
 const { DefaultUserNotification } = require("../contants");
 
 class CommentService {
-  async getComments(indexer) {
+  async getComments(indexer, page, pageSize) {
     const commentCol = await getCommentCollection();
     let comments = await commentCol
-      .find(
-        { indexer },
-        {
-          projection: {
-            indexer: 0,
-          },
-          sort: [["createdAt", 1]],
-        }
-      )
+      .find({ indexer })
+      .sort([["createdAt", 1]])
+      .project({ indexer: 0 })
+      .skip(page * pageSize)
+      .limit(pageSize)
       .toArray();
 
     if (comments.length > 0) {
