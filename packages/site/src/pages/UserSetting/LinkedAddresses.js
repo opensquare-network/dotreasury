@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import {
   isWeb3Injected,
@@ -36,7 +36,7 @@ const StyledDivider = styled(Divider)`
 const AccountWrapper = styled.div`
   padding: 4px 0;
   display: flex;
-  background: #FBFBFB;
+  border: 1px solid #EEEEEE;
   align-items: center;
   justify-content: space-between;
   :not(:last-child) {
@@ -45,6 +45,10 @@ const AccountWrapper = styled.div`
   & > :last-child {
     padding-right: 16px !important;
   }
+  ${p => p.linked && css`
+    background: #FBFBFB;
+    border-color: #FBFBFB;
+  `}
 `
 
 const LinkedAddress = ({ username }) => {
@@ -131,11 +135,11 @@ const LinkedAddress = ({ username }) => {
         <StyledDivider />
         <StyledTitle>Linked addresses</StyledTitle>
         {mergedAccounts.map((account, index) => (
-          <AccountWrapper key={index}>
+          <AccountWrapper key={index} linked={userProfile.addresses?.includes(account.address)}>
             <AccountItem accountName={account.name} accountAddress={account.address} />
             {userProfile.addresses?.includes(account.address) ? (
               <ButtonImage
-                src="/imgs/linked.svg"
+                src="/imgs/link-break.svg"
                 onClick={() => {
                   unlinkAddress(account.address);
                 }}
