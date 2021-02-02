@@ -60,7 +60,7 @@ const StyledModalButtonPrimary = styled(ButtonPrimary)`
 const DeleteAccount = () => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, errors } = useForm();
   const [serverError, setServerError] = useState("");
   const isMounted = useIsMounted();
 
@@ -121,9 +121,14 @@ const DeleteAccount = () => {
                 type="password"
                 placeholder="Please fill password"
                 ref={register({
-                  required: true,
+                  required: {
+                    value: true,
+                    message: "This field is required"
+                  }
                 })}
+                error={errors.password}
               />
+              {errors.password && <FormError>{errors.password.message}</FormError>}
               {serverError && <FormError>{serverError}</FormError>}
               <StyledModalButtonPrimary type="submit">
                 Delete my account
