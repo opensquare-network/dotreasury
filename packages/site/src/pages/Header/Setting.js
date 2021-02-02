@@ -26,7 +26,7 @@ const Wrapper = styled.div`
 `
 
 const StyledModal = styled(Modal)`
-  width: 424px !important;
+  max-width: 424px !important;
   border-radius: 8px !important;
   /* top: 112px; */
 `

@@ -22,7 +22,6 @@ const StyledTextMinor = styled(TextMinor)`
   margin-bottom: 16px;
 `;
 
-
 const StyledCard = styled(Card)`
   padding: 32px !important;
   position: relative !important;
@@ -36,7 +35,7 @@ const CloseButton = styled(Image)`
 `;
 
 const StyledModal = styled(Modal)`
-  width: 424px !important;
+  max-width: 424px !important;
   border-radius: 8px !important;
 `;
 
