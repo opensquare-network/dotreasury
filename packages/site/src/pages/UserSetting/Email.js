@@ -96,9 +96,12 @@ const Email = ({ email }) => {
                   type="text"
                   placeholder="Email"
                   defaultValue={email}
-                  ref={register({
-                    required: true,
-                  })}
+                  ref={e => {
+                    inputRef.current = e
+                    register(e, {
+                      required: true,
+                    })
+                  }}
                 />
               </EditWrapper>
               <EditWrapper>

@@ -262,8 +262,8 @@ const CommentItem = ({
                 }
               />
               <VoteText highlight={highlight}>Up</VoteText>
+              <VoteText highlight={highlight}>({upCount})</VoteText>
             </VoteButton>
-            <VoteText highlight={highlight}>({upCount})</VoteText>
           </VoteWrapper>
         </ButtonList>
       </ContnetWrapper>

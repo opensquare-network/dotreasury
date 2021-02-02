@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { Form } from "semantic-ui-react";
 import api from "../../services/scanApi";
@@ -17,6 +17,8 @@ const Password = () => {
   const { register, handleSubmit } = useForm();
   const [serverError, setServerError] = useState("");
   const isMounted = useIsMounted();
+  const currentPasswordRef = useRef(null);
+  const newPasswordRef = useRef(null);
 
   const onSubmit = async (formData) => {
     const { result, error } = await api.authFetch(
@@ -37,6 +39,12 @@ const Password = () => {
     if (result) {
       if (isMounted.current) {
         setServerError("");
+        if (currentPasswordRef && currentPasswordRef.current) {
+          currentPasswordRef.current.value = "";
+        }
+        if (newPasswordRef && newPasswordRef.current) {
+          newPasswordRef.current.value = "";
+        }
       }
     }
 
@@ -57,9 +65,12 @@ const Password = () => {
               name="currentPassword"
               type="password"
               placeholder="Please fill current password"
-              ref={register({
-                required: true,
-              })}
+              ref={e => {
+                currentPasswordRef.current = e
+                register(e, {
+                  required: true,
+                })
+              }}
             />
           </EditWrapper>
           <StyledTitle>New password</StyledTitle>
@@ -68,9 +79,12 @@ const Password = () => {
               name="newPassword"
               type="password"
               placeholder="Please fill new password"
-              ref={register({
-                required: true,
-              })}
+              ref={e => {
+                newPasswordRef.current = e
+                register(e, {
+                  required: true,
+                })
+              }}
             />
             <EditButton type="submit">Change</EditButton>
           </EditWrapper>
