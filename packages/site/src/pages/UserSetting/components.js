@@ -49,9 +49,13 @@ export const StyledInput = styled(Input)`
   max-width: calc(100% - 92px);
 `
 
-export const StyledFormInput = styled(FormInput)`
+export const StyledFormInputWrapper = styled.div`
   flex-grow: 1;
   max-width: calc(100% - 92px);
+`
+
+export const StyledFormInput = styled(FormInput)`
+  width: 100%;
 `
 
 export const StyledButtonPrimary = styled.button`

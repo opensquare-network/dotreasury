@@ -251,11 +251,16 @@ function Login({ location }) {
             <FormInput
               name="usernameOrEmail"
               type="text"
-              ref={register({ required: true })}
+              ref={register({
+                required: {
+                  value: true,
+                  message: "This field is required"
+                }
+              })}
               error={errors.usernameOrEmail}
             />
             {errors.usernameOrEmail && (
-              <FormError>This field is required</FormError>
+              <FormError>{errors.usernameOrEmail.message}</FormError>
             )}
           </Form.Field>
           <Form.Field>
@@ -267,12 +272,18 @@ function Login({ location }) {
               <FormInput
                 name="password"
                 type={showPassword ? "text" : "password"}
-                ref={register({ required: true })}
+                ref={register({
+                  required: {
+                    value: true,
+                    message: "This field is required"
+                  }
+                })}
                 autocomplete="off"
                 error={errors.password}
               />
             </FormPasswordWrapper>
-            {errors.password && <FormError>This field is required</FormError>}
+            {errors.password && <FormError>{errors.password.message}</FormError>}
+            {serverError && <FormError>{serverError}</FormError>}
           </Form.Field>
           <HelperWrapper>
             {false && <RememberMe onClick={() => setIsRememberMe(!isRememberMe)}>
@@ -283,7 +294,6 @@ function Login({ location }) {
               <StyledTextMnor>Forgot password?</StyledTextMnor>
             </Link>
           </HelperWrapper>
-          {serverError && <FormError>{serverError}</FormError>}
           <StyledButtonPrimary type="submit">Login</StyledButtonPrimary>
           <StyledButton
             onClick={() => {
@@ -305,7 +315,7 @@ function Login({ location }) {
           )}
           {!hasExtension && <DownloadPolkadot />}
           {serverError && <FormError>{serverError}</FormError>}
-          <StyledButtonPrimary onClick={doWeb3Login}>Login</StyledButtonPrimary>
+          <StyledButtonPrimary onClick={doWeb3Login} disabled={!accounts || accounts.length === 0}>Login</StyledButtonPrimary>
           <StyledButton
             onClick={() => {
               setWeb3Login(false);

@@ -5,6 +5,9 @@ const CustomInput = styled(Input)`
   input {
     padding: 8px 16px !important;
     min-height: 40px !important;
+    :hover, :focus {
+      border-color: #CCCCCC !important;
+    }
   }
 `
 
