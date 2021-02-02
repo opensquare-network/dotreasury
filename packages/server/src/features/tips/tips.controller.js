@@ -135,17 +135,12 @@ class TipsController {
   // Comments API
   async getTipComments(ctx) {
     const { page, pageSize } = extractPage(ctx);
-    if (pageSize === 0 || page < 0) {
-      ctx.status = 400;
-      return;
-    }
-
     const tipHash = ctx.params.tipHash;
     const blockHeight = parseInt(ctx.params.blockHeight);
 
     ctx.body = await commentService.getComments(
       {
-        treasuryTipId: {
+        tipId: {
           tipHash,
           blockHeight,
         },

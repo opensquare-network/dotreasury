@@ -7,6 +7,13 @@ const { DefaultUserNotification } = require("../contants");
 class CommentService {
   async getComments(indexer, page, pageSize) {
     const commentCol = await getCommentCollection();
+    const total = await commentCol.countDocuments({ indexer });
+
+    if (page === "last") {
+      const totalPages = Math.ceil(total / pageSize);
+      page = totalPages - 1;
+    }
+
     let comments = await commentCol
       .find({ indexer })
       .sort([["createdAt", 1]])
@@ -50,7 +57,12 @@ class CommentService {
       });
     }
 
-    return comments;
+    return {
+      items: comments,
+      page,
+      pageSize,
+      total,
+    };
   }
 
   async postComment(indexer, content, author) {
@@ -71,13 +83,19 @@ class CommentService {
 
     const commentId = result.ops[0]._id;
 
-    // Send notification email to mentioned users
-    this.processMetions(indexer, commentId, content, author);
+    // Count position
+    const commentPosition = await commentCol.countDocuments({
+      indexer,
+      _id: { $lte: commentId },
+    });
 
-    return true;
+    // Send notification email to mentioned users
+    this.processMetions(indexer, commentId, commentPosition, content, author);
+
+    return commentId;
   }
 
-  async processMetions(indexer, commentId, content, author) {
+  async processMetions(indexer, commentId, commentPosition, content, author) {
     const metions = new Set();
     const reMetion = /\[@(\w+)\]\(https:\/\/dotreasury.com\/user\/(\w+)\)/g;
     let match;
@@ -123,6 +141,7 @@ class CommentService {
           content,
           indexer,
           commentId,
+          commentPosition,
         });
       }
     }
@@ -160,8 +179,20 @@ class CommentService {
 
     const { indexer } = result.value;
 
+    // Count position
+    const commentPosition = await commentCol.countDocuments({
+      indexer,
+      _id: { $lte: commentId },
+    });
+
     // Send notification email to mentioned users
-    this.processMetions(indexer, commentId, newContent, author);
+    this.processMetions(
+      indexer,
+      commentId,
+      commentPosition,
+      newContent,
+      author
+    );
 
     return true;
   }

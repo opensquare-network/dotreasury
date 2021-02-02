@@ -7,6 +7,7 @@ const {
 const { HttpError } = require("../../exc");
 const { isValidSignature } = require("../../utils");
 const { DefaultUserNotification } = require("../../contants");
+const mailService = require("../../services/mail.service");
 
 class UserController {
   async linkAddressStart(ctx) {
@@ -258,11 +259,14 @@ class UserController {
       );
     }
 
+    const verifyToken = randomBytes(12).toString("hex");
     const result = await userCol.updateOne(
       { _id: user._id },
       {
         $set: {
           email: newEmail,
+          emailVerified: false,
+          verifyToken,
         },
       }
     );
@@ -275,6 +279,12 @@ class UserController {
       ctx.body = false;
       return;
     }
+
+    mailService.sendVerificationEmail({
+      username: user.username,
+      email: user.email,
+      token: verifyToken,
+    });
 
     ctx.body = true;
   }
