@@ -57,7 +57,10 @@ class MailService {
     author,
     mentioned,
     content,
+    commentPosition,
   }) {
+    const defaultPageSize = 20;
+
     const text = templates.commentMention({
       author,
       mentioned,
@@ -65,6 +68,7 @@ class MailService {
       indexer,
       commentId,
       siteUrl: process.env.SITE_URL,
+      page: Math.ceil(commentPosition / defaultPageSize),
     });
 
     const msg = {
@@ -102,7 +106,4 @@ class MailService {
   }
 }
 
-module.exports = new MailService(
-  process.env.MAIL_FROM,
-  mailSender || sgMail
-);
+module.exports = new MailService(process.env.MAIL_FROM, mailSender || sgMail);
