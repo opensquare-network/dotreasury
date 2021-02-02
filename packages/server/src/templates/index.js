@@ -1,8 +1,10 @@
 const fs = require("fs");
 const path = require("path");
 const Handlebars = require("handlebars");
+const pluralize = require("pluralize");
 const { stringCamelCase } = require("@polkadot/util");
 
+Handlebars.registerHelper("pluralize", pluralize);
 Handlebars.registerHelper("isdefined", (v) => v !== undefined);
 
 const templates = fs

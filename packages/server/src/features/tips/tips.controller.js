@@ -138,9 +138,10 @@ class TipsController {
     const blockHeight = parseInt(ctx.params.blockHeight);
 
     ctx.body = await commentService.getComments({
-      treasuryTipId: {
-        tipHash,
+      type: "tip",
+      index: {
         blockHeight,
+        tipHash,
       },
     });
   }
@@ -165,9 +166,10 @@ class TipsController {
 
     ctx.body = await commentService.postComment(
       {
-        tipId: {
-          tipHash,
+        type: "tip",
+        index: {
           blockHeight,
+          tipHash,
         },
       },
       content,

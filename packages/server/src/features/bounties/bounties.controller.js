@@ -16,7 +16,7 @@ const bountyStatusName = (bounty) => {
   }
 
   return Object.keys(bounty.meta.status)[0];
-}
+};
 
 class BountiesController {
   async getBounties(ctx) {
@@ -150,7 +150,8 @@ class BountiesController {
     const bountyIndex = parseInt(ctx.params.bountyIndex);
 
     ctx.body = await commentService.getComments({
-      bountyId: bountyIndex,
+      type: "bounty",
+      index: bountyIndex,
     });
   }
 
@@ -169,7 +170,10 @@ class BountiesController {
     }
 
     ctx.body = await commentService.postComment(
-      { bountyId: bountyIndex },
+      {
+        type: "bounty",
+        index: bountyIndex,
+      },
       content,
       user
     );

@@ -29,6 +29,7 @@
     "koa-router": "^10.0.0",
     "mongodb": "^3.6.3",
     "nodemailer": "^6.4.17",
+    "pluralize": "^8.0.0",
     "socket.io": "^3.0.4",
     "uuid": "^8.3.2",
     "validator": "^13.5.2"
