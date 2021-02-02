@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { Form } from "semantic-ui-react";
 import { useDispatch } from "react-redux";
 
-import { StyledItem, StyledTitle } from "./components";
+import { StyledItem, StyledTitle, StyledButtonPrimary } from "./components";
 import TextMinor from "../../components/TextMinor";
 import ButtonPrimary from "../../components/ButtonPrimary";
 import { SECONDARY_THEME_COLOR, WARNING_COLOR } from "../../constants";
@@ -22,18 +22,9 @@ const StyledTextMinor = styled(TextMinor)`
   margin-bottom: 16px;
 `;
 
-const StyledButtonPrimary = styled(ButtonPrimary)`
-  width: 100%;
-  background: ${WARNING_COLOR} !important;
-  &.ui.button:hover,
-  &.ui.button:active,
-  &.ui.button:focus {
-    background: ${WARNING_COLOR} !important;
-  }
-`;
-
 const StyledCard = styled(Card)`
   padding: 32px !important;
+  position: relative !important;
 `;
 
 const CloseButton = styled(Image)`
@@ -44,7 +35,7 @@ const CloseButton = styled(Image)`
 `;
 
 const StyledModal = styled(Modal)`
-  width: 424px !important;
+  max-width: 424px !important;
   border-radius: 8px !important;
 `;
 
@@ -69,10 +60,7 @@ const StyledModalButtonPrimary = styled(ButtonPrimary)`
 const DeleteAccount = () => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
-  const closeModal = () => {
-    setOpen(false);
-  };
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, errors } = useForm();
   const [serverError, setServerError] = useState("");
   const isMounted = useIsMounted();
 
@@ -119,7 +107,7 @@ const DeleteAccount = () => {
         trigger={<StyledButtonPrimary>Delete my account</StyledButtonPrimary>}
       >
         <StyledCard>
-          <CloseButton src="/imgs/close.svg" onClick={() => closeModal()} />
+          <CloseButton src="/imgs/close.svg" onClick={() => setOpen(false)} />
           <StyledModalTitle>Delete account</StyledModalTitle>
           <WarningText>
             This action cannot be undone. This will permanently delete your
@@ -133,9 +121,14 @@ const DeleteAccount = () => {
                 type="password"
                 placeholder="Please fill password"
                 ref={register({
-                  required: true,
+                  required: {
+                    value: true,
+                    message: "This field is required"
+                  }
                 })}
+                error={errors.password}
               />
+              {errors.password && <FormError>{errors.password.message}</FormError>}
               {serverError && <FormError>{serverError}</FormError>}
               <StyledModalButtonPrimary type="submit">
                 Delete my account

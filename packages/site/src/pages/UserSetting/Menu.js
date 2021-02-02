@@ -8,6 +8,7 @@ import GrayImage from "../../components/GrayImage";
 
 const Wrapper = styled.div`
   margin-right: 24px;
+  margin-bottom: 16px;
 `
 
 const Item = styled.div`

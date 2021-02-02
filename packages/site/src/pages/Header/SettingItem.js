@@ -25,6 +25,7 @@ const CheckItem = styled.div`
   border: 1px solid rgba(29, 37, 60, 0.64);
   border-radius: 8px;
   margin-right: 8px;
+  flex: 0 0 auto;
 `
 
 const CheckedItem = styled.div`
@@ -33,6 +34,7 @@ const CheckedItem = styled.div`
   border: 5px solid ${PRIMARY_THEME_COLOR};
   border-radius: 8px;
   margin-right: 8px;
+  flex: 0 0 auto;
 `
 
 const Detail = styled(Text)`

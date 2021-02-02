@@ -255,8 +255,8 @@ const CommentItem = ({ index, comment, refCommentId, onReplyButton }) => {
                 }
               />
               <VoteText highlight={highlight}>Up</VoteText>
+              <VoteText highlight={highlight}>({upCount})</VoteText>
             </VoteButton>
-            <VoteText highlight={highlight}>({upCount})</VoteText>
           </VoteWrapper>
         </ButtonList>
       </ContnetWrapper>

@@ -19,11 +19,24 @@ const Wrapper = styled.div`
   margin: 28px;
   justify-content: center;
   align-items: flex-start;
+  @media screen and (max-width: 970px) {
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 0 auto;
+    width: fit-content;
+  }
+  @media screen and (max-width: 680px) {
+    width: 100%;
+  }
 `;
 
 const CardWrapper = styled(Card)`
   width: 648px;
   padding: 48px 64px;
+  @media screen and (max-width: 680px) {
+    width: 100%;
+    padding: 20px;
+  }
 `;
 
 export const ACCOUNT_SETTING = "account_setting";

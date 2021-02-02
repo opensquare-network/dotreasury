@@ -11,6 +11,7 @@ import {
   StyledText,
   EditButton,
   StyledFormInput,
+  StyledFormInputWrapper,
 } from "./components";
 import FormError from "../../components/FormError";
 import {
@@ -23,7 +24,7 @@ const Email = ({ email }) => {
   const dispatch = useDispatch();
   const [isChange, setIsChange] = useState(false);
   const inputRef = useRef(null);
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, errors } = useForm();
   const [serverError, setServerError] = useState("");
   const loggedInUser = useSelector(loggedInUserSelector);
   const isMounted = useIsMounted();
@@ -91,25 +92,42 @@ const Email = ({ email }) => {
           <Form onSubmit={handleSubmit(onSubmit)}>
             <Form.Field>
               <EditWrapper>
-                <StyledFormInput
-                  name="email"
-                  type="text"
-                  placeholder="Email"
-                  defaultValue={email}
-                  ref={register({
-                    required: true,
-                  })}
-                />
+                <StyledFormInputWrapper>
+                  <StyledFormInput
+                    name="email"
+                    type="text"
+                    placeholder="Email"
+                    defaultValue={email}
+                    ref={e => {
+                      inputRef.current = e
+                      register(e, {
+                        required: {
+                          value: true,
+                          message: "This field is required"
+                        }
+                      })
+                    }}
+                    error={errors.email}
+                  />
+                  {errors.email && <FormError>{errors.email.message}</FormError>}
+                </StyledFormInputWrapper>
               </EditWrapper>
               <EditWrapper>
-                <StyledFormInput
-                  name="password"
-                  type="password"
-                  placeholder="Please fill password"
-                  ref={register({
-                    required: true,
-                  })}
-                />
+                <StyledFormInputWrapper>
+                  <StyledFormInput
+                    name="password"
+                    type="password"
+                    placeholder="Please fill password"
+                    ref={register({
+                      required: {
+                        value: true,
+                        message: "This field is required"
+                      }
+                    })}
+                    error={errors.password}
+                  />
+                  {errors.password && <FormError>{errors.password.message}</FormError>}
+                </StyledFormInputWrapper>
                 <EditButton type="submit">Change</EditButton>
               </EditWrapper>
             </Form.Field>
