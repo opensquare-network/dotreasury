@@ -8,6 +8,7 @@ const { HttpError } = require("../../exc");
 const { isValidSignature } = require("../../utils");
 const { DefaultUserNotification } = require("../../contants");
 const mailService = require("../../services/mail.service");
+const validator = require("validator");
 
 class UserController {
   async linkAddressStart(ctx) {
@@ -244,6 +245,10 @@ class UserController {
       );
     }
 
+    if (!validator.isEmail(newEmail)) {
+      throw new HttpError(400, "Invaild email");
+    }
+
     const correct = await argon2.verify(user.hashedPassword, password);
     if (!correct) {
       throw new HttpError(401, "Incorrect password.");
@@ -282,7 +287,7 @@ class UserController {
 
     mailService.sendVerificationEmail({
       username: user.username,
-      email: user.email,
+      email: newEmail,
       token: verifyToken,
     });
 
