@@ -92,10 +92,12 @@ const ReplayButton = styled(Button)`
   opacity: 0.24;
   :hover {
     opacity: 0.64;
-    ${p => p.noHover && css`
-      opacity: 0.24;
-      cursor: auto;
-    `}
+    ${(p) =>
+      p.noHover &&
+      css`
+        opacity: 0.24;
+        cursor: auto;
+      `}
   }
   align-items: center;
   margin-right: 16px !important;
@@ -157,13 +159,20 @@ const FlexWrapper = styled.div`
   & > :last-child {
     margin-left: 4px;
   }
-`
+`;
 
 const TimeWrapper = styled.div`
   color: ${TEXT_DARK_DISABLE};
-`
+`;
 
-const CommentItem = ({ type, index, comment, position, refCommentId, onReplyButton }) => {
+const CommentItem = ({
+  type,
+  index,
+  comment,
+  position,
+  refCommentId,
+  onReplyButton,
+}) => {
   const [highLight, setHighLight] = useState(false);
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(isLoggedInSelector);
@@ -177,7 +186,7 @@ const CommentItem = ({ type, index, comment, position, refCommentId, onReplyButt
   const highlight = comment.reactions?.some(
     (r) => r.user.username === loggedInUser?.username
   );
-  const ownComment = comment.author.username === loggedInUser?.username;
+  const ownComment = comment.author?.username === loggedInUser?.username;
 
   const commentId = comment._id;
   const thumbUp = () => {
@@ -209,16 +218,16 @@ const CommentItem = ({ type, index, comment, position, refCommentId, onReplyButt
     <Wrapper id={comment._id} ref={commentRef} highLight={highLight}>
       <HeaderWrapper>
         <Avatar src="/imgs/avatar.png" />
-        <Username>{comment.author.username}</Username>
+        <Username>{comment.author?.username ?? "Deleted Account"}</Username>
         <TimeWrapper>
-          {
-            (dayjs().diff(dayjs(comment.createdAt), "day") >= 1) ?
-            dayjs(comment.createdAt).format("YYYY-MM-DD HH:mm:ss") :
+          {dayjs().diff(dayjs(comment.createdAt), "day") >= 1 ? (
+            dayjs(comment.createdAt).format("YYYY-MM-DD HH:mm:ss")
+          ) : (
             <FlexWrapper>
               <TimeElapsed from={dayjs(comment.createdAt).valueOf()} />
               <span>ago</span>
             </FlexWrapper>
-          }
+          )}
         </TimeWrapper>
         <Index>#{position + 1}</Index>
         {isTop && <TopLabel>top</TopLabel>}
@@ -226,13 +235,24 @@ const CommentItem = ({ type, index, comment, position, refCommentId, onReplyButt
       <ContnetWrapper>
         <Markdown md={comment.content} />
         <ButtonList>
-          <ReplayButton onClick={() => (!ownComment && isLoggedIn) && 
-            onReplyButton(`[@${comment.author.username}](https://dotreasury.com/user/${comment.author.username}) `)}
-            noHover={ownComment || !isLoggedIn}>
+          <ReplayButton
+            onClick={() =>
+              !ownComment &&
+              isLoggedIn &&
+              comment.author?.username &&
+              onReplyButton(
+                `[@${comment.author?.username}](https://dotreasury.com/user/${comment.author?.username}) `
+              )
+            }
+            noHover={ownComment || !isLoggedIn || !comment.author?.username}
+          >
             <Image src="/imgs/reply.svg" />
             <Text>Reply</Text>
           </ReplayButton>
-          <VoteWrapper highlight={highlight} noHover={ownComment || !isLoggedIn}>
+          <VoteWrapper
+            highlight={highlight}
+            noHover={ownComment || !isLoggedIn}
+          >
             <VoteButton onClick={thumbUp}>
               <Image
                 src={

@@ -10,7 +10,7 @@ import CommentList from "./CommentList";
 import { unique } from "../../utils/index";
 import {
   fetchComments,
-  commentsSelector
+  commentsSelector,
 } from "../../store/reducers/commentSlice";
 
 import { useLocation } from "react-router-dom";
@@ -32,14 +32,16 @@ const Comment = ({ type, index }) => {
   }, [dispatch, type, index]);
 
   const comments = useSelector(commentsSelector);
-  const authors = unique((comments || []).map((item) => item.author.username));
+  const authors = unique(
+    (comments || []).map((item) => item.author?.username).filter((v) => !!v)
+  );
 
   const { hash } = useLocation();
   const refCommentId = hash && hash.slice(1);
 
   const onReplyButton = (reply) => {
     setContent(reply);
-  }
+  };
 
   return (
     <div>
@@ -52,7 +54,13 @@ const Comment = ({ type, index }) => {
           refCommentId={refCommentId}
           onReplyButton={onReplyButton}
         />
-        <Input type={type} index={index} authors={authors} content={content} setContent={setContent} />
+        <Input
+          type={type}
+          index={index}
+          authors={authors}
+          content={content}
+          setContent={setContent}
+        />
       </Wrapper>
     </div>
   );
