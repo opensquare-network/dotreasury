@@ -258,6 +258,7 @@ function Login({ location }) {
                 }
               })}
               error={errors.usernameOrEmail}
+              onChange={() => setServerError("")}
             />
             {errors.usernameOrEmail && (
               <FormError>{errors.usernameOrEmail.message}</FormError>
@@ -280,6 +281,7 @@ function Login({ location }) {
                 })}
                 autocomplete="off"
                 error={errors.password}
+                onChange={() => setServerError("")}
               />
             </FormPasswordWrapper>
             {errors.password && <FormError>{errors.password.message}</FormError>}

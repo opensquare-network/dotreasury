@@ -145,7 +145,7 @@ const Helper = ({ isAgree, setIsAgree, agreeError, setAgreeError }) => {
           </Link>
         </div>
       </HelperWrapper>
-      {agreeError && <FormError>This field is required</FormError>}
+      {agreeError && <FormError>You must accept our terms</FormError>}
     </HelperErrorWrapper>
   );
 };
