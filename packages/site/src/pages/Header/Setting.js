@@ -43,6 +43,7 @@ const StyledText = styled(Text)`
 
 const StyledCard = styled(Card)`
   padding: 32px !important;
+  position: relative !important;
 `
 
 const StyledButton = styled(Button)`
