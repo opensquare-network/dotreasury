@@ -15,7 +15,7 @@ import {
   setLastNewPost,
   lastUpdateCommentTimeSelector,
 } from "../../store/reducers/commentSlice";
-import ResponsivePagination from "../../components/ResponsivePagination";
+import ResponsivePagination from "./ResponsivePagination";
 import { useQuery } from "../../utils/hooks";
 
 import { useLocation } from "react-router-dom";
