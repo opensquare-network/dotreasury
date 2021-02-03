@@ -26,6 +26,7 @@ const Email = () => {
 
   const userProfile = useSelector(userProfileSelector);
   const verifyEmailSendTime = useSelector(verifyEmailSendTimeSelector);
+  const { email, emailVerified } = userProfile;
 
   const sendVerifyEmail = async () => {
     const { result, error } = await api.authFetch(
@@ -51,6 +52,13 @@ const Email = () => {
 
   const waitSeconds = parseInt(Math.max(0, verifyEmailSendTime + 60 * 1000 - timeNow)  / 1000);
   useEffect(() => {
+    if (emailVerified) {
+      if (isMounted.current) {
+        setServerError("");
+      }
+      return;
+    }
+
     if (isMounted.current) {
       if (waitSeconds > 0) {
         setServerError("Verification email has been sent out, please check your mailbox.");
@@ -67,15 +75,19 @@ const Email = () => {
     setTimeout(updateNow, 1000);
     // Avoid the settimeout chain interruption.
     setTimeout(updateNow, 2000);
-  }, [waitSeconds, isMounted])
+
+    if (waitSeconds === 0 || waitSeconds % 5 === 0) {
+      dispatch(fetchUserProfile());
+    }
+  }, [dispatch, waitSeconds, emailVerified, isMounted]);
 
   return (
     <StyledItem>
       <StyledTitle>Email</StyledTitle>
       <EditWrapper>
-        <StyledText>{userProfile.email}</StyledText>
+        <StyledText>{email}</StyledText>
         {
-          !userProfile.emailVerified && (
+          !emailVerified && (
             <EditButton
               disabled={ waitSeconds > 0 }
               onClick={sendVerifyEmail}
