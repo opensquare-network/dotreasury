@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
-import styled, { css } from "styled-components";
-import { Form } from "semantic-ui-react";
+import styled from "styled-components";
+import { Form, Image } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
 import { setLoggedInUser } from "../../store/reducers/userSlice";
@@ -18,7 +18,6 @@ import FormInput from "../../components/FormInput";
 import FormPasswordWrapper from "../../components/FormPasswordWrapper";
 import ButtonPrimary from "../../components/ButtonPrimary";
 import Button from "../../components/Button";
-import GrayImage from "../../components/GrayImage";
 import TextMinor from "../../components/TextMinor";
 import DownloadPolkadot from "../../components/DownloadPolkadot";
 import AccountSelector from "../../components/AccountSelector";
@@ -79,15 +78,8 @@ const StyledTextMnor = styled(TextMinor)`
   display: inline;
 `;
 
-const CheckImage = styled(GrayImage)`
+const CheckImage = styled(Image)`
   padding: 4px 8px 4px 0;
-  ${(p) =>
-    p.checked &&
-    css`
-      -webkit-filter: grayscale(0);
-      filter: grayscale(0);
-      opacity: 1;
-    `}
   cursor: pointer;
 `;
 
@@ -125,8 +117,7 @@ const Helper = ({ isAgree, setIsAgree, agreeError, setAgreeError }) => {
     <HelperErrorWrapper>
       <HelperWrapper>
         <CheckImage
-          src="/imgs/circle-pass.svg"
-          checked={isAgree}
+          src={isAgree ? "/imgs/circle-pass.svg" : "/imgs/circle-check-off.svg"}
           onClick={() => {
             if (!isAgree) {
               setAgreeError(false);
