@@ -11,6 +11,7 @@ import overviewReducer from "./overviewSlice";
 import userReducer from "./userSlice";
 import commentReducer from "./commentSlice";
 import nodeReducer from "./nodeSlice";
+import toastReducer from "./toastSlice";
 
 export default combineReducers({
   test: testReducer,
@@ -24,5 +25,6 @@ export default combineReducers({
   overview: overviewReducer,
   users: userReducer,
   comments: commentReducer,
-  node: nodeReducer
+  node: nodeReducer,
+  toast: toastReducer
 });
