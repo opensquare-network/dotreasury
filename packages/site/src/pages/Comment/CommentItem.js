@@ -121,7 +121,7 @@ const VoteWrapper = styled(Button)`
         `
       : css`
           &:hover {
-            opacity: 0.64;
+            opacity: ${p => p.highlight ? 1 : 0.64};
           }
         `}
   ${(p) =>
