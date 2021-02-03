@@ -15,7 +15,7 @@ import LinkedAddresses from "./LinkedAddresses";
 import Logout from "./Logout";
 import {
   fetchUserProfile,
-  userProfileSelector
+  userProfileSelector,
 } from "../../store/reducers/userSlice";
 
 const Wrapper = styled.div`
@@ -52,13 +52,11 @@ const UserSetting = () => {
   const [tab, setTab] = useState(ACCOUNT_SETTING);
   const loggedInUser = useSelector(loggedInUserSelector);
 
-  const username = loggedInUser?.username;
-
   useEffect(() => {
-    if (username) {
+    if (loggedInUser) {
       dispatch(fetchUserProfile());
     }
-  }, [dispatch, username]);
+  }, [dispatch, loggedInUser]);
 
   const userProfile = useSelector(userProfileSelector);
 
@@ -66,14 +64,16 @@ const UserSetting = () => {
     return <Redirect to="/" />;
   }
 
+  const { username, email, emailVerified } = userProfile;
+
   return (
     <Wrapper>
       <Menu tab={tab} setTab={setTab} />
       <CardWrapper>
         {tab === ACCOUNT_SETTING && (
           <div>
-            <Username username={userProfile.username} />
-            <Email email={userProfile.email} emailVerified={userProfile.emailVerified} />
+            <Username username={username} />
+            <Email email={email} emailVerified={emailVerified} />
             <Password />
             <Logout />
             <DeleteAccount />
