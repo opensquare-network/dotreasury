@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled, { css } from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -51,17 +51,12 @@ const AccountWrapper = styled.div`
   `}
 `
 
-const LinkedAddress = ({ username }) => {
+const LinkedAddress = () => {
   const isMounted = useIsMounted();
   const dispatch = useDispatch();
 
   const userProfile = useSelector(userProfileSelector);
   const [accounts, setAccounts] = useState([]);
-  useEffect(() => {
-    if (username) {
-      dispatch(fetchUserProfile());
-    }
-  }, [dispatch, username]);
 
   const loadExtensionAddresses = async () => {
     await web3Enable("doTreasury");

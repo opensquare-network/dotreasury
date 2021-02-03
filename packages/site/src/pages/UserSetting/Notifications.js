@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 
 import { StyledItem, StyledTitle } from "./components";
@@ -17,14 +17,8 @@ const Wrapper = styled.div`
   justify-content: space-between;
 `;
 
-const Notifications = ({ username }) => {
+const Notifications = () => {
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (username) {
-      dispatch(fetchUserProfile());
-    }
-  }, [dispatch, username]);
   const userProfile = useSelector(userProfileSelector);
 
   const toggleMentionNotification = async () => {

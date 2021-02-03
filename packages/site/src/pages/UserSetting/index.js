@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
 
 import { loggedInUserSelector } from "../../store/reducers/userSlice";
 import Card from "../../components/Card";
@@ -13,6 +13,10 @@ import DeleteAccount from "./DeleteAccount";
 import Menu from "./Menu";
 import LinkedAddresses from "./LinkedAddresses";
 import Logout from "./Logout";
+import {
+  fetchUserProfile,
+  userProfileSelector
+} from "../../store/reducers/userSlice";
 
 const Wrapper = styled.div`
   display: flex;
@@ -44,15 +48,23 @@ export const NOTIFICATION = "notification";
 export const LINKED_ADDRESSES = "linked_addresses";
 
 const UserSetting = () => {
+  const dispatch = useDispatch();
   const [tab, setTab] = useState(ACCOUNT_SETTING);
   const loggedInUser = useSelector(loggedInUserSelector);
+
+  const username = loggedInUser?.username;
+
+  useEffect(() => {
+    if (username) {
+      dispatch(fetchUserProfile());
+    }
+  }, [dispatch, username]);
+
+  const userProfile = useSelector(userProfileSelector);
 
   if (!loggedInUser) {
     return <Redirect to="/" />;
   }
-
-  const username = loggedInUser?.username;
-  const email = loggedInUser?.email;
 
   return (
     <Wrapper>
@@ -60,8 +72,8 @@ const UserSetting = () => {
       <CardWrapper>
         {tab === ACCOUNT_SETTING && (
           <div>
-            <Username username={username} />
-            <Email email={email} />
+            <Username username={userProfile.username} />
+            <Email email={userProfile.email} emailVerified={userProfile.emailVerified} />
             <Password />
             <Logout />
             <DeleteAccount />
@@ -69,12 +81,12 @@ const UserSetting = () => {
         )}
         {tab === NOTIFICATION && (
           <div>
-            <Notification username={username} />
+            <Notification />
           </div>
         )}
         {tab === LINKED_ADDRESSES && (
           <div>
-            <LinkedAddresses username={username} />
+            <LinkedAddresses />
           </div>
         )}
       </CardWrapper>

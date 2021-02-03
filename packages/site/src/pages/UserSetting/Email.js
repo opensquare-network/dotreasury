@@ -1,6 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useForm } from "react-hook-form";
-import { Form } from "semantic-ui-react";
+import React, { useEffect, useState } from "react";
 import api from "../../services/scanApi";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -10,53 +8,38 @@ import {
   EditWrapper,
   StyledText,
   EditButton,
-  StyledFormInput,
-  StyledFormInputWrapper,
 } from "./components";
 import FormError from "../../components/FormError";
-import {
-  loggedInUserSelector,
-  setLoggedInUser,
-} from "../../store/reducers/userSlice";
 import { useIsMounted } from "../../utils/hooks";
+import {
+  userProfileSelector,
+  fetchUserProfile,
+  verifyEmailSendTimeSelector,
+  setVerifyEmailSendTime,
+} from "../../store/reducers/userSlice";
 
-const Email = ({ email }) => {
+const Email = () => {
   const dispatch = useDispatch();
-  const [isChange, setIsChange] = useState(false);
-  const inputRef = useRef(null);
-  const { register, handleSubmit, errors } = useForm();
   const [serverError, setServerError] = useState("");
-  const loggedInUser = useSelector(loggedInUserSelector);
   const isMounted = useIsMounted();
+  const [timeNow, setTimeNow] = useState(Date.now());
 
-  const onSubmit = async (formData) => {
+  const userProfile = useSelector(userProfileSelector);
+  const verifyEmailSendTime = useSelector(verifyEmailSendTimeSelector);
+
+  const sendVerifyEmail = async () => {
     const { result, error } = await api.authFetch(
-      `/user/changeemail`,
+      `/user/resendverifyemail`,
       {},
       {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          password: formData.password,
-          newEmail: formData.email,
-        }),
       }
     );
 
     if (result) {
-      if (isMounted.current) {
-        setServerError("");
-        setIsChange(false);
-      }
-
-      dispatch(
-        setLoggedInUser({
-          username: loggedInUser.username,
-          email: formData.email,
-        })
-      );
+      dispatch(fetchUserProfile());
+      dispatch(setVerifyEmailSendTime(Date.now()));
+      setTimeNow(Date.now());
     }
 
     if (error) {
@@ -66,75 +49,43 @@ const Email = ({ email }) => {
     }
   };
 
+  const waitSeconds = parseInt(Math.max(0, verifyEmailSendTime + 60 * 1000 - timeNow)  / 1000);
   useEffect(() => {
-    isChange && inputRef?.current?.focus();
-  }, [isChange]);
+    if (isMounted.current) {
+      if (waitSeconds > 0) {
+        setServerError("Verification email has been sent out, please check your mailbox.");
+      } else {
+        setServerError("");
+      }
+    }
+
+    const updateNow = () => {
+      if (isMounted.current) {
+        setTimeNow(Date.now());
+      }
+    };
+    setTimeout(updateNow, 1000);
+    // Avoid the settimeout chain interruption.
+    setTimeout(updateNow, 2000);
+  }, [waitSeconds, isMounted])
 
   return (
     <StyledItem>
       <StyledTitle>Email</StyledTitle>
-      {!isChange && (
-        <div>
-          <EditWrapper>
-            <StyledText>{email}</StyledText>
+      <EditWrapper>
+        <StyledText>{userProfile.email}</StyledText>
+        {
+          !userProfile.emailVerified && (
             <EditButton
-              onClick={() => {
-                setIsChange(true);
-              }}
+              disabled={ waitSeconds > 0 }
+              onClick={sendVerifyEmail}
             >
-              Edit
+              { waitSeconds > 0 ? `${waitSeconds}s` : "Verify" }
             </EditButton>
-          </EditWrapper>
-        </div>
-      )}
-      {isChange && (
-        <>
-          <Form onSubmit={handleSubmit(onSubmit)}>
-            <Form.Field>
-              <EditWrapper>
-                <StyledFormInputWrapper>
-                  <StyledFormInput
-                    name="email"
-                    type="text"
-                    placeholder="Email"
-                    defaultValue={email}
-                    ref={e => {
-                      inputRef.current = e
-                      register(e, {
-                        required: {
-                          value: true,
-                          message: "This field is required"
-                        }
-                      })
-                    }}
-                    error={errors.email}
-                  />
-                  {errors.email && <FormError>{errors.email.message}</FormError>}
-                </StyledFormInputWrapper>
-              </EditWrapper>
-              <EditWrapper>
-                <StyledFormInputWrapper>
-                  <StyledFormInput
-                    name="password"
-                    type="password"
-                    placeholder="Please fill password"
-                    ref={register({
-                      required: {
-                        value: true,
-                        message: "This field is required"
-                      }
-                    })}
-                    error={errors.password}
-                  />
-                  {errors.password && <FormError>{errors.password.message}</FormError>}
-                </StyledFormInputWrapper>
-                <EditButton type="submit">Change</EditButton>
-              </EditWrapper>
-            </Form.Field>
-          </Form>
-          {serverError && <FormError>{serverError}</FormError>}
-        </>
-      )}
+          )
+        }
+      </EditWrapper>
+      {serverError && <FormError>{serverError}</FormError>}
     </StyledItem>
   );
 };

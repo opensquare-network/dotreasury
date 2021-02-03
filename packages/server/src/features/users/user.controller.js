@@ -177,6 +177,7 @@ class UserController {
     ctx.body = {
       username: user.username,
       email: user.email,
+      emailVerified: user.emailVerified,
       addresses: addresses.map((addr) => addr.address),
       notification: { ...DefaultUserNotification, ...user.notification },
     };
@@ -325,6 +326,22 @@ class UserController {
       ctx.body = false;
       return;
     }
+
+    ctx.body = true;
+  }
+
+  async resendVerifyEmail(ctx) {
+    const user = ctx.request.user;
+
+    if (user.emailVerified) {
+      throw new HttpError(400, "Email is already verified.");
+    }
+
+    mailService.sendVerificationEmail({
+      username: user.username,
+      email: user.email,
+      token: user.verifyToken,
+    });
 
     ctx.body = true;
   }
