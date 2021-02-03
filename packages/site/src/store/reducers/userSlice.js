@@ -6,6 +6,7 @@ const userSlice = createSlice({
   initialState: {
     loggedInUser: JSON.parse(localStorage.getItem("loggedInUser")),
     userProfile: {},
+    verifyEmailSendTime: 0,
   },
   reducers: {
     setLoggedInUser(state, { payload }) {
@@ -19,10 +20,13 @@ const userSlice = createSlice({
     setUserProfile(state, { payload }) {
       state.userProfile = payload;
     },
+    setVerifyEmailSendTime(state, { payload }) {
+      state.verifyEmailSendTime = payload;
+    },
   },
 });
 
-export const { setLoggedInUser, setUserProfile } = userSlice.actions;
+export const { setLoggedInUser, setUserProfile, setVerifyEmailSendTime } = userSlice.actions;
 
 export const fetchUserProfile = () => async (dispatch) => {
   const { result } = await api.authFetch("/user/profile");
@@ -46,5 +50,6 @@ export const isLoggedInSelector = createSelector(
   (user) => !!user
 );
 export const userProfileSelector = (state) => state.users.userProfile;
+export const verifyEmailSendTimeSelector = (state) => state.users.verifyEmailSendTime;
 
 export default userSlice.reducer;
