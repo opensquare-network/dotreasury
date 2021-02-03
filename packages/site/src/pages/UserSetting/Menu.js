@@ -39,7 +39,6 @@ const ItemImage = styled(GrayImage)`
 `
 
 const Menu = ({ tab, setTab }) => {
-  console.log(tab)
   return (
     <Wrapper>
       <Item selected={tab === ACCOUNT_SETTING || !tab} onClick={() => setTab(ACCOUNT_SETTING)}>

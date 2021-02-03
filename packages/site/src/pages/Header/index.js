@@ -21,7 +21,7 @@ const Header = () => {
     "/resetpassword",
     "/settings",
     "/verifyemail",
-  ].includes(location.pathname);
+  ].includes(location.pathname) || location.pathname.includes("/settings");
 
   return (
     <Wrapper>
