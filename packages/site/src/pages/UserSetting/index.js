@@ -48,7 +48,7 @@ export const ACCOUNT_SETTING = "account-setting";
 export const NOTIFICATION = "notification";
 export const LINKED_ADDRESSES = "linked-addresses";
 
-const UserSetting = () => {
+const UserSetting = ({ location }) => {
   const { tabname } = useParams();
   const defaultTabName = [
     ACCOUNT_SETTING,
