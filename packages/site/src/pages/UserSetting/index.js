@@ -81,7 +81,14 @@ const UserSetting = () => {
   }
 
   if (!loggedInUser) {
-    return <Redirect to="/" />;
+    return (
+      <Redirect
+        to={{
+          pathname: "/login",
+          search: "?returnUrl=" + encodeURIComponent(location.pathname),
+        }}
+      />
+    );
   }
 
   const { username, email, emailVerified } = userProfile;
