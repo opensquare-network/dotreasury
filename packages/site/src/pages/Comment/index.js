@@ -101,7 +101,7 @@ const Comment = ({ type, index }) => {
   const setReplyToCallback = useCallback((reply) => {
     setContent(reply);
     inputRef.current.scrollIntoView();
-    inputRef.current.querySelector("textarea").focus();
+    inputRef.current.querySelector("textarea")?.focus();
   }, [inputRef]);
 
   const authors = unique(
