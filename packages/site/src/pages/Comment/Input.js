@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled, { css } from "styled-components";
+import { useHistory, useLocation } from "react-router";
 
 import MarkdownEditor from "../../components/MarkdownEditor";
 import Markdown from "../../components/Markdown";
@@ -11,7 +12,11 @@ import {
   clearCommentSelector,
   setClearComment,
 } from "../../store/reducers/commentSlice";
-import { loggedInUserSelector } from "../../store/reducers/userSlice";
+import {
+  loggedInUserSelector,
+  fetchUserProfile,
+  userProfileSelector,
+} from "../../store/reducers/userSlice";
 import { PRIMARY_THEME_COLOR } from "../../constants";
 
 const Wrapper = styled.div`
@@ -37,7 +42,7 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-const PreviewButton = styled(Button)`
+const ButtonSecondary = styled(Button)`
   ${(p) =>
     p.active &&
     css`
@@ -49,46 +54,99 @@ const PreviewButton = styled(Button)`
     `}
 `;
 
-const Input = React.forwardRef(({ type, index, authors, content, setContent }, ref) => {
-  const [isPreview, setIsPreview] = useState(false);
-  const dispatch = useDispatch();
-  const loggedInUser = useSelector(loggedInUserSelector);
-  const clearComment = useSelector(clearCommentSelector);
+const Input = React.forwardRef(
+  ({ type, index, authors, content, setContent }, ref) => {
+    const history = useHistory();
+    const location = useLocation();
+    const [isPreview, setIsPreview] = useState(false);
+    const dispatch = useDispatch();
+    const loggedInUser = useSelector(loggedInUserSelector);
+    const userProfile = useSelector(userProfileSelector);
+    const clearComment = useSelector(clearCommentSelector);
 
-  const post = () => {
-    dispatch(postComment(type, index, content));
-  };
+    useEffect(() => {
+      // If user has logged in and profile is not fetched, fetch it now
+      if (loggedInUser && loggedInUser.username !== userProfile.username) {
+        dispatch(fetchUserProfile());
+      }
+    }, [dispatch, loggedInUser, userProfile]);
 
-  useEffect(() => {
-    if (clearComment) {
-      setContent("");
-      dispatch(setClearComment(false));
-    }
-  }, [clearComment, dispatch, setContent]);
+    const post = () => {
+      dispatch(postComment(type, index, content));
+    };
 
-  return (
-    <Wrapper ref={ref}>
-      {!isPreview && (
-        <MarkdownEditor md={content} onChange={setContent} authors={authors} />
-      )}
-      {isPreview && (
-        <MarkdownWrapper>
-          <Markdown md={content || ""} />
-        </MarkdownWrapper>
-      )}
-      <ButtonWrapper>
-        <PreviewButton
-          active={isPreview}
-          onClick={() => setIsPreview(!isPreview)}
-        >
-          Preview
-        </PreviewButton>
-        <ButtonPrimary disabled={!loggedInUser} onClick={post}>
-          Comment
-        </ButtonPrimary>
-      </ButtonWrapper>
-    </Wrapper>
-  );
-});
+    useEffect(() => {
+      if (clearComment) {
+        setContent("");
+        dispatch(setClearComment(false));
+      }
+    }, [clearComment, dispatch, setContent]);
+
+    const { emailVerified } = userProfile;
+
+    return (
+      <Wrapper ref={ref}>
+        {loggedInUser &&
+          emailVerified &&
+          (isPreview ? (
+            <MarkdownWrapper>
+              <Markdown md={content || ""} />
+            </MarkdownWrapper>
+          ) : (
+            <MarkdownEditor
+              md={content}
+              onChange={setContent}
+              authors={authors}
+            />
+          ))}
+        {loggedInUser ? (
+          emailVerified ? (
+            <ButtonWrapper>
+              <ButtonSecondary
+                active={isPreview}
+                onClick={() => setIsPreview(!isPreview)}
+              >
+                Preview
+              </ButtonSecondary>
+              <ButtonPrimary disabled={!loggedInUser} onClick={post}>
+                Comment
+              </ButtonPrimary>
+            </ButtonWrapper>
+          ) : (
+            <ButtonWrapper>
+              <ButtonPrimary
+                onClick={() => {
+                  history.push("/settings");
+                }}
+              >
+                Verify email
+              </ButtonPrimary>
+            </ButtonWrapper>
+          )
+        ) : (
+          <ButtonWrapper>
+            <ButtonSecondary
+              onClick={() => {
+                history.push("/register");
+              }}
+            >
+              Sign up
+            </ButtonSecondary>
+            <ButtonPrimary
+              onClick={() => {
+                history.push({
+                  pathname: "/login",
+                  search: "?returnUrl=" + encodeURIComponent(location.pathname),
+                });
+              }}
+            >
+              Login
+            </ButtonPrimary>
+          </ButtonWrapper>
+        )}
+      </Wrapper>
+    );
+  }
+);
 
 export default Input;
