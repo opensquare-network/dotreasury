@@ -55,7 +55,7 @@ export default function App() {
               <Route exact path="/burnt" component={Burnt} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
-              <Route exact path="/settings" component={UserSetting} />
+              <Route exact path="/settings/:tabname?" component={UserSetting} />
               <Route exact path="/forget" component={ForgetPassword} />
               <Route exact path="/resetpassword" component={ResetPassword} />
               <Route exact path="/verifyemail" component={VerifyEmail} />

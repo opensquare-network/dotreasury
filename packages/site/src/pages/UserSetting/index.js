@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
+import { useParams, useHistory } from "react-router";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -43,13 +44,19 @@ const CardWrapper = styled(Card)`
   }
 `;
 
-export const ACCOUNT_SETTING = "account_setting";
+export const ACCOUNT_SETTING = "account-setting";
 export const NOTIFICATION = "notification";
-export const LINKED_ADDRESSES = "linked_addresses";
+export const LINKED_ADDRESSES = "linked-addresses";
 
 const UserSetting = () => {
+  const { tabname } = useParams();
+  const defaultTabName = [
+    ACCOUNT_SETTING,
+    NOTIFICATION,
+    LINKED_ADDRESSES].includes(tabname) ? tabname : ACCOUNT_SETTING;
+  const history = useHistory();
   const dispatch = useDispatch();
-  const [tab, setTab] = useState(ACCOUNT_SETTING);
+  const [tab, setTab] = useState(defaultTabName);
   const loggedInUser = useSelector(loggedInUserSelector);
 
   const username = loggedInUser?.username;
@@ -60,7 +67,20 @@ const UserSetting = () => {
     }
   }, [dispatch, username]);
 
+  useEffect(() => {
+    setTab(defaultTabName);
+  }, [defaultTabName]);
+
   const userProfile = useSelector(userProfileSelector);
+
+  const updateTab = (tabName) => {
+    setTab(tabName)
+    if (tabName === ACCOUNT_SETTING) {
+      history.push("/settings")
+    } else {
+      history.push(`/settings/${tabName}`)
+    }
+  }
 
   if (!loggedInUser) {
     return <Redirect to="/" />;
@@ -68,7 +88,7 @@ const UserSetting = () => {
 
   return (
     <Wrapper>
-      <Menu tab={tab} setTab={setTab} />
+      <Menu tab={tab} setTab={updateTab} />
       <CardWrapper>
         {tab === ACCOUNT_SETTING && (
           <div>

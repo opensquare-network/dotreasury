@@ -41,7 +41,7 @@ const ItemImage = styled(GrayImage)`
 const Menu = ({ tab, setTab }) => {
   return (
     <Wrapper>
-      <Item selected={tab === ACCOUNT_SETTING} onClick={() => setTab(ACCOUNT_SETTING)}>
+      <Item selected={tab === ACCOUNT_SETTING || !tab} onClick={() => setTab(ACCOUNT_SETTING)}>
         <ItemImage src="/imgs/setting.svg" />
         <ItemText>Account settings</ItemText>
       </Item>
