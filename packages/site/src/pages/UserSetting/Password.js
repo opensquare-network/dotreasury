@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { useDispatch } from "react-redux"
 import { useForm } from "react-hook-form";
 import { Form } from "semantic-ui-react";
 import api from "../../services/scanApi";
@@ -13,6 +14,7 @@ import {
 } from "./components";
 import FormError from "../../components/FormError";
 import { useIsMounted } from "../../utils/hooks";
+import { addToast } from "../../store/reducers/toastSlice";
 
 const Password = () => {
   const { register, handleSubmit, errors } = useForm();
@@ -20,6 +22,7 @@ const Password = () => {
   const isMounted = useIsMounted();
   const currentPasswordRef = useRef(null);
   const newPasswordRef = useRef(null);
+  const dispatch = useDispatch();
 
   const onSubmit = async (formData) => {
     const { result, error } = await api.authFetch(
@@ -46,6 +49,10 @@ const Password = () => {
         if (newPasswordRef && newPasswordRef.current) {
           newPasswordRef.current.value = "";
         }
+        dispatch(addToast({
+          type: "success",
+          message: "Change password sucess"
+        }))
       }
     }
 

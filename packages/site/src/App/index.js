@@ -26,6 +26,7 @@ import UserSetting from "../pages/UserSetting";
 import ForgetPassword from "../pages/ForgetPassword";
 import ResetPassword from "../pages/ResetPassword";
 import VerifyEmail from "../pages/VerifyEmail";
+import Toast from "../pages/Toast";
 
 export default function App() {
   return (
@@ -63,6 +64,7 @@ export default function App() {
           </Container>
         </PageWrapper>
         <Footer />
+        <Toast />
       </Wrapper>
     </Router>
   );
