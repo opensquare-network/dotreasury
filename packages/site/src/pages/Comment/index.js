@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useDeepCompareEffect from "use-deep-compare-effect";
 import styled from "styled-components";
@@ -35,6 +35,7 @@ const DEFAULT_QUERY_PAGE = 1;
 
 const Comment = ({ type, index }) => {
   const commentRef = useRef(null);
+  const inputRef = useRef(null);
   const history = useHistory();
   const dispatch = useDispatch();
   const [refreshComment, setRefreshComment] = useState(0);
@@ -92,10 +93,16 @@ const Comment = ({ type, index }) => {
   // then we always scroll the comments to view.
   const actualPage = comments.page;
   useEffect(() => {
-    if (searchPage) {
+    if (searchPage && !hashCommentId) {
       commentRef.current.scrollIntoView();
     }
-  }, [searchPage, actualPage]);
+  }, [searchPage, actualPage, hashCommentId]);
+
+  const setReplyToCallback = useCallback((reply) => {
+    setContent(reply);
+    inputRef.current.scrollIntoView();
+    inputRef.current.querySelector("textarea").focus();
+  }, [inputRef]);
 
   const authors = unique(
     (comments?.items || [])
@@ -103,9 +110,9 @@ const Comment = ({ type, index }) => {
       .filter((v) => !!v)
   );
 
-  const onReplyButton = (reply) => {
-    setContent(reply);
-  };
+  const replyEvent = (user) => {
+    setReplyToCallback(`[@${user}](https://dotreasury.com/user/${user}) `);
+  }
 
   return (
     <div>
@@ -116,7 +123,8 @@ const Comment = ({ type, index }) => {
           <CommentList
             comments={comments}
             refCommentId={refCommentId}
-            onReplyButton={onReplyButton}
+            onReplyButton={setReplyToCallback}
+            replyEvent={replyEvent}
           />
           <ResponsivePagination
             activePage={comments.page + 1}
@@ -134,6 +142,7 @@ const Comment = ({ type, index }) => {
           authors={authors}
           content={content}
           setContent={setContent}
+          ref={inputRef}
         />
       </Wrapper>
     </div>

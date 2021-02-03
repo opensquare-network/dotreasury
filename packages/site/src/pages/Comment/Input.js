@@ -49,7 +49,7 @@ const PreviewButton = styled(Button)`
     `}
 `;
 
-const Input = ({ type, index, authors, content, setContent }) => {
+const Input = React.forwardRef(({ type, index, authors, content, setContent }, ref) => {
   const [isPreview, setIsPreview] = useState(false);
   const dispatch = useDispatch();
   const loggedInUser = useSelector(loggedInUserSelector);
@@ -67,7 +67,7 @@ const Input = ({ type, index, authors, content, setContent }) => {
   }, [clearComment, dispatch, setContent]);
 
   return (
-    <Wrapper>
+    <Wrapper ref={ref}>
       {!isPreview && (
         <MarkdownEditor md={content} onChange={setContent} authors={authors} />
       )}
@@ -89,6 +89,6 @@ const Input = ({ type, index, authors, content, setContent }) => {
       </ButtonWrapper>
     </Wrapper>
   );
-};
+});
 
 export default Input;
