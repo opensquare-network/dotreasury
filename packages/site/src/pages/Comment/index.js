@@ -20,6 +20,7 @@ import { useQuery } from "../../utils/hooks";
 
 import { useLocation } from "react-router-dom";
 import { useHistory } from "react-router";
+import NoComment from "./NoComment";
 
 const Header = styled(SubTitle)`
   margin-bottom: 16px;
@@ -110,20 +111,23 @@ const Comment = ({ type, index }) => {
     <div>
       <Header ref={commentRef}>Comment</Header>
       <Wrapper>
-        <CommentList
-          comments={comments}
-          refCommentId={refCommentId}
-          onReplyButton={onReplyButton}
-        />
-        <ResponsivePagination
-          activePage={comments.page + 1}
-          totalPages={totalPages}
-          onPageChange={(_, { activePage }) => {
-            history.push({
-              search: `?page=${activePage}`,
-            });
-          }}
-        />
+        {(!comments || comments.items?.length === 0) && <NoComment />}
+        {comments && comments.items?.length > 0 && <div>
+          <CommentList
+            comments={comments}
+            refCommentId={refCommentId}
+            onReplyButton={onReplyButton}
+          />
+          <ResponsivePagination
+            activePage={comments.page + 1}
+            totalPages={totalPages}
+            onPageChange={(_, { activePage }) => {
+              history.push({
+                search: `?page=${activePage}`,
+              });
+            }}
+          />
+        </div>}
         <Input
           type={type}
           index={index}
