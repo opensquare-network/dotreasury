@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import ReactMarkdown from "react-markdown";
 
@@ -122,9 +122,31 @@ const Wrapper = styled.div`
   } */
 `
 
-const Markdown = ({ md }) => {
+const Markdown = ({ md, replyEvent }) => {
+  const mdRef = useRef(null);
+
+  useEffect(() => {
+    if (mdRef && mdRef.current) {
+      const links = mdRef.current.querySelectorAll("a");
+      links.forEach(item => {
+        const reMetion = /https:\/\/dotreasury.com\/user\/(\w+)/g;
+        let match;
+        match = reMetion.exec(item.href)
+        if (match) {
+          const [, username] = match;
+          item.onclick = (e) => {
+            e.preventDefault();
+            if (replyEvent) {
+              replyEvent(username)
+            }
+          }
+        }
+      })
+    }
+  }, [replyEvent])
+
 	return (
-    <Wrapper>
+    <Wrapper ref={mdRef}>
       <ReactMarkdown className="mde-preview-content" source={md} linkTarget='_blank' />
     </Wrapper>
   )

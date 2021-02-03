@@ -165,7 +165,7 @@ const TimeWrapper = styled.div`
   color: ${TEXT_DARK_DISABLE};
 `;
 
-const CommentItem = ({ index, comment, refCommentId, onReplyButton }) => {
+const CommentItem = ({ index, comment, refCommentId, onReplyButton, replyEvent }) => {
   const [highLight, setHighLight] = useState(false);
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(isLoggedInSelector);
@@ -226,7 +226,7 @@ const CommentItem = ({ index, comment, refCommentId, onReplyButton }) => {
         {isTop && <TopLabel>top</TopLabel>}
       </HeaderWrapper>
       <ContnetWrapper>
-        <Markdown md={comment.content} />
+        <Markdown md={comment.content} replyEvent={replyEvent} />
         <ButtonList>
           <ReplayButton
             onClick={() =>
