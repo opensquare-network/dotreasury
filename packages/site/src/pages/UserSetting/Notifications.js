@@ -10,6 +10,7 @@ import {
   userProfileSelector,
   fetchUserProfile,
 } from "../../store/reducers/userSlice";
+import { addToast } from "../../store/reducers/toastSlice";
 
 const Wrapper = styled.div`
   display: flex;
@@ -44,10 +45,17 @@ const Notifications = ({ username }) => {
 
     if (result) {
       dispatch(fetchUserProfile());
+      dispatch(addToast({
+        type: "success",
+        message: "Change notification success"
+      }))
     }
 
     if (error) {
-      //TODO: show toast message
+      dispatch(addToast({
+        type: "error",
+        message: "Change notification error"
+      }))
     }
   };
 

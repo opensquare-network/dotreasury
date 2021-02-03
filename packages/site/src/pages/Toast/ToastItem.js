@@ -36,7 +36,6 @@ const TOAST_TYPES = [
 ]
 
 const ToastItem = ({ type, message, id }) => {
-  
   const dispatch = useDispatch();
 
   useEffect(() => {
