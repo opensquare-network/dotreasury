@@ -21,17 +21,18 @@ const FlexWrapper = styled.div`
   `}
 `;
 
-const bountyStates = [
-  "Proposed",
-  "Approved",
-  "Funded",
-  "CuratorProposed",
-  "Active",
-  "PendingPayout",
-];
+const BountyStates = Object.freeze({
+  Proposed: 0,
+  Rejected: 1,
+  Approved: 2,
+  Funded: 3,
+  CuratorProposed: 4,
+  Active: 5,
+  PendingPayout: 6,
+});
 
-function indexBountyState(bountyDetail) {
-  return bountyStates.indexOf(bountyDetail.latestState?.state);
+function getBountyState(bountyDetail) {
+  return BountyStates[bountyDetail.latestState?.state] ?? -1;
 }
 
 const InformationTable = ({ loading }) => {
@@ -72,7 +73,7 @@ const InformationTable = ({ loading }) => {
                 <FlexWrapper>
                   <Balance value={bountyDetail.bond} />
                   <Label>
-                    {indexBountyState(bountyDetail) > 0
+                    {getBountyState(bountyDetail) > BountyStates.Proposed
                       ? "has returned to the proposer"
                       : ""}
                   </Label>
@@ -83,7 +84,8 @@ const InformationTable = ({ loading }) => {
           <Table.Row>
             <Table.Cell>
               <TableCell title={"Fee"}>
-                {bountyDetail.latestState?.state === "Funded" ? (
+                {getBountyState(bountyDetail) <
+                BountyStates.CuratorProposed ? (
                   "--"
                 ) : (
                   <Balance value={bountyDetail.fee} />
@@ -94,7 +96,8 @@ const InformationTable = ({ loading }) => {
           <Table.Row>
             <Table.Cell>
               <TableCell title={"Curator Deposit"}>
-                {bountyDetail.latestState?.state === "Funded" ? (
+                {getBountyState(bountyDetail) <
+                BountyStates.Active ? (
                   "--"
                 ) : (
                   <Balance value={bountyDetail.curatorDeposit} />
