@@ -8,7 +8,7 @@ import {
 } from "../../store/reducers/toastSlice";
 
 const Wrapper = styled.div`
-  position: absolute;
+  position: fixed;
   width: 100vw;
   height: 0;
   left: 0;
