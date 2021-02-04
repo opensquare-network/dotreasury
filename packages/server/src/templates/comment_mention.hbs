@@ -1,7 +1,4 @@
-{{#*inline "commentUrl"}}{{siteUrl}}/{{#if (isdefined
-indexer.tipId)}}tips/{{indexer.tipId.blockHeight}}_{{indexer.tipId.tipHash}}{{/if}}{{#if (isdefined
-indexer.proposalId)}}proposals/{{indexer.proposalId}}{{/if}}{{#if (isdefined
-indexer.bountyId)}}bounties/{{indexer.bountyId}}{{/if}}?page={{page}}#{{commentId}}{{/inline}}
+{{#*inline "commentUrl"}}{{siteUrl}}/{{pluralize indexer.type}}/{{#if (eq indexer.type "tip")}}{{indexer.index.blockHeight}}_{{indexer.index.tipHash}}{{else}}{{indexer.index}}{{/if}}?page={{page}}#{{commentId}}{{/inline}}
 
 <!DOCTYPE html>
 <html lang="en">

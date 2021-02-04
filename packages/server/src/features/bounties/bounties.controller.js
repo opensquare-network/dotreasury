@@ -150,13 +150,12 @@ class BountiesController {
     const { page, pageSize } = extractPage(ctx);
     const bountyIndex = parseInt(ctx.params.bountyIndex);
 
-    ctx.body = await commentService.getComments(
-      {
-        bountyId: bountyIndex,
-      },
-      page,
-      pageSize
-    );
+    ctx.body = await commentService.getComments({
+      type: "bounty",
+      index: bountyIndex,
+    },
+    page,
+    pageSize);
   }
 
   async postBountyComment(ctx) {
@@ -174,7 +173,10 @@ class BountiesController {
     }
 
     ctx.body = await commentService.postComment(
-      { bountyId: bountyIndex },
+      {
+        type: "bounty",
+        index: bountyIndex,
+      },
       content,
       user
     );
