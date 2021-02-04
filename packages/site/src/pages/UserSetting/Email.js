@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
 import api from "../../services/scanApi";
 import { useDispatch, useSelector } from "react-redux";
+import styled from "styled-components";
+import { Image } from "semantic-ui-react";
 
-import {
-  StyledItem,
-  StyledTitle,
-  EditWrapper,
-  StyledText,
-  EditButton,
-} from "./components";
+import { StyledItem, StyledTitle, EditWrapper, EditButton } from "./components";
 import FormError from "../../components/FormError";
+import TextMinor from "../../components/TextMinor";
+import TextDisable from "../../components/TextDisable";
 import { useIsMounted } from "../../utils/hooks";
 import {
   userProfileSelector,
@@ -17,6 +15,29 @@ import {
   verifyEmailSendTimeSelector,
   setVerifyEmailSendTime,
 } from "../../store/reducers/userSlice";
+
+const EmailField = styled.div`
+  padding: 8px 16px;
+  background: #fbfbfb;
+  border-radius: 4px;
+  flex-grow: 1;
+  max-width: calc(100% - 92px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+const EmailInfo = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const VerifiedInfo = styled.div`
+  display: flex;
+  align-items: center;
+  & > :first-child {
+    margin-right: 6px;
+  }
+`;
 
 const Email = () => {
   const dispatch = useDispatch();
@@ -50,7 +71,9 @@ const Email = () => {
     }
   };
 
-  const waitSeconds = parseInt(Math.max(0, verifyEmailSendTime + 60 * 1000 - timeNow)  / 1000);
+  const waitSeconds = parseInt(
+    Math.max(0, verifyEmailSendTime + 60 * 1000 - timeNow) / 1000
+  );
   useEffect(() => {
     if (emailVerified) {
       if (isMounted.current) {
@@ -61,7 +84,9 @@ const Email = () => {
 
     if (isMounted.current) {
       if (waitSeconds > 0) {
-        setServerError("Verification email has been sent out, please check your mailbox.");
+        setServerError(
+          "Verification email has been sent out, please check your mailbox."
+        );
       } else {
         setServerError("");
       }
@@ -85,17 +110,24 @@ const Email = () => {
     <StyledItem>
       <StyledTitle>Email</StyledTitle>
       <EditWrapper>
-        <StyledText>{email}</StyledText>
-        {
-          !emailVerified && (
-            <EditButton
-              disabled={ waitSeconds > 0 }
-              onClick={sendVerifyEmail}
-            >
-              { waitSeconds > 0 ? `${waitSeconds}s` : "Verify" }
-            </EditButton>
-          )
-        }
+        <EmailField>
+          <EmailInfo>
+            <TextMinor>{email}</TextMinor>
+            <VerifiedInfo>
+              <Image
+                src={emailVerified ? "/imgs/good.svg" : "/imgs/warning.svg"}
+              />
+              <TextDisable>
+                {emailVerified ? "Verified" : "Unverified"}{" "}
+              </TextDisable>
+            </VerifiedInfo>
+          </EmailInfo>
+        </EmailField>
+        {!emailVerified && (
+          <EditButton disabled={waitSeconds > 0} onClick={sendVerifyEmail}>
+            {waitSeconds > 0 ? `${waitSeconds}s` : "Resend"}
+          </EditButton>
+        )}
       </EditWrapper>
       {serverError && <FormError>{serverError}</FormError>}
     </StyledItem>
