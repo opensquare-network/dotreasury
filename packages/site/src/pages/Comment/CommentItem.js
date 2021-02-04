@@ -177,7 +177,7 @@ const CommentItem = ({ index, comment, refCommentId, onReplyButton, replyEvent }
     comment.reactions?.filter((r) => r.reaction === REACTION_THUMBUP).length ||
     0;
   const highlight = comment.reactions?.some(
-    (r) => r.user.username === loggedInUser?.username
+    (r) => r.user?.username === loggedInUser?.username
   );
   const ownComment = comment.author?.username === loggedInUser?.username;
 
