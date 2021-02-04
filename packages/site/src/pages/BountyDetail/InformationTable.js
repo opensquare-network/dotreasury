@@ -10,28 +10,29 @@ import Balance from "../../components/Balance";
 import Label from "../../components/Label";
 import { mrgap } from "../../styles";
 
-import {
-  bountyDetailSelector,
-} from "../../store/reducers/bountySlice";
+import { bountyDetailSelector } from "../../store/reducers/bountySlice";
 
 const FlexWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  ${css`${mrgap("16px")}`}
+  ${css`
+    ${mrgap("16px")}
+  `}
 `;
 
-const bountyStates = [
-  'Proposed',
-  'Approved',
-  'Funded',
-  'CuratorProposed',
-  'Active',
-  'PendingPayout',
-];
+const BountyStates = Object.freeze({
+  Proposed: 0,
+  Rejected: 1,
+  Approved: 2,
+  Funded: 3,
+  CuratorProposed: 4,
+  Active: 5,
+  PendingPayout: 6,
+});
 
-function indexBountyState(bountyDetail) {
-  return bountyStates.indexOf(bountyDetail.latestState?.state);
+function getBountyState(bountyDetail) {
+  return BountyStates[bountyDetail.latestState?.state] ?? -1;
 }
 
 const InformationTable = ({ loading }) => {
@@ -71,7 +72,11 @@ const InformationTable = ({ loading }) => {
               <TableCell title={"Bond"}>
                 <FlexWrapper>
                   <Balance value={bountyDetail.bond} />
-                  <Label>{indexBountyState(bountyDetail) > 0 ? "has returned to the proposer" : ""}</Label>
+                  <Label>
+                    {getBountyState(bountyDetail) > BountyStates.Proposed
+                      ? "has returned to the proposer"
+                      : ""}
+                  </Label>
                 </FlexWrapper>
               </TableCell>
             </Table.Cell>
@@ -79,22 +84,30 @@ const InformationTable = ({ loading }) => {
           <Table.Row>
             <Table.Cell>
               <TableCell title={"Fee"}>
-                <Balance value={bountyDetail.fee} />
+                {getBountyState(bountyDetail) <
+                BountyStates.CuratorProposed ? (
+                  "--"
+                ) : (
+                  <Balance value={bountyDetail.fee} />
+                )}
               </TableCell>
             </Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.Cell>
               <TableCell title={"Curator Deposit"}>
-                <Balance value={bountyDetail.curatorDeposit} />
+                {getBountyState(bountyDetail) <
+                BountyStates.Active ? (
+                  "--"
+                ) : (
+                  <Balance value={bountyDetail.curatorDeposit} />
+                )}
               </TableCell>
             </Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.Cell>
-              <TableCell title={"Title"}>
-                {bountyDetail.title}
-              </TableCell>
+              <TableCell title={"Title"}>{bountyDetail.title}</TableCell>
             </Table.Cell>
           </Table.Row>
         </Table.Body>
