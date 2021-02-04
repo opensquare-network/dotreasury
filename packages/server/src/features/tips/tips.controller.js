@@ -140,7 +140,10 @@ class TipsController {
 
     ctx.body = await commentService.getComments({
       type: "tip",
-      index: `${blockHeight}_${tipHash}`,
+      index: {
+        blockHeight,
+        tipHash,
+      },
     },
     page,
     pageSize);
@@ -167,7 +170,10 @@ class TipsController {
     ctx.body = await commentService.postComment(
       {
         type: "tip",
-        index: `${blockHeight}_${tipHash}`,
+        index: {
+          blockHeight,
+          tipHash,
+        },
       },
       content,
       user

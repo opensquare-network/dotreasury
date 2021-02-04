@@ -1,4 +1,4 @@
-{{#*inline "commentUrl"}}{{siteUrl}}/{{pluralize indexer.type}}/{{indexer.index}}?page={{page}}#{{commentId}}{{/inline}}
+{{#*inline "commentUrl"}}{{siteUrl}}/{{pluralize indexer.type}}/{{#if (eq indexer.type "tip")}}{{indexer.index.blockHeight}}_{{indexer.index.tipHash}}{{else}}{{indexer.index}}{{/if}}?page={{page}}#{{commentId}}{{/inline}}
 
 <!DOCTYPE html>
 <html lang="en">

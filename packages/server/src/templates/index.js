@@ -6,6 +6,10 @@ const { stringCamelCase } = require("@polkadot/util");
 
 Handlebars.registerHelper("pluralize", pluralize);
 Handlebars.registerHelper("isdefined", (v) => v !== undefined);
+Handlebars.registerHelper('eq', function () {
+  const args = Array.prototype.slice.call(arguments, 0, -1);
+  return args.every(expression => args[0] == expression);
+});
 
 const templates = fs
   .readdirSync(__dirname)
