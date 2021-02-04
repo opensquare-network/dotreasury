@@ -13,7 +13,7 @@ import ButtonLabel from "../../components/ButtonLabel";
 import TextMinor from "../../components/TextMinor";
 import { TEXT_DARK_MAJOR } from "../../constants";
 
-const Wrapper = styled.div`
+const Wrapper = styled.a`
   display: flex;
   align-items: center;
   & > img {
