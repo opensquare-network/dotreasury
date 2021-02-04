@@ -17,6 +17,7 @@ import { TEXT_DARK_MAJOR } from "../../constants";
 import { useIndentity } from "../../utils/hooks";
 import UserAvatar from "../../components/User/Avatar";
 import { getGravatarSrc } from "../../utils";
+import { encodeKusamaAddress } from "../../services/chainApi";
 
 const Wrapper = styled.a`
   display: flex;
@@ -52,6 +53,7 @@ const UserLogin = () => {
   const address = userProfile?.addresses?.[0];
   const { name: addressName } = useIndentity(address);
   const [addressDisplayName, setAddressDisplayName] = useState("");
+  const kusamaAddress = encodeKusamaAddress(address);
 
   useEffect(() => {
     if (loggedInUser && loggedInUser.username !== userProfile.username) {
@@ -61,9 +63,10 @@ const UserLogin = () => {
 
   useEffect(() => {
     if (address) {
+      const kusamaAddress = encodeKusamaAddress(address);
       const addressDisplayName = addressName ?
         addressName :
-        `${address.substring(0, 6)}...${address.substring(address.length - 6, address.length)}`;
+        `${kusamaAddress.substring(0, 6)}...${kusamaAddress.substring(kusamaAddress.length - 6, kusamaAddress.length)}`;
       setAddressDisplayName(addressDisplayName);
     }
   }, [address, addressName])
@@ -75,7 +78,7 @@ const UserLogin = () => {
           history.push("/settings");
         }}>
           {address && <>
-            <UserAvatar address={address} size={20} />
+            <UserAvatar address={kusamaAddress} size={20} />
             <TextMinor>{addressDisplayName}</TextMinor>
           </>}
           {!address && <>

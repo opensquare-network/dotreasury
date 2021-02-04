@@ -2,6 +2,7 @@
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { isWeb3Injected, web3FromAddress } from '@polkadot/extension-dapp'
 import { stringToHex } from '@polkadot/util';
+import { encodeAddress } from "@polkadot/keyring";
 
 import { DEFAULT_NODE_URL, DEFAULT_NODES } from "../constants";
 
@@ -87,4 +88,12 @@ export const estimateBlocksTime = async (blocks) => {
   const api = await getApi();
   const nsPerBlock = api.consts.babe.expectedBlockTime.toNumber();
   return nsPerBlock * blocks;
+}
+
+export const encodeKusamaAddress = (address) => {
+  try {
+    return encodeAddress(address, 2);
+  } catch {
+    return "";
+  }
 }
