@@ -23,10 +23,9 @@ class UserController {
     let addrItem = addresses[0];
 
     if (addrItem?.verified) {
-      throw new HttpError(
-        400,
-        "The address is already linked with this account."
-      );
+      throw new HttpError(400, {
+        address: ["The address is already linked with this account."],
+      });
     }
 
     if (!addrItem) {
@@ -55,7 +54,9 @@ class UserController {
     const user = ctx.request.user;
 
     if (!challengeAnswer) {
-      throw new HttpError(400, "Challenge answer is not provided.");
+      throw new HttpError(400, {
+        challengeAnswer: ["Challenge answer is not provided."],
+      });
     }
 
     const addressCol = await getAddressCollection();
@@ -66,7 +67,9 @@ class UserController {
     const addrItem = addresses[0];
 
     if (!addrItem) {
-      throw new HttpError(404, "The linking address is not found");
+      throw new HttpError(404, {
+        address: ["The linking address is not found"],
+      });
     }
 
     const success = isValidSignature(
@@ -81,10 +84,9 @@ class UserController {
 
     const existing = await addressCol.findOne({ address, verified: true });
     if (existing) {
-      throw new HttpError(
-        400,
-        "The address is already linked with existing account."
-      );
+      throw new HttpError(400, {
+        address: ["The address is already linked with existing account."],
+      });
     }
 
     const result = await addressCol.updateOne(
@@ -188,23 +190,26 @@ class UserController {
     const user = ctx.request.user;
 
     if (!oldPassword) {
-      throw new HttpError(400, "Old password must be provided.");
+      throw new HttpError(400, {
+        oldPassword: ["Old password must be provided."],
+      });
     }
 
     if (!newPassword) {
-      throw new HttpError(400, "New password must be provided.");
+      throw new HttpError(400, {
+        newPassword: ["New password must be provided."],
+      });
     }
 
     if (newPassword === oldPassword) {
-      throw new HttpError(
-        400,
-        "The new password must be different from the old one."
-      );
+      throw new HttpError(400, {
+        newPassword: ["The new password must be different from the old one."],
+      });
     }
 
     const correct = await argon2.verify(user.hashedPassword, oldPassword);
     if (!correct) {
-      throw new HttpError(401, "Incorrect old password.");
+      throw new HttpError(401, { oldPassword: ["Incorrect old password."] });
     }
 
     const hashedPassword = await argon2.hash(newPassword);
@@ -236,33 +241,31 @@ class UserController {
     const user = ctx.request.user;
 
     if (!password) {
-      throw new HttpError(400, "Password must be provided.");
+      throw new HttpError(400, { password: ["Password must be provided."] });
     }
 
     if (newEmail === user.email) {
-      throw new HttpError(
-        400,
-        "The new email address must be different from the old one."
-      );
+      throw new HttpError(400, {
+        newEmail: ["The new email address must be different from the old one."],
+      });
     }
 
     if (!validator.isEmail(newEmail)) {
-      throw new HttpError(400, "Invaild email");
+      throw new HttpError(400, { newEmail: ["Invaild email"] });
     }
 
     const correct = await argon2.verify(user.hashedPassword, password);
     if (!correct) {
-      throw new HttpError(401, "Incorrect password.");
+      throw new HttpError(401, { password: ["Incorrect password."] });
     }
 
     const userCol = await getUserCollection();
 
     const existing = await userCol.findOne({ email: newEmail });
     if (existing) {
-      throw new HttpError(
-        409,
-        "The email address has been used by another account."
-      );
+      throw new HttpError(409, {
+        newEmail: ["The email address has been used by another account."],
+      });
     }
 
     const verifyToken = randomBytes(12).toString("hex");
@@ -300,12 +303,12 @@ class UserController {
     const user = ctx.request.user;
 
     if (!password) {
-      throw new HttpError(400, "Password must be provided.");
+      throw new HttpError(400, { password: ["Password must be provided."] });
     }
 
     const correct = await argon2.verify(user.hashedPassword, password);
     if (!correct) {
-      throw new HttpError(401, "Incorrect password.");
+      throw new HttpError(401, { password: ["Incorrect password."] });
     }
 
     const addressCol = await getAddressCollection();
