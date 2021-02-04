@@ -27,7 +27,7 @@ const Wrapper = styled.div`
   pointer-events: auto;
 `;
 
-const TOAST_TYPES = ["success", "warnning", "error"];
+const TOAST_TYPES = ["success", "warning", "error"];
 
 const ToastItem = ({ type, message, id }) => {
   const dispatch = useDispatch();
@@ -35,7 +35,7 @@ const ToastItem = ({ type, message, id }) => {
   useEffect(() => {
     setTimeout(() => {
       dispatch(removeToast(id));
-    }, 3000);
+    }, 5000);
   });
   if (!message) return null;
   return (

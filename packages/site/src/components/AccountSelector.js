@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { Dropdown } from "semantic-ui-react";
 
 import Text from "./Text";
-import { PRIMARY_THEME_COLOR } from "../constants";
 
 import AccountItem from "./AccountItem";
 
@@ -24,12 +23,13 @@ const StyledDropdown = styled(Dropdown)`
   width: 100%;
   height: 64px !important;
   :active,
+  :hover,
   :focus {
-    border-color: ${PRIMARY_THEME_COLOR} !important;
+    border-color: #CCCCCC !important;
   }
   &.active,
   & .menu {
-    border-color: ${PRIMARY_THEME_COLOR} !important;
+    border-color: #CCCCCC !important;
   }
   &.ui.dropdown .menu > .item {
     padding: 0 !important;
