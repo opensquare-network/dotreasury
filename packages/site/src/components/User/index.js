@@ -5,7 +5,7 @@ import Username from "./Username";
 import Avatar from "./Avatar";
 import Badge from "./Badge";
 import ExplorerLink from "../../components/ExplorerLink";
-import {useIndentity} from "../../utils/hooks";
+import { useIndentity } from "../../utils/hooks";
 import { mrgap } from "../../styles";
 
 const Wrapper = styled.div`
