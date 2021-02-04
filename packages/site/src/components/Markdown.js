@@ -7,6 +7,8 @@ import { PRIMARY_THEME_COLOR } from "../constants";
 const Wrapper = styled.div`
 
   &, &.mde-preview-content {
+    word-break: break-word;
+
     margin-bottom: 8px;
     overflow-wrap: break-word;
 
