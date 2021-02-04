@@ -32,7 +32,7 @@ const BountyStates = Object.freeze({
 });
 
 function getBountyState(bountyDetail) {
-  return BountyStates[bountyDetail.latestState?.state];
+  return BountyStates[bountyDetail.latestState?.state] ?? -1;
 }
 
 const InformationTable = ({ loading }) => {
