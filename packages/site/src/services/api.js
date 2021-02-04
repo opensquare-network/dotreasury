@@ -22,6 +22,7 @@ class Api {
           error: {
             status: resp.status,
             message: data.message,
+            data: data.data,
           }
         })
       } else {

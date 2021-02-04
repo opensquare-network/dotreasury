@@ -9,8 +9,14 @@ const FormInput = styled.input`
   font-family: "Inter" !important;
   font-size: 14px !important;
   color: ${TEXT_DARK_MAJOR} !important;
+  :hover, :focus {
+    border-color: #CCCCCC !important;
+  }
   ${p => p.error && css`
     border-color: #EC4730 !important;
+    :hover, :focus {
+      border-color: #EC4730 !important;
+    }
   `}
 `
 

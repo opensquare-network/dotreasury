@@ -20,12 +20,12 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
   }
   
-  .ui.input input:hover,
+  /* .ui.input input:hover,
   .ui.form input:hover,
   .ui.input input:focus,
   .ui.form input:focus {
     border-color: #CCCCCC !important;
-  }
+  } */
   
   .ant-table.ant-table-small {
     font-size: 13px;

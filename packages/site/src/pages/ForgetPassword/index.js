@@ -7,7 +7,7 @@ import { Redirect } from "react-router-dom";
 import scanApi from "../../services/scanApi";
 import Card from "../../components/Card";
 import Text from "../../components/Text";
-import { TEXT_DARK_MAJOR, PRIMARY_THEME_COLOR } from "../../constants";
+import { TEXT_DARK_MAJOR } from "../../constants";
 import FormInput from "../../components/FormInput";
 import ButtonPrimary from "../../components/ButtonPrimary";
 import FormError from "../../components/FormError";
@@ -21,9 +21,6 @@ const CardWrapper = styled(Card)`
   margin-top: 28px;
   padding: 20px;
   padding: 32px;
-  .ui.form input:focus {
-    border-color: ${PRIMARY_THEME_COLOR} !important;
-  }
   label {
     color: ${TEXT_DARK_MAJOR} !important;
     font-weight: 500 !important;
@@ -149,17 +146,16 @@ function ForgetPassword({ history }) {
           <Form.Field>
             <label htmlFor="email">
               Email
-              {errors.email && (
-                <span className="text-danger">
-                  <span>*</span>
-                </span>
-              )}
             </label>
             <FormInput
               name="email"
               type="text"
+              placeholder="Email"
               ref={register({
-                required: true,
+                required: {
+                  value: true,
+                  message: "This field is required"
+                },
                 pattern: {
                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                   message: "invalid email address",
@@ -168,8 +164,8 @@ function ForgetPassword({ history }) {
               error={errors.email}
             />
             {errors.email && <FormError>{errors.email?.message}</FormError>}
+            {serverError && <FormError>{serverError}</FormError>}
           </Form.Field>
-          {serverError && <FormError>{serverError}</FormError>}
           <StyledButtonPrimary type="submit">Request reset</StyledButtonPrimary>
         </Form>
       )}

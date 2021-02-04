@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 
 import { StyledItem, StyledTitle } from "./components";
@@ -10,6 +10,7 @@ import {
   userProfileSelector,
   fetchUserProfile,
 } from "../../store/reducers/userSlice";
+import { addToast } from "../../store/reducers/toastSlice";
 
 const Wrapper = styled.div`
   display: flex;
@@ -17,14 +18,8 @@ const Wrapper = styled.div`
   justify-content: space-between;
 `;
 
-const Notifications = ({ username }) => {
+const Notifications = () => {
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (username) {
-      dispatch(fetchUserProfile());
-    }
-  }, [dispatch, username]);
   const userProfile = useSelector(userProfileSelector);
 
   const toggleMentionNotification = async () => {
@@ -44,10 +39,17 @@ const Notifications = ({ username }) => {
 
     if (result) {
       dispatch(fetchUserProfile());
+      dispatch(addToast({
+        type: "success",
+        message: "Change notification success"
+      }))
     }
 
     if (error) {
-      //TODO: show toast message
+      dispatch(addToast({
+        type: "error",
+        message: "Change notification error"
+      }))
     }
   };
 

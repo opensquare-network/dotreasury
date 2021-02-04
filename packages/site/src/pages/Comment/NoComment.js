@@ -4,7 +4,7 @@ import { Image } from "semantic-ui-react";
 
 const Wrapper = styled.div`
   width: 100%;
-  height: 100%;
+  min-height: 810px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -20,7 +20,7 @@ const NoComment = () => {
     <Wrapper>
       <div>
         <Image src={"/imgs/comment.png"} />
-        <p>Comment will be supported soon.</p>
+        <p>There is no comment here.</p>
       </div>
     </Wrapper>
   );

@@ -8,6 +8,9 @@ const Wrapper = styled.div`
     border: 0;
     width: fit-content;
     min-width: 100%;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
   }
 `
 

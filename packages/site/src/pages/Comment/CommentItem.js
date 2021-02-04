@@ -121,7 +121,7 @@ const VoteWrapper = styled(Button)`
         `
       : css`
           &:hover {
-            opacity: 0.64;
+            opacity: ${p => p.highlight ? 1 : 0.64};
           }
         `}
   ${(p) =>
@@ -165,14 +165,7 @@ const TimeWrapper = styled.div`
   color: ${TEXT_DARK_DISABLE};
 `;
 
-const CommentItem = ({
-  type,
-  index,
-  comment,
-  position,
-  refCommentId,
-  onReplyButton,
-}) => {
+const CommentItem = ({ index, comment, refCommentId, onReplyButton, replyEvent }) => {
   const [highLight, setHighLight] = useState(false);
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(isLoggedInSelector);
@@ -192,9 +185,9 @@ const CommentItem = ({
   const thumbUp = () => {
     if (isLoggedIn) {
       if (highlight) {
-        dispatch(unsetCommentReaction(type, index, commentId));
+        dispatch(unsetCommentReaction(commentId));
       } else {
-        dispatch(setCommentThumbUp(type, index, commentId));
+        dispatch(setCommentThumbUp(commentId));
       }
     }
   };
@@ -229,11 +222,11 @@ const CommentItem = ({
             </FlexWrapper>
           )}
         </TimeWrapper>
-        <Index>#{position + 1}</Index>
+        <Index>#{index + 1}</Index>
         {isTop && <TopLabel>top</TopLabel>}
       </HeaderWrapper>
       <ContnetWrapper>
-        <Markdown md={comment.content} />
+        <Markdown md={comment.content} replyEvent={replyEvent} />
         <ButtonList>
           <ReplayButton
             onClick={() =>
@@ -262,8 +255,8 @@ const CommentItem = ({
                 }
               />
               <VoteText highlight={highlight}>Up</VoteText>
+              <VoteText highlight={highlight}>({upCount})</VoteText>
             </VoteButton>
-            <VoteText highlight={highlight}>({upCount})</VoteText>
           </VoteWrapper>
         </ButtonList>
       </ContnetWrapper>

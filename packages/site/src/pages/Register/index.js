@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
-import styled, { css } from "styled-components";
-import { Form } from "semantic-ui-react";
+import styled from "styled-components";
+import { Form, Image } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
 import { setLoggedInUser } from "../../store/reducers/userSlice";
@@ -18,7 +18,6 @@ import FormInput from "../../components/FormInput";
 import FormPasswordWrapper from "../../components/FormPasswordWrapper";
 import ButtonPrimary from "../../components/ButtonPrimary";
 import Button from "../../components/Button";
-import GrayImage from "../../components/GrayImage";
 import TextMinor from "../../components/TextMinor";
 import DownloadPolkadot from "../../components/DownloadPolkadot";
 import AccountSelector from "../../components/AccountSelector";
@@ -63,7 +62,6 @@ const Header = styled(Text)`
 const HelperWrapper = styled.div`
   display: flex;
   align-items: start;
-  margin-bottom: 24px;
   & > div > * {
     margin-bottom: 0;
     display: inline;
@@ -71,20 +69,17 @@ const HelperWrapper = styled.div`
   }
 `;
 
+const HelperErrorWrapper = styled.div`
+  margin-bottom: 24px;
+`
+
 const StyledTextMnor = styled(TextMinor)`
   text-decoration: underline;
   display: inline;
 `;
 
-const CheckImage = styled(GrayImage)`
+const CheckImage = styled(Image)`
   padding: 4px 8px 4px 0;
-  ${(p) =>
-    p.checked &&
-    css`
-      -webkit-filter: grayscale(0);
-      filter: grayscale(0);
-      opacity: 1;
-    `}
   cursor: pointer;
 `;
 
@@ -117,25 +112,32 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const Helper = ({ isAgree, setIsAgree }) => {
+const Helper = ({ isAgree, setIsAgree, agreeError, setAgreeError }) => {
   return (
-    <HelperWrapper>
-      <CheckImage
-        src="/imgs/circle-pass.svg"
-        checked={isAgree}
-        onClick={() => setIsAgree(!isAgree)}
-      />
-      <div>
-        <p>I have read and agree to the terms of the </p>
-        <Link to="/register">
-          <StyledTextMnor>User Agreement</StyledTextMnor>
-        </Link>
-        <p> and </p>
-        <Link to="/register">
-          <StyledTextMnor>Privacy Notice.</StyledTextMnor>
-        </Link>
-      </div>
-    </HelperWrapper>
+    <HelperErrorWrapper>
+      <HelperWrapper>
+        <CheckImage
+          src={isAgree ? "/imgs/circle-pass.svg" : "/imgs/circle-check-off.svg"}
+          onClick={() => {
+            if (!isAgree) {
+              setAgreeError(false);
+            }
+            setIsAgree(!isAgree);
+          }}
+        />
+        <div>
+          <p>I have read and agree to the terms of the </p>
+          <Link to="/register">
+            <StyledTextMnor>User Agreement</StyledTextMnor>
+          </Link>
+          <p> and </p>
+          <Link to="/register">
+            <StyledTextMnor>Privacy Notice.</StyledTextMnor>
+          </Link>
+        </div>
+      </HelperWrapper>
+      {agreeError && <FormError>You must accept our terms</FormError>}
+    </HelperErrorWrapper>
   );
 };
 
@@ -144,12 +146,17 @@ function Register({ history }) {
   const [hasExtension] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [isAgree, setIsAgree] = useState(false);
+  const [agreeError, setAgreeError] = useState(false);
   const { register, handleSubmit, errors } = useForm();
   const dispatch = useDispatch();
   const [serverError, setServerError] = useState("");
 
   // Do login
   const onSubmit = async (formData) => {
+    if (!isAgree) {
+      setAgreeError(true);
+      return;
+    }
     const {result: signupResult, error: signupError} = await scanApi.signup(
       formData.username,
       formData.email,
@@ -191,10 +198,15 @@ function Register({ history }) {
             <FormInput
               name="username"
               type="text"
-              ref={register({ required: true })}
+              ref={register({
+                required: {
+                  value: true,
+                  message: "This field is required"
+                }
+              })}
               error={errors.username}
             />
-            {errors.password && <FormError>This field is required</FormError>}
+            {errors.username && <FormError>{errors.username.message}</FormError>}
           </Form.Field>
           <Form.Field>
             <label htmlFor="email">
@@ -203,10 +215,15 @@ function Register({ history }) {
             <FormInput
               name="email"
               type="text"
-              ref={register({ required: true })}
+              ref={register({
+                required: {
+                  value: true,
+                  message: "This field is required"
+                }
+              })}
               error={errors.email}
             />
-            {errors.password && <FormError>This field is required</FormError>}
+            {errors.email && <FormError>{errors.email.message}</FormError>}
           </Form.Field>
           <Form.Field>
             <label htmlFor="password">
@@ -219,15 +236,20 @@ function Register({ history }) {
               <FormInput
                 name="password"
                 type={showPassword ? "text" : "password"}
-                ref={register({ required: true })}
+                ref={register({
+                  required: {
+                    value: true,
+                    message: "This field is required"
+                  }
+                })}
                 autocomplete="off"
                 error={errors.password}
               />
             </FormPasswordWrapper>
-            {errors.password && <FormError>This field is required</FormError>}
+            {errors.password && <FormError>{errors.password.message}</FormError>}
+            {serverError && <FormError>{serverError}</FormError>}
           </Form.Field>
-          <Helper isAgree={isAgree} setIsAgree={setIsAgree} />
-          {serverError && <FormError>{serverError}</FormError>}
+          <Helper isAgree={isAgree} setIsAgree={setIsAgree} agreeError={agreeError} setAgreeError={setAgreeError} />
           <StyledButtonPrimary type="submit">Sign up</StyledButtonPrimary>
           {/* <StyledButton onClick={() => setWeb3Login(true)}>Sign up with web3 address</StyledButton> */}
         </Form>

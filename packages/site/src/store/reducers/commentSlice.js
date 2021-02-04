@@ -5,8 +5,15 @@ import api from "../../services/scanApi";
 const commentSlice = createSlice({
   name: "comments",
   initialState: {
-    comments: [],
-    clearComment: false
+    comments: {
+      items: [],
+      page: 0,
+      pageSize: 10,
+      total: 0,
+    },
+    clearComment: false,
+    lastNewPost: null,
+    lastUpdateCommentTime: 0,
   },
   reducers: {
     setComments(state, { payload }) {
@@ -14,11 +21,22 @@ const commentSlice = createSlice({
     },
     setClearComment(state, { payload }) {
       state.clearComment = payload;
-    }
+    },
+    setLastNewPost(state, { payload }) {
+      state.lastNewPost = payload;
+    },
+    setLastUpdateCommentTime(state, { payload }) {
+      state.lastUpdateCommentTime = payload;
+    },
   },
 });
 
-export const { setComments, setClearComment } = commentSlice.actions;
+export const {
+  setComments,
+  setClearComment,
+  setLastNewPost,
+  setLastUpdateCommentTime,
+} = commentSlice.actions;
 
 export class TipIndex {
   constructor(tipIndex) {
@@ -36,13 +54,27 @@ export class TipIndex {
   }
 }
 
-export const fetchComments = (type, index) => async (dispatch) => {
-  const { result } = await api.fetch(`/${type}/${index}/comments`);
-  dispatch(setComments(result || []));
+export const fetchComments = (type, index, page, pageSize) => async (
+  dispatch
+) => {
+  const { result } = await api.fetch(`/${type}/${index}/comments`, {
+    page,
+    pageSize,
+  });
+  dispatch(
+    setComments(
+      result || {
+        items: [],
+        page: 0,
+        pageSize: 10,
+        total: 0,
+      }
+    )
+  );
 };
 
 export const postComment = (type, index, content) => async (dispatch) => {
-  const { result } =  await api.authFetch(
+  const { result } = await api.authFetch(
     `/${type}/${index}/comments`,
     {},
     {
@@ -54,8 +86,10 @@ export const postComment = (type, index, content) => async (dispatch) => {
     }
   );
 
-  result && dispatch(setClearComment(true));
-  dispatch(fetchComments(type, index));
+  if (result) {
+    dispatch(setClearComment(true));
+    dispatch(setLastNewPost(result));
+  }
 };
 
 export const updateComment = (type, index, commentId, content) => async (
@@ -76,7 +110,7 @@ export const updateComment = (type, index, commentId, content) => async (
   dispatch(fetchComments(type, index));
 };
 
-export const removeComment = (type, index, commentId) => async (dispatch) => {
+export const removeComment = (commentId) => async (dispatch) => {
   await api.authFetch(
     `/comments/${commentId}`,
     {},
@@ -84,13 +118,9 @@ export const removeComment = (type, index, commentId) => async (dispatch) => {
       method: "DELETE",
     }
   );
-
-  dispatch(fetchComments(type, index));
 };
 
-export const setCommentThumbUp = (type, index, commentId) => async (
-  dispatch
-) => {
+export const setCommentThumbUp = (commentId) => async (dispatch) => {
   await api.authFetch(
     `/comments/${commentId}/reaction`,
     {},
@@ -103,12 +133,10 @@ export const setCommentThumbUp = (type, index, commentId) => async (
     }
   );
 
-  dispatch(fetchComments(type, index));
+  dispatch(setLastUpdateCommentTime(Date.now()));
 };
 
-export const setCommentThumbDown = (type, index, commentId) => async (
-  dispatch
-) => {
+export const setCommentThumbDown = (commentId) => async (dispatch) => {
   await api.authFetch(
     `/comments/${commentId}/reaction`,
     {},
@@ -121,12 +149,10 @@ export const setCommentThumbDown = (type, index, commentId) => async (
     }
   );
 
-  dispatch(fetchComments(type, index));
+  dispatch(setLastUpdateCommentTime(Date.now()));
 };
 
-export const unsetCommentReaction = (type, index, commentId) => async (
-  dispatch
-) => {
+export const unsetCommentReaction = (commentId) => async (dispatch) => {
   await api.authFetch(
     `/comments/${commentId}/reaction`,
     {},
@@ -138,10 +164,13 @@ export const unsetCommentReaction = (type, index, commentId) => async (
     }
   );
 
-  dispatch(fetchComments(type, index));
+  dispatch(setLastUpdateCommentTime(Date.now()));
 };
 
 export const commentsSelector = (state) => state.comments.comments;
 export const clearCommentSelector = (state) => state.comments.clearComment;
+export const lastNewPostSelector = (state) => state.comments.lastNewPost;
+export const lastUpdateCommentTimeSelector = (state) =>
+  state.comments.lastUpdateCommentTime;
 
 export default commentSlice.reducer;

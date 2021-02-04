@@ -1,61 +1,67 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useForm } from "react-hook-form";
-import { Form } from "semantic-ui-react";
+import React, { useEffect, useState } from "react";
 import api from "../../services/scanApi";
 import { useDispatch, useSelector } from "react-redux";
+import styled from "styled-components";
+import { Image } from "semantic-ui-react";
 
-import {
-  StyledItem,
-  StyledTitle,
-  EditWrapper,
-  StyledText,
-  EditButton,
-  StyledFormInput,
-} from "./components";
+import { StyledItem, StyledTitle, EditWrapper, EditButton } from "./components";
 import FormError from "../../components/FormError";
-import {
-  loggedInUserSelector,
-  setLoggedInUser,
-} from "../../store/reducers/userSlice";
+import TextMinor from "../../components/TextMinor";
+import TextDisable from "../../components/TextDisable";
 import { useIsMounted } from "../../utils/hooks";
+import {
+  userProfileSelector,
+  fetchUserProfile,
+  verifyEmailSendTimeSelector,
+  setVerifyEmailSendTime,
+} from "../../store/reducers/userSlice";
 
-const Email = ({ email }) => {
+const EmailField = styled.div`
+  padding: 8px 16px;
+  background: #fbfbfb;
+  border-radius: 4px;
+  flex-grow: 1;
+  max-width: calc(100% - 92px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+const EmailInfo = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const VerifiedInfo = styled.div`
+  display: flex;
+  align-items: center;
+  & > :first-child {
+    margin-right: 6px;
+  }
+`;
+
+const Email = () => {
   const dispatch = useDispatch();
-  const [isChange, setIsChange] = useState(false);
-  const inputRef = useRef(null);
-  const { register, handleSubmit } = useForm();
   const [serverError, setServerError] = useState("");
-  const loggedInUser = useSelector(loggedInUserSelector);
   const isMounted = useIsMounted();
+  const [timeNow, setTimeNow] = useState(Date.now());
 
-  const onSubmit = async (formData) => {
+  const userProfile = useSelector(userProfileSelector);
+  const verifyEmailSendTime = useSelector(verifyEmailSendTimeSelector);
+  const { email, emailVerified } = userProfile;
+
+  const sendVerifyEmail = async () => {
     const { result, error } = await api.authFetch(
-      `/user/changeemail`,
+      `/user/resendverifyemail`,
       {},
       {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          password: formData.password,
-          newEmail: formData.email,
-        }),
       }
     );
 
     if (result) {
-      if (isMounted.current) {
-        setServerError("");
-        setIsChange(false);
-      }
-
-      dispatch(
-        setLoggedInUser({
-          username: loggedInUser.username,
-          email: formData.email,
-        })
-      );
+      dispatch(fetchUserProfile());
+      dispatch(setVerifyEmailSendTime(Date.now()));
+      setTimeNow(Date.now());
     }
 
     if (error) {
@@ -65,58 +71,65 @@ const Email = ({ email }) => {
     }
   };
 
+  const waitSeconds = parseInt(
+    Math.max(0, verifyEmailSendTime + 60 * 1000 - timeNow) / 1000
+  );
   useEffect(() => {
-    isChange && inputRef?.current?.focus();
-  }, [isChange]);
+    if (emailVerified) {
+      if (isMounted.current) {
+        setServerError("");
+      }
+      return;
+    }
+
+    if (isMounted.current) {
+      if (waitSeconds > 0) {
+        setServerError(
+          "Verification email has been sent out, please check your mailbox."
+        );
+      } else {
+        setServerError("");
+      }
+    }
+
+    const updateNow = () => {
+      if (isMounted.current) {
+        setTimeNow(Date.now());
+      }
+    };
+    setTimeout(updateNow, 1000);
+    // Avoid the settimeout chain interruption.
+    setTimeout(updateNow, 2000);
+
+    if (waitSeconds === 0 || waitSeconds % 5 === 0) {
+      dispatch(fetchUserProfile());
+    }
+  }, [dispatch, waitSeconds, emailVerified, isMounted]);
 
   return (
     <StyledItem>
       <StyledTitle>Email</StyledTitle>
-      {!isChange && (
-        <div>
-          <EditWrapper>
-            <StyledText>{email}</StyledText>
-            <EditButton
-              onClick={() => {
-                setIsChange(true);
-              }}
-            >
-              Edit
-            </EditButton>
-          </EditWrapper>
-        </div>
-      )}
-      {isChange && (
-        <>
-          <Form onSubmit={handleSubmit(onSubmit)}>
-            <Form.Field>
-              <EditWrapper>
-                <StyledFormInput
-                  name="email"
-                  type="text"
-                  placeholder="Email"
-                  defaultValue={email}
-                  ref={register({
-                    required: true,
-                  })}
-                />
-              </EditWrapper>
-              <EditWrapper>
-                <StyledFormInput
-                  name="password"
-                  type="password"
-                  placeholder="Please fill password"
-                  ref={register({
-                    required: true,
-                  })}
-                />
-                <EditButton type="submit">Change</EditButton>
-              </EditWrapper>
-            </Form.Field>
-          </Form>
-          {serverError && <FormError>{serverError}</FormError>}
-        </>
-      )}
+      <EditWrapper>
+        <EmailField>
+          <EmailInfo>
+            <TextMinor>{email}</TextMinor>
+            <VerifiedInfo>
+              <Image
+                src={emailVerified ? "/imgs/good.svg" : "/imgs/warning.svg"}
+              />
+              <TextDisable>
+                {emailVerified ? "Verified" : "Unverified"}
+              </TextDisable>
+            </VerifiedInfo>
+          </EmailInfo>
+        </EmailField>
+        {!emailVerified && (
+          <EditButton disabled={waitSeconds > 0} onClick={sendVerifyEmail}>
+            {waitSeconds > 0 ? `${waitSeconds}s` : "Resend"}
+          </EditButton>
+        )}
+      </EditWrapper>
+      {serverError && <FormError>{serverError}</FormError>}
     </StyledItem>
   );
 };

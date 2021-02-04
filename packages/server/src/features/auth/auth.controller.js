@@ -17,38 +17,39 @@ class AuthController {
     const { username, email, password } = ctx.request.body;
 
     if (!username) {
-      throw new HttpError(400, "Username is missing");
+      throw new HttpError(400, { username: ["Username is missing"] });
     }
 
     if (!email) {
-      throw new HttpError(400, "Email is missing");
+      throw new HttpError(400, { email: ["Email is missing"] });
     }
 
     if (!password) {
-      throw new HttpError(400, "Password is missing");
+      throw new HttpError(400, { password: ["Password is missing"] });
     }
 
     if (!username.match(/^[a-z][a-z0-9_]{2,15}$/)) {
-      throw new HttpError(
-        400,
-        "Invalid username. It should start with alpha, and only contains alpha, numeric and underscore. The length must between 3 to 16"
-      );
+      throw new HttpError(400, {
+        username: [
+          "Invalid username. It should start with alpha, and only contains alpha, numeric and underscore. The length must between 3 to 16",
+        ],
+      });
     }
 
     if (!validator.isEmail(email)) {
-      throw new HttpError(400, "Invaild email");
+      throw new HttpError(400, { email: ["Invaild email"] });
     }
 
     const userCol = await getUserCollection();
 
     let existing = await userCol.findOne({ email });
     if (existing) {
-      throw new HttpError(403, "Email already exists.");
+      throw new HttpError(403, { email: ["Email already exists."] });
     }
 
     existing = await userCol.findOne({ username });
     if (existing) {
-      throw new HttpError(403, "Username already exists.");
+      throw new HttpError(403, { username: ["Username already exists."] });
     }
 
     const hashedPassword = await argon2.hash(password);
@@ -86,18 +87,18 @@ class AuthController {
     const { email, token } = ctx.request.body;
 
     if (!email) {
-      throw new HttpError(400, "Email is missing");
+      throw new HttpError(400, { email: ["Email is missing"] });
     }
 
     if (!token) {
-      throw new HttpError(400, "Token is missing");
+      throw new HttpError(400, { token: ["Token is missing"] });
     }
 
     const userCol = await getUserCollection();
 
     const user = await userCol.findOne({ email });
     if (!user) {
-      throw new HttpError(404, "Email does not exists.");
+      throw new HttpError(404, { email: ["Email does not exists."] });
     }
 
     if (user.emailVerified) {
@@ -105,7 +106,7 @@ class AuthController {
     }
 
     if (user.verifyToken !== token) {
-      throw new HttpError(400, "Incorrect token.");
+      throw new HttpError(400, { token: ["Incorrect token."] });
     }
 
     const result = await userCol.updateOne(
@@ -122,8 +123,7 @@ class AuthController {
     }
 
     if (result.result.nModified === 0) {
-      ctx.body = false;
-      return;
+      throw new HttpError(500, "Failed to verify email.");
     }
 
     ctx.body = true;
@@ -133,11 +133,13 @@ class AuthController {
     const { usernameOrEmail, password } = ctx.request.body;
 
     if (!usernameOrEmail) {
-      throw new HttpError(400, "Email or username must be provided");
+      throw new HttpError(400, {
+        usernameOrEmail: ["Email or username must be provided"],
+      });
     }
 
     if (!password) {
-      throw new HttpError(400, "Password is missing");
+      throw new HttpError(400, { password: ["Password is missing"] });
     }
 
     const userCol = await getUserCollection();
@@ -147,12 +149,12 @@ class AuthController {
     });
 
     if (!user) {
-      throw new HttpError(404, "User does not exists.");
+      throw new HttpError(404, { usernameOrEmail: ["User does not exists."] });
     }
 
     const correct = await argon2.verify(user.hashedPassword, password);
     if (!correct) {
-      throw new HttpError(401, "Incorrect password.");
+      throw new HttpError(401, { password: ["Incorrect password."] });
     }
 
     const accessToken = await authService.getSignedToken(user);
@@ -204,7 +206,9 @@ class AuthController {
 
     const user = addresses[0]?.user[0];
     if (!user) {
-      throw new HttpError(400, "The address is not linked to any account.");
+      throw new HttpError(400, {
+        address: ["The address is not linked to any account."],
+      });
     }
 
     const loginAttemptCol = await getLoginAttemptCollection();
@@ -272,17 +276,21 @@ class AuthController {
   async forgetPassword(ctx) {
     const { email } = ctx.request.body;
     if (!email) {
-      throw new HttpError(400, "Email is not provided.");
+      throw new HttpError(400, { email: ["Email is not provided."] });
     }
 
     const userCol = await getUserCollection();
     const user = await userCol.findOne({ email });
     if (!user) {
-      throw new HttpError(400, "The email is not associated with any account.");
+      throw new HttpError(400, {
+        email: ["The email is not associated with any account."],
+      });
     }
 
     if (!user.emailVerified) {
-      throw new HttpError(400, "The email address is not verified yet.");
+      throw new HttpError(400, {
+        email: ["The email address is not verified yet."],
+      });
     }
 
     if (user.reset?.expires.getTime() > Date.now()) {
@@ -310,8 +318,7 @@ class AuthController {
     }
 
     if (result.result.nModified === 0) {
-      ctx.body = false;
-      return;
+      throw new HttpError(500, "Failed to request password reset.");
     }
 
     mailService.sendResetPasswordEmail({
@@ -326,25 +333,31 @@ class AuthController {
   async resetPassword(ctx) {
     const { email, token, newPassword } = ctx.request.body;
     if (!email) {
-      throw new HttpError(400, "Email is not provided.");
+      throw new HttpError(400, { email: ["Email is not provided."] });
     }
 
     if (!token) {
-      throw new HttpError(400, "Reset token is not provided.");
+      throw new HttpError(400, { token: ["Reset token is not provided."] });
     }
 
     if (!newPassword) {
-      throw new HttpError(400, "New password is not provided.");
+      throw new HttpError(400, {
+        newPassword: ["New password is not provided."],
+      });
     }
 
     const userCol = await getUserCollection();
-    const user = await userCol.findOne({ email, "reset.token": token });
+    const user = await userCol.findOne({ email });
     if (!user) {
-      throw new HttpError(400, "Invalid reset request.");
+      throw new HttpError(404, { email: ["User not found."] });
+    }
+
+    if (user.reset.token !== token) {
+      throw new HttpError(400, { token: ["Incorrect reset token."] });
     }
 
     if (user.reset.expires.getTime() < Date.now()) {
-      throw new HttpError(400, "The reset token has expired.");
+      throw new HttpError(400, { token: ["The reset token has expired."] });
     }
 
     const hashedPassword = await argon2.hash(newPassword);
@@ -366,8 +379,7 @@ class AuthController {
     }
 
     if (result.result.nModified === 0) {
-      ctx.body = false;
-      return;
+      throw new HttpError(500, "Failed to reset password.");
     }
 
     ctx.body = true;

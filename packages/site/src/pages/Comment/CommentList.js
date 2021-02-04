@@ -10,19 +10,19 @@ const Wrapper = styled.div`
   }
 `;
 
-const CommentList = ({ type, index, comments, refCommentId, onReplyButton }) => {
-  if (comments && comments.length > 0) {
+const CommentList = ({ comments, refCommentId, onReplyButton, replyEvent }) => {
+  if (comments?.items.length > 0) {
+    const startFrom = comments.page * comments.pageSize;
     return (
       <Wrapper>
-        {comments.map((item, position) => (
+        {comments?.items.map((item, index) => (
           <CommentItem
-            type={type}
-            index={index}
             comment={item}
-            position={position}
-            key={position}
+            index={startFrom + index}
+            key={index}
             refCommentId={refCommentId}
             onReplyButton={onReplyButton}
+            replyEvent={replyEvent}
           />
         ))}
       </Wrapper>

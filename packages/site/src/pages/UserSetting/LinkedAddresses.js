@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import React, { useState } from "react";
+import styled, { css } from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import {
   isWeb3Injected,
@@ -12,7 +12,7 @@ import { signMessage } from "../../services/chainApi";
 import { useIsMounted } from "../../utils/hooks";
 import {
   fetchUserProfile,
-  userProfileSelector
+  userProfileSelector,
 } from "../../store/reducers/userSlice";
 import ButtonPrimary from "../../components/ButtonPrimary";
 import { StyledItem, StyledTitle } from "./components";
@@ -20,23 +20,24 @@ import TextMinor from "../../components/TextMinor";
 import Divider from "../../components/Divider";
 import AccountItem from "../../components/AccountItem";
 import ButtonImage from "../../components/ButtonImage";
+import { addToast } from "../../store/reducers/toastSlice";
 
 const StyledTextMinor = styled(TextMinor)`
   margin-bottom: 16px;
-`
+`;
 
 const StyledButtonPrimary = styled(ButtonPrimary)`
   width: 100%;
-`
+`;
 
 const StyledDivider = styled(Divider)`
   margin: 24px 0;
-`
+`;
 
 const AccountWrapper = styled.div`
   padding: 4px 0;
   display: flex;
-  background: #FBFBFB;
+  border: 1px solid #eeeeee;
   align-items: center;
   justify-content: space-between;
   :not(:last-child) {
@@ -45,19 +46,20 @@ const AccountWrapper = styled.div`
   & > :last-child {
     padding-right: 16px !important;
   }
-`
+  ${(p) =>
+    p.linked &&
+    css`
+      background: #fbfbfb;
+      border-color: #fbfbfb;
+    `}
+`;
 
-const LinkedAddress = ({ username }) => {
+const LinkedAddress = () => {
   const isMounted = useIsMounted();
   const dispatch = useDispatch();
 
   const userProfile = useSelector(userProfileSelector);
   const [accounts, setAccounts] = useState([]);
-  useEffect(() => {
-    if (username) {
-      dispatch(fetchUserProfile());
-    }
-  }, [dispatch, username]);
 
   const loadExtensionAddresses = async () => {
     await web3Enable("doTreasury");
@@ -81,7 +83,7 @@ const LinkedAddress = ({ username }) => {
   };
 
   const unlinkAddress = async (address) => {
-    await api.authFetch(
+    const { error } = await api.authFetch(
       `/user/linkaddr/${address}`,
       {},
       {
@@ -89,13 +91,22 @@ const LinkedAddress = ({ username }) => {
       }
     );
     dispatch(fetchUserProfile());
+
+    if (error) {
+      dispatch(
+        addToast({
+          type: "error",
+          message: error.message,
+        })
+      );
+    }
   };
 
   const linkAddress = async (address) => {
-    const { result } = await api.authFetch(`/user/linkaddr/${address}`);
+    const { result, error } = await api.authFetch(`/user/linkaddr/${address}`);
     if (result?.challenge) {
       const signature = await signMessage(result?.challenge, address);
-      await api.authFetch(
+      const { error: confirmError } = await api.authFetch(
         `/user/linkaddr/${address}`,
         {},
         {
@@ -107,6 +118,24 @@ const LinkedAddress = ({ username }) => {
         }
       );
       dispatch(fetchUserProfile());
+
+      if (confirmError) {
+        dispatch(
+          addToast({
+            type: "error",
+            message: confirmError.message,
+          })
+        );
+      }
+    }
+
+    if (error) {
+      dispatch(
+        addToast({
+          type: "error",
+          message: error.message,
+        })
+      );
     }
   };
 
@@ -124,39 +153,47 @@ const LinkedAddress = ({ username }) => {
     <StyledItem>
       <StyledTitle>Linked addresses</StyledTitle>
       <StyledTextMinor>{`Associate your account with an on-chain address using the Polkadot{.js} extension.`}</StyledTextMinor>
-        <StyledButtonPrimary onClick={loadExtensionAddresses}>
-          Show avaliable addresses
-        </StyledButtonPrimary>
-        {mergedAccounts && mergedAccounts.length > 0 && <div>
-        <StyledDivider />
-        <StyledTitle>Linked addresses</StyledTitle>
-        {mergedAccounts.map((account, index) => (
-          <AccountWrapper key={index}>
-            <AccountItem accountName={account.name} accountAddress={account.address} />
-            {userProfile.addresses?.includes(account.address) ? (
-              <ButtonImage
-                src="/imgs/linked.svg"
-                onClick={() => {
-                  unlinkAddress(account.address);
-                }}
-              >
-                Unlink
-              </ButtonImage>
-            ) : (
-              <ButtonImage
-                src="/imgs/linked.svg"
-                onClick={() => {
-                  linkAddress(account.address);
-                }}
-              >
-                Link
-              </ButtonImage>
-            )}
-          </AccountWrapper>
-        ))}
-      </div>}
+      <StyledButtonPrimary onClick={loadExtensionAddresses}>
+        Show avaliable addresses
+      </StyledButtonPrimary>
+      {mergedAccounts && mergedAccounts.length > 0 && (
+        <div>
+          <StyledDivider />
+          <StyledTitle>Linked addresses</StyledTitle>
+          {mergedAccounts.map((account, index) => (
+            <AccountWrapper
+              key={index}
+              linked={userProfile.addresses?.includes(account.address)}
+            >
+              <AccountItem
+                accountName={account.name}
+                accountAddress={account.address}
+              />
+              {userProfile.addresses?.includes(account.address) ? (
+                <ButtonImage
+                  src="/imgs/link-break.svg"
+                  onClick={() => {
+                    unlinkAddress(account.address);
+                  }}
+                >
+                  Unlink
+                </ButtonImage>
+              ) : (
+                <ButtonImage
+                  src="/imgs/linked.svg"
+                  onClick={() => {
+                    linkAddress(account.address);
+                  }}
+                >
+                  Link
+                </ButtonImage>
+              )}
+            </AccountWrapper>
+          ))}
+        </div>
+      )}
     </StyledItem>
-  )
-}
+  );
+};
 
 export default LinkedAddress;

@@ -1,6 +1,7 @@
 const sgMail = require("@sendgrid/mail");
 const nodeMailer = require("nodemailer");
 const templates = require("../templates");
+const MarkdownIt = require('markdown-it');
 
 // Config SendGrid mailing service
 const apiKey = process.env.SENDGRID_API_KEY;
@@ -27,6 +28,7 @@ class MailService {
   constructor(from, mailSender) {
     this.from = from;
     this.send = (mailSender.sendMail || mailSender.send).bind(mailSender);
+    this.md = new MarkdownIt();
   }
 
   sendResetPasswordEmail({ username, email, token }) {
@@ -57,14 +59,18 @@ class MailService {
     author,
     mentioned,
     content,
+    commentPosition,
   }) {
+    const defaultPageSize = 20;
+
     const text = templates.commentMention({
       author,
       mentioned,
-      content,
+      content: this.md.render(content),
       indexer,
       commentId,
       siteUrl: process.env.SITE_URL,
+      page: Math.ceil(commentPosition / defaultPageSize),
     });
 
     const msg = {
@@ -102,7 +108,4 @@ class MailService {
   }
 }
 
-module.exports = new MailService(
-  process.env.MAIL_FROM,
-  mailSender || sgMail
-);
+module.exports = new MailService(process.env.MAIL_FROM, mailSender || sgMail);
