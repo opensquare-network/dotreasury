@@ -118,7 +118,7 @@ const Email = () => {
                 src={emailVerified ? "/imgs/good.svg" : "/imgs/warning.svg"}
               />
               <TextDisable>
-                {emailVerified ? "Verified" : "Unverified"}{" "}
+                {emailVerified ? "Verified" : "Unverified"}
               </TextDisable>
             </VerifiedInfo>
           </EmailInfo>
