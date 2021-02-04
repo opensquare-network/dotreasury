@@ -17,6 +17,7 @@ import api from "../../services/scanApi";
 import FormError from "../../components/FormError";
 import { setLoggedInUser } from "../../store/reducers/userSlice";
 import { useIsMounted } from "../../utils/hooks";
+import { addToast } from "../../store/reducers/toastSlice";
 
 const StyledTextMinor = styled(TextMinor)`
   margin-bottom: 16px;
@@ -85,6 +86,12 @@ const DeleteAccount = () => {
       }
       localStorage.removeItem("token");
       dispatch(setLoggedInUser(null));
+      dispatch(
+        addToast({
+          type: "success",
+          message: "Account has been deleted",
+        })
+      );
     }
 
     if (error) {
@@ -123,12 +130,14 @@ const DeleteAccount = () => {
                 ref={register({
                   required: {
                     value: true,
-                    message: "This field is required"
-                  }
+                    message: "This field is required",
+                  },
                 })}
                 error={errors.password}
               />
-              {errors.password && <FormError>{errors.password.message}</FormError>}
+              {errors.password && (
+                <FormError>{errors.password.message}</FormError>
+              )}
               {serverError && <FormError>{serverError}</FormError>}
               <StyledModalButtonPrimary type="submit">
                 Delete my account
