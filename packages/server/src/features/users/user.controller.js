@@ -78,8 +78,7 @@ class UserController {
       addrItem.address
     );
     if (!success) {
-      ctx.body = false;
-      return;
+      throw new HttpError(400, "Invalid signature.");
     }
 
     const existing = await addressCol.findOne({ address, verified: true });
@@ -129,8 +128,7 @@ class UserController {
     }
 
     if (result.result.n === 0) {
-      ctx.body = false;
-      return;
+      throw new HttpError(500, "Failed to unlink address.");
     }
 
     ctx.body = true;
@@ -161,8 +159,7 @@ class UserController {
     }
 
     if (result.result.nModified === 0) {
-      ctx.body = false;
-      return;
+      throw new HttpError(500, "The notification is not updated.");
     }
 
     ctx.body = true;
@@ -229,8 +226,7 @@ class UserController {
     }
 
     if (result.result.nModified === 0) {
-      ctx.body = false;
-      return;
+      throw new HttpError(500, "Failed to change password.");
     }
 
     ctx.body = true;
@@ -285,8 +281,7 @@ class UserController {
     }
 
     if (result.result.nModified === 0) {
-      ctx.body = false;
-      return;
+      throw new HttpError(500, "Failed to change email.");
     }
 
     mailService.sendVerificationEmail({
@@ -326,8 +321,7 @@ class UserController {
     }
 
     if (result.result.n === 0) {
-      ctx.body = false;
-      return;
+      throw new HttpError(500, "Failed to delete account.");
     }
 
     ctx.body = true;

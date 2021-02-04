@@ -123,8 +123,7 @@ class AuthController {
     }
 
     if (result.result.nModified === 0) {
-      ctx.body = false;
-      return;
+      throw new HttpError(500, "Failed to verify email.");
     }
 
     ctx.body = true;
@@ -319,8 +318,7 @@ class AuthController {
     }
 
     if (result.result.nModified === 0) {
-      ctx.body = false;
-      return;
+      throw new HttpError(500, "Failed to request password reset.");
     }
 
     mailService.sendResetPasswordEmail({
@@ -381,8 +379,7 @@ class AuthController {
     }
 
     if (result.result.nModified === 0) {
-      ctx.body = false;
-      return;
+      throw new HttpError(500, "Failed to reset password.");
     }
 
     ctx.body = true;
