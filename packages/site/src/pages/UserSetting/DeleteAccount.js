@@ -4,6 +4,7 @@ import { Modal, Image } from "semantic-ui-react";
 import { useForm } from "react-hook-form";
 import { Form } from "semantic-ui-react";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router";
 
 import { StyledItem, StyledTitle, StyledButtonPrimary } from "./components";
 import TextMinor from "../../components/TextMinor";
@@ -60,6 +61,7 @@ const StyledModalButtonPrimary = styled(ButtonPrimary)`
 
 const DeleteAccount = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const [open, setOpen] = useState(false);
   const { register, handleSubmit, errors } = useForm();
   const [serverError, setServerError] = useState("");
@@ -85,6 +87,7 @@ const DeleteAccount = () => {
         setServerError("");
       }
       localStorage.removeItem("token");
+      history.push("/");
       dispatch(setLoggedInUser(null));
       dispatch(
         addToast({
