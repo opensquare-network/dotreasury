@@ -84,7 +84,7 @@ class UserController {
     const existing = await addressCol.findOne({ address, verified: true });
     if (existing) {
       throw new HttpError(400, {
-        address: ["The address is already linked with existing account."],
+        address: ["The address is already used by another account."],
       });
     }
 
