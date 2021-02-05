@@ -182,7 +182,6 @@ const CommentItem = ({ index, comment, refCommentId, onReplyButton, replyEvent }
   const isMounted = useIsMounted();
   const loggedInUser = useSelector(loggedInUserSelector);
   const address = comment.author?.address;
-  console.log(comment)
   const { name: addressName } = useIndentity(address);
   const [addressDisplayName, setAddressDisplayName] = useState("");
 
