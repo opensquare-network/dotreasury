@@ -7,7 +7,7 @@ const linkCollectionName = "link";
 const userCollectionName = "user";
 const addressCollectionName = "address";
 const commentCollectionName = "comment";
-const loginAttemptCollectionName = "loginAttempt";
+const attemptCollectionName = "attempt";
 
 let client = null;
 let db = null;
@@ -17,7 +17,7 @@ let linkCol = null;
 let userCol = null;
 let addressCol = null;
 let commentCol = null;
-let loginAttemptCol = null;
+let attemptCol = null;
 
 async function initDb() {
   client = await MongoClient.connect(mongoUrl, {
@@ -29,7 +29,7 @@ async function initDb() {
   userCol = db.collection(userCollectionName);
   addressCol = db.collection(addressCollectionName);
   commentCol = db.collection(commentCollectionName);
-  loginAttemptCol = db.collection(loginAttemptCollectionName);
+  attemptCol = db.collection(attemptCollectionName);
 
   await _createIndexes();
 }
@@ -54,7 +54,7 @@ async function _createIndexes() {
     }
   );
 
-  loginAttemptCol.createIndex({ createdAt: 1 }, { expireAfterSeconds: 3600 });
+  attemptCol.createIndex({ createdAt: 1 }, { expireAfterSeconds: 3600 });
 
   commentCol.createIndex({ indexer: 1, createdAt: 1 });
 }
@@ -85,9 +85,9 @@ async function getCommentCollection() {
   return commentCol;
 }
 
-async function getLoginAttemptCollection() {
-  await tryInit(loginAttemptCol);
-  return loginAttemptCol;
+async function getAttemptCollection() {
+  await tryInit(attemptCol);
+  return attemptCol;
 }
 
 module.exports = {
@@ -96,5 +96,5 @@ module.exports = {
   getUserCollection,
   getAddressCollection,
   getCommentCollection,
-  getLoginAttemptCollection,
+  getAttemptCollection,
 };

@@ -108,10 +108,10 @@ const LinkedAddress = () => {
     const { result, error } = await api.authFetch(
       `/user/linkaddr/kusama/${account.kusamaAddress}`
     );
-    if (result?.challenge) {
+    if (result) {
       const signature = await signMessage(result?.challenge, account.address);
       const { error: confirmError } = await api.authFetch(
-        `/user/linkaddr/kusama/${account.kusamaAddress}`,
+        `/user/linkaddr/${result?.attemptId}`,
         {},
         {
           method: "POST",

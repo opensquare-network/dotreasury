@@ -10,7 +10,7 @@ router.get(
   userController.linkAddressStart
 );
 router.post(
-  "/user/linkaddr/:chain(kusama|polkadot)/:address",
+  "/user/linkaddr/:attemptId",
   requireAuth,
   userController.linkAddressConfirm
 );

@@ -8,7 +8,7 @@ const mailService = require("../../services/mail.service");
 const {
   getUserCollection,
   getAddressCollection,
-  getLoginAttemptCollection,
+  getAttemptCollection,
 } = require("../../mongo-admin");
 const { HttpError } = require("../../exc");
 const { isValidSignature } = require("../../utils");
@@ -215,8 +215,9 @@ class AuthController {
       });
     }
 
-    const loginAttemptCol = await getLoginAttemptCollection();
-    const result = await loginAttemptCol.insertOne({
+    const attemptCol = await getAttemptCollection();
+    const result = await attemptCol.insertOne({
+      type: "login",
       userId: user._id,
       address,
       challenge: randomBytes(12).toString("hex"),
@@ -227,11 +228,11 @@ class AuthController {
       throw new HttpError(500, "Db error: start address login.");
     }
 
-    const loginAttempt = result.ops[0];
+    const attempt = result.ops[0];
 
     ctx.body = {
-      attemptId: loginAttempt._id,
-      challenge: loginAttempt.challenge,
+      attemptId: attempt._id,
+      challenge: attempt.challenge,
     };
   }
 
@@ -243,25 +244,26 @@ class AuthController {
       throw new HttpError(400, "Challenge answer is not provided.");
     }
 
-    const loginAttemptCol = await getLoginAttemptCollection();
-    const loginAttempt = await loginAttemptCol.findOne({
+    const attemptCol = await getAttemptCollection();
+    const attempt = await attemptCol.findOne({
       _id: ObjectId(attemptId),
+      type: "login",
     });
-    if (!loginAttempt) {
+    if (!attempt) {
       throw new HttpError(400, "Incorrect login attempt id");
     }
 
     const success = isValidSignature(
-      loginAttempt.challenge,
+      attempt.challenge,
       challengeAnswer,
-      loginAttempt.address
+      attempt.address
     );
     if (!success) {
-      throw new HttpError(401, "Incorrect signature.");
+      throw new HttpError(401, "Incorrect challenge answer.");
     }
 
     const userCol = await getUserCollection();
-    const user = await userCol.findOne({ _id: loginAttempt.userId });
+    const user = await userCol.findOne({ _id: attempt.userId });
     if (!user) {
       throw new HttpError(500, "Account has been deleted.");
     }

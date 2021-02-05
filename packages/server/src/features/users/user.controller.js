@@ -1,3 +1,4 @@
+const { ObjectId } = require("mongodb");
 const { randomBytes } = require("crypto");
 const argon2 = require("argon2");
 const validator = require("validator");
@@ -6,6 +7,7 @@ const { stringUpperFirst } = require("@polkadot/util");
 const {
   getUserCollection,
   getAddressCollection,
+  getAttemptCollection,
 } = require("../../mongo-admin");
 const { HttpError } = require("../../exc");
 const { isValidSignature } = require("../../utils");
@@ -35,21 +37,71 @@ class UserController {
 
     const wildcardAddress = validateAddress(address, chain);
 
+    const attemptCol = await getAttemptCollection();
+    const result = await attemptCol.insertOne({
+      type: "linkAddress",
+      userId: user._id,
+      address,
+      wildcardAddress,
+      chain,
+      challenge: randomBytes(12).toString("hex"),
+      createdAt: new Date(),
+    });
+
+    if (!result.result.ok) {
+      throw new HttpError(500, "Db error: link address start.");
+    }
+
+    const attempt = result.ops[0];
+
+    ctx.body = {
+      attemptId: attempt._id,
+      challenge: attempt.challenge,
+    };
+  }
+
+  async linkAddressConfirm(ctx) {
+    const { attemptId } = ctx.params;
+    const { challengeAnswer } = ctx.request.body;
+    const user = ctx.request.user;
+
+    const attemptCol = await getAttemptCollection();
+    const attempt = await attemptCol.findOne({
+      _id: ObjectId(attemptId),
+      type: "linkAddress",
+    });
+
+    const { chain, address, wildcardAddress, userId, challenge } = attempt;
+
+    if (!attempt || !userId.equals(user._id)) {
+      throw new HttpError(400, "Incorrect link address attempt id");
+    }
+
+    if (!challengeAnswer) {
+      throw new HttpError(400, {
+        challengeAnswer: ["Challenge answer is not provided."],
+      });
+    }
+
+    const success = isValidSignature(
+      challenge,
+      challengeAnswer,
+      wildcardAddress
+    );
+    if (!success) {
+      throw new HttpError(400, {
+        challengeAnswer: ["Incorrect challenge answer."],
+      });
+    }
+
     const addressCol = await getAddressCollection();
     const addresses = await addressCol
-      .aggregate([
-        {
-          $match: { userId: user._id },
-        },
-        {
-          $unwind: "$chains",
-        },
-      ])
+      .aggregate([{ $match: { userId: user._id } }, { $unwind: "$chains" }])
       .toArray();
 
     if (
       addresses.some(
-        (i) => i.chains.chain === chain && i.chains.address === address
+        (i) => i.wildcardAddress === wildcardAddress && i.chains.chain === chain
       )
     ) {
       throw new HttpError(400, {
@@ -64,67 +116,10 @@ class UserController {
       );
     }
 
-    const challenge = randomBytes(12).toString("hex");
-    const result = await addressCol.updateOne(
-      {
-        userId: user._id,
-        wildcardAddress,
-      },
-      {
-        $set: {
-          challenge,
-        },
-      },
-      { upsert: true }
-    );
-
-    if (!result.result.ok) {
-      throw new HttpError(500, "Db error: start link address.");
-    }
-
-    ctx.body = {
-      challenge,
-    };
-  }
-
-  async linkAddressConfirm(ctx) {
-    const { chain, address } = ctx.params;
-    const { challengeAnswer } = ctx.request.body;
-    const user = ctx.request.user;
-
-    const wildcardAddress = validateAddress(address, chain);
-
-    if (!challengeAnswer) {
-      throw new HttpError(400, {
-        challengeAnswer: ["Challenge answer is not provided."],
-      });
-    }
-
-    const addressCol = await getAddressCollection();
-    const addresses = await addressCol
-      .find({ userId: user._id, wildcardAddress })
-      .toArray();
-
-    const item = addresses[0];
-
-    if (!item) {
-      throw new HttpError(404, {
-        address: ["The linking address is not found"],
-      });
-    }
-
-    const success = isValidSignature(
-      item.challenge,
-      challengeAnswer,
-      item.wildcardAddress
-    );
-    if (!success) {
-      throw new HttpError(400, { challengeAnswer: ["Invalid signature."] });
-    }
-
     const existing = await addressCol.findOne({
       wildcardAddress,
       "chains.0": { $exists: true },
+      userId: { $ne: userId },
     });
     if (existing) {
       throw new HttpError(400, {
@@ -133,22 +128,13 @@ class UserController {
     }
 
     const result = await addressCol.updateOne(
-      {
-        userId: user._id,
-        wildcardAddress,
-        "chains.chain": { $ne: chain },
-      },
-      {
-        $push: { chains: { chain, address } },
-      }
+      { userId, wildcardAddress },
+      { $addToSet: { chains: { chain, address } } },
+      { upsert: true }
     );
 
     if (!result.result.ok) {
       throw new HttpError(500, "Db error: save address.");
-    }
-
-    if (!result.result.nModified === 0) {
-      throw new HttpError(500, "Address is not linked.");
     }
 
     ctx.body = true;
