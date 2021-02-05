@@ -103,6 +103,7 @@ const UtilityMethods = Object.freeze({
 const TreasuryEvent = Object.freeze({
   Burnt: "Burnt",
   Deposit: "Deposit",
+  Rejected: "Rejected",
 });
 
 const StakingEvents = Object.freeze({

@@ -36,6 +36,8 @@ function handleStakingSlash(event, sort, allBlockEvents, blockIndexer) {
 
   const data = {
     indexer: blockIndexer,
+    section,
+    method,
     balance,
     treasuryDepositEventData,
     slashRecords,

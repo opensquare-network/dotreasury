@@ -9,6 +9,7 @@ const { getApi } = require("../api");
 const { getBlockIndexer } = require("../block/getBlockIndexer");
 const { Modules, TreasuryEvent, StakingEvents } = require("../utils/constants");
 const { handleStakingSlash } = require("./slash/stakingSlash");
+const { handleTreasuryProposalSlash } = require("./slash/treasurySlash");
 
 async function scanIncome() {
   await updateHeight();
@@ -50,6 +51,7 @@ async function handleEvents(events, blockIndexer, extrinsics) {
 
     await handleStakingEraPayout(events[sort], sort, events, blockIndexer);
     await handleStakingSlash(events[sort], sort, events, blockIndexer);
+    await handleTreasuryProposalSlash(events[sort], sort, events, blockIndexer);
   }
 }
 
@@ -85,5 +87,5 @@ function handleStakingEraPayout(event, sort, allBlockEvents, blockIndexer) {
 }
 
 (async function f() {
-  await scanBlockTreasuryIncomeByHeight(5976405);
+  await scanBlockTreasuryIncomeByHeight(6006979);
 })();
