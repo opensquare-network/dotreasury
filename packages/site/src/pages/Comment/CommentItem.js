@@ -24,6 +24,10 @@ import {
 } from "../../store/reducers/userSlice";
 import TimeElapsed from "../../components/TimeElapsed";
 import { TEXT_DARK_DISABLE } from "../../constants";
+import UserAvatar from "../../components/User/Avatar";
+import { useIndentity } from "../../utils/hooks";
+import { encodeKusamaAddress } from "../../services/chainApi";
+import { getGravatarSrc } from "../../utils";
 
 const Wrapper = styled.div`
   padding: 32px 32px 16px;
@@ -41,10 +45,9 @@ const HeaderWrapper = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 8px;
-`;
-
-const Avatar = styled(Image)`
-  margin-right: 8px;
+  & > :first-child {
+    margin-right: 8px;
+  }
 `;
 
 const Username = styled(TextMinor)`
@@ -165,6 +168,12 @@ const TimeWrapper = styled.div`
   color: ${TEXT_DARK_DISABLE};
 `;
 
+const CircleImage = styled(Image)`
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+`
+
 const CommentItem = ({ index, comment, refCommentId, onReplyButton, replyEvent }) => {
   const [highLight, setHighLight] = useState(false);
   const dispatch = useDispatch();
@@ -172,6 +181,19 @@ const CommentItem = ({ index, comment, refCommentId, onReplyButton, replyEvent }
   const commentRef = useRef(null);
   const isMounted = useIsMounted();
   const loggedInUser = useSelector(loggedInUserSelector);
+  const address = comment.author?.address;
+  const { name: addressName } = useIndentity(address);
+  const [addressDisplayName, setAddressDisplayName] = useState("");
+
+  useEffect(() => {
+    if (address) {
+      const kusamaAddress = encodeKusamaAddress(address);
+      const addressDisplayName = addressName ?
+        addressName :
+        `${kusamaAddress.substring(0, 6)}...${kusamaAddress.substring(kusamaAddress.length - 6, kusamaAddress.length)}`;
+      setAddressDisplayName(addressDisplayName);
+    }
+  }, [address, addressName])
 
   const upCount =
     comment.reactions?.filter((r) => r.reaction === REACTION_THUMBUP).length ||
@@ -210,8 +232,14 @@ const CommentItem = ({ index, comment, refCommentId, onReplyButton, replyEvent }
   return (
     <Wrapper id={comment._id} ref={commentRef} highLight={highLight}>
       <HeaderWrapper>
-        <Avatar src="/imgs/avatar.png" />
-        <Username>{comment.author?.username ?? "Deleted Account"}</Username>
+        {address && <>
+          <UserAvatar address={address} />
+          <Username>{addressDisplayName}</Username>
+        </>}
+        {!address && <>
+          <CircleImage src={getGravatarSrc(comment.author?.email)} />
+          <Username>{comment.author?.username ?? "Deleted Account"}</Username>
+        </>}
         <TimeWrapper>
           {dayjs().diff(dayjs(comment.createdAt), "day") >= 1 ? (
             dayjs(comment.createdAt).format("YYYY-MM-DD HH:mm:ss")
