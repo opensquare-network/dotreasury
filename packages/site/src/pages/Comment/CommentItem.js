@@ -182,6 +182,7 @@ const CommentItem = ({ index, comment, refCommentId, onReplyButton, replyEvent }
   const isMounted = useIsMounted();
   const loggedInUser = useSelector(loggedInUserSelector);
   const address = comment.author?.address;
+  console.log(comment)
   const { name: addressName } = useIndentity(address);
   const [addressDisplayName, setAddressDisplayName] = useState("");
 
@@ -237,7 +238,7 @@ const CommentItem = ({ index, comment, refCommentId, onReplyButton, replyEvent }
           <Username>{addressDisplayName}</Username>
         </>}
         {!address && <>
-          <CircleImage src={getGravatarSrc(loggedInUser.email)} />
+          <CircleImage src={getGravatarSrc(comment.author?.email)} />
           <Username>{comment.author?.username ?? "Deleted Account"}</Username>
         </>}
         <TimeWrapper>
