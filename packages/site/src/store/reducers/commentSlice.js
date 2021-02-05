@@ -42,7 +42,7 @@ export class TipIndex {
   constructor(tipIndex) {
     const match = tipIndex.match(/^(\d+)_(0x[0-9a-f]+)$/);
     if (!match) {
-      throw new Error("Invaild tip index");
+      throw new Error("Invalid tip index");
     }
 
     this.blockHeight = parseInt(match[1]);
