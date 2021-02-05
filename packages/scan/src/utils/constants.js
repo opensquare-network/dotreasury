@@ -104,6 +104,11 @@ const TreasuryEvent = Object.freeze({
   Burnt: "Burnt",
   Deposit: "Deposit",
   Rejected: "Rejected",
+  BountyRejected: "BountyRejected",
+});
+
+const TreasuryMethods = Object.freeze({
+  unassignCurator: "unassign_curator",
 });
 
 const StakingEvents = Object.freeze({
@@ -131,4 +136,5 @@ module.exports = {
   TreasuryAccount,
   UtilityMethods,
   ksmTreasuryRefactorApplyHeight,
+  TreasuryMethods,
 };
