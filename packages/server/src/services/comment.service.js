@@ -33,10 +33,41 @@ class CommentService {
 
       const userCol = await getUserCollection();
       const users = await userCol
-        .find(
-          { _id: { $in: Array.from(userIds).map(ObjectId) } },
-          { projection: { username: 1 } }
-        )
+        .aggregate([
+          {
+            $match: {
+              _id: {
+                $in: Array.from(userIds).map(ObjectId),
+              },
+            },
+          },
+          {
+            $lookup: {
+              from: "address",
+              let: { userId: "$_id" },
+              pipeline: [
+                {
+                  $match: {
+                    $expr: {
+                      $eq: ["$userId", "$$userId"],
+                    },
+                  },
+                },
+                { $unwind: "$chains" },
+                {
+                  $project: {
+                    wildcardAddress: 1,
+                    chain: "$chains.chain",
+                    address: "$chains.address",
+                    _id: 0,
+                  },
+                },
+              ],
+              as: "addresses",
+            },
+          },
+          { $project: { username: 1, addresses: 1 } },
+        ])
         .toArray();
       const userMap = {};
       users.forEach((user) => {

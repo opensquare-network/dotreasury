@@ -181,16 +181,15 @@ const CommentItem = ({ index, comment, refCommentId, onReplyButton, replyEvent }
   const commentRef = useRef(null);
   const isMounted = useIsMounted();
   const loggedInUser = useSelector(loggedInUserSelector);
-  const address = comment.author?.address;
-  const { name: addressName } = useIndentity(address);
+  const address = comment.author?.addresses?.filter(i => i.chain === "kusama")[0];
+  const { name: addressName } = useIndentity(address?.wildcardAddress);
   const [addressDisplayName, setAddressDisplayName] = useState("");
 
   useEffect(() => {
     if (address) {
-      const kusamaAddress = encodeKusamaAddress(address);
       const addressDisplayName = addressName ?
         addressName :
-        `${kusamaAddress.substring(0, 6)}...${kusamaAddress.substring(kusamaAddress.length - 6, kusamaAddress.length)}`;
+        `${address.address.substring(0, 6)}...${address.address.substring(address.address.length - 6, address.address.length)}`;
       setAddressDisplayName(addressDisplayName);
     }
   }, [address, addressName])
@@ -233,7 +232,7 @@ const CommentItem = ({ index, comment, refCommentId, onReplyButton, replyEvent }
     <Wrapper id={comment._id} ref={commentRef} highLight={highLight}>
       <HeaderWrapper>
         {address && <>
-          <UserAvatar address={address} />
+          <UserAvatar address={address.address} />
           <Username>{addressDisplayName}</Username>
         </>}
         {!address && <>
