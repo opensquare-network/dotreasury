@@ -13,6 +13,7 @@ const { HttpError } = require("../../exc");
 const { isValidSignature } = require("../../utils");
 const { DefaultUserNotification, SS58Format } = require("../../contants");
 const mailService = require("../../services/mail.service");
+const commentService = require("../../services/comment.service");
 
 function validateAddress(address, chain) {
   const ss58Format = SS58Format[stringUpperFirst(chain)];
@@ -71,11 +72,11 @@ class UserController {
       type: "linkAddress",
     });
 
-    const { chain, address, wildcardAddress, userId, challenge } = attempt;
-
-    if (!attempt || !userId.equals(user._id)) {
+    if (!attempt || !attempt.userId.equals(user._id)) {
       throw new HttpError(400, "Incorrect link address attempt id");
     }
+
+    const { chain, address, wildcardAddress, userId, challenge } = attempt;
 
     if (!challengeAnswer) {
       throw new HttpError(400, {
@@ -145,6 +146,11 @@ class UserController {
     const user = ctx.request.user;
 
     const wildcardAddress = validateAddress(address, chain);
+
+    const hasComment = await commentService.hasComment(user);
+    if (hasComment) {
+      throw new HttpError(400, "Cannot unlink address because you have already post comments.");
+    }
 
     const addressCol = await getAddressCollection();
     let result = await addressCol.updateOne(

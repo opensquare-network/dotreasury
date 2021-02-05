@@ -290,6 +290,12 @@ class CommentService {
 
     return true;
   }
+
+  async hasComment(author) {
+    const commentCol = await getCommentCollection();
+    const existing = await commentCol.findOne({ authorId: author._id });
+    return !!existing;
+  }
 }
 
 module.exports = new CommentService();
