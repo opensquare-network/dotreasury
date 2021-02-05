@@ -237,7 +237,7 @@ const CommentItem = ({ index, comment, refCommentId, onReplyButton, replyEvent }
           <Username>{addressDisplayName}</Username>
         </>}
         {!address && <>
-          <CircleImage src={getGravatarSrc(loggedInUser.email)} />
+          <CircleImage src={getGravatarSrc(comment.author?.email)} />
           <Username>{comment.author?.username ?? "Deleted Account"}</Username>
         </>}
         <TimeWrapper>
