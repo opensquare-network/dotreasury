@@ -69,7 +69,6 @@ const Password = () => {
     }
 
     if (error) {
-      console.log(error)
       if (isMounted.current) {
         setServerErrors(error);
       }
