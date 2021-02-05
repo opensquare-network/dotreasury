@@ -85,6 +85,7 @@ const Modules = Object.freeze({
   Utility: "utility",
   Tips: "tips",
   Bounties: "bounties",
+  Staking: "staking",
 });
 
 const ProxyMethods = Object.freeze({
@@ -101,12 +102,18 @@ const UtilityMethods = Object.freeze({
 
 const TreasuryEvent = Object.freeze({
   Burnt: "Burnt",
+  Deposit: "Deposit",
+});
+
+const StakingEvents = Object.freeze({
+  EraPayout: "EraPayout",
 });
 
 module.exports = {
   Modules,
   BountyMethods,
   BountyEvents,
+  StakingEvents,
   ProposalMethods,
   ProposalEvents,
   TipMethods,

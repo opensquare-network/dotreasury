@@ -9,6 +9,9 @@ const bountyCollectionName = "bounty";
 const proposalCollectionName = "proposal";
 const burntCollectionName = "burnt";
 
+// income collections
+const incomeInflationCollectionName = "incomeInflation";
+
 let client = null;
 let db = null;
 
@@ -19,6 +22,7 @@ let bountyCol = null;
 let proposalCol = null;
 let motionCol = null;
 let burntCol = null;
+let incomeInflationCol = null;
 
 async function initDb() {
   client = await MongoClient.connect(mongoUrl, {
@@ -32,6 +36,7 @@ async function initDb() {
   proposalCol = db.collection(proposalCollectionName);
   motionCol = db.collection(motionCollectionName);
   burntCol = db.collection(burntCollectionName);
+  incomeInflationCol = db.collection(incomeInflationCollectionName);
 
   await _createIndexes();
 }
@@ -81,6 +86,11 @@ async function getBurntCollection() {
   return burntCol;
 }
 
+async function getIncomeInflationCollection() {
+  await tryInit(incomeInflationCol);
+  return incomeInflationCol;
+}
+
 module.exports = {
   getStatusCollection,
   getTipCollection,
@@ -88,4 +98,5 @@ module.exports = {
   getProposalCollection,
   getMotionCollection,
   getBurntCollection,
+  getIncomeInflationCollection,
 };
