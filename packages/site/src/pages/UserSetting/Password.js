@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useDispatch } from "react-redux"
 import { useForm } from "react-hook-form";
 import { Form } from "semantic-ui-react";
@@ -18,11 +18,24 @@ import { addToast } from "../../store/reducers/toastSlice";
 
 const Password = () => {
   const { register, handleSubmit, errors } = useForm();
-  const [serverError, setServerError] = useState("");
   const isMounted = useIsMounted();
-  const currentPasswordRef = useRef(null);
+  const oldPasswordRef = useRef(null);
   const newPasswordRef = useRef(null);
   const dispatch = useDispatch();
+  const [serverErrors, setServerErrors] = useState(null);
+  const [showErrors, setShowErrors] = useState(null);
+
+  useEffect(() => {
+    setShowErrors({
+      oldPassword: errors?.oldPassword?.message
+        || serverErrors?.data?.oldPassword?.[0]
+        || null,
+        newPassword: errors?.newPassword?.message
+        || serverErrors?.data?.newPassword?.[0]
+        || null,
+      message: serverErrors?.message || null
+    });
+  }, [errors, serverErrors]);
 
   const onSubmit = async (formData) => {
     const { result, error } = await api.authFetch(
@@ -34,7 +47,7 @@ const Password = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          oldPassword: formData.currentPassword,
+          oldPassword: formData.oldPassword,
           newPassword: formData.newPassword,
         }),
       }
@@ -42,9 +55,8 @@ const Password = () => {
 
     if (result) {
       if (isMounted.current) {
-        setServerError("");
-        if (currentPasswordRef && currentPasswordRef.current) {
-          currentPasswordRef.current.value = "";
+        if (oldPasswordRef && oldPasswordRef.current) {
+          oldPasswordRef.current.value = "";
         }
         if (newPasswordRef && newPasswordRef.current) {
           newPasswordRef.current.value = "";
@@ -57,8 +69,9 @@ const Password = () => {
     }
 
     if (error) {
+      console.log(error)
       if (isMounted.current) {
-        setServerError(error.message);
+        setServerErrors(error);
       }
     }
   };
@@ -71,11 +84,11 @@ const Password = () => {
           <EditWrapper>
             <StyledFormInputWrapper>
               <StyledFormInput
-                name="currentPassword"
+                name="oldPassword"
                 type="password"
                 placeholder="Please fill current password"
                 ref={e => {
-                  currentPasswordRef.current = e
+                  oldPasswordRef.current = e
                   register(e, {
                     required: {
                       value: true,
@@ -83,9 +96,12 @@ const Password = () => {
                     }
                   })
                 }}
-                error={errors.currentPassword}
+                error={showErrors?.oldPassword}
+                onChange={() => {
+                  setShowErrors(null)
+                }}
               />
-              {errors.currentPassword && <FormError>{errors.currentPassword.message}</FormError>}
+              {showErrors?.oldPassword && <FormError>{showErrors.oldPassword}</FormError>}
             </StyledFormInputWrapper>
           </EditWrapper>
           <StyledTitle>New password</StyledTitle>
@@ -104,15 +120,20 @@ const Password = () => {
                     }
                   })
                 }}
-                error={errors.newPassword}
+                error={showErrors?.newPassword}
+                onChange={() => {
+                  setShowErrors(null)
+                }}
               />
-              {errors.newPassword && <FormError>{errors.newPassword.message}</FormError>}
+              {showErrors?.newPassword && <FormError>{showErrors.newPassword}</FormError>}
             </StyledFormInputWrapper>
-            <EditButton type="submit">Change</EditButton>
+            <EditButton type="submit" onClick={() => setServerErrors(null)}>Change</EditButton>
           </EditWrapper>
         </Form.Field>
       </Form>
-      {serverError && <FormError>{serverError}</FormError>}
+      {!showErrors?.oldPassword &&
+        !showErrors?.newPassword &&
+        showErrors?.message && <FormError>{showErrors.message}</FormError>}
     </StyledItem>
   );
 };

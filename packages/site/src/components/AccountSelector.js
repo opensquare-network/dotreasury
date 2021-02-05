@@ -7,7 +7,7 @@ import Text from "./Text";
 import AccountItem from "./AccountItem";
 
 const Wrapper = styled.div`
-  margin-bottom: 24px;
+  /* margin-bottom: 24px; */
 `;
 
 const Label = styled(Text)`

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
@@ -149,7 +149,23 @@ function Register({ history }) {
   const [agreeError, setAgreeError] = useState(false);
   const { register, handleSubmit, errors } = useForm();
   const dispatch = useDispatch();
-  const [serverError, setServerError] = useState("");
+  const [serverErrors, setServerErrors] = useState(null);
+  const [showErrors, setShowErrors] = useState(null);
+
+  useEffect(() => {
+    setShowErrors({
+      username: errors?.username?.message
+        || serverErrors?.data?.username?.[0]
+        || null,
+      email: errors?.email?.message
+        || serverErrors?.data?.email?.[0]
+        || null,
+      password: errors?.password?.message
+        || serverErrors?.data?.password?.[0]
+        || null,
+      message: serverErrors?.message || null
+    });
+  }, [errors, serverErrors]);
 
   // Do login
   const onSubmit = async (formData) => {
@@ -163,7 +179,7 @@ function Register({ history }) {
       formData.password
     );
     if (signupError) {
-      setServerError(signupError.message);
+      setServerErrors(signupError);
     } else {
       saveLoggedInResult(signupResult);
       history.push("/login");
@@ -204,9 +220,12 @@ function Register({ history }) {
                   message: "This field is required"
                 }
               })}
-              error={errors.username}
+              error={showErrors?.username}
+              onChange={() => {
+                setShowErrors(null)
+              }}
             />
-            {errors.username && <FormError>{errors.username.message}</FormError>}
+            {showErrors?.username && <FormError>{showErrors.username}</FormError>}
           </Form.Field>
           <Form.Field>
             <label htmlFor="email">
@@ -221,9 +240,12 @@ function Register({ history }) {
                   message: "This field is required"
                 }
               })}
-              error={errors.email}
+              error={showErrors?.email}
+              onChange={() => {
+                setShowErrors(null)
+              }}
             />
-            {errors.email && <FormError>{errors.email.message}</FormError>}
+            {showErrors?.email && <FormError>{showErrors.email}</FormError>}
           </Form.Field>
           <Form.Field>
             <label htmlFor="password">
@@ -243,14 +265,20 @@ function Register({ history }) {
                   }
                 })}
                 autocomplete="off"
-                error={errors.password}
+                error={showErrors?.password}
+                onChange={() => {
+                  setShowErrors(null)
+                }}
               />
             </FormPasswordWrapper>
-            {errors.password && <FormError>{errors.password.message}</FormError>}
-            {serverError && <FormError>{serverError}</FormError>}
+            {showErrors?.password && <FormError>{showErrors.password}</FormError>}
+            {!showErrors?.username
+              && !showErrors?.email
+              && !showErrors?.password
+              && showErrors?.message && <FormError>{showErrors.message}</FormError>}
           </Form.Field>
           <Helper isAgree={isAgree} setIsAgree={setIsAgree} agreeError={agreeError} setAgreeError={setAgreeError} />
-          <StyledButtonPrimary type="submit">Sign up</StyledButtonPrimary>
+          <StyledButtonPrimary type="submit" onClick={() => setServerErrors(null)}>Sign up</StyledButtonPrimary>
           {/* <StyledButton onClick={() => setWeb3Login(true)}>Sign up with web3 address</StyledButton> */}
         </Form>
       )}
