@@ -109,6 +109,10 @@ const StyledButtonPrimary = styled(ButtonPrimary)`
   margin-bottom: 16px !important;
 `;
 
+const StyledButtonPrimaryWeb3 = styled(StyledButtonPrimary)`
+  margin-top: 24px !important;
+`
+
 const StyledButton = styled(Button)`
   width: 100%;
   margin-bottom: 24px !important;
@@ -144,7 +148,9 @@ function Login({ location }) {
   const dispatch = useDispatch();
   const [selectedAccount, setSelectedAccount] = useState(null);
   const isMounted = useIsMounted();
-  const [serverError, setServerError] = useState("");
+  const [serverErrors, setServerErrors] = useState(null);
+  const [web3Error, setWeb3Error] = useState("");
+  const [showErrors, setShowErrors] = useState(null);
 
   useEffect(() => {
     if (web3Login) {
@@ -172,6 +178,18 @@ function Login({ location }) {
       })();
     }
   }, [web3Login, isMounted]);
+
+  useEffect(() => {
+    setShowErrors({
+      usernameOrEmail: errors?.usernameOrEmail?.message
+        || serverErrors?.data?.usernameOrEmail?.[0]
+        || null,
+      password: errors?.password?.message
+        || serverErrors?.data?.password?.[0]
+        || null,
+      message: serverErrors?.message || null
+    });
+  }, [errors, serverErrors]);
 
   // Redirect out of here if user has already logged in
   if (loggedInUser) {
@@ -205,7 +223,7 @@ function Login({ location }) {
       saveLoggedInResult(loginResult);
     }
     if (loginError) {
-      setServerError(loginError.message);
+      setServerErrors(loginError);
     }
   };
 
@@ -233,11 +251,11 @@ function Login({ location }) {
         saveLoggedInResult(loginResult);
       }
       if (loginError) {
-        setServerError(loginError.message);
+        setWeb3Error(loginError.message);
       }
     }
     if (error) {
-      setServerError(error.message);
+      setWeb3Error(error.message);
     }
   };
 
@@ -257,11 +275,13 @@ function Login({ location }) {
                   message: "This field is required"
                 }
               })}
-              error={errors.usernameOrEmail}
-              onChange={() => setServerError("")}
+              error={showErrors?.usernameOrEmail}
+              onChange={() => {
+                setShowErrors(null)
+              }}
             />
-            {errors.usernameOrEmail && (
-              <FormError>{errors.usernameOrEmail.message}</FormError>
+            {showErrors?.usernameOrEmail && (
+              <FormError>{showErrors.usernameOrEmail}</FormError>
             )}
           </Form.Field>
           <Form.Field>
@@ -280,12 +300,16 @@ function Login({ location }) {
                   }
                 })}
                 autocomplete="off"
-                error={errors.password}
-                onChange={() => setServerError("")}
+                error={showErrors?.password}
+                onChange={() => {
+                  setShowErrors(null)
+                }}
               />
             </FormPasswordWrapper>
-            {errors.password && <FormError>{errors.password.message}</FormError>}
-            {serverError && <FormError>{serverError}</FormError>}
+            {showErrors?.password && <FormError>{showErrors.password}</FormError>}
+            {!showErrors?.usernameOrEmail
+              && !showErrors?.password
+              && showErrors?.message && <FormError>{showErrors.message}</FormError>}
           </Form.Field>
           <HelperWrapper>
             {false && <RememberMe onClick={() => setIsRememberMe(!isRememberMe)}>
@@ -296,11 +320,10 @@ function Login({ location }) {
               <StyledTextMnor>Forgot password?</StyledTextMnor>
             </Link>
           </HelperWrapper>
-          <StyledButtonPrimary type="submit">Login</StyledButtonPrimary>
+          <StyledButtonPrimary type="submit" onClick={() => setServerErrors(null)}>Login</StyledButtonPrimary>
           <StyledButton
             onClick={() => {
               setWeb3Login(true);
-              setServerError("");
             }}
           >
             Login with web3 address
@@ -312,16 +335,17 @@ function Login({ location }) {
           {hasExtension && (
             <AccountSelector
               accounts={accounts}
-              onSelect={(account) => setSelectedAccount(account)}
+              onSelect={(account) => {
+                setSelectedAccount(account);
+              }}
             />
           )}
           {!hasExtension && <DownloadPolkadot />}
-          {serverError && <FormError>{serverError}</FormError>}
-          <StyledButtonPrimary onClick={doWeb3Login} disabled={!accounts || accounts.length === 0}>Login</StyledButtonPrimary>
+          {web3Error && <FormError>{web3Error}</FormError>}
+          <StyledButtonPrimaryWeb3 onClick={doWeb3Login} disabled={!accounts || accounts.length === 0}>Login</StyledButtonPrimaryWeb3>
           <StyledButton
             onClick={() => {
               setWeb3Login(false);
-              setServerError("");
             }}
           >
             Login with username or email
