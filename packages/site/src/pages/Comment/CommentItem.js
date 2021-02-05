@@ -26,7 +26,6 @@ import TimeElapsed from "../../components/TimeElapsed";
 import { TEXT_DARK_DISABLE } from "../../constants";
 import UserAvatar from "../../components/User/Avatar";
 import { useIndentity } from "../../utils/hooks";
-import { encodeKusamaAddress } from "../../services/chainApi";
 import { getGravatarSrc } from "../../utils";
 
 const Wrapper = styled.div`
