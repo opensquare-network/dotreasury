@@ -33,17 +33,6 @@ export const fetchUserProfile = () => async (dispatch) => {
   dispatch(setUserProfile(result || {}));
 };
 
-export const unlinkAddress = (address) => async (dispatch) => {
-  await api.authFetch(
-    `/user/linkaddr/${address}`,
-    {},
-    {
-      method: "DELETE",
-    }
-  );
-  dispatch(fetchUserProfile());
-};
-
 export const loggedInUserSelector = (state) => state.users.loggedInUser;
 export const isLoggedInSelector = createSelector(
   loggedInUserSelector,
