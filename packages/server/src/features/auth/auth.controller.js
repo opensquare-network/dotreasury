@@ -2,6 +2,7 @@ const { ObjectId } = require("mongodb");
 const argon2 = require("argon2");
 const { randomBytes } = require("crypto");
 const validator = require("validator");
+const { encodeAddress } = require("@polkadot/util-crypto");
 const authService = require("../../services/auth.service");
 const mailService = require("../../services/mail.service");
 const {
@@ -11,6 +12,7 @@ const {
 } = require("../../mongo-admin");
 const { HttpError } = require("../../exc");
 const { isValidSignature } = require("../../utils");
+const { SS58Format } = require("../../contants");
 
 class AuthController {
   async signup(ctx) {
@@ -184,13 +186,15 @@ class AuthController {
   async addressLoginStart(ctx) {
     const { address } = ctx.params;
 
+    const wildcardAddress = encodeAddress(address, SS58Format.Substrate);
+
     const addressCol = await getAddressCollection();
     const addresses = await addressCol
       .aggregate([
         {
           $match: {
-            address,
-            verified: true,
+            wildcardAddress,
+            "chains.0": { $exists: true },
           },
         },
         {

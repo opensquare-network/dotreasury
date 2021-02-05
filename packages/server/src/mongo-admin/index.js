@@ -43,13 +43,13 @@ async function _createIndexes() {
   userCol.createIndex({ username: 1 }, { unique: true });
   userCol.createIndex({ email: 1 }, { unique: true });
 
-  addressCol.createIndex({ userId: 1, address: 1 }, { unique: true });
+  addressCol.createIndex({ userId: 1, wildcardAddress: 1 }, { unique: true });
   addressCol.createIndex(
-    { address: 1 },
+    { wildcardAddress: 1 },
     {
       unique: true,
       partialFilterExpression: {
-        verified: { $eq: true },
+        "chains.0": { $exists: true },
       },
     }
   );

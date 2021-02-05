@@ -5,7 +5,6 @@ import TextMinor from "./TextMinor";
 import UserAvatar from "./User/Avatar";
 import Text from "./Text";
 import Address from "./Address";
-import { encodeKusamaAddress } from "../services/chainApi";
 
 const ItemWrapper = styled.div`
   height: 64px;
@@ -27,14 +26,13 @@ const ItemWrapper = styled.div`
 `;
 
 const AccountItem = ({ header, accountName, accountAddress }) => {
-  const kusamaAddress = encodeKusamaAddress(accountAddress);
   return (
     <ItemWrapper header={header}>
-      <UserAvatar address={kusamaAddress} size={40} />
+      <UserAvatar address={accountAddress} size={40} />
       <div>
         <Text>{accountName}</Text>
         <TextMinor>
-          <Address>{kusamaAddress}</Address>
+          <Address>{accountAddress}</Address>
         </TextMinor>
       </div>
     </ItemWrapper>

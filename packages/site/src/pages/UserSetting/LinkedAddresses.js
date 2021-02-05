@@ -21,6 +21,7 @@ import Divider from "../../components/Divider";
 import AccountItem from "../../components/AccountItem";
 import ButtonImage from "../../components/ButtonImage";
 import { addToast } from "../../store/reducers/toastSlice";
+import { encodeKusamaAddress } from "../../services/chainApi";
 
 const StyledTextMinor = styled(TextMinor)`
   margin-bottom: 16px;
@@ -73,6 +74,7 @@ const LinkedAddress = () => {
     const accounts = extensionAccounts.map(({ address, meta: { name } }) => {
       return {
         address,
+        kusamaAddress: encodeKusamaAddress(address),
         name,
       };
     });
@@ -82,9 +84,9 @@ const LinkedAddress = () => {
     }
   };
 
-  const unlinkAddress = async (address) => {
+  const unlinkAddress = async (account) => {
     const { error } = await api.authFetch(
-      `/user/linkaddr/${address}`,
+      `/user/linkaddr/kusama/${account.kusamaAddress}`,
       {},
       {
         method: "DELETE",
@@ -102,12 +104,14 @@ const LinkedAddress = () => {
     }
   };
 
-  const linkAddress = async (address) => {
-    const { result, error } = await api.authFetch(`/user/linkaddr/${address}`);
+  const linkAddress = async (account) => {
+    const { result, error } = await api.authFetch(
+      `/user/linkaddr/kusama/${account.kusamaAddress}`
+    );
     if (result?.challenge) {
-      const signature = await signMessage(result?.challenge, address);
+      const signature = await signMessage(result?.challenge, account.address);
       const { error: confirmError } = await api.authFetch(
-        `/user/linkaddr/${address}`,
+        `/user/linkaddr/kusama/${account.kusamaAddress}`,
         {},
         {
           method: "POST",
@@ -142,9 +146,14 @@ const LinkedAddress = () => {
   const mergedAccounts = [
     ...accounts,
     ...(userProfile.addresses || [])
-      .filter((address) => !accounts.some((acc) => acc.address === address))
+      .filter(
+        (address) =>
+          address.chain === "kusama" &&
+          !accounts.some((acc) => acc.address === address.wildcardAddress)
+      )
       .map((address) => ({
-        address,
+        address: address.wildcardAddress,
+        kusamaAddress: address.address,
         name: "--",
       })),
   ];
@@ -163,17 +172,21 @@ const LinkedAddress = () => {
           {mergedAccounts.map((account, index) => (
             <AccountWrapper
               key={index}
-              linked={userProfile.addresses?.includes(account.address)}
+              linked={userProfile.addresses?.some(
+                (i) => i.address === account.kusamaAddress
+              )}
             >
               <AccountItem
                 accountName={account.name}
-                accountAddress={account.address}
+                accountAddress={account.kusamaAddress}
               />
-              {userProfile.addresses?.includes(account.address) ? (
+              {userProfile.addresses?.some(
+                (i) => i.address === account.kusamaAddress
+              ) ? (
                 <ButtonImage
                   src="/imgs/link-break.svg"
                   onClick={() => {
-                    unlinkAddress(account.address);
+                    unlinkAddress(account);
                   }}
                 >
                   Unlink
@@ -182,7 +195,7 @@ const LinkedAddress = () => {
                 <ButtonImage
                   src="/imgs/linked.svg"
                   onClick={() => {
-                    linkAddress(account.address);
+                    linkAddress(account);
                   }}
                 >
                   Link

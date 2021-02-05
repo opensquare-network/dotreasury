@@ -1,57 +1,98 @@
 const { randomBytes } = require("crypto");
 const argon2 = require("argon2");
+const validator = require("validator");
+const { encodeAddress } = require("@polkadot/util-crypto");
+const { stringUpperFirst } = require("@polkadot/util");
 const {
   getUserCollection,
   getAddressCollection,
 } = require("../../mongo-admin");
 const { HttpError } = require("../../exc");
 const { isValidSignature } = require("../../utils");
-const { DefaultUserNotification } = require("../../contants");
+const { DefaultUserNotification, SS58Format } = require("../../contants");
 const mailService = require("../../services/mail.service");
-const validator = require("validator");
+
+function validateAddress(address, chain) {
+  const ss58Format = SS58Format[stringUpperFirst(chain)];
+  if (ss58Format === undefined) {
+    throw new HttpError(400, { chain: ["Unsupported relay chain."] });
+  }
+
+  const validAddress = encodeAddress(address, ss58Format);
+  if (validAddress !== address) {
+    throw new HttpError(400, {
+      address: [`Must be a valid ${chain} ss58format address.`],
+    });
+  }
+
+  return encodeAddress(address, SS58Format.Substrate);
+}
 
 class UserController {
   async linkAddressStart(ctx) {
-    const { address } = ctx.params;
+    const { chain, address } = ctx.params;
     const user = ctx.request.user;
+
+    const wildcardAddress = validateAddress(address, chain);
 
     const addressCol = await getAddressCollection();
     const addresses = await addressCol
-      .find({ userId: user._id, address })
+      .aggregate([
+        {
+          $match: { userId: user._id },
+        },
+        {
+          $unwind: "$chains",
+        },
+      ])
       .toArray();
 
-    let addrItem = addresses[0];
-
-    if (addrItem?.verified) {
+    if (
+      addresses.some(
+        (i) => i.chains.chain === chain && i.chains.address === address
+      )
+    ) {
       throw new HttpError(400, {
         address: ["The address is already linked with this account."],
       });
     }
 
-    if (!addrItem) {
-      const challenge = randomBytes(12).toString("hex");
-      addrItem = {
-        userId: user._id,
-        address,
-        challenge,
-        verified: false,
-      };
+    if (addresses.some((i) => i.chains.chain === chain)) {
+      throw new HttpError(
+        400,
+        `Only 1 ${chain} address is allow to be linked.`
+      );
+    }
 
-      const result = await addressCol.insertOne(addrItem);
-      if (!result.result.ok) {
-        throw new HttpError(500, "Db error: save address.");
-      }
+    const challenge = randomBytes(12).toString("hex");
+    const result = await addressCol.updateOne(
+      {
+        userId: user._id,
+        wildcardAddress,
+      },
+      {
+        $set: {
+          challenge,
+        },
+      },
+      { upsert: true }
+    );
+
+    if (!result.result.ok) {
+      throw new HttpError(500, "Db error: start link address.");
     }
 
     ctx.body = {
-      challenge: addrItem.challenge,
+      challenge,
     };
   }
 
   async linkAddressConfirm(ctx) {
-    const { address } = ctx.params;
+    const { chain, address } = ctx.params;
     const { challengeAnswer } = ctx.request.body;
     const user = ctx.request.user;
+
+    const wildcardAddress = validateAddress(address, chain);
 
     if (!challengeAnswer) {
       throw new HttpError(400, {
@@ -61,27 +102,30 @@ class UserController {
 
     const addressCol = await getAddressCollection();
     const addresses = await addressCol
-      .find({ userId: user._id, address, verified: false })
+      .find({ userId: user._id, wildcardAddress })
       .toArray();
 
-    const addrItem = addresses[0];
+    const item = addresses[0];
 
-    if (!addrItem) {
+    if (!item) {
       throw new HttpError(404, {
         address: ["The linking address is not found"],
       });
     }
 
     const success = isValidSignature(
-      addrItem.challenge,
+      item.challenge,
       challengeAnswer,
-      addrItem.address
+      item.wildcardAddress
     );
     if (!success) {
-      throw new HttpError(400, "Invalid signature.");
+      throw new HttpError(400, { challengeAnswer: ["Invalid signature."] });
     }
 
-    const existing = await addressCol.findOne({ address, verified: true });
+    const existing = await addressCol.findOne({
+      wildcardAddress,
+      "chains.0": { $exists: true },
+    });
     if (existing) {
       throw new HttpError(400, {
         address: ["The address is already used by another account."],
@@ -91,13 +135,11 @@ class UserController {
     const result = await addressCol.updateOne(
       {
         userId: user._id,
-        address,
-        verified: false,
+        wildcardAddress,
+        "chains.chain": { $ne: chain },
       },
       {
-        $set: {
-          verified: true,
-        },
+        $push: { chains: { chain, address } },
       }
     );
 
@@ -113,21 +155,31 @@ class UserController {
   }
 
   async unlinkAddress(ctx) {
-    const { address } = ctx.params;
+    const { chain, address } = ctx.params;
     const user = ctx.request.user;
 
+    const wildcardAddress = validateAddress(address, chain);
+
     const addressCol = await getAddressCollection();
-    const result = await addressCol.deleteOne({
-      userId: user._id,
-      address,
-      verified: true,
-    });
+    let result = await addressCol.updateOne(
+      {
+        userId: user._id,
+        wildcardAddress,
+      },
+      {
+        $pull: {
+          chains: {
+            chain,
+          },
+        },
+      }
+    );
 
     if (!result.result.ok) {
       throw new HttpError(500, "Db error, unlink address.");
     }
 
-    if (result.result.n === 0) {
+    if (result.result.nModified === 0) {
       throw new HttpError(500, "Failed to unlink address.");
     }
 
@@ -170,14 +222,24 @@ class UserController {
 
     const addressCol = await getAddressCollection();
     const addresses = await addressCol
-      .find({ userId: user._id, verified: true })
+      .aggregate([
+        {
+          $match: { userId: user._id },
+        },
+        {
+          $unwind: "$chains",
+        },
+      ])
       .toArray();
 
     ctx.body = {
       username: user.username,
       email: user.email,
       emailVerified: user.emailVerified,
-      addresses: addresses.map((addr) => addr.address),
+      addresses: addresses.map((i) => ({
+        wildcardAddress: i.wildcardAddress,
+        ...i.chains,
+      })),
       notification: { ...DefaultUserNotification, ...user.notification },
     };
   }
@@ -247,7 +309,7 @@ class UserController {
     }
 
     if (!validator.isEmail(newEmail)) {
-      throw new HttpError(400, { newEmail: ["Invaild email"] });
+      throw new HttpError(400, { newEmail: ["Invalid email"] });
     }
 
     const correct = await argon2.verify(user.hashedPassword, password);
