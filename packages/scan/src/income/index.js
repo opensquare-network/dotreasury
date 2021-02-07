@@ -18,6 +18,7 @@ const { handleStakingEraPayout } = require("./inflation");
 const { handleIdentitySlash } = require("./slash/identitySlash");
 const {
   handleDemocracyBacklistedOrPreimageInvalid,
+  handleDemocracyCancelProposalSlash,
 } = require("./slash/democracySlash");
 
 async function scanIncome() {
@@ -84,6 +85,13 @@ async function handleEvents(events, blockIndexer, extrinsics) {
       const extrinsic = extrinsics[phaseValue];
 
       await handleTreasuryBountyUnassignCuratorSlash(
+        events[sort],
+        sort,
+        events,
+        extrinsicIndexer,
+        extrinsic
+      );
+      await handleDemocracyCancelProposalSlash(
         events[sort],
         sort,
         events,

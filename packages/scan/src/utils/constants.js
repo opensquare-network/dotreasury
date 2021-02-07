@@ -95,6 +95,10 @@ const DemocracyEvents = Object.freeze({
   PreimageInvalid: "PreimageInvalid",
 });
 
+const DemocracyMethods = Object.freeze({
+  cancelProposal: "cancel_proposal",
+});
+
 const ProxyMethods = Object.freeze({
   proxy: "proxy",
 });
@@ -150,4 +154,5 @@ module.exports = {
   TreasuryMethods,
   IdentityEvents,
   DemocracyEvents,
+  DemocracyMethods,
 };

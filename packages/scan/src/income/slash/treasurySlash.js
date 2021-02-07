@@ -90,19 +90,22 @@ function handleTreasuryBountyUnassignCuratorSlash(
   }
 
   const meta = extrinsic.method.meta.toJSON();
-  if (meta.name !== TreasuryMethods.unassignCurator) {
+  if (
+    extrinsic.method.section !== Modules.Treasury ||
+    meta.name !== TreasuryMethods.unassignCurator
+  ) {
     return;
   }
 
+  const bountyIndex = extrinsic.method.args[0].toJSON();
   const treasuryDepositEventData = treasuryDepositData.toJSON();
 
-  const bountyId = extrinsic.method.args[0].toJSON();
   const data = {
     extrinsicIndexer,
     section: extrinsic.method.section,
     method: meta.name,
-    args: { bountyId },
     balance: (treasuryDepositEventData || [])[0],
+    bountyIndex,
   };
 }
 
