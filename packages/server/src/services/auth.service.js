@@ -71,11 +71,11 @@ class AuthService {
     }
 
     if (!user.refreshToken.valid) {
-      throw new HttpError(400, "Invaild refresh token");
+      throw new HttpError(401, "Refresh token revoked");
     }
 
     if (user.refreshToken.expires.getTime() < Date.now()) {
-      throw new HttpError(400, "The refresh token has expired.");
+      throw new HttpError(401, "The refresh token has expired.");
     }
 
     return this.getSignedToken(user);
