@@ -15,6 +15,7 @@ const {
   handleTreasuryBountyUnassignCuratorSlash,
 } = require("./slash/treasurySlash");
 const { handleStakingEraPayout } = require("./inflation");
+const { handleIdentitySlash } = require("./slash/identitySlash");
 
 async function scanIncome() {
   await updateHeight();
@@ -47,7 +48,7 @@ async function scanBlockTreasuryIncomeByHeight(scanHeight) {
 async function handleEvents(events, blockIndexer, extrinsics) {
   for (let sort = 0; sort < events.length; sort++) {
     const {
-      event: { section, method, data },
+      event: { section, method },
       phase,
     } = events[sort];
     if (Modules.Treasury !== section || TreasuryEvent.Deposit !== method) {
@@ -56,21 +57,16 @@ async function handleEvents(events, blockIndexer, extrinsics) {
 
     await handleStakingEraPayout(events[sort], sort, events, blockIndexer);
     await handleStakingSlash(events[sort], sort, events, blockIndexer);
+    await handleTreasuryProposalSlash(events[sort], sort, events, blockIndexer);
+    await handleTreasuryBountyRejectedSlash(
+      events[sort],
+      sort,
+      events,
+      blockIndexer
+    );
+    await handleIdentitySlash(events[sort], sort, events, blockIndexer);
 
     if (!phase.isNull) {
-      await handleTreasuryProposalSlash(
-        events[sort],
-        sort,
-        events,
-        blockIndexer
-      );
-      await handleTreasuryBountyRejectedSlash(
-        events[sort],
-        sort,
-        events,
-        blockIndexer
-      );
-
       const phaseValue = phase.value.toNumber();
       const extrinsicIndexer = {
         ...blockIndexer,

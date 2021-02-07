@@ -86,10 +86,15 @@ const Modules = Object.freeze({
   Tips: "tips",
   Bounties: "bounties",
   Staking: "staking",
+  Identity: "identity",
 });
 
 const ProxyMethods = Object.freeze({
   proxy: "proxy",
+});
+
+const IdentityEvents = Object.freeze({
+  IdentityKilled: "IdentityKilled",
 });
 
 const MultisigMethods = Object.freeze({
@@ -137,4 +142,5 @@ module.exports = {
   UtilityMethods,
   ksmTreasuryRefactorApplyHeight,
   TreasuryMethods,
+  IdentityEvents,
 };
