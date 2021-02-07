@@ -9,8 +9,8 @@
     "prod": "pm2 start ecosystem.config.js --env production"
   },
   "dependencies": {
-    "@polkadot/api": "^3.2.3",
-    "@polkadot/util": "^5.2.2",
+    "@polkadot/api": "^3.7.3",
+    "@polkadot/util": "^5.5.2",
     "dotenv": "^8.2.0",
     "log4js": "^6.3.0",
     "mongodb": "^3.6.3"
