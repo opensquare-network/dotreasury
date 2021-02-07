@@ -29,6 +29,8 @@ function handleStakingEraPayout(event, sort, allBlockEvents, blockIndexer) {
     eraPayoutEventData,
   };
   // TODO: insert data to MongoDB
+
+  return data;
 }
 
 module.exports = {

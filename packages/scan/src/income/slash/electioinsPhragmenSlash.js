@@ -44,6 +44,7 @@ function handleElectionsPhragmenSlash(
     treasuryDepositEventData,
     [key]: nextEventData,
   };
+  return data;
 }
 
 module.exports = {

@@ -44,6 +44,8 @@ function handleStakingSlash(event, sort, allBlockEvents, blockIndexer) {
   };
 
   // TODO: insert data to MongoDB
+
+  return data;
 }
 
 module.exports = {

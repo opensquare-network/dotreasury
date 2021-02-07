@@ -37,6 +37,8 @@ function handleTreasuryProposalSlash(
     treasuryDepositEventData,
     treasuryRejectedEventData,
   };
+
+  return data;
 }
 
 function handleTreasuryBountyRejectedSlash(
@@ -72,6 +74,8 @@ function handleTreasuryBountyRejectedSlash(
     treasuryDepositEventData,
     bountyRejectedEventData,
   };
+
+  return data;
 }
 
 function handleTreasuryBountyUnassignCuratorSlash(
@@ -107,6 +111,8 @@ function handleTreasuryBountyUnassignCuratorSlash(
     balance: (treasuryDepositEventData || [])[0],
     bountyIndex,
   };
+
+  return data;
 }
 
 module.exports = {

@@ -1,8 +1,8 @@
 require("dotenv").config();
 const { updateHeight, getLatestHeight } = require("../chain/latestHead");
 const {
-  getIncomeNextScanHeight,
-  updateIncomeScanHeight,
+  getIncomeNextScanStatus,
+  updateIncomeScanStatus,
 } = require("../mongo/scanHeight");
 const { sleep } = require("../utils");
 const { getApi } = require("../api");
@@ -29,7 +29,7 @@ async function scanIncome() {
 
   while (true) {
     const chainHeight = getLatestHeight();
-    let scanHeight = await getIncomeNextScanHeight();
+    let { height: scanHeight, seats } = await getIncomeNextScanStatus();
 
     if (scanHeight > chainHeight) {
       // Just wait if the to scan height greater than current chain height
@@ -37,11 +37,12 @@ async function scanIncome() {
       continue;
     }
 
-    await updateIncomeScanHeight(scanHeight++);
+    const newSeats = await scanBlockTreasuryIncomeByHeight(scanHeight, seats);
+    await updateIncomeScanStatus(scanHeight++, newSeats);
   }
 }
 
-async function scanBlockTreasuryIncomeByHeight(scanHeight) {
+async function scanBlockTreasuryIncomeByHeight(scanHeight, seats) {
   const api = await getApi();
 
   const blockHash = await api.rpc.chain.getBlockHash(scanHeight);
@@ -49,41 +50,106 @@ async function scanBlockTreasuryIncomeByHeight(scanHeight) {
   const allEvents = await api.query.system.events.at(blockHash);
 
   const blockIndexer = getBlockIndexer(block.block);
-  await handleEvents(allEvents, blockIndexer, block.block.extrinsics);
+  return await handleEvents(
+    allEvents,
+    blockIndexer,
+    block.block.extrinsics,
+    seats
+  );
 }
 
-async function handleEvents(events, blockIndexer, extrinsics) {
+async function handleEvents(events, blockIndexer, extrinsics, seats) {
+  let inflationInc = 0;
+  let slashInc = 0;
+  let gasInc = 0;
+
   for (let sort = 0; sort < events.length; sort++) {
+    let isGas = false;
+
     const {
-      event: { section, method },
+      event: { section, method, data: treasuryDepositData },
       phase,
     } = events[sort];
     if (Modules.Treasury !== section || TreasuryEvent.Deposit !== method) {
       continue;
     }
 
-    await handleStakingEraPayout(events[sort], sort, events, blockIndexer);
-    await handleStakingSlash(events[sort], sort, events, blockIndexer);
-    await handleTreasuryProposalSlash(events[sort], sort, events, blockIndexer);
-    await handleTreasuryBountyRejectedSlash(
+    const eraPayout = await handleStakingEraPayout(
       events[sort],
       sort,
       events,
       blockIndexer
     );
-    await handleIdentitySlash(events[sort], sort, events, blockIndexer);
-    await handleDemocracyBacklistedOrPreimageInvalid(
+    if (eraPayout) {
+      inflationInc += eraPayout.balance;
+      isGas = false;
+    }
+
+    const stakingSlash = await handleStakingSlash(
       events[sort],
       sort,
       events,
       blockIndexer
     );
-    await handleElectionsPhragmenSlash(
+    if (stakingSlash) {
+      slashInc += stakingSlash.balance;
+      isGas = false;
+    }
+
+    const treasuryProposalSlash = await handleTreasuryProposalSlash(
       events[sort],
       sort,
       events,
       blockIndexer
     );
+    if (treasuryProposalSlash) {
+      slashInc += treasuryProposalSlash.balance;
+      isGas = false;
+    }
+
+    const treasuryBountyRejectedSlash = await handleTreasuryBountyRejectedSlash(
+      events[sort],
+      sort,
+      events,
+      blockIndexer
+    );
+    if (treasuryBountyRejectedSlash) {
+      slashInc += treasuryBountyRejectedSlash.balance;
+      isGas = false;
+    }
+
+    const identitySlash = await handleIdentitySlash(
+      events[sort],
+      sort,
+      events,
+      blockIndexer
+    );
+    if (identitySlash) {
+      slashInc += identitySlash.balance;
+      isGas = false;
+    }
+
+    const democracySlash = await handleDemocracyBacklistedOrPreimageInvalid(
+      events[sort],
+      sort,
+      events,
+      blockIndexer
+    );
+    if (democracySlash) {
+      slashInc += democracySlash.balance;
+      isGas = false;
+    }
+
+    const electionSlash = await handleElectionsPhragmenSlash(
+      events[sort],
+      sort,
+      events,
+      blockIndexer
+    );
+    if (electionSlash) {
+      slashInc += electionSlash.balance;
+      isGas = false;
+    }
 
     if (!phase.isNull) {
       const phaseValue = phase.value.toNumber();
@@ -93,24 +159,46 @@ async function handleEvents(events, blockIndexer, extrinsics) {
       };
       const extrinsic = extrinsics[phaseValue];
 
-      await handleTreasuryBountyUnassignCuratorSlash(
+      const bountyUnassignCuratorSlash = await handleTreasuryBountyUnassignCuratorSlash(
         events[sort],
         sort,
         events,
         extrinsicIndexer,
         extrinsic
       );
-      await handleDemocracyCancelProposalSlash(
+      if (bountyUnassignCuratorSlash) {
+        slashInc += bountyUnassignCuratorSlash.balance;
+        isGas = false;
+      }
+
+      const democracyCancelProposalSlash = await handleDemocracyCancelProposalSlash(
         events[sort],
         sort,
         events,
         extrinsicIndexer,
         extrinsic
       );
+      if (democracyCancelProposalSlash) {
+        slashInc += democracyCancelProposalSlash.balance;
+        isGas = false;
+      }
+    }
+
+    if (isGas) {
+      const treasuryDepositEventData = treasuryDepositData.toJSON();
+      const balance = (treasuryDepositEventData || [])[0];
+      gasInc += balance;
     }
   }
+
+  return {
+    inflation: seats.inflation + inflationInc,
+    slash: seats.slash + slashInc,
+    gas: seats.gas + gasInc,
+  };
 }
 
-(async function f() {
-  await scanBlockTreasuryIncomeByHeight(6062400);
-})();
+scanIncome().catch(console.error);
+// (async function f() {
+//   await scanBlockTreasuryIncomeByHeight(6062400);
+// })();

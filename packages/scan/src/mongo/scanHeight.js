@@ -2,7 +2,12 @@ const { getStatusCollection } = require("./index");
 
 const genesisHeight = 1;
 const mainScanName = "main-scan-height";
-const incomeScanName = "income-scan-height";
+const incomeScanName = "income-scan";
+const genesisTreasurySeats = {
+  inflation: 0,
+  slash: 0,
+  gas: 0,
+};
 
 async function getNextScanHeight() {
   const statusCol = await getStatusCollection();
@@ -18,18 +23,18 @@ async function getNextScanHeight() {
   }
 }
 
-async function getIncomeNextScanHeight() {
+async function getIncomeNextScanStatus() {
   const statusCol = await getStatusCollection();
-  const heightInfo = await statusCol.findOne({ name: incomeScanName });
+  const status = await statusCol.findOne({ name: incomeScanName });
 
-  if (!heightInfo) {
-    return genesisHeight;
-  } else if (typeof heightInfo.value === "number") {
-    return heightInfo.value + 1;
-  } else {
-    console.error("Scan height value error in DB!");
-    process.exit(1);
+  if (!status) {
+    return {
+      height: genesisHeight,
+      seats: genesisTreasurySeats,
+    };
   }
+
+  return status;
 }
 
 async function updateScanHeight(height) {
@@ -41,11 +46,11 @@ async function updateScanHeight(height) {
   );
 }
 
-async function updateIncomeScanHeight(height) {
+async function updateIncomeScanStatus(height, seats) {
   const statusCol = await getStatusCollection();
   await statusCol.findOneAndUpdate(
     { name: incomeScanName },
-    { $set: { value: height } },
+    { $set: { height, seats } },
     { upsert: true }
   );
 }
@@ -53,6 +58,6 @@ async function updateIncomeScanHeight(height) {
 module.exports = {
   getNextScanHeight,
   updateScanHeight,
-  getIncomeNextScanHeight,
-  updateIncomeScanHeight,
+  getIncomeNextScanStatus,
+  updateIncomeScanStatus,
 };

@@ -1,4 +1,5 @@
 const { logger, knownHeightsLogger } = require("./logger");
+const BigNumber = require("bignumber.js");
 
 const sleep = (time) => {
   return new Promise((resolve) => {
@@ -35,6 +36,10 @@ function median(values) {
   return sorted[Math.floor(sorted.length / 2)];
 }
 
+function bigAdd(v1, v2) {
+  return new BigNumber(v1).plus(v2).toNumber();
+}
+
 module.exports = {
   getExtrinsicSigner,
   isExtrinsicSuccess,
@@ -43,4 +48,5 @@ module.exports = {
   median,
   logger,
   knownHeightsLogger,
+  bigAdd,
 };

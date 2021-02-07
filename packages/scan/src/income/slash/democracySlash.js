@@ -51,6 +51,8 @@ function handleDemocracyBacklistedOrPreimageInvalid(
     treasuryDepositEventData,
     [key]: nextEventData,
   };
+
+  return data;
 }
 
 async function handleDemocracyCancelProposalSlash(
@@ -108,6 +110,7 @@ async function handleDemocracyCancelProposalSlash(
     treasuryDepositEventData,
     canceledProposalIndex: propIndex,
   };
+  return data;
 }
 
 module.exports = {

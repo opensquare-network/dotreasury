@@ -32,6 +32,7 @@ function handleIdentitySlash(event, sort, allBlockEvents, blockIndexer) {
     treasuryDepositEventData,
     identityKilledEventData,
   };
+  return data;
 }
 
 module.exports = {
