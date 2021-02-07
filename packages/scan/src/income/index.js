@@ -16,6 +16,9 @@ const {
 } = require("./slash/treasurySlash");
 const { handleStakingEraPayout } = require("./inflation");
 const { handleIdentitySlash } = require("./slash/identitySlash");
+const {
+  handleDemocracyBacklistedOrPreimageInvalid,
+} = require("./slash/democracySlash");
 
 async function scanIncome() {
   await updateHeight();
@@ -65,6 +68,12 @@ async function handleEvents(events, blockIndexer, extrinsics) {
       blockIndexer
     );
     await handleIdentitySlash(events[sort], sort, events, blockIndexer);
+    await handleDemocracyBacklistedOrPreimageInvalid(
+      events[sort],
+      sort,
+      events,
+      blockIndexer
+    );
 
     if (!phase.isNull) {
       const phaseValue = phase.value.toNumber();

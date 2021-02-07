@@ -87,6 +87,12 @@ const Modules = Object.freeze({
   Bounties: "bounties",
   Staking: "staking",
   Identity: "identity",
+  Democracy: "democracy",
+});
+
+const DemocracyEvents = Object.freeze({
+  Blacklisted: "Blacklisted",
+  PreimageInvalid: "PreimageInvalid",
 });
 
 const ProxyMethods = Object.freeze({
@@ -143,4 +149,5 @@ module.exports = {
   ksmTreasuryRefactorApplyHeight,
   TreasuryMethods,
   IdentityEvents,
+  DemocracyEvents,
 };
