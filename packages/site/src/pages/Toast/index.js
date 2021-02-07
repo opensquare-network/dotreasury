@@ -6,6 +6,7 @@ import ToastItem from "./ToastItem";
 import {
   toastsSelector
 } from "../../store/reducers/toastSlice";
+import Container from "../../components/Container";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -18,9 +19,10 @@ const Wrapper = styled.div`
 
 const ToastList = styled.div`
   margin-top: 88px;
+  margin-left: auto;
+  width: fit-content;
   display: flex;
   flex-direction: column;
-  align-items: center;
 `
 
 const Toast = () => {
@@ -28,11 +30,13 @@ const Toast = () => {
   
   return (
     <Wrapper>
-      <ToastList>
-        {(toasts || []).map(({ type, message, id }) => 
-          <ToastItem type={type} message={message} id={id} key={id} />
-        )}
-      </ToastList>
+      <Container>
+        <ToastList>
+          {(toasts || []).map(({ type, message, id }) => 
+            <ToastItem type={type} message={message} id={id} key={id} />
+          )}
+        </ToastList>
+      </Container>
     </Wrapper>
   )
 }
