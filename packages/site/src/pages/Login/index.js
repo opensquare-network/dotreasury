@@ -202,8 +202,6 @@ function Login({ location }) {
       username: loginResult.username,
       email: loginResult.email,
     };
-    dispatch(setLoggedInUser(loggedInUser));
-
     localStorage.setItem(
       "token",
       JSON.stringify({
@@ -211,6 +209,7 @@ function Login({ location }) {
         refreshToken: loginResult.refreshToken,
       })
     );
+    dispatch(setLoggedInUser(loggedInUser));
   };
 
   // Do login

@@ -1,6 +1,9 @@
 import Api from "./api";
+import { Subject } from 'rxjs';
 
 class ScanApi extends Api {
+  jwtExpire = new Subject();
+
   async login(usernameOrEmail, password) {
     const { result, error } = await this.fetch(
       "/auth/login",
@@ -39,8 +42,13 @@ class ScanApi extends Api {
   async authFetch(url, params, options) {
     const token = JSON.parse(localStorage.getItem("token"));
     if (!token) {
-      console.error("Access token is not found.");
-      return {};
+      this.jwtExpire.next();
+      return {
+        error: {
+          status: 401,
+          message: "Access token is not found"
+        }
+      };
     }
 
     options = {
@@ -59,7 +67,7 @@ class ScanApi extends Api {
     if (error?.status === 401 && error?.message === "jwt expired") {
       console.warn("Access token expired, tring to refresh token.");
       // jwt expire
-      const { result: refreshResult } = await this.fetch(
+      const { result: refreshResult, error: refreshError } = await this.fetch(
         "/auth/refresh",
         {},
         {
@@ -85,8 +93,12 @@ class ScanApi extends Api {
           "Authorization"
         ] = `Bearer ${refreshResult.accessToken}`;
         return await this.fetch(url, params, options);
-      } else {
+      }
+
+      if (refreshError) {
         console.error("Failed to refresh access token.");
+        this.jwtExpire.next();
+        return { error };
       }
     }
 

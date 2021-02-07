@@ -86,9 +86,9 @@ const DeleteAccount = () => {
       if (isMounted.current) {
         setServerError("");
       }
+      dispatch(setLoggedInUser(null));
       localStorage.removeItem("token");
       history.push("/");
-      dispatch(setLoggedInUser(null));
       dispatch(
         addToast({
           type: "success",

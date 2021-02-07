@@ -17,6 +17,8 @@ import { TEXT_DARK_MAJOR } from "../../constants";
 import { useIndentity } from "../../utils/hooks";
 import UserAvatar from "../../components/User/Avatar";
 import { getGravatarSrc } from "../../utils";
+import scanApi from "../../services/scanApi";
+import { setLoggedInUser } from "../../store/reducers/userSlice";
 
 const Wrapper = styled.a`
   display: flex;
@@ -67,6 +69,16 @@ const UserLogin = () => {
       setAddressDisplayName(addressDisplayName);
     }
   }, [address, addressName])
+
+  useEffect(() => {
+    const sub = scanApi.jwtExpire.subscribe(() => {
+      dispatch(setLoggedInUser(null));
+      localStorage.removeItem("token");
+    });
+    return () => {
+      sub.unsubscribe();
+    };
+  }, [dispatch]);
 
   return (
     <>

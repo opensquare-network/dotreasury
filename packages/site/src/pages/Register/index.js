@@ -191,8 +191,6 @@ function Register({ history }) {
       username: loginResult.username,
       email: loginResult.email,
     };
-    dispatch(setLoggedInUser(loggedInUser));
-
     localStorage.setItem(
       "token",
       JSON.stringify({
@@ -200,6 +198,7 @@ function Register({ history }) {
         refreshToken: loginResult.refreshToken,
       })
     );
+    dispatch(setLoggedInUser(loggedInUser));
   };
 
   return (
