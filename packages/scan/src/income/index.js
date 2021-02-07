@@ -20,6 +20,9 @@ const {
   handleDemocracyBacklistedOrPreimageInvalid,
   handleDemocracyCancelProposalSlash,
 } = require("./slash/democracySlash");
+const {
+  handleElectionsPhragmenSlash,
+} = require("./slash/electioinsPhragmenSlash");
 
 async function scanIncome() {
   await updateHeight();
@@ -75,6 +78,12 @@ async function handleEvents(events, blockIndexer, extrinsics) {
       events,
       blockIndexer
     );
+    await handleElectionsPhragmenSlash(
+      events[sort],
+      sort,
+      events,
+      blockIndexer
+    );
 
     if (!phase.isNull) {
       const phaseValue = phase.value.toNumber();
@@ -103,5 +112,5 @@ async function handleEvents(events, blockIndexer, extrinsics) {
 }
 
 (async function f() {
-  await scanBlockTreasuryIncomeByHeight(6006979);
+  await scanBlockTreasuryIncomeByHeight(6062400);
 })();

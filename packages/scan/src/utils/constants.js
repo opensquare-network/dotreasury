@@ -88,6 +88,12 @@ const Modules = Object.freeze({
   Staking: "staking",
   Identity: "identity",
   Democracy: "democracy",
+  ElectionsPhragmen: "electionsPhragmen",
+});
+
+const ElectionsPhragmenEvents = Object.freeze({
+  CandidateSlashed: "CandidateSlashed",
+  SeatHolderSlashed: "SeatHolderSlashed",
 });
 
 const DemocracyEvents = Object.freeze({
@@ -155,4 +161,5 @@ module.exports = {
   IdentityEvents,
   DemocracyEvents,
   DemocracyMethods,
+  ElectionsPhragmenEvents,
 };
