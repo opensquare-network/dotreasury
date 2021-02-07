@@ -7,13 +7,14 @@ const {
 const { sleep } = require("../utils");
 const { getApi } = require("../api");
 const { getBlockIndexer } = require("../block/getBlockIndexer");
-const { Modules, TreasuryEvent, StakingEvents } = require("../utils/constants");
+const { Modules, TreasuryEvent } = require("../utils/constants");
 const { handleStakingSlash } = require("./slash/stakingSlash");
 const {
   handleTreasuryProposalSlash,
   handleTreasuryBountyRejectedSlash,
   handleTreasuryBountyUnassignCuratorSlash,
 } = require("./slash/treasurySlash");
+const { handleStakingEraPayout } = require("./inflation");
 
 async function scanIncome() {
   await updateHeight();
@@ -55,9 +56,21 @@ async function handleEvents(events, blockIndexer, extrinsics) {
 
     await handleStakingEraPayout(events[sort], sort, events, blockIndexer);
     await handleStakingSlash(events[sort], sort, events, blockIndexer);
-    await handleTreasuryProposalSlash(events[sort], sort, events, blockIndexer);
 
     if (!phase.isNull) {
+      await handleTreasuryProposalSlash(
+        events[sort],
+        sort,
+        events,
+        blockIndexer
+      );
+      await handleTreasuryBountyRejectedSlash(
+        events[sort],
+        sort,
+        events,
+        blockIndexer
+      );
+
       const phaseValue = phase.value.toNumber();
       const extrinsicIndexer = {
         ...blockIndexer,
@@ -74,37 +87,6 @@ async function handleEvents(events, blockIndexer, extrinsics) {
       );
     }
   }
-}
-
-// Inflation
-function handleStakingEraPayout(event, sort, allBlockEvents, blockIndexer) {
-  const {
-    event: { data: treasuryDepositData },
-    phase,
-  } = event; // get deposit event data
-  if (sort <= 0 || !phase.isNull) {
-    return;
-  }
-
-  const preEvent = allBlockEvents[sort - 1];
-  const {
-    event: { section, method, data: eraPayoutData },
-  } = preEvent;
-  if (section !== Modules.Staking || method !== StakingEvents.EraPayout) {
-    return;
-  }
-
-  const treasuryDepositEventData = treasuryDepositData.toJSON();
-  const eraPayoutEventData = eraPayoutData.toJSON();
-  const balance = (treasuryDepositEventData || [])[0];
-
-  const data = {
-    indexer: blockIndexer,
-    balance,
-    treasuryDepositEventData,
-    eraPayoutEventData,
-  };
-  // TODO: insert data to MongoDB
 }
 
 (async function f() {
