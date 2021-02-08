@@ -26,11 +26,10 @@ const {
 
 async function scanIncome() {
   await updateHeight();
+  let { height: scanHeight, seats } = await getIncomeNextScanStatus();
 
   while (true) {
     const chainHeight = getLatestHeight();
-    let { height: scanHeight, seats } = await getIncomeNextScanStatus();
-
     if (scanHeight > chainHeight) {
       // Just wait if the to scan height greater than current chain height
       await sleep(1000);
