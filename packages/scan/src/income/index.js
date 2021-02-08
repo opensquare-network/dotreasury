@@ -64,7 +64,7 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
   let gasInc = 0;
 
   for (let sort = 0; sort < events.length; sort++) {
-    let isGas = false;
+    let isGas = true;
 
     const {
       event: { section, method, data: treasuryDepositData },
