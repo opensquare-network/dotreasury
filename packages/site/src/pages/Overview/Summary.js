@@ -14,11 +14,15 @@ import {
   fetchSpendPeriod,
   spendPeriodSelector
 } from "../../store/reducers/chainSlice";
+import {
+  fetchTreasury,
+  treasurySelector,
+} from "../../store/reducers/burntSlice";
 import { mrgap } from "../../styles";
 
 const Wrapper = styled(Card)`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 24px;
   padding: 32px;
   align-items: center;
@@ -65,10 +69,12 @@ const Summary = () => {
 
   useEffect(() => {
     dispatch(fetchSpendPeriod());
+    dispatch(fetchTreasury());
   }, [dispatch]);
 
   const overview = useSelector(overviewSelector);
   const spendPeriod = useSelector(spendPeriodSelector);
+  const treasury = useSelector(treasurySelector);
 
   return (
     <Wrapper>
@@ -111,13 +117,13 @@ const Summary = () => {
           </div>
         </ItemWrapper>
       </CustomCard>
-      {/* <CustomCard>
+      <CustomCard>
         <ItemWrapper>
           <Image src="/imgs/blockchain-free-icon.svg" />
           <div>
             <Title>Available</Title>
             <ValueWrapper>
-              <TextBold>50.8765</TextBold>
+              <TextBold>{treasury.free?.toFixed(0)}</TextBold>
               <TextMinorBold>KSM</TextMinorBold>
             </ValueWrapper>
           </div>
@@ -129,12 +135,12 @@ const Summary = () => {
           <div>
             <Title>Next burn</Title>
             <ValueWrapper>
-              <TextBold>3.1234</TextBold>
+              <TextBold>{(treasury.burnPercent * treasury.free)?.toFixed(4)}</TextBold>
               <TextMinorBold>KSM</TextMinorBold>
             </ValueWrapper>
           </div>
         </ItemWrapper>
-      </CustomCard> */}
+      </CustomCard>
       <CustomCard>
         <ItemWrapper>
           <CountDown percent={spendPeriod.progress} />
