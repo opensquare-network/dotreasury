@@ -11,7 +11,7 @@ const Wrapper = styled.div`
 
 const Label = styled.span`
   margin-left: 4px;
-  font-family: Inter;
+  font-family: "Inter";
   font-style: normal;
   font-weight: normal;
   font-size: 14px;

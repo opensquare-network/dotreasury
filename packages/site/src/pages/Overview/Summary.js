@@ -14,16 +14,24 @@ import {
   fetchSpendPeriod,
   spendPeriodSelector
 } from "../../store/reducers/chainSlice";
+import {
+  fetchTreasury,
+  treasurySelector,
+} from "../../store/reducers/burntSlice";
 import { mrgap } from "../../styles";
 
-const Wrapper = styled.div`
+const Wrapper = styled(Card)`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 24px;
+  padding: 32px;
+  align-items: center;
+  justify-content: center;
 `
 
-const CustomCard = styled(Card)`
-  padding: 16px 20px;
+const CustomCard = styled.div`
+  padding: 0;
+  border-color: #EEE;
 `
 
 const ItemWrapper = styled.div`
@@ -61,10 +69,12 @@ const Summary = () => {
 
   useEffect(() => {
     dispatch(fetchSpendPeriod());
+    dispatch(fetchTreasury());
   }, [dispatch]);
 
   const overview = useSelector(overviewSelector);
   const spendPeriod = useSelector(spendPeriodSelector);
+  const treasury = useSelector(treasurySelector);
 
   return (
     <Wrapper>
@@ -103,6 +113,30 @@ const Summary = () => {
               <TextBold>{overview.count.bounty.unFinished}</TextBold>
               <TextMinorBold>/</TextMinorBold>
               <TextMinorBold>{overview.count.bounty.all}</TextMinorBold>
+            </ValueWrapper>
+          </div>
+        </ItemWrapper>
+      </CustomCard>
+      <CustomCard>
+        <ItemWrapper>
+          <Image src="/imgs/blockchain-free-icon.svg" />
+          <div>
+            <Title>Available</Title>
+            <ValueWrapper>
+              <TextBold>{treasury.free?.toFixed(0)}</TextBold>
+              <TextMinorBold>KSM</TextMinorBold>
+            </ValueWrapper>
+          </div>
+        </ItemWrapper>
+      </CustomCard>
+      <CustomCard>
+        <ItemWrapper>
+          <Image src="/imgs/blockchain-free-icon.svg" />
+          <div>
+            <Title>Next burn</Title>
+            <ValueWrapper>
+              <TextBold>{(treasury.burnPercent * treasury.free)?.toFixed(4)}</TextBold>
+              <TextMinorBold>KSM</TextMinorBold>
             </ValueWrapper>
           </div>
         </ItemWrapper>

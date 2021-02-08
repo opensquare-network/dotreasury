@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   justify-content: flex-end;
 
   a {
-    font-family: Inter !important;
+    font-family: "Inter" !important;
     outline: none !important;
     &.active {
       color: ${PRIMARY_THEME_COLOR} !important;
