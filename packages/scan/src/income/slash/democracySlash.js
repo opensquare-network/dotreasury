@@ -6,6 +6,7 @@ const {
 } = require("../../utils/constants");
 const { getApi } = require("../../api");
 const { getCall } = require("../../utils/call");
+const { incomeLogger } = require("../../utils");
 
 function handleDemocracyBacklistedOrPreimageInvalid(
   event,
@@ -51,6 +52,10 @@ function handleDemocracyBacklistedOrPreimageInvalid(
     treasuryDepositEventData,
     [key]: nextEventData,
   };
+  incomeLogger.info(
+    `democracy backlisted or preimageInvalid slash detected`,
+    data
+  );
 
   return data;
 }
@@ -110,6 +115,7 @@ async function handleDemocracyCancelProposalSlash(
     treasuryDepositEventData,
     canceledProposalIndex: propIndex,
   };
+  incomeLogger.info(`democracy cancel proposal slash detected`, data);
   return data;
 }
 

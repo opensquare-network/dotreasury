@@ -1,4 +1,5 @@
 const { Modules, ElectionsPhragmenEvents } = require("../../utils/constants");
+const { incomeLogger } = require("../../utils");
 
 function handleElectionsPhragmenSlash(
   event,
@@ -44,6 +45,7 @@ function handleElectionsPhragmenSlash(
     treasuryDepositEventData,
     [key]: nextEventData,
   };
+  incomeLogger.info(`electionsPhragmen slash detected`, data);
   return data;
 }
 

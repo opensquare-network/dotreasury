@@ -5,11 +5,13 @@ const isProduction = process.env.NODE_ENV === "production";
 
 const scanFileCategory = "os-scan";
 const knownHeightsCategory = "known-heights";
+const incomeCategory = "income";
 
 log4js.configure({
   appenders: {
     [scanFileCategory]: { type: "file", filename: "log/os-scan.log" },
     [knownHeightsCategory]: { type: "file", filename: "log/known-heights.log" },
+    [incomeCategory]: { type: "file", filename: "log/income.log" },
     errorFile: {
       type: "file",
       filename: "log/errors.log",
@@ -30,13 +32,19 @@ log4js.configure({
       appenders: [knownHeightsCategory, "errors"],
       level: logLevel,
     },
+    [incomeCategory]: {
+      appenders: [incomeCategory, "errors"],
+      level: logLevel,
+    },
   },
 });
 
 const logger = log4js.getLogger(scanFileCategory);
 const knownHeightsLogger = log4js.getLogger(knownHeightsCategory);
+const incomeLogger = log4js.getLogger(incomeCategory);
 
 module.exports = {
   logger,
   knownHeightsLogger,
+  incomeLogger,
 };

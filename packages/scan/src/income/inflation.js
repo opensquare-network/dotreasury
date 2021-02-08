@@ -1,4 +1,5 @@
 const { Modules, StakingEvents } = require("../utils/constants");
+const { incomeLogger } = require("../utils");
 
 // Inflation
 function handleStakingEraPayout(event, sort, allBlockEvents, blockIndexer) {
@@ -30,6 +31,7 @@ function handleStakingEraPayout(event, sort, allBlockEvents, blockIndexer) {
   };
   // TODO: insert data to MongoDB
 
+  incomeLogger.info(`eraPayout detected`, data);
   return data;
 }
 

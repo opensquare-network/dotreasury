@@ -1,4 +1,4 @@
-const { logger, knownHeightsLogger } = require("./logger");
+const { logger, knownHeightsLogger, incomeLogger } = require("./logger");
 const BigNumber = require("bignumber.js");
 
 const sleep = (time) => {
@@ -48,5 +48,6 @@ module.exports = {
   median,
   logger,
   knownHeightsLogger,
+  incomeLogger,
   bigAdd,
 };

@@ -3,6 +3,7 @@ const {
   TreasuryEvent,
   TreasuryMethods,
 } = require("../../utils/constants");
+const { incomeLogger } = require("../../utils");
 
 function handleTreasuryProposalSlash(
   event,
@@ -37,6 +38,7 @@ function handleTreasuryProposalSlash(
     treasuryDepositEventData,
     treasuryRejectedEventData,
   };
+  incomeLogger.info(`treasury proposal slash detected`, data);
 
   return data;
 }
@@ -74,6 +76,7 @@ function handleTreasuryBountyRejectedSlash(
     treasuryDepositEventData,
     bountyRejectedEventData,
   };
+  incomeLogger.info(`treasury bounty rejected slash detected`, data);
 
   return data;
 }
@@ -111,6 +114,7 @@ function handleTreasuryBountyUnassignCuratorSlash(
     balance: (treasuryDepositEventData || [])[0],
     bountyIndex,
   };
+  incomeLogger.info(`treasury bounty unassign curator slash detected`, data);
 
   return data;
 }

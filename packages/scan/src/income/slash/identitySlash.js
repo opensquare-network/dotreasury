@@ -1,4 +1,5 @@
 const { Modules, IdentityEvents } = require("../../utils/constants");
+const { incomeLogger } = require("../../utils");
 
 function handleIdentitySlash(event, sort, allBlockEvents, blockIndexer) {
   const {
@@ -32,6 +33,7 @@ function handleIdentitySlash(event, sort, allBlockEvents, blockIndexer) {
     treasuryDepositEventData,
     identityKilledEventData,
   };
+  incomeLogger.info(`identity slash detected`, data);
   return data;
 }
 

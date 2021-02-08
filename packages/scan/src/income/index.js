@@ -4,7 +4,7 @@ const {
   getIncomeNextScanStatus,
   updateIncomeScanStatus,
 } = require("../mongo/scanHeight");
-const { sleep } = require("../utils");
+const { sleep, incomeLogger } = require("../utils");
 const { getApi } = require("../api");
 const { getBlockIndexer } = require("../block/getBlockIndexer");
 const { Modules, TreasuryEvent } = require("../utils/constants");
@@ -38,6 +38,7 @@ async function scanIncome() {
     }
 
     const newSeats = await scanBlockTreasuryIncomeByHeight(scanHeight, seats);
+    incomeLogger.info(`block ${scanHeight} done`);
     await updateIncomeScanStatus(scanHeight++, newSeats);
   }
 }
