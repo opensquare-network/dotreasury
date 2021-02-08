@@ -16,14 +16,17 @@ import {
 } from "../../store/reducers/chainSlice";
 import { mrgap } from "../../styles";
 
-const Wrapper = styled.div`
+const Wrapper = styled(Card)`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   gap: 24px;
+  padding: 32px;
+  align-items: center;
+  justify-content: center;
 `
 
-const CustomCard = styled(Card)`
-  padding: 16px 20px;
+const CustomCard = styled.div`
+  padding: 0;
   border-color: #EEE;
 `
 
@@ -108,6 +111,30 @@ const Summary = () => {
           </div>
         </ItemWrapper>
       </CustomCard>
+      {/* <CustomCard>
+        <ItemWrapper>
+          <Image src="/imgs/blockchain-free-icon.svg" />
+          <div>
+            <Title>Available</Title>
+            <ValueWrapper>
+              <TextBold>50.8765</TextBold>
+              <TextMinorBold>KSM</TextMinorBold>
+            </ValueWrapper>
+          </div>
+        </ItemWrapper>
+      </CustomCard>
+      <CustomCard>
+        <ItemWrapper>
+          <Image src="/imgs/blockchain-free-icon.svg" />
+          <div>
+            <Title>Next burn</Title>
+            <ValueWrapper>
+              <TextBold>3.1234</TextBold>
+              <TextMinorBold>KSM</TextMinorBold>
+            </ValueWrapper>
+          </div>
+        </ItemWrapper>
+      </CustomCard> */}
       <CustomCard>
         <ItemWrapper>
           <CountDown percent={spendPeriod.progress} />

@@ -21,7 +21,7 @@ const Wrapper = styled.div`
 
   a {
     border: 0px;
-    font-family: Inter !important;
+    font-family: "Inter" !important;
     outline: none !important;
     color: ${TEXT_DARK_MINOR} !important;
     &.active {
