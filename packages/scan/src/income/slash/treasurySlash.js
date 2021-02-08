@@ -5,6 +5,53 @@ const {
 } = require("../../utils/constants");
 const { incomeLogger } = require("../../utils");
 
+const knownProposalSlash = [
+  {
+    block: 280582,
+    sort: 5,
+  },
+  {
+    block: 280587,
+    sort: 5,
+  },
+  {
+    block: 280589,
+    sort: 5,
+  },
+  {
+    block: 281304,
+    sort: 5,
+  },
+  {
+    block: 294461,
+    sort: 5,
+  },
+  {
+    block: 294463,
+    sort: 5,
+  },
+  {
+    block: 294465,
+    sort: 5,
+  },
+  {
+    block: 294465,
+    sort: 5,
+  },
+  {
+    block: 294467,
+    sort: 5,
+  },
+  {
+    block: 305563,
+    sort: 5,
+  },
+  {
+    block: 305563,
+    sort: 5,
+  },
+];
+
 function handleTreasuryProposalSlash(
   event,
   sort,
@@ -19,6 +66,22 @@ function handleTreasuryProposalSlash(
     return;
   }
 
+  const treasuryDepositEventData = treasuryDepositData.toJSON();
+  const balance = (treasuryDepositEventData || [])[0];
+  if (
+    knownProposalSlash.find(
+      (s) => s.block === blockIndexer.blockHeight && s.sort === sort
+    )
+  ) {
+    return {
+      indexer: blockIndexer,
+      section: Modules.Treasury,
+      method: TreasuryEvent.Rejected,
+      balance,
+      treasuryDepositEventData,
+    };
+  }
+
   const nextEvent = allBlockEvents[sort + 1];
   const {
     event: { section, method },
@@ -28,8 +91,6 @@ function handleTreasuryProposalSlash(
   }
 
   const treasuryRejectedEventData = nextEvent.event.data.toJSON();
-  const treasuryDepositEventData = treasuryDepositData.toJSON();
-  const balance = (treasuryDepositEventData || [])[0];
   const data = {
     indexer: blockIndexer,
     section,
