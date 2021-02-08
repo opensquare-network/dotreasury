@@ -201,5 +201,9 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
 
 scanIncome().catch(console.error);
 // (async function f() {
-//   await scanBlockTreasuryIncomeByHeight(6062400);
+//   await scanBlockTreasuryIncomeByHeight(32468, {
+//     inflation: 0,
+//     slash: 0,
+//     gas: 0,
+//   });
 // })();
