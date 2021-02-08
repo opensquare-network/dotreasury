@@ -5,9 +5,8 @@ const { incomeLogger } = require("../utils");
 function handleStakingEraPayout(event, sort, allBlockEvents, blockIndexer) {
   const {
     event: { data: treasuryDepositData },
-    phase,
   } = event; // get deposit event data
-  if (sort <= 0 || !phase.isNull) {
+  if (sort <= 0) {
     return;
   }
 

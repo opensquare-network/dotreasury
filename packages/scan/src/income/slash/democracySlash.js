@@ -18,7 +18,7 @@ function handleDemocracyBacklistedOrPreimageInvalid(
     event: { data: treasuryDepositData },
     phase,
   } = event; // get deposit event data
-  if (sort >= allBlockEvents.length - 1 || phase.isNull) {
+  if (sort >= allBlockEvents.length - 1) {
     return;
   }
 

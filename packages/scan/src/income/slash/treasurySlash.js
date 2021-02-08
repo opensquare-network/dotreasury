@@ -60,9 +60,8 @@ function handleTreasuryProposalSlash(
 ) {
   const {
     event: { data: treasuryDepositData },
-    phase,
   } = event; // get deposit event data
-  if (sort >= allBlockEvents.length - 1 || phase.isNull) {
+  if (sort >= allBlockEvents.length - 1) {
     return;
   }
 
@@ -112,9 +111,8 @@ function handleTreasuryBountyRejectedSlash(
 ) {
   const {
     event: { data: treasuryDepositData },
-    phase,
   } = event; // get deposit event data
-  if (sort >= allBlockEvents.length - 1 || phase.isNull) {
+  if (sort >= allBlockEvents.length - 1) {
     return;
   }
 
@@ -151,12 +149,7 @@ function handleTreasuryBountyUnassignCuratorSlash(
 ) {
   const {
     event: { data: treasuryDepositData },
-    phase,
   } = event; // get deposit event data
-  if (phase.isNull) {
-    return;
-  }
-
   const meta = extrinsic.method.meta.toJSON();
   if (
     extrinsic.method.section !== Modules.Treasury ||
