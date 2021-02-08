@@ -97,6 +97,10 @@ class CommentService {
   }
 
   async postComment(indexer, content, author) {
+    if (!author.emailVerified) {
+      throw new HttpError(403, "Cannot post because the account is not verified yet.");
+    }
+
     const commentCol = await getCommentCollection();
 
     const now = new Date();
