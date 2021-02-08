@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { TEXT_DARK_MAJOR } from "../constants";
 
 const SubTitle = styled.header`
-  font-family: Inter;
+  font-family: "Inter";
   font-style: normal;
   font-weight: bold;
   font-size: 18px;

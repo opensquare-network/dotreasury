@@ -4,8 +4,6 @@ import styled from "styled-components";
 import Text from "../../components/Text";
 
 const Wrapper = styled.div`
-  position: absolute;
-  top: 16px;
   @media screen and (max-width: 556px) {
     display: none;
   }
@@ -23,7 +21,6 @@ const ItemList = styled.div`
   & > div:not(:last-child) {
     margin-bottom: 8px;
   }
-  align-items: flex-start;
 `
 
 const LabelList = ({children}) => {

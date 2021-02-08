@@ -14,11 +14,22 @@ import {
 } from "../../constants";
 
 const CardWrapper = styled(Card)`
-  position: relative;
-  margin-top: 24px;
-  height: 304px;
-  padding: 32px 20px;
+  display: flex;
+  height: 280px;
+  padding: 32px;
+  border-color: #EEE;
 `;
+
+const CanvasWrapper = styled.div`
+  flex-grow: 1;
+  position: relative;
+`
+
+const DoughnutWrapper = styled.div`
+  width: 214px;
+  height: 214px;
+  margin: 0 auto;
+`
 
 const DoughnutCard = ({ proposals, tips, bounties, burnt }) => {
   const [proposalsDisabled, setProposalsDisabled] = useState(false);
@@ -57,13 +68,6 @@ const DoughnutCard = ({ proposals, tips, bounties, burnt }) => {
 
   return (
     <CardWrapper>
-      <Total total={total} />
-      <Doughnut
-        proposals={proposalsDisabled ? 0 : proposals}
-        tips={tipsDisabled ? 0 : tips}
-        bounties={bountiesDisabled ? 0 : bounties}
-        burnt={burntDisabled ? 0 : burnt}
-      />
       <LabelList>
         <Label
           name="Proposals"
@@ -94,6 +98,17 @@ const DoughnutCard = ({ proposals, tips, bounties, burnt }) => {
           onToggleDisabled={onToggleBurnt}
         />
       </LabelList>
+      <CanvasWrapper>
+        <Total total={total} />
+        <DoughnutWrapper>
+          <Doughnut
+            proposals={proposalsDisabled ? 0 : proposals}
+            tips={tipsDisabled ? 0 : tips}
+            bounties={bountiesDisabled ? 0 : bounties}
+            burnt={burntDisabled ? 0 : burnt}
+          />
+        </DoughnutWrapper>
+      </CanvasWrapper>
     </CardWrapper>
   );
 };
