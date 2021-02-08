@@ -26,7 +26,7 @@ const {
 
 async function scanIncome() {
   await updateHeight();
-  let { height: scanHeight, seats } = await getIncomeNextScanStatus();
+  let { height: scanHeight } = await getIncomeNextScanStatus();
 
   while (true) {
     const chainHeight = getLatestHeight();
@@ -36,6 +36,7 @@ async function scanIncome() {
       continue;
     }
 
+    let { seats } = await getIncomeNextScanStatus();
     const newSeats = await scanBlockTreasuryIncomeByHeight(scanHeight, seats);
     incomeLogger.info(`block ${scanHeight} done`);
     await updateIncomeScanStatus(scanHeight++, newSeats);
