@@ -19,7 +19,7 @@ function handleTreasuryProposalSlash(
     return;
   }
 
-  const nextEvent = allBlockEvents[sort - 1];
+  const nextEvent = allBlockEvents[sort + 1];
   const {
     event: { section, method },
   } = nextEvent;
@@ -57,7 +57,7 @@ function handleTreasuryBountyRejectedSlash(
     return;
   }
 
-  const nextEvent = allBlockEvents[sort - 1];
+  const nextEvent = allBlockEvents[sort + 1];
   const {
     event: { section, method },
   } = nextEvent;

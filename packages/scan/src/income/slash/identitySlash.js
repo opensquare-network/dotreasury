@@ -10,7 +10,7 @@ function handleIdentitySlash(event, sort, allBlockEvents, blockIndexer) {
     return;
   }
 
-  const nextEvent = allBlockEvents[sort - 1];
+  const nextEvent = allBlockEvents[sort + 1];
   const {
     event: { section, method },
   } = nextEvent;
