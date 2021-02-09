@@ -4,7 +4,12 @@ const {
   getIncomeNextScanStatus,
   updateIncomeScanStatus,
 } = require("../mongo/scanHeight");
-const { sleep, incomeLogger, bigAdd } = require("../utils");
+const {
+  sleep,
+  incomeLogger,
+  bigAdd,
+  incomeKnownHeightsLogger: heightsLogger,
+} = require("../utils");
 const { getApi } = require("../api");
 const { getBlockIndexer } = require("../block/getBlockIndexer");
 const { Modules, TreasuryEvent } = require("../utils/constants");
@@ -64,6 +69,8 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
   let slashInc = 0;
   let gasInc = 0;
 
+  let hasDeposit = false;
+
   for (let sort = 0; sort < events.length; sort++) {
     let isGas = true;
 
@@ -74,6 +81,8 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
     if (Modules.Treasury !== section || TreasuryEvent.Deposit !== method) {
       continue;
     }
+
+    hasDeposit = true;
 
     const eraPayout = await handleStakingEraPayout(
       events[sort],
@@ -190,6 +199,10 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
       const balance = (treasuryDepositEventData || [])[0];
       gasInc = bigAdd(gasInc, balance);
     }
+  }
+
+  if (hasDeposit) {
+    heightsLogger.info(blockIndexer.blockHeight);
   }
 
   return {
