@@ -14,7 +14,7 @@ const CustomTable = styled(Table)`
     font-style: normal !important;
     font-weight: normal !important;
     font-size: 14px !important;
-    font-family: Inter !important;
+    font-family: "Inter" !important;
     border-bottom: 0 !important;
     color: ${TEXT_DARK_MINOR} !important;
     padding-top: 14px !important;
