@@ -132,7 +132,7 @@ const Summary = () => {
       </CustomCard>
       <CustomCard>
         <ItemWrapper>
-          <Image src="/imgs/blockchain-free-icon.svg" />
+          <Image src="/imgs/data-available.png" />
           <div>
             <Title>Available</Title>
             <ValueWrapper>
@@ -144,7 +144,7 @@ const Summary = () => {
       </CustomCard>
       <CustomCard>
         <ItemWrapper>
-          <Image src="/imgs/blockchain-free-icon.svg" />
+          <Image src="/imgs/data-next-burn.png" />
           <div>
             <Title>Next burn</Title>
             <ValueWrapper>
