@@ -41,17 +41,17 @@ const InnerCircleLeft = styled(InnerCircle)`
   transform: rotate(${p => p.turn}turn);
 `
 const InnerCircleRight = styled(InnerCircle)`
-  clip-path: polygon(50% 0px, 100% 0px, 100% 100%, 50% 100%);
+  clip-path: polygon(50% 0px, 101% 0px, 101% 100%, 50% 100%);
   visibility: ${p => p.overHalf ? "visible" : "hidden"};
 `
 
 const InnerCircleMaskLeft = styled(BackCircle)`
-  clip-path: polygon(0px 0px, 51% 0px, 51% 100%, 0 100%);
+  clip-path: polygon(0px 0px, 50% 0px, 50% 100%, 0 100%);
   visibility: ${p => p.overHalf ? "hidden" : "visible"};
 `
 
 const InnerCircleMaskRight = styled(BackCircle)`
-  clip-path: polygon(50% 0px, 100% 0px, 100% 100%, 50% 100%);
+  clip-path: polygon(52% 0px, 100% 0px, 100% 100%, 52% 100%);
   visibility: ${p => p.overHalf ? "visible" : "hidden"};
 `
 

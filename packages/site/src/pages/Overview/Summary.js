@@ -93,7 +93,7 @@ const Summary = () => {
     <Wrapper>
       <CustomCard>
         <ItemWrapper>
-          <Image src="/imgs/blockchain-free-icon.svg" />
+          <Image src="/imgs/data-bounties.svg" />
           <div>
             <Title>Proposals</Title>
             <ValueWrapper>
@@ -106,7 +106,7 @@ const Summary = () => {
       </CustomCard>
       <CustomCard>
         <ItemWrapper>
-          <Image src="/imgs/blockchain-free-icon.svg" />
+          <Image src="/imgs/data-bounties.svg" />
           <div>
             <Title>Tips</Title>
             <ValueWrapper>
@@ -119,7 +119,7 @@ const Summary = () => {
       </CustomCard>
       <CustomCard>
         <ItemWrapper>
-          <Image src="/imgs/blockchain-free-icon.svg" />
+          <Image src="/imgs/data-bounties.svg" />
           <div>
             <Title>Bounties</Title>
             <ValueWrapper>
@@ -132,7 +132,7 @@ const Summary = () => {
       </CustomCard>
       <CustomCard>
         <ItemWrapper>
-          <Image src="/imgs/data-available.png" />
+          <Image src="/imgs/data-available.svg" />
           <div>
             <Title>Available</Title>
             <ValueWrapper>
@@ -144,7 +144,7 @@ const Summary = () => {
       </CustomCard>
       <CustomCard>
         <ItemWrapper>
-          <Image src="/imgs/data-next-burn.png" />
+          <Image src="/imgs/data-next-burn.svg" />
           <div>
             <Title>Next burn</Title>
             <ValueWrapper>
