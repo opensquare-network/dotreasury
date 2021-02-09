@@ -4,7 +4,7 @@ const {
   getIncomeNextScanStatus,
   updateIncomeScanStatus,
 } = require("../mongo/scanHeight");
-const { sleep, incomeLogger } = require("../utils");
+const { sleep, incomeLogger, bigAdd } = require("../utils");
 const { getApi } = require("../api");
 const { getBlockIndexer } = require("../block/getBlockIndexer");
 const { Modules, TreasuryEvent } = require("../utils/constants");
@@ -82,7 +82,7 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
       blockIndexer
     );
     if (eraPayout) {
-      inflationInc += eraPayout.balance;
+      inflationInc = bigAdd(inflationInc, eraPayout.balance);
       isGas = false;
     }
 
@@ -93,7 +93,7 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
       blockIndexer
     );
     if (stakingSlash) {
-      slashInc += stakingSlash.balance;
+      slashInc = bigAdd(slashInc, stakingSlash.balance);
       isGas = false;
     }
 
@@ -104,7 +104,7 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
       blockIndexer
     );
     if (treasuryProposalSlash) {
-      slashInc += treasuryProposalSlash.balance;
+      slashInc = bigAdd(slashInc, treasuryProposalSlash.balance);
       isGas = false;
     }
 
@@ -115,7 +115,7 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
       blockIndexer
     );
     if (treasuryBountyRejectedSlash) {
-      slashInc += treasuryBountyRejectedSlash.balance;
+      slashInc = bigAdd(slashInc, treasuryBountyRejectedSlash.balance);
       isGas = false;
     }
 
@@ -126,7 +126,7 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
       blockIndexer
     );
     if (identitySlash) {
-      slashInc += identitySlash.balance;
+      slashInc = bigAdd(slashInc, identitySlash.balance);
       isGas = false;
     }
 
@@ -137,7 +137,7 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
       blockIndexer
     );
     if (democracySlash) {
-      slashInc += democracySlash.balance;
+      slashInc = bigAdd(slashInc, democracySlash.balance);
       isGas = false;
     }
 
@@ -148,7 +148,7 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
       blockIndexer
     );
     if (electionSlash) {
-      slashInc += electionSlash.balance;
+      slashInc = bigAdd(slashInc, electionSlash.balance);
       isGas = false;
     }
 
@@ -168,7 +168,7 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
         extrinsic
       );
       if (bountyUnassignCuratorSlash) {
-        slashInc += bountyUnassignCuratorSlash.balance;
+        slashInc = bigAdd(slashInc, bountyUnassignCuratorSlash.balance);
         isGas = false;
       }
 
@@ -180,7 +180,7 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
         extrinsic
       );
       if (democracyCancelProposalSlash) {
-        slashInc += democracyCancelProposalSlash.balance;
+        slashInc = bigAdd(slashInc, democracyCancelProposalSlash.balance);
         isGas = false;
       }
     }
@@ -188,14 +188,14 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
     if (isGas) {
       const treasuryDepositEventData = treasuryDepositData.toJSON();
       const balance = (treasuryDepositEventData || [])[0];
-      gasInc += balance;
+      gasInc = bigAdd(gasInc, balance);
     }
   }
 
   return {
-    inflation: seats.inflation + inflationInc,
-    slash: seats.slash + slashInc,
-    gas: seats.gas + gasInc,
+    inflation: bigAdd(seats.inflation, inflationInc),
+    slash: bigAdd(seats.slash, slashInc),
+    gas: bigAdd(seats.gas, gasInc),
   };
 }
 

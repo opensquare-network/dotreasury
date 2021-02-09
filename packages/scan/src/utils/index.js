@@ -37,7 +37,7 @@ function median(values) {
 }
 
 function bigAdd(v1, v2) {
-  return new BigNumber(v1).plus(v2).toNumber();
+  return new BigNumber(v1).plus(v2).toString();
 }
 
 module.exports = {
