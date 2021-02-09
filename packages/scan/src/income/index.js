@@ -28,10 +28,31 @@ const {
 const {
   handleElectionsPhragmenSlash,
 } = require("./slash/electioinsPhragmenSlash");
+const { knownHeights, maxKnownHeight } = require("./known");
+
+async function scanKnowBlocks(toScanHeight) {
+  let index = knownHeights.findIndex((height) => height >= toScanHeight);
+  while (index < knownHeights.length) {
+    const height = knownHeights[index];
+
+    let { seats } = await getIncomeNextScanStatus();
+    const newSeats = await scanBlockTreasuryIncomeByHeight(height, seats);
+
+    incomeLogger.info(`block ${height} done`);
+    await updateIncomeScanStatus(height, newSeats);
+    index++;
+  }
+}
 
 async function scanIncome() {
   await updateHeight();
   let { height: scanHeight } = await getIncomeNextScanStatus();
+
+  const useKnowHeights = !!process.env.USE_INCOME_KNOWN_HEIGHT;
+  if (scanHeight <= maxKnownHeight && useKnowHeights) {
+    await scanKnowBlocks(scanHeight);
+    scanHeight = maxKnownHeight + 1;
+  }
 
   while (true) {
     const chainHeight = getLatestHeight();

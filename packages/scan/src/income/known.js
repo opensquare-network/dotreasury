@@ -1,0 +1,33 @@
+const knownHeights = [
+  3876,
+  3877,
+  3878,
+  3879,
+  3880,
+  3881,
+  3882,
+  3883,
+  3884,
+  3885,
+  3886,
+  3887,
+  3888,
+  3889,
+  3890,
+  3891,
+  3892,
+  3893,
+  3894,
+  3895,
+  3896,
+  6444,
+  6910,
+  7593,
+  8212,
+  8743,
+];
+
+module.exports = {
+  knownHeights,
+  maxKnownHeight: knownHeights[knownHeights.length - 1],
+};
