@@ -13,7 +13,6 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  pointer-events: none;
 `
 
 const TextWrapper = styled.div`
@@ -38,9 +37,10 @@ const TotalText = styled(TextMinor)`
   text-align: center;
 `
 
-const Total = ({total}) => {
+const Total = ({total, children}) => {
   return (
     <Wrapper>
+      {children}
       <div>
         <TextWrapper>
           <TextBold>{total}</TextBold>

@@ -29,6 +29,7 @@ const DoughnutWrapper = styled.div`
   width: 214px;
   height: 214px;
   margin: 0 auto;
+  position: absolute;
 `
 
 const DoughnutCard = ({ proposals, tips, bounties, burnt }) => {
@@ -99,15 +100,16 @@ const DoughnutCard = ({ proposals, tips, bounties, burnt }) => {
         />
       </LabelList>
       <CanvasWrapper>
-        <Total total={total} />
-        <DoughnutWrapper>
-          <Doughnut
-            proposals={proposalsDisabled ? 0 : proposals}
-            tips={tipsDisabled ? 0 : tips}
-            bounties={bountiesDisabled ? 0 : bounties}
-            burnt={burntDisabled ? 0 : burnt}
-          />
-        </DoughnutWrapper>
+        <Total total={total}>
+          <DoughnutWrapper>
+            <Doughnut
+              proposals={proposalsDisabled ? 0 : proposals}
+              tips={tipsDisabled ? 0 : tips}
+              bounties={bountiesDisabled ? 0 : bounties}
+              burnt={burntDisabled ? 0 : burnt}
+            />
+          </DoughnutWrapper>
+        </Total>
       </CanvasWrapper>
     </CardWrapper>
   );
