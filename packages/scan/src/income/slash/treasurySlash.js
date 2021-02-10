@@ -3,6 +3,7 @@ const {
   TreasuryEvent,
   TreasuryMethods,
   ksmTreasuryRefactorApplyHeight,
+  TipEvents,
 } = require("../../utils/constants");
 const { incomeLogger } = require("../../utils");
 
@@ -114,6 +115,38 @@ function handleTreasuryProposalSlash(
   return data;
 }
 
+function handleTipSlash(event, sort, allBlockEvents, blockIndexer) {
+  const {
+    event: { data: treasuryDepositData },
+  } = event; // get deposit event data
+  if (sort >= allBlockEvents.length - 1) {
+    return;
+  }
+
+  const nextEvent = allBlockEvents[sort + 1];
+  const {
+    event: { section, method },
+  } = nextEvent;
+  if (section !== Modules.Tips || method !== TipEvents.TipSlashed) {
+    return;
+  }
+
+  const tipSlashedEventData = nextEvent.event.data.toJSON();
+  const treasuryDepositEventData = treasuryDepositData.toJSON();
+  const balance = (treasuryDepositEventData || [])[0];
+  const data = {
+    indexer: blockIndexer,
+    section,
+    method,
+    balance,
+    treasuryDepositEventData,
+    tipSlashedEventData,
+  };
+  incomeLogger.info(`tip slash detected`, data);
+
+  return data;
+}
+
 function handleTreasuryBountyRejectedSlash(
   event,
   sort,
@@ -191,4 +224,5 @@ module.exports = {
   handleTreasuryProposalSlash,
   handleTreasuryBountyRejectedSlash,
   handleTreasuryBountyUnassignCuratorSlash,
+  handleTipSlash,
 };

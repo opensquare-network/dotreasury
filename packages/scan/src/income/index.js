@@ -18,6 +18,7 @@ const {
   handleTreasuryProposalSlash,
   handleTreasuryBountyRejectedSlash,
   handleTreasuryBountyUnassignCuratorSlash,
+  handleTipSlash,
 } = require("./slash/treasurySlash");
 const { handleStakingEraPayout } = require("./inflation");
 const { handleIdentitySlash } = require("./slash/identitySlash");
@@ -124,6 +125,17 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
     );
     if (stakingSlash) {
       slashInc = bigAdd(slashInc, stakingSlash.balance);
+      isGas = false;
+    }
+
+    const tipSlash = await handleTipSlash(
+      events[sort],
+      sort,
+      events,
+      blockIndexer
+    );
+    if (tipSlash) {
+      slashInc = bigAdd(slashInc, tipSlash.balance);
       isGas = false;
     }
 
