@@ -26,7 +26,7 @@ const DoughnutChart = ({ proposals, tips, bounties, burnt }) => {
           OVERVIEW_BOUNTIES_COLOR,
           OVERVIEW_BURNT_COLOR,
         ],
-        borderWidth: 0,
+        borderWidth: 0
       },
     ],
   };
