@@ -7,7 +7,7 @@ const CustomTable = styled(Table)`
   overflow: hidden !important;
   border-radius: 8px !important;
   margin-top: 0 !important;
-  border-color: #EEE !important;
+  border-color: #eee !important;
   td {
     border-top: 0 !important;
   }
@@ -16,7 +16,7 @@ const CustomTable = styled(Table)`
     font-style: normal !important;
     font-weight: normal !important;
     font-size: 14px !important;
-    font-family: Inter !important;
+    font-family: "Inter" !important;
     border-bottom: 0 !important;
     color: ${TEXT_DARK_MINOR} !important;
     padding-top: 14px !important;
