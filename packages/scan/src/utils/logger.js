@@ -22,35 +22,35 @@ log4js.configure({
   appenders: {
     [scanFileCategory]: { type: "file", filename: "log/os-scan.log" },
     [knownHeightsCategory]: { type: "file", filename: "log/known-heights.log" },
-    [incomeCategory]: { type: "file", filename: "log/income.log" },
-    [inflationCategory]: { type: "file", filename: "log/inflation.log" },
+    [incomeCategory]: { type: "file", filename: "log/income/income.log" },
+    [inflationCategory]: { type: "file", filename: "log/income/inflation.log" },
     [incomeKnownHeightsCategory]: {
       type: "file",
-      filename: "log/income-known-heights.log",
+      filename: "log/income/income-known-heights.log",
     },
     [treasurySlashCategory]: {
       type: "file",
-      filename: "log/slash/treasury-slash.log",
+      filename: "log/income/slash/treasury-slash.log",
     },
     [stakingSlashCategory]: {
       type: "file",
-      filename: "log/slash/staking-slash.log",
+      filename: "log/income/slash/staking-slash.log",
     },
     [democracySlashCategory]: {
       type: "file",
-      filename: "log/slash/democracy-slash.log",
+      filename: "log/income/slash/democracy-slash.log",
     },
     [electionsPhragmenSlashCategory]: {
       type: "file",
-      filename: "log/slash/elections-phragmen-slash.log",
+      filename: "log/income/slash/elections-phragmen-slash.log",
     },
     [identitySlashCategory]: {
       type: "file",
-      filename: "log/slash/identity-slash.log",
+      filename: "log/income/slash/identity-slash.log",
     },
     [abnormalGasCategory]: {
       type: "file",
-      filename: "log/abnormal-gas.log",
+      filename: "log/income/abnormal-gas.log",
     },
     errorFile: {
       type: "file",
