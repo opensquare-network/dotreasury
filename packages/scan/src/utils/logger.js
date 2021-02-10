@@ -14,11 +14,14 @@ const democracySlashCategory = "democracy-slash";
 const electionsPhragmenSlashCategory = "electionsPhragmen-slash";
 const identitySlashCategory = "identity-slash";
 
+const inflationCategory = "inflation";
+
 log4js.configure({
   appenders: {
     [scanFileCategory]: { type: "file", filename: "log/os-scan.log" },
     [knownHeightsCategory]: { type: "file", filename: "log/known-heights.log" },
     [incomeCategory]: { type: "file", filename: "log/income.log" },
+    [inflationCategory]: { type: "file", filename: "log/inflation.log" },
     [incomeKnownHeightsCategory]: {
       type: "file",
       filename: "log/income-known-heights.log",
@@ -87,6 +90,8 @@ const electionsPhragmenLogger = log4js.getLogger(
   electionsPhragmenSlashCategory
 );
 
+const inflationLogger = log4js.getLogger(inflationCategory);
+
 module.exports = {
   logger,
   knownHeightsLogger,
@@ -97,4 +102,5 @@ module.exports = {
   democracySlashLogger,
   identitySlashLogger,
   electionsPhragmenLogger,
+  inflationLogger,
 };
