@@ -91,6 +91,13 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
   let slashInc = 0;
   let gasInc = 0;
 
+  // slash increments
+  let treasurySlashInc = 0;
+  let stakingSlashInc = 0;
+  let democracySlashInc = 0;
+  let electionsPhragmenSlashInc = 0;
+  let identitySlashInc = 0;
+
   let hasDeposit = false;
 
   for (let sort = 0; sort < events.length; sort++) {
@@ -125,6 +132,7 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
     );
     if (stakingSlash) {
       slashInc = bigAdd(slashInc, stakingSlash.balance);
+      stakingSlashInc = bigAdd(stakingSlashInc, stakingSlash.balance);
       isGas = false;
     }
 
@@ -136,6 +144,7 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
     );
     if (tipSlash) {
       slashInc = bigAdd(slashInc, tipSlash.balance);
+      treasurySlashInc = bigAdd(treasurySlashInc, tipSlash.balance);
       isGas = false;
     }
 
@@ -147,6 +156,7 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
     );
     if (treasuryProposalSlash) {
       slashInc = bigAdd(slashInc, treasuryProposalSlash.balance);
+      treasurySlashInc = bigAdd(treasurySlashInc, tipSlash.balance);
       isGas = false;
     }
 
@@ -158,6 +168,7 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
     );
     if (treasuryBountyRejectedSlash) {
       slashInc = bigAdd(slashInc, treasuryBountyRejectedSlash.balance);
+      treasurySlashInc = bigAdd(treasurySlashInc, tipSlash.balance);
       isGas = false;
     }
 
@@ -169,6 +180,7 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
     );
     if (identitySlash) {
       slashInc = bigAdd(slashInc, identitySlash.balance);
+      identitySlashInc = bigAdd(identitySlashInc, identitySlash.balance);
       isGas = false;
     }
 
@@ -180,6 +192,7 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
     );
     if (democracySlash) {
       slashInc = bigAdd(slashInc, democracySlash.balance);
+      democracySlashInc = bigAdd(democracySlashInc, democracySlash.balance);
       isGas = false;
     }
 
@@ -191,6 +204,10 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
     );
     if (electionSlash) {
       slashInc = bigAdd(slashInc, electionSlash.balance);
+      electionsPhragmenSlashInc = bigAdd(
+        electionsPhragmenSlashInc,
+        electionSlash.balance
+      );
       isGas = false;
     }
 
@@ -211,6 +228,10 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
       );
       if (bountyUnassignCuratorSlash) {
         slashInc = bigAdd(slashInc, bountyUnassignCuratorSlash.balance);
+        treasurySlashInc = bigAdd(
+          treasurySlashInc,
+          bountyUnassignCuratorSlash.balance
+        );
         isGas = false;
       }
 
@@ -223,6 +244,10 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
       );
       if (democracyCancelProposalSlash) {
         slashInc = bigAdd(slashInc, democracyCancelProposalSlash.balance);
+        democracySlashInc = bigAdd(
+          slashInc,
+          democracyCancelProposalSlash.balance
+        );
         isGas = false;
       }
     }
@@ -238,10 +263,21 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
     heightsLogger.info(blockIndexer.blockHeight);
   }
 
+  const slashSeats = seats.slashSeats || {};
   return {
     inflation: bigAdd(seats.inflation, inflationInc),
     slash: bigAdd(seats.slash, slashInc),
     gas: bigAdd(seats.gas, gasInc),
+    slashSeats: {
+      treasury: bigAdd(slashSeats.treasury || 0, treasurySlashInc),
+      staking: bigAdd(slashSeats.staking || 0, stakingSlashInc),
+      democracy: bigAdd(slashSeats.democracy || 0, democracySlashInc),
+      electionsPhragmen: bigAdd(
+        slashSeats.electionsPhragmen || 0,
+        electionsPhragmenSlashInc
+      ),
+      identity: bigAdd(slashSeats.identity || 0, identitySlashInc),
+    },
   };
 }
 

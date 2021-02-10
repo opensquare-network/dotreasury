@@ -7,6 +7,13 @@ const genesisTreasurySeats = {
   inflation: 0,
   slash: 0,
   gas: 0,
+  slashSeats: {
+    treasury: 0,
+    staking: 0,
+    democracy: 0,
+    electionsPhragmen: 0,
+    identity: 0,
+  },
 };
 
 async function getNextScanHeight() {
