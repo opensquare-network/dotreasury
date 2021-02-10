@@ -84,6 +84,8 @@ function handleTreasuryProposalSlash(
       (s) => s.block === blockIndexer.blockHeight && s.sort === sort
     )
   ) {
+    treasurySlashLogger.info(blockIndexer.blockHeight, TreasuryEvent.Rejected);
+
     return {
       indexer: blockIndexer,
       section: Modules.Treasury,
