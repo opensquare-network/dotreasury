@@ -48,7 +48,13 @@ async function handleTipEvent(
       eventData,
       normalizedExtrinsic
     );
-  } else if ([TipEvents.TipClosed, TipEvents.TipRetracted].includes(method)) {
+  } else if (
+    [
+      TipEvents.TipClosed,
+      TipEvents.TipRetracted,
+      TipEvents.TipSlashed,
+    ].includes(method)
+  ) {
     await updateTipFinalState(
       hash,
       method,

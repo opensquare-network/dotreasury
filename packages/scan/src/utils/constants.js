@@ -18,6 +18,7 @@ const TipEvents = Object.freeze({
   TipClosing: "TipClosing",
   TipClosed: "TipClosed",
   TipRetracted: "TipRetracted",
+  TipSlashed: "TipSlashed",
 });
 
 const TipMethods = Object.freeze({
