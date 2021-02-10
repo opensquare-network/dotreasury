@@ -1,5 +1,6 @@
 const ksmFirstTipClosedHeight = 2192357;
 const ksmFirstRejectedEventHeight = 1164233;
+const ksmTreasuryRefactorApplyHeight = 6143966;
 
 const TreasuryAccount = "F3opxRbN5ZbjJNU511Kj2TLuzFcDq9BGduA9TgiECafpg29";
 
@@ -82,6 +83,8 @@ const Modules = Object.freeze({
   Proxy: "proxy",
   Multisig: "multisig",
   Utility: "utility",
+  Tips: "tips",
+  Bounties: "bounties",
 });
 
 const ProxyMethods = Object.freeze({
@@ -118,4 +121,5 @@ module.exports = {
   ksmFirstRejectedEventHeight,
   TreasuryAccount,
   UtilityMethods,
+  ksmTreasuryRefactorApplyHeight,
 };

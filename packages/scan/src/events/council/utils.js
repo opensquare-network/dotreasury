@@ -10,7 +10,7 @@ function isProposalMotion(method) {
   ].includes(method);
 }
 
-function isBountyMotion(method) {
+function isBountyMethod(method) {
   return [
     BountyMethods.approveBounty,
     BountyMethods.proposeCurator,
@@ -83,7 +83,7 @@ async function getLatestMotionByHash(hash) {
 
 module.exports = {
   isProposalMotion,
-  isBountyMotion,
+  isBountyMethod,
   getBountyVotingName,
   extractCallIndexAndArgs,
   getMotionVoting,

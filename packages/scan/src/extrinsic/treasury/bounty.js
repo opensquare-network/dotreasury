@@ -1,18 +1,33 @@
-const { BountyMethods, Modules } = require("../../utils/constants");
+const {
+  BountyMethods,
+  Modules,
+  ksmTreasuryRefactorApplyHeight,
+} = require("../../utils/constants");
 const { getBountyMeta } = require("../../utils/bounty");
 const { getBountyCollection } = require("../../mongo");
 
+function isBountyModule(section, height) {
+  if (height < ksmTreasuryRefactorApplyHeight && section === Modules.Treasury) {
+    return true;
+  }
+
+  return (
+    height >= ksmTreasuryRefactorApplyHeight && section === Modules.Bounties
+  );
+}
+
 async function handleBountyAcceptCurator(normalizedExtrinsic) {
   const { section, name, args } = normalizedExtrinsic;
-  if (section !== Modules.Treasury || BountyMethods.acceptCurator !== name) {
+  const indexer = normalizedExtrinsic.extrinsicIndexer;
+  if (
+    !isBountyModule(section, indexer.blockHeight) ||
+    BountyMethods.acceptCurator !== name
+  ) {
     return false;
   }
 
   const { bounty_id: bountyIndex } = args;
-  const meta = await getBountyMeta(
-    normalizedExtrinsic.extrinsicIndexer.blockHash,
-    bountyIndex
-  );
+  const meta = await getBountyMeta(indexer.blockHash, bountyIndex);
 
   const timelineItem = {
     name,

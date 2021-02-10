@@ -1,9 +1,29 @@
-const { TipEvents, Modules } = require("../../utils/constants");
+const {
+  TipEvents,
+  Modules,
+  ksmTreasuryRefactorApplyHeight,
+} = require("../../utils/constants");
 const {
   saveNewTip,
   updateTipFinalState,
   updateTipByClosingEvent,
 } = require("../../store/tip");
+
+function isTipEvent(section, method, height) {
+  if (
+    height < ksmTreasuryRefactorApplyHeight &&
+    Modules.Treasury === section &&
+    TipEvents.hasOwnProperty(method)
+  ) {
+    return true;
+  }
+
+  return (
+    height >= ksmTreasuryRefactorApplyHeight &&
+    Modules.Tips === section &&
+    TipEvents.hasOwnProperty(method)
+  );
+}
 
 async function handleTipEvent(
   event,
@@ -12,7 +32,7 @@ async function handleTipEvent(
   extrinsic
 ) {
   const { section, method, data } = event;
-  if (Modules.Treasury !== section || !TipEvents.hasOwnProperty(method)) {
+  if (!isTipEvent(section, method, blockIndexer.blockHeight)) {
     return false;
   }
 
