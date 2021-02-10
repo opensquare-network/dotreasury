@@ -2,6 +2,7 @@ const {
   Modules,
   BountyEvents,
   BountyMethods,
+  ksmTreasuryRefactorApplyHeight,
 } = require("../../utils/constants");
 const { getBountyCollection } = require("../../mongo");
 const {
@@ -10,15 +11,31 @@ const {
   getBountyMetaByBlockHeight,
 } = require("../../utils/bounty");
 
-function isBountyEvent(method) {
-  return BountyEvents.hasOwnProperty(method);
-}
+function isBountyEvent(section, method, height) {
+  if (
+    height < ksmTreasuryRefactorApplyHeight &&
+    Modules.Bounties === section &&
+    BountyEvents.hasOwnProperty(method)
+  ) {
+    return true;
+  }
 
-// const isStateChange = isBountyEvent;
+  return (
+    height >= ksmTreasuryRefactorApplyHeight &&
+    Modules.Bounties === section &&
+    BountyEvents.hasOwnProperty(method)
+  );
+}
 
 async function handleBountyEventWithExtrinsic(event, normalizedExtrinsic) {
   const { section, method } = event;
-  if (Modules.Treasury !== section || !isBountyEvent(method)) {
+  if (
+    !isBountyEvent(
+      section,
+      method,
+      normalizedExtrinsic.extrinsicIndexer.blockHeight
+    )
+  ) {
     return false;
   }
 
@@ -78,12 +95,25 @@ async function handleBountyStateUpdateEvent(
   );
 }
 
+function isBountyBecameActiveEvent(section, method, height) {
+  if (
+    height < ksmTreasuryRefactorApplyHeight &&
+    Modules.Bounties === section &&
+    method === BountyEvents.BountyBecameActive
+  ) {
+    return true;
+  }
+
+  return (
+    height >= ksmTreasuryRefactorApplyHeight &&
+    Modules.Bounties === section &&
+    method === BountyEvents.BountyBecameActive
+  );
+}
+
 async function handleBountyBecameActiveEvent(event, eventIndexer) {
   const { section, method } = event;
-  if (
-    Modules.Treasury !== section ||
-    method !== BountyEvents.BountyBecameActive
-  ) {
+  if (!isBountyBecameActiveEvent(section, method, eventIndexer.blockHeight)) {
     return false;
   }
 

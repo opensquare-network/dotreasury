@@ -84,6 +84,7 @@ const Modules = Object.freeze({
   Multisig: "multisig",
   Utility: "utility",
   Tips: "tips",
+  Bounties: "bounties",
 });
 
 const ProxyMethods = Object.freeze({
