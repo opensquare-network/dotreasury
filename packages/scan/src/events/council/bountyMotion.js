@@ -35,7 +35,7 @@ async function handleProposedForBounty(event, normalizedExtrinsic, extrinsic) {
     extrinsic
   );
   if (
-    isBountyMotion(
+    !isBountyMotion(
       section,
       method,
       normalizedExtrinsic.extrinsicIndexer.blockHeight
