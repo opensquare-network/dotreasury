@@ -30,6 +30,7 @@ const {
 } = require("./slash/democracySlash");
 const {
   handleElectionsPhragmenSlash,
+  handleElectionsLoserCandidateSlash,
 } = require("./slash/electioinsPhragmenSlash");
 const { knownHeights, maxKnownHeight } = require("./known");
 
@@ -217,6 +218,21 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
       electionsPhragmenSlashInc = bigAdd(
         electionsPhragmenSlashInc,
         electionSlash.balance
+      );
+      isGas = false;
+    }
+
+    const loserCandidateSlash = await handleElectionsLoserCandidateSlash(
+      events[sort],
+      sort,
+      events,
+      blockIndexer
+    );
+    if (loserCandidateSlash) {
+      slashInc = bigAdd(slashInc, loserCandidateSlash.balance);
+      electionsPhragmenSlashInc = bigAdd(
+        electionsPhragmenSlashInc,
+        loserCandidateSlash.balance
       );
       isGas = false;
     }

@@ -95,6 +95,7 @@ const Modules = Object.freeze({
 const ElectionsPhragmenEvents = Object.freeze({
   CandidateSlashed: "CandidateSlashed",
   SeatHolderSlashed: "SeatHolderSlashed",
+  NewTerm: "NewTerm",
 });
 
 const DemocracyEvents = Object.freeze({
@@ -136,7 +137,6 @@ const TreasuryMethods = Object.freeze({
 const StakingEvents = Object.freeze({
   EraPayout: "EraPayout",
   Slash: "Slash",
-  NewTerm: "NewTerm",
 });
 
 module.exports = {

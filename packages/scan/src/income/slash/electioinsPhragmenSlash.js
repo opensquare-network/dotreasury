@@ -1,5 +1,90 @@
-const { Modules, ElectionsPhragmenEvents } = require("../../utils/constants");
+const {
+  Modules,
+  ElectionsPhragmenEvents,
+  TreasuryEvent,
+} = require("../../utils/constants");
 const { electionsPhragmenLogger } = require("../../utils/logger");
+
+function allBeforeIsDeposit(allBlockEvents, sort) {
+  let i = sort - 1;
+  while (i >= 0) {
+    const { section, method } = allBlockEvents[i];
+    if (section !== Modules.Treasury || method !== TreasuryEvent.Deposit) {
+      return false;
+    }
+
+    i--;
+  }
+
+  return true;
+}
+
+function nextDifferentIsNewTerm(allBlockEvents, sort) {
+  let i = sort + 1;
+  while (i < allBlockEvents.length) {
+    const { section, method } = allBlockEvents[i];
+
+    const notDeposit =
+      section !== Modules.Treasury || method !== TreasuryEvent.Deposit;
+    const notNewTerm =
+      section !== Modules.ElectionsPhragmen ||
+      method !== ElectionsPhragmenEvents.NewTerm;
+
+    if (!notDeposit) {
+      continue;
+    }
+
+    if (notDeposit && notNewTerm) {
+      return false;
+    }
+
+    if (!notNewTerm) {
+      return true;
+    }
+
+    i++;
+  }
+
+  return false;
+}
+
+function handleElectionsLoserCandidateSlash(
+  event,
+  sort,
+  allBlockEvents,
+  blockIndexer
+) {
+  const {
+    event: { data: treasuryDepositData },
+  } = event; // get deposit event data
+  if (sort >= allBlockEvents.length - 1) {
+    return;
+  }
+
+  if (
+    !allBeforeIsDeposit(allBlockEvents, sort) ||
+    !nextDifferentIsNewTerm(allBlockEvents, sort)
+  ) {
+    return;
+  }
+
+  const treasuryDepositEventData = treasuryDepositData.toJSON();
+  const balance = (treasuryDepositEventData || [])[0];
+
+  const data = {
+    indexer: blockIndexer,
+    section: Modules.ElectionsPhragmen,
+    method: ElectionsPhragmenEvents.NewTerm,
+    balance,
+    treasuryDepositEventData,
+  };
+
+  electionsPhragmenLogger.info(
+    blockIndexer.blockHeight,
+    ElectionsPhragmenEvents.NewTerm
+  );
+  return data;
+}
 
 function handleElectionsPhragmenSlash(
   event,
@@ -51,4 +136,5 @@ function handleElectionsPhragmenSlash(
 
 module.exports = {
   handleElectionsPhragmenSlash,
+  handleElectionsLoserCandidateSlash,
 };

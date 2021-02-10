@@ -50,7 +50,7 @@ log4js.configure({
     },
     [abnormalGasCategory]: {
       type: "file",
-      filename: "log/slash/abnormal-gas.log",
+      filename: "log/abnormal-gas.log",
     },
     errorFile: {
       type: "file",
