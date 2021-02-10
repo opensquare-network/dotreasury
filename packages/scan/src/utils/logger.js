@@ -74,6 +74,26 @@ log4js.configure({
       appenders: [incomeKnownHeightsCategory, "errors"],
       level: logLevel,
     },
+    [treasurySlashCategory]: {
+      appenders: [treasurySlashCategory, "errors"],
+      level: logLevel,
+    },
+    [stakingSlashCategory]: {
+      appenders: [stakingSlashCategory, "errors"],
+      level: logLevel,
+    },
+    [democracySlashCategory]: {
+      appenders: [democracySlashCategory, "errors"],
+      level: logLevel,
+    },
+    [identitySlashCategory]: {
+      appenders: [identitySlashCategory, "errors"],
+      level: logLevel,
+    },
+    [electionsPhragmenSlashCategory]: {
+      appenders: [electionsPhragmenSlashCategory, "errors"],
+      level: logLevel,
+    },
   },
 });
 
