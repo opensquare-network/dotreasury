@@ -17,19 +17,20 @@ const CardWrapper = styled(Card)`
   display: flex;
   height: 280px;
   padding: 32px;
-  border-color: #EEE;
+  border-color: #eee;
 `;
 
 const CanvasWrapper = styled.div`
   flex-grow: 1;
   position: relative;
-`
+`;
 
 const DoughnutWrapper = styled.div`
   width: 214px;
   height: 214px;
   margin: 0 auto;
-`
+  position: absolute;
+`;
 
 const DoughnutCard = ({ proposals, tips, bounties, burnt }) => {
   const [proposalsDisabled, setProposalsDisabled] = useState(false);
@@ -99,15 +100,16 @@ const DoughnutCard = ({ proposals, tips, bounties, burnt }) => {
         />
       </LabelList>
       <CanvasWrapper>
-        <Total total={total} />
-        <DoughnutWrapper>
-          <Doughnut
-            proposals={proposalsDisabled ? 0 : proposals}
-            tips={tipsDisabled ? 0 : tips}
-            bounties={bountiesDisabled ? 0 : bounties}
-            burnt={burntDisabled ? 0 : burnt}
-          />
-        </DoughnutWrapper>
+        <Total total={total}>
+          <DoughnutWrapper>
+            <Doughnut
+              proposals={proposalsDisabled ? 0 : proposals}
+              tips={tipsDisabled ? 0 : tips}
+              bounties={bountiesDisabled ? 0 : bounties}
+              burnt={burntDisabled ? 0 : burnt}
+            />
+          </DoughnutWrapper>
+        </Total>
       </CanvasWrapper>
     </CardWrapper>
   );

@@ -39,19 +39,21 @@ const DoughnutChart = ({ proposals, tips, bounties, burnt }) => {
     },
     tooltips: {
       callbacks: {
-        label: function(tooltipItem, data) {
+        label: function (tooltipItem, data) {
           const dataset = data.datasets[tooltipItem.datasetIndex];
           const meta = dataset._meta[Object.keys(dataset._meta)[0]];
           const total = meta.total;
           const currentValue = dataset.data[tooltipItem.index];
-          const percentage = parseFloat((currentValue/total*100).toFixed(2));
-          return percentage + '%';
+          const percentage = parseFloat(
+            ((currentValue / total) * 100).toFixed(2)
+          );
+          return percentage + "%";
         },
-        title: function(tooltipItem, data) {
+        title: function (tooltipItem, data) {
           return data.labels[tooltipItem[0].index];
-        }
-      }
-    }
+        },
+      },
+    },
   };
   return <Doughnut data={data} options={options} />;
 };
