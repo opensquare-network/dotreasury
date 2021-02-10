@@ -156,7 +156,10 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
     );
     if (treasuryProposalSlash) {
       slashInc = bigAdd(slashInc, treasuryProposalSlash.balance);
-      treasurySlashInc = bigAdd(treasurySlashInc, tipSlash.balance);
+      treasurySlashInc = bigAdd(
+        treasurySlashInc,
+        treasuryProposalSlash.balance
+      );
       isGas = false;
     }
 
@@ -168,7 +171,10 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
     );
     if (treasuryBountyRejectedSlash) {
       slashInc = bigAdd(slashInc, treasuryBountyRejectedSlash.balance);
-      treasurySlashInc = bigAdd(treasurySlashInc, tipSlash.balance);
+      treasurySlashInc = bigAdd(
+        treasurySlashInc,
+        treasuryBountyRejectedSlash.balance
+      );
       isGas = false;
     }
 
