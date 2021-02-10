@@ -312,9 +312,16 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
 
 scanIncome().catch(console.error);
 // (async function f() {
-//   await scanBlockTreasuryIncomeByHeight(32468, {
+//   await scanBlockTreasuryIncomeByHeight(619200, {
 //     inflation: 0,
 //     slash: 0,
 //     gas: 0,
+//     slashSeats: {
+//       treasury: 0,
+//       staking: 0,
+//       democracy: 0,
+//       electionsPhragmen: 0,
+//       identity: 0,
+//     },
 //   });
 // })();

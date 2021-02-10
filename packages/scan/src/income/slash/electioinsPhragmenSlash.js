@@ -7,13 +7,13 @@ const { electionsPhragmenLogger } = require("../../utils/logger");
 
 function allBeforeIsDeposit(allBlockEvents, sort) {
   let i = sort - 1;
-  while (i >= 0) {
-    const { section, method } = allBlockEvents[i];
+  while (i-- >= 0) {
+    const {
+      event: { section, method },
+    } = allBlockEvents[i];
     if (section !== Modules.Treasury || method !== TreasuryEvent.Deposit) {
       return false;
     }
-
-    i--;
   }
 
   return true;
@@ -21,8 +21,10 @@ function allBeforeIsDeposit(allBlockEvents, sort) {
 
 function nextDifferentIsNewTerm(allBlockEvents, sort) {
   let i = sort + 1;
-  while (i < allBlockEvents.length) {
-    const { section, method } = allBlockEvents[i];
+  while (i++ < allBlockEvents.length) {
+    const {
+      event: { section, method },
+    } = allBlockEvents[i];
 
     const notDeposit =
       section !== Modules.Treasury || method !== TreasuryEvent.Deposit;
@@ -41,8 +43,6 @@ function nextDifferentIsNewTerm(allBlockEvents, sort) {
     if (!notNewTerm) {
       return true;
     }
-
-    i++;
   }
 
   return false;
