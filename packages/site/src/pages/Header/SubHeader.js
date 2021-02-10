@@ -40,10 +40,11 @@ const TabWrapper = styled(Tab)`
     padding-left: 0 !important;
     padding-right: 0 !important;
     border-width: 4px !important;
-    font-family: Inter !important;
+    font-family: "Inter" !important;
     color: ${TEXT_DARK_MINOR} !important;
     margin-right: 32px !important;
     & > div.item {
+      margin-bottom: -4px !important;
       padding-left: 0 !important;
       padding-right: 0 !important;
       color: ${TEXT_DARK_MINOR} !important;

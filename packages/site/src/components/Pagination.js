@@ -2,8 +2,8 @@ import React from "react";
 import { Icon, Pagination } from "semantic-ui-react";
 import styled from "styled-components";
 
-import {PRIMARY_THEME_COLOR} from "../constants"
-import {SECONDARY_THEME_COLOR} from "../constants"
+import { PRIMARY_THEME_COLOR } from "../constants";
+import { SECONDARY_THEME_COLOR } from "../constants";
 
 const Wrapper = styled.div`
   margin: 10px 0;
@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   justify-content: flex-end;
 
   a {
-    font-family: Inter !important;
+    font-family: "Inter" !important;
     outline: none !important;
     &.active {
       color: ${PRIMARY_THEME_COLOR} !important;

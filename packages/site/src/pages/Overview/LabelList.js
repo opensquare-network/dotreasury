@@ -4,18 +4,16 @@ import styled from "styled-components";
 import Text from "../../components/Text";
 
 const Wrapper = styled.div`
-  position: absolute;
-  top: 16px;
-  @media screen and (max-width: 695px) {
+  @media screen and (max-width: 556px) {
     display: none;
   }
-`
+`;
 
 const Title = styled(Text)`
   font-size: 18px;
   font-weight: 700;
   margin-bottom: 16px;
-`
+`;
 
 const ItemList = styled.div`
   display: flex;
@@ -23,18 +21,15 @@ const ItemList = styled.div`
   & > div:not(:last-child) {
     margin-bottom: 8px;
   }
-  align-items: flex-start;
-`
+`;
 
-const LabelList = ({children}) => {
+const LabelList = ({ children }) => {
   return (
     <Wrapper>
       <Title>Output</Title>
-      <ItemList>
-        {children}
-      </ItemList>
+      <ItemList>{children}</ItemList>
     </Wrapper>
-  )
-}
+  );
+};
 
 export default LabelList;

@@ -13,7 +13,7 @@ const TipLabel = styled.span`
   background: ${SECONDARY_THEME_COLOR};
   padding: 2px 12px;
   border-radius: 4px;
-  font-family: Inter;
+  font-family: "Inter";
   font-size: 12px;
   line-height: 20px;
   color: ${PRIMARY_THEME_COLOR};
@@ -22,7 +22,7 @@ const TipLabel = styled.span`
 const Label = ({ text }) => {
   return (
     <Wrapper>
-      <TipLabel>{ stringCamlToWords(text) }</TipLabel>
+      <TipLabel>{stringCamlToWords(text)}</TipLabel>
     </Wrapper>
   );
 };
