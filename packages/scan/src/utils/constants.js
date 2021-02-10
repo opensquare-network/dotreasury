@@ -136,6 +136,7 @@ const TreasuryMethods = Object.freeze({
 const StakingEvents = Object.freeze({
   EraPayout: "EraPayout",
   Slash: "Slash",
+  NewTerm: "NewTerm",
 });
 
 module.exports = {

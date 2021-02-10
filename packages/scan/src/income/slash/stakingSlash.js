@@ -13,7 +13,11 @@ function handleStakingSlash(event, sort, allBlockEvents, blockIndexer) {
   const {
     event: { section, method },
   } = preEvent;
-  if (section !== Modules.Staking || method !== StakingEvents.Slash) {
+  // If the method is NewTerm, then it's because of the LoserCandidate slash
+  if (
+    section !== Modules.Staking ||
+    ![StakingEvents.Slash, StakingEvents.NewTerm].includes(method)
+  ) {
     return;
   }
 
