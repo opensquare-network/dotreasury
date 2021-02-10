@@ -5,7 +5,7 @@ const {
   ksmTreasuryRefactorApplyHeight,
   TipEvents,
 } = require("../../utils/constants");
-const { incomeLogger } = require("../../utils");
+const { treasurySlashLogger } = require("../../utils/logger");
 
 function isBountyModule(section, height) {
   if (height < ksmTreasuryRefactorApplyHeight && section === Modules.Treasury) {
@@ -110,7 +110,7 @@ function handleTreasuryProposalSlash(
     treasuryDepositEventData,
     treasuryRejectedEventData,
   };
-  incomeLogger.info(`treasury proposal slash detected`, data);
+  treasurySlashLogger.info(blockIndexer.blockHeight, method);
 
   return data;
 }
@@ -142,7 +142,7 @@ function handleTipSlash(event, sort, allBlockEvents, blockIndexer) {
     treasuryDepositEventData,
     tipSlashedEventData,
   };
-  incomeLogger.info(`tip slash detected`, data);
+  treasurySlashLogger.info(blockIndexer.blockHeight, method);
 
   return data;
 }
@@ -182,7 +182,7 @@ function handleTreasuryBountyRejectedSlash(
     treasuryDepositEventData,
     bountyRejectedEventData,
   };
-  incomeLogger.info(`treasury bounty rejected slash detected`, data);
+  treasurySlashLogger.info(blockIndexer.blockHeight, method);
 
   return data;
 }
@@ -215,7 +215,7 @@ function handleTreasuryBountyUnassignCuratorSlash(
     balance: (treasuryDepositEventData || [])[0],
     bountyIndex,
   };
-  incomeLogger.info(`treasury bounty unassign curator slash detected`, data);
+  treasurySlashLogger.info(extrinsicIndexer.blockHeight, meta.name);
 
   return data;
 }

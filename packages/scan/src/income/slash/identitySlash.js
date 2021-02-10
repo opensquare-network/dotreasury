@@ -1,10 +1,9 @@
 const { Modules, IdentityEvents } = require("../../utils/constants");
-const { incomeLogger } = require("../../utils");
+const { identitySlashLogger } = require("../../utils/logger");
 
 function handleIdentitySlash(event, sort, allBlockEvents, blockIndexer) {
   const {
     event: { data: treasuryDepositData },
-    phase,
   } = event; // get deposit event data
   if (sort >= allBlockEvents.length - 1) {
     return;
@@ -33,7 +32,7 @@ function handleIdentitySlash(event, sort, allBlockEvents, blockIndexer) {
     treasuryDepositEventData,
     identityKilledEventData,
   };
-  incomeLogger.info(`identity slash detected`, data);
+  identitySlashLogger.info(blockIndexer.blockHeight, method);
   return data;
 }
 

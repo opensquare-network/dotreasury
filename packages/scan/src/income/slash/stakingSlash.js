@@ -1,5 +1,5 @@
 const { Modules, StakingEvents } = require("../../utils/constants");
-const { incomeLogger } = require("../../utils");
+const { stakingSlashLogger } = require("../../utils/logger");
 
 function handleStakingSlash(event, sort, allBlockEvents, blockIndexer) {
   const {
@@ -45,7 +45,7 @@ function handleStakingSlash(event, sort, allBlockEvents, blockIndexer) {
 
   // TODO: insert data to MongoDB
 
-  incomeLogger.info(`staking slash detected`, data);
+  stakingSlashLogger.info(blockIndexer.blockHeight, method);
   return data;
 }
 
