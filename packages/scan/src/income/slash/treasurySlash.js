@@ -2,8 +2,19 @@ const {
   Modules,
   TreasuryEvent,
   TreasuryMethods,
+  ksmTreasuryRefactorApplyHeight,
 } = require("../../utils/constants");
 const { incomeLogger } = require("../../utils");
+
+function isBountyModule(section, height) {
+  if (height < ksmTreasuryRefactorApplyHeight && section === Modules.Treasury) {
+    return true;
+  }
+
+  return (
+    height >= ksmTreasuryRefactorApplyHeight && section === Modules.Bounties
+  );
+}
 
 const knownProposalSlash = [
   {
@@ -120,7 +131,10 @@ function handleTreasuryBountyRejectedSlash(
   const {
     event: { section, method },
   } = nextEvent;
-  if (section !== Modules.Treasury || method !== TreasuryEvent.BountyRejected) {
+  if (
+    !isBountyModule(section, blockIndexer.blockHeight) ||
+    method !== TreasuryEvent.BountyRejected
+  ) {
     return;
   }
 
@@ -152,7 +166,7 @@ function handleTreasuryBountyUnassignCuratorSlash(
   } = event; // get deposit event data
   const meta = extrinsic.method.meta.toJSON();
   if (
-    extrinsic.method.section !== Modules.Treasury ||
+    !isBountyModule(extrinsic.method.section, extrinsicIndexer.blockHeight) ||
     meta.name !== TreasuryMethods.unassignCurator
   ) {
     return;
