@@ -9,7 +9,9 @@ const {
   incomeLogger,
   bigAdd,
   incomeKnownHeightsLogger: heightsLogger,
+  gt,
 } = require("../utils");
+const { abnormalGasLogger } = require("../utils/logger");
 const { getApi } = require("../api");
 const { getBlockIndexer } = require("../block/getBlockIndexer");
 const { Modules, TreasuryEvent } = require("../utils/constants");
@@ -30,6 +32,8 @@ const {
   handleElectionsPhragmenSlash,
 } = require("./slash/electioinsPhragmenSlash");
 const { knownHeights, maxKnownHeight } = require("./known");
+
+const tooMuchGas = 0.1 * Math.pow(10, 12);
 
 async function scanKnowBlocks(toScanHeight) {
   let index = knownHeights.findIndex((height) => height >= toScanHeight);
@@ -262,6 +266,9 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
       const treasuryDepositEventData = treasuryDepositData.toJSON();
       const balance = (treasuryDepositEventData || [])[0];
       gasInc = bigAdd(gasInc, balance);
+      if (gt(balance, tooMuchGas)) {
+        abnormalGasLogger.info(blockIndexer.blockHeight, balance);
+      }
     }
   }
 

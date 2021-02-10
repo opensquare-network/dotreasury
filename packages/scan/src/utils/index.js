@@ -45,6 +45,10 @@ function bigAdd(v1, v2) {
   return new BigNumber(v1).plus(v2).toString();
 }
 
+function gt(v1, v2) {
+  return new BigNumber(v1).isGreaterThan(v2);
+}
+
 module.exports = {
   getExtrinsicSigner,
   isExtrinsicSuccess,
@@ -56,4 +60,5 @@ module.exports = {
   incomeLogger,
   incomeKnownHeightsLogger,
   bigAdd,
+  gt,
 };

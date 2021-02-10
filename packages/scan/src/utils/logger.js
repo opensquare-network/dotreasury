@@ -16,6 +16,8 @@ const identitySlashCategory = "identity-slash";
 
 const inflationCategory = "inflation";
 
+const abnormalGasCategory = "abnormal-gas";
+
 log4js.configure({
   appenders: {
     [scanFileCategory]: { type: "file", filename: "log/os-scan.log" },
@@ -45,6 +47,10 @@ log4js.configure({
     [identitySlashCategory]: {
       type: "file",
       filename: "log/slash/identity-slash.log",
+    },
+    [abnormalGasCategory]: {
+      type: "file",
+      filename: "log/slash/abnormal-gas.log",
     },
     errorFile: {
       type: "file",
@@ -94,6 +100,10 @@ log4js.configure({
       appenders: [electionsPhragmenSlashCategory, "errors"],
       level: logLevel,
     },
+    [abnormalGasCategory]: {
+      appenders: [abnormalGasCategory, "errors"],
+      level: logLevel,
+    },
   },
 });
 
@@ -112,6 +122,8 @@ const electionsPhragmenLogger = log4js.getLogger(
 
 const inflationLogger = log4js.getLogger(inflationCategory);
 
+const abnormalGasLogger = log4js.getLogger(abnormalGasCategory);
+
 module.exports = {
   logger,
   knownHeightsLogger,
@@ -123,4 +135,5 @@ module.exports = {
   identitySlashLogger,
   electionsPhragmenLogger,
   inflationLogger,
+  abnormalGasLogger,
 };
