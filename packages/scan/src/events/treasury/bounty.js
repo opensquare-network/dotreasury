@@ -14,7 +14,7 @@ const {
 function isBountyEvent(section, method, height) {
   if (
     height < ksmTreasuryRefactorApplyHeight &&
-    Modules.Bounties === section &&
+    Modules.Treasury === section &&
     BountyEvents.hasOwnProperty(method)
   ) {
     return true;
@@ -98,7 +98,7 @@ async function handleBountyStateUpdateEvent(
 function isBountyBecameActiveEvent(section, method, height) {
   if (
     height < ksmTreasuryRefactorApplyHeight &&
-    Modules.Bounties === section &&
+    Modules.Treasury === section &&
     method === BountyEvents.BountyBecameActive
   ) {
     return true;
