@@ -28,7 +28,7 @@ function isTipModule(section, height) {
 async function handleCloseTipExtrinsic(normalizedExtrinsic) {
   const { section, name, args } = normalizedExtrinsic;
   const indexer = normalizedExtrinsic.extrinsicIndexer;
-  if (isTipModule(section, indexer.blockHeight)) {
+  if (!isTipModule(section, indexer.blockHeight)) {
     return false;
   }
 
@@ -42,9 +42,10 @@ async function handleCloseTipExtrinsic(normalizedExtrinsic) {
       args,
       normalizedExtrinsic
     );
+    return true;
   }
 
-  return true;
+  return false;
 }
 
 async function handleTip(normalizedExtrinsic) {
