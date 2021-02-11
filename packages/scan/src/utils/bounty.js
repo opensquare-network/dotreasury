@@ -8,13 +8,13 @@ async function getBountyMetaByBlockHeight(height, bountyIndex) {
 
 async function getBountyMeta(blockHash, bountyIndex) {
   const api = await getApi();
-  const meta = await api.query.treasury.bounties.at(blockHash, bountyIndex);
+  const meta = await api.query.bounties.bounties.at(blockHash, bountyIndex);
   return meta.toJSON();
 }
 
 async function getBountyDescription(blockHash, bountyIndex) {
   const api = await getApi();
-  const description = await api.query.treasury.bountyDescriptions.at(
+  const description = await api.query.bounties.bountyDescriptions.at(
     blockHash,
     bountyIndex
   );

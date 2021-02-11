@@ -20,10 +20,10 @@ async function getTipMetaByBlockHeight(height, tipHash) {
 
 async function getTipMeta(blockHash, tipHash) {
   const api = await getApi();
-  const rawMeta = await api.query.treasury.tips.at(blockHash, tipHash);
+  const rawMeta = await api.query.tips.tips.at(blockHash, tipHash);
   // FIXME: We should not change the origin meta data
   // if (meta?.reason) {
-  //   const rawReasonText = await api.query.treasury.reasons.at(blockHash, meta.reason);
+  //   const rawReasonText = await api.query.tips.reasons.at(blockHash, meta.reason);
   //   meta.reasonText = rawReasonText.toHuman() || reasonFromArgs;
   // }
   // if (meta?.closes) {
@@ -40,10 +40,7 @@ async function getTipMeta(blockHash, tipHash) {
 async function getReasonStorageReasonText(reasonHash, blockHash) {
   const api = await getApi();
 
-  const rawReasonText = await api.query.treasury.reasons.at(
-    blockHash,
-    reasonHash
-  );
+  const rawReasonText = await api.query.tips.reasons.at(blockHash, reasonHash);
   return rawReasonText.toHuman();
 }
 
