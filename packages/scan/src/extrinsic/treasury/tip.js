@@ -42,9 +42,10 @@ async function handleCloseTipExtrinsic(normalizedExtrinsic) {
       args,
       normalizedExtrinsic
     );
+    return true;
   }
 
-  return true;
+  return false;
 }
 
 async function handleTip(normalizedExtrinsic) {
