@@ -181,7 +181,9 @@ function processTimeline(bountyDetail, scanHeight) {
             ];
           } else if (extrinsic.name === "awardBounty") {
             const curator = extrinsic.signer;
-            const { beneficiary } = extrinsic.args;
+            const {
+              beneficiary: { Id: beneficiary },
+            } = extrinsic.args;
             fields = [
               {
                 title: "Curator",
