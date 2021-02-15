@@ -80,7 +80,7 @@ async function calcCount(
     all: tips.length,
   };
 
-  const unFinishedBounties = bounties.filter(({ meta: { status } }) => {
+  const unFinishedBounties = bounties.filter(({ meta: { status } = {} }) => {
     const statusKey = Object.keys(status)[0];
     return !["BountyRejected", "BountyClaimed", "BountyCanceled"].includes(
       statusKey
