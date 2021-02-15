@@ -3,19 +3,21 @@ const { extractPage } = require("../../utils");
 const linkService = require("../../services/link.services");
 
 const bountyStatus = (bounty) =>
-  bounty.status?.CuratorProposed ||
-  bounty.status?.Active ||
-  bounty.status?.PendingPayout;
+  bounty?.status?.CuratorProposed ||
+  bounty?.status?.Active ||
+  bounty?.status?.PendingPayout;
 
 const bountyStatusName = (bounty) => {
   if (bounty.state?.name === "BountyRejected") {
     return "Rejected";
   } else if (bounty.state?.name === "BountyCanceled") {
     return "Canceled";
+  } else if (bounty.state?.name === "BountyClaimed") {
+    return "Claimed";
   }
 
   return Object.keys(bounty.meta.status)[0];
-}
+};
 
 class BountiesController {
   async getBounties(ctx) {
