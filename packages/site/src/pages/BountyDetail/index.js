@@ -215,6 +215,14 @@ function processTimeline(bountyDetail, scanHeight) {
                 value: <User address={signer} />,
               },
             ];
+          } else if (item.name === "BountyClaimed") {
+            const [, , claimer] = item.eventData || [];
+            fields = [
+              {
+                title: "Beneficiary",
+                value: <User address={claimer} />,
+              },
+            ];
           }
 
           return {
