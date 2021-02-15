@@ -54,7 +54,9 @@ async function handleBountyEventWithExtrinsic(event, normalizedExtrinsic) {
       event,
       normalizedExtrinsic,
       method === BountyEvents.BountyRejected ||
-        method === BountyEvents.BountyCanceled
+        [BountyEvents.BountyCanceled, BountyEvents.BountyClaimed].includes(
+          method
+        )
     );
   }
 
