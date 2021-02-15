@@ -3,9 +3,9 @@ const { extractPage } = require("../../utils");
 const linkService = require("../../services/link.services");
 
 const bountyStatus = (bounty) =>
-  bounty.status?.CuratorProposed ||
-  bounty.status?.Active ||
-  bounty.status?.PendingPayout;
+  bounty?.status?.CuratorProposed ||
+  bounty?.status?.Active ||
+  bounty?.status?.PendingPayout;
 
 const bountyStatusName = (bounty) => {
   if (bounty.state?.name === "BountyRejected") {
@@ -15,7 +15,7 @@ const bountyStatusName = (bounty) => {
   }
 
   return Object.keys(bounty.meta.status)[0];
-}
+};
 
 class BountiesController {
   async getBounties(ctx) {
