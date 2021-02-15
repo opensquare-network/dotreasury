@@ -12,6 +12,8 @@ const bountyStatusName = (bounty) => {
     return "Rejected";
   } else if (bounty.state?.name === "BountyCanceled") {
     return "Canceled";
+  } else if (bounty.state?.name === "BountyClaimed") {
+    return "Claimed";
   }
 
   return Object.keys(bounty.meta.status)[0];
