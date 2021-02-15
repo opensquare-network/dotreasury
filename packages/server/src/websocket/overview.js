@@ -80,17 +80,14 @@ async function calcCount(
     all: tips.length,
   };
 
-  const unFinishedBounties = bounties.filter((bounty) => {
-    if (!bounty?.meta) {
-      return false;
+  const unFinishedBounties = bounties.filter(
+    ({ state: { name: stateName } }) => {
+      return !["BountyRejected", "BountyClaimed", "BountyCanceled"].includes(
+        stateName
+      );
     }
+  );
 
-    const status = bounty.meta.status;
-    const statusKey = Object.keys(status)[0];
-    return !["BountyRejected", "BountyClaimed", "BountyCanceled"].includes(
-      statusKey
-    );
-  });
   const bounty = {
     unFinished: unFinishedBounties.length,
     all: bounties.length,
