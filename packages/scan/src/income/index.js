@@ -282,6 +282,7 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
       const treasuryDepositEventData = treasuryDepositData.toJSON();
       const balance = (treasuryDepositEventData || [])[0];
       othersInc = bigAdd(othersInc, balance);
+      // TODO: Get the treasury address balance and add the imbalance to others
       if (gt(balance, tooMuchGas)) {
         abnormalOthersLogger.info(blockIndexer.blockHeight, balance);
       }
