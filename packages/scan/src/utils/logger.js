@@ -104,6 +104,10 @@ log4js.configure({
       appenders: [abnormalGasCategory, "errors"],
       level: logLevel,
     },
+    [inflationCategory]: {
+      appenders: [inflationCategory, "errors"],
+      level: logLevel,
+    },
   },
 });
 
