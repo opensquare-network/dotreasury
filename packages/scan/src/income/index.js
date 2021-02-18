@@ -118,14 +118,14 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
 
     hasDeposit = true;
 
-    const eraPayout = await handleStakingEraPayout(
+    const inflation = await handleStakingEraPayout(
       events[sort],
       sort,
       events,
       blockIndexer
     );
-    if (eraPayout) {
-      inflationInc = bigAdd(inflationInc, eraPayout.balance);
+    if (inflation) {
+      inflationInc = bigAdd(inflationInc, inflation.balance);
       isGas = false;
     }
 
