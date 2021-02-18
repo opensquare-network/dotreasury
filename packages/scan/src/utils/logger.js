@@ -16,7 +16,7 @@ const identitySlashCategory = "identity-slash";
 
 const inflationCategory = "inflation";
 
-const abnormalGasCategory = "abnormal-gas";
+const abnormalOthersCategory = "abnormal-others";
 
 log4js.configure({
   appenders: {
@@ -48,9 +48,9 @@ log4js.configure({
       type: "file",
       filename: "log/income/slash/identity-slash.log",
     },
-    [abnormalGasCategory]: {
+    [abnormalOthersCategory]: {
       type: "file",
-      filename: "log/income/abnormal-gas.log",
+      filename: "log/income/abnormal-others.log",
     },
     errorFile: {
       type: "file",
@@ -100,8 +100,8 @@ log4js.configure({
       appenders: [electionsPhragmenSlashCategory, "errors"],
       level: logLevel,
     },
-    [abnormalGasCategory]: {
-      appenders: [abnormalGasCategory, "errors"],
+    [abnormalOthersCategory]: {
+      appenders: [abnormalOthersCategory, "errors"],
       level: logLevel,
     },
     [inflationCategory]: {
@@ -126,7 +126,7 @@ const electionsPhragmenLogger = log4js.getLogger(
 
 const inflationLogger = log4js.getLogger(inflationCategory);
 
-const abnormalGasLogger = log4js.getLogger(abnormalGasCategory);
+const abnormalOthersLogger = log4js.getLogger(abnormalOthersCategory);
 
 module.exports = {
   logger,
@@ -139,5 +139,5 @@ module.exports = {
   identitySlashLogger,
   electionsPhragmenLogger,
   inflationLogger,
-  abnormalGasLogger,
+  abnormalOthersLogger,
 };
