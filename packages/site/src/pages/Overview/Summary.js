@@ -12,7 +12,7 @@ import BlocksTime from "../../components/BlocksTime";
 import { overviewSelector } from "../../store/reducers/overviewSlice";
 import {
   fetchSpendPeriod,
-  spendPeriodSelector
+  spendPeriodSelector,
 } from "../../store/reducers/chainSlice";
 import {
   fetchTreasury,
@@ -40,12 +40,12 @@ const Wrapper = styled(Card)`
     grid-auto-flow: row;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
-`
+`;
 
 const CustomCard = styled.div`
   padding: 0;
-  border-color: #EEE;
-`
+  border-color: #eee;
+`;
 
 const ItemWrapper = styled.div`
   display: flex;
@@ -53,29 +53,31 @@ const ItemWrapper = styled.div`
   & > *:first-child {
     margin-right: 20px;
   }
-`
+`;
 
 const Title = styled(TextMinor)`
   line-height: 24px;
-`
+`;
 
 const TextBold = styled(Text)`
   font-size: 18px;
   line-height: 32px;
   font-weight: 700;
-`
+`;
 
 const TextMinorBold = styled(TextMinor)`
   font-size: 18px;
   line-height: 32px;
   font-weight: 700;
-`
+`;
 
 const ValueWrapper = styled.div`
   display: flex;
   align-items: center;
-  ${css`${mrgap("4px")}`}
-`
+  ${css`
+    ${mrgap("4px")}
+  `}
+`;
 
 const Summary = () => {
   const dispatch = useDispatch();
@@ -93,7 +95,7 @@ const Summary = () => {
     <Wrapper>
       <CustomCard>
         <ItemWrapper>
-          <Image src="/imgs/data-bounties.svg" />
+          <Image src="/imgs/data-proposals.svg" />
           <div>
             <Title>Proposals</Title>
             <ValueWrapper>
@@ -106,7 +108,7 @@ const Summary = () => {
       </CustomCard>
       <CustomCard>
         <ItemWrapper>
-          <Image src="/imgs/data-bounties.svg" />
+          <Image src="/imgs/data-tips.svg" />
           <div>
             <Title>Tips</Title>
             <ValueWrapper>
@@ -148,7 +150,9 @@ const Summary = () => {
           <div>
             <Title>Next burn</Title>
             <ValueWrapper>
-              <TextBold>{(treasury.burnPercent * treasury.free)?.toFixed(4)}</TextBold>
+              <TextBold>
+                {(treasury.burnPercent * treasury.free)?.toFixed(4)}
+              </TextBold>
               <TextMinorBold>KSM</TextMinorBold>
             </ValueWrapper>
           </div>
@@ -159,7 +163,8 @@ const Summary = () => {
           <CountDown percent={spendPeriod.progress} />
           <div>
             <Title>Spend period</Title>
-            <BlocksTime blocks={spendPeriod.restBlocks}
+            <BlocksTime
+              blocks={spendPeriod.restBlocks}
               ValueWrapper={TextBold}
               UnitWrapper={TextMinorBold}
               SectionWrapper={Fragment}
@@ -171,7 +176,7 @@ const Summary = () => {
         </ItemWrapper>
       </CustomCard>
     </Wrapper>
-  )
-}
+  );
+};
 
 export default Summary;
