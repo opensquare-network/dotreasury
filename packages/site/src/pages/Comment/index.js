@@ -16,6 +16,10 @@ const Body = styled(Card)`
   padding: 20px;
 `;
 
+const DividerWrapper = styled(Divider)`
+  border-top: 1px solid rgba(238, 238, 238, 1) !important;
+`;
+
 const Comment = () => {
   return (
     <div>
@@ -24,7 +28,7 @@ const Comment = () => {
         <CommentArea>
           <NoComment />
         </CommentArea>
-        <Divider />
+        <DividerWrapper />
         <Input />
       </Body>
     </div>

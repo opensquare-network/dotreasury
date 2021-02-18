@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Divider, Tab } from "semantic-ui-react";
+import { Tab, Divider } from "semantic-ui-react";
 import { NavLink, useLocation } from "react-router-dom";
 import TipsMenu from "./TipsMenu";
 import ProposalsMenu from "./ProposalsMenu";
@@ -16,6 +16,7 @@ import BurntMenu from "./BurntMenu";
 
 const DividerWrapper = styled(Divider)`
   margin: 0 !important;
+  border-top: 1px solid rgba(238, 238, 238, 1) !important;
 `;
 
 const TabWrapper = styled(Tab)`
