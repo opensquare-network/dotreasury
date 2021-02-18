@@ -1,20 +1,46 @@
 const { getMotionCollection, getBountyCollection } = require("../../mongo");
 const {
-  isBountyMotion,
+  isBountyMethod,
   extractCallIndexAndArgs,
   getMotionVoting,
   getLatestMotionByHash,
 } = require("./utils");
-const { Modules, CouncilEvents } = require("../../utils/constants");
+const {
+  Modules,
+  CouncilEvents,
+  ksmTreasuryRefactorApplyHeight,
+} = require("../../utils/constants");
 const { motionActions } = require("./constants");
 const { getBountyMeta } = require("../../utils/bounty");
+
+function isBountyMotion(section, method, height) {
+  if (
+    height < ksmTreasuryRefactorApplyHeight &&
+    section === Modules.Treasury &&
+    isBountyMethod(method)
+  ) {
+    return true;
+  }
+
+  return (
+    height >= ksmTreasuryRefactorApplyHeight &&
+    section === Modules.Bounties &&
+    isBountyMethod(method)
+  );
+}
 
 async function handleProposedForBounty(event, normalizedExtrinsic, extrinsic) {
   const [section, method, args] = await extractCallIndexAndArgs(
     normalizedExtrinsic,
     extrinsic
   );
-  if (section !== Modules.Treasury || !isBountyMotion(method)) {
+  if (
+    !isBountyMotion(
+      section,
+      method,
+      normalizedExtrinsic.extrinsicIndexer.blockHeight
+    )
+  ) {
     return;
   }
 
@@ -53,7 +79,7 @@ async function handleProposedForBounty(event, normalizedExtrinsic, extrinsic) {
 
 async function updateBountyByVoteResult(hash, isApproved, indexer) {
   const motion = await getLatestMotionByHash(hash);
-  if (!motion || !isBountyMotion(motion.method)) {
+  if (!motion || !isBountyMethod(motion.method)) {
     // it means this motion hash is not a treasury bounty motion hash
     return;
   }

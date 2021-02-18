@@ -181,7 +181,9 @@ function processTimeline(bountyDetail, scanHeight) {
             ];
           } else if (extrinsic.name === "awardBounty") {
             const curator = extrinsic.signer;
-            const { beneficiary } = extrinsic.args;
+            const {
+              beneficiary: { Id: beneficiary },
+            } = extrinsic.args;
             fields = [
               {
                 title: "Curator",
@@ -211,6 +213,14 @@ function processTimeline(bountyDetail, scanHeight) {
               {
                 title: "Closed by",
                 value: <User address={signer} />,
+              },
+            ];
+          } else if (item.name === "BountyClaimed") {
+            const [, , claimer] = item.eventData || [];
+            fields = [
+              {
+                title: "Beneficiary",
+                value: <User address={claimer} />,
               },
             ];
           }

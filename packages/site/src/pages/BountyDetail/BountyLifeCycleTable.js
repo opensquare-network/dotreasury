@@ -34,24 +34,26 @@ const BountyLifeCycleTable = ({ loading }) => {
 
   useEffect(() => {
     if (bountyDetail.updateDue) {
-      estimateBlocksTime(bountyDetail.updateDue - scanHeight).then(blocksTime => {
-        let timeLeft = "";
-        const oneMinute = 60 * 1000;
-        const oneHour = 60 * oneMinute;
-        const oneDay = 24 * oneHour;
-        if (blocksTime > oneDay) {
-          timeLeft = `${parseInt(blocksTime/oneDay)} days`;
-        } else if (blocksTime > oneHour) {
-          timeLeft = `${parseInt(blocksTime/oneHour)} hours`;
-        } else if (blocksTime > oneMinute) {
-          timeLeft = `${parseInt(blocksTime/oneMinute)} minutes`;
-        } else {
-          timeLeft = 'less then 1 minute';
+      estimateBlocksTime(bountyDetail.updateDue - scanHeight).then(
+        (blocksTime) => {
+          let timeLeft = "";
+          const oneMinute = 60 * 1000;
+          const oneHour = 60 * oneMinute;
+          const oneDay = 24 * oneHour;
+          if (blocksTime > oneDay) {
+            timeLeft = `${parseInt(blocksTime / oneDay)} days`;
+          } else if (blocksTime > oneHour) {
+            timeLeft = `${parseInt(blocksTime / oneHour)} hours`;
+          } else if (blocksTime > oneMinute) {
+            timeLeft = `${parseInt(blocksTime / oneMinute)} minutes`;
+          } else {
+            timeLeft = "less then 1 minute";
+          }
+          if (isMounted.current) {
+            setUpdateDueTimeLeft(timeLeft);
+          }
         }
-        if (isMounted.current) {
-          setUpdateDueTimeLeft(timeLeft);
-        }
-      })
+      );
     }
   }, [bountyDetail, scanHeight, isMounted]);
 
@@ -107,8 +109,13 @@ const BountyLifeCycleTable = ({ loading }) => {
               <TableCell title={"Update Due"}>
                 {bountyDetail.updateDue ? (
                   <FlexWrapper>
-                    <div>{updateDueTimeLeft ? `${updateDueTimeLeft} left` : "--"}</div>
-                    <PolygonLabel value={bountyDetail.updateDue} noHover={true} />
+                    <div>
+                      {updateDueTimeLeft ? `${updateDueTimeLeft} left` : "--"}
+                    </div>
+                    <PolygonLabel
+                      value={bountyDetail.updateDue}
+                      noHover={true}
+                    />
                   </FlexWrapper>
                 ) : (
                   "--"
@@ -129,13 +136,25 @@ const BountyLifeCycleTable = ({ loading }) => {
           </Table.Row>
           <Table.Row>
             <Table.Cell>
-              <TableCell title={"Unlock At"}>
+              <TableCell
+                title={`${
+                  scanHeight < bountyDetail.unlockAt ? "Unlock" : "Unlocked"
+                } At`}
+              >
                 {bountyDetail.unlockAt ? (
                   <FlexWrapper>
-                    <div>{bountyDetail.unlockAt}</div>
-                    <Label>{`${
-                      bountyDetail.unlockAt - scanHeight
-                    } blocks`}</Label>
+                    {scanHeight < bountyDetail.unlockAt ? (
+                      <>
+                        <div>{bountyDetail.unlockAt}</div>
+                        <Label>{`${
+                          bountyDetail.unlockAt - scanHeight
+                        } blocks`}</Label>
+                      </>
+                    ) : (
+                      <ExplorerLink href={`/block/${bountyDetail.unlockAt}`}>
+                        <PolygonLabel value={bountyDetail.unlockAt} />
+                      </ExplorerLink>
+                    )}
                   </FlexWrapper>
                 ) : (
                   "--"
