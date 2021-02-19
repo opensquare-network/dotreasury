@@ -1,9 +1,15 @@
 const { Modules, StakingEvents } = require("../utils/constants");
 const { inflationLogger } = require("../utils/logger");
+const { getIncomeInflationCollection } = require("../mongo");
 
 const inflationEndHeight = 1379482;
 
-function checkInflation1(event, sort, allBlockEvents, blockIndexer) {
+async function saveInflationRecord(data) {
+  const col = await getIncomeInflationCollection();
+  await col.insertOne(data);
+}
+
+async function checkInflation1(event, sort, allBlockEvents, blockIndexer) {
   if (blockIndexer.blockHeight >= inflationEndHeight) {
     return;
   }
@@ -29,17 +35,25 @@ function checkInflation1(event, sort, allBlockEvents, blockIndexer) {
 
   const data = {
     indexer: blockIndexer,
+    eventSort: sort - 1,
     balance,
     treasuryDepositEventData,
     rewardEventData,
   };
+
+  await saveInflationRecord(data);
 
   inflationLogger.info(blockIndexer.blockHeight, balance);
   return data;
 }
 
 // Inflation
-function handleStakingEraPayout(event, sort, allBlockEvents, blockIndexer) {
+async function handleStakingEraPayout(
+  event,
+  sort,
+  allBlockEvents,
+  blockIndexer
+) {
   const inflationCheck1Data = checkInflation1(
     event,
     sort,
@@ -71,11 +85,13 @@ function handleStakingEraPayout(event, sort, allBlockEvents, blockIndexer) {
 
   const data = {
     indexer: blockIndexer,
+    eventSort: sort - 1,
     balance,
     treasuryDepositEventData,
     eraPayoutEventData,
   };
-  // TODO: insert data to MongoDB
+
+  await saveInflationRecord(data);
 
   inflationLogger.info(blockIndexer.blockHeight, balance);
   return data;
