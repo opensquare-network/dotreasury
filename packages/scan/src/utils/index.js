@@ -5,6 +5,7 @@ const {
   incomeKnownHeightsLogger,
 } = require("./logger");
 const BigNumber = require("bignumber.js");
+const { getApi } = require("../api");
 
 const sleep = (time) => {
   return new Promise((resolve) => {
@@ -49,6 +50,39 @@ function gt(v1, v2) {
   return new BigNumber(v1).isGreaterThan(v2);
 }
 
+async function getMetadataConstByBlockHash(blockHash, moduleName, name) {
+  const api = await getApi();
+  const registry = await api.getBlockRegistry(blockHash);
+
+  let iterVersion = 0;
+  const metadata = registry.metadata.get("metadata");
+
+  while (iterVersion < 1000) {
+    if (!metadata[`isV${iterVersion}`]) {
+      iterVersion++;
+      continue;
+    }
+
+    const modules = metadata[`asV${iterVersion}`].get("modules");
+    const targetModule = modules.find(
+      (module) => module.name.toString() === moduleName
+    );
+    if (!targetModule) {
+      // TODO: should throw error
+      break;
+    }
+
+    const targetConstant = targetModule.constants.find(
+      (constant) => constant.name.toString() === name
+    );
+    const typeName = targetConstant.type.toString();
+    const Type = registry.registry.get(typeName);
+    return new Type(registry.registry, targetConstant.value);
+  }
+
+  return null;
+}
+
 module.exports = {
   getExtrinsicSigner,
   isExtrinsicSuccess,
@@ -61,4 +95,5 @@ module.exports = {
   incomeKnownHeightsLogger,
   bigAdd,
   gt,
+  getMetadataConstByBlockHash,
 };
