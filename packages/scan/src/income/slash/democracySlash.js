@@ -7,8 +7,14 @@ const {
 const { getApi } = require("../../api");
 const { getCall } = require("../../utils/call");
 const { democracySlashLogger } = require("../../utils/logger");
+const { getDemocracySlashCollection } = require("../../mongo");
 
-function handleDemocracyBacklistedOrPreimageInvalid(
+async function saveSlashRecord(data) {
+  const col = await getDemocracySlashCollection();
+  await col.insertOne(data);
+}
+
+async function handleDemocracyBacklistedOrPreimageInvalid(
   event,
   sort,
   allBlockEvents,
@@ -45,12 +51,14 @@ function handleDemocracyBacklistedOrPreimageInvalid(
 
   const data = {
     indexer: blockIndexer,
+    eventSort: sort + 1,
     section,
     method,
     balance,
     treasuryDepositEventData,
     [key]: nextEventData,
   };
+  await saveSlashRecord(data);
   democracySlashLogger.info(blockIndexer.blockHeight, method);
 
   return data;
@@ -111,6 +119,7 @@ async function handleDemocracyCancelProposalSlash(
     treasuryDepositEventData,
     canceledProposalIndex: propIndex,
   };
+  await saveSlashRecord(data);
   democracySlashLogger.info(
     extrinsicIndexer.blockHeight,
     DemocracyMethods.cancelProposal

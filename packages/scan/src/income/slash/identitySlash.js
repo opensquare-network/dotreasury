@@ -1,7 +1,13 @@
 const { Modules, IdentityEvents } = require("../../utils/constants");
 const { identitySlashLogger } = require("../../utils/logger");
+const { getIdentitySlashCollection } = require("../../mongo");
 
-function handleIdentitySlash(event, sort, allBlockEvents, blockIndexer) {
+async function saveSlashRecord(data) {
+  const col = await getIdentitySlashCollection();
+  await col.insertOne(data);
+}
+
+async function handleIdentitySlash(event, sort, allBlockEvents, blockIndexer) {
   const {
     event: { data: treasuryDepositData },
   } = event; // get deposit event data
@@ -26,12 +32,14 @@ function handleIdentitySlash(event, sort, allBlockEvents, blockIndexer) {
 
   const data = {
     indexer: blockIndexer,
+    eventSort: sort + 1,
     section,
     method,
     balance,
     treasuryDepositEventData,
     identityKilledEventData,
   };
+  await saveSlashRecord(data);
   identitySlashLogger.info(blockIndexer.blockHeight, method);
   return data;
 }
