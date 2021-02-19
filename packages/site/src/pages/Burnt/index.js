@@ -19,12 +19,16 @@ const Header = styled(Title)`
 `;
 
 const DEFAULT_PAGE_SIZE = 20;
-const DEDAULT_QUERY_PAGE = 1;
+const DEFAULT_QUERY_PAGE = 1;
 
 const Burnt = () => {
   const searchPage = parseInt(useQuery().get("page"));
-  const queryPage = searchPage && !isNaN(searchPage) && searchPage > 0 ? searchPage : DEDAULT_QUERY_PAGE;
+  const queryPage =
+    searchPage && !isNaN(searchPage) && searchPage > 0
+      ? searchPage
+      : DEFAULT_QUERY_PAGE;
   const [tablePage, setTablePage] = useState(queryPage);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -32,10 +36,10 @@ const Burnt = () => {
   const loading = useSelector(loadingBurntListSelector);
 
   useEffect(() => {
-    dispatch(fetchBurntList(tablePage - 1, DEFAULT_PAGE_SIZE));
-  }, [dispatch, tablePage]);
+    dispatch(fetchBurntList(tablePage - 1, pageSize));
+  }, [dispatch, tablePage, pageSize]);
 
-  const totalPages = Math.ceil(total / DEFAULT_PAGE_SIZE);
+  const totalPages = Math.ceil(total / pageSize);
 
   return (
     <>
@@ -44,9 +48,15 @@ const Burnt = () => {
       <ResponsivePagination
         activePage={tablePage}
         totalPages={totalPages}
+        pageSize={pageSize}
+        setPageSize={(pageSize) => {
+          setTablePage(DEFAULT_QUERY_PAGE);
+          setPageSize(pageSize);
+        }}
         onPageChange={(_, { activePage }) => {
           history.push({
-            search: activePage === DEDAULT_QUERY_PAGE ? null : `?page=${activePage}`
+            search:
+              activePage === DEFAULT_QUERY_PAGE ? null : `?page=${activePage}`,
           });
           setTablePage(activePage);
         }}
