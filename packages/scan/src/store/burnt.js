@@ -1,6 +1,7 @@
 const { getBurntCollection } = require("../mongo");
 const { getApi } = require("../api");
 const { TreasuryAccount } = require("../utils/constants");
+const { getMetadataConstByBlockHash } = require("../utils");
 
 async function getTreasuryBalance(blockHash) {
   const api = await getApi();
@@ -11,35 +12,8 @@ async function getTreasuryBalance(blockHash) {
 }
 
 async function getBurnPercent(blockHash) {
-  const api = await getApi();
-  const registry = await api.getBlockRegistry(blockHash);
-
-  let iterVersion = 0;
-  const metadata = registry.metadata.get("metadata");
-  while (iterVersion < 1000) {
-    if (!metadata[`isV${iterVersion}`]) {
-      iterVersion++;
-      continue;
-    }
-
-    const modules = metadata[`asV${iterVersion}`].get("modules");
-    const treasuryModule = modules.find(
-      (module) => module.name.toString() === "Treasury"
-    );
-    if (!treasuryModule) {
-      // TODO: should throw error
-      break;
-    }
-
-    const burnConstant = treasuryModule.constants.find(
-      (constant) => constant.name.toString() === "Burn"
-    );
-    const typeName = burnConstant.type.toString();
-    const Type = registry.registry.get(typeName);
-    return new Type(registry.registry, burnConstant.value).toHuman();
-  }
-
-  return null;
+  const v = await getMetadataConstByBlockHash(blockHash, "Treasury", "Burn");
+  return v ? v.toHuman() : v;
 }
 
 async function saveNewBurnt(balance, eventIndexer) {

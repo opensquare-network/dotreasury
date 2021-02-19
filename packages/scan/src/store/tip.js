@@ -8,7 +8,7 @@ const {
 const { hexToString } = require("@polkadot/util");
 const { getTipCollection } = require("../mongo");
 const { getApi } = require("../api");
-const { median } = require("../utils");
+const { median, getMetadataConstByBlockHash } = require("../utils");
 const { getCall, getMultiSigExtrinsicAddress } = require("../utils/call");
 const { getTipMethodNameAndArgs } = require("./utils");
 
@@ -45,9 +45,12 @@ async function getReasonStorageReasonText(reasonHash, blockHash) {
 }
 
 async function getTippersCount(blockHash) {
-  const api = await getApi();
-  const members = await api.query.electionsPhragmen.members.at(blockHash);
-  return members.length;
+  const v = await getMetadataConstByBlockHash(
+    blockHash,
+    "ElectionsPhragmen",
+    "DesiredMembers"
+  );
+  return v ? v.toNumber() : v;
 }
 
 function computeTipValue(tipMeta) {
