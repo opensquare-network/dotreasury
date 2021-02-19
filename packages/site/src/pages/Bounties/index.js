@@ -52,6 +52,9 @@ const Bounties = () => {
         setPageSize={(pageSize) => {
           setTablePage(DEFAULT_QUERY_PAGE);
           setPageSize(pageSize);
+          history.push({
+            search: null,
+          });
         }}
         onPageChange={(_, { activePage }) => {
           history.push({
