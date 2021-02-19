@@ -11,6 +11,8 @@ const burntCollectionName = "burnt";
 
 // income collections
 const incomeInflationCollectionName = "incomeInflation";
+const stakingSlashCollectionName = "stakingSlash";
+const treasurySlashCollectionName = "treasurySlash";
 
 let client = null;
 let db = null;
@@ -23,6 +25,8 @@ let proposalCol = null;
 let motionCol = null;
 let burntCol = null;
 let incomeInflationCol = null;
+let stakingSlashCol = null;
+let treasurySlashCol = null;
 
 async function initDb() {
   client = await MongoClient.connect(mongoUrl, {
@@ -37,6 +41,8 @@ async function initDb() {
   motionCol = db.collection(motionCollectionName);
   burntCol = db.collection(burntCollectionName);
   incomeInflationCol = db.collection(incomeInflationCollectionName);
+  stakingSlashCol = db.collection(stakingSlashCollectionName);
+  treasurySlashCol = db.collection(stakingSlashCollectionName);
 
   await _createIndexes();
 }
@@ -91,6 +97,16 @@ async function getIncomeInflationCollection() {
   return incomeInflationCol;
 }
 
+async function getStakingSlashCollection() {
+  await tryInit(stakingSlashCol);
+  return stakingSlashCol;
+}
+
+async function getTreasurySlashCollection() {
+  await tryInit(treasurySlashCol);
+  return treasurySlashCol;
+}
+
 module.exports = {
   getStatusCollection,
   getTipCollection,
@@ -99,4 +115,6 @@ module.exports = {
   getMotionCollection,
   getBurntCollection,
   getIncomeInflationCollection,
+  getStakingSlashCollection,
+  getTreasurySlashCollection,
 };

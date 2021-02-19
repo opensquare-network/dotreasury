@@ -6,6 +6,7 @@ const {
   TipEvents,
 } = require("../../utils/constants");
 const { treasurySlashLogger } = require("../../utils/logger");
+const { getTreasurySlashCollection } = require("../../mongo");
 
 function isBountyModule(section, height) {
   if (height < ksmTreasuryRefactorApplyHeight && section === Modules.Treasury) {
@@ -64,7 +65,12 @@ const knownProposalSlash = [
   },
 ];
 
-function handleTreasuryProposalSlash(
+async function saveSlashRecord(data) {
+  const col = await getTreasurySlashCollection();
+  await col.insertOne(data);
+}
+
+async function handleTreasuryProposalSlash(
   event,
   sort,
   allBlockEvents,
@@ -86,13 +92,18 @@ function handleTreasuryProposalSlash(
   ) {
     treasurySlashLogger.info(blockIndexer.blockHeight, TreasuryEvent.Rejected);
 
-    return {
+    const data = {
       indexer: blockIndexer,
       section: Modules.Treasury,
       method: TreasuryEvent.Rejected,
       balance,
       treasuryDepositEventData,
     };
+
+    await saveSlashRecord(data);
+
+    treasurySlashLogger.info(blockIndexer.blockHeight, TreasuryEvent.Rejected);
+    return data;
   }
 
   const nextEvent = allBlockEvents[sort + 1];
@@ -112,12 +123,13 @@ function handleTreasuryProposalSlash(
     treasuryDepositEventData,
     treasuryRejectedEventData,
   };
+  await saveSlashRecord(data);
   treasurySlashLogger.info(blockIndexer.blockHeight, method);
 
   return data;
 }
 
-function handleTipSlash(event, sort, allBlockEvents, blockIndexer) {
+async function handleTipSlash(event, sort, allBlockEvents, blockIndexer) {
   const {
     event: { data: treasuryDepositData },
   } = event; // get deposit event data
@@ -144,12 +156,14 @@ function handleTipSlash(event, sort, allBlockEvents, blockIndexer) {
     treasuryDepositEventData,
     tipSlashedEventData,
   };
+
+  await saveSlashRecord(data);
   treasurySlashLogger.info(blockIndexer.blockHeight, method);
 
   return data;
 }
 
-function handleTreasuryBountyRejectedSlash(
+async function handleTreasuryBountyRejectedSlash(
   event,
   sort,
   allBlockEvents,
@@ -184,12 +198,13 @@ function handleTreasuryBountyRejectedSlash(
     treasuryDepositEventData,
     bountyRejectedEventData,
   };
+  await saveSlashRecord(data);
   treasurySlashLogger.info(blockIndexer.blockHeight, method);
 
   return data;
 }
 
-function handleTreasuryBountyUnassignCuratorSlash(
+async function handleTreasuryBountyUnassignCuratorSlash(
   event,
   sort,
   allBlockEvents,
@@ -217,6 +232,7 @@ function handleTreasuryBountyUnassignCuratorSlash(
     balance: (treasuryDepositEventData || [])[0],
     bountyIndex,
   };
+  await saveSlashRecord(data);
   treasurySlashLogger.info(extrinsicIndexer.blockHeight, meta.name);
 
   return data;

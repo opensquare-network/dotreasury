@@ -1,7 +1,8 @@
 const { Modules, StakingEvents } = require("../../utils/constants");
 const { stakingSlashLogger } = require("../../utils/logger");
+const { getStakingSlashCollection } = require("../../mongo");
 
-function handleStakingSlash(event, sort, allBlockEvents, blockIndexer) {
+async function handleStakingSlash(event, sort, allBlockEvents, blockIndexer) {
   const {
     event: { data: treasuryDepositData },
   } = event; // get deposit event data
@@ -43,7 +44,8 @@ function handleStakingSlash(event, sort, allBlockEvents, blockIndexer) {
     slashRecords,
   };
 
-  // TODO: insert data to MongoDB
+  const col = await getStakingSlashCollection();
+  await col.insertOne(data);
 
   stakingSlashLogger.info(blockIndexer.blockHeight, method);
   return data;
