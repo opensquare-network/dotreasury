@@ -11,9 +11,9 @@ const burntCollectionName = "burnt";
 
 // income collections
 const incomeInflationCollectionName = "incomeInflation";
-const stakingSlashCollectionName = "stakingSlash";
-const treasurySlashCollectionName = "treasurySlash";
-const electionSlashCollectionName = "electionSlash";
+const stakingSlashCollectionName = "incomeSlashStaking";
+const treasurySlashCollectionName = "incomeSlashTreasury";
+const electionSlashCollectionName = "incomeSlashElections";
 
 let client = null;
 let db = null;
