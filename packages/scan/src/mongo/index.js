@@ -42,7 +42,7 @@ async function initDb() {
   burntCol = db.collection(burntCollectionName);
   incomeInflationCol = db.collection(incomeInflationCollectionName);
   stakingSlashCol = db.collection(stakingSlashCollectionName);
-  treasurySlashCol = db.collection(stakingSlashCollectionName);
+  treasurySlashCol = db.collection(treasurySlashCollectionName);
 
   await _createIndexes();
 }
