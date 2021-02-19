@@ -90,10 +90,9 @@ async function handleTreasuryProposalSlash(
       (s) => s.block === blockIndexer.blockHeight && s.sort === sort
     )
   ) {
-    treasurySlashLogger.info(blockIndexer.blockHeight, TreasuryEvent.Rejected);
-
     const data = {
       indexer: blockIndexer,
+      eventSort: sort,
       section: Modules.Treasury,
       method: TreasuryEvent.Rejected,
       balance,
@@ -117,6 +116,7 @@ async function handleTreasuryProposalSlash(
   const treasuryRejectedEventData = nextEvent.event.data.toJSON();
   const data = {
     indexer: blockIndexer,
+    eventSort: sort + 1,
     section,
     method,
     balance,
@@ -150,6 +150,7 @@ async function handleTipSlash(event, sort, allBlockEvents, blockIndexer) {
   const balance = (treasuryDepositEventData || [])[0];
   const data = {
     indexer: blockIndexer,
+    eventSort: sort + 1,
     section,
     method,
     balance,
@@ -192,6 +193,7 @@ async function handleTreasuryBountyRejectedSlash(
   const balance = (treasuryDepositEventData || [])[0];
   const data = {
     indexer: blockIndexer,
+    eventSort: sort + 1,
     section,
     method,
     balance,

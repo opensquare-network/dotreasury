@@ -37,6 +37,7 @@ async function handleStakingSlash(event, sort, allBlockEvents, blockIndexer) {
 
   const data = {
     indexer: blockIndexer,
+    eventSort: sort,
     section,
     method,
     balance,

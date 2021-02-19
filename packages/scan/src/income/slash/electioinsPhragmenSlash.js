@@ -4,6 +4,7 @@ const {
   TreasuryEvent,
 } = require("../../utils/constants");
 const { electionsPhragmenLogger } = require("../../utils/logger");
+const { getElectionSlashCollection } = require("../../mongo");
 
 function allBeforeIsDeposit(allBlockEvents, sort) {
   let i = sort - 1;
@@ -19,6 +20,11 @@ function allBeforeIsDeposit(allBlockEvents, sort) {
   }
 
   return true;
+}
+
+async function saveSlashRecord(data) {
+  const col = await getElectionSlashCollection();
+  await col.insertOne(data);
 }
 
 function nextDifferentIsNewTerm(allBlockEvents, sort) {
@@ -51,7 +57,7 @@ function nextDifferentIsNewTerm(allBlockEvents, sort) {
   return false;
 }
 
-function handleElectionsLoserCandidateSlash(
+async function handleElectionsLoserCandidateSlash(
   event,
   sort,
   allBlockEvents,
@@ -74,11 +80,14 @@ function handleElectionsLoserCandidateSlash(
 
   const data = {
     indexer: blockIndexer,
+    eventSort: sort,
     section: Modules.ElectionsPhragmen,
     method: ElectionsPhragmenEvents.NewTerm,
     balance,
     treasuryDepositEventData,
   };
+
+  await saveSlashRecord(data);
 
   electionsPhragmenLogger.info(
     blockIndexer.blockHeight,
@@ -87,7 +96,7 @@ function handleElectionsLoserCandidateSlash(
   return data;
 }
 
-function handleElectionsPhragmenSlash(
+async function handleElectionsPhragmenSlash(
   event,
   sort,
   allBlockEvents,
@@ -125,12 +134,14 @@ function handleElectionsPhragmenSlash(
 
   const data = {
     indexer: blockIndexer,
+    eventSort: sort,
     section,
     method,
     balance,
     treasuryDepositEventData,
     [key]: nextEventData,
   };
+  await saveSlashRecord(data);
   electionsPhragmenLogger.info(blockIndexer.blockHeight, method);
   return data;
 }
