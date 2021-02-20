@@ -13,6 +13,7 @@
     "mig:dev": "pm2 start migration.config.js --env development"
   },
   "dependencies": {
+    "@alicloud/pop-core": "^1.7.10",
     "@koa/cors": "^3.1.0",
     "@polkadot/util": "^5.6.2",
     "@polkadot/util-crypto": "^5.6.2",
