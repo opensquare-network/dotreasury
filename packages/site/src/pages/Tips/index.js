@@ -27,17 +27,18 @@ const Tips = () => {
       : DEFAULT_QUERY_PAGE;
 
   const [tablePage, setTablePage] = useState(queryPage);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
 
   const dispatch = useDispatch();
   const history = useHistory();
   const { items: tips, total } = useSelector(normalizedTipListSelector);
   const loading = useSelector(loadingSelector);
 
-  const totalPages = Math.ceil(total / DEFAULT_PAGE_SIZE);
+  const totalPages = Math.ceil(total / pageSize);
 
   useEffect(() => {
-    dispatch(fetchTips(tablePage - 1, DEFAULT_PAGE_SIZE));
-  }, [dispatch, tablePage]);
+    dispatch(fetchTips(tablePage - 1, pageSize));
+  }, [dispatch, tablePage, pageSize]);
 
   return (
     <>
@@ -46,6 +47,14 @@ const Tips = () => {
       <ResponsivePagination
         activePage={tablePage}
         totalPages={totalPages}
+        pageSize={pageSize}
+        setPageSize={(pageSize) => {
+          setTablePage(DEFAULT_QUERY_PAGE);
+          setPageSize(pageSize);
+          history.push({
+            search: null,
+          });
+        }}
         onPageChange={(_, { activePage }) => {
           history.push({
             search:
