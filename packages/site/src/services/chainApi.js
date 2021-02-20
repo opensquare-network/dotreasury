@@ -47,17 +47,6 @@ export const getTipCountdown = async () => {
   return api.consts.tips.tipCountdown.toNumber();
 };
 
-export const getTipFindersFee = async (blockHeightOrHash) => {
-  let blockHash;
-  if (typeof blockHeightOrHash === "number") {
-    blockHash = await getBlockHashFromHeight(blockHeightOrHash);
-  } else {
-    blockHash = blockHeightOrHash;
-  }
-  const value = await getMetadataConstByBlockHash(blockHash, "Tips", "TipFindersFee");
-  return value.toJSON();
-};
-
 export const getCurrentBlockHeight = async () => {
   const api = await getApi();
   const hash = await api.rpc.chain.getFinalizedHead();
@@ -105,36 +94,3 @@ export const estimateBlocksTime = async (blocks) => {
   const nsPerBlock = api.consts.babe.expectedBlockTime.toNumber();
   return nsPerBlock * blocks;
 };
-
-export async function getMetadataConstByBlockHash(blockHash, moduleName, name) {
-  const api = await getApi();
-  const registry = await api.getBlockRegistry(blockHash);
-
-  let iterVersion = 0;
-  const metadata = registry.metadata.get("metadata");
-
-  while (iterVersion < 1000) {
-    if (!metadata[`isV${iterVersion}`]) {
-      iterVersion++;
-      continue;
-    }
-
-    const modules = metadata[`asV${iterVersion}`].get("modules");
-    const targetModule = modules.find(
-      (module) => module.name.toString() === moduleName
-    );
-    if (!targetModule) {
-      // TODO: should throw error
-      break;
-    }
-
-    const targetConstant = targetModule.constants.find(
-      (constant) => constant.name.toString() === name
-    );
-    const typeName = targetConstant.type.toString();
-    const Type = registry.registry.get(typeName);
-    return new Type(registry.registry, targetConstant.value);
-  }
-
-  return null;
-}

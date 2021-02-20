@@ -43,7 +43,7 @@ class TipsController {
     const tipCol = await getTipCollection();
     const tip = await tipCol.findOne({
       hash: tipHash,
-      'indexer.blockHeight': parseInt(blockHeight),
+      "indexer.blockHeight": parseInt(blockHeight),
     });
 
     if (!tip) {
@@ -55,7 +55,6 @@ class TipsController {
       hash: tip.hash,
       proposeTime: tip.indexer.blockTime,
       proposeAtBlockHeight: tip.indexer.blockHeight,
-      proposeAtBlockHash: tip.indexer.blockHash,
       beneficiary: tip.meta?.who,
       finder: tip.finder,
       reason: tip.reason,
@@ -67,6 +66,7 @@ class TipsController {
       tipsCount: tip.meta?.tips.length,
       medianValue: tip.medianValue,
       tippersCount: tip.tippersCount,
+      tipFindersFee: tip.tipFindersFee,
       closeFromBlockHeight: tip.meta?.closes,
       timeline: tip.timeline,
     };
@@ -84,10 +84,13 @@ class TipsController {
       },
       getReason: async () => {
         const tipCol = await getTipCollection();
-        const tip = await tipCol.findOne({ hash: tipHash, 'indexer.blockHeight': blockHeight });
+        const tip = await tipCol.findOne({
+          hash: tipHash,
+          "indexer.blockHeight": blockHeight,
+        });
         return tip?.reason;
-      }
-    })
+      },
+    });
   }
 
   async createTipLink(ctx) {
@@ -96,15 +99,18 @@ class TipsController {
 
     const { link, description } = ctx.request.body;
 
-    ctx.body = await linkService.createLink({
-      type: "tips",
-      indexer: {
-        blockHeight,
-        tipHash,
+    ctx.body = await linkService.createLink(
+      {
+        type: "tips",
+        indexer: {
+          blockHeight,
+          tipHash,
+        },
+        link,
+        description,
       },
-      link,
-      description,
-    }, ctx.request.headers.signature)
+      ctx.request.headers.signature
+    );
   }
 
   async deleteTipLink(ctx) {
@@ -112,14 +118,17 @@ class TipsController {
     const blockHeight = parseInt(ctx.params.blockHeight);
     const linkIndex = parseInt(ctx.params.linkIndex);
 
-    ctx.body = await linkService.deleteLink({
-      type: "tips",
-      indexer: {
-        blockHeight,
-        tipHash,
+    ctx.body = await linkService.deleteLink(
+      {
+        type: "tips",
+        indexer: {
+          blockHeight,
+          tipHash,
+        },
+        linkIndex,
       },
-      linkIndex,
-    }, ctx.request.headers.signature)
+      ctx.request.headers.signature
+    );
   }
 }
 

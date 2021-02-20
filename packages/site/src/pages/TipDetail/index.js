@@ -6,7 +6,6 @@ import { hexToString } from "@polkadot/util";
 import {
   fetchTipCountdown,
   fetchTipDetail,
-  fetchTipFindersFee,
   loadingTipDetailSelector,
   tipDetailSelector,
 } from "../../store/reducers/tipSlice";
@@ -139,13 +138,6 @@ const TipDetail = () => {
   }, [dispatch, tipId]);
 
   const tipDetail = useSelector(tipDetailSelector);
-  const blockHeightOrHash = tipDetail.proposeAtBlockHash ?? tipDetail.proposeAtBlockHeight;
-  useEffect(() => {
-    if (blockHeightOrHash) {
-      dispatch(fetchTipFindersFee(blockHeightOrHash));
-    }
-  }, [dispatch, blockHeightOrHash]);
-
   const loadingTipDetail = useSelector(loadingTipDetailSelector);
 
   const links = useSelector(linksSelector);
