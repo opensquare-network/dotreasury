@@ -55,6 +55,7 @@ class TipsController {
       hash: tip.hash,
       proposeTime: tip.indexer.blockTime,
       proposeAtBlockHeight: tip.indexer.blockHeight,
+      proposeAtBlockHash: tip.indexer.blockHash,
       beneficiary: tip.meta?.who,
       finder: tip.finder,
       reason: tip.reason,

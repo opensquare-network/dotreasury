@@ -134,12 +134,18 @@ const TipDetail = () => {
 
   useEffect(() => {
     dispatch(fetchTipDetail(tipId));
-    dispatch(fetchTipFindersFee());
     dispatch(fetchTipCountdown());
     dispatch(fetchLinks("tips", tipId));
   }, [dispatch, tipId]);
 
   const tipDetail = useSelector(tipDetailSelector);
+  const blockHeightOrHash = tipDetail.proposeAtBlockHash ?? tipDetail.proposeAtBlockHeight;
+  useEffect(() => {
+    if (blockHeightOrHash) {
+      dispatch(fetchTipFindersFee(blockHeightOrHash));
+    }
+  }, [dispatch, blockHeightOrHash]);
+
   const loadingTipDetail = useSelector(loadingTipDetailSelector);
 
   const links = useSelector(linksSelector);

@@ -84,8 +84,8 @@ export const fetchTipCountdown = () => async (dispatch) => {
   dispatch(setTipCountdown(tipCountdown || 14400));
 };
 
-export const fetchTipFindersFee = () => async (dispatch) => {
-  const tipFindersFee = await getTipFindersFee();
+export const fetchTipFindersFee = (blockHeightOrHash) => async (dispatch) => {
+  const tipFindersFee = await getTipFindersFee(blockHeightOrHash);
   dispatch(setTipFindersFee(tipFindersFee || 20));
 };
 
