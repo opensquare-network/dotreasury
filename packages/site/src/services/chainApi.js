@@ -30,6 +30,12 @@ export const getApi = async (queryUrl) => {
   return apiInstanceMap.get(url);
 };
 
+export async function getBlockHashFromHeight(blockHeight) {
+  const api = await getApi();
+  const value = await api.rpc.chain.getBlockHash(blockHeight);
+  return value.toJSON();
+}
+
 export const getIndentity = async (address) => {
   const api = await getApi();
   const { identity } = await api.derive.accounts.info(address);
@@ -39,11 +45,6 @@ export const getIndentity = async (address) => {
 export const getTipCountdown = async () => {
   const api = await getApi();
   return api.consts.tips.tipCountdown.toNumber();
-};
-
-export const getTipFindersFee = async () => {
-  const api = await getApi();
-  return api.consts.tips.tipFindersFee.toNumber();
 };
 
 export const getCurrentBlockHeight = async () => {

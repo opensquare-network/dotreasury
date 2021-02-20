@@ -36,10 +36,7 @@ function median(values) {
   return sorted[Math.floor(sorted.length / 2)];
 }
 
-async function getMetadataConstByBlockHash(blockHash, moduleName, name) {
-  const api = await getApi();
-  const registry = await api.getBlockRegistry(blockHash);
-
+function getConstFromRegistry(registry, moduleName, constantName) {
   let iterVersion = 0;
   const metadata = registry.metadata.get("metadata");
 
@@ -59,14 +56,36 @@ async function getMetadataConstByBlockHash(blockHash, moduleName, name) {
     }
 
     const targetConstant = targetModule.constants.find(
-      (constant) => constant.name.toString() === name
+      (constant) => constant.name.toString() === constantName
     );
+    if (!targetConstant) {
+      break;
+    }
+
     const typeName = targetConstant.type.toString();
     const Type = registry.registry.get(typeName);
     return new Type(registry.registry, targetConstant.value);
   }
 
   return null;
+}
+
+async function getMetadataConstByBlockHash(
+  blockHash,
+  moduleName,
+  constantName
+) {
+  const api = await getApi();
+  const registry = await api.getBlockRegistry(blockHash);
+  return getConstFromRegistry(registry, moduleName, constantName);
+}
+
+async function getMetadataConstsByBlockHash(blockHash, constants) {
+  const api = await getApi();
+  const registry = await api.getBlockRegistry(blockHash);
+  return constants.map(({ moduleName, constantName }) =>
+    getConstFromRegistry(registry, moduleName, constantName)
+  );
 }
 
 module.exports = {
@@ -78,4 +97,5 @@ module.exports = {
   logger,
   knownHeightsLogger,
   getMetadataConstByBlockHash,
+  getMetadataConstsByBlockHash,
 };
