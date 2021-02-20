@@ -36,7 +36,6 @@ class AuthService {
   async getRefreshToken(user) {
     const randHex = randomBytes(12).toString("hex");
     const token = `${user._id}-${randHex}`;
-    const valid = true;
 
     const oneMonth = 30 * 24 * 60 * 60 * 1000;
     const expires = new Date(Date.now() + oneMonth);
@@ -49,7 +48,6 @@ class AuthService {
           refreshToken: {
             expires,
             token,
-            valid,
           },
         },
       }
@@ -68,10 +66,6 @@ class AuthService {
 
     if (!user) {
       throw new HttpError(400, "Invaild refresh token");
-    }
-
-    if (!user.refreshToken.valid) {
-      throw new HttpError(401, "Refresh token revoked");
     }
 
     if (user.refreshToken.expires.getTime() < Date.now()) {
