@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Tab, Divider } from "semantic-ui-react";
 import { NavLink, useLocation } from "react-router-dom";
 import TipsMenu from "./TipsMenu";
 import ProposalsMenu from "./ProposalsMenu";
 import BountiesMenu from "./BountiesMenu";
+import TreasurySlashMenu from "./TreasurySlashMenu";
+import DemocracySlashMenu from "./DemocracySlashMenu";
+import StakingSlashMenu from "./StakingSlashMenu";
+import IdentitySlashMenu from "./IdentitySlashMenu";
+import ElectionPhragmenSlashMenu from "./ElectionPhragmenSlashMenu";
+import InflationMenu from "./InflationMenu";
+import { fetchIncomeCount } from "../../store/reducers/incomeSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { showMenuTabsSelector } from "../../store/reducers/menuSlice";
 
 import {
   PRIMARY_THEME_COLOR,
@@ -71,65 +80,157 @@ const TabWrapper = styled(Tab)`
 
 const TabExampleSecondaryPointing = () => {
   const { pathname } = useLocation();
+  const dispatch = useDispatch();
+  const showMenuTabs = useSelector(showMenuTabsSelector);
 
-  const panes = [
-    {
-      menuItem: {
-        as: NavLink,
-        id: "homeTab",
-        content: "Overview",
-        to: "/",
-        exact: true,
-        key: "home",
-        active: "/" === pathname,
-      },
-    },
-    {
-      menuItem: {
-        as: NavLink,
-        id: "proposalsTab",
-        content: <ProposalsMenu />,
-        to: "/proposals",
-        exact: true,
-        key: "proposals",
-        active:
-          "/proposals" === pathname || pathname.indexOf("/proposals") === 0,
-      },
-    },
-    {
-      menuItem: {
-        as: NavLink,
-        id: "tipsTab",
-        content: <TipsMenu />,
-        to: "/tips",
-        exact: true,
-        key: "tips",
-        active: "/tips" === pathname || pathname.indexOf("/tips") === 0,
-      },
-    },
-    {
-      menuItem: {
-        as: NavLink,
-        id: "bountiesTab",
-        content: <BountiesMenu />,
-        to: "/bounties",
-        exact: true,
-        key: "bounties",
-        active: "/bounties" === pathname || pathname.indexOf("/bounties") === 0,
-      },
-    },
-    {
-      menuItem: {
-        as: NavLink,
-        id: "burntTab",
-        content: <BurntMenu />,
-        to: "/burnt",
-        exact: true,
-        key: "burnt",
-        active: "/burnt" === pathname || pathname.indexOf("/burnt") === 0,
-      },
-    },
-  ];
+  useEffect(() => {
+    dispatch(fetchIncomeCount());
+  });
+
+  const panes =
+    showMenuTabs === "Home"
+      ? [
+          {
+            menuItem: {
+              as: NavLink,
+              id: "homeTab",
+              content: "Overview",
+              to: "/",
+              exact: true,
+              key: "home",
+              active: "/" === pathname,
+            },
+          },
+          {
+            menuItem: {
+              as: NavLink,
+              id: "proposalsTab",
+              content: <ProposalsMenu />,
+              to: "/proposals",
+              exact: true,
+              key: "proposals",
+              active:
+                "/proposals" === pathname ||
+                pathname.indexOf("/proposals") === 0,
+            },
+          },
+          {
+            menuItem: {
+              as: NavLink,
+              id: "tipsTab",
+              content: <TipsMenu />,
+              to: "/tips",
+              exact: true,
+              key: "tips",
+              active: "/tips" === pathname || pathname.indexOf("/tips") === 0,
+            },
+          },
+          {
+            menuItem: {
+              as: NavLink,
+              id: "bountiesTab",
+              content: <BountiesMenu />,
+              to: "/bounties",
+              exact: true,
+              key: "bounties",
+              active:
+                "/bounties" === pathname || pathname.indexOf("/bounties") === 0,
+            },
+          },
+          {
+            menuItem: {
+              as: NavLink,
+              id: "burntTab",
+              content: <BurntMenu />,
+              to: "/burnt",
+              exact: true,
+              key: "burnt",
+              active: "/burnt" === pathname || pathname.indexOf("/burnt") === 0,
+            },
+          },
+        ]
+      : showMenuTabs === "Income"
+      ? [
+          {
+            menuItem: {
+              as: NavLink,
+              id: "treasurySlashTab",
+              content: <TreasurySlashMenu />,
+              to: "/slash/treasury",
+              exact: true,
+              key: "treasurySlash",
+              active:
+                "/slash/treasury" === pathname ||
+                pathname.indexOf("/slash/treasury") === 0,
+            },
+          },
+          {
+            menuItem: {
+              as: NavLink,
+              id: "democracySlashTab",
+              content: <DemocracySlashMenu />,
+              to: "/slash/democracy",
+              exact: true,
+              key: "democracySlash",
+              active:
+                "/slash/democracy" === pathname ||
+                pathname.indexOf("/slash/democracy") === 0,
+            },
+          },
+          {
+            menuItem: {
+              as: NavLink,
+              id: "identitySlashTab",
+              content: <IdentitySlashMenu />,
+              to: "/slash/identity",
+              exact: true,
+              key: "identitySlash",
+              active:
+                "/slash/identity" === pathname ||
+                pathname.indexOf("/slash/identity") === 0,
+            },
+          },
+          {
+            menuItem: {
+              as: NavLink,
+              id: "stakingSlashTab",
+              content: <StakingSlashMenu />,
+              to: "/slash/staking",
+              exact: true,
+              key: "stakingSlash",
+              active:
+                "/slash/staking" === pathname ||
+                pathname.indexOf("/slash/staking") === 0,
+            },
+          },
+          {
+            menuItem: {
+              as: NavLink,
+              id: "electionPhragmenSlashTab",
+              content: <ElectionPhragmenSlashMenu />,
+              to: "/slash/electionphragmen",
+              exact: true,
+              key: "electionPhragmenSlash",
+              active:
+                "/slash/electionphragmen" === pathname ||
+                pathname.indexOf("/slash/electionphragmen") === 0,
+            },
+          },
+          {
+            menuItem: {
+              as: NavLink,
+              id: "inflationTab",
+              content: <InflationMenu />,
+              to: "/inflation",
+              exact: true,
+              key: "inflation",
+              active:
+                "/inflation" === pathname ||
+                pathname.indexOf("/inflation") === 0,
+            },
+          },
+        ]
+      : [];
 
   return (
     <>
