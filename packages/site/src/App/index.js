@@ -21,7 +21,10 @@ import ProposalDetail from "../pages/ProposalDetail";
 import BountyDetail from "../pages/BountyDetail";
 import Overview from "../pages/Overview";
 
+import { usePreload } from "../utils/hooks";
+
 export default function App() {
+  usePreload();
   return (
     <Router>
       <Header />
