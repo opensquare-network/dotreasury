@@ -23,6 +23,7 @@ import DownloadPolkadot from "../../components/DownloadPolkadot";
 import AccountSelector from "../../components/AccountSelector";
 import FormError from "../../components/FormError";
 import Divider from "../../components/Divider";
+import { addToast } from "../../store/reducers/toastSlice";
 
 const CardWrapper = styled(Card)`
   max-width: 424px;
@@ -184,6 +185,12 @@ function Register({ history }) {
     if (signupError) {
       setServerErrors(signupError);
     } else {
+      dispatch(
+        addToast({
+          type: "success",
+          message: "Sign up success",
+        })
+      );
       saveLoggedInResult(signupResult);
       history.push("/login");
     }
