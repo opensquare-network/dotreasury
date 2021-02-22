@@ -7,6 +7,9 @@
   "repository": "git@github.com:opensquare-network/dotreasury.git",
   "author": "OpenSquare <https://www.opensquare.network/>",
   "license": "Apache-2.0",
+  "engines": {
+    "node": ">=15.0.0"
+  },
   "scripts": {
     "start": "yarn workspace @dotreasury/site start",
     "deploy": "yarn workspace @dotreasury/site deploy",
