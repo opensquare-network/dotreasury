@@ -80,3 +80,19 @@ export const useDisablePopup = () => {
   }, [width])
   return disabledPopup;
 }
+
+export const usePreload = () => {
+  useEffect(() => {
+    const preloadImgList = ["/imgs/loading.svg"];
+
+    function getPreloadImgAttr(url) {
+      var img = new Image();
+      img.src = url;
+    }
+
+    preloadImgList.forEach(item => {
+      getPreloadImgAttr(item)
+    })
+  }, [])
+  return;
+}
