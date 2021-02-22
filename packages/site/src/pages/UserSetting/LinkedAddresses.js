@@ -85,7 +85,7 @@ const LinkedAddress = () => {
   };
 
   const unlinkAddress = async (account) => {
-    const { error } = await api.authFetch(
+    const { error, result } = await api.authFetch(
       `/user/linkaddr/kusama/${account.kusamaAddress}`,
       {},
       {
@@ -93,6 +93,15 @@ const LinkedAddress = () => {
       }
     );
     dispatch(fetchUserProfile());
+
+    if (result) {
+      dispatch(
+        addToast({
+          type: "success",
+          message: "Unlink address successfully!",
+        })
+      );
+    }
 
     if (error) {
       dispatch(
@@ -127,7 +136,7 @@ const LinkedAddress = () => {
         dispatch(
           addToast({
             type: "success",
-            message: "Link address success",
+            message: "Link address successfully!",
           })
         );
       }

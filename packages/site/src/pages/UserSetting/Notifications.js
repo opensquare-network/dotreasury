@@ -41,7 +41,7 @@ const Notifications = () => {
       dispatch(fetchUserProfile());
       dispatch(addToast({
         type: "success",
-        message: "Change notification success"
+        message: "Change notification successfully!"
       }))
     }
 

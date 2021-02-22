@@ -188,7 +188,7 @@ function Register({ history }) {
       dispatch(
         addToast({
           type: "success",
-          message: "Sign up success",
+          message: "Sign up successfully! Please check your email to verify your account.",
         })
       );
       saveLoggedInResult(signupResult);
