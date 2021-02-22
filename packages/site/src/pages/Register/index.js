@@ -60,6 +60,7 @@ const Header = styled(Text)`
 `;
 
 const HelperWrapper = styled.div`
+  cursor: pointer;
   display: flex;
   align-items: start;
   & > div > * {
@@ -115,23 +116,25 @@ const StyledLink = styled(Link)`
 const Helper = ({ isAgree, setIsAgree, agreeError, setAgreeError }) => {
   return (
     <HelperErrorWrapper>
-      <HelperWrapper>
-        <CheckImage
-          src={isAgree ? "/imgs/circle-pass.svg" : "/imgs/circle-check-off.svg"}
-          onClick={() => {
-            if (!isAgree) {
-              setAgreeError(false);
-            }
-            setIsAgree(!isAgree);
-          }}
-        />
+      <HelperWrapper
+        onClick={() => {
+          if (!isAgree) {
+            setAgreeError(false);
+          }
+          setIsAgree(!isAgree);
+        }}>
+        <CheckImage src={isAgree ? "/imgs/circle-pass.svg" : "/imgs/circle-check-off.svg"} />
         <div>
           <p>I have read and agree to the terms of the </p>
-          <Link to="/register">
+          <Link to="/register" onClick={
+            (e) => e.stopPropagation()
+          }>
             <StyledTextMnor>User Agreement</StyledTextMnor>
           </Link>
           <p> and </p>
-          <Link to="/register">
+          <Link to="/register" onClick={
+            (e) => e.stopPropagation()
+          }>
             <StyledTextMnor>Privacy Notice.</StyledTextMnor>
           </Link>
         </div>
