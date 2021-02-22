@@ -10,6 +10,7 @@ import Text from "../../components/Text";
 import ExplorerLink from "../../components/ExplorerLink";
 import TableNoDataCell from "../../components/TableNoDataCell";
 import PolygonLabel from "../../components/PolygonLabel";
+import User from "../../components/User";
 
 const Wrapper = styled.div`
   overflow-x: scroll;
@@ -71,6 +72,8 @@ const SlashTable = ({ data, loading }) => {
             <Table.Row>
               <Table.HeaderCell>Time</Table.HeaderCell>
               <Table.HeaderCell>Event ID</Table.HeaderCell>
+              <Table.HeaderCell>Event Name</Table.HeaderCell>
+              <Table.HeaderCell>Account</Table.HeaderCell>
               <Table.HeaderCell textAlign={"right"}>Balance</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
@@ -101,7 +104,11 @@ const SlashTable = ({ data, loading }) => {
                       </EventWrapper>
                     </ExplorerLink>
                   </Table.Cell>
-                  <Table.Cell textAlign={"right"} className="balance-cell">
+                  <Table.Cell>{`${item.section}(${item.method})`}</Table.Cell>
+                  <Table.Cell>
+                    <User address={item?.identityKilledEventData?.[0]} />
+                  </Table.Cell>
+                  <Table.Cell textAlign={"right"}>
                     <Balance value={item.balance} />
                   </Table.Cell>
                 </TableRow>

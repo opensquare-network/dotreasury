@@ -71,6 +71,8 @@ const SlashTable = ({ data, loading }) => {
             <Table.Row>
               <Table.HeaderCell>Time</Table.HeaderCell>
               <Table.HeaderCell>Event ID</Table.HeaderCell>
+              <Table.HeaderCell>Event Name</Table.HeaderCell>
+              <Table.HeaderCell>Proposal ID</Table.HeaderCell>
               <Table.HeaderCell textAlign={"right"}>Balance</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
@@ -101,7 +103,13 @@ const SlashTable = ({ data, loading }) => {
                       </EventWrapper>
                     </ExplorerLink>
                   </Table.Cell>
-                  <Table.Cell textAlign={"right"} className="balance-cell">
+                  <Table.Cell>{`${item.section}(${item.method})`}</Table.Cell>
+                  <Table.Cell>
+                    {item?.treasuryRejectedEventData?.[0]
+                      ? `#${item?.treasuryRejectedEventData?.[0]}`
+                      : ""}
+                  </Table.Cell>
+                  <Table.Cell textAlign={"right"}>
                     <Balance value={item.balance} />
                   </Table.Cell>
                 </TableRow>
