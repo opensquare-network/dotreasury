@@ -68,6 +68,7 @@ class TipsController {
       tipsCount: tip.meta?.tips.length,
       medianValue: tip.medianValue,
       tippersCount: tip.tippersCount,
+      tipFindersFee: tip.tipFindersFee,
       closeFromBlockHeight: tip.meta?.closes,
       timeline: tip.timeline,
     };
@@ -138,15 +139,17 @@ class TipsController {
     const tipHash = ctx.params.tipHash;
     const blockHeight = parseInt(ctx.params.blockHeight);
 
-    ctx.body = await commentService.getComments({
-      type: "tip",
-      index: {
-        blockHeight,
-        tipHash,
+    ctx.body = await commentService.getComments(
+      {
+        type: "tip",
+        index: {
+          blockHeight,
+          tipHash,
+        },
       },
-    },
-    page,
-    pageSize);
+      page,
+      pageSize
+    );
   }
 
   async postTipComment(ctx) {

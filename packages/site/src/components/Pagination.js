@@ -18,11 +18,16 @@ const Wrapper = styled.div`
       background: ${SECONDARY_THEME_COLOR} !important;
     }
   }
+
+  .pagination {
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+  }
 `;
 
 const CustomPagination = (props) => {
   const totalPages = props.totalPages;
-  if (!totalPages || totalPages === 1) return null;
+  if (!totalPages) return null;
   return (
     <Wrapper>
       <Pagination

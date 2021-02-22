@@ -67,6 +67,10 @@ const GlobalStyle = createGlobalStyle`
   div.modals.dimmer {
     background-color: rgba(0, 0, 0, .48) !important;
   }
+
+  .ui.selection.dropdown .menu>.item {
+    padding: 8px !important;
+  }
 `;
 
 export default GlobalStyle;

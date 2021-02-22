@@ -13,21 +13,20 @@ import {
   normalizedTipDetailSelector,
   tipFindersFeeSelector,
 } from "../../store/reducers/tipSlice";
-import {
-  linksSelector,
-} from "../../store/reducers/linkSlice";
+import { linksSelector } from "../../store/reducers/linkSlice";
 
 const InformationTable = ({ loading }) => {
   const tipDetail = useSelector(normalizedTipDetailSelector);
   const links = useSelector(linksSelector);
   const tipFindersFee = useSelector(tipFindersFeeSelector);
   const findersFee =
+    tipDetail?.timeline?.[0]?.method === "tipNew" ||
     tipDetail?.timeline?.[0]?.extrinsic?.name === "tipNew"
       ? 0
-      : `${tipFindersFee.toFixed(2)}%`;
+      : `${(tipFindersFee ?? 0).toFixed(2)}%`;
 
   return (
-    <TableLoading loading={loading} >
+    <TableLoading loading={loading}>
       <Table striped selectable unstackable>
         <Table.Header>
           <Table.Row>
@@ -52,11 +51,11 @@ const InformationTable = ({ loading }) => {
           <Table.Row>
             <Table.Cell>
               <TableCell title={"Value"}>
-                {
-                  tipDetail.showStatus === TipStatus.Retracted
-                    ? "--"
-                    : <Balance value={tipDetail.medianValue} />
-                }
+                {tipDetail.showStatus === TipStatus.Retracted ? (
+                  "--"
+                ) : (
+                  <Balance value={tipDetail.medianValue} />
+                )}
               </TableCell>
             </Table.Cell>
           </Table.Row>

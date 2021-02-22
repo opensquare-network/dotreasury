@@ -17,6 +17,7 @@ import {
 
 const DividerWrapper = styled(Divider)`
   margin: 0 !important;
+  border-top: 1px solid rgba(238, 238, 238, 1) !important;
 `;
 
 const TabWrapper = styled(Tab)`

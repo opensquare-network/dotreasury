@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import useDeepCompareEffect from 'use-deep-compare-effect'
+import useDeepCompareEffect from "use-deep-compare-effect";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Icon, Modal, Form } from "semantic-ui-react";
-import queryString from 'query-string';
-import { useLocation } from "react-router-dom"
+import queryString from "query-string";
+import { useLocation } from "react-router-dom";
 
 import LinkItem from "./LinkItem";
 import SubTitle from "../../components/SubTitle";
@@ -15,9 +15,7 @@ import {
   removeLink,
 } from "../../store/reducers/linkSlice";
 import AdminLogin from "../AdminLogin";
-import {
-  nowAddressSelector,
-} from "../../store/reducers/accountSlice";
+import { nowAddressSelector } from "../../store/reducers/accountSlice";
 import Divider from "../../components/Divider";
 
 const Wrapper = styled.div`
@@ -29,7 +27,7 @@ const LinksWrapper = styled.div`
   display: flex;
   & > :not(:last-child) {
     margin-bottom: 8px;
-  };
+  }
   flex-direction: column;
 `;
 
@@ -43,10 +41,14 @@ const LinkWrapper = styled.div`
 const IconButton = styled(Icon)`
   margin-left: 6px !important;
   cursor: pointer;
-`
+`;
+
+const DividerWrapper = styled(Divider)`
+  border-top: 1px solid rgba(238, 238, 238, 1) !important;
+`;
 
 const RelatedLinks = ({ type, index }) => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const location = useLocation();
 
   useDeepCompareEffect(() => {
@@ -80,23 +82,27 @@ const RelatedLinks = ({ type, index }) => {
       <Wrapper>
         <AdminLogin />
 
-        <SubTitle>Related Links
-          { isAdmin
-              && <IconButton name="plus" onClick={() => setOpenAddLinkModal(true)} />
-          }
+        <SubTitle>
+          Related Links
+          {isAdmin && (
+            <IconButton name="plus" onClick={() => setOpenAddLinkModal(true)} />
+          )}
         </SubTitle>
         <LinksWrapper>
-          {
-            links.map((link, linkIndex) => <LinkWrapper key={linkIndex}>
-              { isAdmin
-                  && <IconButton name="minus" onClick={() => {
-                        setLinkIndex(linkIndex);
-                        setOpenRemoveLinkModal(true);
-                      }} />
-              }
+          {links.map((link, linkIndex) => (
+            <LinkWrapper key={linkIndex}>
+              {isAdmin && (
+                <IconButton
+                  name="minus"
+                  onClick={() => {
+                    setLinkIndex(linkIndex);
+                    setOpenRemoveLinkModal(true);
+                  }}
+                />
+              )}
               <LinkItem text={link.description} link={link.link} />
-            </LinkWrapper>)
-          }
+            </LinkWrapper>
+          ))}
         </LinksWrapper>
 
         <Modal
@@ -107,10 +113,16 @@ const RelatedLinks = ({ type, index }) => {
           <Modal.Header>Add Link</Modal.Header>
           <Modal.Content>
             <Form>
-              <Form.Input fluid label='Link' placeholder='https://'
+              <Form.Input
+                fluid
+                label="Link"
+                placeholder="https://"
                 onChange={(_, { value }) => setLink(value)}
               />
-              <Form.Input fluid label='Description' placeholder='The description of the link'
+              <Form.Input
+                fluid
+                label="Description"
+                placeholder="The description of the link"
                 onChange={(_, { value }) => setDescription(value)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
@@ -121,9 +133,7 @@ const RelatedLinks = ({ type, index }) => {
             </Form>
           </Modal.Content>
           <Modal.Actions>
-            <Button onClick={() => setOpenAddLinkModal(false)}>
-              Cancel
-            </Button>
+            <Button onClick={() => setOpenAddLinkModal(false)}>Cancel</Button>
             <Button onClick={() => addRelatedLink(link, description)}>
               OK
             </Button>
@@ -136,23 +146,19 @@ const RelatedLinks = ({ type, index }) => {
           onClose={() => setOpenRemoveLinkModal(false)}
         >
           <Modal.Header>Remove Link</Modal.Header>
-          <Modal.Content>
-            Are you sure want to remove this link?
-          </Modal.Content>
+          <Modal.Content>Are you sure want to remove this link?</Modal.Content>
           <Modal.Actions>
             <Button onClick={() => setOpenRemoveLinkModal(false)}>
               Cancel
             </Button>
-            <Button onClick={() => removeRelatedLink(linkIndex)}>
-              OK
-            </Button>
+            <Button onClick={() => removeRelatedLink(linkIndex)}>OK</Button>
           </Modal.Actions>
         </Modal>
-        <Divider />
+        <DividerWrapper />
       </Wrapper>
     );
   } else {
-    return null
+    return null;
   }
 };
 

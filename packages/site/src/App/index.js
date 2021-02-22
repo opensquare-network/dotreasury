@@ -28,7 +28,10 @@ import ResetPassword from "../pages/ResetPassword";
 import VerifyEmail from "../pages/VerifyEmail";
 import Toast from "../pages/Toast";
 
+import { usePreload } from "../utils/hooks";
+
 export default function App() {
+  usePreload();
   return (
     <Router>
       <Wrapper>

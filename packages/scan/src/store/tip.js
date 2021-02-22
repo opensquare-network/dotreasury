@@ -8,7 +8,11 @@ const {
 const { hexToString } = require("@polkadot/util");
 const { getTipCollection } = require("../mongo");
 const { getApi } = require("../api");
-const { median } = require("../utils");
+const {
+  median,
+  getMetadataConstByBlockHash,
+  getMetadataConstsByBlockHash,
+} = require("../utils");
 const { getCall, getMultiSigExtrinsicAddress } = require("../utils/call");
 const { getTipMethodNameAndArgs } = require("./utils");
 
@@ -45,9 +49,27 @@ async function getReasonStorageReasonText(reasonHash, blockHash) {
 }
 
 async function getTippersCount(blockHash) {
-  const api = await getApi();
-  const members = await api.query.electionsPhragmen.members.at(blockHash);
-  return members.length;
+  const v = await getMetadataConstByBlockHash(
+    blockHash,
+    "ElectionsPhragmen",
+    "DesiredMembers"
+  );
+  return v ? v.toNumber() : v;
+}
+
+async function getTipFindersFee(blockHash) {
+  const constants = await getMetadataConstsByBlockHash(blockHash, [
+    {
+      moduleName: "Tips",
+      constantName: "TipFindersFee",
+    },
+    {
+      moduleName: "Treasury",
+      constantName: "TipFindersFee",
+    },
+  ]);
+
+  return (constants[0] ?? constants[1])?.toJSON();
 }
 
 function computeTipValue(tipMeta) {
@@ -114,6 +136,7 @@ async function saveNewTip(hash, normalizedExtrinsic, extrinsic) {
     (await getReasonStorageReasonText(meta?.reason, indexer.blockHash));
   const medianValue = computeTipValue(meta);
   const tippersCount = await getTippersCount(indexer.blockHash);
+  const tipFindersFee = await getTipFindersFee(indexer.blockHash);
 
   const [method, args] = await getTipMethodNameAndArgs(
     normalizedExtrinsic,
@@ -130,6 +153,7 @@ async function saveNewTip(hash, normalizedExtrinsic, extrinsic) {
     medianValue,
     meta,
     tippersCount,
+    tipFindersFee,
     isClosedOrRetracted: false,
     state: {
       indexer: normalizedExtrinsic.extrinsicIndexer,
@@ -154,7 +178,13 @@ async function updateTipByClosingEvent(hash, state, data, extrinsic) {
   const blockHash = extrinsic.extrinsicIndexer.blockHash;
   const meta = await getTipMeta(blockHash, hash);
   const tippersCount = await getTippersCount(blockHash);
-  const updates = { tippersCount, meta, medianValue: computeTipValue(meta) };
+  const tipFindersFee = await getTipFindersFee(blockHash);
+  const updates = {
+    tippersCount,
+    tipFindersFee,
+    meta,
+    medianValue: computeTipValue(meta),
+  };
 
   const tipCol = await getTipCollection();
   await tipCol.updateOne(

@@ -95,7 +95,7 @@ const Summary = () => {
     <Wrapper>
       <CustomCard>
         <ItemWrapper>
-          <Image src="/imgs/data-bounties.svg" />
+          <Image src="/imgs/data-proposals.svg" />
           <div>
             <Title>Proposals</Title>
             <ValueWrapper>
@@ -108,7 +108,7 @@ const Summary = () => {
       </CustomCard>
       <CustomCard>
         <ItemWrapper>
-          <Image src="/imgs/data-bounties.svg" />
+          <Image src="/imgs/data-tips.svg" />
           <div>
             <Title>Tips</Title>
             <ValueWrapper>

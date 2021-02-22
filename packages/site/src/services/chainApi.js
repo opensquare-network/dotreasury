@@ -1,7 +1,6 @@
-
-import { ApiPromise, WsProvider } from '@polkadot/api';
-import { isWeb3Injected, web3FromAddress } from '@polkadot/extension-dapp'
-import { stringToHex } from '@polkadot/util';
+import { ApiPromise, WsProvider } from "@polkadot/api";
+import { isWeb3Injected, web3FromAddress } from "@polkadot/extension-dapp";
+import { stringToHex } from "@polkadot/util";
 import { encodeAddress } from "@polkadot/keyring";
 
 import { DEFAULT_NODE_URL, DEFAULT_NODES } from "../constants";
@@ -10,7 +9,10 @@ const apiInstanceMap = new Map();
 
 let nodeUrl = (() => {
   const localNodeUrl = localStorage.getItem("nodeUrl");
-  if (!localNodeUrl || !DEFAULT_NODES.find(item => item.url === localNodeUrl)) {
+  if (
+    !localNodeUrl ||
+    !DEFAULT_NODES.find((item) => item.url === localNodeUrl)
+  ) {
     return DEFAULT_NODE_URL;
   }
   return localNodeUrl;
@@ -21,33 +23,37 @@ export const getNodeUrl = () => nodeUrl;
 export const getApi = async (queryUrl) => {
   const url = queryUrl || nodeUrl;
   if (!apiInstanceMap.has(url)) {
-    apiInstanceMap.set(url, ApiPromise.create({ provider: new WsProvider(url) }));
+    apiInstanceMap.set(
+      url,
+      ApiPromise.create({ provider: new WsProvider(url) })
+    );
   }
   return apiInstanceMap.get(url);
+};
+
+export async function getBlockHashFromHeight(blockHeight) {
+  const api = await getApi();
+  const value = await api.rpc.chain.getBlockHash(blockHeight);
+  return value.toJSON();
 }
 
 export const getIndentity = async (address) => {
   const api = await getApi();
   const { identity } = await api.derive.accounts.info(address);
   return identity;
-}
+};
 
 export const getTipCountdown = async () => {
   const api = await getApi();
-  return api.consts.treasury.tipCountdown.toNumber();
-}
-
-export const getTipFindersFee = async () => {
-  const api = await getApi();
-  return api.consts.treasury.tipFindersFee.toNumber();
-}
+  return api.consts.tips.tipCountdown.toNumber();
+};
 
 export const getCurrentBlockHeight = async () => {
   const api = await getApi();
   const hash = await api.rpc.chain.getFinalizedHead();
   const block = await api.rpc.chain.getBlock(hash);
   return block.block.header.number.toNumber();
-}
+};
 
 export const signMessage = async (text, address) => {
   if (!isWeb3Injected || !address) {
@@ -58,13 +64,13 @@ export const signMessage = async (text, address) => {
 
   const data = stringToHex(text);
   const result = await injector.signer.signRaw({
-    type: 'bytes',
+    type: "bytes",
     data,
     address,
   });
 
   return result.signature;
-}
+};
 
 const extractBlockTime = (extrinsics) => {
   const setTimeExtrinsic = extrinsics.find(
@@ -82,13 +88,13 @@ export const getBlockTime = async (number) => {
   const block = await api.rpc.chain.getBlock(hash);
   const time = extractBlockTime(block.block.extrinsics);
   return time;
-}
+};
 
 export const estimateBlocksTime = async (blocks) => {
   const api = await getApi();
   const nsPerBlock = api.consts.babe.expectedBlockTime.toNumber();
   return nsPerBlock * blocks;
-}
+};
 
 export const encodeKusamaAddress = (address) => {
   try {
@@ -96,4 +102,4 @@ export const encodeKusamaAddress = (address) => {
   } catch {
     return "";
   }
-}
+};
