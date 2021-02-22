@@ -3,6 +3,7 @@ const mailService = require("./mail.service");
 const { getCommentCollection, getUserCollection } = require("../mongo-admin");
 const { HttpError } = require("../exc");
 const { DefaultUserNotification } = require("../contants");
+const { md5 } = require("../utils");
 
 class CommentService {
   async getComments(indexer, page, pageSize) {
@@ -66,12 +67,17 @@ class CommentService {
               as: "addresses",
             },
           },
-          { $project: { username: 1, addresses: 1 } },
+          { $project: { username: 1, email: 1, addresses: 1 } },
         ])
         .toArray();
+
       const userMap = {};
       users.forEach((user) => {
         userMap[user._id.toString()] = user;
+        const emailHash = md5(user.email.trim().toLocaleLowerCase());
+        user.avatar = `https://www.gravatar.com/avatar/${emailHash}?d=https://www.dotreasury.com/imgs/avatar.png`;
+        delete user.email;
+        delete user._id;
       });
 
       comments.forEach((comment) => {
@@ -81,10 +87,6 @@ class CommentService {
           reaction.user = userMap[reaction.userId.toString()];
           delete reaction.userId;
         });
-      });
-
-      users.forEach((user) => {
-        delete user._id;
       });
     }
 

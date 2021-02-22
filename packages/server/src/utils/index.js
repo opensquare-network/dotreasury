@@ -1,3 +1,4 @@
+const crypto = require("crypto");
 const { decodeAddress, signatureVerify } = require("@polkadot/util-crypto");
 const { u8aToHex } = require("@polkadot/util");
 const BigNumber = require("bignumber.js");
@@ -46,9 +47,15 @@ function bigAdd(v1, v2) {
   return new BigNumber(v1).plus(v2).toString();
 }
 
+function md5(str) {
+  const md5 = crypto.createHash("md5");
+  return md5.update(str).digest("hex");
+}
+
 module.exports = {
   extractPage,
   isValidSignature,
   handler,
   bigAdd,
+  md5,
 };
