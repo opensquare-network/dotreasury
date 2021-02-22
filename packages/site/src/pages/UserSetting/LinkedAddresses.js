@@ -110,7 +110,7 @@ const LinkedAddress = () => {
     );
     if (result) {
       const signature = await signMessage(result?.challenge, account.address);
-      const { error: confirmError } = await api.authFetch(
+      const { error: confirmError, result: confirmResult } = await api.authFetch(
         `/user/linkaddr/${result?.attemptId}`,
         {},
         {
@@ -121,7 +121,16 @@ const LinkedAddress = () => {
           body: JSON.stringify({ challengeAnswer: signature }),
         }
       );
+
       dispatch(fetchUserProfile());
+      if (confirmResult) {
+        dispatch(
+          addToast({
+            type: "success",
+            message: "Link address success",
+          })
+        );
+      }
 
       if (confirmError) {
         dispatch(
