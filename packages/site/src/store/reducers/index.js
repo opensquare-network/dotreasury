@@ -8,6 +8,8 @@ import chainReducer from "./chainSlice";
 import linksReducer from "./linkSlice";
 import accountReducer from "./accountSlice";
 import overviewReducer from "./overviewSlice";
+import incomeReducer from "./incomeSlice";
+import menuReducer from "./menuSlice";
 import nodeReducer from "./nodeSlice";
 
 export default combineReducers({
@@ -20,5 +22,7 @@ export default combineReducers({
   chain: chainReducer,
   account: accountReducer,
   overview: overviewReducer,
-  node: nodeReducer
+  income: incomeReducer,
+  menu: menuReducer,
+  node: nodeReducer,
 });
