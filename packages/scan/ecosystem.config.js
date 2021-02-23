@@ -19,5 +19,9 @@ module.exports = {
       name: "doTreasury-scan-staging",
       ...commonPart,
     },
+    {
+      name: "doTreasury-scan-dev",
+      ...commonPart,
+    },
   ],
 };
