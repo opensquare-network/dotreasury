@@ -211,7 +211,7 @@ const CommentItem = ({
 
   const commentId = comment._id;
   const thumbUp = () => {
-    if (isLoggedIn) {
+    if (isLoggedIn && !ownComment) {
       if (highlight) {
         dispatch(unsetCommentReaction(commentId));
       } else {
