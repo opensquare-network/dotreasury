@@ -27,7 +27,10 @@ import StakingSlash from "../pages/StakingSlash";
 import ElectionPhragmenSlash from "../pages/ElectionPhragmenSlash";
 import Inflation from "../pages/Inflation";
 
+import { usePreload } from "../utils/hooks";
+
 export default function App() {
+  usePreload();
   return (
     <Router>
       <Header />
