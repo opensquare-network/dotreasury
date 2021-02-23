@@ -148,14 +148,6 @@ class UserController {
 
     const wildcardAddress = validateAddress(address, chain);
 
-    const hasComment = await commentService.hasComment(user);
-    if (hasComment) {
-      throw new HttpError(
-        400,
-        "Cannot unlink address because you have already post comments."
-      );
-    }
-
     const addressCol = await getAddressCollection();
     let result = await addressCol.updateOne(
       {
