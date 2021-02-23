@@ -1,6 +1,11 @@
 const { ObjectId } = require("mongodb");
 const mailService = require("./mail.service");
-const { getCommentCollection, getUserCollection } = require("../mongo-admin");
+const {
+  withTransaction,
+  getCommentCollection,
+  getReactionCollection,
+  getUserCollection,
+} = require("../mongo-admin");
 const { HttpError } = require("../exc");
 const { DefaultUserNotification } = require("../contants");
 const { md5 } = require("../utils");
@@ -15,12 +20,21 @@ class CommentService {
       page = totalPages - 1;
     }
 
-    let comments = await commentCol
-      .find({ indexer })
-      .sort([["createdAt", 1]])
-      .project({ indexer: 0 })
-      .skip(page * pageSize)
-      .limit(pageSize)
+    const comments = await commentCol
+      .aggregate([
+        { $match: { indexer } },
+        { $sort: { createdAt: 1 } },
+        { $skip: page * pageSize },
+        { $limit: pageSize },
+        {
+          $lookup: {
+            from: "reaction",
+            localField: "_id",
+            foreignField: "commentId",
+            as: "reactions",
+          },
+        },
+      ])
       .toArray();
 
     if (comments.length > 0) {
@@ -100,7 +114,10 @@ class CommentService {
 
   async postComment(indexer, content, author) {
     if (!author.emailVerified) {
-      throw new HttpError(403, "Cannot post because the account is not verified yet.");
+      throw new HttpError(
+        403,
+        "Cannot post because the account is not verified yet."
+      );
     }
 
     const commentCol = await getCommentCollection();
@@ -235,34 +252,47 @@ class CommentService {
   }
 
   async deleteComment(commentId, author) {
-    const commentCol = await getCommentCollection();
-    let result = await commentCol.deleteOne({
-      _id: ObjectId(commentId),
-      authorId: author._id,
-    });
+    await withTransaction(async (session) => {
+      let result;
 
-    if (!result.result.ok) {
-      throw new HttpError(500, "Delete comment error.");
-    }
+      const commentCol = await getCommentCollection();
+      result = await commentCol.deleteOne(
+        {
+          _id: ObjectId(commentId),
+          authorId: author._id,
+        },
+        { session }
+      );
+
+      if (!result.result.ok) {
+        throw new HttpError(500, "Delete comment error.");
+      }
+
+      if (result.result.n === 0) {
+        throw new HttpError(403, "Cannot delete comment.");
+      }
+
+      const reactionCol = await getReactionCollection();
+      result = await reactionCol.deleteMany(
+        { commentId: ObjectId(commentId) },
+        { session }
+      );
+
+      if (!result.result.ok) {
+        throw new HttpError(500, "Delete comment reactions error.");
+      }
+    });
 
     return true;
   }
 
   async unsetCommentReaction(commentId, user) {
-    const commentCol = await getCommentCollection();
+    const reactionCol = await getReactionCollection();
 
-    const result = await commentCol.updateOne(
-      {
-        _id: ObjectId(commentId),
-      },
-      {
-        $pull: {
-          reactions: {
-            userId: user._id,
-          },
-        },
-      }
-    );
+    const result = await reactionCol.deleteOne({
+      commentId: ObjectId(commentId),
+      userId: user._id,
+    });
 
     if (!result.result.ok) {
       throw new HttpError(500, "Db error, clean reaction.");
@@ -277,52 +307,36 @@ class CommentService {
 
   async setCommentReaction(commentId, reaction, user) {
     const commentCol = await getCommentCollection();
+    const existing = await commentCol.countDocuments({
+      _id: ObjectId(commentId),
+      authorId: { $ne: user._id },
+    });
+    if (existing === 0) {
+      throw new HttpError(403, "Cannot set reaction.");
+    }
+
+    const reactionCol = await getReactionCollection();
 
     const now = new Date();
-    let result = await commentCol.updateOne(
+    const result = await reactionCol.updateOne(
       {
-        _id: ObjectId(commentId),
-        "reactions.userId": user._id,
+        commentId: ObjectId(commentId),
+        userId: user._id,
       },
       {
         $set: {
-          "reactions.$.reaction": reaction,
-          "reactions.$.updatedAt": now,
+          reaction,
+          updatedAt: now,
         },
-      }
+        $setOnInsert: {
+          createdAt: now,
+        },
+      },
+      { upsert: true }
     );
 
     if (!result.result.ok) {
       throw new HttpError(500, "Db error, update reaction.");
-    }
-
-    if (result.result.nModified > 0) {
-      return true;
-    }
-
-    result = await commentCol.updateOne(
-      {
-        _id: ObjectId(commentId),
-        authorId: { $ne: user._id },
-      },
-      {
-        $push: {
-          reactions: {
-            userId: user._id,
-            reaction,
-            createdAt: now,
-            updatedAt: now,
-          },
-        },
-      }
-    );
-
-    if (!result.result.ok) {
-      throw new HttpError(500, "Db error, add reaction.");
-    }
-
-    if (result.result.nModified === 0) {
-      return false;
     }
 
     return true;

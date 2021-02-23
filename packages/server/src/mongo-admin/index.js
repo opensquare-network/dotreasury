@@ -7,6 +7,7 @@ const linkCollectionName = "link";
 const userCollectionName = "user";
 const addressCollectionName = "address";
 const commentCollectionName = "comment";
+const reactionCollectionName = "reaction";
 const attemptCollectionName = "attempt";
 
 let client = null;
@@ -17,6 +18,7 @@ let linkCol = null;
 let userCol = null;
 let addressCol = null;
 let commentCol = null;
+let reactionCol = null;
 let attemptCol = null;
 
 async function initDb() {
@@ -29,6 +31,7 @@ async function initDb() {
   userCol = db.collection(userCollectionName);
   addressCol = db.collection(addressCollectionName);
   commentCol = db.collection(commentCollectionName);
+  reactionCol = db.collection(reactionCollectionName);
   attemptCol = db.collection(attemptCollectionName);
 
   await _createIndexes();
@@ -53,6 +56,9 @@ async function _createIndexes() {
       },
     }
   );
+
+  reactionCol.createIndex({ commentId: 1, userId: 1 }, { unique: true });
+  reactionCol.createIndex({ commentId: 1, reaction: 1 });
 
   attemptCol.createIndex({ createdAt: 1 }, { expireAfterSeconds: 3600 });
 
@@ -85,16 +91,29 @@ async function getCommentCollection() {
   return commentCol;
 }
 
+async function getReactionCollection() {
+  await tryInit(reactionCol);
+  return reactionCol;
+}
+
 async function getAttemptCollection() {
   await tryInit(attemptCol);
   return attemptCol;
 }
 
+function withTransaction(fn, options) {
+  return client.withSession((session) => {
+    return session.withTransaction(fn, options);
+  });
+}
+
 module.exports = {
   initDb,
+  withTransaction,
   getLinkCollection,
   getUserCollection,
   getAddressCollection,
   getCommentCollection,
+  getReactionCollection,
   getAttemptCollection,
 };

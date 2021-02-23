@@ -5,6 +5,7 @@ const validator = require("validator");
 const { encodeAddress } = require("@polkadot/util-crypto");
 const { stringUpperFirst } = require("@polkadot/util");
 const {
+  withTransaction,
   getUserCollection,
   getAddressCollection,
   getAttemptCollection,
@@ -149,7 +150,10 @@ class UserController {
 
     const hasComment = await commentService.hasComment(user);
     if (hasComment) {
-      throw new HttpError(400, "Cannot unlink address because you have already post comments.");
+      throw new HttpError(
+        400,
+        "Cannot unlink address because you have already post comments."
+      );
     }
 
     const addressCol = await getAddressCollection();
@@ -360,23 +364,27 @@ class UserController {
       throw new HttpError(401, { password: ["Incorrect password."] });
     }
 
-    const addressCol = await getAddressCollection();
-    let result = await addressCol.deleteMany({ userId: user._id });
+    await withTransaction(async (session) => {
+      let result;
 
-    if (!result.result.ok) {
-      throw new HttpError(500, "DB error: clean linked addresses.");
-    }
+      const userCol = await getUserCollection();
+      result = await userCol.deleteOne({ _id: user._id }, { session });
 
-    const userCol = await getUserCollection();
-    result = await userCol.deleteOne({ _id: user._id });
+      if (!result.result.ok) {
+        throw new HttpError(500, "DB error: delete account.");
+      }
 
-    if (!result.result.ok) {
-      throw new HttpError(500, "DB error: delete account.");
-    }
+      if (result.result.n === 0) {
+        throw new HttpError(500, "Failed to delete account.");
+      }
 
-    if (result.result.n === 0) {
-      throw new HttpError(500, "Failed to delete account.");
-    }
+      const addressCol = await getAddressCollection();
+      result = await addressCol.deleteMany({ userId: user._id }, { session });
+
+      if (!result.result.ok) {
+        throw new HttpError(500, "DB error: clean linked addresses.");
+      }
+    });
 
     ctx.body = true;
   }
