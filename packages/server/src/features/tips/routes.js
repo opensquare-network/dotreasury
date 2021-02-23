@@ -1,6 +1,7 @@
 const Router = require("koa-router");
 const tipsController = require("./tips.controller");
 const requireAuth = require("../../middleware/require-auth");
+const maybeAuth = require("../../middleware/maybe-auth");
 
 const router = new Router();
 
@@ -23,6 +24,7 @@ router.delete(
 
 router.get(
   "/tips/:blockHeight(\\d+)_:tipHash/comments",
+  maybeAuth,
   tipsController.getTipComments
 );
 router.post(

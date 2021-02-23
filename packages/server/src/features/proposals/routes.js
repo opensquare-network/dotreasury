@@ -1,6 +1,7 @@
 const Router = require("koa-router");
 const proposalsController = require("./proposals.controller");
 const requireAuth = require("../../middleware/require-auth");
+const maybeAuth = require("../../middleware/maybe-auth");
 
 const router = new Router();
 
@@ -24,6 +25,7 @@ router.delete(
 
 router.get(
   "/proposals/:proposalIndex/comments",
+  maybeAuth,
   proposalsController.getProposalComments
 );
 router.post(

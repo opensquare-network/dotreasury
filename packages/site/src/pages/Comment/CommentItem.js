@@ -122,7 +122,7 @@ const VoteWrapper = styled(Button)`
         `
       : css`
           &:hover {
-            opacity: ${p => p.highlight ? 1 : 0.64};
+            opacity: ${(p) => (p.highlight ? 1 : 0.64)};
           }
         `}
   ${(p) =>
@@ -170,34 +170,43 @@ const CircleImage = styled(Image)`
   width: 24px;
   height: 24px;
   border-radius: 50%;
-`
+`;
 
-const CommentItem = ({ index, comment, refCommentId, onReplyButton, replyEvent }) => {
+const CommentItem = ({
+  index,
+  comment,
+  refCommentId,
+  onReplyButton,
+  replyEvent,
+}) => {
   const [highLight, setHighLight] = useState(false);
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(isLoggedInSelector);
   const commentRef = useRef(null);
   const isMounted = useIsMounted();
   const loggedInUser = useSelector(loggedInUserSelector);
-  const address = comment.author?.addresses?.filter(i => i.chain === "kusama")[0];
+  const address = comment.author?.addresses?.filter(
+    (i) => i.chain === "kusama"
+  )[0];
   const { name: addressName } = useIndentity(address?.wildcardAddress);
   const [addressDisplayName, setAddressDisplayName] = useState("");
 
   useEffect(() => {
     if (address) {
-      const addressDisplayName = addressName ?
-        addressName :
-        `${address.address.substring(0, 6)}...${address.address.substring(address.address.length - 6, address.address.length)}`;
+      const addressDisplayName = addressName
+        ? addressName
+        : `${address.address.substring(0, 6)}...${address.address.substring(
+            address.address.length - 6,
+            address.address.length
+          )}`;
       setAddressDisplayName(addressDisplayName);
     }
-  }, [address, addressName])
+  }, [address, addressName]);
 
   const upCount =
-    comment.reactions?.filter((r) => r.reaction === REACTION_THUMBUP).length ||
-    0;
-  const highlight = comment.reactions?.some(
-    (r) => r.user?.username === loggedInUser?.username
-  );
+    comment.reactions?.filter((r) => r.reaction === REACTION_THUMBUP)[0]
+      ?.count || 0;
+  const highlight = comment.myReaction === REACTION_THUMBUP;
   const ownComment = comment.author?.username === loggedInUser?.username;
 
   const commentId = comment._id;
@@ -229,14 +238,18 @@ const CommentItem = ({ index, comment, refCommentId, onReplyButton, replyEvent }
   return (
     <Wrapper id={comment._id} ref={commentRef} highLight={highLight}>
       <HeaderWrapper>
-        {address && <>
-          <UserAvatar address={address.address} />
-          <Username>{addressDisplayName}</Username>
-        </>}
-        {!address && <>
-          <CircleImage src={comment.author?.avatar ?? "/imgs/avatar.png"} />
-          <Username>{comment.author?.username ?? "Deleted Account"}</Username>
-        </>}
+        {address && (
+          <>
+            <UserAvatar address={address.address} />
+            <Username>{addressDisplayName}</Username>
+          </>
+        )}
+        {!address && (
+          <>
+            <CircleImage src={comment.author?.avatar ?? "/imgs/avatar.png"} />
+            <Username>{comment.author?.username ?? "Deleted Account"}</Username>
+          </>
+        )}
         <TimeWrapper>
           {dayjs().diff(dayjs(comment.createdAt), "day") >= 1 ? (
             dayjs(comment.createdAt).format("YYYY-MM-DD HH:mm:ss")

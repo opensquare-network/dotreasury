@@ -11,7 +11,7 @@ const { DefaultUserNotification } = require("../contants");
 const { md5 } = require("../utils");
 
 class CommentService {
-  async getComments(indexer, page, pageSize) {
+  async getComments(indexer, page, pageSize, user) {
     const commentCol = await getCommentCollection();
     const total = await commentCol.countDocuments({ indexer });
 
@@ -29,11 +29,62 @@ class CommentService {
         {
           $lookup: {
             from: "reaction",
-            localField: "_id",
-            foreignField: "commentId",
+            let: { commentId: "$_id" },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $eq: ["$commentId", "$$commentId"],
+                  },
+                },
+              },
+              {
+                $group: {
+                  _id: "$reaction",
+                  count: { $sum: 1 },
+                },
+              },
+              {
+                $project: {
+                  _id: 0,
+                  reaction: "$_id",
+                  count: 1,
+                },
+              },
+            ],
             as: "reactions",
           },
         },
+        ...(user
+          ? [
+              {
+                $lookup: {
+                  from: "reaction",
+                  let: { commentId: "$_id" },
+                  pipeline: [
+                    {
+                      $match: {
+                        $expr: {
+                          $and: [
+                            { $eq: ["$commentId", "$$commentId"] },
+                            { $eq: ["$userId", user._id] },
+                          ],
+                        },
+                      },
+                    },
+                  ],
+                  as: "myReaction",
+                },
+              },
+              {
+                $addFields: {
+                  myReaction: {
+                    $arrayElemAt: ["$myReaction.reaction", 0],
+                  },
+                },
+              },
+            ]
+          : []),
       ])
       .toArray();
 
@@ -41,9 +92,6 @@ class CommentService {
       const userIds = new Set();
       comments.forEach((comment) => {
         userIds.add(comment.authorId.toString());
-        comment.reactions?.forEach((reaction) => {
-          userIds.add(reaction.userId.toString());
-        });
       });
 
       const userCol = await getUserCollection();
@@ -97,10 +145,6 @@ class CommentService {
       comments.forEach((comment) => {
         comment.author = userMap[comment.authorId.toString()];
         delete comment.authorId;
-        comment.reactions?.forEach((reaction) => {
-          reaction.user = userMap[reaction.userId.toString()];
-          delete reaction.userId;
-        });
       });
     }
 

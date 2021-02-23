@@ -4,7 +4,7 @@ const { HttpError } = require("../exc");
 async function requireAuth(ctx, next) {
   const authorization = ctx.request.headers.authorization;
   if (!authorization) {
-    throw new HttpError(400, "Missing authorization header.");
+    throw new HttpError(401, "Require authorization header.");
   }
 
   const match = authorization.match(/^Bearer (.*)$/);

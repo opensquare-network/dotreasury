@@ -148,12 +148,15 @@ class ProposalsController {
     const { page, pageSize } = extractPage(ctx);
     const proposalIndex = parseInt(ctx.params.proposalIndex);
 
-    ctx.body = await commentService.getComments({
-      type: "proposal",
-      index: proposalIndex,
-    },
-    page,
-    pageSize);
+    ctx.body = await commentService.getComments(
+      {
+        type: "proposal",
+        index: proposalIndex,
+      },
+      page,
+      pageSize,
+      ctx.request.user
+    );
   }
 
   async postProposalComment(ctx) {

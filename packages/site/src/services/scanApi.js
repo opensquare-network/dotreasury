@@ -1,5 +1,5 @@
 import Api from "./api";
-import { Subject } from 'rxjs';
+import { Subject } from "rxjs";
 
 class ScanApi extends Api {
   jwtExpire = new Subject();
@@ -39,6 +39,21 @@ class ScanApi extends Api {
     return { result, error };
   }
 
+  async maybeAuthFetch(url, params, options) {
+    const token = JSON.parse(localStorage.getItem("token"));
+    if (token) {
+      options = {
+        ...options,
+        headers: {
+          ...options?.headers,
+          Authorization: `Bearer ${token.accessToken}`,
+        },
+      };
+    }
+
+    return await this.fetch(url, params, options);
+  }
+
   async authFetch(url, params, options) {
     const token = JSON.parse(localStorage.getItem("token"));
     if (!token) {
@@ -46,8 +61,8 @@ class ScanApi extends Api {
       return {
         error: {
           status: 401,
-          message: "Access token is not found"
-        }
+          message: "Access token is not found",
+        },
       };
     }
 

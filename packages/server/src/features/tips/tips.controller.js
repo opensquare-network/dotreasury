@@ -148,7 +148,8 @@ class TipsController {
         },
       },
       page,
-      pageSize
+      pageSize,
+      ctx.request.user
     );
   }
 

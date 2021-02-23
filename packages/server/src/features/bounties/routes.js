@@ -1,6 +1,7 @@
 const Router = require("koa-router");
 const bountiesController = require("./bounties.controller");
 const requireAuth = require("../../middleware/require-auth");
+const maybeAuth = require("../../middleware/maybe-auth");
 
 const router = new Router();
 
@@ -20,6 +21,7 @@ router.delete(
 
 router.get(
   "/bounties/:bountyIndex/comments",
+  maybeAuth,
   bountiesController.getBountyComments
 );
 router.post(

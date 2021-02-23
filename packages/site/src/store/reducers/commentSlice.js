@@ -57,7 +57,7 @@ export class TipIndex {
 export const fetchComments = (type, index, page, pageSize) => async (
   dispatch
 ) => {
-  const { result } = await api.fetch(`/${type}/${index}/comments`, {
+  const { result } = await api.maybeAuthFetch(`/${type}/${index}/comments`, {
     page,
     pageSize,
   });
