@@ -21,7 +21,7 @@ module.exports = {
     },
     {
       name: "doTreasury-scan-dev",
-      ...commonPart,
+      ...outputScanPart,
     },
   ],
 };
