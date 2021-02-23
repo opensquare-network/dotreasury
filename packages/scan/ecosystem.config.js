@@ -32,5 +32,9 @@ module.exports = {
       name: "doTreasury-income-scan-staging",
       ...incomePart,
     },
+    {
+      name: "doTreasury-scan-dev",
+      ...commonPart,
+    },
   ],
 };
