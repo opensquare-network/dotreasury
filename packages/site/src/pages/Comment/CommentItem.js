@@ -26,7 +26,6 @@ import TimeElapsed from "../../components/TimeElapsed";
 import { TEXT_DARK_DISABLE } from "../../constants";
 import UserAvatar from "../../components/User/Avatar";
 import { useIndentity } from "../../utils/hooks";
-import { getGravatarSrc } from "../../utils";
 
 const Wrapper = styled.div`
   padding: 32px 32px 16px;
@@ -235,7 +234,7 @@ const CommentItem = ({ index, comment, refCommentId, onReplyButton, replyEvent }
           <Username>{addressDisplayName}</Username>
         </>}
         {!address && <>
-          <CircleImage src={getGravatarSrc(comment.author?.email)} />
+          <CircleImage src={comment.author?.avatar ?? "/imgs/avatar.png"} />
           <Username>{comment.author?.username ?? "Deleted Account"}</Username>
         </>}
         <TimeWrapper>
