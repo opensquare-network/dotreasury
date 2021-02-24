@@ -2,30 +2,14 @@ const { ObjectId } = require("mongodb");
 const { randomBytes } = require("crypto");
 const argon2 = require("argon2");
 const validator = require("validator");
-const { encodeAddress } = require("@polkadot/util-crypto");
-const { stringUpperFirst } = require("@polkadot/util");
 const {
   getUserCollection,
   getAttemptCollection,
 } = require("../../mongo-admin");
 const { HttpError } = require("../../exc");
-const { isValidSignature } = require("../../utils");
-const { DefaultUserNotification, SS58Format } = require("../../contants");
+const { isValidSignature, validateAddress } = require("../../utils");
+const { DefaultUserNotification } = require("../../contants");
 const mailService = require("../../services/mail.service");
-
-function validateAddress(address, chain) {
-  const ss58Format = SS58Format[stringUpperFirst(chain)];
-  if (ss58Format === undefined) {
-    throw new HttpError(400, { chain: ["Unsupported relay chain."] });
-  }
-
-  const validAddress = encodeAddress(address, ss58Format);
-  if (validAddress !== address) {
-    throw new HttpError(400, {
-      address: [`Must be a valid ${chain} ss58format address.`],
-    });
-  }
-}
 
 class UserController {
   async linkAddressStart(ctx) {
