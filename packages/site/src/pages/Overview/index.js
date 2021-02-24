@@ -5,10 +5,11 @@ import Title from "../../components/Title";
 import Summary from "./Summary";
 import ProposerTable from "./ProposerTable";
 import BeneficiaryTable from "./BeneficiaryTable";
-import DoughnutCard from "./DoughnutCard";
+import OutputDoughnutCard from "./OutputDoughnutCard";
 import { overviewSelector } from "../../store/reducers/overviewSlice";
 import { toPrecision } from "../../utils";
 import TotalStacked from "./TotalStacked";
+import Income from "./Income";
 
 const Header = styled(Title)`
   margin-bottom: 20px;
@@ -50,13 +51,8 @@ const Overview = () => {
       <Header>Overview</Header>
       <Summary />
       <DoughnutWrapper>
-        <DoughnutCard
-          proposals={proposalSpent}
-          tips={tipSpent}
-          bounties={bountySpent}
-          burnt={burntTotal}
-        />
-        <DoughnutCard
+        <Income />
+        <OutputDoughnutCard
           proposals={proposalSpent}
           tips={tipSpent}
           bounties={bountySpent}

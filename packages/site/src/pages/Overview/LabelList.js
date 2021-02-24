@@ -1,18 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 
-import Text from "../../components/Text";
-
 const Wrapper = styled.div`
   @media screen and (max-width: 556px) {
     display: none;
   }
-`
-
-const Title = styled(Text)`
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 16px;
 `
 
 const ItemList = styled.div`
@@ -26,7 +18,6 @@ const ItemList = styled.div`
 const LabelList = ({children}) => {
   return (
     <Wrapper>
-      <Title>Output</Title>
       <ItemList>
         {children}
       </ItemList>

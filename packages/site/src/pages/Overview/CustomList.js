@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
-import Text from "../../../components/Text";
-import Label from "./Label";
+import Text from "../../components/Text";
+import Label from "./CustomLabel";
 
 const Wrapper = styled.div`
   & > :not(:last-child) {

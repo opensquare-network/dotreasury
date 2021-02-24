@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import Text from "../../../components/Text";
 import Card from "../../../components/Card";
-import List from "./List";
+import List from "../CustomList";
 import Chart from "./Chart";
 
 const Title = styled(Text)`

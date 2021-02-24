@@ -1,8 +1,8 @@
 import React from "react";
 import styled, { css } from "styled-components";
 
-import Text from "../../../components/Text";
-import TextMinor from "../../../components/TextMinor";
+import Text from "../../components/Text";
+import TextMinor from "../../components/TextMinor";
 
 const Wrapper = styled.div`
   min-width: 224px;
@@ -36,6 +36,13 @@ const Icon = styled.div`
       border-radius: 1px;
     `
   )}
+  ${(p => p.icon === "circle" && css`
+      width: 10px;
+      height: 10px;
+      border: 3px solid ${(p) => (p.disabled ? "rgba(29, 37, 60, 0.24)" : p.color ?? "#EEEEEE")};
+      border-radius: 50%;
+    `
+  )}
 `
 
 const Title = styled(Text)`
@@ -57,7 +64,7 @@ const ValueWrapper = styled.div`
 `
 
 const Label = ({ data, icon }) => {
-  const { name, children } = data;
+  const { name, color, children } = data;
   let { value } = data;
   if (children) {
     value = (children || []).reduce((acc, current) => {
@@ -68,7 +75,7 @@ const Label = ({ data, icon }) => {
     <Wrapper>
       <ItemWrapper>
         <IconWrapper>
-          {!children && <Icon icon={icon} />}
+          {!children && <Icon icon={icon} color={color} />}
         </IconWrapper>
         <Title>{name}</Title>
         <ValueWrapper>
@@ -79,7 +86,7 @@ const Label = ({ data, icon }) => {
       {(children || []).map(item => (
         <ItemWrapper>
           <IconWrapper>
-            <Icon icon={icon} />
+            <Icon icon={icon} color={item.color} />
           </IconWrapper>
           <ChildTitle>{item.name}</ChildTitle>
           <ValueWrapper>
