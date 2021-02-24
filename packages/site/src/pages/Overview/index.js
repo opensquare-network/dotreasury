@@ -8,14 +8,16 @@ import BeneficiaryTable from "./BeneficiaryTable";
 import DoughnutCard from "./DoughnutCard";
 import { overviewSelector } from "../../store/reducers/overviewSlice";
 import { toPrecision } from "../../utils";
+import TotalStacked from "./TotalStacked";
 
 const Header = styled(Title)`
   margin-bottom: 20px;
 `;
 
-const SummaryWrapper = styled.div`
+const DoughnutWrapper = styled.div`
   display: grid;
   gap: 24px;
+  margin-bottom: 24px;
   @media screen and (min-width: 556px) {
     grid-template-columns: repeat(auto-fit, minmax(556px, 1fr));
   }
@@ -46,15 +48,22 @@ const Overview = () => {
   return (
     <>
       <Header>Overview</Header>
-      <SummaryWrapper>
-        <Summary />
+      <Summary />
+      <DoughnutWrapper>
         <DoughnutCard
           proposals={proposalSpent}
           tips={tipSpent}
           bounties={bountySpent}
           burnt={burntTotal}
         />
-      </SummaryWrapper>
+        <DoughnutCard
+          proposals={proposalSpent}
+          tips={tipSpent}
+          bounties={bountySpent}
+          burnt={burntTotal}
+        />
+      </DoughnutWrapper>
+      <TotalStacked />
       <TableWrapper>
         <BeneficiaryTable />
         <ProposerTable />
