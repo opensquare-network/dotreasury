@@ -1,5 +1,6 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 import api from "../../services/scanApi";
+import { encodeSubstrateAddress } from "../../services/chainApi";
 
 const userSlice = createSlice({
   name: "users",
@@ -30,6 +31,12 @@ export const { setLoggedInUser, setUserProfile, setVerifyEmailSendTime } = userS
 
 export const fetchUserProfile = () => async (dispatch) => {
   const { result } = await api.authFetch("/user/profile");
+  if (result?.addresses?.length > 0) {
+    result.addresses = result.addresses.map(addr => ({
+      ...addr,
+      wildcardAddress: encodeSubstrateAddress(addr.address)
+    }));
+  }
   dispatch(setUserProfile(result || {}));
 };
 

@@ -186,29 +186,17 @@ class AuthController {
   async addressLoginStart(ctx) {
     const { address } = ctx.params;
 
-    const wildcardAddress = encodeAddress(address, SS58Format.Substrate);
+    const kusamaAddress = encodeAddress(address, SS58Format.Kusama);
+    const polkadotAddress = encodeAddress(address, SS58Format.Polkadot);
 
-    const addressCol = await getAddressCollection();
-    const addresses = await addressCol
-      .aggregate([
-        {
-          $match: {
-            wildcardAddress,
-            "chains.0": { $exists: true },
-          },
-        },
-        {
-          $lookup: {
-            from: "user",
-            localField: "userId",
-            foreignField: "_id",
-            as: "user",
-          },
-        },
-      ])
-      .toArray();
+    const userCol = await getUserCollection();
+    const user = await userCol.findOne({
+      $or: [
+        { kusamaAddress: { $eq: kusamaAddress } },
+        { polkadotAddress: { $eq: polkadotAddress } },
+      ],
+    });
 
-    const user = addresses[0]?.user[0];
     if (!user) {
       throw new HttpError(400, {
         address: ["The address is not linked to any account."],

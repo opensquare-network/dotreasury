@@ -5,16 +5,13 @@ const validator = require("validator");
 const { encodeAddress } = require("@polkadot/util-crypto");
 const { stringUpperFirst } = require("@polkadot/util");
 const {
-  withTransaction,
   getUserCollection,
-  getAddressCollection,
   getAttemptCollection,
 } = require("../../mongo-admin");
 const { HttpError } = require("../../exc");
 const { isValidSignature } = require("../../utils");
 const { DefaultUserNotification, SS58Format } = require("../../contants");
 const mailService = require("../../services/mail.service");
-const commentService = require("../../services/comment.service");
 
 function validateAddress(address, chain) {
   const ss58Format = SS58Format[stringUpperFirst(chain)];
@@ -28,8 +25,6 @@ function validateAddress(address, chain) {
       address: [`Must be a valid ${chain} ss58format address.`],
     });
   }
-
-  return encodeAddress(address, SS58Format.Substrate);
 }
 
 class UserController {
@@ -37,14 +32,13 @@ class UserController {
     const { chain, address } = ctx.params;
     const user = ctx.request.user;
 
-    const wildcardAddress = validateAddress(address, chain);
+    validateAddress(address, chain);
 
     const attemptCol = await getAttemptCollection();
     const result = await attemptCol.insertOne({
       type: "linkAddress",
       userId: user._id,
       address,
-      wildcardAddress,
       chain,
       challenge: randomBytes(12).toString("hex"),
       createdAt: new Date(),
@@ -71,13 +65,16 @@ class UserController {
     const attempt = await attemptCol.findOne({
       _id: ObjectId(attemptId),
       type: "linkAddress",
+      userId: user._id,
     });
 
-    if (!attempt || !attempt.userId.equals(user._id)) {
+    if (!attempt) {
       throw new HttpError(400, "Incorrect link address attempt id");
     }
 
-    const { chain, address, wildcardAddress, userId, challenge } = attempt;
+    const { chain, address, userId, challenge } = attempt;
+
+    const addressName = `${chain}Address`;
 
     if (!challengeAnswer) {
       throw new HttpError(400, {
@@ -85,42 +82,29 @@ class UserController {
       });
     }
 
-    const success = isValidSignature(
-      challenge,
-      challengeAnswer,
-      wildcardAddress
-    );
+    const success = isValidSignature(challenge, challengeAnswer, address);
     if (!success) {
       throw new HttpError(400, {
         challengeAnswer: ["Incorrect challenge answer."],
       });
     }
 
-    const addressCol = await getAddressCollection();
-    const addresses = await addressCol
-      .aggregate([{ $match: { userId: user._id } }, { $unwind: "$chains" }])
-      .toArray();
-
-    if (
-      addresses.some(
-        (i) => i.wildcardAddress === wildcardAddress && i.chains.chain === chain
-      )
-    ) {
+    if (user[addressName] === address) {
       throw new HttpError(400, {
         address: ["The address is already linked with this account."],
       });
     }
 
-    if (addresses.some((i) => i.chains.chain === chain)) {
+    if (user[addressName]) {
       throw new HttpError(
         400,
         `Only 1 ${chain} address is allow to be linked.`
       );
     }
 
-    const existing = await addressCol.findOne({
-      wildcardAddress,
-      "chains.0": { $exists: true },
+    const userCol = await getUserCollection();
+    const existing = await userCol.findOne({
+      [addressName]: address,
       userId: { $ne: userId },
     });
     if (existing) {
@@ -129,10 +113,13 @@ class UserController {
       });
     }
 
-    const result = await addressCol.updateOne(
-      { userId, wildcardAddress },
-      { $addToSet: { chains: { chain, address } } },
-      { upsert: true }
+    const result = await userCol.updateOne(
+      { _id: userId },
+      {
+        $set: {
+          [addressName]: address,
+        },
+      }
     );
 
     if (!result.result.ok) {
@@ -146,20 +133,15 @@ class UserController {
     const { chain, address } = ctx.params;
     const user = ctx.request.user;
 
-    const wildcardAddress = validateAddress(address, chain);
+    validateAddress(address, chain);
 
-    const addressCol = await getAddressCollection();
-    let result = await addressCol.updateOne(
+    const addressName = `${chain}Address`;
+
+    const userCol = await getUserCollection();
+    const result = await userCol.updateOne(
+      { _id: user._id },
       {
-        userId: user._id,
-        wildcardAddress,
-      },
-      {
-        $pull: {
-          chains: {
-            chain,
-          },
-        },
+        $unset: { [addressName]: true },
       }
     );
 
@@ -208,26 +190,20 @@ class UserController {
   async getUserProfile(ctx) {
     const user = ctx.request.user;
 
-    const addressCol = await getAddressCollection();
-    const addresses = await addressCol
-      .aggregate([
-        {
-          $match: { userId: user._id },
-        },
-        {
-          $unwind: "$chains",
-        },
-      ])
-      .toArray();
-
     ctx.body = {
       username: user.username,
       email: user.email,
       emailVerified: user.emailVerified,
-      addresses: addresses.map((i) => ({
-        wildcardAddress: i.wildcardAddress,
-        ...i.chains,
-      })),
+      addresses: ["kusama", "polkadot"].reduce((addresses, chain) => {
+        const address = user[`${chain}Address`];
+        if (address) {
+          addresses.push({
+            chain,
+            address,
+          });
+        }
+        return addresses;
+      }, []),
       notification: { ...DefaultUserNotification, ...user.notification },
     };
   }
@@ -356,27 +332,16 @@ class UserController {
       throw new HttpError(401, { password: ["Incorrect password."] });
     }
 
-    await withTransaction(async (session) => {
-      let result;
+    const userCol = await getUserCollection();
+    const result = await userCol.deleteOne({ _id: user._id });
 
-      const userCol = await getUserCollection();
-      result = await userCol.deleteOne({ _id: user._id }, { session });
+    if (!result.result.ok) {
+      throw new HttpError(500, "DB error: delete account.");
+    }
 
-      if (!result.result.ok) {
-        throw new HttpError(500, "DB error: delete account.");
-      }
-
-      if (result.result.n === 0) {
-        throw new HttpError(500, "Failed to delete account.");
-      }
-
-      const addressCol = await getAddressCollection();
-      result = await addressCol.deleteMany({ userId: user._id }, { session });
-
-      if (!result.result.ok) {
-        throw new HttpError(500, "DB error: clean linked addresses.");
-      }
-    });
+    if (result.result.n === 0) {
+      throw new HttpError(500, "Failed to delete account.");
+    }
 
     ctx.body = true;
   }

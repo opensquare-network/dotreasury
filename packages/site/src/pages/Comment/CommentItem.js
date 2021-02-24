@@ -26,6 +26,7 @@ import TimeElapsed from "../../components/TimeElapsed";
 import { TEXT_DARK_DISABLE } from "../../constants";
 import UserAvatar from "../../components/User/Avatar";
 import { useIndentity } from "../../utils/hooks";
+import { encodeSubstrateAddress } from "../../services/chainApi";
 
 const Wrapper = styled.div`
   padding: 32px 32px 16px;
@@ -188,7 +189,7 @@ const CommentItem = ({
   const address = comment.author?.addresses?.filter(
     (i) => i.chain === "kusama"
   )[0];
-  const { name: addressName } = useIndentity(address?.wildcardAddress);
+  const { name: addressName } = useIndentity(address && encodeSubstrateAddress(address.address));
   const [addressDisplayName, setAddressDisplayName] = useState("");
 
   useEffect(() => {
