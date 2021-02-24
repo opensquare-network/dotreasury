@@ -30,7 +30,7 @@ import FormError from "../../components/FormError";
 import Divider from "../../components/Divider";
 
 import api from "../../services/scanApi";
-import { signMessage } from "../../services/chainApi";
+import { signMessage, encodeKusamaAddress } from "../../services/chainApi";
 import { useIsMounted } from "../../utils/hooks";
 import {
   isWeb3Injected,
@@ -111,7 +111,7 @@ const StyledButtonPrimary = styled(ButtonPrimary)`
 
 const StyledButtonPrimaryWeb3 = styled(StyledButtonPrimary)`
   margin-top: 24px !important;
-`
+`;
 
 const StyledButton = styled(Button)`
   width: 100%;
@@ -181,13 +181,13 @@ function Login({ location }) {
 
   useEffect(() => {
     setShowErrors({
-      usernameOrEmail: errors?.usernameOrEmail?.message
-        || serverErrors?.data?.usernameOrEmail?.[0]
-        || null,
-      password: errors?.password?.message
-        || serverErrors?.data?.password?.[0]
-        || null,
-      message: serverErrors?.message || null
+      usernameOrEmail:
+        errors?.usernameOrEmail?.message ||
+        serverErrors?.data?.usernameOrEmail?.[0] ||
+        null,
+      password:
+        errors?.password?.message || serverErrors?.data?.password?.[0] || null,
+      message: serverErrors?.message || null,
     });
   }, [errors, serverErrors]);
 
@@ -228,7 +228,7 @@ function Login({ location }) {
 
   const doWeb3Login = async () => {
     const { result, error } = await api.fetch(
-      `/auth/login/${selectedAccount.address}`
+      `/auth/login/kusama/${encodeKusamaAddress(selectedAccount.address)}`
     );
     if (result?.challenge) {
       const signature = await signMessage(
@@ -271,12 +271,12 @@ function Login({ location }) {
               ref={register({
                 required: {
                   value: true,
-                  message: "This field is required"
-                }
+                  message: "This field is required",
+                },
               })}
               error={showErrors?.usernameOrEmail}
               onChange={() => {
-                setShowErrors(null)
+                setShowErrors(null);
               }}
             />
             {showErrors?.usernameOrEmail && (
@@ -295,31 +295,45 @@ function Login({ location }) {
                 ref={register({
                   required: {
                     value: true,
-                    message: "This field is required"
-                  }
+                    message: "This field is required",
+                  },
                 })}
                 autocomplete="off"
                 error={showErrors?.password}
                 onChange={() => {
-                  setShowErrors(null)
+                  setShowErrors(null);
                 }}
               />
             </FormPasswordWrapper>
-            {showErrors?.password && <FormError>{showErrors.password}</FormError>}
-            {!showErrors?.usernameOrEmail
-              && !showErrors?.password
-              && showErrors?.message && <FormError>{showErrors.message}</FormError>}
+            {showErrors?.password && (
+              <FormError>{showErrors.password}</FormError>
+            )}
+            {!showErrors?.usernameOrEmail &&
+              !showErrors?.password &&
+              showErrors?.message && (
+                <FormError>{showErrors.message}</FormError>
+              )}
           </Form.Field>
           <HelperWrapper>
-            {false && <RememberMe onClick={() => setIsRememberMe(!isRememberMe)}>
-              <CheckImage src="/imgs/circle-pass.svg" checked={isRememberMe} />
-              <p>Remember me</p>
-            </RememberMe>}
+            {false && (
+              <RememberMe onClick={() => setIsRememberMe(!isRememberMe)}>
+                <CheckImage
+                  src="/imgs/circle-pass.svg"
+                  checked={isRememberMe}
+                />
+                <p>Remember me</p>
+              </RememberMe>
+            )}
             <Link to="/forget">
               <StyledTextMnor>Forgot password?</StyledTextMnor>
             </Link>
           </HelperWrapper>
-          <StyledButtonPrimary type="submit" onClick={() => setServerErrors(null)}>Login</StyledButtonPrimary>
+          <StyledButtonPrimary
+            type="submit"
+            onClick={() => setServerErrors(null)}
+          >
+            Login
+          </StyledButtonPrimary>
           <StyledButton
             onClick={() => {
               setWeb3Login(true);
@@ -341,7 +355,12 @@ function Login({ location }) {
           )}
           {!hasExtension && <DownloadPolkadot />}
           {web3Error && <FormError>{web3Error}</FormError>}
-          <StyledButtonPrimaryWeb3 onClick={doWeb3Login} disabled={!accounts || accounts.length === 0}>Login</StyledButtonPrimaryWeb3>
+          <StyledButtonPrimaryWeb3
+            onClick={doWeb3Login}
+            disabled={!accounts || accounts.length === 0}
+          >
+            Login
+          </StyledButtonPrimaryWeb3>
           <StyledButton
             onClick={() => {
               setWeb3Login(false);

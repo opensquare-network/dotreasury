@@ -5,7 +5,6 @@ const dbName = config.mongo.adminDbName || "dotreasury-admin";
 
 const linkCollectionName = "link";
 const userCollectionName = "user";
-const addressCollectionName = "address";
 const commentCollectionName = "comment";
 const reactionCollectionName = "reaction";
 const attemptCollectionName = "attempt";
@@ -16,7 +15,6 @@ let db = null;
 const mongoUrl = process.env.MONGO_URL || "mongodb://localhost:27017";
 let linkCol = null;
 let userCol = null;
-let addressCol = null;
 let commentCol = null;
 let reactionCol = null;
 let attemptCol = null;
@@ -29,7 +27,6 @@ async function initDb() {
   db = client.db(dbName);
   linkCol = db.collection(linkCollectionName);
   userCol = db.collection(userCollectionName);
-  addressCol = db.collection(addressCollectionName);
   commentCol = db.collection(commentCollectionName);
   reactionCol = db.collection(reactionCollectionName);
   attemptCol = db.collection(attemptCollectionName);
@@ -45,17 +42,8 @@ async function _createIndexes() {
 
   userCol.createIndex({ username: 1 }, { unique: true });
   userCol.createIndex({ email: 1 }, { unique: true });
-
-  addressCol.createIndex({ userId: 1, wildcardAddress: 1 }, { unique: true });
-  addressCol.createIndex(
-    { wildcardAddress: 1 },
-    {
-      unique: true,
-      partialFilterExpression: {
-        "chains.0": { $exists: true },
-      },
-    }
-  );
+  userCol.createIndex({ kusamaAddress: 1 }, { unique: true, sparse: true });
+  userCol.createIndex({ polkadotAddress: 1 }, { unique: true, sparse: true });
 
   reactionCol.createIndex({ commentId: 1, userId: 1 }, { unique: true });
   reactionCol.createIndex({ commentId: 1, reaction: 1 });
@@ -79,11 +67,6 @@ async function getLinkCollection() {
 async function getUserCollection() {
   await tryInit(userCol);
   return userCol;
-}
-
-async function getAddressCollection() {
-  await tryInit(addressCol);
-  return addressCol;
 }
 
 async function getCommentCollection() {
@@ -112,7 +95,6 @@ module.exports = {
   withTransaction,
   getLinkCollection,
   getUserCollection,
-  getAddressCollection,
   getCommentCollection,
   getReactionCollection,
   getAttemptCollection,

@@ -96,50 +96,31 @@ class CommentService {
 
       const userCol = await getUserCollection();
       const users = await userCol
-        .aggregate([
-          {
-            $match: {
-              _id: {
-                $in: Array.from(userIds).map(ObjectId),
-              },
-            },
+        .find({
+          _id: {
+            $in: Array.from(userIds).map(ObjectId),
           },
-          {
-            $lookup: {
-              from: "address",
-              let: { userId: "$_id" },
-              pipeline: [
-                {
-                  $match: {
-                    $expr: {
-                      $eq: ["$userId", "$$userId"],
-                    },
-                  },
-                },
-                { $unwind: "$chains" },
-                {
-                  $project: {
-                    wildcardAddress: 1,
-                    chain: "$chains.chain",
-                    address: "$chains.address",
-                    _id: 0,
-                  },
-                },
-              ],
-              as: "addresses",
-            },
-          },
-          { $project: { username: 1, email: 1, addresses: 1 } },
-        ])
+        })
         .toArray();
 
       const userMap = {};
       users.forEach((user) => {
-        userMap[user._id.toString()] = user;
         const emailHash = md5(user.email.trim().toLocaleLowerCase());
-        user.avatar = `https://www.gravatar.com/avatar/${emailHash}?d=https://www.dotreasury.com/imgs/avatar.png`;
-        delete user.email;
-        delete user._id;
+
+        userMap[user._id.toString()] = {
+          username: user.username,
+          avatar: `https://www.gravatar.com/avatar/${emailHash}?d=https://www.dotreasury.com/imgs/avatar.png`,
+          addresses: ["kusama", "polkadot"].reduce((addresses, chain) => {
+            const address = user[`${chain}Address`];
+            if (address) {
+              addresses.push({
+                chain,
+                address,
+              });
+            }
+            return addresses;
+          }, []),
+        };
       });
 
       comments.forEach((comment) => {

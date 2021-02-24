@@ -103,3 +103,11 @@ export const encodeKusamaAddress = (address) => {
     return "";
   }
 };
+
+export const encodeSubstrateAddress = (address) => {
+  try {
+    return encodeAddress(address, 42);
+  } catch {
+    return "";
+  }
+};

@@ -2,17 +2,14 @@ const { ObjectId } = require("mongodb");
 const argon2 = require("argon2");
 const { randomBytes } = require("crypto");
 const validator = require("validator");
-const { encodeAddress } = require("@polkadot/util-crypto");
 const authService = require("../../services/auth.service");
 const mailService = require("../../services/mail.service");
 const {
   getUserCollection,
-  getAddressCollection,
   getAttemptCollection,
 } = require("../../mongo-admin");
 const { HttpError } = require("../../exc");
-const { isValidSignature } = require("../../utils");
-const { SS58Format } = require("../../contants");
+const { isValidSignature, validateAddress } = require("../../utils");
 
 class AuthController {
   async signup(ctx) {
@@ -184,31 +181,15 @@ class AuthController {
   }
 
   async addressLoginStart(ctx) {
-    const { address } = ctx.params;
+    const { chain, address } = ctx.params;
 
-    const wildcardAddress = encodeAddress(address, SS58Format.Substrate);
+    validateAddress(address, chain);
 
-    const addressCol = await getAddressCollection();
-    const addresses = await addressCol
-      .aggregate([
-        {
-          $match: {
-            wildcardAddress,
-            "chains.0": { $exists: true },
-          },
-        },
-        {
-          $lookup: {
-            from: "user",
-            localField: "userId",
-            foreignField: "_id",
-            as: "user",
-          },
-        },
-      ])
-      .toArray();
+    const addressName = `${chain}Address`;
 
-    const user = addresses[0]?.user[0];
+    const userCol = await getUserCollection();
+    const user = await userCol.findOne({ [addressName]: address });
+
     if (!user) {
       throw new HttpError(400, {
         address: ["The address is not linked to any account."],
