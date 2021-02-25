@@ -38,7 +38,7 @@ const DoughnutCard = ({ data, clickEvent }) => {
     if (current.children) {
       return acc + current.children.reduce(totalReduce, 0);
     }
-    return acc + current.value ?? 0;
+    return acc + (current.disabled ? 0 : (current.value ?? 0));
   }
   const total = data.labels?.reduce(totalReduce, 0);
   return (

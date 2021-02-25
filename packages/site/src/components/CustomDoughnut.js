@@ -18,34 +18,13 @@ const DoughnutChart = ({ data }) => {
         return current.children.reduce(dataReduce, acc);
       } else {
         acc.labels.push(current.name);
-        acc.datasets[0].data.push(current.value);
+        acc.datasets[0].data.push(current.disabled ? 0 : current.value);
         acc.datasets[0].backgroundColor.push(current.color);
         acc.datasets[0].hoverBackgroundColor.push(current.color);
       }
       return acc;
     }
     data.labels.reduce(dataReduce, doughnutData);
-  // const data = {
-  //   labels: ["Proposals", "Tips", "Bounties", "Burnt"],
-  //   datasets: [
-  //     {
-  //       data: [proposals, tips, bounties, burnt],
-  //       backgroundColor: [
-  //         OVERVIEW_PROPOSALS_COLOR,
-  //         OVERVIEW_TIPS_COLOR,
-  //         OVERVIEW_BOUNTIES_COLOR,
-  //         OVERVIEW_BURNT_COLOR,
-  //       ],
-  //       hoverBackgroundColor: [
-  //         OVERVIEW_PROPOSALS_COLOR,
-  //         OVERVIEW_TIPS_COLOR,
-  //         OVERVIEW_BOUNTIES_COLOR,
-  //         OVERVIEW_BURNT_COLOR,
-  //       ],
-  //       borderWidth: 0,
-  //     },
-  //   ],
-  // };
   const options = {
     maintainAspectRatio: false,
     cutoutPercentage: 80,

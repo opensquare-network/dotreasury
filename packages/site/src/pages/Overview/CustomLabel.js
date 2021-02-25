@@ -18,6 +18,11 @@ const ItemWrapper = styled.div`
   :not(:last-child) {
     margin-bottom: 4px;
   }
+  ${(p => p.disabled && css`
+    & * {
+      color: "rgba(29, 37, 60, 0.24)" !important;
+    }
+  `)}
 `
 
 const IconWrapper = styled.div`
@@ -76,9 +81,9 @@ const Label = ({ data, icon, clickEvent }) => {
     <Wrapper>
       <ItemWrapper onClick={() => {
         clickEvent && clickEvent(name)
-      }} disabled={disabled} >
+      }}>
         <IconWrapper>
-          {!children && <Icon icon={icon} color={color} />}
+          {!children && <Icon icon={icon} color={color} disabled={disabled} />}
         </IconWrapper>
         <Title>{name}</Title>
         <ValueWrapper>
@@ -91,7 +96,7 @@ const Label = ({ data, icon, clickEvent }) => {
           clickEvent && clickEvent(item.name)
         }}>
           <IconWrapper>
-            <Icon icon={icon} color={item.color} />
+            <Icon icon={icon} color={item.color} disabled={item.disabled} />
           </IconWrapper>
           <ChildTitle>{item.name}</ChildTitle>
           <ValueWrapper>
