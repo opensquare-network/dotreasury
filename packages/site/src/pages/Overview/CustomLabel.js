@@ -18,11 +18,6 @@ const ItemWrapper = styled.div`
   :not(:last-child) {
     margin-bottom: 4px;
   }
-  ${(p => p.disabled && css`
-    & * {
-      color: "rgba(29, 37, 60, 0.24)" !important;
-    }
-  `)}
 `
 
 const IconWrapper = styled.div`
