@@ -59,7 +59,6 @@ const Income = () => {
   });
 
   const clickEvent = (name) => {
-    console.log(name)
     const obj = Object.assign({}, incomeData);
     obj.labels.forEach(item => {
       if (item.children) {
@@ -68,8 +67,15 @@ const Income = () => {
             child.disabled = !child.disabled;
           }
         })
-      } else if (item.name === name) {
-        item.disabled = !item.disabled;
+      }
+      if (item.name === name) {
+        const disabled = !item.disabled;
+        item.disabled = disabled;
+        if (item.children) {
+          item.children.forEach(child => {
+            child.disabled = disabled;
+          })
+        }
       }
     });
     setIncomeData(obj);
