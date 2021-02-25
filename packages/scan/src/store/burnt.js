@@ -28,11 +28,14 @@ async function getTreasuryBalance(blockHash, blockHeight) {
     }
 
     return metadata.registry.createType("Compact<Balance>", value).toJSON();
-  } else if (blockHeight < ksmMigrateAccountHeight) {
+  } else if (blockHeight < 1377831) {
     const value = await api.rpc.state.getStorage(oldKey, blockHash);
 
     const metadata = await api.rpc.state.getMetadata(blockHash);
     return metadata.registry.createType("Compact<Balance>", value).toJSON();
+  } else if (blockHeight < ksmMigrateAccountHeight) {
+    // TODO: find how to get the balance from 1377831 to 1492896
+    return await queryAccountFreeWithSystem(blockHash);
   } else {
     return await queryAccountFreeWithSystem(blockHash);
   }
