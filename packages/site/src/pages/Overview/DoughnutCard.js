@@ -33,19 +33,19 @@ const DoughnutWrapper = styled.div`
   position: absolute;
 `;
 
-const DoughnutCard = ({ data }) => {
+const DoughnutCard = ({ data, clickEvent }) => {
   const totalReduce = (acc, current) => {
     if (current.children) {
       return acc + current.children.reduce(totalReduce, 0);
     }
-    return acc + current.value ?? 0;
+    return acc + (current.disabled ? 0 : (current.value ?? 0));
   }
   const total = data.labels?.reduce(totalReduce, 0);
   return (
     <div>
       <Title>Income</Title>
       <CardWrapper>
-        <List data={data}></List>
+        <List data={data} clickEvent={clickEvent}></List>
         <CanvasWrapper>
           <Total total={total}>
             <DoughnutWrapper>

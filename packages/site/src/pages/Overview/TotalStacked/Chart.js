@@ -84,14 +84,14 @@ const Chart = ({ data }) => {
   return (
     <>
       <LegendWrapper>
-        {(values || []).map(item => (
-          <TitleWrapper>
+        {(values || []).reverse().map((item, index) => (
+          <TitleWrapper key={index}>
             <LegendDiv color={item.primaryColor} />
             <LegendTitle>{item.label}</LegendTitle>
           </TitleWrapper>)
         )}
       </LegendWrapper>
-      <Line data={chartData} options={options} height={220} width={752} />
+      <Line data={chartData} options={options} height={220} width={700} />
     </>
   );
 };

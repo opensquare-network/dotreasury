@@ -3,10 +3,12 @@ import styled, { css } from "styled-components";
 import { Popup } from "semantic-ui-react";
 
 import Text from "../../components/Text";
+import TextMinor from "../../components/TextMinor";
 import { mrgap } from "../../styles";
 
 const Wrapper = styled.div`
   background: #fbfbfb;
+  width: 224px;
   padding: 4px 16px;
   display: flex;
   align-items: center;
@@ -17,10 +19,19 @@ const Wrapper = styled.div`
   }
 `;
 
-const Circle = styled.div`
-  width: 16px;
+const IconWrapper = styled.div`
   height: 16px;
-  border: 4px solid ${(p) => (p.disabled ? "rgba(29, 37, 60, 0.24)" : p.color)};
+  width: 16px;
+  margin-right: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+const Icon = styled.div`
+  width: 10px;
+  height: 10px;
+  border: 3px solid ${(p) => (p.disabled ? "rgba(29, 37, 60, 0.24)" : p.color)};
   border-radius: 50%;
 `;
 
@@ -33,9 +44,10 @@ const LabelText = styled(Text)`
     `}
 `;
 
-const ValueText = styled(Text)`
-  font-weight: 300;
-  font-size: 0.8em;
+const ValueText = styled(TextMinor)`
+  /* font-weight: 300; */
+  /* font-size: 0.8em; */
+  margin-left: auto !important;
   ${(p) =>
     p.disabled &&
     css`
@@ -46,7 +58,9 @@ const ValueText = styled(Text)`
 const Label = ({ name, value, color, disabled, onToggleDisabled }) => {
   return (
     <Wrapper onClick={onToggleDisabled}>
-      <Circle color={color} disabled={disabled} />
+      <IconWrapper>
+        <Icon color={color} disabled={disabled} />
+      </IconWrapper>
       <LabelText disabled={disabled}>{name}</LabelText>
       <Popup
         content={`${value} KSM`}

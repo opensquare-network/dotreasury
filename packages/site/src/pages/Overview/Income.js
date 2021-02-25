@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import DoughnutCard from "./DoughnutCard";
 import {
@@ -12,7 +12,7 @@ import {
 } from "../../constants";
 
 const Income = () => {
-  const incomeData = {
+  const [incomeData, setIncomeData] = useState({
     icon: "circle",
     labels: [
       {
@@ -56,10 +56,27 @@ const Income = () => {
         color: OVERVIEW_OTHERS_COLOR
       },
     ]
+  });
+
+  const clickEvent = (name) => {
+    console.log(name)
+    const obj = Object.assign({}, incomeData);
+    obj.labels.forEach(item => {
+      if (item.children) {
+        item.children.forEach(child => {
+          if (child.name === name) {
+            child.disabled = !child.disabled;
+          }
+        })
+      } else if (item.name === name) {
+        item.disabled = !item.disabled;
+      }
+    });
+    setIncomeData(obj);
   }
 
   return (
-    <DoughnutCard data={incomeData} />
+    <DoughnutCard data={incomeData} clickEvent={clickEvent} />
   )
 }
 
