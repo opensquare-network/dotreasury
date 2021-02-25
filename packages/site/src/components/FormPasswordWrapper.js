@@ -27,7 +27,7 @@ const FormPasswordWrapper = ({children, show, toggleClick}) => {
   return (
     <Wrapper>
       {children}
-      <CustomImage src={show ? "/imgs/eye-slash.svg" : "/imgs/eye.svg"} onClick={toggleClick} />
+      <CustomImage src={show ? "/imgs/eye.svg" : "/imgs/eye-slash.svg"} onClick={toggleClick} />
     </Wrapper>
   )
 }
