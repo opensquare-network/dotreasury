@@ -67,6 +67,11 @@ const Income = () => {
             child.disabled = !child.disabled;
           }
         })
+        if (item.children.every(item => item.disabled)) {
+          item.disabled = true;
+        } else {
+          item.disabled = false;
+        }
       }
       if (item.name === name) {
         const disabled = !item.disabled;
@@ -82,7 +87,7 @@ const Income = () => {
   }
 
   return (
-    <DoughnutCard data={incomeData} clickEvent={clickEvent} />
+    <DoughnutCard title="Icome" data={incomeData} clickEvent={clickEvent} />
   )
 }
 

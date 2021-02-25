@@ -91,7 +91,7 @@ const Chart = ({ data }) => {
           </TitleWrapper>)
         )}
       </LegendWrapper>
-      <Line data={chartData} options={options} height={220} width={700} />
+      <Line data={chartData} options={options} />
     </>
   );
 };
