@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import DoughnutCard from "./DoughnutCard";
 import {
@@ -12,7 +12,7 @@ import {
 } from "../../constants";
 
 const Income = () => {
-  const incomeData = {
+  const [incomeData] = useState({
     icon: "circle",
     labels: [
       {
@@ -56,7 +56,7 @@ const Income = () => {
         color: OVERVIEW_OTHERS_COLOR
       },
     ]
-  }
+  });
 
   return (
     <DoughnutCard data={incomeData} />

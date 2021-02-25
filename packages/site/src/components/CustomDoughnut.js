@@ -2,7 +2,6 @@ import React from "react";
 import { Doughnut } from "react-chartjs-2";
 
 const DoughnutChart = ({ data }) => {
-    console.log(data)
     const doughnutData = {
       labels: [],
       datasets: [
@@ -26,7 +25,6 @@ const DoughnutChart = ({ data }) => {
       return acc;
     }
     data.labels.reduce(dataReduce, doughnutData);
-    console.log("reduce", doughnutData)
   // const data = {
   //   labels: ["Proposals", "Tips", "Bounties", "Burnt"],
   //   datasets: [

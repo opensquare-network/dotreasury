@@ -15,7 +15,7 @@ const Title = styled(Text)`
   line-height: 24px;
 `
 
-const List = ({ data }) => {
+const List = ({ data, clickEvent }) => {
   const { title, icon, labels } = data;
   return (
     <Wrapper>
@@ -23,7 +23,7 @@ const List = ({ data }) => {
         {title}
       </Title>}
       {
-        (labels || []).map((item, index) => <Label key={index} data={item} icon={icon} />)
+        (labels || []).map((item, index) => <Label key={index} data={item} icon={icon} clickEvent={clickEvent} />)
       }
     </Wrapper>
   )

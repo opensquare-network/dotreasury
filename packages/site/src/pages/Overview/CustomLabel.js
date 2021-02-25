@@ -12,6 +12,7 @@ const Wrapper = styled.div`
 `
 
 const ItemWrapper = styled.div`
+  cursor: pointer;
   display: flex;
   align-items: center;
   :not(:last-child) {
@@ -63,8 +64,8 @@ const ValueWrapper = styled.div`
   }
 `
 
-const Label = ({ data, icon }) => {
-  const { name, color, children } = data;
+const Label = ({ data, icon, clickEvent }) => {
+  const { name, color, disabled, children } = data;
   let { value } = data;
   if (children) {
     value = (children || []).reduce((acc, current) => {
@@ -73,7 +74,9 @@ const Label = ({ data, icon }) => {
   }
   return (
     <Wrapper>
-      <ItemWrapper>
+      <ItemWrapper onClick={() => {
+        clickEvent && clickEvent(name)
+      }} disabled={disabled} >
         <IconWrapper>
           {!children && <Icon icon={icon} color={color} />}
         </IconWrapper>
@@ -83,8 +86,10 @@ const Label = ({ data, icon }) => {
           <TextMinor>KSM</TextMinor>
         </ValueWrapper>
       </ItemWrapper>
-      {(children || []).map(item => (
-        <ItemWrapper>
+      {(children || []).map((item, index) => (
+        <ItemWrapper key={index} onClick={() => {
+          clickEvent && clickEvent(item.name)
+        }}>
           <IconWrapper>
             <Icon icon={icon} color={item.color} />
           </IconWrapper>

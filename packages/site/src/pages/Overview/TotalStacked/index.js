@@ -23,7 +23,7 @@ const CardWrapper = styled(Card)`
 `;
 
 const ChartWrapper = styled.div`
-  height: 300px;
+  height: 252px;
   width: 752px;
 `
 
@@ -111,11 +111,11 @@ const TotalStacked = () => {
     <>
       <Title>Total Stacked</Title>
       <CardWrapper>
-        <List data={IncomeData}></List>
-        <List data={outputData}></List>
         <ChartWrapper>
           <Chart data={chartData} />
         </ChartWrapper>
+        <List data={IncomeData}></List>
+        <List data={outputData}></List>
       </CardWrapper>
     </>
   )
