@@ -17,16 +17,20 @@ const Title = styled(Text)`
 
 const CardWrapper = styled(Card)`
   display: flex;
-  height: 318px;
+  min-height: 318px;
   padding: 32px;
   @media screen and (max-width: 556px) {
+    flex-direction: column;
+    align-items: center;
     & > :first-child {
-      display: none;
+      margin-bottom: 24px;
     }
   }
 `;
 
 const CanvasWrapper = styled.div`
+  width: 214px;
+  height: 214px;
   flex-grow: 1;
   position: relative;
 `;
