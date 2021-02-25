@@ -27,7 +27,9 @@ const CardWrapper = styled(Card)`
 
 const ChartWrapper = styled.div`
   height: 252px;
-  width: 752px;
+  min-width: 252px;
+  max-width: 752px;
+  flex-grow: 1;
 `
 
 const TotalStacked = () => {
