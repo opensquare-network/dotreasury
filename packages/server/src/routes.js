@@ -5,6 +5,7 @@ const featureRouters = [
   require("./features/status/routes"),
   require("./features/burnt/routes"),
   require("./features/income/routes"),
+  require("./features/stats/routes"),
 ];
 
 module.exports = (app) => {
