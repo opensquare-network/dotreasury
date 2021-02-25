@@ -8,6 +8,7 @@
   "scripts": {
     "prod": "pm2 start ecosystem.config.js --only doTreasury-scan --env production",
     "staging": "pm2 start ecosystem.config.js --only doTreasury-scan-staging --env production",
+    "develop": "pm2 start ecosystem.config.js --only doTreasury-scan-dev --env production",
     "test": "jest src/test"
   },
   "dependencies": {

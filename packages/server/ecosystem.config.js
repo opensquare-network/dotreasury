@@ -19,5 +19,9 @@ module.exports = {
       name: "doTreasury-staging-api",
       ...commonPart,
     },
+    {
+      name: "doTreasury-dev-api",
+      ...commonPart,
+    },
   ],
 };
