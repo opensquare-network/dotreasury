@@ -66,7 +66,6 @@ const ChildTitle = styled(TextMinor)`
 const ValueWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
-  flex-grow: 1;
   margin-left: auto;
   & > :last-child {
     margin-left: 4px;
