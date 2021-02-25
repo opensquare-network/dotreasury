@@ -16,9 +16,12 @@ const Title = styled(Text)`
 const CardWrapper = styled(Card)`
   display: flex;
   flex-wrap: wrap;
-  padding: 32px;
+  padding: 32px 32px 16px;
   & > :not(:last-child) {
     margin-right: 24px;
+  }
+  & > * {
+    margin-bottom: 16px;
   }
 `;
 

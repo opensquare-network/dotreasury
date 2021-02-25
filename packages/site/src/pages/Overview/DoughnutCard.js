@@ -19,6 +19,11 @@ const CardWrapper = styled(Card)`
   display: flex;
   height: 318px;
   padding: 32px;
+  @media screen and (max-width: 556px) {
+    & > :first-child {
+      display: none;
+    }
+  }
 `;
 
 const CanvasWrapper = styled.div`
@@ -33,7 +38,7 @@ const DoughnutWrapper = styled.div`
   position: absolute;
 `;
 
-const DoughnutCard = ({ data, clickEvent }) => {
+const DoughnutCard = ({ title, data, clickEvent }) => {
   const totalReduce = (acc, current) => {
     if (current.children) {
       return acc + current.children.reduce(totalReduce, 0);
@@ -43,7 +48,7 @@ const DoughnutCard = ({ data, clickEvent }) => {
   const total = data.labels?.reduce(totalReduce, 0);
   return (
     <div>
-      <Title>Income</Title>
+      <Title>{title}</Title>
       <CardWrapper>
         <List data={data} clickEvent={clickEvent}></List>
         <CanvasWrapper>

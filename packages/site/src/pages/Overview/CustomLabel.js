@@ -1,5 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
+import { Popup } from "semantic-ui-react";
 
 import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
@@ -49,19 +50,32 @@ const Icon = styled.div`
 const Title = styled(Text)`
   font-weight: 500;
   line-height: 24px;
+  ${(p) => p.disabled && css`
+    color: rgba(29, 37, 60, 0.24);
+  `}
 `
 
 const ChildTitle = styled(TextMinor)`
   font-weight: 500;
   line-height: 24px;
+  ${(p) => p.disabled && css`
+    color: rgba(29, 37, 60, 0.24);
+  `}
 `
 
 const ValueWrapper = styled.div`
   display: flex;
+  justify-content: flex-end;
+  flex-grow: 1;
   margin-left: auto;
   & > :last-child {
     margin-left: 4px;
   }
+  ${(p) => p.disabled && css`
+    & > * {
+      color: rgba(29, 37, 60, 0.24);
+    }
+  `}
 `
 
 const Label = ({ data, icon, clickEvent }) => {
@@ -80,11 +94,14 @@ const Label = ({ data, icon, clickEvent }) => {
         <IconWrapper>
           {!children && <Icon icon={icon} color={color} disabled={disabled} />}
         </IconWrapper>
-        <Title>{name}</Title>
-        <ValueWrapper>
-          <TextMinor>{value ?? 0}</TextMinor>
-          <TextMinor>KSM</TextMinor>
-        </ValueWrapper>
+        <Title disabled={disabled}>{name}</Title>
+        <Popup
+          content={`${value} KSM`}
+          size='mini'
+          trigger={<ValueWrapper disabled={disabled}>
+            <TextMinor>{`${Math.round(value) === value ? "" : "≈ "}${Math.round(value)} KSM`}</TextMinor>
+          </ValueWrapper>}
+        />
       </ItemWrapper>
       {(children || []).map((item, index) => (
         <ItemWrapper key={index} onClick={() => {
@@ -93,11 +110,14 @@ const Label = ({ data, icon, clickEvent }) => {
           <IconWrapper>
             <Icon icon={icon} color={item.color} disabled={item.disabled} />
           </IconWrapper>
-          <ChildTitle>{item.name}</ChildTitle>
-          <ValueWrapper>
-            <TextMinor>{item.value ?? 0}</TextMinor>
-            <TextMinor>KSM</TextMinor>
-          </ValueWrapper>
+          <ChildTitle disabled={item.disabled}>{item.name}</ChildTitle>
+          <Popup
+            content={`${item.value} KSM`}
+            size='mini'
+            trigger={<ValueWrapper disabled={item.disabled}>
+              <TextMinor>{`${Math.round(value) === value ? "" : "≈ "}${Math.round(item.value)} KSM`}</TextMinor>
+            </ValueWrapper>}
+          />
         </ItemWrapper>)
       )}
     </Wrapper>
