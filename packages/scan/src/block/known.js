@@ -1,4 +1,4 @@
-const knownHeights = [
+let knownHeights = [
   52631,
   52671,
   52691,
@@ -4811,6 +4811,11 @@ const knownHeights = [
 ];
 
 const firstKnowCouncilCloseEventHeight = 1975694;
+
+// Merge income known heights
+const { knownHeights: incomeKnownHeights } = require("../income/known");
+knownHeights = knownHeights.concat(incomeKnownHeights);
+knownHeights.sort((a, b) => Number(a) - Number(b));
 
 module.exports = {
   knownHeights,

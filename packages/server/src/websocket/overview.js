@@ -3,6 +3,7 @@ const {
   getBountyCollection,
   getTipCollection,
   getBurntCollection,
+  getStatusCollection,
 } = require("../mongo");
 const { bigAdd } = require("../utils");
 const { setOverview, getOverview } = require("./store");
@@ -49,12 +50,16 @@ async function calcOverview() {
   const bestProposalBeneficiaries = calcBestProposalBeneficiary(proposals);
   const bestTipFinders = calcBestTipProposers(tips);
 
+  const statusCol = await getStatusCollection();
+  const incomeScan = await statusCol.findOne({ name: "income-scan" });
+
   return {
     count,
     spent: output,
     output,
     bestProposalBeneficiaries,
     bestTipFinders,
+    income: incomeScan?.seats,
   };
 }
 

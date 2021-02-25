@@ -18,6 +18,9 @@ const electionSlashCollectionName = "incomeSlashElections";
 const democracySlashCollectionName = "incomeSlashDemocracy";
 const identitySlashCollectionName = "incomeSlashIdentity";
 
+// stats collections
+const statsCollectionName = "weeklyStats";
+
 let client = null;
 let db = null;
 
@@ -34,6 +37,7 @@ let treasurySlashCol = null;
 let electionsPhragmenSlashCol = null;
 let democracySlashCol = null;
 let identitySlashCol = null;
+let statsCol = null;
 
 async function initDb() {
   client = await MongoClient.connect(mongoUrl, {
@@ -53,6 +57,7 @@ async function initDb() {
   electionsPhragmenSlashCol = db.collection(electionSlashCollectionName);
   democracySlashCol = db.collection(democracySlashCollectionName);
   identitySlashCol = db.collection(identitySlashCollectionName);
+  statsCol = db.collection(statsCollectionName);
 
   await _createIndexes();
 }
@@ -132,6 +137,11 @@ async function getIdentitySlashCollection() {
   return identitySlashCol;
 }
 
+async function getStatsCollection() {
+  await tryInit(statsCol);
+  return statsCol;
+}
+
 module.exports = {
   initDb,
   getStatusCollection,
@@ -146,4 +156,5 @@ module.exports = {
   getElectionSlashCollection,
   getDemocracySlashCollection,
   getIdentitySlashCollection,
+  getStatsCollection,
 };
