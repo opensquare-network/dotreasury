@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { bnToBn } from "@polkadot/util";
+import dayjs from "dayjs";
 
 import Text from "../../../components/Text";
 import Card from "../../../components/Card";
 import List from "../CustomList";
 import Chart from "./Chart";
+import { toPrecision } from "../../../utils";
+
+import {
+  fetchStatsHistory,
+  statsHistorySelector,
+} from "../../../store/reducers/overviewSlice";
 
 const Title = styled(Text)`
   font-size: 18px;
@@ -30,9 +39,46 @@ const ChartWrapper = styled.div`
   min-width: 252px;
   max-width: 752px;
   flex-grow: 1;
-`
+`;
 
 const TotalStacked = () => {
+  const dispatch = useDispatch();
+  const [dateLabels, setDateLabels] = useState([]);
+  const [incomeHistory, setIncomeHistory] = useState([]);
+  const [outputHistory, setOutputHistory] = useState([]);
+
+  useEffect(() => {
+    dispatch(fetchStatsHistory());
+  }, [dispatch]);
+
+  const statsHistory = useSelector(statsHistorySelector);
+
+  useEffect(() => {
+    const dateLabels = statsHistory.map((statsItem) =>
+      dayjs(statsItem.indexer.blockTime).format("YYYY-MM")
+    );
+    setDateLabels(dateLabels);
+
+    const incomeHistory = statsHistory
+      .map((statsItem) =>
+        bnToBn(statsItem.income.inflation)
+          .add(bnToBn(statsItem.income.slash))
+          .add(bnToBn(statsItem.income.others))
+      )
+      .map((bn) => toPrecision(bn, 12, false));
+    setIncomeHistory(incomeHistory);
+
+    const outputHistory = statsHistory
+      .map((statsItem) =>
+        bnToBn(statsItem.output.tip)
+          .add(bnToBn(statsItem.output.proposal))
+          .add(bnToBn(statsItem.output.bounty))
+          .add(bnToBn(statsItem.output.burnt))
+      )
+      .map((bn) => toPrecision(bn, 12, false));
+    setOutputHistory(outputHistory);
+  }, [statsHistory]);
+
   const IncomeData = {
     title: "Income",
     icon: "square",
@@ -46,31 +92,31 @@ const TotalStacked = () => {
         children: [
           {
             name: "Treasury",
-            value: 153
+            value: 153,
           },
           {
             name: "Staking",
-            value: 253
+            value: 253,
           },
           {
             name: "Democracy",
-            value: 353
+            value: 353,
           },
           {
             name: "Election",
-            value: 53
+            value: 53,
           },
           {
             name: "Identity",
-            value: 153
+            value: 153,
           },
-        ]
+        ],
       },
       {
         name: "Others",
-        value: 1165
+        value: 1165,
       },
-    ]
+    ],
   };
   const outputData = {
     title: "Output",
@@ -92,25 +138,25 @@ const TotalStacked = () => {
         name: "Burnt",
         value: 1165,
       },
-    ]
-  }
+    ],
+  };
   const chartData = {
-    dates: ['YY-MM', 'YY-MM', 'YY-MM', 'YY-MM', 'YY-MM', 'YY-MM', 'YY-MM', 'YY-MM'],
+    dates: dateLabels,
     values: [
       {
         label: "Output",
         primaryColor: "#FED077",
         secondaryColor: "#FFEDC9",
-        data: [0, 50, 150, 200, 300, 400, 500, 550]
+        data: outputHistory,
       },
       {
         label: "Total",
         primaryColor: "#DF405D",
         secondaryColor: "#FFEEF1",
-        data: [0, 100, 300, 350, 550, 800, 950, 1000]
-      }
-    ]
-  }
+        data: incomeHistory,
+      },
+    ],
+  };
 
   return (
     <>
@@ -123,7 +169,7 @@ const TotalStacked = () => {
         <List data={outputData}></List>
       </CardWrapper>
     </>
-  )
-}
+  );
+};
 
 export default TotalStacked;
