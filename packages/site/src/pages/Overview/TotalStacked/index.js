@@ -55,7 +55,7 @@ const TotalStacked = () => {
 
   useEffect(() => {
     const dateLabels = statsHistory.map((statsItem) =>
-      dayjs(statsItem.indexer.blockTime).format("YYYY-MM-DD")
+      dayjs(statsItem.indexer.blockTime).format("YYYY-MM")
     );
     setDateLabels(dateLabels);
 
