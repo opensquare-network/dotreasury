@@ -107,7 +107,7 @@ const SlashTable = ({ data, loading }) => {
                         href={`/extrinsic/${item.indexer.blockHeight}-${item.indexer.extrinsicIndex}`}
                       >
                         <EventWrapper>
-                          <Image src={"/imgs/event.svg"} />
+                          <Image src={"/imgs/extrinsic.svg"} />
                           <EventID>{`${item.indexer.blockHeight}-${item.indexer.extrinsicIndex}`}</EventID>
                         </EventWrapper>
                       </ExplorerLink>
