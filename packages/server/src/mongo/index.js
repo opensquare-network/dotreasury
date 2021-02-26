@@ -17,7 +17,7 @@ const treasurySlashCollectionName = "incomeSlashTreasury";
 const electionSlashCollectionName = "incomeSlashElections";
 const democracySlashCollectionName = "incomeSlashDemocracy";
 const identitySlashCollectionName = "incomeSlashIdentity";
-const othersIncomeCollectionName = "othersIncome";
+const othersIncomeCollectionName = "incomeOthersBig";
 
 // stats collections
 const statsCollectionName = "weeklyStats";
