@@ -26,7 +26,7 @@ const DoughnutWrapper = styled.div`
   @media screen and (max-width: 556px) {
     grid-template-columns: repeat(1fr);
   }
-`
+`;
 
 const TableWrapper = styled.div`
   margin-top: 32px;
@@ -42,17 +42,54 @@ const TableWrapper = styled.div`
 
 const Overview = () => {
   const overview = useSelector(overviewSelector);
+
   const bountySpent = toPrecision(overview.output.bounty || 0, 12, false);
   const proposalSpent = toPrecision(overview.output.proposal || 0, 12, false);
   const tipSpent = toPrecision(overview.output.tip || 0, 12, false);
   const burntTotal = toPrecision(overview.output.burnt || 0, 12, false);
+
+  const inflation = toPrecision(overview.income.inflation || 0, 12, false);
+  const slashTreasury = toPrecision(
+    overview.income.slashSeats.treasury || 0,
+    12,
+    false
+  );
+  const slashDemocracy = toPrecision(
+    overview.income.slashSeats.democracy || 0,
+    12,
+    false
+  );
+  const slashStaking = toPrecision(
+    overview.income.slashSeats.staking || 0,
+    12,
+    false
+  );
+  const slashElection = toPrecision(
+    overview.income.slashSeats.electionsPhragmen || 0,
+    12,
+    false
+  );
+  const slashIdentity = toPrecision(
+    overview.income.slashSeats.identity || 0,
+    12,
+    false
+  );
+  const others = toPrecision(overview.income.others || 0, 12, false);
 
   return (
     <>
       <Header>Overview</Header>
       <Summary />
       <DoughnutWrapper>
-        <Income />
+        <Income
+          inflation={inflation}
+          slashTreasury={slashTreasury}
+          slashDemocracy={slashDemocracy}
+          slashStaking={slashStaking}
+          slashElection={slashElection}
+          slashIdentity={slashIdentity}
+          others={others}
+        />
         <Output
           proposals={proposalSpent}
           tips={tipSpent}
