@@ -87,7 +87,7 @@ const Income = () => {
   }
 
   return (
-    <DoughnutCard title="Icome" data={incomeData} clickEvent={clickEvent} />
+    <DoughnutCard title="Income" data={incomeData} clickEvent={clickEvent} />
   )
 }
 
