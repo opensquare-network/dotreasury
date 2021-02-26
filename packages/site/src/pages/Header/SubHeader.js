@@ -156,12 +156,11 @@ const TabExampleSecondaryPointing = () => {
               as: NavLink,
               id: "inflationTab",
               content: <InflationMenu />,
-              to: "/income/inflation",
+              to: "/income",
               exact: true,
               key: "inflation",
               active:
-                "/income/inflation" === pathname ||
-                pathname.indexOf("/income/inflation") === 0,
+                "/income" === pathname,
             },
           },
           {
