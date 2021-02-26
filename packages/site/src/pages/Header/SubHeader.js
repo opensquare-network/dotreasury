@@ -154,6 +154,19 @@ const TabExampleSecondaryPointing = () => {
           {
             menuItem: {
               as: NavLink,
+              id: "inflationTab",
+              content: <InflationMenu />,
+              to: "/income/inflation",
+              exact: true,
+              key: "inflation",
+              active:
+                "/income/inflation" === pathname ||
+                pathname.indexOf("/income/inflation") === 0,
+            },
+          },
+          {
+            menuItem: {
+              as: NavLink,
               id: "treasurySlashTab",
               content: <TreasurySlashMenu />,
               to: "/income/slash/treasury",
@@ -162,32 +175,6 @@ const TabExampleSecondaryPointing = () => {
               active:
                 "/income/slash/treasury" === pathname ||
                 pathname.indexOf("/income/slash/treasury") === 0,
-            },
-          },
-          {
-            menuItem: {
-              as: NavLink,
-              id: "democracySlashTab",
-              content: <DemocracySlashMenu />,
-              to: "/income/slash/democracy",
-              exact: true,
-              key: "democracySlash",
-              active:
-                "/income/slash/democracy" === pathname ||
-                pathname.indexOf("/income/slash/democracy") === 0,
-            },
-          },
-          {
-            menuItem: {
-              as: NavLink,
-              id: "identitySlashTab",
-              content: <IdentitySlashMenu />,
-              to: "/income/slash/identity",
-              exact: true,
-              key: "identitySlash",
-              active:
-                "/income/slash/identity" === pathname ||
-                pathname.indexOf("/income/slash/identity") === 0,
             },
           },
           {
@@ -206,6 +193,19 @@ const TabExampleSecondaryPointing = () => {
           {
             menuItem: {
               as: NavLink,
+              id: "democracySlashTab",
+              content: <DemocracySlashMenu />,
+              to: "/income/slash/democracy",
+              exact: true,
+              key: "democracySlash",
+              active:
+                "/income/slash/democracy" === pathname ||
+                pathname.indexOf("/income/slash/democracy") === 0,
+            },
+          },
+          {
+            menuItem: {
+              as: NavLink,
               id: "electionPhragmenSlashTab",
               content: <ElectionPhragmenSlashMenu />,
               to: "/income/slash/electionphragmen",
@@ -219,16 +219,16 @@ const TabExampleSecondaryPointing = () => {
           {
             menuItem: {
               as: NavLink,
-              id: "inflationTab",
-              content: <InflationMenu />,
-              to: "/income/inflation",
+              id: "identitySlashTab",
+              content: <IdentitySlashMenu />,
+              to: "/income/slash/identity",
               exact: true,
-              key: "inflation",
+              key: "identitySlash",
               active:
-                "/income/inflation" === pathname ||
-                pathname.indexOf("/income/inflation") === 0,
+                "/income/slash/identity" === pathname ||
+                pathname.indexOf("/income/slash/identity") === 0,
             },
-          },
+          }
         ]
       : [];
 

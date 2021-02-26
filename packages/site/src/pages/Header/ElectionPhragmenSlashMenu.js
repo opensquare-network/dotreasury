@@ -8,7 +8,7 @@ function ElectionPhragmenSlashMenu() {
 
   return (
     <Menu.Item key="electionPhragmenSlash">
-      Election phragmen<Label>{incomeCount.electionPhragmenSlash}</Label>
+      Election<Label>{incomeCount.electionPhragmenSlash}</Label>
     </Menu.Item>
   );
 }
