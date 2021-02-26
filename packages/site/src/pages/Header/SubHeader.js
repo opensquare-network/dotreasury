@@ -154,40 +154,27 @@ const TabExampleSecondaryPointing = () => {
           {
             menuItem: {
               as: NavLink,
+              id: "inflationTab",
+              content: <InflationMenu />,
+              to: "/income/inflation",
+              exact: true,
+              key: "inflation",
+              active:
+                "/income/inflation" === pathname ||
+                pathname.indexOf("/income/inflation") === 0,
+            },
+          },
+          {
+            menuItem: {
+              as: NavLink,
               id: "treasurySlashTab",
               content: <TreasurySlashMenu />,
-              to: "/slash/treasury",
+              to: "/income/slash/treasury",
               exact: true,
               key: "treasurySlash",
               active:
-                "/slash/treasury" === pathname ||
-                pathname.indexOf("/slash/treasury") === 0,
-            },
-          },
-          {
-            menuItem: {
-              as: NavLink,
-              id: "democracySlashTab",
-              content: <DemocracySlashMenu />,
-              to: "/slash/democracy",
-              exact: true,
-              key: "democracySlash",
-              active:
-                "/slash/democracy" === pathname ||
-                pathname.indexOf("/slash/democracy") === 0,
-            },
-          },
-          {
-            menuItem: {
-              as: NavLink,
-              id: "identitySlashTab",
-              content: <IdentitySlashMenu />,
-              to: "/slash/identity",
-              exact: true,
-              key: "identitySlash",
-              active:
-                "/slash/identity" === pathname ||
-                pathname.indexOf("/slash/identity") === 0,
+                "/income/slash/treasury" === pathname ||
+                pathname.indexOf("/income/slash/treasury") === 0,
             },
           },
           {
@@ -195,12 +182,25 @@ const TabExampleSecondaryPointing = () => {
               as: NavLink,
               id: "stakingSlashTab",
               content: <StakingSlashMenu />,
-              to: "/slash/staking",
+              to: "/income/slash/staking",
               exact: true,
               key: "stakingSlash",
               active:
-                "/slash/staking" === pathname ||
-                pathname.indexOf("/slash/staking") === 0,
+                "/income/slash/staking" === pathname ||
+                pathname.indexOf("/income/slash/staking") === 0,
+            },
+          },
+          {
+            menuItem: {
+              as: NavLink,
+              id: "democracySlashTab",
+              content: <DemocracySlashMenu />,
+              to: "/income/slash/democracy",
+              exact: true,
+              key: "democracySlash",
+              active:
+                "/income/slash/democracy" === pathname ||
+                pathname.indexOf("/income/slash/democracy") === 0,
             },
           },
           {
@@ -208,27 +208,27 @@ const TabExampleSecondaryPointing = () => {
               as: NavLink,
               id: "electionPhragmenSlashTab",
               content: <ElectionPhragmenSlashMenu />,
-              to: "/slash/electionphragmen",
+              to: "/income/slash/electionphragmen",
               exact: true,
               key: "electionPhragmenSlash",
               active:
-                "/slash/electionphragmen" === pathname ||
-                pathname.indexOf("/slash/electionphragmen") === 0,
+                "/income/slash/electionphragmen" === pathname ||
+                pathname.indexOf("/income/slash/electionphragmen") === 0,
             },
           },
           {
             menuItem: {
               as: NavLink,
-              id: "inflationTab",
-              content: <InflationMenu />,
-              to: "/inflation",
+              id: "identitySlashTab",
+              content: <IdentitySlashMenu />,
+              to: "/income/slash/identity",
               exact: true,
-              key: "inflation",
+              key: "identitySlash",
               active:
-                "/inflation" === pathname ||
-                pathname.indexOf("/inflation") === 0,
+                "/income/slash/identity" === pathname ||
+                pathname.indexOf("/income/slash/identity") === 0,
             },
-          },
+          }
         ]
       : [];
 

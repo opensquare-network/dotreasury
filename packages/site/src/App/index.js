@@ -39,6 +39,7 @@ export default function App() {
           <ScrollToTop />
           <Switch>
             <Route exact path="/" component={Overview} />
+            <Route exact path="/income" component={Overview} />
             <Route exact path="/tips" component={Tips} />
             <Route exact path="/proposals" component={Proposals} />
             <Route exact path="/bounties" component={Bounties} />
@@ -46,12 +47,12 @@ export default function App() {
             <Route exact path="/proposals/:proposalIndex" component={ProposalDetail} />
             <Route exact path="/bounties/:bountyIndex" component={BountyDetail} />
             <Route exact path="/burnt" component={Burnt} />
-            <Route exact path="/slash/treasury" component={TreasurySlash} />
-            <Route exact path="/slash/democracy" component={DemocracySlash} />
-            <Route exact path="/slash/identity" component={IdentitySlash} />
-            <Route exact path="/slash/staking" component={StakingSlash} />
-            <Route exact path="/slash/electionphragmen" component={ElectionPhragmenSlash} />
-            <Route exact path="/inflation" component={Inflation} />
+            <Route exact path="/income/slash/treasury" component={TreasurySlash} />
+            <Route exact path="/income/slash/democracy" component={DemocracySlash} />
+            <Route exact path="/income/slash/identity" component={IdentitySlash} />
+            <Route exact path="/income/slash/staking" component={StakingSlash} />
+            <Route exact path="/income/slash/electionphragmen" component={ElectionPhragmenSlash} />
+            <Route exact path="/income/inflation" component={Inflation} />
             <Redirect to="/" />
           </Switch>
         </Container>

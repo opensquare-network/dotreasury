@@ -6,6 +6,7 @@ import { NavLink } from "react-router-dom";
 import ScanHeight from "./ScanHeight";
 import Setting from "./Setting";
 import MenuSwitch from "./MenuSwitch";
+import { useMenuTab } from "../../utils/hooks";
 
 const Wrapper = styled.header`
   height: 68px;
@@ -29,6 +30,7 @@ const ScanHeightWrapper = styled.div`
 `;
 
 const HeaderExamplePage = () => {
+  useMenuTab();
   return (
     <Wrapper>
       <Left>
@@ -40,8 +42,12 @@ const HeaderExamplePage = () => {
         </ScanHeightWrapper>
       </Left>
       <Right>
-        <MenuSwitch menuTabsName="Home" />
-        <MenuSwitch menuTabsName="Income" />
+        <NavLink to="/">
+          <MenuSwitch menuTabsName="Home" />
+        </NavLink>
+        <NavLink to="/income">
+          <MenuSwitch menuTabsName="Income" />
+        </NavLink>
         <Setting />
       </Right>
     </Wrapper>
