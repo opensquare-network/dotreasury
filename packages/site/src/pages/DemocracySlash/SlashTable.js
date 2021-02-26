@@ -70,8 +70,8 @@ const SlashTable = ({ data, loading }) => {
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell>Time</Table.HeaderCell>
-              <Table.HeaderCell>Event ID</Table.HeaderCell>
-              <Table.HeaderCell>Event Name</Table.HeaderCell>
+              <Table.HeaderCell>Event ID / Extrinsic ID</Table.HeaderCell>
+              <Table.HeaderCell>Event Name / Extrinsic Name</Table.HeaderCell>
               <Table.HeaderCell textAlign={"right"}>Balance</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
@@ -93,14 +93,25 @@ const SlashTable = ({ data, loading }) => {
                     </TimeWrapper>
                   </Table.Cell>
                   <Table.Cell>
-                    <ExplorerLink
-                      href={`/block/${item.indexer.blockHeight}?tab=event`}
-                    >
-                      <EventWrapper>
-                        <Image src={"/imgs/event.svg"} />
-                        <EventID>{`${item.indexer.blockHeight}-${item.eventSort}`}</EventID>
-                      </EventWrapper>
-                    </ExplorerLink>
+                    {item.eventSort ? (
+                      <ExplorerLink
+                        href={`/block/${item.indexer.blockHeight}?tab=event`}
+                      >
+                        <EventWrapper>
+                          <Image src={"/imgs/event.svg"} />
+                          <EventID>{`${item.indexer.blockHeight}-${item.eventSort}`}</EventID>
+                        </EventWrapper>
+                      </ExplorerLink>
+                    ) : (
+                      <ExplorerLink
+                        href={`/extrinsic/${item.indexer.blockHeight}-${item.indexer.extrinsicIndex}`}
+                      >
+                        <EventWrapper>
+                          <Image src={"/imgs/event.svg"} />
+                          <EventID>{`${item.indexer.blockHeight}-${item.indexer.extrinsicIndex}`}</EventID>
+                        </EventWrapper>
+                      </ExplorerLink>
+                    )}
                   </Table.Cell>
                   <Table.Cell>{`${item.section}(${item.method})`}</Table.Cell>
                   <Table.Cell textAlign={"right"} className="balance-cell">
