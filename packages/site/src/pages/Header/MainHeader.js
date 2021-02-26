@@ -5,6 +5,8 @@ import Logo from "./Logo";
 import { NavLink } from "react-router-dom";
 import ScanHeight from "./ScanHeight";
 import Setting from "./Setting";
+import Text from "../../components/Text";
+import { PRIMARY_THEME_COLOR } from "../../constants";
 
 const Wrapper = styled.header`
   height: 68px;
@@ -24,7 +26,13 @@ const Right = styled.div`
 `
 
 const ScanHeightWrapper = styled.div`
-margin-left: 24px;
+  margin-left: 24px;
+`
+const NavButton = styled(Text)`
+  margin-right: 32px;
+  :hover {
+    color: ${PRIMARY_THEME_COLOR};
+  }
 `
 
 const HeaderExamplePage = () => {
@@ -40,6 +48,9 @@ const HeaderExamplePage = () => {
         </ScanHeightWrapper>
       </Left>
       <Right>
+        <NavLink to="/projects">
+          <NavButton>projects</NavButton>
+        </NavLink>
         <Setting />
       </Right>
     </Wrapper>
