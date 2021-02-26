@@ -6,6 +6,7 @@ const {
   getElectionSlashCollection,
   getStakingSlashCollection,
   getIncomeInflationCollection,
+  getOthersIncomeCollection,
 } = require("../../mongo");
 
 class IncomeController {
@@ -165,6 +166,32 @@ class IncomeController {
     };
   }
 
+  async getOthers(ctx) {
+    const { page, pageSize } = extractPage(ctx);
+    if (pageSize === 0 || page < 0) {
+      ctx.status = 400;
+      return;
+    }
+
+    const col = await getOthersIncomeCollection();
+    const items = await col
+      .find({})
+      .sort({
+        "indexer.blockHeight": -1,
+      })
+      .skip(page * pageSize)
+      .limit(pageSize)
+      .toArray();
+    const total = await col.estimatedDocumentCount();
+
+    ctx.body = {
+      items,
+      page,
+      pageSize,
+      total,
+    };
+  }
+
   async getCount(ctx) {
     let col;
 
@@ -186,6 +213,9 @@ class IncomeController {
     col = await getIncomeInflationCollection();
     const inflation = await col.estimatedDocumentCount();
 
+    col = await getOthersIncomeCollection();
+    const others = await col.estimatedDocumentCount();
+
     ctx.body = {
       treasurySlash,
       democracySlash,
@@ -193,6 +223,7 @@ class IncomeController {
       electionPhragmenSlash,
       stakingSlash,
       inflation,
+      others,
     };
   }
 }

@@ -27,6 +27,12 @@ const {
   handleElectionsPhragmenSlash,
   handleElectionsLoserCandidateSlash,
 } = require("./slash/electioinsPhragmenSlash");
+const { getOthersIncomeCollection } = require("../mongo");
+
+async function saveOthersRecord(data) {
+  const col = await getOthersIncomeCollection();
+  await col.insertOne(data);
+}
 
 const tooMuchGas = 0.1 * Math.pow(10, 12);
 
@@ -236,6 +242,16 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
       // TODO: Get the treasury address balance and add the imbalance to others
       if (gt(balance, tooMuchGas)) {
         abnormalOthersLogger.info(blockIndexer.blockHeight, balance);
+
+        const data = {
+          indexer: blockIndexer,
+          eventSort: sort,
+          section,
+          method,
+          balance,
+          treasuryDepositEventData,
+        };
+        await saveOthersRecord(data);
       }
     }
   }
