@@ -26,6 +26,7 @@ import IdentitySlash from "../pages/IdentitySlash";
 import StakingSlash from "../pages/StakingSlash";
 import ElectionPhragmenSlash from "../pages/ElectionPhragmenSlash";
 import Inflation from "../pages/Inflation";
+import OthersIncome from "../pages/OthersIncome";
 
 import { usePreload } from "../utils/hooks";
 
@@ -43,15 +44,44 @@ export default function App() {
             <Route exact path="/proposals" component={Proposals} />
             <Route exact path="/bounties" component={Bounties} />
             <Route exact path="/tips/:tipId" component={TipDetail} />
-            <Route exact path="/proposals/:proposalIndex" component={ProposalDetail} />
-            <Route exact path="/bounties/:bountyIndex" component={BountyDetail} />
+            <Route
+              exact
+              path="/proposals/:proposalIndex"
+              component={ProposalDetail}
+            />
+            <Route
+              exact
+              path="/bounties/:bountyIndex"
+              component={BountyDetail}
+            />
             <Route exact path="/burnt" component={Burnt} />
             <Route exact path="/income" component={Inflation} />
-            <Route exact path="/income/slash/treasury" component={TreasurySlash} />
-            <Route exact path="/income/slash/democracy" component={DemocracySlash} />
-            <Route exact path="/income/slash/identity" component={IdentitySlash} />
-            <Route exact path="/income/slash/staking" component={StakingSlash} />
-            <Route exact path="/income/slash/electionphragmen" component={ElectionPhragmenSlash} />
+            <Route
+              exact
+              path="/income/slash/treasury"
+              component={TreasurySlash}
+            />
+            <Route
+              exact
+              path="/income/slash/democracy"
+              component={DemocracySlash}
+            />
+            <Route
+              exact
+              path="/income/slash/identity"
+              component={IdentitySlash}
+            />
+            <Route
+              exact
+              path="/income/slash/staking"
+              component={StakingSlash}
+            />
+            <Route
+              exact
+              path="/income/slash/electionphragmen"
+              component={ElectionPhragmenSlash}
+            />
+            <Route exact path="/income/others" component={OthersIncome} />
             <Redirect to="/" />
           </Switch>
         </Container>

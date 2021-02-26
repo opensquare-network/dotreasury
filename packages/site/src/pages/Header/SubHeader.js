@@ -11,6 +11,7 @@ import StakingSlashMenu from "./StakingSlashMenu";
 import IdentitySlashMenu from "./IdentitySlashMenu";
 import ElectionPhragmenSlashMenu from "./ElectionPhragmenSlashMenu";
 import InflationMenu from "./InflationMenu";
+import OthersIncomeMenu from "./OthersIncomeMenu";
 import { fetchIncomeCount } from "../../store/reducers/incomeSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { showMenuTabsSelector } from "../../store/reducers/menuSlice";
@@ -159,8 +160,7 @@ const TabExampleSecondaryPointing = () => {
               to: "/income",
               exact: true,
               key: "inflation",
-              active:
-                "/income" === pathname,
+              active: "/income" === pathname,
             },
           },
           {
@@ -227,7 +227,20 @@ const TabExampleSecondaryPointing = () => {
                 "/income/slash/identity" === pathname ||
                 pathname.indexOf("/income/slash/identity") === 0,
             },
-          }
+          },
+          {
+            menuItem: {
+              as: NavLink,
+              id: "othersIncomeTab",
+              content: <OthersIncomeMenu />,
+              to: "/income/others",
+              exact: true,
+              key: "othersIncome",
+              active:
+                "/income/others" === pathname ||
+                pathname.indexOf("/income/others") === 0,
+            },
+          },
         ]
       : [];
 

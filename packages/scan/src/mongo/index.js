@@ -16,6 +16,7 @@ const treasurySlashCollectionName = "incomeSlashTreasury";
 const electionSlashCollectionName = "incomeSlashElections";
 const democracySlashCollectionName = "incomeSlashDemocracy";
 const identitySlashCollectionName = "incomeSlashIdentity";
+const othersIncomeCollectionName = "othersIncome";
 
 // stats collections
 const statsCollectionName = "weeklyStats";
@@ -36,6 +37,7 @@ let treasurySlashCol = null;
 let electionsPhragmenSlashCol = null;
 let democracySlashCol = null;
 let identitySlashCol = null;
+let othersIncomeCol = null;
 let statsCol = null;
 
 async function initDb() {
@@ -56,6 +58,7 @@ async function initDb() {
   electionsPhragmenSlashCol = db.collection(electionSlashCollectionName);
   democracySlashCol = db.collection(democracySlashCollectionName);
   identitySlashCol = db.collection(identitySlashCollectionName);
+  othersIncomeCol = db.collection(othersIncomeCollectionName);
   statsCol = db.collection(statsCollectionName);
 
   await _createIndexes();
@@ -136,6 +139,11 @@ async function getIdentitySlashCollection() {
   return identitySlashCol;
 }
 
+async function getOthersIncomeCollection() {
+  await tryInit(othersIncomeCol);
+  return othersIncomeCol;
+}
+
 async function getStatsCollection() {
   await tryInit(statsCol);
   return statsCol;
@@ -154,5 +162,6 @@ module.exports = {
   getElectionSlashCollection,
   getDemocracySlashCollection,
   getIdentitySlashCollection,
+  getOthersIncomeCollection,
   getStatsCollection,
 };
