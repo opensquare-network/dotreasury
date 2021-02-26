@@ -4817,7 +4817,13 @@ const {
   knownHeights: incomeKnownHeights,
   maxKnownHeight: maxIncomeKnownHeight,
 } = require("../income/known");
-const heights = [...new Set(knownHeights.concat(incomeKnownHeights))];
+const heights = [
+  ...new Set(
+    knownHeights
+      .filter((h) => h <= maxIncomeKnownHeight)
+      .concat(incomeKnownHeights)
+  ),
+];
 heights.sort((a, b) => Number(a) - Number(b));
 
 module.exports = {
