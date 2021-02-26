@@ -1,19 +1,16 @@
 import React from "react";
 import styled from "styled-components";
-// import { NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useHistory } from "react-router";
-// import dayjs from "dayjs";
 
 import Table from "../../components/Table";
 import TableLoading from "../../components/TableLoading.js"
-// import User from "../../components/User";
-// import Balance from "../../components/Balance";
-// import RightButton from "../../components/RightButton";
-// import PairTextVertical from "../../components/PairTextVertical";
-// import ReasonText from "./ReasonText";
-// import { TipStatus } from "../../constants";
+import Balance from "../../components/Balance";
+import RightButton from "../../components/RightButton";
 import TableNoDataCell from "../../components/TableNoDataCell";
-// import ReasonLink from "./ReasonLink";
+import Text from "../../components/Text";
+import NameCell from "./NameCell";
+import DateCell from "./DateCell";
 
 const Wrapper = styled.div`
   overflow-x: scroll;
@@ -63,48 +60,31 @@ const TipsTable = ({ data, loading }) => {
               <Table.HeaderCell className="hidden" />
             </Table.Row>
           </Table.Header>
-          {/* <Table.Body>
+          <Table.Body>
             {(data &&
               data.length > 0 &&
               data.map((item, index) => (
                 <Table.Row key={index} onClick={() => onClickRow(index)}>
                   <Table.Cell>
-                    <User address={item.beneficiary} />
+                    <NameCell icon={item.icon} name={item.name} />
                   </Table.Cell>
-                  <Table.Cell className="user-cell hidden">
-                    <User address={item.finder} />
+                  <Table.Cell className="description-cell">
+                    <Text>{item.description}</Text>
                   </Table.Cell>
-                  <Table.Cell>
-                    <ReasonText>
-                      <ReasonLink text={item.reason} />
-                    </ReasonText>
+                  <Table.Cell textAlign={"right"}>
+                    <Text>{item.proposals}</Text>
                   </Table.Cell>
                   <Table.Cell className="balance-cell" textAlign={"right"}>
-                    { item.showStatus === TipStatus.Retracted
-                        ? '--'
-                        : <Balance value={item.medianValue} /> }
+                    <Balance value={item.expense} />
                   </Table.Cell>
-                  <Table.Cell
-                    className={`status-cell ${
-                      item.showTime ? "short-padding" : ""
-                    }`}
-                    textAlign={"right"}
-                  >
-                    {item.showTime ? (
-                      <PairTextVertical
-                        value={item.showStatus}
-                        detail={dayjs(parseInt(item.latestState.time)).format(
-                          "YYYY-MM-DD HH:mm"
-                        )}
-                      />
-                    ) : (
-                      item.showStatus === TipStatus.Tipping
-                        ? `${item.showStatus} (${item.tipsCount})`
-                        : item.showStatus
-                    )}
+                  <Table.Cell className="date-cell">
+                    <DateCell date={item.start} />
+                  </Table.Cell>
+                  <Table.Cell className="date-cell">
+                    <DateCell date={item.end} />
                   </Table.Cell>
                   <Table.Cell className="link-cell hidden">
-                    <NavLink to={`/tips/${item.proposeAtBlockHeight}_${item.hash}`}>
+                    <NavLink to={`/projects/${index}`}>
                       <RightButton />
                     </NavLink>
                   </Table.Cell>
@@ -112,7 +92,7 @@ const TipsTable = ({ data, loading }) => {
               ))) || (
                 <TableNoDataCell />
             )}
-          </Table.Body> */}
+          </Table.Body>
         </StyledTable>
       </TableLoading>
     </Wrapper>

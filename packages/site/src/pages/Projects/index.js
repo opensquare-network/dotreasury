@@ -11,10 +11,10 @@ const Header = styled(Title)`
 const data = [
   {
     name: "OpenSquare",
-    icon: "",
+    icon: "/imgs/opensquare-icon-logo.svg",
     description: "A Kusama/Polkadot treasury explorer",
     proposals: 2,
-    expense: 1000,
+    expense: 1000000000000000,
     start: 1614312040000,
     end: 1614312040000,
   },
@@ -23,7 +23,7 @@ const data = [
     icon: "",
     description: "Volutpat sed semper fermentum rhoncus ut morbi adipiscing",
     proposals: 3,
-    expense: 1000,
+    expense: 1000000000000000,
     start: 1614312040000,
   },
   {
@@ -31,7 +31,7 @@ const data = [
     icon: "",
     description: "Fermentum ipsum cursus vestibulum, adipiscing magna",
     proposals: 1,
-    expense: 1000,
+    expense: 1000000000000000,
     end: 1614312040000,
   },
   {
