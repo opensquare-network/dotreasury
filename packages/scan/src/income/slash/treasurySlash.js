@@ -200,6 +200,7 @@ async function handleTreasuryBountyRejectedSlash(
     section,
     method,
     balance,
+    bountyIndex: bountyRejectedEventData[0],
     treasuryDepositEventData,
     bountyRejectedEventData,
   };
