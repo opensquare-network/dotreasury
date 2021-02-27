@@ -22,46 +22,47 @@ const knownProposalSlash = [
   {
     block: 280582,
     sort: 5,
+    proposalId: 1,
   },
   {
     block: 280587,
     sort: 5,
+    proposalId: 2,
   },
   {
     block: 280589,
     sort: 5,
+    proposalId: 3,
   },
   {
     block: 281304,
     sort: 5,
+    proposalId: 4,
   },
   {
     block: 294461,
     sort: 5,
+    proposalId: 6,
   },
   {
     block: 294463,
     sort: 5,
+    proposalId: 7,
   },
   {
     block: 294465,
     sort: 5,
-  },
-  {
-    block: 294465,
-    sort: 5,
+    proposalId: 8,
   },
   {
     block: 294467,
     sort: 5,
+    proposalId: 9,
   },
   {
     block: 305563,
     sort: 5,
-  },
-  {
-    block: 305563,
-    sort: 5,
+    proposalId: 10,
   },
 ];
 
@@ -85,11 +86,11 @@ async function handleTreasuryProposalSlash(
 
   const treasuryDepositEventData = treasuryDepositData.toJSON();
   const balance = (treasuryDepositEventData || [])[0];
-  if (
-    knownProposalSlash.find(
-      (s) => s.block === blockIndexer.blockHeight && s.sort === sort
-    )
-  ) {
+  const knownSlash = knownProposalSlash.find(
+    (s) => s.block === blockIndexer.blockHeight && s.sort === sort
+  );
+
+  if (knownSlash) {
     const data = {
       indexer: blockIndexer,
       eventSort: sort,
@@ -97,6 +98,7 @@ async function handleTreasuryProposalSlash(
       method: TreasuryEvent.Rejected,
       balance,
       treasuryDepositEventData,
+      proposalId: knownSlash.proposalId,
     };
 
     await saveSlashRecord(data);
@@ -120,6 +122,7 @@ async function handleTreasuryProposalSlash(
     section,
     method,
     balance,
+    proposalId: treasuryRejectedEventData[0],
     treasuryDepositEventData,
     treasuryRejectedEventData,
   };
