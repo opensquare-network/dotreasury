@@ -54,7 +54,7 @@ async function handleStakingEraPayout(
   allBlockEvents,
   blockIndexer
 ) {
-  const inflationCheck1Data = checkInflation1(
+  const inflationCheck1Data = await checkInflation1(
     event,
     sort,
     allBlockEvents,
