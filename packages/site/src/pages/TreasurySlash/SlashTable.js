@@ -72,7 +72,7 @@ const SlashTable = ({ data, loading }) => {
               <Table.HeaderCell>Time</Table.HeaderCell>
               <Table.HeaderCell>Event ID</Table.HeaderCell>
               <Table.HeaderCell>Event Name</Table.HeaderCell>
-              <Table.HeaderCell>Proposal ID</Table.HeaderCell>
+              <Table.HeaderCell>Index</Table.HeaderCell>
               <Table.HeaderCell textAlign={"right"}>Balance</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
@@ -105,8 +105,10 @@ const SlashTable = ({ data, loading }) => {
                   </Table.Cell>
                   <Table.Cell>{`${item.section}(${item.method})`}</Table.Cell>
                   <Table.Cell>
-                    {item?.treasuryRejectedEventData?.[0]
-                      ? `#${item?.treasuryRejectedEventData?.[0]}`
+                    {item.method === "Rejected"
+                      ? `#${item.proposalId}`
+                      : item.method === "BountyRejected"
+                      ? `#${item.bountyIndex}`
                       : ""}
                   </Table.Cell>
                   <Table.Cell textAlign={"right"}>
