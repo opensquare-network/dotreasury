@@ -24,6 +24,7 @@ const SubTitle = styled.span`
   font-size: 12px;
   color: rgba(29, 37, 60, 0.24);
   font-family: Inter;
+  font-weight: normal;
 `;
 
 const DEFAULT_PAGE_SIZE = 20;
