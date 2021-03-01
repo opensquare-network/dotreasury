@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import GrayImage from "../../components/GrayImage";
+import { NavLink } from "react-router-dom";
 
 import DoughnutCard from "./DoughnutCard";
+import TextMinor from "../../components/TextMinor";
 import {
   OVERVIEW_INFLATION_COLOR,
   OVERVIEW_TREASURY_COLOR,
@@ -9,7 +13,23 @@ import {
   OVERVIEW_ELECTION_COLOR,
   OVERVIEW_IDENTITY_COLOR,
   OVERVIEW_OTHERS_COLOR,
+  TEXT_DARK_MAJOR
 } from "../../constants";
+
+const LinkButton = styled(TextMinor)`
+  display: flex;
+  position: absolute;
+  right: 32px;
+  bottom: 32px;
+  :hover {
+    color: ${TEXT_DARK_MAJOR};
+    & > :last-child {
+      -webkit-filter: grayscale(0);
+      filter: grayscale(0);
+      opacity: 1;
+    }
+  }
+`
 
 const Income = ({
   inflation,
@@ -140,7 +160,11 @@ const Income = ({
   };
 
   return (
-    <DoughnutCard title="Income" data={incomeData} status={incomeStatus} clickEvent={clickEvent} />
+    <DoughnutCard title="Income" data={incomeData} status={incomeStatus} clickEvent={clickEvent} >
+      <NavLink to={'/income'}>
+        <LinkButton>Detail<GrayImage src="/imgs/caret-right.svg" width={24} /></LinkButton>
+      </NavLink>
+    </DoughnutCard>
   );
 };
 

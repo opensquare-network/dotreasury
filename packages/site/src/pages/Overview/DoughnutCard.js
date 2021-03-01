@@ -16,6 +16,7 @@ const Title = styled(Text)`
 `;
 
 const CardWrapper = styled(Card)`
+  position: relative;
   display: flex;
   min-height: 318px;
   padding: 32px;
@@ -42,7 +43,7 @@ const DoughnutWrapper = styled.div`
   position: absolute;
 `;
 
-const DoughnutCard = ({ title, data, status, clickEvent }) => {
+const DoughnutCard = ({ title, data, status, clickEvent, children }) => {
   const findDisabled = (name) => {
     const findFunc = (item => {
       if (item.name === name) return item.disabled;
@@ -73,6 +74,7 @@ const DoughnutCard = ({ title, data, status, clickEvent }) => {
             </DoughnutWrapper>
           </Total>
         </CanvasWrapper>
+        {children}
       </CardWrapper>
     </div>
   );
