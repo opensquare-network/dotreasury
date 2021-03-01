@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import styled from "styled-components";
 import {
+  setProposalDetail,
   fetchProposalDetail,
   loadingProposalDetailSelector,
   proposalDetailSelector,
@@ -21,6 +22,7 @@ import Proposer from "../../components/Proposer";
 import BlocksTime from "../../components/BlocksTime";
 import TimelineCommentWrapper from "../../components/TimelineCommentWrapper";
 import DetailGoBack from "../components/DetailGoBack";
+import { useComponentWillMount } from "../../utils/hooks";
 
 const ValueWrapper = styled.span`
   margin-right: 4px;
@@ -178,9 +180,14 @@ function processTimeline(proposalDetail, scanHeight) {
 }
 
 const ProposalDetail = () => {
+
   const { proposalIndex } = useParams();
   const dispatch = useDispatch();
   const [timelineData, setTimelineData] = useState([]);
+
+  useComponentWillMount(() => {
+    dispatch(setProposalDetail({}));
+  });
 
   useEffect(() => {
     dispatch(fetchProposalDetail(proposalIndex));

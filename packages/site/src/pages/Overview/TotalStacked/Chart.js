@@ -34,28 +34,44 @@ const LegendTitle = styled(Text)`
   line-height: 24px;
 `
 
-const options = {
-  scales: {
-    xAxes: [{
-      gridLines: {
-          color: "rgba(0, 0, 0, 0)",
-      },
-    }],
-    yAxes: [{
-      position: 'right',
-      ticks: {
-        stepSize: 200
-      }
-    }]
-  },
-  legend: {
-    display: false,
-  },
-  maintainAspectRatio: false
-}
 
-const Chart = ({ data }) => {
+
+const Chart = ({ data, onHover }) => {
   const { dates, values }  = data;
+  const options = {
+    type: 'line',
+    hover: {
+      mode: 'index'
+    },
+    scales: {
+      xAxes: [{
+        gridLines: {
+          zeroLineWidth: 0,
+          color: "rgba(0, 0, 0, 0)",
+        },
+        ticks: {
+          fontFamily: "Inter",
+          maxRotation: 0,
+          minRotation: 0
+        }
+      }],
+      yAxes: [{
+        position: "right",
+        ticks: {
+          fontFamily: "Inter",
+          stepSize: 100000
+        }
+      }]
+    },
+    legend: {
+      display: false,
+    },
+    maintainAspectRatio: false,
+    onHover: function(_, array) {
+      const index = array?.[0]?._index;
+      onHover(index)
+    }
+  }
   const chartData = {
     labels: dates,
     datasets: (values || []).map(item => ({
@@ -68,9 +84,9 @@ const Chart = ({ data }) => {
       borderDash: [],
       borderDashOffset: 0.0,
       borderJoinStyle: 'miter',
-      pointBorderColor: '#FFF',
+      pointBorderColor: item.primaryColor,
       pointBackgroundColor: item.primaryColor,
-      pointBorderWidth: 1,
+      pointBorderWidth: 0,
       pointHoverRadius: 5,
       pointHoverBackgroundColor: item.secondaryColor,
       pointHoverBorderColor: item.primaryColor,
@@ -84,7 +100,7 @@ const Chart = ({ data }) => {
   return (
     <>
       <LegendWrapper>
-        {(values || []).reverse().map((item, index) => (
+        {(values || []).map((item, index) => (
           <TitleWrapper key={index}>
             <LegendDiv color={item.primaryColor} />
             <LegendTitle>{item.label}</LegendTitle>
