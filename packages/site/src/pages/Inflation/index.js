@@ -16,6 +16,14 @@ import {
 
 const Header = styled(Title)`
   margin-bottom: 20px;
+  display: inline-block;
+  vertical-align: baseline;
+`;
+const SubTitle = styled.span`
+  margin-left: 8px;
+  font-size: 12px;
+  color: rgba(29, 37, 60, 0.24);
+  font-family: Inter;
 `;
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -43,7 +51,10 @@ const Inflation = () => {
 
   return (
     <>
-      <Header>Inflation</Header>
+      <Header>
+        Inflation
+        <SubTitle>Staking Remaining</SubTitle>
+      </Header>
       <SlashTable data={itemList} loading={loading} />
       <ResponsivePagination
         activePage={tablePage}
