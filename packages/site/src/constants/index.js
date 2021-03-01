@@ -8,10 +8,10 @@ export const OVERVIEW_TIPS_COLOR = "#F1AC26";
 export const OVERVIEW_BOUNTIES_COLOR = "#635FEC";
 export const OVERVIEW_BURNT_COLOR = "#EE7735";
 export const OVERVIEW_INFLATION_COLOR = "#DF405D";
-export const OVERVIEW_TREASURY_COLOR = "#F1AC26";
-export const OVERVIEW_STAKING_COLOR = "#FCC04D";
-export const OVERVIEW_DEMOCRACY_COLOR = "#FED077";
-export const OVERVIEW_ELECTION_COLOR = "#FFDFA0";
+export const OVERVIEW_TREASURY_COLOR = "#FCC04D";
+export const OVERVIEW_STAKING_COLOR = "#F1AC26";
+export const OVERVIEW_DEMOCRACY_COLOR = "#FFDFA0";
+export const OVERVIEW_ELECTION_COLOR = "#FED077";
 export const OVERVIEW_IDENTITY_COLOR = "#FFEDC9";
 export const OVERVIEW_OTHERS_COLOR = "#CCCCCC";
 
@@ -34,14 +34,14 @@ export const DEFAULT_NODE_URL = "wss://kusama.elara.patract.io";
 export const DEFAULT_NODES = [
   {
     name: "Parity",
-    url: "wss://kusama-rpc.polkadot.io"
+    url: "wss://kusama-rpc.polkadot.io",
   },
   {
     name: "OnFinality",
-    url: "wss://kusama.api.onfinality.io/public-ws"
+    url: "wss://kusama.api.onfinality.io/public-ws",
   },
   {
     name: "Patract Elara",
-    url: "wss://kusama.elara.patract.io"
-  }
+    url: "wss://kusama.elara.patract.io",
+  },
 ];
