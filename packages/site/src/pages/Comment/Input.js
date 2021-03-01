@@ -65,7 +65,6 @@ const Input = React.forwardRef(
     const clearComment = useSelector(clearCommentSelector);
 
     useEffect(() => {
-      // If user has logged in and profile is not fetched, fetch it now
       if (loggedInUser) {
         dispatch(fetchUserProfile());
       }
