@@ -59,6 +59,68 @@ const TotalStacked = () => {
   const [dateLabels, setDateLabels] = useState([]);
   const [incomeHistory, setIncomeHistory] = useState([]);
   const [outputHistory, setOutputHistory] = useState([]);
+  const [showIndex, setShowIndex] = useState();
+  const [incomeData, setIncomeData] = useState({
+    title: "Income",
+    icon: "square",
+    labels: [
+      {
+        name: "Inflation",
+        value: 0,
+      },
+      {
+        name: "Slashes",
+        children: [
+          {
+            name: "Treasury",
+            value: 0,
+          },
+          {
+            name: "Staking",
+            value: 0,
+          },
+          {
+            name: "Democracy",
+            value: 0,
+          },
+          {
+            name: "Election",
+            value: 0,
+          },
+          {
+            name: "Identity",
+            value: 0,
+          },
+        ],
+      },
+      {
+        name: "Others",
+        value: 0,
+      },
+    ],
+  });
+  const [outputData, setOutputData] = useState({
+    title: "Output",
+    icon: "square",
+    labels: [
+      {
+        name: "Proposal",
+        value: 0,
+      },
+      {
+        name: "Tips",
+        value: 0,
+      },
+      {
+        name: "Bounties",
+        value: 0,
+      },
+      {
+        name: "Burnt",
+        value: 0,
+      },
+    ],
+  });
 
   useEffect(() => {
     dispatch(fetchStatsHistory());
@@ -92,67 +154,75 @@ const TotalStacked = () => {
     setOutputHistory(outputHistory);
   }, [statsHistory]);
 
-  const IncomeData = {
-    title: "Income",
-    icon: "square",
-    labels: [
-      {
-        name: "Inflation",
-        value: 64706,
-      },
-      {
-        name: "Slashes",
-        children: [
+  useEffect(() => {
+    if (statsHistory && statsHistory.length > 0) {
+      const index = showIndex ?? statsHistory.length - 1;
+      const statsData = statsHistory[index];
+      setIncomeData({
+        title: "Income",
+        icon: "square",
+        labels: [
           {
-            name: "Treasury",
-            value: 153,
+            name: "Inflation",
+            value: toPrecision(statsData.income.inflation, 12, false),
           },
           {
-            name: "Staking",
-            value: 253,
+            name: "Slashes",
+            children: [
+              {
+                name: "Treasury",
+                value: toPrecision(statsData.income.slashSeats.treasury, 12, false),
+              },
+              {
+                name: "Staking",
+                value: toPrecision(statsData.income.slashSeats.staking, 12, false),
+              },
+              {
+                name: "Democracy",
+                value: toPrecision(statsData.income.slashSeats.democracy, 12, false),
+              },
+              {
+                name: "Election",
+                value: toPrecision(statsData.income.slashSeats.electionsPhragmen, 12, false),
+              },
+              {
+                name: "Identity",
+                value: toPrecision(statsData.income.slashSeats.identity, 12, false),
+              },
+            ],
           },
           {
-            name: "Democracy",
-            value: 353,
-          },
-          {
-            name: "Election",
-            value: 53,
-          },
-          {
-            name: "Identity",
-            value: 153,
+            name: "Others",
+            value: toPrecision(statsData.income.others, 12, false),
           },
         ],
-      },
-      {
-        name: "Others",
-        value: 1165,
-      },
-    ],
-  };
-  const outputData = {
-    title: "Output",
-    icon: "square",
-    labels: [
-      {
-        name: "Proposal",
-        value: 4553,
-      },
-      {
-        name: "Tips",
-        value: 1165,
-      },
-      {
-        name: "Bounties",
-        value: 1165,
-      },
-      {
-        name: "Burnt",
-        value: 1165,
-      },
-    ],
-  };
+      });
+      setOutputData({
+        title: "Output",
+        icon: "square",
+        labels: [
+          {
+            name: "Proposal",
+            value: toPrecision(statsData.output.proposal, 12, false),
+          },
+          {
+            name: "Tips",
+            value: toPrecision(statsData.output.tip, 12, false),
+          },
+          {
+            name: "Bounties",
+            value: toPrecision(statsData.output.bounty, 12, false),
+          },
+          {
+            name: "Burnt",
+            value: toPrecision(statsData.output.burnt, 12, false),
+          },
+        ],
+      })
+    }
+    
+  }, [showIndex, statsHistory])
+
   const chartData = {
     dates: dateLabels,
     values: [
@@ -171,16 +241,20 @@ const TotalStacked = () => {
     ],
   };
 
+  const onHover = (index) => {
+    setShowIndex(index);
+  }
+
   return (
     <>
       <Title>Total Stacked</Title>
       <CardWrapper>
         <ListWrapper>
-          <List data={IncomeData}></List>
+          <List data={incomeData}></List>
           <List data={outputData}></List>
         </ListWrapper>
         <ChartWrapper>
-          <Chart data={chartData} />
+          <Chart data={chartData} onHover={onHover} />
         </ChartWrapper>
       </CardWrapper>
     </>
