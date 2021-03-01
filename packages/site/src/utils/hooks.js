@@ -109,3 +109,13 @@ export const useMenuTab = () => {
     dispatch(setShowMenuTabs(menuTabsName));
   }, [pathname, dispatch])
 }
+
+export const useComponentWillMount = func => {
+  const willMount = useRef(true);
+
+  if (willMount.current) {
+    func();
+  }
+
+  willMount.current = false;
+}
