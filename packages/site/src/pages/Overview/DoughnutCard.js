@@ -30,7 +30,7 @@ const CardWrapper = styled(Card)`
 
 const CanvasWrapper = styled.div`
   width: 214px;
-  height: 214px;
+  height: 252px;
   flex-grow: 1;
   position: relative;
 `;
@@ -42,23 +42,34 @@ const DoughnutWrapper = styled.div`
   position: absolute;
 `;
 
-const DoughnutCard = ({ title, data, clickEvent }) => {
+const DoughnutCard = ({ title, data, status, clickEvent }) => {
+  const findDisabled = (name) => {
+    const findFunc = (item => {
+      if (item.name === name) return item.disabled;
+      if (item.children) {
+        return item.children.find(findFunc);
+      }
+      return;
+    })
+    const result = status?.labels?.find(findFunc);
+    return result;
+  }
   const totalReduce = (acc, current) => {
     if (current.children) {
       return acc + current.children.reduce(totalReduce, 0);
     }
-    return acc + (current.disabled ? 0 : (current.value ?? 0));
+    return acc + (findDisabled(current.name) ? 0 : (current.value ?? 0));
   }
   const total = data.labels?.reduce(totalReduce, 0);
   return (
     <div>
       <Title>{title}</Title>
       <CardWrapper>
-        <List data={data} clickEvent={clickEvent}></List>
+        <List data={data} status={status} clickEvent={clickEvent}></List>
         <CanvasWrapper>
           <Total total={total}>
             <DoughnutWrapper>
-              <Doughnut data={data} />
+              <Doughnut data={data} status={status} />
             </DoughnutWrapper>
           </Total>
         </CanvasWrapper>

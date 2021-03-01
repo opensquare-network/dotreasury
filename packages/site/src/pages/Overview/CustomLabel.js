@@ -77,8 +77,9 @@ const ValueWrapper = styled.div`
   `}
 `
 
-const Label = ({ data, icon, clickEvent }) => {
-  const { name, color, disabled, children } = data;
+const Label = ({ data, icon, status, clickEvent }) => {
+  const { name, color, children } = data;
+  const disabled = status?.disabled;
   let { value } = data;
   if (children) {
     value = (children || []).reduce((acc, current) => {
@@ -108,13 +109,13 @@ const Label = ({ data, icon, clickEvent }) => {
           clickEvent && clickEvent(item.name)
         }}>
           <IconWrapper>
-            <Icon icon={icon} color={item.color} disabled={item.disabled} />
+            <Icon icon={icon} color={item.color} disabled={status?.children[index].disabled} />
           </IconWrapper>
-          <ChildTitle disabled={item.disabled}>{item.name}</ChildTitle>
+          <ChildTitle disabled={status?.children[index].disabled}>{item.name}</ChildTitle>
           <Popup
             content={`${item.value} KSM`}
             size='mini'
-            trigger={<ValueWrapper disabled={item.disabled}>
+            trigger={<ValueWrapper disabled={status?.children[index].disabled}>
               <TextMinor>{`${Math.round(item.value) === item.value ? "" : "≈ "}${Math.round(item.value)} KSM`}</TextMinor>
             </ValueWrapper>}
           />

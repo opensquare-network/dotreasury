@@ -24,6 +24,36 @@ const Income = ({
     icon: "circle",
     labels: [],
   });
+  const [incomeStatus, setIncomeStatus] = useState({
+    labels: [
+      {
+        name: "Inflation"
+      },
+      {
+        name: "Slashes",
+        children: [
+          {
+            name: "Treasury"
+          },
+          {
+            name: "Staking"
+          },
+          {
+            name: "Democracy"
+          },
+          {
+            name: "Election"
+          },
+          {
+            name: "Identity"
+          },
+        ],
+      },
+      {
+        name: "Others"
+      },
+    ],
+  })
 
   useEffect(() => {
     setIncomeData({
@@ -82,7 +112,7 @@ const Income = ({
   ]);
 
   const clickEvent = (name) => {
-    const obj = Object.assign({}, incomeData);
+    const obj = Object.assign({}, incomeStatus);
     obj.labels.forEach((item) => {
       if (item.children) {
         item.children.forEach((child) => {
@@ -106,11 +136,11 @@ const Income = ({
         }
       }
     });
-    setIncomeData(obj);
+    setIncomeStatus(obj);
   };
 
   return (
-    <DoughnutCard title="Income" data={incomeData} clickEvent={clickEvent} />
+    <DoughnutCard title="Income" data={incomeData} status={incomeStatus} clickEvent={clickEvent} />
   );
 };
 
