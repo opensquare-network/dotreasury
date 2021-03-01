@@ -4,6 +4,7 @@ import { useParams } from "react-router";
 import styled from "styled-components";
 import { hexToString } from "@polkadot/util";
 import {
+  setTipDetail,
   fetchTipCountdown,
   fetchTipDetail,
   loadingTipDetailSelector,
@@ -26,6 +27,7 @@ import Funder from "./Funder";
 import ClickableLink from "../../components/ClickableLink";
 import TimelineCommentWrapper from "../../components/TimelineCommentWrapper";
 import DetailGoBack from "../components/DetailGoBack";
+import { useComponentWillMount } from "../../utils/hooks";
 
 const TableWrapper = styled.div`
   display: grid;
@@ -130,6 +132,11 @@ const TipDetail = () => {
   const { tipId } = useParams();
   const dispatch = useDispatch();
   const [timelineData, setTimelineData] = useState([]);
+
+  // 先清空
+  useComponentWillMount(() => {
+    dispatch(setTipDetail({}));
+  });
 
   useEffect(() => {
     dispatch(fetchTipDetail(tipId));
