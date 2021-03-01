@@ -27,6 +27,13 @@ import ForgetPassword from "../pages/ForgetPassword";
 import ResetPassword from "../pages/ResetPassword";
 import VerifyEmail from "../pages/VerifyEmail";
 import Toast from "../pages/Toast";
+import TreasurySlash from "../pages/TreasurySlash";
+import DemocracySlash from "../pages/DemocracySlash";
+import IdentitySlash from "../pages/IdentitySlash";
+import StakingSlash from "../pages/StakingSlash";
+import ElectionPhragmenSlash from "../pages/ElectionPhragmenSlash";
+import Inflation from "../pages/Inflation";
+import OthersIncome from "../pages/OthersIncome";
 
 import { usePreload } from "../utils/hooks";
 
@@ -56,6 +63,33 @@ export default function App() {
                 component={BountyDetail}
               />
               <Route exact path="/burnt" component={Burnt} />
+              <Route exact path="/income" component={Inflation} />
+              <Route
+                exact
+                path="/income/slash/treasury"
+                component={TreasurySlash}
+              />
+              <Route
+                exact
+                path="/income/slash/democracy"
+                component={DemocracySlash}
+              />
+              <Route
+                exact
+                path="/income/slash/identity"
+                component={IdentitySlash}
+              />
+              <Route
+                exact
+                path="/income/slash/staking"
+                component={StakingSlash}
+              />
+              <Route
+                exact
+                path="/income/slash/electionphragmen"
+                component={ElectionPhragmenSlash}
+              />
+              <Route exact path="/income/others" component={OthersIncome} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
               <Route exact path="/settings/:tabname?" component={UserSetting} />

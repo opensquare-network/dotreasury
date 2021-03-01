@@ -1,7 +1,9 @@
 import { useLayoutEffect, useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import { getIndentity } from "../services/chainApi";
+import { setShowMenuTabs } from "../store/reducers/menuSlice";
 
 export const useWindowSize = () => {
   const [size, setSize] = useState([0, 0]);
@@ -103,4 +105,13 @@ export const usePreload = () => {
     });
   }, []);
   return;
+};
+
+export const useMenuTab = () => {
+  const dispatch = useDispatch();
+  const { pathname } = useLocation();
+  useEffect(() => {
+    const menuTabsName = pathname.startsWith("/income") ? "Income" : "Home";
+    dispatch(setShowMenuTabs(menuTabsName));
+  }, [pathname, dispatch]);
 };

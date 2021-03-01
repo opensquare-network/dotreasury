@@ -2,6 +2,19 @@ const { getStatusCollection } = require("./index");
 
 const genesisHeight = 1;
 const mainScanName = "main-scan-height";
+const incomeScanName = "income-scan";
+const genesisTreasurySeats = {
+  inflation: 0,
+  slash: 0,
+  others: 0, // mainly gas
+  slashSeats: {
+    treasury: 0,
+    staking: 0,
+    democracy: 0,
+    electionsPhragmen: 0,
+    identity: 0,
+  },
+};
 
 async function getNextScanHeight() {
   const statusCol = await getStatusCollection();
@@ -17,6 +30,20 @@ async function getNextScanHeight() {
   }
 }
 
+async function getIncomeNextScanStatus() {
+  const statusCol = await getStatusCollection();
+  const status = await statusCol.findOne({ name: incomeScanName });
+
+  if (!status) {
+    return {
+      height: genesisHeight,
+      seats: genesisTreasurySeats,
+    };
+  }
+
+  return status;
+}
+
 async function updateScanHeight(height) {
   const statusCol = await getStatusCollection();
   await statusCol.findOneAndUpdate(
@@ -26,7 +53,18 @@ async function updateScanHeight(height) {
   );
 }
 
+async function updateIncomeScanStatus(height, seats) {
+  const statusCol = await getStatusCollection();
+  await statusCol.findOneAndUpdate(
+    { name: incomeScanName },
+    { $set: { height, seats } },
+    { upsert: true }
+  );
+}
+
 module.exports = {
   getNextScanHeight,
   updateScanHeight,
+  getIncomeNextScanStatus,
+  updateIncomeScanStatus,
 };

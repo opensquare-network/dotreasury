@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import api from "../../services/scanApi";
 
 const overviewSlice = createSlice({
   name: "overview",
@@ -29,16 +30,37 @@ const overviewSlice = createSlice({
         tip: 0,
         burnt: 0,
       },
+      income: {
+        inflation: 0,
+        others: 0,
+        slash: 0,
+        slashSeats: {
+          democracy: 0,
+          electionsPhragmen: 0,
+          identity: 0,
+          staking: 0,
+          treasury: 0,
+        },
+      },
     },
+    statsHistory: [],
   },
   reducers: {
     setOverview(state, { payload }) {
       state.overview = payload;
     },
+    setStatsHistory(state, { payload }) {
+      state.statsHistory = payload;
+    },
   },
 });
 
-export const { setOverview } = overviewSlice.actions;
+export const { setOverview, setStatsHistory } = overviewSlice.actions;
+
+export const fetchStatsHistory = () => async (dispatch) => {
+  const { result } = await api.fetch(`/stats/weekly`);
+  dispatch(setStatsHistory(result || []));
+};
 
 export const totalProposalCountSelector = (state) =>
   state.overview.overview.count.proposal.all;
@@ -49,5 +71,6 @@ export const totalBountyCountSelector = (state) =>
 export const totalBurntCountSelector = (state) =>
   state.overview.overview.count.burnt.all;
 export const overviewSelector = (state) => state.overview.overview;
+export const statsHistorySelector = (state) => state.overview.statsHistory;
 
 export default overviewSlice.reducer;

@@ -86,10 +86,38 @@ const Modules = Object.freeze({
   Utility: "utility",
   Tips: "tips",
   Bounties: "bounties",
+  Staking: "staking",
+  Identity: "identity",
+  Democracy: "democracy",
+  ElectionsPhragmen: "electionsPhragmen",
+  Session: "session",
+});
+
+const SessionEvents = Object.freeze({
+  NewSession: "NewSession",
+});
+
+const ElectionsPhragmenEvents = Object.freeze({
+  CandidateSlashed: "CandidateSlashed",
+  SeatHolderSlashed: "SeatHolderSlashed",
+  NewTerm: "NewTerm",
+});
+
+const DemocracyEvents = Object.freeze({
+  Blacklisted: "Blacklisted",
+  PreimageInvalid: "PreimageInvalid",
+});
+
+const DemocracyMethods = Object.freeze({
+  cancelProposal: "cancel_proposal",
 });
 
 const ProxyMethods = Object.freeze({
   proxy: "proxy",
+});
+
+const IdentityEvents = Object.freeze({
+  IdentityKilled: "IdentityKilled",
 });
 
 const MultisigMethods = Object.freeze({
@@ -102,12 +130,26 @@ const UtilityMethods = Object.freeze({
 
 const TreasuryEvent = Object.freeze({
   Burnt: "Burnt",
+  Deposit: "Deposit",
+  Rejected: "Rejected",
+  BountyRejected: "BountyRejected",
+});
+
+const TreasuryMethods = Object.freeze({
+  unassignCurator: "unassign_curator",
+});
+
+const StakingEvents = Object.freeze({
+  EraPayout: "EraPayout",
+  Slash: "Slash",
+  Reward: "Reward",
 });
 
 module.exports = {
   Modules,
   BountyMethods,
   BountyEvents,
+  StakingEvents,
   ProposalMethods,
   ProposalEvents,
   TipMethods,
@@ -123,4 +165,10 @@ module.exports = {
   TreasuryAccount,
   UtilityMethods,
   ksmTreasuryRefactorApplyHeight,
+  TreasuryMethods,
+  IdentityEvents,
+  DemocracyEvents,
+  DemocracyMethods,
+  ElectionsPhragmenEvents,
+  SessionEvents,
 };

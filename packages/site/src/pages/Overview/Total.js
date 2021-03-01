@@ -38,6 +38,7 @@ const TotalText = styled(TextMinor)`
 `;
 
 const Total = ({ total, children }) => {
+  total = total.toFixed(2).replace(/\D00/, "");
   return (
     <Wrapper>
       {children}

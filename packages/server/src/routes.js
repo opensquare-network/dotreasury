@@ -7,6 +7,8 @@ const featureRouters = [
   require("./features/auth/routes"),
   require("./features/users/routes"),
   require("./features/comments/routes"),
+  require("./features/income/routes"),
+  require("./features/stats/routes"),
 ];
 
 module.exports = (app) => {
