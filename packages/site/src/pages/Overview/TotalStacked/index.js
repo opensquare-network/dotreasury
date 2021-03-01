@@ -72,19 +72,19 @@ const TotalStacked = () => {
         name: "Slashes",
         children: [
           {
-            name: "Treasury",
-            value: 0,
-          },
-          {
             name: "Staking",
             value: 0,
           },
           {
-            name: "Democracy",
+            name: "Treasury",
             value: 0,
           },
           {
             name: "Election",
+            value: 0,
+          },
+          {
+            name: "Democracy",
             value: 0,
           },
           {
@@ -170,20 +170,20 @@ const TotalStacked = () => {
             name: "Slashes",
             children: [
               {
-                name: "Treasury",
-                value: toPrecision(statsData.income.slashSeats.treasury, 12, false),
-              },
-              {
                 name: "Staking",
                 value: toPrecision(statsData.income.slashSeats.staking, 12, false),
               },
               {
-                name: "Democracy",
-                value: toPrecision(statsData.income.slashSeats.democracy, 12, false),
+                name: "Treasury",
+                value: toPrecision(statsData.income.slashSeats.treasury, 12, false),
               },
               {
                 name: "Election",
                 value: toPrecision(statsData.income.slashSeats.electionsPhragmen, 12, false),
+              },
+              {
+                name: "Democracy",
+                value: toPrecision(statsData.income.slashSeats.democracy, 12, false),
               },
               {
                 name: "Identity",
