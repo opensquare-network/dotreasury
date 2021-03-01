@@ -4,6 +4,7 @@ import DetailGoBack from "../components/DetailGoBack";
 import RelatedLinks from "../RelatedLinks";
 import Comment from "../Comment";
 import Detail from "./Detail";
+import Proposals from "./Proposals";
 
 const ProjectDetail = () => {
   return (
@@ -11,6 +12,7 @@ const ProjectDetail = () => {
       <DetailGoBack />
       <Detail />
       <RelatedLinks />
+      <Proposals />
       <Comment />
     </>
   )
