@@ -85,6 +85,7 @@ const Label = ({ data, icon, clickEvent }) => {
       return acc + current.value ?? 0;
     }, 0)
   }
+
   return (
     <Wrapper>
       <ItemWrapper onClick={() => {
@@ -114,7 +115,7 @@ const Label = ({ data, icon, clickEvent }) => {
             content={`${item.value} KSM`}
             size='mini'
             trigger={<ValueWrapper disabled={item.disabled}>
-              <TextMinor>{`${Math.round(value) === value ? "" : "≈ "}${Math.round(item.value)} KSM`}</TextMinor>
+              <TextMinor>{`${Math.round(item.value) === item.value ? "" : "≈ "}${Math.round(item.value)} KSM`}</TextMinor>
             </ValueWrapper>}
           />
         </ItemWrapper>)
