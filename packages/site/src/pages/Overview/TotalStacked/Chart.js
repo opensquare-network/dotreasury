@@ -58,7 +58,8 @@ const Chart = ({ data, onHover }) => {
       yAxes: [{
         position: "right",
         ticks: {
-          fontFamily: "Inter"
+          fontFamily: "Inter",
+          stepSize: 100000
         }
       }]
     },
