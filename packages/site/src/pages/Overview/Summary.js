@@ -23,9 +23,10 @@ import { mrgap } from "../../styles";
 const Wrapper = styled(Card)`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 24px;
+  gap: 8px;
   padding: 31px;
-  @media screen and (min-width: 1168px) {
+  margin-bottom: 24px;
+  /* @media screen and (min-width: 1168px) {
     height: 280px;
     grid-auto-flow: column;
     grid-template-rows: repeat(auto-fit, 56px);
@@ -39,7 +40,7 @@ const Wrapper = styled(Card)`
     height: auto;
     grid-auto-flow: row;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  }
+  } */
 `;
 
 const CustomCard = styled.div`

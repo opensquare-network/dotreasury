@@ -5,8 +5,8 @@ import Logo from "./Logo";
 import { NavLink } from "react-router-dom";
 import ScanHeight from "./ScanHeight";
 import Setting from "./Setting";
-import Text from "../../components/Text";
-import { PRIMARY_THEME_COLOR } from "../../constants";
+import MenuSwitch from "./MenuSwitch";
+import { useMenuTab } from "../../utils/hooks";
 
 const Wrapper = styled.header`
   height: 68px;
@@ -18,25 +18,19 @@ const Wrapper = styled.header`
 const Left = styled.div`
   display: flex;
   align-items: center;
-`
+`;
 
 const Right = styled.div`
   display: flex;
   align-items: center;
-`
+`;
 
 const ScanHeightWrapper = styled.div`
   margin-left: 24px;
 `
-const NavButton = styled(Text)`
-  margin-right: 32px;
-  :hover {
-    color: ${PRIMARY_THEME_COLOR};
-  }
-`
 
 const HeaderExamplePage = () => {
-
+  useMenuTab();
   return (
     <Wrapper>
       <Left>
@@ -48,13 +42,19 @@ const HeaderExamplePage = () => {
         </ScanHeightWrapper>
       </Left>
       <Right>
+        <NavLink to="/">
+          <MenuSwitch menuTabsName="Home" />
+        </NavLink>
+        <NavLink to="/income">
+          <MenuSwitch menuTabsName="Income" />
+        </NavLink>
         <NavLink to="/projects">
-          <NavButton>projects</NavButton>
+          <MenuSwitch menuTabsName="Projects" />
         </NavLink>
         <Setting />
       </Right>
     </Wrapper>
-  )
+  );
 };
 
 export default HeaderExamplePage;

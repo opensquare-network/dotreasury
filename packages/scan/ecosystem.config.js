@@ -1,5 +1,4 @@
 const commonPart = {
-  script: "src/index.js",
   log_date_format: "YYYY-MM-DD HH:mm Z",
   env: {
     NODE_ENV: "development",
@@ -9,15 +8,29 @@ const commonPart = {
   },
 };
 
+const outputScanPart = {
+  script: "src/index.js",
+  ...commonPart,
+};
+
+const incomePart = {
+  script: "src/income/index.js",
+  ...commonPart,
+};
+
 module.exports = {
   apps: [
     {
       name: "doTreasury-scan",
-      ...commonPart,
+      ...outputScanPart,
     },
     {
       name: "doTreasury-scan-staging",
-      ...commonPart,
+      ...outputScanPart,
+    },
+    {
+      name: "doTreasury-income-scan-staging",
+      ...incomePart,
     },
     {
       name: "doTreasury-scan-dev",

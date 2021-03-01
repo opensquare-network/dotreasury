@@ -1,4 +1,10 @@
-const { logger, knownHeightsLogger } = require("./logger");
+const {
+  logger,
+  knownHeightsLogger,
+  incomeLogger,
+  incomeKnownHeightsLogger,
+} = require("./logger");
+const BigNumber = require("bignumber.js");
 const { getApi } = require("../api");
 
 const sleep = (time) => {
@@ -34,6 +40,14 @@ function median(values) {
 
   const sorted = [...values].sort((a, b) => a - b);
   return sorted[Math.floor(sorted.length / 2)];
+}
+
+function bigAdd(v1, v2) {
+  return new BigNumber(v1).plus(v2).toString();
+}
+
+function gt(v1, v2) {
+  return new BigNumber(v1).isGreaterThan(v2);
 }
 
 function getConstFromRegistry(registry, moduleName, constantName) {
@@ -96,6 +110,10 @@ module.exports = {
   median,
   logger,
   knownHeightsLogger,
+  incomeLogger,
+  incomeKnownHeightsLogger,
+  bigAdd,
+  gt,
   getMetadataConstByBlockHash,
   getMetadataConstsByBlockHash,
 };

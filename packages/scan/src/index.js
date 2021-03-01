@@ -9,6 +9,8 @@ const { getBlockIndexer } = require("./block/getBlockIndexer");
 const { handleExtrinsics } = require("./extrinsic");
 const { handleEvents } = require("./events");
 const { knownHeights, maxKnownHeight } = require("./block/known");
+const { processStat } = require("./stats");
+const { handleIncomeEvents } = require("./income");
 
 async function scanKnowBlocks(toScanHeight) {
   let index = knownHeights.findIndex((height) => height >= toScanHeight);
@@ -66,6 +68,10 @@ async function scanBlockByHeight(scanHeight) {
   if (hasTargetEvents || hasTargetEx) {
     knownHeightsLogger.info(scanHeight);
   }
+
+  await handleIncomeEvents(allEvents, blockIndexer, block.block.extrinsics);
+
+  await processStat(blockIndexer);
 
   logger.info(`block ${block.block.header.number.toNumber()} done`);
 }
