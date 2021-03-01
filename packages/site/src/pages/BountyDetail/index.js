@@ -241,7 +241,6 @@ const BountyDetail = () => {
   const dispatch = useDispatch();
   const [timelineData, setTimelineData] = useState([]);
 
-  // 先清空
   useComponentWillMount(() => {
     dispatch(setBountyDetail({}));
   });
