@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import styled from "styled-components";
 import {
+  setBountyDetail,
   bountyDetailSelector,
   fetchBountyDetail,
   loadingBountyDetailSelector,
@@ -24,6 +25,7 @@ import { stringToWords } from "../../utils";
 
 import { scanHeightSelector } from "../../store/reducers/chainSlice";
 import DetailGoBack from "../components/DetailGoBack";
+import { useComponentWillMount } from "../../utils/hooks";
 
 const ValueWrapper = styled.span`
   margin-right: 4px;
@@ -238,6 +240,11 @@ const BountyDetail = () => {
   const { bountyIndex } = useParams();
   const dispatch = useDispatch();
   const [timelineData, setTimelineData] = useState([]);
+
+  // 先清空
+  useComponentWillMount(() => {
+    dispatch(setBountyDetail({}));
+  });
 
   useEffect(() => {
     dispatch(fetchBountyDetail(bountyIndex));
