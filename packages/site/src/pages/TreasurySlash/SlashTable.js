@@ -1,7 +1,8 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import dayjs from "dayjs";
-import { Image } from "semantic-ui-react";
+import { Image, Popup } from "semantic-ui-react";
 
 import Table from "../../components/Table";
 import TableLoading from "../../components/TableLoading";
@@ -62,6 +63,13 @@ const EventWrapper = styled.div`
   }
 `;
 
+const ProposalID = styled(Text)`
+  white-space: nowrap;
+  &:hover {
+    text-decoration-line: underline;
+  }
+`;
+
 const SlashTable = ({ data, loading }) => {
   return (
     <Wrapper>
@@ -105,11 +113,29 @@ const SlashTable = ({ data, loading }) => {
                   </Table.Cell>
                   <Table.Cell>{`${item.section}(${item.method})`}</Table.Cell>
                   <Table.Cell>
-                    {item.method === "Rejected"
-                      ? `#${item.proposalId}`
-                      : item.method === "BountyRejected"
-                      ? `#${item.bountyIndex}`
-                      : ""}
+                    <Popup
+                      content={
+                        item.method === "Rejected"
+                          ? "Proposal ID"
+                          : item.method === "BountyRejected"
+                          ? "Bounty ID"
+                          : "Tip ID"
+                      }
+                      size="mini"
+                      trigger={
+                        item.method === "Rejected" ? (
+                          <NavLink to={`/proposals/${item.proposalId}`}>
+                            <ProposalID>#{item.proposalId}</ProposalID>
+                          </NavLink>
+                        ) : item.method === "BountyRejected" ? (
+                          <NavLink to={`/bounties/${item.bountyIndex}`}>
+                            <ProposalID>#{item.bountyIndex}</ProposalID>
+                          </NavLink>
+                        ) : (
+                          ""
+                        )
+                      }
+                    />
                   </Table.Cell>
                   <Table.Cell textAlign={"right"}>
                     <Balance value={item.balance} />
