@@ -30,7 +30,7 @@ const CardWrapper = styled(Card)`
 
 const CanvasWrapper = styled.div`
   width: 214px;
-  height: 214px;
+  height: 252px;
   flex-grow: 1;
   position: relative;
 `;
@@ -42,7 +42,7 @@ const DoughnutWrapper = styled.div`
   position: absolute;
 `;
 
-const DoughnutCard = ({ title, data, clickEvent }) => {
+const DoughnutCard = ({ title, data, status, clickEvent }) => {
   const totalReduce = (acc, current) => {
     if (current.children) {
       return acc + current.children.reduce(totalReduce, 0);
@@ -54,11 +54,11 @@ const DoughnutCard = ({ title, data, clickEvent }) => {
     <div>
       <Title>{title}</Title>
       <CardWrapper>
-        <List data={data} clickEvent={clickEvent}></List>
+        <List data={data} status={status} clickEvent={clickEvent}></List>
         <CanvasWrapper>
           <Total total={total}>
             <DoughnutWrapper>
-              <Doughnut data={data} />
+              <Doughnut data={data} status={status} />
             </DoughnutWrapper>
           </Total>
         </CanvasWrapper>

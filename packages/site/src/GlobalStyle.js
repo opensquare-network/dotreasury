@@ -4,6 +4,9 @@ const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
     background: #FBFBFB;
+    * {
+      box-sizing: border-box !important;
+    }
   }
   
   #root {

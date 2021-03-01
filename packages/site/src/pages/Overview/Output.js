@@ -13,6 +13,23 @@ const Output = ({ proposals, tips, bounties, burnt }) => {
     icon: "circle",
     labels: []
   });
+                       
+  const [outputStatus, setOutputStatus] = useState({
+    labels: [
+      {
+        name: "Proposals"
+      },
+      {
+        name: "Tips"
+      },
+      {
+        name: "Bounties"
+      },
+      {
+        name: "Burnt"
+      }
+    ]
+  })
 
   useEffect(() => {
     setOutputData({
@@ -43,18 +60,18 @@ const Output = ({ proposals, tips, bounties, burnt }) => {
   }, [proposals, tips, bounties, burnt])
 
   const clickEvent = (name) => {
-    const obj = Object.assign({}, outputData);
+    const obj = Object.assign({}, outputStatus);
     obj.labels.forEach(item => {
       if (item.name === name) {
         const disabled = !item.disabled;
         item.disabled = disabled;
       }
     });
-    setOutputData(obj);
+    setOutputStatus(obj);
   }
 
   return (
-    <DoughnutCard title="Output" data={outputData} clickEvent={clickEvent} />
+    <DoughnutCard title="Output" data={outputData} status={outputStatus} clickEvent={clickEvent} />
   )
 }
 
