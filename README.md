@@ -60,7 +60,7 @@ In packages/site/.env file, point to your server API url
 
 ```
 REACT_APP_SCAN_SERVER=http://localhost:3213/
-REACT_APP_SOCKET_IO_URL=https://localhost:3213/
+REACT_APP_SOCKET_IO_URL=http://localhost:3213/
 ```
 
 Then, run it.
