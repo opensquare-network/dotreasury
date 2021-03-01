@@ -91,20 +91,20 @@ const TotalStacked = () => {
         name: "Slashes",
         children: [
           {
-            name: "Treasury",
-            value: 153,
-          },
-          {
             name: "Staking",
             value: 253,
           },
           {
-            name: "Democracy",
-            value: 353,
+            name: "Treasury",
+            value: 153,
           },
           {
             name: "Election",
             value: 53,
+          },
+          {
+            name: "Democracy",
+            value: 353,
           },
           {
             name: "Identity",

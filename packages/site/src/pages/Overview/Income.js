@@ -13,7 +13,7 @@ import {
   OVERVIEW_ELECTION_COLOR,
   OVERVIEW_IDENTITY_COLOR,
   OVERVIEW_OTHERS_COLOR,
-  TEXT_DARK_MAJOR
+  TEXT_DARK_MAJOR,
 } from "../../constants";
 
 const LinkButton = styled(TextMinor)`
@@ -29,7 +29,7 @@ const LinkButton = styled(TextMinor)`
       opacity: 1;
     }
   }
-`
+`;
 
 const Income = ({
   inflation,
@@ -47,33 +47,33 @@ const Income = ({
   const [incomeStatus, setIncomeStatus] = useState({
     labels: [
       {
-        name: "Inflation"
+        name: "Inflation",
       },
       {
         name: "Slashes",
         children: [
           {
-            name: "Treasury"
+            name: "Staking",
           },
           {
-            name: "Staking"
+            name: "Treasury",
           },
           {
-            name: "Democracy"
+            name: "Election",
           },
           {
-            name: "Election"
+            name: "Democracy",
           },
           {
-            name: "Identity"
+            name: "Identity",
           },
         ],
       },
       {
-        name: "Others"
+        name: "Others",
       },
     ],
-  })
+  });
 
   useEffect(() => {
     setIncomeData({
@@ -88,24 +88,24 @@ const Income = ({
           name: "Slashes",
           children: [
             {
-              name: "Treasury",
-              value: slashTreasury,
-              color: OVERVIEW_TREASURY_COLOR,
-            },
-            {
               name: "Staking",
               value: slashStaking,
               color: OVERVIEW_STAKING_COLOR,
             },
             {
-              name: "Democracy",
-              value: slashDemocracy,
-              color: OVERVIEW_DEMOCRACY_COLOR,
+              name: "Treasury",
+              value: slashTreasury,
+              color: OVERVIEW_TREASURY_COLOR,
             },
             {
               name: "Election",
               value: slashElection,
               color: OVERVIEW_ELECTION_COLOR,
+            },
+            {
+              name: "Democracy",
+              value: slashDemocracy,
+              color: OVERVIEW_DEMOCRACY_COLOR,
             },
             {
               name: "Identity",
@@ -160,9 +160,17 @@ const Income = ({
   };
 
   return (
-    <DoughnutCard title="Income" data={incomeData} status={incomeStatus} clickEvent={clickEvent} >
-      <NavLink to={'/income'}>
-        <LinkButton>Detail<GrayImage src="/imgs/caret-right.svg" width={24} /></LinkButton>
+    <DoughnutCard
+      title="Income"
+      data={incomeData}
+      status={incomeStatus}
+      clickEvent={clickEvent}
+    >
+      <NavLink to={"/income"}>
+        <LinkButton>
+          Detail
+          <GrayImage src="/imgs/caret-right.svg" width={24} />
+        </LinkButton>
       </NavLink>
     </DoughnutCard>
   );
