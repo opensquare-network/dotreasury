@@ -110,9 +110,11 @@ const BurntTable = ({ data, loading }) => {
                     {item.burnPercent}
                   </Table.Cell>
                   <Table.Cell textAlign={"right"} className="balance-cell">
-                    <Balance
-                      value={item?.treasury?.free || item.treasuryBalance}
-                    />
+                    {parseInt(item.treasuryBalance) <= 0 ? (
+                      "--"
+                    ) : (
+                      <Balance value={item.treasuryBalance} />
+                    )}
                   </Table.Cell>
                 </TableRow>
               ))) || <TableNoDataCell />}
