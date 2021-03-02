@@ -53,16 +53,16 @@ const Income = ({
         name: "Slashes",
         children: [
           {
-            name: "Treasury",
-          },
-          {
             name: "Staking",
           },
           {
-            name: "Democracy",
+            name: "Treasury",
           },
           {
             name: "Election",
+          },
+          {
+            name: "Democracy",
           },
           {
             name: "Identity",
@@ -88,24 +88,24 @@ const Income = ({
           name: "Slashes",
           children: [
             {
-              name: "Treasury",
-              value: slashTreasury,
-              color: OVERVIEW_TREASURY_COLOR,
-            },
-            {
               name: "Staking",
               value: slashStaking,
               color: OVERVIEW_STAKING_COLOR,
             },
             {
-              name: "Democracy",
-              value: slashDemocracy,
-              color: OVERVIEW_DEMOCRACY_COLOR,
+              name: "Treasury",
+              value: slashTreasury,
+              color: OVERVIEW_TREASURY_COLOR,
             },
             {
               name: "Election",
               value: slashElection,
               color: OVERVIEW_ELECTION_COLOR,
+            },
+            {
+              name: "Democracy",
+              value: slashDemocracy,
+              color: OVERVIEW_DEMOCRACY_COLOR,
             },
             {
               name: "Identity",

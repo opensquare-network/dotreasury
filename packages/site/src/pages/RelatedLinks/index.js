@@ -9,6 +9,7 @@ import { useLocation } from "react-router-dom";
 import LinkItem from "./LinkItem";
 import SubTitle from "../../components/SubTitle";
 import {
+  setLinks,
   fetchLinks,
   linksSelector,
   addLink,
@@ -17,6 +18,7 @@ import {
 import AdminLogin from "../AdminLogin";
 import { nowAddressSelector } from "../../store/reducers/accountSlice";
 import Divider from "../../components/Divider";
+import { useComponentWillMount } from "../../utils/hooks";
 
 const Wrapper = styled.div`
   margin-top: 20px;
@@ -50,6 +52,10 @@ const DividerWrapper = styled(Divider)`
 const RelatedLinks = ({ type, index }) => {
   const dispatch = useDispatch();
   const location = useLocation();
+
+  useComponentWillMount(() => {
+    dispatch(setLinks([]));
+  });
 
   useDeepCompareEffect(() => {
     dispatch(fetchLinks(type, index));

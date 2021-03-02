@@ -167,19 +167,6 @@ const TabExampleSecondaryPointing = () => {
           {
             menuItem: {
               as: NavLink,
-              id: "treasurySlashTab",
-              content: <TreasurySlashMenu />,
-              to: "/income/slash/treasury",
-              exact: true,
-              key: "treasurySlash",
-              active:
-                "/income/slash/treasury" === pathname ||
-                pathname.indexOf("/income/slash/treasury") === 0,
-            },
-          },
-          {
-            menuItem: {
-              as: NavLink,
               id: "stakingSlashTab",
               content: <StakingSlashMenu />,
               to: "/income/slash/staking",
@@ -193,14 +180,14 @@ const TabExampleSecondaryPointing = () => {
           {
             menuItem: {
               as: NavLink,
-              id: "democracySlashTab",
-              content: <DemocracySlashMenu />,
-              to: "/income/slash/democracy",
+              id: "treasurySlashTab",
+              content: <TreasurySlashMenu />,
+              to: "/income/slash/treasury",
               exact: true,
-              key: "democracySlash",
+              key: "treasurySlash",
               active:
-                "/income/slash/democracy" === pathname ||
-                pathname.indexOf("/income/slash/democracy") === 0,
+                "/income/slash/treasury" === pathname ||
+                pathname.indexOf("/income/slash/treasury") === 0,
             },
           },
           {
@@ -214,6 +201,19 @@ const TabExampleSecondaryPointing = () => {
               active:
                 "/income/slash/electionphragmen" === pathname ||
                 pathname.indexOf("/income/slash/electionphragmen") === 0,
+            },
+          },
+          {
+            menuItem: {
+              as: NavLink,
+              id: "democracySlashTab",
+              content: <DemocracySlashMenu />,
+              to: "/income/slash/democracy",
+              exact: true,
+              key: "democracySlash",
+              active:
+                "/income/slash/democracy" === pathname ||
+                pathname.indexOf("/income/slash/democracy") === 0,
             },
           },
           {
