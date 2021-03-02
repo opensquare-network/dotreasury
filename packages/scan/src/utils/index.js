@@ -6,6 +6,8 @@ const {
 } = require("./logger");
 const BigNumber = require("bignumber.js");
 const { getApi } = require("../api");
+const { TreasuryAccount } = require("./constants");
+const { expandMetadata } = require("@polkadot/metadata");
 
 const sleep = (time) => {
   return new Promise((resolve) => {
@@ -102,6 +104,55 @@ async function getMetadataConstsByBlockHash(blockHash, constants) {
   );
 }
 
+const ksmMigrateAccountHeight = 1492896;
+let oldKey;
+
+async function queryAccountFreeWithSystem(blockHash) {
+  const api = await getApi();
+  const account = (
+    await api.query.system.account.at(blockHash, TreasuryAccount)
+  ).toJSON();
+  return account?.data?.free;
+}
+
+async function setOldKey() {
+  const api = await getApi();
+  const blockHash = await api.rpc.chain.getBlockHash(1375085);
+  const metadata = await api.rpc.state.getMetadata(blockHash);
+  const decorated = expandMetadata(metadata.registry, metadata);
+
+  oldKey = [decorated.query.balances.freeBalance, TreasuryAccount];
+}
+
+async function getTreasuryBalance(blockHash, blockHeight) {
+  const api = await getApi();
+  if (blockHeight < 1375086) {
+    const metadata = await api.rpc.state.getMetadata(blockHash);
+    const decorated = expandMetadata(metadata.registry, metadata);
+    const key = [decorated.query.balances.freeBalance, TreasuryAccount];
+    const value = await api.rpc.state.getStorage(key, blockHash);
+
+    if (blockHeight === 1375085) {
+      oldKey = key;
+    }
+
+    return metadata.registry.createType("Compact<Balance>", value).toJSON();
+  } else if (blockHeight < 1377831) {
+    if (!oldKey) {
+      await setOldKey();
+    }
+    const value = await api.rpc.state.getStorage(oldKey, blockHash);
+
+    const metadata = await api.rpc.state.getMetadata(blockHash);
+    return metadata.registry.createType("Compact<Balance>", value).toJSON();
+  } else if (blockHeight < ksmMigrateAccountHeight) {
+    // TODO: find how to get the balance from 1377831 to 1492896
+    return await queryAccountFreeWithSystem(blockHash);
+  } else {
+    return await queryAccountFreeWithSystem(blockHash);
+  }
+}
+
 module.exports = {
   getExtrinsicSigner,
   isExtrinsicSuccess,
@@ -116,4 +167,5 @@ module.exports = {
   gt,
   getMetadataConstByBlockHash,
   getMetadataConstsByBlockHash,
+  getTreasuryBalance,
 };
