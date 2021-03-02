@@ -97,10 +97,10 @@ const UserLogin = () => {
         </Wrapper>
       ) : (
         <>
-          <NavLink to="/register">
+          <NavLink to="/register" className="button signUp">
             <SignUpButton>Sign up</SignUpButton>
           </NavLink>
-          <NavLink to="/login">
+          <NavLink to="/login" className="button login">
             <ButtonPrimary>Login</ButtonPrimary>
           </NavLink>
         </>
