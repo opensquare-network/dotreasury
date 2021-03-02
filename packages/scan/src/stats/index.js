@@ -13,7 +13,10 @@ const { bigAdd, getTreasuryBalance } = require("../utils");
 const { updateLastStatTime } = require("../mongo/statTime");
 
 async function shouldSaveStatHistory(blockIndexer) {
-  if (1377831 <= blockIndexer.height && blockIndexer.height < 1492896) {
+  if (
+    1377831 <= blockIndexer.blockHeight &&
+    blockIndexer.blockHeight < 1492896
+  ) {
     // Skip due to we cannot get treasury balance correctly in these blocks
     return false;
   }
