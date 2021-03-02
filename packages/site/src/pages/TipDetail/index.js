@@ -10,11 +10,7 @@ import {
   loadingTipDetailSelector,
   tipDetailSelector,
 } from "../../store/reducers/tipSlice";
-import {
-  fetchLinks,
-  linksSelector,
-  TipIndex,
-} from "../../store/reducers/linkSlice";
+import { linksSelector, TipIndex } from "../../store/reducers/linkSlice";
 
 import InformationTable from "./InformationTable";
 import Timeline from "../Timeline";
@@ -140,7 +136,6 @@ const TipDetail = () => {
   useEffect(() => {
     dispatch(fetchTipDetail(tipId));
     dispatch(fetchTipCountdown());
-    dispatch(fetchLinks("tips", tipId));
   }, [dispatch, tipId]);
 
   const tipDetail = useSelector(tipDetailSelector);
@@ -159,10 +154,10 @@ const TipDetail = () => {
         <InformationTable loading={loadingTipDetail} />
         <TipLifeCycleTable loading={loadingTipDetail} />
       </TableWrapper>
-      <RelatedLinks type="tips" index={new TipIndex(tipId)} />
+      <RelatedLinks type="tip" index={new TipIndex(tipId)} />
       <TimelineCommentWrapper>
         <Timeline data={timelineData} loading={loadingTipDetail} />
-        <Comment type="tips" index={new TipIndex(tipId)} />
+        <Comment type="tip" index={new TipIndex(tipId)} />
       </TimelineCommentWrapper>
     </>
   );

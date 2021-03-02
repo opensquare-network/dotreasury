@@ -207,10 +207,10 @@ const ProposalDetail = () => {
         <InformationTable loading={loadingProposalDetail} />
         <ProposalLifeCycleTable loading={loadingProposalDetail} />
       </TableWrapper>
-      <RelatedLinks type="proposals" index={parseInt(proposalIndex)} />
+      <RelatedLinks type="proposal" index={parseInt(proposalIndex)} />
       <TimelineCommentWrapper>
         <Timeline data={timelineData} loading={loadingProposalDetail} />
-        <Comment type="proposals" index={parseInt(proposalIndex)} />
+        <Comment type="proposal" index={parseInt(proposalIndex)} />
       </TimelineCommentWrapper>
     </>
   );

@@ -13,7 +13,7 @@ const { md5 } = require("../utils");
 class CommentService {
   async getComments(indexer, page, pageSize, user) {
     const commentCol = await getCommentCollection();
-    const total = await commentCol.countDocuments({ chain: "kusama", indexer });
+    const total = await commentCol.countDocuments({ indexer });
 
     if (page === "last") {
       const totalPages = Math.ceil(total / pageSize);
@@ -22,7 +22,7 @@ class CommentService {
 
     const comments = await commentCol
       .aggregate([
-        { $match: { chain: "kusama", indexer } },
+        { $match: { indexer } },
         { $sort: { createdAt: 1 } },
         { $skip: page * pageSize },
         { $limit: pageSize },
@@ -149,7 +149,6 @@ class CommentService {
 
     const now = new Date();
     const result = await commentCol.insertOne({
-      chain: "kusama",
       indexer,
       authorId: author._id,
       content,
@@ -165,7 +164,6 @@ class CommentService {
 
     // Count position
     const commentPosition = await commentCol.countDocuments({
-      chain: "kusama",
       indexer,
       _id: { $lte: commentId },
     });
@@ -262,7 +260,6 @@ class CommentService {
 
     // Count position
     const commentPosition = await commentCol.countDocuments({
-      chain: "kusama",
       indexer,
       _id: { $lte: commentId },
     });
