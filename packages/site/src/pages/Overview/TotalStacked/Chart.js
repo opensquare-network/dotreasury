@@ -8,9 +8,10 @@ import Text from "../../../components/Text"
 const LegendWrapper = styled.div`
   display: flex;
   align-items: center;
-  margin-left: 40px;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
   & > :first-child {
-    margin-right: 32px;
+    margin-left: 32px;
   }
 `
 
@@ -35,19 +36,20 @@ const LegendTitle = styled(Text)`
   line-height: 24px;
 `
 
-const CharWrapper = styled.div`
-  height: 100%;
-  width: calc(100% + 20px);
-  margin-left: -20px;
-`
-
-
-const Chart = ({ data, onHover }) => {
+const LineChart = ({ data, onHover }) => {
   const { dates, values }  = data;
   const options = {
     type: 'line',
     scales: {
       xAxes: [{
+        type: 'time',
+        time: {
+          displayFormats: {
+            month: 'YYYY-MM'
+          },
+          unit: 'month',
+          unitStepSize: 3
+        },
         gridLines: {
           zeroLineWidth: 0,
           color: "rgba(0, 0, 0, 0)",
@@ -55,10 +57,7 @@ const Chart = ({ data, onHover }) => {
         ticks: {
           fontFamily: "Inter",
           maxRotation: 0,
-          minRotation: 0,
-          callback: function(value, index, values) {
-            return dayjs(value).format("            YYYY-MM            ")
-          }
+          minRotation: 0
         }
       }],
       yAxes: [{
@@ -70,7 +69,7 @@ const Chart = ({ data, onHover }) => {
       }]
     },
     tooltips: {
-      mode: 'index',
+      mode: 'x-axis',
       callbacks: {
         title: function(tooltipItems) {
           return dayjs(tooltipItems[0].xLabel).format("YYYY-MM-DD");
@@ -122,13 +121,11 @@ const Chart = ({ data, onHover }) => {
             </TitleWrapper>)
           )}
         </LegendWrapper>
-        <CharWrapper>
-          <Line data={chartData} options={options} />
-        </CharWrapper>
+        <Line data={chartData} options={options} />
       </>
     )} else {
     return null;
   }
 };
 
-export default Chart;
+export default LineChart;

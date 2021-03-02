@@ -25,6 +25,11 @@ const Title = styled(Text)`
 const CardWrapper = styled(Card)`
   display: flex;
   padding: 32px;
+  @media screen and (min-width: 1140px) {
+    & > :first-child {
+      margin-right: 24px;
+    }
+  }
   @media screen and (max-width: 1140px) {
     flex-direction: column;
     & > :first-child {
