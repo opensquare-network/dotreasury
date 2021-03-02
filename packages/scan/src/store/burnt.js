@@ -15,6 +15,15 @@ async function queryAccountFreeWithSystem(blockHash) {
   return account?.data?.free;
 }
 
+async function setOldKey() {
+  const api = await getApi();
+  const blockHash = await api.rpc.chain.getBlockHash(1375085);
+  const metadata = await api.rpc.state.getMetadata(blockHash);
+  const decorated = expandMetadata(metadata.registry, metadata);
+
+  oldKey = [decorated.query.balances.freeBalance, TreasuryAccount];
+}
+
 async function getTreasuryBalance(blockHash, blockHeight) {
   const api = await getApi();
   if (blockHeight < 1375086) {
@@ -29,6 +38,9 @@ async function getTreasuryBalance(blockHash, blockHeight) {
 
     return metadata.registry.createType("Compact<Balance>", value).toJSON();
   } else if (blockHeight < 1377831) {
+    if (!oldKey) {
+      await setOldKey();
+    }
     const value = await api.rpc.state.getStorage(oldKey, blockHash);
 
     const metadata = await api.rpc.state.getMetadata(blockHash);
@@ -64,4 +76,5 @@ async function saveNewBurnt(balance, eventIndexer) {
 
 module.exports = {
   saveNewBurnt,
+  getTreasuryBalance,
 };
