@@ -1,15 +1,17 @@
 import React from 'react';
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Line } from 'react-chartjs-2';
+import dayjs from "dayjs";
 
 import Text from "../../../components/Text"
 
 const LegendWrapper = styled.div`
   display: flex;
   align-items: center;
-  margin-left: 22px;
-  & > :first-child {
-    margin-right: 32px;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  & > :not(:last-child) {
+    margin-left: 32px;
   }
 `
 
@@ -23,10 +25,18 @@ const TitleWrapper = styled.div`
 `
 
 const LegendDiv = styled.div`
-  width: 8px;
-  height: 8px;
-  background: ${p => p.color};
-  border-radius: 1px;
+  ${p => p.icon === "square" && css`
+    width: 8px;
+    height: 8px;
+    background: ${p => p.color};
+    border-radius: 1px;
+  `}
+  ${p => p.icon === "bar" && css`
+    width: 12px;
+    height: 3px;
+    background: ${p => p.color};
+    border-radius: 1px;
+  `}
 `
 
 const LegendTitle = styled(Text)`
@@ -34,17 +44,24 @@ const LegendTitle = styled(Text)`
   line-height: 24px;
 `
 
-
-
-const Chart = ({ data, onHover }) => {
+const LineChart = ({ data, onHover }) => {
   const { dates, values }  = data;
   const options = {
     type: 'line',
     hover: {
-      mode: 'index'
+      mode: 'nearest',
+      intersect: true
     },
     scales: {
       xAxes: [{
+        type: 'time',
+        time: {
+          displayFormats: {
+            month: 'YYYY-MM'
+          },
+          unit: 'month',
+          unitStepSize: 3
+        },
         gridLines: {
           zeroLineWidth: 0,
           color: "rgba(0, 0, 0, 0)",
@@ -63,8 +80,16 @@ const Chart = ({ data, onHover }) => {
         }
       }]
     },
+    tooltips: {
+      mode: 'index',
+      callbacks: {
+        title: function(tooltipItems) {
+          return dayjs(tooltipItems[0].xLabel).format("YYYY-MM-DD");
+        }
+      }
+    },
     legend: {
-      display: false,
+      display: false
     },
     maintainAspectRatio: false,
     onHover: function(_, array) {
@@ -76,7 +101,7 @@ const Chart = ({ data, onHover }) => {
     labels: dates,
     datasets: (values || []).map(item => ({
       label: item.label,
-      fill: true,
+      fill: item.fill,
       lineTension: 0,
       backgroundColor: item.secondaryColor,
       borderColor: item.primaryColor,
@@ -88,7 +113,7 @@ const Chart = ({ data, onHover }) => {
       pointBackgroundColor: item.primaryColor,
       pointBorderWidth: 0,
       pointHoverRadius: 5,
-      pointHoverBackgroundColor: item.secondaryColor,
+      pointHoverBackgroundColor: item.primaryColor,
       pointHoverBorderColor: item.primaryColor,
       pointHoverBorderWidth: 2,
       pointRadius: 1,
@@ -97,19 +122,22 @@ const Chart = ({ data, onHover }) => {
     }))
   }
 
-  return (
-    <>
-      <LegendWrapper>
-        {(values || []).map((item, index) => (
-          <TitleWrapper key={index}>
-            <LegendDiv color={item.primaryColor} />
-            <LegendTitle>{item.label}</LegendTitle>
-          </TitleWrapper>)
-        )}
-      </LegendWrapper>
-      <Line data={chartData} options={options} />
-    </>
-  );
+  if (dates && dates.length > 0) {
+    return (
+      <>
+        <LegendWrapper>
+          {(values || []).map((item, index) => (
+            <TitleWrapper key={index}>
+              <LegendDiv color={item.primaryColor} icon={item.icon} />
+              <LegendTitle>{item.label}</LegendTitle>
+            </TitleWrapper>)
+          )}
+        </LegendWrapper>
+        <Line data={chartData} options={options} />
+      </>
+    )} else {
+    return null;
+  }
 };
 
-export default Chart;
+export default LineChart;
