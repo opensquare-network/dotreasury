@@ -1,4 +1,5 @@
 const dayjs = require("dayjs");
+const { bnToBn } = require("@polkadot/util");
 const { getLastStatTime } = require("../mongo/statTime");
 const { getIncomeNextScanStatus } = require("../mongo/scanHeight");
 const {
@@ -8,7 +9,7 @@ const {
   getBurntCollection,
   getStatsCollection,
 } = require("../mongo");
-const { bigAdd } = require("../utils");
+const { bigAdd, getTreasuryBalance } = require("../utils");
 const { updateLastStatTime } = require("../mongo/statTime");
 
 async function shouldSaveStatHistory(blockIndexer) {
@@ -40,23 +41,32 @@ async function processStat(blockIndexer) {
     return;
   }
 
-  await saveOutputStat(blockIndexer);
-  await saveIncomeStat(blockIndexer);
+  await saveStats(blockIndexer);
 
   // Remember latest stat time
   await updateLastStatTime(blockIndexer.blockTime);
 }
 
-async function saveOutputStat(indexer) {
+async function saveStats(indexer) {
   const output = await calcOutputStats();
-  const statsCol = await getStatsCollection();
-  await statsCol.updateOne({ indexer }, { $set: { output } }, { upsert: true });
-}
-
-async function saveIncomeStat(indexer) {
   const { seats: income } = await getIncomeNextScanStatus();
+  const treasuryBalance = await getTreasuryBalance(
+    indexer.blockHash,
+    indexer.blockHeight
+  );
+
   const statsCol = await getStatsCollection();
-  await statsCol.updateOne({ indexer }, { $set: { income } }, { upsert: true });
+  await statsCol.updateOne(
+    { indexer },
+    {
+      $set: {
+        output,
+        income,
+        treasuryBalance: bnToBn(treasuryBalance).toString(),
+      },
+    },
+    { upsert: true }
+  );
 }
 
 async function calcOutputStats() {
