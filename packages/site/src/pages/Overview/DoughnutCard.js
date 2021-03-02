@@ -22,7 +22,6 @@ const CardWrapper = styled(Card)`
   padding: 32px;
   @media screen and (max-width: 556px) {
     flex-direction: column;
-    align-items: center;
     & > :first-child {
       margin-bottom: 24px;
     }
@@ -30,7 +29,6 @@ const CardWrapper = styled(Card)`
 `;
 
 const CanvasWrapper = styled.div`
-  width: 214px;
   height: 252px;
   flex-grow: 1;
   position: relative;

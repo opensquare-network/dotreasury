@@ -25,6 +25,11 @@ const Title = styled(Text)`
 const CardWrapper = styled(Card)`
   display: flex;
   padding: 32px;
+  @media screen and (min-width: 1140px) {
+    & > :first-child {
+      margin-right: 24px;
+    }
+  }
   @media screen and (max-width: 1140px) {
     flex-direction: column;
     & > :first-child {
@@ -54,11 +59,23 @@ const ListWrapper = styled.div`
   }
 `;
 
+const SecondListWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  @media screen and (max-width: 556px) {
+    & > :first-child {
+      margin-bottom: 24px;
+    }
+  }
+`;
+
 const TotalStacked = () => {
   const dispatch = useDispatch();
   const [dateLabels, setDateLabels] = useState([]);
   const [incomeHistory, setIncomeHistory] = useState([]);
   const [outputHistory, setOutputHistory] = useState([]);
+  const [treasuryHistory, setTreasuryHistory] = useState([]);
   const [showIndex, setShowIndex] = useState();
   const [incomeData, setIncomeData] = useState({
     title: "Income",
@@ -121,6 +138,16 @@ const TotalStacked = () => {
       },
     ],
   });
+  const [treasuryData, setTreasuryData] = useState({
+    title: "Treasury",
+    icon: "square",
+    labels: [
+      {
+        name: "Balance",
+        value: 0,
+      },
+    ],
+  });
 
   useEffect(() => {
     dispatch(fetchStatsHistory());
@@ -129,10 +156,8 @@ const TotalStacked = () => {
   const statsHistory = useSelector(statsHistorySelector);
 
   useEffect(() => {
-    const dateLabels = statsHistory.map((statsItem) =>
-      dayjs(statsItem.indexer.blockTime).format(
-        "            YYYY-MM            "
-      )
+    const dateLabels = statsHistory.map(
+      (statsItem) => statsItem.indexer.blockTime
     );
     setDateLabels(dateLabels);
 
@@ -154,6 +179,11 @@ const TotalStacked = () => {
       )
       .map((bn) => toPrecision(bn, 12, false));
     setOutputHistory(outputHistory);
+
+    const treasuryHistory = statsHistory.map((statsItem) =>
+      toPrecision(statsItem.treasuryBalance, 12, false)
+    );
+    setTreasuryHistory(treasuryHistory);
   }, [statsHistory]);
 
   useEffect(() => {
@@ -162,6 +192,7 @@ const TotalStacked = () => {
       const statsData = statsHistory[index];
       setIncomeData({
         title: "Income",
+        date: dayjs(dateLabels?.[index]).format("YYYY-MM-DD"),
         icon: "square",
         labels: [
           {
@@ -219,8 +250,10 @@ const TotalStacked = () => {
           },
         ],
       });
+
       setOutputData({
         title: "Output",
+        date: dayjs(dateLabels?.[index]).format("YYYY-MM-DD"),
         icon: "square",
         labels: [
           {
@@ -241,23 +274,47 @@ const TotalStacked = () => {
           },
         ],
       });
+
+      setTreasuryData({
+        title: "Treasury",
+        date: dayjs(dateLabels?.[index]).format("YYYY-MM-DD"),
+        icon: "square",
+        labels: [
+          {
+            name: "Balance",
+            value: toPrecision(statsData.treasuryBalance, 12, false),
+          },
+        ],
+      });
     }
-  }, [showIndex, statsHistory]);
+  }, [showIndex, statsHistory, dateLabels]);
 
   const chartData = {
     dates: dateLabels,
     values: [
       {
+        label: "Treasury Balance",
+        primaryColor: "#FBA06E",
+        secondaryColor: "#FBA06E",
+        data: treasuryHistory,
+        fill: false,
+        icon: "bar",
+      },
+      {
         label: "Output",
         primaryColor: "#FED077",
         secondaryColor: "#FFEDC9",
         data: outputHistory,
+        fill: true,
+        icon: "square",
       },
       {
         label: "Total",
         primaryColor: "#DF405D",
         secondaryColor: "#FFEEF1",
         data: incomeHistory,
+        fill: true,
+        icon: "square",
       },
     ],
   };
@@ -272,7 +329,10 @@ const TotalStacked = () => {
       <CardWrapper>
         <ListWrapper>
           <List data={incomeData}></List>
-          <List data={outputData}></List>
+          <SecondListWrapper>
+            <List data={outputData}></List>
+            <List data={treasuryData}></List>
+          </SecondListWrapper>
         </ListWrapper>
         <ChartWrapper>
           <Chart data={chartData} onHover={onHover} />
