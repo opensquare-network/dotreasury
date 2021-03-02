@@ -32,7 +32,7 @@ const Right = styled.div`
     flex-direction: column;
     position: absolute;
     top: 69px;
-    left: 0px;
+    left: -16px;
     z-index: 9999;
     background-color: white;
     padding: 22px 0;
