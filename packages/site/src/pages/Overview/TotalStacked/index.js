@@ -160,6 +160,7 @@ const TotalStacked = () => {
       const statsData = statsHistory[index];
       setIncomeData({
         title: "Income",
+        date: dateLabels?.[index]?.trim(),
         icon: "square",
         labels: [
           {
@@ -199,6 +200,7 @@ const TotalStacked = () => {
       });
       setOutputData({
         title: "Output",
+        date: dateLabels?.[index]?.trim(),
         icon: "square",
         labels: [
           {
@@ -221,7 +223,7 @@ const TotalStacked = () => {
       })
     }
     
-  }, [showIndex, statsHistory])
+  }, [showIndex, statsHistory, dateLabels])
 
   const chartData = {
     dates: dateLabels,
