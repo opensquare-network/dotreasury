@@ -1,13 +1,14 @@
 import React from 'react';
 import styled from "styled-components";
 import { Line } from 'react-chartjs-2';
+import dayjs from "dayjs";
 
 import Text from "../../../components/Text"
 
 const LegendWrapper = styled.div`
   display: flex;
   align-items: center;
-  margin-left: 22px;
+  margin-left: 40px;
   & > :first-child {
     margin-right: 32px;
   }
@@ -34,15 +35,17 @@ const LegendTitle = styled(Text)`
   line-height: 24px;
 `
 
+const CharWrapper = styled.div`
+  height: 100%;
+  width: calc(100% + 20px);
+  margin-left: -20px;
+`
 
 
 const Chart = ({ data, onHover }) => {
   const { dates, values }  = data;
   const options = {
     type: 'line',
-    hover: {
-      mode: 'index'
-    },
     scales: {
       xAxes: [{
         gridLines: {
@@ -52,7 +55,10 @@ const Chart = ({ data, onHover }) => {
         ticks: {
           fontFamily: "Inter",
           maxRotation: 0,
-          minRotation: 0
+          minRotation: 0,
+          callback: function(value, index, values) {
+            return dayjs(value).format("            YYYY-MM            ")
+          }
         }
       }],
       yAxes: [{
@@ -63,8 +69,16 @@ const Chart = ({ data, onHover }) => {
         }
       }]
     },
+    tooltips: {
+      mode: 'index',
+      callbacks: {
+        title: function(tooltipItems) {
+          return dayjs(tooltipItems[0].xLabel).format("YYYY-MM-DD");
+        }
+      }
+    },
     legend: {
-      display: false,
+      display: false
     },
     maintainAspectRatio: false,
     onHover: function(_, array) {
@@ -97,19 +111,24 @@ const Chart = ({ data, onHover }) => {
     }))
   }
 
-  return (
-    <>
-      <LegendWrapper>
-        {(values || []).map((item, index) => (
-          <TitleWrapper key={index}>
-            <LegendDiv color={item.primaryColor} />
-            <LegendTitle>{item.label}</LegendTitle>
-          </TitleWrapper>)
-        )}
-      </LegendWrapper>
-      <Line data={chartData} options={options} />
-    </>
-  );
+  if (dates && dates.length > 0) {
+    return (
+      <>
+        <LegendWrapper>
+          {(values || []).map((item, index) => (
+            <TitleWrapper key={index}>
+              <LegendDiv color={item.primaryColor} />
+              <LegendTitle>{item.label}</LegendTitle>
+            </TitleWrapper>)
+          )}
+        </LegendWrapper>
+        <CharWrapper>
+          <Line data={chartData} options={options} />
+        </CharWrapper>
+      </>
+    )} else {
+    return null;
+  }
 };
 
 export default Chart;

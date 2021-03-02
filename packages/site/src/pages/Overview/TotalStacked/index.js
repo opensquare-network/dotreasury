@@ -130,7 +130,7 @@ const TotalStacked = () => {
 
   useEffect(() => {
     const dateLabels = statsHistory.map((statsItem) =>
-      dayjs(statsItem.indexer.blockTime).format("            YYYY-MM            ")
+      statsItem.indexer.blockTime
     );
     setDateLabels(dateLabels);
 
@@ -160,7 +160,7 @@ const TotalStacked = () => {
       const statsData = statsHistory[index];
       setIncomeData({
         title: "Income",
-        date: dateLabels?.[index]?.trim(),
+        date: dayjs(dateLabels?.[index]).format("YYYY-MM-DD"),
         icon: "square",
         labels: [
           {
@@ -200,7 +200,7 @@ const TotalStacked = () => {
       });
       setOutputData({
         title: "Output",
-        date: dateLabels?.[index]?.trim(),
+        date: dayjs(dateLabels?.[index]).format("YYYY-MM-DD"),
         icon: "square",
         labels: [
           {
