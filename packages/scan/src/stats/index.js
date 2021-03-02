@@ -1,4 +1,8 @@
 const dayjs = require("dayjs");
+const { expandMetadata } = require("@polkadot/metadata");
+const { bnToBn } = require("@polkadot/util");
+const { getApi } = require("../api");
+const { TreasuryAccount } = require("../utils/constants");
 const { getLastStatTime } = require("../mongo/statTime");
 const { getIncomeNextScanStatus } = require("../mongo/scanHeight");
 const {
@@ -42,6 +46,7 @@ async function processStat(blockIndexer) {
 
   await saveOutputStat(blockIndexer);
   await saveIncomeStat(blockIndexer);
+  await saveTreasuryBalance(blockIndexer);
 
   // Remember latest stat time
   await updateLastStatTime(blockIndexer.blockTime);
@@ -57,6 +62,23 @@ async function saveIncomeStat(indexer) {
   const { seats: income } = await getIncomeNextScanStatus();
   const statsCol = await getStatsCollection();
   await statsCol.updateOne({ indexer }, { $set: { income } }, { upsert: true });
+}
+
+async function saveTreasuryBalance(indexer) {
+  const treasuryBalance = await getTreasuryBalance(
+    indexer.blockHash,
+    indexer.blockHeight
+  );
+  const statsCol = await getStatsCollection();
+  await statsCol.updateOne(
+    { indexer },
+    {
+      $set: {
+        treasuryBalance: bnToBn(treasuryBalance).toString(),
+      },
+    },
+    { upsert: true }
+  );
 }
 
 async function calcOutputStats() {
@@ -129,6 +151,48 @@ async function calcOutput(
     bounty: bountySpent,
     burnt: burntTotal,
   };
+}
+
+async function queryAccountFreeWithSystem(blockHash) {
+  const api = await getApi();
+  const account = (
+    await api.query.system.account.at(blockHash, TreasuryAccount)
+  ).toJSON();
+  return account?.data?.free;
+}
+
+async function getOldKey(api) {
+  const blockHash = await api.rpc.chain.getBlockHash(1375085);
+
+  const metadata = await api.rpc.state.getMetadata(blockHash);
+  const decorated = expandMetadata(metadata.registry, metadata);
+
+  return [decorated.query.balances.freeBalance, TreasuryAccount];
+}
+
+async function getTreasuryBalance(blockHash, blockHeight) {
+  const ksmMigrateAccountHeight = 1492896;
+
+  const api = await getApi();
+  if (blockHeight < 1375086) {
+    const metadata = await api.rpc.state.getMetadata(blockHash);
+    const decorated = expandMetadata(metadata.registry, metadata);
+    const key = [decorated.query.balances.freeBalance, TreasuryAccount];
+    const value = await api.rpc.state.getStorage(key, blockHash);
+
+    return metadata.registry.createType("Compact<Balance>", value).toJSON();
+  } else if (blockHeight < 1377831) {
+    const oldKey = await getOldKey(api);
+    const value = await api.rpc.state.getStorage(oldKey, blockHash);
+
+    const metadata = await api.rpc.state.getMetadata(blockHash);
+    return metadata.registry.createType("Compact<Balance>", value).toJSON();
+  } else if (blockHeight < ksmMigrateAccountHeight) {
+    // TODO: find how to get the balance from 1377831 to 1492896
+    return await queryAccountFreeWithSystem(blockHash);
+  } else {
+    return await queryAccountFreeWithSystem(blockHash);
+  }
 }
 
 module.exports = {
