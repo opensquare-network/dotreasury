@@ -7,6 +7,7 @@ import Text from "../../../components/Text"
 
 const LegendWrapper = styled.div`
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   & > :not(:last-child) {
     margin-right: 32px;

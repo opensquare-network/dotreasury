@@ -42,6 +42,7 @@ const ChartWrapper = styled.div`
   height: 252px;
   min-width: 252px;
   flex-grow: 1;
+  margin-bottom: 24px;
 `;
 
 const ListWrapper = styled.div`
