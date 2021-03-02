@@ -25,6 +25,11 @@ const Title = styled(Text)`
 const CardWrapper = styled(Card)`
   display: flex;
   padding: 32px;
+  @media screen and (min-width: 1140px) {
+    & > :first-child {
+      margin-right: 24px;
+    }
+  }
   @media screen and (max-width: 1140px) {
     flex-direction: column;
     & > :first-child {
@@ -130,7 +135,7 @@ const TotalStacked = () => {
 
   useEffect(() => {
     const dateLabels = statsHistory.map((statsItem) =>
-      dayjs(statsItem.indexer.blockTime).format("            YYYY-MM            ")
+      statsItem.indexer.blockTime
     );
     setDateLabels(dateLabels);
 
@@ -160,6 +165,7 @@ const TotalStacked = () => {
       const statsData = statsHistory[index];
       setIncomeData({
         title: "Income",
+        date: dayjs(dateLabels?.[index]).format("YYYY-MM-DD"),
         icon: "square",
         labels: [
           {
@@ -199,6 +205,7 @@ const TotalStacked = () => {
       });
       setOutputData({
         title: "Output",
+        date: dayjs(dateLabels?.[index]).format("YYYY-MM-DD"),
         icon: "square",
         labels: [
           {
@@ -221,7 +228,7 @@ const TotalStacked = () => {
       })
     }
     
-  }, [showIndex, statsHistory])
+  }, [showIndex, statsHistory, dateLabels])
 
   const chartData = {
     dates: dateLabels,
