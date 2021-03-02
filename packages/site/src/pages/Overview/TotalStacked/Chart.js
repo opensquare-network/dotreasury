@@ -40,6 +40,10 @@ const LineChart = ({ data, onHover }) => {
   const { dates, values }  = data;
   const options = {
     type: 'line',
+    hover: {
+      mode: 'nearest',
+      intersect: true
+    },
     scales: {
       xAxes: [{
         type: 'time',
@@ -69,7 +73,7 @@ const LineChart = ({ data, onHover }) => {
       }]
     },
     tooltips: {
-      mode: 'x-axis',
+      mode: 'index',
       callbacks: {
         title: function(tooltipItems) {
           return dayjs(tooltipItems[0].xLabel).format("YYYY-MM-DD");
