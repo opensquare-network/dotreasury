@@ -7,11 +7,10 @@ import Text from "../../../components/Text"
 
 const LegendWrapper = styled.div`
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  flex-direction: row-reverse;
-  justify-content: flex-end;
   & > :not(:last-child) {
-    margin-left: 32px;
+    margin-right: 32px;
   }
 `
 
@@ -86,6 +85,9 @@ const LineChart = ({ data, onHover }) => {
         title: function(tooltipItems) {
           return dayjs(tooltipItems[0].xLabel).format("YYYY-MM-DD");
         }
+      },
+      itemSort: function(a, b) {
+        return a.datasetIndex - b.datasetIndex
       }
     },
     legend: {
@@ -118,7 +120,8 @@ const LineChart = ({ data, onHover }) => {
       pointHoverBorderWidth: 2,
       pointRadius: 1,
       pointHitRadius: 10,
-      data: item.data
+      data: item.data,
+      order: item.order
     }))
   }
 
