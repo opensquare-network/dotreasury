@@ -8,17 +8,18 @@ async function checkAdmin(address) {
   if (!admins) {
     admins = (process.env.ADMINS || "")
       .split("|")
-      .filter(addr => addr !== "")
-      .map(addr => decodeAddress(addr));
+      .filter((addr) => addr !== "")
+      .map((addr) => decodeAddress(addr));
   }
   const lookup = decodeAddress(address);
-  return admins.some(admin => Buffer.compare(admin, lookup) === 0);
+  return admins.some((admin) => Buffer.compare(admin, lookup) === 0);
 }
 
 class LinkService {
   async getLinks({ type, indexer, getReason }) {
     const linkCol = await getLinkCollection();
     const links = await linkCol.findOne({
+      chain: "kusama",
       type,
       indexer,
     });
@@ -31,51 +32,65 @@ class LinkService {
       const reason = await getReason();
       if (reason) {
         // Pull existing inReason links before re-push
-        await linkCol.updateOne({
-          type,
-          indexer,
-        }, {
-          $pull: {
-            links: {
-              inReasons: true,
-            }
+        await linkCol.updateOne(
+          {
+            chain: "kusama",
+            type,
+            indexer,
+          },
+          {
+            $pull: {
+              links: {
+                inReasons: true,
+              },
+            },
           }
-        });
+        );
 
         // Extract all links that present in reason text
         const urlRegex = /(https?:\/\/[^ ]+)/g;
         let match;
-        while (match = urlRegex.exec(reason)) {
+        while ((match = urlRegex.exec(reason))) {
           const inReasonLink = match[1];
 
-          await linkCol.updateOne({
-            type,
-            indexer,
-          }, {
-            $push: {
-              links: {
-                link: inReasonLink,
-                description: "",
-                inReasons: true,
-              }
-            }
-          }, { upsert: true });
+          await linkCol.updateOne(
+            {
+              chain: "kusama",
+              type,
+              indexer,
+            },
+            {
+              $push: {
+                links: {
+                  link: inReasonLink,
+                  description: "",
+                  inReasons: true,
+                },
+              },
+            },
+            { upsert: true }
+          );
         }
 
         // Remember that the inReason links has been processed
-        await linkCol.updateOne({
-          type,
-          indexer,
-        }, {
-          $set: {
-            inReasonExtracted: true,
+        await linkCol.updateOne(
+          {
+            chain: "kusama",
+            type,
+            indexer,
           },
-        }, { upsert: true });
-
+          {
+            $set: {
+              inReasonExtracted: true,
+            },
+          },
+          { upsert: true }
+        );
       }
     }
 
     const updatedTipLinks = await linkCol.findOne({
+      chain: "kusama",
       type,
       indexer,
     });
@@ -107,47 +122,66 @@ class LinkService {
   }
 
   async createLink({ type, indexer, link, description }, addressAndSignature) {
-    await this.verifySignature(addressAndSignature, JSON.stringify({ type, index: indexer, link, description }));
+    await this.verifySignature(
+      addressAndSignature,
+      JSON.stringify({ type, index: indexer, link, description })
+    );
 
     const linkCol = await getLinkCollection();
-    await linkCol.updateOne({
-      type,
-      indexer,
-    }, {
-      $push: {
-        links: {
-          link,
-          description,
-          inReasons: false,
-        }
-      }
-    }, { upsert: true });
+    await linkCol.updateOne(
+      {
+        chain: "kusama",
+        type,
+        indexer,
+      },
+      {
+        $push: {
+          links: {
+            link,
+            description,
+            inReasons: false,
+          },
+        },
+      },
+      { upsert: true }
+    );
 
     return true;
   }
 
   async deleteLink({ type, indexer, linkIndex }, addressAndSignature) {
-    await this.verifySignature(addressAndSignature, JSON.stringify({ type, index: indexer, linkIndex }));
+    await this.verifySignature(
+      addressAndSignature,
+      JSON.stringify({ type, index: indexer, linkIndex })
+    );
 
     const linkCol = await getLinkCollection();
-    await linkCol.updateOne({
-      type,
-      indexer,
-      [`links.${linkIndex}.inReasons`]: false
-    }, {
-      $unset: {
-        [`links.${linkIndex}`]: 1
+    await linkCol.updateOne(
+      {
+        chain: "kusama",
+        type,
+        indexer,
+        [`links.${linkIndex}.inReasons`]: false,
+      },
+      {
+        $unset: {
+          [`links.${linkIndex}`]: 1,
+        },
       }
-    });
+    );
 
-    await linkCol.updateOne({
-      type,
-      indexer,
-    }, {
-      $pull: {
-        links: null
+    await linkCol.updateOne(
+      {
+        chain: "kusama",
+        type,
+        indexer,
+      },
+      {
+        $pull: {
+          links: null,
+        },
       }
-    });
+    );
 
     return true;
   }
