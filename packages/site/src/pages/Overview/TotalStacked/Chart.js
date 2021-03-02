@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Line } from 'react-chartjs-2';
 import dayjs from "dayjs";
 
@@ -10,7 +10,7 @@ const LegendWrapper = styled.div`
   align-items: center;
   flex-direction: row-reverse;
   justify-content: flex-end;
-  & > :first-child {
+  & > :not(:last-child) {
     margin-left: 32px;
   }
 `
@@ -25,10 +25,18 @@ const TitleWrapper = styled.div`
 `
 
 const LegendDiv = styled.div`
-  width: 8px;
-  height: 8px;
-  background: ${p => p.color};
-  border-radius: 1px;
+  ${p => p.icon === "square" && css`
+    width: 8px;
+    height: 8px;
+    background: ${p => p.color};
+    border-radius: 1px;
+  `}
+  ${p => p.icon === "bar" && css`
+    width: 12px;
+    height: 3px;
+    background: ${p => p.color};
+    border-radius: 1px;
+  `}
 `
 
 const LegendTitle = styled(Text)`
@@ -93,7 +101,7 @@ const LineChart = ({ data, onHover }) => {
     labels: dates,
     datasets: (values || []).map(item => ({
       label: item.label,
-      fill: true,
+      fill: item.fill,
       lineTension: 0,
       backgroundColor: item.secondaryColor,
       borderColor: item.primaryColor,
@@ -105,7 +113,7 @@ const LineChart = ({ data, onHover }) => {
       pointBackgroundColor: item.primaryColor,
       pointBorderWidth: 0,
       pointHoverRadius: 5,
-      pointHoverBackgroundColor: item.secondaryColor,
+      pointHoverBackgroundColor: item.primaryColor,
       pointHoverBorderColor: item.primaryColor,
       pointHoverBorderWidth: 2,
       pointRadius: 1,
@@ -120,7 +128,7 @@ const LineChart = ({ data, onHover }) => {
         <LegendWrapper>
           {(values || []).map((item, index) => (
             <TitleWrapper key={index}>
-              <LegendDiv color={item.primaryColor} />
+              <LegendDiv color={item.primaryColor} icon={item.icon} />
               <LegendTitle>{item.label}</LegendTitle>
             </TitleWrapper>)
           )}
