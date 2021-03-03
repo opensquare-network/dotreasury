@@ -6,12 +6,17 @@ const main = async () => {
     console.log("migration start");
     const proposalCol = await getProposalCollection();
     const linkCol = await getLinkCollection();
-    const proposalLinks = await linkCol.find({ type: "proposals" }).toArray();
+    const proposalLinks = await linkCol
+      .find({
+        "indexer.chain": "kusama",
+        "indexer.type": "proposal",
+      })
+      .toArray();
     await Promise.all(
       proposalLinks.map(async (item) => {
         await proposalCol.updateOne(
           {
-            proposalIndex: item.indexer,
+            proposalIndex: item.indexer.index,
           },
           {
             $set: { links: item.links },

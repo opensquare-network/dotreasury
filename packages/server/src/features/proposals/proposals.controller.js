@@ -109,9 +109,11 @@ class ProposalsController {
     const proposalIndex = parseInt(ctx.params.proposalIndex);
 
     ctx.body = await linkService.getLinks({
-      chain: "kusama",
-      type: "proposal",
-      index: proposalIndex,
+      indexer: {
+        chain: "kusama",
+        type: "proposal",
+        index: proposalIndex,
+      },
     });
   }
 

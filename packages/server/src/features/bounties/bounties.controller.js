@@ -113,9 +113,11 @@ class BountiesController {
     const bountyIndex = parseInt(ctx.params.bountyIndex);
 
     ctx.body = await linkService.getLinks({
-      chain: "kusama",
-      type: "bounty",
-      index: bountyIndex,
+      indexer: {
+        chain: "kusama",
+        type: "bounty",
+        index: bountyIndex,
+      },
     });
   }
 
