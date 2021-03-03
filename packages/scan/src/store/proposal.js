@@ -1,7 +1,7 @@
 const { getProposalCollection } = require("../mongo");
 const { getApi } = require("../api");
 const { ProposalState } = require("../utils/constants");
-const { asyncLocalStorage } = require("./utils");
+const { asyncLocalStorage } = require("../utils");
 
 async function saveNewProposal(proposalIndex, nullableNormalizedExtrinsic) {
   const api = await getApi();

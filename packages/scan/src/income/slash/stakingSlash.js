@@ -1,7 +1,7 @@
 const { Modules, StakingEvents } = require("../../utils/constants");
 const { stakingSlashLogger } = require("../../utils/logger");
 const { getStakingSlashCollection } = require("../../mongo");
-const { asyncLocalStorage } = require("./utils");
+const { asyncLocalStorage } = require("../../utils");
 
 async function handleStakingSlash(event, sort, allBlockEvents, blockIndexer) {
   const {

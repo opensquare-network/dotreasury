@@ -11,7 +11,7 @@ const {
 } = require("../mongo");
 const { bigAdd, getTreasuryBalance } = require("../utils");
 const { updateLastStatTime } = require("../mongo/statTime");
-const { asyncLocalStorage } = require("./utils");
+const { asyncLocalStorage } = require("../utils");
 
 async function shouldSaveStatHistory(blockIndexer) {
   if (

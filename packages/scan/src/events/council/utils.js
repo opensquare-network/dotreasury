@@ -2,7 +2,7 @@ const { ProposalMethods, BountyMethods } = require("../../utils/constants");
 const { getCall } = require("../../utils/call");
 const { getApi } = require("../../api");
 const { getMotionCollection } = require("../../mongo");
-const { asyncLocalStorage } = require("./utils");
+const { asyncLocalStorage } = require("../../utils");
 
 function isProposalMotion(method) {
   return [

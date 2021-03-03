@@ -12,7 +12,7 @@ const {
   ProposalEvents,
   ProposalMethods,
 } = require("../../utils/constants");
-const { asyncLocalStorage } = require("./utils");
+const { asyncLocalStorage } = require("../../utils");
 
 async function handleProposedForProposal(
   event,

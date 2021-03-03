@@ -7,7 +7,7 @@ const {
 } = require("../../utils/constants");
 const { treasurySlashLogger } = require("../../utils/logger");
 const { getTreasurySlashCollection } = require("../../mongo");
-const { asyncLocalStorage } = require("./utils");
+const { asyncLocalStorage } = require("../../utils");
 
 function isBountyModule(section, height) {
   if (height < ksmTreasuryRefactorApplyHeight && section === Modules.Treasury) {

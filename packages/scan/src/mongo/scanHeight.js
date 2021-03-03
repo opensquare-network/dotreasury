@@ -1,5 +1,5 @@
 const { getStatusCollection } = require("./index");
-const { asyncLocalStorage } = require("./utils");
+const { asyncLocalStorage } = require("../utils");
 
 const genesisHeight = 1;
 const mainScanName = "main-scan-height";

@@ -1,6 +1,6 @@
 const { getBurntCollection } = require("../mongo");
 const { getMetadataConstByBlockHash, getTreasuryBalance } = require("../utils");
-const { asyncLocalStorage } = require("./utils");
+const { asyncLocalStorage } = require("../utils");
 
 async function getBurnPercent(blockHash) {
   const v = await getMetadataConstByBlockHash(blockHash, "Treasury", "Burn");

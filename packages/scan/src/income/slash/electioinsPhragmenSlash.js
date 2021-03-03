@@ -5,7 +5,7 @@ const {
 } = require("../../utils/constants");
 const { electionsPhragmenLogger } = require("../../utils/logger");
 const { getElectionSlashCollection } = require("../../mongo");
-const { asyncLocalStorage } = require("./utils");
+const { asyncLocalStorage } = require("../../utils");
 
 function allBeforeIsDeposit(allBlockEvents, sort) {
   let i = sort - 1;

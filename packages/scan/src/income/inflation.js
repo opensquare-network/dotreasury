@@ -1,7 +1,7 @@
 const { Modules, StakingEvents } = require("../utils/constants");
 const { inflationLogger } = require("../utils/logger");
 const { getIncomeInflationCollection } = require("../mongo");
-const { asyncLocalStorage } = require("./utils");
+const { asyncLocalStorage } = require("../utils");
 
 const inflationEndHeight = 1379482;
 

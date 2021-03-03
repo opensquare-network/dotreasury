@@ -1,7 +1,7 @@
 const { Modules, IdentityEvents } = require("../../utils/constants");
 const { identitySlashLogger } = require("../../utils/logger");
 const { getIdentitySlashCollection } = require("../../mongo");
-const { asyncLocalStorage } = require("./utils");
+const { asyncLocalStorage } = require("../../utils");
 
 async function saveSlashRecord(data) {
   const session = asyncLocalStorage.getStore();

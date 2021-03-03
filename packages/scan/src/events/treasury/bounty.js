@@ -10,7 +10,7 @@ const {
   getBountyDescription,
   getBountyMetaByBlockHeight,
 } = require("../../utils/bounty");
-const { asyncLocalStorage } = require("./utils");
+const { asyncLocalStorage } = require("../../utils");
 
 function isBountyEvent(section, method, height) {
   if (

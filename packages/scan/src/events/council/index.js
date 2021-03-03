@@ -13,7 +13,7 @@ const {
   handleProposedForBounty,
   updateBountyByVoteResult,
 } = require("./bountyMotion");
-const { asyncLocalStorage } = require("./utils");
+const { asyncLocalStorage } = require("../../utils");
 
 async function handleCouncilEvent(event, normalizedExtrinsic, extrinsic) {
   const { section, method } = event;

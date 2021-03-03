@@ -12,7 +12,7 @@ const {
 } = require("../../utils/constants");
 const { motionActions } = require("./constants");
 const { getBountyMeta } = require("../../utils/bounty");
-const { asyncLocalStorage } = require("./utils");
+const { asyncLocalStorage } = require("../../utils");
 
 function isBountyMotion(section, method, height) {
   if (

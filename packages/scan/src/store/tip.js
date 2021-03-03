@@ -15,7 +15,7 @@ const {
 } = require("../utils");
 const { getCall, getMultiSigExtrinsicAddress } = require("../utils/call");
 const { getTipMethodNameAndArgs } = require("./utils");
-const { asyncLocalStorage } = require("./utils");
+const { asyncLocalStorage } = require("../utils");
 
 async function getTipMetaByBlockHeight(height, tipHash) {
   const api = await getApi();

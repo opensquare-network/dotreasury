@@ -28,7 +28,7 @@ const {
   handleElectionsLoserCandidateSlash,
 } = require("./slash/electioinsPhragmenSlash");
 const { getOthersIncomeCollection } = require("../mongo");
-const { asyncLocalStorage } = require("./utils");
+const { asyncLocalStorage } = require("../utils");
 
 async function saveOthersRecord(data) {
   const session = asyncLocalStorage.getStore();
