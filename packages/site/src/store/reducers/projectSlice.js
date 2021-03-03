@@ -34,11 +34,11 @@ export const {
   setLoadingProjectDetail
 } = projectSlice.actions;
 
-export const fetchProjects = () => async (dispatch) => {
+export const fetchProjects = (page = 0, pageSize = 30) => async (dispatch) => {
   dispatch(setLoading(true));
 
   try {
-    const { result } = await api.fetch('/projects');
+    const { result } = await api.fetch('/projects', { page, pageSize });
     dispatch(setProjects(result || {}));
   } finally {
     dispatch(setLoading(false));

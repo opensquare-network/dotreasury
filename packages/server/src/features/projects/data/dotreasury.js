@@ -1,4 +1,4 @@
-const name = "do Treasury";
+const name = "doTreasury";
 const title = "";
 const description = `doTreasury aim to introduce remarks from councilors and communities to improve current kusama/polkadot treasury with a retrospect mechanism.`;
 const startTime = 1606795356000;

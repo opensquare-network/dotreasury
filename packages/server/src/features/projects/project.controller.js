@@ -1,16 +1,29 @@
 const projects = require("./data");
+const { extractPage } = require("../../utils");
 
 class ProjectController {
   async getProjects(ctx) {
+    const { page, pageSize } = extractPage(ctx);
+    if (pageSize === 0 || page < 0) {
+      ctx.status = 400;
+      return;
+    }
+
+    const total = projects.length;
+    const skip = page * pageSize;
+
     ctx.body = {
-      items: projects.map(item => ({
+      items: projects.slice(skip, skip + pageSize).map(item => ({
         name: item.name,
         description: item.description,
         startTime: item.startTime,
         endTime: item.endTime,
         proposals: item.proposals?.length,
         expense: item.proposals?.reduce((previous, current) => previous + current.amount, 0)
-      }))
+      })),
+      page,
+      pageSize,
+      total,
     };
   }
 
