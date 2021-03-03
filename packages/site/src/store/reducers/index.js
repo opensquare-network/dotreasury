@@ -8,9 +8,12 @@ import chainReducer from "./chainSlice";
 import linksReducer from "./linkSlice";
 import accountReducer from "./accountSlice";
 import overviewReducer from "./overviewSlice";
+import userReducer from "./userSlice";
+import commentReducer from "./commentSlice";
 import incomeReducer from "./incomeSlice";
 import menuReducer from "./menuSlice";
 import nodeReducer from "./nodeSlice";
+import toastReducer from "./toastSlice";
 
 export default combineReducers({
   test: testReducer,
@@ -22,6 +25,9 @@ export default combineReducers({
   chain: chainReducer,
   account: accountReducer,
   overview: overviewReducer,
+  users: userReducer,
+  comments: commentReducer,
+  toast: toastReducer,
   income: incomeReducer,
   menu: menuReducer,
   node: nodeReducer,

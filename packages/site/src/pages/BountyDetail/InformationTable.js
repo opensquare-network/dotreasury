@@ -39,7 +39,7 @@ const InformationTable = ({ loading }) => {
   const bountyDetail = useSelector(bountyDetailSelector);
   return (
     <TableLoading loading={loading}>
-      <Table striped selectable>
+      <Table striped selectable unstackable>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>Information</Table.HeaderCell>

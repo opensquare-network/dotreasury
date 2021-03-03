@@ -1,7 +1,9 @@
 const { getTipCollection } = require("../../mongo");
-const linkService = require("../../services/link.services");
+const linkService = require("../../services/link.service");
+const commentService = require("../../services/comment.service");
 const { extractPage } = require("../../utils");
 const { normalizeTip } = require("./utils");
+const { HttpError } = require("../../exc");
 
 class TipsController {
   async getTips(ctx) {
@@ -77,10 +79,13 @@ class TipsController {
     const blockHeight = parseInt(ctx.params.blockHeight);
 
     ctx.body = await linkService.getLinks({
-      type: "tips",
       indexer: {
-        blockHeight,
-        tipHash,
+        chain: "kusama",
+        type: "tip",
+        index: {
+          blockHeight,
+          tipHash,
+        },
       },
       getReason: async () => {
         const tipCol = await getTipCollection();
@@ -101,10 +106,13 @@ class TipsController {
 
     ctx.body = await linkService.createLink(
       {
-        type: "tips",
         indexer: {
-          blockHeight,
-          tipHash,
+          chain: "kusama",
+          type: "tip",
+          index: {
+            blockHeight,
+            tipHash,
+          },
         },
         link,
         description,
@@ -120,14 +128,70 @@ class TipsController {
 
     ctx.body = await linkService.deleteLink(
       {
-        type: "tips",
         indexer: {
-          blockHeight,
-          tipHash,
+          chain: "kusama",
+          type: "tip",
+          index: {
+            blockHeight,
+            tipHash,
+          },
         },
         linkIndex,
       },
       ctx.request.headers.signature
+    );
+  }
+
+  // Comments API
+  async getTipComments(ctx) {
+    const { page, pageSize } = extractPage(ctx);
+    const tipHash = ctx.params.tipHash;
+    const blockHeight = parseInt(ctx.params.blockHeight);
+
+    ctx.body = await commentService.getComments(
+      {
+        chain: "kusama",
+        type: "tip",
+        index: {
+          blockHeight,
+          tipHash,
+        },
+      },
+      page,
+      pageSize,
+      ctx.request.user
+    );
+  }
+
+  async postTipComment(ctx) {
+    const tipHash = ctx.params.tipHash;
+    const blockHeight = parseInt(ctx.params.blockHeight);
+    const { content } = ctx.request.body;
+    const user = ctx.request.user;
+    if (!content) {
+      throw new HttpError(400, "Comment content is missing");
+    }
+
+    const tipCol = await getTipCollection();
+    const tip = await tipCol.findOne({
+      hash: tipHash,
+      "indexer.blockHeight": blockHeight,
+    });
+    if (!tip) {
+      throw new HttpError(404, "Tip not found");
+    }
+
+    ctx.body = await commentService.postComment(
+      {
+        chain: "kusama",
+        type: "tip",
+        index: {
+          blockHeight,
+          tipHash,
+        },
+      },
+      content,
+      user
     );
   }
 }

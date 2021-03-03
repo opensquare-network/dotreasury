@@ -32,7 +32,9 @@ const ElectionPhragmenSlash = () => {
 
   const dispatch = useDispatch();
   const history = useHistory();
-  const { items: itemList, total } = useSelector(electionPhragmenSlashListSelector);
+  const { items: itemList, total } = useSelector(
+    electionPhragmenSlashListSelector
+  );
   const loading = useSelector(electionPhragmenSlashListLoadingSelector);
 
   useEffect(() => {

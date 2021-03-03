@@ -15,31 +15,20 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Inter', 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
   }
   
-  ol, ul, li {
+  ol:not(.mde-preview-content *),
+  ul:not(.mde-preview-content *),
+  li:not(.mde-preview-content *) {
     list-style: none;
     margin: 0;
     padding: 0;
   }
   
-  .ui.primary.button, .ui.primary.buttons .button {
-    background: #DF405D;
-    
-    &:hover, &:active, &:focus {
-      background: #DF405D;
-    }
-    
-    &:focus {
-      background: #DF405D;
-    }
-  }
-  
-  .ui.input.focus>input, .ui.input>input:focus {
-    border-color: #DF405D;
-  }
-  
-  .ui.input.error>input:focus {
-    border-color: #DF405D;
-  }
+  /* .ui.input input:hover,
+  .ui.form input:hover,
+  .ui.input input:focus,
+  .ui.form input:focus {
+    border-color: #CCCCCC !important;
+  } */
   
   .ant-table.ant-table-small {
     font-size: 13px;

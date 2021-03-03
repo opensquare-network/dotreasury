@@ -3,16 +3,16 @@ import { Doughnut } from "react-chartjs-2";
 
 const DoughnutChart = ({ data, status }) => {
   const findDisabled = (name) => {
-    const findFunc = (item => {
+    const findFunc = (item) => {
       if (item.name === name) return item.disabled;
       if (item.children) {
         return item.children.find(findFunc);
       }
       return;
-    })
+    };
     const result = status?.labels?.find(findFunc);
     return result;
-  }
+  };
   const doughnutData = {
     labels: [],
     datasets: [
@@ -21,9 +21,9 @@ const DoughnutChart = ({ data, status }) => {
         backgroundColor: [],
         hoverBackgroundColor: [],
         borderWidth: 0,
-      }
-    ]
-  }
+      },
+    ],
+  };
   const dataReduce = (acc, current) => {
     if (current.children) {
       return current.children.reduce(dataReduce, acc);
@@ -34,7 +34,7 @@ const DoughnutChart = ({ data, status }) => {
       acc.datasets[0].hoverBackgroundColor.push(current.color);
     }
     return acc;
-  }
+  };
   data.labels.reduce(dataReduce, doughnutData);
   const options = {
     maintainAspectRatio: false,

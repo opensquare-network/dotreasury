@@ -48,7 +48,7 @@ const TipLifeCycleTable = ({ loading }) => {
 
   return (
     <TableLoading loading={loading}>
-      <Table striped selectable>
+      <Table striped selectable unstackable>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>Tip Life Cycle</Table.HeaderCell>

@@ -43,22 +43,22 @@ const DoughnutWrapper = styled.div`
 
 const DoughnutCard = ({ title, data, status, clickEvent, children }) => {
   const findDisabled = (name) => {
-    const findFunc = (item => {
+    const findFunc = (item) => {
       if (item.name === name) return item.disabled;
       if (item.children) {
         return item.children.find(findFunc);
       }
       return;
-    })
+    };
     const result = status?.labels?.find(findFunc);
     return result;
-  }
+  };
   const totalReduce = (acc, current) => {
     if (current.children) {
       return acc + current.children.reduce(totalReduce, 0);
     }
-    return acc + (findDisabled(current.name) ? 0 : (current.value ?? 0));
-  }
+    return acc + (findDisabled(current.name) ? 0 : current.value ?? 0);
+  };
   const total = data.labels?.reduce(totalReduce, 0);
   return (
     <div>

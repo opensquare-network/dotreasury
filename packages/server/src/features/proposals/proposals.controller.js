@@ -1,6 +1,8 @@
 const { getProposalCollection, getMotionCollection } = require("../../mongo");
 const { extractPage } = require("../../utils");
-const linkService = require("../../services/link.services");
+const linkService = require("../../services/link.service");
+const commentService = require("../../services/comment.service");
+const { HttpError } = require("../../exc");
 
 class ProposalsController {
   async getProposals(ctx) {
@@ -107,8 +109,11 @@ class ProposalsController {
     const proposalIndex = parseInt(ctx.params.proposalIndex);
 
     ctx.body = await linkService.getLinks({
-      type: "proposals",
-      indexer: proposalIndex,
+      indexer: {
+        chain: "kusama",
+        type: "proposal",
+        index: proposalIndex,
+      },
     });
   }
 
@@ -118,8 +123,11 @@ class ProposalsController {
 
     ctx.body = await linkService.createLink(
       {
-        type: "proposals",
-        indexer: proposalIndex,
+        indexer: {
+          chain: "kusama",
+          type: "proposal",
+          index: proposalIndex,
+        },
         link,
         description,
       },
@@ -133,11 +141,56 @@ class ProposalsController {
 
     ctx.body = await linkService.deleteLink(
       {
-        type: "proposals",
-        indexer: proposalIndex,
+        indexer: {
+          chain: "kusama",
+          type: "proposal",
+          index: proposalIndex,
+        },
         linkIndex,
       },
       ctx.request.headers.signature
+    );
+  }
+
+  // Comments API
+  async getProposalComments(ctx) {
+    const { page, pageSize } = extractPage(ctx);
+    const proposalIndex = parseInt(ctx.params.proposalIndex);
+
+    ctx.body = await commentService.getComments(
+      {
+        chain: "kusama",
+        type: "proposal",
+        index: proposalIndex,
+      },
+      page,
+      pageSize,
+      ctx.request.user
+    );
+  }
+
+  async postProposalComment(ctx) {
+    const proposalIndex = parseInt(ctx.params.proposalIndex);
+    const { content } = ctx.request.body;
+    const user = ctx.request.user;
+    if (!content) {
+      throw new HttpError(400, "Comment content is missing");
+    }
+
+    const proposalCol = await getProposalCollection();
+    const proposal = await proposalCol.findOne({ proposalIndex });
+    if (!proposal) {
+      throw new HttpError(404, "Proposal not found");
+    }
+
+    ctx.body = await commentService.postComment(
+      {
+        chain: "kusama",
+        type: "proposal",
+        index: proposalIndex,
+      },
+      content,
+      user
     );
   }
 }

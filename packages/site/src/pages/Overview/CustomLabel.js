@@ -10,7 +10,7 @@ const Wrapper = styled.div`
   background: #fbfbfb;
   padding: 4px 16px;
   border-radius: 4px;
-`
+`;
 
 const ItemWrapper = styled.div`
   cursor: pointer;
@@ -19,7 +19,7 @@ const ItemWrapper = styled.div`
   :not(:last-child) {
     margin-bottom: 4px;
   }
-`
+`;
 
 const IconWrapper = styled.div`
   height: 16px;
@@ -28,40 +28,47 @@ const IconWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`
+`;
 
 const Icon = styled.div`
-  ${(p => p.icon === "square" && css`
+  ${(p) =>
+    p.icon === "square" &&
+    css`
       width: 8px;
       height: 8px;
       background: ${p.color ?? "#EEEEEE"};
       border-radius: 1px;
-    `
-  )}
-  ${(p => p.icon === "circle" && css`
+    `}
+  ${(p) =>
+    p.icon === "circle" &&
+    css`
       width: 10px;
       height: 10px;
-      border: 3px solid ${(p) => (p.disabled ? "rgba(29, 37, 60, 0.24)" : p.color ?? "#EEEEEE")};
+      border: 3px solid
+        ${(p) => (p.disabled ? "rgba(29, 37, 60, 0.24)" : p.color ?? "#EEEEEE")};
       border-radius: 50%;
-    `
-  )}
-`
+    `}
+`;
 
 const Title = styled(Text)`
   font-weight: 500;
   line-height: 24px;
-  ${(p) => p.disabled && css`
-    color: rgba(29, 37, 60, 0.24);
-  `}
-`
+  ${(p) =>
+    p.disabled &&
+    css`
+      color: rgba(29, 37, 60, 0.24);
+    `}
+`;
 
 const ChildTitle = styled(TextMinor)`
   font-weight: 500;
   line-height: 24px;
-  ${(p) => p.disabled && css`
-    color: rgba(29, 37, 60, 0.24);
-  `}
-`
+  ${(p) =>
+    p.disabled &&
+    css`
+      color: rgba(29, 37, 60, 0.24);
+    `}
+`;
 
 const ValueWrapper = styled.div`
   display: flex;
@@ -70,12 +77,14 @@ const ValueWrapper = styled.div`
   & > :last-child {
     margin-left: 4px;
   }
-  ${(p) => p.disabled && css`
-    & > * {
-      color: rgba(29, 37, 60, 0.24);
-    }
-  `}
-`
+  ${(p) =>
+    p.disabled &&
+    css`
+      & > * {
+        color: rgba(29, 37, 60, 0.24);
+      }
+    `}
+`;
 
 const Label = ({ data, icon, status, clickEvent }) => {
   const { name, color, children } = data;
@@ -84,45 +93,64 @@ const Label = ({ data, icon, status, clickEvent }) => {
   if (children) {
     value = (children || []).reduce((acc, current) => {
       return acc + current.value ?? 0;
-    }, 0)
+    }, 0);
   }
 
   return (
     <Wrapper>
-      <ItemWrapper onClick={() => {
-        clickEvent && clickEvent(name)
-      }}>
+      <ItemWrapper
+        onClick={() => {
+          clickEvent && clickEvent(name);
+        }}
+      >
         <IconWrapper>
           {!children && <Icon icon={icon} color={color} disabled={disabled} />}
         </IconWrapper>
         <Title disabled={disabled}>{name}</Title>
         <Popup
           content={`${value} KSM`}
-          size='mini'
-          trigger={<ValueWrapper disabled={disabled}>
-            <TextMinor>{`${Math.round(value) === value ? "" : "≈ "}${Math.round(value)} KSM`}</TextMinor>
-          </ValueWrapper>}
+          size="mini"
+          trigger={
+            <ValueWrapper disabled={disabled}>
+              <TextMinor>{`${
+                Math.round(value) === value ? "" : "≈ "
+              }${Math.round(value)} KSM`}</TextMinor>
+            </ValueWrapper>
+          }
         />
       </ItemWrapper>
       {(children || []).map((item, index) => (
-        <ItemWrapper key={index} onClick={() => {
-          clickEvent && clickEvent(item.name)
-        }}>
+        <ItemWrapper
+          key={index}
+          onClick={() => {
+            clickEvent && clickEvent(item.name);
+          }}
+        >
           <IconWrapper>
-            <Icon icon={icon} color={item.color} disabled={status?.children[index].disabled} />
+            <Icon
+              icon={icon}
+              color={item.color}
+              disabled={status?.children[index].disabled}
+            />
           </IconWrapper>
-          <ChildTitle disabled={status?.children[index].disabled}>{item.name}</ChildTitle>
+          <ChildTitle disabled={status?.children[index].disabled}>
+            {item.name}
+          </ChildTitle>
           <Popup
             content={`${item.value} KSM`}
-            size='mini'
-            trigger={<ValueWrapper disabled={status?.children[index].disabled}>
-              <TextMinor>{`${Math.round(item.value) === item.value ? "" : "≈ "}${Math.round(item.value)} KSM`}</TextMinor>
-            </ValueWrapper>}
+            size="mini"
+            trigger={
+              <ValueWrapper disabled={status?.children[index].disabled}>
+                <TextMinor>{`${
+                  Math.round(item.value) === item.value ? "" : "≈ "
+                }${Math.round(item.value)} KSM`}</TextMinor>
+              </ValueWrapper>
+            }
           />
-        </ItemWrapper>)
-      )}
+        </ItemWrapper>
+      ))}
     </Wrapper>
-  )
-}
+  );
+};
 
 export default Label;

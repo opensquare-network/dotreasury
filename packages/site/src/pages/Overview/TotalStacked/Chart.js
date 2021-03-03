@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
 import styled, { css } from "styled-components";
-import { Line } from 'react-chartjs-2';
+import { Line } from "react-chartjs-2";
 import dayjs from "dayjs";
 
-import Text from "../../../components/Text"
+import Text from "../../../components/Text";
 
 const LegendWrapper = styled.div`
   display: flex;
@@ -12,7 +12,7 @@ const LegendWrapper = styled.div`
   & > :not(:last-child) {
     margin-right: 32px;
   }
-`
+`;
 
 const TitleWrapper = styled.div`
   display: flex;
@@ -21,96 +21,90 @@ const TitleWrapper = styled.div`
   & > :first-child {
     margin-right: 12px;
   }
-`
+`;
 
 const LegendDiv = styled.div`
-  ${p => p.icon === "square" && css`
-    width: 8px;
-    height: 8px;
-    background: ${p => p.color};
-    border-radius: 1px;
-  `}
-  ${p => p.icon === "bar" && css`
-    width: 12px;
-    height: 3px;
-    background: ${p => p.color};
-    border-radius: 1px;
-  `}
-`
+  ${(p) =>
+    p.icon === "square" &&
+    css`
+      width: 8px;
+      height: 8px;
+      background: ${(p) => p.color};
+      border-radius: 1px;
+    `}
+  ${(p) =>
+    p.icon === "bar" &&
+    css`
+      width: 12px;
+      height: 3px;
+      background: ${(p) => p.color};
+      border-radius: 1px;
+    `}
+`;
 
 const LegendTitle = styled(Text)`
   font-weight: 500;
   line-height: 24px;
-`
+`;
 
 const LineChart = ({ data, onHover }) => {
-  const { dates, values }  = data;
+  const { dates, values } = data;
   const options = {
-    type: 'line',
+    type: "line",
     hover: {
-      mode: 'nearest',
-      intersect: true
+      mode: "nearest",
+      intersect: true,
     },
     scales: {
-      xAxes: [{
-        type: 'time',
-        time: {
-          displayFormats: {
-            month: 'YYYY-MM'
+      xAxes: [
+        {
+          type: "time",
+          time: {
+            displayFormats: {
+              month: "YYYY-MM",
+            },
+            unit: "month",
+            unitStepSize: 3,
           },
-          unit: 'month',
-          unitStepSize: 3
+          gridLines: {
+            zeroLineWidth: 0,
+            color: "rgba(0, 0, 0, 0)",
+          },
         },
-        gridLines: {
-          zeroLineWidth: 0,
-          color: "rgba(0, 0, 0, 0)",
-        },
-        ticks: {
-          fontFamily: "Inter",
-          maxRotation: 0,
-          minRotation: 0
-        }
-      }],
-      yAxes: [{
-        position: "right",
-        ticks: {
-          fontFamily: "Inter",
-          stepSize: 100000
-        }
-      }]
+      ],
     },
     tooltips: {
-      mode: 'index',
+      mode: "index",
       callbacks: {
-        title: function(tooltipItems) {
+        title: function (tooltipItems) {
           return dayjs(tooltipItems[0].xLabel).format("YYYY-MM-DD");
-        }
+        },
       },
-      itemSort: function(a, b) {
-        return a.datasetIndex - b.datasetIndex
-      }
+      itemSort: function (a, b) {
+        return a.datasetIndex - b.datasetIndex;
+      },
     },
     legend: {
-      display: false
+      display: false,
     },
     maintainAspectRatio: false,
-    onHover: function(_, array) {
+    onHover: function (_, array) {
       const index = array?.[0]?._index;
-      onHover(index)
-    }
-  }
+      onHover(index);
+    },
+  };
   const chartData = {
     labels: dates,
-    datasets: (values || []).map(item => ({
+    datasets: (values || []).map((item) => ({
       label: item.label,
       fill: item.fill,
       lineTension: 0,
       backgroundColor: item.secondaryColor,
       borderColor: item.primaryColor,
-      borderCapStyle: 'butt',
+      borderCapStyle: "butt",
       borderDash: [],
       borderDashOffset: 0.0,
-      borderJoinStyle: 'miter',
+      borderJoinStyle: "miter",
       pointBorderColor: item.primaryColor,
       pointBackgroundColor: item.primaryColor,
       pointBorderWidth: 0,
@@ -121,9 +115,9 @@ const LineChart = ({ data, onHover }) => {
       pointRadius: 1,
       pointHitRadius: 10,
       data: item.data,
-      order: item.order
-    }))
-  }
+      order: item.order,
+    })),
+  };
 
   if (dates && dates.length > 0) {
     return (
@@ -133,12 +127,13 @@ const LineChart = ({ data, onHover }) => {
             <TitleWrapper key={index}>
               <LegendDiv color={item.primaryColor} icon={item.icon} />
               <LegendTitle>{item.label}</LegendTitle>
-            </TitleWrapper>)
-          )}
+            </TitleWrapper>
+          ))}
         </LegendWrapper>
         <Line data={chartData} options={options} />
       </>
-    )} else {
+    );
+  } else {
     return null;
   }
 };

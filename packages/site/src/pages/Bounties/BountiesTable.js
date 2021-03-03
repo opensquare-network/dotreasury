@@ -53,6 +53,10 @@ const ProposeTimeWrapper = styled.div`
   }
 `
 
+const TableRow = styled(Table.Row)`
+  height: 50px;
+`;
+
 const BountiesTable = ({ data, loading }) => {
   const history = useHistory();
 
@@ -84,7 +88,7 @@ const BountiesTable = ({ data, loading }) => {
             {(data &&
               data.length > 0 &&
               data.map((item, index) => (
-                <Table.Row key={index} onClick={() => onClickRow(item.bountyIndex)}>
+                <TableRow key={index} onClick={() => onClickRow(item.bountyIndex)}>
                   <Table.Cell className="index-cell">
                     <TextMinor>{`#${item.bountyIndex}`}</TextMinor>
                   </Table.Cell>
@@ -115,7 +119,7 @@ const BountiesTable = ({ data, loading }) => {
                       <RightButton />
                     </NavLink>
                   </Table.Cell>
-                </Table.Row>
+                </TableRow>
               ))) || (
                 <TableNoDataCell />
             )}

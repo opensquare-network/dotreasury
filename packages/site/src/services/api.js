@@ -17,11 +17,12 @@ class Api {
     return new Promise(async (resolve, reject) => {
       const resp = await window.fetch(url, options)
       if (resp.status !== 200) {
+        const data = await resp.json();
         resolve({
           error: {
-            code: resp.status,
-            url: path,
-            message: 'api is not online'
+            status: resp.status,
+            message: data.message,
+            data: data.data,
           }
         })
       } else {

@@ -8,7 +8,7 @@ const config = require("../config");
 const { initDb } = require("./mongo");
 const { listenAndEmitInfo } = require("./websocket");
 
-require('dotenv').config();
+require("dotenv").config();
 
 const app = new Koa();
 
@@ -23,7 +23,8 @@ app.use(async (ctx, next) => {
   } catch (err) {
     ctx.status = err.statusCode || err.status || 500;
     ctx.body = {
-      message: err.message
+      message: err.message,
+      data: err.data,
     };
   }
 });

@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { Tab, Divider } from "semantic-ui-react";
+import { Tab } from "semantic-ui-react";
 import { NavLink, useLocation } from "react-router-dom";
 import TipsMenu from "./TipsMenu";
 import ProposalsMenu from "./ProposalsMenu";
 import BountiesMenu from "./BountiesMenu";
+import BurntMenu from "./BurntMenu";
+import Divider from "../../components/Divider";
 import TreasurySlashMenu from "./TreasurySlashMenu";
 import DemocracySlashMenu from "./DemocracySlashMenu";
 import StakingSlashMenu from "./StakingSlashMenu";
@@ -22,7 +24,6 @@ import {
   TEXT_DARK_MAJOR,
   TEXT_DARK_MINOR,
 } from "../../constants";
-import BurntMenu from "./BurntMenu";
 
 const DividerWrapper = styled(Divider)`
   margin: 0 !important;
