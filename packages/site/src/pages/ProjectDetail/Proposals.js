@@ -112,7 +112,6 @@ const TextDollar = styled(Text)`
 
 
 const Proposals = ({ data }) => {
-  console.log("propossal data", data);
   return (
     <>
       <Header>Proposals</Header>
@@ -145,7 +144,7 @@ const Proposals = ({ data }) => {
                 <Item>
                   <BoldText>Achievement</BoldText>
                   <div>
-                    {(item.achievements || []).map((item, index) => (<TextMinor>{item}</TextMinor>))}
+                    {(item.achievements || []).map((item, index) => (<TextMinor key={index}>{item}</TextMinor>))}
                   </div>
                 </Item>
               </CardWrapper>

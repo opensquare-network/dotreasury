@@ -28,7 +28,6 @@ const LinksWrapper = styled.div`
 `;
 
 const RelatedLinks = ({ data }) => {
-  console.log(data)
   if (data && data.length > 0) {
     return (
       <Wrapper>
