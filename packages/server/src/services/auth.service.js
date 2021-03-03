@@ -30,7 +30,7 @@ class AuthService {
       iat: Math.floor(Date.now() / 1000),
     };
 
-    return jwt.sign(content, process.env.JWT_SECRET_KEY, { expiresIn: "1h" });
+    return jwt.sign(content, process.env.JWT_SECRET_KEY, { expiresIn: "7d" });
   }
 
   async getRefreshToken(user) {
