@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "styled-components";
+import { NavLink } from "react-router-dom";
 
 import { PRIMARY_THEME_COLOR } from "../../constants";
 import SubTitle from "../../components/SubTitle";
 import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
 import Card from "../../components/Card";
-import ButtonList from "./ButtonList";
 
 const Header = styled(SubTitle)`
   margin-bottom: 16px;
@@ -63,8 +63,11 @@ const FlexWrapper = styled.div`
 
 const TextWrapper = styled.div`
   flex-grow: 1;
-  & > p {
+  & * {
     display: inline;
+  }
+  & > a > p:hover {
+    text-decoration: underline
   }
 `
 
@@ -127,10 +130,11 @@ const Proposals = ({ data }) => {
             <VerticalWrapper>
               <FlexWrapper>
                 <TextWrapper>
-                  <NumberText>{`#${item.proposalId}`}</NumberText>
+                  <NavLink to={`/proposals/${item.proposalId}`}>
+                    <NumberText>{`#${item.proposalId}`}</NumberText>
+                  </NavLink>
                   <BoldText>{item.title}</BoldText>
                 </TextWrapper>
-                <ButtonList />
               </FlexWrapper>
               <CardWrapper>
                 <Item>
