@@ -150,12 +150,6 @@ async function getStatsCollection() {
   return statsCol;
 }
 
-function withTransaction(fn, options) {
-  return client.withSession((session) => {
-    return session.withTransaction(fn, options);
-  });
-}
-
 module.exports = {
   initDb,
   getStatusCollection,
@@ -172,5 +166,4 @@ module.exports = {
   getIdentitySlashCollection,
   getOthersIncomeCollection,
   getStatsCollection,
-  withTransaction,
 };
