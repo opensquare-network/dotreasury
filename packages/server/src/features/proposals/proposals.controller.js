@@ -109,8 +109,11 @@ class ProposalsController {
     const proposalIndex = parseInt(ctx.params.proposalIndex);
 
     ctx.body = await linkService.getLinks({
-      type: "proposals",
-      indexer: proposalIndex,
+      indexer: {
+        chain: "kusama",
+        type: "proposal",
+        index: proposalIndex,
+      },
     });
   }
 
@@ -120,8 +123,11 @@ class ProposalsController {
 
     ctx.body = await linkService.createLink(
       {
-        type: "proposals",
-        indexer: proposalIndex,
+        indexer: {
+          chain: "kusama",
+          type: "proposal",
+          index: proposalIndex,
+        },
         link,
         description,
       },
@@ -135,8 +141,11 @@ class ProposalsController {
 
     ctx.body = await linkService.deleteLink(
       {
-        type: "proposals",
-        indexer: proposalIndex,
+        indexer: {
+          chain: "kusama",
+          type: "proposal",
+          index: proposalIndex,
+        },
         linkIndex,
       },
       ctx.request.headers.signature
@@ -150,6 +159,7 @@ class ProposalsController {
 
     ctx.body = await commentService.getComments(
       {
+        chain: "kusama",
         type: "proposal",
         index: proposalIndex,
       },
@@ -175,6 +185,7 @@ class ProposalsController {
 
     ctx.body = await commentService.postComment(
       {
+        chain: "kusama",
         type: "proposal",
         index: proposalIndex,
       },

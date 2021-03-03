@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import pluralize from "pluralize";
 import api from "../../services/scanApi";
 import { signMessage } from "../../services/chainApi";
 
@@ -14,10 +15,7 @@ const linkSlice = createSlice({
   },
 });
 
-export const {
-  setLinks,
-} = linkSlice.actions;
-
+export const { setLinks } = linkSlice.actions;
 
 export class TipIndex {
   constructor(tipIndex) {
@@ -36,47 +34,65 @@ export class TipIndex {
 }
 
 export const fetchLinks = (type, index) => async (dispatch) => {
-  const { result } = await api.fetch(`/${type}/${index}/links`);
+  const { result } = await api.fetch(`/${pluralize(type)}/${index}/links`);
   dispatch(setLinks(result || []));
 };
 
-export const addLink = (type, index, link, description, address) => async (dispatch) => {
+export const addLink = (type, index, link, description, address) => async (
+  dispatch
+) => {
   const signature = await signMessage(
     JSON.stringify({
+      chain: "kusama",
       type,
       index,
       link,
       description,
-    }), address);
+    }),
+    address
+  );
 
-  await api.fetch(`/${type}/${index}/links`, {}, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Signature': address ? `${address}/${signature}` : "",
-    },
-    body: JSON.stringify({ link, description }),
-  });
+  await api.fetch(
+    `/${pluralize(type)}/${index}/links`,
+    {},
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Signature: address ? `${address}/${signature}` : "",
+      },
+      body: JSON.stringify({ link, description }),
+    }
+  );
 
   dispatch(fetchLinks(type, index));
-}
+};
 
-export const removeLink = (type, index, linkIndex, address) => async (dispatch) => {
+export const removeLink = (type, index, linkIndex, address) => async (
+  dispatch
+) => {
   const signature = await signMessage(
     JSON.stringify({
+      chain: "kusama",
       type,
       index,
       linkIndex,
-    }), address);
+    }),
+    address
+  );
 
-  await api.fetch(`/${type}/${index}/links/${linkIndex}`, {}, {
-    method: 'DELETE',
-    headers: {
-      'Signature': address ? `${address}/${signature}` : "",
-    },
-  });
+  await api.fetch(
+    `/${pluralize(type)}/${index}/links/${linkIndex}`,
+    {},
+    {
+      method: "DELETE",
+      headers: {
+        Signature: address ? `${address}/${signature}` : "",
+      },
+    }
+  );
   dispatch(fetchLinks(type, index));
-}
+};
 
 export const linksSelector = (state) => state.links.links;
 

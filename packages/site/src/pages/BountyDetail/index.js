@@ -264,10 +264,10 @@ const BountyDetail = () => {
         <InformationTable loading={loadingBountyDetail} />
         <BountyLifeCycleTable loading={loadingBountyDetail} />
       </TableWrapper>
-      <RelatedLinks type="bounties" index={parseInt(bountyIndex)} />
+      <RelatedLinks type="bounty" index={parseInt(bountyIndex)} />
       <TimelineCommentWrapper>
         <Timeline data={timelineData} loading={loadingBountyDetail} />
-        <Comment type="bounties" index={parseInt(bountyIndex)} />
+        <Comment type="bounty" index={parseInt(bountyIndex)} />
       </TimelineCommentWrapper>
     </>
   );

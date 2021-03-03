@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import pluralize from "pluralize";
 import { REACTION_THUMBDOWN, REACTION_THUMBUP } from "../../constants";
 import api from "../../services/scanApi";
 
@@ -57,10 +58,13 @@ export class TipIndex {
 export const fetchComments = (type, index, page, pageSize) => async (
   dispatch
 ) => {
-  const { result } = await api.maybeAuthFetch(`/${type}/${index}/comments`, {
-    page,
-    pageSize,
-  });
+  const { result } = await api.maybeAuthFetch(
+    `/${pluralize(type)}/${index}/comments`,
+    {
+      page,
+      pageSize,
+    }
+  );
   dispatch(
     setComments(
       result || {
@@ -75,7 +79,7 @@ export const fetchComments = (type, index, page, pageSize) => async (
 
 export const postComment = (type, index, content) => async (dispatch) => {
   const { result } = await api.authFetch(
-    `/${type}/${index}/comments`,
+    `/${pluralize(type)}/${index}/comments`,
     {},
     {
       method: "POST",

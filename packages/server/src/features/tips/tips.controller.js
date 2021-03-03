@@ -79,10 +79,13 @@ class TipsController {
     const blockHeight = parseInt(ctx.params.blockHeight);
 
     ctx.body = await linkService.getLinks({
-      type: "tips",
       indexer: {
-        blockHeight,
-        tipHash,
+        chain: "kusama",
+        type: "tip",
+        index: {
+          blockHeight,
+          tipHash,
+        },
       },
       getReason: async () => {
         const tipCol = await getTipCollection();
@@ -103,10 +106,13 @@ class TipsController {
 
     ctx.body = await linkService.createLink(
       {
-        type: "tips",
         indexer: {
-          blockHeight,
-          tipHash,
+          chain: "kusama",
+          type: "tip",
+          index: {
+            blockHeight,
+            tipHash,
+          },
         },
         link,
         description,
@@ -122,10 +128,13 @@ class TipsController {
 
     ctx.body = await linkService.deleteLink(
       {
-        type: "tips",
         indexer: {
-          blockHeight,
-          tipHash,
+          chain: "kusama",
+          type: "tip",
+          index: {
+            blockHeight,
+            tipHash,
+          },
         },
         linkIndex,
       },
@@ -141,6 +150,7 @@ class TipsController {
 
     ctx.body = await commentService.getComments(
       {
+        chain: "kusama",
         type: "tip",
         index: {
           blockHeight,
@@ -173,6 +183,7 @@ class TipsController {
 
     ctx.body = await commentService.postComment(
       {
+        chain: "kusama",
         type: "tip",
         index: {
           blockHeight,

@@ -113,8 +113,11 @@ class BountiesController {
     const bountyIndex = parseInt(ctx.params.bountyIndex);
 
     ctx.body = await linkService.getLinks({
-      type: "bounties",
-      indexer: bountyIndex,
+      indexer: {
+        chain: "kusama",
+        type: "bounty",
+        index: bountyIndex,
+      },
     });
   }
 
@@ -124,8 +127,11 @@ class BountiesController {
 
     ctx.body = await linkService.createLink(
       {
-        type: "bounties",
-        indexer: bountyIndex,
+        indexer: {
+          chain: "kusama",
+          type: "bounty",
+          index: bountyIndex,
+        },
         link,
         description,
       },
@@ -139,8 +145,11 @@ class BountiesController {
 
     ctx.body = await linkService.deleteLink(
       {
-        type: "bounties",
-        indexer: bountyIndex,
+        indexer: {
+          chain: "kusama",
+          type: "bounty",
+          index: bountyIndex,
+        },
         linkIndex,
       },
       ctx.request.headers.signature
@@ -154,6 +163,7 @@ class BountiesController {
 
     ctx.body = await commentService.getComments(
       {
+        chain: "kusama",
         type: "bounty",
         index: bountyIndex,
       },
@@ -179,6 +189,7 @@ class BountiesController {
 
     ctx.body = await commentService.postComment(
       {
+        chain: "kusama",
         type: "bounty",
         index: bountyIndex,
       },
