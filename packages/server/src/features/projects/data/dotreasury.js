@@ -3,6 +3,7 @@ const title = "";
 const description = `doTreasury aim to introduce remarks from councilors and communities to improve current kusama/polkadot treasury with a retrospect mechanism.`;
 const startTime = 1606795356000;
 const logo = "dotreasury-logo.svg"
+const relatedLinks = ["https://www.dotreasury.com/proposals/58", "https://www.dotreasury.com/proposals/75"]
 const proposals = [
   {
     token: "ksm",
@@ -39,4 +40,5 @@ module.exports = {
   description,
   startTime,
   proposals,
+  relatedLinks
 };

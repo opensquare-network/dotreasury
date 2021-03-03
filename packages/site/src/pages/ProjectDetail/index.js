@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 
 import DetailGoBack from "../components/DetailGoBack";
-import RelatedLinks from "../RelatedLinks";
 import Comment from "../Comment";
+import RelatedLinks from "./RelatedLinks";
 import Detail from "./Detail";
 import Proposals from "./Proposals";
 import { useComponentWillMount } from "../../utils/hooks";
@@ -45,7 +45,7 @@ const ProjectDetail = () => {
     <>
       <DetailGoBack />
       <Detail data={detailData} />
-      <RelatedLinks />
+      <RelatedLinks data={projectDetail.relatedLinks} />
       <Proposals data={projectDetail.proposals} />
       <Comment />
     </>
