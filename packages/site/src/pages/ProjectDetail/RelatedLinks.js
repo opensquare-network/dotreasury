@@ -31,7 +31,7 @@ const RelatedLinks = ({ data }) => {
   if (data && data.length > 0) {
     return (
       <Wrapper>
-        <Header>RelatedLink</Header>
+        <Header>Related Links</Header>
         <LinksWrapper>
           {data.map((item, index) => (
             <LinkItem link={item} key={index} />
