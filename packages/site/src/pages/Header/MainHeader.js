@@ -27,6 +27,7 @@ const Right = styled.div`
   display: flex;
   align-items: center;
   @media screen and (max-width: 850px) {
+    box-shadow: 0px 4px 12px rgba(29, 37, 60, 0.08);
     display: none;
     width: 100vw;
     flex-direction: column;
