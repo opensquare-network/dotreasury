@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import TipsTable from "./TipsTable";
+import Filter from "./Filter";
 import ResponsivePagination from "../../components/ResponsivePagination";
 import Title from "../../components/Title";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,21 +29,23 @@ const Tips = () => {
 
   const [tablePage, setTablePage] = useState(queryPage);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
+  const [filterData, setFilterData] = useState({});
 
   const dispatch = useDispatch();
   const history = useHistory();
   const { items: tips, total } = useSelector(normalizedTipListSelector);
   const loading = useSelector(loadingSelector);
-
   const totalPages = Math.ceil(total / pageSize);
 
+  console.log(filterData);
   useEffect(() => {
-    dispatch(fetchTips(tablePage - 1, pageSize));
-  }, [dispatch, tablePage, pageSize]);
+    dispatch(fetchTips(tablePage - 1, pageSize, filterData));
+  }, [dispatch, tablePage, pageSize, filterData]);
 
   return (
     <>
       <Header>Tips</Header>
+      <Filter query={setFilterData} />
       <TipsTable data={tips} loading={loading} />
       <ResponsivePagination
         activePage={tablePage}
