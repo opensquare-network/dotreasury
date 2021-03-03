@@ -5,7 +5,7 @@ import { useHistory } from "react-router";
 
 import Table from "../../components/Table";
 import TableLoading from "../../components/TableLoading.js"
-import Balance from "../../components/Balance";
+import PairText from "../../components/PairText";
 import RightButton from "../../components/RightButton";
 import TableNoDataCell from "../../components/TableNoDataCell";
 import Text from "../../components/Text";
@@ -39,9 +39,9 @@ const StyledTable = styled(Table)`
 const TipsTable = ({ data, loading }) => {
   const history = useHistory();
 
-  const onClickRow = (index) => {
+  const onClickRow = (name) => {
     if (window.innerWidth < 1140) {
-      history.push(`/projects/${index}`);
+      history.push(`/projects/${name}`);
     }
   }
 
@@ -64,9 +64,9 @@ const TipsTable = ({ data, loading }) => {
             {(data &&
               data.length > 0 &&
               data.map((item, index) => (
-                <Table.Row key={index} onClick={() => onClickRow(index)}>
+                <Table.Row key={index} onClick={() => onClickRow(item.name)}>
                   <Table.Cell>
-                    <NameCell icon={item.icon} name={item.name} />
+                    <NameCell logo={item.logo} name={item.name} />
                   </Table.Cell>
                   <Table.Cell className="description-cell">
                     <Text>{item.description}</Text>
@@ -75,16 +75,16 @@ const TipsTable = ({ data, loading }) => {
                     <Text>{item.proposals}</Text>
                   </Table.Cell>
                   <Table.Cell className="balance-cell" textAlign={"right"}>
-                    <Balance value={item.expense} />
+                    <PairText value={item.expense} unit="KSM" />
                   </Table.Cell>
                   <Table.Cell className="date-cell">
-                    <DateCell date={item.start} />
+                    <DateCell date={item.startTime} />
                   </Table.Cell>
                   <Table.Cell className="date-cell">
-                    <DateCell date={item.end} />
+                    <DateCell date={item.endTime} />
                   </Table.Cell>
                   <Table.Cell className="link-cell hidden">
-                    <NavLink to={`/projects/${index}`}>
+                    <NavLink to={`/projects/${item.name}`}>
                       <RightButton />
                     </NavLink>
                   </Table.Cell>
