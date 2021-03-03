@@ -16,10 +16,10 @@ const TextWrapper = styled(Text)`
   white-space: nowrap; 
 `
 
-const NameCell = ({ icon, name }) => {
+const NameCell = ({ logo, name }) => {
   return (
     <Wrapper>
-      <Image src={icon || "/imgs/default-logo.svg"} width={24} height={24} />
+      <Image src={logo ? `/imgs/${logo}` : "/imgs/default-logo.svg"} width={24} height={24} />
       <TextWrapper>{name}</TextWrapper>
     </Wrapper>
   )

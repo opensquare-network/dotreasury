@@ -66,7 +66,7 @@ const TipsTable = ({ data, loading }) => {
               data.map((item, index) => (
                 <Table.Row key={index} onClick={() => onClickRow(item.name)}>
                   <Table.Cell>
-                    <NameCell icon={item.icon} name={item.name} />
+                    <NameCell logo={item.logo} name={item.name} />
                   </Table.Cell>
                   <Table.Cell className="description-cell">
                     <Text>{item.description}</Text>

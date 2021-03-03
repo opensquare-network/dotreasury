@@ -45,43 +45,19 @@ export const fetchProjects = (page = 0, pageSize = 30) => async (dispatch) => {
   }
 };
 
-// export const fetchProposalsCount = () => async (dispatch) => {
-//   const { result } = await api.fetch("/proposals/count");
-//   dispatch(setProposalsCount(result || 0));
-// };
-
-// export const fetchProposalDetail = (proposalIndex) => async (dispatch) => {
-//   dispatch(setLoadingProposalDetail(true));
-//   try {
-//     const { result } = await api.fetch(`/proposals/${proposalIndex}`);
-//     dispatch(setProposalDetail(result || {}));
-//   } finally {
-//     dispatch(setLoadingProposalDetail(false));
-//   }
-// };
-
-// export const fetchProposalsSummary = () => async (dispatch) => {
-//   const { result } = await api.fetch("/proposals/summary");
-//   const summary = {
-//     total: 0,
-//     numOfOngoing: 0,
-//     numOfApproved: 0,
-//     numOfAwarded: 0,
-//   };
-//   if (result) {
-//     summary.total = result.total;
-//     summary.numOfOngoing = (result.Proposed || 0) + (result.ApproveVoting || 0) + (result.RejectVoting || 0);
-//     summary.numOfApproved = result.Approved || 0;
-//     summary.numOfAwarded = result.Awarded || 0;
-//   }
-//   dispatch(setProposalSummary(summary));
-// };
+export const fetchProjectDetail = (projectName) => async (dispatch) => {
+  dispatch(setLoadingProjectDetail(true));
+  try {
+    const { result } = await api.fetch(`/projects/${projectName}`);
+    dispatch(setProjectDetail(result || {}));
+  } finally {
+    dispatch(setLoadingProjectDetail(false));
+  }
+};
 
 export const projectsSelector = (state) => state.projects.projects;
 export const loadingSelector = (state) => state.projects.loading;
-// export const proposalsCountSelector = (state) => state.proposals.proposalsCount;
-// export const proposalDetailSelector = (state) => state.proposals.proposalDetail;
-// export const loadingProposalDetailSelector = (state) => state.proposals.loadingProposalDetail;
-// export const proposalSummarySelector = (state) => state.proposals.proposalSummary;
+export const projectDetailSelector = (state) => state.projects.projectDetail;
+export const loadingProjectDetailSelector = (state) => state.projects.loadingProjectDetail;
 
 export default projectSlice.reducer;

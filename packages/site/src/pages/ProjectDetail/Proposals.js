@@ -14,10 +14,14 @@ const Header = styled(SubTitle)`
 
 const Wrapper = styled.div`
   display: flex;
-  margin-bottom: 32px;
   & > div:last-child {
     flex-grow: 1;
     margin-left: 12px;
+  }
+  &:last-child {
+    .bar {
+      visibility: hidden;
+    }
   }
 `;
 
@@ -107,46 +111,48 @@ const TextDollar = styled(Text)`
 `
 
 
-const Proposals = () => {
+const Proposals = ({ data }) => {
+  console.log("propossal data", data);
   return (
     <>
       <Header>Proposals</Header>
-      <Wrapper>
-        <VerticalWrapper>
-          <CircleWrapper>
-            <div />
-          </CircleWrapper>
-          <Bar />
-        </VerticalWrapper>
-        <VerticalWrapper>
-          <FlexWrapper>
-            <TextWrapper>
-              <NumberText>#58</NumberText>
-              <BoldText>Praesent amet bibendum pharetra, condimentum odio  aliquet nulla mauris quis.</BoldText>
-            </TextWrapper>
-            <ButtonList />
-          </FlexWrapper>
-          <CardWrapper>
-            <Item>
-              <BoldText>Expense</BoldText>
-              <ExpenseWrapper>
-                <Text>50.00</Text>
-                <TextMinor className="unit">KSM</TextMinor>
-                <TextDollar className="dollar">≈ $21,123.00</TextDollar>
-              </ExpenseWrapper>
-            </Item>
-            <Item>
-              <BoldText>Achievement</BoldText>
-              <div>
-                <TextMinor>1. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Augue sagittis integer diam et eleifend mi quam nec.</TextMinor>
-                <TextMinor>2. Semper sit lorem mattis ornare ipsum turpis congue urna, gravida.</TextMinor>
-                <TextMinor>3. Ultrices eros, ornare elementum arcu, aenean.</TextMinor>
-                <TextMinor>4. Felis egestas fringilla tempor ac orci ridiculus.</TextMinor>
-              </div>
-            </Item>
-          </CardWrapper>
-        </VerticalWrapper>
-      </Wrapper>
+      <div>
+        {(data || []).map((item, index) => (
+          <Wrapper key={index}>
+            <VerticalWrapper>
+              <CircleWrapper>
+                <div />
+              </CircleWrapper>
+              <Bar className="bar" />
+            </VerticalWrapper>
+            <VerticalWrapper>
+              <FlexWrapper>
+                <TextWrapper>
+                  <NumberText>{`#${item.proposalId}`}</NumberText>
+                  <BoldText>{item.title}</BoldText>
+                </TextWrapper>
+                <ButtonList />
+              </FlexWrapper>
+              <CardWrapper>
+                <Item>
+                  <BoldText>Expense</BoldText>
+                  <ExpenseWrapper>
+                    <Text>{item.amount}</Text>
+                    <TextMinor className="unit">{item.token.toUpperCase()}</TextMinor>
+                    <TextDollar className="dollar">{`≈ $${item.amount * item.proposeTimePrice}`}</TextDollar>
+                  </ExpenseWrapper>
+                </Item>
+                <Item>
+                  <BoldText>Achievement</BoldText>
+                  <div>
+                    {(item.achievements || []).map((item, index) => (<TextMinor>{item}</TextMinor>))}
+                  </div>
+                </Item>
+              </CardWrapper>
+            </VerticalWrapper>
+          </Wrapper>
+        ))}
+      </div>
     </>
   )
 }

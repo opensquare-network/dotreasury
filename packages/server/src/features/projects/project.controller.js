@@ -15,6 +15,7 @@ class ProjectController {
     ctx.body = {
       items: projects.slice(skip, skip + pageSize).map(item => ({
         name: item.name,
+        logo: item.logo,
         description: item.description,
         startTime: item.startTime,
         endTime: item.endTime,

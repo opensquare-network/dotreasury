@@ -1,18 +1,52 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router";
 
 import DetailGoBack from "../components/DetailGoBack";
 import RelatedLinks from "../RelatedLinks";
 import Comment from "../Comment";
 import Detail from "./Detail";
 import Proposals from "./Proposals";
+import { useComponentWillMount } from "../../utils/hooks";
+import {
+  setProjectDetail,
+  fetchProjectDetail,
+  // loadingProjectDetailSelector,
+  projectDetailSelector,
+} from "../../store/reducers/projectSlice";
 
 const ProjectDetail = () => {
+  const { projectName } = useParams();
+
+  const dispatch = useDispatch();
+
+  useComponentWillMount(() => {
+    dispatch(setProjectDetail({}));
+  });
+
+  useEffect(() => {
+    dispatch(fetchProjectDetail(projectName));
+  }, [dispatch, projectName]);
+
+  // const loadingProjectDetail = useSelector(loadingProjectDetailSelector);
+  const projectDetail = useSelector(projectDetailSelector);
+
+  const detailData = {
+    name: projectDetail.name,
+    logo: projectDetail.logo,
+    description: projectDetail.description,
+    proposals: projectDetail.proposals?.length,
+    expense: projectDetail.proposals?.reduce((previous, current) => (
+      previous + current.amount
+    ), 0)
+  }
+
   return (
     <>
       <DetailGoBack />
-      <Detail />
+      <Detail data={detailData} />
       <RelatedLinks />
-      <Proposals />
+      <Proposals data={projectDetail.proposals} />
       <Comment />
     </>
   )
