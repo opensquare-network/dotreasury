@@ -7,6 +7,7 @@ const {
 } = require("../../utils/constants");
 const { treasurySlashLogger } = require("../../utils/logger");
 const { getTreasurySlashCollection } = require("../../mongo");
+const { asyncLocalStorage } = require("./utils");
 
 function isBountyModule(section, height) {
   if (height < ksmTreasuryRefactorApplyHeight && section === Modules.Treasury) {
@@ -67,8 +68,9 @@ const knownProposalSlash = [
 ];
 
 async function saveSlashRecord(data) {
+  const session = asyncLocalStorage.getStore();
   const col = await getTreasurySlashCollection();
-  await col.insertOne(data);
+  await col.insertOne(data, { session });
 }
 
 async function handleTreasuryProposalSlash(

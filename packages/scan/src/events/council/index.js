@@ -13,6 +13,7 @@ const {
   handleProposedForBounty,
   updateBountyByVoteResult,
 } = require("./bountyMotion");
+const { asyncLocalStorage } = require("./utils");
 
 async function handleCouncilEvent(event, normalizedExtrinsic, extrinsic) {
   const { section, method } = event;
@@ -46,6 +47,7 @@ async function handleVoteEvent(event, normalizedExtrinsic) {
     hash
   );
 
+  const session = asyncLocalStorage.getStore();
   const col = await getMotionCollection();
   const index = await getMotionLatestIndex(hash);
   await col.updateOne(
@@ -66,7 +68,8 @@ async function handleVoteEvent(event, normalizedExtrinsic) {
           extrinsic: normalizedExtrinsic,
         },
       },
-    }
+    },
+    { session }
   );
 
   const indexer = normalizedExtrinsic.extrinsicIndexer;
@@ -81,6 +84,7 @@ async function handleClosedEvent(event, normalizedExtrinsic) {
     hash
   );
 
+  const session = asyncLocalStorage.getStore();
   const col = await getMotionCollection();
   const index = await getMotionLatestIndex(hash);
   await col.updateOne(
@@ -101,7 +105,8 @@ async function handleClosedEvent(event, normalizedExtrinsic) {
           extrinsic: normalizedExtrinsic,
         },
       },
-    }
+    },
+    { session }
   );
 }
 
@@ -146,9 +151,10 @@ async function handleApprovedEvent(event, normalizedExtrinsic) {
     };
   }
 
+  const session = asyncLocalStorage.getStore();
   const col = await getMotionCollection();
   const index = await getMotionLatestIndex(hash);
-  await col.updateOne({ index }, updateObj);
+  await col.updateOne({ index }, updateObj, { session });
 
   await updateProposalStateByVoteResult(
     hash,
@@ -203,9 +209,10 @@ async function handleDisapprovedEvent(event, normalizedExtrinsic) {
     };
   }
 
+  const session = asyncLocalStorage.getStore();
   const col = await getMotionCollection();
   const index = await getMotionLatestIndex(hash);
-  await col.updateOne({ index }, updateObj);
+  await col.updateOne({ index }, updateObj, { session });
 
   await updateProposalStateByVoteResult(
     hash,
@@ -223,6 +230,7 @@ async function handleExecutedEvent(event) {
   const eventData = event.data.toJSON();
   const [hash, result] = eventData;
 
+  const session = asyncLocalStorage.getStore();
   const col = await getMotionCollection();
   const index = await getMotionLatestIndex(hash);
   await col.updateOne(
@@ -234,7 +242,8 @@ async function handleExecutedEvent(event) {
           eventData,
         },
       },
-    }
+    },
+    { session }
   );
 }
 

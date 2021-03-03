@@ -11,6 +11,7 @@ const {
 } = require("../mongo");
 const { bigAdd, getTreasuryBalance } = require("../utils");
 const { updateLastStatTime } = require("../mongo/statTime");
+const { asyncLocalStorage } = require("./utils");
 
 async function shouldSaveStatHistory(blockIndexer) {
   if (
@@ -58,6 +59,7 @@ async function saveStats(indexer) {
     indexer.blockHeight
   );
 
+  const session = asyncLocalStorage.getStore();
   const statsCol = await getStatsCollection();
   await statsCol.updateOne(
     { indexer },
@@ -68,7 +70,7 @@ async function saveStats(indexer) {
         treasuryBalance: bnToBn(treasuryBalance).toString(),
       },
     },
-    { upsert: true }
+    { upsert: true, session }
   );
 }
 

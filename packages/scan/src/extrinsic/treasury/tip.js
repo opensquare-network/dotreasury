@@ -16,6 +16,7 @@ const {
 } = require("../../store/tip");
 const { getTipCollection } = require("../../mongo");
 const { getCall, getMultiSigExtrinsicAddress } = require("../../utils/call");
+const { asyncLocalStorage } = require("./utils");
 
 function isTipModule(section, height) {
   if (height < ksmTreasuryRefactorApplyHeight && section === Modules.Treasury) {
@@ -76,6 +77,7 @@ async function updateTipInDB(
   value,
   normalizedExtrinsic
 ) {
+  const session = asyncLocalStorage.getStore();
   const tipCol = await getTipCollection();
   await tipCol.updateOne(
     { hash, isClosedOrRetracted: false },
@@ -92,7 +94,8 @@ async function updateTipInDB(
           extrinsic: normalizedExtrinsic,
         },
       },
-    }
+    },
+    { session }
   );
 }
 
