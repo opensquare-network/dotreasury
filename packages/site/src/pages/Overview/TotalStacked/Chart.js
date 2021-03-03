@@ -56,6 +56,14 @@ const LineChart = ({ data, onHover }) => {
       intersect: true,
     },
     scales: {
+      yAxes: [
+        {
+          position: "right",
+          ticks: {
+            stepSize: 100000
+          }
+        }
+      ],
       xAxes: [
         {
           type: "time",
