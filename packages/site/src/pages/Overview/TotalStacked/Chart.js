@@ -80,7 +80,7 @@ const LineChart = ({ data, onHover }) => {
           return dayjs(tooltipItems[0].xLabel).format("YYYY-MM-DD");
         },
         label: function (tooltipItem) {
-          return parseInt(tooltipItem.value)
+          return `${values[tooltipItem.datasetIndex].label} ≈ ${parseInt(tooltipItem.value)}`
         }
       },
       itemSort: function (a, b) {
