@@ -42,6 +42,7 @@ const ChartWrapper = styled.div`
   height: 252px;
   min-width: 252px;
   flex-grow: 1;
+  margin-bottom: 24px;
 `;
 
 const ListWrapper = styled.div`
@@ -293,12 +294,13 @@ const TotalStacked = () => {
     dates: dateLabels,
     values: [
       {
-        label: "Treasury Balance",
-        primaryColor: "#FBA06E",
-        secondaryColor: "#FBA06E",
-        data: treasuryHistory,
-        fill: false,
-        icon: "bar",
+        label: "Income",
+        primaryColor: "#DF405D",
+        secondaryColor: "#FFEEF1",
+        data: incomeHistory,
+        fill: true,
+        icon: "square",
+        order: 2,
       },
       {
         label: "Output",
@@ -307,14 +309,16 @@ const TotalStacked = () => {
         data: outputHistory,
         fill: true,
         icon: "square",
+        order: 1,
       },
       {
-        label: "Total",
-        primaryColor: "#DF405D",
-        secondaryColor: "#FFEEF1",
-        data: incomeHistory,
-        fill: true,
-        icon: "square",
+        label: "Treasury Balance",
+        primaryColor: "#FBA06E",
+        secondaryColor: "#FBA06E",
+        data: treasuryHistory,
+        fill: false,
+        icon: "bar",
+        order: 0,
       },
     ],
   };

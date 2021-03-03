@@ -10,14 +10,23 @@ const TIMEOUT = 10000;
 
 const fetchApiTime = async (api) => {
   const startTime = Date.now();
-  await api.rpc.system.chain();
+  try {
+    await api.rpc.system.chain();
+  } catch (e) {
+    return "error";
+  }
+
   const endTime = Date.now();
   return endTime - startTime;
 };
 
+const timeout = async (ms) => {
+  await sleep(ms);
+  return "timeout";
+};
+
 const testNet = async (api) => {
-  const result = await Promise.race([fetchApiTime(api), sleep(TIMEOUT)]);
-  return typeof result === "number" ? result : "timeout";
+  return await Promise.race([fetchApiTime(api), timeout(TIMEOUT)]);
 };
 
 const useUpdateNodesDelay = () => {
