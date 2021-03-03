@@ -32,8 +32,9 @@ async function getNextScanHeight() {
 }
 
 async function getIncomeNextScanStatus() {
+  const session = asyncLocalStorage.getStore();
   const statusCol = await getStatusCollection();
-  const status = await statusCol.findOne({ name: incomeScanName });
+  const status = await statusCol.findOne({ name: incomeScanName }, { session });
 
   if (!status) {
     return {

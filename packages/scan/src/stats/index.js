@@ -75,21 +75,30 @@ async function saveStats(indexer) {
 }
 
 async function calcOutputStats() {
+  const session = asyncLocalStorage.getStore();
+
   const proposalCol = await getProposalCollection();
   const proposals = await proposalCol
-    .find({}, { value: 1, beneficiary: 1, meta: 1, state: 1 })
+    .find(
+      {},
+      { projection: { value: 1, beneficiary: 1, meta: 1, state: 1 }, session }
+    )
     .toArray();
 
   const tipCol = await getTipCollection();
   const tips = await tipCol
-    .find({}, { finder: 1, medianValue: 1, state: 1 })
+    .find({}, { projection: { finder: 1, medianValue: 1, state: 1 }, session })
     .toArray();
 
   const bountyCol = await getBountyCollection();
-  const bounties = await bountyCol.find({}, { meta: 1, state: 1 }).toArray();
+  const bounties = await bountyCol
+    .find({}, { projection: { meta: 1, state: 1 }, session })
+    .toArray();
 
   const burntCol = await getBurntCollection();
-  const burntList = await burntCol.find({}, { balance: 1 }).toArray();
+  const burntList = await burntCol
+    .find({}, { projection: { balance: 1 }, session })
+    .toArray();
 
   const output = await calcOutput(proposals, tips, bounties, burntList);
 
