@@ -75,12 +75,13 @@ const LineChart = ({ data, onHover }) => {
     },
     tooltips: {
       mode: "index",
+      bodySpacing: 10,
       callbacks: {
         title: function (tooltipItems) {
           return dayjs(tooltipItems[0].xLabel).format("YYYY-MM-DD");
         },
-        label: function (tooltipItem) {
-          return `${values[tooltipItem.datasetIndex].label} ≈ ${parseInt(tooltipItem.value)}`
+        label: function (tooltipItem, data) {
+          return `${data.datasets[tooltipItem.datasetIndex].label} ${Math.round(tooltipItem.value) === tooltipItem.value ? "" : "≈"} ${parseInt(tooltipItem.value)}`;
         }
       },
       itemSort: function (a, b) {
