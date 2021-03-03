@@ -312,7 +312,7 @@ const TotalStacked = () => {
         order: 1,
       },
       {
-        label: "Treasury Balance",
+        label: "Treasury",
         primaryColor: "#FBA06E",
         secondaryColor: "#FBA06E",
         data: treasuryHistory,
