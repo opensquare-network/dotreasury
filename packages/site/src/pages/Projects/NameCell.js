@@ -12,11 +12,15 @@ const Wrapper = styled.div`
   }
 `
 
+const TextWrapper = styled(Text)`
+  white-space: nowrap; 
+`
+
 const NameCell = ({ icon, name }) => {
   return (
     <Wrapper>
       <Image src={icon || "/imgs/default-logo.svg"} width={24} height={24} />
-      <Text>{name}</Text>
+      <TextWrapper>{name}</TextWrapper>
     </Wrapper>
   )
 }

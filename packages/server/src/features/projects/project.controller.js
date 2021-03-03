@@ -2,7 +2,16 @@ const projects = require("./data");
 
 class ProjectController {
   async getProjects(ctx) {
-    ctx.body = projects;
+    ctx.body = {
+      items: projects.map(item => ({
+        name: item.name,
+        description: item.description,
+        startTime: item.startTime,
+        endTime: item.endTime,
+        proposals: item.proposals?.length,
+        expense: item.proposals?.reduce((previous, current) => previous + current.amount, 0)
+      }))
+    };
   }
 
   async getProject(ctx) {
