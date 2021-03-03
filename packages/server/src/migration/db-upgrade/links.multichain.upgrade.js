@@ -6,7 +6,7 @@ const main = async () => {
     const linkCol = await getLinkCollection();
     const links = await linkCol.find({}).toArray();
     for (const linkItem of links) {
-      if (linkItem.type && linkItem.indexer) {
+      if (linkItem.type && linkItem.indexer !== undefined) {
         await linkCol.updateOne(
           {
             _id: linkItem._id,
