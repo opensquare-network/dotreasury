@@ -9,9 +9,6 @@ const FormWrapper = styled(Form)`
   display: flex;
   justify-content: flex-end;
 `;
-/* const ButtonsWrapper = styled.div`
-  margin-left: 20px;
-`; */
 const StatusSelect = styled(Select)`
   width: 200px;
 `;
@@ -64,10 +61,6 @@ const Filter = ({ query }) => {
         defaultValue="-1"
         onChange={(e, {name,value})=>setStatus(value)}
       />
-      {/* <ButtonsWrapper>
-        <Button type="submit" primary>query</Button>
-        <Button secondary>clear</Button>
-      </ButtonsWrapper> */}
     </FormWrapper>
   );
 };

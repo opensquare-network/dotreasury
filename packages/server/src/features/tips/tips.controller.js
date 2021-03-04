@@ -38,7 +38,6 @@ class TipsController {
       .limit(pageSize)
       .toArray();
     const result = await Promise.all([total, list]);
-    // const total = await tipCol.estimatedDocumentCount();
 
     ctx.body = {
       items: result[1].map(normalizeTip),

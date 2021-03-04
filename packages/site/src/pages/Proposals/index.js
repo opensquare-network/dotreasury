@@ -16,9 +16,6 @@ import {
   proposalListSelector,
 } from "../../store/reducers/proposalSlice";
 
-// const Header = styled(Title)`
-//   margin-bottom: 20px;
-// `;
 const HeaderWrapper = styled.div`
   margin-bottom: 14px;
   display: flex;

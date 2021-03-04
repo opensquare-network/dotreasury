@@ -8,9 +8,6 @@ const FormWrapper = styled(Form)`
   display: flex;
   justify-content: flex-end;
 `;
-// const ButtonsWrapper = styled.div`
-//   margin-left: 20px;
-// `;
 const StatusSelect = styled(Select)`
   width: 200px;
 `;
@@ -27,7 +24,7 @@ const Filter = ({ query }) => {
   useEffect(() => {
     if (mounting.current) {
       mounting.current = false;
-      return 
+      return;
     } 
     const data = {
       status
