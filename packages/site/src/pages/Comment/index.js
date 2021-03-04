@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useDeepCompareEffect from "use-deep-compare-effect";
 import styled from "styled-components";
+import { Dimmer, Image } from "semantic-ui-react";
 
 import Card from "../../components/Card";
 import SubTitle from "../../components/SubTitle";
@@ -13,10 +14,13 @@ import {
   commentsSelector,
   lastNewPostSelector,
   setLastNewPost,
+  setComments,
   lastUpdateCommentTimeSelector,
+  loadingSelector
 } from "../../store/reducers/commentSlice";
 import ResponsivePagination from "./ResponsivePagination";
 import { useQuery } from "../../utils/hooks";
+import { useComponentWillMount } from "../../utils/hooks";
 
 import { useLocation } from "react-router-dom";
 import { useHistory } from "react-router";
@@ -28,6 +32,7 @@ const Header = styled(SubTitle)`
 
 const Wrapper = styled(Card)`
   padding: 0;
+  position: relative;
 `;
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -44,6 +49,10 @@ const Comment = ({ type, index }) => {
   const hashCommentId = hash && hash.slice(1);
   const [refCommentId, setRefCommentId] = useState(hashCommentId);
 
+  useComponentWillMount(() => {
+    dispatch(setComments([]));
+  });
+
   let searchPage = useQuery().get("page");
   if (searchPage !== "last") {
     searchPage = parseInt(searchPage);
@@ -59,6 +68,7 @@ const Comment = ({ type, index }) => {
   const comments = useSelector(commentsSelector);
   const lastNewPost = useSelector(lastNewPostSelector);
   const lastUpdateCommentTime = useSelector(lastUpdateCommentTimeSelector);
+  const loading = useSelector(loadingSelector);
 
   const totalPages = Math.ceil(comments.total / DEFAULT_PAGE_SIZE);
 
@@ -118,6 +128,9 @@ const Comment = ({ type, index }) => {
     <div>
       <Header ref={commentRef}>Comment</Header>
       <Wrapper>
+        <Dimmer active={loading} inverted>
+          <Image src="/imgs/loading.svg" />
+        </Dimmer>
         {(!comments || comments.items?.length === 0) && <NoComment />}
         {comments && comments.items?.length > 0 && <div>
           <CommentList
