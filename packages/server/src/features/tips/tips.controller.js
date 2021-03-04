@@ -6,16 +6,13 @@ const { normalizeTip } = require("./utils");
 const { HttpError } = require("../../exc");
 
 function getCondition(ctx) {
-  let { status } = ctx.request.query;
-  let condition = {};
-  if(status) {
-    if(status.includes('||')) {
-      status = status.split('||');
-      condition['$or'] = status.map(item=>({"state.state": item}));
-    }else {
-      condition['state.state'] = status;
-    }
+  const { status } = ctx.request.query;
+
+  const condition = {};
+  if (status) {
+    condition["state.state"] = { $in: status.split("||") };
   }
+
   return condition;
 }
 
