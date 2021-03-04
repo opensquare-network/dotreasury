@@ -1,7 +1,6 @@
 const { ObjectId } = require("mongodb");
 const mailService = require("./mail.service");
 const {
-  withTransaction,
   getCommentCollection,
   getReactionCollection,
   getUserCollection,
@@ -277,36 +276,34 @@ class CommentService {
   }
 
   async deleteComment(commentId, author) {
-    await withTransaction(async (session) => {
-      let result;
+    let result;
 
-      const commentCol = await getCommentCollection();
-      result = await commentCol.deleteOne(
-        {
-          _id: ObjectId(commentId),
-          authorId: author._id,
-        },
-        { session }
-      );
+    const commentCol = await getCommentCollection();
+    result = await commentCol.deleteOne(
+      {
+        _id: ObjectId(commentId),
+        authorId: author._id,
+      },
+      { session }
+    );
 
-      if (!result.result.ok) {
-        throw new HttpError(500, "Delete comment error.");
-      }
+    if (!result.result.ok) {
+      throw new HttpError(500, "Delete comment error.");
+    }
 
-      if (result.result.n === 0) {
-        throw new HttpError(403, "Cannot delete comment.");
-      }
+    if (result.result.n === 0) {
+      throw new HttpError(403, "Cannot delete comment.");
+    }
 
-      const reactionCol = await getReactionCollection();
-      result = await reactionCol.deleteMany(
-        { commentId: ObjectId(commentId) },
-        { session }
-      );
+    const reactionCol = await getReactionCollection();
+    result = await reactionCol.deleteMany(
+      { commentId: ObjectId(commentId) },
+      { session }
+    );
 
-      if (!result.result.ok) {
-        throw new HttpError(500, "Delete comment reactions error.");
-      }
-    });
+    if (!result.result.ok) {
+      throw new HttpError(500, "Delete comment reactions error.");
+    }
 
     return true;
   }
