@@ -35,6 +35,7 @@ import ElectionPhragmenSlash from "../pages/ElectionPhragmenSlash";
 import Inflation from "../pages/Inflation";
 import OthersIncome from "../pages/OthersIncome";
 import UserAgreement from "../pages/UserAgreement";
+import Privacy from "../pages/Privacy";
 
 import { usePreload } from "../utils/hooks";
 
@@ -98,6 +99,7 @@ export default function App() {
               <Route exact path="/resetpassword" component={ResetPassword} />
               <Route exact path="/verifyemail" component={VerifyEmail} />
               <Route exact path="/useragreement" component={UserAgreement} />
+              <Route exact path="/privacy" component={Privacy} />
               <Redirect to="/" />
             </Switch>
           </Container>

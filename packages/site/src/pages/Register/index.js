@@ -133,7 +133,7 @@ const Helper = ({ isAgree, setIsAgree, agreeError, setAgreeError }) => {
             <StyledTextMnor>User Agreement</StyledTextMnor>
           </Link>
           <p> and </p>
-          <Link to="/register" onClick={
+          <Link to="/privacy" onClick={
             (e) => e.stopPropagation()
           }>
             <StyledTextMnor>Privacy Notice.</StyledTextMnor>
