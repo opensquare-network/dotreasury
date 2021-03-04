@@ -127,13 +127,13 @@ const Helper = ({ isAgree, setIsAgree, agreeError, setAgreeError }) => {
         <CheckImage src={isAgree ? "/imgs/circle-pass.svg" : "/imgs/circle-check-off.svg"} />
         <div>
           <p>I have read and agree to the terms of the </p>
-          <Link to="/register" onClick={
+          <Link to="/useragreement" onClick={
             (e) => e.stopPropagation()
           }>
             <StyledTextMnor>User Agreement</StyledTextMnor>
           </Link>
           <p> and </p>
-          <Link to="/register" onClick={
+          <Link to="/privacy" onClick={
             (e) => e.stopPropagation()
           }>
             <StyledTextMnor>Privacy Notice.</StyledTextMnor>
