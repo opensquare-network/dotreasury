@@ -5,6 +5,20 @@ const { extractPage } = require("../../utils");
 const { normalizeTip } = require("./utils");
 const { HttpError } = require("../../exc");
 
+function getCondition(ctx) {
+  let { status } = ctx.request.query;
+  let condition = {};
+  if(status) {
+    if(status.includes('||')) {
+      status = status.split('||');
+      condition['$or'] = status.map(item=>({"state.state": item}));
+    }else {
+      condition['state.state'] = status;
+    }
+  }
+  return condition;
+}
+
 class TipsController {
   async getTips(ctx) {
     const { page, pageSize } = extractPage(ctx);
@@ -12,10 +26,12 @@ class TipsController {
       ctx.status = 400;
       return;
     }
+    const condition = getCondition(ctx);
 
     const tipCol = await getTipCollection();
-    const tips = await tipCol
-      .find({}, { timeline: 0 })
+    const total = tipCol.countDocuments(condition);
+    const list = tipCol
+      .find(condition, { timeline: 0 })
       .sort({
         isClosedOrRetracted: 1,
         "indexer.blockHeight": -1,
@@ -23,13 +39,13 @@ class TipsController {
       .skip(page * pageSize)
       .limit(pageSize)
       .toArray();
-    const total = await tipCol.estimatedDocumentCount();
+    const result = await Promise.all([total, list]);
 
     ctx.body = {
-      items: tips.map(normalizeTip),
+      items: result[1].map(normalizeTip),
       page,
       pageSize,
-      total,
+      total: result[0],
     };
   }
 

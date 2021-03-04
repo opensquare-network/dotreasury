@@ -7,24 +7,31 @@ const { HttpError } = require("../../exc");
 class ProposalsController {
   async getProposals(ctx) {
     const { page, pageSize } = extractPage(ctx);
+    const { status } = ctx.request.query;
     if (pageSize === 0 || page < 0) {
       ctx.status = 400;
       return;
     }
 
+    let condition = {};
+    if(status) {
+      condition = {"state.name": status};
+    }
     const proposalCol = await getProposalCollection();
-    const proposals = await proposalCol
-      .find({}, { timeline: 0 })
+
+    const total = proposalCol.countDocuments(condition);
+    const list = proposalCol
+      .find(condition, { timeline: 0 })
       .sort({
         "indexer.blockHeight": -1,
       })
       .skip(page * pageSize)
       .limit(pageSize)
       .toArray();
-    const total = await proposalCol.estimatedDocumentCount();
+    const result = await Promise.all([total, list]);
 
     ctx.body = {
-      items: proposals.map((item) => ({
+      items: result[1].map((item) => ({
         indexer: item.indexer,
         proposalIndex: item.proposalIndex,
         proposeTime: item.indexer.blockTime,
@@ -40,7 +47,7 @@ class ProposalsController {
       })),
       page,
       pageSize,
-      total,
+      total: result[0],
     };
   }
 

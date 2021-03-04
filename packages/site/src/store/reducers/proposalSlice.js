@@ -52,11 +52,11 @@ export const {
   setProposalSummary,
 } = proposalSlice.actions;
 
-export const fetchProposals = (page = 0, pageSize = 30) => async (dispatch) => {
+export const fetchProposals = (page = 0, pageSize = 30, filterData={}) => async (dispatch) => {
   dispatch(setLoading(true));
 
   try {
-    const { result } = await api.fetch('/proposals', { page, pageSize });
+    const { result } = await api.fetch('/proposals', { page, pageSize, ...filterData });
     dispatch(setProposals(result || {}));
   } finally {
     dispatch(setLoading(false));
