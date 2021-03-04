@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router";
 
@@ -50,10 +50,10 @@ const Proposals = () => {
 
   const totalPages = Math.ceil(total / pageSize);
 
-  const filterQuery = (data)=>{
+  const filterQuery = useCallback((data)=>{
     setFilterData(data);
     setTablePage(1);
-  }
+  }, []);
 
   return (
     <>

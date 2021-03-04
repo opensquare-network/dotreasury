@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import TipsTable from "./TipsTable";
 import Filter from "./Filter";
@@ -45,10 +45,10 @@ const Tips = () => {
     dispatch(fetchTips(tablePage - 1, pageSize, filterData));
   }, [dispatch, tablePage, pageSize, filterData]);
 
-  const filterQuery = (data)=>{
+  const filterQuery = useCallback((data)=>{
     setFilterData(data);
     setTablePage(1);
-  }
+  }, []);
 
   return (
     <>

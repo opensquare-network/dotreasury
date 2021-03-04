@@ -48,12 +48,12 @@ const Filter = ({ query }) => {
       status
     }
     for(let key in data) {
-      if(data[key]==='' || data[key]==-1) {
+      if(data[key]==='' || data[key]==='-1') {
         delete data[key];
       }
     }
     query(data)
-  }, [status]);
+  }, [status, query]);
 
   return (
     <FormWrapper>
