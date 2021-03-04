@@ -8,18 +8,16 @@ const FormWrapper = styled(Form)`
   display: flex;
   justify-content: flex-end;
 `;
-/* const ButtonsWrapper = styled.div`
-  margin-left: 20px;
-`; */
+// const ButtonsWrapper = styled.div`
+//   margin-left: 20px;
+// `;
 const StatusSelect = styled(Select)`
   width: 200px;
 `;
 
 const statusOptions = [
   { key: 'all', value: '-1', text: 'All status' },
-  { key: 'closed', value: 'closed', text: 'Closed' },
-  { key: 'tipping', value: 'tipping', text: 'Tipping' },
-  { key: 'retracted', value: 'retracted', text: 'Retracted' },
+  ...['Awarded', 'Proposed', 'Rejected'].map(item=>({ key: item, value: item, text:item }))
 ]
 const Filter = ({ query }) => {
   const [status, setStatus] = useState('');
@@ -29,8 +27,8 @@ const Filter = ({ query }) => {
   useEffect(() => {
     if (mounting.current) {
       mounting.current = false;
-      return;
-    }
+      return 
+    } 
     const data = {
       status
     }
@@ -51,10 +49,6 @@ const Filter = ({ query }) => {
         defaultValue="-1"
         onChange={(e, {name,value})=>setStatus(value)}
       />
-      {/* <ButtonsWrapper>
-        <Button type="submit" primary>query</Button>
-        <Button secondary>clear</Button>
-      </ButtonsWrapper> */}
     </FormWrapper>
   );
 };

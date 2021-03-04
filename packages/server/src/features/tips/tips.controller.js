@@ -3,6 +3,30 @@ const linkService = require("../../services/link.services");
 const { extractPage } = require("../../utils");
 const { normalizeTip } = require("./utils");
 
+function getCondition(ctx) {
+  const { status } = ctx.request.query;
+  let condition = {};
+  switch(status){
+    case 'tipping':
+      condition = {
+        $or: [{"state.state":"NewTip"}, {"state.state":"tip"}]
+      };
+      break;
+    case 'retracted':
+      // condition['state.state'] = 'TipRetracted';
+      condition = {
+        "state.state": "TipRetracted"
+      }
+      break;
+    case 'closed':
+      condition = {
+        "state.state": "TipClosed"
+      }
+      break;
+  }
+  return condition;
+}
+
 class TipsController {
   async getTips(ctx) {
     const { page, pageSize } = extractPage(ctx);
@@ -10,10 +34,12 @@ class TipsController {
       ctx.status = 400;
       return;
     }
+    const condition = getCondition(ctx);
 
     const tipCol = await getTipCollection();
-    const tips = await tipCol
-      .find({}, { timeline: 0 })
+    const total = tipCol.find(condition, { timeline: 0 }).count();
+    const list = tipCol
+      .find(condition, { timeline: 0 })
       .sort({
         isClosedOrRetracted: 1,
         "indexer.blockHeight": -1,
@@ -21,13 +47,14 @@ class TipsController {
       .skip(page * pageSize)
       .limit(pageSize)
       .toArray();
-    const total = await tipCol.estimatedDocumentCount();
+    const result = await Promise.all([total, list]);
+    // const total = await tipCol.estimatedDocumentCount();
 
     ctx.body = {
-      items: tips.map(normalizeTip),
+      items: result[1].map(normalizeTip),
       page,
       pageSize,
-      total,
+      total: result[0],
     };
   }
 

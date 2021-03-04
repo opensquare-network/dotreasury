@@ -8,6 +8,7 @@ import ProposalsTable from "./ProposalsTable";
 import { useDispatch, useSelector } from "react-redux";
 import { useQuery } from "../../utils/hooks";
 import Summary from "./Summary";
+import Filter from "./Filter";
 
 import {
   fetchProposals,
@@ -15,8 +16,14 @@ import {
   proposalListSelector,
 } from "../../store/reducers/proposalSlice";
 
-const Header = styled(Title)`
-  margin-bottom: 20px;
+// const Header = styled(Title)`
+//   margin-bottom: 20px;
+// `;
+const HeaderWrapper = styled.div`
+  margin-bottom: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -30,6 +37,7 @@ const Proposals = () => {
       : DEFAULT_QUERY_PAGE;
   const [tablePage, setTablePage] = useState(queryPage);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
+  const [filterData, setFilterData] = useState({});
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -37,14 +45,22 @@ const Proposals = () => {
   const loading = useSelector(loadingSelector);
 
   useEffect(() => {
-    dispatch(fetchProposals(tablePage - 1, pageSize));
-  }, [dispatch, tablePage, pageSize]);
+    dispatch(fetchProposals(tablePage - 1, pageSize, filterData));
+  }, [dispatch, tablePage, pageSize, filterData]);
 
   const totalPages = Math.ceil(total / pageSize);
 
+  const filterQuery = (data)=>{
+    setFilterData(data);
+    setTablePage(1);
+  }
+
   return (
     <>
-      <Header>Proposals</Header>
+      <HeaderWrapper>
+        <Title>Proposals</Title>
+        <Filter query={filterQuery} />
+      </HeaderWrapper>
       <Summary />
       <ProposalsTable data={proposals} loading={loading} />
       <ResponsivePagination

@@ -13,9 +13,13 @@ import {
 import { useQuery } from "../../utils/hooks";
 import { useHistory } from "react-router";
 
-const Header = styled(Title)`
-  margin-bottom: 20px;
+const HeaderWrapper = styled.div`
+  margin-bottom: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
+
 
 const DEFAULT_PAGE_SIZE = 20;
 const DEFAULT_QUERY_PAGE = 1;
@@ -37,15 +41,21 @@ const Tips = () => {
   const loading = useSelector(loadingSelector);
   const totalPages = Math.ceil(total / pageSize);
 
-  console.log(filterData);
   useEffect(() => {
     dispatch(fetchTips(tablePage - 1, pageSize, filterData));
   }, [dispatch, tablePage, pageSize, filterData]);
 
+  const filterQuery = (data)=>{
+    setFilterData(data);
+    setTablePage(1);
+  }
+
   return (
     <>
-      <Header>Tips</Header>
-      <Filter query={setFilterData} />
+      <HeaderWrapper>
+        <Title>Tips</Title>
+        <Filter query={filterQuery} />
+      </HeaderWrapper>
       <TipsTable data={tips} loading={loading} />
       <ResponsivePagination
         activePage={tablePage}
