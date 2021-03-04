@@ -59,7 +59,18 @@ async function calcOverview() {
     output,
     bestProposalBeneficiaries,
     bestTipFinders,
-    income: incomeScan?.seats,
+    income: incomeScan?.seats || {
+      inflation: 0,
+      slash: 0,
+      others: 0,
+      slashSeats: {
+        treasury: 0,
+        staking: 0,
+        democracy: 0,
+        electionsPhragmen: 0,
+        identity: 0,
+      },
+    },
   };
 }
 
