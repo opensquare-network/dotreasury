@@ -15,6 +15,7 @@ const commentSlice = createSlice({
     clearComment: false,
     lastNewPost: null,
     lastUpdateCommentTime: 0,
+    loading: false,
   },
   reducers: {
     setComments(state, { payload }) {
@@ -29,10 +30,14 @@ const commentSlice = createSlice({
     setLastUpdateCommentTime(state, { payload }) {
       state.lastUpdateCommentTime = payload;
     },
+    setLoading(state, { payload }) {
+      state.loading = payload;
+    },
   },
 });
 
 export const {
+  setLoading,
   setComments,
   setClearComment,
   setLastNewPost,
@@ -58,23 +63,28 @@ export class TipIndex {
 export const fetchComments = (type, index, page, pageSize) => async (
   dispatch
 ) => {
-  const { result } = await api.maybeAuthFetch(
-    `/${pluralize(type)}/${index}/comments`,
-    {
-      page,
-      pageSize,
-    }
-  );
-  dispatch(
-    setComments(
-      result || {
-        items: [],
-        page: 0,
-        pageSize: 10,
-        total: 0,
+  dispatch(setLoading(true));
+  try{
+    const { result } = await api.maybeAuthFetch(
+      `/${pluralize(type)}/${index}/comments`,
+      {
+        page,
+        pageSize,
       }
-    )
-  );
+    );
+    dispatch(
+      setComments(
+        result || {
+          items: [],
+          page: 0,
+          pageSize: 10,
+          total: 0,
+        }
+      )
+    );
+  } finally {
+    dispatch(setLoading(false));
+  }
 };
 
 export const postComment = (type, index, content) => async (dispatch) => {
@@ -174,7 +184,7 @@ export const unsetCommentReaction = (commentId) => async (dispatch) => {
 export const commentsSelector = (state) => state.comments.comments;
 export const clearCommentSelector = (state) => state.comments.clearComment;
 export const lastNewPostSelector = (state) => state.comments.lastNewPost;
-export const lastUpdateCommentTimeSelector = (state) =>
-  state.comments.lastUpdateCommentTime;
+export const lastUpdateCommentTimeSelector = (state) => state.comments.lastUpdateCommentTime;
+export const loadingSelector = (state) => state.comments.loading;
 
 export default commentSlice.reducer;
