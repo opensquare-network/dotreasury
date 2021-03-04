@@ -15,7 +15,6 @@ const {
 } = require("../utils");
 const { getCall, getMultiSigExtrinsicAddress } = require("../utils/call");
 const { getTipMethodNameAndArgs } = require("./utils");
-const { asyncLocalStorage } = require("../utils");
 
 async function getTipMetaByBlockHeight(height, tipHash) {
   const api = await getApi();
@@ -145,38 +144,34 @@ async function saveNewTip(hash, normalizedExtrinsic, extrinsic) {
     reason
   );
 
-  const session = asyncLocalStorage.getStore();
   const tipCol = await getTipCollection();
-  await tipCol.insertOne(
-    {
-      indexer,
-      hash,
-      reason,
-      finder,
-      medianValue,
-      meta,
-      tippersCount,
-      tipFindersFee,
-      isClosedOrRetracted: false,
-      state: {
-        indexer: normalizedExtrinsic.extrinsicIndexer,
-        state: TipEvents.NewTip,
-        data: [hash],
-      },
-      timeline: [
-        {
-          type: "extrinsic",
-          method,
-          args: {
-            ...args,
-            finder,
-          },
-          extrinsic: normalizedExtrinsic,
-        },
-      ],
+  await tipCol.insertOne({
+    indexer,
+    hash,
+    reason,
+    finder,
+    medianValue,
+    meta,
+    tippersCount,
+    tipFindersFee,
+    isClosedOrRetracted: false,
+    state: {
+      indexer: normalizedExtrinsic.extrinsicIndexer,
+      state: TipEvents.NewTip,
+      data: [hash],
     },
-    { session }
-  );
+    timeline: [
+      {
+        type: "extrinsic",
+        method,
+        args: {
+          ...args,
+          finder,
+        },
+        extrinsic: normalizedExtrinsic,
+      },
+    ],
+  });
 }
 
 async function updateTipByClosingEvent(hash, state, data, extrinsic) {
@@ -191,12 +186,10 @@ async function updateTipByClosingEvent(hash, state, data, extrinsic) {
     medianValue: computeTipValue(meta),
   };
 
-  const session = asyncLocalStorage.getStore();
   const tipCol = await getTipCollection();
   await tipCol.updateOne(
     { hash, isClosedOrRetracted: false },
-    { $set: updates },
-    { session }
+    { $set: updates }
   );
 }
 
@@ -221,7 +214,6 @@ async function updateTipFinalState(
   );
   const terminator = await getRealSigner(normalizedExtrinsic);
 
-  const session = asyncLocalStorage.getStore();
   const tipCol = await getTipCollection();
   await tipCol.updateOne(
     { hash, isClosedOrRetracted: false },
@@ -238,8 +230,7 @@ async function updateTipFinalState(
           extrinsic: normalizedExtrinsic,
         },
       },
-    },
-    { session }
+    }
   );
 }
 

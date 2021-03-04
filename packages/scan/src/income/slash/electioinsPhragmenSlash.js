@@ -5,7 +5,6 @@ const {
 } = require("../../utils/constants");
 const { electionsPhragmenLogger } = require("../../utils/logger");
 const { getElectionSlashCollection } = require("../../mongo");
-const { asyncLocalStorage } = require("../../utils");
 
 function allBeforeIsDeposit(allBlockEvents, sort) {
   let i = sort - 1;
@@ -24,9 +23,8 @@ function allBeforeIsDeposit(allBlockEvents, sort) {
 }
 
 async function saveSlashRecord(data) {
-  const session = asyncLocalStorage.getStore();
   const col = await getElectionSlashCollection();
-  await col.insertOne(data, { session });
+  await col.insertOne(data);
 }
 
 function nextDifferentIsNewTerm(allBlockEvents, sort) {

@@ -1,6 +1,5 @@
 const { getBurntCollection } = require("../mongo");
 const { getMetadataConstByBlockHash, getTreasuryBalance } = require("../utils");
-const { asyncLocalStorage } = require("../utils");
 
 async function getBurnPercent(blockHash) {
   const v = await getMetadataConstByBlockHash(blockHash, "Treasury", "Burn");
@@ -14,17 +13,13 @@ async function saveNewBurnt(balance, eventIndexer) {
   );
   const burnPercent = await getBurnPercent(eventIndexer.blockHash);
 
-  const session = asyncLocalStorage.getStore();
   const burntCol = await getBurntCollection();
-  await burntCol.insertOne(
-    {
-      indexer: eventIndexer,
-      balance,
-      treasuryBalance,
-      burnPercent,
-    },
-    { session }
-  );
+  await burntCol.insertOne({
+    indexer: eventIndexer,
+    balance,
+    treasuryBalance,
+    burnPercent,
+  });
 }
 
 module.exports = {

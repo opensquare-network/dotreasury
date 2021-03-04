@@ -5,7 +5,6 @@ const {
 } = require("../../utils/constants");
 const { getBountyMeta } = require("../../utils/bounty");
 const { getBountyCollection } = require("../../mongo");
-const { asyncLocalStorage } = require("../../utils");
 
 function isBountyModule(section, height) {
   if (height < ksmTreasuryRefactorApplyHeight && section === Modules.Treasury) {
@@ -35,15 +34,13 @@ async function handleBountyAcceptCurator(normalizedExtrinsic) {
     extrinsic: normalizedExtrinsic,
   };
 
-  const session = asyncLocalStorage.getStore();
   const bountyCol = await getBountyCollection();
   await bountyCol.findOneAndUpdate(
     { bountyIndex },
     {
       $set: { meta },
       $push: { timeline: timelineItem },
-    },
-    { session }
+    }
   );
 
   return true;

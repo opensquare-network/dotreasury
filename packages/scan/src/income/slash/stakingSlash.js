@@ -1,7 +1,6 @@
 const { Modules, StakingEvents } = require("../../utils/constants");
 const { stakingSlashLogger } = require("../../utils/logger");
 const { getStakingSlashCollection } = require("../../mongo");
-const { asyncLocalStorage } = require("../../utils");
 
 async function handleStakingSlash(event, sort, allBlockEvents, blockIndexer) {
   const {
@@ -46,9 +45,8 @@ async function handleStakingSlash(event, sort, allBlockEvents, blockIndexer) {
     slashRecords,
   };
 
-  const session = asyncLocalStorage.getStore();
   const col = await getStakingSlashCollection();
-  await col.insertOne(data, { session });
+  await col.insertOne(data);
 
   stakingSlashLogger.info(blockIndexer.blockHeight, method);
   return data;

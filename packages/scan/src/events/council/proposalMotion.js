@@ -12,7 +12,6 @@ const {
   ProposalEvents,
   ProposalMethods,
 } = require("../../utils/constants");
-const { asyncLocalStorage } = require("../../utils");
 
 async function handleProposedForProposal(
   event,
@@ -45,25 +44,21 @@ async function handleProposedForProposal(
     },
   ];
 
-  const session = asyncLocalStorage.getStore();
   const col = await getMotionCollection();
-  await col.insertOne(
-    {
-      hash,
-      index,
-      proposer,
-      method,
-      treasuryProposalId,
-      voting,
-      state: {
-        state: CouncilEvents.Proposed,
-        eventData,
-        extrinsic: normalizedExtrinsic,
-      },
-      timeline,
+  await col.insertOne({
+    hash,
+    index,
+    proposer,
+    method,
+    treasuryProposalId,
+    voting,
+    state: {
+      state: CouncilEvents.Proposed,
+      eventData,
+      extrinsic: normalizedExtrinsic,
     },
-    { session }
-  );
+    timeline,
+  });
 
   await updateProposalStateByProposeOrVote(
     hash,
@@ -85,7 +80,6 @@ async function updateProposalStateByProposeOrVote(hash, indexer) {
       ? "ApproveVoting"
       : "RejectVoting";
 
-  const session = asyncLocalStorage.getStore();
   const proposalCol = await getProposalCollection();
   await proposalCol.findOneAndUpdate(
     { proposalIndex: motion.treasuryProposalId },
@@ -98,8 +92,7 @@ async function updateProposalStateByProposeOrVote(hash, indexer) {
           motionVoting,
         },
       },
-    },
-    { session }
+    }
   );
 }
 
@@ -124,14 +117,12 @@ async function updateProposalStateByVoteResult(hash, isApproved, indexer) {
     }
   }
 
-  const session = asyncLocalStorage.getStore();
   const proposalCol = await getProposalCollection();
   await proposalCol.findOneAndUpdate(
     { proposalIndex: motion.treasuryProposalId },
     {
       $set: { state: { name, indexer } },
-    },
-    { session }
+    }
   );
 }
 

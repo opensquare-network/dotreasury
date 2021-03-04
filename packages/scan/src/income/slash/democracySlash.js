@@ -8,12 +8,10 @@ const { getApi } = require("../../api");
 const { getCall } = require("../../utils/call");
 const { democracySlashLogger } = require("../../utils/logger");
 const { getDemocracySlashCollection } = require("../../mongo");
-const { asyncLocalStorage } = require("../../utils");
 
 async function saveSlashRecord(data) {
-  const session = asyncLocalStorage.getStore();
   const col = await getDemocracySlashCollection();
-  await col.insertOne(data, { session });
+  await col.insertOne(data);
 }
 
 async function handleDemocracyBacklistedOrPreimageInvalid(

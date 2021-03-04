@@ -1,5 +1,4 @@
 const { getStatusCollection } = require("./index");
-const { asyncLocalStorage } = require("../utils");
 
 const statusName = "last-stat-time";
 
@@ -11,7 +10,6 @@ async function getLastStatTime() {
 }
 
 async function updateLastStatTime(statTime) {
-  const session = asyncLocalStorage.getStore();
   const statusCol = await getStatusCollection();
   await statusCol.updateOne(
     { name: statusName },
@@ -20,7 +18,7 @@ async function updateLastStatTime(statTime) {
         value: statTime,
       },
     },
-    { upsert: true, session }
+    { upsert: true }
   );
 }
 

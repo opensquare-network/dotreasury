@@ -1,4 +1,3 @@
-const { AsyncLocalStorage } = require("async_hooks");
 const {
   logger,
   knownHeightsLogger,
@@ -9,8 +8,6 @@ const BigNumber = require("bignumber.js");
 const { getApi } = require("../api");
 const { TreasuryAccount } = require("./constants");
 const { expandMetadata } = require("@polkadot/metadata");
-
-const asyncLocalStorage = new AsyncLocalStorage();
 
 const sleep = (time) => {
   return new Promise((resolve) => {
@@ -157,7 +154,6 @@ async function getTreasuryBalance(blockHash, blockHeight) {
 }
 
 module.exports = {
-  asyncLocalStorage,
   getExtrinsicSigner,
   isExtrinsicSuccess,
   extractExtrinsicEvents,

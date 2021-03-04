@@ -11,7 +11,6 @@ const {
 } = require("../mongo");
 const { bigAdd, getTreasuryBalance } = require("../utils");
 const { updateLastStatTime } = require("../mongo/statTime");
-const { asyncLocalStorage } = require("../utils");
 
 async function shouldSaveStatHistory(blockIndexer) {
   if (
@@ -59,7 +58,6 @@ async function saveStats(indexer) {
     indexer.blockHeight
   );
 
-  const session = asyncLocalStorage.getStore();
   const statsCol = await getStatsCollection();
   await statsCol.updateOne(
     { indexer },
@@ -70,35 +68,26 @@ async function saveStats(indexer) {
         treasuryBalance: bnToBn(treasuryBalance).toString(),
       },
     },
-    { upsert: true, session }
+    { upsert: true }
   );
 }
 
 async function calcOutputStats() {
-  const session = asyncLocalStorage.getStore();
-
   const proposalCol = await getProposalCollection();
   const proposals = await proposalCol
-    .find(
-      {},
-      { projection: { value: 1, beneficiary: 1, meta: 1, state: 1 }, session }
-    )
+    .find({}, { value: 1, beneficiary: 1, meta: 1, state: 1 })
     .toArray();
 
   const tipCol = await getTipCollection();
   const tips = await tipCol
-    .find({}, { projection: { finder: 1, medianValue: 1, state: 1 }, session })
+    .find({}, { finder: 1, medianValue: 1, state: 1 })
     .toArray();
 
   const bountyCol = await getBountyCollection();
-  const bounties = await bountyCol
-    .find({}, { projection: { meta: 1, state: 1 }, session })
-    .toArray();
+  const bounties = await bountyCol.find({}, { meta: 1, state: 1 }).toArray();
 
   const burntCol = await getBurntCollection();
-  const burntList = await burntCol
-    .find({}, { projection: { balance: 1 }, session })
-    .toArray();
+  const burntList = await burntCol.find({}, { balance: 1 }).toArray();
 
   const output = await calcOutput(proposals, tips, bounties, burntList);
 

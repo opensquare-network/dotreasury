@@ -149,14 +149,7 @@ async function getStatsCollection() {
   return statsCol;
 }
 
-function withTransaction(fn, options) {
-  return client.withSession((session) => {
-    return session.withTransaction(fn, options);
-  });
-}
-
 module.exports = {
-  withTransaction,
   getStatusCollection,
   getTipCollection,
   getBountyCollection,

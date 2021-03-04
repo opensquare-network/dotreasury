@@ -12,7 +12,6 @@ const {
 } = require("../../utils/constants");
 const { motionActions } = require("./constants");
 const { getBountyMeta } = require("../../utils/bounty");
-const { asyncLocalStorage } = require("../../utils");
 
 function isBountyMotion(section, method, height) {
   if (
@@ -61,25 +60,21 @@ async function handleProposedForBounty(event, normalizedExtrinsic, extrinsic) {
   ];
 
   const { bounty_id: treasuryBountyId } = args;
-  const session = asyncLocalStorage.getStore();
   const col = await getMotionCollection();
-  await col.insertOne(
-    {
-      hash,
-      index,
-      proposer,
-      method,
-      treasuryBountyId,
-      voting,
-      state: {
-        state: CouncilEvents.Proposed,
-        eventData,
-        extrinsic: normalizedExtrinsic,
-      },
-      timeline,
+  await col.insertOne({
+    hash,
+    index,
+    proposer,
+    method,
+    treasuryBountyId,
+    voting,
+    state: {
+      state: CouncilEvents.Proposed,
+      eventData,
+      extrinsic: normalizedExtrinsic,
     },
-    { session }
-  );
+    timeline,
+  });
 }
 
 async function updateBountyByVoteResult(hash, isApproved, indexer) {
@@ -91,12 +86,10 @@ async function updateBountyByVoteResult(hash, isApproved, indexer) {
 
   const meta = await getBountyMeta(indexer.blockHash, motion.treasuryBountyId);
 
-  const session = asyncLocalStorage.getStore();
   const bountyCol = await getBountyCollection();
   await bountyCol.findOneAndUpdate(
     { bountyIndex: motion.treasuryBountyId },
-    { $set: { meta } },
-    { session }
+    { $set: { meta } }
   );
 }
 
