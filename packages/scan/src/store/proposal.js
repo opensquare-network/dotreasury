@@ -1,6 +1,7 @@
 const { getProposalCollection } = require("../mongo");
 const { getApi } = require("../api");
 const { ProposalState } = require("../utils/constants");
+const { asyncLocalStorage } = require("../utils");
 
 async function saveNewProposal(proposalIndex, nullableNormalizedExtrinsic) {
   const api = await getApi();
@@ -22,19 +23,23 @@ async function saveNewProposal(proposalIndex, nullableNormalizedExtrinsic) {
     beneficiary = metaJson.beneficiary;
   }
 
+  const session = asyncLocalStorage.getStore();
   const proposalCol = await getProposalCollection();
-  await proposalCol.insertOne({
-    indexer,
-    proposalIndex,
-    proposer,
-    value,
-    beneficiary,
-    meta: metaJson,
-    state: {
-      name: ProposalState.Proposed,
+  await proposalCol.insertOne(
+    {
       indexer,
+      proposalIndex,
+      proposer,
+      value,
+      beneficiary,
+      meta: metaJson,
+      state: {
+        name: ProposalState.Proposed,
+        indexer,
+      },
     },
-  });
+    { session }
+  );
 }
 
 async function updateProposalStateByEvent(
@@ -48,6 +53,7 @@ async function updateProposalStateByEvent(
   const proposalIndex = eventData[0];
   const eventIndexer = { ...blockIndexer, eventSort };
 
+  const session = asyncLocalStorage.getStore();
   const col = await getProposalCollection();
   await col.updateOne(
     { proposalIndex },
@@ -60,7 +66,8 @@ async function updateProposalStateByEvent(
             nullableNormalizedExtrinsic?.extrinsicIndexer || eventIndexer,
         },
       },
-    }
+    },
+    { session }
   );
 }
 

@@ -28,10 +28,12 @@ const {
   handleElectionsLoserCandidateSlash,
 } = require("./slash/electioinsPhragmenSlash");
 const { getOthersIncomeCollection } = require("../mongo");
+const { asyncLocalStorage } = require("../utils");
 
 async function saveOthersRecord(data) {
+  const session = asyncLocalStorage.getStore();
   const col = await getOthersIncomeCollection();
-  await col.insertOne(data);
+  await col.insertOne(data, { session });
 }
 
 const tooMuchGas = 0.1 * Math.pow(10, 12);

@@ -1,10 +1,12 @@
 const { Modules, IdentityEvents } = require("../../utils/constants");
 const { identitySlashLogger } = require("../../utils/logger");
 const { getIdentitySlashCollection } = require("../../mongo");
+const { asyncLocalStorage } = require("../../utils");
 
 async function saveSlashRecord(data) {
+  const session = asyncLocalStorage.getStore();
   const col = await getIdentitySlashCollection();
-  await col.insertOne(data);
+  await col.insertOne(data, { session });
 }
 
 async function handleIdentitySlash(event, sort, allBlockEvents, blockIndexer) {

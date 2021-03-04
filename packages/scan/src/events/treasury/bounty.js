@@ -10,6 +10,7 @@ const {
   getBountyDescription,
   getBountyMetaByBlockHeight,
 } = require("../../utils/bounty");
+const { asyncLocalStorage } = require("../../utils");
 
 function isBountyEvent(section, method, height) {
   if (
@@ -87,13 +88,15 @@ async function handleBountyStateUpdateEvent(
     extrinsic: normalizedExtrinsic,
   };
 
+  const session = asyncLocalStorage.getStore();
   const bountyCol = await getBountyCollection();
   await bountyCol.findOneAndUpdate(
     { bountyIndex },
     {
       $set: { meta, state: timelineItem },
       $push: { timeline: timelineItem },
-    }
+    },
+    { session }
   );
 }
 
@@ -129,13 +132,15 @@ async function handleBountyBecameActiveEvent(event, eventIndexer) {
     eventIndexer,
   };
 
+  const session = asyncLocalStorage.getStore();
   const bountyCol = await getBountyCollection();
   await bountyCol.findOneAndUpdate(
     { bountyIndex },
     {
       $set: { meta, state: timelineItem },
       $push: { timeline: timelineItem },
-    }
+    },
+    { session }
   );
 
   return true;
@@ -160,19 +165,23 @@ async function handleProposedEvent(event, normalizedExtrinsic) {
     },
   ];
 
+  const session = asyncLocalStorage.getStore();
   const bountyCol = await getBountyCollection();
-  await bountyCol.insertOne({
-    indexer,
-    bountyIndex,
-    description,
-    meta,
-    state: {
-      name: event.method,
+  await bountyCol.insertOne(
+    {
       indexer,
-      normalizedExtrinsic,
+      bountyIndex,
+      description,
+      meta,
+      state: {
+        name: event.method,
+        indexer,
+        normalizedExtrinsic,
+      },
+      timeline,
     },
-    timeline,
-  });
+    { session }
+  );
 }
 
 module.exports = {

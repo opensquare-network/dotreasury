@@ -2,6 +2,7 @@ const { ProposalMethods, BountyMethods } = require("../../utils/constants");
 const { getCall } = require("../../utils/call");
 const { getApi } = require("../../api");
 const { getMotionCollection } = require("../../mongo");
+const { asyncLocalStorage } = require("../../utils");
 
 function isProposalMotion(method) {
   return [
@@ -76,8 +77,12 @@ async function getMotionLatestIndex(hash) {
 }
 
 async function getLatestMotionByHash(hash) {
+  const session = asyncLocalStorage.getStore();
   const motionCol = await getMotionCollection();
-  const motions = await motionCol.find({ hash }).sort({ index: -1 }).toArray();
+  const motions = await motionCol
+    .find({ hash }, { session })
+    .sort({ index: -1 })
+    .toArray();
   return motions[0];
 }
 

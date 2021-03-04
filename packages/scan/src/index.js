@@ -1,10 +1,16 @@
 require("dotenv").config();
+const { withTransaction } = require("./mongo");
 const { getNextScanHeight, updateScanHeight } = require("./mongo/scanHeight");
 const { getApi } = require("./api");
 const { updateHeight } = require("./chain/latestHead");
 const { deleteDataFrom } = require("./clean");
 const { getLatestHeight } = require("./chain/latestHead");
-const { sleep, logger, knownHeightsLogger } = require("./utils");
+const {
+  sleep,
+  logger,
+  knownHeightsLogger,
+  asyncLocalStorage,
+} = require("./utils");
 const { getBlockIndexer } = require("./block/getBlockIndexer");
 const { handleExtrinsics } = require("./extrinsic");
 const { handleEvents } = require("./events");
@@ -12,12 +18,20 @@ const { knownHeights, maxKnownHeight } = require("./block/known");
 const { processStat } = require("./stats");
 const { handleIncomeEvents } = require("./income");
 
+async function scanOneBlock(height) {
+  await withTransaction(async (session) => {
+    await asyncLocalStorage.run(session, async () => {
+      await scanBlockByHeight(height);
+      await updateScanHeight(height);
+    });
+  });
+}
+
 async function scanKnowBlocks(toScanHeight) {
   let index = knownHeights.findIndex((height) => height >= toScanHeight);
   while (index < knownHeights.length) {
     const height = knownHeights[index];
-    await scanBlockByHeight(height);
-    await updateScanHeight(height);
+    await scanOneBlock(height);
     index++;
   }
 }
@@ -41,8 +55,8 @@ async function main() {
       continue;
     }
 
-    await scanBlockByHeight(scanHeight);
-    await updateScanHeight(scanHeight++);
+    await scanOneBlock(scanHeight);
+    scanHeight++;
   }
 }
 

@@ -1,12 +1,14 @@
 const { Modules, StakingEvents } = require("../utils/constants");
 const { inflationLogger } = require("../utils/logger");
 const { getIncomeInflationCollection } = require("../mongo");
+const { asyncLocalStorage } = require("../utils");
 
 const inflationEndHeight = 1379482;
 
 async function saveInflationRecord(data) {
+  const session = asyncLocalStorage.getStore();
   const col = await getIncomeInflationCollection();
-  await col.insertOne(data);
+  await col.insertOne(data, { session });
 }
 
 async function checkInflation1(event, sort, allBlockEvents, blockIndexer) {
