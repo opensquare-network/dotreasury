@@ -17,7 +17,7 @@ class ProposalsController {
     }
     const proposalCol = await getProposalCollection();
 
-    const total = proposalCol.find(condition, { timeline: 0 }).count();
+    const total = proposalCol.countDocuments(condition);
     const list = proposalCol
       .find(condition, { timeline: 0 })
       .sort({

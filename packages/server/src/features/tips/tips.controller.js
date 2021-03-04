@@ -37,7 +37,7 @@ class TipsController {
     const condition = getCondition(ctx);
 
     const tipCol = await getTipCollection();
-    const total = tipCol.find(condition, { timeline: 0 }).count();
+    const total = tipCol.countDocuments(condition);
     const list = tipCol
       .find(condition, { timeline: 0 })
       .sort({
