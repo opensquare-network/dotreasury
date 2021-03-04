@@ -19,7 +19,7 @@ const TextWrapper = styled(Text)`
 const NameCell = ({ logo, name }) => {
   return (
     <Wrapper>
-      <Image src={logo ? `/imgs/${logo}` : "/imgs/default-logo.svg"} width={24} height={24} />
+      <Image src={logo ? `/imgs/projects/${logo}` : "/imgs/default-logo.svg"} width={24} height={24} />
       <TextWrapper>{name}</TextWrapper>
     </Wrapper>
   )
