@@ -23,6 +23,13 @@ export const TipStatus = {
   Retracted: "Retracted",
 };
 
+export const tipStatusMap = {
+  NewTip: "Tipping",
+  tip: "Tipping",
+  TipRetracted: "Retracted",
+  TipClosed: "Closed",
+};
+
 export const ProposalStatus = {
   Approved: "Approved",
   Rejected: "Rejected",

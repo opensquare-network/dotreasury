@@ -4,25 +4,15 @@ const { extractPage } = require("../../utils");
 const { normalizeTip } = require("./utils");
 
 function getCondition(ctx) {
-  const { status } = ctx.request.query;
+  let { status } = ctx.request.query;
   let condition = {};
-  switch(status){
-    case 'tipping':
-      condition = {
-        $or: [{"state.state":"NewTip"}, {"state.state":"tip"}]
-      };
-      break;
-    case 'retracted':
-      // condition['state.state'] = 'TipRetracted';
-      condition = {
-        "state.state": "TipRetracted"
-      }
-      break;
-    case 'closed':
-      condition = {
-        "state.state": "TipClosed"
-      }
-      break;
+  if(status) {
+    if(status.includes('||')) {
+      status = status.split('||');
+      condition['$or'] = status.map(item=>({"state.state": item}));
+    }else {
+      condition['state.state'] = status;
+    }
   }
   return condition;
 }

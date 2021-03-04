@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { Form } from 'semantic-ui-react'
+import { tipStatusMap } from "../../constants";
 
 import Select from "../../components/Select";
 
@@ -15,12 +16,24 @@ const StatusSelect = styled(Select)`
   width: 200px;
 `;
 
+const statusMap = {};
+for(let key in tipStatusMap) {
+  if(statusMap[tipStatusMap[key]]) {
+    statusMap[tipStatusMap[key]] = statusMap[tipStatusMap[key]] + '||' + key;
+  }else {
+    statusMap[tipStatusMap[key]] = key;
+  }
+}
 const statusOptions = [
-  { key: 'all', value: '-1', text: 'All status' },
-  { key: 'closed', value: 'closed', text: 'Closed' },
-  { key: 'tipping', value: 'tipping', text: 'Tipping' },
-  { key: 'retracted', value: 'retracted', text: 'Retracted' },
-]
+  { key: 'all', value: '-1', text: 'All status' }
+];
+
+for(let key in statusMap) {
+  statusOptions.push({
+    key, value: statusMap[key], text: key
+  });
+}
+
 const Filter = ({ query }) => {
   const [status, setStatus] = useState('');
 
