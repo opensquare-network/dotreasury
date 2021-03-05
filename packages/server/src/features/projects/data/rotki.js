@@ -1,3 +1,4 @@
+const id = "rotki";
 const name = "Rotki";
 const description = "Rotki";
 const logo = "rotki-logo.svg";
@@ -12,6 +13,7 @@ const proposals = [
 ];
 
 module.exports = {
+  id,
   logo,
   name,
   description,

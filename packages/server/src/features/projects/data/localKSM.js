@@ -1,3 +1,4 @@
+const id = "local-ksm";
 const name = "Local KSM";
 const title = "";
 const description = "Local KSM"

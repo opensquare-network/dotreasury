@@ -49,11 +49,16 @@ class ProjectController {
     const { page, pageSize } = extractPage(ctx);
     const projectName = ctx.params.projectName;
 
+    const projectId = projects.filter(item => item.name === projectName)[0]?.id;
+    if (!projectId) {
+      throw new HttpError(404, "Project not found");
+    }
+
     ctx.body = await commentService.getComments(
       {
         chain: "kusama",
         type: "project",
-        index: projectName,
+        index: projectId,
       },
       page,
       pageSize,
@@ -69,8 +74,8 @@ class ProjectController {
       throw new HttpError(400, "Comment content is missing");
     }
 
-    const project = projects.filter(item => item.name === projectName);
-    if (project.length === 0) {
+    const projectId = projects.filter(item => item.name === projectName)[0]?.id;
+    if (!projectId) {
       throw new HttpError(404, "Project not found");
     }
 
@@ -78,7 +83,7 @@ class ProjectController {
       {
         chain: "kusama",
         type: "project",
-        index: projectName,
+        index: projectId,
       },
       content,
       user
