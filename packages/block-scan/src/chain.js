@@ -1,5 +1,4 @@
 const { getApi } = require("./api");
-const { logger } = require("./logger")
 
 let latestHeight = null;
 let unsubscribeNewHead = null;
@@ -13,7 +12,6 @@ async function updateHeight() {
 
   unsubscribeNewHead = await api.rpc.chain.subscribeFinalizedHeads((header) => {
     latestHeight = header.number.toNumber();
-    logger.info(`latest finalized height: ${latestHeight}`);
   });
 }
 
