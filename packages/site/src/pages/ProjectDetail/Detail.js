@@ -11,8 +11,13 @@ const Wrapper = styled(Card)`
   padding: 24px 32px;
   margin-bottom: 32px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   flex-wrap: wrap;
+  @media screen and (max-width: 481px) {
+     & * {
+       text-align: left !important;
+     }
+  }
 `
 
 const IconImage = styled(Image)`
@@ -51,6 +56,10 @@ const NameContent = styled(TextMinor)`
 const ProposalWrapper = styled.div`
   margin-left: 32px;
   flex-basis: 160px;
+  @media screen and (max-width: 481px) {
+    margin-left: 0;
+    margin-right: 32px;
+  }
 `
 
 const CustomText = styled(Text)`
@@ -61,12 +70,17 @@ const CustomText = styled(Text)`
 `
 
 const CustomTextMinor = styled(TextMinor)`
+  padding-top: 6px;
   text-align: right;
 `
 
 const ExpenseContentWrapper = styled.div`
   margin-left: 32px;
   flex-basis: 160px;
+  @media screen and (max-width: 481px) {
+    margin-left: 0;
+    margin-right: 32px;
+  }
 `
 
 const UnitText = styled(TextMinor)`
@@ -79,10 +93,17 @@ const UnitText = styled(TextMinor)`
 const ExpenseWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
+  @media screen and (max-width: 481px) {
+    justify-content: flex-start;
+  }
+`
+
+const DollarText = styled(TextMinor)`
+  text-align: right;
 `
 
 const Detail = ({ data }) => {
-  const { name, logo, description, proposals, expense} = data;
+  const { name, logo, description, proposals, expense, dollar} = data;
   return (
     <Wrapper>
       <IconImage src={logo ? `/imgs/projects/${logo}` : "/imgs/opensquare-icon-logo.svg"} width={96} height={96} />
@@ -94,15 +115,16 @@ const Detail = ({ data }) => {
         <NameContent>{description}</NameContent>
       </NameContentWrapper>
       <ProposalWrapper>
-        <CustomText>{proposals}</CustomText>
         <CustomTextMinor>Proposals</CustomTextMinor>
+        <CustomText>{proposals ?? 0}</CustomText>
       </ProposalWrapper>
       <ExpenseContentWrapper>
+        <CustomTextMinor>Expense</CustomTextMinor>
         <ExpenseWrapper>
-          <CustomText>{expense}</CustomText>
+          <CustomText>{expense ?? 0}</CustomText>
           <UnitText>KSM</UnitText>
         </ExpenseWrapper>
-        <CustomTextMinor>Expense</CustomTextMinor>
+        {dollar && <DollarText>{`≈ $${dollar}`}</DollarText>}
       </ExpenseContentWrapper>
     </Wrapper>
   )

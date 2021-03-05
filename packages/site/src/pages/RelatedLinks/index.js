@@ -6,7 +6,7 @@ import { Button, Icon, Modal, Form } from "semantic-ui-react";
 import queryString from "query-string";
 import { useLocation } from "react-router-dom";
 
-import LinkItem from "./LinkItem";
+import LinkItem from "../../components/LinkItem";
 import SubTitle from "../../components/SubTitle";
 import {
   setLinks,
