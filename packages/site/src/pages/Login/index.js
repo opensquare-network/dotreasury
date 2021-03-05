@@ -151,6 +151,7 @@ function Login({ location }) {
   const [serverErrors, setServerErrors] = useState(null);
   const [web3Error, setWeb3Error] = useState("");
   const [showErrors, setShowErrors] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (web3Login) {
@@ -214,15 +215,20 @@ function Login({ location }) {
 
   // Do login
   const onSubmit = async (formData) => {
-    const { result: loginResult, error: loginError } = await scanApi.login(
-      formData.usernameOrEmail,
-      formData.password
-    );
-    if (loginResult) {
-      saveLoggedInResult(loginResult);
-    }
-    if (loginError) {
-      setServerErrors(loginError);
+    try {
+      setLoading(true);
+      const { result: loginResult, error: loginError } = await scanApi.login(
+        formData.usernameOrEmail,
+        formData.password
+      );
+      if (loginResult) {
+        saveLoggedInResult(loginResult);
+      }
+      if (loginError) {
+        setServerErrors(loginError);
+      }
+    }finally{
+      setLoading(false);
     }
   };
 
@@ -329,6 +335,7 @@ function Login({ location }) {
             </Link>
           </HelperWrapper>
           <StyledButtonPrimary
+            disabled={loading}
             type="submit"
             onClick={() => setServerErrors(null)}
           >
