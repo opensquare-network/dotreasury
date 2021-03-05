@@ -1,3 +1,4 @@
+const id = "himalia";
 const name = "Himalia";
 const title = "";
 const description = "Himalia"
@@ -16,6 +17,7 @@ const proposals = [
 ];
 
 module.exports = {
+  id,
   name,
   logo,
   title,

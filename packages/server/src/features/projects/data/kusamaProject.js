@@ -1,3 +1,4 @@
+const id = "kusama-project";
 const name = "Kusama Project";
 const title = "";
 const description = "Kusama Project"
@@ -10,6 +11,7 @@ const relatedLinks = [
 ];
 
 module.exports = {
+  id,
   name,
   logo,
   title,

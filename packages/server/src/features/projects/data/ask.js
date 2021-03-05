@@ -1,3 +1,4 @@
+const id = "ask!";
 const name = "Ask!";
 const title = "";
 const description = "Ask!"
@@ -16,6 +17,7 @@ const proposals = [
 ];
 
 module.exports = {
+  id,
   name,
   logo,
   title,
