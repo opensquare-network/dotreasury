@@ -8,15 +8,16 @@ const Divider = styled.div`
   position: relative;
   width: 1px;
   height: 20px;
-  background: #EEEEEE;
+  background: #eeeeee;
   left: 16px;
-`
+`;
 function InflationMenu() {
   const incomeCount = useSelector(incomeCountSelector);
 
   return (
-    <Menu.Item key="Inflation" >
-      Inflation<Label>{incomeCount.inflation}</Label><Divider />
+    <Menu.Item key="Inflation">
+      Inflation<Label>{incomeCount.inflation}</Label>
+      <Divider />
     </Menu.Item>
   );
 }

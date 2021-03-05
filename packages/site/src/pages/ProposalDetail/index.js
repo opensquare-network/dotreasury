@@ -180,7 +180,6 @@ function processTimeline(proposalDetail, scanHeight) {
 }
 
 const ProposalDetail = () => {
-
   const { proposalIndex } = useParams();
   const dispatch = useDispatch();
   const [timelineData, setTimelineData] = useState([]);
@@ -208,10 +207,10 @@ const ProposalDetail = () => {
         <InformationTable loading={loadingProposalDetail} />
         <ProposalLifeCycleTable loading={loadingProposalDetail} />
       </TableWrapper>
-      <RelatedLinks type="proposals" index={parseInt(proposalIndex)} />
+      <RelatedLinks type="proposal" index={parseInt(proposalIndex)} />
       <TimelineCommentWrapper>
         <Timeline data={timelineData} loading={loadingProposalDetail} />
-        <Comment />
+        <Comment type="proposal" index={parseInt(proposalIndex)} />
       </TimelineCommentWrapper>
     </>
   );

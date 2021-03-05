@@ -1,6 +1,7 @@
 const { getBountyCollection, getMotionCollection } = require("../../mongo");
 const { extractPage } = require("../../utils");
-const linkService = require("../../services/link.services");
+const linkService = require("../../services/link.service");
+const commentService = require("../../services/comment.service");
 
 const bountyStatus = (bounty) =>
   bounty?.status?.CuratorProposed ||
@@ -112,8 +113,11 @@ class BountiesController {
     const bountyIndex = parseInt(ctx.params.bountyIndex);
 
     ctx.body = await linkService.getLinks({
-      type: "bounties",
-      indexer: bountyIndex,
+      indexer: {
+        chain: "kusama",
+        type: "bounty",
+        index: bountyIndex,
+      },
     });
   }
 
@@ -123,8 +127,11 @@ class BountiesController {
 
     ctx.body = await linkService.createLink(
       {
-        type: "bounties",
-        indexer: bountyIndex,
+        indexer: {
+          chain: "kusama",
+          type: "bounty",
+          index: bountyIndex,
+        },
         link,
         description,
       },
@@ -138,11 +145,56 @@ class BountiesController {
 
     ctx.body = await linkService.deleteLink(
       {
-        type: "bounties",
-        indexer: bountyIndex,
+        indexer: {
+          chain: "kusama",
+          type: "bounty",
+          index: bountyIndex,
+        },
         linkIndex,
       },
       ctx.request.headers.signature
+    );
+  }
+
+  // Comments API
+  async getBountyComments(ctx) {
+    const { page, pageSize } = extractPage(ctx);
+    const bountyIndex = parseInt(ctx.params.bountyIndex);
+
+    ctx.body = await commentService.getComments(
+      {
+        chain: "kusama",
+        type: "bounty",
+        index: bountyIndex,
+      },
+      page,
+      pageSize,
+      ctx.request.user
+    );
+  }
+
+  async postBountyComment(ctx) {
+    const bountyIndex = parseInt(ctx.params.bountyIndex);
+    const { content } = ctx.request.body;
+    const user = ctx.request.user;
+    if (!content) {
+      throw new HttpError(400, "Comment content is missing");
+    }
+
+    const bountyCol = await getBountyCollection();
+    const bounty = await bountyCol.findOne({ bountyIndex });
+    if (!bounty) {
+      throw new HttpError(404, "Bounty not found");
+    }
+
+    ctx.body = await commentService.postComment(
+      {
+        chain: "kusama",
+        type: "bounty",
+        index: bountyIndex,
+      },
+      content,
+      user
     );
   }
 }

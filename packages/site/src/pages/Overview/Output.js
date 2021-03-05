@@ -11,25 +11,25 @@ import {
 const Output = ({ proposals, tips, bounties, burnt }) => {
   const [outputData, setOutputData] = useState({
     icon: "circle",
-    labels: []
+    labels: [],
   });
-                       
+
   const [outputStatus, setOutputStatus] = useState({
     labels: [
       {
-        name: "Proposals"
+        name: "Proposals",
       },
       {
-        name: "Tips"
+        name: "Tips",
       },
       {
-        name: "Bounties"
+        name: "Bounties",
       },
       {
-        name: "Burnt"
-      }
-    ]
-  })
+        name: "Burnt",
+      },
+    ],
+  });
 
   useEffect(() => {
     setOutputData({
@@ -38,41 +38,46 @@ const Output = ({ proposals, tips, bounties, burnt }) => {
         {
           name: "Proposals",
           value: proposals,
-          color: OVERVIEW_PROPOSALS_COLOR
+          color: OVERVIEW_PROPOSALS_COLOR,
         },
         {
           name: "Tips",
           value: tips,
-          color: OVERVIEW_TIPS_COLOR
+          color: OVERVIEW_TIPS_COLOR,
         },
         {
           name: "Bounties",
           value: bounties,
-          color: OVERVIEW_BOUNTIES_COLOR
+          color: OVERVIEW_BOUNTIES_COLOR,
         },
         {
           name: "Burnt",
           value: burnt,
-          color: OVERVIEW_BURNT_COLOR
+          color: OVERVIEW_BURNT_COLOR,
         },
-      ]
-    })
-  }, [proposals, tips, bounties, burnt])
+      ],
+    });
+  }, [proposals, tips, bounties, burnt]);
 
   const clickEvent = (name) => {
     const obj = Object.assign({}, outputStatus);
-    obj.labels.forEach(item => {
+    obj.labels.forEach((item) => {
       if (item.name === name) {
         const disabled = !item.disabled;
         item.disabled = disabled;
       }
     });
     setOutputStatus(obj);
-  }
+  };
 
   return (
-    <DoughnutCard title="Output" data={outputData} status={outputStatus} clickEvent={clickEvent} />
-  )
-}
+    <DoughnutCard
+      title="Output"
+      data={outputData}
+      status={outputStatus}
+      clickEvent={clickEvent}
+    />
+  );
+};
 
 export default Output;

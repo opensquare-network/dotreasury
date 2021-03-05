@@ -42,6 +42,7 @@ const ChartWrapper = styled.div`
   height: 252px;
   min-width: 252px;
   flex-grow: 1;
+  margin-bottom: 24px;
 `;
 
 const ListWrapper = styled.div`
@@ -57,7 +58,7 @@ const ListWrapper = styled.div`
       margin-bottom: 24px;
     }
   }
-`
+`;
 
 const SecondListWrapper = styled.div`
   display: flex;
@@ -68,7 +69,7 @@ const SecondListWrapper = styled.div`
       margin-bottom: 24px;
     }
   }
-`
+`;
 
 const TotalStacked = () => {
   const dispatch = useDispatch();
@@ -138,15 +139,15 @@ const TotalStacked = () => {
       },
     ],
   });
-  const [treasuryData, setTreasuryData]  = useState({
+  const [treasuryData, setTreasuryData] = useState({
     title: "Treasury",
     icon: "square",
     labels: [
       {
         name: "Balance",
         value: 0,
-      }
-    ]
+      },
+    ],
   });
 
   useEffect(() => {
@@ -156,8 +157,8 @@ const TotalStacked = () => {
   const statsHistory = useSelector(statsHistorySelector);
 
   useEffect(() => {
-    const dateLabels = statsHistory.map((statsItem) =>
-      statsItem.indexer.blockTime
+    const dateLabels = statsHistory.map(
+      (statsItem) => statsItem.indexer.blockTime
     );
     setDateLabels(dateLabels);
 
@@ -180,10 +181,9 @@ const TotalStacked = () => {
       .map((bn) => toPrecision(bn, 12, false));
     setOutputHistory(outputHistory);
 
-    const treasuryHistory = statsHistory
-      .map((statsItem) =>
-        toPrecision(statsItem.treasuryBalance, 12, false)
-      );
+    const treasuryHistory = statsHistory.map((statsItem) =>
+      toPrecision(statsItem.treasuryBalance, 12, false)
+    );
     setTreasuryHistory(treasuryHistory);
   }, [statsHistory]);
 
@@ -205,23 +205,43 @@ const TotalStacked = () => {
             children: [
               {
                 name: "Staking",
-                value: toPrecision(statsData.income.slashSeats.staking, 12, false),
+                value: toPrecision(
+                  statsData.income.slashSeats.staking,
+                  12,
+                  false
+                ),
               },
               {
                 name: "Treasury",
-                value: toPrecision(statsData.income.slashSeats.treasury, 12, false),
+                value: toPrecision(
+                  statsData.income.slashSeats.treasury,
+                  12,
+                  false
+                ),
               },
               {
                 name: "Election",
-                value: toPrecision(statsData.income.slashSeats.electionsPhragmen, 12, false),
+                value: toPrecision(
+                  statsData.income.slashSeats.electionsPhragmen,
+                  12,
+                  false
+                ),
               },
               {
                 name: "Democracy",
-                value: toPrecision(statsData.income.slashSeats.democracy, 12, false),
+                value: toPrecision(
+                  statsData.income.slashSeats.democracy,
+                  12,
+                  false
+                ),
               },
               {
                 name: "Identity",
-                value: toPrecision(statsData.income.slashSeats.identity, 12, false),
+                value: toPrecision(
+                  statsData.income.slashSeats.identity,
+                  12,
+                  false
+                ),
               },
             ],
           },
@@ -264,23 +284,23 @@ const TotalStacked = () => {
           {
             name: "Balance",
             value: toPrecision(statsData.treasuryBalance, 12, false),
-          }
-        ]
+          },
+        ],
       });
     }
-    
-  }, [showIndex, statsHistory, dateLabels])
+  }, [showIndex, statsHistory, dateLabels]);
 
   const chartData = {
     dates: dateLabels,
     values: [
       {
-        label: "Treasury Balance",
-        primaryColor: "#FBA06E",
-        secondaryColor: "#FBA06E",
-        data: treasuryHistory,
-        fill: false,
-        icon: "bar"
+        label: "Income",
+        primaryColor: "#DF405D",
+        secondaryColor: "#FFEEF1",
+        data: incomeHistory,
+        fill: true,
+        icon: "square",
+        order: 2,
       },
       {
         label: "Output",
@@ -288,22 +308,24 @@ const TotalStacked = () => {
         secondaryColor: "#FFEDC9",
         data: outputHistory,
         fill: true,
-        icon: "square"
+        icon: "square",
+        order: 1,
       },
       {
-        label: "Total",
-        primaryColor: "#DF405D",
-        secondaryColor: "#FFEEF1",
-        data: incomeHistory,
-        fill: true,
-        icon: "square"
-      }
+        label: "Treasury",
+        primaryColor: "#FBA06E",
+        secondaryColor: "#FBA06E",
+        data: treasuryHistory,
+        fill: false,
+        icon: "bar",
+        order: 0,
+      },
     ],
   };
 
   const onHover = (index) => {
     setShowIndex(index);
-  }
+  };
 
   return (
     <>

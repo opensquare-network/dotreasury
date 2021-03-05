@@ -15,8 +15,18 @@ const Wrapper = styled.header`
 const Header = () => {
   const location = useLocation();
   const hideSubHeader = [
+    "/login",
+    "/register",
+    "/forget",
+    "/resetpassword",
+    "/settings",
+    "/verifyemail",
+    "/useragreement",
+    "/privacy",
     "/projects"
-  ].includes(location.pathname) || location.pathname.includes("/projects");
+  ].includes(location.pathname)
+    || location.pathname.includes("/settings")
+    || location.pathname.includes("/projects");
 
   return (
     <Wrapper>
@@ -25,7 +35,7 @@ const Header = () => {
         {!hideSubHeader && <SubHeader />}
       </Container>
     </Wrapper>
-  )
+  );
 };
 
 export default Header;

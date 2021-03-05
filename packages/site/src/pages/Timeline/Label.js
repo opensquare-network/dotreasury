@@ -22,7 +22,7 @@ const TipLabel = styled.span`
 const Label = ({ text }) => {
   return (
     <Wrapper>
-      <TipLabel>{ stringCamlToWords(text) }</TipLabel>
+      <TipLabel>{stringCamlToWords(text)}</TipLabel>
     </Wrapper>
   );
 };

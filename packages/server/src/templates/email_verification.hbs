@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style type="text/css">
+    body,
+    p,
+    div,
+    pre {
+      font-family: 'Inter', 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+      font-family: Inter;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 24px;
+    }
+
+    a {
+      color: #df405d !important;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: #df405d !important;
+      text-decoration: underline;
+    }
+
+    pre {
+      background-color: whitesmoke;
+      color: #4a4a4a;
+      overflow-x: auto;
+      padding: 1rem 1rem;
+      white-space: pre;
+      word-wrap: normal;
+    }
+
+    p {
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      margin: 0 auto;
+      max-width: 600px;
+    }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <p>
+        Welcome aboard {{username}}!<br/><br/>
+
+        Please confirm your email address here - <a style="color: #df405d" target="_blank" href="{{siteUrl}}/verifyemail?email={{email}}&token={{token}}">verify your account</a><br/><br/>
+
+        See you soon,<br/><br/>
+
+        Best Regards<br />
+        ---<br />
+        OpenSquare Team
+      </p>
+    </div>
+  </body>
+</html>

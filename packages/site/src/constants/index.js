@@ -1,8 +1,9 @@
 export const TEXT_DARK_MAJOR = "#1D253C";
 export const TEXT_DARK_MINOR = "rgba(29, 37, 60, 0.64)";
-export const TEXT_DARK_DISABLE = "rgba(29, 37, 60, 0.24)"
+export const TEXT_DARK_DISABLE = "rgba(29, 37, 60, 0.24)";
 export const PRIMARY_THEME_COLOR = "#DF405D";
 export const SECONDARY_THEME_COLOR = "#FFEEF1";
+export const WARNING_COLOR = "#EC4730";
 
 export const OVERVIEW_PROPOSALS_COLOR = "#DF405D";
 export const OVERVIEW_TIPS_COLOR = "#F1AC26";
@@ -23,6 +24,13 @@ export const TipStatus = {
   Retracted: "Retracted",
 };
 
+export const tipStatusMap = {
+  NewTip: "Tipping",
+  tip: "Tipping",
+  TipRetracted: "Retracted",
+  TipClosed: "Closed",
+};
+
 export const ProposalStatus = {
   Approved: "Approved",
   Rejected: "Rejected",
@@ -30,6 +38,9 @@ export const ProposalStatus = {
 
 export const TreasuryAccount =
   "F3opxRbN5ZbjJNU511Kj2TLuzFcDq9BGduA9TgiECafpg29";
+
+export const REACTION_THUMBUP = 1;
+export const REACTION_THUMBDOWN = 2;
 
 export const DEFAULT_NODE_URL = "wss://kusama.elara.patract.io";
 export const DEFAULT_NODES = [
