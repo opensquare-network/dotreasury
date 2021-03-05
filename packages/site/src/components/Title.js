@@ -7,7 +7,7 @@ const Title = styled.header`
   font-style: normal;
   font-weight: bold;
   font-size: 28px;
-  line-height: 44px;
+  line-height: 40px;
   color: ${TEXT_DARK_MAJOR};
 `;
 

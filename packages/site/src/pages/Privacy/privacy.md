@@ -1,4 +1,4 @@
-### Privacy notice
+## Privacy notice
 
 ### What does this notice cover?
 
@@ -102,5 +102,7 @@ Any personal information provided to or gathered by dotreasury is controlled by 
 #### Changes to our privacy notice
 
 We reserve the right to change this privacy notice from time to time to reflect changes in the law or regulation, our information practices, our services, or our operational requirements. Depending on the type of change, we may notify you by updating this page or by email. We encourage you to periodically review this page to see any changes we have made.
+
+------------
 
 Last updated: 4th March 2021 version 1
