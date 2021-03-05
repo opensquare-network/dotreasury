@@ -124,7 +124,7 @@ const Detail = ({ data }) => {
           <CustomText>{expense ?? 0}</CustomText>
           <UnitText>KSM</UnitText>
         </ExpenseWrapper>
-        {dollar && <DollarText>{`≈ $${dollar}`}</DollarText>}
+        {dollar > 0 && <DollarText>{`≈ $${dollar}`}</DollarText>}
       </ExpenseContentWrapper>
     </Wrapper>
   )
