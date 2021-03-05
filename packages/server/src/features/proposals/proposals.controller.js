@@ -15,7 +15,7 @@ class ProposalsController {
 
     const condition = {};
     if (status) {
-      condition = { "state.name": status };
+      condition["state.name"] = status;
     }
     const proposalCol = await getProposalCollection();
 
