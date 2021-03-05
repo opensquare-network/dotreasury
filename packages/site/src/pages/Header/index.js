@@ -22,8 +22,11 @@ const Header = () => {
     "/settings",
     "/verifyemail",
     "/useragreement",
-    "/privacy"
-  ].includes(location.pathname) || location.pathname.includes("/settings");
+    "/privacy",
+    "/projects"
+  ].includes(location.pathname)
+    || location.pathname.includes("/settings")
+    || location.pathname.includes("/projects");
 
   return (
     <Wrapper>

@@ -21,7 +21,7 @@ import Divider from "../../components/Divider";
 import { useComponentWillMount } from "../../utils/hooks";
 
 const Wrapper = styled.div`
-  margin-top: 20px;
+  margin-top: 32px;
 `;
 
 const LinksWrapper = styled.div`
@@ -46,7 +46,7 @@ const IconButton = styled(Icon)`
 `;
 
 const DividerWrapper = styled(Divider)`
-  border-top: 1px solid rgba(238, 238, 238, 1) !important;
+  border-top: 1px solid #EEEEEE !important;
 `;
 
 const RelatedLinks = ({ type, index }) => {

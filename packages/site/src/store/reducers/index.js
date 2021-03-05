@@ -13,6 +13,7 @@ import commentReducer from "./commentSlice";
 import incomeReducer from "./incomeSlice";
 import menuReducer from "./menuSlice";
 import nodeReducer from "./nodeSlice";
+import projectsReducer from "./projectSlice";
 import toastReducer from "./toastSlice";
 
 export default combineReducers({
@@ -31,4 +32,5 @@ export default combineReducers({
   income: incomeReducer,
   menu: menuReducer,
   node: nodeReducer,
+  projects: projectsReducer
 });

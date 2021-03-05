@@ -56,6 +56,12 @@ const CustomTable = styled(Table)`
   .related-links-cell {
     min-width: 120px !important;
   }
+  .description-cell {
+    min-width: 432px !important;
+  }
+  .date-cell {
+    min-width: 108px !important;
+  }
   td:first-child {
     font-weight: 400 !important;
   }

@@ -9,6 +9,7 @@ const featureRouters = [
   require("./features/comments/routes"),
   require("./features/income/routes"),
   require("./features/stats/routes"),
+  require("./features/projects/routes"),
 ];
 
 module.exports = (app) => {
