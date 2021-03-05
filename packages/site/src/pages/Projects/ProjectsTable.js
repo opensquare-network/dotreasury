@@ -72,10 +72,10 @@ const TipsTable = ({ data, loading }) => {
                     <Text>{item.description}</Text>
                   </Table.Cell>
                   <Table.Cell textAlign={"right"}>
-                    <Text>{item.proposals}</Text>
+                    <Text>{item.proposals ?? 0}</Text>
                   </Table.Cell>
                   <Table.Cell className="balance-cell" textAlign={"right"}>
-                    <PairText value={item.expense} unit="KSM" />
+                    <PairText value={item.expense ?? 0} unit="KSM" />
                   </Table.Cell>
                   <Table.Cell className="date-cell">
                     <DateCell date={item.startTime} />

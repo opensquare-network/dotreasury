@@ -85,7 +85,7 @@ const Detail = ({ data }) => {
   const { name, logo, description, proposals, expense} = data;
   return (
     <Wrapper>
-      <IconImage src={logo ? `/imgs/${logo}` : "/imgs/opensquare-icon-logo.svg"} width={96} height={96} />
+      <IconImage src={logo ? `/imgs/projects/${logo}` : "/imgs/opensquare-icon-logo.svg"} width={96} height={96} />
       <NameContentWrapper>
         <NameWrapper>
           <NameTitle>{name}</NameTitle>
