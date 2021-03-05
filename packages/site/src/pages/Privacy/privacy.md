@@ -53,7 +53,7 @@ As required by dotreasury to conduct our business and pursue our legitimate inte
 Withdrawing consent or otherwise objecting to direct marketing
 Wherever we rely on your consent, you will always be able to withdraw that consent, although we may have other legal grounds for processing your data for other purposes, such as those set out above.
 
-In some cases, we are able to send you direct marketing without your consent, where we rely on our legitimate interests. You have an absolute right to opt-out of direct marketing, or profiling we carry out for direct marketing, at any time. You can do this by following the instructions in the communication within an electronic message, or by contacting us at dev@notify.dotreasury.com.
+In some cases, we are able to send you direct marketing without your consent, where we rely on our legitimate interests. You have an absolute right to opt-out of direct marketing, or profiling we carry out for direct marketing, at any time. You can do this by following the instructions in the communication within an electronic message, or by contacting us at hi@opensquare.network.
 
 Who will we share this data with, where and when
 
@@ -93,11 +93,11 @@ Sometimes business and legal requirements oblige us to retain certain informatio
 
 #### How do I get in touch with you?
 
-If you have any questions or concerns about how we process your data, please contact us at dev@notify.dotreasury.com.
+If you have any questions or concerns about how we process your data, please contact us at hi@opensquare.network.
 
 #### Who is my data controller?
 
-Any personal information provided to or gathered by dotreasury is controlled by dotreasury Technologies Limited.For more information on who is considered the specific data controller in connection with the collection of your personal information please contact us at dev@notify.dotreasury.com.
+Any personal information provided to or gathered by dotreasury is controlled by dotreasury Technologies Limited.For more information on who is considered the specific data controller in connection with the collection of your personal information please contact us at hi@opensquare.network.
 
 #### Changes to our privacy notice
 
