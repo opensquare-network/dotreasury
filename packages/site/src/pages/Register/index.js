@@ -155,6 +155,7 @@ function Register({ history }) {
   const dispatch = useDispatch();
   const [serverErrors, setServerErrors] = useState(null);
   const [showErrors, setShowErrors] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setShowErrors({
@@ -177,22 +178,27 @@ function Register({ history }) {
       setAgreeError(true);
       return;
     }
-    const {result: signupResult, error: signupError} = await scanApi.signup(
-      formData.username,
-      formData.email,
-      formData.password
-    );
-    if (signupError) {
-      setServerErrors(signupError);
-    } else {
-      dispatch(
-        addToast({
-          type: "success",
-          message: "Sign up successfully! Please check your email to verify your account.",
-        })
+    try {
+      setLoading(true);
+      const {result: signupResult, error: signupError} = await scanApi.signup(
+        formData.username,
+        formData.email,
+        formData.password
       );
-      saveLoggedInResult(signupResult);
-      history.push("/login");
+      if (signupError) {
+        setServerErrors(signupError);
+      } else {
+        dispatch(
+          addToast({
+            type: "success",
+            message: "Sign up successfully! Please check your email to verify your account.",
+          })
+        );
+        saveLoggedInResult(signupResult);
+        history.push("/login");
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -287,7 +293,7 @@ function Register({ history }) {
               && showErrors?.message && <FormError>{showErrors.message}</FormError>}
           </Form.Field>
           <Helper isAgree={isAgree} setIsAgree={setIsAgree} agreeError={agreeError} setAgreeError={setAgreeError} />
-          <StyledButtonPrimary type="submit" onClick={() => setServerErrors(null)}>Sign up</StyledButtonPrimary>
+          <StyledButtonPrimary disabled={loading} type="submit" onClick={() => setServerErrors(null)}>Sign up</StyledButtonPrimary>
           {/* <StyledButton onClick={() => setWeb3Login(true)}>Sign up with web3 address</StyledButton> */}
         </Form>
       )}
