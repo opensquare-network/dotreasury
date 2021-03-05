@@ -4,6 +4,13 @@ const description = "A mobile wallet for polkadot.";
 const logo = "polkawallet-logo.svg";
 const startTime = 1591848372015;
 
+const relatedLinks = [
+  {
+    link: "https://polkawallet.io/",
+    description: "Polkawallet Website",
+  },
+];
+
 const proposals = [
   {
     token: "ksm",
@@ -47,5 +54,6 @@ module.exports = {
   name,
   description,
   proposals,
+  relatedLinks,
   startTime,
 };
