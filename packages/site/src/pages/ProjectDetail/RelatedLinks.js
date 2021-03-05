@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Divider } from "semantic-ui-react";
 
 import SubTitle from "../../components/SubTitle";
-import LinkItem from "./LinkItem";
+import LinkItem from "../../components/LinkItem"
 
 const Wrapper = styled.div`
   margin-bottom: 32px;
@@ -21,7 +21,7 @@ const DividerWrapper = styled(Divider)`
 const LinksWrapper = styled.div`
   margin-top: 16px;
   display: flex;
-  & > :not(:last-child) {
+  & > * {
     margin-bottom: 8px;
   }
   flex-direction: column;
@@ -34,7 +34,7 @@ const RelatedLinks = ({ data }) => {
         <Header>Related Links</Header>
         <LinksWrapper>
           {data.map((item, index) => (
-            <LinkItem link={item} key={index} />
+            <LinkItem link={item.link} text={item.description} key={index} />
           ))}
         </LinksWrapper>
         <DividerWrapper />

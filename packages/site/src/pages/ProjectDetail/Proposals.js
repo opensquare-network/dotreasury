@@ -115,49 +115,53 @@ const TextDollar = styled(Text)`
 
 
 const Proposals = ({ data }) => {
-  return (
-    <>
-      <Header>Proposals</Header>
-      <div>
-        {(data || []).map((item, index) => (
-          <Wrapper key={index}>
-            <VerticalWrapper>
-              <CircleWrapper>
-                <div />
-              </CircleWrapper>
-              <Bar className="bar" />
-            </VerticalWrapper>
-            <VerticalWrapper>
-              <FlexWrapper>
-                <TextWrapper>
-                  <NavLink to={`/proposals/${item.proposalId}`}>
-                    <NumberText>{`#${item.proposalId}`}</NumberText>
-                  </NavLink>
-                  <BoldText>{item.title}</BoldText>
-                </TextWrapper>
-              </FlexWrapper>
-              <CardWrapper>
-                <Item>
-                  <BoldText>Expense</BoldText>
-                  <ExpenseWrapper>
-                    <Text>{item.amount}</Text>
-                    <TextMinor className="unit">{item.token.toUpperCase()}</TextMinor>
-                    <TextDollar className="dollar">{`≈ $${item.amount * item.proposeTimePrice}`}</TextDollar>
-                  </ExpenseWrapper>
-                </Item>
-                <Item>
-                  <BoldText>Achievement</BoldText>
-                  <div>
-                    {(item.achievements || []).map((item, index) => (<TextMinor key={index}>{item}</TextMinor>))}
-                  </div>
-                </Item>
-              </CardWrapper>
-            </VerticalWrapper>
-          </Wrapper>
-        ))}
-      </div>
-    </>
-  )
+  if (data) {
+    return (
+      <>
+        <Header>Proposals</Header>
+        <div>
+          {(data || []).map((item, index) => (
+            <Wrapper key={index}>
+              <VerticalWrapper>
+                <CircleWrapper>
+                  <div />
+                </CircleWrapper>
+                <Bar className="bar" />
+              </VerticalWrapper>
+              <VerticalWrapper>
+                <FlexWrapper>
+                  <TextWrapper>
+                    <NavLink to={`/proposals/${item.proposalId}`}>
+                      <NumberText>{`#${item.proposalId}`}</NumberText>
+                    </NavLink>
+                    <BoldText>{item.title}</BoldText>
+                  </TextWrapper>
+                </FlexWrapper>
+                <CardWrapper>
+                  <Item>
+                    <BoldText>Expense</BoldText>
+                    <ExpenseWrapper>
+                      <Text>{item.amount}</Text>
+                      <TextMinor className="unit">{item.token.toUpperCase()}</TextMinor>
+                      <TextDollar className="dollar">{`≈ $${item.amount * item.proposeTimePrice}`}</TextDollar>
+                    </ExpenseWrapper>
+                  </Item>
+                  <Item>
+                    <BoldText>Achievement</BoldText>
+                    <div>
+                      {(item.achievements || []).map((item, index) => (<TextMinor key={index}>{item}</TextMinor>))}
+                    </div>
+                  </Item>
+                </CardWrapper>
+              </VerticalWrapper>
+            </Wrapper>
+          ))}
+        </div>
+      </>
+    )
+  } else {
+    return null;
+  }
 }
 
 export default Proposals;
