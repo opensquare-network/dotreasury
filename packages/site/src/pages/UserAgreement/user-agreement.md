@@ -24,7 +24,7 @@
 
 2. We have the right to disable any Accounts and/or passwords, at any time, if in our reasonable opinion you have failed to comply with any of the provisions of these Terms.
 
-3. If you know or suspect that anyone other than you knows your Account login details, you must immediately notify us at dev@notify.dotreasury.com.
+3. If you know or suspect that anyone other than you knows your Account login details, you must immediately notify us at noreply@notify.dotreasury.com.
 
 4. You are responsible for any unauthorised use of your Account login details.
 
@@ -86,7 +86,7 @@
 
 16. We take no responsibility for, and we do not expressly or implicitly endorse, any User Generated Content. By submitting your User Generated Content, you represent and warrant that you have all rights, power and authority necessary to grant the rights to such User Generated Content as set out in these Terms. As you alone are responsible for your User Generated Content, you may expose yourself to liability if you post or share User Generated Content without all necessary rights.
 
-17. We do not oversee, monitor or moderate any User Generated Content which is uploaded to the Forum. If you become aware of any User Generated Content that breaches clause 4.2 above, please use the report button or contact us on dev@notify.dotreasury.com, providing details of: (i) the date on which it was posted and where it can be found on the Forum; (ii) the name and surname of the author or, if the author is a legal person, the author's business name; (iii) reasons why the content should be deleted; and (vi) copies of any communication with the author (if any).
+17. We do not oversee, monitor or moderate any User Generated Content which is uploaded to the Forum. If you become aware of any User Generated Content that breaches clause 4.2 above, please use the report button or contact us on hi@opensquare.network, providing details of: (i) the date on which it was posted and where it can be found on the Forum; (ii) the name and surname of the author or, if the author is a legal person, the author's business name; (iii) reasons why the content should be deleted; and (vi) copies of any communication with the author (if any).
 
 *Viruses*
 
@@ -200,7 +200,7 @@
 
 > Should you have any reasons for a complaint, we will endeavour to resolve the issue and avoid any re-occurrence in the future. You can always contact us by using the following details:
 
-> Email address: dev@notify.dotreasury.com
+> Email address: hi@opensquare.network
 
 Thank you.
 
