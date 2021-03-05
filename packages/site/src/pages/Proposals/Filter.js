@@ -14,7 +14,14 @@ const StatusSelect = styled(Select)`
 
 const statusOptions = [
   { key: "all", value: "-1", text: "All status" },
-  ...["Awarded", "Proposed", "Rejected"].map((item) => ({
+  ...[
+    "Awarded",
+    "Proposed",
+    "Approved",
+    "ApproveVoting",
+    "RejectVoting",
+    "Rejected",
+  ].map((item) => ({
     key: item,
     value: item,
     text: item,
