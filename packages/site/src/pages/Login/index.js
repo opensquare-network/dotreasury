@@ -336,6 +336,7 @@ function Login({ location }) {
           </HelperWrapper>
           <StyledButtonPrimary
             disabled={loading}
+            loading={loading}
             type="submit"
             onClick={() => setServerErrors(null)}
           >

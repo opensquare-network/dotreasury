@@ -293,7 +293,9 @@ function Register({ history }) {
               && showErrors?.message && <FormError>{showErrors.message}</FormError>}
           </Form.Field>
           <Helper isAgree={isAgree} setIsAgree={setIsAgree} agreeError={agreeError} setAgreeError={setAgreeError} />
-          <StyledButtonPrimary disabled={loading} type="submit" onClick={() => setServerErrors(null)}>Sign up</StyledButtonPrimary>
+          <StyledButtonPrimary disabled={loading} loading={loading} type="submit" onClick={() => setServerErrors(null)}>
+            Sign up
+          </StyledButtonPrimary>
           {/* <StyledButton onClick={() => setWeb3Login(true)}>Sign up with web3 address</StyledButton> */}
         </Form>
       )}
