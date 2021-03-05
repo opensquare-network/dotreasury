@@ -37,10 +37,10 @@ const ProjectDetail = () => {
     description: projectDetail.description,
     proposals: projectDetail.proposals?.length,
     expense: projectDetail.proposals?.reduce((previous, current) => (
-      previous + current.amount ?? 0
+      previous + (current.amount ?? 0)
     ), 0),
     dollar: projectDetail.proposals?.reduce((previous, current) => (
-      previous + current.amount ?? 0 * current.proposeTimePrice ?? 0
+      previous + (current.amount ?? 0) * (current.proposeTimePrice ?? 0)
     ), 0)
   }
 
