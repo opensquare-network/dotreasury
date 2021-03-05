@@ -56,7 +56,15 @@ async function main() {
 async function scanBlockByHeight(scanHeight) {
   const api = await getApi();
 
-  const blockHash = await api.rpc.chain.getBlockHash(scanHeight);
+  let blockHash;
+
+  try {
+    blockHash = await api.rpc.chain.getBlockHash(scanHeight);
+  } catch (e) {
+    console.error("Can not get blockhash");
+    throw e;
+  }
+
   const block = await api.rpc.chain.getBlock(blockHash);
   const allEvents = await api.query.system.events.at(blockHash);
 
