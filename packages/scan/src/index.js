@@ -16,7 +16,13 @@ async function scanKnowBlocks(toScanHeight) {
   let index = knownHeights.findIndex((height) => height >= toScanHeight);
   while (index < knownHeights.length) {
     const height = knownHeights[index];
-    await scanBlockByHeight(height);
+    try {
+      await scanBlockByHeight(height);
+    } catch (e) {
+      await sleep(3000);
+      console.error(`Error with known block scan ${height}`, e);
+      continue;
+    }
     await updateScanHeight(height);
     index++;
   }
