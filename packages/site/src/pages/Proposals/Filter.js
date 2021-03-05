@@ -10,6 +10,9 @@ const FormWrapper = styled(Form)`
 `;
 const StatusSelect = styled(Select)`
   width: 200px;
+  @media screen and (max-width: 600px) {
+    width: 110px;
+  }
 `;
 
 const statusOptions = [
