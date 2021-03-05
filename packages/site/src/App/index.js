@@ -20,6 +20,8 @@ import TipDetail from "../pages/TipDetail";
 import ProposalDetail from "../pages/ProposalDetail";
 import BountyDetail from "../pages/BountyDetail";
 import Overview from "../pages/Overview";
+import Projects from "../pages/Projects";
+import ProjectDetail from "../pages/ProjectDetail";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import UserSetting from "../pages/UserSetting";
@@ -65,6 +67,8 @@ export default function App() {
                 component={BountyDetail}
               />
               <Route exact path="/burnt" component={Burnt} />
+              <Route exact path="/projects" component={Projects} />
+              <Route exact path="/projects/:projectName" component={ProjectDetail} />
               <Route exact path="/income" component={Inflation} />
               <Route
                 exact

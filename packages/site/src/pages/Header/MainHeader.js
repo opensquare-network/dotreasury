@@ -114,6 +114,9 @@ const HeaderExamplePage = () => {
         <NavLink to="/income">
           <MenuSwitch menuTabsName="Income" />
         </NavLink>
+        <NavLink to="/projects">
+          <MenuSwitch menuTabsName="Projects" />
+        </NavLink>
         <Setting />
         <UserLogin />
       </Right>

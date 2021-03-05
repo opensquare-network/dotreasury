@@ -1,12 +1,12 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { Image } from "semantic-ui-react";
-import ExternalLink from "../../components/ExternalLink";
+import ExternalLink from "./ExternalLink";
 
-import TextMinor from "../../components/TextMinor"
-import { TEXT_DARK_MAJOR } from "../../constants";
-import { getLinkNameAndSrc } from "../../utils";
-import { mrgap } from "../../styles";
+import TextMinor from "./TextMinor"
+import { TEXT_DARK_MAJOR } from "../constants";
+import { getLinkNameAndSrc } from "../utils";
+import { mrgap } from "../styles";
 
 const Wrapper = styled.div`
   display: flex;
@@ -22,6 +22,7 @@ const LinkWrapper = styled.div`
 `;
 
 const LinkText = styled(TextMinor)`
+  word-break: break-word;
   cursor: pointer;
   line-height: 24px;
   &:hover {
