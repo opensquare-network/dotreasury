@@ -18,9 +18,9 @@ const statusOptions = [
     "Awarded",
     "Proposed",
     "Approved",
+    "Rejected",
     "ApproveVoting",
     "RejectVoting",
-    "Rejected",
   ].map((item) => ({
     key: item,
     value: item,
