@@ -4,7 +4,7 @@ import { Image } from "semantic-ui-react";
 
 const Wrapper = styled.div`
   width: 100%;
-  min-height: 810px;
+  min-height: 456px;
   display: flex;
   align-items: center;
   justify-content: center;

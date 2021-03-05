@@ -83,7 +83,7 @@ const LineChart = ({ data, onHover }) => {
     },
     tooltips: {
       mode: "index",
-      bodySpacing: 10,
+      bodySpacing: 8,
       callbacks: {
         title: function (tooltipItems) {
           return dayjs(tooltipItems[0].xLabel).format("YYYY-MM-DD");

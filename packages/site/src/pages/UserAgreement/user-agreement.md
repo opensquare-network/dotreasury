@@ -1,4 +1,4 @@
-### User agreement
+## User agreement
 
 ### 1. Understanding these terms
 
@@ -204,4 +204,6 @@
 
 Thank you.
 
-Terms last updated 4th March 2021
+------------
+
+Last updated: 4th March 2021 version 1
