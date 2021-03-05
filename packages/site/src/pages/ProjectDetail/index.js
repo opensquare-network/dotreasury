@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 
 import DetailGoBack from "../components/DetailGoBack";
-// import Comment from "../Comment";
+import Comment from "../Comment";
 import RelatedLinks from "./RelatedLinks";
 import Detail from "./Detail";
 import Proposals from "./Proposals";
@@ -50,7 +50,7 @@ const ProjectDetail = () => {
       <Detail data={detailData} />
       <RelatedLinks data={projectDetail.relatedLinks} />
       <Proposals data={projectDetail.proposals} />
-      {/* <Comment /> */}
+      <Comment type="project" index={projectName} />
     </>
   )
 }

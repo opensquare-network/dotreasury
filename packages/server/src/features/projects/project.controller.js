@@ -1,5 +1,7 @@
 const projects = require("./data");
 const { extractPage } = require("../../utils");
+const commentService = require("../../services/comment.service");
+const { HttpError } = require("../../exc");
 
 class ProjectController {
   async getProjects(ctx) {
@@ -40,6 +42,47 @@ class ProjectController {
     }
 
     ctx.body = project;
+  }
+
+  // Comments API
+  async getProjectComments(ctx) {
+    const { page, pageSize } = extractPage(ctx);
+    const projectName = ctx.params.projectName;
+
+    ctx.body = await commentService.getComments(
+      {
+        chain: "kusama",
+        type: "project",
+        index: projectName,
+      },
+      page,
+      pageSize,
+      ctx.request.user
+    );
+  }
+
+  async postProjectComment(ctx) {
+    const projectName = ctx.params.projectName;
+    const { content } = ctx.request.body;
+    const user = ctx.request.user;
+    if (!content) {
+      throw new HttpError(400, "Comment content is missing");
+    }
+
+    const project = projects.filter(item => item.name === projectName);
+    if (!project) {
+      throw new HttpError(404, "Project not found");
+    }
+
+    ctx.body = await commentService.postComment(
+      {
+        chain: "kusama",
+        type: "project",
+        index: projectName,
+      },
+      content,
+      user
+    );
   }
 }
 
