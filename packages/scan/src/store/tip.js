@@ -24,7 +24,12 @@ async function getTipMetaByBlockHeight(height, tipHash) {
 
 async function getTipMeta(blockHash, tipHash) {
   const api = await getApi();
-  const rawMeta = await api.query.tips.tips.at(blockHash, tipHash);
+  let rawMeta;
+  if (api.query.tips) {
+    rawMeta = await api.query.tips.tips.at(blockHash, tipHash);
+  } else {
+    rawMeta = await api.query.treasury.tips.at(blockHash, tipHash);
+  }
   // FIXME: We should not change the origin meta data
   // if (meta?.reason) {
   //   const rawReasonText = await api.query.tips.reasons.at(blockHash, meta.reason);
