@@ -70,7 +70,7 @@ class ProjectController {
     }
 
     const project = projects.filter(item => item.name === projectName);
-    if (!project) {
+    if (project.length === 0) {
       throw new HttpError(404, "Project not found");
     }
 
