@@ -8,8 +8,10 @@
   "scripts": {
     "prod": "pm2 start ecosystem.config.js --only doTreasury-scan --env production",
     "staging": "pm2 start ecosystem.config.js --only doTreasury-scan-staging --env production",
-    "income-staging": "pm2 start ecosystem.config.js --only doTreasury-income-scan-staging --env production",
     "develop": "pm2 start ecosystem.config.js --only doTreasury-scan-dev --env production",
+    "monitor:prod": "pm2 start monitor.config.js --only doTreasury-scanmon --env production",
+    "monitor:staging": "pm2 start monitor.config.js --only doTreasury-scanmon-staging --env production",
+    "monitor:develop": "pm2 start monitor.config.js --only doTreasury-scanmon-dev --env production",
     "test": "jest src/test"
   },
   "dependencies": {
@@ -21,7 +23,8 @@
     "dayjs": "^1.10.4",
     "dotenv": "^8.2.0",
     "log4js": "^6.3.0",
-    "mongodb": "^3.6.3"
+    "mongodb": "^3.6.3",
+    "pm2": "^4.5.5"
   },
   "devDependencies": {
     "jest": "^26.6.3",

@@ -1,5 +1,5 @@
 const commonPart = {
-  script: "src/index.js",
+  script: "src/monitor/index.js",
   log_date_format: "YYYY-MM-DD HH:mm Z",
   env: {
     NODE_ENV: "development",
@@ -12,15 +12,18 @@ const commonPart = {
 module.exports = {
   apps: [
     {
-      name: "doTreasury-scan",
+      name: "doTreasury-scanmon",
+      args: "doTreasury-scan",
       ...commonPart,
     },
     {
-      name: "doTreasury-scan-staging",
+      name: "doTreasury-scanmon-staging",
+      args: "doTreasury-scan-staging",
       ...commonPart,
     },
     {
-      name: "doTreasury-scan-dev",
+      name: "doTreasury-scanmon-dev",
+      args: "doTreasury-scan-dev",
       ...commonPart,
     },
   ],
