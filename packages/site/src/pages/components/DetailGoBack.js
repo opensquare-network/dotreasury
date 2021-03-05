@@ -22,7 +22,7 @@ export default function DetailGoBack() {
   return (
     <HeaderWrapper>
       <div onClick={() => history.goBack()}>
-        <Image src="/imgs/left-arrow.svg" width={"32px"} height={"32px"} />
+        <Image src="/imgs/back.svg" width={"32px"} height={"32px"} />
       </div>
       <Title>Detail</Title>
     </HeaderWrapper>

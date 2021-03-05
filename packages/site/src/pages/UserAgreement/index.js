@@ -20,7 +20,7 @@ const UserAgreement = () => {
 
   return (
     <Wrapper>
-      <Markdown md={markdown} />
+      <Markdown md={markdown} minor />
     </Wrapper>
   )
 }
