@@ -19,15 +19,13 @@ const proposals = [
   {
     token: "ksm",
     amount: 4400,
-    proposalId: 15,
-    proposeTimePrice: 3,
-    title: "Milestone 1 — Implement KSM support & Design",
+    proposalId: 35,
+    proposeTimePrice: 9.4,
+    title: "Milestone 3 — Finalization & Launch preparation",
     achievements: [
-      "Develop wrapper for multisig from utility pallet",
-      "Creation of base methods required to support KSM",
-      "Air Protocol adjustments to KSM specific functions or required data",
-      "Details to change on front end pre existing components",
-      "Customization of views",
+      "Do thorough testing of the app in the mainnet and go through functionalities pre launch",
+      "Prepare infrastructure for deployment to production",
+      "Launch LocalKSM!",
     ],
   },
   {
@@ -50,13 +48,15 @@ const proposals = [
   {
     token: "ksm",
     amount: 4400,
-    proposalId: 35,
-    proposeTimePrice: 9.4,
-    title: "Milestone 3 — Finalization & Launch preparation",
+    proposalId: 15,
+    proposeTimePrice: 3,
+    title: "Milestone 1 — Implement KSM support & Design",
     achievements: [
-      "Do thorough testing of the app in the mainnet and go through functionalities pre launch",
-      "Prepare infrastructure for deployment to production",
-      "Launch LocalKSM!",
+      "Develop wrapper for multisig from utility pallet",
+      "Creation of base methods required to support KSM",
+      "Air Protocol adjustments to KSM specific functions or required data",
+      "Details to change on front end pre existing components",
+      "Customization of views",
     ],
   },
 ];
