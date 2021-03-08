@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled, { css } from "styled-components";
-import { Image } from "semantic-ui-react";
+import { Image, Loader } from "semantic-ui-react";
 import dayjs from "dayjs";
 
 import Text from "../../components/Text";
@@ -123,7 +123,7 @@ const VoteWrapper = styled(Button)`
         `
       : css`
           &:hover {
-            opacity: ${(p) => (p.highlight ? 1 : 0.64)};
+            opacity: ${(p) => (p.thumbup ? 1 : 0.64)};
           }
         `}
   ${(p) =>
@@ -140,7 +140,7 @@ const VoteButton = styled(Button)`
   display: flex;
   align-items: center;
   & > :first-child {
-    margin-right: 5px;
+    margin-right: 5px !important;
   }
 `;
 
@@ -180,7 +180,18 @@ const CommentItem = ({
   onReplyButton,
   replyEvent,
 }) => {
+  const upCountDefault =
+  comment.reactions?.filter((r) => r.reaction === REACTION_THUMBUP)[0]
+    ?.count || 0;
+
   const [highLight, setHighLight] = useState(false);
+  const [addressDisplayName, setAddressDisplayName] = useState("");
+  const [thumbup, setThumbup] = useState(
+    comment.myReaction === REACTION_THUMBUP
+  );
+  const [thumbupLoading, setThumbupLoading] = useState(false);
+  const [upCount, setUpCount] = useState(upCountDefault);
+
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(isLoggedInSelector);
   const commentRef = useRef(null);
@@ -189,8 +200,9 @@ const CommentItem = ({
   const address = comment.author?.addresses?.filter(
     (i) => i.chain === "kusama"
   )[0];
-  const { name: addressName } = useIndentity(address && encodeSubstrateAddress(address.address));
-  const [addressDisplayName, setAddressDisplayName] = useState("");
+  const { name: addressName } = useIndentity(
+    address && encodeSubstrateAddress(address.address)
+  );
 
   useEffect(() => {
     if (address) {
@@ -204,19 +216,29 @@ const CommentItem = ({
     }
   }, [address, addressName]);
 
-  const upCount =
-    comment.reactions?.filter((r) => r.reaction === REACTION_THUMBUP)[0]
-      ?.count || 0;
-  const highlight = comment.myReaction === REACTION_THUMBUP;
-  const ownComment = comment.author?.username === loggedInUser?.username;
 
+  const ownComment = comment.author?.username === loggedInUser?.username;
   const commentId = comment._id;
-  const thumbUp = () => {
-    if (isLoggedIn && !ownComment) {
-      if (highlight) {
-        dispatch(unsetCommentReaction(commentId));
-      } else {
-        dispatch(setCommentThumbUp(commentId));
+
+  const thumbUpToogle = async () => {
+    if (isLoggedIn && !ownComment && !thumbupLoading) {
+      try {
+        setThumbupLoading(true);
+        if (thumbup) {
+          const { result } = await dispatch(unsetCommentReaction(commentId));
+          if (result) {
+            setThumbup(false);
+            setUpCount(upCount - 1);
+          }
+        } else {
+          const { result } = await dispatch(setCommentThumbUp(commentId));
+          if (result) {
+            setThumbup(true);
+            setUpCount(upCount + 1);
+          }
+        }
+      } finally {
+        setThumbupLoading(false);
       }
     }
   };
@@ -282,19 +304,23 @@ const CommentItem = ({
             <Text>Reply</Text>
           </ReplayButton>
           <VoteWrapper
-            highlight={highlight}
-            noHover={ownComment || !isLoggedIn}
+            highlight={thumbup}
+            noHover={ownComment || !isLoggedIn || thumbupLoading}
           >
-            <VoteButton onClick={thumbUp}>
-              <Image
-                src={
-                  highlight
-                    ? "/imgs/thumb-up-highlight.svg"
-                    : "/imgs/thumb-up.svg"
-                }
-              />
-              <VoteText highlight={highlight}>Up</VoteText>
-              <VoteText highlight={highlight}>({upCount})</VoteText>
+            <VoteButton onClick={thumbUpToogle}>
+              {thumbupLoading ? (
+                <Loader size="mini" active inline></Loader>
+              ) : (
+                <Image
+                  src={
+                    thumbup
+                      ? "/imgs/thumb-up-highlight.svg"
+                      : "/imgs/thumb-up.svg"
+                  }
+                />
+              )}
+              <VoteText highlight={thumbup}>Up</VoteText>
+              <VoteText highlight={thumbup}>({upCount})</VoteText>
             </VoteButton>
           </VoteWrapper>
         </ButtonList>
