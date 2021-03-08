@@ -15,14 +15,18 @@ class ProjectController {
     const skip = page * pageSize;
 
     ctx.body = {
-      items: projects.slice(skip, skip + pageSize).map(item => ({
+      items: projects.slice(skip, skip + pageSize).map((item) => ({
         name: item.name,
         logo: item.logo,
+        title: item.title,
         description: item.description,
         startTime: item.startTime,
         endTime: item.endTime,
         proposals: item.proposals?.length,
-        expense: item.proposals?.reduce((previous, current) => previous + current.amount, 0)
+        expense: item.proposals?.reduce(
+          (previous, current) => previous + current.amount,
+          0
+        ),
       })),
       page,
       pageSize,
@@ -49,7 +53,8 @@ class ProjectController {
     const { page, pageSize } = extractPage(ctx);
     const projectName = ctx.params.projectName;
 
-    const projectId = projects.filter(item => item.name === projectName)[0]?.id;
+    const projectId = projects.filter((item) => item.name === projectName)[0]
+      ?.id;
     if (!projectId) {
       throw new HttpError(404, "Project not found");
     }
@@ -74,7 +79,8 @@ class ProjectController {
       throw new HttpError(400, "Comment content is missing");
     }
 
-    const projectId = projects.filter(item => item.name === projectName)[0]?.id;
+    const projectId = projects.filter((item) => item.name === projectName)[0]
+      ?.id;
     if (!projectId) {
       throw new HttpError(404, "Project not found");
     }

@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import { useHistory } from "react-router";
 
 import Table from "../../components/Table";
-import TableLoading from "../../components/TableLoading.js"
+import TableLoading from "../../components/TableLoading.js";
 import PairText from "../../components/PairText";
 import RightButton from "../../components/RightButton";
 import TableNoDataCell from "../../components/TableNoDataCell";
@@ -43,7 +43,7 @@ const TipsTable = ({ data, loading }) => {
     if (window.innerWidth < 1140) {
       history.push(`/projects/${name}`);
     }
-  }
+  };
 
   return (
     <Wrapper>
@@ -69,7 +69,7 @@ const TipsTable = ({ data, loading }) => {
                     <NameCell logo={item.logo} name={item.name} />
                   </Table.Cell>
                   <Table.Cell className="description-cell">
-                    <Text>{item.description}</Text>
+                    <Text>{item.title || item.description}</Text>
                   </Table.Cell>
                   <Table.Cell textAlign={"right"}>
                     <Text>{item.proposals ?? 0}</Text>
@@ -89,9 +89,7 @@ const TipsTable = ({ data, loading }) => {
                     </NavLink>
                   </Table.Cell>
                 </Table.Row>
-              ))) || (
-                <TableNoDataCell />
-            )}
+              ))) || <TableNoDataCell />}
           </Table.Body>
         </StyledTable>
       </TableLoading>
