@@ -1,6 +1,7 @@
 const id = "dotreasury";
 const name = "doTreasury";
-const title = "";
+const title =
+  "doTreasury is now a Kusama network treasury explorer which will try to introduce retrospect mechanism to current treasury mechanism.";
 const description = `doTreasury aim to introduce remarks from councilors and communities to improve current kusama/polkadot treasury with a retrospect mechanism.`;
 const startTime = 1606795356000;
 const logo = "dotreasury-logo.svg";
