@@ -14,12 +14,15 @@ const relatedLinks = [
 const proposals = [
   {
     token: "ksm",
-    amount: 0.01,
-    proposalId: 27,
-    proposeTimePrice: 5.8,
-    title: "Proposal discussion",
+    amount: 3858,
+    proposalId: 41,
+    proposeTimePrice: 13.5,
+    title: "Polkawallet Treasury Proposal - M2&3",
     achievements: [
-      "Polkawallet team list their proposal milestones and have a discussion with councilors",
+      "Support treasury functionalities",
+      "Support democracy functionalities",
+      "Show motions and support councilors' vote",
+      "Polkassembly integration",
     ],
   },
   {
@@ -35,15 +38,12 @@ const proposals = [
   },
   {
     token: "ksm",
-    amount: 3858,
-    proposalId: 41,
-    proposeTimePrice: 13.5,
-    title: "Polkawallet Treasury Proposal - M2&3",
+    amount: 0.01,
+    proposalId: 27,
+    proposeTimePrice: 5.8,
+    title: "Proposal discussion",
     achievements: [
-      "Support treasury functionalities",
-      "Support democracy functionalities",
-      "Show motions and support councilors' vote",
-      "Polkassembly integration",
+      "Polkawallet team list their proposal milestones and have a discussion with councilors",
     ],
   },
 ];

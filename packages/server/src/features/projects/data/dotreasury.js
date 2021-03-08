@@ -1,6 +1,7 @@
 const id = "dotreasury";
 const name = "doTreasury";
-const title = "";
+const title =
+  "doTreasury is now a Kusama network treasury explorer which will try to introduce retrospect mechanism to current treasury mechanism.";
 const description = `doTreasury aim to introduce remarks from councilors and communities to improve current kusama/polkadot treasury with a retrospect mechanism.`;
 const startTime = 1606795356000;
 const logo = "dotreasury-logo.svg";
@@ -18,19 +19,6 @@ const relatedLinks = [
 const proposals = [
   {
     token: "ksm",
-    amount: 531,
-    proposalId: 58,
-    proposeTimePrice: 51,
-    title: "Milestone 1: Kusama treasury expense explorer",
-    achievements: [
-      "List and detail page for Kusama network proposals, tips and bounties.",
-      "Overview page which show the KSM expense distribution, and top beneficiaries, top tip finders.",
-      "Scan scripts which scan the finalized blocks and extract the corresponding business.",
-      "A restful server which serve the treasury business data.",
-    ],
-  },
-  {
-    token: "ksm",
     amount: 438,
     proposalId: 75,
     proposeTimePrice: 95,
@@ -40,6 +28,19 @@ const proposals = [
       "Support account register and comment.",
       "Show Kusama treasury funded project list.",
       "Polish product details.",
+    ],
+  },
+  {
+    token: "ksm",
+    amount: 531,
+    proposalId: 58,
+    proposeTimePrice: 51,
+    title: "Milestone 1: Kusama treasury expense explorer",
+    achievements: [
+      "List and detail page for Kusama network proposals, tips and bounties.",
+      "Overview page which show the KSM expense distribution, and top beneficiaries, top tip finders.",
+      "Scan scripts which scan the finalized blocks and extract the corresponding business.",
+      "A restful server which serve the treasury business data.",
     ],
   },
 ];
