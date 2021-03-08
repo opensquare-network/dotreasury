@@ -56,7 +56,7 @@ const TipsTable = ({ data, loading }) => {
               <Table.HeaderCell textAlign={"right"}>Proposals</Table.HeaderCell>
               <Table.HeaderCell textAlign={"right"}>Expense</Table.HeaderCell>
               <Table.HeaderCell textAlign={"right"}>Start</Table.HeaderCell>
-              <Table.HeaderCell textAlign={"right"}>End</Table.HeaderCell>
+              {/* <Table.HeaderCell textAlign={"right"}>End</Table.HeaderCell> */}
               <Table.HeaderCell className="hidden" />
             </Table.Row>
           </Table.Header>
@@ -80,9 +80,9 @@ const TipsTable = ({ data, loading }) => {
                   <Table.Cell className="date-cell">
                     <DateCell date={item.startTime} />
                   </Table.Cell>
-                  <Table.Cell className="date-cell">
+                  {/* <Table.Cell className="date-cell">
                     <DateCell date={item.endTime} />
-                  </Table.Cell>
+                  </Table.Cell> */}
                   <Table.Cell className="link-cell hidden">
                     <NavLink to={`/projects/${item.name}`}>
                       <RightButton />
