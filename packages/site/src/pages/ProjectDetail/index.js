@@ -41,7 +41,7 @@ const ProjectDetail = () => {
     ), 0),
     dollar: projectDetail.proposals?.reduce((previous, current) => (
       previous + (current.amount ?? 0) * (current.proposeTimePrice ?? 0)
-    ), 0)
+    ), 0).toFixed(2).replace(/\D00/, "")
   }
 
   return (

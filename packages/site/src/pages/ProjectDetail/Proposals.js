@@ -144,7 +144,7 @@ const Proposals = ({ data }) => {
                       <Text>{item.amount ?? 0}</Text>
                       <TextMinor className="unit">{item.token?.toUpperCase()}</TextMinor>
                       {item.amount && item.proposeTimePrice &&
-                      <TextDollar className="dollar">{`≈ $${item.amount * item.proposeTimePrice}`}</TextDollar>}
+                      <TextDollar className="dollar">{`≈ $${(item.amount * item.proposeTimePrice).toFixed(2).replace(/\D00/, "")}`}</TextDollar>}
                     </ExpenseWrapper>
                   </Item>
                   <Item>

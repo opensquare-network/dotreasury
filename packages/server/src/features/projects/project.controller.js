@@ -27,6 +27,9 @@ class ProjectController {
           (previous, current) => previous + current.amount,
           0
         ),
+        dollar: item.proposals?.reduce((previous, current) => (
+          previous + (current.amount ?? 0) * (current.proposeTimePrice ?? 0)
+        ), 0)
       })),
       page,
       pageSize,
