@@ -3,7 +3,6 @@ import styled from "styled-components";
 
 import PairText from "../../components/PairText";
 import TextMinor from "../../components/TextMinor";
-import { toPrecision } from "../../utils";
 
 const DollarText = styled(TextMinor)`
   font-size: 12px;
