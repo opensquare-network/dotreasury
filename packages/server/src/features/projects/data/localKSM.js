@@ -11,6 +11,7 @@ const relatedLinks = [
 ];
 
 module.exports = {
+  id,
   name,
   logo,
   title,
