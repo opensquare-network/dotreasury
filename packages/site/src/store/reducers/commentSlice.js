@@ -64,7 +64,7 @@ export const fetchComments = (type, index, page, pageSize) => async (
   dispatch
 ) => {
   dispatch(setLoading(true));
-  try{
+  try {
     const { result } = await api.maybeAuthFetch(
       `/${pluralize(type)}/${index}/comments`,
       {
@@ -135,7 +135,7 @@ export const removeComment = (commentId) => async (dispatch) => {
 };
 
 export const setCommentThumbUp = (commentId) => async (dispatch) => {
-  await api.authFetch(
+  return await api.authFetch(
     `/comments/${commentId}/reaction`,
     {},
     {
@@ -147,7 +147,7 @@ export const setCommentThumbUp = (commentId) => async (dispatch) => {
     }
   );
 
-  dispatch(setLastUpdateCommentTime(Date.now()));
+  // dispatch(setLastUpdateCommentTime(Date.now()));
 };
 
 export const setCommentThumbDown = (commentId) => async (dispatch) => {
@@ -167,7 +167,7 @@ export const setCommentThumbDown = (commentId) => async (dispatch) => {
 };
 
 export const unsetCommentReaction = (commentId) => async (dispatch) => {
-  await api.authFetch(
+  return await api.authFetch(
     `/comments/${commentId}/reaction`,
     {},
     {
@@ -178,13 +178,14 @@ export const unsetCommentReaction = (commentId) => async (dispatch) => {
     }
   );
 
-  dispatch(setLastUpdateCommentTime(Date.now()));
+  // dispatch(setLastUpdateCommentTime(Date.now()));
 };
 
 export const commentsSelector = (state) => state.comments.comments;
 export const clearCommentSelector = (state) => state.comments.clearComment;
 export const lastNewPostSelector = (state) => state.comments.lastNewPost;
-export const lastUpdateCommentTimeSelector = (state) => state.comments.lastUpdateCommentTime;
+export const lastUpdateCommentTimeSelector = (state) =>
+  state.comments.lastUpdateCommentTime;
 export const loadingSelector = (state) => state.comments.loading;
 
 export default commentSlice.reducer;

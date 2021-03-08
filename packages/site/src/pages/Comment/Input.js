@@ -59,6 +59,7 @@ const Input = React.forwardRef(
     const history = useHistory();
     const location = useLocation();
     const [isPreview, setIsPreview] = useState(false);
+    const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
     const loggedInUser = useSelector(loggedInUserSelector);
     const userProfile = useSelector(userProfileSelector);
@@ -70,8 +71,13 @@ const Input = React.forwardRef(
       }
     }, [dispatch, loggedInUser]);
 
-    const post = () => {
-      dispatch(postComment(type, index, content));
+    const post = async () => {
+      setLoading(true);
+      try {
+        await dispatch(postComment(type, index, content));
+      } finally {
+        setLoading(false);
+      }
     };
 
     useEffect(() => {
@@ -107,7 +113,11 @@ const Input = React.forwardRef(
               >
                 Preview
               </ButtonSecondary>
-              <ButtonPrimary disabled={!loggedInUser} onClick={post}>
+              <ButtonPrimary
+                disabled={loading}
+                loading={loading}
+                onClick={post}
+              >
                 Comment
               </ButtonPrimary>
             </ButtonWrapper>
