@@ -5,12 +5,12 @@ import { useHistory } from "react-router";
 
 import Table from "../../components/Table";
 import TableLoading from "../../components/TableLoading.js"
-import PairText from "../../components/PairText";
 import RightButton from "../../components/RightButton";
 import TableNoDataCell from "../../components/TableNoDataCell";
 import Text from "../../components/Text";
 import NameCell from "./NameCell";
 import DateCell from "./DateCell";
+import ExpenseCell from "./ExpenseCell";
 
 const Wrapper = styled.div`
   overflow-x: scroll;
@@ -75,7 +75,7 @@ const TipsTable = ({ data, loading }) => {
                     <Text>{item.proposals ?? 0}</Text>
                   </Table.Cell>
                   <Table.Cell className="balance-cell" textAlign={"right"}>
-                    <PairText value={item.expense ?? 0} unit="KSM" />
+                    <ExpenseCell expense={item.expense ?? 0} dollar={item.dollar} />
                   </Table.Cell>
                   <Table.Cell className="date-cell">
                     <DateCell date={item.startTime} />

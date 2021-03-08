@@ -22,7 +22,10 @@ class ProjectController {
         startTime: item.startTime,
         endTime: item.endTime,
         proposals: item.proposals?.length,
-        expense: item.proposals?.reduce((previous, current) => previous + current.amount, 0)
+        expense: item.proposals?.reduce((previous, current) => previous + current.amount, 0),
+        dollar: item.proposals?.reduce((previous, current) => (
+          previous + (current.amount ?? 0) * (current.proposeTimePrice ?? 0)
+        ), 0)
       })),
       page,
       pageSize,
