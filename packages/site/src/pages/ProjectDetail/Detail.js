@@ -38,17 +38,6 @@ const NameTitle = styled(Title)`
   line-height: 36px;
 `
 
-// const NameTag = styled.div`
-//   background: #EBFBFA;
-//   border-radius: 4px;
-//   padding: 0 8px;
-//   margin-left: 16px;
-//   font-family: "Inter";
-//   font-size: 12px;
-//   line-height: 20px;
-//   color: #04D2C5;
-// `
-
 const NameContent = styled(TextMinor)`
   max-width: 512px;
 `
@@ -106,7 +95,7 @@ const Detail = ({ data }) => {
   const { name, logo, description, proposals, expense, dollar} = data;
   return (
     <Wrapper>
-      <IconImage src={logo ? `/imgs/projects/${logo}` : "/imgs/opensquare-icon-logo.svg"} width={96} height={96} />
+      <IconImage src={logo ? `/imgs/projects/${logo}` : "/imgs/default-logo.svg"} width={96} height={96} />
       <NameContentWrapper>
         <NameWrapper>
           <NameTitle>{name}</NameTitle>
