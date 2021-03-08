@@ -18,10 +18,10 @@ const proposals = [
     token: "ksm",
     amount: 200,
     proposalId: 20,
-    proposeTimePrice: 4.2,
-    title: "Proposal discussion",
+    proposeTimePrice: 4.3,
+    title: "KusamaProject",
     achievements: [
-      "Polkawallet team list their proposal milestones and have a discussion with councilors",
+      "kusamaproject.com is online and we can see ecosystem projects",
     ],
   },
 ];

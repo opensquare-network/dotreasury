@@ -8,6 +8,16 @@ const localKSM = require("./localKSM");
 const kusamaProject = require("./kusamaProject");
 const rotki = require("./rotki");
 
-const projects = [dotreasury, polkawallet, fearlessWallet, ask, himalia, LocalCoinSwap, localKSM, kusamaProject, rotki];
+const projects = [
+  dotreasury,
+  polkawallet,
+  fearlessWallet,
+  ask,
+  himalia,
+  LocalCoinSwap,
+  localKSM,
+  kusamaProject,
+  rotki,
+];
 
-module.exports = projects;
+module.exports = [...projects].sort((p1, p2) => p2.startTime - p1.startTime);
