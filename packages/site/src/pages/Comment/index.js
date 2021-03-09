@@ -44,11 +44,14 @@ const Comment = ({ type, index }) => {
   const inputRef = useRef(null);
   const history = useHistory();
   const dispatch = useDispatch();
-  const [refreshComment, setRefreshComment] = useState(0);
-
   const { hash } = useLocation();
+
   const hashCommentId = hash && hash.slice(1);
+
+  const [refreshComment, setRefreshComment] = useState(0);
   const [refCommentId, setRefCommentId] = useState(hashCommentId);
+  const [content, setContent] = useState("");
+  const [loadingList, setLoadingList] = useState(false);
 
   useComponentWillMount(() => {
     dispatch(setComments([]));
@@ -69,14 +72,12 @@ const Comment = ({ type, index }) => {
   const comments = useSelector(commentsSelector);
   const lastNewPost = useSelector(lastNewPostSelector);
   const lastUpdateCommentTime = useSelector(lastUpdateCommentTimeSelector);
-  const loading = useSelector(loadingSelector);
 
   const totalPages = Math.ceil(comments.total / DEFAULT_PAGE_SIZE);
 
-  const [content, setContent] = useState("");
 
   useDeepCompareEffect(async () => {
-    dispatch(setLoading(true));
+    setLoadingList(true);
     try{
       await dispatch(
         fetchComments(
@@ -87,7 +88,7 @@ const Comment = ({ type, index }) => {
         )
       );
     }finally{
-      dispatch(setLoading(false)); 
+      setLoadingList(false); 
     }
   }, [dispatch, type, index, tablePage, lastUpdateCommentTime, refreshComment]);
 
@@ -134,7 +135,7 @@ const Comment = ({ type, index }) => {
     <div>
       <Header ref={commentRef}>Comment</Header>
       <Wrapper>
-        <Dimmer active={loading} inverted>
+        <Dimmer active={loadingList} inverted>
           <Image src="/imgs/loading.svg" />
         </Dimmer>
         {(!comments || comments.items?.length === 0) && <NoComment />}

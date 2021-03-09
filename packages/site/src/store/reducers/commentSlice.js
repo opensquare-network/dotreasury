@@ -15,7 +15,6 @@ const commentSlice = createSlice({
     clearComment: false,
     lastNewPost: null,
     lastUpdateCommentTime: 0,
-    loading: false,
   },
   reducers: {
     setComments(state, { payload }) {
@@ -29,10 +28,7 @@ const commentSlice = createSlice({
     },
     setLastUpdateCommentTime(state, { payload }) {
       state.lastUpdateCommentTime = payload;
-    },
-    setLoading(state, { payload }) {
-      state.loading = payload;
-    },
+    }
   },
 });
 
@@ -180,6 +176,5 @@ export const clearCommentSelector = (state) => state.comments.clearComment;
 export const lastNewPostSelector = (state) => state.comments.lastNewPost;
 export const lastUpdateCommentTimeSelector = (state) =>
   state.comments.lastUpdateCommentTime;
-export const loadingSelector = (state) => state.comments.loading;
 
 export default commentSlice.reducer;
