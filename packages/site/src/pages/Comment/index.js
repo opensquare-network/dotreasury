@@ -47,7 +47,7 @@ const Comment = ({ type, index }) => {
   const hashCommentId = hash && hash.slice(1);
   useEffect(() => {
     dispatch(setLastNewPost(hashCommentId));
-  }, []);
+  }, [dispatch, hashCommentId]);
 
   const [content, setContent] = useState("");
   const [loadingList, setLoadingList] = useState(false);

@@ -260,7 +260,7 @@ const CommentItem = ({
         }
       }, 4000);
     }
-  }, [commentId, isMounted]);
+  }, [dispatch, lastNewPost, commentId, isMounted]);
 
   return (
     <Wrapper id={comment._id} ref={commentRef} highLight={highLight}>
