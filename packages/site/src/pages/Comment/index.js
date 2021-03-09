@@ -57,10 +57,14 @@ const Comment = ({ type, index }) => {
   });
 
   let searchPage = useQuery().get("page");
-  searchPage = parseInt(searchPage);
+  if (searchPage !== "last") {
+    searchPage = parseInt(searchPage);
+  }
 
   const tablePage =
-      searchPage && !isNaN(searchPage) && searchPage > 0
+    searchPage === "last"
+      ? searchPage
+      : searchPage && !isNaN(searchPage) && searchPage > 0
       ? searchPage
       : DEFAULT_QUERY_PAGE;
 
@@ -77,7 +81,7 @@ const Comment = ({ type, index }) => {
         fetchComments(
           type,
           index,
-          tablePage - 1,
+          tablePage === "last" ? tablePage : tablePage - 1,
           DEFAULT_PAGE_SIZE
         )
       );
