@@ -5,6 +5,7 @@ const title =
 const description =
   "Ask! uses the similar way to ink! of designing the procedural macro in the form of eDSL, to write contracts by providing annotation type in AssemblyScript (aka AS). This way can hide the implementation details of the contract, and reduces the difficulty of writing contract. Ask! will be similar to ink!’s existing implementation, and the final product will maintain maximum compatibility with ink!’s existing standards. The WASM and metadata files compiled by Ask! can be deployed on the Substrate chain and run normally.";
 const logo = "ask-logo.svg";
+const startTime = 1610334804000;
 const relatedLinks = [
   {
     link: "https://github.com/patractlabs/ask",
@@ -34,6 +35,7 @@ module.exports = {
   id,
   name,
   logo,
+  startTime,
   title,
   description,
   proposals,

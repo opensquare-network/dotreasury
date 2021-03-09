@@ -4,13 +4,13 @@ import { NavLink } from "react-router-dom";
 import { useHistory } from "react-router";
 
 import Table from "../../components/Table";
-import TableLoading from "../../components/TableLoading.js"
-import PairText from "../../components/PairText";
+import TableLoading from "../../components/TableLoading.js";
 import RightButton from "../../components/RightButton";
 import TableNoDataCell from "../../components/TableNoDataCell";
 import Text from "../../components/Text";
 import NameCell from "./NameCell";
 import DateCell from "./DateCell";
+import ExpenseCell from "./ExpenseCell";
 
 const Wrapper = styled.div`
   overflow-x: scroll;
@@ -43,7 +43,7 @@ const TipsTable = ({ data, loading }) => {
     if (window.innerWidth < 1140) {
       history.push(`/projects/${name}`);
     }
-  }
+  };
 
   return (
     <Wrapper>
@@ -56,7 +56,7 @@ const TipsTable = ({ data, loading }) => {
               <Table.HeaderCell textAlign={"right"}>Proposals</Table.HeaderCell>
               <Table.HeaderCell textAlign={"right"}>Expense</Table.HeaderCell>
               <Table.HeaderCell textAlign={"right"}>Start</Table.HeaderCell>
-              <Table.HeaderCell textAlign={"right"}>End</Table.HeaderCell>
+              {/* <Table.HeaderCell textAlign={"right"}>End</Table.HeaderCell> */}
               <Table.HeaderCell className="hidden" />
             </Table.Row>
           </Table.Header>
@@ -69,29 +69,27 @@ const TipsTable = ({ data, loading }) => {
                     <NameCell logo={item.logo} name={item.name} />
                   </Table.Cell>
                   <Table.Cell className="description-cell">
-                    <Text>{item.description}</Text>
+                    <Text>{item.title || item.description}</Text>
                   </Table.Cell>
                   <Table.Cell textAlign={"right"}>
                     <Text>{item.proposals ?? 0}</Text>
                   </Table.Cell>
                   <Table.Cell className="balance-cell" textAlign={"right"}>
-                    <PairText value={item.expense ?? 0} unit="KSM" />
+                    <ExpenseCell expense={item.expense ?? 0} dollar={item.dollar} />
                   </Table.Cell>
                   <Table.Cell className="date-cell">
                     <DateCell date={item.startTime} />
                   </Table.Cell>
-                  <Table.Cell className="date-cell">
+                  {/* <Table.Cell className="date-cell">
                     <DateCell date={item.endTime} />
-                  </Table.Cell>
+                  </Table.Cell> */}
                   <Table.Cell className="link-cell hidden">
                     <NavLink to={`/projects/${item.name}`}>
                       <RightButton />
                     </NavLink>
                   </Table.Cell>
                 </Table.Row>
-              ))) || (
-                <TableNoDataCell />
-            )}
+              ))) || <TableNoDataCell />}
           </Table.Body>
         </StyledTable>
       </TableLoading>
