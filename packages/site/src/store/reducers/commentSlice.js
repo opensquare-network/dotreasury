@@ -93,6 +93,7 @@ export const postComment = (type, index, content) => async (dispatch) => {
 
   if (result) {
     dispatch(setClearComment(true));
+    dispatch(setLastNewPost(result));
   }
 };
 

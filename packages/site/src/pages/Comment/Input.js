@@ -76,7 +76,7 @@ const Input = React.forwardRef(
       setLoading(true);
       try {
         await dispatch(postComment(type, index, content));
-        await dispatch(fetchComments(type, index, 0, pageSize));
+        await dispatch(fetchComments(type, index, 'last', pageSize));
       } finally {
         setLoading(false);
       }
