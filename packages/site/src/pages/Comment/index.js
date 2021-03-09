@@ -16,8 +16,6 @@ import {
   setLastNewPost,
   setComments,
   lastUpdateCommentTimeSelector,
-  loadingSelector,
-  setLoading,
 } from "../../store/reducers/commentSlice";
 import ResponsivePagination from "./ResponsivePagination";
 import { useQuery } from "../../utils/hooks";

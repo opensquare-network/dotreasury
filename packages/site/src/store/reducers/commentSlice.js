@@ -56,27 +56,6 @@ export class TipIndex {
   }
 }
 
-export const fetchCommentsWithoutLoading = (type, index, page, pageSize) => async (
-  dispatch
-) => {
-  const { result } = await api.maybeAuthFetch(
-    `/${pluralize(type)}/${index}/comments`,
-    {
-      page,
-      pageSize,
-    }
-  );
-  dispatch(
-    setComments(
-      result || {
-        items: [],
-        page: 0,
-        pageSize: 10,
-        total: 0,
-      }
-    )
-  );
-};
 export const fetchComments = (type, index, page, pageSize) => async (
   dispatch
 ) => {
