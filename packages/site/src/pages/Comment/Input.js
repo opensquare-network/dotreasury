@@ -7,11 +7,12 @@ import MarkdownEditor from "../../components/MarkdownEditor";
 import Markdown from "../../components/Markdown";
 import Button from "../../components/Button";
 import ButtonPrimary from "../../components/ButtonPrimary";
+import { useQuery } from "../../utils/hooks";
 import {
   postComment,
   clearCommentSelector,
-  fetchCommentsWithoutLoading,
   setClearComment,
+  setLastUpdateCommentTime
 } from "../../store/reducers/commentSlice";
 import {
   loggedInUserSelector,
@@ -72,11 +73,19 @@ const Input = React.forwardRef(
       }
     }, [dispatch, loggedInUser]);
 
+    const page = useQuery().get("page");
     const post = async () => {
       setLoading(true);
       try {
         await dispatch(postComment(type, index, content));
-        await dispatch(fetchCommentsWithoutLoading(type, index, 0, pageSize));
+        if(page==='last') {
+          dispatch(setLastUpdateCommentTime(Date.now()));
+        }else {
+          history.push({
+            search: `?page=last`,
+          });
+        }
+        // await dispatch(fetchComments(type, index, 'last', pageSize));
       } finally {
         setLoading(false);
         isPreview && setIsPreview(false);

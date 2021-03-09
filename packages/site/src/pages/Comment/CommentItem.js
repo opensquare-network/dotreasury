@@ -17,6 +17,8 @@ import { useIsMounted } from "../../utils/hooks";
 import {
   setCommentThumbUp,
   unsetCommentReaction,
+  setLastNewPost,
+  lastNewPostSelector,
 } from "../../store/reducers/commentSlice";
 import {
   isLoggedInSelector,
@@ -176,7 +178,6 @@ const CircleImage = styled(Image)`
 const CommentItem = ({
   index,
   comment,
-  refCommentId,
   onReplyButton,
   replyEvent,
 }) => {
@@ -197,6 +198,8 @@ const CommentItem = ({
   const commentRef = useRef(null);
   const isMounted = useIsMounted();
   const loggedInUser = useSelector(loggedInUserSelector);
+  const lastNewPost = useSelector(lastNewPostSelector);
+
   const address = comment.author?.addresses?.filter(
     (i) => i.chain === "kusama"
   )[0];
@@ -245,18 +248,19 @@ const CommentItem = ({
 
   const isTop = false;
   useEffect(() => {
-    setTimeout(() => {
-      if (isMounted.current && commentId === refCommentId) {
+    if (isMounted.current && commentId === lastNewPost) {
+      dispatch(setLastNewPost(null)); 
+      setTimeout(() => {
         commentRef.current.scrollIntoView();
         setHighLight(true);
-      }
-    }, 1000);
-    setTimeout(() => {
-      if (isMounted.current) {
-        setHighLight(false);
-      }
-    }, 4000);
-  }, [commentId, refCommentId, isMounted]);
+      }, 1000);
+      setTimeout(() => {
+        if (isMounted.current) {
+          setHighLight(false);
+        }
+      }, 4000);
+    }
+  }, [dispatch, lastNewPost, commentId, isMounted]);
 
   return (
     <Wrapper id={comment._id} ref={commentRef} highLight={highLight}>

@@ -10,7 +10,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const CommentList = ({ comments, refCommentId, onReplyButton, replyEvent }) => {
+const CommentList = ({ comments, onReplyButton, replyEvent }) => {
   if (comments?.items.length > 0) {
     const startFrom = comments.page * comments.pageSize;
     return (
@@ -20,7 +20,6 @@ const CommentList = ({ comments, refCommentId, onReplyButton, replyEvent }) => {
             comment={item}
             index={startFrom + index}
             key={index}
-            refCommentId={refCommentId}
             onReplyButton={onReplyButton}
             replyEvent={replyEvent}
           />

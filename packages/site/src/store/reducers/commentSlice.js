@@ -15,7 +15,6 @@ const commentSlice = createSlice({
     clearComment: false,
     lastNewPost: null,
     lastUpdateCommentTime: 0,
-    loading: false,
   },
   reducers: {
     setComments(state, { payload }) {
@@ -29,10 +28,7 @@ const commentSlice = createSlice({
     },
     setLastUpdateCommentTime(state, { payload }) {
       state.lastUpdateCommentTime = payload;
-    },
-    setLoading(state, { payload }) {
-      state.loading = payload;
-    },
+    }
   },
 });
 
@@ -60,7 +56,7 @@ export class TipIndex {
   }
 }
 
-export const fetchCommentsWithoutLoading = (type, index, page, pageSize) => async (
+export const fetchComments = (type, index, page, pageSize) => async (
   dispatch
 ) => {
   const { result } = await api.maybeAuthFetch(
@@ -81,16 +77,6 @@ export const fetchCommentsWithoutLoading = (type, index, page, pageSize) => asyn
     )
   );
 };
-export const fetchComments = (type, index, page, pageSize) => async (
-  dispatch
-) => {
-  dispatch(setLoading(true));
-  try {
-    await dispatch(fetchCommentsWithoutLoading(type, index, page, pageSize));
-  } finally {
-    dispatch(setLoading(false));
-  }
-};
 
 export const postComment = (type, index, content) => async (dispatch) => {
   const { result } = await api.authFetch(
@@ -107,6 +93,7 @@ export const postComment = (type, index, content) => async (dispatch) => {
 
   if (result) {
     dispatch(setClearComment(true));
+    dispatch(setLastNewPost(result));
   }
 };
 
@@ -150,8 +137,6 @@ export const setCommentThumbUp = (commentId) => async (dispatch) => {
       body: JSON.stringify({ reaction: REACTION_THUMBUP }),
     }
   );
-
-  // dispatch(setLastUpdateCommentTime(Date.now()));
 };
 
 export const setCommentThumbDown = (commentId) => async (dispatch) => {
@@ -181,8 +166,6 @@ export const unsetCommentReaction = (commentId) => async (dispatch) => {
       },
     }
   );
-
-  // dispatch(setLastUpdateCommentTime(Date.now()));
 };
 
 export const commentsSelector = (state) => state.comments.comments;
@@ -190,6 +173,5 @@ export const clearCommentSelector = (state) => state.comments.clearComment;
 export const lastNewPostSelector = (state) => state.comments.lastNewPost;
 export const lastUpdateCommentTimeSelector = (state) =>
   state.comments.lastUpdateCommentTime;
-export const loadingSelector = (state) => state.comments.loading;
 
 export default commentSlice.reducer;

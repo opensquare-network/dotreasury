@@ -12,11 +12,9 @@ import { unique } from "../../utils/index";
 import {
   fetchComments,
   commentsSelector,
-  lastNewPostSelector,
-  setLastNewPost,
   setComments,
+  setLastNewPost,
   lastUpdateCommentTimeSelector,
-  loadingSelector
 } from "../../store/reducers/commentSlice";
 import ResponsivePagination from "./ResponsivePagination";
 import { useQuery } from "../../utils/hooks";
@@ -43,11 +41,16 @@ const Comment = ({ type, index }) => {
   const inputRef = useRef(null);
   const history = useHistory();
   const dispatch = useDispatch();
-  const [refreshComment, setRefreshComment] = useState(0);
-
   const { hash } = useLocation();
+
+  // from email notification when mentioned on comments
   const hashCommentId = hash && hash.slice(1);
-  const [refCommentId, setRefCommentId] = useState(hashCommentId);
+  useEffect(() => {
+    dispatch(setLastNewPost(hashCommentId));
+  }, [dispatch, hashCommentId]);
+
+  const [content, setContent] = useState("");
+  const [loadingList, setLoadingList] = useState(false);
 
   useComponentWillMount(() => {
     dispatch(setComments([]));
@@ -65,38 +68,25 @@ const Comment = ({ type, index }) => {
       ? searchPage
       : DEFAULT_QUERY_PAGE;
   const comments = useSelector(commentsSelector);
-  const lastNewPost = useSelector(lastNewPostSelector);
   const lastUpdateCommentTime = useSelector(lastUpdateCommentTimeSelector);
-  const loading = useSelector(loadingSelector);
 
   const totalPages = Math.ceil(comments.total / DEFAULT_PAGE_SIZE);
 
-  const [content, setContent] = useState("");
-
-  useDeepCompareEffect(() => {
-    dispatch(
-      fetchComments(
-        type,
-        index,
-        tablePage === "last" ? tablePage : tablePage - 1,
-        DEFAULT_PAGE_SIZE
-      )
-    );
-  }, [dispatch, type, index, tablePage, lastUpdateCommentTime, refreshComment]);
-
-  useDeepCompareEffect(() => {
-    if (lastNewPost) {
-      dispatch(setLastNewPost(null));
-      if (searchPage !== "last") {
-        history.push({
-          search: `?page=last`,
-        });
-        setRefCommentId(lastNewPost);
-      } else {
-        setRefreshComment(refreshComment + 1);
-      }
+  useDeepCompareEffect(async () => {
+    setLoadingList(true);
+    try{
+      await dispatch(
+        fetchComments(
+          type,
+          index,
+          tablePage === "last" ? tablePage : tablePage - 1,
+          DEFAULT_PAGE_SIZE
+        )
+      );
+    }finally{
+      setLoadingList(false); 
     }
-  }, [dispatch, lastNewPost]);
+  }, [dispatch, type, index, tablePage, lastUpdateCommentTime]);
 
   // If the actual page index is changed, and there is a page query in url
   // then we always scroll the comments to view.
@@ -127,14 +117,13 @@ const Comment = ({ type, index }) => {
     <div>
       <Header ref={commentRef}>Comment</Header>
       <Wrapper>
-        <Dimmer active={loading} inverted>
+        <Dimmer active={loadingList} inverted>
           <Image src="/imgs/loading.svg" />
         </Dimmer>
         {(!comments || comments.items?.length === 0) && <NoComment type={type} />}
         {comments && comments.items?.length > 0 && <div>
           <CommentList
             comments={comments}
-            refCommentId={refCommentId}
             onReplyButton={setReplyToCallback}
             replyEvent={replyEvent}
           />
