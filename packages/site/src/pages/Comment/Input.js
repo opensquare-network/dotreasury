@@ -79,6 +79,7 @@ const Input = React.forwardRef(
         await dispatch(fetchCommentsWithoutLoading(type, index, 0, pageSize));
       } finally {
         setLoading(false);
+        setIsPreview(false);
       }
     };
 
