@@ -86,7 +86,7 @@ const LineChart = ({ data, onHover }) => {
       bodySpacing: 8,
       callbacks: {
         title: function (tooltipItems) {
-          return dayjs(tooltipItems[0].xLabel).format("YYYY-MM-DD");
+          return dayjs(tooltipItems[0].xLabel).format("YYYY-MM-DD hh:mm");
         },
         label: function (tooltipItem, data) {
           return `${data.datasets[tooltipItem.datasetIndex].label} ${Math.round(tooltipItem.value) === tooltipItem.value ? "" : "≈"} ${parseInt(tooltipItem.value)}`;
