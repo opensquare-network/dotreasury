@@ -14,13 +14,12 @@ const Wrapper = styled.div`
     text-align: center;
   }
 `;
-
-const NoComment = () => {
+const NoComment = ({ type }) => {
   return (
     <Wrapper>
       <div>
         <Image src={"/imgs/comment.png"} />
-        <p>There is no comment here.</p>
+        <p>How do you think about this {type}? Leave your comments!</p>
       </div>
     </Wrapper>
   );
