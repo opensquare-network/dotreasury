@@ -4931,6 +4931,12 @@ let knownHeights = [
   6514823,
   6514824,
   6514870,
+  6518279,
+  6530290,
+  6530520,
+  6530521,
+  6530523,
+  6530703,
 ];
 
 const firstKnowCouncilCloseEventHeight = 1975694;
