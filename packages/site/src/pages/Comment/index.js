@@ -155,6 +155,7 @@ const Comment = ({ type, index }) => {
           authors={authors}
           content={content}
           setContent={setContent}
+          pageSize={DEFAULT_PAGE_SIZE}
           ref={inputRef}
         />
       </Wrapper>

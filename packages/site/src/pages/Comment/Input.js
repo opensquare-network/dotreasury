@@ -10,6 +10,7 @@ import ButtonPrimary from "../../components/ButtonPrimary";
 import {
   postComment,
   clearCommentSelector,
+  fetchCommentsWithoutLoading,
   setClearComment,
 } from "../../store/reducers/commentSlice";
 import {
@@ -55,7 +56,7 @@ const ButtonSecondary = styled(Button)`
 `;
 
 const Input = React.forwardRef(
-  ({ type, index, authors, content, setContent }, ref) => {
+  ({ type, index, authors, content, setContent, pageSize }, ref) => {
     const history = useHistory();
     const location = useLocation();
     const [isPreview, setIsPreview] = useState(false);
@@ -75,6 +76,7 @@ const Input = React.forwardRef(
       setLoading(true);
       try {
         await dispatch(postComment(type, index, content));
+        await dispatch(fetchCommentsWithoutLoading(type, index, 0, pageSize));
       } finally {
         setLoading(false);
       }
