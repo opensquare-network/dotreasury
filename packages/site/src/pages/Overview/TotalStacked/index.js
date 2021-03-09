@@ -193,7 +193,7 @@ const TotalStacked = () => {
       const statsData = statsHistory[index];
       setIncomeData({
         title: "Income",
-        date: dayjs(dateLabels?.[index]).format("YYYY-MM-DD"),
+        date: dayjs(dateLabels?.[index]).format("YYYY-MM-DD hh:mm"),
         icon: "square",
         labels: [
           {
@@ -254,7 +254,7 @@ const TotalStacked = () => {
 
       setOutputData({
         title: "Output",
-        date: dayjs(dateLabels?.[index]).format("YYYY-MM-DD"),
+        date: dayjs(dateLabels?.[index]).format("YYYY-MM-DD hh:mm"),
         icon: "square",
         labels: [
           {
@@ -278,7 +278,7 @@ const TotalStacked = () => {
 
       setTreasuryData({
         title: "Treasury",
-        date: dayjs(dateLabels?.[index]).format("YYYY-MM-DD"),
+        date: dayjs(dateLabels?.[index]).format("YYYY-MM-DD hh:mm"),
         icon: "square",
         labels: [
           {
