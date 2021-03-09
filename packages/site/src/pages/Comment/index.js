@@ -16,7 +16,8 @@ import {
   setLastNewPost,
   setComments,
   lastUpdateCommentTimeSelector,
-  loadingSelector
+  loadingSelector,
+  setLoading,
 } from "../../store/reducers/commentSlice";
 import ResponsivePagination from "./ResponsivePagination";
 import { useQuery } from "../../utils/hooks";
@@ -74,15 +75,20 @@ const Comment = ({ type, index }) => {
 
   const [content, setContent] = useState("");
 
-  useDeepCompareEffect(() => {
-    dispatch(
-      fetchComments(
-        type,
-        index,
-        tablePage === "last" ? tablePage : tablePage - 1,
-        DEFAULT_PAGE_SIZE
-      )
-    );
+  useDeepCompareEffect(async () => {
+    dispatch(setLoading(true));
+    try{
+      await dispatch(
+        fetchComments(
+          type,
+          index,
+          tablePage === "last" ? tablePage : tablePage - 1,
+          DEFAULT_PAGE_SIZE
+        )
+      );
+    }finally{
+      dispatch(setLoading(false)); 
+    }
   }, [dispatch, type, index, tablePage, lastUpdateCommentTime, refreshComment]);
 
   useDeepCompareEffect(() => {

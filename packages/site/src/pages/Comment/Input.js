@@ -10,7 +10,7 @@ import ButtonPrimary from "../../components/ButtonPrimary";
 import {
   postComment,
   clearCommentSelector,
-  fetchCommentsWithoutLoading,
+  fetchComments,
   setClearComment,
 } from "../../store/reducers/commentSlice";
 import {
@@ -76,7 +76,7 @@ const Input = React.forwardRef(
       setLoading(true);
       try {
         await dispatch(postComment(type, index, content));
-        await dispatch(fetchCommentsWithoutLoading(type, index, 0, pageSize));
+        await dispatch(fetchComments(type, index, 0, pageSize));
       } finally {
         setLoading(false);
       }
