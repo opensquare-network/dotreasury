@@ -73,7 +73,6 @@ const Comment = ({ type, index }) => {
 
   const totalPages = Math.ceil(comments.total / DEFAULT_PAGE_SIZE);
 
-
   useDeepCompareEffect(async () => {
     setLoadingList(true);
     try{
