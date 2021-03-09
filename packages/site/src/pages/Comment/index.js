@@ -64,7 +64,6 @@ const Comment = ({ type, index }) => {
       : searchPage && !isNaN(searchPage) && searchPage > 0
       ? searchPage
       : DEFAULT_QUERY_PAGE;
-
   const comments = useSelector(commentsSelector);
   const lastNewPost = useSelector(lastNewPostSelector);
   const lastUpdateCommentTime = useSelector(lastUpdateCommentTimeSelector);
@@ -131,7 +130,7 @@ const Comment = ({ type, index }) => {
         <Dimmer active={loading} inverted>
           <Image src="/imgs/loading.svg" />
         </Dimmer>
-        {(!comments || comments.items?.length === 0) && <NoComment />}
+        {(!comments || comments.items?.length === 0) && <NoComment type={type} />}
         {comments && comments.items?.length > 0 && <div>
           <CommentList
             comments={comments}
