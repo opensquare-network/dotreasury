@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled, { css } from "styled-components";
 import { Image, Loader } from "semantic-ui-react";
 import dayjs from "dayjs";
+import copy from 'copy-to-clipboard';
 
 import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
@@ -19,6 +20,7 @@ import {
   unsetCommentReaction,
   setLastNewPost,
   lastNewPostSelector,
+  // currentPageSelector,
 } from "../../store/reducers/commentSlice";
 import {
   isLoggedInSelector,
@@ -79,6 +81,28 @@ const ContnetWrapper = styled.div`
   margin-left: 32px;
 `;
 
+const OperateWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+const Copy = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: rgba(29, 37, 60);
+  opacity: 0.24;
+  ${(p) =>
+    p.active &&
+    css`
+      opacity: 0.64;
+    `}
+  :hover {
+    opacity: 0.64;
+  }
+  img{
+    margin-right: 6px;
+  }
+`;
 const ButtonList = styled.div`
   display: flex;
   align-items: center;
@@ -192,6 +216,7 @@ const CommentItem = ({
   );
   const [thumbupLoading, setThumbupLoading] = useState(false);
   const [upCount, setUpCount] = useState(upCountDefault);
+  const [linkCopied, setLinkCopied] = useState(false);
 
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(isLoggedInSelector);
@@ -246,6 +271,18 @@ const CommentItem = ({
     }
   };
 
+  const copyLink = () => {
+    let copyContent = window.location.href;
+    if(!copyContent.includes('#')) {
+      copyContent += ('#'+commentId);
+    }
+    copy(copyContent);
+    setLinkCopied(true);
+    setTimeout(()=>{
+      setLinkCopied(false);
+    }, 500);
+  }
+
   const isTop = false;
   useEffect(() => {
     if (isMounted.current && commentId === lastNewPost) {
@@ -292,42 +329,48 @@ const CommentItem = ({
       </HeaderWrapper>
       <ContnetWrapper>
         <Markdown md={comment.content} replyEvent={replyEvent} />
-        <ButtonList>
-          <ReplayButton
-            onClick={() =>
-              !ownComment &&
-              isLoggedIn &&
-              comment.author?.username &&
-              onReplyButton(
-                `[@${comment.author?.username}](https://dotreasury.com/user/${comment.author?.username}) `
-              )
-            }
-            noHover={ownComment || !isLoggedIn || !comment.author?.username}
-          >
-            <Image src="/imgs/reply.svg" />
-            <Text>Reply</Text>
-          </ReplayButton>
-          <VoteWrapper
-            highlight={thumbup}
-            noHover={ownComment || !isLoggedIn || thumbupLoading}
-          >
-            <VoteButton onClick={thumbUpToogle}>
-              {thumbupLoading ? (
-                <Loader size="mini" active inline></Loader>
-              ) : (
-                <Image
-                  src={
-                    thumbup
-                      ? "/imgs/thumb-up-highlight.svg"
-                      : "/imgs/thumb-up.svg"
-                  }
-                />
-              )}
-              <VoteText highlight={thumbup}>Up</VoteText>
-              <VoteText highlight={thumbup}>({upCount})</VoteText>
-            </VoteButton>
-          </VoteWrapper>
-        </ButtonList>
+        <OperateWrapper>
+          <ButtonList>
+            <ReplayButton
+              onClick={() =>
+                !ownComment &&
+                isLoggedIn &&
+                comment.author?.username &&
+                onReplyButton(
+                  `[@${comment.author?.username}](https://dotreasury.com/user/${comment.author?.username}) `
+                )
+              }
+              noHover={ownComment || !isLoggedIn || !comment.author?.username}
+            >
+              <Image src="/imgs/reply.svg" />
+              <Text>Reply</Text>
+            </ReplayButton>
+            <VoteWrapper
+              highlight={thumbup}
+              noHover={ownComment || !isLoggedIn || thumbupLoading}
+            >
+              <VoteButton onClick={thumbUpToogle}>
+                {thumbupLoading ? (
+                  <Loader size="mini" active inline></Loader>
+                ) : (
+                  <Image
+                    src={
+                      thumbup
+                        ? "/imgs/thumb-up-highlight.svg"
+                        : "/imgs/thumb-up.svg"
+                    }
+                  />
+                )}
+                <VoteText highlight={thumbup}>Up</VoteText>
+                <VoteText highlight={thumbup}>({upCount})</VoteText>
+              </VoteButton>
+            </VoteWrapper>
+          </ButtonList>
+          <Copy active={linkCopied} onClick={copyLink}>
+            <Image src="/imgs/copy.svg" />
+            <Text>{linkCopied ? 'Copied': 'Copy Link'}</Text>
+          </Copy>
+        </OperateWrapper>
       </ContnetWrapper>
     </Wrapper>
   );

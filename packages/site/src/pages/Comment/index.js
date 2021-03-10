@@ -61,7 +61,7 @@ const Comment = ({ type, index }) => {
     searchPage = parseInt(searchPage);
   }
 
-  const tablePage =
+  let tablePage =
     searchPage === "last"
       ? searchPage
       : searchPage && !isNaN(searchPage) && searchPage > 0
@@ -74,14 +74,14 @@ const Comment = ({ type, index }) => {
 
   useDeepCompareEffect(async () => {
     setLoadingList(true);
+    tablePage = "last" ? tablePage : tablePage - 1;
     try{
       await dispatch(
         fetchComments(
           type,
           index,
-          tablePage === "last" ? tablePage : tablePage - 1,
-          DEFAULT_PAGE_SIZE
-        )
+          tablePage,
+          DEFAULT_PAGE_SIZE)
       );
     }finally{
       setLoadingList(false); 
