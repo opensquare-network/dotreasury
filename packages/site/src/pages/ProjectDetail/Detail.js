@@ -25,7 +25,7 @@ const IconImage = styled(Image)`
 `
 
 const NameContentWrapper = styled.div`
-  flex-grow: 1;
+  flex: 1 1 774px;
 `
 const NameWrapper = styled.div`
   display: flex;
@@ -38,12 +38,9 @@ const NameTitle = styled(Title)`
   line-height: 36px;
 `
 
-const NameContent = styled(TextMinor)`
-  max-width: 512px;
-`
+const NameContent = styled(TextMinor)``
 
 const ProposalWrapper = styled.div`
-  margin-left: 32px;
   flex-basis: 160px;
   @media screen and (max-width: 481px) {
     margin-left: 0;
