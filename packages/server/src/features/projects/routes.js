@@ -5,15 +5,15 @@ const maybeAuth = require("../../middleware/maybe-auth");
 
 const router = new Router();
 router.get("/projects", projectsController.getProjects);
-router.get("/projects/:projectName", projectsController.getProject);
+router.get("/projects/:projectId", projectsController.getProject);
 
 router.get(
-  "/projects/:projectName/comments",
+  "/projects/:projectId/comments",
   maybeAuth,
   projectsController.getProjectComments
 );
 router.post(
-  "/projects/:projectName/comments",
+  "/projects/:projectId/comments",
   requireAuth,
   projectsController.postProjectComment
 );

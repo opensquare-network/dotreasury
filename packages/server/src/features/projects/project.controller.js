@@ -16,6 +16,7 @@ class ProjectController {
 
     ctx.body = {
       items: projects.slice(skip, skip + pageSize).map((item) => ({
+        id: item.id,
         name: item.name,
         logo: item.logo,
         title: item.title,
@@ -38,10 +39,10 @@ class ProjectController {
   }
 
   async getProject(ctx) {
-    const projectName = ctx.params.projectName;
+    const projectId = ctx.params.projectId;
     const project = projects.find(
       (p) =>
-        (p.name || "").toLocaleLowerCase() === (projectName || "").toLowerCase()
+        (p.id || "").toLocaleLowerCase() === (projectId || "").toLowerCase()
     );
     if (!project) {
       ctx.status = 404;
@@ -54,10 +55,10 @@ class ProjectController {
   // Comments API
   async getProjectComments(ctx) {
     const { page, pageSize } = extractPage(ctx);
-    const projectName = ctx.params.projectName;
+    const projectId = ctx.params.projectId;
 
-    const projectId = projects.filter((item) => item.name === projectName)[0]
-      ?.id;
+    // const projectId = projects.filter((item) => item.name === projectName)[0]
+    //   ?.id;
     if (!projectId) {
       throw new HttpError(404, "Project not found");
     }
@@ -75,15 +76,15 @@ class ProjectController {
   }
 
   async postProjectComment(ctx) {
-    const projectName = ctx.params.projectName;
+    const projectId = ctx.params.projectId;
     const { content } = ctx.request.body;
     const user = ctx.request.user;
     if (!content) {
       throw new HttpError(400, "Comment content is missing");
     }
 
-    const projectId = projects.filter((item) => item.name === projectName)[0]
-      ?.id;
+    // const projectId = projects.filter((item) => item.name === projectName)[0]
+    //   ?.id;
     if (!projectId) {
       throw new HttpError(404, "Project not found");
     }
