@@ -1,4 +1,4 @@
-const id = "ask!";
+const id = "ask";
 const name = "Ask!";
 const title =
   "Ask! is a smart contract language designed based on AssemblyScript and running on Substrate FRAME Contracts.";
