@@ -266,9 +266,10 @@ const CommentItem = ({ index, comment, onReplyButton, replyEvent }) => {
 
   const copyLink = () => {
     let copyContent = window.location.href;
-    if (!copyContent.includes("#")) {
-      copyContent += "#" + commentId;
+    if (copyContent.includes("#")) {
+      copyContent = copyContent.split('#')[0];
     }
+    copyContent += "#" + commentId;
     copy(copyContent);
     setLinkCopied(true);
     setTimeout(() => {
