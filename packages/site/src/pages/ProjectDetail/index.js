@@ -16,7 +16,7 @@ import {
 } from "../../store/reducers/projectSlice";
 
 const ProjectDetail = () => {
-  const { projectName } = useParams();
+  const { projectId } = useParams();
 
   const dispatch = useDispatch();
 
@@ -25,8 +25,8 @@ const ProjectDetail = () => {
   });
 
   useEffect(() => {
-    dispatch(fetchProjectDetail(projectName));
-  }, [dispatch, projectName]);
+    dispatch(fetchProjectDetail(projectId));
+  }, [dispatch, projectId]);
 
   // const loadingProjectDetail = useSelector(loadingProjectDetailSelector);
   const projectDetail = useSelector(projectDetailSelector);
@@ -50,7 +50,7 @@ const ProjectDetail = () => {
       <Detail data={detailData} />
       <RelatedLinks data={projectDetail.relatedLinks} />
       <Proposals data={projectDetail.proposals} />
-      <Comment type="project" index={projectName} />
+      <Comment type="project" index={projectId} />
     </>
   )
 }

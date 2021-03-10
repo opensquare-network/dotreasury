@@ -45,10 +45,10 @@ export const fetchProjects = (page = 0, pageSize = 30) => async (dispatch) => {
   }
 };
 
-export const fetchProjectDetail = (projectName) => async (dispatch) => {
+export const fetchProjectDetail = (projectId) => async (dispatch) => {
   dispatch(setLoadingProjectDetail(true));
   try {
-    const { result } = await api.fetch(`/projects/${projectName}`);
+    const { result } = await api.fetch(`/projects/${projectId}`);
     dispatch(setProjectDetail(result || {}));
   } finally {
     dispatch(setLoadingProjectDetail(false));

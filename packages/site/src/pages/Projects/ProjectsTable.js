@@ -39,9 +39,9 @@ const StyledTable = styled(Table)`
 const TipsTable = ({ data, loading }) => {
   const history = useHistory();
 
-  const onClickRow = (name) => {
+  const onClickRow = (id) => {
     if (window.innerWidth < 1140) {
-      history.push(`/projects/${name}`);
+      history.push(`/projects/${id}`);
     }
   };
 
@@ -64,7 +64,7 @@ const TipsTable = ({ data, loading }) => {
             {(data &&
               data.length > 0 &&
               data.map((item, index) => (
-                <Table.Row key={index} onClick={() => onClickRow(item.name)}>
+                <Table.Row key={index} onClick={() => onClickRow(item.id)}>
                   <Table.Cell>
                     <NameCell logo={item.logo} name={item.name} />
                   </Table.Cell>
@@ -84,7 +84,7 @@ const TipsTable = ({ data, loading }) => {
                     <DateCell date={item.endTime} />
                   </Table.Cell> */}
                   <Table.Cell className="link-cell hidden">
-                    <NavLink to={`/projects/${item.name}`}>
+                    <NavLink to={`/projects/${item.id}`}>
                       <RightButton />
                     </NavLink>
                   </Table.Cell>
