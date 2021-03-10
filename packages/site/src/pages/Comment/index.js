@@ -74,13 +74,12 @@ const Comment = ({ type, index }) => {
 
   useDeepCompareEffect(async () => {
     setLoadingList(true);
-    tablePage = "last" ? tablePage : tablePage - 1;
     try{
       await dispatch(
         fetchComments(
           type,
           index,
-          tablePage,
+          tablePage === "last" ? tablePage : tablePage - 1,
           DEFAULT_PAGE_SIZE)
       );
     }finally{
