@@ -10,7 +10,7 @@ const LegendWrapper = styled.div`
   flex-wrap: wrap;
   align-items: center;
   & > :not(:last-child) {
-    margin-right: 32px;
+    margin-right: 16px;
   }
 `;
 
