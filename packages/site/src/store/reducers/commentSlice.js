@@ -28,7 +28,7 @@ const commentSlice = createSlice({
     },
     setLastUpdateCommentTime(state, { payload }) {
       state.lastUpdateCommentTime = payload;
-    }
+    },
   },
 });
 
@@ -38,6 +38,7 @@ export const {
   setClearComment,
   setLastNewPost,
   setLastUpdateCommentTime,
+  setCurrentPage,
 } = commentSlice.actions;
 
 export class TipIndex {
@@ -172,6 +173,6 @@ export const commentsSelector = (state) => state.comments.comments;
 export const clearCommentSelector = (state) => state.comments.clearComment;
 export const lastNewPostSelector = (state) => state.comments.lastNewPost;
 export const lastUpdateCommentTimeSelector = (state) =>
-  state.comments.lastUpdateCommentTime;
+state.comments.lastUpdateCommentTime;
 
 export default commentSlice.reducer;
