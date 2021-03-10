@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled, { css } from "styled-components";
 import { Image, Loader } from "semantic-ui-react";
 import dayjs from "dayjs";
-import copy from 'copy-to-clipboard';
+import copy from "copy-to-clipboard";
 
 import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
@@ -20,7 +20,6 @@ import {
   unsetCommentReaction,
   setLastNewPost,
   lastNewPostSelector,
-  // currentPageSelector,
 } from "../../store/reducers/commentSlice";
 import {
   isLoggedInSelector,
@@ -99,7 +98,7 @@ const Copy = styled.div`
   :hover {
     opacity: 0.64;
   }
-  img{
+  img {
     margin-right: 6px;
   }
 `;
@@ -199,15 +198,10 @@ const CircleImage = styled(Image)`
   border-radius: 50%;
 `;
 
-const CommentItem = ({
-  index,
-  comment,
-  onReplyButton,
-  replyEvent,
-}) => {
+const CommentItem = ({ index, comment, onReplyButton, replyEvent }) => {
   const upCountDefault =
-  comment.reactions?.filter((r) => r.reaction === REACTION_THUMBUP)[0]
-    ?.count || 0;
+    comment.reactions?.filter((r) => r.reaction === REACTION_THUMBUP)[0]
+      ?.count || 0;
 
   const [highLight, setHighLight] = useState(false);
   const [addressDisplayName, setAddressDisplayName] = useState("");
@@ -244,7 +238,6 @@ const CommentItem = ({
     }
   }, [address, addressName]);
 
-
   const ownComment = comment.author?.username === loggedInUser?.username;
   const commentId = comment._id;
 
@@ -273,20 +266,20 @@ const CommentItem = ({
 
   const copyLink = () => {
     let copyContent = window.location.href;
-    if(!copyContent.includes('#')) {
-      copyContent += ('#'+commentId);
+    if (!copyContent.includes("#")) {
+      copyContent += "#" + commentId;
     }
     copy(copyContent);
     setLinkCopied(true);
-    setTimeout(()=>{
+    setTimeout(() => {
       setLinkCopied(false);
     }, 500);
-  }
+  };
 
   const isTop = false;
   useEffect(() => {
     if (isMounted.current && commentId === lastNewPost) {
-      dispatch(setLastNewPost(null)); 
+      dispatch(setLastNewPost(null));
       setTimeout(() => {
         commentRef.current.scrollIntoView();
         setHighLight(true);
@@ -368,7 +361,7 @@ const CommentItem = ({
           </ButtonList>
           <Copy active={linkCopied} onClick={copyLink}>
             <Image src="/imgs/copy.svg" />
-            <Text>{linkCopied ? 'Copied': 'Copy Link'}</Text>
+            <Text>{linkCopied ? "Copied" : "Copy Link"}</Text>
           </Copy>
         </OperateWrapper>
       </ContnetWrapper>
