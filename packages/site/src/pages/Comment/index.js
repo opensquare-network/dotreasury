@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import useDeepCompareEffect from "use-deep-compare-effect";
 import styled from "styled-components";
 import { Dimmer, Image } from "semantic-ui-react";
+import useDeepCompareEffect from "use-deep-compare-effect";
 
 import Card from "../../components/Card";
 import SubTitle from "../../components/SubTitle";
@@ -67,23 +67,22 @@ const Comment = ({ type, index }) => {
 
   const totalPages = Math.ceil(comments.total / DEFAULT_PAGE_SIZE);
 
-  const fetchData = async () => {
-    setLoadingList(true);
-    try {
-      await dispatch(
-        fetchComments(
-          type,
-          index,
-          tablePage === "last" ? tablePage : tablePage - 1,
-          DEFAULT_PAGE_SIZE
-        )
-      );
-    } finally {
-      setLoadingList(false);
-    }
-  };
-  useEffect(() => {
-    fetchData();
+  useDeepCompareEffect(() => {
+    (async () => {
+      setLoadingList(true);
+      try {
+        await dispatch(
+          fetchComments(
+            type,
+            index,
+            tablePage === "last" ? tablePage : tablePage - 1,
+            DEFAULT_PAGE_SIZE
+          )
+        );
+      } finally {
+        setLoadingList(false);
+      }
+    })();
     return () => {
       dispatch(setComments([]));
     };
