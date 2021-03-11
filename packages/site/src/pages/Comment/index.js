@@ -67,7 +67,6 @@ const Comment = ({ type, index }) => {
 
   const totalPages = Math.ceil(comments.total / DEFAULT_PAGE_SIZE);
 
-<<<<<<< HEAD
   useDeepCompareEffect(() => {
     (async () => {
       setLoadingList(true);
@@ -84,25 +83,6 @@ const Comment = ({ type, index }) => {
         setLoadingList(false);
       }
     })();
-=======
-  const fetchData = async () => {
-    setLoadingList(true);
-    try {
-      await dispatch(
-        fetchComments(
-          type,
-          index,
-          tablePage === "last" ? tablePage : tablePage - 1,
-          DEFAULT_PAGE_SIZE
-        )
-      );
-    } finally {
-      setLoadingList(false);
-    }
-  };
-  useEffect(() => {
-    fetchData();
->>>>>>> ad571b0de637e3646b916ea487ae1e28adaec865
     return () => {
       dispatch(setComments([]));
     };
