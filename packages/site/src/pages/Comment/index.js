@@ -18,7 +18,6 @@ import {
 } from "../../store/reducers/commentSlice";
 import ResponsivePagination from "./ResponsivePagination";
 import { useQuery } from "../../utils/hooks";
-import { useComponentWillMount } from "../../utils/hooks";
 
 import { useLocation } from "react-router-dom";
 import { useHistory } from "react-router";
@@ -52,10 +51,6 @@ const Comment = ({ type, index }) => {
   const [content, setContent] = useState("");
   const [loadingList, setLoadingList] = useState(false);
 
-  useComponentWillMount(() => {
-    dispatch(setComments([]));
-  });
-
   let searchPage = useQuery().get("page");
   if (searchPage !== "last") {
     searchPage = parseInt(searchPage);
@@ -72,19 +67,26 @@ const Comment = ({ type, index }) => {
 
   const totalPages = Math.ceil(comments.total / DEFAULT_PAGE_SIZE);
 
-  useDeepCompareEffect(async () => {
+  const fetchData = async () => {
     setLoadingList(true);
-    try{
+    try {
       await dispatch(
         fetchComments(
           type,
           index,
           tablePage === "last" ? tablePage : tablePage - 1,
-          DEFAULT_PAGE_SIZE)
+          DEFAULT_PAGE_SIZE
+        )
       );
-    }finally{
-      setLoadingList(false); 
+    } finally {
+      setLoadingList(false);
     }
+  };
+  useEffect(() => {
+    fetchData();
+    return () => {
+      dispatch(setComments([]));
+    };
   }, [dispatch, type, index, tablePage, lastUpdateCommentTime]);
 
   // If the actual page index is changed, and there is a page query in url
@@ -96,11 +98,14 @@ const Comment = ({ type, index }) => {
     }
   }, [searchPage, actualPage, hashCommentId]);
 
-  const setReplyToCallback = useCallback((reply) => {
-    setContent(reply);
-    inputRef.current.scrollIntoView();
-    inputRef.current.querySelector("textarea")?.focus();
-  }, [inputRef]);
+  const setReplyToCallback = useCallback(
+    (reply) => {
+      setContent(reply);
+      inputRef.current.scrollIntoView();
+      inputRef.current.querySelector("textarea")?.focus();
+    },
+    [inputRef]
+  );
 
   const authors = unique(
     (comments?.items || [])
@@ -110,7 +115,7 @@ const Comment = ({ type, index }) => {
 
   const replyEvent = (user) => {
     setReplyToCallback(`[@${user}](https://dotreasury.com/user/${user}) `);
-  }
+  };
 
   return (
     <div>
@@ -119,23 +124,27 @@ const Comment = ({ type, index }) => {
         <Dimmer active={loadingList} inverted>
           <Image src="/imgs/loading.svg" />
         </Dimmer>
-        {(!comments || comments.items?.length === 0) && <NoComment type={type} />}
-        {comments && comments.items?.length > 0 && <div>
-          <CommentList
-            comments={comments}
-            onReplyButton={setReplyToCallback}
-            replyEvent={replyEvent}
-          />
-          <ResponsivePagination
-            activePage={comments.page + 1}
-            totalPages={totalPages}
-            onPageChange={(_, { activePage }) => {
-              history.push({
-                search: `?page=${activePage}`,
-              });
-            }}
-          />
-        </div>}
+        {(!comments || comments.items?.length === 0) && (
+          <NoComment type={type} />
+        )}
+        {comments && comments.items?.length > 0 && (
+          <div>
+            <CommentList
+              comments={comments}
+              onReplyButton={setReplyToCallback}
+              replyEvent={replyEvent}
+            />
+            <ResponsivePagination
+              activePage={comments.page + 1}
+              totalPages={totalPages}
+              onPageChange={(_, { activePage }) => {
+                history.push({
+                  search: `?page=${activePage}`,
+                });
+              }}
+            />
+          </div>
+        )}
         <Input
           type={type}
           index={index}

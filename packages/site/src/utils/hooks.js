@@ -111,17 +111,11 @@ export const useMenuTab = () => {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
   useEffect(() => {
-    const menuTabsName = pathname.startsWith("/income") ? "Income" : pathname.startsWith("/projects") ? "Projects" : "Home";
+    const menuTabsName = pathname.startsWith("/income")
+      ? "Income"
+      : pathname.startsWith("/projects")
+      ? "Projects"
+      : "Home";
     dispatch(setShowMenuTabs(menuTabsName));
   }, [pathname, dispatch]);
-};
-
-export const useComponentWillMount = (func) => {
-  const willMount = useRef(true);
-
-  if (willMount.current) {
-    func();
-  }
-
-  willMount.current = false;
 };
