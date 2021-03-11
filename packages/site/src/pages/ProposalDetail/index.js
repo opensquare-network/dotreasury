@@ -22,7 +22,6 @@ import Proposer from "../../components/Proposer";
 import BlocksTime from "../../components/BlocksTime";
 import TimelineCommentWrapper from "../../components/TimelineCommentWrapper";
 import DetailGoBack from "../components/DetailGoBack";
-import { useComponentWillMount } from "../../utils/hooks";
 
 const ValueWrapper = styled.span`
   margin-right: 4px;
@@ -184,12 +183,11 @@ const ProposalDetail = () => {
   const dispatch = useDispatch();
   const [timelineData, setTimelineData] = useState([]);
 
-  useComponentWillMount(() => {
-    dispatch(setProposalDetail({}));
-  });
-
   useEffect(() => {
     dispatch(fetchProposalDetail(proposalIndex));
+    return () => {
+      dispatch(setProposalDetail({}));
+    };
   }, [dispatch, proposalIndex]);
 
   const loadingProposalDetail = useSelector(loadingProposalDetailSelector);

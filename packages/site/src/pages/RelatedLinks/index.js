@@ -18,7 +18,6 @@ import {
 import AdminLogin from "../AdminLogin";
 import { nowAddressSelector } from "../../store/reducers/accountSlice";
 import Divider from "../../components/Divider";
-import { useComponentWillMount } from "../../utils/hooks";
 
 const Wrapper = styled.div`
   margin-top: 32px;
@@ -46,19 +45,18 @@ const IconButton = styled(Icon)`
 `;
 
 const DividerWrapper = styled(Divider)`
-  border-top: 1px solid #EEEEEE !important;
+  border-top: 1px solid #eeeeee !important;
 `;
 
 const RelatedLinks = ({ type, index }) => {
   const dispatch = useDispatch();
   const location = useLocation();
 
-  useComponentWillMount(() => {
-    dispatch(setLinks([]));
-  });
-
   useDeepCompareEffect(() => {
     dispatch(fetchLinks(type, index));
+    return () => {
+      dispatch(setLinks([]));
+    };
   }, [dispatch, type, index]);
 
   const links = useSelector(linksSelector);

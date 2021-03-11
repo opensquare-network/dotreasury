@@ -25,7 +25,6 @@ import { stringToWords } from "../../utils";
 
 import { scanHeightSelector } from "../../store/reducers/chainSlice";
 import DetailGoBack from "../components/DetailGoBack";
-import { useComponentWillMount } from "../../utils/hooks";
 
 const ValueWrapper = styled.span`
   margin-right: 4px;
@@ -241,12 +240,11 @@ const BountyDetail = () => {
   const dispatch = useDispatch();
   const [timelineData, setTimelineData] = useState([]);
 
-  useComponentWillMount(() => {
-    dispatch(setBountyDetail({}));
-  });
-
   useEffect(() => {
     dispatch(fetchBountyDetail(bountyIndex));
+    return () => {
+      dispatch(setBountyDetail({}));
+    };
   }, [dispatch, bountyIndex]);
 
   const loadingBountyDetail = useSelector(loadingBountyDetailSelector);

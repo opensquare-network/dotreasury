@@ -23,7 +23,6 @@ import Funder from "./Funder";
 import ClickableLink from "../../components/ClickableLink";
 import TimelineCommentWrapper from "../../components/TimelineCommentWrapper";
 import DetailGoBack from "../components/DetailGoBack";
-import { useComponentWillMount } from "../../utils/hooks";
 
 const TableWrapper = styled.div`
   display: grid;
@@ -129,13 +128,12 @@ const TipDetail = () => {
   const dispatch = useDispatch();
   const [timelineData, setTimelineData] = useState([]);
 
-  useComponentWillMount(() => {
-    dispatch(setTipDetail({}));
-  });
-
   useEffect(() => {
     dispatch(fetchTipDetail(tipId));
     dispatch(fetchTipCountdown());
+    return () => {
+      dispatch(setTipDetail({}));
+    };
   }, [dispatch, tipId]);
 
   const tipDetail = useSelector(tipDetailSelector);
