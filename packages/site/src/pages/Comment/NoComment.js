@@ -8,19 +8,20 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  div p {
+  flex-direction: column;
+  p {
     color: rgba(29, 37, 60, 0.24);
-    margin-top: 8px;
+    margin: 8px 0 0;
     text-align: center;
   }
 `;
+
 const NoComment = ({ type }) => {
   return (
     <Wrapper>
-      <div>
         <Image src={"/imgs/comment.png"} />
-        <p>How do you think about this {type}? Leave your comments!</p>
-      </div>
+        <p>How do you think about this {type}?</p>
+        <p>Leave your comments!</p>
     </Wrapper>
   );
 };

@@ -9,7 +9,7 @@ import {
 import { PRIMARY_THEME_COLOR } from "../../constants";
 
 const Wrapper = styled.div`
-  margin-right: 16px;
+  margin-right: 32px;
 `;
 
 const StyledButton = styled(Button)`
