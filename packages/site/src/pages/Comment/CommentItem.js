@@ -34,7 +34,7 @@ import { encodeSubstrateAddress } from "../../services/chainApi";
 const Wrapper = styled.div`
   padding: 32px 32px 16px;
   :hover {
-    background: #FFF9FA;
+    background: #fbfbfb;
   }
   ${(p) =>
     p.highLight &&
