@@ -89,7 +89,7 @@ class UserController {
     const userCol = await getUserCollection();
     const existing = await userCol.findOne({
       [addressName]: address,
-      userId: { $ne: userId },
+      _id: { $ne: userId },
     });
     if (existing) {
       throw new HttpError(400, {
