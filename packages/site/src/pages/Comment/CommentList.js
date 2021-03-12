@@ -1,4 +1,4 @@
-import React from "react";
+import React, {memo} from "react";
 import styled from "styled-components";
 
 import CommentItem from "./CommentItem";
@@ -9,8 +9,7 @@ const Wrapper = styled.div`
     border-top-right-radius: 8px;
   }
 `;
-
-const CommentList = ({ comments, onReplyButton, replyEvent }) => {
+const CommentList = memo(({ comments, onReplyButton, replyEvent }) => {
   if (comments?.items.length > 0) {
     const startFrom = comments.page * comments.pageSize;
     return (
@@ -29,6 +28,6 @@ const CommentList = ({ comments, onReplyButton, replyEvent }) => {
   } else {
     return null;
   }
-};
+});
 
 export default CommentList;

@@ -112,9 +112,15 @@ const Comment = ({ type, index }) => {
       .filter((v) => !!v)
   );
 
-  const replyEvent = (user) => {
+  const replyEvent = useCallback((user) => {
     setReplyToCallback(`[@${user}](https://dotreasury.com/user/${user}) `);
-  };
+  }, [setReplyToCallback]);
+
+  const pageChange = useCallback((_, { activePage }) => {
+    history.push({
+      search: `?page=${activePage}`,
+    });
+  }, []);
 
   return (
     <div>
@@ -136,11 +142,7 @@ const Comment = ({ type, index }) => {
             <ResponsivePagination
               activePage={comments.page + 1}
               totalPages={totalPages}
-              onPageChange={(_, { activePage }) => {
-                history.push({
-                  search: `?page=${activePage}`,
-                });
-              }}
+              onPageChange={pageChange}
             />
           </div>
         )}
