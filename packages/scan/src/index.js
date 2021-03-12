@@ -97,5 +97,9 @@ async function scanBlockByHeight(scanHeight) {
   logger.info(`block ${block.block.header.number.toNumber()} done`);
 }
 
+(async () => {
+  await scanBlockByHeight(6565839);
+})();
+
 // FIXME: log the error
-main().catch(console.error);
+// main().catch(console.error);
