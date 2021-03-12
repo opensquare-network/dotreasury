@@ -120,7 +120,7 @@ const Comment = ({ type, index }) => {
     history.push({
       search: `?page=${activePage}`,
     });
-  }, []);
+  }, [history]);
 
   return (
     <div>
