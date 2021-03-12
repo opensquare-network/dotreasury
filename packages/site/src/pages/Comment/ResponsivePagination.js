@@ -1,4 +1,4 @@
-import React from "react";
+import React, {memo} from "react";
 import styled from "styled-components";
 import Pagination from "./Pagination";
 
@@ -17,7 +17,7 @@ const Container = styled.div`
   }
 `
 
-const ResponsivePagination = ({ activePage, totalPages, onPageChange }) => {
+const ResponsivePagination = memo(({ activePage, totalPages, onPageChange }) => {
   return (
     <Container>
       <Pagination
@@ -35,6 +35,6 @@ const ResponsivePagination = ({ activePage, totalPages, onPageChange }) => {
       />
     </Container>
   )
-}
+})
 
 export default ResponsivePagination;
