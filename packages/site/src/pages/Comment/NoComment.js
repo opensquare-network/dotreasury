@@ -14,6 +14,10 @@ const Wrapper = styled.div`
     margin: 8px 0 0;
     text-align: center;
   }
+  img{
+    width: 300px;
+    height: auto;
+  }
 `;
 
 const NoComment = ({ type }) => {
