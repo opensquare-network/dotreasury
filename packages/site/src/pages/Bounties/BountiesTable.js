@@ -51,7 +51,11 @@ const ProposeTimeWrapper = styled.div`
   p:first-child {
     min-width: 154px;
   }
-`
+`;
+
+const CapText = styled(Text)`
+  text-transform: capitalize;
+`;
 
 const TableRow = styled(Table.Row)`
   height: 50px;
@@ -112,7 +116,7 @@ const BountiesTable = ({ data, loading }) => {
                     <Balance value={item.value} />
                   </Table.Cell>
                   <Table.Cell textAlign={"right"}>
-                    <Text>{item.latestState?.state}</Text>
+                    <CapText>{item.latestState?.state}</CapText>
                   </Table.Cell>
                   <Table.Cell className="link-cell hidden">
                     <NavLink to={`/bounties/${item.bountyIndex}`}>
