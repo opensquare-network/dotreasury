@@ -45,9 +45,9 @@ class BountiesController {
         proposeTime: item.indexer.blockTime,
         proposeAtBlockHeight: item.indexer.blockHeight,
         curator: bountyStatus(item.meta)?.curator,
-        updateDue: item.meta?.status.Active?.updateDue,
+        updateDue: bountyStatus(item.meta)?.updateDue,
         beneficiary: bountyStatus(item.meta)?.beneficiary,
-        unlockAt: item.meta?.status.PendingPayout?.unlockAt,
+        unlockAt: bountyStatus(item.meta)?.unlockAt,
         title: item.description,
         value: item.meta?.value,
         latestState: {
@@ -94,9 +94,9 @@ class BountiesController {
       fee: bounty.meta?.fee,
       curatorDeposit: bounty.meta?.curatorDeposit,
       curator: bountyStatus(bounty.meta)?.curator,
-      updateDue: bounty.meta?.status.Active?.updateDue,
+      updateDue: bountyStatus(bounty.meta)?.updateDue,
       beneficiary: bountyStatus(bounty.meta)?.beneficiary,
-      unlockAt: bounty.meta?.status.PendingPayout?.unlockAt,
+      unlockAt: bountyStatus(bounty.meta)?.unlockAt,
       title: bounty.description,
       value: bounty.meta?.value,
       latestState: {
