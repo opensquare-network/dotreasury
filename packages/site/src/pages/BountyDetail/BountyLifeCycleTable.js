@@ -6,6 +6,7 @@ import Table from "../../components/Table";
 import TableLoading from "../../components/TableLoading";
 import TableCell from "../../components/TableCell";
 import User from "../../components/User";
+import Text from "../../components/Text";
 import { scanHeightSelector } from "../../store/reducers/chainSlice";
 import Label from "../../components/Label";
 import DateShow from "../../components/DateShow";
@@ -24,6 +25,10 @@ const FlexWrapper = styled.div`
   ${css`
     ${mrgap("16px")}
   `}
+`;
+
+const CapText = styled(Text)`
+  text-transform: capitalize;
 `;
 
 const BountyLifeCycleTable = ({ loading }) => {
@@ -86,7 +91,7 @@ const BountyLifeCycleTable = ({ loading }) => {
             <Table.Cell>
               <TableCell title="Status">
                 <FlexWrapper>
-                  <div>{bountyDetail.latestState?.state}</div>
+                  <CapText>{bountyDetail.latestState?.state}</CapText>
                   {/* <ElapsedTimeLabel time={bountyDetail.latestState?.indexer?.blockTime} /> */}
                   <div />
                 </FlexWrapper>
