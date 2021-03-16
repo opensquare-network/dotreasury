@@ -4,9 +4,9 @@ const linkService = require("../../services/link.service");
 const commentService = require("../../services/comment.service");
 
 const bountyStatus = (bounty) =>
-  bounty?.status?.CuratorProposed ||
-  bounty?.status?.Active ||
-  bounty?.status?.PendingPayout;
+  bounty?.status?.CuratorProposed || bounty?.status?.curatorProposed ||
+  bounty?.status?.Active || bounty?.status?.active ||
+  bounty?.status?.PendingPayout || bounty?.status?.pendingPayout;
 
 const bountyStatusName = (bounty) => {
   if (bounty.state?.name === "BountyRejected") {
