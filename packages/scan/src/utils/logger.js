@@ -2,6 +2,7 @@ const log4js = require("log4js");
 
 const logLevel = process.env.LOG_LEVEL || "debug";
 const isProduction = process.env.NODE_ENV === "production";
+const chain = process.env.CHAIN || "kusama";
 
 const scanFileCategory = "os-scan";
 const knownHeightsCategory = "known-heights";
@@ -20,41 +21,50 @@ const abnormalOthersCategory = "abnormal-others";
 
 log4js.configure({
   appenders: {
-    [scanFileCategory]: { type: "file", filename: "log/os-scan.log" },
-    [knownHeightsCategory]: { type: "file", filename: "log/known-heights.log" },
-    [incomeCategory]: { type: "file", filename: "log/income/income.log" },
-    [inflationCategory]: { type: "file", filename: "log/income/inflation.log" },
+    [scanFileCategory]: { type: "file", filename: `log/${chain}/os-scan.log` },
+    [knownHeightsCategory]: {
+      type: "file",
+      filename: `log/${chain}/known-heights.log`,
+    },
+    [incomeCategory]: {
+      type: "file",
+      filename: `log/${chain}/income/income.log`,
+    },
+    [inflationCategory]: {
+      type: "file",
+      filename: `log/${chain}/income/inflation.log`,
+    },
     [incomeKnownHeightsCategory]: {
       type: "file",
-      filename: "log/income/income-known-heights.log",
+      filename: `log/${chain}/income/income-known-heights.log`,
     },
     [treasurySlashCategory]: {
       type: "file",
-      filename: "log/income/slash/treasury-slash.log",
+      filename: `log/${chain}/income/slash/treasury-slash.log`,
     },
     [stakingSlashCategory]: {
       type: "file",
-      filename: "log/income/slash/staking-slash.log",
+      filename: `log/${chain}/income/slash/staking-slash.log`,
     },
     [democracySlashCategory]: {
       type: "file",
-      filename: "log/income/slash/democracy-slash.log",
+      filename: `log/${chain}/income/slash/democracy-slash.log`,
     },
     [electionsPhragmenSlashCategory]: {
       type: "file",
-      filename: "log/income/slash/elections-phragmen-slash.log",
+      filename: `log/${chain}/income/slash/elections-phragmen-slash.log`,
     },
     [identitySlashCategory]: {
       type: "file",
-      filename: "log/income/slash/identity-slash.log",
+      filename: `log/${chain}/income/slash/identity-slash.log`,
     },
     [abnormalOthersCategory]: {
       type: "file",
-      filename: "log/income/abnormal-others.log",
+      filename: `log/${chain}/income/abnormal-others.log`,
     },
     errorFile: {
       type: "file",
-      filename: "log/errors.log",
+      filename: `log/${chain}/errors.log`,
     },
     errors: {
       type: "logLevelFilter",
@@ -69,43 +79,46 @@ log4js.configure({
       level: logLevel,
     },
     [knownHeightsCategory]: {
-      appenders: [knownHeightsCategory, "errors"],
+      appenders: [isProduction ? knownHeightsCategory : "out", "errors"],
       level: logLevel,
     },
     [incomeCategory]: {
-      appenders: [incomeCategory, "errors"],
+      appenders: [isProduction ? incomeCategory : "out", "errors"],
       level: logLevel,
     },
     [incomeKnownHeightsCategory]: {
-      appenders: [incomeKnownHeightsCategory, "errors"],
+      appenders: [isProduction ? incomeKnownHeightsCategory : "out", "errors"],
       level: logLevel,
     },
     [treasurySlashCategory]: {
-      appenders: [treasurySlashCategory, "errors"],
+      appenders: [isProduction ? treasurySlashCategory : "out", "errors"],
       level: logLevel,
     },
     [stakingSlashCategory]: {
-      appenders: [stakingSlashCategory, "errors"],
+      appenders: [isProduction ? stakingSlashCategory : "out", "errors"],
       level: logLevel,
     },
     [democracySlashCategory]: {
-      appenders: [democracySlashCategory, "errors"],
+      appenders: [isProduction ? democracySlashCategory : "out", "errors"],
       level: logLevel,
     },
     [identitySlashCategory]: {
-      appenders: [identitySlashCategory, "errors"],
+      appenders: [isProduction ? identitySlashCategory : "out", "errors"],
       level: logLevel,
     },
     [electionsPhragmenSlashCategory]: {
-      appenders: [electionsPhragmenSlashCategory, "errors"],
+      appenders: [
+        isProduction ? electionsPhragmenSlashCategory : "out",
+        "errors",
+      ],
       level: logLevel,
     },
     [abnormalOthersCategory]: {
-      appenders: [abnormalOthersCategory, "errors"],
+      appenders: [isProduction ? abnormalOthersCategory : "out", "errors"],
       level: logLevel,
     },
     [inflationCategory]: {
-      appenders: [inflationCategory, "errors"],
+      appenders: [isProduction ? inflationCategory : "out", "errors"],
       level: logLevel,
     },
   },
