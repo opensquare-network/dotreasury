@@ -2,7 +2,9 @@ const { CouncilEvents, Modules } = require("../../utils/constants");
 const { getMotionLatestIndex } = require("./utils");
 const { getMotionCollection } = require("../../mongo");
 const { motionActions } = require("./constants");
-const { firstKnowCouncilCloseEventHeight } = require("../../block/known");
+const {
+  getFirstKnownCouncilCloseEventHeight,
+} = require("../../block/known/index");
 const { getMotionVoting, getMotionVotingByHeight } = require("./utils");
 const {
   updateProposalStateByProposeOrVote,
@@ -115,6 +117,7 @@ async function handleApprovedEvent(event, normalizedExtrinsic) {
 
   let updateObj;
   // We will insert timeline with Closed event handling when >= firstKnowCouncilCloseEventHeight
+  const firstKnowCouncilCloseEventHeight = getFirstKnownCouncilCloseEventHeight();
   if (
     normalizedExtrinsic.extrinsicIndexer.blockHeight <
     firstKnowCouncilCloseEventHeight
@@ -172,6 +175,7 @@ async function handleDisapprovedEvent(event, normalizedExtrinsic) {
 
   let updateObj;
   // We will insert timeline with Closed event handling when >= firstKnowCouncilCloseEventHeight
+  const firstKnowCouncilCloseEventHeight = getFirstKnownCouncilCloseEventHeight();
   if (
     normalizedExtrinsic.extrinsicIndexer.blockHeight <
     firstKnowCouncilCloseEventHeight

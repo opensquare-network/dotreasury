@@ -4945,7 +4945,7 @@ const firstKnowCouncilCloseEventHeight = 1975694;
 const {
   knownHeights: incomeKnownHeights,
   maxKnownHeight: maxIncomeKnownHeight,
-} = require("../income/known");
+} = require("../../income/known");
 const heights = [
   ...new Set(
     knownHeights

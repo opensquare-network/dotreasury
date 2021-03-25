@@ -8,11 +8,13 @@ const { sleep, logger, knownHeightsLogger } = require("./utils");
 const { getBlockIndexer } = require("./block/getBlockIndexer");
 const { handleExtrinsics } = require("./extrinsic");
 const { handleEvents } = require("./events");
-const { knownHeights, maxKnownHeight } = require("./block/known");
+const { getKnownHeights, getMaxKnownHeight } = require("./block/known/index");
 const { processStat } = require("./stats");
 const { handleIncomeEvents } = require("./income");
+const { currentChain } = require("./chain/index");
 
 async function scanKnowBlocks(toScanHeight) {
+  const knownHeights = getKnownHeights();
   let index = knownHeights.findIndex((height) => height >= toScanHeight);
   while (index < knownHeights.length) {
     const height = knownHeights[index];
@@ -33,7 +35,12 @@ async function main() {
   let scanHeight = await getNextScanHeight();
   await deleteDataFrom(scanHeight);
 
-  const useKnowHeights = !!process.env.USE_KNOWN_HEIGHTS;
+  const chain = currentChain();
+  const useKnowHeights =
+    "kusama" === chain
+      ? !!process.env.KSM_USE_KNOWN_HEIGHTS
+      : !!process.env.DOT_USE_KNOWN_HEIGHTS;
+  const maxKnownHeight = getMaxKnownHeight();
   if (scanHeight <= maxKnownHeight && useKnowHeights) {
     await scanKnowBlocks(scanHeight);
     scanHeight = maxKnownHeight + 1;
