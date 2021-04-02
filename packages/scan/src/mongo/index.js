@@ -1,6 +1,14 @@
 const { MongoClient } = require("mongodb");
+const { currentChain } = require("../chain");
 
-const dbName = process.env.MONGO_DB_NAME || "dotreasury";
+function getDbName() {
+  const chain = currentChain();
+  if ("kusama" === chain) {
+    return process.env.MONGO_DB_KSM_NAME || "dotreasury-ksm";
+  } else {
+    return process.env.MONGO_DB_DOT_NAME || "dotreasury-dot";
+  }
+}
 
 const statusCollectionName = "status";
 const tipCollectionName = "tip";
@@ -45,7 +53,7 @@ async function initDb() {
     useUnifiedTopology: true,
   });
 
-  db = client.db(dbName);
+  db = client.db(getDbName());
   statusCol = db.collection(statusCollectionName);
   tipCol = db.collection(tipCollectionName);
   bountyCol = db.collection(bountyCollectionName);

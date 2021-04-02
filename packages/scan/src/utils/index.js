@@ -8,6 +8,7 @@ const BigNumber = require("bignumber.js");
 const { getApi } = require("../api");
 const { TreasuryAccount } = require("./constants");
 const { expandMetadata } = require("@polkadot/metadata");
+const { currentChain } = require("../chain");
 
 const sleep = (time) => {
   return new Promise((resolve) => {
@@ -126,6 +127,10 @@ async function setOldKey() {
 
 async function getTreasuryBalance(blockHash, blockHeight) {
   const api = await getApi();
+  if ("polkadot" === currentChain()) {
+    return await queryAccountFreeWithSystem(blockHash);
+  }
+
   if (blockHeight < 1375086) {
     const metadata = await api.rpc.state.getMetadata(blockHash);
     const decorated = expandMetadata(metadata.registry, metadata);
