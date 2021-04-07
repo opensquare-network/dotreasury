@@ -1,4 +1,5 @@
 const commonPart = {
+  script: "src/index.js",
   log_date_format: "YYYY-MM-DD HH:mm Z",
   env: {
     NODE_ENV: "development",
@@ -8,24 +9,54 @@ const commonPart = {
   },
 };
 
-const outputScanPart = {
-  script: "src/index.js",
+function getEnvConfig(chainName) {
+  return {
+    env: {
+      ...commonPart.env,
+      CHAIN: chainName,
+    },
+    env_production: {
+      ...commonPart.env_production,
+      CHAIN: chainName,
+    },
+  };
+}
+
+const dotScanConfig = {
   ...commonPart,
+  ...getEnvConfig("polkadot"),
+};
+
+const ksmScanConfig = {
+  ...commonPart,
+  ...getEnvConfig("kusama"),
 };
 
 module.exports = {
   apps: [
     {
       name: "doTreasury-scan",
-      ...outputScanPart,
+      ...commonPart,
     },
     {
       name: "doTreasury-scan-staging",
-      ...outputScanPart,
+      ...commonPart,
     },
     {
-      name: "doTreasury-scan-dev",
-      ...outputScanPart,
+      name: "dot-scan",
+      ...dotScanConfig,
+    },
+    {
+      name: "dot-scan-staging",
+      ...dotScanConfig,
+    },
+    {
+      name: "ksm-scan",
+      ...dotScanConfig,
+    },
+    {
+      name: "ksm-scan-staging",
+      ...dotScanConfig,
     },
   ],
 };
