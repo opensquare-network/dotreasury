@@ -13,11 +13,6 @@ const outputScanPart = {
   ...commonPart,
 };
 
-const incomePart = {
-  script: "src/income/index.js",
-  ...commonPart,
-};
-
 module.exports = {
   apps: [
     {
@@ -27,10 +22,6 @@ module.exports = {
     {
       name: "doTreasury-scan-staging",
       ...outputScanPart,
-    },
-    {
-      name: "doTreasury-income-scan-staging",
-      ...incomePart,
     },
     {
       name: "doTreasury-scan-dev",
