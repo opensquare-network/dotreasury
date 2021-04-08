@@ -7,6 +7,7 @@ const {
   MultisigMethods,
   UtilityMethods,
   ksmTreasuryRefactorApplyHeight,
+  dotTreasuryRefactorApplyHeight,
 } = require("../../utils/constants");
 const {
   updateTipFinalState,
@@ -16,16 +17,39 @@ const {
 } = require("../../store/tip");
 const { getTipCollection } = require("../../mongo");
 const { getCall, getMultiSigExtrinsicAddress } = require("../../utils/call");
+const { currentChain, CHAINS } = require("../../chain");
+
+function _isKsmTipModule(section, height) {
+  return (
+    section ===
+    (height < ksmTreasuryRefactorApplyHeight ? Modules.Treasury : Modules.Tips)
+  );
+}
+
+function _isDotTipModule(section, height) {
+  return (
+    section ===
+    (height < dotTreasuryRefactorApplyHeight ? Modules.Treasury : Modules.Tips)
+  );
+}
 
 function isTipModule(section, height) {
-  if (height < ksmTreasuryRefactorApplyHeight && section === Modules.Treasury) {
-    return true;
+  const chain = currentChain();
+  if (chain === CHAINS.POLKADOT) {
+    return _isDotTipModule(section, height);
+  } else if (chain === CHAINS.KUSAMA) {
+    return _isKsmTipModule(section, height);
   }
 
-  return height >= ksmTreasuryRefactorApplyHeight && section === Modules.Tips;
+  return section === Modules.Treasury;
 }
 
 async function handleCloseTipExtrinsic(normalizedExtrinsic) {
+  const chain = currentChain();
+  if (chain === CHAINS.POLKADOT) {
+    return false;
+  }
+
   const { section, name, args } = normalizedExtrinsic;
   const indexer = normalizedExtrinsic.extrinsicIndexer;
   if (!isTipModule(section, indexer.blockHeight)) {

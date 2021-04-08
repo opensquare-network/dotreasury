@@ -9,11 +9,13 @@ const {
   Modules,
   CouncilEvents,
   ksmTreasuryRefactorApplyHeight,
+  dotTreasuryRefactorApplyHeight,
 } = require("../../utils/constants");
 const { motionActions } = require("./constants");
 const { getBountyMeta } = require("../../utils/bounty");
+const { currentChain, CHAINS } = require("../../chain");
 
-function isBountyMotion(section, method, height) {
+function _isKsmBountyMotion(section, method, height) {
   if (
     height < ksmTreasuryRefactorApplyHeight &&
     section === Modules.Treasury &&
@@ -28,6 +30,24 @@ function isBountyMotion(section, method, height) {
     isBountyMethod(method)
   );
 }
+
+function _isDotBountyMotion(section, method, height) {
+  if (
+    height < dotTreasuryRefactorApplyHeight &&
+    section === Modules.Treasury &&
+    isBountyMethod(method)
+  ) {
+    return true;
+  }
+
+  return (
+    height >= dotTreasuryRefactorApplyHeight &&
+    section === Modules.Bounties &&
+    isBountyMethod(method)
+  );
+}
+
+function isBountyMotion(section, method, height) {}
 
 async function handleProposedForBounty(event, normalizedExtrinsic, extrinsic) {
   const [section, method, args] = await extractCallIndexAndArgs(

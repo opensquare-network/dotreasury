@@ -6,6 +6,12 @@ function currentChain() {
   }
 }
 
+const CHAINS = {
+  POLKADOT: "polkadot",
+  KUSAMA: "kusama",
+};
+
 module.exports = {
   currentChain,
+  CHAINS,
 };

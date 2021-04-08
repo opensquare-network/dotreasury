@@ -3,19 +3,40 @@ const {
   TreasuryEvent,
   TreasuryMethods,
   ksmTreasuryRefactorApplyHeight,
+  dotTreasuryRefactorApplyHeight,
   TipEvents,
 } = require("../../utils/constants");
 const { treasurySlashLogger } = require("../../utils/logger");
 const { getTreasurySlashCollection } = require("../../mongo");
+const { currentChain, CHAINS } = require("../../chain");
+
+function _isKsmBountyModule(section, height) {
+  return (
+    section ===
+    (height < ksmTreasuryRefactorApplyHeight
+      ? Modules.Treasury
+      : Modules.Bounties)
+  );
+}
+
+function _isDotBountyModule(section, height) {
+  return (
+    section ===
+    (height < dotTreasuryRefactorApplyHeight
+      ? Modules.Treasury
+      : Modules.Bounties)
+  );
+}
 
 function isBountyModule(section, height) {
-  if (height < ksmTreasuryRefactorApplyHeight && section === Modules.Treasury) {
-    return true;
+  const chain = currentChain();
+  if (chain === CHAINS.POLKADOT) {
+    return _isDotBountyModule(section, height);
+  } else if (chain === CHAINS.KUSAMA) {
+    return _isKsmBountyModule(section, height);
   }
 
-  return (
-    height >= ksmTreasuryRefactorApplyHeight && section === Modules.Bounties
-  );
+  return section === Modules.Treasury;
 }
 
 const knownProposalSlash = [

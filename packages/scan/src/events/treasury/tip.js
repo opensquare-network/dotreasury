@@ -2,27 +2,36 @@ const {
   TipEvents,
   Modules,
   ksmTreasuryRefactorApplyHeight,
+  dotTreasuryRefactorApplyHeight,
 } = require("../../utils/constants");
 const {
   saveNewTip,
   updateTipFinalState,
   updateTipByClosingEvent,
 } = require("../../store/tip");
+const { currentChain, CHAINS } = require("../../chain");
+
+function _isKsmTipEvent(section, method, height) {
+  const isSection =
+    section ===
+    (height < ksmTreasuryRefactorApplyHeight ? Modules.Treasury : Modules.Tips);
+  return isSection && TipEvents.hasOwnProperty(method);
+}
+
+function _isDotTipEvent(section, method, height) {
+  const isSection =
+    section ===
+    (height < dotTreasuryRefactorApplyHeight ? Modules.Treasury : Modules.Tips);
+  return isSection && TipEvents.hasOwnProperty(method);
+}
 
 function isTipEvent(section, method, height) {
-  if (
-    height < ksmTreasuryRefactorApplyHeight &&
-    Modules.Treasury === section &&
-    TipEvents.hasOwnProperty(method)
-  ) {
-    return true;
+  const chain = currentChain();
+  if (chain === CHAINS.POLKADOT) {
+    return _isDotTipEvent(section, method, height);
+  } else if (chain === CHAINS.KUSAMA) {
+    return _isKsmTipEvent(section, method, height);
   }
-
-  return (
-    height >= ksmTreasuryRefactorApplyHeight &&
-    Modules.Tips === section &&
-    TipEvents.hasOwnProperty(method)
-  );
 }
 
 async function handleTipEvent(
