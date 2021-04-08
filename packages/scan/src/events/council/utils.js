@@ -1,4 +1,9 @@
-const { ProposalMethods, BountyMethods } = require("../../utils/constants");
+const {
+  ProposalMethods,
+  BountyMethods,
+  Modules,
+  ProxyMethods,
+} = require("../../utils/constants");
 const { getCall } = require("../../utils/call");
 const { getApi } = require("../../api");
 const { getMotionCollection } = require("../../mongo");
@@ -32,20 +37,29 @@ function getBountyVotingName(method) {
   }
 }
 
+// extract the real args from the batch/proxy extrinsic
+function _getProposalArgs(wrappedArgs) {
+  const {
+    call: {
+      args: {
+        proposal: { args: proposalArgs },
+      },
+    },
+  } = wrappedArgs;
+
+  return proposalArgs;
+}
+
 async function extractCallIndexAndArgs(normalizedExtrinsic, extrinsic) {
-  // TODO: handle proxy extrinsic
   const blockHash = normalizedExtrinsic.extrinsicIndexer.blockHash;
   const { section, name, args } = normalizedExtrinsic;
-  if ("utility" === section && "asMulti" === name) {
-    const {
-      call: {
-        args: {
-          proposal: { args: proposalArgs },
-        },
-      },
-    } = args;
+
+  if (Modules.Proxy === section && ProxyMethods.proxy === name) {
+    const call = await getCall(blockHash, extrinsic.args[2].toHex());
+    return [call.section, call.method, _getProposalArgs(args)];
+  } else if ("utility" === section && "asMulti" === name) {
     const call = await getCall(blockHash, extrinsic.method.args[3].toHex());
-    return [call.section, call.method, proposalArgs];
+    return [call.section, call.method, _getProposalArgs(args)];
   }
 
   const {
