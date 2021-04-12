@@ -4,9 +4,12 @@ const linkService = require("../../services/link.service");
 const commentService = require("../../services/comment.service");
 
 const bountyStatus = (bounty) =>
-  bounty?.status?.CuratorProposed || bounty?.status?.curatorProposed ||
-  bounty?.status?.Active || bounty?.status?.active ||
-  bounty?.status?.PendingPayout || bounty?.status?.pendingPayout;
+  bounty?.status?.CuratorProposed ||
+  bounty?.status?.curatorProposed ||
+  bounty?.status?.Active ||
+  bounty?.status?.active ||
+  bounty?.status?.PendingPayout ||
+  bounty?.status?.pendingPayout;
 
 const bountyStatusName = (bounty) => {
   if (bounty.state?.name === "BountyRejected") {
@@ -59,12 +62,6 @@ class BountiesController {
       pageSize,
       total,
     };
-  }
-
-  async getBountiesCount(ctx) {
-    const bountyCol = await getBountyCollection();
-    const total = await bountyCol.estimatedDocumentCount();
-    ctx.body = total;
   }
 
   async getBountyDetail(ctx) {
