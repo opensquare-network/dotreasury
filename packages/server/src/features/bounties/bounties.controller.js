@@ -22,13 +22,14 @@ const bountyStatusName = (bounty) => {
 
 class BountiesController {
   async getBounties(ctx) {
+    const { chain } = ctx.params;
     const { page, pageSize } = extractPage(ctx);
     if (pageSize === 0 || page < 0) {
       ctx.status = 400;
       return;
     }
 
-    const bountyCol = await getBountyCollection();
+    const bountyCol = await getBountyCollection(chain);
     const bounties = await bountyCol
       .find({}, { timeline: 0 })
       .sort({
@@ -62,18 +63,20 @@ class BountiesController {
   }
 
   async getBountiesCount(ctx) {
-    const bountyCol = await getBountyCollection();
+    const { chain } = ctx.params;
+    const bountyCol = await getBountyCollection(chain);
     const total = await bountyCol.estimatedDocumentCount();
     ctx.body = total;
   }
 
   async getBountyDetail(ctx) {
+    const { chain } = ctx.params;
     const bountyIndex = parseInt(ctx.params.bountyIndex);
 
-    const bountyCol = await getBountyCollection();
+    const bountyCol = await getBountyCollection(chain);
     const bounty = await bountyCol.findOne({ bountyIndex });
 
-    const motionCol = await getMotionCollection();
+    const motionCol = await getMotionCollection(chain);
     const bountyMotions = await motionCol
       .find({ treasuryBountyId: bountyIndex })
       .sort({ index: 1 })
@@ -110,11 +113,12 @@ class BountiesController {
   }
 
   async getBountyLinks(ctx) {
+    const { chain } = ctx.params;
     const bountyIndex = parseInt(ctx.params.bountyIndex);
 
     ctx.body = await linkService.getLinks({
       indexer: {
-        chain: "kusama",
+        chain,
         type: "bounty",
         index: bountyIndex,
       },
@@ -122,13 +126,14 @@ class BountiesController {
   }
 
   async createBountyLink(ctx) {
+    const { chain } = ctx.params;
     const bountyIndex = parseInt(ctx.params.bountyIndex);
     const { link, description } = ctx.request.body;
 
     ctx.body = await linkService.createLink(
       {
         indexer: {
-          chain: "kusama",
+          chain,
           type: "bounty",
           index: bountyIndex,
         },
@@ -140,13 +145,14 @@ class BountiesController {
   }
 
   async deleteBountyLink(ctx) {
+    const { chain } = ctx.params;
     const bountyIndex = parseInt(ctx.params.bountyIndex);
     const linkIndex = parseInt(ctx.params.linkIndex);
 
     ctx.body = await linkService.deleteLink(
       {
         indexer: {
-          chain: "kusama",
+          chain,
           type: "bounty",
           index: bountyIndex,
         },
@@ -158,12 +164,13 @@ class BountiesController {
 
   // Comments API
   async getBountyComments(ctx) {
+    const { chain } = ctx.params;
     const { page, pageSize } = extractPage(ctx);
     const bountyIndex = parseInt(ctx.params.bountyIndex);
 
     ctx.body = await commentService.getComments(
       {
-        chain: "kusama",
+        chain,
         type: "bounty",
         index: bountyIndex,
       },
@@ -174,6 +181,7 @@ class BountiesController {
   }
 
   async postBountyComment(ctx) {
+    const { chain } = ctx.params;
     const bountyIndex = parseInt(ctx.params.bountyIndex);
     const { content } = ctx.request.body;
     const user = ctx.request.user;
@@ -181,7 +189,7 @@ class BountiesController {
       throw new HttpError(400, "Comment content is missing");
     }
 
-    const bountyCol = await getBountyCollection();
+    const bountyCol = await getBountyCollection(chain);
     const bounty = await bountyCol.findOne({ bountyIndex });
     if (!bounty) {
       throw new HttpError(404, "Bounty not found");
@@ -189,7 +197,7 @@ class BountiesController {
 
     ctx.body = await commentService.postComment(
       {
-        chain: "kusama",
+        chain,
         type: "bounty",
         index: bountyIndex,
       },

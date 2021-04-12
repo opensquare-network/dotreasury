@@ -34,7 +34,7 @@ export class TipIndex {
 }
 
 export const fetchLinks = (type, index) => async (dispatch) => {
-  const { result } = await api.fetch(`/${pluralize(type)}/${index}/links`);
+  const { result } = await api.fetch(`/kusama/${pluralize(type)}/${index}/links`);
   dispatch(setLinks(result || []));
 };
 
@@ -53,7 +53,7 @@ export const addLink = (type, index, link, description, address) => async (
   );
 
   await api.fetch(
-    `/${pluralize(type)}/${index}/links`,
+    `/kusama/${pluralize(type)}/${index}/links`,
     {},
     {
       method: "POST",
@@ -82,7 +82,7 @@ export const removeLink = (type, index, linkIndex, address) => async (
   );
 
   await api.fetch(
-    `/${pluralize(type)}/${index}/links/${linkIndex}`,
+    `/kusama/${pluralize(type)}/${index}/links/${linkIndex}`,
     {},
     {
       method: "DELETE",

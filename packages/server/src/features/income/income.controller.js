@@ -11,13 +11,14 @@ const {
 
 class IncomeController {
   async getTreasurySlash(ctx) {
+    const { chain } = ctx.params;
     const { page, pageSize } = extractPage(ctx);
     if (pageSize === 0 || page < 0) {
       ctx.status = 400;
       return;
     }
 
-    const col = await getTreasurySlashCollection();
+    const col = await getTreasurySlashCollection(chain);
     const items = await col
       .find({})
       .sort({
@@ -37,13 +38,14 @@ class IncomeController {
   }
 
   async getDemocracySlash(ctx) {
+    const { chain } = ctx.params;
     const { page, pageSize } = extractPage(ctx);
     if (pageSize === 0 || page < 0) {
       ctx.status = 400;
       return;
     }
 
-    const col = await getDemocracySlashCollection();
+    const col = await getDemocracySlashCollection(chain);
     const items = await col
       .find({})
       .sort({
@@ -63,13 +65,14 @@ class IncomeController {
   }
 
   async getElectionPhragmenSlash(ctx) {
+    const { chain } = ctx.params;
     const { page, pageSize } = extractPage(ctx);
     if (pageSize === 0 || page < 0) {
       ctx.status = 400;
       return;
     }
 
-    const col = await getElectionSlashCollection();
+    const col = await getElectionSlashCollection(chain);
     const items = await col
       .find({})
       .sort({
@@ -89,13 +92,14 @@ class IncomeController {
   }
 
   async getStakingSlash(ctx) {
+    const { chain } = ctx.params;
     const { page, pageSize } = extractPage(ctx);
     if (pageSize === 0 || page < 0) {
       ctx.status = 400;
       return;
     }
 
-    const col = await getStakingSlashCollection();
+    const col = await getStakingSlashCollection(chain);
     const items = await col
       .find({})
       .sort({
@@ -115,13 +119,14 @@ class IncomeController {
   }
 
   async getIdentitySlash(ctx) {
+    const { chain } = ctx.params;
     const { page, pageSize } = extractPage(ctx);
     if (pageSize === 0 || page < 0) {
       ctx.status = 400;
       return;
     }
 
-    const col = await getIdentitySlashCollection();
+    const col = await getIdentitySlashCollection(chain);
     const items = await col
       .find({})
       .sort({
@@ -141,13 +146,14 @@ class IncomeController {
   }
 
   async getInflation(ctx) {
+    const { chain } = ctx.params;
     const { page, pageSize } = extractPage(ctx);
     if (pageSize === 0 || page < 0) {
       ctx.status = 400;
       return;
     }
 
-    const col = await getIncomeInflationCollection();
+    const col = await getIncomeInflationCollection(chain);
     const items = await col
       .find({})
       .sort({
@@ -167,13 +173,14 @@ class IncomeController {
   }
 
   async getOthers(ctx) {
+    const { chain } = ctx.params;
     const { page, pageSize } = extractPage(ctx);
     if (pageSize === 0 || page < 0) {
       ctx.status = 400;
       return;
     }
 
-    const col = await getOthersIncomeCollection();
+    const col = await getOthersIncomeCollection(chain);
     const items = await col
       .find({})
       .sort({
@@ -193,27 +200,29 @@ class IncomeController {
   }
 
   async getCount(ctx) {
+    const { chain } = ctx.params;
+
     let col;
 
-    col = await getTreasurySlashCollection();
+    col = await getTreasurySlashCollection(chain);
     const treasurySlash = await col.estimatedDocumentCount();
 
-    col = await getDemocracySlashCollection();
+    col = await getDemocracySlashCollection(chain);
     const democracySlash = await col.estimatedDocumentCount();
 
-    col = await getIdentitySlashCollection();
+    col = await getIdentitySlashCollection(chain);
     const identitySlash = await col.estimatedDocumentCount();
 
-    col = await getElectionSlashCollection();
+    col = await getElectionSlashCollection(chain);
     const electionPhragmenSlash = await col.estimatedDocumentCount();
 
-    col = await getStakingSlashCollection();
+    col = await getStakingSlashCollection(chain);
     const stakingSlash = await col.estimatedDocumentCount();
 
-    col = await getIncomeInflationCollection();
+    col = await getIncomeInflationCollection(chain);
     const inflation = await col.estimatedDocumentCount();
 
-    col = await getOthersIncomeCollection();
+    col = await getOthersIncomeCollection(chain);
     const others = await col.estimatedDocumentCount();
 
     ctx.body = {
