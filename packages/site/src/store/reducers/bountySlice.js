@@ -10,7 +10,6 @@ const bountySlice = createSlice({
       pageSize: 10,
       total: 0,
     },
-    bountiesCount: 0,
     loading: false,
     bountyDetail: {},
     loadingBountyDetail: false,
@@ -21,9 +20,6 @@ const bountySlice = createSlice({
     },
     setLoading(state, { payload }) {
       state.loading = payload;
-    },
-    setBountiesCount(state, { payload }) {
-      state.bountiesCount = payload;
     },
     setBountyDetail(state, { payload }) {
       state.bountyDetail = payload;
@@ -37,7 +33,6 @@ const bountySlice = createSlice({
 export const {
   setBounties,
   setLoading,
-  setBountiesCount,
   setBountyDetail,
   setLoadingBountyDetail,
 } = bountySlice.actions;
@@ -46,16 +41,11 @@ export const fetchBounties = (page = 0, pageSize = 30) => async (dispatch) => {
   dispatch(setLoading(true));
 
   try {
-    const { result } = await api.fetch('/bounties', { page, pageSize });
+    const { result } = await api.fetch("/bounties", { page, pageSize });
     dispatch(setBounties(result || {}));
   } finally {
     dispatch(setLoading(false));
   }
-};
-
-export const fetchBountiesCount = () => async (dispatch) => {
-  const { result } = await api.fetch("/bounties/count");
-  dispatch(setBountiesCount(result || 0));
 };
 
 export const fetchBountyDetail = (bountyIndex) => async (dispatch) => {
@@ -70,8 +60,8 @@ export const fetchBountyDetail = (bountyIndex) => async (dispatch) => {
 
 export const bountyListSelector = (state) => state.bounties.bounties;
 export const loadingSelector = (state) => state.bounties.loading;
-export const bountiesCountSelector = (state) => state.bounties.bountiesCount;
 export const bountyDetailSelector = (state) => state.bounties.bountyDetail;
-export const loadingBountyDetailSelector = (state) => state.bounties.loadingBountyDetail;
+export const loadingBountyDetailSelector = (state) =>
+  state.bounties.loadingBountyDetail;
 
 export default bountySlice.reducer;
