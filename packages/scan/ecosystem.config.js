@@ -52,11 +52,11 @@ module.exports = {
     },
     {
       name: "ksm-scan",
-      ...dotScanConfig,
+      ...ksmScanConfig,
     },
     {
       name: "ksm-scan-staging",
-      ...dotScanConfig,
+      ...ksmScanConfig,
     },
   ],
 };
