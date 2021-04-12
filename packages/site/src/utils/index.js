@@ -3,8 +3,21 @@ import { stringUpperFirst, stringCamelCase } from "@polkadot/util";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import md5 from "md5";
+import { CHAINS } from "../constants";
 
 dayjs.extend(duration);
+
+export function getPrecision(chainSymbol, blockHeight) {
+  if (CHAINS.KUSAMA === chainSymbol) {
+    return 12;
+  }
+
+  if (CHAINS.POLKADOT === chainSymbol) {
+    return blockHeight > 1248325 ? 10 : 12;
+  }
+
+  return 12;
+}
 
 export function toPrecision(value, precision = 0, paddingZero = true) {
   precision = Number(precision);
@@ -124,17 +137,19 @@ export function unique(arr) {
   return Array.from(new Set(arr));
 }
 
-export const sleep = time => {
-  return new Promise(resolve => {
+export const sleep = (time) => {
+  return new Promise((resolve) => {
     setTimeout(resolve, time);
-  })
-}
+  });
+};
 
-export const getGravatarSrc = email => {
+export const getGravatarSrc = (email) => {
   // default img url
   // https%3A%2F%2www.dotreasury.com%2imgs%2avatar.png
   if (email && typeof email === "string") {
-    return `https://www.gravatar.com/avatar/${md5(email.trim().toLocaleLowerCase())}?d=https://www.dotreasury.com/imgs/avatar.png`;
+    return `https://www.gravatar.com/avatar/${md5(
+      email.trim().toLocaleLowerCase()
+    )}?d=https://www.dotreasury.com/imgs/avatar.png`;
   }
   return "/imgs/avatar.png";
-}
+};
