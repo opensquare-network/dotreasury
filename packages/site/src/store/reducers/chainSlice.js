@@ -77,5 +77,6 @@ export const scanHeightSelector = (state) => state.chain.scanHeight;
 export const spendPeriodSelector = (state) => state.chain.spendPeriod;
 
 export const chainSelector = (state) => state.chain.chain;
+export const chainSymbolSelector = (state) => state.chain.chain;
 
 export default chainSlice.reducer;
