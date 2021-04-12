@@ -10,6 +10,8 @@ import Text from "../../components/Text";
 import ExplorerLink from "../../components/ExplorerLink";
 import TableNoDataCell from "../../components/TableNoDataCell";
 import PolygonLabel from "../../components/PolygonLabel";
+import { useSelector } from "react-redux";
+import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 
 const Wrapper = styled.div`
   overflow-x: scroll;
@@ -63,6 +65,8 @@ const EventWrapper = styled.div`
 `;
 
 const BurntTable = ({ data, loading }) => {
+  const symbol = useSelector(chainSymbolSelector);
+
   return (
     <Wrapper>
       <TableLoading loading={loading}>
@@ -104,7 +108,7 @@ const BurntTable = ({ data, loading }) => {
                     </ExplorerLink>
                   </Table.Cell>
                   <Table.Cell textAlign={"right"} className="balance-cell">
-                    <Balance value={item.balance} />
+                    <Balance value={item.balance} currency={symbol} />
                   </Table.Cell>
                   <Table.Cell textAlign={"right"} className="balance-cell">
                     {item.burnPercent}
@@ -113,7 +117,7 @@ const BurntTable = ({ data, loading }) => {
                     {parseInt(item.treasuryBalance) <= 0 ? (
                       "--"
                     ) : (
-                      <Balance value={item.treasuryBalance} />
+                      <Balance value={item.treasuryBalance} currency={symbol} />
                     )}
                   </Table.Cell>
                 </TableRow>

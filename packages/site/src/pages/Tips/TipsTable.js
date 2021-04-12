@@ -5,7 +5,7 @@ import { useHistory } from "react-router";
 import dayjs from "dayjs";
 
 import Table from "../../components/Table";
-import TableLoading from "../../components/TableLoading.js"
+import TableLoading from "../../components/TableLoading.js";
 import User from "../../components/User";
 import Balance from "../../components/Balance";
 import RightButton from "../../components/RightButton";
@@ -14,6 +14,8 @@ import ReasonText from "./ReasonText";
 import { TipStatus } from "../../constants";
 import TableNoDataCell from "../../components/TableNoDataCell";
 import ReasonLink from "./ReasonLink";
+import { useSelector } from "react-redux";
+import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 
 const Wrapper = styled.div`
   overflow-x: scroll;
@@ -41,6 +43,7 @@ const StyledTable = styled(Table)`
 
 const TipsTable = ({ data, loading }) => {
   const history = useHistory();
+  const symbol = useSelector(chainSymbolSelector);
 
   const onClickRow = (height, hash) => {
     if (height && hash) {
@@ -48,7 +51,7 @@ const TipsTable = ({ data, loading }) => {
         history.push(`/tips/${height}_${hash}`);
       }
     }
-  }
+  };
 
   return (
     <Wrapper>
@@ -68,7 +71,12 @@ const TipsTable = ({ data, loading }) => {
             {(data &&
               data.length > 0 &&
               data.map((item, index) => (
-                <Table.Row key={index} onClick={() => onClickRow(item.proposeAtBlockHeight, item.hash)}>
+                <Table.Row
+                  key={index}
+                  onClick={() =>
+                    onClickRow(item.proposeAtBlockHeight, item.hash)
+                  }
+                >
                   <Table.Cell className="user-cell">
                     <User address={item.beneficiary} />
                   </Table.Cell>
@@ -81,9 +89,11 @@ const TipsTable = ({ data, loading }) => {
                     </ReasonText>
                   </Table.Cell>
                   <Table.Cell className="balance-cell" textAlign={"right"}>
-                    { item.showStatus === TipStatus.Retracted
-                        ? '--'
-                        : <Balance value={item.medianValue} /> }
+                    {item.showStatus === TipStatus.Retracted ? (
+                      "--"
+                    ) : (
+                      <Balance value={item.medianValue} currency={symbol} />
+                    )}
                   </Table.Cell>
                   <Table.Cell
                     className={`status-cell ${
@@ -98,21 +108,21 @@ const TipsTable = ({ data, loading }) => {
                           "YYYY-MM-DD HH:mm"
                         )}
                       />
+                    ) : item.showStatus === TipStatus.Tipping ? (
+                      `${item.showStatus} (${item.tipsCount})`
                     ) : (
-                      item.showStatus === TipStatus.Tipping
-                        ? `${item.showStatus} (${item.tipsCount})`
-                        : item.showStatus
+                      item.showStatus
                     )}
                   </Table.Cell>
                   <Table.Cell className="link-cell hidden">
-                    <NavLink to={`/tips/${item.proposeAtBlockHeight}_${item.hash}`}>
+                    <NavLink
+                      to={`/tips/${item.proposeAtBlockHeight}_${item.hash}`}
+                    >
                       <RightButton />
                     </NavLink>
                   </Table.Cell>
                 </Table.Row>
-              ))) || (
-                <TableNoDataCell />
-            )}
+              ))) || <TableNoDataCell />}
           </Table.Body>
         </StyledTable>
       </TableLoading>

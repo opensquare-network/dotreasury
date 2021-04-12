@@ -15,6 +15,8 @@ import PolygonLabel from "../../components/PolygonLabel";
 import ExplorerLink from "../../components/ExplorerLink";
 import TableNoDataCell from "../../components/TableNoDataCell";
 import RelatedLInks from "../../components/RelatedLinks";
+import { useSelector } from "react-redux";
+import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 
 const Wrapper = styled.div`
   overflow-x: scroll;
@@ -46,16 +48,17 @@ const ProposeTimeWrapper = styled.div`
   p:first-child {
     min-width: 154px;
   }
-`
+`;
 
 const ProposalsTable = ({ data, loading }) => {
   const history = useHistory();
+  const symbol = useSelector(chainSymbolSelector);
 
   const onClickRow = (proposalIndex) => {
     if (window.innerWidth < 1140) {
       history.push(`/proposals/${proposalIndex}`);
     }
-  }
+  };
 
   return (
     <Wrapper>
@@ -77,16 +80,23 @@ const ProposalsTable = ({ data, loading }) => {
             {(data &&
               data.length > 0 &&
               data.map((item, index) => (
-                <Table.Row key={index} onClick={() => onClickRow(item.proposalIndex)}>
+                <Table.Row
+                  key={index}
+                  onClick={() => onClickRow(item.proposalIndex)}
+                >
                   <Table.Cell className="index-cell">
                     <TextMinor>{`#${item.proposalIndex}`}</TextMinor>
                   </Table.Cell>
                   <Table.Cell className="propose-time-cell">
                     <ProposeTimeWrapper>
-                      <TextMinor>{dayjs(parseInt(item.proposeTime)).format(
-                        "YYYY-MM-DD HH:mm:ss"
-                      )}</TextMinor>
-                      <ExplorerLink href={`/block/${item.proposeAtBlockHeight}`}>
+                      <TextMinor>
+                        {dayjs(parseInt(item.proposeTime)).format(
+                          "YYYY-MM-DD HH:mm:ss"
+                        )}
+                      </TextMinor>
+                      <ExplorerLink
+                        href={`/block/${item.proposeAtBlockHeight}`}
+                      >
                         <PolygonLabel value={item.proposeAtBlockHeight} />
                       </ExplorerLink>
                     </ProposeTimeWrapper>
@@ -101,7 +111,7 @@ const ProposalsTable = ({ data, loading }) => {
                     <RelatedLInks links={item.links} />
                   </Table.Cell>
                   <Table.Cell textAlign={"right"}>
-                    <Balance value={item.value} />
+                    <Balance value={item.value} currency={symbol} />
                   </Table.Cell>
                   <Table.Cell className="status-cell" textAlign={"right"}>
                     <PairTextVertical
@@ -117,9 +127,7 @@ const ProposalsTable = ({ data, loading }) => {
                     </NavLink>
                   </Table.Cell>
                 </Table.Row>
-              ))) || (
-                <TableNoDataCell />
-              )}
+              ))) || <TableNoDataCell />}
           </Table.Body>
         </StyledTable>
       </TableLoading>

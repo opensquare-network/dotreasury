@@ -13,6 +13,8 @@ import TextMinor from "../../components/TextMinor";
 import TableNoDataCell from "../../components/TableNoDataCell";
 import PolygonLabel from "../../components/PolygonLabel";
 import ExplorerLink from "../../components/ExplorerLink";
+import { useSelector } from "react-redux";
+import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 
 const Wrapper = styled.div`
   overflow-x: scroll;
@@ -63,12 +65,13 @@ const TableRow = styled(Table.Row)`
 
 const BountiesTable = ({ data, loading }) => {
   const history = useHistory();
+  const symbol = useSelector(chainSymbolSelector);
 
   const onClickRow = (bountyIndex) => {
     if (window.innerWidth < 1140) {
       history.push(`/bounties/${bountyIndex}`);
     }
-  }
+  };
 
   return (
     <Wrapper>
@@ -92,28 +95,35 @@ const BountiesTable = ({ data, loading }) => {
             {(data &&
               data.length > 0 &&
               data.map((item, index) => (
-                <TableRow key={index} onClick={() => onClickRow(item.bountyIndex)}>
+                <TableRow
+                  key={index}
+                  onClick={() => onClickRow(item.bountyIndex)}
+                >
                   <Table.Cell className="index-cell">
                     <TextMinor>{`#${item.bountyIndex}`}</TextMinor>
                   </Table.Cell>
                   <Table.Cell className="propose-time-cell">
                     <ProposeTimeWrapper>
-                      <TextMinor>{dayjs(parseInt(item.proposeTime)).format(
-                        "YYYY-MM-DD HH:mm:ss"
-                      )}</TextMinor>
-                      <ExplorerLink href={`/block/${item.proposeAtBlockHeight}`}>
+                      <TextMinor>
+                        {dayjs(parseInt(item.proposeTime)).format(
+                          "YYYY-MM-DD HH:mm:ss"
+                        )}
+                      </TextMinor>
+                      <ExplorerLink
+                        href={`/block/${item.proposeAtBlockHeight}`}
+                      >
                         <PolygonLabel value={item.proposeAtBlockHeight} />
                       </ExplorerLink>
                     </ProposeTimeWrapper>
                   </Table.Cell>
                   <Table.Cell className="user-cell">
-                    { item.curator ? <User address={item.curator} /> : "--" }
+                    {item.curator ? <User address={item.curator} /> : "--"}
                   </Table.Cell>
                   <Table.Cell className="title-cell">
                     <Text>{item.title}</Text>
                   </Table.Cell>
                   <Table.Cell className="balance-cell" textAlign={"right"}>
-                    <Balance value={item.value} />
+                    <Balance value={item.value} currency={symbol} />
                   </Table.Cell>
                   <Table.Cell textAlign={"right"}>
                     <CapText>{item.latestState?.state}</CapText>
@@ -124,9 +134,7 @@ const BountiesTable = ({ data, loading }) => {
                     </NavLink>
                   </Table.Cell>
                 </TableRow>
-              ))) || (
-                <TableNoDataCell />
-            )}
+              ))) || <TableNoDataCell />}
           </Table.Body>
         </StyledTable>
       </Segment>

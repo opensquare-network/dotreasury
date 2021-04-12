@@ -23,7 +23,10 @@ import TimelineCommentWrapper from "../../components/TimelineCommentWrapper";
 import { hexToString } from "@polkadot/util";
 import { stringToWords } from "../../utils";
 
-import { scanHeightSelector } from "../../store/reducers/chainSlice";
+import {
+  chainSymbolSelector,
+  scanHeightSelector,
+} from "../../store/reducers/chainSlice";
 import DetailGoBack from "../components/DetailGoBack";
 
 const ValueWrapper = styled.span`
@@ -53,7 +56,7 @@ function mergeExtrinsicsAndMotions(extrinsics, motions) {
   return result;
 }
 
-function processTimeline(bountyDetail, scanHeight) {
+function processTimeline(bountyDetail, scanHeight, symbol) {
   return mergeExtrinsicsAndMotions(
     bountyDetail.timeline || [],
     bountyDetail.motions || []
@@ -84,7 +87,7 @@ function processTimeline(bountyDetail, scanHeight) {
                         if (key === "curator") {
                           return <User address={val} />;
                         } else if (key === "fee") {
-                          return <Balance value={val} />;
+                          return <Balance value={val} currency={symbol} />;
                         } else {
                           return val;
                         }
@@ -165,7 +168,7 @@ function processTimeline(bountyDetail, scanHeight) {
               },
               {
                 title: "Value",
-                value: <Balance value={value} />,
+                value: <Balance value={value} currency={symbol} />,
               },
               {
                 title: "Title",
@@ -241,6 +244,8 @@ const BountyDetail = () => {
   const dispatch = useDispatch();
   const [timelineData, setTimelineData] = useState([]);
 
+  const symbol = useSelector(chainSymbolSelector);
+
   useEffect(() => {
     dispatch(fetchBountyDetail(bountyIndex));
     return () => {
@@ -253,8 +258,8 @@ const BountyDetail = () => {
   const scanHeight = useSelector(scanHeightSelector);
 
   useEffect(() => {
-    setTimelineData(processTimeline(bountyDetail, scanHeight));
-  }, [bountyDetail, scanHeight]);
+    setTimelineData(processTimeline(bountyDetail, scanHeight, symbol));
+  }, [bountyDetail, scanHeight, symbol]);
 
   return (
     <>
