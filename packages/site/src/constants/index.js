@@ -57,3 +57,8 @@ export const DEFAULT_NODES = [
     url: "wss://kusama.elara.patract.io",
   },
 ];
+
+export const CHAINS = {
+  POLKADOT: "dot",
+  KUSAMA: "ksm",
+};
