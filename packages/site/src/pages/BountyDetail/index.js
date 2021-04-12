@@ -182,8 +182,9 @@ function processTimeline(bountyDetail, scanHeight) {
             ];
           } else if (extrinsic.name === "awardBounty") {
             const curator = extrinsic.signer;
+            // TODO: remove the `candidateData`
             const {
-              beneficiary: { id: beneficiary },
+              beneficiary: { id: beneficiary, Id: candidateData },
             } = extrinsic.args;
             fields = [
               {
@@ -192,7 +193,7 @@ function processTimeline(bountyDetail, scanHeight) {
               },
               {
                 title: "Beneficiary",
-                value: <User address={beneficiary} />,
+                value: <User address={beneficiary || candidateData} />,
               },
             ];
           } else if (extrinsic.name === "extendBountyExpiry") {
