@@ -1,153 +1,70 @@
-const { MongoClient } = require("mongodb");
-const config = require("../../config");
+const polkadot = require("./polkadot");
+const kusama = require("./kusama");
 
-const dbName = config.mongo.dbName || "dotreasury";
+const db = (chain) => chain === "kusama" ? kusama : (chain === "polkadot" ? polkadot : null);
 
-const statusCollectionName = "status";
-const tipCollectionName = "tip";
-const proposalCollectionName = "proposal";
-const bountyCollectionName = "bounty";
-const motionCollectionName = "motion";
-const burntCollectionName = "burnt";
-
-// income collections
-const incomeInflationCollectionName = "incomeInflation";
-const stakingSlashCollectionName = "incomeSlashStaking";
-const treasurySlashCollectionName = "incomeSlashTreasury";
-const electionSlashCollectionName = "incomeSlashElections";
-const democracySlashCollectionName = "incomeSlashDemocracy";
-const identitySlashCollectionName = "incomeSlashIdentity";
-const othersIncomeCollectionName = "incomeOthersBig";
-
-// stats collections
-const statsCollectionName = "weeklyStats";
-
-let client = null;
-let db = null;
-
-const mongoUrl = process.env.MONGO_URL || "mongodb://localhost:27017";
-let statusCol = null;
-let tipCol = null;
-let proposalCol = null;
-let bountyCol = null;
-let motionCol = null;
-let burntCol = null;
-let incomeInflationCol = null;
-let stakingSlashCol = null;
-let treasurySlashCol = null;
-let electionsPhragmenSlashCol = null;
-let democracySlashCol = null;
-let identitySlashCol = null;
-let othersIncomeCol = null;
-let statsCol = null;
-
-async function initDb() {
-  client = await MongoClient.connect(mongoUrl, {
-    useUnifiedTopology: true,
-  });
-
-  db = client.db(dbName);
-  statusCol = db.collection(statusCollectionName);
-  tipCol = db.collection(tipCollectionName);
-  proposalCol = db.collection(proposalCollectionName);
-  bountyCol = db.collection(bountyCollectionName);
-  motionCol = db.collection(motionCollectionName);
-  burntCol = db.collection(burntCollectionName);
-  incomeInflationCol = db.collection(incomeInflationCollectionName);
-  stakingSlashCol = db.collection(stakingSlashCollectionName);
-  treasurySlashCol = db.collection(treasurySlashCollectionName);
-  electionsPhragmenSlashCol = db.collection(electionSlashCollectionName);
-  democracySlashCol = db.collection(democracySlashCollectionName);
-  identitySlashCol = db.collection(identitySlashCollectionName);
-  othersIncomeCol = db.collection(othersIncomeCollectionName);
-  statsCol = db.collection(statsCollectionName);
-
-  await _createIndexes();
+function initDb() {
+  return Promise.all(
+    [
+      polkadot.initDb(),
+      kusama.initDb()
+    ]);
 }
 
-async function _createIndexes() {
-  if (!db) {
-    console.error("Please call initDb first");
-    process.exit(1);
-  }
-
-  // TODO: create indexes for better query performance
+function getStatusCollection(chain) {
+  return db(chain).getStatusCollection();
 }
 
-async function tryInit(col) {
-  if (!col) {
-    await initDb();
-  }
+function getTipCollection(chain) {
+  return db(chain).getTipCollection();
 }
 
-async function getStatusCollection() {
-  await tryInit(statusCol);
-  return statusCol;
+function getProposalCollection(chain) {
+  return db(chain).getProposalCollection();
 }
 
-async function getTipCollection() {
-  await tryInit(tipCol);
-  return tipCol;
+function getBountyCollection(chain) {
+  return db(chain).getBountyCollection();
 }
 
-async function getProposalCollection() {
-  await tryInit(proposalCol);
-  return proposalCol;
+function getMotionCollection(chain) {
+  return db(chain).getMotionCollection();
 }
 
-async function getBountyCollection() {
-  await tryInit(bountyCol);
-  return bountyCol;
+function getBurntCollection(chain) {
+  return db(chain).getBurntCollection();
 }
 
-async function getMotionCollection() {
-  await tryInit(motionCol);
-  return motionCol;
+function getIncomeInflationCollection(chain) {
+  return db(chain).getIncomeInflationCollection();
 }
 
-async function getBurntCollection() {
-  await tryInit(burntCol);
-  return burntCol;
+function getStakingSlashCollection(chain) {
+  return db(chain).getStakingSlashCollection();
 }
 
-async function getIncomeInflationCollection() {
-  await tryInit(incomeInflationCol);
-  return incomeInflationCol;
+function getTreasurySlashCollection(chain) {
+  return db(chain).getTreasurySlashCollection();
 }
 
-async function getStakingSlashCollection() {
-  await tryInit(stakingSlashCol);
-  return stakingSlashCol;
+function getElectionSlashCollection(chain) {
+  return db(chain).getElectionSlashCollection();
 }
 
-async function getTreasurySlashCollection() {
-  await tryInit(treasurySlashCol);
-  return treasurySlashCol;
+function getDemocracySlashCollection(chain) {
+  return db(chain).getDemocracySlashCollection();
 }
 
-async function getElectionSlashCollection() {
-  await tryInit(electionsPhragmenSlashCol);
-  return electionsPhragmenSlashCol;
+function getIdentitySlashCollection(chain) {
+  return db(chain).getIdentitySlashCollection();
 }
 
-async function getDemocracySlashCollection() {
-  await tryInit(democracySlashCol);
-  return democracySlashCol;
+function getOthersIncomeCollection(chain) {
+  return db(chain).getOthersIncomeCollection();
 }
 
-async function getIdentitySlashCollection() {
-  await tryInit(identitySlashCol);
-  return identitySlashCol;
-}
-
-async function getOthersIncomeCollection() {
-  await tryInit(othersIncomeCol);
-  return othersIncomeCol;
-}
-
-async function getStatsCollection() {
-  await tryInit(statsCol);
-  return statsCol;
+function getStatsCollection(chain) {
+  return db(chain).getStatsCollection();
 }
 
 module.exports = {

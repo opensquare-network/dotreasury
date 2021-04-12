@@ -55,11 +55,7 @@ export const fetchProposals = (
   dispatch(setLoading(true));
 
   try {
-    const { result } = await api.fetch("/proposals", {
-      page,
-      pageSize,
-      ...filterData,
-    });
+    const { result } = await api.fetch('/kusama/proposals', { page, pageSize, ...filterData });
     dispatch(setProposals(result || {}));
   } finally {
     dispatch(setLoading(false));
@@ -69,7 +65,7 @@ export const fetchProposals = (
 export const fetchProposalDetail = (proposalIndex) => async (dispatch) => {
   dispatch(setLoadingProposalDetail(true));
   try {
-    const { result } = await api.fetch(`/proposals/${proposalIndex}`);
+    const { result } = await api.fetch(`/kusama/proposals/${proposalIndex}`);
     dispatch(setProposalDetail(result || {}));
   } finally {
     dispatch(setLoadingProposalDetail(false));
@@ -77,7 +73,7 @@ export const fetchProposalDetail = (proposalIndex) => async (dispatch) => {
 };
 
 export const fetchProposalsSummary = () => async (dispatch) => {
-  const { result } = await api.fetch("/proposals/summary");
+  const { result } = await api.fetch("/kusama/proposals/summary");
   const summary = {
     total: 0,
     numOfOngoing: 0,

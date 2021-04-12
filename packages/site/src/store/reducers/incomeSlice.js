@@ -131,7 +131,7 @@ export const {
 } = incomeSlice.actions;
 
 export const fetchIncomeCount = () => async (dispatch) => {
-  const { result } = await api.fetch(`/income/count`);
+  const { result } = await api.fetch(`/kusama/income/count`);
   dispatch(
     setCount(
       result || {
@@ -153,7 +153,7 @@ export const fetchTreasurySlashList = (page = 0, pageSize = 30) => async (
   dispatch(setTreasurySlashListLoading(true));
 
   try {
-    const { result } = await api.fetch(`/income/slash/treasury`, {
+    const { result } = await api.fetch(`/kusama/income/slash/treasury`, {
       page,
       pageSize,
     });
@@ -178,7 +178,7 @@ export const fetchDemocracySlashList = (page = 0, pageSize = 30) => async (
   dispatch(setDemocracySlashListLoading(true));
 
   try {
-    const { result } = await api.fetch(`/income/slash/democracy`, {
+    const { result } = await api.fetch(`/kusama/income/slash/democracy`, {
       page,
       pageSize,
     });
@@ -203,7 +203,7 @@ export const fetchIdentitySlashList = (page = 0, pageSize = 30) => async (
   dispatch(setIdentitySlashListLoading(true));
 
   try {
-    const { result } = await api.fetch(`/income/slash/identity`, {
+    const { result } = await api.fetch(`/kusama/income/slash/identity`, {
       page,
       pageSize,
     });
@@ -228,7 +228,7 @@ export const fetchStakingSlashList = (page = 0, pageSize = 30) => async (
   dispatch(setStakingSlashListLoading(true));
 
   try {
-    const { result } = await api.fetch(`/income/slash/staking`, {
+    const { result } = await api.fetch(`/kusama/income/slash/staking`, {
       page,
       pageSize,
     });
@@ -254,7 +254,7 @@ export const fetchElectionPhragmenSlashList = (
   dispatch(setElectionPhragmenSlashListLoading(true));
 
   try {
-    const { result } = await api.fetch(`/income/slash/electionphragmen`, {
+    const { result } = await api.fetch(`/kusama/income/slash/electionphragmen`, {
       page,
       pageSize,
     });
@@ -279,7 +279,7 @@ export const fetchInflationList = (page = 0, pageSize = 30) => async (
   dispatch(setInflationListLoading(true));
 
   try {
-    const { result } = await api.fetch(`/income/inflation`, { page, pageSize });
+    const { result } = await api.fetch(`/kusama/income/inflation`, { page, pageSize });
     dispatch(
       setInflationList(
         result || {
@@ -301,7 +301,7 @@ export const fetchOthersIncomeList = (page = 0, pageSize = 30) => async (
   dispatch(setOthersIncomeListLoading(true));
 
   try {
-    const { result } = await api.fetch(`/income/others`, { page, pageSize });
+    const { result } = await api.fetch(`/kusama/income/others`, { page, pageSize });
     dispatch(
       setOthersIncomeList(
         result || {

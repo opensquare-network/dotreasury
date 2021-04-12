@@ -29,20 +29,20 @@ async function feedOverview(io) {
 }
 
 async function calcOverview() {
-  const proposalCol = await getProposalCollection();
+  const proposalCol = await getProposalCollection("kusama");
   const proposals = await proposalCol
     .find({}, { value: 1, beneficiary: 1, meta: 1, state: 1 })
     .toArray();
 
-  const tipCol = await getTipCollection();
+  const tipCol = await getTipCollection("kusama");
   const tips = await tipCol
     .find({}, { finder: 1, medianValue: 1, state: 1 })
     .toArray();
 
-  const bountyCol = await getBountyCollection();
+  const bountyCol = await getBountyCollection("kusama");
   const bounties = await bountyCol.find({}, { meta: 1, state: 1 }).toArray();
 
-  const burntCol = await getBurntCollection();
+  const burntCol = await getBurntCollection("kusama");
   const burntList = await burntCol.find({}, { balance: 1 }).toArray();
 
   const count = await calcCount(proposals, tips, bounties, burntList);
@@ -50,7 +50,7 @@ async function calcOverview() {
   const bestProposalBeneficiaries = calcBestProposalBeneficiary(proposals);
   const bestTipFinders = calcBestTipProposers(tips);
 
-  const statusCol = await getStatusCollection();
+  const statusCol = await getStatusCollection("kusama");
   const incomeScan = await statusCol.findOne({ name: "income-scan" });
 
   return {

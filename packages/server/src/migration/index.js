@@ -4,7 +4,7 @@ const { getLinkCollection } = require("../mongo-admin");
 const main = async () => {
   try {
     console.log("migration start");
-    const proposalCol = await getProposalCollection();
+    const proposalCol = await getProposalCollection("kusama");
     const linkCol = await getLinkCollection();
     const proposalLinks = await linkCol
       .find({
