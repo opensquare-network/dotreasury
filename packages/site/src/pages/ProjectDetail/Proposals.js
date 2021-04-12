@@ -90,7 +90,9 @@ const CardWrapper = styled(Card)`
 const Item = styled.div`
   padding: 4px 16px;
   display: flex;
-  flex-wrap: wrap;
+  @media screen and (max-width: 640px) {
+    flex-wrap: wrap;
+  }
   :not(:last-child) {
     margin-bottom: 8px;
   }
