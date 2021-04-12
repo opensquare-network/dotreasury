@@ -12,7 +12,6 @@ const tipSlice = createSlice({
       pageSize: 10,
       total: 0,
     },
-    tipsCount: 0,
     loading: false,
     tipDetail: {},
     loadingTipDetail: false,
@@ -24,9 +23,6 @@ const tipSlice = createSlice({
     },
     setLoading(state, { payload }) {
       state.loading = payload;
-    },
-    setTipsCount(state, { payload }) {
-      state.tipsCount = payload;
     },
     setTipDetail(state, { payload }) {
       state.tipDetail = payload;
@@ -43,13 +39,14 @@ const tipSlice = createSlice({
 export const {
   setTips,
   setLoading,
-  setTipsCount,
   setTipDetail,
   setLoadingTipDetail,
   setTipCountdown,
 } = tipSlice.actions;
 
-export const fetchTips = (page = 0, pageSize = 30, filterData={}) => async (dispatch) => {
+export const fetchTips = (page = 0, pageSize = 30, filterData = {}) => async (
+  dispatch
+) => {
   dispatch(setLoading(true));
 
   try {
@@ -58,11 +55,6 @@ export const fetchTips = (page = 0, pageSize = 30, filterData={}) => async (disp
   } finally {
     dispatch(setLoading(false));
   }
-};
-
-export const fetchTipsCount = () => async (dispatch) => {
-  const { result } = await api.fetch("/kusama/tips/count");
-  dispatch(setTipsCount(result || 0));
 };
 
 export const fetchTipDetail = (tipId) => async (dispatch) => {
@@ -106,7 +98,6 @@ export const normalizedTipListSelector = createSelector(
   }
 );
 export const loadingSelector = (state) => state.tips.loading;
-export const tipsCountSelector = (state) => state.tips.tipsCount;
 export const tipDetailSelector = (state) => state.tips.tipDetail;
 export const normalizedTipDetailSelector = createSelector(
   tipDetailSelector,

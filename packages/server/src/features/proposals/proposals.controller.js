@@ -52,13 +52,6 @@ class ProposalsController {
     };
   }
 
-  async getProposalsCount(ctx) {
-    const { chain } = ctx.params;
-    const proposalCol = await getProposalCollection(chain);
-    const proposalsCount = await proposalCol.estimatedDocumentCount();
-    ctx.body = proposalsCount;
-  }
-
   async getProposalDetail(ctx) {
     const { chain } = ctx.params;
     const proposalIndex = parseInt(ctx.params.proposalIndex);

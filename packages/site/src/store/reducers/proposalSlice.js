@@ -10,7 +10,6 @@ const proposalSlice = createSlice({
       pageSize: 10,
       total: 0,
     },
-    proposalsCount: 0,
     loading: false,
     proposalDetail: {},
     loadingProposalDetail: false,
@@ -28,9 +27,6 @@ const proposalSlice = createSlice({
     setLoading(state, { payload }) {
       state.loading = payload;
     },
-    setProposalsCount(state, { payload }) {
-      state.proposalsCount = payload;
-    },
     setProposalDetail(state, { payload }) {
       state.proposalDetail = payload;
     },
@@ -39,20 +35,23 @@ const proposalSlice = createSlice({
     },
     setProposalSummary(state, { payload }) {
       state.proposalSummary = payload;
-    }
+    },
   },
 });
 
 export const {
   setProposals,
   setLoading,
-  setProposalsCount,
   setProposalDetail,
   setLoadingProposalDetail,
   setProposalSummary,
 } = proposalSlice.actions;
 
-export const fetchProposals = (page = 0, pageSize = 30, filterData={}) => async (dispatch) => {
+export const fetchProposals = (
+  page = 0,
+  pageSize = 30,
+  filterData = {}
+) => async (dispatch) => {
   dispatch(setLoading(true));
 
   try {
@@ -61,11 +60,6 @@ export const fetchProposals = (page = 0, pageSize = 30, filterData={}) => async 
   } finally {
     dispatch(setLoading(false));
   }
-};
-
-export const fetchProposalsCount = () => async (dispatch) => {
-  const { result } = await api.fetch("/kusama/proposals/count");
-  dispatch(setProposalsCount(result || 0));
 };
 
 export const fetchProposalDetail = (proposalIndex) => async (dispatch) => {
@@ -88,7 +82,10 @@ export const fetchProposalsSummary = () => async (dispatch) => {
   };
   if (result) {
     summary.total = result.total;
-    summary.numOfOngoing = (result.Proposed || 0) + (result.ApproveVoting || 0) + (result.RejectVoting || 0);
+    summary.numOfOngoing =
+      (result.Proposed || 0) +
+      (result.ApproveVoting || 0) +
+      (result.RejectVoting || 0);
     summary.numOfApproved = result.Approved || 0;
     summary.numOfAwarded = result.Awarded || 0;
   }
@@ -97,9 +94,10 @@ export const fetchProposalsSummary = () => async (dispatch) => {
 
 export const proposalListSelector = (state) => state.proposals.proposals;
 export const loadingSelector = (state) => state.proposals.loading;
-export const proposalsCountSelector = (state) => state.proposals.proposalsCount;
 export const proposalDetailSelector = (state) => state.proposals.proposalDetail;
-export const loadingProposalDetailSelector = (state) => state.proposals.loadingProposalDetail;
-export const proposalSummarySelector = (state) => state.proposals.proposalSummary;
+export const loadingProposalDetailSelector = (state) =>
+  state.proposals.loadingProposalDetail;
+export const proposalSummarySelector = (state) =>
+  state.proposals.proposalSummary;
 
 export default proposalSlice.reducer;

@@ -47,13 +47,6 @@ class TipsController {
     };
   }
 
-  async getTipsCount(ctx) {
-    const { chain } = ctx.params;
-    const tipCol = await getTipCollection(chain);
-    const tipsCount = await tipCol.estimatedDocumentCount();
-    ctx.body = tipsCount;
-  }
-
   async getTipDetail(ctx) {
     const { blockHeight, tipHash, chain } = ctx.params;
 
