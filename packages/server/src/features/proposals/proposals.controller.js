@@ -6,6 +6,7 @@ const { HttpError } = require("../../exc");
 
 class ProposalsController {
   async getProposals(ctx) {
+    const { chain } = ctx.params;
     const { page, pageSize } = extractPage(ctx);
     const { status } = ctx.request.query;
     if (pageSize === 0 || page < 0) {
@@ -17,7 +18,7 @@ class ProposalsController {
     if (status) {
       condition["state.name"] = status;
     }
-    const proposalCol = await getProposalCollection();
+    const proposalCol = await getProposalCollection(chain);
 
     const total = proposalCol.countDocuments(condition);
     const list = proposalCol
@@ -52,12 +53,13 @@ class ProposalsController {
   }
 
   async getProposalDetail(ctx) {
+    const { chain } = ctx.params;
     const proposalIndex = parseInt(ctx.params.proposalIndex);
 
-    const proposalCol = await getProposalCollection();
+    const proposalCol = await getProposalCollection(chain);
     const proposal = await proposalCol.findOne({ proposalIndex });
 
-    const motionCol = await getMotionCollection();
+    const motionCol = await getMotionCollection(chain);
     const proposalMotions = await motionCol
       .find({ treasuryProposalId: proposalIndex })
       .sort({ index: 1 })
@@ -87,7 +89,8 @@ class ProposalsController {
   }
 
   async getProposalSummary(ctx) {
-    const proposalCol = await getProposalCollection();
+    const { chain } = ctx.params;
+    const proposalCol = await getProposalCollection(chain);
     const total = await proposalCol.estimatedDocumentCount();
     const countByStates = await proposalCol
       .aggregate([
@@ -107,11 +110,12 @@ class ProposalsController {
   }
 
   async getProposalLinks(ctx) {
+    const { chain } = ctx.params;
     const proposalIndex = parseInt(ctx.params.proposalIndex);
 
     ctx.body = await linkService.getLinks({
       indexer: {
-        chain: "kusama",
+        chain,
         type: "proposal",
         index: proposalIndex,
       },
@@ -119,13 +123,14 @@ class ProposalsController {
   }
 
   async createProposalLink(ctx) {
+    const { chain } = ctx.params;
     const proposalIndex = parseInt(ctx.params.proposalIndex);
     const { link, description } = ctx.request.body;
 
     ctx.body = await linkService.createLink(
       {
         indexer: {
-          chain: "kusama",
+          chain,
           type: "proposal",
           index: proposalIndex,
         },
@@ -137,13 +142,14 @@ class ProposalsController {
   }
 
   async deleteProposalLink(ctx) {
+    const { chain } = ctx.params;
     const proposalIndex = parseInt(ctx.params.proposalIndex);
     const linkIndex = parseInt(ctx.params.linkIndex);
 
     ctx.body = await linkService.deleteLink(
       {
         indexer: {
-          chain: "kusama",
+          chain,
           type: "proposal",
           index: proposalIndex,
         },
@@ -155,12 +161,13 @@ class ProposalsController {
 
   // Comments API
   async getProposalComments(ctx) {
+    const { chain } = ctx.params;
     const { page, pageSize } = extractPage(ctx);
     const proposalIndex = parseInt(ctx.params.proposalIndex);
 
     ctx.body = await commentService.getComments(
       {
-        chain: "kusama",
+        chain,
         type: "proposal",
         index: proposalIndex,
       },
@@ -171,6 +178,7 @@ class ProposalsController {
   }
 
   async postProposalComment(ctx) {
+    const { chain } = ctx.params;
     const proposalIndex = parseInt(ctx.params.proposalIndex);
     const { content } = ctx.request.body;
     const user = ctx.request.user;
@@ -186,7 +194,7 @@ class ProposalsController {
 
     ctx.body = await commentService.postComment(
       {
-        chain: "kusama",
+        chain,
         type: "proposal",
         index: proposalIndex,
       },

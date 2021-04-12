@@ -61,7 +61,7 @@ export const fetchComments = (type, index, page, pageSize) => async (
   dispatch
 ) => {
   const { result } = await api.maybeAuthFetch(
-    `/${pluralize(type)}/${index}/comments`,
+    `/kusama/${pluralize(type)}/${index}/comments`,
     {
       page,
       pageSize,
@@ -81,7 +81,7 @@ export const fetchComments = (type, index, page, pageSize) => async (
 
 export const postComment = (type, index, content) => async (dispatch) => {
   const { result } = await api.authFetch(
-    `/${pluralize(type)}/${index}/comments`,
+    `/kusama/${pluralize(type)}/${index}/comments`,
     {},
     {
       method: "POST",

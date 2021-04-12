@@ -41,7 +41,7 @@ export const fetchBounties = (page = 0, pageSize = 30) => async (dispatch) => {
   dispatch(setLoading(true));
 
   try {
-    const { result } = await api.fetch("/bounties", { page, pageSize });
+    const { result } = await api.fetch('/kusama/bounties', { page, pageSize });
     dispatch(setBounties(result || {}));
   } finally {
     dispatch(setLoading(false));
@@ -51,7 +51,7 @@ export const fetchBounties = (page = 0, pageSize = 30) => async (dispatch) => {
 export const fetchBountyDetail = (bountyIndex) => async (dispatch) => {
   dispatch(setLoadingBountyDetail(true));
   try {
-    const { result } = await api.fetch(`/bounties/${bountyIndex}`);
+    const { result } = await api.fetch(`/kusama/bounties/${bountyIndex}`);
     dispatch(setBountyDetail(result || {}));
   } finally {
     dispatch(setLoadingBountyDetail(false));

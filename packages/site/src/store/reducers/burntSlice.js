@@ -47,7 +47,7 @@ export const fetchBurntList = (page = 0, pageSize = 30) => async (dispatch) => {
   dispatch(setLoadingBurntList(true));
 
   try {
-    const { result } = await api.fetch(`/burnt`, { page, pageSize });
+    const { result } = await api.fetch(`/kusama/burnt`, { page, pageSize });
     dispatch(setBurntList(result || {
       items: [],
       page: 0,
@@ -60,7 +60,7 @@ export const fetchBurntList = (page = 0, pageSize = 30) => async (dispatch) => {
 };
 
 export const fetchBurntListCount = () => async (dispatch) => {
-  const { result } = await api.fetch(`/burnt/count`);
+  const { result } = await api.fetch(`/kusama/burnt/count`);
   dispatch(setBurntListCount(result || 0));
 };
 

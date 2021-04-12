@@ -50,11 +50,7 @@ export const fetchTips = (page = 0, pageSize = 30, filterData = {}) => async (
   dispatch(setLoading(true));
 
   try {
-    const { result } = await api.fetch("/tips", {
-      page,
-      pageSize,
-      ...filterData,
-    });
+    const { result } = await api.fetch("/kusama/tips", { page, pageSize, ...filterData });
     dispatch(setTips(result || {}));
   } finally {
     dispatch(setLoading(false));
@@ -64,7 +60,7 @@ export const fetchTips = (page = 0, pageSize = 30, filterData = {}) => async (
 export const fetchTipDetail = (tipId) => async (dispatch) => {
   dispatch(setLoadingTipDetail(true));
   try {
-    const { result } = await api.fetch(`/tips/${tipId}`);
+    const { result } = await api.fetch(`/kusama/tips/${tipId}`);
     dispatch(setTipDetail(result || {}));
   } finally {
     dispatch(setLoadingTipDetail(false));

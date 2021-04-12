@@ -4,7 +4,7 @@ const { setScanHeight } = require("./store");
 
 async function feedScanStatus(io) {
   try {
-    const col = await getStatusCollection();
+    const col = await getStatusCollection("kusama");
     const arr = await col.find({}).toArray();
     const statusRow = arr.find((item) => item.name === "main-scan-height");
 

@@ -58,7 +58,7 @@ const overviewSlice = createSlice({
 export const { setOverview, setStatsHistory } = overviewSlice.actions;
 
 export const fetchStatsHistory = () => async (dispatch) => {
-  const { result } = await api.fetch(`/stats/weekly`);
+  const { result } = await api.fetch(`/kusama/stats/weekly`);
   dispatch(setStatsHistory(result || []));
 };
 

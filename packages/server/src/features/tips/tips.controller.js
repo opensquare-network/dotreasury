@@ -18,6 +18,7 @@ function getCondition(ctx) {
 
 class TipsController {
   async getTips(ctx) {
+    const { chain } = ctx.params;
     const { page, pageSize } = extractPage(ctx);
     if (pageSize === 0 || page < 0) {
       ctx.status = 400;
@@ -25,7 +26,7 @@ class TipsController {
     }
     const condition = getCondition(ctx);
 
-    const tipCol = await getTipCollection();
+    const tipCol = await getTipCollection(chain);
     const total = tipCol.countDocuments(condition);
     const list = tipCol
       .find(condition, { timeline: 0 })
@@ -47,9 +48,9 @@ class TipsController {
   }
 
   async getTipDetail(ctx) {
-    const { blockHeight, tipHash } = ctx.params;
+    const { blockHeight, tipHash, chain } = ctx.params;
 
-    const tipCol = await getTipCollection();
+    const tipCol = await getTipCollection(chain);
     const tip = await tipCol.findOne({
       hash: tipHash,
       "indexer.blockHeight": parseInt(blockHeight),
@@ -82,12 +83,12 @@ class TipsController {
   }
 
   async getTipLinks(ctx) {
-    const tipHash = ctx.params.tipHash;
+    const { chain, tipHash } = ctx.params;
     const blockHeight = parseInt(ctx.params.blockHeight);
 
     ctx.body = await linkService.getLinks({
       indexer: {
-        chain: "kusama",
+        chain,
         type: "tip",
         index: {
           blockHeight,
@@ -95,7 +96,7 @@ class TipsController {
         },
       },
       getReason: async () => {
-        const tipCol = await getTipCollection();
+        const tipCol = await getTipCollection(chain);
         const tip = await tipCol.findOne({
           hash: tipHash,
           "indexer.blockHeight": blockHeight,
@@ -106,7 +107,7 @@ class TipsController {
   }
 
   async createTipLink(ctx) {
-    const tipHash = ctx.params.tipHash;
+    const { chain, tipHash } = ctx.params;
     const blockHeight = parseInt(ctx.params.blockHeight);
 
     const { link, description } = ctx.request.body;
@@ -114,7 +115,7 @@ class TipsController {
     ctx.body = await linkService.createLink(
       {
         indexer: {
-          chain: "kusama",
+          chain,
           type: "tip",
           index: {
             blockHeight,
@@ -129,14 +130,14 @@ class TipsController {
   }
 
   async deleteTipLink(ctx) {
-    const { tipHash } = ctx.params;
+    const { tipHash, chain } = ctx.params;
     const blockHeight = parseInt(ctx.params.blockHeight);
     const linkIndex = parseInt(ctx.params.linkIndex);
 
     ctx.body = await linkService.deleteLink(
       {
         indexer: {
-          chain: "kusama",
+          chain,
           type: "tip",
           index: {
             blockHeight,
@@ -151,13 +152,13 @@ class TipsController {
 
   // Comments API
   async getTipComments(ctx) {
+    const { chain, tipHash } = ctx.params;
     const { page, pageSize } = extractPage(ctx);
-    const tipHash = ctx.params.tipHash;
     const blockHeight = parseInt(ctx.params.blockHeight);
 
     ctx.body = await commentService.getComments(
       {
-        chain: "kusama",
+        chain,
         type: "tip",
         index: {
           blockHeight,
@@ -171,7 +172,7 @@ class TipsController {
   }
 
   async postTipComment(ctx) {
-    const tipHash = ctx.params.tipHash;
+    const { chain, tipHash } = ctx.params;
     const blockHeight = parseInt(ctx.params.blockHeight);
     const { content } = ctx.request.body;
     const user = ctx.request.user;
@@ -179,7 +180,7 @@ class TipsController {
       throw new HttpError(400, "Comment content is missing");
     }
 
-    const tipCol = await getTipCollection();
+    const tipCol = await getTipCollection(chain);
     const tip = await tipCol.findOne({
       hash: tipHash,
       "indexer.blockHeight": blockHeight,
@@ -190,7 +191,7 @@ class TipsController {
 
     ctx.body = await commentService.postComment(
       {
-        chain: "kusama",
+        chain,
         type: "tip",
         index: {
           blockHeight,

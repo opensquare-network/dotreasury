@@ -1,21 +1,25 @@
-const projects = require("./data");
+const kusamaProjects = require("./data/kusama");
+const polkadotProjects = require("./data/polkadot");
 const { extractPage } = require("../../utils");
 const commentService = require("../../services/comment.service");
 const { HttpError } = require("../../exc");
 
+const projects = (chain) => chain === "kusama" ? kusamaProjects : (chain === "polkadot" ? polkadotProjects : null);
+
 class ProjectController {
   async getProjects(ctx) {
+    const { chain } = ctx.params;
     const { page, pageSize } = extractPage(ctx);
     if (pageSize === 0 || page < 0) {
       ctx.status = 400;
       return;
     }
 
-    const total = projects.length;
+    const total = projects(chain).length;
     const skip = page * pageSize;
 
     ctx.body = {
-      items: projects.slice(skip, skip + pageSize).map((item) => ({
+      items: projects(chain).slice(skip, skip + pageSize).map((item) => ({
         id: item.id,
         name: item.name,
         logo: item.logo,
@@ -39,8 +43,9 @@ class ProjectController {
   }
 
   async getProject(ctx) {
+    const { chain } = ctx.params;
     const projectId = ctx.params.projectId;
-    const project = projects.find(
+    const project = projects(chain).find(
       (p) =>
         (p.id || "").toLocaleLowerCase() === (projectId || "").toLowerCase()
     );
@@ -54,18 +59,17 @@ class ProjectController {
 
   // Comments API
   async getProjectComments(ctx) {
+    const { chain } = ctx.params;
     const { page, pageSize } = extractPage(ctx);
     const projectId = ctx.params.projectId;
 
-    // const projectId = projects.filter((item) => item.name === projectName)[0]
-    //   ?.id;
     if (!projectId) {
       throw new HttpError(404, "Project not found");
     }
 
     ctx.body = await commentService.getComments(
       {
-        chain: "kusama",
+        chain,
         type: "project",
         index: projectId,
       },
@@ -76,6 +80,7 @@ class ProjectController {
   }
 
   async postProjectComment(ctx) {
+    const { chain } = ctx.params;
     const projectId = ctx.params.projectId;
     const { content } = ctx.request.body;
     const user = ctx.request.user;
@@ -83,15 +88,13 @@ class ProjectController {
       throw new HttpError(400, "Comment content is missing");
     }
 
-    // const projectId = projects.filter((item) => item.name === projectName)[0]
-    //   ?.id;
     if (!projectId) {
       throw new HttpError(404, "Project not found");
     }
 
     ctx.body = await commentService.postComment(
       {
-        chain: "kusama",
+        chain,
         type: "project",
         index: projectId,
       },
