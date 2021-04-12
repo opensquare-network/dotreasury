@@ -6,7 +6,6 @@ const maybeAuth = require("../../middleware/maybe-auth");
 const router = new Router();
 
 router.get("/tips", tipsController.getTips);
-router.get("/tips/count", tipsController.getTipsCount);
 router.get("/tips/:blockHeight(\\d+)_:tipHash", tipsController.getTipDetail);
 
 router.get(

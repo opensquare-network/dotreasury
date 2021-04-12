@@ -6,7 +6,6 @@ const maybeAuth = require("../../middleware/maybe-auth");
 const router = new Router();
 
 router.get("/bounties", bountiesController.getBounties);
-router.get("/bounties/count", bountiesController.getBountiesCount);
 router.get("/bounties/:bountyIndex", bountiesController.getBountyDetail);
 
 router.get("/bounties/:bountyIndex/links", bountiesController.getBountyLinks);
