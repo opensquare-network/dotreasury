@@ -1,14 +1,14 @@
 const { getProposalCollection } = require("../mongo");
 const { getLinkCollection } = require("../mongo-admin");
 
-const main = async () => {
+const migrate = async (chain) => {
   try {
-    console.log("migration start");
-    const proposalCol = await getProposalCollection("kusama");
+    console.log(`${chain} migration start`);
+    const proposalCol = await getProposalCollection(chain);
     const linkCol = await getLinkCollection();
     const proposalLinks = await linkCol
       .find({
-        "indexer.chain": "kusama",
+        "indexer.chain": chain,
         "indexer.type": "proposal",
       })
       .toArray();
@@ -24,12 +24,14 @@ const main = async () => {
         );
       })
     );
-    console.log("migration success");
-    process.exit(0);
+    console.log(`${chain} migration success`);
   } catch (err) {
-    console.log("migration error", err);
-    process.exit(1);
+    console.log(`${chain} migration error`, err);
   }
 };
 
-main();
+(async () => {
+  await migrate("kusama");
+  await migrate("polkadot");
+  process.exit(0);
+})();
