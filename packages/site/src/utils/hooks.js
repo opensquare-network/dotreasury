@@ -1,9 +1,10 @@
 import { useLayoutEffect, useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { getIndentity } from "../services/chainApi";
 import { setShowMenuTabs } from "../store/reducers/menuSlice";
+import { chainSelector } from "../store/reducers/chainSlice";
 
 export const useWindowSize = () => {
   const [size, setSize] = useState([0, 0]);
@@ -21,6 +22,7 @@ export const useWindowSize = () => {
 export const useIndentity = (address) => {
   const [name, setName] = useState(null);
   const [badgeData, setBadgeData] = useState(null);
+  const chain = useSelector(chainSelector);
   useEffect(() => {
     let isMounted = true;
     const fetchIdentity = async () => {
@@ -28,7 +30,7 @@ export const useIndentity = (address) => {
       if (sessionStorage.getItem(`identity_${address}`)) {
         identity = JSON.parse(sessionStorage.getItem(`identity_${address}`));
       } else {
-        identity = await getIndentity(address);
+        identity = await getIndentity(chain, address);
         sessionStorage.setItem(`identity_${address}`, JSON.stringify(identity));
       }
       if (isMounted && identity && identity.display) {
@@ -50,7 +52,7 @@ export const useIndentity = (address) => {
     return () => {
       isMounted = false;
     };
-  }, [address]);
+  }, [address, chain]);
   return { name, badgeData };
 };
 

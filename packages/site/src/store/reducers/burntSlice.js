@@ -64,8 +64,8 @@ export const fetchBurntListCount = (chain) => async (dispatch) => {
   dispatch(setBurntListCount(result || 0));
 };
 
-export const fetchTreasury = () => async (dispatch) => {
-  const api = await getApi();
+export const fetchTreasury = (chain) => async (dispatch) => {
+  const api = await getApi(chain);
   const account = (
     await api.query.system.account(TreasuryAccount)
   ).toJSON();

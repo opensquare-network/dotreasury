@@ -3,25 +3,37 @@ import { isWeb3Injected, web3FromAddress } from "@polkadot/extension-dapp";
 import { stringToHex } from "@polkadot/util";
 import { encodeAddress } from "@polkadot/keyring";
 
-import { DEFAULT_NODE_URL, DEFAULT_NODES } from "../constants";
+import {
+  DEFAULT_KUSAMA_NODE_URL,
+  DEFAULT_KUSAMA_NODES,
+  DEFAULT_POLKADOT_NODE_URL,
+  DEFAULT_POLKADOT_NODES,
+} from "../constants";
 
 const apiInstanceMap = new Map();
 
 let nodeUrl = (() => {
-  const localNodeUrl = localStorage.getItem("nodeUrl");
-  if (
-    !localNodeUrl ||
-    !DEFAULT_NODES.find((item) => item.url === localNodeUrl)
-  ) {
-    return DEFAULT_NODE_URL;
+  let localNodeUrl = null;
+  try {
+    localNodeUrl = JSON.parse(localStorage.getItem("nodeUrl"));
+  } catch (e) {
+    // ignore parse error
   }
-  return localNodeUrl;
+  return {
+    kusama: DEFAULT_KUSAMA_NODES.find((item) => item.url === localNodeUrl?.kusama)?.url || DEFAULT_KUSAMA_NODE_URL,
+    polkadot: DEFAULT_POLKADOT_NODES.find((item) => item.url === localNodeUrl?.polkadot)?.url || DEFAULT_POLKADOT_NODE_URL,
+  };
 })();
 
 export const getNodeUrl = () => nodeUrl;
 
-export const getApi = async (queryUrl) => {
-  const url = queryUrl || nodeUrl;
+export const getNodes = () => ({
+  kusama: DEFAULT_KUSAMA_NODES,
+  polkadot: DEFAULT_POLKADOT_NODES,
+});
+
+export const getApi = async (chain, queryUrl) => {
+  const url = queryUrl || nodeUrl?.[chain];
   if (!apiInstanceMap.has(url)) {
     apiInstanceMap.set(
       url,
@@ -31,28 +43,15 @@ export const getApi = async (queryUrl) => {
   return apiInstanceMap.get(url);
 };
 
-export async function getBlockHashFromHeight(blockHeight) {
-  const api = await getApi();
-  const value = await api.rpc.chain.getBlockHash(blockHeight);
-  return value.toJSON();
-}
-
-export const getIndentity = async (address) => {
-  const api = await getApi();
+export const getIndentity = async (chain, address) => {
+  const api = await getApi(chain);
   const { identity } = await api.derive.accounts.info(address);
   return identity;
 };
 
-export const getTipCountdown = async () => {
-  const api = await getApi();
+export const getTipCountdown = async (chain) => {
+  const api = await getApi(chain);
   return api.consts.tips.tipCountdown.toNumber();
-};
-
-export const getCurrentBlockHeight = async () => {
-  const api = await getApi();
-  const hash = await api.rpc.chain.getFinalizedHead();
-  const block = await api.rpc.chain.getBlock(hash);
-  return block.block.header.number.toNumber();
 };
 
 export const signMessage = async (text, address) => {
@@ -82,16 +81,16 @@ const extractBlockTime = (extrinsics) => {
   }
 };
 
-export const getBlockTime = async (number) => {
-  const api = await getApi();
+export const getBlockTime = async (chain, number) => {
+  const api = await getApi(chain);
   const hash = await api.rpc.chain.getBlockHash(number);
   const block = await api.rpc.chain.getBlock(hash);
   const time = extractBlockTime(block.block.extrinsics);
   return time;
 };
 
-export const estimateBlocksTime = async (blocks) => {
-  const api = await getApi();
+export const estimateBlocksTime = async (chain, blocks) => {
+  const api = await getApi(chain);
   const nsPerBlock = api.consts.babe.expectedBlockTime.toNumber();
   return nsPerBlock * blocks;
 };

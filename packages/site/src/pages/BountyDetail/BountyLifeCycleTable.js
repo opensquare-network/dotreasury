@@ -7,7 +7,7 @@ import TableLoading from "../../components/TableLoading";
 import TableCell from "../../components/TableCell";
 import User from "../../components/User";
 import Text from "../../components/Text";
-import { scanHeightSelector } from "../../store/reducers/chainSlice";
+import { chainSelector, scanHeightSelector } from "../../store/reducers/chainSlice";
 import Label from "../../components/Label";
 import DateShow from "../../components/DateShow";
 import PolygonLabel from "../../components/PolygonLabel";
@@ -36,10 +36,11 @@ const BountyLifeCycleTable = ({ loading }) => {
   const scanHeight = useSelector(scanHeightSelector);
   const [updateDueTimeLeft, setUpdateDueTimeLeft] = useState("");
   const isMounted = useIsMounted();
+  const chain = useSelector(chainSelector);
 
   useEffect(() => {
     if (bountyDetail.updateDue) {
-      estimateBlocksTime(bountyDetail.updateDue - scanHeight).then(
+      estimateBlocksTime(chain, bountyDetail.updateDue - scanHeight).then(
         (blocksTime) => {
           let timeLeft = "";
           const oneMinute = 60 * 1000;
@@ -60,7 +61,7 @@ const BountyLifeCycleTable = ({ loading }) => {
         }
       );
     }
-  }, [bountyDetail, scanHeight, isMounted]);
+  }, [chain, bountyDetail, scanHeight, isMounted]);
 
   return (
     <TableLoading loading={loading}>

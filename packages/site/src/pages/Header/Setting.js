@@ -17,6 +17,7 @@ import {
 import useUpdateNodesDelay from "../../utils/useUpdateNodesDelay";
 import GrayImage from "../../components/GrayImage";
 import { PRIMARY_THEME_COLOR } from "../../constants";
+import { chainSelector } from "../../store/reducers/chainSlice";
 
 
 const Wrapper = styled.div`
@@ -39,6 +40,7 @@ const StyledTitle = styled(Title)`
 const StyledText = styled(Text)`
   font-weight: 500;
   margin-bottom: 8px;
+  text-transform: capitalize;
 `
 
 const StyledCard = styled(Card)`
@@ -83,9 +85,12 @@ const StyledButtonPrimary = styled(ButtonPrimary)`
 const Setting = () => {
   const [open, setOpen] = React.useState(false);
   const dispatch = useDispatch();
-  const currentNode = useSelector(currentNodeSelector);
+  const currentNodeSetting = useSelector(currentNodeSelector);
+  const chain = useSelector(chainSelector);
+  const currentNode = currentNodeSetting?.[chain];
   const [selectedNode, setSelectedNode] = useState(currentNode);
-  const nodes = useSelector(nodesSelector);
+  const nodesSetting = useSelector(nodesSelector);
+  const nodes = nodesSetting?.[chain];
 
   const closeModal = () => {
     setOpen(false);
@@ -111,7 +116,7 @@ const Setting = () => {
       <StyledCard>
         <CloseButton src="/imgs/close.svg" onClick={() => closeModal()} />
         <StyledTitle>Setting</StyledTitle>
-        <StyledText>Kusama nodes</StyledText>
+        <StyledText>{`${chain} nodes`}</StyledText>
         <SettingList>
           {(nodes || []).map((item, index) => (<SettingItem
             key={index}
@@ -123,7 +128,7 @@ const Setting = () => {
         <StyledButtonPrimary
           disabled={selectedNode === currentNode}
           onClick={() => {
-            dispatch(setCurrentNode(selectedNode));
+            dispatch(setCurrentNode({ chain, url: selectedNode }));
             closeModal();
         }}>Switch</StyledButtonPrimary>
       </StyledCard>

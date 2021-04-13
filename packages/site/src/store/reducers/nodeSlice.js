@@ -1,21 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { DEFAULT_NODES } from "../../constants";
-import { getNodeUrl } from "../../services/chainApi";
+import { getNodeUrl, getNodes } from "../../services/chainApi";
 
 const nodeSlice = createSlice({
   name: "node",
   initialState: {
     currentNode: getNodeUrl(),
-    nodes: DEFAULT_NODES
+    nodes: getNodes(),
   },
   reducers: {
     setCurrentNode(_, { payload }) {
-      localStorage.setItem("nodeUrl", payload);
+      const { chain, url } = payload;
+      let nodeUrl = null;
+      try {
+        nodeUrl = JSON.parse(localStorage.getItem("nodeUrl"));
+      } catch (e) {
+        // ignore parse error
+      }
+      nodeUrl = { ...nodeUrl, [chain]: url }
+      localStorage.setItem("nodeUrl", JSON.stringify(nodeUrl));
       window.location.reload();
     },
     setNodesDelay(state, { payload }) {
       (payload || []).forEach(item => {
-        const node = state.nodes.find(node => item.url === node.url);
+        const node = state.nodes[item.chain]?.find(node => item.url === node.url);
         if (node) node.delay = item.delay;
       })
     }
