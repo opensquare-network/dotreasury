@@ -1,8 +1,10 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 
 import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
+import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 
 const Wrapper = styled.div`
   position: absolute;
@@ -38,6 +40,7 @@ const TotalText = styled(TextMinor)`
 `;
 
 const Total = ({ total, children }) => {
+  const symbol = useSelector(chainSymbolSelector);
   total = total.toFixed(2).replace(/\D00/, "");
   return (
     <Wrapper>
@@ -45,7 +48,7 @@ const Total = ({ total, children }) => {
       <div>
         <TextWrapper>
           <TextBold>{total}</TextBold>
-          <TextMinorBold>KSM</TextMinorBold>
+          <TextMinorBold>{symbol}</TextMinorBold>
         </TextWrapper>
         <TotalText>Total amount</TotalText>
       </div>

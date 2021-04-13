@@ -6,6 +6,8 @@ import Card from "../../components/Card";
 import Title from "../../components/Title";
 import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
+import { useSelector } from "react-redux";
+import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 
 const Wrapper = styled(Card)`
   padding: 24px 32px;
@@ -90,6 +92,7 @@ const DollarText = styled(TextMinor)`
 
 const Detail = ({ data }) => {
   const { name, logo, description, proposals, expense, dollar} = data;
+  const symbol = useSelector(chainSymbolSelector);
   return (
     <Wrapper>
       <IconImage src={logo ? `/imgs/projects/${logo}` : "/imgs/default-logo.svg"} width={96} height={96} />
@@ -108,7 +111,7 @@ const Detail = ({ data }) => {
         <CustomTextMinor>Expense</CustomTextMinor>
         <ExpenseWrapper>
           <CustomText>{expense ?? 0}</CustomText>
-          <UnitText>KSM</UnitText>
+          <UnitText>{symbol}</UnitText>
         </ExpenseWrapper>
         {dollar > 0 && <DollarText>{`≈ $${dollar}`}</DollarText>}
       </ExpenseContentWrapper>

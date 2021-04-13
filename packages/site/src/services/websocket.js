@@ -10,7 +10,8 @@ let socket = null;
 
 export function connect(chain) {
   if (socket) {
-    socket.emit("unsubscribe");
+    socket.emit("unsubscribe", { chain, data: chainStatusRoom });
+    socket.emit("unsubscribe", { chain, data: overviewRoom });
     socket.disconnect();
   }
 

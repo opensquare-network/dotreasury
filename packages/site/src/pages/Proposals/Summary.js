@@ -14,6 +14,7 @@ import {
 } from "../../store/reducers/proposalSlice";
 import {
   chainSelector,
+  chainSymbolSelector,
   fetchSpendPeriod,
   spendPeriodSelector,
 } from "../../store/reducers/chainSlice";
@@ -120,6 +121,7 @@ const Summary = () => {
   const summary = useSelector(proposalSummarySelector);
   const spendPeriod = useSelector(spendPeriodSelector);
   const treasury = useSelector(treasurySelector);
+  const symbol = useSelector(chainSymbolSelector);
 
   return (
     <Wrapper>
@@ -143,14 +145,14 @@ const Summary = () => {
         <Title>Available</Title>
         <ValueWrapper>
           <Value>{treasury.free?.toFixed(0)}</Value>
-          <Unit>KSM</Unit>
+          <Unit>{symbol}</Unit>
         </ValueWrapper>
       </Item>
       <Item className="right next-burn">
         <Title>Next burn</Title>
         <ValueWrapper>
           <Value>{(treasury.burnPercent * treasury.free)?.toFixed(4)}</Value>
-          <Unit>KSM</Unit>
+          <Unit>{symbol}</Unit>
         </ValueWrapper>
       </Item>
       <Item className="right spend-period">
