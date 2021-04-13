@@ -8,6 +8,8 @@ import { nil } from "../../utils";
 import { useIsMounted } from "../../utils/hooks";
 import { mrgap } from "../../styles";
 import polkassemblyApi from "../../services/polkassembly";
+import { useSelector } from "react-redux";
+import { chainSelector } from "../../store/reducers/chainSlice";
 
 const Wrapper = styled.div`
   margin-top: 8px;
@@ -20,6 +22,7 @@ const Wrapper = styled.div`
 const ButtonList = ({ extrinsicIndexer, eventIndexer, polkassembly }) => {
   const [motionUrl, setMotionUrl] = useState(null);
   const isMounted = useIsMounted();
+  const chain = useSelector(chainSelector);
 
   useEffect(() => {
     (async () => {
@@ -40,7 +43,7 @@ const ButtonList = ({ extrinsicIndexer, eventIndexer, polkassembly }) => {
   return (
     <Wrapper>
       <ExplorerLink
-        base="https://polkascan.io/kusama/"
+        base={chain === "kusama" ? process.env.REACT_APP_POLKASCAN_KUSAMA : process.env.REACT_APP_POLKASCAN_POLKADOT}
         href={`${nil(eventSort) ? "transaction" : "event"}/${blockHeight}-${
           eventSort ?? extrinsicIndex
         }`}
@@ -48,7 +51,7 @@ const ButtonList = ({ extrinsicIndexer, eventIndexer, polkassembly }) => {
         <ImageButton src={"/imgs/polkascan-logo.svg"} />
       </ExplorerLink>
       <ExplorerLink
-        base="https://kusama.subscan.io/"
+        base={chain === "kusama" ? process.env.REACT_APP_SUBSCAN_KUSAMA : process.env.REACT_APP_SUBSCAN_POLKADOT}
         href={`extrinsic/${blockHeight}-${extrinsicIndex}${
           nil(eventSort) ? "" : "?event=" + blockHeight + "-" + eventSort
         }`}

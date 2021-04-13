@@ -155,9 +155,9 @@ export const getGravatarSrc = (email) => {
 };
 
 export function networkFromSymbol(symbol) {
-  if (symbol === CHAINS.KUSAMA) {
+  if (symbol.toLowerCase() === CHAINS.KUSAMA) {
     return "kusama";
-  } else if (symbol === CHAINS.POLKADOT) {
+  } else if (symbol.toLowerCase() === CHAINS.POLKADOT) {
     return "polkadot";
   } else {
     return null;
