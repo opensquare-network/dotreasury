@@ -54,16 +54,13 @@ const ScanHeight = () => {
   const dispatch = useDispatch();
   const scanHeight = useSelector(scanHeightSelector);
   const chain = useSelector(chainSelector);
-  console.log(chain);
 
   return (
     <Wrapper>
       <Kusama src="/imgs/logo-kusama.svg" onClick={() => {
         if (chain === "polkadot") {
-          console.log("set", CHAINS.KUSAMA);
           dispatch(setChain(CHAINS.KUSAMA));
         } else {
-          console.log("set", CHAINS.POLKADOT);
           dispatch(setChain(CHAINS.POLKADOT));
         }
       }} />
