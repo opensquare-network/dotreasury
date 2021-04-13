@@ -7,13 +7,13 @@ import { CHAINS } from "../constants";
 
 dayjs.extend(duration);
 
-export function getPrecision(chainSymbol, blockHeight) {
+export function getPrecision(chainSymbol) {
   if (CHAINS.KUSAMA === chainSymbol) {
     return 12;
   }
 
   if (CHAINS.POLKADOT === chainSymbol) {
-    return blockHeight > 1248325 ? 10 : 12;
+    return 10;
   }
 
   return 12;
@@ -153,3 +153,23 @@ export const getGravatarSrc = (email) => {
   }
   return "/imgs/avatar.png";
 };
+
+export function networkFromSymbol(symbol) {
+  if (symbol.toLowerCase() === CHAINS.KUSAMA) {
+    return "kusama";
+  } else if (symbol.toLowerCase() === CHAINS.POLKADOT) {
+    return "polkadot";
+  } else {
+    return null;
+  }
+}
+
+export function symbolFromNetwork(network) {
+  if (network === "kusama") {
+    return CHAINS.KUSAMA;
+  } else if (network === "polkadot") {
+    return CHAINS.POLKADOT;
+  } else {
+    return null;
+  }
+}

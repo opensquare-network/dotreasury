@@ -4,6 +4,7 @@ import {
   estimateBlocksTime,
 } from "../../services/chainApi";
 import { CHAINS } from "../../constants";
+import { networkFromSymbol } from "../../utils";
 
 const chainStorageKey = "dotreasury-current-chain";
 const chain = localStorage.getItem(chainStorageKey) || CHAINS.POLKADOT;
@@ -72,7 +73,7 @@ export const currentBlockHeightSelector = (state) =>
 export const scanHeightSelector = (state) => state.chain.scanHeight;
 export const spendPeriodSelector = (state) => state.chain.spendPeriod;
 
-export const chainSelector = (state) => state.chain.chain === CHAINS.KUSAMA ? "kusama" : (state.chain.chain === CHAINS.POLKADOT ? "polkadot" : null);
+export const chainSelector = (state) => networkFromSymbol(state.chain.chain);
 export const chainSymbolSelector = (state) =>
   (state.chain.chain || "").toUpperCase();
 

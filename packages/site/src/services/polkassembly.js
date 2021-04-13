@@ -1,7 +1,17 @@
+import { networkFromSymbol } from "../utils";
 import Api from "./api";
+import { CHAINS } from "../constants";
+
+const chainStorageKey = "dotreasury-current-chain";
+const INITIAL_CHAIN = localStorage.getItem(chainStorageKey) || CHAINS.POLKADOT;
+const chain = networkFromSymbol(INITIAL_CHAIN);
 
 class PolkassemblyApi extends Api {
   async getMotionUrl(motionIndex) {
+    if (motionIndex === undefined || motionIndex === null) {
+      return null;
+    }
+
     const { result } = await this.fetch("/v1/graphql", {}, {
       method: "POST",
       headers: {
@@ -22,13 +32,17 @@ class PolkassemblyApi extends Api {
     });
 
     if (result?.data?.posts?.length > 0) {
-      return `https://kusama.polkassembly.io/motion/${motionIndex}`;
+      return `https://${chain}.polkassembly.io/motion/${motionIndex}`;
     } else {
       return null;
     }
   }
 
   async getProposalUrl(proposalIndex) {
+    if (proposalIndex === undefined || proposalIndex === null) {
+      return null;
+    }
+
     const { result } = await this.fetch("/v1/graphql", {}, {
       method: "POST",
       headers: {
@@ -47,11 +61,11 @@ class PolkassemblyApi extends Api {
     });
 
     if (result?.data?.posts?.length > 0) {
-      return `https://kusama.polkassembly.io/treasury/${proposalIndex}`;
+      return `https://${chain}.polkassembly.io/treasury/${proposalIndex}`;
     } else {
       return null;
     }
   }
 }
 
-export default new PolkassemblyApi("https://kusama.polkassembly.io");
+export default new PolkassemblyApi(`https://${chain}.polkassembly.io`);

@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import api from "../../services/scanApi";
 import { getApi } from "../../services/chainApi";
 import { TreasuryAccount } from "../../constants";
-import { toPrecision } from "../../utils";
+import { getPrecision, symbolFromNetwork, toPrecision } from "../../utils";
 
 const burntSlice = createSlice({
   name: "burnt",
@@ -70,7 +70,7 @@ export const fetchTreasury = (chain) => async (dispatch) => {
     await api.query.system.account(TreasuryAccount)
   ).toJSON();
   const result = {
-    free: account ? toPrecision(account.data.free, 12, false) : 0,
+    free: account ? toPrecision(account.data.free, getPrecision(symbolFromNetwork(chain)), false) : 0,
     burnPercent: toPrecision(api.consts.treasury.burn, 6, false),
   }
   dispatch(setTreasury(result));
