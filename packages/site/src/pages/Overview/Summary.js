@@ -18,7 +18,7 @@ import {
   fetchTreasury,
   treasurySelector,
 } from "../../store/reducers/burntSlice";
-import { chainSymbolSelector } from "../../store/reducers/chainSlice"
+import { chainSelector, chainSymbolSelector } from "../../store/reducers/chainSlice"
 import { mrgap } from "../../styles";
 
 const Wrapper = styled(Card)`
@@ -74,11 +74,12 @@ const ValueWrapper = styled.div`
 
 const Summary = () => {
   const dispatch = useDispatch();
+  const chain = useSelector(chainSelector);
 
   useEffect(() => {
-    dispatch(fetchSpendPeriod());
-    dispatch(fetchTreasury());
-  }, [dispatch]);
+    dispatch(fetchSpendPeriod(chain));
+    dispatch(fetchTreasury(chain));
+  }, [dispatch, chain]);
 
   const overview = useSelector(overviewSelector);
   const spendPeriod = useSelector(spendPeriodSelector);

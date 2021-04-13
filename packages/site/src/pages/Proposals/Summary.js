@@ -114,8 +114,8 @@ const Summary = () => {
 
   useEffect(() => {
     dispatch(fetchProposalsSummary(chain));
-    dispatch(fetchSpendPeriod());
-    dispatch(fetchTreasury());
+    dispatch(fetchSpendPeriod(chain));
+    dispatch(fetchTreasury(chain));
   }, [dispatch, chain]);
 
   const summary = useSelector(proposalSummarySelector);

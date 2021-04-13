@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { getApi } from "../services/chainApi";
+import { chainSelector } from "../store/reducers/chainSlice";
 import { nodesSelector, setNodesDelay } from "../store/reducers/nodeSlice";
 import { sleep } from "./index";
 
@@ -29,17 +30,19 @@ const testNet = async (api) => {
 };
 
 const useUpdateNodesDelay = () => {
-  const nodes = useSelector(nodesSelector);
+  const nodesSetting = useSelector(nodesSelector);
+  const chain = useSelector(chainSelector);
+  const nodes = nodesSetting?.[chain];
   const dispatch = useDispatch();
 
   useEffect(() => {
     const updateNodeDelay = async (url) => {
       try {
-        const api = await getApi(url);
+        const api = await getApi(chain, url);
         const delay = await testNet(api);
-        return { url, delay };
+        return { chain, url, delay };
       } catch {
-        return { url, delay: "" };
+        return { chain, url, delay: "" };
       }
     };
 
@@ -53,7 +56,7 @@ const useUpdateNodesDelay = () => {
       10000
     );
     return () => clearTimeout(timeoutId);
-  }, [nodes, dispatch]);
+  }, [nodes, dispatch, chain]);
 };
 
 export default useUpdateNodesDelay;

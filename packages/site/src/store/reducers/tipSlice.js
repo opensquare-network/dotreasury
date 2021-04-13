@@ -67,8 +67,8 @@ export const fetchTipDetail = (chain, tipId) => async (dispatch) => {
   }
 };
 
-export const fetchTipCountdown = () => async (dispatch) => {
-  const tipCountdown = await getTipCountdown();
+export const fetchTipCountdown = (chain) => async (dispatch) => {
+  const tipCountdown = await getTipCountdown(chain);
   dispatch(setTipCountdown(tipCountdown || 14400));
 };
 

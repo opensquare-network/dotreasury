@@ -63,6 +63,7 @@ const ScanHeight = () => {
         } else {
           dispatch(setChain(CHAINS.POLKADOT));
         }
+        window.location.reload();
       }} />
       <Polygon src={"/imgs/polygon.svg"} />
       <DarkMinorLabel>Scan height</DarkMinorLabel>

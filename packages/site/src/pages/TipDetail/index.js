@@ -132,7 +132,7 @@ const TipDetail = () => {
 
   useEffect(() => {
     dispatch(fetchTipDetail(chain, tipId));
-    dispatch(fetchTipCountdown());
+    dispatch(fetchTipCountdown(chain));
     return () => {
       dispatch(setTipDetail({}));
     };
