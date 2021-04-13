@@ -57,11 +57,11 @@ export class TipIndex {
   }
 }
 
-export const fetchComments = (type, index, page, pageSize) => async (
+export const fetchComments = (chain, type, index, page, pageSize) => async (
   dispatch
 ) => {
   const { result } = await api.maybeAuthFetch(
-    `/kusama/${pluralize(type)}/${index}/comments`,
+    `/${chain}/${pluralize(type)}/${index}/comments`,
     {
       page,
       pageSize,
@@ -79,9 +79,9 @@ export const fetchComments = (type, index, page, pageSize) => async (
   );
 };
 
-export const postComment = (type, index, content) => async (dispatch) => {
+export const postComment = (chain, type, index, content) => async (dispatch) => {
   const { result } = await api.authFetch(
-    `/kusama/${pluralize(type)}/${index}/comments`,
+    `/${chain}/${pluralize(type)}/${index}/comments`,
     {},
     {
       method: "POST",
@@ -98,7 +98,7 @@ export const postComment = (type, index, content) => async (dispatch) => {
   }
 };
 
-export const updateComment = (type, index, commentId, content) => async (
+export const updateComment = (chain, type, index, commentId, content) => async (
   dispatch
 ) => {
   await api.authFetch(
@@ -113,7 +113,7 @@ export const updateComment = (type, index, commentId, content) => async (
     }
   );
 
-  dispatch(fetchComments(type, index));
+  dispatch(fetchComments(chain, type, index));
 };
 
 export const removeComment = (commentId) => async (dispatch) => {

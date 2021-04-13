@@ -44,23 +44,23 @@ export const {
   setTipCountdown,
 } = tipSlice.actions;
 
-export const fetchTips = (page = 0, pageSize = 30, filterData = {}) => async (
+export const fetchTips = (chain, page = 0, pageSize = 30, filterData = {}) => async (
   dispatch
 ) => {
   dispatch(setLoading(true));
 
   try {
-    const { result } = await api.fetch("/kusama/tips", { page, pageSize, ...filterData });
+    const { result } = await api.fetch(`/${chain}/tips`, { page, pageSize, ...filterData });
     dispatch(setTips(result || {}));
   } finally {
     dispatch(setLoading(false));
   }
 };
 
-export const fetchTipDetail = (tipId) => async (dispatch) => {
+export const fetchTipDetail = (chain, tipId) => async (dispatch) => {
   dispatch(setLoadingTipDetail(true));
   try {
-    const { result } = await api.fetch(`/kusama/tips/${tipId}`);
+    const { result } = await api.fetch(`/${chain}/tips/${tipId}`);
     dispatch(setTipDetail(result || {}));
   } finally {
     dispatch(setLoadingTipDetail(false));

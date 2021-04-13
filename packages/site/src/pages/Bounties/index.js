@@ -13,6 +13,7 @@ import {
   loadingSelector,
   bountyListSelector,
 } from "../../store/reducers/bountySlice";
+import { chainSelector } from "../../store/reducers/chainSlice";
 
 const Header = styled(Title)`
   margin-bottom: 20px;
@@ -34,10 +35,11 @@ const Bounties = () => {
   const history = useHistory();
   const { items: bounties, total } = useSelector(bountyListSelector);
   const loading = useSelector(loadingSelector);
+  const chain = useSelector(chainSelector);
 
   useEffect(() => {
-    dispatch(fetchBounties(tablePage - 1, pageSize));
-  }, [dispatch, tablePage, pageSize]);
+    dispatch(fetchBounties(chain, tablePage - 1, pageSize));
+  }, [dispatch, chain, tablePage, pageSize]);
 
   const totalPages = Math.ceil(total / pageSize);
 

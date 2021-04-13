@@ -130,8 +130,8 @@ export const {
   setOthersIncomeListLoading,
 } = incomeSlice.actions;
 
-export const fetchIncomeCount = () => async (dispatch) => {
-  const { result } = await api.fetch(`/kusama/income/count`);
+export const fetchIncomeCount = (chain) => async (dispatch) => {
+  const { result } = await api.fetch(`/${chain}/income/count`);
   dispatch(
     setCount(
       result || {
@@ -147,13 +147,13 @@ export const fetchIncomeCount = () => async (dispatch) => {
   );
 };
 
-export const fetchTreasurySlashList = (page = 0, pageSize = 30) => async (
+export const fetchTreasurySlashList = (chain, page = 0, pageSize = 30) => async (
   dispatch
 ) => {
   dispatch(setTreasurySlashListLoading(true));
 
   try {
-    const { result } = await api.fetch(`/kusama/income/slash/treasury`, {
+    const { result } = await api.fetch(`/${chain}/income/slash/treasury`, {
       page,
       pageSize,
     });
@@ -172,13 +172,13 @@ export const fetchTreasurySlashList = (page = 0, pageSize = 30) => async (
   }
 };
 
-export const fetchDemocracySlashList = (page = 0, pageSize = 30) => async (
+export const fetchDemocracySlashList = (chain, page = 0, pageSize = 30) => async (
   dispatch
 ) => {
   dispatch(setDemocracySlashListLoading(true));
 
   try {
-    const { result } = await api.fetch(`/kusama/income/slash/democracy`, {
+    const { result } = await api.fetch(`/${chain}/income/slash/democracy`, {
       page,
       pageSize,
     });
@@ -197,13 +197,13 @@ export const fetchDemocracySlashList = (page = 0, pageSize = 30) => async (
   }
 };
 
-export const fetchIdentitySlashList = (page = 0, pageSize = 30) => async (
+export const fetchIdentitySlashList = (chain, page = 0, pageSize = 30) => async (
   dispatch
 ) => {
   dispatch(setIdentitySlashListLoading(true));
 
   try {
-    const { result } = await api.fetch(`/kusama/income/slash/identity`, {
+    const { result } = await api.fetch(`/${chain}/income/slash/identity`, {
       page,
       pageSize,
     });
@@ -222,13 +222,13 @@ export const fetchIdentitySlashList = (page = 0, pageSize = 30) => async (
   }
 };
 
-export const fetchStakingSlashList = (page = 0, pageSize = 30) => async (
+export const fetchStakingSlashList = (chain, page = 0, pageSize = 30) => async (
   dispatch
 ) => {
   dispatch(setStakingSlashListLoading(true));
 
   try {
-    const { result } = await api.fetch(`/kusama/income/slash/staking`, {
+    const { result } = await api.fetch(`/${chain}/income/slash/staking`, {
       page,
       pageSize,
     });
@@ -248,13 +248,14 @@ export const fetchStakingSlashList = (page = 0, pageSize = 30) => async (
 };
 
 export const fetchElectionPhragmenSlashList = (
+  chain,
   page = 0,
   pageSize = 30
 ) => async (dispatch) => {
   dispatch(setElectionPhragmenSlashListLoading(true));
 
   try {
-    const { result } = await api.fetch(`/kusama/income/slash/electionphragmen`, {
+    const { result } = await api.fetch(`/${chain}/income/slash/electionphragmen`, {
       page,
       pageSize,
     });
@@ -273,13 +274,13 @@ export const fetchElectionPhragmenSlashList = (
   }
 };
 
-export const fetchInflationList = (page = 0, pageSize = 30) => async (
+export const fetchInflationList = (chain, page = 0, pageSize = 30) => async (
   dispatch
 ) => {
   dispatch(setInflationListLoading(true));
 
   try {
-    const { result } = await api.fetch(`/kusama/income/inflation`, { page, pageSize });
+    const { result } = await api.fetch(`/${chain}/income/inflation`, { page, pageSize });
     dispatch(
       setInflationList(
         result || {
@@ -295,13 +296,13 @@ export const fetchInflationList = (page = 0, pageSize = 30) => async (
   }
 };
 
-export const fetchOthersIncomeList = (page = 0, pageSize = 30) => async (
+export const fetchOthersIncomeList = (chain, page = 0, pageSize = 30) => async (
   dispatch
 ) => {
   dispatch(setOthersIncomeListLoading(true));
 
   try {
-    const { result } = await api.fetch(`/kusama/income/others`, { page, pageSize });
+    const { result } = await api.fetch(`/${chain}/income/others`, { page, pageSize });
     dispatch(
       setOthersIncomeList(
         result || {

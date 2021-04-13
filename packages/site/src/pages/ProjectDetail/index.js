@@ -13,18 +13,20 @@ import {
   // loadingProjectDetailSelector,
   projectDetailSelector,
 } from "../../store/reducers/projectSlice";
+import { chainSelector } from "../../store/reducers/chainSlice";
 
 const ProjectDetail = () => {
   const { projectId } = useParams();
 
   const dispatch = useDispatch();
+  const chain = useSelector(chainSelector);
 
   useEffect(() => {
-    dispatch(fetchProjectDetail(projectId));
+    dispatch(fetchProjectDetail(chain, projectId));
     return () => {
       dispatch(setProjectDetail({}));
     };
-  }, [dispatch, projectId]);
+  }, [dispatch, chain, projectId]);
 
   // const loadingProjectDetail = useSelector(loadingProjectDetailSelector);
   const projectDetail = useSelector(projectDetailSelector);

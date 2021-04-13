@@ -13,6 +13,7 @@ import {
   electionPhragmenSlashListSelector,
   electionPhragmenSlashListLoadingSelector,
 } from "../../store/reducers/incomeSlice";
+import { chainSelector } from "../../store/reducers/chainSlice";
 
 const Header = styled(Title)`
   margin-bottom: 20px;
@@ -36,10 +37,11 @@ const ElectionPhragmenSlash = () => {
     electionPhragmenSlashListSelector
   );
   const loading = useSelector(electionPhragmenSlashListLoadingSelector);
+  const chain = useSelector(chainSelector);
 
   useEffect(() => {
-    dispatch(fetchElectionPhragmenSlashList(tablePage - 1, pageSize));
-  }, [dispatch, tablePage, pageSize]);
+    dispatch(fetchElectionPhragmenSlashList(chain, tablePage - 1, pageSize));
+  }, [dispatch, chain, tablePage, pageSize]);
 
   const totalPages = Math.ceil(total / pageSize);
 

@@ -15,6 +15,7 @@ import {
   loadingSelector,
   proposalListSelector,
 } from "../../store/reducers/proposalSlice";
+import { chainSelector } from "../../store/reducers/chainSlice";
 
 const HeaderWrapper = styled.div`
   margin-bottom: 14px;
@@ -40,10 +41,11 @@ const Proposals = () => {
   const history = useHistory();
   const { items: proposals, total } = useSelector(proposalListSelector);
   const loading = useSelector(loadingSelector);
+  const chain = useSelector(chainSelector);
 
   useEffect(() => {
-    dispatch(fetchProposals(tablePage - 1, pageSize, filterData));
-  }, [dispatch, tablePage, pageSize, filterData]);
+    dispatch(fetchProposals(chain, tablePage - 1, pageSize, filterData));
+  }, [dispatch, chain, tablePage, pageSize, filterData]);
 
   const totalPages = Math.ceil(total / pageSize);
 

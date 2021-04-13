@@ -14,6 +14,7 @@ import {
   fetchStatsHistory,
   statsHistorySelector,
 } from "../../../store/reducers/overviewSlice";
+import { chainSelector } from "../../../store/reducers/chainSlice";
 
 const Title = styled(Text)`
   font-size: 18px;
@@ -150,9 +151,11 @@ const TotalStacked = () => {
     ],
   });
 
+  const chain = useSelector(chainSelector);
+
   useEffect(() => {
-    dispatch(fetchStatsHistory());
-  }, [dispatch]);
+    dispatch(fetchStatsHistory(chain));
+  }, [dispatch, chain]);
 
   const statsHistory = useSelector(statsHistorySelector);
 

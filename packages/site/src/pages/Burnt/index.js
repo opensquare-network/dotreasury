@@ -13,6 +13,7 @@ import {
   burntListSelector,
   loadingBurntListSelector,
 } from "../../store/reducers/burntSlice";
+import { chainSelector } from "../../store/reducers/chainSlice";
 
 const Header = styled(Title)`
   margin-bottom: 20px;
@@ -34,10 +35,11 @@ const Burnt = () => {
   const history = useHistory();
   const { items: burntList, total } = useSelector(burntListSelector);
   const loading = useSelector(loadingBurntListSelector);
+  const chain = useSelector(chainSelector);
 
   useEffect(() => {
-    dispatch(fetchBurntList(tablePage - 1, pageSize));
-  }, [dispatch, tablePage, pageSize]);
+    dispatch(fetchBurntList(chain, tablePage - 1, pageSize));
+  }, [dispatch, chain, tablePage, pageSize]);
 
   const totalPages = Math.ceil(total / pageSize);
 

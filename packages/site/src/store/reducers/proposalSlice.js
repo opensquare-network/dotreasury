@@ -48,6 +48,7 @@ export const {
 } = proposalSlice.actions;
 
 export const fetchProposals = (
+  chain,
   page = 0,
   pageSize = 30,
   filterData = {}
@@ -55,25 +56,25 @@ export const fetchProposals = (
   dispatch(setLoading(true));
 
   try {
-    const { result } = await api.fetch('/kusama/proposals', { page, pageSize, ...filterData });
+    const { result } = await api.fetch(`/${chain}/proposals`, { page, pageSize, ...filterData });
     dispatch(setProposals(result || {}));
   } finally {
     dispatch(setLoading(false));
   }
 };
 
-export const fetchProposalDetail = (proposalIndex) => async (dispatch) => {
+export const fetchProposalDetail = (chain, proposalIndex) => async (dispatch) => {
   dispatch(setLoadingProposalDetail(true));
   try {
-    const { result } = await api.fetch(`/kusama/proposals/${proposalIndex}`);
+    const { result } = await api.fetch(`/${chain}/proposals/${proposalIndex}`);
     dispatch(setProposalDetail(result || {}));
   } finally {
     dispatch(setLoadingProposalDetail(false));
   }
 };
 
-export const fetchProposalsSummary = () => async (dispatch) => {
-  const { result } = await api.fetch("/kusama/proposals/summary");
+export const fetchProposalsSummary = (chain) => async (dispatch) => {
+  const { result } = await api.fetch(`/${chain}/proposals/summary`);
   const summary = {
     total: 0,
     numOfOngoing: 0,

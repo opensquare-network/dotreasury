@@ -17,6 +17,7 @@ import {
 } from "../../store/reducers/linkSlice";
 import AdminLogin from "../AdminLogin";
 import { nowAddressSelector } from "../../store/reducers/accountSlice";
+import { chainSelector } from "../../store/reducers/chainSlice";
 import Divider from "../../components/Divider";
 
 const Wrapper = styled.div`
@@ -51,13 +52,14 @@ const DividerWrapper = styled(Divider)`
 const RelatedLinks = ({ type, index }) => {
   const dispatch = useDispatch();
   const location = useLocation();
+  const chain = useSelector(chainSelector);
 
   useDeepCompareEffect(() => {
-    dispatch(fetchLinks(type, index));
+    dispatch(fetchLinks(chain, type, index));
     return () => {
       dispatch(setLinks([]));
     };
-  }, [dispatch, type, index]);
+  }, [dispatch, chain, type, index]);
 
   const links = useSelector(linksSelector);
   const nowAddress = useSelector(nowAddressSelector);
@@ -70,12 +72,12 @@ const RelatedLinks = ({ type, index }) => {
 
   const addRelatedLink = async (link, description) => {
     setOpenAddLinkModal(false);
-    dispatch(addLink(type, index, link, description, nowAddress));
+    dispatch(addLink(chain, type, index, link, description, nowAddress));
   };
 
   const removeRelatedLink = async (linkIndex) => {
     setOpenRemoveLinkModal(false);
-    dispatch(removeLink(type, index, linkIndex, nowAddress));
+    dispatch(removeLink(chain, type, index, linkIndex, nowAddress));
   };
 
   const q = queryString.parse(location.search);

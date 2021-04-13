@@ -76,7 +76,7 @@ export const currentBlockHeightSelector = (state) =>
 export const scanHeightSelector = (state) => state.chain.scanHeight;
 export const spendPeriodSelector = (state) => state.chain.spendPeriod;
 
-export const chainSelector = (state) => state.chain.chain;
+export const chainSelector = (state) => state.chain.chain === "ksm" ? "kusama" : (state.chain.chain === "dot" ? "polkadot" : null);
 export const chainSymbolSelector = (state) =>
   (state.chain.chain || "").toUpperCase();
 

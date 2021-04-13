@@ -13,6 +13,7 @@ import {
   treasurySlashListSelector,
   treasurySlashListLoadingSelector,
 } from "../../store/reducers/incomeSlice";
+import { chainSelector } from "../../store/reducers/chainSlice";
 
 const Header = styled(Title)`
   margin-bottom: 20px;
@@ -34,10 +35,11 @@ const TreasurySlash = () => {
   const history = useHistory();
   const { items: itemList, total } = useSelector(treasurySlashListSelector);
   const loading = useSelector(treasurySlashListLoadingSelector);
+  const chain = useSelector(chainSelector);
 
   useEffect(() => {
-    dispatch(fetchTreasurySlashList(tablePage - 1, pageSize));
-  }, [dispatch, tablePage, pageSize]);
+    dispatch(fetchTreasurySlashList(chain, tablePage - 1, pageSize));
+  }, [dispatch, chain, tablePage, pageSize]);
 
   const totalPages = Math.ceil(total / pageSize);
 

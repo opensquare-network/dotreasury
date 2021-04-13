@@ -24,6 +24,7 @@ import { hexToString } from "@polkadot/util";
 import { stringToWords } from "../../utils";
 
 import {
+  chainSelector,
   chainSymbolSelector,
   scanHeightSelector,
 } from "../../store/reducers/chainSlice";
@@ -245,13 +246,14 @@ const BountyDetail = () => {
   const [timelineData, setTimelineData] = useState([]);
 
   const symbol = useSelector(chainSymbolSelector);
+  const chain = useSelector(chainSelector);
 
   useEffect(() => {
-    dispatch(fetchBountyDetail(bountyIndex));
+    dispatch(fetchBountyDetail(chain, bountyIndex));
     return () => {
       dispatch(setBountyDetail({}));
     };
-  }, [dispatch, bountyIndex]);
+  }, [dispatch, chain, bountyIndex]);
 
   const loadingBountyDetail = useSelector(loadingBountyDetailSelector);
   const bountyDetail = useSelector(bountyDetailSelector);
