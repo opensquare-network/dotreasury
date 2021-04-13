@@ -186,7 +186,7 @@ class ProposalsController {
       throw new HttpError(400, "Comment content is missing");
     }
 
-    const proposalCol = await getProposalCollection();
+    const proposalCol = await getProposalCollection(chain);
     const proposal = await proposalCol.findOne({ proposalIndex });
     if (!proposal) {
       throw new HttpError(404, "Proposal not found");

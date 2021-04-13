@@ -17,6 +17,7 @@ import OthersIncomeMenu from "./OthersIncomeMenu";
 import { fetchIncomeCount } from "../../store/reducers/incomeSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { showMenuTabsSelector } from "../../store/reducers/menuSlice";
+import { chainSelector } from "../../store/reducers/chainSlice";
 
 import {
   PRIMARY_THEME_COLOR,
@@ -84,10 +85,11 @@ const TabExampleSecondaryPointing = () => {
   const { pathname } = useLocation();
   const dispatch = useDispatch();
   const showMenuTabs = useSelector(showMenuTabsSelector);
+  const chain = useSelector(chainSelector);
 
   useEffect(() => {
-    dispatch(fetchIncomeCount());
-  });
+    dispatch(fetchIncomeCount(chain));
+  }, [dispatch, chain]);
 
   const panes =
     showMenuTabs === "Home"

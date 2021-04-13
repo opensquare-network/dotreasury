@@ -1,20 +1,28 @@
-let scanHeight = 0;
-let overview = null;
+const data = {
+  kusama: {
+    scanHeight: 0,
+    overview: null,
+  },
+  polkadot: {
+    scanHeight: 0,
+    overview: null,
+  },
+};
 
-function setScanHeight(height) {
-  scanHeight = height;
+function setScanHeight(chain, height) {
+  data[chain].scanHeight = height;
 }
 
-function getScanHeight() {
-  return scanHeight;
+function getScanHeight(chain) {
+  return data[chain].scanHeight;
 }
 
-function setOverview(arg) {
-  overview = arg;
+function setOverview(chain, arg) {
+  data[chain].overview = arg;
 }
 
-function getOverview() {
-  return overview;
+function getOverview(chain) {
+  return data[chain].overview;
 }
 
 module.exports = {

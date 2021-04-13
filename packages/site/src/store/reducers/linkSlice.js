@@ -33,17 +33,17 @@ export class TipIndex {
   }
 }
 
-export const fetchLinks = (type, index) => async (dispatch) => {
-  const { result } = await api.fetch(`/kusama/${pluralize(type)}/${index}/links`);
+export const fetchLinks = (chain, type, index) => async (dispatch) => {
+  const { result } = await api.fetch(`/${chain}/${pluralize(type)}/${index}/links`);
   dispatch(setLinks(result || []));
 };
 
-export const addLink = (type, index, link, description, address) => async (
+export const addLink = (chain, type, index, link, description, address) => async (
   dispatch
 ) => {
   const signature = await signMessage(
     JSON.stringify({
-      chain: "kusama",
+      chain,
       type,
       index,
       link,
@@ -53,7 +53,7 @@ export const addLink = (type, index, link, description, address) => async (
   );
 
   await api.fetch(
-    `/kusama/${pluralize(type)}/${index}/links`,
+    `/${chain}/${pluralize(type)}/${index}/links`,
     {},
     {
       method: "POST",
@@ -68,12 +68,12 @@ export const addLink = (type, index, link, description, address) => async (
   dispatch(fetchLinks(type, index));
 };
 
-export const removeLink = (type, index, linkIndex, address) => async (
+export const removeLink = (chain, type, index, linkIndex, address) => async (
   dispatch
 ) => {
   const signature = await signMessage(
     JSON.stringify({
-      chain: "kusama",
+      chain,
       type,
       index,
       linkIndex,
@@ -82,7 +82,7 @@ export const removeLink = (type, index, linkIndex, address) => async (
   );
 
   await api.fetch(
-    `/kusama/${pluralize(type)}/${index}/links/${linkIndex}`,
+    `/${chain}/${pluralize(type)}/${index}/links/${linkIndex}`,
     {},
     {
       method: "DELETE",

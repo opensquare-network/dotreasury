@@ -19,6 +19,10 @@ import {
   fetchUserProfile,
   userProfileSelector,
 } from "../../store/reducers/userSlice";
+import {
+  chainSelector,
+} from "../../store/reducers/chainSlice";
+
 import { PRIMARY_THEME_COLOR } from "../../constants";
 
 const Wrapper = styled.div`
@@ -66,6 +70,7 @@ const Input = React.forwardRef(
     const loggedInUser = useSelector(loggedInUserSelector);
     const userProfile = useSelector(userProfileSelector);
     const clearComment = useSelector(clearCommentSelector);
+    const chain = useSelector(chainSelector);
 
     useEffect(() => {
       if (loggedInUser) {
@@ -77,7 +82,7 @@ const Input = React.forwardRef(
     const post = async () => {
       setLoading(true);
       try {
-        await dispatch(postComment(type, index, content));
+        await dispatch(postComment(chain, type, index, content));
         if(page==='last') {
           dispatch(setLastUpdateCommentTime(Date.now()));
         }else {
@@ -85,7 +90,6 @@ const Input = React.forwardRef(
             search: `?page=last`,
           });
         }
-        // await dispatch(fetchComments(type, index, 'last', pageSize));
       } finally {
         setLoading(false);
         isPreview && setIsPreview(false);

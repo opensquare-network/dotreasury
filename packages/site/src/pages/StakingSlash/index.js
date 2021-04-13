@@ -13,6 +13,7 @@ import {
   stakingSlashListSelector,
   stakingSlashListLoadingSelector,
 } from "../../store/reducers/incomeSlice";
+import { chainSelector } from "../../store/reducers/chainSlice";
 
 const Header = styled(Title)`
   margin-bottom: 20px;
@@ -34,10 +35,11 @@ const StakingSlash = () => {
   const history = useHistory();
   const { items: itemList, total } = useSelector(stakingSlashListSelector);
   const loading = useSelector(stakingSlashListLoadingSelector);
+  const chain = useSelector(chainSelector);
 
   useEffect(() => {
-    dispatch(fetchStakingSlashList(tablePage - 1, pageSize));
-  }, [dispatch, tablePage, pageSize]);
+    dispatch(fetchStakingSlashList(chain, tablePage - 1, pageSize));
+  }, [dispatch, chain, tablePage, pageSize]);
 
   const totalPages = Math.ceil(total / pageSize);
 

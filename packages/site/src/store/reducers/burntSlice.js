@@ -43,11 +43,11 @@ export const {
   setTreasury,
 } = burntSlice.actions;
 
-export const fetchBurntList = (page = 0, pageSize = 30) => async (dispatch) => {
+export const fetchBurntList = (chain, page = 0, pageSize = 30) => async (dispatch) => {
   dispatch(setLoadingBurntList(true));
 
   try {
-    const { result } = await api.fetch(`/kusama/burnt`, { page, pageSize });
+    const { result } = await api.fetch(`/${chain}/burnt`, { page, pageSize });
     dispatch(setBurntList(result || {
       items: [],
       page: 0,
@@ -59,8 +59,8 @@ export const fetchBurntList = (page = 0, pageSize = 30) => async (dispatch) => {
   }
 };
 
-export const fetchBurntListCount = () => async (dispatch) => {
-  const { result } = await api.fetch(`/kusama/burnt/count`);
+export const fetchBurntListCount = (chain) => async (dispatch) => {
+  const { result } = await api.fetch(`/${chain}/burnt/count`);
   dispatch(setBurntListCount(result || 0));
 };
 

@@ -5,7 +5,7 @@ import {
   Route,
   Switch,
 } from "react-router-dom";
-import "../services/websocket";
+import { connect } from "../services/websocket";
 
 import Container from "../components/Container";
 import { Wrapper, PageWrapper } from "./components";
@@ -40,9 +40,15 @@ import UserAgreement from "../pages/UserAgreement";
 import Privacy from "../pages/Privacy";
 
 import { usePreload } from "../utils/hooks";
+import { useSelector } from "react-redux";
+import { chainSelector } from "../store/reducers/chainSlice";
 
 export default function App() {
+  const chain = useSelector(chainSelector);
   usePreload();
+
+  connect(chain);
+
   return (
     <Router>
       <Wrapper>

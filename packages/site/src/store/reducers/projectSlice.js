@@ -34,21 +34,21 @@ export const {
   setLoadingProjectDetail
 } = projectSlice.actions;
 
-export const fetchProjects = (page = 0, pageSize = 30) => async (dispatch) => {
+export const fetchProjects = (chain, page = 0, pageSize = 30) => async (dispatch) => {
   dispatch(setLoading(true));
 
   try {
-    const { result } = await api.fetch('/kusama/projects', { page, pageSize });
+    const { result } = await api.fetch(`/${chain}/projects`, { page, pageSize });
     dispatch(setProjects(result || {}));
   } finally {
     dispatch(setLoading(false));
   }
 };
 
-export const fetchProjectDetail = (projectId) => async (dispatch) => {
+export const fetchProjectDetail = (chain, projectId) => async (dispatch) => {
   dispatch(setLoadingProjectDetail(true));
   try {
-    const { result } = await api.fetch(`/kusama/projects/${projectId}`);
+    const { result } = await api.fetch(`/${chain}/projects/${projectId}`);
     dispatch(setProjectDetail(result || {}));
   } finally {
     dispatch(setLoadingProjectDetail(false));

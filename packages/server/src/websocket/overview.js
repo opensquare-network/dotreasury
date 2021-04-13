@@ -10,39 +10,39 @@ const { setOverview, getOverview } = require("./store");
 const { overviewRoom, OVERVIEW_FEED_INTERVAL } = require("./constants");
 const util = require("util");
 
-async function feedOverview(io) {
+async function feedOverview(chain, io) {
   try {
-    const oldStoreOverview = getOverview();
-    const overview = await calcOverview();
+    const oldStoreOverview = getOverview(chain);
+    const overview = await calcOverview(chain);
 
     if (util.isDeepStrictEqual(overview, oldStoreOverview)) {
       return;
     }
 
-    setOverview(overview);
-    io.to(overviewRoom).emit("overview", overview);
+    setOverview(chain, overview);
+    io.to(`${chain}:${overviewRoom}`).emit("overview", overview);
   } catch (e) {
     console.error("feed overview error:", e);
   } finally {
-    setTimeout(feedOverview.bind(null, io), OVERVIEW_FEED_INTERVAL);
+    setTimeout(feedOverview.bind(null, chain, io), OVERVIEW_FEED_INTERVAL);
   }
 }
 
-async function calcOverview() {
-  const proposalCol = await getProposalCollection("kusama");
+async function calcOverview(chain) {
+  const proposalCol = await getProposalCollection(chain);
   const proposals = await proposalCol
     .find({}, { value: 1, beneficiary: 1, meta: 1, state: 1 })
     .toArray();
 
-  const tipCol = await getTipCollection("kusama");
+  const tipCol = await getTipCollection(chain);
   const tips = await tipCol
     .find({}, { finder: 1, medianValue: 1, state: 1 })
     .toArray();
 
-  const bountyCol = await getBountyCollection("kusama");
+  const bountyCol = await getBountyCollection(chain);
   const bounties = await bountyCol.find({}, { meta: 1, state: 1 }).toArray();
 
-  const burntCol = await getBurntCollection("kusama");
+  const burntCol = await getBurntCollection(chain);
   const burntList = await burntCol.find({}, { balance: 1 }).toArray();
 
   const count = await calcCount(proposals, tips, bounties, burntList);
@@ -50,7 +50,7 @@ async function calcOverview() {
   const bestProposalBeneficiaries = calcBestProposalBeneficiary(proposals);
   const bestTipFinders = calcBestTipProposers(tips);
 
-  const statusCol = await getStatusCollection("kusama");
+  const statusCol = await getStatusCollection(chain);
   const incomeScan = await statusCol.findOne({ name: "income-scan" });
 
   return {

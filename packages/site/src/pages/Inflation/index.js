@@ -13,6 +13,7 @@ import {
   inflationListSelector,
   inflationListLoadingSelector,
 } from "../../store/reducers/incomeSlice";
+import { chainSelector } from "../../store/reducers/chainSlice";
 
 const Header = styled(Title)`
   margin-bottom: 20px;
@@ -43,10 +44,11 @@ const Inflation = () => {
   const history = useHistory();
   const { items: itemList, total } = useSelector(inflationListSelector);
   const loading = useSelector(inflationListLoadingSelector);
+  const chain = useSelector(chainSelector);
 
   useEffect(() => {
-    dispatch(fetchInflationList(tablePage - 1, pageSize));
-  }, [dispatch, tablePage, pageSize]);
+    dispatch(fetchInflationList(chain, tablePage - 1, pageSize));
+  }, [dispatch, chain, tablePage, pageSize]);
 
   const totalPages = Math.ceil(total / pageSize);
 
