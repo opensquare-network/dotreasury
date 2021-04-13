@@ -45,6 +45,7 @@ const chainSlice = createSlice({
 });
 
 export const {
+  setChain,
   setCurrentBlockHeight,
   setScanHeight,
   setSpendPeriod,
