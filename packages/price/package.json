@@ -1,0 +1,12 @@
+{
+  "name": "@dotreasury/price",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=15.0.0"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "mongodb": "^3.6.3"
+  }
+}
