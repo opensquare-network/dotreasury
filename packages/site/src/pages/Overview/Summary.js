@@ -18,6 +18,7 @@ import {
   fetchTreasury,
   treasurySelector,
 } from "../../store/reducers/burntSlice";
+import { chainSymbolSelector } from "../../store/reducers/chainSlice"
 import { mrgap } from "../../styles";
 
 const Wrapper = styled(Card)`
@@ -82,6 +83,7 @@ const Summary = () => {
   const overview = useSelector(overviewSelector);
   const spendPeriod = useSelector(spendPeriodSelector);
   const treasury = useSelector(treasurySelector);
+  const symbol = useSelector(chainSymbolSelector);
 
   return (
     <Wrapper>
@@ -131,7 +133,7 @@ const Summary = () => {
             <Title>Available</Title>
             <ValueWrapper>
               <TextBold>{treasury.free?.toFixed(0)}</TextBold>
-              <TextMinorBold>KSM</TextMinorBold>
+              <TextMinorBold>{symbol}</TextMinorBold>
             </ValueWrapper>
           </div>
         </ItemWrapper>
@@ -145,7 +147,7 @@ const Summary = () => {
               <TextBold>
                 {(treasury.burnPercent * treasury.free)?.toFixed(4)}
               </TextBold>
-              <TextMinorBold>KSM</TextMinorBold>
+              <TextMinorBold>{symbol}</TextMinorBold>
             </ValueWrapper>
           </div>
         </ItemWrapper>

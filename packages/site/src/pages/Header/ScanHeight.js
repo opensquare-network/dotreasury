@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Image } from "semantic-ui-react";
 import ExplorerLink from "../../components/ExplorerLink";
 
-import { TEXT_DARK_MAJOR, TEXT_DARK_MINOR } from "../../constants";
-import { scanHeightSelector } from "../../store/reducers/chainSlice";
+import { CHAINS, TEXT_DARK_MAJOR, TEXT_DARK_MINOR } from "../../constants";
+import { setChain, chainSelector, scanHeightSelector } from "../../store/reducers/chainSlice";
 
 const Wrapper = styled.div`
   display: flex;
@@ -51,11 +51,22 @@ const Kusama = styled(Image)`
 `;
 
 const ScanHeight = () => {
+  const dispatch = useDispatch();
   const scanHeight = useSelector(scanHeightSelector);
+  const chain = useSelector(chainSelector);
+  console.log(chain);
 
   return (
     <Wrapper>
-      <Kusama src="/imgs/logo-kusama.svg" />
+      <Kusama src="/imgs/logo-kusama.svg" onClick={() => {
+        if (chain === "polkadot") {
+          console.log("set", CHAINS.KUSAMA);
+          dispatch(setChain(CHAINS.KUSAMA));
+        } else {
+          console.log("set", CHAINS.POLKADOT);
+          dispatch(setChain(CHAINS.POLKADOT));
+        }
+      }} />
       <Polygon src={"/imgs/polygon.svg"} />
       <DarkMinorLabel>Scan height</DarkMinorLabel>
       <ExplorerLink href={`/block/${scanHeight}`}>

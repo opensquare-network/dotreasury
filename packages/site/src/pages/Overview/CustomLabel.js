@@ -4,6 +4,8 @@ import { Popup } from "semantic-ui-react";
 
 import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
+import { useSelector } from "react-redux";
+import { chainSymbolSelector } from "../../store/reducers/chainSlice"
 
 const Wrapper = styled.div`
   min-width: 224px;
@@ -87,6 +89,7 @@ const ValueWrapper = styled.div`
 `;
 
 const Label = ({ data, icon, status, clickEvent }) => {
+  const symbol = useSelector(chainSymbolSelector);
   const { name, color, children } = data;
   const disabled = status?.disabled;
   let { value } = data;
@@ -108,13 +111,13 @@ const Label = ({ data, icon, status, clickEvent }) => {
         </IconWrapper>
         <Title disabled={disabled}>{name}</Title>
         <Popup
-          content={`${value} KSM`}
+          content={`${value} ${symbol}`}
           size="mini"
           trigger={
             <ValueWrapper disabled={disabled}>
               <TextMinor>{`${
                 Math.round(value) === value ? "" : "≈ "
-              }${Math.round(value)} KSM`}</TextMinor>
+              }${Math.round(value)} ${symbol}`}</TextMinor>
             </ValueWrapper>
           }
         />
@@ -137,13 +140,13 @@ const Label = ({ data, icon, status, clickEvent }) => {
             {item.name}
           </ChildTitle>
           <Popup
-            content={`${item.value} KSM`}
+            content={`${item.value} ${symbol}`}
             size="mini"
             trigger={
               <ValueWrapper disabled={status?.children[index].disabled}>
                 <TextMinor>{`${
                   Math.round(item.value) === item.value ? "" : "≈ "
-                }${Math.round(item.value)} KSM`}</TextMinor>
+                }${Math.round(item.value)} ${symbol}`}</TextMinor>
               </ValueWrapper>
             }
           />
