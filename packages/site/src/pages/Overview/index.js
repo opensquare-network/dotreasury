@@ -9,10 +9,11 @@ import ProposerTable from "./ProposerTable";
 import BeneficiaryTable from "./BeneficiaryTable";
 // import OutputDoughnutCard from "./OutputDoughnutCard";
 import { overviewSelector } from "../../store/reducers/overviewSlice";
-import { toPrecision } from "../../utils";
+import { getPrecision, toPrecision } from "../../utils";
 import TotalStacked from "./TotalStacked";
 import Income from "./Income";
 import Output from "./Output";
+import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 
 const Header = styled(Title)`
   margin-bottom: 20px;
@@ -44,39 +45,40 @@ const TableWrapper = styled.div`
 
 const Overview = () => {
   const overview = useSelector(overviewSelector);
+  const symbol = useSelector(chainSymbolSelector);
 
-  const bountySpent = toPrecision(overview.output.bounty || 0, 12, false);
-  const proposalSpent = toPrecision(overview.output.proposal || 0, 12, false);
-  const tipSpent = toPrecision(overview.output.tip || 0, 12, false);
-  const burntTotal = toPrecision(overview.output.burnt || 0, 12, false);
+  const bountySpent = toPrecision(overview.output.bounty || 0, getPrecision(symbol), false);
+  const proposalSpent = toPrecision(overview.output.proposal || 0, getPrecision(symbol), false);
+  const tipSpent = toPrecision(overview.output.tip || 0, getPrecision(symbol), false);
+  const burntTotal = toPrecision(overview.output.burnt || 0, getPrecision(symbol), false);
 
-  const inflation = toPrecision(overview.income.inflation || 0, 12, false);
+  const inflation = toPrecision(overview.income.inflation || 0, getPrecision(symbol), false);
   const slashTreasury = toPrecision(
     overview.income.slashSeats.treasury || 0,
-    12,
+    getPrecision(symbol),
     false
   );
   const slashDemocracy = toPrecision(
     overview.income.slashSeats.democracy || 0,
-    12,
+    getPrecision(symbol),
     false
   );
   const slashStaking = toPrecision(
     overview.income.slashSeats.staking || 0,
-    12,
+    getPrecision(symbol),
     false
   );
   const slashElection = toPrecision(
     overview.income.slashSeats.electionsPhragmen || 0,
-    12,
+    getPrecision(symbol),
     false
   );
   const slashIdentity = toPrecision(
     overview.income.slashSeats.identity || 0,
-    12,
+    getPrecision(symbol),
     false
   );
-  const others = toPrecision(overview.income.others || 0, 12, false);
+  const others = toPrecision(overview.income.others || 0, getPrecision(symbol), false);
 
   defaults.global.defaultFontFamily = "Inter";
 

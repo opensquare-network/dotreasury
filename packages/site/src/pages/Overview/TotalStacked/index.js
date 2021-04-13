@@ -8,13 +8,13 @@ import Text from "../../../components/Text";
 import Card from "../../../components/Card";
 import List from "../CustomList";
 import Chart from "./Chart";
-import { toPrecision } from "../../../utils";
+import { getPrecision, toPrecision } from "../../../utils";
 
 import {
   fetchStatsHistory,
   statsHistorySelector,
 } from "../../../store/reducers/overviewSlice";
-import { chainSelector } from "../../../store/reducers/chainSlice";
+import { chainSelector, chainSymbolSelector } from "../../../store/reducers/chainSlice";
 
 const Title = styled(Text)`
   font-size: 18px;
@@ -152,6 +152,7 @@ const TotalStacked = () => {
   });
 
   const chain = useSelector(chainSelector);
+  const symbol = useSelector(chainSymbolSelector);
 
   useEffect(() => {
     dispatch(fetchStatsHistory(chain));
@@ -171,7 +172,7 @@ const TotalStacked = () => {
           .add(bnToBn(statsItem.income.slash))
           .add(bnToBn(statsItem.income.others))
       )
-      .map((bn) => toPrecision(bn, 12, false));
+      .map((bn) => toPrecision(bn, getPrecision(symbol), false));
     setIncomeHistory(incomeHistory);
 
     const outputHistory = statsHistory
@@ -181,14 +182,14 @@ const TotalStacked = () => {
           .add(bnToBn(statsItem.output.bounty))
           .add(bnToBn(statsItem.output.burnt))
       )
-      .map((bn) => toPrecision(bn, 12, false));
+      .map((bn) => toPrecision(bn, getPrecision(symbol), false));
     setOutputHistory(outputHistory);
 
     const treasuryHistory = statsHistory.map((statsItem) =>
-      toPrecision(statsItem.treasuryBalance, 12, false)
+      toPrecision(statsItem.treasuryBalance, getPrecision(symbol), false)
     );
     setTreasuryHistory(treasuryHistory);
-  }, [statsHistory]);
+  }, [statsHistory, symbol]);
 
   useEffect(() => {
     if (statsHistory && statsHistory.length > 0) {
@@ -201,7 +202,7 @@ const TotalStacked = () => {
         labels: [
           {
             name: "Inflation",
-            value: toPrecision(statsData.income.inflation, 12, false),
+            value: toPrecision(statsData.income.inflation, getPrecision(symbol), false),
           },
           {
             name: "Slashes",
@@ -210,7 +211,7 @@ const TotalStacked = () => {
                 name: "Staking",
                 value: toPrecision(
                   statsData.income.slashSeats.staking,
-                  12,
+                  getPrecision(symbol),
                   false
                 ),
               },
@@ -218,7 +219,7 @@ const TotalStacked = () => {
                 name: "Treasury",
                 value: toPrecision(
                   statsData.income.slashSeats.treasury,
-                  12,
+                  getPrecision(symbol),
                   false
                 ),
               },
@@ -226,7 +227,7 @@ const TotalStacked = () => {
                 name: "Election",
                 value: toPrecision(
                   statsData.income.slashSeats.electionsPhragmen,
-                  12,
+                  getPrecision(symbol),
                   false
                 ),
               },
@@ -234,7 +235,7 @@ const TotalStacked = () => {
                 name: "Democracy",
                 value: toPrecision(
                   statsData.income.slashSeats.democracy,
-                  12,
+                  getPrecision(symbol),
                   false
                 ),
               },
@@ -242,7 +243,7 @@ const TotalStacked = () => {
                 name: "Identity",
                 value: toPrecision(
                   statsData.income.slashSeats.identity,
-                  12,
+                  getPrecision(symbol),
                   false
                 ),
               },
@@ -250,7 +251,7 @@ const TotalStacked = () => {
           },
           {
             name: "Others",
-            value: toPrecision(statsData.income.others, 12, false),
+            value: toPrecision(statsData.income.others, getPrecision(symbol), false),
           },
         ],
       });
@@ -262,19 +263,19 @@ const TotalStacked = () => {
         labels: [
           {
             name: "Proposal",
-            value: toPrecision(statsData.output.proposal, 12, false),
+            value: toPrecision(statsData.output.proposal, getPrecision(symbol), false),
           },
           {
             name: "Tips",
-            value: toPrecision(statsData.output.tip, 12, false),
+            value: toPrecision(statsData.output.tip, getPrecision(symbol), false),
           },
           {
             name: "Bounties",
-            value: toPrecision(statsData.output.bounty, 12, false),
+            value: toPrecision(statsData.output.bounty, getPrecision(symbol), false),
           },
           {
             name: "Burnt",
-            value: toPrecision(statsData.output.burnt, 12, false),
+            value: toPrecision(statsData.output.burnt, getPrecision(symbol), false),
           },
         ],
       });
@@ -286,12 +287,12 @@ const TotalStacked = () => {
         labels: [
           {
             name: "Balance",
-            value: toPrecision(statsData.treasuryBalance, 12, false),
+            value: toPrecision(statsData.treasuryBalance, getPrecision(symbol), false),
           },
         ],
       });
     }
-  }, [showIndex, statsHistory, dateLabels]);
+  }, [showIndex, statsHistory, dateLabels, symbol]);
 
   const chartData = {
     dates: dateLabels,
