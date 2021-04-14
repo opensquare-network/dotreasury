@@ -46,39 +46,52 @@ const TableWrapper = styled.div`
 const Overview = () => {
   const overview = useSelector(overviewSelector);
   const symbol = useSelector(chainSymbolSelector);
+  const precision = getPrecision(symbol);
 
-  const bountySpent = toPrecision(overview.output.bounty || 0, getPrecision(symbol), false);
-  const proposalSpent = toPrecision(overview.output.proposal || 0, getPrecision(symbol), false);
-  const tipSpent = toPrecision(overview.output.tip || 0, getPrecision(symbol), false);
-  const burntTotal = toPrecision(overview.output.burnt || 0, getPrecision(symbol), false);
+  const bountySpent = toPrecision(
+    overview.output.bounty || 0,
+    precision,
+    false
+  );
+  const proposalSpent = toPrecision(
+    overview.output.proposal || 0,
+    precision,
+    false
+  );
+  const tipSpent = toPrecision(overview.output.tip || 0, precision, false);
+  const burntTotal = toPrecision(overview.output.burnt || 0, precision, false);
 
-  const inflation = toPrecision(overview.income.inflation || 0, getPrecision(symbol), false);
+  const inflation = toPrecision(
+    overview.income.inflation || 0,
+    precision,
+    false
+  );
   const slashTreasury = toPrecision(
     overview.income.slashSeats.treasury || 0,
-    getPrecision(symbol),
+    precision,
     false
   );
   const slashDemocracy = toPrecision(
     overview.income.slashSeats.democracy || 0,
-    getPrecision(symbol),
+    precision,
     false
   );
   const slashStaking = toPrecision(
     overview.income.slashSeats.staking || 0,
-    getPrecision(symbol),
+    precision,
     false
   );
   const slashElection = toPrecision(
     overview.income.slashSeats.electionsPhragmen || 0,
-    getPrecision(symbol),
+    precision,
     false
   );
   const slashIdentity = toPrecision(
     overview.income.slashSeats.identity || 0,
-    getPrecision(symbol),
+    precision,
     false
   );
-  const others = toPrecision(overview.income.others || 0, getPrecision(symbol), false);
+  const others = toPrecision(overview.income.others || 0, precision, false);
 
   defaults.global.defaultFontFamily = "Inter";
 
