@@ -68,7 +68,6 @@ const ScanHeight = () => {
             : "/imgs/logo-kusama.svg"
         }
       />
-      <Polygon src={"/imgs/polygon.svg"} />
       <DarkMinorLabel>Scan height</DarkMinorLabel>
       <ExplorerLink href={`/block/${scanHeight}`}>
         <DarkMajorLabel>{`#${scanHeight}`}</DarkMajorLabel>
