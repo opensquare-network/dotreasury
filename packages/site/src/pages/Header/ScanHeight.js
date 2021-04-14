@@ -41,6 +41,9 @@ const DarkMajorLabel = styled(Label)`
   &:hover {
     text-decoration-line: underline;
   }
+  @media screen and (max-width: 640px) {
+    display: none;
+  }
 `;
 
 const Kusama = styled(Image)`

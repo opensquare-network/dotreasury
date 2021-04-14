@@ -21,6 +21,10 @@ const Wrapper = styled.header`
 const Left = styled.div`
   display: flex;
   align-items: center;
+  @media screen and (max-width: 640px) {
+    justify-content: space-between;
+    flex-grow: 3;
+  }
 `;
 
 const Right = styled.div`
@@ -74,9 +78,6 @@ const MenuIcon = styled(Image)`
 
 const ScanHeightWrapper = styled.div`
   margin-left: 24px;
-  @media screen and (max-width: 556px) {
-    display: none;
-  }
 `;
 
 const HeaderExamplePage = () => {
