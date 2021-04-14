@@ -7,12 +7,16 @@ import { CHAINS } from "../constants";
 
 dayjs.extend(duration);
 
+function strEqualIgnoreCase(str1 = "", str2 = "") {
+  return str1.toLowerCase() === str2.toLowerCase();
+}
+
 export function getPrecision(chainSymbol) {
-  if (CHAINS.KUSAMA === chainSymbol) {
+  if (strEqualIgnoreCase(CHAINS.KUSAMA, chainSymbol)) {
     return 12;
   }
 
-  if (CHAINS.POLKADOT === chainSymbol) {
+  if (strEqualIgnoreCase(CHAINS.POLKADOT, chainSymbol)) {
     return 10;
   }
 
