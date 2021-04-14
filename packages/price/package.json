@@ -6,7 +6,9 @@
     "node": ">=15.0.0"
   },
   "dependencies": {
+    "abort-controller": "^3.0.0",
     "axios": "^0.21.1",
-    "mongodb": "^3.6.3"
+    "mongodb": "^3.6.3",
+    "node-fetch": "^2.6.1"
   }
 }
