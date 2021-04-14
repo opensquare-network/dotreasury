@@ -43,12 +43,6 @@ const DarkMajorLabel = styled(Label)`
   }
 `;
 
-const Polygon = styled(Image)`
-  width: 12px;
-  height: 12px;
-  margin: 4px;
-`;
-
 const Kusama = styled(Image)`
   position: relative;
   top: -1px;

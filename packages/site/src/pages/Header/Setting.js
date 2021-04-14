@@ -154,12 +154,11 @@ const Setting = () => {
         <StyledButtonPrimary
           disabled={selectedNode === defaultNode && selectedNetwork === chain}
           onClick={() => {
-            closeModal();
             dispatch(
               setCurrentNode({ chain: selectedNetwork, url: selectedNode })
             );
             dispatch(setChain(symbolFromNetwork(selectedNetwork)));
-            window.location.reload();
+            window.location.href = "/";
           }}
         >
           Switch
