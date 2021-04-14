@@ -16,17 +16,18 @@ const nodeSlice = createSlice({
       } catch (e) {
         // ignore parse error
       }
-      nodeUrl = { ...nodeUrl, [chain]: url }
+      nodeUrl = { ...nodeUrl, [chain]: url };
       localStorage.setItem("nodeUrl", JSON.stringify(nodeUrl));
-      window.location.reload();
     },
     setNodesDelay(state, { payload }) {
-      (payload || []).forEach(item => {
-        const node = state.nodes[item.chain]?.find(node => item.url === node.url);
+      (payload || []).forEach((item) => {
+        const node = state.nodes[item.chain]?.find(
+          (node) => item.url === node.url
+        );
         if (node) node.delay = item.delay;
-      })
-    }
-  }
+      });
+    },
+  },
 });
 
 export const currentNodeSelector = (state) => state.node.currentNode;

@@ -1,11 +1,15 @@
 import React from "react";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Image } from "semantic-ui-react";
 import ExplorerLink from "../../components/ExplorerLink";
+import Setting from "./Setting";
 
-import { CHAINS, TEXT_DARK_MAJOR, TEXT_DARK_MINOR } from "../../constants";
-import { setChain, chainSelector, scanHeightSelector } from "../../store/reducers/chainSlice";
+import { TEXT_DARK_MAJOR, TEXT_DARK_MINOR } from "../../constants";
+import {
+  chainSelector,
+  scanHeightSelector,
+} from "../../store/reducers/chainSlice";
 
 const Wrapper = styled.div`
   display: flex;
@@ -33,15 +37,13 @@ const DarkMinorLabel = styled(Label)`
 
 const DarkMajorLabel = styled(Label)`
   color: ${TEXT_DARK_MAJOR};
+  margin-right: 16px;
   &:hover {
     text-decoration-line: underline;
   }
-`;
-
-const Polygon = styled(Image)`
-  width: 12px;
-  height: 12px;
-  margin: 4px;
+  @media screen and (max-width: 640px) {
+    display: none;
+  }
 `;
 
 const Kusama = styled(Image)`
@@ -51,25 +53,23 @@ const Kusama = styled(Image)`
 `;
 
 const ScanHeight = () => {
-  const dispatch = useDispatch();
   const scanHeight = useSelector(scanHeightSelector);
   const chain = useSelector(chainSelector);
 
   return (
     <Wrapper>
-      <Kusama src="/imgs/logo-kusama.svg" onClick={() => {
-        if (chain === "polkadot") {
-          dispatch(setChain(CHAINS.KUSAMA));
-        } else {
-          dispatch(setChain(CHAINS.POLKADOT));
+      <Kusama
+        src={
+          chain === "polkadot"
+            ? "/imgs/logo-polkadot.svg"
+            : "/imgs/logo-kusama.svg"
         }
-        window.location.reload();
-      }} />
-      <Polygon src={"/imgs/polygon.svg"} />
+      />
       <DarkMinorLabel>Scan height</DarkMinorLabel>
       <ExplorerLink href={`/block/${scanHeight}`}>
         <DarkMajorLabel>{`#${scanHeight}`}</DarkMajorLabel>
       </ExplorerLink>
+      <Setting />
     </Wrapper>
   );
 };

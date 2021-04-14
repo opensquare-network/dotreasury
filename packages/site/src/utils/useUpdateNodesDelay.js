@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { getApi } from "../services/chainApi";
-import { chainSelector } from "../store/reducers/chainSlice";
 import { nodesSelector, setNodesDelay } from "../store/reducers/nodeSlice";
 import { sleep } from "./index";
 
@@ -31,12 +30,10 @@ const testNet = async (api) => {
 
 const useUpdateNodesDelay = () => {
   const nodesSetting = useSelector(nodesSelector);
-  const chain = useSelector(chainSelector);
-  const nodes = nodesSetting?.[chain];
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const updateNodeDelay = async (url) => {
+    const updateNodeDelay = async (chain, url) => {
       try {
         const api = await getApi(chain, url);
         const delay = await testNet(api);
@@ -46,17 +43,19 @@ const useUpdateNodesDelay = () => {
       }
     };
 
-    const timeoutId = setTimeout(
-      async () => {
-        const results = await Promise.all(
-          (nodes || []).map((item) => updateNodeDelay(item.url))
-        );
-        dispatch(setNodesDelay(results));
-      },
-      10000
-    );
+    const timeoutId = setTimeout(async () => {
+      const results = await Promise.all([
+        ...(nodesSetting.kusama || []).map((item) =>
+          updateNodeDelay("kusama", item.url)
+        ),
+        ...(nodesSetting.polkadot || []).map((item) =>
+          updateNodeDelay("polkadot", item.url)
+        ),
+      ]);
+      dispatch(setNodesDelay(results));
+    }, 10000);
     return () => clearTimeout(timeoutId);
-  }, [nodes, dispatch, chain]);
+  }, [dispatch, nodesSetting]);
 };
 
 export default useUpdateNodesDelay;
