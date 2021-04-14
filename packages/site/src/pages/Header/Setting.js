@@ -21,11 +21,7 @@ import { PRIMARY_THEME_COLOR } from "../../constants";
 import { chainSelector, setChain } from "../../store/reducers/chainSlice";
 import { symbolFromNetwork } from "../../utils";
 
-const Wrapper = styled.div`
-  :not(:last-child) {
-    margin-right: 32px;
-  }
-`;
+const Wrapper = styled.div``;
 
 const StyledModal = styled(Modal)`
   max-width: 424px !important;
@@ -50,14 +46,15 @@ const StyledCard = styled(Card)`
 `;
 
 const StyledButton = styled(Button)`
+  height: 32px !important;
+  padding: 9px !important;
+
   display: flex !important;
   align-items: center;
   border: 0 !important;
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-  & > :first-child {
-    margin-right: 8px;
-  }
+  /* padding-left: 0 !important;
+  padding-right: 0 !important; */
+  background: #fbfbfb !important;
   &:hover {
     color: ${PRIMARY_THEME_COLOR} !important;
     & > :first-child {
@@ -117,7 +114,6 @@ const Setting = () => {
         <Wrapper>
           <StyledButton open={open}>
             <GrayImage src="/imgs/setting-dark.svg" />
-            {/* Setting */}
           </StyledButton>
         </Wrapper>
       }

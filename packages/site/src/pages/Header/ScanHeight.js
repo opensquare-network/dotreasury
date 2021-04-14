@@ -14,9 +14,21 @@ import {
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
+  margin-right: 21px;
+`;
+
+const ScanHeightWrapper = styled.div`
+  display: flex;
+  align-items: center;
 
   background: #fbfbfb;
-  padding: 2px 16px;
+  height: 32px;
+  padding: 4px;
+  margin-right: 4px;
+`;
+
+const SettingWrapper = styled.div`
+  background: #fbfbfb;
 `;
 
 const Label = styled.div`
@@ -29,6 +41,7 @@ const Label = styled.div`
 
 const DarkMinorLabel = styled(Label)`
   color: ${TEXT_DARK_MINOR};
+  margin-left: 8px;
   margin-right: 8px;
   @media screen and (max-width: 640px) {
     display: none;
@@ -36,8 +49,8 @@ const DarkMinorLabel = styled(Label)`
 `;
 
 const DarkMajorLabel = styled(Label)`
+  margin-right: 4px;
   color: ${TEXT_DARK_MAJOR};
-  margin-right: 16px;
   &:hover {
     text-decoration-line: underline;
   }
@@ -49,7 +62,6 @@ const DarkMajorLabel = styled(Label)`
 const Kusama = styled(Image)`
   position: relative;
   top: -1px;
-  margin-right: 8px;
 `;
 
 const ScanHeight = () => {
@@ -58,18 +70,22 @@ const ScanHeight = () => {
 
   return (
     <Wrapper>
-      <Kusama
-        src={
-          chain === "polkadot"
-            ? "/imgs/logo-polkadot.svg"
-            : "/imgs/logo-kusama.svg"
-        }
-      />
-      <DarkMinorLabel>Scan height</DarkMinorLabel>
-      <ExplorerLink href={`/block/${scanHeight}`}>
-        <DarkMajorLabel>{`#${scanHeight}`}</DarkMajorLabel>
-      </ExplorerLink>
-      <Setting />
+      <ScanHeightWrapper>
+        <Kusama
+          src={
+            chain === "polkadot"
+              ? "/imgs/logo-polkadot.svg"
+              : "/imgs/logo-kusama.svg"
+          }
+        />
+        <DarkMinorLabel>Scan height</DarkMinorLabel>
+        <ExplorerLink href={`/block/${scanHeight}`}>
+          <DarkMajorLabel>{`#${scanHeight}`}</DarkMajorLabel>
+        </ExplorerLink>
+      </ScanHeightWrapper>
+      <SettingWrapper>
+        <Setting />
+      </SettingWrapper>
     </Wrapper>
   );
 };
