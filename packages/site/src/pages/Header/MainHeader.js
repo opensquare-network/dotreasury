@@ -6,7 +6,6 @@ import Logo from "./Logo";
 import { NavLink } from "react-router-dom";
 import ScanHeight from "./ScanHeight";
 import UserLogin from "./UserLogin";
-// import Setting from "./Setting";
 import MenuSwitch from "./MenuSwitch";
 import { useMenuTab } from "../../utils/hooks";
 
@@ -119,7 +118,6 @@ const HeaderExamplePage = () => {
         <NavLink to="/projects">
           <MenuSwitch menuTabsName="Projects" />
         </NavLink>
-        {/* <Setting /> */}
         <UserLogin />
       </Right>
     </Wrapper>
