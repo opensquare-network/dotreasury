@@ -9,6 +9,7 @@ import Text from "../../components/Text";
 import Button from "../../components/Button";
 import ButtonPrimary from "../../components/ButtonPrimary";
 import SettingItem from "./SettingItem";
+import NetworkItem from "./NetworkItem";
 import {
   currentNodeSelector,
   setCurrentNode,
@@ -17,36 +18,36 @@ import {
 import useUpdateNodesDelay from "../../utils/useUpdateNodesDelay";
 import GrayImage from "../../components/GrayImage";
 import { PRIMARY_THEME_COLOR } from "../../constants";
-import { chainSelector } from "../../store/reducers/chainSlice";
-
+import { chainSelector, setChain } from "../../store/reducers/chainSlice";
+import { symbolFromNetwork } from "../../utils";
 
 const Wrapper = styled.div`
   :not(:last-child) {
     margin-right: 32px;
   }
-`
+`;
 
 const StyledModal = styled(Modal)`
   max-width: 424px !important;
   border-radius: 8px !important;
   /* top: 112px; */
-`
+`;
 
 const StyledTitle = styled(Title)`
   text-align: center;
   margin-bottom: 24px;
-`
+`;
 
 const StyledText = styled(Text)`
   font-weight: 500;
   margin-bottom: 8px;
   text-transform: capitalize;
-`
+`;
 
 const StyledCard = styled(Card)`
   padding: 32px !important;
   position: relative !important;
-`
+`;
 
 const StyledButton = styled(Button)`
   display: flex !important;
@@ -65,37 +66,45 @@ const StyledButton = styled(Button)`
       opacity: 1;
     }
   }
-`
+`;
 
 const SettingList = styled.div`
   margin-bottom: 24px;
-`
+`;
 
 const CloseButton = styled(Image)`
   position: absolute !important;
   top: 42px;
   right: 32px;
   cursor: pointer;
-`
+`;
 
 const StyledButtonPrimary = styled(ButtonPrimary)`
   width: 100%;
-`
+`;
 
 const Setting = () => {
   const [open, setOpen] = React.useState(false);
   const dispatch = useDispatch();
-  const currentNodeSetting = useSelector(currentNodeSelector);
+
   const chain = useSelector(chainSelector);
-  const currentNode = currentNodeSetting?.[chain];
-  const [selectedNode, setSelectedNode] = useState(currentNode);
   const nodesSetting = useSelector(nodesSelector);
-  const nodes = nodesSetting?.[chain];
+  const currentNodeSetting = useSelector(currentNodeSelector);
+
+  const [selectedNetwork, setSelectedNetwork] = useState(chain);
+  const defaultNode = currentNodeSetting?.[selectedNetwork];
+  const [selectedNode, setSelectedNode] = useState(defaultNode);
 
   const closeModal = () => {
     setOpen(false);
-    setSelectedNode(currentNode);
-  }
+    setSelectedNode(defaultNode);
+  };
+
+  const _setSelectedNetwork = (chain) => {
+    const defaultNode = currentNodeSetting?.[chain];
+    setSelectedNode(defaultNode);
+    setSelectedNetwork(chain);
+  };
 
   useUpdateNodesDelay();
 
@@ -107,8 +116,8 @@ const Setting = () => {
       trigger={
         <Wrapper>
           <StyledButton open={open}>
-            <GrayImage src="/imgs/setting-red.svg" />
-            Setting
+            <GrayImage src="/imgs/setting-dark.svg" />
+            {/* Setting */}
           </StyledButton>
         </Wrapper>
       }
@@ -116,24 +125,48 @@ const Setting = () => {
       <StyledCard>
         <CloseButton src="/imgs/close.svg" onClick={() => closeModal()} />
         <StyledTitle>Setting</StyledTitle>
-        <StyledText>{`${chain} nodes`}</StyledText>
+        <StyledText>{`Network`}</StyledText>
         <SettingList>
-          {(nodes || []).map((item, index) => (<SettingItem
-            key={index}
-            node={item}
-            selectedNode={selectedNode}
-            setSelectedNode={setSelectedNode} />)
-          )}
+          <NetworkItem
+            icon={"/imgs/logo-polkadot.svg"}
+            name={"polkadot"}
+            selectedNetwork={selectedNetwork}
+            setSelectedNetwork={_setSelectedNetwork}
+          />
+          <NetworkItem
+            icon={"/imgs/logo-kusama.svg"}
+            name={"kusama"}
+            selectedNetwork={selectedNetwork}
+            setSelectedNetwork={_setSelectedNetwork}
+          />
+        </SettingList>
+        <StyledText>{`Nodes`}</StyledText>
+        <SettingList>
+          {(nodesSetting?.[selectedNetwork] || []).map((item, index) => (
+            <SettingItem
+              key={index}
+              node={item}
+              selectedNode={selectedNode}
+              setSelectedNode={setSelectedNode}
+            />
+          ))}
         </SettingList>
         <StyledButtonPrimary
-          disabled={selectedNode === currentNode}
+          disabled={selectedNode === defaultNode && selectedNetwork === chain}
           onClick={() => {
-            dispatch(setCurrentNode({ chain, url: selectedNode }));
             closeModal();
-        }}>Switch</StyledButtonPrimary>
+            dispatch(
+              setCurrentNode({ chain: selectedNetwork, url: selectedNode })
+            );
+            dispatch(setChain(symbolFromNetwork(selectedNetwork)));
+            window.location.reload();
+          }}
+        >
+          Switch
+        </StyledButtonPrimary>
       </StyledCard>
     </StyledModal>
-  )
-}
+  );
+};
 
 export default Setting;

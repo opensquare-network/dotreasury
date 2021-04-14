@@ -1,4 +1,4 @@
-import React , { useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import { Image } from "semantic-ui-react";
 
@@ -6,7 +6,7 @@ import Logo from "./Logo";
 import { NavLink } from "react-router-dom";
 import ScanHeight from "./ScanHeight";
 import UserLogin from "./UserLogin";
-import Setting from "./Setting";
+// import Setting from "./Setting";
 import MenuSwitch from "./MenuSwitch";
 import { useMenuTab } from "../../utils/hooks";
 
@@ -37,40 +37,40 @@ const Right = styled.div`
     z-index: 9999;
     background-color: white;
     padding: 22px 0;
-    border-bottom: 1px solid #EEEEEE;
-    >*{
+    border-bottom: 1px solid #eeeeee;
+    > * {
       margin-top: 8px;
-      &:first-child{
+      &:first-child {
         margin-top: 0;
       }
     }
-    >a div, >a button{
-      margin-right: 0!important;
+    > a div,
+    > a button {
+      margin-right: 0 !important;
     }
-    >.button button{
+    > .button button {
       width: 83vw;
     }
-    >.signUp{
-      border: 1px solid #DF405D;
+    > .signUp {
+      border: 1px solid #df405d;
       border-radius: 4px;
     }
-    >.login{
+    > .login {
       margin-top: 16px;
     }
-    >div{
-      margin-right: 0!important;
+    > div {
+      margin-right: 0 !important;
     }
   }
 `;
 
 const MenuIcon = styled(Image)`
-  display: none!important;
+  display: none !important;
   @media screen and (max-width: 850px) {
-    display: block!important;
+    display: block !important;
     cursor: pointer;
   }
 `;
-
 
 const ScanHeightWrapper = styled.div`
   margin-left: 24px;
@@ -85,13 +85,13 @@ const HeaderExamplePage = () => {
 
   const menuWrap = useRef();
   const menuClick = (e) => {
-    if(e.target !== menuWrap.current) {
+    if (e.target !== menuWrap.current) {
       setMenuShow(false);
     }
   };
-  let menuIconSrc = '/imgs/menu-icon-open.svg';
-  if(menuShow) {
-    menuIconSrc = '/imgs/menu-icon-close.svg';
+  let menuIconSrc = "/imgs/menu-icon-open.svg";
+  if (menuShow) {
+    menuIconSrc = "/imgs/menu-icon-close.svg";
   }
   return (
     <Wrapper>
@@ -103,11 +103,12 @@ const HeaderExamplePage = () => {
           <ScanHeight />
         </ScanHeightWrapper>
       </Left>
-      <MenuIcon
-        src={menuIconSrc}
-        onClick={() => setMenuShow(!menuShow)}
-      />
-      <Right style={{display: menuShow?'flex':''}} onClick={menuClick} ref={menuWrap}>
+      <MenuIcon src={menuIconSrc} onClick={() => setMenuShow(!menuShow)} />
+      <Right
+        style={{ display: menuShow ? "flex" : "" }}
+        onClick={menuClick}
+        ref={menuWrap}
+      >
         <NavLink to="/">
           <MenuSwitch menuTabsName="Home" />
         </NavLink>
@@ -117,7 +118,7 @@ const HeaderExamplePage = () => {
         <NavLink to="/projects">
           <MenuSwitch menuTabsName="Projects" />
         </NavLink>
-        <Setting />
+        {/* <Setting /> */}
         <UserLogin />
       </Right>
     </Wrapper>
