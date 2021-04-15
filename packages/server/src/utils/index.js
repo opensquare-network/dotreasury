@@ -8,6 +8,7 @@ const { u8aToHex } = require("@polkadot/util");
 const BigNumber = require("bignumber.js");
 const { stringUpperFirst } = require("@polkadot/util");
 const { SS58Format } = require("../contants");
+const { HttpError } = require("../exc");
 
 function extractPage(ctx) {
   const { page_size: queryPageSize, page: queryPage } = ctx.query;

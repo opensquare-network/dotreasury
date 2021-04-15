@@ -128,6 +128,8 @@ async function setOldKey() {
 async function getTreasuryBalance(blockHash, blockHeight) {
   const api = await getApi();
   if ("polkadot" === currentChain()) {
+    // TODO: We can not get treasury balance at height which <= 29230.
+    // TODO: Though we do not store the balance in this range, we should figure out how to query it.
     return await queryAccountFreeWithSystem(blockHash);
   }
 

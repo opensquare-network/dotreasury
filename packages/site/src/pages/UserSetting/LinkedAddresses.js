@@ -8,7 +8,11 @@ import {
 } from "@polkadot/extension-dapp";
 
 import api from "../../services/scanApi";
-import { signMessage } from "../../services/chainApi";
+import {
+  isExtensionKusamaAddress,
+  isExtensionPolkadotAddress,
+  signMessage,
+} from "../../services/chainApi";
 import { useIsMounted } from "../../utils/hooks";
 import {
   fetchUserProfile,
@@ -21,7 +25,11 @@ import Divider from "../../components/Divider";
 import AccountItem from "../../components/AccountItem";
 import ButtonImage from "../../components/ButtonImage";
 import { addToast } from "../../store/reducers/toastSlice";
-import { encodeKusamaAddress } from "../../services/chainApi";
+import {
+  encodeKusamaAddress,
+  encodePolkadotAddress,
+} from "../../services/chainApi";
+import ChainHeader from "./ChainHeader";
 
 const StyledTextMinor = styled(TextMinor)`
   margin-bottom: 16px;
@@ -29,10 +37,6 @@ const StyledTextMinor = styled(TextMinor)`
 
 const StyledButtonPrimary = styled(ButtonPrimary)`
   width: 100%;
-`;
-
-const StyledDivider = styled(Divider)`
-  margin: 24px 0;
 `;
 
 const AccountWrapper = styled.div`
@@ -55,12 +59,18 @@ const AccountWrapper = styled.div`
     `}
 `;
 
+const DividerWrapper = styled(Divider)`
+  margin: 2px 0 0 0 !important;
+  border-top: 1px solid rgba(238, 238, 238, 1) !important;
+`;
+
 const LinkedAddress = () => {
   const isMounted = useIsMounted();
   const dispatch = useDispatch();
 
   const userProfile = useSelector(userProfileSelector);
   const [accounts, setAccounts] = useState([]);
+  const [activeChain, setActiveChain] = useState("polkadot");
 
   const loadExtensionAddresses = async () => {
     await web3Enable("doTreasury");
@@ -71,10 +81,20 @@ const LinkedAddress = () => {
       return;
     }
     const extensionAccounts = await web3Accounts();
-    const accounts = extensionAccounts.map(({ address, meta: { name } }) => {
+    console.log(extensionAccounts);
+    const accounts = extensionAccounts.map((item) => {
+      const {
+        address,
+        meta: { name },
+      } = item;
       return {
         address,
-        kusamaAddress: encodeKusamaAddress(address),
+        kusamaAddress: isExtensionKusamaAddress(item)
+          ? encodeKusamaAddress(address)
+          : null,
+        polkadotAddress: isExtensionPolkadotAddress(item)
+          ? encodePolkadotAddress(address)
+          : null,
         name,
       };
     });
@@ -84,9 +104,11 @@ const LinkedAddress = () => {
     }
   };
 
-  const unlinkAddress = async (account) => {
+  const unlinkAddress = async (chain, account) => {
+    const address = account[`${chain}Address`];
+
     const { error, result } = await api.authFetch(
-      `/user/linkaddr/kusama/${account.kusamaAddress}`,
+      `/user/linkaddr/${chain}/${address}`,
       {},
       {
         method: "DELETE",
@@ -113,13 +135,18 @@ const LinkedAddress = () => {
     }
   };
 
-  const linkAddress = async (account) => {
+  const linkAddress = async (chain, account) => {
+    const address = account[`${chain}Address`];
+
     const { result, error } = await api.authFetch(
-      `/user/linkaddr/kusama/${account.kusamaAddress}`
+      `/user/linkaddr/${chain}/${address}`
     );
     if (result) {
       const signature = await signMessage(result?.challenge, account.address);
-      const { error: confirmError, result: confirmResult } = await api.authFetch(
+      const {
+        error: confirmError,
+        result: confirmResult,
+      } = await api.authFetch(
         `/user/linkaddr/${result?.attemptId}`,
         {},
         {
@@ -166,45 +193,49 @@ const LinkedAddress = () => {
     ...(userProfile.addresses || [])
       .filter(
         (address) =>
-          address.chain === "kusama" &&
           !accounts.some((acc) => acc.address === address.wildcardAddress)
       )
       .map((address) => ({
         address: address.wildcardAddress,
-        kusamaAddress: address.address,
+        kusamaAddress: address.chain === "kusama" ? address.address : null,
+        polkadotAddress: address.chain === "polkadot" ? address.address : null,
         name: "--",
       })),
   ];
 
   return (
     <StyledItem>
-      <StyledTitle>Linked addresses</StyledTitle>
+      <StyledTitle>Link address</StyledTitle>
       <StyledTextMinor>{`Associate your account with an on-chain address using the Polkadot{.js} extension.`}</StyledTextMinor>
       <StyledButtonPrimary onClick={loadExtensionAddresses}>
         Show avaliable addresses
       </StyledButtonPrimary>
-      {mergedAccounts && mergedAccounts.length > 0 && (
-        <div>
-          <StyledDivider />
-          <StyledTitle>Linked addresses</StyledTitle>
-          {mergedAccounts.map((account, index) => (
+      <div>
+        <ChainHeader
+          activeChain={activeChain}
+          setActiveChain={setActiveChain}
+        />
+        <DividerWrapper />
+        {mergedAccounts
+          ?.filter((acc) => acc[`${activeChain}Address`])
+          .map((account, index) => (
             <AccountWrapper
               key={index}
               linked={userProfile.addresses?.some(
-                (i) => i.address === account.kusamaAddress
+                (i) => i.address === account[`${activeChain}Address`]
               )}
             >
               <AccountItem
                 accountName={account.name}
-                accountAddress={account.kusamaAddress}
+                accountAddress={account[`${activeChain}Address`]}
               />
               {userProfile.addresses?.some(
-                (i) => i.address === account.kusamaAddress
+                (i) => i.address === account[`${activeChain}Address`]
               ) ? (
                 <ButtonImage
                   src="/imgs/link-break.svg"
                   onClick={() => {
-                    unlinkAddress(account);
+                    unlinkAddress(activeChain, account);
                   }}
                 >
                   Unlink
@@ -213,7 +244,7 @@ const LinkedAddress = () => {
                 <ButtonImage
                   src="/imgs/linked.svg"
                   onClick={() => {
-                    linkAddress(account);
+                    linkAddress(activeChain, account);
                   }}
                 >
                   Link
@@ -221,8 +252,7 @@ const LinkedAddress = () => {
               )}
             </AccountWrapper>
           ))}
-        </div>
-      )}
+      </div>
     </StyledItem>
   );
 };

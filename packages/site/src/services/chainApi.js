@@ -20,8 +20,12 @@ let nodeUrl = (() => {
     // ignore parse error
   }
   return {
-    kusama: DEFAULT_KUSAMA_NODES.find((item) => item.url === localNodeUrl?.kusama)?.url || DEFAULT_KUSAMA_NODE_URL,
-    polkadot: DEFAULT_POLKADOT_NODES.find((item) => item.url === localNodeUrl?.polkadot)?.url || DEFAULT_POLKADOT_NODE_URL,
+    kusama:
+      DEFAULT_KUSAMA_NODES.find((item) => item.url === localNodeUrl?.kusama)
+        ?.url || DEFAULT_KUSAMA_NODE_URL,
+    polkadot:
+      DEFAULT_POLKADOT_NODES.find((item) => item.url === localNodeUrl?.polkadot)
+        ?.url || DEFAULT_POLKADOT_NODE_URL,
   };
 })();
 
@@ -103,10 +107,34 @@ export const encodeKusamaAddress = (address) => {
   }
 };
 
+export const encodePolkadotAddress = (address) => {
+  try {
+    return encodeAddress(address, 0);
+  } catch {
+    return "";
+  }
+};
+
 export const encodeSubstrateAddress = (address) => {
   try {
     return encodeAddress(address, 42);
   } catch {
     return "";
   }
+};
+
+export const isExtensionKusamaAddress = (item) => {
+  return (
+    item.meta.genesisHash === "" ||
+    item.meta.genesisHash ===
+      "0xb0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafe"
+  );
+};
+
+export const isExtensionPolkadotAddress = (item) => {
+  return (
+    item.meta.genesisHash === "" ||
+    item.meta.genesisHash ===
+      "0x91b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3"
+  );
 };
