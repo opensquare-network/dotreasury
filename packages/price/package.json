@@ -5,8 +5,14 @@
   "engines": {
     "node": ">=15.0.0"
   },
+  "scripts": {
+    "deploy:ksm": "pm2 start ecosystem.config.js --only ksm-price-tracker",
+    "deploy:dot": "pm2 start ecosystem.config.js --only dot-price-tracker"
+  },
   "dependencies": {
     "abort-controller": "^3.0.0",
+    "dayjs": "^1.10.4",
+    "minimist": "^1.2.5",
     "mongodb": "^3.6.3",
     "node-fetch": "^2.6.1"
   }
