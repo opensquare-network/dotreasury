@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -30,6 +30,8 @@ import {
   encodePolkadotAddress,
 } from "../../services/chainApi";
 import ChainHeader from "./ChainHeader";
+import NoAddress from "./NoAddress";
+import DownloadPolkadot from "../../components/DownloadPolkadot";
 
 const StyledTextMinor = styled(TextMinor)`
   margin-bottom: 16px;
@@ -45,6 +47,7 @@ const AccountWrapper = styled.div`
   border: 1px solid #eeeeee;
   align-items: center;
   justify-content: space-between;
+  margin-top: 12px;
   :not(:last-child) {
     margin-bottom: 8px;
   }
@@ -67,10 +70,23 @@ const DividerWrapper = styled(Divider)`
 const LinkedAddress = () => {
   const isMounted = useIsMounted();
   const dispatch = useDispatch();
+  const [hasExtension, setHasExtension] = useState(true);
 
   const userProfile = useSelector(userProfileSelector);
   const [accounts, setAccounts] = useState([]);
   const [activeChain, setActiveChain] = useState("polkadot");
+
+  useEffect(() => {
+    (async () => {
+      await web3Enable("doTreasury");
+      if (!isWeb3Injected) {
+        if (isMounted.current) {
+          setHasExtension(false);
+        }
+        return;
+      }
+    })();
+  }, [isMounted]);
 
   const loadExtensionAddresses = async () => {
     await web3Enable("doTreasury");
@@ -81,7 +97,6 @@ const LinkedAddress = () => {
       return;
     }
     const extensionAccounts = await web3Accounts();
-    console.log(extensionAccounts);
     const accounts = extensionAccounts.map((item) => {
       const {
         address,
@@ -203,6 +218,9 @@ const LinkedAddress = () => {
       })),
   ];
 
+  const availableAccounts =
+    mergedAccounts?.filter((acc) => acc[`${activeChain}Address`]) || [];
+
   return (
     <StyledItem>
       <StyledTitle>Link address</StyledTitle>
@@ -210,48 +228,52 @@ const LinkedAddress = () => {
       <StyledButtonPrimary onClick={loadExtensionAddresses}>
         Show avaliable addresses
       </StyledButtonPrimary>
-      <div>
-        <ChainHeader
-          activeChain={activeChain}
-          setActiveChain={setActiveChain}
-        />
-        <DividerWrapper />
-        {mergedAccounts
-          ?.filter((acc) => acc[`${activeChain}Address`])
-          .map((account, index) => (
-            <AccountWrapper
-              key={index}
-              linked={userProfile.addresses?.some(
-                (i) => i.address === account[`${activeChain}Address`]
-              )}
-            >
-              <AccountItem
-                accountName={account.name}
-                accountAddress={account[`${activeChain}Address`]}
-              />
-              {userProfile.addresses?.some(
-                (i) => i.address === account[`${activeChain}Address`]
-              ) ? (
-                <ButtonImage
-                  src="/imgs/link-break.svg"
-                  onClick={() => {
-                    unlinkAddress(activeChain, account);
-                  }}
-                >
-                  Unlink
-                </ButtonImage>
-              ) : (
-                <ButtonImage
-                  src="/imgs/linked.svg"
-                  onClick={() => {
-                    linkAddress(activeChain, account);
-                  }}
-                >
-                  Link
-                </ButtonImage>
-              )}
-            </AccountWrapper>
-          ))}
+      <div style={{ "margin-top": "16px" }}>
+        {!hasExtension && <DownloadPolkadot />}
+        {hasExtension && (
+          <>
+            <ChainHeader
+              activeChain={activeChain}
+              setActiveChain={setActiveChain}
+            />
+            <DividerWrapper />
+            {availableAccounts.length === 0 ? <NoAddress /> : <></>}
+            {availableAccounts.map((account, index) => (
+              <AccountWrapper
+                key={index}
+                linked={userProfile.addresses?.some(
+                  (i) => i.address === account[`${activeChain}Address`]
+                )}
+              >
+                <AccountItem
+                  accountName={account.name}
+                  accountAddress={account[`${activeChain}Address`]}
+                />
+                {userProfile.addresses?.some(
+                  (i) => i.address === account[`${activeChain}Address`]
+                ) ? (
+                  <ButtonImage
+                    src="/imgs/link-break.svg"
+                    onClick={() => {
+                      unlinkAddress(activeChain, account);
+                    }}
+                  >
+                    Unlink
+                  </ButtonImage>
+                ) : (
+                  <ButtonImage
+                    src="/imgs/linked.svg"
+                    onClick={() => {
+                      linkAddress(activeChain, account);
+                    }}
+                  >
+                    Link
+                  </ButtonImage>
+                )}
+              </AccountWrapper>
+            ))}
+          </>
+        )}
       </div>
     </StyledItem>
   );

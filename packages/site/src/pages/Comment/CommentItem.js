@@ -30,6 +30,7 @@ import { TEXT_DARK_DISABLE } from "../../constants";
 import UserAvatar from "../../components/User/Avatar";
 import { useIndentity } from "../../utils/hooks";
 import { encodeSubstrateAddress } from "../../services/chainApi";
+import { chainSelector } from "../../store/reducers/chainSlice";
 
 const Wrapper = styled.div`
   padding: 32px 32px 16px;
@@ -39,7 +40,7 @@ const Wrapper = styled.div`
   ${(p) =>
     p.highLight &&
     css`
-      background: #FFF9FA;
+      background: #fff9fa;
     `}
 `;
 
@@ -218,9 +219,10 @@ const CommentItem = ({ index, comment, onReplyButton, replyEvent }) => {
   const isMounted = useIsMounted();
   const loggedInUser = useSelector(loggedInUserSelector);
   const lastNewPost = useSelector(lastNewPostSelector);
+  const chain = useSelector(chainSelector);
 
   const address = comment.author?.addresses?.filter(
-    (i) => i.chain === "kusama"
+    (i) => i.chain === chain
   )[0];
   const { name: addressName } = useIndentity(
     address && encodeSubstrateAddress(address.address)
@@ -267,7 +269,7 @@ const CommentItem = ({ index, comment, onReplyButton, replyEvent }) => {
   const copyLink = () => {
     let copyContent = window.location.href;
     if (copyContent.includes("#")) {
-      copyContent = copyContent.split('#')[0];
+      copyContent = copyContent.split("#")[0];
     }
     copyContent += "#" + commentId;
     copy(copyContent);

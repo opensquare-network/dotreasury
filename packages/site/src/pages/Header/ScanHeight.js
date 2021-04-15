@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { Image } from "semantic-ui-react";
 import ExplorerLink from "../../components/ExplorerLink";
-import Setting from "./Setting";
+import Setting from "../../components/Setting";
 
 import { TEXT_DARK_MAJOR, TEXT_DARK_MINOR } from "../../constants";
 import {

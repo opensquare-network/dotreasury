@@ -11,7 +11,7 @@ import {
 
 const TabWrapper = styled(Tab)`
   display: flex;
-  height: 65px;
+  height: 48px;
   background: transparent;
 
   div {
