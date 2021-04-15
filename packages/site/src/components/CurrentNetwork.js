@@ -15,17 +15,10 @@ const Wrapper = styled.div`
 
   justify-content: space-between;
   align-items: center;
-  padding: 12px 20px;
+  padding: 12px 16px;
   background: #fbfbfb;
   border-radius: 8px;
   margin-bottom: 24px;
-  p {
-    margin-bottom: 10px;
-  }
-`;
-
-const Text = styled(TextMinor)`
-  margin-bottom: 0px !important;
 `;
 
 const Dark = styled.span`
@@ -46,12 +39,12 @@ const CurrentNetwork = () => {
   const chain = useSelector(chainSelector);
   return (
     <Wrapper>
-      <Text>
+      <TextMinor>
         You are under the{" "}
         <Dark>
           <Cap>{chain}</Cap> network
         </Dark>
-      </Text>
+      </TextMinor>
       <SettingWrapper>
         <Setting />
       </SettingWrapper>
