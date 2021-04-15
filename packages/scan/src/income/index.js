@@ -28,6 +28,7 @@ const {
   handleElectionsLoserCandidateSlash,
 } = require("./slash/electioinsPhragmenSlash");
 const { getOthersIncomeCollection } = require("../mongo");
+const { handleTransferToTreasuryAccount } = require("./transfer");
 
 async function saveOthersRecord(data) {
   const col = await getOthersIncomeCollection();
@@ -51,6 +52,7 @@ async function handleIncomeEvents(allEvents, blockIndexer, extrinsics) {
 async function handleEvents(events, blockIndexer, extrinsics, seats) {
   let inflationInc = 0;
   let slashInc = 0;
+  let transferInc = 0;
   let othersInc = 0;
 
   // slash increments
@@ -63,6 +65,17 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
   let hasDeposit = false;
 
   for (let sort = 0; sort < events.length; sort++) {
+    const transferData = await handleTransferToTreasuryAccount(
+      events[sort],
+      sort,
+      blockIndexer
+    );
+    if (transferData) {
+      hasDeposit = true;
+      transferInc = bigAdd(transferInc, transferData.balance);
+      continue;
+    }
+
     let isOthers = true;
 
     const {
@@ -264,6 +277,7 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
   return {
     inflation: bigAdd(seats.inflation, inflationInc),
     slash: bigAdd(seats.slash, slashInc),
+    transfer: bigAdd(seats.transfer, transferInc),
     others: bigAdd(seats.others, othersInc),
     slashSeats: {
       treasury: bigAdd(slashSeats.treasury || 0, treasurySlashInc),
