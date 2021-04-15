@@ -2,7 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 
 import { PRIMARY_THEME_COLOR } from "../../constants";
-import Text from "../../components/Text";
+import Text from "../Text";
 
 const Wrapper = styled.div`
   padding: 8px 16px;
@@ -17,7 +17,7 @@ const Wrapper = styled.div`
     margin-bottom: 8px;
   }
   cursor: pointer;
-`
+`;
 
 const CheckItem = styled.div`
   width: 16px;
@@ -26,7 +26,7 @@ const CheckItem = styled.div`
   border-radius: 8px;
   margin-right: 8px;
   flex: 0 0 auto;
-`
+`;
 
 const CheckedItem = styled.div`
   width: 16px;
@@ -35,32 +35,51 @@ const CheckedItem = styled.div`
   border-radius: 8px;
   margin-right: 8px;
   flex: 0 0 auto;
-`
+`;
 
 const Detail = styled(Text)`
   font-weight: 500;
-  color: #3ABC3F;
-  ${p => p.delay && typeof p.delay === 'number' && p.delay >= 100 && css`
-    color: #EE7735;
-  `}
-  ${p => p.delay && typeof p.delay === 'number' && p.delay >= 300 && css`
-    color: #EC4730;
-  `}
-  ${p => p.delay && typeof p.delay === 'string' && css`
-    color: #EC4730;
-  `}
-`
+  color: #3abc3f;
+  ${(p) =>
+    p.delay &&
+    typeof p.delay === "number" &&
+    p.delay >= 100 &&
+    css`
+      color: #ee7735;
+    `}
+  ${(p) =>
+    p.delay &&
+    typeof p.delay === "number" &&
+    p.delay >= 300 &&
+    css`
+      color: #ec4730;
+    `}
+  ${(p) =>
+    p.delay &&
+    typeof p.delay === "string" &&
+    css`
+      color: #ec4730;
+    `}
+`;
 
-const SettingItem = ({node: {name, url, delay}, selectedNode, setSelectedNode}) => {
+const SettingItem = ({
+  node: { name, url, delay },
+  selectedNode,
+  setSelectedNode,
+}) => {
   const checked = url === selectedNode;
   return (
     <Wrapper onClick={() => setSelectedNode(url)}>
       {!checked && <CheckItem />}
       {checked && <CheckedItem />}
       <Text className="grow">Hosted by {name}</Text>
-      {delay && <Detail delay={delay}>{typeof delay === "number" ? `${delay} ms` : delay}</Detail>}
+      {delay && (
+        <Detail delay={delay}>
+          {typeof delay === "number" ? `${delay} ms` : delay}
+        </Detail>
+      )}
     </Wrapper>
-  )
-}
+  );
+};
 
 export default SettingItem;

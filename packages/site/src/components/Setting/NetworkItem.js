@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import { PRIMARY_THEME_COLOR } from "../../constants";
-import Text from "../../components/Text";
+import Text from "../Text";
 import { Image } from "semantic-ui-react";
 
 const CapText = styled(Text)`
