@@ -6,6 +6,7 @@ const incomeScanName = "income-scan";
 const genesisTreasurySeats = {
   inflation: 0,
   slash: 0,
+  transfer: 0,
   others: 0, // mainly gas
   slashSeats: {
     treasury: 0,
