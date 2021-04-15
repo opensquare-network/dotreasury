@@ -8,11 +8,7 @@ import {
 } from "@polkadot/extension-dapp";
 
 import api from "../../services/scanApi";
-import {
-  isExtensionKusamaAddress,
-  isExtensionPolkadotAddress,
-  signMessage,
-} from "../../services/chainApi";
+import { signMessage } from "../../services/chainApi";
 import { useIsMounted } from "../../utils/hooks";
 import {
   fetchUserProfile,
@@ -104,12 +100,8 @@ const LinkedAddress = () => {
       } = item;
       return {
         address,
-        kusamaAddress: isExtensionKusamaAddress(item)
-          ? encodeKusamaAddress(address)
-          : null,
-        polkadotAddress: isExtensionPolkadotAddress(item)
-          ? encodePolkadotAddress(address)
-          : null,
+        kusamaAddress: encodeKusamaAddress(address),
+        polkadotAddress: encodePolkadotAddress(address),
         name,
       };
     });
@@ -228,7 +220,7 @@ const LinkedAddress = () => {
       <StyledButtonPrimary onClick={loadExtensionAddresses}>
         Show avaliable addresses
       </StyledButtonPrimary>
-      <div style={{ "margin-top": "16px" }}>
+      <div style={{ marginTop: "16px" }}>
         {!hasExtension && <DownloadPolkadot />}
         {hasExtension && (
           <>

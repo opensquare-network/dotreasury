@@ -35,8 +35,6 @@ import {
   signMessage,
   encodeKusamaAddress,
   encodePolkadotAddress,
-  isExtensionKusamaAddress,
-  isExtensionPolkadotAddress,
 } from "../../services/chainApi";
 import { useIsMounted } from "../../utils/hooks";
 import {
@@ -180,12 +178,8 @@ function Login({ location }) {
           } = item;
           return {
             address,
-            kusamaAddress: isExtensionKusamaAddress(item)
-              ? encodeKusamaAddress(address)
-              : null,
-            polkadotAddress: isExtensionPolkadotAddress(item)
-              ? encodePolkadotAddress(address)
-              : null,
+            kusamaAddress: encodeKusamaAddress(address),
+            polkadotAddress: encodePolkadotAddress(address),
             name,
           };
         });
