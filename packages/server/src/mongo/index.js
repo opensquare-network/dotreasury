@@ -1,14 +1,11 @@
 const polkadot = require("./polkadot");
 const kusama = require("./kusama");
 
-const db = (chain) => chain === "kusama" ? kusama : (chain === "polkadot" ? polkadot : null);
+const db = (chain) =>
+  chain === "kusama" ? kusama : chain === "polkadot" ? polkadot : null;
 
 function initDb() {
-  return Promise.all(
-    [
-      polkadot.initDb(),
-      kusama.initDb()
-    ]);
+  return Promise.all([polkadot.initDb(), kusama.initDb()]);
 }
 
 function getStatusCollection(chain) {
@@ -63,8 +60,8 @@ function getOthersIncomeCollection(chain) {
   return db(chain).getOthersIncomeCollection();
 }
 
-function getStatsCollection(chain) {
-  return db(chain).getStatsCollection();
+function getWeeklyStatsCollection(chain) {
+  return db(chain).getWeeklyStatsCollection();
 }
 
 module.exports = {
@@ -82,5 +79,5 @@ module.exports = {
   getDemocracySlashCollection,
   getIdentitySlashCollection,
   getOthersIncomeCollection,
-  getStatsCollection,
+  getWeeklyStatsCollection,
 };
