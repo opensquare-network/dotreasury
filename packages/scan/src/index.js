@@ -70,11 +70,10 @@ async function scanBlockByHeight(scanHeight) {
   const api = await getApi();
 
   let blockHash;
-
   try {
     blockHash = await api.rpc.chain.getBlockHash(scanHeight);
   } catch (e) {
-    console.error("Can not get blockhash");
+    console.error("Can not get block hash");
     throw e;
   }
 
