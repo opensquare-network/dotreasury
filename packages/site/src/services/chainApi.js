@@ -20,8 +20,12 @@ let nodeUrl = (() => {
     // ignore parse error
   }
   return {
-    kusama: DEFAULT_KUSAMA_NODES.find((item) => item.url === localNodeUrl?.kusama)?.url || DEFAULT_KUSAMA_NODE_URL,
-    polkadot: DEFAULT_POLKADOT_NODES.find((item) => item.url === localNodeUrl?.polkadot)?.url || DEFAULT_POLKADOT_NODE_URL,
+    kusama:
+      DEFAULT_KUSAMA_NODES.find((item) => item.url === localNodeUrl?.kusama)
+        ?.url || DEFAULT_KUSAMA_NODE_URL,
+    polkadot:
+      DEFAULT_POLKADOT_NODES.find((item) => item.url === localNodeUrl?.polkadot)
+        ?.url || DEFAULT_POLKADOT_NODE_URL,
   };
 })();
 
@@ -98,6 +102,14 @@ export const estimateBlocksTime = async (chain, blocks) => {
 export const encodeKusamaAddress = (address) => {
   try {
     return encodeAddress(address, 2);
+  } catch {
+    return "";
+  }
+};
+
+export const encodePolkadotAddress = (address) => {
+  try {
+    return encodeAddress(address, 0);
   } catch {
     return "";
   }

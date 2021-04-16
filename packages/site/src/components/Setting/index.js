@@ -3,11 +3,11 @@ import styled from "styled-components";
 import { Image, Modal } from "semantic-ui-react";
 import { useDispatch, useSelector } from "react-redux";
 
-import Card from "../../components/Card";
-import Title from "../../components/Title";
-import Text from "../../components/Text";
-import Button from "../../components/Button";
-import ButtonPrimary from "../../components/ButtonPrimary";
+import Card from "../Card";
+import Title from "../Title";
+import Text from "../Text";
+import Button from "../Button";
+import ButtonPrimary from "../ButtonPrimary";
 import SettingItem from "./SettingItem";
 import NetworkItem from "./NetworkItem";
 import {
@@ -16,7 +16,7 @@ import {
   nodesSelector,
 } from "../../store/reducers/nodeSlice";
 import useUpdateNodesDelay from "../../utils/useUpdateNodesDelay";
-import GrayImage from "../../components/GrayImage";
+import GrayImage from "../GrayImage";
 import { PRIMARY_THEME_COLOR } from "../../constants";
 import { chainSelector, setChain } from "../../store/reducers/chainSlice";
 import { symbolFromNetwork } from "../../utils";
@@ -52,8 +52,6 @@ const StyledButton = styled(Button)`
   display: flex !important;
   align-items: center;
   border: 0 !important;
-  /* padding-left: 0 !important;
-  padding-right: 0 !important; */
   background: #fbfbfb !important;
   &:hover {
     color: ${PRIMARY_THEME_COLOR} !important;

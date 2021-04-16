@@ -8,7 +8,7 @@ import {
   isLoggedInSelector,
   loggedInUserSelector,
   userProfileSelector,
-  fetchUserProfile
+  fetchUserProfile,
 } from "../../store/reducers/userSlice";
 import ButtonPrimary from "../../components/ButtonPrimary";
 import ButtonLabel from "../../components/ButtonLabel";
@@ -19,6 +19,7 @@ import UserAvatar from "../../components/User/Avatar";
 import { getGravatarSrc } from "../../utils";
 import scanApi from "../../services/scanApi";
 import { setLoggedInUser } from "../../store/reducers/userSlice";
+import { chainSelector } from "../../store/reducers/chainSlice";
 
 const Wrapper = styled.a`
   display: flex;
@@ -43,7 +44,7 @@ const CircleImage = styled(Image)`
   width: 20px;
   height: 20px;
   border-radius: 50%;
-`
+`;
 
 const UserLogin = () => {
   const history = useHistory();
@@ -51,7 +52,8 @@ const UserLogin = () => {
   const isLoggedIn = useSelector(isLoggedInSelector);
   const loggedInUser = useSelector(loggedInUserSelector);
   const userProfile = useSelector(userProfileSelector);
-  const address = userProfile?.addresses?.filter(i => i.chain === "kusama")[0];
+  const chain = useSelector(chainSelector);
+  const address = userProfile?.addresses?.filter((i) => i.chain === chain)[0];
   const { name: addressName } = useIndentity(address?.wildcardAddress);
   const [addressDisplayName, setAddressDisplayName] = useState("");
 
@@ -63,12 +65,15 @@ const UserLogin = () => {
 
   useEffect(() => {
     if (address) {
-      const addressDisplayName = addressName ?
-        addressName :
-        `${address.address.substring(0, 6)}...${address.address.substring(address.address.length - 6, address.address.length)}`;
+      const addressDisplayName = addressName
+        ? addressName
+        : `${address.address.substring(0, 6)}...${address.address.substring(
+            address.address.length - 6,
+            address.address.length
+          )}`;
       setAddressDisplayName(addressDisplayName);
     }
-  }, [address, addressName])
+  }, [address, addressName]);
 
   useEffect(() => {
     const sub = scanApi.jwtExpire.subscribe(() => {
@@ -83,17 +88,23 @@ const UserLogin = () => {
   return (
     <>
       {isLoggedIn ? (
-        <Wrapper onClick={() => {
-          history.push("/settings");
-        }}>
-          {address && <>
-            <UserAvatar address={address.address} size={20} />
-            <TextMinor>{addressDisplayName}</TextMinor>
-          </>}
-          {!address && <>
-            <CircleImage src={getGravatarSrc(loggedInUser.email)} />
-            <TextMinor>{loggedInUser.username}</TextMinor>
-          </>}
+        <Wrapper
+          onClick={() => {
+            history.push("/settings");
+          }}
+        >
+          {address && (
+            <>
+              <UserAvatar address={address.address} size={20} />
+              <TextMinor>{addressDisplayName}</TextMinor>
+            </>
+          )}
+          {!address && (
+            <>
+              <CircleImage src={getGravatarSrc(loggedInUser.email)} />
+              <TextMinor>{loggedInUser.username}</TextMinor>
+            </>
+          )}
         </Wrapper>
       ) : (
         <>

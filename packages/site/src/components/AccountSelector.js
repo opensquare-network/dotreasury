@@ -25,11 +25,11 @@ const StyledDropdown = styled(Dropdown)`
   :active,
   :hover,
   :focus {
-    border-color: #CCCCCC !important;
+    border-color: #cccccc !important;
   }
   &.active,
   & .menu {
-    border-color: #CCCCCC !important;
+    border-color: #cccccc !important;
   }
   &.ui.dropdown .menu > .item {
     padding: 0 !important;
@@ -41,29 +41,39 @@ const StyledDropdown = styled(Dropdown)`
   }
 `;
 
+const AccountSelector = ({ chain, accounts, onSelect = () => {} }) => {
+  const filteredAccounts = accounts.filter((item) => item[`${chain}Address`]);
 
-const AccountSelector = ({ accounts, onSelect = () => {} }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   useEffect(() => {
-    onSelect(accounts[selectedIndex]);
-  }, [accounts, onSelect, selectedIndex]);
-  const options = accounts.map((item, index) => ({
+    onSelect(filteredAccounts[selectedIndex]);
+  }, [filteredAccounts, onSelect, selectedIndex]);
+  const options = filteredAccounts.map((item, index) => ({
     key: index,
     value: index,
     content: (
-      <AccountItem accountName={item.name} accountAddress={item.address} />
-    )
-  }))
+      <AccountItem
+        accountName={item.name}
+        accountAddress={item[`${chain}Address`]}
+      />
+    ),
+  }));
   return (
     <Wrapper>
       <Label>Choose linked account</Label>
       <DropdownWrapper>
-        <StyledDropdown selection options={options} onChange={(_, { value }) => {
-            setSelectedIndex(value)
-          }} />
+        <StyledDropdown
+          selection
+          options={options}
+          onChange={(_, { value }) => {
+            setSelectedIndex(value);
+          }}
+        />
         <AccountItem
-          accountName={accounts?.[selectedIndex]?.name}
-          accountAddress={accounts?.[selectedIndex]?.address}
+          accountName={filteredAccounts?.[selectedIndex]?.name}
+          accountAddress={
+            filteredAccounts?.[selectedIndex]?.[`${chain}Address`]
+          }
           header
         />
       </DropdownWrapper>

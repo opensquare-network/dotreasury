@@ -2,9 +2,8 @@ const ksmFirstTipClosedHeight = 2192357;
 const ksmFirstRejectedEventHeight = 1164233;
 const ksmTreasuryRefactorApplyHeight = 6143966;
 
-const dotTreasuryRefactorApplyHeight = 3899548;
-
 const TreasuryAccount = "F3opxRbN5ZbjJNU511Kj2TLuzFcDq9BGduA9TgiECafpg29";
+const DotTreasuryAccount = "13UVJyLnbVp9RBZYFwFGyDvVd1y27Tt8tkntv6Q7JVPhFsTB";
 
 const ProposalState = Object.freeze({
   Proposed: "Proposed",
@@ -93,6 +92,11 @@ const Modules = Object.freeze({
   Democracy: "democracy",
   ElectionsPhragmen: "electionsPhragmen",
   Session: "session",
+  Balances: "balances",
+});
+
+const BalancesEvents = Object.freeze({
+  Transfer: "Transfer",
 });
 
 const SessionEvents = Object.freeze({
@@ -165,6 +169,7 @@ module.exports = {
   ProposalState,
   ksmFirstRejectedEventHeight,
   TreasuryAccount,
+  DotTreasuryAccount,
   UtilityMethods,
   ksmTreasuryRefactorApplyHeight,
   TreasuryMethods,
@@ -173,4 +178,5 @@ module.exports = {
   DemocracyMethods,
   ElectionsPhragmenEvents,
   SessionEvents,
+  BalancesEvents,
 };

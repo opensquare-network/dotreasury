@@ -28,15 +28,21 @@ import DownloadPolkadot from "../../components/DownloadPolkadot";
 import AccountSelector from "../../components/AccountSelector";
 import FormError from "../../components/FormError";
 import Divider from "../../components/Divider";
+import CurrentNetwork from "../../components/CurrentNetwork";
 
 import api from "../../services/scanApi";
-import { signMessage, encodeKusamaAddress } from "../../services/chainApi";
+import {
+  signMessage,
+  encodeKusamaAddress,
+  encodePolkadotAddress,
+} from "../../services/chainApi";
 import { useIsMounted } from "../../utils/hooks";
 import {
   isWeb3Injected,
   web3Accounts,
   web3Enable,
 } from "@polkadot/extension-dapp";
+import { chainSelector } from "../../store/reducers/chainSlice";
 
 const CardWrapper = styled(Card)`
   max-width: 424px;
@@ -152,6 +158,7 @@ function Login({ location }) {
   const [web3Error, setWeb3Error] = useState("");
   const [showErrors, setShowErrors] = useState(null);
   const [loading, setLoading] = useState(false);
+  const chain = useSelector(chainSelector);
 
   useEffect(() => {
     if (web3Login) {
@@ -164,14 +171,18 @@ function Login({ location }) {
           return;
         }
         const extensionAccounts = await web3Accounts();
-        const accounts = extensionAccounts.map(
-          ({ address, meta: { name } }) => {
-            return {
-              address,
-              name,
-            };
-          }
-        );
+        const accounts = extensionAccounts.map((item) => {
+          const {
+            address,
+            meta: { name },
+          } = item;
+          return {
+            address,
+            kusamaAddress: encodeKusamaAddress(address),
+            polkadotAddress: encodePolkadotAddress(address),
+            name,
+          };
+        });
 
         if (isMounted.current) {
           setAccounts(accounts);
@@ -227,14 +238,16 @@ function Login({ location }) {
       if (loginError) {
         setServerErrors(loginError);
       }
-    }finally{
+    } finally {
       setLoading(false);
     }
   };
 
   const doWeb3Login = async () => {
+    const address = selectedAccount[`${chain}Address`];
+    console.log(address);
     const { result, error } = await api.fetch(
-      `/auth/login/kusama/${encodeKusamaAddress(selectedAccount.address)}`
+      `/auth/login/${chain}/${address}`
     );
     if (result?.challenge) {
       const signature = await signMessage(
@@ -354,12 +367,16 @@ function Login({ location }) {
       {web3Login && (
         <div>
           {hasExtension && (
-            <AccountSelector
-              accounts={accounts}
-              onSelect={(account) => {
-                setSelectedAccount(account);
-              }}
-            />
+            <>
+              <CurrentNetwork />
+              <AccountSelector
+                chain={chain}
+                accounts={accounts}
+                onSelect={(account) => {
+                  setSelectedAccount(account);
+                }}
+              />
+            </>
           )}
           {!hasExtension && <DownloadPolkadot />}
           {web3Error && <FormError>{web3Error}</FormError>}

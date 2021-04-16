@@ -7,7 +7,7 @@ const {
   getBountyCollection,
   getTipCollection,
   getBurntCollection,
-  getStatsCollection,
+  getWeeklyStatsCollection,
 } = require("../mongo");
 const { bigAdd, getTreasuryBalance } = require("../utils");
 const { updateLastStatTime } = require("../mongo/statTime");
@@ -58,8 +58,8 @@ async function saveStats(indexer) {
     indexer.blockHeight
   );
 
-  const statsCol = await getStatsCollection();
-  await statsCol.updateOne(
+  const weeklyStatsCol = await getWeeklyStatsCollection();
+  await weeklyStatsCol.updateOne(
     { indexer },
     {
       $set: {
