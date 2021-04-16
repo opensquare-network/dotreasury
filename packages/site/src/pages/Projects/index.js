@@ -5,13 +5,13 @@ import { useHistory } from "react-router";
 
 import Title from "../../components/Title";
 import ResponsivePagination from "../../components/ResponsivePagination";
-import { useQuery } from "../../utils/hooks";
+import { useChainRoute, useQuery } from "../../utils/hooks";
 import ProjectsTable from "./ProjectsTable";
 
 import {
   fetchProjects,
   projectsSelector,
-  loadingSelector
+  loadingSelector,
 } from "../../store/reducers/projectSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
 
@@ -23,6 +23,8 @@ const DEFAULT_PAGE_SIZE = 20;
 const DEFAULT_QUERY_PAGE = 1;
 
 const Projects = () => {
+  useChainRoute();
+
   const searchPage = parseInt(useQuery().get("page"));
   const queryPage =
     searchPage && !isNaN(searchPage) && searchPage > 0
@@ -38,7 +40,6 @@ const Projects = () => {
   const chain = useSelector(chainSelector);
 
   const totalPages = Math.ceil(total / pageSize);
-
 
   useEffect(() => {
     dispatch(fetchProjects(chain, tablePage - 1, pageSize));
@@ -68,7 +69,7 @@ const Projects = () => {
         }}
       />
     </>
-  )
-}
+  );
+};
 
 export default Projects;

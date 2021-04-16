@@ -6,7 +6,7 @@ import Title from "../../components/Title";
 import ResponsivePagination from "../../components/ResponsivePagination";
 import ProposalsTable from "./ProposalsTable";
 import { useDispatch, useSelector } from "react-redux";
-import { useQuery } from "../../utils/hooks";
+import { useChainRoute, useQuery } from "../../utils/hooks";
 import Summary from "./Summary";
 import Filter from "./Filter";
 
@@ -28,6 +28,8 @@ const DEFAULT_PAGE_SIZE = 20;
 const DEFAULT_QUERY_PAGE = 1;
 
 const Proposals = () => {
+  useChainRoute();
+
   const searchPage = parseInt(useQuery().get("page"));
   const queryPage =
     searchPage && !isNaN(searchPage) && searchPage > 0
@@ -49,7 +51,7 @@ const Proposals = () => {
 
   const totalPages = Math.ceil(total / pageSize);
 
-  const filterQuery = useCallback((data)=>{
+  const filterQuery = useCallback((data) => {
     setFilterData(data);
     setTablePage(1);
   }, []);

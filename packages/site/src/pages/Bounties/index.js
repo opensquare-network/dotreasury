@@ -5,7 +5,7 @@ import Title from "../../components/Title";
 import ResponsivePagination from "../../components/ResponsivePagination";
 import BountiesTable from "./BountiesTable";
 import { useDispatch, useSelector } from "react-redux";
-import { useQuery } from "../../utils/hooks";
+import { useChainRoute, useQuery } from "../../utils/hooks";
 import { useHistory } from "react-router";
 
 import {
@@ -23,6 +23,8 @@ const DEFAULT_PAGE_SIZE = 20;
 const DEFAULT_QUERY_PAGE = 1;
 
 const Bounties = () => {
+  useChainRoute();
+
   const searchPage = parseInt(useQuery().get("page"));
   const queryPage =
     searchPage && !isNaN(searchPage) && searchPage > 0

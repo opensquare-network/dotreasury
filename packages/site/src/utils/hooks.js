@@ -1,10 +1,10 @@
 import { useLayoutEffect, useState, useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { getIndentity } from "../services/chainApi";
 import { setShowMenuTabs } from "../store/reducers/menuSlice";
-import { chainSelector } from "../store/reducers/chainSlice";
+import { chainSelector, setChain } from "../store/reducers/chainSlice";
 
 export const useWindowSize = () => {
   const [size, setSize] = useState([0, 0]);
@@ -111,13 +111,29 @@ export const usePreload = () => {
 
 export const useMenuTab = () => {
   const dispatch = useDispatch();
+  const chain = useSelector(chainSelector);
   const { pathname } = useLocation();
   useEffect(() => {
-    const menuTabsName = pathname.startsWith("/income")
+    const menuTabsName = pathname.startsWith(`/${chain}/income`)
       ? "Income"
-      : pathname.startsWith("/projects")
+      : pathname.startsWith(`/${chain}/projects`)
       ? "Projects"
       : "Home";
     dispatch(setShowMenuTabs(menuTabsName));
-  }, [pathname, dispatch]);
+  }, [pathname, dispatch, chain]);
 };
+
+export function useChainRoute() {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const location = useLocation();
+  const chain = useSelector(chainSelector);
+  const { chain: paramChain } = useParams();
+  useEffect(() => {
+    if (!paramChain) {
+      return history.push(`/${chain}${location.pathname}`);
+    } else if (paramChain !== chain) {
+      dispatch(setChain(paramChain));
+    }
+  }, [dispatch, history, location, chain, paramChain]);
+}

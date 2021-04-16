@@ -10,12 +10,14 @@ import Proposals from "./Proposals";
 import {
   setProjectDetail,
   fetchProjectDetail,
-  // loadingProjectDetailSelector,
   projectDetailSelector,
 } from "../../store/reducers/projectSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
+import { useChainRoute } from "../../utils/hooks";
 
 const ProjectDetail = () => {
+  useChainRoute();
+
   const { projectId } = useParams();
 
   const dispatch = useDispatch();
@@ -28,7 +30,6 @@ const ProjectDetail = () => {
     };
   }, [dispatch, chain, projectId]);
 
-  // const loadingProjectDetail = useSelector(loadingProjectDetailSelector);
   const projectDetail = useSelector(projectDetailSelector);
 
   const detailData = {

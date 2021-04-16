@@ -8,6 +8,8 @@ import ScanHeight from "./ScanHeight";
 import UserLogin from "./UserLogin";
 import MenuSwitch from "./MenuSwitch";
 import { useMenuTab } from "../../utils/hooks";
+import { useSelector } from "react-redux";
+import { chainSelector } from "../../store/reducers/chainSlice";
 
 const Wrapper = styled.header`
   height: 68px;
@@ -80,6 +82,7 @@ const ScanHeightWrapper = styled.div`
 `;
 
 const HeaderExamplePage = () => {
+  const chain = useSelector(chainSelector);
   const [menuShow, setMenuShow] = useState(false);
   useMenuTab();
 
@@ -109,13 +112,13 @@ const HeaderExamplePage = () => {
         onClick={menuClick}
         ref={menuWrap}
       >
-        <NavLink to="/">
+        <NavLink to={`/${chain}`}>
           <MenuSwitch menuTabsName="Home" />
         </NavLink>
-        <NavLink to="/income">
+        <NavLink to={`/${chain}/income`}>
           <MenuSwitch menuTabsName="Income" />
         </NavLink>
-        <NavLink to="/projects">
+        <NavLink to={`/${chain}/projects`}>
           <MenuSwitch menuTabsName="Projects" />
         </NavLink>
         <UserLogin />

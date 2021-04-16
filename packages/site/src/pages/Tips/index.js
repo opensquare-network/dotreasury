@@ -11,7 +11,7 @@ import {
   normalizedTipListSelector,
 } from "../../store/reducers/tipSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
-import { useQuery } from "../../utils/hooks";
+import { useChainRoute, useQuery } from "../../utils/hooks";
 import { useHistory } from "react-router";
 
 const HeaderWrapper = styled.div`
@@ -21,11 +21,12 @@ const HeaderWrapper = styled.div`
   align-items: center;
 `;
 
-
 const DEFAULT_PAGE_SIZE = 20;
 const DEFAULT_QUERY_PAGE = 1;
 
 const Tips = () => {
+  useChainRoute();
+
   const searchPage = parseInt(useQuery().get("page"));
   const queryPage =
     searchPage && !isNaN(searchPage) && searchPage > 0
@@ -47,7 +48,7 @@ const Tips = () => {
     dispatch(fetchTips(chain, tablePage - 1, pageSize, filterData));
   }, [dispatch, chain, tablePage, pageSize, filterData]);
 
-  const filterQuery = useCallback((data)=>{
+  const filterQuery = useCallback((data) => {
     setFilterData(data);
     setTablePage(1);
   }, []);
