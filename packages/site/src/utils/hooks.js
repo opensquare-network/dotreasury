@@ -133,13 +133,13 @@ export function useChainRoute() {
   const location = useLocation();
   const symbol = useSelector(chainSymbolSelector).toLowerCase();
   const { symbol: paramSymbol } = useParams();
-  const urlSymbol = paramSymbol.toLowerCase();
+  const urlSymbol = paramSymbol?.toLowerCase();
   useEffect(() => {
-    if (!paramSymbol) {
+    if (!urlSymbol) {
       return history.push(`/${symbol}${location.pathname}`);
     } else if (urlSymbol !== symbol) {
       dispatch(setChain(urlSymbol));
       window.location.reload();
     }
-  }, [dispatch, history, location, symbol, paramSymbol]);
+  }, [dispatch, history, location, symbol, urlSymbol]);
 }
