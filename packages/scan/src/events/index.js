@@ -7,6 +7,7 @@ const {
   handleBountyEventWithExtrinsic,
   handleBountyBecameActiveEvent,
 } = require("./treasury/bounty");
+const { handleTreasuryTransferOut } = require("./outTransfer")
 
 async function handleEvents(events, blockIndexer, extrinsics) {
   if (events.length <= 0) {
@@ -64,8 +65,10 @@ async function handleEvents(events, blockIndexer, extrinsics) {
       normalizedExtrinsic,
       sort
     );
-    if (hasProposalEvents) {
-      hasTargetEvents = true;
+    const hasTransferOut = await handleTreasuryTransferOut(event, sort, blockIndexer)
+
+    if (hasProposalEvents || hasTransferOut) {
+      hasTargetEvents = true
     }
   }
 
