@@ -11,6 +11,8 @@ import Text from "../../components/Text";
 import NameCell from "./NameCell";
 import DateCell from "./DateCell";
 import ExpenseCell from "./ExpenseCell";
+import { useSelector } from "react-redux";
+import { chainSelector } from "../../store/reducers/chainSlice";
 
 const Wrapper = styled.div`
   overflow-x: scroll;
@@ -38,10 +40,11 @@ const StyledTable = styled(Table)`
 
 const TipsTable = ({ data, loading }) => {
   const history = useHistory();
+  const chain = useSelector(chainSelector);
 
   const onClickRow = (id) => {
     if (window.innerWidth < 1140) {
-      history.push(`/projects/${id}`);
+      history.push(`/${chain}/projects/${id}`);
     }
   };
 
@@ -75,7 +78,10 @@ const TipsTable = ({ data, loading }) => {
                     <Text>{item.proposals ?? 0}</Text>
                   </Table.Cell>
                   <Table.Cell className="balance-cell" textAlign={"right"}>
-                    <ExpenseCell expense={item.expense ?? 0} dollar={item.dollar} />
+                    <ExpenseCell
+                      expense={item.expense ?? 0}
+                      dollar={item.dollar}
+                    />
                   </Table.Cell>
                   <Table.Cell className="date-cell">
                     <DateCell date={item.startTime} />
@@ -84,7 +90,7 @@ const TipsTable = ({ data, loading }) => {
                     <DateCell date={item.endTime} />
                   </Table.Cell> */}
                   <Table.Cell className="link-cell hidden">
-                    <NavLink to={`/projects/${item.id}`}>
+                    <NavLink to={`/${chain}/projects/${item.id}`}>
                       <RightButton />
                     </NavLink>
                   </Table.Cell>

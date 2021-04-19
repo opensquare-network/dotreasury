@@ -15,7 +15,10 @@ import { TipStatus } from "../../constants";
 import TableNoDataCell from "../../components/TableNoDataCell";
 import ReasonLink from "./ReasonLink";
 import { useSelector } from "react-redux";
-import { chainSymbolSelector } from "../../store/reducers/chainSlice";
+import {
+  chainSelector,
+  chainSymbolSelector,
+} from "../../store/reducers/chainSlice";
 
 const Wrapper = styled.div`
   overflow-x: scroll;
@@ -44,11 +47,12 @@ const StyledTable = styled(Table)`
 const TipsTable = ({ data, loading }) => {
   const history = useHistory();
   const symbol = useSelector(chainSymbolSelector);
+  const chain = useSelector(chainSelector);
 
   const onClickRow = (height, hash) => {
     if (height && hash) {
       if (window.innerWidth < 1140) {
-        history.push(`/tips/${height}_${hash}`);
+        history.push(`/${chain}/tips/${height}_${hash}`);
       }
     }
   };
@@ -116,7 +120,7 @@ const TipsTable = ({ data, loading }) => {
                   </Table.Cell>
                   <Table.Cell className="link-cell hidden">
                     <NavLink
-                      to={`/tips/${item.proposeAtBlockHeight}_${item.hash}`}
+                      to={`/${chain}/tips/${item.proposeAtBlockHeight}_${item.hash}`}
                     >
                       <RightButton />
                     </NavLink>

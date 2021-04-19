@@ -23,6 +23,7 @@ import Proposer from "../../components/Proposer";
 import BlocksTime from "../../components/BlocksTime";
 import TimelineCommentWrapper from "../../components/TimelineCommentWrapper";
 import DetailGoBack from "../components/DetailGoBack";
+import { useChainRoute } from "../../utils/hooks";
 
 const ValueWrapper = styled.span`
   margin-right: 4px;
@@ -180,6 +181,8 @@ function processTimeline(proposalDetail, scanHeight) {
 }
 
 const ProposalDetail = () => {
+  useChainRoute();
+
   const { proposalIndex } = useParams();
   const dispatch = useDispatch();
   const [timelineData, setTimelineData] = useState([]);

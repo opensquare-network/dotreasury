@@ -24,6 +24,7 @@ import Funder from "./Funder";
 import ClickableLink from "../../components/ClickableLink";
 import TimelineCommentWrapper from "../../components/TimelineCommentWrapper";
 import DetailGoBack from "../components/DetailGoBack";
+import { useChainRoute } from "../../utils/hooks";
 
 const TableWrapper = styled.div`
   display: grid;
@@ -125,6 +126,8 @@ function processTimeline(tipDetail, links) {
 }
 
 const TipDetail = () => {
+  useChainRoute();
+
   const { tipId } = useParams();
   const dispatch = useDispatch();
   const [timelineData, setTimelineData] = useState([]);

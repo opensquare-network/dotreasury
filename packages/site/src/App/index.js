@@ -58,50 +58,91 @@ export default function App() {
             <ScrollToTop />
             <Switch>
               <Route exact path="/" component={Overview} />
-              <Route exact path="/tips" component={Tips} />
-              <Route exact path="/proposals" component={Proposals} />
-              <Route exact path="/bounties" component={Bounties} />
-              <Route exact path="/tips/:tipId" component={TipDetail} />
               <Route
                 exact
-                path="/proposals/:proposalIndex"
+                path="/:chain(kusama|polkadot)"
+                component={Overview}
+              />
+              <Route
+                exact
+                path="/:chain(kusama|polkadot)/tips"
+                component={Tips}
+              />
+              <Route
+                exact
+                path="/:chain(kusama|polkadot)/proposals"
+                component={Proposals}
+              />
+              <Route
+                exact
+                path="/:chain(kusama|polkadot)/bounties"
+                component={Bounties}
+              />
+              <Route
+                exact
+                path="/:chain(kusama|polkadot)/tips/:tipId"
+                component={TipDetail}
+              />
+              <Route
+                exact
+                path="/:chain(kusama|polkadot)/proposals/:proposalIndex"
                 component={ProposalDetail}
               />
               <Route
                 exact
-                path="/bounties/:bountyIndex"
+                path="/:chain(kusama|polkadot)/bounties/:bountyIndex"
                 component={BountyDetail}
               />
-              <Route exact path="/burnt" component={Burnt} />
-              <Route exact path="/projects" component={Projects} />
-              <Route exact path="/projects/:projectId" component={ProjectDetail} />
-              <Route exact path="/income" component={Inflation} />
               <Route
                 exact
-                path="/income/slash/treasury"
+                path="/:chain(kusama|polkadot)/burnt"
+                component={Burnt}
+              />
+              <Route
+                exact
+                path="/:chain(kusama|polkadot)/projects"
+                component={Projects}
+              />
+              <Route
+                exact
+                path="/:chain(kusama|polkadot)/projects/:projectId"
+                component={ProjectDetail}
+              />
+              <Route
+                exact
+                path="/:chain(kusama|polkadot)/income"
+                component={Inflation}
+              />
+              <Route
+                exact
+                path="/:chain(kusama|polkadot)/income/slash/treasury"
                 component={TreasurySlash}
               />
               <Route
                 exact
-                path="/income/slash/democracy"
+                path="/:chain(kusama|polkadot)/income/slash/democracy"
                 component={DemocracySlash}
               />
               <Route
                 exact
-                path="/income/slash/identity"
+                path="/:chain(kusama|polkadot)/income/slash/identity"
                 component={IdentitySlash}
               />
               <Route
                 exact
-                path="/income/slash/staking"
+                path="/:chain(kusama|polkadot)/income/slash/staking"
                 component={StakingSlash}
               />
               <Route
                 exact
-                path="/income/slash/electionphragmen"
+                path="/:chain(kusama|polkadot)/income/slash/electionphragmen"
                 component={ElectionPhragmenSlash}
               />
-              <Route exact path="/income/others" component={OthersIncome} />
+              <Route
+                exact
+                path="/:chain(kusama|polkadot)/income/others"
+                component={OthersIncome}
+              />
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
               <Route exact path="/settings/:tabname?" component={UserSetting} />

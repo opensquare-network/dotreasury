@@ -7,13 +7,13 @@ import Title from "../../components/Title";
 import Summary from "./Summary";
 import ProposerTable from "./ProposerTable";
 import BeneficiaryTable from "./BeneficiaryTable";
-// import OutputDoughnutCard from "./OutputDoughnutCard";
 import { overviewSelector } from "../../store/reducers/overviewSlice";
 import { getPrecision, toPrecision } from "../../utils";
 import TotalStacked from "./TotalStacked";
 import Income from "./Income";
 import Output from "./Output";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
+import { useChainRoute } from "../../utils/hooks";
 
 const Header = styled(Title)`
   margin-bottom: 20px;
@@ -46,6 +46,9 @@ const TableWrapper = styled.div`
 const Overview = () => {
   const overview = useSelector(overviewSelector);
   const symbol = useSelector(chainSymbolSelector);
+
+  useChainRoute();
+
   const precision = getPrecision(symbol);
 
   const bountySpent = toPrecision(

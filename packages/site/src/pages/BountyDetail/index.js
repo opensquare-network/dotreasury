@@ -29,6 +29,7 @@ import {
   scanHeightSelector,
 } from "../../store/reducers/chainSlice";
 import DetailGoBack from "../components/DetailGoBack";
+import { useChainRoute } from "../../utils/hooks";
 
 const ValueWrapper = styled.span`
   margin-right: 4px;
@@ -241,6 +242,8 @@ function processTimeline(bountyDetail, scanHeight, symbol) {
 }
 
 const BountyDetail = () => {
+  useChainRoute();
+
   const { bountyIndex } = useParams();
   const dispatch = useDispatch();
   const [timelineData, setTimelineData] = useState([]);
