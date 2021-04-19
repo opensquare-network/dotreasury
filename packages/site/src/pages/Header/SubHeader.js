@@ -17,7 +17,10 @@ import OthersIncomeMenu from "./OthersIncomeMenu";
 import { fetchIncomeCount } from "../../store/reducers/incomeSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { showMenuTabsSelector } from "../../store/reducers/menuSlice";
-import { chainSelector } from "../../store/reducers/chainSlice";
+import {
+  chainSelector,
+  chainSymbolSelector,
+} from "../../store/reducers/chainSlice";
 
 import {
   PRIMARY_THEME_COLOR,
@@ -86,6 +89,7 @@ const TabExampleSecondaryPointing = () => {
   const dispatch = useDispatch();
   const showMenuTabs = useSelector(showMenuTabsSelector);
   const chain = useSelector(chainSelector);
+  const symbol = useSelector(chainSymbolSelector)?.toLowerCase();
 
   useEffect(() => {
     dispatch(fetchIncomeCount(chain));
@@ -99,10 +103,10 @@ const TabExampleSecondaryPointing = () => {
               as: NavLink,
               id: "homeTab",
               content: "Overview",
-              to: `/${chain}`,
+              to: `/${symbol}`,
               exact: true,
               key: "home",
-              active: `/${chain}` === pathname,
+              active: `/${symbol}` === pathname,
             },
           },
           {
@@ -110,12 +114,12 @@ const TabExampleSecondaryPointing = () => {
               as: NavLink,
               id: "proposalsTab",
               content: <ProposalsMenu />,
-              to: `/${chain}/proposals`,
+              to: `/${symbol}/proposals`,
               exact: true,
               key: "proposals",
               active:
-                `/${chain}/proposals` === pathname ||
-                pathname.indexOf(`/${chain}/proposals`) === 0,
+                `/${symbol}/proposals` === pathname ||
+                pathname.indexOf(`/${symbol}/proposals`) === 0,
             },
           },
           {
@@ -123,12 +127,12 @@ const TabExampleSecondaryPointing = () => {
               as: NavLink,
               id: "tipsTab",
               content: <TipsMenu />,
-              to: `/${chain}/tips`,
+              to: `/${symbol}/tips`,
               exact: true,
               key: "tips",
               active:
-                `/${chain}/tips` === pathname ||
-                pathname.indexOf(`/${chain}/tips`) === 0,
+                `/${symbol}/tips` === pathname ||
+                pathname.indexOf(`/${symbol}/tips`) === 0,
             },
           },
           {
@@ -136,12 +140,12 @@ const TabExampleSecondaryPointing = () => {
               as: NavLink,
               id: "bountiesTab",
               content: <BountiesMenu />,
-              to: `/${chain}/bounties`,
+              to: `/${symbol}/bounties`,
               exact: true,
               key: "bounties",
               active:
-                `/${chain}/bounties` === pathname ||
-                pathname.indexOf(`/${chain}/bounties`) === 0,
+                `/${symbol}/bounties` === pathname ||
+                pathname.indexOf(`/${symbol}/bounties`) === 0,
             },
           },
           {
@@ -149,12 +153,12 @@ const TabExampleSecondaryPointing = () => {
               as: NavLink,
               id: "burntTab",
               content: <BurntMenu />,
-              to: `/${chain}/burnt`,
+              to: `/${symbol}/burnt`,
               exact: true,
               key: "burnt",
               active:
-                `/${chain}/burnt` === pathname ||
-                pathname.indexOf(`/${chain}/burnt`) === 0,
+                `/${symbol}/burnt` === pathname ||
+                pathname.indexOf(`/${symbol}/burnt`) === 0,
             },
           },
         ]
@@ -165,10 +169,10 @@ const TabExampleSecondaryPointing = () => {
               as: NavLink,
               id: "inflationTab",
               content: <InflationMenu />,
-              to: `/${chain}/income`,
+              to: `/${symbol}/income`,
               exact: true,
               key: "inflation",
-              active: `/${chain}/income` === pathname,
+              active: `/${symbol}/income` === pathname,
             },
           },
           {
@@ -176,12 +180,12 @@ const TabExampleSecondaryPointing = () => {
               as: NavLink,
               id: "stakingSlashTab",
               content: <StakingSlashMenu />,
-              to: `/${chain}/income/slash/staking`,
+              to: `/${symbol}/income/slash/staking`,
               exact: true,
               key: "stakingSlash",
               active:
-                `${chain}/income/slash/staking` === pathname ||
-                pathname.indexOf(`${chain}/income/slash/staking`) === 0,
+                `${symbol}/income/slash/staking` === pathname ||
+                pathname.indexOf(`${symbol}/income/slash/staking`) === 0,
             },
           },
           {
@@ -189,12 +193,12 @@ const TabExampleSecondaryPointing = () => {
               as: NavLink,
               id: "treasurySlashTab",
               content: <TreasurySlashMenu />,
-              to: `/${chain}/income/slash/treasury`,
+              to: `/${symbol}/income/slash/treasury`,
               exact: true,
               key: "treasurySlash",
               active:
-                `/${chain}/income/slash/treasury` === pathname ||
-                pathname.indexOf(`/${chain}/income/slash/treasury`) === 0,
+                `/${symbol}/income/slash/treasury` === pathname ||
+                pathname.indexOf(`/${symbol}/income/slash/treasury`) === 0,
             },
           },
           {
@@ -202,12 +206,12 @@ const TabExampleSecondaryPointing = () => {
               as: NavLink,
               id: "electionPhragmenSlashTab",
               content: <ElectionPhragmenSlashMenu />,
-              to: `/${chain}/income/slash/electionphragmen`,
+              to: `/${symbol}/income/slash/electionphragmen`,
               exact: true,
               key: "electionPhragmenSlash",
               active:
-                `/${chain}/income/slash/electionphragmen` === pathname ||
-                pathname.indexOf(`/${chain}/income/slash/electionphragmen`) ===
+                `/${symbol}/income/slash/electionphragmen` === pathname ||
+                pathname.indexOf(`/${symbol}/income/slash/electionphragmen`) ===
                   0,
             },
           },
@@ -216,12 +220,12 @@ const TabExampleSecondaryPointing = () => {
               as: NavLink,
               id: "democracySlashTab",
               content: <DemocracySlashMenu />,
-              to: `/${chain}/income/slash/democracy`,
+              to: `/${symbol}/income/slash/democracy`,
               exact: true,
               key: "democracySlash",
               active:
-                `/${chain}/income/slash/democracy` === pathname ||
-                pathname.indexOf(`/${chain}/income/slash/democracy`) === 0,
+                `/${symbol}/income/slash/democracy` === pathname ||
+                pathname.indexOf(`/${symbol}/income/slash/democracy`) === 0,
             },
           },
           {
@@ -229,12 +233,12 @@ const TabExampleSecondaryPointing = () => {
               as: NavLink,
               id: "identitySlashTab",
               content: <IdentitySlashMenu />,
-              to: `/${chain}/income/slash/identity`,
+              to: `/${symbol}/income/slash/identity`,
               exact: true,
               key: "identitySlash",
               active:
-                `/${chain}/income/slash/identity` === pathname ||
-                pathname.indexOf(`/${chain}/income/slash/identity`) === 0,
+                `/${symbol}/income/slash/identity` === pathname ||
+                pathname.indexOf(`/${symbol}/income/slash/identity`) === 0,
             },
           },
           {
@@ -242,12 +246,12 @@ const TabExampleSecondaryPointing = () => {
               as: NavLink,
               id: "othersIncomeTab",
               content: <OthersIncomeMenu />,
-              to: `/${chain}/income/others`,
+              to: `/${symbol}/income/others`,
               exact: true,
               key: "othersIncome",
               active:
-                `/${chain}/income/others` === pathname ||
-                pathname.indexOf(`/${chain}/income/others`) === 0,
+                `/${symbol}/income/others` === pathname ||
+                pathname.indexOf(`/${symbol}/income/others`) === 0,
             },
           },
         ]

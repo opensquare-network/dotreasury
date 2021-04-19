@@ -16,10 +16,7 @@ import ExplorerLink from "../../components/ExplorerLink";
 import TableNoDataCell from "../../components/TableNoDataCell";
 import RelatedLInks from "../../components/RelatedLinks";
 import { useSelector } from "react-redux";
-import {
-  chainSelector,
-  chainSymbolSelector,
-} from "../../store/reducers/chainSlice";
+import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 
 const Wrapper = styled.div`
   overflow-x: scroll;
@@ -56,11 +53,10 @@ const ProposeTimeWrapper = styled.div`
 const ProposalsTable = ({ data, loading }) => {
   const history = useHistory();
   const symbol = useSelector(chainSymbolSelector);
-  const chain = useSelector(chainSelector);
 
   const onClickRow = (proposalIndex) => {
     if (window.innerWidth < 1140) {
-      history.push(`/${chain}/proposals/${proposalIndex}`);
+      history.push(`/${symbol.toLowerCase()}/proposals/${proposalIndex}`);
     }
   };
 
@@ -126,7 +122,11 @@ const ProposalsTable = ({ data, loading }) => {
                     />
                   </Table.Cell>
                   <Table.Cell className="link-cell hidden">
-                    <NavLink to={`/${chain}/proposals/${item.proposalIndex}`}>
+                    <NavLink
+                      to={`/${symbol.toLowerCase()}/proposals/${
+                        item.proposalIndex
+                      }`}
+                    >
                       <RightButton />
                     </NavLink>
                   </Table.Cell>

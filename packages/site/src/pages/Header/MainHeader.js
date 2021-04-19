@@ -9,7 +9,7 @@ import UserLogin from "./UserLogin";
 import MenuSwitch from "./MenuSwitch";
 import { useMenuTab } from "../../utils/hooks";
 import { useSelector } from "react-redux";
-import { chainSelector } from "../../store/reducers/chainSlice";
+import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 
 const Wrapper = styled.header`
   height: 68px;
@@ -82,7 +82,7 @@ const ScanHeightWrapper = styled.div`
 `;
 
 const HeaderExamplePage = () => {
-  const chain = useSelector(chainSelector);
+  const symbol = useSelector(chainSymbolSelector)?.toLowerCase();
   const [menuShow, setMenuShow] = useState(false);
   useMenuTab();
 
@@ -112,13 +112,13 @@ const HeaderExamplePage = () => {
         onClick={menuClick}
         ref={menuWrap}
       >
-        <NavLink to={`/${chain}`}>
+        <NavLink to={`/${symbol}`}>
           <MenuSwitch menuTabsName="Home" />
         </NavLink>
-        <NavLink to={`/${chain}/income`}>
+        <NavLink to={`/${symbol}/income`}>
           <MenuSwitch menuTabsName="Income" />
         </NavLink>
-        <NavLink to={`/${chain}/projects`}>
+        <NavLink to={`/${symbol}/projects`}>
           <MenuSwitch menuTabsName="Projects" />
         </NavLink>
         <UserLogin />

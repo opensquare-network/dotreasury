@@ -58,89 +58,77 @@ export default function App() {
             <ScrollToTop />
             <Switch>
               <Route exact path="/" component={Overview} />
+              <Route exact path="/:symbol(ksm|dot)" component={Overview} />
+              <Route exact path="/:symbol(ksm|dot)/tips" component={Tips} />
               <Route
                 exact
-                path="/:chain(kusama|polkadot)"
-                component={Overview}
-              />
-              <Route
-                exact
-                path="/:chain(kusama|polkadot)/tips"
-                component={Tips}
-              />
-              <Route
-                exact
-                path="/:chain(kusama|polkadot)/proposals"
+                path="/:symbol(ksm|dot)/proposals"
                 component={Proposals}
               />
               <Route
                 exact
-                path="/:chain(kusama|polkadot)/bounties"
+                path="/:symbol(ksm|dot)/bounties"
                 component={Bounties}
               />
               <Route
                 exact
-                path="/:chain(kusama|polkadot)/tips/:tipId"
+                path="/:symbol(ksm|dot)/tips/:tipId"
                 component={TipDetail}
               />
               <Route
                 exact
-                path="/:chain(kusama|polkadot)/proposals/:proposalIndex"
+                path="/:symbol(ksm|dot)/proposals/:proposalIndex"
                 component={ProposalDetail}
               />
               <Route
                 exact
-                path="/:chain(kusama|polkadot)/bounties/:bountyIndex"
+                path="/:symbol(ksm|dot)/bounties/:bountyIndex"
                 component={BountyDetail}
               />
+              <Route exact path="/:symbol(ksm|dot)/burnt" component={Burnt} />
               <Route
                 exact
-                path="/:chain(kusama|polkadot)/burnt"
-                component={Burnt}
-              />
-              <Route
-                exact
-                path="/:chain(kusama|polkadot)/projects"
+                path="/:symbol(ksm|dot)/projects"
                 component={Projects}
               />
               <Route
                 exact
-                path="/:chain(kusama|polkadot)/projects/:projectId"
+                path="/:symbol(ksm|dot)/projects/:projectId"
                 component={ProjectDetail}
               />
               <Route
                 exact
-                path="/:chain(kusama|polkadot)/income"
+                path="/:symbol(ksm|dot)/income"
                 component={Inflation}
               />
               <Route
                 exact
-                path="/:chain(kusama|polkadot)/income/slash/treasury"
+                path="/:symbol(ksm|dot)/income/slash/treasury"
                 component={TreasurySlash}
               />
               <Route
                 exact
-                path="/:chain(kusama|polkadot)/income/slash/democracy"
+                path="/:symbol(ksm|dot)/income/slash/democracy"
                 component={DemocracySlash}
               />
               <Route
                 exact
-                path="/:chain(kusama|polkadot)/income/slash/identity"
+                path="/:symbol(ksm|dot)/income/slash/identity"
                 component={IdentitySlash}
               />
               <Route
                 exact
-                path="/:chain(kusama|polkadot)/income/slash/staking"
+                path="/:symbol(ksm|dot)/income/slash/staking"
                 component={StakingSlash}
               />
               <Route
                 exact
-                path="/:chain(kusama|polkadot)/income/slash/electionphragmen"
+                path="/:symbol(ksm|dot)/income/slash/electionphragmen"
                 component={ElectionPhragmenSlash}
               />
               <Route
                 exact
-                path="/:chain(kusama|polkadot)/income/others"
+                path="/:symbol(ksm|dot)/income/others"
                 component={OthersIncome}
               />
               <Route exact path="/login" component={Login} />

@@ -4,8 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { getIndentity } from "../services/chainApi";
 import { setShowMenuTabs } from "../store/reducers/menuSlice";
-import { chainSelector, setChain } from "../store/reducers/chainSlice";
-import { symbolFromNetwork } from ".";
+import {
+  chainSelector,
+  chainSymbolSelector,
+  setChain,
+} from "../store/reducers/chainSlice";
 
 export const useWindowSize = () => {
   const [size, setSize] = useState([0, 0]);
@@ -112,29 +115,30 @@ export const usePreload = () => {
 
 export const useMenuTab = () => {
   const dispatch = useDispatch();
-  const chain = useSelector(chainSelector);
+  const symbol = useSelector(chainSymbolSelector)?.toLowerCase();
   const { pathname } = useLocation();
   useEffect(() => {
-    const menuTabsName = pathname.startsWith(`/${chain}/income`)
+    const menuTabsName = pathname.startsWith(`/${symbol}/income`)
       ? "Income"
-      : pathname.startsWith(`/${chain}/projects`)
+      : pathname.startsWith(`/${symbol}/projects`)
       ? "Projects"
       : "Home";
     dispatch(setShowMenuTabs(menuTabsName));
-  }, [pathname, dispatch, chain]);
+  }, [pathname, dispatch, symbol]);
 };
 
 export function useChainRoute() {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
-  const chain = useSelector(chainSelector);
-  const { chain: paramChain } = useParams();
+  const symbol = useSelector(chainSymbolSelector);
+  const { symbol: paramSymbol } = useParams();
   useEffect(() => {
-    if (!paramChain) {
-      return history.push(`/${chain}${location.pathname}`);
-    } else if (paramChain !== chain) {
-      dispatch(setChain(symbolFromNetwork(paramChain)));
+    if (!paramSymbol) {
+      return history.push(`/${symbol}${location.pathname}`);
+    } else if (paramSymbol.toLowerCase() !== symbol.toLowerCase()) {
+      dispatch(setChain(paramSymbol));
+      window.location.reload();
     }
-  }, [dispatch, history, location, chain, paramChain]);
+  }, [dispatch, history, location, symbol, paramSymbol]);
 }

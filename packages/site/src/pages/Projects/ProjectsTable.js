@@ -12,7 +12,7 @@ import NameCell from "./NameCell";
 import DateCell from "./DateCell";
 import ExpenseCell from "./ExpenseCell";
 import { useSelector } from "react-redux";
-import { chainSelector } from "../../store/reducers/chainSlice";
+import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 
 const Wrapper = styled.div`
   overflow-x: scroll;
@@ -40,11 +40,11 @@ const StyledTable = styled(Table)`
 
 const TipsTable = ({ data, loading }) => {
   const history = useHistory();
-  const chain = useSelector(chainSelector);
+  const symbol = useSelector(chainSymbolSelector);
 
   const onClickRow = (id) => {
     if (window.innerWidth < 1140) {
-      history.push(`/${chain}/projects/${id}`);
+      history.push(`/${symbol.toLowerCase()}/projects/${id}`);
     }
   };
 
@@ -86,11 +86,10 @@ const TipsTable = ({ data, loading }) => {
                   <Table.Cell className="date-cell">
                     <DateCell date={item.startTime} />
                   </Table.Cell>
-                  {/* <Table.Cell className="date-cell">
-                    <DateCell date={item.endTime} />
-                  </Table.Cell> */}
                   <Table.Cell className="link-cell hidden">
-                    <NavLink to={`/${chain}/projects/${item.id}`}>
+                    <NavLink
+                      to={`/${symbol.toLowerCase()}/projects/${item.id}`}
+                    >
                       <RightButton />
                     </NavLink>
                   </Table.Cell>

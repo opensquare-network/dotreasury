@@ -14,10 +14,7 @@ import TableNoDataCell from "../../components/TableNoDataCell";
 import PolygonLabel from "../../components/PolygonLabel";
 import ExplorerLink from "../../components/ExplorerLink";
 import { useSelector } from "react-redux";
-import {
-  chainSelector,
-  chainSymbolSelector,
-} from "../../store/reducers/chainSlice";
+import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 
 const Wrapper = styled.div`
   overflow-x: scroll;
@@ -69,11 +66,10 @@ const TableRow = styled(Table.Row)`
 const BountiesTable = ({ data, loading }) => {
   const history = useHistory();
   const symbol = useSelector(chainSymbolSelector);
-  const chain = useSelector(chainSelector);
 
   const onClickRow = (bountyIndex) => {
     if (window.innerWidth < 1140) {
-      history.push(`/${chain}/bounties/${bountyIndex}`);
+      history.push(`/${symbol.toLowerCase()}/bounties/${bountyIndex}`);
     }
   };
 
@@ -133,7 +129,11 @@ const BountiesTable = ({ data, loading }) => {
                     <CapText>{item.latestState?.state}</CapText>
                   </Table.Cell>
                   <Table.Cell className="link-cell hidden">
-                    <NavLink to={`/${chain}/bounties/${item.bountyIndex}`}>
+                    <NavLink
+                      to={`/${symbol.toLowerCase()}/bounties/${
+                        item.bountyIndex
+                      }`}
+                    >
                       <RightButton />
                     </NavLink>
                   </Table.Cell>
