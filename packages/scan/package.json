@@ -13,6 +13,8 @@
     "dotStaging": "pm2 start ecosystem.config.js --only dot-scan-staging --env production",
     "ksm": "pm2 start ecosystem.config.js --only ksm-scan --env production",
     "ksmStaging": "pm2 start ecosystem.config.js --only ksm-scan-staging --env production",
+    "ksmPrice": "pm2 start ecosystem.config.js --only ksm-calc-price --env production",
+    "dotPrice": "pm2 start ecosystem.config.js --only dot-calc-price --env production",
     "test": "jest src/test"
   },
   "dependencies": {

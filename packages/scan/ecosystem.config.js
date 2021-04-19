@@ -58,5 +58,33 @@ module.exports = {
       name: "ksm-scan-staging",
       ...ksmScanConfig,
     },
+    {
+      name: "ksm-calc-price",
+      script: "src/calcprice/index.js",
+      cron_restart: "* */5 * * *",
+      log_date_format: "YYYY-MM-DD HH:mm Z",
+      env: {
+        NODE_ENV: "development",
+        CHAIN: "kusama",
+      },
+      env_production: {
+        NODE_ENV: "production",
+        CHAIN: "kusama",
+      },
+    },
+    {
+      name: "dot-calc-price",
+      script: "src/calcprice/index.js",
+      cron_restart: "* */5 * * *",
+      log_date_format: "YYYY-MM-DD HH:mm Z",
+      env: {
+        NODE_ENV: "development",
+        CHAIN: "polkadot",
+      },
+      env_production: {
+        NODE_ENV: "production",
+        CHAIN: "polkadot",
+      },
+    },
   ],
 };
