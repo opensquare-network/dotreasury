@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getIndentity } from "../services/chainApi";
 import { setShowMenuTabs } from "../store/reducers/menuSlice";
 import { chainSelector, setChain } from "../store/reducers/chainSlice";
+import { symbolFromNetwork } from ".";
 
 export const useWindowSize = () => {
   const [size, setSize] = useState([0, 0]);
@@ -133,7 +134,7 @@ export function useChainRoute() {
     if (!paramChain) {
       return history.push(`/${chain}${location.pathname}`);
     } else if (paramChain !== chain) {
-      dispatch(setChain(paramChain));
+      dispatch(setChain(symbolFromNetwork(paramChain)));
     }
   }, [dispatch, history, location, chain, paramChain]);
 }
