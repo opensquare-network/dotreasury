@@ -131,13 +131,14 @@ export function useChainRoute() {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
-  const symbol = useSelector(chainSymbolSelector);
+  const symbol = useSelector(chainSymbolSelector).toLowerCase();
   const { symbol: paramSymbol } = useParams();
+  const urlSymbol = paramSymbol.toLowerCase();
   useEffect(() => {
     if (!paramSymbol) {
       return history.push(`/${symbol}${location.pathname}`);
-    } else if (paramSymbol.toLowerCase() !== symbol.toLowerCase()) {
-      dispatch(setChain(paramSymbol));
+    } else if (urlSymbol !== symbol) {
+      dispatch(setChain(urlSymbol));
       window.location.reload();
     }
   }, [dispatch, history, location, symbol, paramSymbol]);
