@@ -151,8 +151,9 @@ const Setting = () => {
             dispatch(
               setCurrentNode({ chain: selectedNetwork, url: selectedNode })
             );
-            dispatch(setChain(symbolFromNetwork(selectedNetwork)));
-            window.location.href = "/";
+            window.location.href = `/${symbolFromNetwork(
+              selectedNetwork
+            ).toLowerCase()}`;
           }}
         >
           Switch
