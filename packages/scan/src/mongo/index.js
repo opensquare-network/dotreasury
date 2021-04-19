@@ -16,6 +16,7 @@ const motionCollectionName = "motion";
 const bountyCollectionName = "bounty";
 const proposalCollectionName = "proposal";
 const burntCollectionName = "burnt";
+const outTransferColName = "outputTransfer";
 
 // income collections
 const incomeInflationCollectionName = "incomeInflation";
@@ -49,6 +50,7 @@ let identitySlashCol = null;
 let othersIncomeCol = null;
 let weeklyStatsCol = null;
 let incomeTransferCol = null;
+let outTransferCol = null;
 
 async function initDb() {
   client = await MongoClient.connect(mongoUrl, {
@@ -71,6 +73,7 @@ async function initDb() {
   othersIncomeCol = db.collection(othersIncomeCollectionName);
   weeklyStatsCol = db.collection(weeklyStatsCollectionName);
   incomeTransferCol = db.collection(incomeTransferCollectionName);
+  outTransferCol = db.collection(outTransferColName);
 
   await _createIndexes();
 }
@@ -165,6 +168,11 @@ async function getIncomeTransferCollection() {
   return incomeTransferCol;
 }
 
+async function getOutTransferCollection() {
+  await tryInit(outTransferCol);
+  return outTransferCol;
+}
+
 module.exports = {
   getStatusCollection,
   getTipCollection,
@@ -181,4 +189,5 @@ module.exports = {
   getOthersIncomeCollection,
   getWeeklyStatsCollection,
   getIncomeTransferCollection,
+  getOutTransferCollection,
 };
