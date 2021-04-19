@@ -4,6 +4,8 @@ import { Line } from "react-chartjs-2";
 import dayjs from "dayjs";
 
 import Text from "../../../components/Text";
+import { useSelector } from "react-redux";
+import { chainSelector } from "../../../store/reducers/chainSlice";
 
 const LegendWrapper = styled.div`
   display: flex;
@@ -48,6 +50,7 @@ const LegendTitle = styled(Text)`
 `;
 
 const LineChart = ({ data, onHover }) => {
+  const chain = useSelector(chainSelector);
   const { dates, values } = data;
   const options = {
     type: "line",
@@ -60,9 +63,9 @@ const LineChart = ({ data, onHover }) => {
         {
           position: "right",
           ticks: {
-            stepSize: 100000
-          }
-        }
+            stepSize: chain === "kusama" ? 100000 : 4000000,
+          },
+        },
       ],
       xAxes: [
         {
@@ -89,8 +92,10 @@ const LineChart = ({ data, onHover }) => {
           return dayjs(tooltipItems[0].xLabel).format("YYYY-MM-DD hh:mm");
         },
         label: function (tooltipItem, data) {
-          return `${data.datasets[tooltipItem.datasetIndex].label} ${Math.round(tooltipItem.value) === tooltipItem.value ? "" : "≈"} ${parseInt(tooltipItem.value)}`;
-        }
+          return `${data.datasets[tooltipItem.datasetIndex].label} ${
+            Math.round(tooltipItem.value) === tooltipItem.value ? "" : "≈"
+          } ${parseInt(tooltipItem.value)}`;
+        },
       },
       itemSort: function (a, b) {
         return a.datasetIndex - b.datasetIndex;
