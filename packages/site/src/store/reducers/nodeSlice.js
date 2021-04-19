@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getNodeUrl, getNodes } from "../../services/chainApi";
+import { symbolFromNetwork } from "../../utils";
 
 const nodeSlice = createSlice({
   name: "node",
@@ -18,6 +19,7 @@ const nodeSlice = createSlice({
       }
       nodeUrl = { ...nodeUrl, [chain]: url };
       localStorage.setItem("nodeUrl", JSON.stringify(nodeUrl));
+      window.location.href = `/${symbolFromNetwork(chain).toLowerCase()}`;
     },
     setNodesDelay(state, { payload }) {
       (payload || []).forEach((item) => {

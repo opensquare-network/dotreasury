@@ -18,8 +18,7 @@ import {
 import useUpdateNodesDelay from "../../utils/useUpdateNodesDelay";
 import GrayImage from "../GrayImage";
 import { PRIMARY_THEME_COLOR } from "../../constants";
-import { chainSelector, setChain } from "../../store/reducers/chainSlice";
-import { symbolFromNetwork } from "../../utils";
+import { chainSelector } from "../../store/reducers/chainSlice";
 
 const Wrapper = styled.div``;
 
@@ -151,9 +150,6 @@ const Setting = () => {
             dispatch(
               setCurrentNode({ chain: selectedNetwork, url: selectedNode })
             );
-            window.location.href = `/${symbolFromNetwork(
-              selectedNetwork
-            ).toLowerCase()}`;
           }}
         >
           Switch
