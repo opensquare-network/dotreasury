@@ -45,10 +45,6 @@ export const REACTION_THUMBDOWN = 2;
 export const DEFAULT_NODE_URL = "wss://kusama.elara.patract.io";
 export const DEFAULT_NODES = [
   {
-    name: "Parity",
-    url: "wss://kusama-rpc.polkadot.io",
-  },
-  {
     name: "OnFinality",
     url: "wss://kusama.api.onfinality.io/public-ws",
   },
