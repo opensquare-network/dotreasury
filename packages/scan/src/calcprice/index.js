@@ -19,12 +19,11 @@ async function savePrice(col) {
     if (blockTime) {
       const price = await getPrice(blockTime);
       if (price) {
-        const avgPrice = price.quoteAssetVolume / price.volume;
         await col.updateOne(
           { _id: item._id },
           {
             $set: {
-              symbolPrice: avgPrice,
+              symbolPrice: price,
             },
           }
         );
