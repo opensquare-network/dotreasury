@@ -1,3 +1,6 @@
+const dotenv = require("dotenv");
+dotenv.config();
+
 const minimist = require("minimist");
 const dayjs = require("dayjs");
 const { getKlines } = require("./binance");

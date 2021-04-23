@@ -12,6 +12,7 @@
   "dependencies": {
     "abort-controller": "^3.0.0",
     "dayjs": "^1.10.4",
+    "dotenv": "^8.2.0",
     "minimist": "^1.2.5",
     "mongodb": "^3.6.3",
     "node-fetch": "^2.6.1"
