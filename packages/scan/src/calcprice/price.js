@@ -51,15 +51,15 @@ async function getPrice(time) {
 
   if (price) {
     return price.quoteAssetVolume / price.volume;
+  }
+
+  const date = dayjs(time).format("YYYY-MM-DD");
+  if (process.env.CHAIN === "kusama") {
+    return kusamaPriceData.get(date);
+  } else if (process.env.CHAIN === "polkadot") {
+    return polkadotPriceData.get(date);
   } else {
-    const date = dayjs(time).format("YYYY-MM-DD");
-    if (process.env.CHAIN === "kusama") {
-      return kusamaPriceData.get(date);
-    } else if (process.env.CHAIN === "polkadot") {
-      return polkadotPriceData.get(date);
-    } else {
-      return null;
-    }
+    return null;
   }
 }
 
