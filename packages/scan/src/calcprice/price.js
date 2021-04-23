@@ -1,6 +1,8 @@
 const dayjs = require("dayjs");
-// Kusama price data downloaded from: https://web-api.coinmarketcap.com/v1.1/cryptocurrency/quotes/historical?convert=USD,USDT&format=chart_crypto_details&id=5034&interval=1d&time_end=1619222400&time_start=1576108800
+// Kusama price data downloaded from:
+// https://web-api.coinmarketcap.com/v1.1/cryptocurrency/quotes/historical?convert=USD,USDT&format=chart_crypto_details&id=5034&interval=1d&time_end=1619222400&time_start=1576108800
 // Ref: https://coinmarketcap.com/currencies/kusama/
+// Ref: https://www.coingecko.com/en/coins/kusama/historical_data/usd?end_date=2019-12-09&start_date=2019-12-06#panel
 const kusamaJsonPriceData = require("./kusamaPrice.json");
 // Polkadot price data downloaded from: https://cryptopro.app/graph.php?m=86648
 // Ref: https://cryptopro.app/price/polkadot/
