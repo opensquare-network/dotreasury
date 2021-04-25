@@ -10,7 +10,7 @@ import {
   userProfileSelector,
   fetchUserProfile,
 } from "../../store/reducers/userSlice";
-import ButtonPrimary from "../../components/ButtonPrimary";
+// import ButtonPrimary from "../../components/ButtonPrimary";
 import ButtonLabel from "../../components/ButtonLabel";
 import TextMinor from "../../components/TextMinor";
 import { TEXT_DARK_MAJOR } from "../../constants";
@@ -38,6 +38,9 @@ const Wrapper = styled.a`
 
 const SignUpButton = styled(ButtonLabel)`
   margin-right: 32px !important;
+  button {
+    font-weight: 600px !important;
+  }
 `;
 
 const CircleImage = styled(Image)`
@@ -111,9 +114,9 @@ const UserLogin = () => {
           <NavLink to="/register" className="button signUp">
             <SignUpButton>Sign up</SignUpButton>
           </NavLink>
-          <NavLink to="/login" className="button login">
+          {/* <NavLink to="/login" className="button login">
             <ButtonPrimary>Login</ButtonPrimary>
-          </NavLink>
+          </NavLink> */}
         </>
       )}
     </>

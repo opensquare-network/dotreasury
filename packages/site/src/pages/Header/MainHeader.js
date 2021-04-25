@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Image } from "semantic-ui-react";
 
 import Logo from "./Logo";
@@ -31,6 +31,17 @@ const Left = styled.div`
 const Right = styled.div`
   display: flex;
   align-items: center;
+  ${(p) =>
+    p.symbol === "ksm" &&
+    css`
+      a > div > button {
+        background: #000 !important;
+        color: #fff !important;
+        :hover {
+          color: #fff !important;
+        }
+      }
+    `}
   @media screen and (max-width: 850px) {
     box-shadow: 0px 4px 12px rgba(29, 37, 60, 0.08);
     display: none;
@@ -97,21 +108,19 @@ const HeaderExamplePage = () => {
     menuIconSrc = "/imgs/menu-icon-close.svg";
   }
   return (
-    <Wrapper>
+    <Wrapper symbol={symbol}>
       <Left>
         <NavLink to="/">
-          <Logo />
+          <Logo symbol={symbol} />
         </NavLink>
       </Left>
       <MenuIcon src={menuIconSrc} onClick={() => setMenuShow(!menuShow)} />
       <Right
+        symbol={symbol}
         style={{ display: menuShow ? "flex" : "" }}
         onClick={menuClick}
         ref={menuWrap}
       >
-        {/* <NavLink to={`/${symbol}`}>
-          <MenuSwitch menuTabsName="Home" />
-        </NavLink> */}
         <NavLink to={`/${symbol}/income`}>
           <MenuSwitch menuTabsName="Income" />
         </NavLink>

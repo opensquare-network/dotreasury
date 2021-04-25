@@ -6,7 +6,6 @@ import TipsMenu from "./TipsMenu";
 import ProposalsMenu from "./ProposalsMenu";
 import BountiesMenu from "./BountiesMenu";
 import BurntMenu from "./BurntMenu";
-import Divider from "../../components/Divider";
 import TreasurySlashMenu from "./TreasurySlashMenu";
 import DemocracySlashMenu from "./DemocracySlashMenu";
 import StakingSlashMenu from "./StakingSlashMenu";
@@ -41,8 +40,8 @@ const WrapperBackground = styled.div`
   top: 0;
   height: 42px;
   width: 100%;
-  background: #ffffff;
   z-index: -1;
+  background: ${(p) => (p.symbol === "ksm" ? "#000" : "#fff")};
 `;
 
 const TabWrapper = styled(Tab)`
@@ -297,7 +296,7 @@ const TabExampleSecondaryPointing = () => {
 
   return (
     <Wrapper>
-      <WrapperBackground />
+      <WrapperBackground symbol={symbol} />
       <Container>
         <CustomCard>
           <TopWrapper>
