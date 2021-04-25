@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 
 const Wrapper = styled.header`
-  height: 68px;
+  height: 76px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -102,9 +102,6 @@ const HeaderExamplePage = () => {
         <NavLink to="/">
           <Logo />
         </NavLink>
-        <ScanHeightWrapper>
-          <ScanHeight />
-        </ScanHeightWrapper>
       </Left>
       <MenuIcon src={menuIconSrc} onClick={() => setMenuShow(!menuShow)} />
       <Right
@@ -112,9 +109,9 @@ const HeaderExamplePage = () => {
         onClick={menuClick}
         ref={menuWrap}
       >
-        <NavLink to={`/${symbol}`}>
+        {/* <NavLink to={`/${symbol}`}>
           <MenuSwitch menuTabsName="Home" />
-        </NavLink>
+        </NavLink> */}
         <NavLink to={`/${symbol}/income`}>
           <MenuSwitch menuTabsName="Income" />
         </NavLink>
@@ -122,6 +119,9 @@ const HeaderExamplePage = () => {
           <MenuSwitch menuTabsName="Projects" />
         </NavLink>
         <UserLogin />
+        <ScanHeightWrapper>
+          <ScanHeight />
+        </ScanHeightWrapper>
       </Right>
     </Wrapper>
   );

@@ -21,6 +21,8 @@ import {
   chainSelector,
   chainSymbolSelector,
 } from "../../store/reducers/chainSlice";
+import Card from "../../components/Card";
+import Container from "../../components/Container";
 
 import {
   PRIMARY_THEME_COLOR,
@@ -29,19 +31,27 @@ import {
   TEXT_DARK_MINOR,
 } from "../../constants";
 
-const DividerWrapper = styled(Divider)`
-  margin: 0 !important;
-  border-top: 1px solid rgba(238, 238, 238, 1) !important;
+const Wrapper = styled.div`
+  position: relative;
+`;
+
+const WrapperBackground = styled.div`
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 42px;
+  width: 100%;
+  background: #ffffff;
+  z-index: -1;
 `;
 
 const TabWrapper = styled(Tab)`
-  height: 65px;
   overflow-x: scroll;
   &::-webkit-scrollbar {
     display: none;
   }
   -ms-overflow-style: none;
-  scrollbar-width: none;
+  /* scrollbar-width: none; */
   overflow-y: auto;
 
   background: transparent;
@@ -51,13 +61,13 @@ const TabWrapper = styled(Tab)`
   }
 
   a {
-    height: 65px;
     padding-left: 0 !important;
     padding-right: 0 !important;
     border-width: 4px !important;
     font-family: "Inter" !important;
     color: ${TEXT_DARK_MINOR} !important;
     margin-right: 32px !important;
+    margin-bottom: 0px !important;
     & > div.item {
       margin-bottom: -4px !important;
       padding-left: 0 !important;
@@ -81,8 +91,36 @@ const TabWrapper = styled(Tab)`
       color: ${TEXT_DARK_MAJOR} !important;
       border-color: ${PRIMARY_THEME_COLOR} !important;
     }
+    &.item {
+      padding: 2px 0 !important;
+    }
   }
 `;
+
+const CustomCard = styled(Card)`
+  padding: 0 24px;
+`;
+
+const TopWrapper = styled.div`
+  padding: 11px 0;
+  border-bottom: 1px solid #f4f4f4;
+  > a {
+    font-size: 13px;
+    line-height: 18px;
+    color: rgba(0, 0, 0, 0.3);
+    :hover {
+      color: ${TEXT_DARK_MINOR};
+    }
+  }
+`;
+
+const OverviewWrapper = styled.div`
+  line-height: 22px !important;
+`;
+
+const Overview = () => {
+  return <OverviewWrapper className="item">Overview</OverviewWrapper>;
+};
 
 const TabExampleSecondaryPointing = () => {
   const { pathname } = useLocation();
@@ -102,7 +140,7 @@ const TabExampleSecondaryPointing = () => {
             menuItem: {
               as: NavLink,
               id: "homeTab",
-              content: "Overview",
+              content: <Overview />,
               to: `/${symbol}`,
               exact: true,
               key: "home",
@@ -258,14 +296,21 @@ const TabExampleSecondaryPointing = () => {
       : [];
 
   return (
-    <>
-      <DividerWrapper />
-      <TabWrapper
-        menu={{ secondary: true, pointing: true }}
-        panes={panes}
-        activeIndex={"tipsTab"}
-      />
-    </>
+    <Wrapper>
+      <WrapperBackground />
+      <Container>
+        <CustomCard>
+          <TopWrapper>
+            <NavLink to={`/${symbol}`}>Home</NavLink>
+          </TopWrapper>
+          <TabWrapper
+            menu={{ secondary: true, pointing: true }}
+            panes={panes}
+            activeIndex={"tipsTab"}
+          />
+        </CustomCard>
+      </Container>
+    </Wrapper>
   );
 };
 
