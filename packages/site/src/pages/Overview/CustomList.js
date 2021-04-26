@@ -6,6 +6,7 @@ import Label from "./CustomLabel";
 import { TEXT_DARK_DISABLE } from "../../constants";
 
 const Wrapper = styled.div`
+  min-width: 240px;
   & > :not(:last-child) {
     margin-bottom: 8px;
   }

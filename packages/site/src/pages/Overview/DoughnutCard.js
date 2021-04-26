@@ -9,17 +9,21 @@ import Total from "./Total";
 import Text from "../../components/Text";
 
 const Title = styled(Text)`
-  font-size: 18px;
-  line-height: 32px;
+  font-size: 16px;
+  line-height: 24px;
   font-weight: 700;
   margin-bottom: 16px;
 `;
 
 const CardWrapper = styled(Card)`
   position: relative;
+  padding: 20px 24px;
+`;
+
+const ContentWrapper = styled.div`
+  /* position: relative; */
   display: flex;
-  min-height: 318px;
-  padding: 32px;
+  /* padding: 32px; */
   @media screen and (max-width: 556px) {
     flex-direction: column;
     & > :first-child {
@@ -61,9 +65,9 @@ const DoughnutCard = ({ title, data, status, clickEvent, children }) => {
   };
   const total = data.labels?.reduce(totalReduce, 0);
   return (
-    <div>
+    <CardWrapper>
       <Title>{title}</Title>
-      <CardWrapper>
+      <ContentWrapper>
         <List data={data} status={status} clickEvent={clickEvent}></List>
         <CanvasWrapper>
           <Total total={total}>
@@ -73,8 +77,8 @@ const DoughnutCard = ({ title, data, status, clickEvent, children }) => {
           </Total>
         </CanvasWrapper>
         {children}
-      </CardWrapper>
-    </div>
+      </ContentWrapper>
+    </CardWrapper>
   );
 };
 

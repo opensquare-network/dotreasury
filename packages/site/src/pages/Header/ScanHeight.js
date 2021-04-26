@@ -25,6 +25,10 @@ const Wrapper = styled.div`
   border: 1px solid #f4f4f4;
   border-radius: 4px;
   min-width: 200px;
+  @media screen and (max-width: 600px) {
+    min-width: 65px;
+    position: static;
+  }
 `;
 
 const ScanHeightWrapper = styled.div`
@@ -48,7 +52,7 @@ const DarkMinorLabel = styled(Label)`
   color: ${TEXT_DARK_MINOR};
   margin-left: 8px;
   margin-right: 8px;
-  @media screen and (max-width: 640px) {
+  @media screen and (max-width: 600px) {
     display: none;
   }
 `;
@@ -93,6 +97,12 @@ const SymbolWrapper = styled(Card)`
   top: calc(100% + 8px);
   width: 100%;
   z-index: 999;
+  @media screen and (max-width: 600px) {
+    width: 100vw;
+    left: 0;
+    top: 100%;
+    border-radius: 0;
+  }
 `;
 
 const SymbolItem = styled.div`
@@ -123,9 +133,13 @@ const SymbolItem = styled.div`
 const NetworkWrapper = styled.div`
   position: relative;
   display: flex;
+  @media screen and (max-width: 600px) {
+    position: static;
+  }
 `;
 
 const NetworkButton = styled.button`
+  flex: 0 0 auto;
   border: 1px solid #f4f4f4;
   border-radius: 4px;
   background-color: #fff;
@@ -149,6 +163,12 @@ const NetworkItemWrapper = styled(Card)`
   top: calc(100% + 8px);
   width: 100%;
   z-index: 999;
+  @media screen and (max-width: 600px) {
+    width: 100vw;
+    left: 0;
+    top: 100%;
+    border-radius: 0;
+  }
 `;
 
 const NetworkItem = styled.div`

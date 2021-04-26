@@ -15,12 +15,14 @@ import {
   OVERVIEW_OTHERS_COLOR,
   TEXT_DARK_MAJOR,
 } from "../../constants";
+import { useSelector } from "react-redux";
+import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 
 const LinkButton = styled(TextMinor)`
   display: flex;
   position: absolute;
-  right: 32px;
-  bottom: 32px;
+  right: 24px;
+  top: 20px;
   :hover {
     color: ${TEXT_DARK_MAJOR};
     & > :last-child {
@@ -40,6 +42,7 @@ const Income = ({
   slashIdentity,
   others,
 }) => {
+  const symbol = useSelector(chainSymbolSelector)?.toLowerCase();
   const [incomeData, setIncomeData] = useState({
     icon: "circle",
     labels: [],
@@ -166,7 +169,7 @@ const Income = ({
       status={incomeStatus}
       clickEvent={clickEvent}
     >
-      <NavLink to={"/income"}>
+      <NavLink to={`/${symbol}/income`}>
         <LinkButton>
           Detail
           <GrayImage src="/imgs/caret-right.svg" width={24} />

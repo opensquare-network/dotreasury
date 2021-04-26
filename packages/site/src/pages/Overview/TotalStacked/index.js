@@ -19,6 +19,10 @@ import {
   chainSymbolSelector,
 } from "../../../store/reducers/chainSlice";
 
+const CardWrapper = styled(Card)`
+  padding: 20px 24px;
+`;
+
 const Title = styled(Text)`
   font-size: 18px;
   line-height: 32px;
@@ -26,9 +30,8 @@ const Title = styled(Text)`
   margin-bottom: 16px;
 `;
 
-const CardWrapper = styled(Card)`
+const ContentWrapper = styled.div`
   display: flex;
-  padding: 32px;
   @media screen and (min-width: 1140px) {
     & > :first-child {
       margin-right: 24px;
@@ -51,12 +54,12 @@ const ChartWrapper = styled.div`
 
 const ListWrapper = styled.div`
   display: flex;
-  @media screen and (min-width: 556px) {
+  @media screen and (min-width: 600px) {
     & > :first-child {
       margin-right: 24px;
     }
   }
-  @media screen and (max-width: 556px) {
+  @media screen and (max-width: 600px) {
     flex-direction: column;
     & > :first-child {
       margin-bottom: 24px;
@@ -68,7 +71,7 @@ const SecondListWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  @media screen and (max-width: 556px) {
+  @media screen and (max-width: 600px) {
     & > :first-child {
       margin-bottom: 24px;
     }
@@ -336,9 +339,9 @@ const TotalStacked = () => {
   };
 
   return (
-    <>
+    <CardWrapper>
       <Title>Total Stacked</Title>
-      <CardWrapper>
+      <ContentWrapper>
         <ListWrapper>
           <List data={incomeData}></List>
           <SecondListWrapper>
@@ -349,8 +352,8 @@ const TotalStacked = () => {
         <ChartWrapper>
           <Chart data={chartData} onHover={onHover} />
         </ChartWrapper>
-      </CardWrapper>
-    </>
+      </ContentWrapper>
+    </CardWrapper>
   );
 };
 
