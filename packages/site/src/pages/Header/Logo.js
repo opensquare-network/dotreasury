@@ -8,9 +8,11 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
-const Logo = () => (
+const Logo = ({ symbol }) => (
   <Wrapper>
-    <Image src="/imgs/al-logo.svg" />
+    <Image
+      src={symbol === "ksm" ? `/imgs/logo-white.svg` : `/imgs/logo-black.svg`}
+    />
   </Wrapper>
 );
 

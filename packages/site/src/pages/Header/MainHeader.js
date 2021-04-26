@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Image } from "semantic-ui-react";
 
 import Logo from "./Logo";
@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 
 const Wrapper = styled.header`
-  height: 68px;
+  height: 76px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -31,6 +31,19 @@ const Left = styled.div`
 const Right = styled.div`
   display: flex;
   align-items: center;
+  button.ui {
+    background-color: transparent !important;
+  }
+  ${(p) =>
+    p.symbol === "ksm" &&
+    css`
+      a > div > button {
+        color: #fff !important;
+      }
+      a > button {
+        color: #fff !important;
+      }
+    `}
   @media screen and (max-width: 850px) {
     box-shadow: 0px 4px 12px rgba(29, 37, 60, 0.08);
     display: none;
@@ -97,31 +110,29 @@ const HeaderExamplePage = () => {
     menuIconSrc = "/imgs/menu-icon-close.svg";
   }
   return (
-    <Wrapper>
+    <Wrapper symbol={symbol}>
       <Left>
         <NavLink to="/">
-          <Logo />
+          <Logo symbol={symbol} />
         </NavLink>
-        <ScanHeightWrapper>
-          <ScanHeight />
-        </ScanHeightWrapper>
       </Left>
       <MenuIcon src={menuIconSrc} onClick={() => setMenuShow(!menuShow)} />
       <Right
+        symbol={symbol}
         style={{ display: menuShow ? "flex" : "" }}
         onClick={menuClick}
         ref={menuWrap}
       >
-        <NavLink to={`/${symbol}`}>
-          <MenuSwitch menuTabsName="Home" />
-        </NavLink>
         <NavLink to={`/${symbol}/income`}>
           <MenuSwitch menuTabsName="Income" />
         </NavLink>
         <NavLink to={`/${symbol}/projects`}>
           <MenuSwitch menuTabsName="Projects" />
         </NavLink>
-        <UserLogin />
+        <UserLogin symbol={symbol} />
+        <ScanHeightWrapper>
+          <ScanHeight />
+        </ScanHeightWrapper>
       </Right>
     </Wrapper>
   );

@@ -1,40 +1,46 @@
 import React from "react";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 
 import Container from "../../components/Container";
 import MainHeader from "./MainHeader";
 import SubHeader from "./SubHeader";
+import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 
 const Wrapper = styled.header`
-  background: #fff;
+  background: ${(p) => (p.symbol === "ksm" ? "#000" : "#fff")};
   max-height: 136px;
-  border-bottom: 1px solid #eee;
 `;
 
 const Header = () => {
   const location = useLocation();
-  const hideSubHeader = [
-    "/login",
-    "/register",
-    "/forget",
-    "/resetpassword",
-    "/settings",
-    "/verifyemail",
-    "/useragreement",
-    "/privacy",
-    "/projects"
-  ].includes(location.pathname)
-    || location.pathname.includes("/settings")
-    || location.pathname.includes("/projects");
+  const hideSubHeader =
+    [
+      "/login",
+      "/register",
+      "/forget",
+      "/resetpassword",
+      "/settings",
+      "/verifyemail",
+      "/useragreement",
+      "/privacy",
+      "/projects",
+    ].includes(location.pathname) ||
+    location.pathname.includes("/settings") ||
+    location.pathname.includes("/projects");
+
+  const symbol = useSelector(chainSymbolSelector)?.toLowerCase();
 
   return (
-    <Wrapper>
-      <Container>
-        <MainHeader />
-        {!hideSubHeader && <SubHeader />}
-      </Container>
-    </Wrapper>
+    <>
+      <Wrapper symbol={symbol}>
+        <Container>
+          <MainHeader />
+        </Container>
+      </Wrapper>
+      {!hideSubHeader && <SubHeader />}
+    </>
   );
 };
 
