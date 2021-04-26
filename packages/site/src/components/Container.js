@@ -13,7 +13,12 @@ const Container = styled.div`
 
   @media screen and (max-width: 1320px) {
     margin: 0 16px;
-    width: calc(100wd - 32px);
+    width: calc(100vw - 32px);
+  }
+
+  @media screen and (max-width: 600px) {
+    margin: 0;
+    width: 100vw;
   }
 `;
 

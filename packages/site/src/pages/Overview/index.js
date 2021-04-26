@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { defaults } from "react-chartjs-2";
 
-import Title from "../../components/Title";
 import Summary from "./Summary";
 import ProposerTable from "./ProposerTable";
 import BeneficiaryTable from "./BeneficiaryTable";
@@ -15,10 +14,6 @@ import Output from "./Output";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import { useChainRoute } from "../../utils/hooks";
 
-const Header = styled(Title)`
-  margin-bottom: 20px;
-`;
-
 const DoughnutWrapper = styled.div`
   display: grid;
   gap: 24px;
@@ -27,19 +22,19 @@ const DoughnutWrapper = styled.div`
     grid-template-columns: repeat(auto-fit, minmax(556px, 1fr));
   }
   @media screen and (max-width: 556px) {
-    grid-template-columns: repeat(1fr);
+    grid-template-columns: repeat(1fr, minmax(100px, 200px));
   }
 `;
 
 const TableWrapper = styled.div`
-  margin-top: 32px;
+  margin-top: 24px;
   display: grid;
   gap: 24px;
   @media screen and (min-width: 556px) {
     grid-template-columns: repeat(auto-fit, minmax(556px, 1fr));
   }
   @media screen and (max-width: 556px) {
-    grid-template-columns: repeat(1fr);
+    grid-template-columns: repeat(auto-fill);
   }
 `;
 
@@ -100,7 +95,6 @@ const Overview = () => {
 
   return (
     <>
-      <Header>Overview</Header>
       <Summary />
       <DoughnutWrapper>
         <Income

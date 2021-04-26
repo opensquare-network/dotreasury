@@ -6,23 +6,28 @@ import Table from "../../components/Table";
 import User from "../../components/User";
 import Balance from "../../components/Balance";
 import Text from "../../components/Text";
+import Card from "../../components/Card";
 import TableNoDataCell from "../../components/TableNoDataCell";
 import { overviewSelector } from "../../store/reducers/overviewSlice";
 
-const Wrapper = styled.div`
-  overflow: hidden;
-`
+const CardWrapper = styled(Card)`
+  overflow-x: hidden;
+  padding: 0;
+  table {
+    border-radius: 0 !important;
+    border: none !important;
+  }
+`;
 
 const TableWrapper = styled.div`
   overflow: scroll;
-`
-
+`;
 
 const Title = styled(Text)`
-  font-size: 18px;
-  line-height: 32px;
+  font-size: 16px;
+  line-height: 24px;
   font-weight: 700;
-  margin-bottom: 16px;
+  padding: 20px 24px;
 `;
 
 const TableRow = styled(Table.Row)`
@@ -34,14 +39,17 @@ const BeneficiaryTable = () => {
   const data = overview.bestProposalBeneficiaries || [];
 
   return (
-    <Wrapper>
+    <CardWrapper>
       <Title>Top Proposal Beneficiaries</Title>
+      {/* <Wrapper> */}
       <TableWrapper>
         <Table striped selectable unstackable>
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell>Beneficiary</Table.HeaderCell>
-              <Table.HeaderCell textAlign={"right"}>Total value</Table.HeaderCell>
+              <Table.HeaderCell textAlign={"right"}>
+                Total value
+              </Table.HeaderCell>
               <Table.HeaderCell textAlign={"right"}>
                 Proposal count
               </Table.HeaderCell>
@@ -68,7 +76,8 @@ const BeneficiaryTable = () => {
           </Table.Body>
         </Table>
       </TableWrapper>
-    </Wrapper>
+      {/* </Wrapper> */}
+    </CardWrapper>
   );
 };
 
