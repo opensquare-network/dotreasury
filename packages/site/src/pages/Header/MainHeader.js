@@ -31,15 +31,17 @@ const Left = styled.div`
 const Right = styled.div`
   display: flex;
   align-items: center;
+  button.ui {
+    background-color: transparent !important;
+  }
   ${(p) =>
     p.symbol === "ksm" &&
     css`
       a > div > button {
-        background: #000 !important;
         color: #fff !important;
-        :hover {
-          color: #fff !important;
-        }
+      }
+      a > button {
+        color: #fff !important;
       }
     `}
   @media screen and (max-width: 850px) {
@@ -127,7 +129,7 @@ const HeaderExamplePage = () => {
         <NavLink to={`/${symbol}/projects`}>
           <MenuSwitch menuTabsName="Projects" />
         </NavLink>
-        <UserLogin />
+        <UserLogin symbol={symbol} />
         <ScanHeightWrapper>
           <ScanHeight />
         </ScanHeightWrapper>

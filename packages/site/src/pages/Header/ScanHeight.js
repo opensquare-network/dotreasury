@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useState, useRef } from "react";
+import styled, { css } from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { Image } from "semantic-ui-react";
 import ExplorerLink from "../../components/ExplorerLink";
@@ -14,6 +14,7 @@ import {
   currentNodeSelector,
   setCurrentNode,
 } from "../../store/reducers/nodeSlice";
+import { useOutsideClick } from "../../utils/hooks";
 
 const Wrapper = styled.div`
   position: relative;
@@ -21,12 +22,13 @@ const Wrapper = styled.div`
   align-items: center;
   border: 1px solid #f4f4f4;
   border-radius: 4px;
+  min-width: 200px;
 `;
 
 const ScanHeightWrapper = styled.div`
   display: flex;
   align-items: center;
-
+  flex: 1 1 auto;
   background: #fbfbfb;
   height: 32px;
   padding: 4px 8px;
@@ -71,6 +73,12 @@ const Button = styled.button`
   border-left: 1px solid #f4f4f4;
   cursor: pointer;
   background: #fff;
+  flex: 0 0 auto;
+  ${(p) =>
+    p.isActive &&
+    css`
+      background: #fafafa;
+    `}
 `;
 
 const SymbolWrapper = styled(Card)`
@@ -100,6 +108,11 @@ const SymbolItem = styled.div`
   :hover {
     background: #fafafa;
   }
+  ${(p) =>
+    p.isActive &&
+    css`
+      background: #fafafa;
+    `}
 `;
 
 const ScanHeight = () => {
@@ -108,6 +121,21 @@ const ScanHeight = () => {
   const chain = useSelector(chainSelector);
   const currentNodeSetting = useSelector(currentNodeSelector);
   const [symbolOpen, setSymbolOpen] = useState(false);
+  const symbolRef = useRef(null);
+
+  useOutsideClick(symbolRef, () => {
+    setSymbolOpen(false);
+  });
+
+  const switchNode = (node) => {
+    if (node === chain) return;
+    dispatch(
+      setCurrentNode({
+        chain: node,
+        url: currentNodeSetting.polkadot,
+      })
+    );
+  };
 
   return (
     <Wrapper>
@@ -128,46 +156,41 @@ const ScanHeight = () => {
         onClick={() => {
           setSymbolOpen(!symbolOpen);
         }}
-        onBlur={() => {
-          setTimeout(() => {
-            setSymbolOpen(false);
-          }, 100);
-        }}
+        ref={symbolRef}
+        isActive={symbolOpen}
       >
-        <Image src="/imgs/icon-triangle-down.svg" />
+        <Image
+          src={`${
+            symbolOpen
+              ? "/imgs/icon-triangle-up.svg"
+              : "/imgs/icon-triangle-down.svg"
+          }`}
+        />
+        {symbolOpen && (
+          <SymbolWrapper>
+            <SymbolItem
+              isActive={chain === "polkadot"}
+              onClick={() => {
+                switchNode("polkadot");
+              }}
+            >
+              <Image src="/imgs/logo-polkadot.svg" />
+              <div>Polkadot</div>
+              <div className="unit">DOT</div>
+            </SymbolItem>
+            <SymbolItem
+              isActive={chain === "kusama"}
+              onClick={() => {
+                switchNode("kusama");
+              }}
+            >
+              <Image src="/imgs/logo-kusama.svg" />
+              <div>Kusama</div>
+              <div className="unit">KSM</div>
+            </SymbolItem>
+          </SymbolWrapper>
+        )}
       </Button>
-      {symbolOpen && (
-        <SymbolWrapper>
-          <SymbolItem
-            onClick={() => {
-              dispatch(
-                setCurrentNode({
-                  chain: "polkadot",
-                  url: currentNodeSetting.polkadot,
-                })
-              );
-            }}
-          >
-            <Image src="/imgs/logo-polkadot.svg" />
-            <div>Polkadot</div>
-            <div className="unit">DOT</div>
-          </SymbolItem>
-          <SymbolItem
-            onClick={() => {
-              dispatch(
-                setCurrentNode({
-                  chain: "kusama",
-                  url: currentNodeSetting.kusama,
-                })
-              );
-            }}
-          >
-            <Image src="/imgs/logo-kusama.svg" />
-            <div>Kusama</div>
-            <div className="unit">KSM</div>
-          </SymbolItem>
-        </SymbolWrapper>
-      )}
     </Wrapper>
   );
 };

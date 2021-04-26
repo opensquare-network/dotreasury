@@ -27,10 +27,16 @@ const Wrapper = styled.a`
   & > :first-child {
     margin-right: 8px;
   }
+  p {
+    color: ${(p) =>
+      p.symbol === "ksm"
+        ? "rgba(255,255,255,0.8)"
+        : "rgba(29,37,60,0.64)"} !important;
+  }
   :hover {
     cursor: pointer;
     p {
-      color: ${TEXT_DARK_MAJOR};
+      color: ${(p) => (p.symbol === "ksm" ? "#fff" : TEXT_DARK_MAJOR)};
       text-decoration: underline;
     }
   }
@@ -49,7 +55,7 @@ const CircleImage = styled(Image)`
   border-radius: 50%;
 `;
 
-const UserLogin = () => {
+const UserLogin = ({ symbol }) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(isLoggedInSelector);
@@ -92,6 +98,7 @@ const UserLogin = () => {
     <>
       {isLoggedIn ? (
         <Wrapper
+          symbol={symbol}
           onClick={() => {
             history.push("/settings");
           }}
@@ -114,9 +121,6 @@ const UserLogin = () => {
           <NavLink to="/register" className="button signUp">
             <SignUpButton>Sign up</SignUpButton>
           </NavLink>
-          {/* <NavLink to="/login" className="button login">
-            <ButtonPrimary>Login</ButtonPrimary>
-          </NavLink> */}
         </>
       )}
     </>
