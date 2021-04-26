@@ -17,9 +17,18 @@ const Wrapper = styled.header`
   align-items: center;
   justify-content: space-between;
   position: relative;
+  @media screen and (max-width: 600px) {
+    padding: 0 24px;
+  }
+`;
+
+const FlexWrapper = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 const Left = styled.div`
+  flex: 0 0 auto;
   display: flex;
   align-items: center;
   @media screen and (max-width: 640px) {
@@ -50,8 +59,8 @@ const Right = styled.div`
     width: 100vw;
     flex-direction: column;
     position: absolute;
+    left: 0;
     top: 69px;
-    left: -16px;
     z-index: 9999;
     background-color: white;
     padding: 22px 0;
@@ -82,11 +91,16 @@ const Right = styled.div`
   }
 `;
 
-const MenuIcon = styled(Image)`
+const MenuIcon = styled.div`
+  width: 24px;
+  height: 24px;
   display: none !important;
+  margin-left: 0.5rem;
   @media screen and (max-width: 850px) {
-    display: block !important;
+    display: flex !important;
     cursor: pointer;
+    align-items: center;
+    justify-content: center;
   }
 `;
 
@@ -107,7 +121,7 @@ const HeaderExamplePage = () => {
   };
   let menuIconSrc = "/imgs/menu-icon-open.svg";
   if (menuShow) {
-    menuIconSrc = "/imgs/menu-icon-close.svg";
+    menuIconSrc = "/imgs/menu-icon-close-white.svg";
   }
   return (
     <Wrapper symbol={symbol}>
@@ -116,24 +130,28 @@ const HeaderExamplePage = () => {
           <Logo symbol={symbol} />
         </NavLink>
       </Left>
-      <MenuIcon src={menuIconSrc} onClick={() => setMenuShow(!menuShow)} />
-      <Right
-        symbol={symbol}
-        style={{ display: menuShow ? "flex" : "" }}
-        onClick={menuClick}
-        ref={menuWrap}
-      >
-        <NavLink to={`/${symbol}/income`}>
-          <MenuSwitch menuTabsName="Income" />
-        </NavLink>
-        <NavLink to={`/${symbol}/projects`}>
-          <MenuSwitch menuTabsName="Projects" />
-        </NavLink>
-        <UserLogin symbol={symbol} />
+      <FlexWrapper>
+        <Right
+          symbol={symbol}
+          style={{ display: menuShow ? "flex" : "" }}
+          onClick={menuClick}
+          ref={menuWrap}
+        >
+          <NavLink to={`/${symbol}/income`}>
+            <MenuSwitch menuTabsName="Income" />
+          </NavLink>
+          <NavLink to={`/${symbol}/projects`}>
+            <MenuSwitch menuTabsName="Projects" />
+          </NavLink>
+          <UserLogin symbol={symbol} />
+        </Right>
         <ScanHeightWrapper>
           <ScanHeight />
         </ScanHeightWrapper>
-      </Right>
+        <MenuIcon onClick={() => setMenuShow(!menuShow)}>
+          <Image src={menuIconSrc} />
+        </MenuIcon>
+      </FlexWrapper>
     </Wrapper>
   );
 };
