@@ -104,7 +104,11 @@ const TipsTable = ({ data, loading, header, footer }) => {
                         {item.showStatus === TipStatus.Retracted ? (
                           "--"
                         ) : (
-                          <Balance value={item.medianValue} currency={symbol} />
+                          <Balance
+                            value={item.medianValue}
+                            currency={symbol}
+                            usdt={item.symbolPrice}
+                          />
                         )}
                       </Table.Cell>
                       <Table.Cell

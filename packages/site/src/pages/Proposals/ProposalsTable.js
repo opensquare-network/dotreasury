@@ -123,7 +123,11 @@ const ProposalsTable = ({ data, loading, header, footer }) => {
                         <RelatedLInks links={item.links} />
                       </Table.Cell>
                       <Table.Cell textAlign={"right"}>
-                        <Balance value={item.value} currency={symbol} />
+                        <Balance
+                          value={item.value}
+                          currency={symbol}
+                          usdt={item.symbolPrice}
+                        />
                       </Table.Cell>
                       <Table.Cell className="status-cell" textAlign={"right"}>
                         <PairTextVertical
