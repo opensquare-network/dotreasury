@@ -45,8 +45,6 @@ const ProposerTable = () => {
   const overview = useSelector(overviewSelector);
   const data = overview.bestTipFinders || [];
 
-  console.log({ overview });
-
   return (
     <CardWrapper>
       <Title>Top Tip Finders</Title>
