@@ -198,7 +198,7 @@ function calcBestProposalBeneficiary(chain, proposals = []) {
     const perhaps = map[beneficiary];
     const proposalValue = perhaps ? bigAdd(perhaps.value, value) : value;
     const proposalFiatValue = addUsdtValue(
-      perhaps ? perhaps.value : 0,
+      perhaps ? perhaps.fiatValue : 0,
       value,
       symbolPrice || 0,
       chain
@@ -213,10 +213,11 @@ function calcBestProposalBeneficiary(chain, proposals = []) {
   }
 
   const beneficiaries = Object.entries(map).map(
-    ([beneficiary, { value, count }]) => {
+    ([beneficiary, { value, fiatValue, count }]) => {
       return {
         beneficiary,
         value,
+        fiatValue,
         count,
       };
     }
@@ -234,7 +235,7 @@ function calcBestTipProposers(chain, tips = []) {
     const perhaps = map[finder];
     const tipValue = perhaps ? bigAdd(perhaps.value, medianValue) : medianValue;
     const tipFiatValue = addUsdtValue(
-      perhaps ? perhaps.value : 0,
+      perhaps ? perhaps.fiatValue : 0,
       medianValue,
       symbolPrice || 0,
       chain
@@ -244,13 +245,16 @@ function calcBestTipProposers(chain, tips = []) {
     map[finder] = { value: tipValue, fiatValue: tipFiatValue, count };
   }
 
-  const finders = Object.entries(map).map(([finder, { value, count }]) => {
-    return {
-      finder,
-      value,
-      count,
-    };
-  });
+  const finders = Object.entries(map).map(
+    ([finder, { value, fiatValue, count }]) => {
+      return {
+        finder,
+        value,
+        fiatValue,
+        count,
+      };
+    }
+  );
 
   return sortByCount(finders).slice(0, 10);
 }
