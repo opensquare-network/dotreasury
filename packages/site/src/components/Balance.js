@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 import PairText from "./PairText";
 import { toPrecision, getPrecision } from "../utils";
@@ -10,6 +10,21 @@ const Wrapper = styled.div`
   display: flex;
   align-items: flex-end;
   flex-direction: column;
+  ${(p) =>
+    p.reverse &&
+    css`
+      flex-direction: column-reverse;
+      > :first-child * {
+        font-size: 12px;
+        line-height: 18px;
+        color: rgba(0, 0, 0, 0.3);
+      }
+      > :last-child {
+        font-size: 14px;
+        line-height: 22px;
+        color: rgba(0, 0, 0, 0.65);
+      }
+    `}
 `;
 
 const UsdtWrapper = styled.div`
@@ -18,13 +33,13 @@ const UsdtWrapper = styled.div`
   color: rgba(0, 0, 0, 0.3);
 `;
 
-const Balance = ({ value = 0, currency, usdt }) => {
+const Balance = ({ value = 0, currency, usdt, reverse = false }) => {
   const symbol = useSelector(chainSymbolSelector);
   const usdtNumber = Number(usdt);
   if (value === null || value === undefined) value = 0;
   const precision = toPrecision(value, getPrecision(currency || symbol), false);
   return (
-    <Wrapper>
+    <Wrapper reverse={reverse}>
       <PairText value={precision} unit={currency || symbol} />
       {usdt && !isNaN(usdtNumber) && (
         <UsdtWrapper>{`${
