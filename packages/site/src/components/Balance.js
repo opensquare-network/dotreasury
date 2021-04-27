@@ -33,11 +33,18 @@ const UsdtWrapper = styled.div`
   color: rgba(0, 0, 0, 0.3);
 `;
 
-const Balance = ({ value = 0, currency, usdt, reverse = false }) => {
+const Balance = ({
+  value = 0,
+  currency,
+  usdt,
+  reverse = false,
+  isUnitPrice = true,
+}) => {
   const symbol = useSelector(chainSymbolSelector);
-  const usdtNumber = Number(usdt);
+  let usdtNumber = Number(usdt);
   if (value === null || value === undefined) value = 0;
   const precision = toPrecision(value, getPrecision(currency || symbol), false);
+  if (isUnitPrice) usdtNumber = usdtNumber * precision;
   return (
     <Wrapper reverse={reverse}>
       <PairText value={precision} unit={currency || symbol} />

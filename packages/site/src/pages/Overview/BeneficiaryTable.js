@@ -66,7 +66,12 @@ const BeneficiaryTable = () => {
                     <User address={item.beneficiary} />
                   </Table.Cell>
                   <Table.Cell textAlign={"right"}>
-                    <Balance value={item.value} usdt={item.fiatValue} reverse />
+                    <Balance
+                      value={item.value}
+                      usdt={item.fiatValue}
+                      reverse
+                      isUnitPrice={false}
+                    />
                   </Table.Cell>
                   <Table.Cell textAlign={"right"}>
                     <Text>{item.count}</Text>
