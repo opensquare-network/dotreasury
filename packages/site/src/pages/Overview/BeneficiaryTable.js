@@ -17,6 +17,9 @@ const CardWrapper = styled(Card)`
     border-radius: 0 !important;
     border: none !important;
   }
+  @media screen and (max-width: 600px) {
+    border-radius: 0;
+  }
 `;
 
 const TableWrapper = styled.div`

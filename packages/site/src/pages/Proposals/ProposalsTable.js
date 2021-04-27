@@ -17,19 +17,26 @@ import TableNoDataCell from "../../components/TableNoDataCell";
 import RelatedLInks from "../../components/RelatedLinks";
 import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
+import Card from "../../components/Card";
+
+const CardWrapper = styled(Card)`
+  overflow-x: hidden;
+  padding: 0;
+  table {
+    border-radius: 0 !important;
+    border: none !important;
+  }
+  @media screen and (max-width: 600px) {
+    border-radius: 0;
+  }
+`;
 
 const Wrapper = styled.div`
-  overflow-x: scroll;
+  overflow: hidden;
+`;
 
-  @media screen and (max-width: 1140px) {
-    position: relative;
-    left: -16px;
-    padding: 0 16px;
-    width: calc(100% + 32px);
-    .hidden {
-      display: none;
-    }
-  }
+const TableWrapper = styled.div`
+  overflow: scroll;
 `;
 
 const StyledTable = styled(Table)`
@@ -50,7 +57,7 @@ const ProposeTimeWrapper = styled.div`
   }
 `;
 
-const ProposalsTable = ({ data, loading }) => {
+const ProposalsTable = ({ data, loading, header, footer }) => {
   const history = useHistory();
   const symbol = useSelector(chainSymbolSelector);
 
@@ -61,81 +68,89 @@ const ProposalsTable = ({ data, loading }) => {
   };
 
   return (
-    <Wrapper>
-      <TableLoading loading={loading}>
-        <StyledTable striped selectable unstackable>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell>Index</Table.HeaderCell>
-              <Table.HeaderCell>Propose time</Table.HeaderCell>
-              <Table.HeaderCell>Beneficiary</Table.HeaderCell>
-              <Table.HeaderCell>Proposer</Table.HeaderCell>
-              <Table.HeaderCell>Related links</Table.HeaderCell>
-              <Table.HeaderCell textAlign={"right"}>Value</Table.HeaderCell>
-              <Table.HeaderCell textAlign={"right"}>Status</Table.HeaderCell>
-              <Table.HeaderCell className="hidden" />
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            {(data &&
-              data.length > 0 &&
-              data.map((item, index) => (
-                <Table.Row
-                  key={index}
-                  onClick={() => onClickRow(item.proposalIndex)}
-                >
-                  <Table.Cell className="index-cell">
-                    <TextMinor>{`#${item.proposalIndex}`}</TextMinor>
-                  </Table.Cell>
-                  <Table.Cell className="propose-time-cell">
-                    <ProposeTimeWrapper>
-                      <TextMinor>
-                        {dayjs(parseInt(item.proposeTime)).format(
-                          "YYYY-MM-DD HH:mm:ss"
-                        )}
-                      </TextMinor>
-                      <ExplorerLink
-                        href={`/block/${item.proposeAtBlockHeight}`}
-                      >
-                        <PolygonLabel value={item.proposeAtBlockHeight} />
-                      </ExplorerLink>
-                    </ProposeTimeWrapper>
-                  </Table.Cell>
-                  <Table.Cell className="user-cell">
-                    <User address={item.beneficiary} />
-                  </Table.Cell>
-                  <Table.Cell className="user-cell">
-                    <User address={item.proposer} />
-                  </Table.Cell>
-                  <Table.Cell className="related-links-cell">
-                    <RelatedLInks links={item.links} />
-                  </Table.Cell>
-                  <Table.Cell textAlign={"right"}>
-                    <Balance value={item.value} currency={symbol} />
-                  </Table.Cell>
-                  <Table.Cell className="status-cell" textAlign={"right"}>
-                    <PairTextVertical
-                      value={item.latestState.state}
-                      detail={dayjs(parseInt(item.latestState.time)).format(
-                        "YYYY-MM-DD HH:mm"
-                      )}
-                    />
-                  </Table.Cell>
-                  <Table.Cell className="link-cell hidden">
-                    <NavLink
-                      to={`/${symbol.toLowerCase()}/proposals/${
-                        item.proposalIndex
-                      }`}
-                    >
-                      <RightButton />
-                    </NavLink>
-                  </Table.Cell>
+    <CardWrapper>
+      {header}
+      <Wrapper>
+        <TableWrapper>
+          <TableLoading loading={loading}>
+            <StyledTable striped selectable unstackable>
+              <Table.Header>
+                <Table.Row>
+                  <Table.HeaderCell>Index</Table.HeaderCell>
+                  <Table.HeaderCell>Propose time</Table.HeaderCell>
+                  <Table.HeaderCell>Beneficiary</Table.HeaderCell>
+                  <Table.HeaderCell>Proposer</Table.HeaderCell>
+                  <Table.HeaderCell>Related links</Table.HeaderCell>
+                  <Table.HeaderCell textAlign={"right"}>Value</Table.HeaderCell>
+                  <Table.HeaderCell textAlign={"right"}>
+                    Status
+                  </Table.HeaderCell>
+                  <Table.HeaderCell className="hidden" />
                 </Table.Row>
-              ))) || <TableNoDataCell />}
-          </Table.Body>
-        </StyledTable>
-      </TableLoading>
-    </Wrapper>
+              </Table.Header>
+              <Table.Body>
+                {(data &&
+                  data.length > 0 &&
+                  data.map((item, index) => (
+                    <Table.Row
+                      key={index}
+                      onClick={() => onClickRow(item.proposalIndex)}
+                    >
+                      <Table.Cell className="index-cell">
+                        <TextMinor>{`#${item.proposalIndex}`}</TextMinor>
+                      </Table.Cell>
+                      <Table.Cell className="propose-time-cell">
+                        <ProposeTimeWrapper>
+                          <TextMinor>
+                            {dayjs(parseInt(item.proposeTime)).format(
+                              "YYYY-MM-DD HH:mm:ss"
+                            )}
+                          </TextMinor>
+                          <ExplorerLink
+                            href={`/block/${item.proposeAtBlockHeight}`}
+                          >
+                            <PolygonLabel value={item.proposeAtBlockHeight} />
+                          </ExplorerLink>
+                        </ProposeTimeWrapper>
+                      </Table.Cell>
+                      <Table.Cell className="user-cell">
+                        <User address={item.beneficiary} />
+                      </Table.Cell>
+                      <Table.Cell className="user-cell">
+                        <User address={item.proposer} />
+                      </Table.Cell>
+                      <Table.Cell className="related-links-cell">
+                        <RelatedLInks links={item.links} />
+                      </Table.Cell>
+                      <Table.Cell textAlign={"right"}>
+                        <Balance value={item.value} currency={symbol} />
+                      </Table.Cell>
+                      <Table.Cell className="status-cell" textAlign={"right"}>
+                        <PairTextVertical
+                          value={item.latestState.state}
+                          detail={dayjs(parseInt(item.latestState.time)).format(
+                            "YYYY-MM-DD HH:mm"
+                          )}
+                        />
+                      </Table.Cell>
+                      <Table.Cell className="link-cell hidden">
+                        <NavLink
+                          to={`/${symbol.toLowerCase()}/proposals/${
+                            item.proposalIndex
+                          }`}
+                        >
+                          <RightButton />
+                        </NavLink>
+                      </Table.Cell>
+                    </Table.Row>
+                  ))) || <TableNoDataCell />}
+              </Table.Body>
+            </StyledTable>
+          </TableLoading>
+        </TableWrapper>
+      </Wrapper>
+      {footer}
+    </CardWrapper>
   );
 };
 

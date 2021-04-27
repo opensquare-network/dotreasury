@@ -8,11 +8,30 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
+const ImgFullWrapper = styled.div`
+  display: block;
+  @media screen and (max-width: 390px) {
+    display: none;
+  }
+`;
+
+const ImgShortWrapper = styled.div`
+  display: none;
+  @media screen and (max-width: 390px) {
+    display: block;
+  }
+`;
+
 const Logo = ({ symbol }) => (
   <Wrapper>
-    <Image
-      src={symbol === "ksm" ? `/imgs/logo-white.svg` : `/imgs/logo-black.svg`}
-    />
+    <ImgFullWrapper>
+      <Image
+        src={symbol === "ksm" ? `/imgs/logo-white.svg` : `/imgs/logo-black.svg`}
+      />
+    </ImgFullWrapper>
+    <ImgShortWrapper>
+      <Image src="/imgs/logo.svg" width={32} />
+    </ImgShortWrapper>
   </Wrapper>
 );
 

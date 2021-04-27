@@ -12,19 +12,26 @@ import TableNoDataCell from "../../components/TableNoDataCell";
 import PolygonLabel from "../../components/PolygonLabel";
 import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
+import Card from "../../components/Card";
+
+const CardWrapper = styled(Card)`
+  overflow-x: hidden;
+  padding: 0;
+  table {
+    border-radius: 0 !important;
+    border: none !important;
+  }
+  @media screen and (max-width: 600px) {
+    border-radius: 0;
+  }
+`;
 
 const Wrapper = styled.div`
-  overflow-x: scroll;
+  overflow: hidden;
+`;
 
-  @media screen and (max-width: 1140px) {
-    position: relative;
-    left: -16px;
-    padding: 0 16px;
-    width: calc(100% + 32px);
-    .hidden {
-      display: none;
-    }
-  }
+const TableWrapper = styled.div`
+  overflow: scroll;
 `;
 
 const StyledTable = styled(Table)`
@@ -64,68 +71,81 @@ const EventWrapper = styled.div`
   }
 `;
 
-const BurntTable = ({ data, loading }) => {
+const BurntTable = ({ data, loading, header, footer }) => {
   const symbol = useSelector(chainSymbolSelector);
 
   return (
-    <Wrapper>
-      <TableLoading loading={loading}>
-        <StyledTable striped selectable unstackable>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell>Time</Table.HeaderCell>
-              <Table.HeaderCell>Event ID</Table.HeaderCell>
-              <Table.HeaderCell textAlign={"right"}>Value</Table.HeaderCell>
-              <Table.HeaderCell textAlign={"right"}>Per</Table.HeaderCell>
-              <Table.HeaderCell textAlign={"right"}>Remnant</Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            {(data &&
-              data.length > 0 &&
-              data.map((item, index) => (
-                <TableRow key={index}>
-                  <Table.Cell className="propose-time-cell">
-                    <TimeWrapper>
-                      <Text>
-                        {dayjs(parseInt(item.indexer.blockTime)).format(
-                          "YYYY-MM-DD HH:mm:ss"
+    <CardWrapper>
+      {header}
+      <Wrapper>
+        <TableWrapper>
+          <TableLoading loading={loading}>
+            <StyledTable striped selectable unstackable>
+              <Table.Header>
+                <Table.Row>
+                  <Table.HeaderCell>Time</Table.HeaderCell>
+                  <Table.HeaderCell>Event ID</Table.HeaderCell>
+                  <Table.HeaderCell textAlign={"right"}>Value</Table.HeaderCell>
+                  <Table.HeaderCell textAlign={"right"}>Per</Table.HeaderCell>
+                  <Table.HeaderCell textAlign={"right"}>
+                    Remnant
+                  </Table.HeaderCell>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
+                {(data &&
+                  data.length > 0 &&
+                  data.map((item, index) => (
+                    <TableRow key={index}>
+                      <Table.Cell className="propose-time-cell">
+                        <TimeWrapper>
+                          <Text>
+                            {dayjs(parseInt(item.indexer.blockTime)).format(
+                              "YYYY-MM-DD HH:mm:ss"
+                            )}
+                          </Text>
+                          <ExplorerLink
+                            href={`/block/${item.indexer.blockHeight}`}
+                          >
+                            <PolygonLabel value={item.indexer.blockHeight} />
+                          </ExplorerLink>
+                        </TimeWrapper>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <ExplorerLink
+                          href={`/extrinsic/${item.indexer.blockHeight}-0?event=${item.indexer.blockHeight}-${item.indexer.sort}`}
+                        >
+                          <EventWrapper>
+                            <Image src={"/imgs/event.svg"} />
+                            <EventID>{`${item.indexer.blockHeight}-${item.indexer.sort}`}</EventID>
+                          </EventWrapper>
+                        </ExplorerLink>
+                      </Table.Cell>
+                      <Table.Cell textAlign={"right"} className="balance-cell">
+                        <Balance value={item.balance} currency={symbol} />
+                      </Table.Cell>
+                      <Table.Cell textAlign={"right"} className="balance-cell">
+                        {item.burnPercent}
+                      </Table.Cell>
+                      <Table.Cell textAlign={"right"} className="balance-cell">
+                        {parseInt(item.treasuryBalance) <= 0 ? (
+                          "--"
+                        ) : (
+                          <Balance
+                            value={item.treasuryBalance}
+                            currency={symbol}
+                          />
                         )}
-                      </Text>
-                      <ExplorerLink href={`/block/${item.indexer.blockHeight}`}>
-                        <PolygonLabel value={item.indexer.blockHeight} />
-                      </ExplorerLink>
-                    </TimeWrapper>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <ExplorerLink
-                      href={`/extrinsic/${item.indexer.blockHeight}-0?event=${item.indexer.blockHeight}-${item.indexer.sort}`}
-                    >
-                      <EventWrapper>
-                        <Image src={"/imgs/event.svg"} />
-                        <EventID>{`${item.indexer.blockHeight}-${item.indexer.sort}`}</EventID>
-                      </EventWrapper>
-                    </ExplorerLink>
-                  </Table.Cell>
-                  <Table.Cell textAlign={"right"} className="balance-cell">
-                    <Balance value={item.balance} currency={symbol} />
-                  </Table.Cell>
-                  <Table.Cell textAlign={"right"} className="balance-cell">
-                    {item.burnPercent}
-                  </Table.Cell>
-                  <Table.Cell textAlign={"right"} className="balance-cell">
-                    {parseInt(item.treasuryBalance) <= 0 ? (
-                      "--"
-                    ) : (
-                      <Balance value={item.treasuryBalance} currency={symbol} />
-                    )}
-                  </Table.Cell>
-                </TableRow>
-              ))) || <TableNoDataCell />}
-          </Table.Body>
-        </StyledTable>
-      </TableLoading>
-    </Wrapper>
+                      </Table.Cell>
+                    </TableRow>
+                  ))) || <TableNoDataCell />}
+              </Table.Body>
+            </StyledTable>
+          </TableLoading>
+        </TableWrapper>
+      </Wrapper>
+      {footer}
+    </CardWrapper>
   );
 };
 

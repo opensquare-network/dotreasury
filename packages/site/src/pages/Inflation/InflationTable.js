@@ -10,19 +10,26 @@ import Text from "../../components/Text";
 import ExplorerLink from "../../components/ExplorerLink";
 import TableNoDataCell from "../../components/TableNoDataCell";
 import PolygonLabel from "../../components/PolygonLabel";
+import Card from "../../components/Card";
+
+const CardWrapper = styled(Card)`
+  overflow-x: hidden;
+  padding: 0;
+  table {
+    border-radius: 0 !important;
+    border: none !important;
+  }
+  @media screen and (max-width: 600px) {
+    border-radius: 0;
+  }
+`;
 
 const Wrapper = styled.div`
-  overflow-x: scroll;
+  overflow: hidden;
+`;
 
-  @media screen and (max-width: 1140px) {
-    position: relative;
-    left: -16px;
-    padding: 0 16px;
-    width: calc(100% + 32px);
-    .hidden {
-      display: none;
-    }
-  }
+const TableWrapper = styled.div`
+  overflow: scroll;
 `;
 
 const StyledTable = styled(Table)`
@@ -62,54 +69,64 @@ const EventWrapper = styled.div`
   }
 `;
 
-const InflationTable = ({ data, loading }) => {
+const InflationTable = ({ data, loading, header, footer }) => {
   return (
-    <Wrapper>
-      <TableLoading loading={loading}>
-        <StyledTable striped selectable unstackable>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell>Time</Table.HeaderCell>
-              <Table.HeaderCell>Event ID</Table.HeaderCell>
-              <Table.HeaderCell textAlign={"right"}>Balance</Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            {(data &&
-              data.length > 0 &&
-              data.map((item, index) => (
-                <TableRow key={index}>
-                  <Table.Cell className="propose-time-cell">
-                    <TimeWrapper>
-                      <Text>
-                        {dayjs(parseInt(item.indexer.blockTime)).format(
-                          "YYYY-MM-DD HH:mm:ss"
-                        )}
-                      </Text>
-                      <ExplorerLink href={`/block/${item.indexer.blockHeight}`}>
-                        <PolygonLabel value={item.indexer.blockHeight} />
-                      </ExplorerLink>
-                    </TimeWrapper>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <ExplorerLink
-                      href={`/block/${item.indexer.blockHeight}?tab=event`}
-                    >
-                      <EventWrapper>
-                        <Image src={"/imgs/event.svg"} />
-                        <EventID>{`${item.indexer.blockHeight}-${item.eventSort}`}</EventID>
-                      </EventWrapper>
-                    </ExplorerLink>
-                  </Table.Cell>
-                  <Table.Cell textAlign={"right"} className="balance-cell">
-                    <Balance value={item.balance} />
-                  </Table.Cell>
-                </TableRow>
-              ))) || <TableNoDataCell />}
-          </Table.Body>
-        </StyledTable>
-      </TableLoading>
-    </Wrapper>
+    <CardWrapper>
+      {header}
+      <Wrapper>
+        <TableWrapper>
+          <TableLoading loading={loading}>
+            <StyledTable striped selectable unstackable>
+              <Table.Header>
+                <Table.Row>
+                  <Table.HeaderCell>Time</Table.HeaderCell>
+                  <Table.HeaderCell>Event ID</Table.HeaderCell>
+                  <Table.HeaderCell textAlign={"right"}>
+                    Balance
+                  </Table.HeaderCell>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
+                {(data &&
+                  data.length > 0 &&
+                  data.map((item, index) => (
+                    <TableRow key={index}>
+                      <Table.Cell className="propose-time-cell">
+                        <TimeWrapper>
+                          <Text>
+                            {dayjs(parseInt(item.indexer.blockTime)).format(
+                              "YYYY-MM-DD HH:mm:ss"
+                            )}
+                          </Text>
+                          <ExplorerLink
+                            href={`/block/${item.indexer.blockHeight}`}
+                          >
+                            <PolygonLabel value={item.indexer.blockHeight} />
+                          </ExplorerLink>
+                        </TimeWrapper>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <ExplorerLink
+                          href={`/block/${item.indexer.blockHeight}?tab=event`}
+                        >
+                          <EventWrapper>
+                            <Image src={"/imgs/event.svg"} />
+                            <EventID>{`${item.indexer.blockHeight}-${item.eventSort}`}</EventID>
+                          </EventWrapper>
+                        </ExplorerLink>
+                      </Table.Cell>
+                      <Table.Cell textAlign={"right"} className="balance-cell">
+                        <Balance value={item.balance} />
+                      </Table.Cell>
+                    </TableRow>
+                  ))) || <TableNoDataCell />}
+              </Table.Body>
+            </StyledTable>
+          </TableLoading>
+        </TableWrapper>
+      </Wrapper>
+      {footer}
+    </CardWrapper>
   );
 };
 

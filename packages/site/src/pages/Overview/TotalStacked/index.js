@@ -21,6 +21,9 @@ import {
 
 const CardWrapper = styled(Card)`
   padding: 20px 24px;
+  @media screen and (max-width: 600px) {
+    border-radius: 0;
+  }
 `;
 
 const Title = styled(Text)`

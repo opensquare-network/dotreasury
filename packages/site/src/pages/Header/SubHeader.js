@@ -98,6 +98,9 @@ const TabWrapper = styled(Tab)`
 
 const CustomCard = styled(Card)`
   padding: 0 24px;
+  @media screen and (max-width: 600px) {
+    border-radius: 0;
+  }
 `;
 
 const TopWrapper = styled.div`

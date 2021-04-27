@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import Title from "../../components/Title";
 import ResponsivePagination from "../../components/ResponsivePagination";
 import BountiesTable from "./BountiesTable";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,9 +13,19 @@ import {
   bountyListSelector,
 } from "../../store/reducers/bountySlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
+import Text from "../../components/Text";
 
-const Header = styled(Title)`
-  margin-bottom: 20px;
+const HeaderWrapper = styled.div`
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const Title = styled(Text)`
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 700;
 `;
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -47,26 +56,37 @@ const Bounties = () => {
 
   return (
     <>
-      <Header>Bounties</Header>
-      <BountiesTable data={bounties} loading={loading} />
-      <ResponsivePagination
-        activePage={tablePage}
-        totalPages={totalPages}
-        pageSize={pageSize}
-        setPageSize={(pageSize) => {
-          setTablePage(DEFAULT_QUERY_PAGE);
-          setPageSize(pageSize);
-          history.push({
-            search: null,
-          });
-        }}
-        onPageChange={(_, { activePage }) => {
-          history.push({
-            search:
-              activePage === DEFAULT_QUERY_PAGE ? null : `?page=${activePage}`,
-          });
-          setTablePage(activePage);
-        }}
+      <BountiesTable
+        data={bounties}
+        loading={loading}
+        header={
+          <HeaderWrapper>
+            <Title>Bounties</Title>
+          </HeaderWrapper>
+        }
+        footer={
+          <ResponsivePagination
+            activePage={tablePage}
+            totalPages={totalPages}
+            pageSize={pageSize}
+            setPageSize={(pageSize) => {
+              setTablePage(DEFAULT_QUERY_PAGE);
+              setPageSize(pageSize);
+              history.push({
+                search: null,
+              });
+            }}
+            onPageChange={(_, { activePage }) => {
+              history.push({
+                search:
+                  activePage === DEFAULT_QUERY_PAGE
+                    ? null
+                    : `?page=${activePage}`,
+              });
+              setTablePage(activePage);
+            }}
+          />
+        }
       />
     </>
   );

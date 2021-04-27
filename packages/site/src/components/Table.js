@@ -19,8 +19,8 @@ const CustomTable = styled(Table)`
     font-family: "Inter" !important;
     border-bottom: 0 !important;
     color: ${TEXT_DARK_MINOR} !important;
-    padding-top: 14px !important;
-    padding-bottom: 14px !important;
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
   }
   .user-cell {
     width: 192px !important;

@@ -18,6 +18,9 @@ const Title = styled(Text)`
 const CardWrapper = styled(Card)`
   position: relative;
   padding: 20px 24px;
+  @media screen and (max-width: 600px) {
+    border-radius: 0;
+  }
 `;
 
 const ContentWrapper = styled.div`

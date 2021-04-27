@@ -31,10 +31,6 @@ const Left = styled.div`
   flex: 0 0 auto;
   display: flex;
   align-items: center;
-  @media screen and (max-width: 640px) {
-    justify-content: space-between;
-    flex-grow: 3;
-  }
 `;
 
 const Right = styled.div`
@@ -47,10 +43,14 @@ const Right = styled.div`
     p.symbol === "ksm" &&
     css`
       a > div > button {
-        color: #fff !important;
+        @media screen and (min-width: 850px) {
+          color: #fff !important;
+        }
       }
       a > button {
-        color: #fff !important;
+        @media screen and (min-width: 850px) {
+          color: #fff !important;
+        }
       }
     `}
   @media screen and (max-width: 850px) {
@@ -59,7 +59,7 @@ const Right = styled.div`
     width: 100vw;
     flex-direction: column;
     position: absolute;
-    left: 0;
+    left: -16px;
     top: 69px;
     z-index: 9999;
     background-color: white;
@@ -88,6 +88,9 @@ const Right = styled.div`
     > div {
       margin-right: 0 !important;
     }
+  }
+  @media screen and (max-width: 600px) {
+    left: 0;
   }
 `;
 
@@ -119,9 +122,13 @@ const HeaderExamplePage = () => {
       setMenuShow(false);
     }
   };
-  let menuIconSrc = "/imgs/menu-icon-open.svg";
+  let menuIconSrc =
+    symbol === "ksm" ? "/imgs/icon-ham-white.svg" : "/imgs/icon-ham-black.svg";
   if (menuShow) {
-    menuIconSrc = "/imgs/menu-icon-close-white.svg";
+    menuIconSrc =
+      symbol === "ksm"
+        ? "/imgs/menu-icon-close-white.svg"
+        : "/imgs/menu-icon-close.svg";
   }
   return (
     <Wrapper symbol={symbol}>
