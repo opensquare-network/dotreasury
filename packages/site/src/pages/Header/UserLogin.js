@@ -29,14 +29,18 @@ const Wrapper = styled.a`
   }
   p {
     color: ${(p) =>
-      p.symbol === "ksm"
-        ? "rgba(255,255,255,0.8)"
-        : "rgba(29,37,60,0.64)"} !important;
+      p.symbol === "ksm" ? "rgba(255,255,255,0.8)" : "rgba(29,37,60,0.64)"};
+    @media screen and (max-width: 850px) {
+      color: rgba(29, 37, 60, 0.64);
+    }
   }
   :hover {
     cursor: pointer;
     p {
       color: ${(p) => (p.symbol === "ksm" ? "#fff" : TEXT_DARK_MAJOR)};
+      @media screen and (max-width: 850px) {
+        color: ${TEXT_DARK_MAJOR};
+      }
       text-decoration: underline;
     }
   }

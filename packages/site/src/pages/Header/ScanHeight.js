@@ -63,7 +63,7 @@ const DarkMajorLabel = styled(Label)`
   &:hover {
     text-decoration-line: underline;
   }
-  @media screen and (max-width: 640px) {
+  @media screen and (max-width: 600px) {
     display: none;
   }
 `;
@@ -102,6 +102,7 @@ const SymbolWrapper = styled(Card)`
     left: 0;
     top: 100%;
     border-radius: 0;
+    padding: 8px 0;
   }
 `;
 
@@ -128,6 +129,9 @@ const SymbolItem = styled.div`
     css`
       background: #fafafa;
     `}
+  @media screen and (max-width: 600px) {
+    padding: 11px 24px;
+  }
 `;
 
 const NetworkWrapper = styled.div`
@@ -168,6 +172,7 @@ const NetworkItemWrapper = styled(Card)`
     left: 0;
     top: 100%;
     border-radius: 0;
+    padding: 8px 0;
   }
 `;
 
@@ -214,6 +219,9 @@ const NetworkItem = styled.div`
         color: #ec4730;
       }
     `}
+  @media screen and (max-width: 600px) {
+    padding: 11px 24px;
+  }
 `;
 
 const ScanHeight = () => {

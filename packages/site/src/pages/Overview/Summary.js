@@ -18,7 +18,10 @@ import {
   fetchTreasury,
   treasurySelector,
 } from "../../store/reducers/burntSlice";
-import { chainSelector, chainSymbolSelector } from "../../store/reducers/chainSlice"
+import {
+  chainSelector,
+  chainSymbolSelector,
+} from "../../store/reducers/chainSlice";
 import { mrgap } from "../../styles";
 
 const Wrapper = styled(Card)`
@@ -33,6 +36,9 @@ const Wrapper = styled(Card)`
   }
   padding: 31px;
   margin-bottom: 24px;
+  @media screen and (max-width: 600px) {
+    border-radius: 0;
+  }
 `;
 
 const CustomCard = styled.div`

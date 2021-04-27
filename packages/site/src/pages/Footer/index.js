@@ -4,20 +4,25 @@ import { Icon, Image } from "semantic-ui-react";
 
 import Container from "../../components/Container";
 import TextMinor from "../../components/TextMinor";
-import {TEXT_DARK_MAJOR, TEXT_DARK_MINOR} from "../../constants";
+import { TEXT_DARK_MAJOR, TEXT_DARK_MINOR } from "../../constants";
 import { mrgap } from "../../styles";
 
 const Wrapper = styled.footer`
-  background: #fff;
-  height: 64px;
-  border-top: 1px solid #eee;
+  /* min-height: 64px; */
+  padding-bottom: 20px;
 `;
 
 const FooterWrapper = styled.div`
-  height: 100%;
+  /* min-height: 64px; */
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  /* justify-content: space-between; */
+  > :not(:first-child) {
+    margin-left: 24px;
+  }
+  > :last-child {
+    margin-left: auto;
+  }
   .link {
     cursor: pointer;
     :hover {
@@ -32,6 +37,15 @@ const FooterWrapper = styled.div`
   @media screen and (max-width: 1140px) {
     flex-direction: column;
     justify-content: center;
+    > * {
+      margin: 0 !important;
+    }
+    > :not(:first-child) {
+      margin-top: 4px !important;
+    }
+    > :last-child {
+      margin: 4px auto 0 !important;
+    }
     .hidden {
       display: none;
     }
@@ -41,15 +55,12 @@ const FooterWrapper = styled.div`
   }
 `;
 
-const TextWrapper = styled.div`
-  display: flex;
-  ${css`${mrgap("32px")}`}
-  align-items: center;
-`
-
 const IconList = styled.div`
+  margin-left: auto !important;
   display: inline-flex;
-  ${css`${mrgap("16px")}`}
+  > :not(:first-child) {
+    margin-left: 16px;
+  }
   i {
     font-size: 20px;
     color: rgba(29, 37, 60, 0.24);
@@ -62,44 +73,44 @@ const IconList = styled.div`
 
 const ImageLogoWrapper = styled.div`
   display: flex;
-  ${css`${mrgap("8px")}`}
   align-items: center;
-`
+  > :not(:first-child) {
+    margin-left: 8px;
+  }
+`;
 
 const Footer = () => {
   return (
     <Wrapper>
       <Container>
         <FooterWrapper>
-          <TextWrapper className="hidden">
-            <ImageLogoWrapper>
-              <TextMinor>
-                doTreasury © {new Date().getFullYear()} - Powered By
-              </TextMinor>
-                <a
-                  href="https://www.opensquare.network/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Image src="/imgs/opensquare-logo.svg" />
-                </a>
-            </ImageLogoWrapper>
-            <ImageLogoWrapper>
-              <TextMinor>
-                Funded by
-              </TextMinor>
-                <a
-                  href="https://kusama.network/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Image src="/imgs/kusama-treasury-logo.svg" />
-                </a>
-            </ImageLogoWrapper>
-          </TextWrapper>
-          <TextMinor className="small">
+          {/* <TextWrapper> */}
+          <ImageLogoWrapper>
+            <TextMinor>
+              doTreasury © {new Date().getFullYear()} - Powered By
+            </TextMinor>
+            <a
+              href="https://www.opensquare.network/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Image src="/imgs/opensquare-logo.svg" />
+            </a>
+          </ImageLogoWrapper>
+          <ImageLogoWrapper>
+            <TextMinor>Funded by</TextMinor>
+            <a
+              href="https://kusama.network/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Image src="/imgs/kusama-treasury-logo.svg" />
+            </a>
+          </ImageLogoWrapper>
+          {/* </TextWrapper> */}
+          {/* <TextMinor className="small">
             doTreasury © {new Date().getFullYear()} - Powered By OpenSquare
-          </TextMinor>
+          </TextMinor> */}
           <IconList>
             <a
               href="mailto:yongfeng@opensquare.network"
