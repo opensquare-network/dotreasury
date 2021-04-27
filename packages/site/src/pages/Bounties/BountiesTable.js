@@ -125,7 +125,11 @@ const BountiesTable = ({ data, loading, header, footer }) => {
                         <Text>{item.title}</Text>
                       </Table.Cell>
                       <Table.Cell className="balance-cell" textAlign={"right"}>
-                        <Balance value={item.value} currency={symbol} />
+                        <Balance
+                          value={item.value}
+                          currency={symbol}
+                          usdt={item.symbolPrice}
+                        />
                       </Table.Cell>
                       <Table.Cell textAlign={"right"}>
                         <CapText>{item.latestState?.state}</CapText>

@@ -45,6 +45,8 @@ const ProposerTable = () => {
   const overview = useSelector(overviewSelector);
   const data = overview.bestTipFinders || [];
 
+  console.log({ overview });
+
   return (
     <CardWrapper>
       <Title>Top Tip Finders</Title>
@@ -71,7 +73,7 @@ const ProposerTable = () => {
                       <Text>{item.count}</Text>
                     </Table.Cell>
                     <Table.Cell textAlign={"right"}>
-                      <Balance value={item.value} />
+                      <Balance value={item.value} usdt={item.fiatValue} />
                     </Table.Cell>
                   </TableRow>
                 ))
