@@ -213,10 +213,11 @@ function calcBestProposalBeneficiary(chain, proposals = []) {
   }
 
   const beneficiaries = Object.entries(map).map(
-    ([beneficiary, { value, count }]) => {
+    ([beneficiary, { value, fiatValue, count }]) => {
       return {
         beneficiary,
         value,
+        fiatValue,
         count,
       };
     }
@@ -244,10 +245,11 @@ function calcBestTipProposers(chain, tips = []) {
     map[finder] = { value: tipValue, fiatValue: tipFiatValue, count };
   }
 
-  const finders = Object.entries(map).map(([finder, { value, count }]) => {
+  const finders = Object.entries(map).map(([finder, { value, fiatValue, count }]) => {
     return {
       finder,
       value,
+      fiatValue,
       count,
     };
   });
