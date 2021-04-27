@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import Title from "../../components/Title";
 import ResponsivePagination from "../../components/ResponsivePagination";
 import SlashTable from "./SlashTable";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,9 +13,19 @@ import {
   electionPhragmenSlashListLoadingSelector,
 } from "../../store/reducers/incomeSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
+import Text from "../../components/Text";
 
-const Header = styled(Title)`
-  margin-bottom: 20px;
+const HeaderWrapper = styled.div`
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const Title = styled(Text)`
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 700;
 `;
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -49,26 +58,37 @@ const ElectionPhragmenSlash = () => {
 
   return (
     <>
-      <Header>Election phragmen slash</Header>
-      <SlashTable data={itemList} loading={loading} />
-      <ResponsivePagination
-        activePage={tablePage}
-        totalPages={totalPages}
-        pageSize={pageSize}
-        setPageSize={(pageSize) => {
-          setTablePage(DEFAULT_QUERY_PAGE);
-          setPageSize(pageSize);
-          history.push({
-            search: null,
-          });
-        }}
-        onPageChange={(_, { activePage }) => {
-          history.push({
-            search:
-              activePage === DEFAULT_QUERY_PAGE ? null : `?page=${activePage}`,
-          });
-          setTablePage(activePage);
-        }}
+      <SlashTable
+        data={itemList}
+        loading={loading}
+        header={
+          <HeaderWrapper>
+            <Title>Election phragmen slash</Title>
+          </HeaderWrapper>
+        }
+        footer={
+          <ResponsivePagination
+            activePage={tablePage}
+            totalPages={totalPages}
+            pageSize={pageSize}
+            setPageSize={(pageSize) => {
+              setTablePage(DEFAULT_QUERY_PAGE);
+              setPageSize(pageSize);
+              history.push({
+                search: null,
+              });
+            }}
+            onPageChange={(_, { activePage }) => {
+              history.push({
+                search:
+                  activePage === DEFAULT_QUERY_PAGE
+                    ? null
+                    : `?page=${activePage}`,
+              });
+              setTablePage(activePage);
+            }}
+          />
+        }
       />
     </>
   );

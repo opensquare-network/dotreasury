@@ -7,6 +7,7 @@ import TextMinor from "../../components/TextMinor";
 import CountDown from "../../components/CountDown";
 import BlocksTime from "../../components/BlocksTime";
 import { mrgap } from "../../styles";
+import Card from "../../components/Card";
 
 import {
   fetchProposalsSummary,
@@ -23,9 +24,7 @@ import {
   treasurySelector,
 } from "../../store/reducers/burntSlice";
 
-const Wrapper = styled.div`
-  background: #FFF;
-  border: 1px solid #EEE;
+const Wrapper = styled(Card)`
   padding: 16px 20px 8px;
   border-radius: 8px;
   margin-bottom: 16px;
@@ -33,16 +32,16 @@ const Wrapper = styled.div`
   align-items: center;
   & > div:not(:last-child) {
     margin-right: 16px;
-  };
+  }
   & > div {
     margin-bottom: 8px;
-  };
+  }
   justify-content: space-between;
   flex-wrap: wrap;
   @media screen and (max-width: 1140px) {
     justify-content: flex-start;
   }
-`
+`;
 
 const Item = styled.div`
   min-width: 120px;
@@ -55,7 +54,8 @@ const Item = styled.div`
   &.right {
     text-align: right;
   }
-  &.available, &.next-burn {
+  &.available,
+  &.next-burn {
     min-width: 160px;
   }
   &.spend-period {
@@ -75,7 +75,8 @@ const Item = styled.div`
     &.right {
       text-align: left;
     }
-    &.available, &.next-burn {
+    &.available,
+    &.next-burn {
       min-width: 120px;
     }
     &.spend-period {
@@ -85,28 +86,30 @@ const Item = styled.div`
       justify-content: flex-start;
     }
   }
-`
+`;
 
 const Title = styled(TextMinor)`
   line-height: 24px;
-`
+`;
 
 const Value = styled(Text)`
   line-height: 32px;
   font-weight: bold;
   font-size: 18px;
-`
+`;
 
 const Unit = styled(TextMinor)`
   line-height: 32px;
   font-weight: bold;
   font-size: 18px;
-`
+`;
 
 const ValueWrapper = styled.div`
   display: flex;
-  ${css`${mrgap("4px")}`}
-`
+  ${css`
+    ${mrgap("4px")}
+  `}
+`;
 
 const Summary = () => {
   const dispatch = useDispatch();
@@ -157,7 +160,8 @@ const Summary = () => {
       </Item>
       <Item className="right spend-period">
         <Title>Spend period</Title>
-        <BlocksTime blocks={spendPeriod.restBlocks}
+        <BlocksTime
+          blocks={spendPeriod.restBlocks}
           ValueWrapper={Value}
           UnitWrapper={Unit}
           SectionWrapper={Fragment}
@@ -170,7 +174,7 @@ const Summary = () => {
         <CountDown percent={spendPeriod.progress} />
       </Item>
     </Wrapper>
-  )
-}
+  );
+};
 
 export default Summary;

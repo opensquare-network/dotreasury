@@ -1,22 +1,18 @@
 import React from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { Icon, Image } from "semantic-ui-react";
 
 import Container from "../../components/Container";
 import TextMinor from "../../components/TextMinor";
 import { TEXT_DARK_MAJOR, TEXT_DARK_MINOR } from "../../constants";
-import { mrgap } from "../../styles";
 
 const Wrapper = styled.footer`
-  /* min-height: 64px; */
   padding-bottom: 20px;
 `;
 
 const FooterWrapper = styled.div`
-  /* min-height: 64px; */
   display: flex;
   align-items: center;
-  /* justify-content: space-between; */
   > :not(:first-child) {
     margin-left: 24px;
   }
@@ -84,7 +80,6 @@ const Footer = () => {
     <Wrapper>
       <Container>
         <FooterWrapper>
-          {/* <TextWrapper> */}
           <ImageLogoWrapper>
             <TextMinor>
               doTreasury © {new Date().getFullYear()} - Powered By
@@ -107,10 +102,6 @@ const Footer = () => {
               <Image src="/imgs/kusama-treasury-logo.svg" />
             </a>
           </ImageLogoWrapper>
-          {/* </TextWrapper> */}
-          {/* <TextMinor className="small">
-            doTreasury © {new Date().getFullYear()} - Powered By OpenSquare
-          </TextMinor> */}
           <IconList>
             <a
               href="mailto:yongfeng@opensquare.network"

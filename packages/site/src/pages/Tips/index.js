@@ -3,7 +3,6 @@ import styled from "styled-components";
 import TipsTable from "./TipsTable";
 import Filter from "./Filter";
 import ResponsivePagination from "../../components/ResponsivePagination";
-import Title from "../../components/Title";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchTips,
@@ -13,12 +12,19 @@ import {
 import { chainSelector } from "../../store/reducers/chainSlice";
 import { useChainRoute, useQuery } from "../../utils/hooks";
 import { useHistory } from "react-router";
+import Text from "../../components/Text";
 
 const HeaderWrapper = styled.div`
-  margin-bottom: 14px;
+  padding: 20px 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+`;
+
+const Title = styled(Text)`
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 700;
 `;
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -55,29 +61,38 @@ const Tips = () => {
 
   return (
     <>
-      <HeaderWrapper>
-        <Title>Tips</Title>
-        <Filter query={filterQuery} />
-      </HeaderWrapper>
-      <TipsTable data={tips} loading={loading} />
-      <ResponsivePagination
-        activePage={tablePage}
-        totalPages={totalPages}
-        pageSize={pageSize}
-        setPageSize={(pageSize) => {
-          setTablePage(DEFAULT_QUERY_PAGE);
-          setPageSize(pageSize);
-          history.push({
-            search: null,
-          });
-        }}
-        onPageChange={(_, { activePage }) => {
-          history.push({
-            search:
-              activePage === DEFAULT_QUERY_PAGE ? null : `?page=${activePage}`,
-          });
-          setTablePage(activePage);
-        }}
+      <TipsTable
+        data={tips}
+        loading={loading}
+        header={
+          <HeaderWrapper>
+            <Title>Tips</Title>
+            <Filter query={filterQuery} />
+          </HeaderWrapper>
+        }
+        footer={
+          <ResponsivePagination
+            activePage={tablePage}
+            totalPages={totalPages}
+            pageSize={pageSize}
+            setPageSize={(pageSize) => {
+              setTablePage(DEFAULT_QUERY_PAGE);
+              setPageSize(pageSize);
+              history.push({
+                search: null,
+              });
+            }}
+            onPageChange={(_, { activePage }) => {
+              history.push({
+                search:
+                  activePage === DEFAULT_QUERY_PAGE
+                    ? null
+                    : `?page=${activePage}`,
+              });
+              setTablePage(activePage);
+            }}
+          />
+        }
       />
     </>
   );
