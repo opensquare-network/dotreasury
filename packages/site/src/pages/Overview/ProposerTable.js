@@ -71,7 +71,11 @@ const ProposerTable = () => {
                       <Text>{item.count}</Text>
                     </Table.Cell>
                     <Table.Cell textAlign={"right"}>
-                      <Balance value={item.value} usdt={item.fiatValue} />
+                      <Balance
+                        value={item.value}
+                        usdt={item.fiatValue}
+                        isUnitPrice={false}
+                      />
                     </Table.Cell>
                   </TableRow>
                 ))
