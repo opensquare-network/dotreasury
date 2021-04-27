@@ -172,7 +172,7 @@ async function calcOutput(
 
 function sortByValue(arr) {
   return arr.sort((a, b) => {
-    return Number(b.value) - Number(a.value);
+    return Number(b.fiatValue) - Number(a.fiatValue);
   });
 }
 
@@ -195,18 +195,21 @@ function calcBestProposalBeneficiary(chain, proposals = []) {
   );
   const map = {};
   for (const { beneficiary, value, symbolPrice } of spentProposals) {
-    if (symbolPrice) {
-      const perhaps = map[beneficiary];
-      const proposalValue = addUsdtValue(
-        perhaps ? perhaps.value : 0,
-        value,
-        symbolPrice,
-        chain
-      );
-      const count = perhaps ? perhaps.count + 1 : 1;
+    const perhaps = map[beneficiary];
+    const proposalValue = perhaps ? bigAdd(perhaps.value, value) : value;
+    const proposalFiatValue = addUsdtValue(
+      perhaps ? perhaps.value : 0,
+      value,
+      symbolPrice || 0,
+      chain
+    );
+    const count = perhaps ? perhaps.count + 1 : 1;
 
-      map[beneficiary] = { value: proposalValue, count };
-    }
+    map[beneficiary] = {
+      value: proposalValue,
+      fiatValue: proposalFiatValue,
+      count,
+    };
   }
 
   const beneficiaries = Object.entries(map).map(
@@ -228,18 +231,17 @@ function calcBestTipProposers(chain, tips = []) {
   );
   const map = {};
   for (const { finder, medianValue, symbolPrice } of closedTips) {
-    if (symbolPrice) {
-      const perhaps = map[finder];
-      const tipValue = addUsdtValue(
-        perhaps ? perhaps.value : 0,
-        medianValue,
-        symbolPrice,
-        chain
-      );
-      const count = perhaps ? perhaps.count + 1 : 1;
+    const perhaps = map[finder];
+    const tipValue = perhaps ? bigAdd(perhaps.value, medianValue) : medianValue;
+    const tipFiatValue = addUsdtValue(
+      perhaps ? perhaps.value : 0,
+      medianValue,
+      symbolPrice || 0,
+      chain
+    );
+    const count = perhaps ? perhaps.count + 1 : 1;
 
-      map[finder] = { value: tipValue, count };
-    }
+    map[finder] = { value: tipValue, fiatValue: tipFiatValue, count };
   }
 
   const finders = Object.entries(map).map(([finder, { value, count }]) => {
