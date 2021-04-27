@@ -39,6 +39,7 @@ class ProposalsController {
         proposeAtBlockHeight: item.indexer.blockHeight,
         proposer: item.proposer,
         value: item.value,
+        symbolPrice: item.symbolPrice,
         beneficiary: item.beneficiary,
         links: item.links || [],
         latestState: {
@@ -77,6 +78,7 @@ class ProposalsController {
       proposeAtBlockHeight: proposal.indexer.blockHeight,
       proposer: proposal.proposer,
       value: proposal.value,
+      symbolPrice: proposal.symbolPrice,
       beneficiary: proposal.beneficiary,
       latestState: {
         state: proposal.state?.name,

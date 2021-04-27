@@ -12,6 +12,7 @@ function normalizeTip(tipInDb) {
     },
     tipsCount: tipInDb.meta?.tips.length,
     medianValue: tipInDb.medianValue,
+    symbolPrice: tipInDb.symbolPrice,
   };
 }
 

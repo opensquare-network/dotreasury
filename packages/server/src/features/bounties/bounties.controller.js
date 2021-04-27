@@ -54,6 +54,7 @@ class BountiesController {
         unlockAt: bountyStatus(item.meta)?.unlockAt,
         title: item.description,
         value: item.meta?.value,
+        symbolPrice: item.symbolPrice,
         latestState: {
           state: bountyStatusName(item),
           indexer: item.state?.indexer || item.state?.eventIndexer,
@@ -98,6 +99,7 @@ class BountiesController {
       unlockAt: bountyStatus(bounty.meta)?.unlockAt,
       title: bounty.description,
       value: bounty.meta?.value,
+      symbolPrice: bounty.symbolPrice,
       latestState: {
         state: bountyStatusName(bounty),
         indexer: bounty.state?.indexer || bounty.state?.eventIndexer,
