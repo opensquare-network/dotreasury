@@ -9,6 +9,7 @@ const { bigAdd } = require("../utils");
 const { setOverview, getOverview } = require("./store");
 const { overviewRoom, OVERVIEW_FEED_INTERVAL } = require("./constants");
 const util = require("util");
+const BigNumber = require("bignumber.js");
 
 async function feedOverview(chain, io) {
   try {
@@ -47,8 +48,11 @@ async function calcOverview(chain) {
 
   const count = await calcCount(proposals, tips, bounties, burntList);
   const output = await calcOutput(proposals, tips, bounties, burntList);
-  const bestProposalBeneficiaries = calcBestProposalBeneficiary(proposals);
-  const bestTipFinders = calcBestTipProposers(tips);
+  const bestProposalBeneficiaries = calcBestProposalBeneficiary(
+    chain,
+    proposals
+  );
+  const bestTipFinders = calcBestTipProposers(chain, tips);
 
   const statusCol = await getStatusCollection(chain);
   const incomeScan = await statusCol.findOne({ name: "income-scan" });
@@ -178,17 +182,31 @@ function sortByCount(arr) {
   });
 }
 
-function calcBestProposalBeneficiary(proposals = []) {
+function addUsdtValue(currUsdtValue, nextSymbolValue, symbolPrice, chain) {
+  const nextUsdtValue = new BigNumber(nextSymbolValue)
+    .div(Math.pow(10, chain === "kusama" ? 12 : 10))
+    .multipliedBy(symbolPrice);
+  return currUsdtValue ? nextUsdtValue.plus(currUsdtValue) : nextUsdtValue;
+}
+
+function calcBestProposalBeneficiary(chain, proposals = []) {
   const spentProposals = proposals.filter(
     ({ state: { name } }) => name === "Awarded"
   );
   const map = {};
-  for (const { beneficiary, value } of spentProposals) {
-    const perhaps = map[beneficiary];
-    const proposalValue = perhaps ? bigAdd(perhaps.value, value) : value;
-    const count = perhaps ? perhaps.count + 1 : 1;
+  for (const { beneficiary, value, symbolPrice } of spentProposals) {
+    if (symbolPrice) {
+      const perhaps = map[beneficiary];
+      const proposalValue = addUsdtValue(
+        perhaps ? perhaps.value : 0,
+        value,
+        symbolPrice,
+        chain
+      );
+      const count = perhaps ? perhaps.count + 1 : 1;
 
-    map[beneficiary] = { value: proposalValue, count };
+      map[beneficiary] = { value: proposalValue, count };
+    }
   }
 
   const beneficiaries = Object.entries(map).map(
@@ -204,17 +222,24 @@ function calcBestProposalBeneficiary(proposals = []) {
   return sortByValue(beneficiaries).slice(0, 10);
 }
 
-function calcBestTipProposers(tips = []) {
+function calcBestTipProposers(chain, tips = []) {
   const closedTips = tips.filter(
     ({ state: { state } }) => state === "TipClosed"
   );
   const map = {};
-  for (const { finder, medianValue } of closedTips) {
-    const perhaps = map[finder];
-    const tipValue = perhaps ? bigAdd(perhaps.value, medianValue) : medianValue;
-    const count = perhaps ? perhaps.count + 1 : 1;
+  for (const { finder, medianValue, symbolPrice } of closedTips) {
+    if (symbolPrice) {
+      const perhaps = map[finder];
+      const tipValue = addUsdtValue(
+        perhaps ? perhaps.value : 0,
+        medianValue,
+        symbolPrice,
+        chain
+      );
+      const count = perhaps ? perhaps.count + 1 : 1;
 
-    map[finder] = { value: tipValue, count };
+      map[finder] = { value: tipValue, count };
+    }
   }
 
   const finders = Object.entries(map).map(([finder, { value, count }]) => {
