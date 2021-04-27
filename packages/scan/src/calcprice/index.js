@@ -52,6 +52,7 @@ async function main() {
   const bountyCol = await getBountyCollection();
   await savePrice(bountyCol);
 
+  console.log("Update price successful");
   process.exit(0);
 }
 

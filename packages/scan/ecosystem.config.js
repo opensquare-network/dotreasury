@@ -62,6 +62,7 @@ module.exports = {
       name: "ksm-calc-price",
       script: "src/calcprice/index.js",
       cron_restart: "* */5 * * *",
+      autorestart: false,
       log_date_format: "YYYY-MM-DD HH:mm Z",
       env: {
         NODE_ENV: "development",
@@ -76,6 +77,7 @@ module.exports = {
       name: "dot-calc-price",
       script: "src/calcprice/index.js",
       cron_restart: "* */5 * * *",
+      autorestart: false,
       log_date_format: "YYYY-MM-DD HH:mm Z",
       env: {
         NODE_ENV: "development",
