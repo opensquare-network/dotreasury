@@ -2,6 +2,8 @@ const ksmFirstTipClosedHeight = 2192357;
 const ksmFirstRejectedEventHeight = 1164233;
 const ksmTreasuryRefactorApplyHeight = 6143966;
 
+const dotTreasuryRefactorApplyHeight = 3899548;
+
 const TreasuryAccount = "F3opxRbN5ZbjJNU511Kj2TLuzFcDq9BGduA9TgiECafpg29";
 const DotTreasuryAccount = "13UVJyLnbVp9RBZYFwFGyDvVd1y27Tt8tkntv6Q7JVPhFsTB";
 
@@ -180,4 +182,5 @@ module.exports = {
   ElectionsPhragmenEvents,
   SessionEvents,
   BalancesEvents,
+  dotTreasuryRefactorApplyHeight,
 };
