@@ -32,6 +32,10 @@ function getBurntCollection(chain) {
   return db(chain).getBurntCollection();
 }
 
+function getOutputTransferCollection(chain) {
+  return db(chain).getOutputTransferCollection();
+}
+
 function getIncomeInflationCollection(chain) {
   return db(chain).getIncomeInflationCollection();
 }
@@ -56,6 +60,10 @@ function getIdentitySlashCollection(chain) {
   return db(chain).getIdentitySlashCollection();
 }
 
+function getIncomeTransferCollection(chain) {
+  return db(chain).getIncomeTransferCollection();
+}
+
 function getOthersIncomeCollection(chain) {
   return db(chain).getOthersIncomeCollection();
 }
@@ -72,12 +80,14 @@ module.exports = {
   getBountyCollection,
   getMotionCollection,
   getBurntCollection,
+  getOutputTransferCollection,
   getIncomeInflationCollection,
   getStakingSlashCollection,
   getTreasurySlashCollection,
   getElectionSlashCollection,
   getDemocracySlashCollection,
   getIdentitySlashCollection,
+  getIncomeTransferCollection,
   getOthersIncomeCollection,
   getWeeklyStatsCollection,
 };
