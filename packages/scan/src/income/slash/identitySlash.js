@@ -1,5 +1,4 @@
 const { Modules, IdentityEvents } = require("../../utils/constants");
-const { identitySlashLogger } = require("../../utils/logger");
 const { getIdentitySlashCollection } = require("../../mongo");
 
 async function saveSlashRecord(data) {
@@ -40,7 +39,6 @@ async function handleIdentitySlash(event, sort, allBlockEvents, blockIndexer) {
     identityKilledEventData,
   };
   await saveSlashRecord(data);
-  identitySlashLogger.info(blockIndexer.blockHeight, method);
   return data;
 }
 

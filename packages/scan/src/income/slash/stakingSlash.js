@@ -1,5 +1,4 @@
 const { Modules, StakingEvents } = require("../../utils/constants");
-const { stakingSlashLogger } = require("../../utils/logger");
 const { getStakingSlashCollection } = require("../../mongo");
 
 async function handleStakingSlash(event, sort, allBlockEvents, blockIndexer) {
@@ -48,7 +47,6 @@ async function handleStakingSlash(event, sort, allBlockEvents, blockIndexer) {
   const col = await getStakingSlashCollection();
   await col.insertOne(data);
 
-  stakingSlashLogger.info(blockIndexer.blockHeight, method);
   return data;
 }
 

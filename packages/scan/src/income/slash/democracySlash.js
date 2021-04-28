@@ -6,7 +6,6 @@ const {
 } = require("../../utils/constants");
 const { getApi } = require("../../api");
 const { getCall } = require("../../utils/call");
-const { democracySlashLogger } = require("../../utils/logger");
 const { getDemocracySlashCollection } = require("../../mongo");
 
 async function saveSlashRecord(data) {
@@ -59,7 +58,6 @@ async function handleDemocracyBacklistedOrPreimageInvalid(
     [key]: nextEventData,
   };
   await saveSlashRecord(data);
-  democracySlashLogger.info(blockIndexer.blockHeight, method);
 
   return data;
 }
@@ -120,10 +118,6 @@ async function handleDemocracyCancelProposalSlash(
     canceledProposalIndex: propIndex,
   };
   await saveSlashRecord(data);
-  democracySlashLogger.info(
-    extrinsicIndexer.blockHeight,
-    DemocracyMethods.cancelProposal
-  );
   return data;
 }
 

@@ -9,12 +9,6 @@ const knownHeightsCategory = "known-heights";
 const incomeCategory = "income";
 const incomeKnownHeightsCategory = "income-known-heights";
 
-const treasurySlashCategory = "treasury-slash";
-const stakingSlashCategory = "staking-slash";
-const democracySlashCategory = "democracy-slash";
-const electionsPhragmenSlashCategory = "electionsPhragmen-slash";
-const identitySlashCategory = "identity-slash";
-
 const inflationCategory = "inflation";
 
 const abnormalOthersCategory = "abnormal-others";
@@ -37,26 +31,6 @@ log4js.configure({
     [incomeKnownHeightsCategory]: {
       type: "file",
       filename: `log/${chain}/income/income-known-heights.log`,
-    },
-    [treasurySlashCategory]: {
-      type: "file",
-      filename: `log/${chain}/income/slash/treasury-slash.log`,
-    },
-    [stakingSlashCategory]: {
-      type: "file",
-      filename: `log/${chain}/income/slash/staking-slash.log`,
-    },
-    [democracySlashCategory]: {
-      type: "file",
-      filename: `log/${chain}/income/slash/democracy-slash.log`,
-    },
-    [electionsPhragmenSlashCategory]: {
-      type: "file",
-      filename: `log/${chain}/income/slash/elections-phragmen-slash.log`,
-    },
-    [identitySlashCategory]: {
-      type: "file",
-      filename: `log/${chain}/income/slash/identity-slash.log`,
     },
     [abnormalOthersCategory]: {
       type: "file",
@@ -90,29 +64,6 @@ log4js.configure({
       appenders: [isProduction ? incomeKnownHeightsCategory : "out", "errors"],
       level: logLevel,
     },
-    [treasurySlashCategory]: {
-      appenders: [isProduction ? treasurySlashCategory : "out", "errors"],
-      level: logLevel,
-    },
-    [stakingSlashCategory]: {
-      appenders: [isProduction ? stakingSlashCategory : "out", "errors"],
-      level: logLevel,
-    },
-    [democracySlashCategory]: {
-      appenders: [isProduction ? democracySlashCategory : "out", "errors"],
-      level: logLevel,
-    },
-    [identitySlashCategory]: {
-      appenders: [isProduction ? identitySlashCategory : "out", "errors"],
-      level: logLevel,
-    },
-    [electionsPhragmenSlashCategory]: {
-      appenders: [
-        isProduction ? electionsPhragmenSlashCategory : "out",
-        "errors",
-      ],
-      level: logLevel,
-    },
     [abnormalOthersCategory]: {
       appenders: [isProduction ? abnormalOthersCategory : "out", "errors"],
       level: logLevel,
@@ -129,14 +80,6 @@ const knownHeightsLogger = log4js.getLogger(knownHeightsCategory);
 const incomeLogger = log4js.getLogger(incomeCategory);
 const incomeKnownHeightsLogger = log4js.getLogger(incomeKnownHeightsCategory);
 
-const treasurySlashLogger = log4js.getLogger(treasurySlashCategory);
-const stakingSlashLogger = log4js.getLogger(stakingSlashCategory);
-const democracySlashLogger = log4js.getLogger(democracySlashCategory);
-const identitySlashLogger = log4js.getLogger(identitySlashCategory);
-const electionsPhragmenLogger = log4js.getLogger(
-  electionsPhragmenSlashCategory
-);
-
 const inflationLogger = log4js.getLogger(inflationCategory);
 
 const abnormalOthersLogger = log4js.getLogger(abnormalOthersCategory);
@@ -146,11 +89,6 @@ module.exports = {
   knownHeightsLogger,
   incomeLogger,
   incomeKnownHeightsLogger,
-  treasurySlashLogger,
-  stakingSlashLogger,
-  democracySlashLogger,
-  identitySlashLogger,
-  electionsPhragmenLogger,
   inflationLogger,
   abnormalOthersLogger,
 };

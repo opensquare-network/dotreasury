@@ -6,7 +6,6 @@ const {
   dotTreasuryRefactorApplyHeight,
   TipEvents,
 } = require("../../utils/constants");
-const { treasurySlashLogger } = require("../../utils/logger");
 const { getTreasurySlashCollection } = require("../../mongo");
 const { currentChain, CHAINS } = require("../../chain");
 
@@ -124,7 +123,6 @@ async function handleTreasuryProposalSlash(
 
     await saveSlashRecord(data);
 
-    treasurySlashLogger.info(blockIndexer.blockHeight, TreasuryEvent.Rejected);
     return data;
   }
 
@@ -148,7 +146,6 @@ async function handleTreasuryProposalSlash(
     treasuryRejectedEventData,
   };
   await saveSlashRecord(data);
-  treasurySlashLogger.info(blockIndexer.blockHeight, method);
 
   return data;
 }
@@ -183,7 +180,6 @@ async function handleTipSlash(event, sort, allBlockEvents, blockIndexer) {
   };
 
   await saveSlashRecord(data);
-  treasurySlashLogger.info(blockIndexer.blockHeight, method);
 
   return data;
 }
@@ -226,7 +222,6 @@ async function handleTreasuryBountyRejectedSlash(
     bountyRejectedEventData,
   };
   await saveSlashRecord(data);
-  treasurySlashLogger.info(blockIndexer.blockHeight, method);
 
   return data;
 }
@@ -260,7 +255,6 @@ async function handleTreasuryBountyUnassignCuratorSlash(
     bountyIndex,
   };
   await saveSlashRecord(data);
-  treasurySlashLogger.info(extrinsicIndexer.blockHeight, meta.name);
 
   return data;
 }

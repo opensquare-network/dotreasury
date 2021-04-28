@@ -3,7 +3,6 @@ const {
   ElectionsPhragmenEvents,
   TreasuryEvent,
 } = require("../../utils/constants");
-const { electionsPhragmenLogger } = require("../../utils/logger");
 const { getElectionSlashCollection } = require("../../mongo");
 
 function allBeforeIsDeposit(allBlockEvents, sort) {
@@ -89,10 +88,6 @@ async function handleElectionsLoserCandidateSlash(
 
   await saveSlashRecord(data);
 
-  electionsPhragmenLogger.info(
-    blockIndexer.blockHeight,
-    ElectionsPhragmenEvents.NewTerm
-  );
   return data;
 }
 
@@ -142,7 +137,6 @@ async function handleElectionsPhragmenSlash(
     [key]: nextEventData,
   };
   await saveSlashRecord(data);
-  electionsPhragmenLogger.info(blockIndexer.blockHeight, method);
   return data;
 }
 
