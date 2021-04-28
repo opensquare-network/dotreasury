@@ -115,15 +115,21 @@ const Comment = ({ type, index }) => {
       .filter((v) => !!v)
   );
 
-  const replyEvent = useCallback((user) => {
-    setReplyToCallback(`[@${user}](https://dotreasury.com/user/${user}) `);
-  }, [setReplyToCallback]);
+  const replyEvent = useCallback(
+    (user) => {
+      setReplyToCallback(`[@${user}](https://dotreasury.com/user/${user}) `);
+    },
+    [setReplyToCallback]
+  );
 
-  const pageChange = useCallback((_, { activePage }) => {
-    history.push({
-      search: `?page=${activePage}`,
-    });
-  }, [history]);
+  const pageChange = useCallback(
+    (_, { activePage }) => {
+      history.push({
+        search: `?page=${activePage}`,
+      });
+    },
+    [history]
+  );
 
   return (
     <div>

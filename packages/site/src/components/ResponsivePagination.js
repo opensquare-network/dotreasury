@@ -4,32 +4,59 @@ import Pagination from "./Pagination";
 import { Dropdown } from "semantic-ui-react";
 
 const Container = styled.div`
+  padding: 16px 24px;
+  max-height: 64px;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
 
   @media screen and (max-width: 640px) {
-    div:first-child {
+    > div:first-child {
       display: none;
     }
   }
 
   @media screen and (min-width: 640px) {
-    div:nth-child(2) {
+    > div:nth-child(2) {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: 640px) {
+    .hidden {
       display: none;
     }
   }
 `;
 
+const TextWrapper = styled.div`
+  width: 153px;
+  height: 24px;
+  flex-grow: 1;
+`;
+
+const DropdownWrapper = styled.div`
+  width: 72px;
+  height: 24px;
+  margin-right: 0;
+`;
+
+const DropdownText = styled.div`
+  font-size: 13px;
+  line-height: 24px;
+  color: rgba(0, 0, 0, 0.3);
+  text-align: right;
+  padding-right: 16px;
+`;
+
 const CustomDropdown = styled(Dropdown)`
-  height: 42px !important;
+  position: absolute !important;
+  height: 24px !important;
+  min-height: 24px !important;
   min-width: 72px !important;
   border-left: 0 !important;
-  box-shadow: 0 1px 2px 0 rgb(34 36 38 / 15%) !important;
-  border-top-left-radius: 0 !important;
-  border-bottom-left-radius: 0 !important;
-  border-color: rgba(34, 36, 38, 0.15) !important;
-  padding: 8px !important;
+  border: 1px solid #dddddd !important;
+  padding: 3px 8px !important;
+
   &:hover {
     border-color: rgba(34, 36, 38, 0.15) !important;
     background-color: #fbfbfb !important;
@@ -52,24 +79,26 @@ const CustomDropdown = styled(Dropdown)`
     max-height: none !important;
   }
   & > div.text {
-    line-height: 24px !important;
+    line-height: 18px !important;
+    font-size: 13px !important;
     width: 32px !important;
-    text-align: right;
   }
   & > i.dropdown.icon {
+    padding: 4px 12px !important;
     margin-top: -8px !important;
     ::before {
       color: rgba(29, 37, 60, 0.24) !important;
     }
   }
   & .item {
-    height: 40px !important;
-    padding: 8px !important;
+    height: 24px !important;
+    padding: 0px 8px !important;
     & > .text {
-      display: block;
       line-height: 24px !important;
+      font-size: 13px !important;
+      display: block;
       width: 32px !important;
-      text-align: right !important;
+      margin-top: -8px !important;
     }
   }
 `;
@@ -103,14 +132,21 @@ const ResponsivePagination = ({
         onPageChange={onPageChange}
       />
       {totalPages > 0 && (
-        <CustomDropdown
-          value={pageSize}
-          options={options}
-          selection
-          onChange={(_, { value }) => {
-            setPageSize(value);
-          }}
-        />
+        <>
+          <TextWrapper>
+            <DropdownText className="hidden">Show rows</DropdownText>
+          </TextWrapper>
+          <DropdownWrapper>
+            <CustomDropdown
+              value={pageSize}
+              options={options}
+              selection
+              onChange={(_, { value }) => {
+                setPageSize(value);
+              }}
+            />
+          </DropdownWrapper>
+        </>
       )}
     </Container>
   );

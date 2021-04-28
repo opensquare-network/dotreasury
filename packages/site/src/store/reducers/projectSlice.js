@@ -5,7 +5,7 @@ const projectSlice = createSlice({
   name: "projects",
   initialState: {
     projects: {
-      items: []
+      items: [],
     },
     loading: false,
     projectDetail: {},
@@ -23,7 +23,7 @@ const projectSlice = createSlice({
     },
     setLoadingProjectDetail(state, { payload }) {
       state.loadingProjectDetail = payload;
-    }
+    },
   },
 });
 
@@ -31,14 +31,19 @@ export const {
   setProjects,
   setLoading,
   setProjectDetail,
-  setLoadingProjectDetail
+  setLoadingProjectDetail,
 } = projectSlice.actions;
 
-export const fetchProjects = (chain, page = 0, pageSize = 30) => async (dispatch) => {
+export const fetchProjects = (chain, page = 0, pageSize = 30) => async (
+  dispatch
+) => {
   dispatch(setLoading(true));
 
   try {
-    const { result } = await api.fetch(`/${chain}/projects`, { page, pageSize });
+    const { result } = await api.fetch(`/${chain}/projects`, {
+      page,
+      pageSize,
+    });
     dispatch(setProjects(result || {}));
   } finally {
     dispatch(setLoading(false));
@@ -58,6 +63,7 @@ export const fetchProjectDetail = (chain, projectId) => async (dispatch) => {
 export const projectsSelector = (state) => state.projects.projects;
 export const loadingSelector = (state) => state.projects.loading;
 export const projectDetailSelector = (state) => state.projects.projectDetail;
-export const loadingProjectDetailSelector = (state) => state.projects.loadingProjectDetail;
+export const loadingProjectDetailSelector = (state) =>
+  state.projects.loadingProjectDetail;
 
 export default projectSlice.reducer;

@@ -25,10 +25,8 @@ const Header = () => {
       "/verifyemail",
       "/useragreement",
       "/privacy",
-      "/projects",
     ].includes(location.pathname) ||
-    location.pathname.includes("/settings") ||
-    location.pathname.includes("/projects");
+    location.pathname.includes("/settings");
 
   const symbol = useSelector(chainSymbolSelector)?.toLowerCase();
 

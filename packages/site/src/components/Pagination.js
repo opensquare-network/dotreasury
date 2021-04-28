@@ -6,9 +6,9 @@ import { PRIMARY_THEME_COLOR } from "../constants";
 import { SECONDARY_THEME_COLOR } from "../constants";
 
 const Wrapper = styled.div`
-  margin: 10px 0;
-  display: flex;
-  justify-content: flex-end;
+  /* margin: 10px 0; */
+  /* display: flex; */
+  /* justify-content: flex-end; */
 
   a {
     font-family: "Inter" !important;
@@ -22,6 +22,27 @@ const Wrapper = styled.div`
   .pagination {
     border-top-right-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
+    height: 32px !important;
+    min-height: 32px !important;
+    border: 0 !important;
+    box-shadow: none;
+    > a {
+      width: 32px !important;
+      height: 32px !important;
+      min-width: 32px !important;
+      padding: 0 !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 0 !important;
+      border-radius: 4px !important;
+      ::before {
+        display: none;
+      }
+      :not(:first-child) {
+        margin-left: 8px !important;
+      }
+    }
   }
 `;
 
