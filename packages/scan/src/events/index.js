@@ -43,8 +43,9 @@ async function handleEvents(events, blockIndexer, extrinsics) {
         normalizedExtrinsic,
         extrinsic
       );
+      const hasTransferOut = await handleTreasuryTransferOut(event, sort, normalizedExtrinsic)
 
-      if (hasTipEvents || hasCouncilEvents || hasBountyEvents) {
+      if (hasTipEvents || hasCouncilEvents || hasBountyEvents || hasTransferOut) {
         hasTargetEvents = true;
       }
     } else {
@@ -65,9 +66,8 @@ async function handleEvents(events, blockIndexer, extrinsics) {
       normalizedExtrinsic,
       sort
     );
-    const hasTransferOut = await handleTreasuryTransferOut(event, sort, blockIndexer)
 
-    if (hasProposalEvents || hasTransferOut) {
+    if (hasProposalEvents) {
       hasTargetEvents = true
     }
   }

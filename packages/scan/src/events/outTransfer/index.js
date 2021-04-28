@@ -9,11 +9,15 @@ async function saveOutputTransferRecord(data) {
   await col.insertOne(data);
 }
 
-async function handleTreasuryTransferOut(event, sort, blockIndexer) {
-  const { section, method, data: args ,} = event;
+async function handleTreasuryTransferOut(event, sort, normalizedExtrinsic) {
+  const { section, method, data: args, } = event;
 
   if (section !== Modules.Balances || BalancesEvents.Transfer !== method) {
     return false;
+  }
+
+  if ([Modules.Treasury, Modules.Bounties, Modules.Tips].includes(normalizedExtrinsic.section)) {
+    return false
   }
 
   const transferEventData = args.toJSON();
@@ -23,7 +27,7 @@ async function handleTreasuryTransferOut(event, sort, blockIndexer) {
   }
 
   await saveOutputTransferRecord({
-    indexer: blockIndexer,
+    indexer: normalizedExtrinsic.extrinsicIndexer,
     eventSort: sort,
     balance,
     transferEventData,
