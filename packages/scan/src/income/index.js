@@ -8,7 +8,6 @@ const {
   incomeKnownHeightsLogger: heightsLogger,
   gt,
 } = require("../utils");
-const { abnormalOthersLogger } = require("../utils/logger");
 const { Modules, TreasuryEvent } = require("../utils/constants");
 const { handleStakingSlash } = require("./slash/stakingSlash");
 const {
@@ -254,8 +253,6 @@ async function handleEvents(events, blockIndexer, extrinsics, seats) {
       othersInc = bigAdd(othersInc, balance);
       // TODO: Get the treasury address balance and add the imbalance to others
       if (gt(balance, tooMuchGas)) {
-        abnormalOthersLogger.info(blockIndexer.blockHeight, balance);
-
         const data = {
           indexer: blockIndexer,
           eventSort: sort,

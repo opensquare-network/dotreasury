@@ -1,5 +1,4 @@
 const { Modules, StakingEvents } = require("../utils/constants");
-const { inflationLogger } = require("../utils/logger");
 const { getIncomeInflationCollection } = require("../mongo");
 
 const inflationEndHeight = 1379482;
@@ -43,7 +42,6 @@ async function checkInflation1(event, sort, allBlockEvents, blockIndexer) {
 
   await saveInflationRecord(data);
 
-  inflationLogger.info(blockIndexer.blockHeight, balance);
   return data;
 }
 
@@ -93,7 +91,6 @@ async function handleStakingEraPayout(
 
   await saveInflationRecord(data);
 
-  inflationLogger.info(blockIndexer.blockHeight, balance);
   return data;
 }
 

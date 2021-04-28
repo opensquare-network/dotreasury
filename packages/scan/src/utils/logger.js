@@ -9,10 +9,6 @@ const knownHeightsCategory = "known-heights";
 const incomeCategory = "income";
 const incomeKnownHeightsCategory = "income-known-heights";
 
-const inflationCategory = "inflation";
-
-const abnormalOthersCategory = "abnormal-others";
-
 log4js.configure({
   appenders: {
     [scanFileCategory]: { type: "file", filename: `log/${chain}/os-scan.log` },
@@ -24,17 +20,9 @@ log4js.configure({
       type: "file",
       filename: `log/${chain}/income/income.log`,
     },
-    [inflationCategory]: {
-      type: "file",
-      filename: `log/${chain}/income/inflation.log`,
-    },
     [incomeKnownHeightsCategory]: {
       type: "file",
       filename: `log/${chain}/income/income-known-heights.log`,
-    },
-    [abnormalOthersCategory]: {
-      type: "file",
-      filename: `log/${chain}/income/abnormal-others.log`,
     },
     errorFile: {
       type: "file",
@@ -64,14 +52,6 @@ log4js.configure({
       appenders: [isProduction ? incomeKnownHeightsCategory : "out", "errors"],
       level: logLevel,
     },
-    [abnormalOthersCategory]: {
-      appenders: [isProduction ? abnormalOthersCategory : "out", "errors"],
-      level: logLevel,
-    },
-    [inflationCategory]: {
-      appenders: [isProduction ? inflationCategory : "out", "errors"],
-      level: logLevel,
-    },
   },
 });
 
@@ -80,15 +60,9 @@ const knownHeightsLogger = log4js.getLogger(knownHeightsCategory);
 const incomeLogger = log4js.getLogger(incomeCategory);
 const incomeKnownHeightsLogger = log4js.getLogger(incomeKnownHeightsCategory);
 
-const inflationLogger = log4js.getLogger(inflationCategory);
-
-const abnormalOthersLogger = log4js.getLogger(abnormalOthersCategory);
-
 module.exports = {
   logger,
   knownHeightsLogger,
   incomeLogger,
   incomeKnownHeightsLogger,
-  inflationLogger,
-  abnormalOthersLogger,
 };
