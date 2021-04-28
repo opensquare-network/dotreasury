@@ -2,28 +2,40 @@ import React from "react";
 import { Icon, Pagination } from "semantic-ui-react";
 import styled from "styled-components";
 
-import {PRIMARY_THEME_COLOR} from "../../constants"
-import {SECONDARY_THEME_COLOR} from "../../constants"
-import {TEXT_DARK_MINOR} from "../../constants"
+import { PRIMARY_THEME_COLOR } from "../../constants";
+import { SECONDARY_THEME_COLOR } from "../../constants";
+import { TEXT_DARK_MINOR } from "../../constants";
 
 const Wrapper = styled.div`
   margin: 10px 0;
   display: flex;
   justify-content: center;
+  height: 32px;
 
   .ui.menu {
     border: 0px;
     box-shadow: none;
     .item:before {
-      background-color: rgba(0,0,0,0);
+      background-color: rgba(0, 0, 0, 0);
     }
   }
 
   a {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    padding: 0 !important;
     border: 0px;
     font-family: Inter !important;
     outline: none !important;
     color: ${TEXT_DARK_MINOR} !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    :not(:first-child) {
+      margin-left: 8px;
+    }
     &.active {
       color: ${PRIMARY_THEME_COLOR} !important;
       background: ${SECONDARY_THEME_COLOR} !important;
