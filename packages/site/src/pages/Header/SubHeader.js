@@ -13,6 +13,7 @@ import IdentitySlashMenu from "./IdentitySlashMenu";
 import ElectionPhragmenSlashMenu from "./ElectionPhragmenSlashMenu";
 import InflationMenu from "./InflationMenu";
 import OthersIncomeMenu from "./OthersIncomeMenu";
+import ProjectsMenu from "./ProjectsMenu";
 import { fetchIncomeCount } from "../../store/reducers/incomeSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { showMenuTabsSelector } from "../../store/reducers/menuSlice";
@@ -292,6 +293,20 @@ const TabExampleSecondaryPointing = () => {
               active:
                 `/${symbol}/income/others` === pathname ||
                 pathname.indexOf(`/${symbol}/income/others`) === 0,
+            },
+          },
+        ]
+      : showMenuTabs === "Projects"
+      ? [
+          {
+            menuItem: {
+              as: NavLink,
+              id: "projectsTab",
+              content: <ProjectsMenu />,
+              to: `/${symbol}/projects`,
+              exact: true,
+              key: "projects",
+              active: `/${symbol}/projects` === pathname,
             },
           },
         ]
