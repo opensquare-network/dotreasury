@@ -16,7 +16,7 @@ async function handleTreasuryTransferOut(event, sort, normalizedExtrinsic) {
     return false;
   }
 
-  if ([Modules.Treasury, Modules.Bounties, Modules.Tips].includes(normalizedExtrinsic.section)) {
+  if (Modules.Sudo !== normalizedExtrinsic.section) {
     return false
   }
 

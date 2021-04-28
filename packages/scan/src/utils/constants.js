@@ -93,6 +93,7 @@ const Modules = Object.freeze({
   ElectionsPhragmen: "electionsPhragmen",
   Session: "session",
   Balances: "balances",
+  Sudo: "sudo",
 });
 
 const BalancesEvents = Object.freeze({
