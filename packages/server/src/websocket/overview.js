@@ -4,6 +4,7 @@ const {
   getTipCollection,
   getBurntCollection,
   getStatusCollection,
+  getOutputTransferCollection,
 } = require("../mongo");
 const { bigAdd } = require("../utils");
 const { setOverview, getOverview } = require("./store");
@@ -46,8 +47,25 @@ async function calcOverview(chain) {
   const burntCol = await getBurntCollection(chain);
   const burntList = await burntCol.find({}, { balance: 1 }).toArray();
 
-  const count = await calcCount(proposals, tips, bounties, burntList);
-  const output = await calcOutput(proposals, tips, bounties, burntList);
+  const outputTransferCol = await getOutputTransferCollection(chain);
+  const outputTransferList = await outputTransferCol
+    .find({}, { balance: 1 })
+    .toArray();
+
+  const count = await calcCount(
+    proposals,
+    tips,
+    bounties,
+    burntList,
+    outputTransferList
+  );
+  const output = await calcOutput(
+    proposals,
+    tips,
+    bounties,
+    burntList,
+    outputTransferList
+  );
   const bestProposalBeneficiaries = calcBestProposalBeneficiary(
     chain,
     proposals
@@ -66,6 +84,7 @@ async function calcOverview(chain) {
     income: incomeScan?.seats || {
       inflation: 0,
       slash: 0,
+      transfer: 0,
       others: 0,
       slashSeats: {
         treasury: 0,
@@ -82,7 +101,8 @@ async function calcCount(
   proposals = [],
   tips = [],
   bounties = [],
-  burntList = []
+  burntList = [],
+  outputTransferList = []
 ) {
   const unFinishedProposals = proposals.filter(
     ({ state: { name } }) => name !== "Awarded" && name !== "Rejected"
@@ -117,7 +137,11 @@ async function calcCount(
     all: burntList.length,
   };
 
-  return { proposal, tip, bounty, burnt };
+  const transfer = {
+    all: outputTransferList.length,
+  };
+
+  return { proposal, tip, bounty, burnt, transfer };
 }
 
 const bountyStatuses = [
@@ -133,7 +157,8 @@ async function calcOutput(
   proposals = [],
   tips = [],
   bounties = [],
-  burntList = []
+  burntList = [],
+  outputTransferList = []
 ) {
   const spentProposals = proposals.filter(
     ({ state: { name } }) => name === "Awarded"
@@ -162,11 +187,16 @@ async function calcOutput(
     return bigAdd(result, balance);
   }, 0);
 
+  const transferTotal = outputTransferList.reduce((result, { balance }) => {
+    return bigAdd(result, balance);
+  }, 0);
+
   return {
     proposal: proposalSpent,
     tip: tipSpent,
     bounty: bountySpent,
     burnt: burntTotal,
+    transfer: transferTotal,
   };
 }
 

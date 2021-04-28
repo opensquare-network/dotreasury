@@ -11,6 +11,7 @@ const chainFeatureRouters = [
   require("./features/income/routes"),
   require("./features/stats/routes"),
   require("./features/projects/routes"),
+  require("./features/outputtransfers/routes"),
 ];
 
 const commonFeatureRouters = [
@@ -24,7 +25,11 @@ module.exports = (app) => {
     router.use(r.routes(), r.allowedMethods({ throw: true }));
   }
   for (const r of chainFeatureRouters) {
-    router.use("/:chain(kusama|polkadot)", r.routes(), r.allowedMethods({ throw: true }));
+    router.use(
+      "/:chain(kusama|polkadot)",
+      r.routes(),
+      r.allowedMethods({ throw: true })
+    );
   }
   app.use(router.routes());
 };

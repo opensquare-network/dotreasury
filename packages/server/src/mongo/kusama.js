@@ -1,7 +1,7 @@
 const { MongoClient } = require("mongodb");
 const config = require("../../config");
 
-const dbName = config.mongo.ksmDbName || "dotreasury";
+const dbName = config.mongo.ksmDbName || "dotreasury-ksm";
 
 const statusCollectionName = "status";
 const tipCollectionName = "tip";
@@ -9,6 +9,7 @@ const proposalCollectionName = "proposal";
 const bountyCollectionName = "bounty";
 const motionCollectionName = "motion";
 const burntCollectionName = "burnt";
+const outputTransferCollectionName = "outputTransfer";
 
 // income collections
 const incomeInflationCollectionName = "incomeInflation";
@@ -18,6 +19,7 @@ const electionSlashCollectionName = "incomeSlashElections";
 const democracySlashCollectionName = "incomeSlashDemocracy";
 const identitySlashCollectionName = "incomeSlashIdentity";
 const othersIncomeCollectionName = "incomeOthersBig";
+const incomeTransferCollectionName = "incomeTransfer";
 
 // stats collections
 const weeklyStatsCollectionName = "weeklyStats";
@@ -40,6 +42,8 @@ let democracySlashCol = null;
 let identitySlashCol = null;
 let othersIncomeCol = null;
 let weeklyStatsCol = null;
+let outputTransferCol = null;
+let incomeTransferCol = null;
 
 async function initDb() {
   client = await MongoClient.connect(mongoUrl, {
@@ -61,6 +65,8 @@ async function initDb() {
   identitySlashCol = db.collection(identitySlashCollectionName);
   othersIncomeCol = db.collection(othersIncomeCollectionName);
   weeklyStatsCol = db.collection(weeklyStatsCollectionName);
+  outputTransferCol = db.collection(outputTransferCollectionName);
+  incomeTransferCol = db.collection(incomeTransferCollectionName);
 
   await _createIndexes();
 }
@@ -110,6 +116,11 @@ async function getBurntCollection() {
   return burntCol;
 }
 
+async function getOutputTransferCollection() {
+  await tryInit(outputTransferCol);
+  return outputTransferCol;
+}
+
 async function getIncomeInflationCollection() {
   await tryInit(incomeInflationCol);
   return incomeInflationCol;
@@ -140,6 +151,11 @@ async function getIdentitySlashCollection() {
   return identitySlashCol;
 }
 
+async function getIncomeTransferCollection() {
+  await tryInit(incomeTransferCol);
+  return incomeTransferCol;
+}
+
 async function getOthersIncomeCollection() {
   await tryInit(othersIncomeCol);
   return othersIncomeCol;
@@ -158,12 +174,14 @@ module.exports = {
   getBountyCollection,
   getMotionCollection,
   getBurntCollection,
+  getOutputTransferCollection,
   getIncomeInflationCollection,
   getStakingSlashCollection,
   getTreasurySlashCollection,
   getElectionSlashCollection,
   getDemocracySlashCollection,
   getIdentitySlashCollection,
+  getIncomeTransferCollection,
   getOthersIncomeCollection,
   getWeeklyStatsCollection,
 };
