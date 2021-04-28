@@ -6,7 +6,6 @@ const chain = process.env.CHAIN || "kusama";
 
 const scanFileCategory = "os-scan";
 const knownHeightsCategory = "known-heights";
-const incomeCategory = "income";
 const incomeKnownHeightsCategory = "income-known-heights";
 
 log4js.configure({
@@ -15,10 +14,6 @@ log4js.configure({
     [knownHeightsCategory]: {
       type: "file",
       filename: `log/${chain}/known-heights.log`,
-    },
-    [incomeCategory]: {
-      type: "file",
-      filename: `log/${chain}/income/income.log`,
     },
     [incomeKnownHeightsCategory]: {
       type: "file",
@@ -44,10 +39,6 @@ log4js.configure({
       appenders: [isProduction ? knownHeightsCategory : "out", "errors"],
       level: logLevel,
     },
-    [incomeCategory]: {
-      appenders: [isProduction ? incomeCategory : "out", "errors"],
-      level: logLevel,
-    },
     [incomeKnownHeightsCategory]: {
       appenders: [isProduction ? incomeKnownHeightsCategory : "out", "errors"],
       level: logLevel,
@@ -57,12 +48,10 @@ log4js.configure({
 
 const logger = log4js.getLogger(scanFileCategory);
 const knownHeightsLogger = log4js.getLogger(knownHeightsCategory);
-const incomeLogger = log4js.getLogger(incomeCategory);
 const incomeKnownHeightsLogger = log4js.getLogger(incomeKnownHeightsCategory);
 
 module.exports = {
   logger,
   knownHeightsLogger,
-  incomeLogger,
   incomeKnownHeightsLogger,
 };

@@ -1,7 +1,6 @@
 const {
   logger,
   knownHeightsLogger,
-  incomeLogger,
   incomeKnownHeightsLogger,
 } = require("./logger");
 const BigNumber = require("bignumber.js");
@@ -168,7 +167,6 @@ module.exports = {
   median,
   logger,
   knownHeightsLogger,
-  incomeLogger,
   incomeKnownHeightsLogger,
   bigAdd,
   gt,
