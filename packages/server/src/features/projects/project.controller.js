@@ -4,7 +4,37 @@ const { extractPage } = require("../../utils");
 const commentService = require("../../services/comment.service");
 const { HttpError } = require("../../exc");
 
-const projects = (chain) => chain === "kusama" ? kusamaProjects : (chain === "polkadot" ? polkadotProjects : null);
+function sum(arr) {
+  return arr.reduce((previous, current) => previous + current, 0);
+}
+
+function calc(projects) {
+  projects.forEach((project) => {
+    const ksmProposals =
+      project.proposals?.filter((p) => p.token === "ksm") || [];
+    const dotProposals =
+      project.proposals?.filter((p) => p.token === "dot") || [];
+    project.ksmProposalsCount = ksmProposals.length;
+    project.dotProposalsCount = dotProposals.length;
+    project.expenseKsm = sum(ksmProposals.map((p) => p.amount));
+    project.expenseDot = sum(dotProposals.map((p) => p.amount));
+    project.dollar = sum(
+      (project.proposals || []).map(
+        (p) => (p.amount ?? 0) * (p.proposeTimePrice ?? 0)
+      )
+    );
+  });
+}
+
+calc(kusamaProjects);
+calc(polkadotProjects);
+
+const projects = (chain) =>
+  chain === "kusama"
+    ? kusamaProjects
+    : chain === "polkadot"
+    ? polkadotProjects
+    : null;
 
 class ProjectController {
   async getProjects(ctx) {
@@ -19,23 +49,23 @@ class ProjectController {
     const skip = page * pageSize;
 
     ctx.body = {
-      items: projects(chain).slice(skip, skip + pageSize).map((item) => ({
-        id: item.id,
-        name: item.name,
-        logo: item.logo,
-        title: item.title,
-        description: item.description,
-        startTime: item.startTime,
-        endTime: item.endTime,
-        proposals: item.proposals?.length,
-        expense: item.proposals?.reduce(
-          (previous, current) => previous + current.amount,
-          0
-        ),
-        dollar: item.proposals?.reduce((previous, current) => (
-          previous + (current.amount ?? 0) * (current.proposeTimePrice ?? 0)
-        ), 0)
-      })),
+      items: projects(chain)
+        .slice(skip, skip + pageSize)
+        .map((item) => ({
+          id: item.id,
+          name: item.name,
+          logo: item.logo,
+          title: item.title,
+          description: item.description,
+          startTime: item.startTime,
+          endTime: item.endTime,
+          proposals: item.proposals?.length,
+          ksmProposalsCount: item.ksmProposalsCount,
+          dotProposalsCount: item.dotProposalsCount,
+          expenseKsm: item.expenseKsm,
+          expenseDot: item.expenseDot,
+          dollar: item.dollar,
+        })),
       page,
       pageSize,
       total,

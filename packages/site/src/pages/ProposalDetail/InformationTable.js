@@ -7,15 +7,13 @@ import TableCell from "../../components/TableCell";
 import User from "../../components/User";
 import Balance from "../../components/Balance";
 
-import {
-  proposalDetailSelector,
-} from "../../store/reducers/proposalSlice";
+import { proposalDetailSelector } from "../../store/reducers/proposalSlice";
 
 const InformationTable = ({ loading }) => {
   const proposalDetail = useSelector(proposalDetailSelector);
   return (
     <TableLoading loading={loading}>
-      <Table striped selectable unstackable>
+      <Table selectable unstackable>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>Information</Table.HeaderCell>
@@ -46,7 +44,11 @@ const InformationTable = ({ loading }) => {
           <Table.Row>
             <Table.Cell>
               <TableCell title={"Value"}>
-                <Balance value={proposalDetail.value} />
+                <Balance
+                  value={proposalDetail.value}
+                  usdt={proposalDetail.symbolPrice}
+                  horizontal
+                />
               </TableCell>
             </Table.Cell>
           </Table.Row>

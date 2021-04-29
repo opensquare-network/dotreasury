@@ -25,12 +25,22 @@ const Wrapper = styled.div`
         color: rgba(0, 0, 0, 0.65);
       }
     `}
+  ${(p) =>
+    p.horizontal &&
+    css`
+      flex-direction: row;
+      align-items: center;
+      > :last-child {
+        margin-left: 16px;
+      }
+    `}
 `;
 
 const UsdtWrapper = styled.div`
   font-size: 12px;
   line-height: 18px;
   color: rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
 `;
 
 const Balance = ({
@@ -39,6 +49,7 @@ const Balance = ({
   usdt,
   reverse = false,
   isUnitPrice = true,
+  horizontal = false,
 }) => {
   const symbol = useSelector(chainSymbolSelector);
   let usdtNumber = Number(usdt);
@@ -46,7 +57,7 @@ const Balance = ({
   const precision = toPrecision(value, getPrecision(currency || symbol), false);
   if (isUnitPrice) usdtNumber = usdtNumber * precision;
   return (
-    <Wrapper reverse={reverse}>
+    <Wrapper reverse={reverse} horizontal={horizontal}>
       <PairText value={precision} unit={currency || symbol} />
       {usdt && !isNaN(usdtNumber) && (
         <UsdtWrapper>{`${
