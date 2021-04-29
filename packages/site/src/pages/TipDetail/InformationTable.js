@@ -27,7 +27,7 @@ const InformationTable = ({ loading }) => {
 
   return (
     <TableLoading loading={loading}>
-      <Table striped selectable unstackable>
+      <Table selectable unstackable>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>Information</Table.HeaderCell>
@@ -54,7 +54,11 @@ const InformationTable = ({ loading }) => {
                 {tipDetail.showStatus === TipStatus.Retracted ? (
                   "--"
                 ) : (
-                  <Balance value={tipDetail.medianValue} />
+                  <Balance
+                    value={tipDetail.medianValue}
+                    usdt={tipDetail.symbolPrice}
+                    horizontal
+                  />
                 )}
               </TableCell>
             </Table.Cell>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { useSelector } from "react-redux";
 
 import Table from "../../components/Table";
@@ -7,7 +7,10 @@ import TableLoading from "../../components/TableLoading";
 import TableCell from "../../components/TableCell";
 import User from "../../components/User";
 import Text from "../../components/Text";
-import { chainSelector, scanHeightSelector } from "../../store/reducers/chainSlice";
+import {
+  chainSelector,
+  scanHeightSelector,
+} from "../../store/reducers/chainSlice";
 import Label from "../../components/Label";
 import DateShow from "../../components/DateShow";
 import PolygonLabel from "../../components/PolygonLabel";
@@ -16,15 +19,13 @@ import { useIsMounted } from "../../utils/hooks";
 import { estimateBlocksTime } from "../../services/chainApi";
 
 import { bountyDetailSelector } from "../../store/reducers/bountySlice";
-import { mrgap } from "../../styles";
 
 const FlexWrapper = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  ${css`
-    ${mrgap("16px")}
-  `}
+  > :not(:first-child) {
+    margin-left: 16px;
+  }
 `;
 
 const CapText = styled(Text)`
@@ -65,7 +66,7 @@ const BountyLifeCycleTable = ({ loading }) => {
 
   return (
     <TableLoading loading={loading}>
-      <Table striped selectable unstackable>
+      <Table selectable unstackable>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>Bounty Life Cycle</Table.HeaderCell>

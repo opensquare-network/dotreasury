@@ -24,24 +24,15 @@ import BlocksTime from "../../components/BlocksTime";
 import TimelineCommentWrapper from "../../components/TimelineCommentWrapper";
 import DetailGoBack from "../components/DetailGoBack";
 import { useChainRoute } from "../../utils/hooks";
+import DetailTableWrapper from "../../components/DetailTableWrapper";
 
 const ValueWrapper = styled.span`
   margin-right: 4px;
   color: #1d253c;
 `;
+
 const UnitWrapper = styled.span`
   color: #1d253c;
-`;
-
-const TableWrapper = styled.div`
-  display: grid;
-  gap: 16px;
-  @media screen and (min-width: 556px) {
-    grid-template-columns: repeat(auto-fit, minmax(556px, 1fr));
-  }
-  @media screen and (max-width: 556px) {
-    grid-template-columns: repeat(1fr);
-  }
 `;
 
 function processTimeline(proposalDetail, scanHeight) {
@@ -206,11 +197,11 @@ const ProposalDetail = () => {
   return (
     <>
       <DetailGoBack />
-      <TableWrapper>
+      <DetailTableWrapper title="Proposal" desc={`#${proposalIndex}`}>
         <InformationTable loading={loadingProposalDetail} />
         <ProposalLifeCycleTable loading={loadingProposalDetail} />
-      </TableWrapper>
-      <RelatedLinks type="proposal" index={parseInt(proposalIndex)} />
+        <RelatedLinks type="proposal" index={parseInt(proposalIndex)} />
+      </DetailTableWrapper>
       <TimelineCommentWrapper>
         <Timeline data={timelineData} loading={loadingProposalDetail} />
         <Comment type="proposal" index={parseInt(proposalIndex)} />

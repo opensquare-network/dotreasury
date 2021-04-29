@@ -7,7 +7,6 @@ import queryString from "query-string";
 import { useLocation } from "react-router-dom";
 
 import LinkItem from "../../components/LinkItem";
-import SubTitle from "../../components/SubTitle";
 import {
   setLinks,
   fetchLinks,
@@ -19,18 +18,12 @@ import AdminLogin from "../AdminLogin";
 import { nowAddressSelector } from "../../store/reducers/accountSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import Divider from "../../components/Divider";
+import Table from "../../components/Table";
 
 const Wrapper = styled.div`
-  margin-top: 32px;
-`;
-
-const LinksWrapper = styled.div`
-  margin: 16px 0;
-  display: flex;
-  & > :not(:last-child) {
-    margin-bottom: 8px;
+  table {
+    margin-bottom: 0 !important;
   }
-  flex-direction: column;
 `;
 
 const LinkWrapper = styled.div`
@@ -87,29 +80,43 @@ const RelatedLinks = ({ type, index }) => {
     return (
       <Wrapper>
         <AdminLogin />
-
-        <SubTitle>
-          Related Links
-          {isAdmin && (
-            <IconButton name="plus" onClick={() => setOpenAddLinkModal(true)} />
-          )}
-        </SubTitle>
-        <LinksWrapper>
-          {links.map((link, linkIndex) => (
-            <LinkWrapper key={linkIndex}>
-              {isAdmin && (
-                <IconButton
-                  name="minus"
-                  onClick={() => {
-                    setLinkIndex(linkIndex);
-                    setOpenRemoveLinkModal(true);
-                  }}
-                />
-              )}
-              <LinkItem text={link.description} link={link.link} />
-            </LinkWrapper>
-          ))}
-        </LinksWrapper>
+        <Table selectable unstackable>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell>
+                Related Links
+                {isAdmin && (
+                  <IconButton
+                    name="plus"
+                    onClick={() => setOpenAddLinkModal(true)}
+                  />
+                )}
+              </Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {links.map((link, linkIndex) => (
+              <LinkItem
+                key={linkIndex}
+                text={link.description}
+                link={link.link}
+                button={
+                  <LinkWrapper>
+                    {isAdmin && (
+                      <IconButton
+                        name="minus"
+                        onClick={() => {
+                          setLinkIndex(linkIndex);
+                          setOpenRemoveLinkModal(true);
+                        }}
+                      />
+                    )}
+                  </LinkWrapper>
+                }
+              />
+            ))}
+          </Table.Body>
+        </Table>
 
         <Modal
           size="small"

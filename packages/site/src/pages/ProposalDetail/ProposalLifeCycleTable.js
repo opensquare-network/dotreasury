@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { useSelector } from "react-redux";
 
 import Table from "../../components/Table";
@@ -14,15 +14,12 @@ import { useIsMounted } from "../../utils/hooks";
 import polkaassemblyApi from "../../services/polkassembly";
 import { proposalDetailSelector } from "../../store/reducers/proposalSlice";
 
-import { mrgap } from "../../styles";
-
 const FlexWrapper = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  ${css`
-    ${mrgap("16px")}
-  `}
+  > :not(:first-child) {
+    margin-left: 16px;
+  }
 `;
 
 const ProposalLifeCycleTable = ({ loading }) => {
@@ -47,7 +44,7 @@ const ProposalLifeCycleTable = ({ loading }) => {
 
   return (
     <TableLoading loading={loading}>
-      <Table striped selectable unstackable>
+      <Table selectable unstackable>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>Proposal Life Cycle</Table.HeaderCell>
@@ -75,7 +72,6 @@ const ProposalLifeCycleTable = ({ loading }) => {
               <TableCell title="Status">
                 <FlexWrapper>
                   <div>{proposalDetail.latestState?.state}</div>
-                  <div />
                 </FlexWrapper>
               </TableCell>
             </Table.Cell>

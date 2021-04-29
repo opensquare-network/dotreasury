@@ -22,14 +22,17 @@ import { scanHeightSelector } from "../../store/reducers/chainSlice";
 const FlexWrapper = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  :first-child {
-    margin-right: 16px;
+  > :not(:first-child) {
+    margin-left: 16px;
   }
 `;
 
+const BarWrapper = styled.div`
+  max-width: 312px;
+  flex: 1 1;
+`;
+
 const TippersLabel = styled.div`
-  min-width: 100px;
   text-align: right;
   color: rgba(29, 37, 60, 0.64);
 `;
@@ -48,7 +51,7 @@ const TipLifeCycleTable = ({ loading }) => {
 
   return (
     <TableLoading loading={loading}>
-      <Table striped selectable unstackable>
+      <Table selectable unstackable>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>Tip Life Cycle</Table.HeaderCell>
@@ -59,8 +62,12 @@ const TipLifeCycleTable = ({ loading }) => {
             <Table.Cell>
               <TableCell title={"Created"}>
                 <FlexWrapper>
-                  <div><DateShow value={tipDetail.proposeTime} /></div>
-                  <ExplorerLink href={`/block/${tipDetail.proposeAtBlockHeight}`}>
+                  <div>
+                    <DateShow value={tipDetail.proposeTime} />
+                  </div>
+                  <ExplorerLink
+                    href={`/block/${tipDetail.proposeAtBlockHeight}`}
+                  >
                     <PolygonLabel value={tipDetail.proposeAtBlockHeight} />
                   </ExplorerLink>
                 </FlexWrapper>
@@ -81,10 +88,12 @@ const TipLifeCycleTable = ({ loading }) => {
             <Table.Cell>
               <TableCell title="Threshold">
                 <FlexWrapper>
-                  <BarProgress
-                    total={thresholdTotalCount}
-                    current={tipDetail.tipsCount}
-                  />
+                  <BarWrapper>
+                    <BarProgress
+                      total={thresholdTotalCount}
+                      current={tipDetail.tipsCount}
+                    />
+                  </BarWrapper>
                   <TippersLabel>
                     {tipDetail.tipsCount}/{thresholdTotalCount}
                   </TippersLabel>
@@ -97,21 +106,25 @@ const TipLifeCycleTable = ({ loading }) => {
               <TableCell title="Closes">
                 {tipDetail.closeFromBlockHeight ? (
                   <FlexWrapper>
-                    <Progress percent={percentage * 100} />
+                    <BarWrapper>
+                      <Progress percent={percentage * 100} />
+                    </BarWrapper>
                     <TipCountDownLabel
                       scanHeight={scanHeight}
                       closes={tipDetail.closeFromBlockHeight}
                     />
                   </FlexWrapper>
                 ) : (
-                    <FlexWrapper>
+                  <FlexWrapper>
+                    <BarWrapper>
                       <Progress percent={0} />
-                      <TipCountDownLabel
-                        scanHeight={scanHeight}
-                        closes={tipDetail.closeFromBlockHeight}
-                      />
-                    </FlexWrapper>
-                  )}
+                    </BarWrapper>
+                    <TipCountDownLabel
+                      scanHeight={scanHeight}
+                      closes={tipDetail.closeFromBlockHeight}
+                    />
+                  </FlexWrapper>
+                )}
               </TableCell>
             </Table.Cell>
           </Table.Row>

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
-import styled from "styled-components";
 import { hexToString } from "@polkadot/util";
 import {
   setTipDetail,
@@ -25,17 +24,7 @@ import ClickableLink from "../../components/ClickableLink";
 import TimelineCommentWrapper from "../../components/TimelineCommentWrapper";
 import DetailGoBack from "../components/DetailGoBack";
 import { useChainRoute } from "../../utils/hooks";
-
-const TableWrapper = styled.div`
-  display: grid;
-  gap: 16px;
-  @media screen and (min-width: 556px) {
-    grid-template-columns: repeat(auto-fit, minmax(556px, 1fr));
-  }
-  @media screen and (max-width: 556px) {
-    grid-template-columns: repeat(1fr);
-  }
-`;
+import DetailTableWrapper from "../../components/DetailTableWrapper";
 
 function processTimeline(tipDetail, links) {
   return (tipDetail.timeline || []).map((timelineItem) => {
@@ -146,6 +135,11 @@ const TipDetail = () => {
 
   const links = useSelector(linksSelector);
 
+  const getShortTipId = (id) => {
+    if (!id) return "";
+    return `${id.slice(0, 12)}...${id.slice(id.length - 4)}`;
+  };
+
   useEffect(() => {
     setTimelineData(processTimeline(tipDetail, links));
   }, [tipDetail, links]);
@@ -153,11 +147,11 @@ const TipDetail = () => {
   return (
     <>
       <DetailGoBack />
-      <TableWrapper>
+      <DetailTableWrapper title="Tip" desc={getShortTipId(tipId)}>
         <InformationTable loading={loadingTipDetail} />
         <TipLifeCycleTable loading={loadingTipDetail} />
-      </TableWrapper>
-      <RelatedLinks type="tip" index={new TipIndex(tipId)} />
+        <RelatedLinks type="tip" index={new TipIndex(tipId)} />
+      </DetailTableWrapper>
       <TimelineCommentWrapper>
         <Timeline data={timelineData} loading={loadingTipDetail} />
         <Comment type="tip" index={new TipIndex(tipId)} />

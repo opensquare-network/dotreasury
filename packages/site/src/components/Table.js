@@ -1,8 +1,6 @@
 import styled from "styled-components";
 import { Table } from "semantic-ui-react";
 
-import { TEXT_DARK_MINOR } from "../constants";
-
 const CustomTable = styled(Table)`
   overflow: hidden !important;
   border-radius: 8px !important;
@@ -10,17 +8,19 @@ const CustomTable = styled(Table)`
   border-color: #eee !important;
   td {
     border-top: 0 !important;
+    border-bottom: 1px solid #f4f4f4;
+    padding: 12px 24px !important;
   }
   th {
-    line-height: 20px;
     font-style: normal !important;
     font-weight: normal !important;
-    font-size: 14px !important;
+    font-size: 13px !important;
     font-family: "Inter" !important;
     border-bottom: 0 !important;
-    color: ${TEXT_DARK_MINOR} !important;
-    padding-top: 12px !important;
-    padding-bottom: 12px !important;
+    padding: 12px 24px !important;
+    background: #fafafa !important;
+    line-height: 18px !important;
+    color: rgba(0, 0, 0, 0.3) !important;
   }
   .user-cell {
     width: 192px !important;

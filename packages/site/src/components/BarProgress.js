@@ -22,7 +22,9 @@ const Wrapper = styled.div`
   min-width: 200px;
   height: 6px;
   display: flex;
-  ${css`${mrgap("4px")}`}
+  ${css`
+    ${mrgap("4px")}
+  `}
   align-items: center;
   div:first-child {
     border-top-left-radius: 4px;
@@ -37,7 +39,7 @@ const Wrapper = styled.div`
 
 const ProgressItem = styled.div`
   background: ${SECONDARY_THEME_COLOR};
-  flex-grow: 1;
+  flex: 1 1;
   height: 6px;
 `;
 

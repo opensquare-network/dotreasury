@@ -22,6 +22,7 @@ import BlocksTime from "../../components/BlocksTime";
 import TimelineCommentWrapper from "../../components/TimelineCommentWrapper";
 import { hexToString } from "@polkadot/util";
 import { stringToWords } from "../../utils";
+import DetailTableWrapper from "../../components/DetailTableWrapper";
 
 import {
   chainSelector,
@@ -37,17 +38,6 @@ const ValueWrapper = styled.span`
 `;
 const UnitWrapper = styled.span`
   color: #1d253c;
-`;
-
-const TableWrapper = styled.div`
-  display: grid;
-  gap: 16px;
-  @media screen and (min-width: 556px) {
-    grid-template-columns: repeat(auto-fit, minmax(556px, 1fr));
-  }
-  @media screen and (max-width: 556px) {
-    grid-template-columns: repeat(1fr);
-  }
 `;
 
 function mergeExtrinsicsAndMotions(extrinsics, motions) {
@@ -269,11 +259,11 @@ const BountyDetail = () => {
   return (
     <>
       <DetailGoBack />
-      <TableWrapper>
+      <DetailTableWrapper title="Tip" desc={`#${bountyIndex}`}>
         <InformationTable loading={loadingBountyDetail} />
         <BountyLifeCycleTable loading={loadingBountyDetail} />
-      </TableWrapper>
-      <RelatedLinks type="bounty" index={parseInt(bountyIndex)} />
+        <RelatedLinks type="bounty" index={parseInt(bountyIndex)} />
+      </DetailTableWrapper>
       <TimelineCommentWrapper>
         <Timeline data={timelineData} loading={loadingBountyDetail} />
         <Comment type="bounty" index={parseInt(bountyIndex)} />
