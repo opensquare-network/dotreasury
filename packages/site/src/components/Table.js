@@ -10,6 +10,8 @@ const CustomTable = styled(Table)`
   border-color: #eee !important;
   td {
     border-top: 0 !important;
+    border-bottom: 1px solid #f4f4f4;
+    padding: 12px 24px !important;
   }
   th {
     line-height: 20px;
@@ -19,8 +21,8 @@ const CustomTable = styled(Table)`
     font-family: "Inter" !important;
     border-bottom: 0 !important;
     color: ${TEXT_DARK_MINOR} !important;
-    padding-top: 12px !important;
-    padding-bottom: 12px !important;
+    padding: 12px 24px !important;
+    background: #fafafa !important;
   }
   .user-cell {
     width: 192px !important;

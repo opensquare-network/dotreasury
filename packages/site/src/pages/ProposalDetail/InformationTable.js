@@ -7,15 +7,13 @@ import TableCell from "../../components/TableCell";
 import User from "../../components/User";
 import Balance from "../../components/Balance";
 
-import {
-  proposalDetailSelector,
-} from "../../store/reducers/proposalSlice";
+import { proposalDetailSelector } from "../../store/reducers/proposalSlice";
 
 const InformationTable = ({ loading }) => {
   const proposalDetail = useSelector(proposalDetailSelector);
   return (
     <TableLoading loading={loading}>
-      <Table striped selectable unstackable>
+      <Table selectable unstackable>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>Information</Table.HeaderCell>
