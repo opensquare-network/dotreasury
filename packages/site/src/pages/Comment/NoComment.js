@@ -14,7 +14,7 @@ const Wrapper = styled.div`
     margin: 8px 0 0;
     text-align: center;
   }
-  img{
+  img {
     width: 300px;
     height: auto;
   }
@@ -23,9 +23,9 @@ const Wrapper = styled.div`
 const NoComment = ({ type }) => {
   return (
     <Wrapper>
-        <Image src={"/imgs/comment.png"} />
-        <p>How do you think about this {type}?</p>
-        <p>Leave your comments!</p>
+      <Image src={"/imgs/empty.svg"} />
+      <p>How do you think about this {type}?</p>
+      <p>Leave your comments!</p>
     </Wrapper>
   );
 };
