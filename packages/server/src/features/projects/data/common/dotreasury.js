@@ -43,6 +43,18 @@ const proposals = [
       "A restful server which serve the treasury business data.",
     ],
   },
+  {
+    token: "dot",
+    amount: 376,
+    proposalId: 42,
+    proposeTimePrice: 30,
+    title: "Polkadot integration",
+    achievements: [
+      "Code refactor to support multiple chains.",
+      "Add price tracker so we can see fiat cost of the expenses.",
+      "Polkadot related off-chain materials collect and product polish"
+    ]
+  }
 ];
 
 module.exports = {

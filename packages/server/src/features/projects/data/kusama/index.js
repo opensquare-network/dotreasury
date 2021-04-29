@@ -1,4 +1,4 @@
-const dotreasury = require("./dotreasury");
+const dotreasury = require("../common/dotreasury");
 const polkawallet = require("./polkawallet");
 const fearlessWallet = require("./fearlessWallet");
 const ask = require("./ask");
