@@ -30,20 +30,10 @@ const ValueWrapper = styled.span`
   margin-right: 4px;
   color: #1d253c;
 `;
+
 const UnitWrapper = styled.span`
   color: #1d253c;
 `;
-
-// const TableWrapper = styled.div`
-//   display: grid;
-//   gap: 16px;
-//   @media screen and (min-width: 556px) {
-//     grid-template-columns: repeat(auto-fit, minmax(556px, 1fr));
-//   }
-//   @media screen and (max-width: 556px) {
-//     grid-template-columns: repeat(1fr);
-//   }
-// `;
 
 function processTimeline(proposalDetail, scanHeight) {
   return [
@@ -208,10 +198,8 @@ const ProposalDetail = () => {
     <>
       <DetailGoBack />
       <DetailTableWrapper title="Proposal" desc={`#${proposalIndex}`}>
-        {/* <TableWrapper> */}
         <InformationTable loading={loadingProposalDetail} />
         <ProposalLifeCycleTable loading={loadingProposalDetail} />
-        {/* </TableWrapper> */}
         <RelatedLinks type="proposal" index={parseInt(proposalIndex)} />
       </DetailTableWrapper>
       <TimelineCommentWrapper>

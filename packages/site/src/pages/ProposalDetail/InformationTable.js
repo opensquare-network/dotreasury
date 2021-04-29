@@ -44,7 +44,11 @@ const InformationTable = ({ loading }) => {
           <Table.Row>
             <Table.Cell>
               <TableCell title={"Value"}>
-                <Balance value={proposalDetail.value} />
+                <Balance
+                  value={proposalDetail.value}
+                  usdt={proposalDetail.symbolPrice}
+                  horizontal
+                />
               </TableCell>
             </Table.Cell>
           </Table.Row>

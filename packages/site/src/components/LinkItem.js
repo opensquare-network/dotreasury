@@ -1,51 +1,57 @@
 import React from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { Image } from "semantic-ui-react";
 import ExternalLink from "./ExternalLink";
 
-import TextMinor from "./TextMinor"
-import { TEXT_DARK_MAJOR } from "../constants";
+import Table from "../components/Table";
+import TextMinor from "./TextMinor";
 import { getLinkNameAndSrc } from "../utils";
-import { mrgap } from "../styles";
 
-const Wrapper = styled.div`
+const FlexWrapper = styled.div`
   display: flex;
-  align-items: start;
-  ${css`${mrgap("32px")}`}
+  align-items: center;
 `;
 
 const LinkWrapper = styled.div`
   display: flex;
   align-items: center;
-  ${css`${mrgap("8px")}`}
-  min-width: 140px;
+  width: 440px;
+  > :not(:first-child) {
+    margin-left: 8px;
+  }
+  @media screen and (max-width: 1140px) {
+    width: 100%;
+  }
 `;
 
 const LinkText = styled(TextMinor)`
   word-break: break-word;
   cursor: pointer;
   line-height: 24px;
+  color: #086de3;
   &:hover {
-    color: ${TEXT_DARK_MAJOR};
     text-decoration-line: underline;
   }
 `;
 
-const Link = ({ link, text }) => {
+const Link = ({ link, text, button }) => {
   const [name, src] = getLinkNameAndSrc(link);
 
   return (
-    <Wrapper>
-      <ExternalLink href={link}>
-        <LinkWrapper>
-          <Image src={src} />
-          <TextMinor>{name}</TextMinor>
-        </LinkWrapper>
-      </ExternalLink>
-      <ExternalLink href={link}>
-        <LinkText>{text}</LinkText>
-      </ExternalLink>
-    </Wrapper>
+    <Table.Row>
+      <Table.Cell>
+        <FlexWrapper>
+          <LinkWrapper>
+            <Image src={src} />
+            <TextMinor>{name}</TextMinor>
+            {button}
+          </LinkWrapper>
+          <ExternalLink href={link}>
+            <LinkText>{text}</LinkText>
+          </ExternalLink>
+        </FlexWrapper>
+      </Table.Cell>
+    </Table.Row>
   );
 };
 

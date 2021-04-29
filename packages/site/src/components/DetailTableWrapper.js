@@ -9,6 +9,10 @@ const CustomCard = styled(Card)`
     border: 0 !important;
     border-radius: 0 !important;
   }
+  overflow: hidden;
+  @media screen and (max-width: 600px) {
+    overflow: visible;
+  }
 `;
 
 const TitleWrapper = styled.div`

@@ -39,7 +39,7 @@ const InformationTable = ({ loading }) => {
   const bountyDetail = useSelector(bountyDetailSelector);
   return (
     <TableLoading loading={loading}>
-      <Table striped selectable unstackable>
+      <Table selectable unstackable>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>Information</Table.HeaderCell>
@@ -63,7 +63,11 @@ const InformationTable = ({ loading }) => {
           <Table.Row>
             <Table.Cell>
               <TableCell title={"Value"}>
-                <Balance value={bountyDetail.value} />
+                <Balance
+                  value={bountyDetail.value}
+                  usdt={bountyDetail.symbolPrice}
+                  horizontal
+                />
               </TableCell>
             </Table.Cell>
           </Table.Row>
@@ -84,8 +88,7 @@ const InformationTable = ({ loading }) => {
           <Table.Row>
             <Table.Cell>
               <TableCell title={"Fee"}>
-                {getBountyState(bountyDetail) <
-                BountyStates.CuratorProposed ? (
+                {getBountyState(bountyDetail) < BountyStates.CuratorProposed ? (
                   "--"
                 ) : (
                   <Balance value={bountyDetail.fee} />
@@ -96,8 +99,7 @@ const InformationTable = ({ loading }) => {
           <Table.Row>
             <Table.Cell>
               <TableCell title={"Curator Deposit"}>
-                {getBountyState(bountyDetail) <
-                BountyStates.Active ? (
+                {getBountyState(bountyDetail) < BountyStates.Active ? (
                   "--"
                 ) : (
                   <Balance value={bountyDetail.curatorDeposit} />
