@@ -11,15 +11,42 @@ const relatedLinks = [];
 const proposals = [
   {
     token: "dot",
+    amount: 922,
+    proposalId: 23,
+    proposeTimePrice: 41.7,
+    title: "Redspot v0.4",
+    achievements: [
+      "Provide Typescript type support for contracts (similar to Typechain), integrate multi-language SDK, etc."
+    ]
+  },
+  {
+    token: "dot",
+    amount: 7975,
+    proposalId: 23,
+    proposeTimePrice: 4.46,
+    title: "Redspot v0.3",
+    achievements: [
+      "Promote Redspot and allow more contract developers to participate. Combine the features of Substrate to add various plug-ins, such as Waffle, Jupiter, Gas report.",
+    ],
+  },
+  {
+    token: "dot",
+    amount: 7650,
+    proposalId: 13,
+    proposeTimePrice: 4.3,
+    title: "Redspot v0.2",
+    achievements: [
+      "Migrate to Hardhat framework to enhance the extensibility of plugins and add some features to provide a smoother development workflow",
+    ],
+  },
+  {
+    token: "dot",
     amount: 10000,
     proposalId: 0,
     proposeTimePrice: 3.4,
     title: "Redspot v0.1",
     achievements: [
-      "Can simply deploy a local testnet to test.",
-      "Can connect with the public testnet (Jupiter) to verify.",
-      "Can generate a smart contract project's directory.",
-      "Can use Redspot commands to do “compile”, “deploy”, “test”",
+      "Build core functions based on Truffle framework",
     ],
   },
 ];
