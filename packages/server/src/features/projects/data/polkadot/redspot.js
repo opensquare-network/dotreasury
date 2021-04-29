@@ -4,9 +4,9 @@ const title = "Truffle in polkadot ecosystem.";
 const description =
   "Redspot is named after Jupiter's Great Red Spot, which is also the largest DOT in the solar system. Redspot's target project is Truffle in Truffle Suite. Redspot is a development environment, testing framework and asset pipeline for pallet-contracts. Redspot is trying to let the development of ink! be projectized and simplify the testing and interacting with contracts.";
 const startTime = 1597390542000;
+const logo = "redspot-logo.svg";
 
-const relatedLinks = [
-];
+const relatedLinks = [];
 
 const proposals = [
   {
@@ -14,8 +14,7 @@ const proposals = [
     amount: 10000,
     proposalId: 0,
     proposeTimePrice: 3.4,
-    title:
-      "Redspot v0.1",
+    title: "Redspot v0.1",
     achievements: [
       "Can simply deploy a local testnet to test.",
       "Can connect with the public testnet (Jupiter) to verify.",
@@ -27,10 +26,11 @@ const proposals = [
 
 module.exports = {
   id,
+  logo,
   name,
   title,
   description,
   startTime,
   relatedLinks,
-  proposals
-}
+  proposals,
+};
