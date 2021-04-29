@@ -1,8 +1,10 @@
 const redspot = require("./redspot")
 const dotreasury = require("../common/dotreasury")
+const localCoinSwap = require("../common/localCoinSwap")
 
 const projects = [
   dotreasury,
+  localCoinSwap,
   redspot,
 ];
 
