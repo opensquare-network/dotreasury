@@ -51,10 +51,12 @@ const ProjectDetail = () => {
       .replace(/\D00/, ""),
   };
 
+  console.log({ detailData, projectDetail });
+
   return (
     <>
       <DetailGoBack />
-      <Detail data={detailData} />
+      <Detail data={detailData} projectData={projectDetail} />
       <RelatedLinks data={projectDetail.relatedLinks} />
       <Proposals data={projectDetail.proposals} />
       <Comment type="project" index={projectId} />
