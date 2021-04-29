@@ -18,6 +18,11 @@ function calc(projects) {
     project.dotProposalsCount = dotProposals.length;
     project.expenseKsm = sum(ksmProposals.map((p) => p.amount));
     project.expenseDot = sum(dotProposals.map((p) => p.amount));
+    project.dollar = sum(
+      (project.proposals || []).map(
+        (p) => (p.amount ?? 0) * (p.proposeTimePrice ?? 0)
+      )
+    );
   });
 }
 
@@ -59,16 +64,7 @@ class ProjectController {
           dotProposalsCount: item.dotProposalsCount,
           expenseKsm: item.expenseKsm,
           expenseDot: item.expenseDot,
-          expense: item.proposals?.reduce(
-            (previous, current) => previous + current.amount,
-            0
-          ),
-          dollar: item.proposals?.reduce(
-            (previous, current) =>
-              previous +
-              (current.amount ?? 0) * (current.proposeTimePrice ?? 0),
-            0
-          ),
+          dollar: item.dollar,
         })),
       page,
       pageSize,
