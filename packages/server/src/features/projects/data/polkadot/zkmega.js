@@ -4,7 +4,7 @@ const title = "A zero-knowledge proof tool set building for the Polkadot ecology
 const description =
   "zkMega is a zero-knowledge proof tool set building for the Polkadot ecology.";
 const startTime = 1606205484000;
-const logo = "zakmega-logo.svg";
+const logo = "zkmega-logo.svg";
 
 const relatedLinks = [];
 
