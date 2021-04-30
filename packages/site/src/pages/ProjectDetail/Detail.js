@@ -4,119 +4,119 @@ import { Image } from "semantic-ui-react";
 
 import Card from "../../components/Card";
 import Title from "../../components/Title";
-import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
-import { useSelector } from "react-redux";
-import { chainSymbolSelector } from "../../store/reducers/chainSlice";
+import ProjectProposals from "../../components/ProjectProposals";
+import ProjectExpense from "../../components/ProjectExpense";
 
 const Wrapper = styled(Card)`
   padding: 24px 32px;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
   display: flex;
   align-items: flex-start;
   flex-wrap: wrap;
   @media screen and (max-width: 481px) {
-     & * {
-       text-align: left !important;
-     }
+    & * {
+      text-align: left !important;
+    }
   }
-`
+`;
 
 const IconImage = styled(Image)`
   margin-right: 32px;
-`
+`;
 
 const NameContentWrapper = styled.div`
   flex: 1 1 774px;
-`
+`;
+
 const NameWrapper = styled.div`
   display: flex;
   align-items: center;
-`
+`;
 
 const NameTitle = styled(Title)`
   font-size: 22px;
   font-weight: 700;
   line-height: 36px;
-`
+`;
 
-const NameContent = styled(TextMinor)``
+const NameContent = styled(TextMinor)``;
 
 const ProposalWrapper = styled.div`
   flex-basis: 160px;
-  @media screen and (max-width: 481px) {
-    margin-left: 0;
-    margin-right: 32px;
+  > :last-child > * {
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: right;
+    color: rgba(0, 0, 0, 0.9);
   }
-`
-
-const CustomText = styled(Text)`
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 32px;
-  text-align: right;
-`
+  @media screen and (max-width: 481px) {
+    > :last-child {
+      justify-content: flex-start;
+    }
+  }
+`;
 
 const CustomTextMinor = styled(TextMinor)`
   padding-top: 6px;
   text-align: right;
-`
+`;
 
 const ExpenseContentWrapper = styled.div`
   margin-left: 32px;
   flex-basis: 160px;
+  > :last-child > :first-child {
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 24px;
+    color: rgba(0, 0, 0, 0.9);
+  }
   @media screen and (max-width: 481px) {
     margin-left: 0;
     margin-right: 32px;
   }
-`
+`;
 
-const UnitText = styled(TextMinor)`
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 32px;
-  margin-left: 8px;
-`
+const Detail = ({ data, projectData }) => {
+  const { name, logo, description, dollar } = data;
+  const {
+    expenseDot,
+    expenseKsm,
+    dotProposalsCount,
+    ksmProposalsCount,
+  } = projectData;
 
-const ExpenseWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  @media screen and (max-width: 481px) {
-    justify-content: flex-start;
-  }
-`
-
-const DollarText = styled(TextMinor)`
-  text-align: right;
-`
-
-const Detail = ({ data }) => {
-  const { name, logo, description, proposals, expense, dollar} = data;
-  const symbol = useSelector(chainSymbolSelector);
   return (
     <Wrapper>
-      <IconImage src={logo ? `/imgs/projects/${logo}` : "/imgs/default-logo.svg"} width={96} height={96} />
+      <IconImage
+        src={logo ? `/imgs/projects/${logo}` : "/imgs/default-logo.svg"}
+        width={96}
+        height={96}
+      />
       <NameContentWrapper>
         <NameWrapper>
           <NameTitle>{name}</NameTitle>
-          {/* <NameTag>OSN</NameTag> */}
         </NameWrapper>
         <NameContent>{description}</NameContent>
       </NameContentWrapper>
       <ProposalWrapper>
         <CustomTextMinor>Proposals</CustomTextMinor>
-        <CustomText>{proposals ?? 0}</CustomText>
+        <ProjectProposals
+          dotProposalsCount={dotProposalsCount}
+          ksmProposalsCount={ksmProposalsCount}
+        />
       </ProposalWrapper>
       <ExpenseContentWrapper>
         <CustomTextMinor>Expense</CustomTextMinor>
-        <ExpenseWrapper>
-          <CustomText>{expense ?? 0}</CustomText>
-          <UnitText>{symbol}</UnitText>
-        </ExpenseWrapper>
-        {dollar > 0 && <DollarText>{`≈ $${dollar}`}</DollarText>}
+        <ProjectExpense
+          expenseDot={expenseDot}
+          expenseKsm={expenseKsm}
+          dollar={dollar}
+        />
       </ExpenseContentWrapper>
     </Wrapper>
-  )
-}
+  );
+};
 
 export default Detail;

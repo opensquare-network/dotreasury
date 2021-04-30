@@ -60,7 +60,7 @@ const CustomTable = styled(Table)`
     min-width: 432px !important;
   }
   .date-cell {
-    min-width: 108px !important;
+    min-width: 140px !important;
   }
   td:first-child {
     font-weight: 400 !important;

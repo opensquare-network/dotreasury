@@ -1,48 +1,42 @@
 import React from "react";
 import styled from "styled-components";
-import { Divider } from "semantic-ui-react";
 
-import SubTitle from "../../components/SubTitle";
-import LinkItem from "../../components/LinkItem"
+import LinkItem from "../../components/LinkItem";
+import Table from "../../components/Table";
+import Card from "../../components/Card";
 
-const Wrapper = styled.div`
-  margin-bottom: 32px;
-`
-
-const Header = styled(SubTitle)`
-  margin-bottom: 16px;
-`;
-
-const DividerWrapper = styled(Divider)`
-  border-top: 1px solid #EEEEEE !important;
-  margin: 0 !important;
-`;
-
-const LinksWrapper = styled.div`
-  margin-top: 16px;
-  display: flex;
-  & > * {
-    margin-bottom: 8px;
+const Wrapper = styled(Card)`
+  padding: 0;
+  margin-bottom: 24px;
+  table {
+    border: none !important;
   }
-  flex-direction: column;
+  a > p {
+    white-space: nowrap;
+  }
 `;
 
 const RelatedLinks = ({ data }) => {
   if (data && data.length > 0) {
     return (
       <Wrapper>
-        <Header>Related Links</Header>
-        <LinksWrapper>
-          {data.map((item, index) => (
-            <LinkItem link={item.link} text={item.description} key={index} />
-          ))}
-        </LinksWrapper>
-        <DividerWrapper />
+        <Table selectable unstackable>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell>Related Links</Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {data.map((link, index) => (
+              <LinkItem key={index} text={link.description} link={link.link} />
+            ))}
+          </Table.Body>
+        </Table>
       </Wrapper>
-    )
+    );
   } else {
     return null;
   }
-}
+};
 
 export default RelatedLinks;
