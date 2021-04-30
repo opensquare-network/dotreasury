@@ -11,7 +11,7 @@
     "dotScanStaging": "pm2 start ecosystem.config.js --only dot-scan-staging --env production",
     "ksmScanStaging": "pm2 start ecosystem.config.js --only ksm-scan-staging --env production",
     "dotScanDev": "pm2 start ecosystem.config.js --only dot-scan-dev --env production",
-    "ksmScanDev": "pm2 start ecosystem.config.js --only dot-scan-dev --env production",
+    "ksmScanDev": "pm2 start ecosystem.config.js --only ksm-scan-dev --env production",
 
 
     "dotCalcPriceProd": "pm2 start ecosystem.config.js --only dot-calc-price-prod --env production",
