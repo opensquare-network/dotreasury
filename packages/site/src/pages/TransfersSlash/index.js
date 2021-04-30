@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import ResponsivePagination from "../../components/ResponsivePagination";
-import TransfersTable from "./TransfersTable";
+import TransfersSlashTable from "./TransfersSlashTable";
 import { useDispatch, useSelector } from "react-redux";
 import { useChainRoute, useQuery } from "../../utils/hooks";
 import { useHistory } from "react-router";
@@ -10,8 +10,8 @@ import { useHistory } from "react-router";
 import {
   fetchTransferList,
   transferListSelector,
-  loadingTransferListSelector,
-} from "../../store/reducers/transferSlice";
+  transferListLoadingSelector,
+} from "../../store/reducers/incomeSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import Text from "../../components/Text";
 
@@ -45,7 +45,7 @@ const Transfers = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { items: transferList, total } = useSelector(transferListSelector);
-  const loading = useSelector(loadingTransferListSelector);
+  const loading = useSelector(transferListLoadingSelector);
   const chain = useSelector(chainSelector);
 
   useEffect(() => {
@@ -55,8 +55,8 @@ const Transfers = () => {
   const totalPages = Math.ceil(total / pageSize);
 
   return (
-    <>
-      <TransfersTable
+    <div>
+      <TransfersSlashTable
         data={transferList}
         loading={loading}
         header={
@@ -88,7 +88,7 @@ const Transfers = () => {
           />
         }
       />
-    </>
+    </div>
   );
 };
 

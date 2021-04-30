@@ -46,6 +46,13 @@ const incomeSlice = createSlice({
       total: 0,
     },
     inflationListLoading: false,
+    transferListLoading: false,
+    transferList: {
+      items: [],
+      page: 0,
+      pageSize: 10,
+      total: 0,
+    },
     othersIncomeList: {
       items: [],
       page: 0,
@@ -61,6 +68,7 @@ const incomeSlice = createSlice({
       stakingSlash: 0,
       inflation: 0,
       others: 0,
+      transfer: 0,
     },
   },
   reducers: {
@@ -109,6 +117,12 @@ const incomeSlice = createSlice({
     setOthersIncomeListLoading(state, { payload }) {
       state.othersIncomeListLoading = payload;
     },
+    setTransferList(state, { payload }) {
+      state.transferList = payload;
+    },
+    setTransferListLoading(state, { payload }) {
+      state.transferListLoading = payload;
+    },
   },
 });
 
@@ -128,6 +142,8 @@ export const {
   setInflationListLoading,
   setOthersIncomeList,
   setOthersIncomeListLoading,
+  setTransferList,
+  setTransferListLoading,
 } = incomeSlice.actions;
 
 export const fetchIncomeCount = (chain) => async (dispatch) => {
@@ -142,14 +158,17 @@ export const fetchIncomeCount = (chain) => async (dispatch) => {
         stakingSlash: 0,
         inflation: 0,
         others: 0,
+        transfer: 0,
       }
     )
   );
 };
 
-export const fetchTreasurySlashList = (chain, page = 0, pageSize = 30) => async (
-  dispatch
-) => {
+export const fetchTreasurySlashList = (
+  chain,
+  page = 0,
+  pageSize = 30
+) => async (dispatch) => {
   dispatch(setTreasurySlashListLoading(true));
 
   try {
@@ -172,9 +191,11 @@ export const fetchTreasurySlashList = (chain, page = 0, pageSize = 30) => async 
   }
 };
 
-export const fetchDemocracySlashList = (chain, page = 0, pageSize = 30) => async (
-  dispatch
-) => {
+export const fetchDemocracySlashList = (
+  chain,
+  page = 0,
+  pageSize = 30
+) => async (dispatch) => {
   dispatch(setDemocracySlashListLoading(true));
 
   try {
@@ -197,9 +218,11 @@ export const fetchDemocracySlashList = (chain, page = 0, pageSize = 30) => async
   }
 };
 
-export const fetchIdentitySlashList = (chain, page = 0, pageSize = 30) => async (
-  dispatch
-) => {
+export const fetchIdentitySlashList = (
+  chain,
+  page = 0,
+  pageSize = 30
+) => async (dispatch) => {
   dispatch(setIdentitySlashListLoading(true));
 
   try {
@@ -255,10 +278,13 @@ export const fetchElectionPhragmenSlashList = (
   dispatch(setElectionPhragmenSlashListLoading(true));
 
   try {
-    const { result } = await api.fetch(`/${chain}/income/slash/electionphragmen`, {
-      page,
-      pageSize,
-    });
+    const { result } = await api.fetch(
+      `/${chain}/income/slash/electionphragmen`,
+      {
+        page,
+        pageSize,
+      }
+    );
     dispatch(
       setElectionPhragmenSlashList(
         result || {
@@ -280,7 +306,10 @@ export const fetchInflationList = (chain, page = 0, pageSize = 30) => async (
   dispatch(setInflationListLoading(true));
 
   try {
-    const { result } = await api.fetch(`/${chain}/income/inflation`, { page, pageSize });
+    const { result } = await api.fetch(`/${chain}/income/inflation`, {
+      page,
+      pageSize,
+    });
     dispatch(
       setInflationList(
         result || {
@@ -296,13 +325,41 @@ export const fetchInflationList = (chain, page = 0, pageSize = 30) => async (
   }
 };
 
+export const fetchTransferList = (chain, page = 0, pageSize = 30) => async (
+  dispatch
+) => {
+  dispatch(setTransferListLoading(true));
+
+  try {
+    const { result } = await api.fetch(`/${chain}/income/transfer`, {
+      page,
+      pageSize,
+    });
+    dispatch(
+      setTransferList(
+        result || {
+          items: [],
+          page: 0,
+          pageSize: 10,
+          total: 0,
+        }
+      )
+    );
+  } finally {
+    dispatch(setTransferListLoading(false));
+  }
+};
+
 export const fetchOthersIncomeList = (chain, page = 0, pageSize = 30) => async (
   dispatch
 ) => {
   dispatch(setOthersIncomeListLoading(true));
 
   try {
-    const { result } = await api.fetch(`/${chain}/income/others`, { page, pageSize });
+    const { result } = await api.fetch(`/${chain}/income/others`, {
+      page,
+      pageSize,
+    });
     dispatch(
       setOthersIncomeList(
         result || {
@@ -346,5 +403,8 @@ export const othersIncomeListSelector = (state) =>
   state.income.othersIncomeList;
 export const othersIncomeListLoadingSelector = (state) =>
   state.income.othersIncomeListLoading;
+export const transferListSelector = (state) => state.income.transferList;
+export const transferListLoadingSelector = (state) =>
+  state.income.transferListLoading;
 
 export default incomeSlice.reducer;

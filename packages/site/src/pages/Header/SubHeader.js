@@ -15,6 +15,7 @@ import InflationMenu from "./InflationMenu";
 import OthersIncomeMenu from "./OthersIncomeMenu";
 import ProjectsMenu from "./ProjectsMenu";
 import TransfersMenu from "./TransfersMenu";
+import TansfersSlashMenu from "./TansfersSlashMenu";
 import { fetchIncomeCount } from "../../store/reducers/incomeSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { showMenuTabsSelector } from "../../store/reducers/menuSlice";
@@ -305,6 +306,19 @@ const TabExampleSecondaryPointing = () => {
               active:
                 `/${symbol}/income/slash/identity` === pathname ||
                 pathname.indexOf(`/${symbol}/income/slash/identity`) === 0,
+            },
+          },
+          {
+            menuItem: {
+              as: NavLink,
+              id: "transfersSlashTab",
+              content: <TansfersSlashMenu />,
+              to: `/${symbol}/income/slash/transfers`,
+              exact: true,
+              key: "transfersSlash",
+              active:
+                `/${symbol}/income/slash/transfers` === pathname ||
+                pathname.indexOf(`/${symbol}/income/slash/transfers`) === 0,
             },
           },
           {
