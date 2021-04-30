@@ -6,15 +6,21 @@
     "node": ">=15.0.0"
   },
   "scripts": {
-    "prod": "pm2 start ecosystem.config.js --only doTreasury-scan --env production",
-    "staging": "pm2 start ecosystem.config.js --only doTreasury-scan-staging --env production",
-    "develop": "pm2 start ecosystem.config.js --only doTreasury-scan-dev --env production",
-    "dot": "pm2 start ecosystem.config.js --only dot-scan --env production",
-    "dotStaging": "pm2 start ecosystem.config.js --only dot-scan-staging --env production",
-    "ksm": "pm2 start ecosystem.config.js --only ksm-scan --env production",
-    "ksmStaging": "pm2 start ecosystem.config.js --only ksm-scan-staging --env production",
-    "ksmPrice": "pm2 start ecosystem.config.js --only ksm-calc-price --env production",
-    "dotPrice": "pm2 start ecosystem.config.js --only dot-calc-price --env production",
+    "dotScanProd": "pm2 start ecosystem.config.js --only dot-scan-prod --env production",
+    "ksmScanProd": "pm2 start ecosystem.config.js --only ksm-scan-prod --env production",
+    "dotScanStaging": "pm2 start ecosystem.config.js --only dot-scan-staging --env production",
+    "ksmScanStaging": "pm2 start ecosystem.config.js --only ksm-scan-staging --env production",
+    "dotScanDev": "pm2 start ecosystem.config.js --only dot-scan-dev --env production",
+    "ksmScanDev": "pm2 start ecosystem.config.js --only dot-scan-dev --env production",
+
+
+    "dotCalcPriceProd": "pm2 start ecosystem.config.js --only dot-calc-price-prod --env production",
+    "ksmCalcPriceProd": "pm2 start ecosystem.config.js --only ksm-calc-price-prod --env production",
+    "dotCalcPriceStaging": "pm2 start ecosystem.config.js --only dot-calc-price-staging --env production",
+    "ksmCalcPriceStaging": "pm2 start ecosystem.config.js --only ksm-calc-price-staging --env production",
+    "dotCalcPriceDev": "pm2 start ecosystem.config.js --only dot-calc-price-dev --env production",
+    "ksmCalcPriceDev": "pm2 start ecosystem.config.js --only ksm-calc-price-dev --env production",
+
     "test": "jest src/test"
   },
   "dependencies": {
