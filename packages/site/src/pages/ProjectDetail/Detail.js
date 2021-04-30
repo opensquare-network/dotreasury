@@ -10,7 +10,7 @@ import ProjectExpense from "../../components/ProjectExpense";
 
 const Wrapper = styled(Card)`
   padding: 24px 32px;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
   display: flex;
   align-items: flex-start;
   flex-wrap: wrap;
