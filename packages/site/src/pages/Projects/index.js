@@ -54,8 +54,6 @@ const Projects = () => {
     dispatch(fetchProjects(chain, tablePage - 1, pageSize));
   }, [dispatch, chain, tablePage, pageSize]);
 
-  console.log({ projects });
-
   return (
     <>
       <ProjectsTable

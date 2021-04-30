@@ -8,7 +8,7 @@ import TableCell from "../../components/TableCell";
 import DateShow from "../../components/DateShow";
 import PolygonLabel from "../../components/PolygonLabel";
 import ExplorerLink from "../../components/ExplorerLink";
-import RelatedLInks from "../../components/RelatedLinks";
+import RelatedLinks from "../../components/RelatedLinks";
 
 import { useIsMounted } from "../../utils/hooks";
 import polkaassemblyApi from "../../services/polkassembly";
@@ -80,7 +80,7 @@ const ProposalLifeCycleTable = ({ loading }) => {
             <Table.Row>
               <Table.Cell>
                 <TableCell title="Proposal Page">
-                  <RelatedLInks
+                  <RelatedLinks
                     links={[
                       {
                         link: proposalUrl,

@@ -10,10 +10,11 @@ import TableNoDataCell from "../../components/TableNoDataCell";
 import Text from "../../components/Text";
 import NameCell from "./NameCell";
 import DateCell from "./DateCell";
-import ExpenseCell from "./ExpenseCell";
 import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import Card from "../../components/Card";
+import ProjectProposals from "../../components/ProjectProposals";
+import ProjectExpense from "../../components/ProjectExpense";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -89,11 +90,15 @@ const TipsTable = ({ data, loading, header, footer }) => {
                         <Text>{item.title || item.description}</Text>
                       </Table.Cell>
                       <Table.Cell textAlign={"right"}>
-                        <Text>{item.proposals ?? 0}</Text>
+                        <ProjectProposals
+                          dotProposalsCount={item.dotProposalsCount}
+                          ksmProposalsCount={item.ksmProposalsCount}
+                        />
                       </Table.Cell>
                       <Table.Cell className="balance-cell" textAlign={"right"}>
-                        <ExpenseCell
-                          expense={item.expense ?? 0}
+                        <ProjectExpense
+                          expenseDot={item.expenseDot}
+                          expenseKsm={item.expenseKsm}
                           dollar={item.dollar}
                         />
                       </Table.Cell>

@@ -1,18 +1,27 @@
 import React from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
+import { Image } from "semantic-ui-react";
 
 import { PRIMARY_THEME_COLOR } from "../../constants";
-import SubTitle from "../../components/SubTitle";
 import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
 import Card from "../../components/Card";
 
-const Header = styled(SubTitle)`
-  margin-bottom: 16px;
+const Wrapper = styled(Card)`
+  padding: 20px 24px;
+  margin-bottom: 24px;
 `;
 
-const Wrapper = styled.div`
+const Header = styled.div`
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+  color: rgba(0, 0, 0, 0.9);
+  margin-bottom: 20px;
+`;
+
+const ContentWrapper = styled.div`
   display: flex;
   & > div:last-child {
     flex-grow: 1;
@@ -51,7 +60,7 @@ const CircleWrapper = styled.div`
 const Bar = styled.div`
   width: 2px;
   margin: 0 11px;
-  background: #F292A4;
+  background: #f292a4;
   flex: 0 0 auto;
 `;
 
@@ -59,36 +68,40 @@ const FlexWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-`
+`;
 
 const TextWrapper = styled.div`
   flex-grow: 1;
   & * {
-    display: inline;
+    display: inline !important;
+    line-height: 24px !important;
+  }
+  > img {
+    margin-right: 4px;
   }
   & > a > p:hover {
-    text-decoration: underline
+    text-decoration: underline;
   }
-`
+`;
 
 const BoldText = styled(Text)`
   font-weight: 500;
-`
+`;
 
 const NumberText = styled(Text)`
   color: ${PRIMARY_THEME_COLOR};
   font-weight: 500;
   margin-right: 12px;
-`
+`;
 
-const CardWrapper = styled(Card)`
+const CardWrapper = styled.div`
   padding: 8px 0;
   margin-top: 8px;
   margin-bottom: 32px;
-`
+`;
 
 const Item = styled.div`
-  padding: 4px 16px;
+  padding: 4px 0px;
   display: flex;
   @media screen and (max-width: 640px) {
     flex-wrap: wrap;
@@ -99,7 +112,7 @@ const Item = styled.div`
   & > :first-child {
     min-width: 140px;
   }
-`
+`;
 
 const ExpenseWrapper = styled.div`
   display: flex;
@@ -109,21 +122,20 @@ const ExpenseWrapper = styled.div`
   & > .dollar {
     margin-left: 8px;
   }
-`
+`;
 
 const TextDollar = styled(Text)`
   color: rgba(29, 37, 60, 0.24);
-`
-
+`;
 
 const Proposals = ({ data }) => {
   if (data) {
     return (
-      <>
+      <Wrapper>
         <Header>Proposals</Header>
         <div>
           {(data || []).map((item, index) => (
-            <Wrapper key={index}>
+            <ContentWrapper key={index}>
               <VerticalWrapper>
                 <CircleWrapper>
                   <div />
@@ -133,6 +145,14 @@ const Proposals = ({ data }) => {
               <VerticalWrapper>
                 <FlexWrapper>
                   <TextWrapper>
+                    <Image
+                      width={24}
+                      src={
+                        item.token === "ksm"
+                          ? "/imgs/logo-kusama.svg"
+                          : "/imgs/logo-polkadot.svg"
+                      }
+                    />
                     <NavLink to={`/proposals/${item.proposalId}`}>
                       <NumberText>{`#${item.proposalId}`}</NumberText>
                     </NavLink>
@@ -141,30 +161,39 @@ const Proposals = ({ data }) => {
                 </FlexWrapper>
                 <CardWrapper>
                   <Item>
-                    <BoldText>Expense</BoldText>
+                    <Text>Expense</Text>
                     <ExpenseWrapper>
                       <Text>{item.amount ?? 0}</Text>
-                      <TextMinor className="unit">{item.token?.toUpperCase()}</TextMinor>
-                      {item.amount && item.proposeTimePrice &&
-                      <TextDollar className="dollar">{`≈ $${(item.amount * item.proposeTimePrice).toFixed(2).replace(/\D00/, "")}`}</TextDollar>}
+                      <TextMinor className="unit">
+                        {item.token?.toUpperCase()}
+                      </TextMinor>
+                      {item.amount && item.proposeTimePrice && (
+                        <TextDollar className="dollar">{`≈ $${(
+                          item.amount * item.proposeTimePrice
+                        )
+                          .toFixed(2)
+                          .replace(/\D00/, "")}`}</TextDollar>
+                      )}
                     </ExpenseWrapper>
                   </Item>
                   <Item>
-                    <BoldText>Achievement</BoldText>
+                    <Text>Achievement</Text>
                     <div>
-                      {(item.achievements || []).map((item, index) => (<TextMinor key={index}>{item}</TextMinor>))}
+                      {(item.achievements || []).map((item, index) => (
+                        <TextMinor key={index}>{item}</TextMinor>
+                      ))}
                     </div>
                   </Item>
                 </CardWrapper>
               </VerticalWrapper>
-            </Wrapper>
+            </ContentWrapper>
           ))}
         </div>
-      </>
-    )
+      </Wrapper>
+    );
   } else {
     return null;
   }
-}
+};
 
 export default Proposals;
