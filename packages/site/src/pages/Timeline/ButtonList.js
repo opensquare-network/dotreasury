@@ -43,7 +43,7 @@ const ButtonList = ({ extrinsicIndexer, eventIndexer, polkassembly }) => {
   return (
     <Wrapper>
       <ExplorerLink
-        base={chain === "kusama" ? process.env.REACT_APP_POLKASCAN_KUSAMA : process.env.REACT_APP_POLKASCAN_POLKADOT}
+        base={chain === "kusama" ? "https://polkascan.io/kusama/" : "https://polkascan.io/polkadot/"}
         href={`${nil(eventSort) ? "transaction" : "event"}/${blockHeight}-${
           eventSort ?? extrinsicIndex
         }`}
@@ -51,7 +51,7 @@ const ButtonList = ({ extrinsicIndexer, eventIndexer, polkassembly }) => {
         <ImageButton src={"/imgs/polkascan-logo.svg"} />
       </ExplorerLink>
       <ExplorerLink
-        base={chain === "kusama" ? process.env.REACT_APP_SUBSCAN_KUSAMA : process.env.REACT_APP_SUBSCAN_POLKADOT}
+        base={chain === "kusama" ? "https://polkadot.subscan.io/" : "https://polkadot.subscan.io/"}
         href={`extrinsic/${blockHeight}-${extrinsicIndex}${
           nil(eventSort) ? "" : "?event=" + blockHeight + "-" + eventSort
         }`}

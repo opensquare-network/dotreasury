@@ -5,7 +5,7 @@ import ExternalLink from "./ExternalLink"
 
 export default function ExplorerLink({ href, base, children}) {
   const chain = useSelector(chainSelector);
-  const defaultExplorerSite = chain === "kusama" ? process.env.REACT_APP_SUBSCAN_KUSAMA : process.env.REACT_APP_SUBSCAN_POLKADOT
+  const defaultExplorerSite = chain === "kusama" ? "https://polkadot.subscan.io/" : "https://polkadot.subscan.io/"
   const baseHref = base ?? defaultExplorerSite;
   return <ExternalLink href={new URL(href, baseHref).href}>{children}</ExternalLink>;
 }
