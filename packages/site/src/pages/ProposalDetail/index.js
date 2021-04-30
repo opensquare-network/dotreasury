@@ -51,7 +51,13 @@ function processTimeline(proposalDetail, scanHeight) {
         },
         {
           title: "Value",
-          value: <Balance value={proposalDetail.value} />,
+          value: (
+            <Balance
+              value={proposalDetail.value}
+              usdt={proposalDetail.symbolPrice}
+              horizontal
+            />
+          ),
         },
       ],
     },

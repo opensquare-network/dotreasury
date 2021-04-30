@@ -60,9 +60,9 @@ const Balance = ({
     <Wrapper reverse={reverse} horizontal={horizontal}>
       <PairText value={precision} unit={currency || symbol} />
       {usdt && !isNaN(usdtNumber) && (
-        <UsdtWrapper>{`${
-          Math.round(usdtNumber) === usdtNumber ? "" : "≈ "
-        }$${usdtNumber.toFixed(2)}`}</UsdtWrapper>
+        <UsdtWrapper>{`${usdtNumber === 0 ? "" : "≈ "}$${usdtNumber.toFixed(
+          2
+        )}`}</UsdtWrapper>
       )}
     </Wrapper>
   );

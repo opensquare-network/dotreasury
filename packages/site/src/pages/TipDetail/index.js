@@ -66,7 +66,9 @@ function processTimeline(tipDetail, links) {
         },
         {
           title: "Tip value",
-          value: <Balance value={tipValue} />,
+          value: (
+            <Balance value={tipValue} usdt={tipDetail.symbolPrice} horizontal />
+          ),
         },
         {
           title: "Reason",
@@ -93,7 +95,13 @@ function processTimeline(tipDetail, links) {
         },
         {
           title: "Final tip value",
-          value: <Balance value={tipDetail.medianValue} />,
+          value: (
+            <Balance
+              value={tipDetail.medianValue}
+              usdt={tipDetail.symbolPrice}
+              horizontal
+            />
+          ),
         },
       ];
     } else if (timelineItem.method === "retractTip") {

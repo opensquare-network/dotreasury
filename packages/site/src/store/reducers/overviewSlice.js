@@ -23,12 +23,16 @@ const overviewSlice = createSlice({
         burnt: {
           all: 0,
         },
+        transfer: {
+          all: 0,
+        },
       },
       output: {
         bounty: 0,
         proposal: 0,
         tip: 0,
         burnt: 0,
+        transfer: 0,
       },
       income: {
         inflation: 0,
@@ -70,6 +74,8 @@ export const totalBountyCountSelector = (state) =>
   state.overview.overview.count.bounty.all;
 export const totalBurntCountSelector = (state) =>
   state.overview.overview.count.burnt.all;
+export const totalTransferCountSelector = (state) =>
+  state.overview.overview.count.transfer.all;
 export const overviewSelector = (state) => state.overview.overview;
 export const statsHistorySelector = (state) => state.overview.statsHistory;
 

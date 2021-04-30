@@ -40,7 +40,9 @@ const NameTitle = styled(Title)`
   line-height: 36px;
 `;
 
-const NameContent = styled(TextMinor)``;
+const NameContent = styled(TextMinor)`
+  text-align: justify;
+`;
 
 const ProposalWrapper = styled.div`
   flex-basis: 160px;

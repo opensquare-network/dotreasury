@@ -12,15 +12,15 @@ const Divider = styled.div`
   left: 16px;
 `;
 
-function InflationMenu() {
+function TransfersSlashMenu() {
   const incomeCount = useSelector(incomeCountSelector);
 
   return (
-    <Menu.Item key="Inflation">
-      Inflation<Label>{incomeCount.inflation}</Label>
+    <Menu.Item key="transfer">
+      Transfers<Label>{incomeCount.transfer}</Label>
       <Divider />
     </Menu.Item>
   );
 }
 
-export default InflationMenu;
+export default TransfersSlashMenu;
