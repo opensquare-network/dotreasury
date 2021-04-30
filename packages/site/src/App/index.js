@@ -38,6 +38,7 @@ import Inflation from "../pages/Inflation";
 import OthersIncome from "../pages/OthersIncome";
 import UserAgreement from "../pages/UserAgreement";
 import Privacy from "../pages/Privacy";
+import Transfers from "../pages/Transfers";
 
 import { usePreload } from "../utils/hooks";
 import { useSelector } from "react-redux";
@@ -69,6 +70,11 @@ export default function App() {
                 exact
                 path="/:symbol(ksm|dot)/bounties"
                 component={Bounties}
+              />
+              <Route
+                exact
+                path="/:symbol(ksm|dot)/transfers"
+                component={Transfers}
               />
               <Route
                 exact

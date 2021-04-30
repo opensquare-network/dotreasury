@@ -14,6 +14,7 @@ import ElectionPhragmenSlashMenu from "./ElectionPhragmenSlashMenu";
 import InflationMenu from "./InflationMenu";
 import OthersIncomeMenu from "./OthersIncomeMenu";
 import ProjectsMenu from "./ProjectsMenu";
+import TransfersMenu from "./TransfersMenu";
 import { fetchIncomeCount } from "../../store/reducers/incomeSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { showMenuTabsSelector } from "../../store/reducers/menuSlice";
@@ -121,8 +122,21 @@ const OverviewWrapper = styled.div`
   line-height: 22px !important;
 `;
 
+const Divider = styled.div`
+  position: relative;
+  width: 1px;
+  height: 20px;
+  background: #eeeeee;
+  left: 16px;
+`;
+
 const Overview = () => {
-  return <OverviewWrapper className="item">Overview</OverviewWrapper>;
+  return (
+    <OverviewWrapper className="item">
+      Overview
+      <Divider />
+    </OverviewWrapper>
+  );
 };
 
 const TabExampleSecondaryPointing = () => {
@@ -200,6 +214,17 @@ const TabExampleSecondaryPointing = () => {
               active:
                 `/${symbol}/burnt` === pathname ||
                 pathname.indexOf(`/${symbol}/burnt`) === 0,
+            },
+          },
+          {
+            menuItem: {
+              as: NavLink,
+              id: "transfersTab",
+              content: <TransfersMenu />,
+              to: `/${symbol}/transfers`,
+              exact: true,
+              key: "transfers",
+              active: `/${symbol}/transfers` === pathname,
             },
           },
         ]
@@ -306,7 +331,9 @@ const TabExampleSecondaryPointing = () => {
               to: `/${symbol}/projects`,
               exact: true,
               key: "projects",
-              active: `/${symbol}/projects` === pathname,
+              active:
+                `/${symbol}/projects` === pathname ||
+                pathname.indexOf(`/${symbol}/projects`) === 0,
             },
           },
         ]

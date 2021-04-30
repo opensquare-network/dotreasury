@@ -11,6 +11,7 @@ const Divider = styled.div`
   background: #eeeeee;
   left: 16px;
 `;
+
 function InflationMenu() {
   const incomeCount = useSelector(incomeCountSelector);
 

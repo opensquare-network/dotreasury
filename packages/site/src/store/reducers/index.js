@@ -15,6 +15,7 @@ import menuReducer from "./menuSlice";
 import nodeReducer from "./nodeSlice";
 import projectsReducer from "./projectSlice";
 import toastReducer from "./toastSlice";
+import transferReducder from "./transferSlice";
 
 export default combineReducers({
   test: testReducer,
@@ -32,5 +33,6 @@ export default combineReducers({
   income: incomeReducer,
   menu: menuReducer,
   node: nodeReducer,
-  projects: projectsReducer
+  projects: projectsReducer,
+  transfers: transferReducder,
 });
