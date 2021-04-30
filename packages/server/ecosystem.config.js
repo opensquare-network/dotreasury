@@ -12,15 +12,15 @@ const commonPart = {
 module.exports = {
   apps: [
     {
-      name: "doTreasury-api",
+      name: "doTreasury-api-prod",
       ...commonPart,
     },
     {
-      name: "doTreasury-staging-api",
+      name: "doTreasury-api-staging",
       ...commonPart,
     },
     {
-      name: "doTreasury-dev-api",
+      name: "doTreasury-api-dev",
       ...commonPart,
     },
   ],

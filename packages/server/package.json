@@ -6,9 +6,9 @@
     "node": ">=15.0.0"
   },
   "scripts": {
-    "prod": "pm2 start ecosystem.config.js --only doTreasury-api --env production",
-    "staging": "pm2 start ecosystem.config.js --only doTreasury-staging-api --env production",
-    "develop": "pm2 start ecosystem.config.js --only doTreasury-dev-api --env production",
+    "prod": "pm2 start ecosystem.config.js --only doTreasury-api-prod --env production",
+    "staging": "pm2 start ecosystem.config.js --only doTreasury-api-staging --env production",
+    "develop": "pm2 start ecosystem.config.js --only doTreasury-api-dev --env production",
     "dev": "pm2 start ecosystem.config.js --env development",
     "mig:prod": "pm2 start migration.config.js --env production",
     "mig:dev": "pm2 start migration.config.js --env development"
