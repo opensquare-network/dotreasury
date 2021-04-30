@@ -51,8 +51,6 @@ const ProjectDetail = () => {
       .replace(/\D00/, ""),
   };
 
-  console.log({ detailData, projectDetail });
-
   return (
     <>
       <DetailGoBack />
