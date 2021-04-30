@@ -44,9 +44,7 @@ export default function ProjectExpense({ expenseDot, expenseKsm, dollar }) {
       </ExpenseWrapper>
       {!isNaN(numberDollar) && (
         <DollarWrapper>
-          {`${
-            Math.round(numberDollar) === numberDollar ? "" : "≈ "
-          }$${numberDollar.toFixed(2)}`}
+          {`${numberDollar === 0 ? "" : "≈ "}$${numberDollar.toFixed(2)}`}
         </DollarWrapper>
       )}
     </div>

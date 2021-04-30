@@ -5,7 +5,6 @@ import { Dimmer, Image } from "semantic-ui-react";
 import useDeepCompareEffect from "use-deep-compare-effect";
 
 import Card from "../../components/Card";
-import SubTitle from "../../components/SubTitle";
 import Input from "./Input";
 import CommentList from "./CommentList";
 import { unique } from "../../utils/index";
@@ -24,8 +23,12 @@ import { useLocation } from "react-router-dom";
 import { useHistory } from "react-router";
 import NoComment from "./NoComment";
 
-const Header = styled(SubTitle)`
-  margin-bottom: 16px;
+const Header = styled.div`
+  padding: 20px 24px;
+  font-size: 16px;
+  line-height: 24px;
+  color: rgba(0, 0, 0, 0.9);
+  font-weight: bold;
 `;
 
 const Wrapper = styled(Card)`
@@ -133,8 +136,8 @@ const Comment = ({ type, index }) => {
 
   return (
     <div>
-      <Header ref={commentRef}>Comment</Header>
       <Wrapper>
+        <Header ref={commentRef}>Comment</Header>
         <Dimmer active={loadingList} inverted>
           <Image src="/imgs/loading.svg" />
         </Dimmer>

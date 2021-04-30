@@ -1,7 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
 
-import Card from "../../components/Card";
 import Circle from "./Circle";
 import Label from "./Label";
 import Bar from "./Bar";
@@ -96,13 +95,11 @@ const Item = ({
             />
           </FlexWrapper>
           <CardWrapper>
-            <Card>
-              {data.fields.map(({ title, value }, index) => (
-                <CardItem key={index} title={title}>
-                  {value}
-                </CardItem>
-              ))}
-            </Card>
+            {data.fields.map(({ title, value }, index) => (
+              <CardItem key={index} title={title}>
+                {value}
+              </CardItem>
+            ))}
             {!hideButtonList && (
               <ButtonList
                 extrinsicIndexer={data.extrinsicIndexer}
