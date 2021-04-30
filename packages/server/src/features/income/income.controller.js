@@ -253,6 +253,9 @@ class IncomeController {
     col = await getOthersIncomeCollection(chain);
     const others = await col.estimatedDocumentCount();
 
+    col = await getIncomeTransferCollection(chain);
+    const transfer = await col.estimatedDocumentCount();
+
     ctx.body = {
       treasurySlash,
       democracySlash,
@@ -260,6 +263,7 @@ class IncomeController {
       electionPhragmenSlash,
       stakingSlash,
       inflation,
+      transfer,
       others,
     };
   }
