@@ -11,15 +11,42 @@ const relatedLinks = [];
 const proposals = [
   {
     token: "dot",
+    amount: 922,
+    proposalId: 23,
+    proposeTimePrice: 41.7,
+    title: "Redspot v0.4",
+    achievements: [
+      "v0.4 is the version that reduces the user's use of the door operating system. It provides support for core functions such as multi-contract, Docker compilation, and contract-related UI interfaces, and also adds some other plug-ins, such as Redspot-watcher, Balances decimal plugin, default blockchain types plugin."
+    ]
+  },
+  {
+    token: "dot",
+    amount: 7975,
+    proposalId: 23,
+    proposeTimePrice: 4.46,
+    title: "Redspot v0.3",
+    achievements: [
+      "v0.3 is a production version of Redspot. In this version, we promote Redspot and allow more contract developers to participate. While this version combines the features of Substrate to add various plug-ins, such as Waffle, Jupiter, Gas report.",
+    ],
+  },
+  {
+    token: "dot",
+    amount: 7650,
+    proposalId: 13,
+    proposeTimePrice: 4.3,
+    title: "Redspot v0.2",
+    achievements: [
+      "v0.2 is the migration version. Migrate to Hardhat framework to enhance the extensibility of plugins and add some features to provide a smoother development workflow. In version, we provide a complete framework and some necessary plugins, and it's the beta version for RedSpot.",
+    ],
+  },
+  {
+    token: "dot",
     amount: 10000,
     proposalId: 0,
     proposeTimePrice: 3.4,
     title: "Redspot v0.1",
     achievements: [
-      "Can simply deploy a local testnet to test.",
-      "Can connect with the public testnet (Jupiter) to verify.",
-      "Can generate a smart contract project's directory.",
-      "Can use Redspot commands to do “compile”, “deploy”, “test”",
+      "v0.1 is the smallest verifiable version. This version builds core functions based on the Truffle framework and provides based features like deploy, compile, and test. This version is the MVP version of Redspot.",
     ],
   },
 ];

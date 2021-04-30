@@ -6,6 +6,26 @@ const startTime = 1587142392000;
 
 const proposals = [
   {
+    token: "dot",
+    amount: 1500,
+    proposalId: 26,
+    proposeTimePrice: 4.87,
+    title: "Python Substrate libraries upgrade & Polkadot integration: M2",
+    achievements: [
+      "Utilize the libraries to allow Polkadot to be fully tradable on the LocalCoinSwap API as well as through the LocalCoinSwap front-end application. This includes end-user wallet functionality, non-custodial P2P trading, basic and advanced pricing mechanisms as well as allowing crypto-to-crypto swaps."
+    ]
+  },
+  {
+    token: "dot",
+    amount: 1500,
+    proposalId: 20,
+    proposeTimePrice: 4.08,
+    title: "Python Substrate libraries upgrade & Polkadot integration: M1",
+    achievements: [
+      "Extend the libraries and utils to support multiple substrate chains"
+    ]
+  },
+  {
     token: "ksm",
     amount: 2300,
     proposalId: 42,
