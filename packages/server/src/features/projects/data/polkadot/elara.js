@@ -7,7 +7,12 @@ const startTime = 1602484872000;
 
 const logo = "elara-logo.svg";
 
-const relatedLinks = [];
+const relatedLinks = [
+  {
+    link: "https://elara.patract.io/",
+    description: "Elara Website",
+  },
+];
 const proposals = [
   {
     token: "dot",
@@ -19,7 +24,7 @@ const proposals = [
       "Create account space for developers, support developers to use Github as a third-party login method",
       "Support multiple projects under the account space",
       "Provide developers with detailed access information of the DApp project by multiple dimensions, including statistical indicators such as daily and weekly requests, calling methods, and source of user group requests",
-      "Optimise program performance"
+      "Optimise program performance",
     ],
   },
   {
@@ -31,8 +36,8 @@ const proposals = [
     achievements: [
       "Create a server-side framework to develop proxy access, automatic monitoring and data statistics to the RPC service of the Substrate node",
       "Support developers to use http and websocket protocols to uniformly access the network through the server framework",
-      "Develop a front-end dashboard to display relevant monitoring statistics of the RPC service of the Substrate node"
-    ]
+      "Develop a front-end dashboard to display relevant monitoring statistics of the RPC service of the Substrate node",
+    ],
   },
 ];
 

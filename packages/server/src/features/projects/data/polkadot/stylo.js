@@ -7,7 +7,16 @@ const startTime = 1613730330000;
 
 const logo = "stylo-logo.svg";
 
-const relatedLinks = [];
+const relatedLinks = [
+  {
+    link: "https://stylo-app.com/",
+    description: "Stylo App Website",
+  },
+  {
+    link: "https://github.com/stylo-app/stylo",
+    description: "Github Repo",
+  },
+];
 
 const proposals = [
   {
@@ -19,10 +28,10 @@ const proposals = [
     achievements: [
       "An app available as apk (Github) and on the Android Play store.",
       "Support for DOT, KSM, any Substrate chain and ETH.",
-      "Features include: simple message signing, derivation in a similar way than Polkadot-js extension, unlock with fingerprint instead of pin, metadata update over QR code."
-    ]
-  }
-]
+      "Features include: simple message signing, derivation in a similar way than Polkadot-js extension, unlock with fingerprint instead of pin, metadata update over QR code.",
+    ],
+  },
+];
 
 module.exports = {
   id,
