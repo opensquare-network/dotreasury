@@ -6,7 +6,12 @@ const description =
 const startTime = 1597390542000;
 const logo = "redspot-logo.svg";
 
-const relatedLinks = [];
+const relatedLinks = [
+  {
+    link: "https://redspot.patract.io/",
+    description: "Redspot Website",
+  },
+];
 
 const proposals = [
   {
@@ -16,8 +21,8 @@ const proposals = [
     proposeTimePrice: 41.7,
     title: "Redspot v0.4",
     achievements: [
-      "v0.4 is the version that reduces the user's use of the door operating system. It provides support for core functions such as multi-contract, Docker compilation, and contract-related UI interfaces, and also adds some other plug-ins, such as Redspot-watcher, Balances decimal plugin, default blockchain types plugin."
-    ]
+      "v0.4 is the version that reduces the user's use of the door operating system. It provides support for core functions such as multi-contract, Docker compilation, and contract-related UI interfaces, and also adds some other plug-ins, such as Redspot-watcher, Balances decimal plugin, default blockchain types plugin.",
+    ],
   },
   {
     token: "dot",

@@ -6,7 +6,12 @@ const description =
 const startTime = 1602077352000;
 
 const logo = "europa-logo.svg";
-const relatedLinks = [];
+const relatedLinks = [
+  {
+    link: "https://github.com/patractlabs/europa",
+    description: "Europa github repo",
+  },
+];
 const proposals = [
   {
     token: "dot",
@@ -19,8 +24,8 @@ const proposals = [
       "Contracts stack traces, the call stack of a contract calling another contract",
       "Console.log, provides libraries and methods to print command lines during contract development",
       "Strengthen the error type and error display of the contract module",
-      "Simple integration with Redspot"
-    ]
+      "Simple integration with Redspot",
+    ],
   },
   {
     token: "dot",
@@ -29,9 +34,9 @@ const proposals = [
     proposeTimePrice: 3.77,
     title: "Europa v0.1",
     achievements: [
-      "The independent runtime environment of excluded nodes can be expanded more without the constraints of the node environment and WASM compilation, and can be easily integrated with other components. In this version, it is more like simulating the Ganache project in Ethereum ecosystem, enabling contract developers to develop without having to build a contract blockchain. Developers can quickly fire up a personal Substrate chain, which can be used to run tests, execute commands, and inspect state while controlling how the chain operates."
-    ]
-  }
+      "The independent runtime environment of excluded nodes can be expanded more without the constraints of the node environment and WASM compilation, and can be easily integrated with other components. In this version, it is more like simulating the Ganache project in Ethereum ecosystem, enabling contract developers to develop without having to build a contract blockchain. Developers can quickly fire up a personal Substrate chain, which can be used to run tests, execute commands, and inspect state while controlling how the chain operates.",
+    ],
+  },
 ];
 
 module.exports = {
