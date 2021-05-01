@@ -6,6 +6,7 @@ const europa = require("./europa");
 const zkmega = require("./zkmega");
 const stylo = require("./stylo");
 const polkaworld = require("./polkaworld");
+const tee = require("./substrate-tee");
 
 const projects = [
   dotreasury,
@@ -16,6 +17,7 @@ const projects = [
   zkmega,
   stylo,
   polkaworld,
+  tee,
 ];
 
 module.exports = [...projects].sort((p1, p2) => p2.startTime - p1.startTime);
