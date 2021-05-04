@@ -168,12 +168,12 @@ async function calcOutput(
     0
   );
 
-  const tipSpent = tips.reduce((result, { state: { state }, medianValue }) => {
-    if (state !== "TipClosed") {
+  const tipSpent = tips.reduce((result, { state, medianValue }) => {
+    if (state.state !== "TipClosed") {
       return result;
     }
 
-    return bigAdd(result, medianValue);
+    return bigAdd(result, state.data[2]);
   }, 0);
 
   const bountySpent = bounties.reduce((result, { meta: { status, value } }) => {
