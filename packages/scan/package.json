@@ -12,22 +12,19 @@
     "ksmScanStaging": "pm2 start ecosystem.config.js --only ksm-scan-staging --env production",
     "dotScanDev": "pm2 start ecosystem.config.js --only dot-scan-dev --env production",
     "ksmScanDev": "pm2 start ecosystem.config.js --only ksm-scan-dev --env production",
-
-
     "dotCalcPriceProd": "pm2 start ecosystem.config.js --only dot-calc-price-prod --env production",
     "ksmCalcPriceProd": "pm2 start ecosystem.config.js --only ksm-calc-price-prod --env production",
     "dotCalcPriceStaging": "pm2 start ecosystem.config.js --only dot-calc-price-staging --env production",
     "ksmCalcPriceStaging": "pm2 start ecosystem.config.js --only ksm-calc-price-staging --env production",
     "dotCalcPriceDev": "pm2 start ecosystem.config.js --only dot-calc-price-dev --env production",
     "ksmCalcPriceDev": "pm2 start ecosystem.config.js --only ksm-calc-price-dev --env production",
-
     "test": "jest src/test"
   },
   "dependencies": {
-    "@polkadot/api": "^4.6.2",
-    "@polkadot/types": "^4.6.2",
-    "@polkadot/util": "^6.2.1",
-    "@polkadot/util-crypto": "^6.2.1",
+    "@polkadot/api": "^4.8.1",
+    "@polkadot/types": "^4.8.1",
+    "@polkadot/util": "^6.3.1",
+    "@polkadot/util-crypto": "^6.3.1",
     "bignumber.js": "^9.0.1",
     "dayjs": "^1.10.4",
     "dotenv": "^8.2.0",
