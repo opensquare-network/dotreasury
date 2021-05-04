@@ -173,7 +173,9 @@ async function calcOutput(
       return result;
     }
 
-    return bigAdd(result, state.data[2]);
+    const eventValue = state.data[2];
+    const value = eventValue || medianValue || 0;
+    return bigAdd(result, value);
   }, 0);
 
   const bountySpent = bounties.reduce((result, { meta: { status, value } }) => {
