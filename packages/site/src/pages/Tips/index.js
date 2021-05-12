@@ -38,10 +38,17 @@ const Tips = () => {
     searchPage && !isNaN(searchPage) && searchPage > 0
       ? searchPage
       : DEFAULT_QUERY_PAGE;
+  const searchStatus = useQuery().get("status");
 
   const [tablePage, setTablePage] = useState(queryPage);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
-  const [filterData, setFilterData] = useState({});
+  const [filterData, setFilterData] = useState(
+    searchStatus
+      ? {
+          status: searchStatus,
+        }
+      : {}
+  );
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -54,10 +61,16 @@ const Tips = () => {
     dispatch(fetchTips(chain, tablePage - 1, pageSize, filterData));
   }, [dispatch, chain, tablePage, pageSize, filterData]);
 
-  const filterQuery = useCallback((data) => {
-    setFilterData(data);
-    setTablePage(1);
-  }, []);
+  const filterQuery = useCallback(
+    (data) => {
+      setFilterData(data);
+      setTablePage(1);
+      history.push({
+        search: data.status ? `status=${data.status}` : null,
+      });
+    },
+    [history]
+  );
 
   return (
     <>
@@ -67,7 +80,7 @@ const Tips = () => {
         header={
           <HeaderWrapper>
             <Title>Tips</Title>
-            <Filter query={filterQuery} />
+            <Filter value={filterData.status ?? "-1"} query={filterQuery} />
           </HeaderWrapper>
         }
         footer={
