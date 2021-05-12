@@ -2,6 +2,7 @@ import React, { useEffect, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled, { css } from "styled-components";
 import { Image } from "semantic-ui-react";
+import { Link } from "react-router-dom";
 
 import Card from "../../components/Card";
 import Text from "../../components/Text";
@@ -9,6 +10,7 @@ import TextMinor from "../../components/TextMinor";
 import CountDown from "../../components/CountDown";
 import BlocksTime from "../../components/BlocksTime";
 
+import { TEXT_DARK_MAJOR, TEXT_DARK_MINOR } from "../../constants";
 import { overviewSelector } from "../../store/reducers/overviewSlice";
 import {
   fetchSpendPeriod,
@@ -78,6 +80,20 @@ const ValueWrapper = styled.div`
   `}
 `;
 
+const StyledLink = styled(Link)`
+  color: ${TEXT_DARK_MINOR} !important;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+const StyledLinkMajor = styled(Link)`
+  color: ${TEXT_DARK_MAJOR} !important;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
 const Summary = () => {
   const dispatch = useDispatch();
   const chain = useSelector(chainSelector);
@@ -102,7 +118,9 @@ const Summary = () => {
             <ValueWrapper>
               <TextBold>{overview.count.proposal.unFinished}</TextBold>
               <TextMinorBold>/</TextMinorBold>
-              <TextMinorBold>{overview.count.proposal.all}</TextMinorBold>
+              <StyledLink to={`${symbol}/proposals`}>
+                <TextMinorBold>{overview.count.proposal.all}</TextMinorBold>
+              </StyledLink>
             </ValueWrapper>
           </div>
         </ItemWrapper>
@@ -113,9 +131,18 @@ const Summary = () => {
           <div>
             <Title>Tips</Title>
             <ValueWrapper>
-              <TextBold>{overview.count.tip.unFinished}</TextBold>
+              <StyledLinkMajor
+                to={{
+                  pathname: `${symbol}/tips`,
+                  search: `?status=NewTip||tip`,
+                }}
+              >
+                <TextBold>{overview.count.tip.unFinished}</TextBold>
+              </StyledLinkMajor>
               <TextMinorBold>/</TextMinorBold>
-              <TextMinorBold>{overview.count.tip.all}</TextMinorBold>
+              <StyledLink to={`${symbol}/tips`}>
+                <TextMinorBold>{overview.count.tip.all}</TextMinorBold>
+              </StyledLink>
             </ValueWrapper>
           </div>
         </ItemWrapper>
@@ -128,7 +155,9 @@ const Summary = () => {
             <ValueWrapper>
               <TextBold>{overview.count.bounty.unFinished}</TextBold>
               <TextMinorBold>/</TextMinorBold>
-              <TextMinorBold>{overview.count.bounty.all}</TextMinorBold>
+              <StyledLink to={`${symbol}/bounties`}>
+                <TextMinorBold>{overview.count.bounty.all}</TextMinorBold>
+              </StyledLink>
             </ValueWrapper>
           </div>
         </ItemWrapper>

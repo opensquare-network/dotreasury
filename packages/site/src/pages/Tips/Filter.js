@@ -25,7 +25,7 @@ const statusOptions = [
   })),
 ];
 
-const Filter = ({ query }) => {
+const Filter = ({ value, query }) => {
   const [status, setStatus] = useState("");
 
   // only query on filters change
@@ -52,8 +52,8 @@ const Filter = ({ query }) => {
         name="status"
         fluid
         options={statusOptions}
-        defaultValue="-1"
-        onChange={(e, { name, value }) => setStatus(value)}
+        value={value}
+        onChange={(e, { value }) => setStatus(value)}
       />
     </FormWrapper>
   );
