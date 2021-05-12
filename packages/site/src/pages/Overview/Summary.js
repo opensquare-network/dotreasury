@@ -107,6 +107,7 @@ const Summary = () => {
   const spendPeriod = useSelector(spendPeriodSelector);
   const treasury = useSelector(treasurySelector);
   const symbol = useSelector(chainSymbolSelector);
+  const symbolLowerCase = symbol?.toLowerCase();
 
   return (
     <Wrapper>
@@ -118,7 +119,7 @@ const Summary = () => {
             <ValueWrapper>
               <TextBold>{overview.count.proposal.unFinished}</TextBold>
               <TextMinorBold>/</TextMinorBold>
-              <StyledLink to={`${symbol}/proposals`}>
+              <StyledLink to={`${symbolLowerCase}/proposals`}>
                 <TextMinorBold>{overview.count.proposal.all}</TextMinorBold>
               </StyledLink>
             </ValueWrapper>
@@ -133,14 +134,14 @@ const Summary = () => {
             <ValueWrapper>
               <StyledLinkMajor
                 to={{
-                  pathname: `${symbol}/tips`,
+                  pathname: `${symbolLowerCase}/tips`,
                   search: `?status=NewTip||tip`,
                 }}
               >
                 <TextBold>{overview.count.tip.unFinished}</TextBold>
               </StyledLinkMajor>
               <TextMinorBold>/</TextMinorBold>
-              <StyledLink to={`${symbol}/tips`}>
+              <StyledLink to={`${symbolLowerCase}/tips`}>
                 <TextMinorBold>{overview.count.tip.all}</TextMinorBold>
               </StyledLink>
             </ValueWrapper>
@@ -155,7 +156,7 @@ const Summary = () => {
             <ValueWrapper>
               <TextBold>{overview.count.bounty.unFinished}</TextBold>
               <TextMinorBold>/</TextMinorBold>
-              <StyledLink to={`${symbol}/bounties`}>
+              <StyledLink to={`${symbolLowerCase}/bounties`}>
                 <TextMinorBold>{overview.count.bounty.all}</TextMinorBold>
               </StyledLink>
             </ValueWrapper>
