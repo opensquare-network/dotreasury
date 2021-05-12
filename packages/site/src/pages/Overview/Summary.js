@@ -119,7 +119,7 @@ const Summary = () => {
             <ValueWrapper>
               <TextBold>{overview.count.proposal.unFinished}</TextBold>
               <TextMinorBold>/</TextMinorBold>
-              <StyledLink to={`${symbolLowerCase}/proposals`}>
+              <StyledLink to={`/${symbolLowerCase}/proposals`}>
                 <TextMinorBold>{overview.count.proposal.all}</TextMinorBold>
               </StyledLink>
             </ValueWrapper>
@@ -134,14 +134,14 @@ const Summary = () => {
             <ValueWrapper>
               <StyledLinkMajor
                 to={{
-                  pathname: `${symbolLowerCase}/tips`,
+                  pathname: `/${symbolLowerCase}/tips`,
                   search: `?status=NewTip||tip`,
                 }}
               >
                 <TextBold>{overview.count.tip.unFinished}</TextBold>
               </StyledLinkMajor>
               <TextMinorBold>/</TextMinorBold>
-              <StyledLink to={`${symbolLowerCase}/tips`}>
+              <StyledLink to={`/${symbolLowerCase}/tips`}>
                 <TextMinorBold>{overview.count.tip.all}</TextMinorBold>
               </StyledLink>
             </ValueWrapper>
@@ -156,7 +156,7 @@ const Summary = () => {
             <ValueWrapper>
               <TextBold>{overview.count.bounty.unFinished}</TextBold>
               <TextMinorBold>/</TextMinorBold>
-              <StyledLink to={`${symbolLowerCase}/bounties`}>
+              <StyledLink to={`/${symbolLowerCase}/bounties`}>
                 <TextMinorBold>{overview.count.bounty.all}</TextMinorBold>
               </StyledLink>
             </ValueWrapper>
