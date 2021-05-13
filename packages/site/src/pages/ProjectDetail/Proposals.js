@@ -2,11 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { Image } from "semantic-ui-react";
+import { useSelector } from "react-redux";
 
 import { PRIMARY_THEME_COLOR } from "../../constants";
 import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
 import Card from "../../components/Card";
+import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 
 const Wrapper = styled(Card)`
   padding: 20px 24px;
@@ -129,6 +131,8 @@ const TextDollar = styled(Text)`
 `;
 
 const Proposals = ({ data }) => {
+  const symbol = useSelector(chainSymbolSelector)?.toLowerCase();
+
   if (data) {
     return (
       <Wrapper>
@@ -153,7 +157,7 @@ const Proposals = ({ data }) => {
                           : "/imgs/logo-polkadot.svg"
                       }
                     />
-                    <NavLink to={`/proposals/${item.proposalId}`}>
+                    <NavLink to={`/${symbol}/proposals/${item.proposalId}`}>
                       <NumberText>{`#${item.proposalId}`}</NumberText>
                     </NavLink>
                     <BoldText>{item.title}</BoldText>
