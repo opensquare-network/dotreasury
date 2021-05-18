@@ -1796,22 +1796,22 @@
   dependencies:
     "@babel/runtime" "^7.14.0"
 
-"@polkadot/react-identicon@^0.75.1":
-  version "0.75.1"
-  resolved "https://registry.nlark.com/@polkadot/react-identicon/download/@polkadot/react-identicon-0.75.1.tgz#30a71fb08d927d41ef035979890931f4ea9242ff"
-  integrity sha1-MKcfsI2SfUHvA1l5iQkx9OqSQv8=
+"@polkadot/react-identicon@^0.76.1":
+  version "0.76.1"
+  resolved "https://registry.nlark.com/@polkadot/react-identicon/download/@polkadot/react-identicon-0.76.1.tgz#6e7b0aef1d50bb00057fb59b906d3c4651448078"
+  integrity sha1-bnsK7x1QuwAFf7WbkG08RlFEgHg=
   dependencies:
-    "@babel/runtime" "^7.13.17"
-    "@polkadot/keyring" "^6.3.1"
-    "@polkadot/ui-settings" "0.75.1"
-    "@polkadot/ui-shared" "0.75.1"
-    "@polkadot/util" "^6.3.1"
-    "@polkadot/util-crypto" "^6.3.1"
+    "@babel/runtime" "^7.14.0"
+    "@polkadot/keyring" "^6.4.1"
+    "@polkadot/ui-settings" "0.76.1"
+    "@polkadot/ui-shared" "0.76.1"
+    "@polkadot/util" "^6.4.1"
+    "@polkadot/util-crypto" "^6.4.1"
     color "^3.1.3"
     ethereum-blockies-base64 "^1.0.2"
     jdenticon "3.1.0"
     react-copy-to-clipboard "^5.0.3"
-    styled-components "^5.2.3"
+    styled-components "^5.3.0"
 
 "@polkadot/rpc-core@4.10.1":
   version "4.10.1"
@@ -1915,23 +1915,23 @@
     "@types/bn.js" "^4.11.6"
     bn.js "^4.11.9"
 
-"@polkadot/ui-settings@0.75.1":
-  version "0.75.1"
-  resolved "https://registry.nlark.com/@polkadot/ui-settings/download/@polkadot/ui-settings-0.75.1.tgz#9755b9ca92d1ddb6cc7574caf1c4ff2fc905ff5e"
-  integrity sha1-l1W5ypLR3bbMdXTK8cT/L8kF/14=
+"@polkadot/ui-settings@0.76.1":
+  version "0.76.1"
+  resolved "https://registry.nlark.com/@polkadot/ui-settings/download/@polkadot/ui-settings-0.76.1.tgz#693c6de30bbe9ed1b0101c647756be8af8d995d4"
+  integrity sha1-aTxt4wu+ntGwEBxkd1a+ivjZldQ=
   dependencies:
-    "@babel/runtime" "^7.13.17"
-    "@polkadot/networks" "^6.3.1"
-    "@polkadot/util" "^6.3.1"
+    "@babel/runtime" "^7.14.0"
+    "@polkadot/networks" "^6.4.1"
+    "@polkadot/util" "^6.4.1"
     eventemitter3 "^4.0.7"
     store "^2.0.12"
 
-"@polkadot/ui-shared@0.75.1":
-  version "0.75.1"
-  resolved "https://registry.nlark.com/@polkadot/ui-shared/download/@polkadot/ui-shared-0.75.1.tgz#c4e06139a4bc17e115da8d60116f7ff7116836b1"
-  integrity sha1-xOBhOaS8F+EV2o1gEW9/9xFoNrE=
+"@polkadot/ui-shared@0.76.1":
+  version "0.76.1"
+  resolved "https://registry.nlark.com/@polkadot/ui-shared/download/@polkadot/ui-shared-0.76.1.tgz#7edf63c239c83b7950888cea8dd15caf9f64a532"
+  integrity sha1-ft9jwjnIO3lQiIzqjdFcr59kpTI=
   dependencies:
-    "@babel/runtime" "^7.13.17"
+    "@babel/runtime" "^7.14.0"
     color "^3.1.3"
 
 "@polkadot/util-crypto@6.3.1", "@polkadot/util-crypto@^6.3.1":
@@ -13415,10 +13415,26 @@ style-loader@1.3.0:
     loader-utils "^2.0.0"
     schema-utils "^2.7.0"
 
-styled-components@^5.2.1, styled-components@^5.2.3:
+styled-components@^5.2.1:
   version "5.2.3"
   resolved "https://registry.npm.taobao.org/styled-components/download/styled-components-5.2.3.tgz#752669fd694aac10de814d96efc287dde0d11385"
   integrity sha1-dSZp/WlKrBDegU2W78KH3eDRE4U=
+  dependencies:
+    "@babel/helper-module-imports" "^7.0.0"
+    "@babel/traverse" "^7.4.5"
+    "@emotion/is-prop-valid" "^0.8.8"
+    "@emotion/stylis" "^0.8.4"
+    "@emotion/unitless" "^0.7.4"
+    babel-plugin-styled-components ">= 1.12.0"
+    css-to-react-native "^3.0.0"
+    hoist-non-react-statics "^3.0.0"
+    shallowequal "^1.1.0"
+    supports-color "^5.5.0"
+
+styled-components@^5.3.0:
+  version "5.3.0"
+  resolved "https://registry.nlark.com/styled-components/download/styled-components-5.3.0.tgz#e47c3d3e9ddfff539f118a3dd0fd4f8f4fb25727"
+  integrity sha1-5Hw9Pp3f/1OfEYo90P1Pj0+yVyc=
   dependencies:
     "@babel/helper-module-imports" "^7.0.0"
     "@babel/traverse" "^7.4.5"
