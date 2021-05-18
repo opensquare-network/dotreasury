@@ -73,6 +73,21 @@ const ImageLogoWrapper = styled.div`
   > :not(:first-child) {
     margin-left: 8px;
   }
+  @media screen and (max-width: 481px) {
+    flex-direction: column;
+    > :not(:first-child) {
+      margin-left: 0;
+      margin-top: 4px;
+    }
+  }
+`;
+
+const FlexWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  > :not(:first-child) {
+    margin-left: 8px;
+  }
 `;
 
 const Footer = () => {
@@ -94,13 +109,22 @@ const Footer = () => {
           </ImageLogoWrapper>
           <ImageLogoWrapper>
             <TextMinor>Funded by</TextMinor>
-            <a
-              href="https://kusama.network/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Image src="/imgs/kusama-treasury-logo.svg" />
-            </a>
+            <FlexWrapper>
+              <a
+                href="https://kusama.network/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Image src="/imgs/kusama-treasury-logo.svg" />
+              </a>
+              <a
+                href="https://polkadot.network/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Image src="/imgs/polkadot-treasury-logo.svg" />
+              </a>
+            </FlexWrapper>
           </ImageLogoWrapper>
           <IconList>
             <a
