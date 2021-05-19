@@ -36,7 +36,7 @@ function nextDifferentIsNewTerm(allBlockEvents, sort) {
     const notDeposit =
       section !== Modules.Treasury || method !== TreasuryEvent.Deposit;
     const notNewTerm =
-      section !== Modules.ElectionsPhragmen ||
+      !([Modules.ElectionsPhragmen, Modules.PhragmenElection].includes(section)) ||
       method !== ElectionsPhragmenEvents.NewTerm;
 
     if (!notDeposit) {
@@ -64,7 +64,6 @@ async function handleElectionsLoserCandidateSlash(
 ) {
   const {
     event: { data: treasuryDepositData },
-    phase,
   } = event; // get deposit event data
   if (sort >= allBlockEvents.length - 1) {
     return;
