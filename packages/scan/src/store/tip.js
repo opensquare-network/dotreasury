@@ -54,12 +54,23 @@ async function getReasonStorageReasonText(reasonHash, blockHash) {
 }
 
 async function getTippersCount(blockHash) {
-  const v = await getMetadataConstByBlockHash(
+  const oldModuleValue = await getMetadataConstByBlockHash(
     blockHash,
     "ElectionsPhragmen",
     "DesiredMembers"
   );
-  return v ? v.toNumber() : v;
+
+  if (oldModuleValue) {
+    return oldModuleValue.toNumber()
+  }
+
+  const newModuleValue = await getMetadataConstByBlockHash(
+    blockHash,
+    "PhragmenElection",
+    "DesiredMembers"
+  );
+
+  return newModuleValue ? newModuleValue.toNumber() : newModuleValue
 }
 
 async function getTipFindersFee(blockHash) {
