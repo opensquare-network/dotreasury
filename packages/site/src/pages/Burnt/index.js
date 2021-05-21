@@ -61,7 +61,7 @@ const Burnt = () => {
         loading={loading}
         header={
           <HeaderWrapper>
-            <Title>Proposals</Title>
+            <Title>Burnt</Title>
           </HeaderWrapper>
         }
         footer={
