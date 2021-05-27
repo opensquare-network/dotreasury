@@ -40,10 +40,16 @@ const ButtonList = ({ extrinsicIndexer, eventIndexer, polkassembly }) => {
   const extrinsicIndex = extrinsicIndexer?.index ?? 0;
   const eventSort = eventIndexer?.eventSort;
 
+  console.log(chain);
+
   return (
     <Wrapper>
       <ExplorerLink
-        base={chain === "kusama" ? "https://polkascan.io/kusama/" : "https://polkascan.io/polkadot/"}
+        base={
+          chain === "kusama"
+            ? "https://polkascan.io/kusama/"
+            : "https://polkascan.io/polkadot/"
+        }
         href={`${nil(eventSort) ? "transaction" : "event"}/${blockHeight}-${
           eventSort ?? extrinsicIndex
         }`}
@@ -51,7 +57,11 @@ const ButtonList = ({ extrinsicIndexer, eventIndexer, polkassembly }) => {
         <ImageButton src={"/imgs/polkascan-logo.svg"} />
       </ExplorerLink>
       <ExplorerLink
-        base={chain === "kusama" ? "https://polkadot.subscan.io/" : "https://polkadot.subscan.io/"}
+        base={
+          chain === "kusama"
+            ? "https://kusama.subscan.io/"
+            : "https://polkadot.subscan.io/"
+        }
         href={`extrinsic/${blockHeight}-${extrinsicIndex}${
           nil(eventSort) ? "" : "?event=" + blockHeight + "-" + eventSort
         }`}
