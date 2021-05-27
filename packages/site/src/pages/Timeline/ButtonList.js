@@ -40,8 +40,6 @@ const ButtonList = ({ extrinsicIndexer, eventIndexer, polkassembly }) => {
   const extrinsicIndex = extrinsicIndexer?.index ?? 0;
   const eventSort = eventIndexer?.eventSort;
 
-  console.log(chain);
-
   return (
     <Wrapper>
       <ExplorerLink
