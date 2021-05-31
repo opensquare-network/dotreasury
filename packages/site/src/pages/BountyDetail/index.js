@@ -259,7 +259,7 @@ const BountyDetail = () => {
   return (
     <>
       <DetailGoBack />
-      <DetailTableWrapper title="Tip" desc={`#${bountyIndex}`}>
+      <DetailTableWrapper title="Bounty" desc={`#${bountyIndex}`}>
         <InformationTable loading={loadingBountyDetail} />
         <BountyLifeCycleTable loading={loadingBountyDetail} />
         <RelatedLinks type="bounty" index={parseInt(bountyIndex)} />
