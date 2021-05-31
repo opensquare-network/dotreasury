@@ -58,6 +58,10 @@ async function saveStats(indexer) {
     indexer.blockHeight
   );
 
+  if (treasuryBalance === null) {
+    return;
+  }
+
   const weeklyStatsCol = await getWeeklyStatsCollection();
   await weeklyStatsCol.updateOne(
     { indexer },

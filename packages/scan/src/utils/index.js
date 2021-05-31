@@ -157,7 +157,8 @@ async function getTreasuryBalance(blockHash, blockHeight) {
     return metadata.registry.createType("Compact<Balance>", value).toJSON();
   } else if (blockHeight < ksmMigrateAccountHeight) {
     // TODO: find how to get the balance from 1377831 to 1492896
-    return await queryAccountFreeWithSystem(blockHash);
+    return null;
+    // return await queryAccountFreeWithSystem(blockHash);
   } else {
     return await queryAccountFreeWithSystem(blockHash);
   }
