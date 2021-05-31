@@ -129,6 +129,10 @@ async function getTreasuryBalance(blockHash, blockHeight) {
   if ("polkadot" === currentChain()) {
     // TODO: We can not get treasury balance at height which <= 29230.
     // TODO: Though we do not store the balance in this range, we should figure out how to query it.
+    if (blockHeight <= 29230) {
+      return 0;
+    }
+
     return await queryAccountFreeWithSystem(blockHash);
   }
 
