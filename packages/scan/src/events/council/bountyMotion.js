@@ -47,7 +47,14 @@ function _isDotBountyMotion(section, method, height) {
   );
 }
 
-function isBountyMotion(section, method, height) {}
+function isBountyMotion(section, method, height) {
+  const chain = currentChain();
+  if (CHAINS.KUSAMA === chain) {
+    return _isKsmBountyMotion(section, method, height);
+  } else {
+    return _isDotBountyMotion(section, method, height);
+  }
+}
 
 async function handleProposedForBounty(event, normalizedExtrinsic, extrinsic) {
   const [section, method, args] = await extractCallIndexAndArgs(
