@@ -7,6 +7,7 @@ function isBountyModule(section) {
 }
 
 async function handleBountyAcceptCurator(normalizedExtrinsic) {
+  // TODO: handle acceptCurator wrapped in batch/multisig extrinsic
   const { section, name, args } = normalizedExtrinsic;
   const indexer = normalizedExtrinsic.extrinsicIndexer;
   if (!isBountyModule(section) || BountyMethods.acceptCurator !== name) {
