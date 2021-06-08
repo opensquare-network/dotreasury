@@ -22,14 +22,14 @@ const FlexWrapper = styled.div`
   `}
 `;
 
-const CuratorText = styled.div`
+const ReturnedText = styled.div`
   color: rgba(0, 0, 0, 0.3);
   font-size: 14px;
   line-height: 22px;
   margin-left: 16px;
 `;
 
-const CuratorWrapper = styled.div`
+const ReturnedWrapper = styled.div`
   display: flex;
   align-items: center;
 `;
@@ -48,6 +48,7 @@ const BountyStates = Object.freeze({
   CuratorProposed: 4,
   Active: 5,
   PendingPayout: 6,
+  Claimed: 7,
 });
 
 function getBountyState(bountyDetail) {
@@ -95,14 +96,12 @@ const InformationTable = ({ loading }) => {
           <Table.Row>
             <Table.Cell>
               <TableCell title={"Bond"}>
-                <FlexWrapper>
+                <ReturnedWrapper>
                   <Balance value={bountyDetail.bond} />
-                  <Label>
-                    {getBountyState(bountyDetail) > BountyStates.Proposed
-                      ? "has returned to the proposer"
-                      : ""}
-                  </Label>
-                </FlexWrapper>
+                  {getBountyState(bountyDetail) > BountyStates.Rejected ? (
+                    <ReturnedText>Returned to proposer</ReturnedText>
+                  ) : null}
+                </ReturnedWrapper>
               </TableCell>
             </Table.Cell>
           </Table.Row>
@@ -122,7 +121,7 @@ const InformationTable = ({ loading }) => {
           <Table.Row>
             <Table.Cell>
               <TableCell title={"Curator Deposit"}>
-                <CuratorWrapper>
+                <ReturnedWrapper>
                   {getBountyState(bountyDetail) < BountyStates.Active ? (
                     "--"
                   ) : (
@@ -132,9 +131,9 @@ const InformationTable = ({ loading }) => {
                   )}
                   {getBountyState(bountyDetail) >=
                   BountyStates.PendingPayout ? (
-                    <CuratorText>Returned to curator</CuratorText>
+                    <ReturnedText>Returned to curator</ReturnedText>
                   ) : null}
-                </CuratorWrapper>
+                </ReturnedWrapper>
               </TableCell>
             </Table.Cell>
           </Table.Row>
