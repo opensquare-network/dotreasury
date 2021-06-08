@@ -11,6 +11,7 @@ import Label from "../../components/Label";
 import { mrgap } from "../../styles";
 
 import { bountyDetailSelector } from "../../store/reducers/bountySlice";
+import { capitalizeFirstLetter } from "../../utils";
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -19,6 +20,24 @@ const FlexWrapper = styled.div`
   ${css`
     ${mrgap("16px")}
   `}
+`;
+
+const CuratorText = styled.div`
+  color: rgba(0, 0, 0, 0.3);
+  font-size: 14px;
+  line-height: 22px;
+  margin-left: 16px;
+`;
+
+const CuratorWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const AlignItemWrapper = styled.div`
+  * {
+    align-items: flex-start;
+  }
 `;
 
 const BountyStates = Object.freeze({
@@ -32,7 +51,9 @@ const BountyStates = Object.freeze({
 });
 
 function getBountyState(bountyDetail) {
-  return BountyStates[bountyDetail.latestState?.state] ?? -1;
+  return (
+    BountyStates[capitalizeFirstLetter(bountyDetail.latestState?.state)] ?? -1
+  );
 }
 
 const InformationTable = ({ loading }) => {
@@ -91,7 +112,9 @@ const InformationTable = ({ loading }) => {
                 {getBountyState(bountyDetail) < BountyStates.CuratorProposed ? (
                   "--"
                 ) : (
-                  <Balance value={bountyDetail.fee} />
+                  <AlignItemWrapper>
+                    <Balance value={bountyDetail.fee} />
+                  </AlignItemWrapper>
                 )}
               </TableCell>
             </Table.Cell>
@@ -99,11 +122,19 @@ const InformationTable = ({ loading }) => {
           <Table.Row>
             <Table.Cell>
               <TableCell title={"Curator Deposit"}>
-                {getBountyState(bountyDetail) < BountyStates.Active ? (
-                  "--"
-                ) : (
-                  <Balance value={bountyDetail.curatorDeposit} />
-                )}
+                <CuratorWrapper>
+                  {getBountyState(bountyDetail) < BountyStates.Active ? (
+                    "--"
+                  ) : (
+                    <AlignItemWrapper>
+                      <Balance value={bountyDetail.curatorDeposit} />
+                    </AlignItemWrapper>
+                  )}
+                  {getBountyState(bountyDetail) >=
+                  BountyStates.PendingPayout ? (
+                    <CuratorText>Returned to curator</CuratorText>
+                  ) : null}
+                </CuratorWrapper>
               </TableCell>
             </Table.Cell>
           </Table.Row>
