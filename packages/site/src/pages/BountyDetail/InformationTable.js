@@ -1,5 +1,5 @@
 import React from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { useSelector } from "react-redux";
 
 import Table from "../../components/Table";
@@ -7,20 +7,9 @@ import TableLoading from "../../components/TableLoading";
 import TableCell from "../../components/TableCell";
 import User from "../../components/User";
 import Balance from "../../components/Balance";
-import Label from "../../components/Label";
-import { mrgap } from "../../styles";
 
 import { bountyDetailSelector } from "../../store/reducers/bountySlice";
 import { capitalizeFirstLetter } from "../../utils";
-
-const FlexWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  ${css`
-    ${mrgap("16px")}
-  `}
-`;
 
 const ReturnedText = styled.div`
   color: rgba(0, 0, 0, 0.3);
