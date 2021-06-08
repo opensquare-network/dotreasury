@@ -89,6 +89,7 @@ async function handleBountyAcceptCurator(normalizedExtrinsic, extrinsic) {
     name: BountyMethods.acceptCurator,
     extrinsic: {
       ...normalizedExtrinsic,
+      name: BountyMethods.acceptCurator,
       signer,
     },
   };
