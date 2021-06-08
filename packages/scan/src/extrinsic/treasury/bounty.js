@@ -1,28 +1,15 @@
-const {
-  BountyMethods,
-  Modules,
-  ksmTreasuryRefactorApplyHeight,
-} = require("../../utils/constants");
+const { BountyMethods, Modules } = require("../../utils/constants");
 const { getBountyMeta } = require("../../utils/bounty");
 const { getBountyCollection } = require("../../mongo");
 
-function isBountyModule(section, height) {
-  if (height < ksmTreasuryRefactorApplyHeight && section === Modules.Treasury) {
-    return true;
-  }
-
-  return (
-    height >= ksmTreasuryRefactorApplyHeight && section === Modules.Bounties
-  );
+function isBountyModule(section) {
+  return [Modules.Treasury, Modules.Bounties].includes(section);
 }
 
 async function handleBountyAcceptCurator(normalizedExtrinsic) {
   const { section, name, args } = normalizedExtrinsic;
   const indexer = normalizedExtrinsic.extrinsicIndexer;
-  if (
-    !isBountyModule(section, indexer.blockHeight) ||
-    BountyMethods.acceptCurator !== name
-  ) {
+  if (!isBountyModule(section) || BountyMethods.acceptCurator !== name) {
     return false;
   }
 

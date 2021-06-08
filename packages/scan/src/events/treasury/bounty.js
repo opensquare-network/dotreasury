@@ -11,18 +11,9 @@ const {
   getBountyMetaByBlockHeight,
 } = require("../../utils/bounty");
 
-function isBountyEvent(section, method, height) {
-  if (
-    height < ksmTreasuryRefactorApplyHeight &&
-    Modules.Treasury === section &&
-    BountyEvents.hasOwnProperty(method)
-  ) {
-    return true;
-  }
-
+function isBountyEvent(section, method) {
   return (
-    height >= ksmTreasuryRefactorApplyHeight &&
-    Modules.Bounties === section &&
+    [Modules.Treasury, Modules.Bounties].includes(section) &&
     BountyEvents.hasOwnProperty(method)
   );
 }
