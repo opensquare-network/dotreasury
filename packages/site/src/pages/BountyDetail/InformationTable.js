@@ -11,6 +11,7 @@ import Label from "../../components/Label";
 import { mrgap } from "../../styles";
 
 import { bountyDetailSelector } from "../../store/reducers/bountySlice";
+import { capitalizeFirstLetter } from "../../utils";
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -21,6 +22,24 @@ const FlexWrapper = styled.div`
   `}
 `;
 
+const ReturnedText = styled.div`
+  color: rgba(0, 0, 0, 0.3);
+  font-size: 14px;
+  line-height: 22px;
+  margin-left: 16px;
+`;
+
+const ReturnedWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const AlignItemWrapper = styled.div`
+  * {
+    align-items: flex-start;
+  }
+`;
+
 const BountyStates = Object.freeze({
   Proposed: 0,
   Rejected: 1,
@@ -29,10 +48,13 @@ const BountyStates = Object.freeze({
   CuratorProposed: 4,
   Active: 5,
   PendingPayout: 6,
+  Claimed: 7,
 });
 
 function getBountyState(bountyDetail) {
-  return BountyStates[bountyDetail.latestState?.state] ?? -1;
+  return (
+    BountyStates[capitalizeFirstLetter(bountyDetail.latestState?.state)] ?? -1
+  );
 }
 
 const InformationTable = ({ loading }) => {
@@ -74,14 +96,12 @@ const InformationTable = ({ loading }) => {
           <Table.Row>
             <Table.Cell>
               <TableCell title={"Bond"}>
-                <FlexWrapper>
+                <ReturnedWrapper>
                   <Balance value={bountyDetail.bond} />
-                  <Label>
-                    {getBountyState(bountyDetail) > BountyStates.Proposed
-                      ? "has returned to the proposer"
-                      : ""}
-                  </Label>
-                </FlexWrapper>
+                  {getBountyState(bountyDetail) > BountyStates.Rejected ? (
+                    <ReturnedText>Returned to proposer</ReturnedText>
+                  ) : null}
+                </ReturnedWrapper>
               </TableCell>
             </Table.Cell>
           </Table.Row>
@@ -91,7 +111,9 @@ const InformationTable = ({ loading }) => {
                 {getBountyState(bountyDetail) < BountyStates.CuratorProposed ? (
                   "--"
                 ) : (
-                  <Balance value={bountyDetail.fee} />
+                  <AlignItemWrapper>
+                    <Balance value={bountyDetail.fee} />
+                  </AlignItemWrapper>
                 )}
               </TableCell>
             </Table.Cell>
@@ -99,11 +121,19 @@ const InformationTable = ({ loading }) => {
           <Table.Row>
             <Table.Cell>
               <TableCell title={"Curator Deposit"}>
-                {getBountyState(bountyDetail) < BountyStates.Active ? (
-                  "--"
-                ) : (
-                  <Balance value={bountyDetail.curatorDeposit} />
-                )}
+                <ReturnedWrapper>
+                  {getBountyState(bountyDetail) < BountyStates.Active ? (
+                    "--"
+                  ) : (
+                    <AlignItemWrapper>
+                      <Balance value={bountyDetail.curatorDeposit} />
+                    </AlignItemWrapper>
+                  )}
+                  {getBountyState(bountyDetail) >=
+                  BountyStates.PendingPayout ? (
+                    <ReturnedText>Returned to curator</ReturnedText>
+                  ) : null}
+                </ReturnedWrapper>
               </TableCell>
             </Table.Cell>
           </Table.Row>

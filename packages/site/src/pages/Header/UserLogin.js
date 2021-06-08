@@ -48,6 +48,7 @@ const Wrapper = styled.a`
 
 const SignUpButton = styled(ButtonLabel)`
   margin-right: 32px !important;
+  font-weight: 500 !important;
   button {
     font-weight: 600px !important;
   }
