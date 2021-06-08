@@ -40,7 +40,8 @@ async function handleExtrinsics(extrinsics = [], allEvents = [], indexer) {
     const isBatch = await handleTipByBatch(normalizedExtrinsic, extrinsic);
 
     const isAcceptCurator = await handleBountyAcceptCurator(
-      normalizedExtrinsic
+      normalizedExtrinsic,
+      extrinsic
     );
 
     if (
