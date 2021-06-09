@@ -2,7 +2,6 @@ const {
   Modules,
   BountyEvents,
   BountyMethods,
-  ksmTreasuryRefactorApplyHeight,
 } = require("../../utils/constants");
 const { getBountyCollection } = require("../../mongo");
 const {
@@ -88,25 +87,16 @@ async function handleBountyStateUpdateEvent(
   );
 }
 
-function isBountyBecameActiveEvent(section, method, height) {
-  if (
-    height < ksmTreasuryRefactorApplyHeight &&
-    Modules.Treasury === section &&
-    method === BountyEvents.BountyBecameActive
-  ) {
-    return true;
-  }
-
+function isBountyBecameActiveEvent(section, method) {
   return (
-    height >= ksmTreasuryRefactorApplyHeight &&
-    Modules.Bounties === section &&
+    [Modules.Treasury, Modules.Bounties].includes(section) &&
     method === BountyEvents.BountyBecameActive
   );
 }
 
 async function handleBountyBecameActiveEvent(event, eventIndexer) {
   const { section, method } = event;
-  if (!isBountyBecameActiveEvent(section, method, eventIndexer.blockHeight)) {
+  if (!isBountyBecameActiveEvent(section, method)) {
     return false;
   }
 
