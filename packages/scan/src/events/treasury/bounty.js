@@ -9,6 +9,7 @@ const {
   getBountyDescription,
   getBountyMetaByBlockHeight,
 } = require("../../utils/bounty");
+const { handleBountyAcceptCurator } = require("./bountyAcceptCurator");
 
 function isBountyEvent(section, method) {
   return (
@@ -17,7 +18,11 @@ function isBountyEvent(section, method) {
   );
 }
 
-async function handleBountyEventWithExtrinsic(event, normalizedExtrinsic) {
+async function handleBountyEventWithExtrinsic(
+  event,
+  normalizedExtrinsic,
+  extrinsic
+) {
   const { section, method } = event;
   if (
     !isBountyEvent(
@@ -31,12 +36,13 @@ async function handleBountyEventWithExtrinsic(event, normalizedExtrinsic) {
 
   if (method === BountyEvents.BountyProposed) {
     await handleProposedEvent(event, normalizedExtrinsic);
+  } else if (method === BountyEvents.BountyExtended) {
+    await handleBountyAcceptCurator(event, normalizedExtrinsic, extrinsic);
   } else if (
     [
       BountyEvents.BountyAwarded,
       BountyEvents.BountyCanceled,
       BountyEvents.BountyClaimed,
-      BountyEvents.BountyExtended,
       BountyEvents.BountyRejected,
     ].includes(method)
   ) {
