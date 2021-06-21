@@ -23,7 +23,9 @@ export const useWindowSize = () => {
   return size;
 };
 
-export const useIndentity = (address) => {
+const displayCache = new Map();
+
+export const useIndentity = (address, map) => {
   const [name, setName] = useState(null);
   const [badgeData, setBadgeData] = useState(null);
   const chain = useSelector(chainSelector);
@@ -31,22 +33,48 @@ export const useIndentity = (address) => {
     let isMounted = true;
     const fetchIdentity = async () => {
       let identity;
-      if (sessionStorage.getItem(`identity_${address}`)) {
-        identity = JSON.parse(sessionStorage.getItem(`identity_${address}`));
+      if (displayCache.has(`identity_${address}`)) {
+        identity = displayCache.get(`identity_${address}`);
       } else {
         identity = await getIndentity(chain, address);
-        sessionStorage.setItem(`identity_${address}`, JSON.stringify(identity));
+        displayCache.set(`identity_${address}`, identity);
       }
       if (isMounted && identity && identity.display) {
+        const judgements = identity.judgements.filter(
+          ([, judgement]) => !judgement.isFreePaid
+        );
+        const isGood = judgements.some(
+          ([, judgement]) => judgement.isKnownGood || judgement.isReasonable
+        );
+        const isBad = judgements.some(
+          ([, judgement]) => judgement.isErroneous || judgement.isLowQuality
+        );
+        const displayName = isGood
+          ? identity.display
+          : (identity.display || "").replace(/[^\x20-\x7E]/g, "");
+        const displayParent =
+          identity.displayParent &&
+          (isGood
+            ? identity.displayParent
+            : identity.displayParent.replace(/[^\x20-\x7E]/g, ""));
+        const color = isBad ? "#8C0002" : isGood ? "#008000" : "#eeedec";
         setName(
-          identity.displayParent
-            ? `${identity.displayParent}/${identity.display}`
-            : identity.display
+          displayParent ? `${displayParent}/${displayName}` : displayName
         );
         setBadgeData({
-          isDisplay: !!identity.display,
-          hasParent: !!identity.displayParent,
-          hasJudgement: identity.judgements?.length > 0,
+          isDisplay: !!displayName,
+          color,
+          icon: identity.parent
+            ? color === "#eeedec"
+              ? "link-gray"
+              : "link"
+            : isGood && !isBad
+            ? color === "#eeedec"
+              ? "check-gray"
+              : "check"
+            : color === "#eeedec"
+            ? "minus-gray"
+            : "minus",
         });
       }
     };

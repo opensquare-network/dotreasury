@@ -40,8 +40,37 @@ class ScanApi extends Api {
   }
 
   async maybeAuthFetch(url, params, options) {
-    const token = JSON.parse(localStorage.getItem("token"));
-    if (token) {
+    try {
+      const token = JSON.parse(localStorage.getItem("token"));
+      if (token) {
+        options = {
+          ...options,
+          headers: {
+            ...options?.headers,
+            Authorization: `Bearer ${token.accessToken}`,
+          },
+        };
+      }
+
+      return await this.fetch(url, params, options);
+    } catch {
+      return { result: null };
+    }
+  }
+
+  async authFetch(url, params, options) {
+    try {
+      const token = JSON.parse(localStorage.getItem("token"));
+      if (!token) {
+        this.jwtExpire.next();
+        return {
+          error: {
+            status: 401,
+            message: "Access token is not found",
+          },
+        };
+      }
+
       options = {
         ...options,
         headers: {
@@ -49,75 +78,54 @@ class ScanApi extends Api {
           Authorization: `Bearer ${token.accessToken}`,
         },
       };
-    }
+      const { result, error } = await this.fetch(url, params, options);
 
-    return await this.fetch(url, params, options);
-  }
+      if (result) {
+        return { result };
+      }
 
-  async authFetch(url, params, options) {
-    const token = JSON.parse(localStorage.getItem("token"));
-    if (!token) {
-      this.jwtExpire.next();
-      return {
-        error: {
-          status: 401,
-          message: "Access token is not found",
-        },
-      };
-    }
-
-    options = {
-      ...options,
-      headers: {
-        ...options?.headers,
-        Authorization: `Bearer ${token.accessToken}`,
-      },
-    };
-    const { result, error } = await this.fetch(url, params, options);
-
-    if (result) {
-      return { result };
-    }
-
-    if (error?.status === 401 && error?.message === "jwt expired") {
-      console.warn("Access token expired, tring to refresh token.");
-      // jwt expire
-      const { result: refreshResult, error: refreshError } = await this.fetch(
-        "/auth/refresh",
-        {},
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ refreshToken: token.refreshToken }),
-        }
-      );
-
-      if (refreshResult) {
-        console.log("New access token is acquired.");
-        localStorage.setItem(
-          "token",
-          JSON.stringify({
-            accessToken: refreshResult.accessToken,
-            refreshToken: token.refreshToken,
-          })
+      if (error?.status === 401 && error?.message === "jwt expired") {
+        console.warn("Access token expired, tring to refresh token.");
+        // jwt expire
+        const { result: refreshResult, error: refreshError } = await this.fetch(
+          "/auth/refresh",
+          {},
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ refreshToken: token.refreshToken }),
+          }
         );
 
-        options.headers[
-          "Authorization"
-        ] = `Bearer ${refreshResult.accessToken}`;
-        return await this.fetch(url, params, options);
+        if (refreshResult) {
+          console.log("New access token is acquired.");
+          localStorage.setItem(
+            "token",
+            JSON.stringify({
+              accessToken: refreshResult.accessToken,
+              refreshToken: token.refreshToken,
+            })
+          );
+
+          options.headers[
+            "Authorization"
+          ] = `Bearer ${refreshResult.accessToken}`;
+          return await this.fetch(url, params, options);
+        }
+
+        if (refreshError) {
+          console.error("Failed to refresh access token.");
+          this.jwtExpire.next();
+          return { error };
+        }
       }
 
-      if (refreshError) {
-        console.error("Failed to refresh access token.");
-        this.jwtExpire.next();
-        return { error };
-      }
+      return { error };
+    } catch {
+      return { result: null };
     }
-
-    return { error };
   }
 }
 
