@@ -57,7 +57,7 @@ export const useIndentity = (address, map) => {
           (isGood
             ? identity.displayParent
             : identity.displayParent.replace(/[^\x20-\x7E]/g, ""));
-        const color = isBad ? "red" : isGood ? "#008000" : "#eeedec";
+        const color = isBad ? "#8C0002" : isGood ? "#008000" : "#eeedec";
         setName(
           displayParent ? `${displayParent}/${displayName}` : displayName
         );

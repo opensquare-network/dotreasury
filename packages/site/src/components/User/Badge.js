@@ -12,13 +12,6 @@ const Wrapper = styled.div`
 
 const Badge = ({ isDisplay, color, icon }) => {
   if (!isDisplay) return null;
-  // const imgSrc = hasJudgement
-  //   ? hasParent
-  //     ? "/imgs/badge-link.svg"
-  //     : "/imgs/badge-check.svg"
-  //   : hasParent
-  //   ? "/imgs/badge-link-gray.svg"
-  //   : "/imgs/badge-minus.svg";
   const imgSrc = `/imgs/badge-${icon}.svg`;
   return (
     <Wrapper color={color}>
