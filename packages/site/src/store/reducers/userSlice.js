@@ -27,14 +27,18 @@ const userSlice = createSlice({
   },
 });
 
-export const { setLoggedInUser, setUserProfile, setVerifyEmailSendTime } = userSlice.actions;
+export const {
+  setLoggedInUser,
+  setUserProfile,
+  setVerifyEmailSendTime,
+} = userSlice.actions;
 
 export const fetchUserProfile = () => async (dispatch) => {
   const { result } = await api.authFetch("/user/profile");
   if (result?.addresses?.length > 0) {
-    result.addresses = result.addresses.map(addr => ({
+    result.addresses = result.addresses.map((addr) => ({
       ...addr,
-      wildcardAddress: encodeSubstrateAddress(addr.address)
+      wildcardAddress: encodeSubstrateAddress(addr.address),
     }));
   }
   dispatch(setUserProfile(result || {}));
@@ -46,6 +50,7 @@ export const isLoggedInSelector = createSelector(
   (user) => !!user
 );
 export const userProfileSelector = (state) => state.users.userProfile;
-export const verifyEmailSendTimeSelector = (state) => state.users.verifyEmailSendTime;
+export const verifyEmailSendTimeSelector = (state) =>
+  state.users.verifyEmailSendTime;
 
 export default userSlice.reducer;

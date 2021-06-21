@@ -27,6 +27,7 @@ const BadgeWrapper = styled.div`
 
 const User = ({ address, ellipsis = true, popup = true }) => {
   const { name, badgeData } = useIndentity(address);
+
   return (
     <Wrapper>
       <Avatar address={address} />
@@ -45,4 +46,4 @@ const User = ({ address, ellipsis = true, popup = true }) => {
   );
 };
 
-export default User;
+export default React.memo(User);
