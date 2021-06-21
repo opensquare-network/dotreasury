@@ -38,15 +38,30 @@ export const useIndentity = (address) => {
         sessionStorage.setItem(`identity_${address}`, JSON.stringify(identity));
       }
       if (isMounted && identity && identity.display) {
+        const judgements = identity.judgements.filter(
+          ([, judgement]) => !judgement.isFreePaid
+        );
+        const isGood = judgements.some(
+          ([, judgement]) => judgement.isKnownGood || judgement.isReasonable
+        );
+        const isBad = judgements.some(
+          ([, judgement]) => judgement.isErroneous || judgement.isLowQuality
+        );
+        const displayName = isGood
+          ? identity.display
+          : (identity.display || "").replace(/[^\x20-\x7E]/g, "");
+        const displayParent =
+          identity.displayParent &&
+          (isGood
+            ? identity.displayParent
+            : identity.displayParent.replace(/[^\x20-\x7E]/g, ""));
         setName(
-          identity.displayParent
-            ? `${identity.displayParent}/${identity.display}`
-            : identity.display
+          displayParent ? `${displayParent}/${displayName}` : displayName
         );
         setBadgeData({
-          isDisplay: !!identity.display,
-          hasParent: !!identity.displayParent,
-          hasJudgement: identity.judgements?.length > 0,
+          isDisplay: !!displayName,
+          color: isBad ? "red" : isGood ? "green" : "gray",
+          icon: identity.parent ? "link" : isGood && !isBad ? "check" : "minus",
         });
       }
     };

@@ -11,25 +11,34 @@ import { mrgap } from "../../styles";
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
-  ${css`${mrgap("8px")}`}
+  ${css`
+    ${mrgap("8px")}
+  `}
   overflow: hidden;
 `;
 
 const BadgeWrapper = styled.div`
   display: flex;
   align-items: center;
-  ${css`${mrgap("3px")}`}
-`
+  ${css`
+    ${mrgap("3px")}
+  `}
+`;
 
 const User = ({ address, ellipsis = true, popup = true }) => {
-  const {name, badgeData} = useIndentity(address)
+  const { name, badgeData } = useIndentity(address);
   return (
     <Wrapper>
       <Avatar address={address} />
       <BadgeWrapper>
         <Badge {...badgeData} />
         <ExplorerLink href={`/account/${address}`}>
-          <Username name={name} address={address} ellipsis={ellipsis} popup={popup} />
+          <Username
+            name={name}
+            address={address}
+            ellipsis={ellipsis}
+            popup={popup}
+          />
         </ExplorerLink>
       </BadgeWrapper>
     </Wrapper>
