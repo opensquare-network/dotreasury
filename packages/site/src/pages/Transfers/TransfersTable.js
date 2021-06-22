@@ -112,7 +112,7 @@ const TransfersTable = ({ data, loading, header, footer }) => {
                       </Table.Cell>
                       <Table.Cell>
                         <ExplorerLink
-                          href={`/extrinsic/${item.indexer.blockHeight}-0?event=${item.indexer.blockHeight}-${item.eventSort}`}
+                          href={`/extrinsic/${item.indexer.blockHeight}-${item.indexer.index}?event=${item.indexer.blockHeight}-${item.eventSort}`}
                         >
                           <EventWrapper>
                             <Image src={"/imgs/event.svg"} />
