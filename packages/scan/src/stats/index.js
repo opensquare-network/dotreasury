@@ -1,5 +1,5 @@
 const dayjs = require("dayjs");
-const { bnToBn } = require("@polkadot/util");
+const { bnToBn, stringUpperFirst } = require("@polkadot/util");
 const { getLastStatTime } = require("../mongo/statTime");
 const { getIncomeNextScanStatus } = require("../mongo/scanHeight");
 const {
@@ -130,7 +130,7 @@ async function calcOutput(
   }, 0);
 
   const bountySpent = bounties.reduce((result, { meta: { status, value } }) => {
-    const statusKey = Object.keys(status)[0];
+    const statusKey = stringUpperFirst(Object.keys(status)[0]);
 
     const index = bountyStatuses.findIndex((item) => item === statusKey);
     return index >= 2 ? bigAdd(result, value) : result;
