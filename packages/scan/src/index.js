@@ -8,43 +8,18 @@ const { sleep, logger, knownHeightsLogger } = require("./utils");
 const { getBlockIndexer } = require("./block/getBlockIndexer");
 const { handleExtrinsics } = require("./extrinsic");
 const { handleEvents } = require("./events");
-const { getKnownHeights, getMaxKnownHeight } = require("./block/known/index");
 const { processStat } = require("./stats");
 const { handleIncomeEvents } = require("./income");
-const { currentChain } = require("./chain/index");
+const { getBlocks } = require("./mongo/meta");
+const { GenericBlock } = require("@polkadot/types");
+const { hexToU8a } = require("@polkadot/util");
 
-async function scanKnowBlocks(toScanHeight) {
-  const knownHeights = getKnownHeights();
-  let index = knownHeights.findIndex((height) => height >= toScanHeight);
-  while (index < knownHeights.length) {
-    const height = knownHeights[index];
-    try {
-      await scanBlockByHeight(height);
-    } catch (e) {
-      await sleep(3000);
-      console.error(`Error with known block scan ${height}`, e);
-      continue;
-    }
-    await updateScanHeight(height);
-    index++;
-  }
-}
+let registry;
 
 async function main() {
   await updateHeight();
   let scanHeight = await getNextScanHeight();
   await deleteDataFrom(scanHeight);
-
-  const chain = currentChain();
-  const useKnowHeights =
-    "kusama" === chain
-      ? !!process.env.KSM_USE_KNOWN_HEIGHTS
-      : !!process.env.DOT_USE_KNOWN_HEIGHTS;
-  const maxKnownHeight = getMaxKnownHeight();
-  if (scanHeight <= maxKnownHeight && useKnowHeights) {
-    await scanKnowBlocks(scanHeight);
-    scanHeight = maxKnownHeight + 1;
-  }
 
   while (true) {
     const chainHeight = getLatestHeight();
@@ -54,53 +29,72 @@ async function main() {
       continue;
     }
 
-    try {
-      await scanBlockByHeight(scanHeight);
-    } catch (e) {
-      await sleep(3000);
-      console.error(`Error with block scan ${scanHeight}`, e);
+    let targetHeight = chainHeight;
+    if (scanHeight + 100 < chainHeight) {
+      targetHeight = scanHeight + 100;
+    }
+
+    const blocks = await getBlocks(scanHeight, targetHeight);
+    if ((blocks || []).length <= 0) {
+      await sleep(1000);
       continue;
     }
 
-    await updateScanHeight(scanHeight++);
+    for (const block of blocks) {
+      // TODO: do following operations in one transaction
+      try {
+        await scanBlock(block);
+        await updateScanHeight(block.height);
+      } catch (e) {
+        await sleep(3000);
+        console.error(`Error with block scan ${scanHeight}`, e);
+        continue;
+      }
+
+      scanHeight = block.height + 1;
+    }
+
+    logger.info(`block ${targetHeight} done`);
   }
 }
 
-async function scanBlockByHeight(scanHeight) {
-  const api = await getApi();
-
-  let blockHash;
-  try {
-    blockHash = await api.rpc.chain.getBlockHash(scanHeight);
-  } catch (e) {
-    console.error("Can not get block hash");
-    throw e;
+async function scanBlock(blockInDb) {
+  if (!registry || registry.specVersion.toNumber() !== blockInDb.specVersion) {
+    registry = await getRegistryByHeight(blockInDb.height);
   }
 
-  const block = await api.rpc.chain.getBlock(blockHash);
-  const allEvents = await api.query.system.events.at(blockHash);
+  const block = new GenericBlock(registry.registry, hexToU8a(blockInDb.block));
+  const allEvents = registry.registry.createType(
+    "Vec<EventRecord>",
+    blockInDb.events,
+    true
+  );
 
-  const blockIndexer = getBlockIndexer(block.block);
+  const blockIndexer = getBlockIndexer(block);
 
   const hasTargetEvents = await handleEvents(
     allEvents,
     blockIndexer,
-    block.block.extrinsics
+    block.extrinsics
   );
   const hasTargetEx = await handleExtrinsics(
-    block.block.extrinsics,
+    block.extrinsics,
     allEvents,
     blockIndexer
   );
   if (hasTargetEvents || hasTargetEx) {
-    knownHeightsLogger.info(scanHeight);
+    knownHeightsLogger.info(blockInDb.height);
   }
 
-  await handleIncomeEvents(allEvents, blockIndexer, block.block.extrinsics);
-
+  await handleIncomeEvents(allEvents, blockIndexer, block.extrinsics);
   await processStat(blockIndexer);
+}
 
-  logger.info(`block ${block.block.header.number.toNumber()} done`);
+async function getRegistryByHeight(height) {
+  const api = await getApi();
+  const blockHash = await api.rpc.chain.getBlockHash(height);
+
+  return await api.getBlockRegistry(blockHash);
 }
 
 // FIXME: log the error
