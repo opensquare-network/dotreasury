@@ -12,7 +12,7 @@ async function handleCall(call, author, extrinsicIndexer) {
 }
 
 async function unwrapProxy(call, signer, extrinsicIndexer) {
-  await handleCall(call.args[2], signer, extrinsicIndexer);
+  await handleCall(call.args[2], call.args[0].toJSON(), extrinsicIndexer);
 }
 
 async function handleMultisig(call, signer, extrinsicIndexer) {
