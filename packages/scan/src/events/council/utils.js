@@ -4,9 +4,9 @@ const {
   Modules,
   ProxyMethods,
 } = require("../../utils/constants");
-const { getCall } = require("../../utils/call");
 const { getApi } = require("../../api");
 const { getMotionCollection } = require("../../mongo");
+const { GenericCall } = require("@polkadot/types");
 
 function isProposalMotion(method) {
   return [
@@ -37,29 +37,31 @@ function getBountyVotingName(method) {
   }
 }
 
-// extract the real args from the batch/proxy extrinsic
-function _getProposalArgs(wrappedArgs) {
-  const {
-    call: {
-      args: {
-        proposal: { args: proposalArgs },
-      },
-    },
-  } = wrappedArgs;
-
-  return proposalArgs;
-}
-
 async function extractCallIndexAndArgs(normalizedExtrinsic, extrinsic) {
-  const blockHash = normalizedExtrinsic.extrinsicIndexer.blockHash;
-  const { section, name, args } = normalizedExtrinsic;
+  const { section, name } = normalizedExtrinsic;
 
   if (Modules.Proxy === section && ProxyMethods.proxy === name) {
-    const call = await getCall(blockHash, extrinsic.args[2].toHex());
-    return [call.section, call.method, _getProposalArgs(args)];
-  } else if ("utility" === section && "asMulti" === name) {
-    const call = await getCall(blockHash, extrinsic.method.args[3].toHex());
-    return [call.section, call.method, _getProposalArgs(args)];
+    const proposeCall = new GenericCall(
+      extrinsic.registry,
+      extrinsic.args[2].toHex()
+    );
+    const call = new GenericCall(
+      extrinsic.registry,
+      proposeCall.args[1].toHex()
+    );
+    return [call.section, call.method, call.toJSON().args];
+  }
+
+  if ("utility" === section && "asMulti" === name) {
+    const proposeCall = new GenericCall(
+      extrinsic.registry,
+      extrinsic.method.args[3].toHex()
+    );
+    const call = new GenericCall(
+      extrinsic.registry,
+      proposeCall.args[1].toHex()
+    );
+    return [call.section, call.method, call.toJSON().args];
   }
 
   const {
@@ -67,7 +69,7 @@ async function extractCallIndexAndArgs(normalizedExtrinsic, extrinsic) {
       proposal: { args: proposalArgs },
     },
   } = normalizedExtrinsic;
-  const call = await getCall(blockHash, extrinsic.args[1].toHex());
+  const call = new GenericCall(extrinsic.registry, extrinsic.args[1].toHex());
   return [call.section, call.method, proposalArgs];
 }
 

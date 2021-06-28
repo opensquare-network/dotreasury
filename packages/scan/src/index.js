@@ -91,7 +91,7 @@ async function getRegistryByHeight(height) {
 }
 
 async function test() {
-  const height = 5571590;
+  const height = 3543099;
   const api = await getApi();
   const blockHash = await api.rpc.chain.getBlockHash(height);
   const block = await api.rpc.chain.getBlock(blockHash);
