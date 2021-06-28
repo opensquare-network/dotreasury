@@ -7,14 +7,13 @@ const {
   handleBountyEventWithExtrinsic,
   handleBountyBecameActiveEvent,
 } = require("./treasury/bounty");
-const { handleTreasuryTransferOut } = require("./outTransfer")
+const { handleTreasuryTransferOut } = require("./outTransfer");
 
 async function handleEvents(events, blockIndexer, extrinsics) {
   if (events.length <= 0) {
     return false;
   }
 
-  let hasTargetEvents = false;
   for (let sort = 0; sort < events.length; sort++) {
     const { event, phase } = events[sort];
 
@@ -27,52 +26,22 @@ async function handleEvents(events, blockIndexer, extrinsics) {
         ...normalizeExtrinsic(extrinsic, events),
       };
 
-      const hasTipEvents = await handleTipEvent(
-        event,
-        normalizedExtrinsic,
-        blockIndexer,
-        extrinsic
-      );
-      const hasCouncilEvents = await handleCouncilEvent(
+      await handleTipEvent(event, normalizedExtrinsic, blockIndexer, extrinsic);
+      await handleCouncilEvent(event, normalizedExtrinsic, extrinsic);
+      await handleBountyEventWithExtrinsic(
         event,
         normalizedExtrinsic,
         extrinsic
       );
-      const hasBountyEvents = await handleBountyEventWithExtrinsic(
-        event,
-        normalizedExtrinsic,
-        extrinsic
-      );
-      const hasTransferOut = await handleTreasuryTransferOut(event, sort, normalizedExtrinsic)
-
-      if (hasTipEvents || hasCouncilEvents || hasBountyEvents || hasTransferOut) {
-        hasTargetEvents = true;
-      }
+      await handleTreasuryTransferOut(event, sort, normalizedExtrinsic);
     } else {
       const eventIndexer = { ...blockIndexer, sort };
-      const hasBountyEvents = await handleBountyBecameActiveEvent(
-        event,
-        eventIndexer
-      );
-      const hasBurntEvents = await handleBurntEvent(event, eventIndexer);
-      if (hasBountyEvents || hasBurntEvents) {
-        hasTargetEvents = true;
-      }
+      await handleBountyBecameActiveEvent(event, eventIndexer);
+      await handleBurntEvent(event, eventIndexer);
     }
 
-    const hasProposalEvents = await handleProposalEvent(
-      event,
-      blockIndexer,
-      normalizedExtrinsic,
-      sort
-    );
-
-    if (hasProposalEvents) {
-      hasTargetEvents = true
-    }
+    await handleProposalEvent(event, blockIndexer, normalizedExtrinsic, sort);
   }
-
-  return hasTargetEvents;
 }
 
 module.exports = {

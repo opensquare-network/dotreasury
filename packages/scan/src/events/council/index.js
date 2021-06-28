@@ -19,7 +19,7 @@ const {
 async function handleCouncilEvent(event, normalizedExtrinsic, extrinsic) {
   const { section, method } = event;
   if (Modules.Council !== section) {
-    return false;
+    return;
   }
 
   if (method === CouncilEvents.Proposed) {
@@ -36,8 +36,6 @@ async function handleCouncilEvent(event, normalizedExtrinsic, extrinsic) {
   } else if (method === CouncilEvents.Closed) {
     await handleClosedEvent(event, normalizedExtrinsic);
   }
-
-  return true;
 }
 
 async function handleVoteEvent(event, normalizedExtrinsic) {

@@ -12,7 +12,6 @@ const { handleBountyAcceptCurator } = require("./treasury/bounty");
 
 async function handleExtrinsics(extrinsics = [], allEvents = [], indexer) {
   let index = 0;
-  let hasTargetEx = false;
   for (const extrinsic of extrinsics) {
     const events = extractExtrinsicEvents(allEvents, index);
     const normalized = normalizeExtrinsic(extrinsic, events);
@@ -30,33 +29,14 @@ async function handleExtrinsics(extrinsics = [], allEvents = [], indexer) {
       extrinsicIndexer,
     };
 
-    const isCloseTipEx = await handleCloseTipExtrinsic(normalizedExtrinsic);
-    const isTipEx = await handleTip(normalizedExtrinsic);
-    const isProxyTip = await handleTipByProxy(normalizedExtrinsic, extrinsic);
-    const isMultisigTip = await handleTipByMultiSig(
-      normalizedExtrinsic,
-      extrinsic
-    );
-    const isBatch = await handleTipByBatch(normalizedExtrinsic, extrinsic);
+    await handleCloseTipExtrinsic(normalizedExtrinsic);
+    await handleTip(normalizedExtrinsic);
+    await handleTipByProxy(normalizedExtrinsic, extrinsic);
+    await handleTipByMultiSig(normalizedExtrinsic, extrinsic);
+    await handleTipByBatch(normalizedExtrinsic, extrinsic);
 
-    const isAcceptCurator = await handleBountyAcceptCurator(
-      normalizedExtrinsic,
-      extrinsic
-    );
-
-    if (
-      isCloseTipEx ||
-      isTipEx ||
-      isProxyTip ||
-      isMultisigTip ||
-      isBatch ||
-      isAcceptCurator
-    ) {
-      hasTargetEx = true;
-    }
+    await handleBountyAcceptCurator(normalizedExtrinsic, extrinsic);
   }
-
-  return hasTargetEx;
 }
 
 function normalizeExtrinsic(extrinsic, events) {

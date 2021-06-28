@@ -42,7 +42,7 @@ async function handleTipEvent(
 ) {
   const { section, method, data } = event;
   if (!isTipEvent(section, method, blockIndexer.blockHeight)) {
-    return false;
+    return;
   }
 
   const eventData = data.toJSON();
@@ -72,8 +72,6 @@ async function handleTipEvent(
       extrinsic
     );
   }
-
-  return true;
 }
 
 module.exports = {

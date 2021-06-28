@@ -102,8 +102,6 @@ async function handleBountyAcceptCurator(normalizedExtrinsic, extrinsic) {
       $push: { timeline: timelineItem },
     }
   );
-
-  return true;
 }
 
 module.exports = {

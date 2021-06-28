@@ -1,8 +1,10 @@
 const {
-  Modules, BalancesEvents, TreasuryAccount,
+  Modules,
+  BalancesEvents,
+  TreasuryAccount,
   DotTreasuryAccount,
-} = require("../../utils/constants")
-const { getOutTransferCollection } = require("../../mongo")
+} = require("../../utils/constants");
+const { getOutTransferCollection } = require("../../mongo");
 
 async function saveOutputTransferRecord(data) {
   const col = await getOutTransferCollection();
@@ -10,20 +12,20 @@ async function saveOutputTransferRecord(data) {
 }
 
 async function handleTreasuryTransferOut(event, sort, normalizedExtrinsic) {
-  const { section, method, data: args, } = event;
+  const { section, method, data: args } = event;
 
   if (section !== Modules.Balances || BalancesEvents.Transfer !== method) {
-    return false;
+    return;
   }
 
   if (Modules.Sudo !== normalizedExtrinsic.section) {
-    return false
+    return;
   }
 
   const transferEventData = args.toJSON();
   const [source, , balance] = transferEventData;
   if (![TreasuryAccount, DotTreasuryAccount].includes(source)) {
-    return false;
+    return;
   }
 
   await saveOutputTransferRecord({
@@ -31,11 +33,9 @@ async function handleTreasuryTransferOut(event, sort, normalizedExtrinsic) {
     eventSort: sort,
     balance,
     transferEventData,
-  })
-
-  return true
+  });
 }
 
 module.exports = {
-  handleTreasuryTransferOut
-}
+  handleTreasuryTransferOut,
+};

@@ -1,8 +1,4 @@
-const {
-  logger,
-  knownHeightsLogger,
-  incomeKnownHeightsLogger,
-} = require("./logger");
+const { logger, incomeKnownHeightsLogger } = require("./logger");
 const BigNumber = require("bignumber.js");
 const { getApi } = require("../api");
 const { TreasuryAccount } = require("./constants");
@@ -171,7 +167,6 @@ module.exports = {
   sleep,
   median,
   logger,
-  knownHeightsLogger,
   incomeKnownHeightsLogger,
   bigAdd,
   gt,

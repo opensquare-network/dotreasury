@@ -4,7 +4,7 @@ const { getApi } = require("./api");
 const { updateHeight } = require("./chain/latestHead");
 const { deleteDataFrom } = require("./clean");
 const { getLatestHeight } = require("./chain/latestHead");
-const { sleep, logger, knownHeightsLogger } = require("./utils");
+const { sleep, logger } = require("./utils");
 const { getBlockIndexer } = require("./block/getBlockIndexer");
 const { handleExtrinsics } = require("./extrinsic");
 const { handleEvents } = require("./events");
@@ -72,19 +72,8 @@ async function scanBlock(blockInDb) {
 
   const blockIndexer = getBlockIndexer(block);
 
-  const hasTargetEvents = await handleEvents(
-    allEvents,
-    blockIndexer,
-    block.extrinsics
-  );
-  const hasTargetEx = await handleExtrinsics(
-    block.extrinsics,
-    allEvents,
-    blockIndexer
-  );
-  if (hasTargetEvents || hasTargetEx) {
-    knownHeightsLogger.info(blockInDb.height);
-  }
+  await handleEvents(allEvents, blockIndexer, block.extrinsics);
+  await handleExtrinsics(block.extrinsics, allEvents, blockIndexer);
 
   await handleIncomeEvents(allEvents, blockIndexer, block.extrinsics);
   await processStat(blockIndexer);

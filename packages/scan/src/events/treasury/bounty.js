@@ -31,7 +31,7 @@ async function handleBountyEventWithExtrinsic(
       normalizedExtrinsic.extrinsicIndexer.blockHeight
     )
   ) {
-    return false;
+    return;
   }
 
   if (method === BountyEvents.BountyProposed) {
@@ -55,8 +55,6 @@ async function handleBountyEventWithExtrinsic(
         )
     );
   }
-
-  return true;
 }
 
 async function handleBountyStateUpdateEvent(
@@ -103,7 +101,7 @@ function isBountyBecameActiveEvent(section, method) {
 async function handleBountyBecameActiveEvent(event, eventIndexer) {
   const { section, method } = event;
   if (!isBountyBecameActiveEvent(section, method)) {
-    return false;
+    return;
   }
 
   const eventData = event.data.toJSON();
@@ -124,8 +122,6 @@ async function handleBountyBecameActiveEvent(event, eventIndexer) {
       $push: { timeline: timelineItem },
     }
   );
-
-  return true;
 }
 
 async function handleProposedEvent(event, normalizedExtrinsic) {

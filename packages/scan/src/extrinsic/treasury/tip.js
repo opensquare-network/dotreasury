@@ -47,13 +47,13 @@ function isTipModule(section, height) {
 async function handleCloseTipExtrinsic(normalizedExtrinsic) {
   const chain = currentChain();
   if (chain === CHAINS.POLKADOT) {
-    return false;
+    return;
   }
 
   const { section, name, args } = normalizedExtrinsic;
   const indexer = normalizedExtrinsic.extrinsicIndexer;
   if (!isTipModule(section, indexer.blockHeight)) {
-    return false;
+    return;
   }
 
   if (
@@ -66,10 +66,7 @@ async function handleCloseTipExtrinsic(normalizedExtrinsic) {
       args,
       normalizedExtrinsic
     );
-    return true;
   }
-
-  return false;
 }
 
 async function handleTip(normalizedExtrinsic) {
@@ -81,7 +78,7 @@ async function handleTip(normalizedExtrinsic) {
   const indexer = normalizedExtrinsic.extrinsicIndexer;
 
   if (!isTipModule(section, indexer.blockHeight) || name !== TipMethods.tip) {
-    return false;
+    return;
   }
 
   const updates = await getCommonTipUpdates(
@@ -90,7 +87,6 @@ async function handleTip(normalizedExtrinsic) {
   );
   const tipper = normalizedExtrinsic.signer;
   await updateTipInDB(hash, updates, tipper, tipValue, normalizedExtrinsic);
-  return true;
 }
 
 async function updateTipInDB(
@@ -123,7 +119,7 @@ async function updateTipInDB(
 async function handleTipByProxy(normalizedExtrinsic, extrinsic) {
   const { section, name, args } = normalizedExtrinsic;
   if (Modules.Proxy !== section || ProxyMethods.proxy !== name) {
-    return false;
+    return;
   }
 
   const indexer = normalizedExtrinsic.extrinsicIndexer;
@@ -134,7 +130,7 @@ async function handleTipByProxy(normalizedExtrinsic, extrinsic) {
     !isTipModule(call.section, indexer.blockHeight) ||
     TipMethods.tip !== call.method
   ) {
-    return false;
+    return;
   }
 
   const {
@@ -143,7 +139,6 @@ async function handleTipByProxy(normalizedExtrinsic, extrinsic) {
   const updates = await getCommonTipUpdates(indexer.blockHash, hash);
   const tipper = args.real;
   await updateTipInDB(hash, updates, tipper, tipValue, normalizedExtrinsic);
-  return true;
 }
 
 async function getCommonTipUpdates(blockHash, tipHash) {
@@ -155,7 +150,7 @@ async function getCommonTipUpdates(blockHash, tipHash) {
 async function handleTipByMultiSig(normalizedExtrinsic, extrinsic) {
   const { section, name, args } = normalizedExtrinsic;
   if (Modules.Multisig !== section || MultisigMethods.asMulti !== name) {
-    return false;
+    return;
   }
 
   const indexer = normalizedExtrinsic.extrinsicIndexer;
@@ -167,7 +162,7 @@ async function handleTipByMultiSig(normalizedExtrinsic, extrinsic) {
     !isTipModule(call.section, indexer.blockHeight) ||
     TipMethods.tip !== call.method
   ) {
-    return false;
+    return;
   }
 
   const {
@@ -179,19 +174,16 @@ async function handleTipByMultiSig(normalizedExtrinsic, extrinsic) {
     normalizedExtrinsic.signer
   );
   await updateTipInDB(hash, updates, tipper, tipValue, normalizedExtrinsic);
-
-  return true;
 }
 
 async function handleTipByBatch(normalizedExtrinsic, extrinsic) {
   const { section, name } = normalizedExtrinsic;
 
   if (Modules.Utility !== section || UtilityMethods.batch !== name) {
-    return false;
+    return;
   }
 
   const indexer = normalizedExtrinsic.extrinsicIndexer;
-  let hasTip = false;
   const blockHash = indexer.blockHash;
   const batchCalls = extrinsic.method.args[0];
   for (const callInBatch of batchCalls) {
@@ -205,7 +197,6 @@ async function handleTipByBatch(normalizedExtrinsic, extrinsic) {
       continue;
     }
 
-    hasTip = true;
     const {
       args: { hash, tip_value: tipValue },
     } = call.toJSON();
@@ -213,8 +204,6 @@ async function handleTipByBatch(normalizedExtrinsic, extrinsic) {
     const tipper = normalizedExtrinsic.signer;
     await updateTipInDB(hash, updates, tipper, tipValue, normalizedExtrinsic);
   }
-
-  return hasTip;
 }
 
 module.exports = {
