@@ -5,6 +5,7 @@ const { u8aToHex } = require("@polkadot/util");
 const { handleTipCall, handleTipCloseCall } = require("./treasury/tip");
 const { handleBountyAcceptCurator } = require("./treasury/bounty");
 const { GenericCall } = require("@polkadot/types");
+const { Modules, ProxyMethods } = require("../utils/constants");
 
 async function handleCall(call, author, extrinsicIndexer) {
   await handleTipCall(...arguments);
@@ -20,13 +21,20 @@ async function handleMultisig(call, signer, extrinsicIndexer) {
   const threshold = call.args[0].toNumber();
   const otherSignatories = call.args[1].toJSON();
   const multisigAddr = calcMultisigAddress(
-    [signer, otherSignatories],
+    [signer, ...otherSignatories],
     threshold,
     call.registry.ss58Prefix
   );
 
   const innerCall = new GenericCall(call.registry, callHex);
-  await handleCall(innerCall, multisigAddr, extrinsicIndexer);
+  if (
+    Modules.Proxy === innerCall.section &&
+    ProxyMethods.proxy === innerCall.method
+  ) {
+    await unwrapProxy(innerCall, multisigAddr, extrinsicIndexer);
+  } else {
+    await handleCall(innerCall, multisigAddr, extrinsicIndexer);
+  }
 }
 
 async function unwrapBatch(call, signer, extrinsicIndexer) {
