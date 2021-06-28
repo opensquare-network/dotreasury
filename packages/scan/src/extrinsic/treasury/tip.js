@@ -1,23 +1,18 @@
 const {
-  TipEvents,
   TipMethods,
   Modules,
-  ProxyMethods,
   ksmFirstTipClosedHeight,
-  MultisigMethods,
-  UtilityMethods,
   ksmTreasuryRefactorApplyHeight,
   dotTreasuryRefactorApplyHeight,
 } = require("../../utils/constants");
 const {
-  updateTipFinalState,
   getTippersCount,
   getTipMeta,
   computeTipValue,
 } = require("../../store/tip");
 const { getTipCollection } = require("../../mongo");
-const { getCall, getMultiSigExtrinsicAddress } = require("../../utils/call");
 const { currentChain, CHAINS } = require("../../chain");
+const { getTipMetaByBlockHeight } = require("../../store/tip");
 
 function _isKsmTipModule(section, height) {
   return (
@@ -44,49 +39,31 @@ function isTipModule(section, height) {
   return section === Modules.Treasury;
 }
 
-async function handleCloseTipExtrinsic(normalizedExtrinsic) {
-  const chain = currentChain();
-  if (chain === CHAINS.POLKADOT) {
-    return;
-  }
-
-  const { section, name, args } = normalizedExtrinsic;
-  const indexer = normalizedExtrinsic.extrinsicIndexer;
-  if (!isTipModule(section, indexer.blockHeight)) {
-    return;
-  }
-
-  if (
-    name === TipMethods.closeTip &&
-    indexer.blockHeight < ksmFirstTipClosedHeight
-  ) {
-    await updateTipFinalState(
-      args.hash,
-      TipEvents.TipClosed,
-      args,
-      normalizedExtrinsic
-    );
-  }
-}
-
-async function handleTip(normalizedExtrinsic) {
-  const {
-    section,
-    name,
-    args: { hash, tip_value: tipValue },
-  } = normalizedExtrinsic;
-  const indexer = normalizedExtrinsic.extrinsicIndexer;
-
-  if (!isTipModule(section, indexer.blockHeight) || name !== TipMethods.tip) {
-    return;
-  }
-
-  const updates = await getCommonTipUpdates(
-    normalizedExtrinsic.extrinsicIndexer.blockHash,
-    hash
+async function updateTipInDbByCall(
+  tipHash,
+  updates,
+  tipper,
+  value,
+  extrinsicIndexer
+) {
+  const tipCol = await getTipCollection();
+  await tipCol.updateOne(
+    { hash: tipHash, isClosedOrRetracted: false },
+    {
+      $set: updates,
+      $push: {
+        timeline: {
+          type: "extrinsic",
+          method: TipMethods.tip,
+          args: {
+            tipper,
+            value,
+          },
+          extrinsicIndexer,
+        },
+      },
+    }
   );
-  const tipper = normalizedExtrinsic.signer;
-  await updateTipInDB(hash, updates, tipper, tipValue, normalizedExtrinsic);
 }
 
 async function updateTipInDB(
@@ -116,50 +93,15 @@ async function updateTipInDB(
   );
 }
 
-async function handleTipByProxy(normalizedExtrinsic, extrinsic) {
-  const { section, name, args } = normalizedExtrinsic;
-  if (Modules.Proxy !== section || ProxyMethods.proxy !== name) {
-    return;
-  }
-
-  const indexer = normalizedExtrinsic.extrinsicIndexer;
-  const callHex = extrinsic.args[2].toHex();
-  const call = await getCall(indexer.blockHash, callHex);
-
-  if (
-    !isTipModule(call.section, indexer.blockHeight) ||
-    TipMethods.tip !== call.method
-  ) {
-    return;
-  }
-
-  const {
-    args: { hash, tip_value: tipValue },
-  } = call.toJSON();
-  const updates = await getCommonTipUpdates(indexer.blockHash, hash);
-  const tipper = args.real;
-  await updateTipInDB(hash, updates, tipper, tipValue, normalizedExtrinsic);
-}
-
 async function getCommonTipUpdates(blockHash, tipHash) {
   const tippersCount = await getTippersCount(blockHash);
   const meta = await getTipMeta(blockHash, tipHash);
   return { tippersCount, meta, medianValue: computeTipValue(meta) };
 }
 
-async function handleTipByMultiSig(normalizedExtrinsic, extrinsic) {
-  const { section, name, args } = normalizedExtrinsic;
-  if (Modules.Multisig !== section || MultisigMethods.asMulti !== name) {
-    return;
-  }
-
-  const indexer = normalizedExtrinsic.extrinsicIndexer;
-  const blockHash = indexer.blockHash;
-  const rawCall = extrinsic.method.args[3].toHex();
-  const call = await getCall(blockHash, rawCall);
-  // TODO: check whether there are multisig batch extrinsic, tip maybe wrapped in the multisig batch tip action
+async function handleTipCall(call, author, extrinsicIndexer) {
   if (
-    !isTipModule(call.section, indexer.blockHeight) ||
+    !isTipModule(call.section, extrinsicIndexer.blockHeight) ||
     TipMethods.tip !== call.method
   ) {
     return;
@@ -168,48 +110,78 @@ async function handleTipByMultiSig(normalizedExtrinsic, extrinsic) {
   const {
     args: { hash, tip_value: tipValue },
   } = call.toJSON();
-  const updates = await getCommonTipUpdates(blockHash, hash);
-  const tipper = await getMultiSigExtrinsicAddress(
-    args,
-    normalizedExtrinsic.signer
-  );
-  await updateTipInDB(hash, updates, tipper, tipValue, normalizedExtrinsic);
+
+  const updates = await getCommonTipUpdates(extrinsicIndexer.blockHash, hash);
+  await updateTipInDbByCall(hash, updates, author, tipValue, extrinsicIndexer);
 }
 
-async function handleTipByBatch(normalizedExtrinsic, extrinsic) {
-  const { section, name } = normalizedExtrinsic;
+async function updateTipFinalStateByCall(
+  author,
+  tipHash,
+  method,
+  data,
+  extrinsicIndexer
+) {
+  const meta = await getTipMetaByBlockHeight(
+    extrinsicIndexer.blockHeight - 1,
+    tipHash
+  );
+  const updates = {
+    isClosedOrRetracted: true,
+    meta,
+    state: { indexer: extrinsicIndexer, state: method, data },
+  };
 
-  if (Modules.Utility !== section || UtilityMethods.batch !== name) {
+  const tipCol = await getTipCollection();
+  await tipCol.updateOne(
+    { hash: tipHash, isClosedOrRetracted: false },
+    {
+      $set: updates,
+      $push: {
+        timeline: {
+          type: "extrinsic",
+          method,
+          args: {
+            ...data,
+            terminator: author,
+          },
+          extrinsicIndexer,
+        },
+      },
+    }
+  );
+}
+
+async function handleTipCloseCall(call, author, extrinsicIndexer) {
+  const chain = currentChain();
+  if (chain === CHAINS.POLKADOT) {
     return;
   }
 
-  const indexer = normalizedExtrinsic.extrinsicIndexer;
-  const blockHash = indexer.blockHash;
-  const batchCalls = extrinsic.method.args[0];
-  for (const callInBatch of batchCalls) {
-    const rawCall = callInBatch.toHex();
-    const call = await getCall(blockHash, rawCall);
-
-    if (
-      !isTipModule(call.section, indexer.blockHeight) ||
-      TipMethods.tip !== call.method
-    ) {
-      continue;
-    }
-
-    const {
-      args: { hash, tip_value: tipValue },
-    } = call.toJSON();
-    const updates = await getCommonTipUpdates(blockHash, hash);
-    const tipper = normalizedExtrinsic.signer;
-    await updateTipInDB(hash, updates, tipper, tipValue, normalizedExtrinsic);
+  const { section, method, args } = call;
+  const indexer = extrinsicIndexer;
+  if (!isTipModule(section, indexer.blockHeight)) {
+    return;
   }
+
+  if (
+    name !== TipMethods.closeTip ||
+    indexer.blockHeight >= ksmFirstTipClosedHeight
+  ) {
+    return;
+  }
+
+  const { hash } = args.toJSON();
+  await updateTipFinalStateByCall(
+    author,
+    hash,
+    method,
+    args.toJSON(),
+    extrinsicIndexer
+  );
 }
 
 module.exports = {
-  handleCloseTipExtrinsic,
-  handleTipByProxy,
-  handleTipByMultiSig,
-  handleTip,
-  handleTipByBatch,
+  handleTipCall,
+  handleTipCloseCall,
 };

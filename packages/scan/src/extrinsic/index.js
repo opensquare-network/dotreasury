@@ -1,14 +1,62 @@
 const { extractExtrinsicEvents, getExtrinsicSigner } = require("../utils");
 const { isExtrinsicSuccess } = require("../utils");
+const { calcMultisigAddress } = require("../utils/call");
 const { u8aToHex } = require("@polkadot/util");
-const {
-  handleCloseTipExtrinsic,
-  handleTipByProxy,
-  handleTipByMultiSig,
-  handleTip,
-  handleTipByBatch,
-} = require("./treasury/tip");
+const { handleTipCall, handleTipCloseCall } = require("./treasury/tip");
 const { handleBountyAcceptCurator } = require("./treasury/bounty");
+const { GenericCall } = require("@polkadot/types");
+
+async function handleCall(call, author, extrinsicIndexer) {
+  await handleTipCall(...arguments);
+  await handleTipCloseCall(...arguments);
+}
+
+async function unwrapProxy(call, signer, extrinsicIndexer) {
+  await handleCall(call.args[2], signer, extrinsicIndexer);
+}
+
+async function handleMultisig(call, signer, extrinsicIndexer) {
+  const callHex = call.args[3];
+  const threshold = call.args[0].toNumber();
+  const otherSignatories = call.args[1].toJSON();
+  const multisigAddr = calcMultisigAddress(
+    [signer, otherSignatories],
+    threshold,
+    call.registry.ss58Prefix
+  );
+
+  const innerCall = new GenericCall(call.registry, callHex);
+  await handleCall(innerCall, multisigAddr, extrinsicIndexer);
+}
+
+async function unwrapBatch(call, signer, extrinsicIndexer) {
+  // TODO: not handle call after the BatchInterrupted event
+  for (const innerCall of call.args[0]) {
+    // TODO: here we didn't handle proxy&batch extrinsic in batch
+    await handleCall(innerCall, signer, extrinsicIndexer);
+  }
+}
+
+async function handleCallInExtrinsic(call, signer, extrinsicIndexer) {
+  const { section, method } = call;
+
+  if ("proxy" === section && "proxy" === method) {
+    await unwrapProxy(call, signer, extrinsicIndexer);
+  } else if ("multisig" === section && "asMulti" === method) {
+    await handleMultisig(call, signer, extrinsicIndexer);
+  } else if ("utility" === section && "batch" === method) {
+    await unwrapBatch(call, signer, extrinsicIndexer);
+  }
+
+  await handleCall(call, signer, extrinsicIndexer);
+}
+
+async function extractAndHandleCall(extrinsic, events = [], extrinsicIndexer) {
+  const signer = extrinsic._raw.signature.signer.toString();
+  const call = extrinsic.method;
+
+  await handleCallInExtrinsic(call, signer, extrinsicIndexer);
+}
 
 async function handleExtrinsics(extrinsics = [], allEvents = [], indexer) {
   let index = 0;
@@ -24,16 +72,12 @@ async function handleExtrinsics(extrinsics = [], allEvents = [], indexer) {
       continue;
     }
 
+    await extractAndHandleCall(extrinsic, events, extrinsicIndexer);
+
     const normalizedExtrinsic = {
       ...normalized,
       extrinsicIndexer,
     };
-
-    await handleCloseTipExtrinsic(normalizedExtrinsic);
-    await handleTip(normalizedExtrinsic);
-    await handleTipByProxy(normalizedExtrinsic, extrinsic);
-    await handleTipByMultiSig(normalizedExtrinsic, extrinsic);
-    await handleTipByBatch(normalizedExtrinsic, extrinsic);
 
     await handleBountyAcceptCurator(normalizedExtrinsic, extrinsic);
   }

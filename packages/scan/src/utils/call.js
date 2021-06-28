@@ -24,10 +24,18 @@ async function getCall(blockHash, callHex) {
 
 async function getMultiSigExtrinsicAddress(args = {}, signer) {
   const { threshold, other_signatories: otherSignatories } = args;
-  const multiAddresses = [signer, ...otherSignatories];
-  const multiPub = createKeyMulti(multiAddresses, threshold);
   const api = await getApi();
-  return encodeAddress(multiPub, api.registry.chainSS58);
+
+  return calcMultisigAddress(
+    [signer, ...otherSignatories],
+    threshold,
+    api.registry.chainSS58
+  );
+}
+
+function calcMultisigAddress(signatories, threshold, chainSS58) {
+  const multiPub = createKeyMulti(signatories, threshold);
+  return encodeAddress(multiPub, chainSS58);
 }
 
 module.exports = {
@@ -36,4 +44,5 @@ module.exports = {
   rejectProposalIndex,
   getCall,
   getMultiSigExtrinsicAddress,
+  calcMultisigAddress,
 };
