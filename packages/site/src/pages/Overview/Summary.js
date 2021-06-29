@@ -25,6 +25,7 @@ import {
   chainSymbolSelector,
 } from "../../store/reducers/chainSlice";
 import { mrgap } from "../../styles";
+import { toLocaleStringWithFixed } from "../../utils";
 
 const Wrapper = styled(Card)`
   @media screen and (max-width: 1320px) {
@@ -169,7 +170,7 @@ const Summary = () => {
           <div>
             <Title>Available</Title>
             <ValueWrapper>
-              <TextBold>{treasury.free?.toFixed(0)}</TextBold>
+              <TextBold>{toLocaleStringWithFixed(treasury.free, 0)}</TextBold>
               <TextMinorBold>{symbol}</TextMinorBold>
             </ValueWrapper>
           </div>
@@ -182,7 +183,10 @@ const Summary = () => {
             <Title>Next burn</Title>
             <ValueWrapper>
               <TextBold>
-                {(treasury.burnPercent * treasury.free)?.toFixed(4)}
+                {toLocaleStringWithFixed(
+                  treasury.burnPercent * treasury.free,
+                  4
+                )}
               </TextBold>
               <TextMinorBold>{symbol}</TextMinorBold>
             </ValueWrapper>
