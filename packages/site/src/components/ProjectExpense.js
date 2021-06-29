@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { toLocaleStringWithFixed } from "../utils";
 
 const ExpenseWrapper = styled.div`
   display: flex;
@@ -38,13 +39,16 @@ export default function ProjectExpense({ expenseDot, expenseKsm, dollar }) {
   return (
     <div>
       <ExpenseWrapper>
-        {expenseDot > 0 && <div>{`${expenseDot} DOT`}</div>}
+        {expenseDot > 0 && <div>{`${expenseDot.toLocaleString()} DOT`}</div>}
         <PlusWrapper>+</PlusWrapper>
-        {expenseKsm > 0 && <div>{`${expenseKsm} KSM`}</div>}
+        {expenseKsm > 0 && <div>{`${expenseKsm.toLocaleString()} KSM`}</div>}
       </ExpenseWrapper>
       {!isNaN(numberDollar) && (
         <DollarWrapper>
-          {`${numberDollar === 0 ? "" : "≈ "}$${numberDollar.toFixed(2)}`}
+          {`${numberDollar === 0 ? "" : "≈ "}$${toLocaleStringWithFixed(
+            numberDollar,
+            2
+          )}`}
         </DollarWrapper>
       )}
     </div>
