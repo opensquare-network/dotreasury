@@ -15,10 +15,6 @@ function tryInitCall(registry, callHex) {
   }
 }
 
-function getCallWithRegistry(registry, callHex) {
-  return new GenericCall(registry, callHex);
-}
-
 async function getCall(blockHash, callHex) {
   const api = await getApi();
   const registry = await api.getBlockRegistry(blockHash);

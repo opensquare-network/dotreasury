@@ -184,7 +184,7 @@ async function saveNewTip(hash, normalizedExtrinsic, extrinsic) {
           ...args,
           finder,
         },
-        extrinsic: normalizedExtrinsic,
+        extrinsicIndexer: indexer,
       },
     ],
   });
@@ -243,7 +243,7 @@ async function updateTipFinalState(
             ...args,
             terminator,
           },
-          extrinsic: normalizedExtrinsic,
+          extrinsicIndexer: indexer,
         },
       },
     }
