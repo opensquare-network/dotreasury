@@ -5,7 +5,12 @@ const { u8aToHex } = require("@polkadot/util");
 const { handleTipCall, handleTipCloseCall } = require("./treasury/tip");
 const { handleBountyAcceptCurator } = require("./treasury/bounty");
 const { GenericCall } = require("@polkadot/types");
-const { Modules, ProxyMethods, UtilityMethods } = require("../utils/constants");
+const {
+  Modules,
+  ProxyMethods,
+  UtilityMethods,
+  MultisigMethods,
+} = require("../utils/constants");
 
 async function handleCall(call, author, extrinsicIndexer) {
   await handleTipCall(...arguments);
@@ -15,14 +20,7 @@ async function handleCall(call, author, extrinsicIndexer) {
 async function unwrapProxy(call, signer, extrinsicIndexer) {
   const real = call.args[0].toJSON();
   const innerCall = call.args[2];
-  if (
-    Modules.Utility === innerCall.section &&
-    UtilityMethods.batch === innerCall.method
-  ) {
-    await unwrapBatch(innerCall, real, extrinsicIndexer);
-  } else {
-    await handleCall(innerCall, real, extrinsicIndexer);
-  }
+  await handleWrappedCall(innerCall, real, extrinsicIndexer);
 }
 
 async function handleMultisig(call, signer, extrinsicIndexer) {
@@ -36,32 +34,28 @@ async function handleMultisig(call, signer, extrinsicIndexer) {
   );
 
   const innerCall = new GenericCall(call.registry, callHex);
-  if (
-    Modules.Proxy === innerCall.section &&
-    ProxyMethods.proxy === innerCall.method
-  ) {
-    await unwrapProxy(innerCall, multisigAddr, extrinsicIndexer);
-  } else {
-    await handleCall(innerCall, multisigAddr, extrinsicIndexer);
-  }
+  await handleWrappedCall(innerCall, multisigAddr, extrinsicIndexer);
 }
 
 async function unwrapBatch(call, signer, extrinsicIndexer) {
   // TODO: not handle call after the BatchInterrupted event
   for (const innerCall of call.args[0]) {
     // TODO: here we didn't handle proxy&batch extrinsic in batch
-    await handleCall(innerCall, signer, extrinsicIndexer);
+    await handleWrappedCall(innerCall, signer, extrinsicIndexer);
   }
 }
 
-async function handleCallInExtrinsic(call, signer, extrinsicIndexer) {
+async function handleWrappedCall(call, signer, extrinsicIndexer) {
   const { section, method } = call;
 
-  if ("proxy" === section && "proxy" === method) {
+  if (Modules.Proxy === section && ProxyMethods.proxy === method) {
     await unwrapProxy(call, signer, extrinsicIndexer);
-  } else if ("multisig" === section && "asMulti" === method) {
+  } else if (
+    Modules.Multisig === section &&
+    MultisigMethods.asMulti === method
+  ) {
     await handleMultisig(call, signer, extrinsicIndexer);
-  } else if ("utility" === section && "batch" === method) {
+  } else if (Modules.Utility === section && UtilityMethods.batch === method) {
     await unwrapBatch(call, signer, extrinsicIndexer);
   }
 
@@ -72,7 +66,7 @@ async function extractAndHandleCall(extrinsic, events = [], extrinsicIndexer) {
   const signer = extrinsic._raw.signature.signer.toString();
   const call = extrinsic.method;
 
-  await handleCallInExtrinsic(call, signer, extrinsicIndexer);
+  await handleWrappedCall(call, signer, extrinsicIndexer);
 }
 
 async function handleExtrinsics(extrinsics = [], allEvents = [], indexer) {
