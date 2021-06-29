@@ -5,7 +5,7 @@ const { u8aToHex } = require("@polkadot/util");
 const { handleTipCall, handleTipCloseCall } = require("./treasury/tip");
 const { handleBountyAcceptCurator } = require("./treasury/bounty");
 const { GenericCall } = require("@polkadot/types");
-const { Modules, ProxyMethods } = require("../utils/constants");
+const { Modules, ProxyMethods, UtilityMethods } = require("../utils/constants");
 
 async function handleCall(call, author, extrinsicIndexer) {
   await handleTipCall(...arguments);
@@ -13,7 +13,16 @@ async function handleCall(call, author, extrinsicIndexer) {
 }
 
 async function unwrapProxy(call, signer, extrinsicIndexer) {
-  await handleCall(call.args[2], call.args[0].toJSON(), extrinsicIndexer);
+  const real = call.args[0].toJSON();
+  const innerCall = call.args[2];
+  if (
+    Modules.Utility === innerCall.section &&
+    UtilityMethods.batch === innerCall.method
+  ) {
+    await unwrapBatch(innerCall, real, extrinsicIndexer);
+  } else {
+    await handleCall(innerCall, real, extrinsicIndexer);
+  }
 }
 
 async function handleMultisig(call, signer, extrinsicIndexer) {
