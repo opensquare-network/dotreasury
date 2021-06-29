@@ -5,7 +5,7 @@ import { Popup } from "semantic-ui-react";
 import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
 import { useSelector } from "react-redux";
-import { chainSymbolSelector } from "../../store/reducers/chainSlice"
+import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 
 const Wrapper = styled.div`
   min-width: 224px;
@@ -117,7 +117,7 @@ const Label = ({ data, icon, status, clickEvent }) => {
             <ValueWrapper disabled={disabled}>
               <TextMinor>{`${
                 Math.round(value) === value ? "" : "≈ "
-              }${Math.round(value)} ${symbol}`}</TextMinor>
+              }${Math.round(value).toLocaleString()} ${symbol}`}</TextMinor>
             </ValueWrapper>
           }
         />
@@ -146,7 +146,9 @@ const Label = ({ data, icon, status, clickEvent }) => {
               <ValueWrapper disabled={status?.children[index].disabled}>
                 <TextMinor>{`${
                   Math.round(item.value) === item.value ? "" : "≈ "
-                }${Math.round(item.value)} ${symbol}`}</TextMinor>
+                }${Math.round(
+                  item.value
+                ).toLocaleString()} ${symbol}`}</TextMinor>
               </ValueWrapper>
             }
           />
