@@ -4,7 +4,7 @@ import styled from "styled-components";
 import ResponsivePagination from "../../components/ResponsivePagination";
 import TransfersSlashTable from "./TransfersSlashTable";
 import { useDispatch, useSelector } from "react-redux";
-import { useChainRoute, useQuery } from "../../utils/hooks";
+import { useChainRoute, useQuery, useLocalStorage } from "../../utils/hooks";
 import { useHistory } from "react-router";
 
 import {
@@ -40,7 +40,10 @@ const Transfers = () => {
       ? searchPage
       : DEFAULT_QUERY_PAGE;
   const [tablePage, setTablePage] = useState(queryPage);
-  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
+  const [pageSize, setPageSize] = useLocalStorage(
+    "transfersSlashPageSize",
+    DEFAULT_PAGE_SIZE
+  );
 
   const dispatch = useDispatch();
   const history = useHistory();

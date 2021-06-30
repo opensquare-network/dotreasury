@@ -4,7 +4,7 @@ import styled from "styled-components";
 import ResponsivePagination from "../../components/ResponsivePagination";
 import SlashTable from "./InflationTable";
 import { useDispatch, useSelector } from "react-redux";
-import { useChainRoute, useQuery } from "../../utils/hooks";
+import { useChainRoute, useQuery, useLocalStorage } from "../../utils/hooks";
 import { useHistory } from "react-router";
 
 import {
@@ -47,7 +47,10 @@ const Inflation = () => {
       ? searchPage
       : DEFAULT_QUERY_PAGE;
   const [tablePage, setTablePage] = useState(queryPage);
-  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
+  const [pageSize, setPageSize] = useLocalStorage(
+    "inflationPageSize",
+    DEFAULT_PAGE_SIZE
+  );
 
   const dispatch = useDispatch();
   const history = useHistory();

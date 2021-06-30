@@ -5,7 +5,7 @@ import { useHistory } from "react-router";
 import ResponsivePagination from "../../components/ResponsivePagination";
 import ProposalsTable from "./ProposalsTable";
 import { useDispatch, useSelector } from "react-redux";
-import { useChainRoute, useQuery } from "../../utils/hooks";
+import { useChainRoute, useQuery, useLocalStorage } from "../../utils/hooks";
 import Summary from "./Summary";
 import Filter from "./Filter";
 
@@ -42,7 +42,10 @@ const Proposals = () => {
       ? searchPage
       : DEFAULT_QUERY_PAGE;
   const [tablePage, setTablePage] = useState(queryPage);
-  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
+  const [pageSize, setPageSize] = useLocalStorage(
+    "proposalsPageSize",
+    DEFAULT_PAGE_SIZE
+  );
   const [filterData, setFilterData] = useState({});
 
   const dispatch = useDispatch();

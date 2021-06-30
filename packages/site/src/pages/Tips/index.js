@@ -10,7 +10,7 @@ import {
   normalizedTipListSelector,
 } from "../../store/reducers/tipSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
-import { useChainRoute, useQuery } from "../../utils/hooks";
+import { useChainRoute, useQuery, useLocalStorage } from "../../utils/hooks";
 import { useHistory } from "react-router";
 import Text from "../../components/Text";
 
@@ -41,7 +41,10 @@ const Tips = () => {
   const searchStatus = useQuery().get("status");
 
   const [tablePage, setTablePage] = useState(queryPage);
-  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
+  const [pageSize, setPageSize] = useLocalStorage(
+    "tipsPageSize",
+    DEFAULT_PAGE_SIZE
+  );
   const [filterData, setFilterData] = useState(
     searchStatus
       ? {
