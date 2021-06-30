@@ -66,33 +66,6 @@ async function updateTipInDbByCall(
   );
 }
 
-async function updateTipInDB(
-  hash,
-  updates,
-  tipper,
-  value,
-  normalizedExtrinsic
-) {
-  const tipCol = await getTipCollection();
-  await tipCol.updateOne(
-    { hash, isClosedOrRetracted: false },
-    {
-      $set: updates,
-      $push: {
-        timeline: {
-          type: "extrinsic",
-          method: TipMethods.tip,
-          args: {
-            tipper,
-            value,
-          },
-          extrinsic: normalizedExtrinsic,
-        },
-      },
-    }
-  );
-}
-
 async function getCommonTipUpdates(blockHash, tipHash) {
   const tippersCount = await getTippersCount(blockHash);
   const meta = await getTipMeta(blockHash, tipHash);

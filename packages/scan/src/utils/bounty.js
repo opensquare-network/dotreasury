@@ -1,4 +1,5 @@
 const { getApi } = require("../api");
+const { Modules } = require("./constants");
 
 async function getBountyMetaByBlockHeight(height, bountyIndex) {
   const api = await getApi();
@@ -21,8 +22,13 @@ async function getBountyDescription(blockHash, bountyIndex) {
   return description.toHuman();
 }
 
+function isBountyModule(section) {
+  return [Modules.Treasury, Modules.Bounties].includes(section);
+}
+
 module.exports = {
   getBountyMeta,
   getBountyDescription,
   getBountyMetaByBlockHeight,
+  isBountyModule,
 };

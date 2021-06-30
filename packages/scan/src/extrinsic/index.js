@@ -3,7 +3,6 @@ const { isExtrinsicSuccess } = require("../utils");
 const { calcMultisigAddress } = require("../utils/call");
 const { u8aToHex } = require("@polkadot/util");
 const { handleTipCall, handleTipCloseCall } = require("./treasury/tip");
-const { handleBountyAcceptCurator } = require("./treasury/bounty");
 const { GenericCall } = require("@polkadot/types");
 const {
   Modules,
@@ -11,10 +10,12 @@ const {
   UtilityMethods,
   MultisigMethods,
 } = require("../utils/constants");
+const { handleAcceptCurator } = require("./treasury/bounty/acceptCurator");
 
 async function handleCall(call, author, extrinsicIndexer) {
   await handleTipCall(...arguments);
   await handleTipCloseCall(...arguments);
+  await handleAcceptCurator(...arguments);
 }
 
 async function unwrapProxy(call, signer, extrinsicIndexer) {
@@ -83,13 +84,6 @@ async function handleExtrinsics(extrinsics = [], allEvents = [], indexer) {
     }
 
     await extractAndHandleCall(extrinsic, events, extrinsicIndexer);
-
-    const normalizedExtrinsic = {
-      ...normalized,
-      extrinsicIndexer,
-    };
-
-    await handleBountyAcceptCurator(normalizedExtrinsic, extrinsic);
   }
 }
 
