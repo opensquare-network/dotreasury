@@ -30,7 +30,7 @@ async function handleMultisig(call, signer, extrinsicIndexer) {
   const multisigAddr = calcMultisigAddress(
     [signer, ...otherSignatories],
     threshold,
-    call.registry.ss58Prefix
+    call.registry.chainSS58
   );
 
   const innerCall = new GenericCall(call.registry, callHex);
@@ -40,7 +40,6 @@ async function handleMultisig(call, signer, extrinsicIndexer) {
 async function unwrapBatch(call, signer, extrinsicIndexer) {
   // TODO: not handle call after the BatchInterrupted event
   for (const innerCall of call.args[0]) {
-    // TODO: here we didn't handle proxy&batch extrinsic in batch
     await handleWrappedCall(innerCall, signer, extrinsicIndexer);
   }
 }

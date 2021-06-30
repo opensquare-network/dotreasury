@@ -2,6 +2,7 @@ const {
   Modules,
   BountyEvents,
   BountyMethods,
+  timelineItemTypes,
 } = require("../../utils/constants");
 const { getBountyCollection } = require("../../mongo");
 const {
@@ -10,6 +11,8 @@ const {
   getBountyMetaByBlockHeight,
 } = require("../../utils/bounty");
 const { handleBountyExtended } = require("./bountyExtended");
+const { getRealCaller, findTargetCall } = require("../../utils");
+const { hexToString } = require("@polkadot/util");
 
 function isBountyEvent(section, method) {
   return (
@@ -24,18 +27,12 @@ async function handleBountyEventWithExtrinsic(
   extrinsic
 ) {
   const { section, method } = event;
-  if (
-    !isBountyEvent(
-      section,
-      method,
-      normalizedExtrinsic.extrinsicIndexer.blockHeight
-    )
-  ) {
+  if (!isBountyEvent(section, method)) {
     return;
   }
 
   if (method === BountyEvents.BountyProposed) {
-    await handleProposedEvent(event, normalizedExtrinsic);
+    await handleProposedEvent(event, normalizedExtrinsic, extrinsic);
   } else if (method === BountyEvents.BountyExtended) {
     await handleBountyExtended(event, normalizedExtrinsic, extrinsic);
   } else if (
@@ -109,7 +106,11 @@ async function handleBountyBecameActiveEvent(event, eventIndexer) {
   const meta = await getBountyMeta(eventIndexer.blockHash, bountyIndex);
 
   const timelineItem = {
+    type: timelineItemTypes.event,
     name: method,
+    args: {
+      bountyIndex,
+    },
     eventData,
     eventIndexer,
   };
@@ -124,7 +125,7 @@ async function handleBountyBecameActiveEvent(event, eventIndexer) {
   );
 }
 
-async function handleProposedEvent(event, normalizedExtrinsic) {
+async function handleProposedEvent(event, normalizedExtrinsic, extrinsic) {
   const eventData = event.data.toJSON();
   const bountyIndex = eventData[0];
 
@@ -135,11 +136,38 @@ async function handleProposedEvent(event, normalizedExtrinsic) {
     bountyIndex
   );
 
+  const proposer = getRealCaller(extrinsic.method, normalizedExtrinsic.signer);
+  let proposeCall = findTargetCall(
+    extrinsic.method,
+    Modules.Treasury,
+    BountyMethods.proposeBounty
+  );
+  if (!proposeCall) {
+    proposeCall = findTargetCall(
+      extrinsic.method,
+      Modules.Bounties,
+      BountyMethods.proposeBounty
+    );
+  }
+
+  if (!proposeCall) {
+    throw new Error("can not find the target proposeBounty extrinsic");
+  }
+
+  const { value, description: descriptionInArg } = proposeCall.toJSON().args;
+  const args = {
+    proposer,
+    value,
+    description: hexToString(descriptionInArg) || description,
+  };
+
   const timeline = [
     {
+      type: timelineItemTypes.extrinsic,
       name: BountyMethods.proposeBounty,
+      args,
       eventData,
-      extrinsic: normalizedExtrinsic,
+      extrinsicIndexer: indexer,
     },
   ];
 
