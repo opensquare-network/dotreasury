@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 
 import ResponsivePagination from "../../components/ResponsivePagination";
-import { useChainRoute, useQuery } from "../../utils/hooks";
+import { useChainRoute, useQuery, useLocalStorage } from "../../utils/hooks";
 import ProjectsTable from "./ProjectsTable";
 
 import {
@@ -40,7 +40,10 @@ const Projects = () => {
       ? searchPage
       : DEFAULT_QUERY_PAGE;
   const [tablePage, setTablePage] = useState(queryPage);
-  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
+  const [pageSize, setPageSize] = useLocalStorage(
+    "projectsPageSize",
+    DEFAULT_PAGE_SIZE
+  );
 
   const dispatch = useDispatch();
   const history = useHistory();
