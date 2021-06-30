@@ -3,10 +3,10 @@ const { handleTipEvent } = require("./treasury/tip");
 const { handleProposalEvent } = require("./treasury/proposal");
 const { handleBurntEvent } = require("./treasury/burnt");
 const { handleCouncilEvent } = require("./council/index");
+const { handleBountyEventWithExtrinsic } = require("./treasury/bounty");
 const {
-  handleBountyEventWithExtrinsic,
   handleBountyBecameActiveEvent,
-} = require("./treasury/bounty");
+} = require("./treasury/bounty/becameActive");
 const { handleTreasuryTransferOut } = require("./outTransfer");
 
 async function handleEvents(events, blockIndexer, extrinsics) {

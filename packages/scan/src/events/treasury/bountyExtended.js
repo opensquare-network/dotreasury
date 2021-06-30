@@ -1,9 +1,9 @@
 const { timelineItemTypes } = require("../../utils/constants");
-const { getBountyCollection } = require("../../mongo");
 const { BountyMethods, Modules } = require("../../utils/constants");
 const { getBountyMeta } = require("../../utils/bounty");
-const { getRealCaller, findTargetCall } = require("../../utils");
-import { hexToString } from "@polkadot/util";
+const { getRealCaller, findCallInSections } = require("../../utils");
+const { hexToString } = require("@polkadot/util");
+const { updateBountyInDb } = require("./bounty/common");
 
 async function handleBountyExtended(event, normalizedExtrinsic, extrinsic) {
   const indexer = normalizedExtrinsic.extrinsicIndexer;
@@ -12,18 +12,11 @@ async function handleBountyExtended(event, normalizedExtrinsic, extrinsic) {
   const meta = await getBountyMeta(indexer.blockHash, bountyIndex);
 
   const caller = getRealCaller(extrinsic.method, normalizedExtrinsic.signer);
-  let call = findTargetCall(
+  const call = findCallInSections(
     extrinsic.method,
-    Modules.Treasury,
+    [Modules.Treasury, Modules.Bounties],
     BountyMethods.extendBountyExpiry
   );
-  if (!call) {
-    call = findTargetCall(
-      extrinsic.method,
-      Modules.Bounties,
-      BountyMethods.extendBountyExpiry
-    );
-  }
 
   if (!call) {
     throw new Error(
@@ -32,27 +25,21 @@ async function handleBountyExtended(event, normalizedExtrinsic, extrinsic) {
   }
 
   const { _remark: remark } = call.toJSON().args;
-  const args = {
-    caller,
-    remark: hexToString(remark),
-  };
-
   const timelineItem = {
     type: timelineItemTypes.extrinsic,
     name: event.method,
-    args,
+    args: {
+      caller,
+      remark: hexToString(remark),
+    },
     eventData,
     extrinsicIndexer: indexer,
   };
 
-  const bountyCol = await getBountyCollection();
-  await bountyCol.findOneAndUpdate(
-    { bountyIndex },
-    {
-      $set: { meta },
-      $push: { timeline: timelineItem },
-    }
-  );
+  await updateBountyInDb(bountyIndex, {
+    $set: { meta },
+    $push: { timeline: timelineItem },
+  });
 }
 
 module.exports = {

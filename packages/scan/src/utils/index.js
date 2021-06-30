@@ -247,6 +247,17 @@ function findTargetCall(call, targetSection, targetMethod) {
   return null;
 }
 
+function findCallInSections(call, sections, targetMethod) {
+  for (const section of sections) {
+    let result = findTargetCall(call, section, targetMethod);
+    if (result) {
+      return result;
+    }
+  }
+
+  return null;
+}
+
 module.exports = {
   getExtrinsicSigner,
   isExtrinsicSuccess,
@@ -262,4 +273,5 @@ module.exports = {
   getTreasuryBalance,
   getRealCaller,
   findTargetCall,
+  findCallInSections,
 };
