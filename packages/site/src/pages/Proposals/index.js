@@ -1,14 +1,12 @@
 import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
-import { useHistory } from "react-router";
 
 import ResponsivePagination from "../../components/ResponsivePagination";
 import ProposalsTable from "./ProposalsTable";
 import { useDispatch, useSelector } from "react-redux";
-import { useChainRoute, useQuery } from "../../utils/hooks";
+import { useChainRoute, useQuery, usePageStorage } from "../../utils/hooks";
 import Summary from "./Summary";
 import Filter from "./Filter";
-
 import {
   fetchProposals,
   loadingSelector,
@@ -41,12 +39,11 @@ const Proposals = () => {
     searchPage && !isNaN(searchPage) && searchPage > 0
       ? searchPage
       : DEFAULT_QUERY_PAGE;
-  const [tablePage, setTablePage] = useState(queryPage);
+  const [tablePage, setTablePage] = usePageStorage("proposalsPage", queryPage);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const [filterData, setFilterData] = useState({});
 
   const dispatch = useDispatch();
-  const history = useHistory();
   const { items: proposals, total } = useSelector(proposalListSelector);
   const loading = useSelector(loadingSelector);
   const chain = useSelector(chainSelector);
@@ -57,10 +54,13 @@ const Proposals = () => {
 
   const totalPages = Math.ceil(total / pageSize);
 
-  const filterQuery = useCallback((data) => {
-    setFilterData(data);
-    setTablePage(1);
-  }, []);
+  const filterQuery = useCallback(
+    (data) => {
+      setFilterData(data);
+      setTablePage(1);
+    },
+    [setTablePage]
+  );
 
   return (
     <>
@@ -82,17 +82,8 @@ const Proposals = () => {
             setPageSize={(pageSize) => {
               setTablePage(DEFAULT_QUERY_PAGE);
               setPageSize(pageSize);
-              history.push({
-                search: null,
-              });
             }}
             onPageChange={(_, { activePage }) => {
-              history.push({
-                search:
-                  activePage === DEFAULT_QUERY_PAGE
-                    ? null
-                    : `?page=${activePage}`,
-              });
               setTablePage(activePage);
             }}
           />

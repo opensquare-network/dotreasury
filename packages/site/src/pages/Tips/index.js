@@ -10,8 +10,7 @@ import {
   normalizedTipListSelector,
 } from "../../store/reducers/tipSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
-import { useChainRoute, useQuery } from "../../utils/hooks";
-import { useHistory } from "react-router";
+import { useChainRoute, useQuery, usePageStorage } from "../../utils/hooks";
 import Text from "../../components/Text";
 
 const HeaderWrapper = styled.div`
@@ -38,20 +37,12 @@ const Tips = () => {
     searchPage && !isNaN(searchPage) && searchPage > 0
       ? searchPage
       : DEFAULT_QUERY_PAGE;
-  const searchStatus = useQuery().get("status");
 
-  const [tablePage, setTablePage] = useState(queryPage);
+  const [tablePage, setTablePage] = usePageStorage("tipsPage", queryPage);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
-  const [filterData, setFilterData] = useState(
-    searchStatus
-      ? {
-          status: searchStatus,
-        }
-      : {}
-  );
+  const [filterData, setFilterData] = useState({});
 
   const dispatch = useDispatch();
-  const history = useHistory();
   const { items: tips, total } = useSelector(normalizedTipListSelector);
   const loading = useSelector(loadingSelector);
   const totalPages = Math.ceil(total / pageSize);
@@ -65,11 +56,8 @@ const Tips = () => {
     (data) => {
       setFilterData(data);
       setTablePage(1);
-      history.push({
-        search: data.status ? `status=${data.status}` : null,
-      });
     },
-    [history]
+    [setTablePage]
   );
 
   return (
@@ -91,17 +79,8 @@ const Tips = () => {
             setPageSize={(pageSize) => {
               setTablePage(DEFAULT_QUERY_PAGE);
               setPageSize(pageSize);
-              history.push({
-                search: null,
-              });
             }}
             onPageChange={(_, { activePage }) => {
-              history.push({
-                search:
-                  activePage === DEFAULT_QUERY_PAGE
-                    ? null
-                    : `?page=${activePage}`,
-              });
               setTablePage(activePage);
             }}
           />

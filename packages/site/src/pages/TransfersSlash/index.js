@@ -4,8 +4,7 @@ import styled from "styled-components";
 import ResponsivePagination from "../../components/ResponsivePagination";
 import TransfersSlashTable from "./TransfersSlashTable";
 import { useDispatch, useSelector } from "react-redux";
-import { useChainRoute, useQuery } from "../../utils/hooks";
-import { useHistory } from "react-router";
+import { useChainRoute, useQuery, usePageStorage } from "../../utils/hooks";
 
 import {
   fetchTransferList,
@@ -39,11 +38,13 @@ const Transfers = () => {
     searchPage && !isNaN(searchPage) && searchPage > 0
       ? searchPage
       : DEFAULT_QUERY_PAGE;
-  const [tablePage, setTablePage] = useState(queryPage);
+  const [tablePage, setTablePage] = usePageStorage(
+    "transfersSlashPage",
+    queryPage
+  );
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
 
   const dispatch = useDispatch();
-  const history = useHistory();
   const { items: transferList, total } = useSelector(transferListSelector);
   const loading = useSelector(transferListLoadingSelector);
   const chain = useSelector(chainSelector);
@@ -72,17 +73,8 @@ const Transfers = () => {
             setPageSize={(pageSize) => {
               setTablePage(DEFAULT_QUERY_PAGE);
               setPageSize(pageSize);
-              history.push({
-                search: null,
-              });
             }}
             onPageChange={(_, { activePage }) => {
-              history.push({
-                search:
-                  activePage === DEFAULT_QUERY_PAGE
-                    ? null
-                    : `?page=${activePage}`,
-              });
               setTablePage(activePage);
             }}
           />

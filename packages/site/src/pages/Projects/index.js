@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router";
 
 import ResponsivePagination from "../../components/ResponsivePagination";
-import { useChainRoute, useQuery } from "../../utils/hooks";
+import { useChainRoute, useQuery, usePageStorage } from "../../utils/hooks";
 import ProjectsTable from "./ProjectsTable";
 
 import {
@@ -39,11 +38,10 @@ const Projects = () => {
     searchPage && !isNaN(searchPage) && searchPage > 0
       ? searchPage
       : DEFAULT_QUERY_PAGE;
-  const [tablePage, setTablePage] = useState(queryPage);
+  const [tablePage, setTablePage] = usePageStorage("projectsPage", queryPage);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
 
   const dispatch = useDispatch();
-  const history = useHistory();
   const { items: projects, total } = useSelector(projectsSelector);
   const loading = useSelector(loadingSelector);
   const chain = useSelector(chainSelector);
@@ -72,17 +70,8 @@ const Projects = () => {
             setPageSize={(pageSize) => {
               setTablePage(DEFAULT_QUERY_PAGE);
               setPageSize(pageSize);
-              history.push({
-                search: null,
-              });
             }}
             onPageChange={(_, { activePage }) => {
-              history.push({
-                search:
-                  activePage === DEFAULT_QUERY_PAGE
-                    ? null
-                    : `?page=${activePage}`,
-              });
               setTablePage(activePage);
             }}
           />

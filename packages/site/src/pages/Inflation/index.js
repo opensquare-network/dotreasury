@@ -4,9 +4,7 @@ import styled from "styled-components";
 import ResponsivePagination from "../../components/ResponsivePagination";
 import SlashTable from "./InflationTable";
 import { useDispatch, useSelector } from "react-redux";
-import { useChainRoute, useQuery } from "../../utils/hooks";
-import { useHistory } from "react-router";
-
+import { useChainRoute, useQuery, usePageStorage } from "../../utils/hooks";
 import {
   fetchInflationList,
   inflationListSelector,
@@ -46,11 +44,10 @@ const Inflation = () => {
     searchPage && !isNaN(searchPage) && searchPage > 0
       ? searchPage
       : DEFAULT_QUERY_PAGE;
-  const [tablePage, setTablePage] = useState(queryPage);
+  const [tablePage, setTablePage] = usePageStorage("inflationPage", queryPage);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
 
   const dispatch = useDispatch();
-  const history = useHistory();
   const { items: itemList, total } = useSelector(inflationListSelector);
   const loading = useSelector(inflationListLoadingSelector);
   const chain = useSelector(chainSelector);
@@ -80,17 +77,8 @@ const Inflation = () => {
             setPageSize={(pageSize) => {
               setTablePage(DEFAULT_QUERY_PAGE);
               setPageSize(pageSize);
-              history.push({
-                search: null,
-              });
             }}
             onPageChange={(_, { activePage }) => {
-              history.push({
-                search:
-                  activePage === DEFAULT_QUERY_PAGE
-                    ? null
-                    : `?page=${activePage}`,
-              });
               setTablePage(activePage);
             }}
           />

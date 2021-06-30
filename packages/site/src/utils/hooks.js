@@ -1,4 +1,10 @@
-import { useLayoutEffect, useState, useEffect, useRef } from "react";
+import {
+  useLayoutEffect,
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+} from "react";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -184,4 +190,48 @@ export function useOutsideClick(ref, cb) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [ref, cb]);
+}
+
+export function usePageStorage(key, initialValue) {
+  const history = useHistory();
+  const setPageSearch = (page) => {
+    history.push({
+      search: page === 1 ? null : `?page=${page}`,
+    });
+  };
+
+  const [storedValue, setStoredValue] = useState(() => {
+    try {
+      if (initialValue && initialValue !== 1) {
+        window.localStorage.setItem(key, JSON.stringify(initialValue));
+        return initialValue;
+      } else {
+        const item = window.localStorage.getItem(key);
+        const page = item ? JSON.parse(item) : initialValue;
+        setPageSearch(page);
+        return page;
+      }
+    } catch (error) {
+      console.log(error);
+      return initialValue;
+    }
+  });
+  const setValue = useCallback(
+    (value) => {
+      const setPageSearch = (page) => {
+        history.push({
+          search: page === 1 ? null : `?page=${page}`,
+        });
+      };
+      try {
+        setStoredValue(value);
+        setPageSearch(value);
+        window.localStorage.setItem(key, JSON.stringify(value));
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [key, history]
+  );
+  return [storedValue, setValue];
 }
