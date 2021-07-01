@@ -46,13 +46,6 @@ async function handleBountyEventWithExtrinsic(
   }
 }
 
-function isBountyBecameActiveEvent(section, method) {
-  return (
-    [Modules.Treasury, Modules.Bounties].includes(section) &&
-    method === BountyEvents.BountyBecameActive
-  );
-}
-
 async function handleProposedEvent(event, normalizedExtrinsic, extrinsic) {
   const eventData = event.data.toJSON();
   const bountyIndex = eventData[0];

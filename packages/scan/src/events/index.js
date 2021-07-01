@@ -1,6 +1,6 @@
 const { normalizeExtrinsic } = require("../extrinsic/index");
 const { handleTipEvent } = require("./treasury/tip");
-const { handleProposalEvent } = require("./treasury/proposal");
+const { handleProposalEvent } = require("./treasury/proposal/index");
 const { handleBurntEvent } = require("./treasury/burnt");
 const { handleCouncilEvent } = require("./council/index");
 const { handleBountyEventWithExtrinsic } = require("./treasury/bounty");
