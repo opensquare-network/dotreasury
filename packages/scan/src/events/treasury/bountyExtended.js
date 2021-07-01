@@ -72,7 +72,7 @@ async function tryGetRealSignerAndRemarkFromProxy(
   extrinsic
 ) {
   const indexer = normalizedExtrinsic.extrinsicIndexer;
-  const callHex = extrinsic.args[2].toHex();
+  const callHex = extrinsic.args[1].toHex();
   const call = await getCall(indexer.blockHash, callHex);
 
   if (BountyMethods.extendBountyExpiry === call.method) {
