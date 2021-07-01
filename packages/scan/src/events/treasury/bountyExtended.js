@@ -28,7 +28,7 @@ async function getRealSignerAndRemark(normalizedExtrinsic, extrinsic) {
       normalizedExtrinsic,
       extrinsic
     );
-  } else if (Modules.Proxy !== section || ProxyMethods.proxy !== name) {
+  } else if (Modules.Proxy === section && ProxyMethods.proxy === name) {
     [signer, remark] = await tryGetRealSignerAndRemarkFromProxy(
       normalizedExtrinsic,
       extrinsic
