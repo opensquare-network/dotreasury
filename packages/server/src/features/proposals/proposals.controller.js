@@ -84,13 +84,9 @@ class ProposalsController {
       value: proposal.value,
       symbolPrice: proposal.symbolPrice,
       beneficiary: proposal.beneficiary,
-      latestState: {
-        state: proposal.state?.name,
-        time: proposal.state?.indexer.blockTime,
-        indexer: proposal.state?.indexer,
-        data: proposal.state?.data,
-      },
+      latestState: proposal.state,
       motions: proposalMotions,
+      timeline: proposal.timeline,
     };
   }
 
