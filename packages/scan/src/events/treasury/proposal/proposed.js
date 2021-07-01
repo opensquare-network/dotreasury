@@ -11,9 +11,9 @@ async function handleProposed(event, normalizedExtrinsic) {
   const [proposalIndex] = eventData;
 
   const api = await getApi();
-  const indexer = normalizedExtrinsic.extrinsicIndexer;
+  const extrinsicIndexer = normalizedExtrinsic.extrinsicIndexer;
   const meta = await api.query.treasury.proposals.at(
-    indexer.blockHash,
+    extrinsicIndexer.blockHash,
     proposalIndex
   );
   const metaJson = meta.toJSON();
@@ -38,13 +38,13 @@ async function handleProposed(event, normalizedExtrinsic) {
       beneficiary,
     },
     eventData,
-    extrinsicIndexer: indexer,
+    extrinsicIndexer,
   };
 
   const proposalCol = await getProposalCollection();
 
   await proposalCol.insertOne({
-    indexer,
+    indexer: extrinsicIndexer,
     proposalIndex,
     proposer,
     value,
@@ -52,7 +52,7 @@ async function handleProposed(event, normalizedExtrinsic) {
     meta: metaJson,
     state: {
       name: ProposalState.Proposed,
-      indexer,
+      extrinsicIndexer,
     },
     timeline: [timelineItem],
   });

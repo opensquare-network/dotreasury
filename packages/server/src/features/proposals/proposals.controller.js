@@ -44,7 +44,8 @@ class ProposalsController {
         links: item.links || [],
         latestState: {
           state: item.state?.name,
-          time: item.state?.indexer.blockTime,
+          time: (item.state?.eventIndexer || item.state?.eventIndexer)
+            .blockTime,
         },
       })),
       page,
