@@ -138,7 +138,7 @@ async function handleTipCloseCall(call, author, extrinsicIndexer) {
   }
 
   if (
-    name !== TipMethods.closeTip ||
+    method !== TipMethods.closeTip ||
     indexer.blockHeight >= ksmFirstTipClosedHeight
   ) {
     return;
