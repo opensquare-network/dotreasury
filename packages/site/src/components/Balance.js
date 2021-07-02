@@ -31,7 +31,7 @@ const Wrapper = styled.div`
     css`
       flex-direction: row;
       align-items: center;
-      > :last-child {
+      > :not(:first-child) {
         margin-left: 16px;
       }
     `}
