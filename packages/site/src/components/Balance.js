@@ -55,12 +55,12 @@ const Balance = ({
   const symbol = useSelector(chainSymbolSelector);
   let usdtNumber = Number(usdt);
   if (value === null || value === undefined) value = 0;
-  let precision = toPrecision(value, getPrecision(currency || symbol), false);
-  precision = Number(precision).toLocaleString();
+  const precision = toPrecision(value, getPrecision(currency || symbol), false);
+  const localePrecision = Number(precision).toLocaleString();
   if (isUnitPrice) usdtNumber = usdtNumber * precision;
   return (
     <Wrapper reverse={reverse} horizontal={horizontal}>
-      <PairText value={precision} unit={currency || symbol} />
+      <PairText value={localePrecision} unit={currency || symbol} />
       {usdt && !isNaN(usdtNumber) && (
         <UsdtWrapper>{`${
           usdtNumber === 0 ? "" : "≈ "
