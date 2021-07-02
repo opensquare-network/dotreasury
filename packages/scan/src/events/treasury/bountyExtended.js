@@ -28,7 +28,7 @@ async function getRealSignerAndRemark(normalizedExtrinsic, extrinsic) {
       normalizedExtrinsic,
       extrinsic
     );
-  } else if (Modules.Proxy !== section || ProxyMethods.proxy !== name) {
+  } else if (Modules.Proxy === section && ProxyMethods.proxy === name) {
     [signer, remark] = await tryGetRealSignerAndRemarkFromProxy(
       normalizedExtrinsic,
       extrinsic
@@ -72,7 +72,7 @@ async function tryGetRealSignerAndRemarkFromProxy(
   extrinsic
 ) {
   const indexer = normalizedExtrinsic.extrinsicIndexer;
-  const callHex = extrinsic.args[2].toHex();
+  const callHex = extrinsic.args[1].toHex();
   const call = await getCall(indexer.blockHash, callHex);
 
   if (BountyMethods.extendBountyExpiry === call.method) {
