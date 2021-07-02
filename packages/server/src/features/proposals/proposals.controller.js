@@ -46,7 +46,7 @@ class ProposalsController {
           state: item.state?.name,
           time: (
             item.state?.eventIndexer ||
-            item.state?.eventIndexer ||
+            item.state?.extrinsicIndexer ||
             item.state?.indexer
           ).blockTime,
         },
