@@ -11,7 +11,7 @@ function normalizeTip(tipInDb) {
       time: tipInDb.state?.indexer.blockTime,
     },
     tipsCount: tipInDb.meta?.tips.length,
-    medianValue: tipInDb.medianValue,
+    medianValue: tipInDb.state?.data?.[2] || tipInDb.medianValue,
     symbolPrice: tipInDb.symbolPrice,
   };
 }

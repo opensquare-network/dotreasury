@@ -74,7 +74,7 @@ class TipsController {
         blockHeight: tip.state?.indexer.blockHeight,
       },
       tipsCount: tip.meta?.tips.length,
-      medianValue: tip.medianValue,
+      medianValue: tip.state?.data?.[2] || tip.medianValue,
       symbolPrice: tip.symbolPrice,
       tippersCount: tip.tippersCount,
       tipFindersFee: tip.tipFindersFee,
