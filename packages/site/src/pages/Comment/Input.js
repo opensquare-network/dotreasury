@@ -12,16 +12,14 @@ import {
   postComment,
   clearCommentSelector,
   setClearComment,
-  setLastUpdateCommentTime
+  setLastUpdateCommentTime,
 } from "../../store/reducers/commentSlice";
 import {
   loggedInUserSelector,
   fetchUserProfile,
   userProfileSelector,
 } from "../../store/reducers/userSlice";
-import {
-  chainSelector,
-} from "../../store/reducers/chainSlice";
+import { chainSelector } from "../../store/reducers/chainSlice";
 
 import { PRIMARY_THEME_COLOR } from "../../constants";
 
@@ -83,9 +81,9 @@ const Input = React.forwardRef(
       setLoading(true);
       try {
         await dispatch(postComment(chain, type, index, content));
-        if(page==='last') {
+        if (page === "last") {
           dispatch(setLastUpdateCommentTime(Date.now()));
-        }else {
+        } else {
           history.push({
             search: `?page=last`,
           });
@@ -103,7 +101,7 @@ const Input = React.forwardRef(
       }
     }, [clearComment, dispatch, setContent]);
 
-    const { emailVerified } = userProfile;
+    const { emailVerified } = userProfile ?? {};
 
     return (
       <Wrapper ref={ref}>

@@ -6,7 +6,7 @@ const userSlice = createSlice({
   name: "users",
   initialState: {
     loggedInUser: JSON.parse(localStorage.getItem("loggedInUser")),
-    userProfile: {},
+    userProfile: null,
     verifyEmailSendTime: 0,
   },
   reducers: {
@@ -41,7 +41,7 @@ export const fetchUserProfile = () => async (dispatch) => {
       wildcardAddress: encodeSubstrateAddress(addr.address),
     }));
   }
-  dispatch(setUserProfile(result || {}));
+  dispatch(setUserProfile(result || null));
 };
 
 export const loggedInUserSelector = (state) => state.users.loggedInUser;

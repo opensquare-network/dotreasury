@@ -47,7 +47,7 @@ const Email = () => {
 
   const userProfile = useSelector(userProfileSelector);
   const verifyEmailSendTime = useSelector(verifyEmailSendTimeSelector);
-  const { email, emailVerified } = userProfile;
+  const { email, emailVerified } = userProfile ?? {};
 
   const sendVerifyEmail = async () => {
     const { result, error } = await api.authFetch(
