@@ -190,7 +190,7 @@ function processTimeline(bountyDetail, scanHeight, symbol) {
               },
             ];
           } else if (item.name === "BountyAwarded") {
-            const { beneficiary } = item;
+            const { beneficiary } = item.args || {};
             fields = [
               {
                 title: "Beneficiary",
