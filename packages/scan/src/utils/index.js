@@ -1,9 +1,17 @@
 const { logger, incomeKnownHeightsLogger } = require("./logger");
 const BigNumber = require("bignumber.js");
+const { calcMultisigAddress } = require("./call");
 const { getApi } = require("../api");
-const { TreasuryAccount } = require("./constants");
+const {
+  TreasuryAccount,
+  Modules,
+  ProxyMethods,
+  MultisigMethods,
+  UtilityMethods,
+} = require("./constants");
 const { expandMetadata } = require("@polkadot/metadata");
 const { currentChain } = require("../chain");
+const { GenericCall } = require("@polkadot/types");
 
 const sleep = (time) => {
   return new Promise((resolve) => {
@@ -160,6 +168,96 @@ async function getTreasuryBalance(blockHash, blockHeight) {
   }
 }
 
+function getRealCaller(call, caller) {
+  const { section, method } = call;
+
+  if (Modules.Proxy === section && ProxyMethods.proxy === method) {
+    return call.args[0].toJSON();
+  }
+
+  if (
+    Modules.Multisig === section &&
+    MultisigMethods.asMulti === method
+    // TODO:  Maybe other methods, check them out
+  ) {
+    const callHex = call.args[3];
+    const innerCall = new GenericCall(call.registry, callHex);
+    if (
+      Modules.Proxy === innerCall.section &&
+      ProxyMethods.proxy === innerCall.method
+    ) {
+      return innerCall.args[0].toJSON();
+    }
+
+    const threshold = call.args[0].toNumber();
+    const otherSignatories = call.args[1].toJSON();
+    return calcMultisigAddress(
+      [caller, ...otherSignatories],
+      threshold,
+      call.registry.chainSS58
+    );
+  }
+
+  return caller;
+}
+
+function findTargetCallFromProxy(proxyCall, targetSection, targetMethod) {
+  const innerCall = proxyCall.args[2];
+  return findTargetCall(innerCall, targetSection, targetMethod);
+}
+
+function findTargetCallFromMultisig(multisigCall, targetSection, targetMethod) {
+  const callHex = multisigCall.args[3];
+  const innerCall = new GenericCall(multisigCall.registry, callHex);
+  return findTargetCall(innerCall, targetSection, targetMethod);
+}
+
+function findTargetCallFromBatch(batchCall, targetSection, targetMethod) {
+  for (const innerCall of batchCall.args[0]) {
+    const call = findTargetCall(innerCall, targetSection, targetMethod);
+    if (call.section === targetSection && call.method === targetMethod) {
+      //FIXME: here we only get the first call which has the target section and target method, but there maybe multiple
+      // these kinds of calls in batch extrinsic. Need more info to figure out the target call.
+      return call;
+    }
+  }
+
+  return batchCall;
+}
+
+function findTargetCall(call, targetSection, targetMethod) {
+  const { section, method } = call;
+
+  if (Modules.Proxy === section && ProxyMethods.proxy === method) {
+    return findTargetCallFromProxy(...arguments);
+  }
+
+  if (Modules.Multisig === section && MultisigMethods.asMulti === method) {
+    return findTargetCallFromMultisig(...arguments);
+  }
+
+  if (Modules.Utility === section && UtilityMethods.batch === method) {
+    return findTargetCallFromBatch(...arguments);
+  }
+
+  if (call.section === targetSection && call.method === targetMethod) {
+    return call;
+  }
+
+  return null;
+}
+
+function findCallInSections(call, sections, targetMethod) {
+  for (const section of sections) {
+    let result = findTargetCall(call, section, targetMethod);
+    if (result) {
+      return result;
+    }
+  }
+
+  return null;
+}
+
 module.exports = {
   getExtrinsicSigner,
   isExtrinsicSuccess,
@@ -173,4 +271,7 @@ module.exports = {
   getMetadataConstByBlockHash,
   getMetadataConstsByBlockHash,
   getTreasuryBalance,
+  getRealCaller,
+  findTargetCall,
+  findCallInSections,
 };

@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 
 import ImageButton from "./ImageButton";
 import ExplorerLink from "../../components/ExplorerLink";
 import ExternalLink from "../../components/ExternalLink";
-import { nil } from "../../utils";
 import { useIsMounted } from "../../utils/hooks";
 import { mrgap } from "../../styles";
 import polkassemblyApi from "../../services/polkassembly";
@@ -38,7 +37,12 @@ const ButtonList = ({ extrinsicIndexer, eventIndexer, polkassembly }) => {
   const blockHeight =
     extrinsicIndexer?.blockHeight ?? eventIndexer?.blockHeight;
   const extrinsicIndex = extrinsicIndexer?.index ?? 0;
-  const eventSort = eventIndexer?.eventSort;
+  const eventSort = eventIndexer?.eventSort || eventIndexer?.sort;
+
+  const isExtrinsic = !!extrinsicIndexer;
+  const subscanLink = isExtrinsic
+    ? `extrinsic/${blockHeight}-${extrinsicIndex}`
+    : `block/${blockHeight}?tab=event`;
 
   return (
     <Wrapper>
@@ -48,8 +52,8 @@ const ButtonList = ({ extrinsicIndexer, eventIndexer, polkassembly }) => {
             ? "https://polkascan.io/kusama/"
             : "https://polkascan.io/polkadot/"
         }
-        href={`${nil(eventSort) ? "transaction" : "event"}/${blockHeight}-${
-          eventSort ?? extrinsicIndex
+        href={`${isExtrinsic ? "transaction" : "event"}/${blockHeight}-${
+          isExtrinsic ? extrinsicIndex : eventSort
         }`}
       >
         <ImageButton src={"/imgs/polkascan-logo.svg"} />
@@ -60,9 +64,7 @@ const ButtonList = ({ extrinsicIndexer, eventIndexer, polkassembly }) => {
             ? "https://kusama.subscan.io/"
             : "https://polkadot.subscan.io/"
         }
-        href={`extrinsic/${blockHeight}-${extrinsicIndex}${
-          nil(eventSort) ? "" : "?event=" + blockHeight + "-" + eventSort
-        }`}
+        href={subscanLink}
       >
         <ImageButton src={"/imgs/subscan-logo.svg"} />
       </ExplorerLink>

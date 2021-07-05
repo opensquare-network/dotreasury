@@ -61,7 +61,7 @@ async function getTippersCount(blockHash) {
   );
 
   if (oldModuleValue) {
-    return oldModuleValue.toNumber()
+    return oldModuleValue.toNumber();
   }
 
   const newModuleValue = await getMetadataConstByBlockHash(
@@ -70,7 +70,7 @@ async function getTippersCount(blockHash) {
     "DesiredMembers"
   );
 
-  return newModuleValue ? newModuleValue.toNumber() : newModuleValue
+  return newModuleValue ? newModuleValue.toNumber() : newModuleValue;
 }
 
 async function getTipFindersFee(blockHash) {
@@ -184,7 +184,7 @@ async function saveNewTip(hash, normalizedExtrinsic, extrinsic) {
           ...args,
           finder,
         },
-        extrinsic: normalizedExtrinsic,
+        extrinsicIndexer: indexer,
       },
     ],
   });
@@ -243,7 +243,7 @@ async function updateTipFinalState(
             ...args,
             terminator,
           },
-          extrinsic: normalizedExtrinsic,
+          extrinsicIndexer: indexer,
         },
       },
     }
@@ -257,4 +257,5 @@ module.exports = {
   getTippersCount,
   getTipMeta,
   computeTipValue,
+  getTipMetaByBlockHeight,
 };

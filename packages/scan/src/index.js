@@ -70,12 +70,16 @@ async function scanBlock(blockInDb) {
     true
   );
 
+  await scanNormalizedBlock(block, allEvents);
+}
+
+async function scanNormalizedBlock(block, blockEvents) {
   const blockIndexer = getBlockIndexer(block);
 
-  await handleEvents(allEvents, blockIndexer, block.extrinsics);
-  await handleExtrinsics(block.extrinsics, allEvents, blockIndexer);
+  await handleExtrinsics(block.extrinsics, blockEvents, blockIndexer);
+  await handleEvents(blockEvents, blockIndexer, block.extrinsics);
 
-  await handleIncomeEvents(allEvents, blockIndexer, block.extrinsics);
+  await handleIncomeEvents(blockEvents, blockIndexer, block.extrinsics);
   await processStat(blockIndexer);
 }
 
@@ -86,5 +90,16 @@ async function getRegistryByHeight(height) {
   return await api.getBlockRegistry(blockHash);
 }
 
+async function test() {
+  const height = 3543099;
+  const api = await getApi();
+  const blockHash = await api.rpc.chain.getBlockHash(height);
+  const block = await api.rpc.chain.getBlock(blockHash);
+  const allEvents = await api.query.system.events.at(blockHash);
+
+  await scanNormalizedBlock(block.block, allEvents);
+}
+
 // FIXME: log the error
 main().catch(console.error);
+// test()

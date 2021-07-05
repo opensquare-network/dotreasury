@@ -155,6 +155,11 @@ const StakingEvents = Object.freeze({
   Reward: "Reward",
 });
 
+const timelineItemTypes = Object.freeze({
+  extrinsic: "extrinsic",
+  event: "event",
+});
+
 module.exports = {
   Modules,
   BountyMethods,
@@ -184,4 +189,5 @@ module.exports = {
   SessionEvents,
   BalancesEvents,
   dotTreasuryRefactorApplyHeight,
+  timelineItemTypes,
 };

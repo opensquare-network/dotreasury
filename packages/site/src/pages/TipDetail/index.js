@@ -115,7 +115,9 @@ function processTimeline(tipDetail, links) {
     }
 
     return {
-      extrinsicIndexer: timelineItem.extrinsic.extrinsicIndexer,
+      extrinsicIndexer:
+        timelineItem.extrinsicIndexer ||
+        timelineItem.extrinsic?.extrinsicIndexer,
       name: timelineItem.method,
       fields,
     };

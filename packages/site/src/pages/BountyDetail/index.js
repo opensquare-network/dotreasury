@@ -20,7 +20,6 @@ import Voter from "../../components/Voter";
 import Proposer from "../../components/Proposer";
 import BlocksTime from "../../components/BlocksTime";
 import TimelineCommentWrapper from "../../components/TimelineCommentWrapper";
-import { hexToString } from "@polkadot/util";
 import { stringToWords } from "../../utils";
 import DetailTableWrapper from "../../components/DetailTableWrapper";
 
@@ -40,11 +39,29 @@ const UnitWrapper = styled.span`
   color: #1d253c;
 `;
 
-function mergeExtrinsicsAndMotions(extrinsics, motions) {
-  const result = [...extrinsics.filter((item) => item.extrinsic), ...motions];
-  const indexer = (item) =>
-    (item.extrinsic || item.timeline?.[0].extrinsic)?.extrinsicIndexer;
-  result.sort((a, b) => indexer(a)?.blockHeight - indexer(b)?.blockHeight);
+function isMotion(timelineItem) {
+  return !!timelineItem.voting;
+}
+
+function timelineItemHeight(timelineItem) {
+  if (isMotion(timelineItem)) {
+    return timelineItem.timeline[0].extrinsic.extrinsicIndexer.blockHeight;
+  }
+
+  if ("extrinsic" === timelineItem.type) {
+    return timelineItem.extrinsicIndexer.blockHeight;
+  }
+
+  if ("event" === timelineItem.type) {
+    return timelineItem.eventIndexer.blockHeight;
+  }
+
+  return null;
+}
+
+function mergeExtrinsicsAndMotions(timelineItems, motions) {
+  const result = [...timelineItems, ...motions];
+  result.sort((a, b) => timelineItemHeight(a) - timelineItemHeight(b));
   return result;
 }
 
@@ -146,13 +163,10 @@ function processTimeline(bountyDetail, scanHeight, symbol) {
           })),
         }))(item)
       : ((item) => {
-          const extrinsic = item.extrinsic;
           let fields = [];
 
-          if (extrinsic.name === "proposeBounty") {
-            const proposer = extrinsic.signer;
-            const { value, description } = extrinsic.args;
-            const title = hexToString(description);
+          if (item.name === "proposeBounty") {
+            const { proposer, value, description } = item.args;
             fields = [
               {
                 title: "Proposer",
@@ -164,52 +178,47 @@ function processTimeline(bountyDetail, scanHeight, symbol) {
               },
               {
                 title: "Title",
-                value: title,
+                value: description,
               },
             ];
-          } else if (extrinsic.name === "acceptCurator") {
-            const curator = extrinsic.signer;
+          } else if (item.name === "acceptCurator") {
+            const { caller } = item.args;
             fields = [
               {
                 title: "Curator",
-                value: <User address={curator} />,
+                value: <User address={caller} />,
               },
             ];
-          } else if (extrinsic.name === "awardBounty") {
-            const curator = extrinsic.signer;
-            // TODO: remove the `candidateData`
-            const {
-              beneficiary: { id: beneficiary, Id: candidateData },
-            } = extrinsic.args;
+          } else if (item.name === "BountyAwarded") {
+            const { beneficiary } = item;
             fields = [
-              {
-                title: "Curator",
-                value: <User address={curator} />,
-              },
               {
                 title: "Beneficiary",
-                value: <User address={beneficiary || candidateData} />,
+                value: <User address={beneficiary} />,
               },
             ];
-          } else if (extrinsic.name === "extendBountyExpiry") {
-            const signer = extrinsic.signer;
-            const { _remark } = extrinsic.args;
+          } else if (item.name === "BountyExtended") {
+            const { caller, remark } = item.args;
             fields = [
               {
                 title: "Signer",
-                value: <User address={signer} />,
+                value: <User address={caller} />,
               },
               {
                 title: "Remark",
-                value: hexToString(_remark),
+                value: remark,
               },
             ];
           } else if (item.name === "BountyRejected") {
-            const signer = extrinsic.signer;
+            const { caller, slashed } = item.args;
             fields = [
               {
                 title: "Closed by",
-                value: <User address={signer} />,
+                value: <User address={caller} />,
+              },
+              {
+                title: "Proposer slashed",
+                value: <Balance value={slashed} currency={symbol} />,
               },
             ];
           } else if (item.name === "BountyClaimed") {
@@ -223,8 +232,9 @@ function processTimeline(bountyDetail, scanHeight, symbol) {
           }
 
           return {
-            extrinsicIndexer: extrinsic.extrinsicIndexer,
-            name: extrinsic.name,
+            extrinsicIndexer: item.extrinsicIndexer,
+            eventIndexer: item.eventIndexer,
+            name: item.name,
             fields,
           };
         })(item)

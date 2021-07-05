@@ -44,7 +44,11 @@ class ProposalsController {
         links: item.links || [],
         latestState: {
           state: item.state?.name,
-          time: item.state?.indexer.blockTime,
+          time: (
+            item.state?.eventIndexer ||
+            item.state?.extrinsicIndexer ||
+            item.state?.indexer
+          ).blockTime,
         },
       })),
       page,
@@ -80,13 +84,9 @@ class ProposalsController {
       value: proposal.value,
       symbolPrice: proposal.symbolPrice,
       beneficiary: proposal.beneficiary,
-      latestState: {
-        state: proposal.state?.name,
-        time: proposal.state?.indexer.blockTime,
-        indexer: proposal.state?.indexer,
-        data: proposal.state?.data,
-      },
+      latestState: proposal.state,
       motions: proposalMotions,
+      timeline: proposal.timeline,
     };
   }
 

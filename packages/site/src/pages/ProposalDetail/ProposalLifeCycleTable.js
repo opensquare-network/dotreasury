@@ -71,7 +71,7 @@ const ProposalLifeCycleTable = ({ loading }) => {
             <Table.Cell>
               <TableCell title="Status">
                 <FlexWrapper>
-                  <div>{proposalDetail.latestState?.state}</div>
+                  <div>{proposalDetail.latestState?.name}</div>
                 </FlexWrapper>
               </TableCell>
             </Table.Cell>
