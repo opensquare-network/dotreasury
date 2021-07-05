@@ -61,6 +61,9 @@ class TipsController {
       return;
     }
 
+    const tipValue =
+      tip.state?.state === "TipClosed" ? tip.state?.data?.[2] : null;
+
     ctx.body = {
       hash: tip.hash,
       proposeTime: tip.indexer.blockTime,
@@ -74,7 +77,7 @@ class TipsController {
         blockHeight: tip.state?.indexer.blockHeight,
       },
       tipsCount: tip.meta?.tips.length,
-      medianValue: tip.state?.data?.[2] || tip.medianValue,
+      medianValue: tipValue ?? tip.medianValue,
       symbolPrice: tip.symbolPrice,
       tippersCount: tip.tippersCount,
       tipFindersFee: tip.tipFindersFee,

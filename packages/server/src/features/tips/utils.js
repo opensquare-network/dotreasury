@@ -1,4 +1,7 @@
 function normalizeTip(tipInDb) {
+  const tipValue =
+    tipInDb.state?.state === "TipClosed" ? tipInDb.state?.data?.[2] : null;
+
   return {
     hash: tipInDb.hash,
     proposeTime: tipInDb.indexer.blockTime,
@@ -11,7 +14,7 @@ function normalizeTip(tipInDb) {
       time: tipInDb.state?.indexer.blockTime,
     },
     tipsCount: tipInDb.meta?.tips.length,
-    medianValue: tipInDb.state?.data?.[2] || tipInDb.medianValue,
+    medianValue: tipValue ?? tipInDb.medianValue,
     symbolPrice: tipInDb.symbolPrice,
   };
 }
