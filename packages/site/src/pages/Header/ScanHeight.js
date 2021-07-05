@@ -263,6 +263,7 @@ const ScanHeight = () => {
       setCurrentNode({
         chain: node,
         url: currentNodeSetting.polkadot,
+        refresh: true,
       })
     );
   };

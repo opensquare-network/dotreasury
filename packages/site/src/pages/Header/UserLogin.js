@@ -72,7 +72,7 @@ const UserLogin = ({ symbol }) => {
   const [addressDisplayName, setAddressDisplayName] = useState("");
 
   useEffect(() => {
-    if (loggedInUser && loggedInUser.username !== userProfile.username) {
+    if (loggedInUser && loggedInUser.username !== userProfile?.username) {
       dispatch(fetchUserProfile());
     }
   }, [dispatch, loggedInUser, userProfile]);

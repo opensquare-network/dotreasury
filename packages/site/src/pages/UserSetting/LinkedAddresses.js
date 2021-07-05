@@ -197,7 +197,7 @@ const LinkedAddress = () => {
 
   const mergedAccounts = [
     ...accounts,
-    ...(userProfile.addresses || [])
+    ...(userProfile?.addresses || [])
       .filter(
         (address) =>
           !accounts.some((acc) => acc.address === address.wildcardAddress)
@@ -233,7 +233,7 @@ const LinkedAddress = () => {
             {availableAccounts.map((account, index) => (
               <AccountWrapper
                 key={index}
-                linked={userProfile.addresses?.some(
+                linked={userProfile?.addresses?.some(
                   (i) => i.address === account[`${activeChain}Address`]
                 )}
               >
@@ -241,7 +241,7 @@ const LinkedAddress = () => {
                   accountName={account.name}
                   accountAddress={account[`${activeChain}Address`]}
                 />
-                {userProfile.addresses?.some(
+                {userProfile?.addresses?.some(
                   (i) => i.address === account[`${activeChain}Address`]
                 ) ? (
                   <ButtonImage

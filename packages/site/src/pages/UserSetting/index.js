@@ -53,7 +53,10 @@ const UserSetting = ({ location }) => {
   const defaultTabName = [
     ACCOUNT_SETTING,
     NOTIFICATION,
-    LINKED_ADDRESSES].includes(tabname) ? tabname : ACCOUNT_SETTING;
+    LINKED_ADDRESSES,
+  ].includes(tabname)
+    ? tabname
+    : ACCOUNT_SETTING;
   const history = useHistory();
   const dispatch = useDispatch();
   const [tab, setTab] = useState(defaultTabName);
@@ -72,13 +75,13 @@ const UserSetting = ({ location }) => {
   const userProfile = useSelector(userProfileSelector);
 
   const updateTab = (tabName) => {
-    setTab(tabName)
+    setTab(tabName);
     if (tabName === ACCOUNT_SETTING) {
-      history.push("/settings")
+      history.push("/settings");
     } else {
-      history.push(`/settings/${tabName}`)
+      history.push(`/settings/${tabName}`);
     }
-  }
+  };
 
   if (!loggedInUser) {
     return (
@@ -91,7 +94,7 @@ const UserSetting = ({ location }) => {
     );
   }
 
-  const { username, email, emailVerified } = userProfile;
+  const { username, email, emailVerified } = userProfile ?? {};
 
   return (
     <Wrapper>

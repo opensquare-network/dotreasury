@@ -148,7 +148,11 @@ const Setting = () => {
           disabled={selectedNode === defaultNode && selectedNetwork === chain}
           onClick={() => {
             dispatch(
-              setCurrentNode({ chain: selectedNetwork, url: selectedNode })
+              setCurrentNode({
+                chain: selectedNetwork,
+                url: selectedNode,
+                refresh: true,
+              })
             );
           }}
         >

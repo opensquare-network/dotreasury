@@ -32,24 +32,28 @@ const Notifications = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          mentioned: !userProfile.notification?.mentioned,
+          mentioned: !userProfile?.notification?.mentioned,
         }),
       }
     );
 
     if (result) {
       dispatch(fetchUserProfile());
-      dispatch(addToast({
-        type: "success",
-        message: "Change notification successfully!"
-      }))
+      dispatch(
+        addToast({
+          type: "success",
+          message: "Change notification successfully!",
+        })
+      );
     }
 
     if (error) {
-      dispatch(addToast({
-        type: "error",
-        message: "Change notification error"
-      }))
+      dispatch(
+        addToast({
+          type: "error",
+          message: "Change notification error",
+        })
+      );
     }
   };
 
@@ -59,7 +63,7 @@ const Notifications = () => {
       <Wrapper>
         <TextMinor>Subscribe to reply your comment.</TextMinor>
         <Toggle
-          checked={userProfile.notification?.mentioned}
+          checked={userProfile?.notification?.mentioned}
           onClick={toggleMentionNotification}
         />
       </Wrapper>

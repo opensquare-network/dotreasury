@@ -124,6 +124,9 @@ class ScanApi extends Api {
 
       return { error };
     } catch {
+      localStorage.removeItem("loggedInUser");
+      localStorage.removeItem("token");
+      // window.location.reload();
       return { result: null };
     }
   }
