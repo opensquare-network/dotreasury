@@ -94,7 +94,7 @@ function processTimeline(bountyDetail, scanHeight, symbol) {
                       title: stringToWords(key),
                       value: (() => {
                         if (key === "curator") {
-                          return <User address={val.id} />;
+                          return <User address={val.id || val} />;
                         } else if (key === "fee") {
                           return <Balance value={val} currency={symbol} />;
                         } else {
