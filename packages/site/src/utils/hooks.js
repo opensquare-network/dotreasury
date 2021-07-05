@@ -209,7 +209,6 @@ export function useLocalStorage(key, initialValue) {
   return [storedValue, setValue];
 }
 
-// Hook
 export function useWhyDidYouUpdate(name, props) {
   const previousProps = useRef();
   useEffect(() => {

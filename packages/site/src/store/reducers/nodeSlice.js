@@ -9,8 +9,10 @@ const nodeSlice = createSlice({
     nodes: getNodes(),
   },
   reducers: {
-    setCurrentNode(_, { payload }) {
-      const { chain, url } = payload;
+    setCurrentNode(state, { payload }) {
+      const { chain, url, refresh } = payload;
+      const boforeUrl = state.currentNode?.[chain];
+
       let nodeUrl = null;
       try {
         nodeUrl = JSON.parse(localStorage.getItem("nodeUrl"));
@@ -19,7 +21,19 @@ const nodeSlice = createSlice({
       }
       nodeUrl = { ...nodeUrl, [chain]: url };
       localStorage.setItem("nodeUrl", JSON.stringify(nodeUrl));
-      window.location.href = `/${symbolFromNetwork(chain).toLowerCase()}`;
+
+      state.nodes[chain] = (state.nodes?.[chain] || []).map((item) => {
+        if (item.url === boforeUrl) {
+          return { ...item, update: true };
+        } else {
+          return item;
+        }
+      });
+      state.currentNode = nodeUrl;
+
+      if (refresh) {
+        window.location.href = `/${symbolFromNetwork(chain).toLowerCase()}`;
+      }
     },
     setNodesDelay(state, { payload }) {
       (payload || []).forEach((item) => {

@@ -123,7 +123,7 @@ class ScanApi extends Api {
       }
 
       return { error };
-    } catch (err) {
+    } catch {
       localStorage.removeItem("loggedInUser");
       localStorage.removeItem("token");
       // window.location.reload();
