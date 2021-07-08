@@ -17,6 +17,7 @@ import {
 } from "../../store/reducers/nodeSlice";
 import { useOutsideClick } from "../../utils/hooks";
 import useUpdateNodesDelay from "../../utils/useUpdateNodesDelay";
+import { addToast } from "../../store/reducers/toastSlice";
 
 const Wrapper = styled.div`
   position: relative;
@@ -273,6 +274,12 @@ const ScanHeight = () => {
       setCurrentNode({
         chain,
         url,
+      })
+    );
+    dispatch(
+      addToast({
+        type: "success",
+        message: "Change node successfully!",
       })
     );
   };
