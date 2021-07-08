@@ -23,6 +23,9 @@ const Wrapper = styled.div`
     flex: 1 1 auto;
     color: ${TEXT_DARK_MINOR};
     word-break: break-word;
+    > * {
+      align-items: flex-start;
+    }
   }
 `;
 

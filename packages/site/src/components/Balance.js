@@ -42,6 +42,7 @@ const UsdtWrapper = styled.div`
   line-height: 18px;
   color: rgba(0, 0, 0, 0.3);
   white-space: nowrap;
+  align-self: center;
 `;
 
 const Balance = ({
