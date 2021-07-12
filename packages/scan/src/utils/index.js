@@ -9,9 +9,8 @@ const {
   MultisigMethods,
   UtilityMethods,
 } = require("./constants");
-const { expandMetadata } = require("@polkadot/metadata");
 const { currentChain } = require("../chain");
-const { GenericCall } = require("@polkadot/types");
+const { GenericCall, expandMetadata } = require("@polkadot/types");
 
 const sleep = (time) => {
   return new Promise((resolve) => {
