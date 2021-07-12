@@ -5,7 +5,7 @@ import { Image } from "semantic-ui-react";
 import Voter from "./Voter";
 import BarProgress from "./BarProgress";
 import TextMinor from "./TextMinor";
-import {TEXT_DARK_MAJOR, TEXT_DARK_MINOR} from "../constants"
+import { TEXT_DARK_MAJOR, TEXT_DARK_MINOR } from "../constants";
 
 const Wrapper = styled.div`
   display: flex;
@@ -13,7 +13,7 @@ const Wrapper = styled.div`
   & > :not(:last-child) {
     margin-bottom: 8px;
   }
-`
+`;
 
 const BarProgressWrapper = styled.div`
   display: flex;
@@ -22,17 +22,17 @@ const BarProgressWrapper = styled.div`
     margin-bottom: 8px;
   }
   margin-top: 8px;
-`
+`;
 
 const CustomText = styled(TextMinor)`
   white-space: nowrap;
-`
+`;
 
 const TextWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-`
+`;
 
 const AyeNayWrapper = styled.div`
   display: flex;
@@ -40,7 +40,7 @@ const AyeNayWrapper = styled.div`
   & > :not(:last-child) {
     margin-right: 16px;
   }
-`
+`;
 
 const ItemWrapper = styled.div`
   display: flex;
@@ -48,14 +48,14 @@ const ItemWrapper = styled.div`
   & > :not(:last-child) {
     margin-right: 8px;
   }
-`
+`;
 
 const ProposalArgsWrapper = styled.div`
   padding: 4px 16px;
   display: flex;
   flex-direction: column;
   background-color: #fbfbfb;
-`
+`;
 
 const ProposalArgsItemWrapper = styled.div`
   padding: 4px 0px;
@@ -77,23 +77,23 @@ const ProposalArgsItemWrapper = styled.div`
     color: ${TEXT_DARK_MINOR};
     word-break: break-word;
   }
-`
+`;
 
-const Proposer = ({address, agree, value, args, threshold, ayes, nays }) => {
+const Proposer = ({ address, agree, value, args, threshold, ayes, nays }) => {
   return (
     <Wrapper>
       <Voter address={address} agree={agree} value={value} />
 
-      { (args && args.length > 0) &&
-          <ProposalArgsWrapper>
-          { args.map(({title, value}) => (
-              <ProposalArgsItemWrapper key={title}>
-                <div className="title">{title}</div>
-                <div className="value">{value}</div>
-              </ProposalArgsItemWrapper>
-            ))}
-          </ProposalArgsWrapper>
-      }
+      {args && args.length > 0 && (
+        <ProposalArgsWrapper>
+          {args.map(({ title, value }) => (
+            <ProposalArgsItemWrapper key={title}>
+              <div className="title">{title}</div>
+              <div className="value">{value}</div>
+            </ProposalArgsItemWrapper>
+          ))}
+        </ProposalArgsWrapper>
+      )}
 
       <BarProgressWrapper>
         <BarProgress current={ayes} total={threshold} />
@@ -105,14 +105,14 @@ const Proposer = ({address, agree, value, args, threshold, ayes, nays }) => {
               <Image src="/imgs/aye.svg" />
             </ItemWrapper>
             <ItemWrapper>
-            <CustomText>Nay ({nays})</CustomText>
+              <CustomText>Nay ({nays})</CustomText>
               <Image src="/imgs/nay.svg" />
             </ItemWrapper>
           </AyeNayWrapper>
         </TextWrapper>
       </BarProgressWrapper>
     </Wrapper>
-  )
-}
+  );
+};
 
 export default Proposer;

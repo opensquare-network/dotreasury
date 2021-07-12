@@ -42,6 +42,11 @@ const UsdtWrapper = styled.div`
   line-height: 18px;
   color: rgba(0, 0, 0, 0.3);
   white-space: nowrap;
+  ${(p) =>
+    p.horizontal &&
+    css`
+      align-self: center;
+    `}
 `;
 
 const Balance = ({
@@ -62,7 +67,7 @@ const Balance = ({
     <Wrapper reverse={reverse} horizontal={horizontal}>
       <PairText value={localePrecision} unit={currency || symbol} />
       {usdt && !isNaN(usdtNumber) && (
-        <UsdtWrapper>{`${
+        <UsdtWrapper horizontal={horizontal}>{`${
           usdtNumber === 0 ? "" : "≈ "
         }$${toLocaleStringWithFixed(usdtNumber, 2)}`}</UsdtWrapper>
       )}
