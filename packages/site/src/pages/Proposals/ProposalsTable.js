@@ -57,6 +57,20 @@ const ProposeTimeWrapper = styled.div`
   }
 `;
 
+const getStateWithVotingAyes = (item) => {
+  const state = item.latestState.state;
+  const isProposalVoting = ["ApproveVoting", "RejectVoting"].includes(state);
+
+  if (isProposalVoting) {
+    const nAyes = item.latestState.motionVoting?.ayes?.length;
+    if (nAyes !== undefined) {
+      return state + ` (${nAyes})`;
+    }
+  }
+
+  return state;
+};
+
 const ProposalsTable = ({ data, loading, header, footer }) => {
   const history = useHistory();
   const symbol = useSelector(chainSymbolSelector);
@@ -131,7 +145,7 @@ const ProposalsTable = ({ data, loading, header, footer }) => {
                       </Table.Cell>
                       <Table.Cell className="status-cell" textAlign={"right"}>
                         <PairTextVertical
-                          value={item.latestState.state}
+                          value={getStateWithVotingAyes(item)}
                           detail={dayjs(parseInt(item.latestState.time)).format(
                             "YYYY-MM-DD HH:mm"
                           )}
