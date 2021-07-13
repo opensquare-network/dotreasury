@@ -131,7 +131,17 @@ const ProposalsTable = ({ data, loading, header, footer }) => {
                       </Table.Cell>
                       <Table.Cell className="status-cell" textAlign={"right"}>
                         <PairTextVertical
-                          value={item.latestState.state}
+                          value={
+                            item.latestState.state +
+                            (["ApproveVoting", "RejectVoting"].includes(
+                              item.latestState.state
+                            )
+                              ? ` (${
+                                  item.latestState.motionVoting?.ayes?.length ||
+                                  0
+                                })`
+                              : "")
+                          }
                           detail={dayjs(parseInt(item.latestState.time)).format(
                             "YYYY-MM-DD HH:mm"
                           )}
