@@ -63,7 +63,9 @@ const getStateWithVotingAyes = (item) => {
 
   if (isProposalVoting) {
     const nAyes = item.latestState.motionVoting?.ayes?.length;
-    return state + ` (${nAyes || 0})`;
+    if (nAyes !== undefined) {
+      return state + ` (${nAyes})`;
+    }
   }
 
   return state;
