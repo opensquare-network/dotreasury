@@ -280,7 +280,7 @@ const ScanHeight = () => {
     dispatch(
       addToast({
         type: "success",
-        message: `Node switched to ${nodeName} successfully!`,
+        message: `Node switched to ${nodeName}!`,
       })
     );
   };
