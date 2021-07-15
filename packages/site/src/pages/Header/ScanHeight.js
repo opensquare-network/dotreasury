@@ -276,10 +276,11 @@ const ScanHeight = () => {
         url,
       })
     );
+    const nodeName = nodesSetting[chain].find((item) => item.url === url)?.name;
     dispatch(
       addToast({
         type: "success",
-        message: "Change node successfully!",
+        message: `Node switched to ${nodeName} successfully!`,
       })
     );
   };
