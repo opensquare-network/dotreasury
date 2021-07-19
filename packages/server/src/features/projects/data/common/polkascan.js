@@ -32,7 +32,7 @@ const proposals = [
     amount: 3431.651,
     proposalId: 2,
     proposeTimePrice: 3.4,
-    title: "Cover expenses to run https://polkascan.io",
+    title: "Part of social contract: June 2020 - November 2020",
     achievements: [],
   },
   {
