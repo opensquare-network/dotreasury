@@ -7,8 +7,10 @@ const zkmega = require("./zkmega");
 const stylo = require("./stylo");
 const polkaworld = require("./polkaworld");
 const tee = require("./substrate-tee");
+const polkascan = require("../common/polkascan");
 
 const projects = [
+  polkascan,
   dotreasury,
   localCoinSwap,
   redspot,

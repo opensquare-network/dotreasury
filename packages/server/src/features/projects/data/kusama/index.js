@@ -7,8 +7,10 @@ const LocalCoinSwap = require("../common/localCoinSwap");
 const localKSM = require("./localKSM");
 const kusamaProject = require("./kusamaProject");
 const rotki = require("./rotki");
+const polkascan = require("../common/polkascan");
 
 const projects = [
+  polkascan,
   dotreasury,
   polkawallet,
   fearlessWallet,
