@@ -5,7 +5,7 @@ const title =
 
 const description = `Polkascan Foundation aims to make multi-chain data accessible and understandable through various activities including: the development of tools and libraries, the operation of platforms, governance and education. `;
 const startTime = 1606795356000;
-const logo = "dotreasury-logo.svg";
+const logo = "polkascan-logo.svg";
 
 const relatedLinks = [
   {
