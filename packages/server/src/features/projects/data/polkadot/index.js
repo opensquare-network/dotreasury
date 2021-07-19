@@ -8,8 +8,10 @@ const stylo = require("./stylo");
 const polkaworld = require("./polkaworld");
 const tee = require("./substrate-tee");
 const polkascan = require("../common/polkascan");
+const onfinality = require("../common/onFinality");
 
 const projects = [
+  onfinality,
   polkascan,
   dotreasury,
   localCoinSwap,

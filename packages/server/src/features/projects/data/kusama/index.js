@@ -8,8 +8,10 @@ const localKSM = require("./localKSM");
 const kusamaProject = require("./kusamaProject");
 const rotki = require("./rotki");
 const polkascan = require("../common/polkascan");
+const onfinality = require("../common/onFinality");
 
 const projects = [
+  onfinality,
   polkascan,
   dotreasury,
   polkawallet,
