@@ -3,7 +3,7 @@ const name = "onFinality";
 const title =
   "OnFinality is a SaaS platform providing infrastructure services for the Kusama/Substrate community.";
 
-const description = `OnFinality is a SaaS platform providing infrastructure services for the Kusama/Substrate community.`;
+const description = `Providing infrastructure services for the Kusama/Substrate community.`;
 const startTime = 1610076198000;
 const logo = "onfinality-logo.svg";
 

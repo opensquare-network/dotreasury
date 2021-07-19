@@ -1,10 +1,9 @@
 const id = "polkascan";
 const name = "Polkascan";
-const title =
-  "Polkascan Foundation aims to make multi-chain data accessible and understandable through various activities including: the development of tools and libraries, the operation of platforms, governance and education. ";
+const title = "Polkadot/Kusama explorers";
 
 const description = `Polkascan Foundation aims to make multi-chain data accessible and understandable through various activities including: the development of tools and libraries, the operation of platforms, governance and education. `;
-const startTime = 1606795356000;
+const startTime = 1594724118000;
 const logo = "polkascan-logo.svg";
 
 const relatedLinks = [
