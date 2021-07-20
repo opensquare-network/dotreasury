@@ -176,14 +176,16 @@ const Proposals = ({ data }) => {
                       )}
                     </ExpenseWrapper>
                   </Item>
-                  <Item>
-                    <Text>Achievement</Text>
-                    <div>
-                      {(item.achievements || []).map((item, index) => (
-                        <TextMinor key={index}>{item}</TextMinor>
-                      ))}
-                    </div>
-                  </Item>
+                  {(item.achievements || []).length > 0 && (
+                    <Item>
+                      <Text>Achievement</Text>
+                      <div>
+                        {(item.achievements || []).map((item, index) => (
+                          <TextMinor key={index}>{item}</TextMinor>
+                        ))}
+                      </div>
+                    </Item>
+                  )}
                 </CardWrapper>
               </VerticalWrapper>
             </ContentWrapper>
