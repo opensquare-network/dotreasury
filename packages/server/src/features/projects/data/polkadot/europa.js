@@ -15,6 +15,16 @@ const relatedLinks = [
 const proposals = [
   {
     token: "dot",
+    amount: 1091,
+    proposalId: 49,
+    proposeTimePrice: 37.8,
+    title: "Europa v0.3",
+    achievements: [
+      "Improve the developement experience, strengthen collaboration with other tools, and extend the sandbox to be compatible with other runtime modules",
+    ],
+  },
+  {
+    token: "dot",
     amount: 7560,
     proposalId: 27,
     proposeTimePrice: 4.94,

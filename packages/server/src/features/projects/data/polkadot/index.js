@@ -7,8 +7,20 @@ const zkmega = require("./zkmega");
 const stylo = require("./stylo");
 const polkaworld = require("./polkaworld");
 const tee = require("./substrate-tee");
+const polkascan = require("../common/polkascan");
+const onfinality = require("../common/onFinality");
+const polkastats = require("../common/polkaStats");
+const peri = require("../polkadot/peri");
+const subscan = require("../common/subscan");
+const polkassembly = require("./polkassembly");
 
 const projects = [
+  polkassembly,
+  subscan,
+  peri,
+  polkastats,
+  onfinality,
+  polkascan,
   dotreasury,
   localCoinSwap,
   redspot,
