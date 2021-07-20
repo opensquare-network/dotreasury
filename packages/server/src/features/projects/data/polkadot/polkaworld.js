@@ -25,6 +25,14 @@ const proposals = [
       "Wiki page developed",
     ],
   },
+  {
+    token: "dot",
+    amount: 1885.98,
+    proposalId: 48,
+    proposeTimePrice: 35.98,
+    title: "Cover operation cost for 06.2021 - 08.2021",
+    achievements: [],
+  },
 ];
 
 module.exports = {
