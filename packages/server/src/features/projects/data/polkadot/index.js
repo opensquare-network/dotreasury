@@ -12,8 +12,10 @@ const onfinality = require("../common/onFinality");
 const polkastats = require("../common/polkaStats");
 const peri = require("../polkadot/peri");
 const subscan = require("../common/subscan");
+const polkassembly = require("./polkassembly");
 
 const projects = [
+  polkassembly,
   subscan,
   peri,
   polkastats,
