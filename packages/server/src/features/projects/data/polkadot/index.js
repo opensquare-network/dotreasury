@@ -10,8 +10,10 @@ const tee = require("./substrate-tee");
 const polkascan = require("../common/polkascan");
 const onfinality = require("../common/onFinality");
 const polkastats = require("../common/polkaStats");
+const peri = require("../polkadot/peri");
 
 const projects = [
+  peri,
   polkastats,
   onfinality,
   polkascan,
