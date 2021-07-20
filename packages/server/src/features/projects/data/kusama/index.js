@@ -10,8 +10,10 @@ const rotki = require("./rotki");
 const polkascan = require("../common/polkascan");
 const onfinality = require("../common/onFinality");
 const polkastats = require("../common/polkaStats");
+const subscan = require("../common/subscan");
 
 const projects = [
+  subscan,
   polkastats,
   onfinality,
   polkascan,
