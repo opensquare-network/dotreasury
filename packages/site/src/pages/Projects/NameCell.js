@@ -10,19 +10,23 @@ const Wrapper = styled.div`
   & > :first-child {
     margin-right: 8px;
   }
-`
+`;
 
 const TextWrapper = styled(Text)`
-  white-space: nowrap; 
-`
+  /* white-space: nowrap;  */
+`;
 
 const NameCell = ({ logo, name }) => {
   return (
     <Wrapper>
-      <Image src={logo ? `/imgs/projects/${logo}` : "/imgs/default-logo.svg"} width={24} height={24} />
+      <Image
+        src={logo ? `/imgs/projects/${logo}` : "/imgs/default-logo.svg"}
+        width={24}
+        height={24}
+      />
       <TextWrapper>{name}</TextWrapper>
     </Wrapper>
-  )
-}
+  );
+};
 
 export default NameCell;
