@@ -4,7 +4,7 @@
   "license": "Apache-2.0",
   "homepage": "https://www.dotreasury.com",
   "dependencies": {
-    "@polkadot/api": "^5.0.1",
+    "@polkadot/api": "^5.1.1",
     "@polkadot/extension-dapp": "^0.39.1",
     "@polkadot/react-identicon": "^0.84.1",
     "@reduxjs/toolkit": "^1.5.0",
