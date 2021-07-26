@@ -64,7 +64,7 @@ async function scanBlock(blockInDb) {
   }
 
   let block;
-  if (isHex(blockInDb.block())) {
+  if (isHex(blockInDb.block)) {
     block = new GenericBlock(registry.registry, hexToU8a(blockInDb.block));
   } else {
     block = new GenericBlock(registry.registry, blockInDb.block);
