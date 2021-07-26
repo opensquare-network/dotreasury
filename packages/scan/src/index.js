@@ -67,7 +67,7 @@ async function scanBlock(blockInDb) {
   if (isHex(blockInDb.block)) {
     block = new GenericBlock(registry.registry, hexToU8a(blockInDb.block));
   } else {
-    block = new GenericBlock(registry.registry, blockInDb.block);
+    block = new GenericBlock(registry.registry, blockInDb.block.block);
   }
   const allEvents = registry.registry.createType(
     "Vec<EventRecord>",
