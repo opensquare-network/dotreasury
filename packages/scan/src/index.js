@@ -47,7 +47,7 @@ async function main() {
         await updateScanHeight(block.height);
       } catch (e) {
         await sleep(3000);
-        console.error(`Error with block scan ${scanHeight}`, e);
+        logger.error(`Error with block scan ${scanHeight}`, e);
         continue;
       }
 
