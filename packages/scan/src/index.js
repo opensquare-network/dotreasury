@@ -48,12 +48,10 @@ async function main() {
       } catch (e) {
         await sleep(3000);
         logger.error(`Error with block scan ${scanHeight}`, e);
-        continue;
       }
-
-      scanHeight = block.height + 1;
     }
 
+    scanHeight = targetHeight + 1;
     logger.info(`block ${targetHeight} done`);
   }
 }
