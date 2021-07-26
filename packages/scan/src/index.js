@@ -4,7 +4,7 @@ const { getApi } = require("./api");
 const { updateHeight } = require("./chain/latestHead");
 const { deleteDataFrom } = require("./clean");
 const { getLatestHeight } = require("./chain/latestHead");
-const { sleep, logger } = require("./utils");
+const { sleep, logger, isHex } = require("./utils");
 const { getBlockIndexer } = require("./block/getBlockIndexer");
 const { handleExtrinsics } = require("./extrinsic");
 const { handleEvents } = require("./events");
@@ -63,7 +63,12 @@ async function scanBlock(blockInDb) {
     registry = await getRegistryByHeight(blockInDb.height);
   }
 
-  const block = new GenericBlock(registry.registry, hexToU8a(blockInDb.block));
+  let block;
+  if (isHex(blockInDb.block())) {
+    block = new GenericBlock(registry.registry, hexToU8a(blockInDb.block));
+  } else {
+    block = new GenericBlock(registry.registry, blockInDb.block);
+  }
   const allEvents = registry.registry.createType(
     "Vec<EventRecord>",
     blockInDb.events,
