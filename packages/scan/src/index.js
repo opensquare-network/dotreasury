@@ -51,7 +51,8 @@ async function main() {
       }
     }
 
-    scanHeight = targetHeight + 1;
+    const destHeight = blocks[(blocks || []).length - 1].height;
+    scanHeight = destHeight + 1;
     logger.info(`block ${targetHeight} done`);
   }
 }
