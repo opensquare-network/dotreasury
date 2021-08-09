@@ -5,9 +5,10 @@ import { Dropdown } from "semantic-ui-react";
 
 const Container = styled.div`
   padding: 16px 24px;
-  max-height: 64px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
 
   @media screen and (max-width: 640px) {
     > div:first-child {
@@ -24,6 +25,8 @@ const Container = styled.div`
   @media screen and (max-width: 640px) {
     .hidden {
       display: none;
+      width: 0 !important;
+      height: 0 !important;
     }
   }
 `;
@@ -31,7 +34,6 @@ const Container = styled.div`
 const TextWrapper = styled.div`
   width: 153px;
   height: 24px;
-  flex-grow: 1;
 `;
 
 const DropdownWrapper = styled.div`
@@ -103,6 +105,11 @@ const CustomDropdown = styled(Dropdown)`
   }
 `;
 
+const SelectWrapper = styled.div`
+  display: flex;
+  margin-left: auto;
+`;
+
 const options = [
   { key: 1, text: "20", value: 20 },
   { key: 2, text: "50", value: 50 },
@@ -132,9 +139,9 @@ const ResponsivePagination = ({
         onPageChange={onPageChange}
       />
       {totalPages > 0 && (
-        <>
-          <TextWrapper>
-            <DropdownText className="hidden">Show rows</DropdownText>
+        <SelectWrapper>
+          <TextWrapper className="hidden">
+            <DropdownText>Show rows</DropdownText>
           </TextWrapper>
           <DropdownWrapper>
             <CustomDropdown
@@ -146,7 +153,7 @@ const ResponsivePagination = ({
               }}
             />
           </DropdownWrapper>
-        </>
+        </SelectWrapper>
       )}
     </Container>
   );
