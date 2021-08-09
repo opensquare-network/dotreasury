@@ -136,7 +136,7 @@ export default function App() {
               TransfersSlash
               <Route
                 exact
-                path="/:symbol(ksm|dot)/income/slash/transfers"
+                path="/:symbol(ksm|dot)/income/transfers"
                 component={TransfersSlash}
               />
               <Route
