@@ -13,6 +13,7 @@ import PolygonLabel from "../../components/PolygonLabel";
 import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import Card from "../../components/Card";
+import User from "../../components/User";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -121,7 +122,10 @@ const TransfersTable = ({ data, loading, header, footer }) => {
                         </ExplorerLink>
                       </Table.Cell>
                       <Table.Cell>
-                        <Text>{item.transferEventData[0]}</Text>
+                        <User
+                          address={item.transferEventData[0]}
+                          ellipsis={false}
+                        />
                       </Table.Cell>
                       <Table.Cell textAlign={"right"} className="balance-cell">
                         <Balance value={item.balance} currency={symbol} />
