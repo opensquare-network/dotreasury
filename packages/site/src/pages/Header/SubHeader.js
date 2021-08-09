@@ -313,12 +313,12 @@ const TabExampleSecondaryPointing = () => {
               as: NavLink,
               id: "transfersSlashTab",
               content: <TansfersSlashMenu />,
-              to: `/${symbol}/income/slash/transfers`,
+              to: `/${symbol}/income/transfers`,
               exact: true,
               key: "transfersSlash",
               active:
-                `/${symbol}/income/slash/transfers` === pathname ||
-                pathname.indexOf(`/${symbol}/income/slash/transfers`) === 0,
+                `/${symbol}/income/transfers` === pathname ||
+                pathname.indexOf(`/${symbol}/income/transfers`) === 0,
             },
           },
           {
