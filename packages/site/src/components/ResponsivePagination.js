@@ -107,7 +107,7 @@ const CustomDropdown = styled(Dropdown)`
 
 const SelectWrapper = styled.div`
   display: flex;
-  margin-left: auto;
+  margin: 8px 0;
 `;
 
 const options = [
