@@ -18,6 +18,15 @@ const relatedLinks = [
 
 const proposals = [
   {
+    token: "ksm",
+    amount: 38.66,
+    proposalId: 103,
+    proposeTimePrice: 206.7,
+    title:
+      "Maintenance from 05.2021 to 07.2021 and part of M3 features development",
+    achievements: [],
+  },
+  {
     token: "dot",
     amount: 376,
     proposalId: 42,
@@ -26,8 +35,8 @@ const proposals = [
     achievements: [
       "Code refactor to support multiple chains.",
       "Add price tracker so we can see fiat cost of the expenses.",
-      "Polkadot related off-chain materials collect and product polish"
-    ]
+      "Polkadot related off-chain materials collect and product polish",
+    ],
   },
   {
     token: "ksm",
