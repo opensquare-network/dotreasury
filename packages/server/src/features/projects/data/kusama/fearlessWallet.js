@@ -8,6 +8,14 @@ const startTime = 1590044478000;
 const proposals = [
   {
     token: "ksm",
+    amount: 563.53,
+    proposalId: 74,
+    proposeTimePrice: 206.98,
+    title: "Multi-asset & networks support proposal",
+    achievements: [],
+  },
+  {
+    token: "ksm",
     amount: 1373.0445,
     proposalId: 74,
     proposeTimePrice: 95,

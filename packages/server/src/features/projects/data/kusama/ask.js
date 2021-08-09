@@ -20,6 +20,32 @@ const relatedLinks = [
 const proposals = [
   {
     token: "ksm",
+    amount: 458,
+    proposalId: 101,
+    proposeTimePrice: 189.4,
+    title: "v0.3 (AssemblyScript Contract)",
+    achievements: [
+      "Add project management tool ask-cli",
+      "Performance optimization",
+      "Provide system parameter types in custom env",
+      "Unit Testing and Documentation",
+    ],
+  },
+  {
+    token: "ksm",
+    amount: 440,
+    proposalId: 81,
+    proposeTimePrice: 317.9,
+    title: "v0.2 (ink! in AS)",
+    achievements: [
+      "Add spread and packed data storage methods",
+      "Add new annotations and extend the supported annotation functions",
+      "Add contract inheritance function",
+      "Add the function of cross-contract call by specifying @dynamic class",
+    ],
+  },
+  {
+    token: "ksm",
     amount: 1661,
     proposalId: 66,
     proposeTimePrice: 69,

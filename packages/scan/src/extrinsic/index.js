@@ -11,6 +11,7 @@ const {
   MultisigMethods,
 } = require("../utils/constants");
 const { handleAcceptCurator } = require("./treasury/bounty/acceptCurator");
+const { logger } = require("../utils/logger");
 
 async function handleCall(call, author, extrinsicIndexer) {
   await handleTipCall(...arguments);
@@ -34,7 +35,15 @@ async function handleMultisig(call, signer, extrinsicIndexer) {
     call.registry.chainSS58
   );
 
-  const innerCall = new GenericCall(call.registry, callHex);
+  let innerCall;
+
+  try {
+    innerCall = new GenericCall(call.registry, callHex);
+  } catch (e) {
+    logger.error(`error when parse multiSig`, extrinsicIndexer);
+    return;
+  }
+
   await handleWrappedCall(innerCall, multisigAddr, extrinsicIndexer);
 }
 
