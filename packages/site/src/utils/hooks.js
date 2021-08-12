@@ -2,7 +2,7 @@ import { useLayoutEffect, useState, useEffect, useRef } from "react";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { getIndentity } from "../services/chainApi";
+import { fetchIdentity as getIndentity } from "../services/identity";
 import { setShowMenuTabs } from "../store/reducers/menuSlice";
 import {
   chainSelector,
@@ -39,15 +39,22 @@ export const useIndentity = (address, map) => {
         identity = await getIndentity(chain, address);
         displayCache.set(`identity_${address}`, identity);
       }
+      identity = identity?.info;
       if (isMounted && identity && identity.display) {
         const judgements = identity.judgements.filter(
           ([, judgement]) => !judgement.isFreePaid
         );
         const isGood = judgements.some(
-          ([, judgement]) => judgement.isKnownGood || judgement.isReasonable
+          ([, judgement]) =>
+            typeof judgement === "object" &&
+            (Object.keys(judgement).some((key) => key === "reasonable") ||
+              Object.keys(judgement).some((key) => key === "knownGood"))
         );
         const isBad = judgements.some(
-          ([, judgement]) => judgement.isErroneous || judgement.isLowQuality
+          ([, judgement]) =>
+            typeof judgement === "object" &&
+            (Object.keys(judgement).some((key) => key === "erroneous") ||
+              Object.keys(judgement).some((key) => key === "lowQuality"))
         );
         const displayName = isGood
           ? identity.display
