@@ -47,7 +47,8 @@ export const useIndentity = (address, map) => {
         const isGood = judgements.some(
           ([, judgement]) =>
             typeof judgement === "object" &&
-            Object.keys(judgement).some((key) => key === "reasonable")
+            (Object.keys(judgement).some((key) => key === "reasonable") ||
+              Object.keys(judgement).some((key) => key === "knownGood"))
         );
         const isBad = judgements.some(
           ([, judgement]) =>
