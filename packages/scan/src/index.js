@@ -19,6 +19,7 @@ const { findRegistry } = require("./mongo/service/specs");
 async function main() {
   await updateHeight();
   let scanHeight = await getNextScanHeight();
+  await updateSpecs();
   await deleteDataFrom(scanHeight);
 
   while (true) {
