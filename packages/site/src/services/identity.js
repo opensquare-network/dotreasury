@@ -1,5 +1,4 @@
 import debounce from "lodash/debounce";
-import axios from "axios";
 
 const cachedIdentities = new Map();
 let pendingQueries = new Map();
@@ -24,15 +23,23 @@ const delayQuery = debounce(() => {
   for (const chain in chainAddresses) {
     const addresses = chainAddresses[chain];
 
-    axios
-      .post(
+    window
+      .fetch(
         `${process.env.REACT_APP_IDENTITY_SERVER_HOST}/${chain}/identities`,
-        { addresses }
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ addresses }),
+        }
       )
-      .then(({ data }) => {
+      .then((resp) => resp.json())
+      .then((data) => {
         const identities = new Map(data.map((item) => [item.address, item]));
 
-        for (const [idName, [, resolve, reject]] of pending) {
+        for (const [idName, [, resolve]] of pending) {
           const [chainOfIdName, addrOfIdName] = idName.split("/");
           if (chainOfIdName !== chain) {
             continue;

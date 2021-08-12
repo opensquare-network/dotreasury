@@ -45,10 +45,15 @@ export const useIndentity = (address, map) => {
           ([, judgement]) => !judgement.isFreePaid
         );
         const isGood = judgements.some(
-          ([, judgement]) => judgement.isKnownGood || judgement.isReasonable
+          ([, judgement]) =>
+            typeof judgement === "object" &&
+            Object.keys(judgement).some((key) => key === "reasonable")
         );
         const isBad = judgements.some(
-          ([, judgement]) => judgement.isErroneous || judgement.isLowQuality
+          ([, judgement]) =>
+            typeof judgement === "object" &&
+            (Object.keys(judgement).some((key) => key === "erroneous") ||
+              Object.keys(judgement).some((key) => key === "lowQuality"))
         );
         const displayName = isGood
           ? identity.display
