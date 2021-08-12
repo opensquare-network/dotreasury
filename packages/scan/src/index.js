@@ -19,8 +19,13 @@ const { findRegistry } = require("./mongo/service/specs");
 async function main() {
   await updateHeight();
   let scanHeight = await getNextScanHeight();
-  await updateSpecs();
   await deleteDataFrom(scanHeight);
+  await updateSpecs();
+  const specHeights = getSpecHeights();
+  if (specHeights.length <= 0 || specHeights[0] > 1) {
+    logger.error("No specHeights or invalid");
+    return;
+  }
 
   while (true) {
     const chainHeight = getLatestHeight();
