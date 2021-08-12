@@ -1,4 +1,4 @@
-import debounce from "lodash/debounce";
+import debounce from "lodash.debounce";
 
 const cachedIdentities = new Map();
 let pendingQueries = new Map();
