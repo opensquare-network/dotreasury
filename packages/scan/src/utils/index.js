@@ -257,16 +257,7 @@ function findCallInSections(call, sections, targetMethod) {
   return null;
 }
 
-function isHex(blockData) {
-  if (typeof blockData !== "string") {
-    return false;
-  }
-
-  return blockData.startsWith("0x");
-}
-
 module.exports = {
-  isHex,
   getExtrinsicSigner,
   isExtrinsicSuccess,
   extractExtrinsicEvents,
