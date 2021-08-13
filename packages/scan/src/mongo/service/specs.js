@@ -7,13 +7,6 @@ let registryMap = {};
 
 async function updateSpecs() {
   versionChangedHeights = await getAllVersionChangeHeights();
-  for (const height of versionChangedHeights) {
-    if (registryMap[height]) {
-      continue;
-    }
-
-    registryMap[height] = await getRegistryByHeight(height);
-  }
 }
 
 function getSpecHeights() {
@@ -29,12 +22,13 @@ async function findRegistry(height) {
     throw new Error(`Can not find registry for height ${height}`);
   }
 
-  const registry = registryMap[mostRecentChangeHeight];
+  let registry = registryMap[mostRecentChangeHeight];
   if (!registry) {
-    await updateSpecs();
+    registry = await getRegistryByHeight(mostRecentChangeHeight);
+    registryMap[mostRecentChangeHeight] = registry;
   }
 
-  return registryMap[mostRecentChangeHeight];
+  return registry;
 }
 
 module.exports = {
