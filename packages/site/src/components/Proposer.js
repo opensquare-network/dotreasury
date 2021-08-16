@@ -76,6 +76,9 @@ const ProposalArgsItemWrapper = styled.div`
     flex: 1 1 auto;
     color: ${TEXT_DARK_MINOR};
     word-break: break-word;
+    :not(:first-child) > * {
+      align-items: flex-start;
+    }
   }
 `;
 
