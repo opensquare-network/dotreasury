@@ -1,5 +1,6 @@
 const {
   TipMethods,
+  TipEvents,
   Modules,
   ksmFirstTipClosedHeight,
   ksmTreasuryRefactorApplyHeight,
@@ -133,7 +134,7 @@ async function handleTipCloseCall(call, author, extrinsicIndexer) {
 
   const { section, method, args } = call;
   const indexer = extrinsicIndexer;
-  if (!isTipModule(section, indexer.blockHeight)) {
+  if (![Modules.Treasury, Modules.Tips].includes(section)) {
     return;
   }
 
@@ -144,12 +145,12 @@ async function handleTipCloseCall(call, author, extrinsicIndexer) {
     return;
   }
 
-  const { hash } = args.toJSON();
+  const hash = args[0].toJSON();
   await updateTipFinalStateByCall(
     author,
     hash,
-    method,
-    args.toJSON(),
+    TipEvents.TipClosed,
+    { hash },
     extrinsicIndexer
   );
 }
