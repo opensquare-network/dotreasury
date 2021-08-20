@@ -20,6 +20,7 @@ import { getGravatarSrc } from "../../utils";
 import scanApi from "../../services/scanApi";
 import { setLoggedInUser } from "../../store/reducers/userSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
+import { encodeSubstrateAddress } from "../../services/chainApi";
 
 const Wrapper = styled.a`
   display: flex;
@@ -68,7 +69,9 @@ const UserLogin = ({ symbol }) => {
   const userProfile = useSelector(userProfileSelector);
   const chain = useSelector(chainSelector);
   const address = userProfile?.addresses?.filter((i) => i.chain === chain)[0];
-  const { name: addressName } = useIndentity(address?.wildcardAddress);
+  const { name: addressName } = useIndentity(
+    address && encodeSubstrateAddress(address.address)
+  );
   const [addressDisplayName, setAddressDisplayName] = useState("");
 
   useEffect(() => {
