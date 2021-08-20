@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Image } from "semantic-ui-react";
 import { NavLink } from "react-router-dom";
 import { useHistory } from "react-router";
 import {
+  fetchUserProfile,
   isLoggedInSelector,
   loggedInUserSelector,
+  setLoggedInUser,
   userProfileSelector,
-  fetchUserProfile,
 } from "../../store/reducers/userSlice";
-// import ButtonPrimary from "../../components/ButtonPrimary";
 import ButtonLabel from "../../components/ButtonLabel";
 import TextMinor from "../../components/TextMinor";
 import { TEXT_DARK_MAJOR } from "../../constants";
@@ -18,9 +18,7 @@ import { useIndentity } from "../../utils/hooks";
 import UserAvatar from "../../components/User/Avatar";
 import { getGravatarSrc } from "../../utils";
 import scanApi from "../../services/scanApi";
-import { setLoggedInUser } from "../../store/reducers/userSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
-import { encodeSubstrateAddress } from "../../services/chainApi";
 
 const Wrapper = styled.a`
   display: flex;
@@ -51,7 +49,7 @@ const SignUpButton = styled(ButtonLabel)`
   margin-right: 32px !important;
   font-weight: 500 !important;
   button {
-    font-weight: 600px !important;
+    font-weight: 600 !important;
   }
 `;
 
@@ -69,9 +67,7 @@ const UserLogin = ({ symbol }) => {
   const userProfile = useSelector(userProfileSelector);
   const chain = useSelector(chainSelector);
   const address = userProfile?.addresses?.filter((i) => i.chain === chain)[0];
-  const { name: addressName } = useIndentity(
-    address && encodeSubstrateAddress(address.address)
-  );
+  const { name: addressName } = useIndentity(address && address.address);
   const [addressDisplayName, setAddressDisplayName] = useState("");
 
   useEffect(() => {
