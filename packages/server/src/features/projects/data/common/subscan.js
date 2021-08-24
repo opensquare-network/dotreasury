@@ -15,6 +15,14 @@ const relatedLinks = [
 
 const proposals = [
   {
+    token: "dot",
+    amount: 967,
+    proposalId: 60,
+    proposeTimePrice: 14.16,
+    title: "Cover operation cost for 08.2021 - 10.2021",
+    achievements: [],
+  },
+  {
     token: "ksm",
     amount: 75,
     proposalId: 54,
