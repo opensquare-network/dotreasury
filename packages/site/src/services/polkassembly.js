@@ -12,15 +12,18 @@ class PolkassemblyApi extends Api {
       return null;
     }
 
-    const { result } = await this.fetch("/v1/graphql", {}, {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        operationName: "MotionPostAndComments",
-        variables: { id: motionIndex },
-        query: `
+    const { result } = await this.fetch(
+      "/v1/graphql",
+      {},
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          operationName: "MotionPostAndComments",
+          variables: { id: motionIndex },
+          query: `
           query MotionPostAndComments($id: Int!) {
             posts(where: {
               onchain_link: { onchain_motion_id: { _eq: $id } }
@@ -28,8 +31,9 @@ class PolkassemblyApi extends Api {
               __typename
             }
           }`,
-      }),
-    });
+        }),
+      }
+    );
 
     if (result?.data?.posts?.length > 0) {
       return `https://${chain}.polkassembly.io/motion/${motionIndex}`;
@@ -43,25 +47,62 @@ class PolkassemblyApi extends Api {
       return null;
     }
 
-    const { result } = await this.fetch("/v1/graphql", {}, {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        operationName: "TreasuryProposalPostAndComments",
-        variables: { id: proposalIndex },
-        query: `
+    const { result } = await this.fetch(
+      "/v1/graphql",
+      {},
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          operationName: "TreasuryProposalPostAndComments",
+          variables: { id: proposalIndex },
+          query: `
           query TreasuryProposalPostAndComments($id: Int!) {
             posts(where: {onchain_link: {onchain_treasury_proposal_id: {_eq: $id}}}) {
               __typename
             }
           }`,
-      }),
-    });
+        }),
+      }
+    );
 
     if (result?.data?.posts?.length > 0) {
       return `https://${chain}.polkassembly.io/treasury/${proposalIndex}`;
+    } else {
+      return null;
+    }
+  }
+
+  async getTipUrl(tipHash) {
+    if (tipHash === undefined || tipHash === null) {
+      return null;
+    }
+
+    const { result } = await this.fetch(
+      "/v1/graphql",
+      {},
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          operationName: "TipPostAndComments",
+          variables: { hash: tipHash },
+          query: `
+          query TipPostAndComments($hash: String!) {
+            posts(where: {onchain_link: {onchain_tip_id: {_eq: $hash}}}) {
+              __typename
+            }
+          }`,
+        }),
+      }
+    );
+
+    if (result?.data?.posts?.length > 0) {
+      return `https://${chain}.polkassembly.io/tip/${tipHash}`;
     } else {
       return null;
     }
