@@ -152,6 +152,7 @@ const TreasuryMethods = Object.freeze({
 const StakingEvents = Object.freeze({
   EraPayout: "EraPayout",
   Slash: "Slash",
+  Slashed: "Slashed",
   Reward: "Reward",
 });
 

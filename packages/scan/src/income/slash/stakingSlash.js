@@ -13,7 +13,10 @@ async function handleStakingSlash(event, sort, allBlockEvents, blockIndexer) {
   const {
     event: { section, method },
   } = preEvent;
-  if (section !== Modules.Staking || method !== StakingEvents.Slash) {
+  if (
+    section !== Modules.Staking ||
+    ![StakingEvents.Slash, StakingEvents.Slashed].includes(method)
+  ) {
     return;
   }
 
@@ -23,7 +26,10 @@ async function handleStakingSlash(event, sort, allBlockEvents, blockIndexer) {
     const {
       event: { section, method },
     } = allBlockEvents[iter];
-    if (section !== Modules.Staking || method !== StakingEvents.Slash) {
+    if (
+      section !== Modules.Staking ||
+      ![StakingEvents.Slash, StakingEvents.Slashed].includes(method)
+    ) {
       break;
     }
 
