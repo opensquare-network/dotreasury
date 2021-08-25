@@ -145,9 +145,17 @@ const TipDetail = () => {
 
   const links = useSelector(linksSelector);
 
-  const getShortTipId = (id) => {
-    if (!id) return "";
-    return `${id.slice(0, 12)}...${id.slice(id.length - 4)}`;
+  const getShortTipId = (tipDetail) => {
+    if (!tipDetail.hash) return "";
+    return `${tipDetail.proposeAtBlockHeight}_${tipDetail.hash.slice(
+      0,
+      4
+    )}...${tipDetail.hash.slice(tipDetail.hash.length - 4)}`;
+  };
+
+  const getTipIndex = (tipDetail) => {
+    if (!tipDetail.hash) return null;
+    return new TipIndex(`${tipDetail.proposeAtBlockHeight}_${tipDetail.hash}`);
   };
 
   useEffect(() => {
@@ -157,14 +165,14 @@ const TipDetail = () => {
   return (
     <>
       <DetailGoBack />
-      <DetailTableWrapper title="Tip" desc={getShortTipId(tipId)}>
+      <DetailTableWrapper title="Tip" desc={getShortTipId(tipDetail)}>
         <InformationTable loading={loadingTipDetail} />
         <TipLifeCycleTable loading={loadingTipDetail} />
-        <RelatedLinks type="tip" index={new TipIndex(tipId)} />
+        <RelatedLinks type="tip" index={getTipIndex(tipDetail)} />
       </DetailTableWrapper>
       <TimelineCommentWrapper>
         <Timeline data={timelineData} loading={loadingTipDetail} />
-        <Comment type="tip" index={new TipIndex(tipId)} />
+        <Comment type="tip" index={getTipIndex(tipDetail)} />
       </TimelineCommentWrapper>
     </>
   );

@@ -48,7 +48,9 @@ const RelatedLinks = ({ type, index }) => {
   const chain = useSelector(chainSelector);
 
   useDeepCompareEffect(() => {
-    dispatch(fetchLinks(chain, type, index));
+    if (index) {
+      dispatch(fetchLinks(chain, type, index));
+    }
     return () => {
       dispatch(setLinks([]));
     };
