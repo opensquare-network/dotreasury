@@ -41,22 +41,6 @@ export const {
   setCurrentPage,
 } = commentSlice.actions;
 
-export class TipIndex {
-  constructor(tipIndex) {
-    const match = tipIndex.match(/^(\d+)_(0x[0-9a-f]+)$/);
-    if (!match) {
-      throw new Error("Invalid tip index");
-    }
-
-    this.blockHeight = parseInt(match[1]);
-    this.tipHash = match[2];
-  }
-
-  toString() {
-    return `${this.blockHeight}_${this.tipHash}`;
-  }
-}
-
 export const fetchComments = (chain, type, index, page, pageSize) => async (
   dispatch
 ) => {
@@ -79,7 +63,9 @@ export const fetchComments = (chain, type, index, page, pageSize) => async (
   );
 };
 
-export const postComment = (chain, type, index, content) => async (dispatch) => {
+export const postComment = (chain, type, index, content) => async (
+  dispatch
+) => {
   const { result } = await api.authFetch(
     `/${chain}/${pluralize(type)}/${index}/comments`,
     {},
@@ -173,6 +159,6 @@ export const commentsSelector = (state) => state.comments.comments;
 export const clearCommentSelector = (state) => state.comments.clearComment;
 export const lastNewPostSelector = (state) => state.comments.lastNewPost;
 export const lastUpdateCommentTimeSelector = (state) =>
-state.comments.lastUpdateCommentTime;
+  state.comments.lastUpdateCommentTime;
 
 export default commentSlice.reducer;

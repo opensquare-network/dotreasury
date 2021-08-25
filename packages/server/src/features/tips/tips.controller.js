@@ -48,13 +48,34 @@ class TipsController {
   }
 
   async getTipDetail(ctx) {
-    const { blockHeight, tipHash, chain } = ctx.params;
+    const { tipId, chain } = ctx.params;
+
+    let blockHeight = null;
+    let tipHash = null;
+
+    const match = tipId.match(/^(\d+)_(0x[0-9a-f]+)$/);
+    if (match) {
+      blockHeight = parseInt(match[1]);
+      tipHash = match[2];
+    } else {
+      tipHash = tipId;
+    }
 
     const tipCol = await getTipCollection(chain);
-    const tip = await tipCol.findOne({
-      hash: tipHash,
-      "indexer.blockHeight": parseInt(blockHeight),
-    });
+    let tip = null;
+    if (blockHeight === null) {
+      tip = await tipCol.findOne(
+        { hash: tipHash },
+        {
+          sort: { "indexer.blockHeight": -1 },
+        }
+      );
+    } else {
+      tip = await tipCol.findOne({
+        hash: tipHash,
+        "indexer.blockHeight": parseInt(blockHeight),
+      });
+    }
 
     if (!tip) {
       ctx.status = 404;
