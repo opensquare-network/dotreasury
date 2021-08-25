@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 
@@ -13,11 +13,15 @@ import DateShow from "../../components/DateShow";
 import PolygonLabel from "../../components/PolygonLabel";
 import ExplorerLink from "../../components/ExplorerLink";
 
+import polkaassemblyApi from "../../services/polkassembly";
+import { useIsMounted } from "../../utils/hooks";
+
 import {
   normalizedTipDetailSelector,
   tipCountdownSelector,
 } from "../../store/reducers/tipSlice";
 import { scanHeightSelector } from "../../store/reducers/chainSlice";
+import RelatedLinks from "../../components/RelatedLinks";
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -42,12 +46,27 @@ const TipLifeCycleTable = ({ loading }) => {
   const tipCountdown = useSelector(tipCountdownSelector);
   const scanHeight = useSelector(scanHeightSelector);
   const tippersCount = tipDetail.tippersCount;
+  const [tipUrl, setTipUrl] = useState(null);
+  const isMounted = useIsMounted();
 
   const begin = tipDetail.closeFromBlockHeight - tipCountdown;
   const goneBlocks = Math.max(scanHeight - begin, 0);
   const percentage = goneBlocks > tipCountdown ? 1 : goneBlocks / tipCountdown;
 
   const thresholdTotalCount = tippersCount ? (tippersCount + 1) / 2 : 0;
+
+  useEffect(() => {
+    (async () => {
+      if (tipDetail) {
+        const url = await polkaassemblyApi.getTipUrl(tipDetail.hash);
+        if (isMounted.current) {
+          setTipUrl(url);
+        }
+      } else {
+        setTipUrl(null);
+      }
+    })();
+  }, [tipDetail, isMounted]);
 
   return (
     <TableLoading loading={loading}>
@@ -128,6 +147,22 @@ const TipLifeCycleTable = ({ loading }) => {
               </TableCell>
             </Table.Cell>
           </Table.Row>
+          {tipUrl && (
+            <Table.Row>
+              <Table.Cell>
+                <TableCell title="Tip Page">
+                  <RelatedLinks
+                    links={[
+                      {
+                        link: tipUrl,
+                        description: "Tip proposal discusssion",
+                      },
+                    ]}
+                  />
+                </TableCell>
+              </Table.Cell>
+            </Table.Row>
+          )}
         </Table.Body>
       </Table>
     </TableLoading>
