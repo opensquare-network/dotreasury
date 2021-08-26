@@ -14,6 +14,10 @@ async function handleEvents(events, blockIndexer, extrinsics) {
     return false;
   }
 
+  const normalizedExtrinsics = extrinsics.map((extrinsic) =>
+    normalizeExtrinsic(extrinsic, events)
+  );
+
   for (let sort = 0; sort < events.length; sort++) {
     const { event, phase } = events[sort];
 
@@ -21,9 +25,10 @@ async function handleEvents(events, blockIndexer, extrinsics) {
     if (!phase.isNull) {
       const phaseValue = phase.value.toNumber();
       const extrinsic = extrinsics[phaseValue];
+      const normalized = normalizedExtrinsics[phaseValue];
       normalizedExtrinsic = {
         extrinsicIndexer: { ...blockIndexer, index: phaseValue },
-        ...normalizeExtrinsic(extrinsic, events),
+        ...normalized,
       };
 
       await handleTipEvent(event, normalizedExtrinsic, blockIndexer, extrinsic);
