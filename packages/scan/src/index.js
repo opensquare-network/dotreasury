@@ -36,8 +36,8 @@ async function main() {
     }
 
     let targetHeight = chainHeight;
-    if (scanHeight + 100 < chainHeight) {
-      targetHeight = scanHeight + 100;
+    if (scanHeight + 1 < chainHeight) {
+      targetHeight = scanHeight + 1;
     }
 
     const specHeights = getSpecHeights();
