@@ -1,32 +1,18 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import React, {useEffect, useState} from "react";
 
 import ResponsivePagination from "../../components/ResponsivePagination";
 import BurntTable from "./BurntTable";
-import { useDispatch, useSelector } from "react-redux";
-import { useChainRoute, useQuery, useLocalStorage } from "../../utils/hooks";
-import { useHistory } from "react-router";
+import {useDispatch, useSelector} from "react-redux";
+import {useChainRoute, useQuery, useLocalStorage} from "../../utils/hooks";
+import {useHistory} from "react-router";
 
 import {
   fetchBurntList,
   burntListSelector,
-  loadingBurntListSelector,
+  loadingBurntListSelector, burntChartSelector, fetchBurntChart,
 } from "../../store/reducers/burntSlice";
-import { chainSelector } from "../../store/reducers/chainSlice";
-import Text from "../../components/Text";
+import {chainSelector} from "../../store/reducers/chainSlice";
 
-const HeaderWrapper = styled.div`
-  padding: 20px 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const Title = styled(Text)`
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 700;
-`;
 
 const DEFAULT_PAGE_SIZE = 20;
 const DEFAULT_QUERY_PAGE = 1;
@@ -47,12 +33,14 @@ const Burnt = () => {
 
   const dispatch = useDispatch();
   const history = useHistory();
-  const { items: burntList, total } = useSelector(burntListSelector);
+  const {items: burntList, total} = useSelector(burntListSelector);
+  const chartData = useSelector(burntChartSelector);
   const loading = useSelector(loadingBurntListSelector);
   const chain = useSelector(chainSelector);
 
   useEffect(() => {
     dispatch(fetchBurntList(chain, tablePage - 1, pageSize));
+    dispatch(fetchBurntChart(chain));
   }, [dispatch, chain, tablePage, pageSize]);
 
   const totalPages = Math.ceil(total / pageSize);
@@ -60,13 +48,9 @@ const Burnt = () => {
   return (
     <>
       <BurntTable
+        chartData={chartData}
         data={burntList}
         loading={loading}
-        header={
-          <HeaderWrapper>
-            <Title>Burnt</Title>
-          </HeaderWrapper>
-        }
         footer={
           <ResponsivePagination
             activePage={tablePage}
@@ -79,7 +63,7 @@ const Burnt = () => {
                 search: null,
               });
             }}
-            onPageChange={(_, { activePage }) => {
+            onPageChange={(_, {activePage}) => {
               history.push({
                 search:
                   activePage === DEFAULT_QUERY_PAGE
