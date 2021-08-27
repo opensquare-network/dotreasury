@@ -64,24 +64,16 @@ export const useIndentity = (address, map) => {
           (isGood
             ? identity.displayParent
             : identity.displayParent.replace(/[^\x20-\x7E]/g, ""));
-        const color = isBad ? "#8C0002" : isGood ? "#008000" : "#eeedec";
         setName(
           displayParent ? `${displayParent}/${displayName}` : displayName
         );
         setBadgeData({
           isDisplay: !!displayName,
-          color,
-          icon: identity.parent
-            ? color === "#eeedec"
-              ? "link-gray"
-              : "link"
-            : isGood && !isBad
-            ? color === "#eeedec"
-              ? "check-gray"
-              : "check"
-            : color === "#eeedec"
-            ? "minus-gray"
-            : "minus",
+          icon: isBad
+            ? "error"
+            : `${isGood ? "authorized" : "unauthorized"}${
+                identity.parent ? "-sub" : ""
+              }`,
         });
       }
     };
