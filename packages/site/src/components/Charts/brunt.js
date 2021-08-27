@@ -1,4 +1,4 @@
-import  {Bar} from "react-chartjs-2";
+import {Bar} from "react-chartjs-2";
 import styled, {css} from "styled-components";
 import Text from "../Text";
 import dayjs from "dayjs";
