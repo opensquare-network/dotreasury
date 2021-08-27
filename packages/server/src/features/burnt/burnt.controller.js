@@ -35,6 +35,26 @@ class BurntController {
     const burntCount = await burntCol.estimatedDocumentCount();
     ctx.body = burntCount;
   }
+
+  async getBurntDataForChart(ctx) {
+    const { chain } = ctx.params;
+    const burntCol = await getBurntCollection(chain);
+    const burntList = await burntCol
+      .aggregate([
+        {
+          $sort: { "indexer.blockHeight": -1 },
+        },
+        {
+          $project: {
+            _id: 0,
+            timestemp: "$indexer.blockTime",
+            amount: "$balance",
+          },
+        },
+      ])
+      .toArray();
+    ctx.body = burntList;
+  }
 }
 
 module.exports = new BurntController();
