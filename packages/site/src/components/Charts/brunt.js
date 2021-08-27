@@ -1,5 +1,5 @@
 import {Bar} from "react-chartjs-2";
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 import Text from "../Text";
 import dayjs from "dayjs";
 import {getPrecision, toPrecision} from "../../utils";
@@ -9,11 +9,20 @@ const Wrapper = styled.div`
   padding-right: 17px;
   background-color: #ffffff;
   margin-bottom: 24px;
-  overflow: hidden;
+  overflow: scroll;
+`
+
+const ChartWrapper = styled.div`
+  position: relative;
+  ${(props) => {
+    return props && props.w && css`width: max(${props.w}, 100%);`
+  }
+  }
 `
 
 const HeaderWrapper = styled.div`
   margin-left: -17px;
+  margin-right: -17px;
   padding: 20px 24px;
   padding-bottom: 0;
   display: flex;
@@ -28,11 +37,11 @@ const Title = styled(Text)`
 `;
 
 function Brunt({chartData, symbol}) {
-  if(!chartData){
+  if (!chartData) {
     return null;
   }
 
-  const formatDate = (time)=> {
+  const formatDate = (time) => {
     var d = new Date(time),
       month = '' + (d.getMonth() + 1),
       day = '' + d.getDate(),
@@ -47,16 +56,16 @@ function Brunt({chartData, symbol}) {
   }
 
   chartData = chartData
-    .map(bar => ( {date: formatDate(bar.timestamp), brunt:bar.amount}))
+    .map(bar => ({date: formatDate(bar.timestamp), brunt: bar.amount}))
     .reverse()
 
   chartData.forEach(() => chartData[0].brunt === 0 && chartData.shift())
 
-  var options = {
-    legend:{
-      display:false,
+  const options = {
+    legend: {
+      display: false,
     },
-    maintainAspectRatio:false,
+    maintainAspectRatio: false,
     scales: {
       xAxes: [{
         stacked: true,
@@ -89,10 +98,10 @@ function Brunt({chartData, symbol}) {
           return dayjs(tooltipItems[0].xLabel).format("YYYY-MM-DD");
         },
         label: function (tooltipItem, data) {
-          const label =data.datasets[tooltipItem.datasetIndex].label;
-          const precision = toPrecision(tooltipItem.value, getPrecision( symbol), false);
+          const label = data.datasets[tooltipItem.datasetIndex].label;
+          const precision = toPrecision(tooltipItem.value, getPrecision(symbol), false);
           const localePrecision = Number(precision).toLocaleString();
-          if(label === 'Latest'){
+          if (label === 'Latest') {
             return '';
           }
           return `${label} ≈ ${localePrecision} ${symbol}`;
@@ -121,7 +130,7 @@ function Brunt({chartData, symbol}) {
         backgroundColor: '#f4f4f4',
         borderWidth: 0,
         barThickness: 6,
-        data: chartData.map(bar => chartData[chartData.length-1].brunt * 1.2),
+        data: chartData.map(bar => chartData[chartData.length - 1].brunt * 1.2),
         xAxisID: "bar-x-axis2",
       },
     ]
@@ -132,11 +141,18 @@ function Brunt({chartData, symbol}) {
         <Title>Burnt</Title>
         <svg xmlns="http://www.w3.org/2000/svg" width="48" height="24" viewBox="0 0 48 24" fill="none">
           <rect width="48" height="24" rx="4" fill="#FFE6EA"/>
-          <path d="M18.0551 17L19.0061 14.3224H22.8286L23.7796 17H24.9798L21.5083 7.54545H20.3264L16.8548 17H18.0551ZM19.3662 13.3068L20.8804 9.04119H20.9543L22.4685 13.3068H19.3662ZM27.3943 7.54545H26.3048V17H27.3943V7.54545ZM30.4792 7.54545H29.3897V17H30.4792V7.54545Z" fill="#F23252"/>
+          <path
+            d="M18.0551 17L19.0061 14.3224H22.8286L23.7796 17H24.9798L21.5083 7.54545H20.3264L16.8548 17H18.0551ZM19.3662 13.3068L20.8804 9.04119H20.9543L22.4685 13.3068H19.3662ZM27.3943 7.54545H26.3048V17H27.3943V7.54545ZM30.4792 7.54545H29.3897V17H30.4792V7.54545Z"
+            fill="#F23252"/>
         </svg>
       </HeaderWrapper>
-      <div style={{height: chartData.length < 20 ? 120 : 100, marginTop:chartData.length < 20 ? 0 : 20 }}>
-        <Bar options={options} data={data}/>
+      <div style={{overflow: "scroll"}}>
+        <ChartWrapper
+          w={chartData.length > 18 ? `${chartData.length * 14}px` : "100%"}
+          style={{height: chartData.length < 20 ? 120 : 100, marginTop: chartData.length < 20 ? 0 : 20}}
+        >
+          <Bar width={1200} options={options} data={data}/>
+        </ChartWrapper>
       </div>
     </Wrapper>
   )
