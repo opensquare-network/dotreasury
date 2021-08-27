@@ -1,4 +1,4 @@
-import {Bar} from "react-chartjs-2";
+import  {Bar} from "react-chartjs-2";
 import styled, {css} from "styled-components";
 import Text from "../Text";
 import dayjs from "dayjs";
@@ -14,6 +14,7 @@ const Wrapper = styled.div`
 
 const ChartWrapper = styled.div`
   position: relative;
+  overflow: scroll;
   ${(props) => {
     return props && props.w && css`width: max(${props.w}, 100%);`
   }
@@ -92,6 +93,8 @@ function Brunt({chartData, symbol}) {
     },
     tooltips: {
       mode: "index",
+      yAlign: 'bottom',
+      caretPadding: -40,
       bodySpacing: 8,
       callbacks: {
         title: function (tooltipItems) {
@@ -121,6 +124,7 @@ function Brunt({chartData, symbol}) {
         backgroundColor: '#FC7C91',
         hoverBackgroundColor: '#F23252',
         borderWidth: 0,
+        borderColor: "#ffffff",
         barThickness: 6,
         data: chartData.map(bar => bar.brunt),
         xAxisID: "bar-x-axis1",
@@ -128,8 +132,9 @@ function Brunt({chartData, symbol}) {
       {
         label: "Latest",
         backgroundColor: '#f4f4f4',
-        borderWidth: 0,
-        barThickness: 6,
+        borderWidth: 4,
+        borderColor: "#ffffff",
+        barThickness: 14,
         data: chartData.map(bar => chartData[chartData.length - 1].brunt * 1.2),
         xAxisID: "bar-x-axis2",
       },
