@@ -3,18 +3,17 @@ import styled from "styled-components";
 import { Image } from "semantic-ui-react";
 
 const Wrapper = styled.div`
-  width: 16px;
-  height: 16px;
-  background: ${(p) => p.color};
-  border-radius: 50%;
-  padding: 3px;
+  > img {
+    width: 18px;
+    height: 18px;
+  }
 `;
 
-const Badge = ({ isDisplay, color, icon }) => {
+const Badge = ({ isDisplay, icon }) => {
   if (!isDisplay) return null;
-  const imgSrc = `/imgs/badge-${icon}.svg`;
+  const imgSrc = `/imgs/badge-icons/${icon}.svg`;
   return (
-    <Wrapper color={color}>
+    <Wrapper>
       <Image src={imgSrc} />
     </Wrapper>
   );
