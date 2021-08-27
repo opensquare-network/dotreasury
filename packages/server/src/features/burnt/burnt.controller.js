@@ -47,7 +47,7 @@ class BurntController {
         {
           $project: {
             _id: 0,
-            timestemp: "$indexer.blockTime",
+            timestamp: "$indexer.blockTime",
             amount: "$balance",
           },
         },
