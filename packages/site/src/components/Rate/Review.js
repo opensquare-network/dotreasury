@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import ReviewItem from "./ReviewItem";
+import Pagination from "../Pagination";
 
 const Wrapper = styled.div``;
 
@@ -21,6 +22,14 @@ const TitleWrapper = styled.div`
   }
 `;
 
+const PaginationWrapper = styled.div`
+  display: flex;
+  margin-bottom: 24px;
+  > * {
+    margin: 0 auto;
+  }
+`;
+
 export default function Review({ data }) {
   return (
     <Wrapper>
@@ -31,6 +40,9 @@ export default function Review({ data }) {
       {(data || []).map((item, index) => (
         <ReviewItem key={index} data={item} />
       ))}
+      <PaginationWrapper>
+        <Pagination totalPages={10} />
+      </PaginationWrapper>
     </Wrapper>
   );
 }

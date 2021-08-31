@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 import Stars from "./Stars";
+import ThumbUp from "./ThumbUp";
 
 const Wrapper = styled.div`
   padding: 16px 24px;
@@ -43,6 +44,10 @@ const ContentWrapper = styled.div`
   word-wrap: break-word;
 `;
 
+const ThumbUpWrapper = styled.div`
+  margin: 8px 0 0 32px;
+`;
+
 export default function ReviewItem({ data }) {
   return (
     <Wrapper>
@@ -57,6 +62,9 @@ export default function ReviewItem({ data }) {
         </RateWrapper>
       </InfoWrapper>
       <ContentWrapper>{data.content}</ContentWrapper>
+      <ThumbUpWrapper>
+        <ThumbUp />
+      </ThumbUpWrapper>
     </Wrapper>
   );
 }

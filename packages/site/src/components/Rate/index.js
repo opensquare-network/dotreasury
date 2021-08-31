@@ -7,6 +7,10 @@ import Review from "./Review";
 
 import { RATE } from "../../constants";
 
+const Wrapper = styled(Card)`
+  padding: 0;
+`;
+
 const TitleWrapper = styled.div`
   padding: 20px 24px;
   font-weight: bold;
@@ -39,7 +43,7 @@ const Divider = styled.div`
 
 export default function rate() {
   return (
-    <Card>
+    <Wrapper>
       <TitleWrapper>Rate</TitleWrapper>
       <UpWrapper>
         <Ratings data={RATE.ratings} />
@@ -48,6 +52,6 @@ export default function rate() {
       </UpWrapper>
       <Divider />
       <Review data={RATE.reviews} />
-    </Card>
+    </Wrapper>
   );
 }
