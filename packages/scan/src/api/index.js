@@ -29,7 +29,7 @@ async function getApi() {
 
 async function disconnect() {
   if (provider) {
-    provider.disconnect();
+    await provider.disconnect();
   }
 }
 
