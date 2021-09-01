@@ -10,7 +10,7 @@ class StatsController {
     ctx.body = statsHistory;
   }
 
-  async getOverviewData(ctx) {
+  async getTreasuryInOut(ctx) {
     const { chain } = ctx.params;
     const overview = getOverview(chain);
 
