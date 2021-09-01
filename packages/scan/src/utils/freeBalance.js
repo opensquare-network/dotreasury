@@ -18,7 +18,7 @@ async function getBalance(api, metadata, blockHash) {
     return freeBalanceValue.toJSON();
   }
 
-  return 0;
+  return null;
 }
 
 module.exports = {

@@ -3,14 +3,13 @@ const BigNumber = require("bignumber.js");
 const { calcMultisigAddress } = require("./call");
 const { getApi } = require("../api");
 const {
-  TreasuryAccount,
   Modules,
   ProxyMethods,
   MultisigMethods,
   UtilityMethods,
 } = require("./constants");
-const { currentChain } = require("../chain");
-const { GenericCall, expandMetadata } = require("@polkadot/types");
+const { GenericCall } = require("@polkadot/types");
+const { getTreasuryBalance: getTreasuryFreeBalance } = require("./freeBalance");
 
 const sleep = (time) => {
   return new Promise((resolve) => {
@@ -107,64 +106,10 @@ async function getMetadataConstsByBlockHash(blockHash, constants) {
   );
 }
 
-const ksmMigrateAccountHeight = 1492896;
-let oldKey;
-
-async function queryAccountFreeWithSystem(blockHash) {
+async function getTreasuryBalance(blockHash) {
   const api = await getApi();
-  const account = (
-    await api.query.system.account.at(blockHash, TreasuryAccount)
-  ).toJSON();
-  return account?.data?.free;
-}
-
-async function setOldKey() {
-  const api = await getApi();
-  const blockHash = await api.rpc.chain.getBlockHash(1375085);
   const metadata = await api.rpc.state.getMetadata(blockHash);
-  const decorated = expandMetadata(metadata.registry, metadata);
-
-  oldKey = [decorated.query.balances.freeBalance, TreasuryAccount];
-}
-
-async function getTreasuryBalance(blockHash, blockHeight) {
-  const api = await getApi();
-  if ("polkadot" === currentChain()) {
-    // TODO: We can not get treasury balance at height which <= 29230.
-    // TODO: Though we do not store the balance in this range, we should figure out how to query it.
-    if (blockHeight <= 29230) {
-      return 0;
-    }
-
-    return await queryAccountFreeWithSystem(blockHash);
-  }
-
-  if (blockHeight < 1375086) {
-    const metadata = await api.rpc.state.getMetadata(blockHash);
-    const decorated = expandMetadata(metadata.registry, metadata);
-    const key = [decorated.query.balances.freeBalance, TreasuryAccount];
-    const value = await api.rpc.state.getStorage(key, blockHash);
-
-    if (blockHeight === 1375085) {
-      oldKey = key;
-    }
-
-    return metadata.registry.createType("Compact<Balance>", value).toJSON();
-  } else if (blockHeight < 1377831) {
-    if (!oldKey) {
-      await setOldKey();
-    }
-    const value = await api.rpc.state.getStorage(oldKey, blockHash);
-
-    const metadata = await api.rpc.state.getMetadata(blockHash);
-    return metadata.registry.createType("Compact<Balance>", value).toJSON();
-  } else if (blockHeight < ksmMigrateAccountHeight) {
-    // TODO: find how to get the balance from 1377831 to 1492896
-    return null;
-    // return await queryAccountFreeWithSystem(blockHash);
-  } else {
-    return await queryAccountFreeWithSystem(blockHash);
-  }
+  return await getTreasuryFreeBalance(api, metadata, blockHash);
 }
 
 function getRealCaller(call, caller) {
