@@ -3,10 +3,6 @@ const { createKeyMulti, encodeAddress } = require("@polkadot/util-crypto");
 const { getApi } = require("../api");
 const { logger } = require("../utils/logger");
 
-const treasuryProposalCouncilIndexes = ["0x1201", "0x1202"];
-const approveProposalIndex = "0x1202";
-const rejectProposalIndex = "0x1201";
-
 function tryInitCall(registry, callHex) {
   try {
     return new GenericCall(registry, callHex);
@@ -39,9 +35,6 @@ function calcMultisigAddress(signatories, threshold, chainSS58) {
 }
 
 module.exports = {
-  treasuryProposalCouncilIndexes,
-  approveProposalIndex,
-  rejectProposalIndex,
   getCall,
   getMultiSigExtrinsicAddress,
   calcMultisigAddress,
