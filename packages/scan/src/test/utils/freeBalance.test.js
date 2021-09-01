@@ -1,7 +1,7 @@
 jest.setTimeout(3000000);
 
 const { ApiPromise, WsProvider } = require("@polkadot/api");
-const { getBalance } = require("../../utils/freeBalance");
+const { getTreasuryBalance: getBalance } = require("../../utils/freeBalance");
 const { bnToBn } = require("@polkadot/util");
 
 describe("test get balance", () => {

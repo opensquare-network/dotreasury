@@ -22,5 +22,5 @@ async function getBalance(api, metadata, blockHash) {
 }
 
 module.exports = {
-  getBalance,
+  getTreasuryBalance: getBalance,
 };
