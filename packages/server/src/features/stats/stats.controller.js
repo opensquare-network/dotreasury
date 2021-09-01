@@ -13,16 +13,20 @@ class StatsController {
   async getTreasuryInOut(ctx) {
     const { chain } = ctx.params;
     const overview = getOverview(chain);
+    if (!overview) {
+      ctx.body = {};
+      return;
+    }
 
     const income = overview.income;
-    income.total = bnToBn(income.inflation ?? 0)
+    const incomeTotal = bnToBn(income.inflation ?? 0)
       .add(bnToBn(income.slash ?? 0))
       .add(bnToBn(income.transfer ?? 0))
       .add(bnToBn(income.others ?? 0))
       .toString();
 
     const output = overview.output;
-    output.total = bnToBn(output.proposal ?? 0)
+    const outputTotal = bnToBn(output.proposal ?? 0)
       .add(bnToBn(output.tip ?? 0))
       .add(bnToBn(output.bounty ?? 0))
       .add(bnToBn(output.burnt ?? 0))
@@ -30,8 +34,8 @@ class StatsController {
       .toString();
 
     ctx.body = {
-      income,
-      output,
+      income: {...income, total: incomeTotal},
+      output: {...output, total: outputTotal},
     };
   }
 }
