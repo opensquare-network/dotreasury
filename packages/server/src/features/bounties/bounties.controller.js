@@ -203,6 +203,10 @@ class BountiesController {
       user
     );
   }
+
+  async getRates(ctx) {
+    ctx.body = true;
+  }
 }
 
 module.exports = new BountiesController();

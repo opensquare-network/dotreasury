@@ -32,4 +32,17 @@ router.post(
   tipsController.postTipComment
 );
 
+router.get(
+  "/tips/:blockHeight(\\d+)_:tipHash/rates",
+  requireAuth,
+  tipsController.getRates,
+);
+
+router.get(
+  "/tips/:blockHeight(\\d+)_:tipHash/ratestats",
+  requireAuth,
+  tipsController.getRateStats,
+);
+
+
 module.exports = router;

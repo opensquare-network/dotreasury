@@ -1,6 +1,7 @@
 const { getTipCollection } = require("../../mongo");
 const linkService = require("../../services/link.service");
 const commentService = require("../../services/comment.service");
+const rateService = require("../../services/rate.service");
 const { extractPage } = require("../../utils");
 const { normalizeTip } = require("./utils");
 const { HttpError } = require("../../exc");
@@ -226,6 +227,34 @@ class TipsController {
       content,
       user
     );
+  }
+
+  async getRates(ctx) {
+    const { chain, tipHash } = ctx.params;
+    const blockHeight = parseInt(ctx.params.blockHeight);
+
+    ctx.body = await rateService.getRates({
+      chain,
+      type: "tip",
+      index: {
+        blockHeight,
+        tipHash,
+      },
+    });
+  }
+
+  async getRateStats(ctx) {
+    const { chain, tipHash } = ctx.params;
+    const blockHeight = parseInt(ctx.params.blockHeight);
+
+    ctx.body = await rateService.getRateStats({
+      chain,
+      type: "tip",
+      index: {
+        blockHeight,
+        tipHash,
+      },
+    });
   }
 }
 

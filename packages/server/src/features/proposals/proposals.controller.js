@@ -205,6 +205,10 @@ class ProposalsController {
       user
     );
   }
+
+  async getRates(ctx) {
+    ctx.body = true;
+  }
 }
 
 module.exports = new ProposalsController();

@@ -33,4 +33,10 @@ router.post(
   proposalsController.postProposalComment
 );
 
+router.get(
+  "/proposals/:proposalIndex/rates",
+  requireAuth,
+  proposalsController.getRates,
+);
+
 module.exports = router;

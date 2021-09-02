@@ -29,4 +29,10 @@ router.post(
   bountiesController.postBountyComment
 );
 
+router.get(
+  "/bounties/:bountyIndex/rates",
+  requireAuth,
+  bountiesController.getRates,
+);
+
 module.exports = router;
