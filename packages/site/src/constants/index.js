@@ -78,3 +78,30 @@ export const CHAINS = {
   POLKADOT: "dot",
   KUSAMA: "ksm",
 };
+
+export const RATE = {
+  ratings: [6, 12, 2, 1, 0],
+  reviews: [
+    {
+      author: "Kathryn",
+      time: "2 hours ago",
+      rate: 4,
+      content:
+        "Convallis amet, adipiscing cum arcu elementum aliquet sed commodo at. Eget vulputate ac quisque nunc ut at quis.",
+    },
+    {
+      author: "HUfz...prsX",
+      time: "3 hours ago",
+      rate: 2,
+      content:
+        "Integer enim pellentesque risus sed eget integer curabitur tincidunt amet. Volutpat pellentesque enim vitae aliquam sed cursus. Cras vestibulum ultrices mattis fermentum.",
+    },
+    {
+      author: "15kU...t2i8",
+      time: "4 hours ago",
+      rate: 1,
+      content:
+        "Ac platea arcu hendrerit diam posuere aliquam eu eleifend non. Etiam dolor egestas fringilla turpis platea velit. Scelerisque urna fames eu pellentesque et cursus urna, mattis.",
+    },
+  ],
+};
