@@ -1,16 +1,13 @@
 const { getApi } = require("../api");
 const { Modules } = require("./constants");
+const {
+  getBountyMeta: getBountyMetaFromStorage,
+} = require("../events/treasury/bounty/utils");
 
 async function getBountyMetaByBlockHeight(height, bountyIndex) {
   const api = await getApi();
   const blockHash = await api.rpc.chain.getBlockHash(height);
-  return await getBountyMeta(blockHash, bountyIndex);
-}
-
-async function getBountyMeta(blockHash, bountyIndex) {
-  const api = await getApi();
-  const meta = await api.query.bounties.bounties.at(blockHash, bountyIndex);
-  return meta.toJSON();
+  return await getBountyMetaFromStorage(api, blockHash, bountyIndex);
 }
 
 async function getBountyDescription(blockHash, bountyIndex) {
@@ -27,7 +24,6 @@ function isBountyModule(section) {
 }
 
 module.exports = {
-  getBountyMeta,
   getBountyDescription,
   getBountyMetaByBlockHeight,
   isBountyModule,

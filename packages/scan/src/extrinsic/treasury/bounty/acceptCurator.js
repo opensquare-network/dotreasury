@@ -1,10 +1,11 @@
+const { getBountyMeta } = require("../../../events/treasury/bounty/utils");
 const { isBountyModule } = require("../../../utils/bounty");
 const {
   BountyMethods,
   timelineItemTypes,
 } = require("../../../utils/constants");
-const { getBountyMeta } = require("../../../utils/bounty");
 const { updateBountyInDb } = require("../../../events/treasury/bounty/common");
+const { getApi } = require("../../../api");
 
 async function handleAcceptCurator(call, caller, extrinsicIndexer) {
   if (
@@ -15,7 +16,12 @@ async function handleAcceptCurator(call, caller, extrinsicIndexer) {
   }
 
   const { bounty_id: bountyIndex } = call.toJSON().args;
-  const meta = await getBountyMeta(extrinsicIndexer.blockHash, bountyIndex);
+  const api = await getApi();
+  const meta = await getBountyMeta(
+    api,
+    extrinsicIndexer.blockHash,
+    bountyIndex
+  );
 
   const timelineItem = {
     type: timelineItemTypes.extrinsic,

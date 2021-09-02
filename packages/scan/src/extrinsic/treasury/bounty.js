@@ -1,3 +1,4 @@
+const { getBountyMeta } = require("../../events/treasury/bounty/utils");
 const { getCall, getMultiSigExtrinsicAddress } = require("../../utils/call");
 const {
   BountyMethods,
@@ -5,8 +6,8 @@ const {
   MultisigMethods,
   ProxyMethods,
 } = require("../../utils/constants");
-const { getBountyMeta } = require("../../utils/bounty");
 const { getBountyCollection } = require("../../mongo");
+const { getApi } = require("../../api");
 
 function isBountyModule(section) {
   return [Modules.Treasury, Modules.Bounties].includes(section);
@@ -83,7 +84,8 @@ async function handleBountyAcceptCurator(normalizedExtrinsic, extrinsic) {
     return;
   }
 
-  const meta = await getBountyMeta(indexer.blockHash, bountyIndex);
+  const api = await getApi();
+  const meta = await getBountyMeta(api, indexer.blockHash, bountyIndex);
 
   const timelineItem = {
     name: BountyMethods.acceptCurator,

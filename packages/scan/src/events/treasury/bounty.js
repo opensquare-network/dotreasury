@@ -1,3 +1,4 @@
+const { getBountyMeta } = require("./bounty/utils");
 const {
   Modules,
   BountyEvents,
@@ -5,7 +6,7 @@ const {
   timelineItemTypes,
 } = require("../../utils/constants");
 const { getBountyCollection } = require("../../mongo");
-const { getBountyMeta, getBountyDescription } = require("../../utils/bounty");
+const { getBountyDescription } = require("../../utils/bounty");
 const { handleBountyExtended } = require("./bountyExtended");
 const { getRealCaller, findTargetCall } = require("../../utils");
 const { hexToString } = require("@polkadot/util");
@@ -13,6 +14,7 @@ const { handleBountyAwarded } = require("./bounty/awarded");
 const { handleBountyRejected } = require("./bounty/rejected");
 const { handleBountyClaimed } = require("./bounty/claimed");
 const { handleBountyCanceled } = require("./bounty/canceled");
+const { getApi } = require("../../api");
 
 function isBountyEvent(section, method) {
   return (
@@ -51,7 +53,8 @@ async function handleProposedEvent(event, normalizedExtrinsic, extrinsic) {
   const bountyIndex = eventData[0];
 
   const indexer = normalizedExtrinsic.extrinsicIndexer;
-  const meta = await getBountyMeta(indexer.blockHash, bountyIndex);
+  const api = await getApi();
+  const meta = await getBountyMeta(api, indexer.blockHash, bountyIndex);
   const description = await getBountyDescription(
     indexer.blockHash,
     bountyIndex
