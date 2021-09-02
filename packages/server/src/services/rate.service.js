@@ -3,6 +3,7 @@ const {
   getRateCollection,
 } = require("../mongo-admin");
 const { HttpError } = require("../exc");
+const { isValidSignature } = require("../utils");
 
 class RateService {
   async verifySignature(signature, data) {
@@ -25,7 +26,18 @@ class RateService {
   async addRate(data, signature) {
     await this.verifySignature(signature, data);
 
-    const { chain, type, blockHeight, hash, index, grade, comment, timestamp, address } = data;
+    const {
+      chain,
+      type,
+      blockHeight,
+      hash,
+      index,
+      grade,
+      comment,
+      timestamp,
+      version,
+      address,
+    } = data;
 
     if (!data.type) {
       throw new HttpError(400, "data.type is missing");
@@ -94,23 +106,26 @@ class RateService {
       throw new HttpError(400, "data.timestamp is missing");
     }
 
+    if (!version) {
+      throw new HttpError(400, "data.version is missing");
+    }
+
     const rateCol = await getRateCollection();
 
+    const existRate = await rateCol.findOne({ indexer, address });
+    if (existRate) {
+      throw new HttpError(400, "You had already rated");
+    }
+
     const now = new Date();
-    const result = await rateCol.updateOne(
-      { indexer, address },
+    const result = await rateCol.insertOne(
       {
-        grade,
-        comment,
+        indexer,
+        data,
         signature,
-        timestamp,
         createdAt: now,
         updatedAt: now,
-      },
-      {
-        upsert: true
-      }
-    );
+      });
 
     if (!result.result.ok) {
       throw new HttpError(500, "Add rate error");

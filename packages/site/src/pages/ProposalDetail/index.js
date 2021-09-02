@@ -265,7 +265,7 @@ const ProposalDetail = () => {
       <TimelineCommentWrapper>
         <Timeline data={timelineData} loading={loadingProposalDetail} />
         <div>
-          <Rate />
+          <Rate type="proposal" index={parseInt(proposalIndex)} />
           <Comment type="proposal" index={parseInt(proposalIndex)} />
         </div>
       </TimelineCommentWrapper>

@@ -41,14 +41,14 @@ const Divider = styled.div`
   background: #f4f4f4;
 `;
 
-export default function rate() {
+export default function Rate({ type, index }) {
   return (
     <Wrapper>
       <TitleWrapper>Rate</TitleWrapper>
       <UpWrapper>
         <Ratings data={RATE.ratings} />
         <UpDivider />
-        <MyRating />
+        <MyRating type={type} index={index} />
       </UpWrapper>
       <Divider />
       <Review data={RATE.reviews} />

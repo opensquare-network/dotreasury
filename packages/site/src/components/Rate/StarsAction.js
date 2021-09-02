@@ -1,5 +1,4 @@
 import styled, { css } from "styled-components";
-import { useState } from "react";
 
 const Wrapper = styled.div`
   display: flex;
@@ -28,9 +27,7 @@ const Star = styled.div`
     `}
 `;
 
-export default function StarsAction() {
-  const [rate, setRate] = useState(0);
-
+export default function StarsAction({ rate, setRate }) {
   return (
     <Wrapper>
       {[...Array(5).keys()].map((item) => (

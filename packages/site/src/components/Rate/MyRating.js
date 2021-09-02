@@ -1,8 +1,12 @@
 import styled from "styled-components";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import StarsAction from "./StarsAction";
 import ButtonPrimary from "../ButtonPrimary";
+import SelectAddress from "../../pages/SelectAddress";
+import { addRate } from "../../store/reducers/rateSlice";
+import { chainSelector } from "../../store/reducers/chainSlice";
 
 const Wrapper = styled.div`
   padding: 0 24px;
@@ -61,8 +65,12 @@ const ButtonWrapper = styled.div`
   justify-content: flex-end;
 `;
 
-export default function MyRating() {
+export default function MyRating({ type, index }) {
+  const dispatch = useDispatch();
   const [content, setContent] = useState("");
+  const [rate, setRate] = useState(0);
+  const [accountsModalOpen, setAccountsModalOpen] = useState(false);
+  const chain = useSelector(chainSelector);
 
   const onChange = (e) => {
     let value = e.target.value;
@@ -72,11 +80,30 @@ export default function MyRating() {
     setContent(value);
   };
 
+  const startRate = () => {
+    setAccountsModalOpen(true);
+  };
+
+  const onSelectSignedAccount = (account) => {
+    console.log(account);
+    const address = account.address;
+    dispatch(addRate(
+      chain,
+      type,
+      index,
+      rate,
+      content,
+      "1",
+      Date.now(),
+      address,
+    ));
+  }
+
   return (
     <Wrapper>
       <TitleWrapper>
         Your rating
-        <StarsAction />
+        <StarsAction rate={rate} setRate={setRate} />
       </TitleWrapper>
       <TextareaWrapper>
         <StyledTextarea
@@ -87,8 +114,13 @@ export default function MyRating() {
         <TextCount>{content.length}/140</TextCount>
       </TextareaWrapper>
       <ButtonWrapper>
-        <ButtonPrimary>Submit</ButtonPrimary>
+        <ButtonPrimary onClick={startRate}>Submit</ButtonPrimary>
       </ButtonWrapper>
+      <SelectAddress
+        accountsModalOpen={accountsModalOpen}
+        setAccountsModalOpen={setAccountsModalOpen}
+        onSelect={onSelectSignedAccount}
+      />
     </Wrapper>
   );
 }

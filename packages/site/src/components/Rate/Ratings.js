@@ -77,7 +77,7 @@ export default function Ratings({ data }) {
         </ProgressWrapper>
         <CountWrapper>
           {[...Array(5).keys()].map((item) => (
-            <div>{(data || [])[item] ?? 0}</div>
+            <div key={item}>{(data || [])[item] ?? 0}</div>
           ))}
         </CountWrapper>
       </MainWrapper>

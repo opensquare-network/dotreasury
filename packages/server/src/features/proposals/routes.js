@@ -35,7 +35,6 @@ router.post(
 
 router.get(
   "/proposals/:proposalIndex/rates",
-  requireAuth,
   proposalsController.getRates,
 );
 
