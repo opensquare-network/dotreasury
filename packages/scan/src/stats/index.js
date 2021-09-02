@@ -53,10 +53,7 @@ async function processStat(blockIndexer) {
 async function saveStats(indexer) {
   const output = await calcOutputStats();
   const { seats: income } = await getIncomeNextScanStatus();
-  const treasuryBalance = await getTreasuryBalance(
-    indexer.blockHash,
-    indexer.blockHeight
-  );
+  const treasuryBalance = await getTreasuryBalance(indexer.blockHash);
 
   if (treasuryBalance === null) {
     return;

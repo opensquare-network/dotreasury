@@ -1,13 +1,16 @@
+const { getBountyMeta } = require("./utils");
 const { timelineItemTypes } = require("../../../utils/constants");
-const { getBountyMeta } = require("../../../utils/bounty");
 const { updateBountyInDb } = require("./common");
+const { getApi } = require("../../../api/index");
 
 async function handleBountyAwarded(event, normalizedExtrinsic) {
   const indexer = normalizedExtrinsic.extrinsicIndexer;
 
   const eventData = event.data.toJSON();
   const [bountyIndex, beneficiary] = eventData;
-  const meta = await getBountyMeta(indexer.blockHash, bountyIndex);
+
+  const api = await getApi();
+  const meta = await getBountyMeta(api, indexer.blockHash, bountyIndex);
 
   const timelineItem = {
     type: timelineItemTypes.extrinsic,

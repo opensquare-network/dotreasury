@@ -1,3 +1,4 @@
+const { getBountyMeta } = require("../treasury/bounty/utils");
 const { getMotionCollection, getBountyCollection } = require("../../mongo");
 const {
   isBountyMethod,
@@ -12,8 +13,8 @@ const {
   dotTreasuryRefactorApplyHeight,
 } = require("../../utils/constants");
 const { motionActions } = require("./constants");
-const { getBountyMeta } = require("../../utils/bounty");
 const { currentChain, CHAINS } = require("../../chain");
+const { getApi } = require("../../api/index");
 
 function _isKsmBountyMotion(section, method, height) {
   if (
@@ -111,7 +112,12 @@ async function updateBountyByVoteResult(hash, isApproved, indexer) {
     return;
   }
 
-  const meta = await getBountyMeta(indexer.blockHash, motion.treasuryBountyId);
+  const api = await getApi();
+  const meta = await getBountyMeta(
+    api,
+    indexer.blockHash,
+    motion.treasuryBountyId
+  );
 
   const bountyCol = await getBountyCollection();
   await bountyCol.findOneAndUpdate(

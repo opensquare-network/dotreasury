@@ -82,6 +82,13 @@ const BurntTable = ({ data,chartData, loading, footer }) => {
         <TableWrapper>
           <TableLoading loading={loading}>
             <StyledTable striped selectable unstackable>
+              <colgroup>
+                <col span="1" style={{width: "25%"}}/>
+                <col span="1" style={{width: "15%"}}/>
+                <col span="1"/>
+                <col span="1" style={{width: "10%"}}/>
+                <col span="1" style={{width: "20%"}}/>
+              </colgroup>
               <Table.Header>
                 <Table.Row>
                   <Table.HeaderCell>Time</Table.HeaderCell>

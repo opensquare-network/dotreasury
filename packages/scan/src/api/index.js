@@ -20,7 +20,7 @@ function getEndPoint() {
 
 async function getApi() {
   if (!api) {
-    provider = new WsProvider(getEndPoint());
+    provider = new WsProvider(getEndPoint(), 1000);
     api = await ApiPromise.create({ provider });
   }
 
@@ -29,7 +29,7 @@ async function getApi() {
 
 async function disconnect() {
   if (provider) {
-    provider.disconnect();
+    await provider.disconnect();
   }
 }
 
