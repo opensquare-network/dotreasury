@@ -1,3 +1,4 @@
+const { getBountyDescription } = require("./bounty/utils");
 const { getBountyMeta } = require("./bounty/utils");
 const {
   Modules,
@@ -6,7 +7,6 @@ const {
   timelineItemTypes,
 } = require("../../utils/constants");
 const { getBountyCollection } = require("../../mongo");
-const { getBountyDescription } = require("../../utils/bounty");
 const { handleBountyExtended } = require("./bountyExtended");
 const { getRealCaller, findTargetCall } = require("../../utils");
 const { hexToString } = require("@polkadot/util");
@@ -56,6 +56,7 @@ async function handleProposedEvent(event, normalizedExtrinsic, extrinsic) {
   const api = await getApi();
   const meta = await getBountyMeta(api, indexer.blockHash, bountyIndex);
   const description = await getBountyDescription(
+    api,
     indexer.blockHash,
     bountyIndex
   );

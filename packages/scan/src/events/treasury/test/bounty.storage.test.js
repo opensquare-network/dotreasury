@@ -1,4 +1,4 @@
-const { getBountyMeta } = require("../bounty/utils");
+const { getBountyMeta, getBountyDescription } = require("../bounty/utils");
 jest.setTimeout(3000000);
 
 const { ApiPromise, WsProvider } = require("@polkadot/api");
@@ -46,5 +46,19 @@ describe("test get bounties", () => {
         proposed: null,
       },
     });
+  });
+
+  test("#0 description of kusama works", async () => {
+    const blockHash = await api.rpc.chain.getBlockHash(4501546);
+    const description = await getBountyDescription(api, blockHash, 0);
+
+    expect(description).toEqual("Kusama network UI Bounty");
+  });
+
+  test("#4 description of kusama works", async () => {
+    const blockHash = await api.rpc.chain.getBlockHash(6924780);
+    const description = await getBountyDescription(api, blockHash, 4);
+
+    expect(description).toEqual("Council Alert App");
   });
 });
