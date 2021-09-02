@@ -1,3 +1,4 @@
+const { getProposalMeta } = require("./utils");
 const {
   ProposalState,
   timelineItemTypes,
@@ -12,11 +13,13 @@ async function handleProposed(event, normalizedExtrinsic) {
 
   const api = await getApi();
   const extrinsicIndexer = normalizedExtrinsic.extrinsicIndexer;
-  const meta = await api.query.treasury.proposals.at(
+  const metadata = await api.rpc.state.getMetadata(extrinsicIndexer.blockHash);
+  const metaJson = await getProposalMeta(
+    api,
+    metadata,
     extrinsicIndexer.blockHash,
     proposalIndex
   );
-  const metaJson = meta.toJSON();
 
   let {
     signer: proposer,
