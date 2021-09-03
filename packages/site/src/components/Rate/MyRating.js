@@ -7,6 +7,7 @@ import ButtonPrimary from "../ButtonPrimary";
 import SelectAddress from "../../pages/SelectAddress";
 import { addRate } from "../../store/reducers/rateSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
+import { addToast } from "../../store/reducers/toastSlice";
 
 const Wrapper = styled.div`
   padding: 0 24px;
@@ -69,8 +70,8 @@ export default function MyRating({ type, index }) {
   const dispatch = useDispatch();
   const [content, setContent] = useState("");
   const [rate, setRate] = useState(0);
-  const [accountsModalOpen, setAccountsModalOpen] = useState(false);
   const chain = useSelector(chainSelector);
+  const [accountsModalOpen, setAccountsModalOpen] = useState(false);
 
   const onChange = (e) => {
     let value = e.target.value;
@@ -81,10 +82,21 @@ export default function MyRating({ type, index }) {
   };
 
   const startRate = () => {
+    if (rate < 1 || rate > 5) {
+      dispatch(addToast(
+        {
+          type: "error",
+          message: "Please select 1 to 5 stars",
+        }
+      ));
+      return;
+    }
     setAccountsModalOpen(true);
   };
 
   const onSelectSignedAccount = (account) => {
+    setAccountsModalOpen(false);
+
     const address = account.address;
     dispatch(addRate(
       chain,
@@ -118,11 +130,14 @@ export default function MyRating({ type, index }) {
       <ButtonWrapper>
         <ButtonPrimary onClick={startRate}>Submit</ButtonPrimary>
       </ButtonWrapper>
-      <SelectAddress
-        accountsModalOpen={accountsModalOpen}
-        setAccountsModalOpen={setAccountsModalOpen}
-        onSelect={onSelectSignedAccount}
-      />
+      {
+        accountsModalOpen && (
+          <SelectAddress
+            onClose={() => setAccountsModalOpen(false)}
+            onSelect={onSelectSignedAccount}
+          />
+        )
+      }
     </Wrapper>
   );
 }

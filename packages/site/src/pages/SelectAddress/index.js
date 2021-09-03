@@ -20,15 +20,15 @@ const SignInModal = styled(Modal)`
   }
 `
 
-const SelectAddress = ({ accountsModalOpen, setAccountsModalOpen, onSelect = () => {} }) => {
+const SelectAddress = ({ onSelect = ()=>{}, onClose = ()=>{} }) => {
   const isMounted = useIsMounted();
 
+  const [accountsModalOpen, setAccountsModalOpen] = useState(false);
   const [noExtensionModalOpen, setNoExtensionModalOpen] = useState(false)
   const [accounts, setAccounts] = useState([])
 
   useEffect(() => {
     if (!accountsModalOpen && !noExtensionModalOpen) {
-
       (async function login() {
         await web3Enable("doTreasury");
         if (!isWeb3Injected) {
@@ -47,6 +47,7 @@ const SelectAddress = ({ accountsModalOpen, setAccountsModalOpen, onSelect = () 
 
         if (isMounted.current) {
           setAccounts(accounts);
+          setAccountsModalOpen(true);
         }
       })();
     }
@@ -67,6 +68,7 @@ const SelectAddress = ({ accountsModalOpen, setAccountsModalOpen, onSelect = () 
         size="mini"
         open={accountsModalOpen}
         onClose={() => {
+          onClose();
           setAccountsModalOpen(false);
         }}
       >
@@ -93,6 +95,7 @@ const SelectAddress = ({ accountsModalOpen, setAccountsModalOpen, onSelect = () 
         size="mini"
         open={noExtensionModalOpen}
         onClose={() => {
+          onClose();
           setNoExtensionModalOpen(false);
         }}
       >
