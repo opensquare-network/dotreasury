@@ -77,7 +77,7 @@ export default function ThumbUp({ rate }) {
   useEffect(() => {
     setThumbup(thumbupDefault);
     setUpCount(upCountDefault);
-  }, [rate]);
+  }, [thumbupDefault, upCountDefault]);
 
   const thumbUpToogle = async () => {
     if (isLoggedIn && !thumbupLoading) {

@@ -41,8 +41,9 @@ class ScanApi extends Api {
 
   async maybeAuthFetch(url, params, options) {
     try {
-      const token = JSON.parse(localStorage.getItem("token"));
-      if (token) {
+      const storageToken = localStorage.getItem("token");
+      if (storageToken) {
+        const token = JSON.parse(storageToken);
         options = {
           ...options,
           headers: {
@@ -51,11 +52,11 @@ class ScanApi extends Api {
           },
         };
       }
-
-      return await this.fetch(url, params, options);
     } catch {
-      return { result: null };
+      // ignore
     }
+
+    return await this.fetch(url, params, options);
   }
 
   async authFetch(url, params, options) {
