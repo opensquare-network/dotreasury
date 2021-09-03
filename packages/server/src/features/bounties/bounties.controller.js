@@ -2,6 +2,7 @@ const { getBountyCollection, getMotionCollection } = require("../../mongo");
 const { extractPage } = require("../../utils");
 const linkService = require("../../services/link.service");
 const commentService = require("../../services/comment.service");
+const rateService = require("../../services/rate.service");
 
 const bountyStatus = (bounty) =>
   bounty?.status?.CuratorProposed ||
@@ -205,7 +206,36 @@ class BountiesController {
   }
 
   async getRates(ctx) {
-    ctx.body = true;
+    const { chain } = ctx.params;
+    const bountyIndex = parseInt(ctx.params.bountyIndex);
+
+    const { page, pageSize } = extractPage(ctx);
+    if (pageSize === 0 || page < 0) {
+      ctx.status = 400;
+      return;
+    }
+
+    ctx.body = await rateService.getRates(
+      {
+        chain,
+        type: "bounty",
+        index: bountyIndex,
+      },
+      page,
+      pageSize,
+      ctx.request.user
+    );
+  }
+
+  async getRateStats(ctx) {
+    const { chain } = ctx.params;
+    const bountyIndex = parseInt(ctx.params.bountyIndex);
+
+    ctx.body = await rateService.getRateStats({
+      chain,
+      type: "bounty",
+      index: bountyIndex,
+    });
   }
 }
 

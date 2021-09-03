@@ -30,6 +30,7 @@ import {
 } from "../../store/reducers/chainSlice";
 import DetailGoBack from "../components/DetailGoBack";
 import { useChainRoute } from "../../utils/hooks";
+import Rate from "../../components/Rate";
 
 const ValueWrapper = styled.span`
   margin-right: 4px;
@@ -276,7 +277,10 @@ const BountyDetail = () => {
       </DetailTableWrapper>
       <TimelineCommentWrapper>
         <Timeline data={timelineData} loading={loadingBountyDetail} />
-        <Comment type="bounty" index={parseInt(bountyIndex)} />
+        <div>
+          <Rate type="bounty" index={parseInt(bountyIndex)} />
+          <Comment type="bounty" index={parseInt(bountyIndex)} />
+        </div>
       </TimelineCommentWrapper>
     </>
   );

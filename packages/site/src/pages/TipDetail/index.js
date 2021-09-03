@@ -25,6 +25,7 @@ import TimelineCommentWrapper from "../../components/TimelineCommentWrapper";
 import DetailGoBack from "../components/DetailGoBack";
 import { useChainRoute } from "../../utils/hooks";
 import DetailTableWrapper from "../../components/DetailTableWrapper";
+import Rate from "../../components/Rate";
 
 function processTimeline(tipDetail, links) {
   return (tipDetail.timeline || []).map((timelineItem) => {
@@ -172,7 +173,10 @@ const TipDetail = () => {
       </DetailTableWrapper>
       <TimelineCommentWrapper>
         <Timeline data={timelineData} loading={loadingTipDetail} />
-        <Comment type="tip" index={getTipIndex(tipDetail)} />
+        <div>
+          <Rate type="tip" index={getTipIndex(tipDetail)} />
+          <Comment type="tip" index={getTipIndex(tipDetail)} />
+        </div>
       </TimelineCommentWrapper>
     </>
   );

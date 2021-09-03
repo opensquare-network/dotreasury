@@ -3,9 +3,8 @@ import dayjs from "dayjs";
 
 import Stars from "./Stars";
 import ThumbUp from "./ThumbUp";
-import UserAvatar from "../User/Avatar";
-import Username from "../User/Username";
 import TimeElapsed from "../TimeElapsed";
+import User from "../User";
 
 const Wrapper = styled.div`
   padding: 16px 24px;
@@ -65,8 +64,7 @@ export default function ReviewItem({ rate }) {
     <Wrapper>
       <InfoWrapper>
         <AuthorWrapper>
-          <UserAvatar address={data.address} />
-          <Username address={data.address} ellipsis={true} />
+          <User address={data.address} />
         </AuthorWrapper>
         <TimeWrapper>
           {dayjs().diff(dayjs(data.timestamp), "day") >= 1 ? (

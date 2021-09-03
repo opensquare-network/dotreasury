@@ -31,8 +31,13 @@ router.post(
 
 router.get(
   "/bounties/:bountyIndex/rates",
-  requireAuth,
+  maybeAuth,
   bountiesController.getRates,
+);
+
+router.get(
+  "/bounties/:bountyIndex/ratestats",
+  bountiesController.getRateStats,
 );
 
 module.exports = router;
