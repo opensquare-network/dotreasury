@@ -46,12 +46,12 @@ export default function Rate({ type, index }) {
     <Wrapper>
       <TitleWrapper>Rate</TitleWrapper>
       <UpWrapper>
-        <Ratings data={RATE.ratings} />
+        <Ratings type={type} index={index} />
         <UpDivider />
         <MyRating type={type} index={index} />
       </UpWrapper>
       <Divider />
-      <Review data={RATE.reviews} />
+      <Review type={type} index={index} />
     </Wrapper>
   );
 }

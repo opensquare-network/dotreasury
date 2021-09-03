@@ -227,6 +227,17 @@ class ProposalsController {
       pageSize
     );
   }
+
+  async getRateStats(ctx) {
+    const { chain } = ctx.params;
+    const proposalIndex = parseInt(ctx.params.proposalIndex);
+
+    ctx.body = await rateService.getRateStats({
+      chain,
+      type: "proposal",
+      index: proposalIndex,
+    });
+  }
 }
 
 module.exports = new ProposalsController();

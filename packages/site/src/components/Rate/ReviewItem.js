@@ -1,7 +1,11 @@
 import styled from "styled-components";
+import dayjs from "dayjs";
 
 import Stars from "./Stars";
 import ThumbUp from "./ThumbUp";
+import UserAvatar from "../User/Avatar";
+import Username from "../User/Username";
+import TimeElapsed from "../TimeElapsed";
 
 const Wrapper = styled.div`
   padding: 16px 24px;
@@ -18,11 +22,10 @@ const AuthorWrapper = styled.div`
   font-size: 14px;
   line-height: 22px;
   color: rgba(0, 0, 0, 0.9);
-  > img {
-    width: 24px;
-    height: 24px;
+  & > :first-child {
     margin-right: 8px;
   }
+
 `;
 
 const TimeWrapper = styled.div`
@@ -48,20 +51,37 @@ const ThumbUpWrapper = styled.div`
   margin: 8px 0 0 32px;
 `;
 
+const FlexWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  & > :last-child {
+    margin-left: 4px;
+  }
+`;
+
 export default function ReviewItem({ data }) {
   return (
     <Wrapper>
       <InfoWrapper>
         <AuthorWrapper>
-          <img src="/imgs/avatar.png" alt="" />
-          {data.author}
+          <UserAvatar address={data.address} />
+          <Username address={data.address} ellipsis={true} />
         </AuthorWrapper>
-        <TimeWrapper>{data.time}</TimeWrapper>
+        <TimeWrapper>
+          {dayjs().diff(dayjs(data.timestamp), "day") >= 1 ? (
+            dayjs(data.timestamp).format("YYYY-MM-DD HH:mm:ss")
+          ) : (
+            <FlexWrapper>
+              <TimeElapsed from={dayjs(data.timestamp).valueOf()} />
+              <span>ago</span>
+            </FlexWrapper>
+          )}
+        </TimeWrapper>
         <RateWrapper>
-          <Stars rate={data.rate} />
+          <Stars rate={data.grade} />
         </RateWrapper>
       </InfoWrapper>
-      <ContentWrapper>{data.content}</ContentWrapper>
+      <ContentWrapper>{data.comment}</ContentWrapper>
       <ThumbUpWrapper>
         <ThumbUp />
       </ThumbUpWrapper>

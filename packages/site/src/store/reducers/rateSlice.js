@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
+import pluralize from "pluralize";
 import api from "../../services/scanApi";
 import { signMessage } from "../../services/chainApi";
+import { addToast } from "./toastSlice";
 
 const rateSlice = createSlice({
   name: "rate",
@@ -29,10 +31,8 @@ const rateSlice = createSlice({
   },
 });
 
-export const { setRateStats, setRates } = rateSlice.actions;
 
-export const rateStatsSelector = (state) => state.rate.rateStats;
-export const ratesSelector = (state) => state.rate.rates;
+export const { setRateStats, setRates } = rateSlice.actions;
 
 
 export const addRate = (
@@ -72,10 +72,47 @@ export const addRate = (
   );
 
   if (error) {
-    console.log(error);
+    dispatch(
+      addToast({
+        type: "error",
+        message: error.message,
+      })
+    );
   }
 
-  // dispatch(fetchLinks(chain, type, index));
+  dispatch(fetchRateStats(chain, type, index));
 };
+
+
+export const fetchRateStats = (chain, type, index) => async (dispatch) => {
+  const { result } = await api.fetch(
+    `/${chain}/${pluralize(type)}/${index}/ratestats`
+  );
+  dispatch(setRateStats(result || {
+    5: 0,
+    4: 0,
+    3: 0,
+    2: 0,
+    1: 0,
+  }));
+};
+
+
+export const fetchRates = (chain, type, index, page, pageSize) => async (dispatch) => {
+  const { result } = await api.fetch(
+    `/${chain}/${pluralize(type)}/${index}/rates`,
+    { page, pageSize },
+  );
+  dispatch(setRates(result || {
+    items: [],
+    page: 0,
+    pageSize: 10,
+    total: 0,
+  }));
+};
+
+
+export const rateStatsSelector = (state) => state.rate.rateStats;
+export const ratesSelector = (state) => state.rate.rates;
 
 export default rateSlice.reducer;

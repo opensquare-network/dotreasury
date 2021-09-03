@@ -1,6 +1,10 @@
 import styled from "styled-components";
 import ReviewItem from "./ReviewItem";
-import Pagination from "../Pagination";
+import Pagination from "../../pages/Comment/ResponsivePagination";
+import { useDispatch, useSelector } from "react-redux";
+import { chainSelector } from "../../store/reducers/chainSlice";
+import { fetchRates, ratesSelector, rateStatsSelector } from "../../store/reducers/rateSlice";
+import { useEffect, useState } from "react";
 
 const Wrapper = styled.div``;
 
@@ -30,18 +34,40 @@ const PaginationWrapper = styled.div`
   }
 `;
 
-export default function Review({ data }) {
+const DEFAULT_PAGE_SIZE = 3;
+
+export default function Review({ type, index }) {
+  const dispatch = useDispatch();
+  const chain = useSelector(chainSelector);
+  const rates = useSelector(ratesSelector);
+  const rateStats = useSelector(rateStatsSelector);
+  const [page, setPage] = useState(0);
+
+  const totalPages = Math.ceil(rates.total / DEFAULT_PAGE_SIZE);
+
+  useEffect(() => {
+    dispatch(fetchRates(chain, type, index, page - 1, DEFAULT_PAGE_SIZE));
+  }, [dispatch, chain, type, index, page, rateStats]);
+
+  const pageChange = (_, { activePage }) => {
+    setPage(activePage);
+  };
+
   return (
     <Wrapper>
       <TitleWrapper>
         <div>Review</div>
-        <div>{data?.length ?? 0} Reviews</div>
+        <div>{rates?.total ?? 0} Reviews</div>
       </TitleWrapper>
-      {(data || []).map((item, index) => (
-        <ReviewItem key={index} data={item} />
+      {(rates.items || []).map((item, index) => (
+        <ReviewItem key={index} data={item.data} />
       ))}
       <PaginationWrapper>
-        <Pagination totalPages={10} />
+        <Pagination
+          activePage={rates.page + 1}
+          totalPages={totalPages}
+          onPageChange={pageChange}
+        />
       </PaginationWrapper>
     </Wrapper>
   );

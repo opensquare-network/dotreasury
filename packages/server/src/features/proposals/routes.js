@@ -38,4 +38,9 @@ router.get(
   proposalsController.getRates,
 );
 
+router.get(
+  "/proposals/:proposalIndex/ratestats",
+  proposalsController.getRateStats,
+);
+
 module.exports = router;

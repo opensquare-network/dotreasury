@@ -85,18 +85,20 @@ export default function MyRating({ type, index }) {
   };
 
   const onSelectSignedAccount = (account) => {
-    console.log(account);
     const address = account.address;
     dispatch(addRate(
       chain,
       type,
       index,
       rate,
-      content,
+      content.trim() === "" ? null : content.trim(),
       "1",
       Date.now(),
       address,
     ));
+
+    setContent("");
+    setRate(0);
   }
 
   return (

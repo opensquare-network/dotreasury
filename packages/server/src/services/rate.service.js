@@ -40,22 +40,22 @@ class RateService {
     } = data;
 
     if (!data.type) {
-      throw new HttpError(400, "data.type is missing");
+      throw new HttpError(400, "Treasury type is missing");
     }
 
     if (!data.chain) {
-      throw new HttpError(400, "data.chain is missing");
+      throw new HttpError(400, "Chain is missing");
     }
 
     let indexer = null;
 
     if ("tip" === type) {
       if (!hash) {
-        throw new HttpError(400, "data.hash is missing");
+        throw new HttpError(400, "Hash is missing");
       }
 
       if (!blockHeight) {
-        throw new HttpError(400, "data.blockHeight is missing");
+        throw new HttpError(400, "Block height is missing");
       }
 
       indexer = {
@@ -68,7 +68,7 @@ class RateService {
       };
     } else if ("treasury_proposal" === type) {
       if (!index) {
-        throw new HttpError(400, "data.index is missing");
+        throw new HttpError(400, "Proposal index is missing");
       }
 
       indexer = {
@@ -78,7 +78,7 @@ class RateService {
       };
     } else if ("bounty" === type) {
       if (!index) {
-        throw new HttpError(400, "data.index is missing");
+        throw new HttpError(400, "Bounty index is missing");
       }
 
       indexer = {
@@ -87,32 +87,28 @@ class RateService {
         index
       };
     } else {
-      throw new HttpError(400, "Unknown data.type");
+      throw new HttpError(400, "Unknown treasury type");
     }
 
     if (grade < 1 || grade > 5) {
-      throw new HttpError(400, "data.grade must between 1 to 5");
+      throw new HttpError(400, "Number of grade must between 1 to 5");
     }
 
-    if (typeof comment !== "string") {
-      throw new HttpError(400, "data.comment must be string");
-    }
-
-    if (comment.length > 140) {
-      throw new HttpError(400, "data.comment too long");
+    if (comment?.length > 140) {
+      throw new HttpError(400, "Comment too long");
     }
 
     if (!timestamp) {
-      throw new HttpError(400, "data.timestamp is missing");
+      throw new HttpError(400, "Timestamp is missing");
     }
 
     if (!version) {
-      throw new HttpError(400, "data.version is missing");
+      throw new HttpError(400, "Version is missing");
     }
 
     const rateCol = await getRateCollection();
 
-    const existRate = await rateCol.findOne({ indexer, address });
+    const existRate = await rateCol.findOne({ indexer, "data.address": address });
     if (existRate) {
       throw new HttpError(400, "You had already rated");
     }
@@ -138,7 +134,13 @@ class RateService {
 
   async getRates(indexer, page, pageSize) {
     const rateCol = await getRateCollection();
-    const total = await rateCol.countDocuments({ indexer });
+
+    const q = {
+      indexer,
+      "data.comment": { $ne: null },
+    };
+
+    const total = await rateCol.countDocuments(q);
 
     if (page === "last") {
       const totalPages = Math.ceil(total / pageSize);
@@ -146,7 +148,7 @@ class RateService {
     }
 
     const rates = await rateCol
-      .find({ indexer })
+      .find(q)
       .sort({ createdAt: -1 })
       .skip(page * pageSize)
       .limit(pageSize)
@@ -167,8 +169,8 @@ class RateService {
       { $match: { indexer } },
       {
         $group: {
-          _id: grade,
-          count: { $sum: 1 }
+          _id: "$data.grade",
+          count: { $sum: 1 },
         }
       },
     ]).toArray();

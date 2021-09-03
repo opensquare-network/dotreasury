@@ -2,6 +2,10 @@ import styled from "styled-components";
 
 import Stars from "./Stars";
 import Progress from "./Progress";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchRateStats, rateStatsSelector } from "../../store/reducers/rateSlice";
+import { useEffect } from "react";
+import { chainSelector } from "../../store/reducers/chainSlice";
 
 const Wrapper = styled.div`
   padding: 0 24px;
@@ -51,8 +55,15 @@ const Total = styled.div`
   color: rgba(0, 0, 0, 0.65);
 `;
 
-export default function Ratings({ data }) {
-  const [max, total] = (data || []).reduce(
+export default function Ratings({ type, index }) {
+  const dispatch = useDispatch();
+  const chain = useSelector(chainSelector);
+  const rateStats = useSelector(rateStatsSelector);
+  useEffect(() => {
+    dispatch(fetchRateStats(chain, type, index));
+  }, [dispatch, chain, type, index]);
+
+  const [max, total] = (Object.values(rateStats) || []).reduce(
     (pre, cur) => {
       return [pre[0] < cur ? cur : pre[0], pre[1] + cur];
     },
@@ -71,13 +82,13 @@ export default function Ratings({ data }) {
           {[...Array(5).keys()].map((item) => (
             <Progress
               key={item}
-              percent={(((data || [])[item] ?? 0) / max) * 100 + "%"}
+              percent={(((rateStats || [])[5 - item] ?? 0) / max) * 100 + "%"}
             />
           ))}
         </ProgressWrapper>
         <CountWrapper>
           {[...Array(5).keys()].map((item) => (
-            <div key={item}>{(data || [])[item] ?? 0}</div>
+            <div key={item}>{(rateStats || [])[5 - item] ?? 0}</div>
           ))}
         </CountWrapper>
       </MainWrapper>
