@@ -34,6 +34,7 @@ router.post(
 
 router.get(
   "/tips/:blockHeight(\\d+)_:tipHash/rates",
+  maybeAuth,
   tipsController.getRates,
 );
 

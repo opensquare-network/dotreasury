@@ -6,6 +6,7 @@ const http = require("http");
 const cors = require("@koa/cors");
 const config = require("../config");
 const { initDb } = require("./mongo");
+const { initDb: initAdminDb } = require("./mongo-admin");
 const { listenAndEmitInfo } = require("./websocket");
 
 require("dotenv").config();
@@ -38,7 +39,7 @@ const io = require("socket.io")(server, {
   },
 });
 
-initDb()
+Promise.all([initDb(), initAdminDb()])
   .then(async (db) => {
     await listenAndEmitInfo(io);
 

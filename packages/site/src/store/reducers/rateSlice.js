@@ -3,6 +3,7 @@ import pluralize from "pluralize";
 import api from "../../services/scanApi";
 import { signMessage } from "../../services/chainApi";
 import { addToast } from "./toastSlice";
+import { REACTION_THUMBUP } from "../../constants";
 
 const rateSlice = createSlice({
   name: "rate",
@@ -31,9 +32,7 @@ const rateSlice = createSlice({
   },
 });
 
-
 export const { setRateStats, setRates } = rateSlice.actions;
-
 
 export const addRate = (
   chain,
@@ -61,7 +60,7 @@ export const addRate = (
     address
   );
 
-  const { error } = await api.fetch(`/${chain}/rates`, {},
+  const { error } = await api.fetch(`/rates`, {},
     {
       method: "POST",
       headers: {
@@ -83,7 +82,6 @@ export const addRate = (
   dispatch(fetchRateStats(chain, type, index));
 };
 
-
 export const fetchRateStats = (chain, type, index) => async (dispatch) => {
   const { result } = await api.fetch(
     `/${chain}/${pluralize(type)}/${index}/ratestats`
@@ -97,9 +95,8 @@ export const fetchRateStats = (chain, type, index) => async (dispatch) => {
   }));
 };
 
-
 export const fetchRates = (chain, type, index, page, pageSize) => async (dispatch) => {
-  const { result } = await api.fetch(
+  const { result } = await api.maybeAuthFetch(
     `/${chain}/${pluralize(type)}/${index}/rates`,
     { page, pageSize },
   );
@@ -111,6 +108,32 @@ export const fetchRates = (chain, type, index, page, pageSize) => async (dispatc
   }));
 };
 
+export const setRateThumbUp = (rateId) => async (dispatch) => {
+  return await api.authFetch(
+    `/rates/${rateId}/reaction`,
+    {},
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ reaction: REACTION_THUMBUP }),
+    }
+  );
+};
+
+export const unsetRateReaction = (rateId) => async (dispatch) => {
+  return await api.authFetch(
+    `/rates/${rateId}/reaction`,
+    {},
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+};
 
 export const rateStatsSelector = (state) => state.rate.rateStats;
 export const ratesSelector = (state) => state.rate.rates;

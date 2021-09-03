@@ -233,14 +233,25 @@ class TipsController {
     const { chain, tipHash } = ctx.params;
     const blockHeight = parseInt(ctx.params.blockHeight);
 
-    ctx.body = await rateService.getRates({
-      chain,
-      type: "tip",
-      index: {
-        blockHeight,
-        tipHash,
+    const { page, pageSize } = extractPage(ctx);
+    if (pageSize === 0 || page < 0) {
+      ctx.status = 400;
+      return;
+    }
+
+    ctx.body = await rateService.getRates(
+      {
+        chain,
+        type: "tip",
+        index: {
+          blockHeight,
+          tipHash,
+        },
       },
-    });
+      page,
+      pageSize,
+      ctx.request.user
+    );
   }
 
   async getRateStats(ctx) {

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import { fetchRates, ratesSelector, rateStatsSelector } from "../../store/reducers/rateSlice";
 import { useEffect, useState } from "react";
+import { loggedInUserSelector } from "../../store/reducers/userSlice";
 
 const Wrapper = styled.div``;
 
@@ -42,12 +43,14 @@ export default function Review({ type, index }) {
   const rates = useSelector(ratesSelector);
   const rateStats = useSelector(rateStatsSelector);
   const [page, setPage] = useState(0);
+  const loggedInUser = useSelector(loggedInUserSelector);
+  const loggedIn = !!loggedInUser;
 
   const totalPages = Math.ceil(rates.total / DEFAULT_PAGE_SIZE);
 
   useEffect(() => {
     dispatch(fetchRates(chain, type, index, page - 1, DEFAULT_PAGE_SIZE));
-  }, [dispatch, chain, type, index, page, rateStats]);
+  }, [dispatch, chain, type, index, page, rateStats, loggedIn]);
 
   const pageChange = (_, { activePage }) => {
     setPage(activePage);
@@ -60,7 +63,7 @@ export default function Review({ type, index }) {
         <div>{rates?.total ?? 0} Reviews</div>
       </TitleWrapper>
       {(rates.items || []).map((item, index) => (
-        <ReviewItem key={index} data={item.data} />
+        <ReviewItem key={index} rate={item} />
       ))}
       <PaginationWrapper>
         <Pagination

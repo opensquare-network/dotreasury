@@ -59,7 +59,8 @@ const FlexWrapper = styled.div`
   }
 `;
 
-export default function ReviewItem({ data }) {
+export default function ReviewItem({ rate }) {
+  const data = rate.data;
   return (
     <Wrapper>
       <InfoWrapper>
@@ -83,7 +84,7 @@ export default function ReviewItem({ data }) {
       </InfoWrapper>
       <ContentWrapper>{data.comment}</ContentWrapper>
       <ThumbUpWrapper>
-        <ThumbUp />
+        <ThumbUp rate={rate} />
       </ThumbUpWrapper>
     </Wrapper>
   );

@@ -5,8 +5,6 @@ import Ratings from "./Ratings";
 import MyRating from "./MyRating";
 import Review from "./Review";
 
-import { RATE } from "../../constants";
-
 const Wrapper = styled(Card)`
   padding: 0;
 `;

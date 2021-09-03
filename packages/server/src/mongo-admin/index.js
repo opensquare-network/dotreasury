@@ -48,7 +48,23 @@ async function _createIndexes() {
   userCol.createIndex({ kusamaAddress: 1 }, { unique: true, sparse: true });
   userCol.createIndex({ polkadotAddress: 1 }, { unique: true, sparse: true });
 
-  reactionCol.createIndex({ commentId: 1, userId: 1 }, { unique: true });
+  const exists = await reactionCol.indexExists("commentId_1_userId_1")
+  if (exists) {
+    await reactionCol.dropIndex("commentId_1_userId_1");
+  }
+  reactionCol.createIndex({ commentId: 1, userId: 1 }, {
+    unique: true,
+    partialFilterExpression: {
+      commentId: { $exists: true }
+    },
+    name: "commentId_1_userId_1-v2",
+  });
+  reactionCol.createIndex({ rateId: 1, userId: 1 }, {
+    unique: true,
+    partialFilterExpression: {
+      rateId: { $exists: true }
+    },
+  });
   reactionCol.createIndex({ commentId: 1, reaction: 1 });
 
   attemptCol.createIndex({ createdAt: 1 }, { expireAfterSeconds: 3600 });

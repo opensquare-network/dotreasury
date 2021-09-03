@@ -1,6 +1,6 @@
 const { ObjectId } = require("mongodb");
 const {
-  getRateCollection,
+  getRateCollection, getReactionCollection,
 } = require("../mongo-admin");
 const { HttpError } = require("../exc");
 const { isValidSignature } = require("../utils");
@@ -132,7 +132,7 @@ class RateService {
     return rateId;
   }
 
-  async getRates(indexer, page, pageSize) {
+  async getRates(indexer, page, pageSize, user) {
     const rateCol = await getRateCollection();
 
     const q = {
@@ -147,12 +147,71 @@ class RateService {
       page = totalPages - 1;
     }
 
-    const rates = await rateCol
-      .find(q)
-      .sort({ createdAt: -1 })
-      .skip(page * pageSize)
-      .limit(pageSize)
-      .toArray();
+    const rates = await rateCol.aggregate([
+      { $match: q },
+      { $sort: { createdAt: 1 } },
+      { $skip: page * pageSize },
+      { $limit: pageSize },
+      {
+        $lookup: {
+          from: "reaction",
+          let: { rateId: "$_id" },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: ["$rateId", "$$rateId"],
+                },
+              },
+            },
+            {
+              $group: {
+                _id: "$reaction",
+                count: { $sum: 1 },
+              },
+            },
+            {
+              $project: {
+                _id: 0,
+                reaction: "$_id",
+                count: 1,
+              },
+            },
+          ],
+          as: "reactions",
+        },
+      },
+      ...(user
+        ? [
+            {
+              $lookup: {
+                from: "reaction",
+                let: { rateId: "$_id" },
+                pipeline: [
+                  {
+                    $match: {
+                      $expr: {
+                        $and: [
+                          { $eq: ["$rateId", "$$rateId"] },
+                          { $eq: ["$userId", user._id] },
+                        ],
+                      },
+                    },
+                  },
+                ],
+                as: "myReaction",
+              },
+            },
+            {
+              $addFields: {
+                myReaction: {
+                  $arrayElemAt: ["$myReaction.reaction", 0],
+                },
+              },
+            },
+          ]
+        : []),
+    ]).toArray();
 
     return {
       items: rates,
@@ -189,6 +248,54 @@ class RateService {
 
     return result;
   }
+
+  async unsetRateReaction(rateId, user) {
+    const reactionCol = await getReactionCollection();
+
+    const result = await reactionCol.deleteOne({
+      rateId: ObjectId(rateId),
+      userId: user._id,
+    });
+
+    if (!result.result.ok) {
+      throw new HttpError(500, "Db error, clean reaction.");
+    }
+
+    if (result.result.nModified === 0) {
+      return false;
+    }
+
+    return true;
+  }
+
+  async setRateReaction(rateId, reaction, user) {
+    const reactionCol = await getReactionCollection();
+
+    const now = new Date();
+    const result = await reactionCol.updateOne(
+      {
+        rateId: ObjectId(rateId),
+        userId: user._id,
+      },
+      {
+        $set: {
+          reaction,
+          updatedAt: now,
+        },
+        $setOnInsert: {
+          createdAt: now,
+        },
+      },
+      { upsert: true }
+    );
+
+    if (!result.result.ok) {
+      throw new HttpError(500, "Db error, update reaction.");
+    }
+
+    return true;
+  }
+
 }
 
 module.exports = new RateService();
