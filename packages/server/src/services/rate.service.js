@@ -42,7 +42,6 @@ if (!DECOO_IPFS_ENDPOINT) {
 const trimTailSlash = (url) => url.endsWith("/") ? url.substr(0, url.length - 1) : url;
 
 async function pinJsonToIpfs(data) {
-  console.log("pin json:", data);
   const jsonData = JSON.stringify(data);
   const buf = Buffer.from(jsonData);
   const cid = await Hash.of(buf);
@@ -52,8 +51,6 @@ async function pinJsonToIpfs(data) {
   formdata.append("file", buf, { filename: "grade-" + Date.now() + ".json", contentType: "application/json" });
   formdata.append("cid", cid);
   formdata.append("secret", secret);
-  console.log("ipfs cid:", cid);
-  console.log("decoo secret:", secret);
 
   const tokenResult = await axios.get(`${trimTailSlash(DECOO_API_OAUTH_ENDPOINT)}/oauth/accessToken`, {
     headers: {
@@ -61,7 +58,6 @@ async function pinJsonToIpfs(data) {
     }
   });
   const accessToken = tokenResult.data.Data;
-  console.log("decoo token:", accessToken);
 
   const pinResult = await axios.post(`${trimTailSlash(DECOO_API_UPLOAD_ENDPOINT)}/pinning/pinFile`, formdata, {
     headers: {
@@ -70,7 +66,6 @@ async function pinJsonToIpfs(data) {
     }
   });
 
-  console.log("decoo token:", pinResult.data);
   return pinResult.data;
 }
 
@@ -212,7 +207,6 @@ class RateService {
 
     const q = {
       indexer,
-      "data.comment": { $ne: null },
     };
 
     const total = await rateCol.countDocuments(q);
@@ -288,8 +282,9 @@ class RateService {
         : []),
     ]).toArray();
 
+    const ipfsEndpoint = trimTailSlash(DECOO_IPFS_ENDPOINT);
     return {
-      items: rates,
+      items: rates.map(r => ({...r, ipfsEndpoint})),
       page,
       pageSize,
       total,

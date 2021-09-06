@@ -2,7 +2,7 @@ import styled from "styled-components";
 import dayjs from "dayjs";
 
 import Stars from "./Stars";
-import ThumbUp from "./ThumbUp";
+import IpfsData from "./IpfsData";
 import TimeElapsed from "../TimeElapsed";
 import User from "../User";
 
@@ -38,16 +38,16 @@ const RateWrapper = styled.div`
   margin-left: auto;
 `;
 
+const IpfsWrapper = styled.div`
+  margin-left: 12px;
+`;
+
 const ContentWrapper = styled.div`
   margin: 8px 0 0 32px;
   font-size: 14px;
   line-height: 22px;
   color: rgba(0, 0, 0, 0.9);
   word-wrap: break-word;
-`;
-
-const ThumbUpWrapper = styled.div`
-  margin: 8px 0 0 32px;
 `;
 
 const FlexWrapper = styled.div`
@@ -79,11 +79,11 @@ export default function ReviewItem({ rate }) {
         <RateWrapper>
           <Stars rate={data.grade} />
         </RateWrapper>
+        <IpfsWrapper>
+          <IpfsData url={`${rate.ipfsEndpoint}/${rate.pinHash}`} />
+        </IpfsWrapper>
       </InfoWrapper>
       <ContentWrapper>{data.comment}</ContentWrapper>
-      <ThumbUpWrapper>
-        <ThumbUp rate={rate} />
-      </ThumbUpWrapper>
     </Wrapper>
   );
 }

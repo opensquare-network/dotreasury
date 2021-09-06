@@ -96,6 +96,11 @@ export default function MyRating({ type, index }) {
 
   const onSelectSignedAccount = (account) => {
     setAccountsModalOpen(false);
+    if (!account) {
+      return;
+    }
+
+    localStorage.setItem("lastSignatureAddress", account.address);
 
     const address = account.address;
     dispatch(addRate(
