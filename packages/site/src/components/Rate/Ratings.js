@@ -92,7 +92,7 @@ export default function Ratings({ type, index }) {
           ))}
         </CountWrapper>
       </MainWrapper>
-      <Total>{total} Ratings</Total>
+      <Total>{total} Grades</Total>
     </Wrapper>
   );
 }

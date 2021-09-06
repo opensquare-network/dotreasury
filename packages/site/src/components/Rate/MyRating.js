@@ -116,7 +116,7 @@ export default function MyRating({ type, index }) {
   return (
     <Wrapper>
       <TitleWrapper>
-        Your rating
+        Your grading
         <StarsAction rate={rate} setRate={setRate} />
       </TitleWrapper>
       <TextareaWrapper>

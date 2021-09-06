@@ -42,7 +42,7 @@ const Divider = styled.div`
 export default function Rate({ type, index }) {
   return (
     <Wrapper>
-      <TitleWrapper>Rate</TitleWrapper>
+      <TitleWrapper>Grade</TitleWrapper>
       <UpWrapper>
         <Ratings type={type} index={index} />
         <UpDivider />

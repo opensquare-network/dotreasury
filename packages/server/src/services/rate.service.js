@@ -1,9 +1,78 @@
+const crypto = require("crypto");
+const axios = require("axios");
+const FormData = require("form-data");
+const Hash = require("ipfs-only-hash");
 const { ObjectId } = require("mongodb");
 const {
   getRateCollection, getReactionCollection,
 } = require("../mongo-admin");
 const { HttpError } = require("../exc");
 const { isValidSignature } = require("../utils");
+
+const DECOO_API_TOKEN = process.env.DECOO_API_TOKEN;
+if (!DECOO_API_TOKEN) {
+  console.error("DECOO_API_TOKEN is not properly configured");
+  process.exit();
+}
+
+const DECOO_API_SECRET_KEY = process.env.DECOO_API_SECRET_KEY;
+if (!DECOO_API_SECRET_KEY) {
+  console.error("DECOO_API_SECRET_KEY is not properly configured");
+  process.exit();
+}
+
+const DECOO_API_OAUTH_ENDPOINT = process.env.DECOO_API_OAUTH_ENDPOINT;
+if (!DECOO_API_OAUTH_ENDPOINT) {
+  console.error("DECOO_API_OAUTH_ENDPOINT is not properly configured");
+  process.exit();
+}
+
+const DECOO_API_UPLOAD_ENDPOINT = process.env.DECOO_API_UPLOAD_ENDPOINT;
+if (!DECOO_API_UPLOAD_ENDPOINT) {
+  console.error("DECOO_API_UPLOAD_ENDPOINT is not properly configured");
+  process.exit();
+}
+
+const DECOO_IPFS_ENDPOINT = process.env.DECOO_IPFS_ENDPOINT;
+if (!DECOO_IPFS_ENDPOINT) {
+  console.error("DECOO_IPFS_ENDPOINT is not properly configured");
+  process.exit();
+}
+
+const trimTailSlash = (url) => url.endsWith("/") ? url.substr(0, url.length - 1) : url;
+
+async function pinJsonToIpfs(data) {
+  console.log("pin json:", data);
+  const jsonData = JSON.stringify(data);
+  const buf = Buffer.from(jsonData);
+  const cid = await Hash.of(buf);
+  const fullPrivateKey = `-----BEGIN PRIVATE KEY-----\n${DECOO_API_SECRET_KEY}\n-----END PRIVATE KEY-----`;
+  const secret = crypto.privateEncrypt(fullPrivateKey, Buffer.from(cid)).toString("base64");
+  const formdata = new FormData();
+  formdata.append("file", buf, { filename: "grade-" + Date.now() + ".json", contentType: "application/json" });
+  formdata.append("cid", cid);
+  formdata.append("secret", secret);
+  console.log("ipfs cid:", cid);
+  console.log("decoo secret:", secret);
+
+  const tokenResult = await axios.get(`${trimTailSlash(DECOO_API_OAUTH_ENDPOINT)}/oauth/accessToken`, {
+    headers: {
+      authorization: `Bearer ${DECOO_API_TOKEN}`,
+    }
+  });
+  const accessToken = tokenResult.data.Data;
+  console.log("decoo token:", accessToken);
+
+  const pinResult = await axios.post(`${trimTailSlash(DECOO_API_UPLOAD_ENDPOINT)}/pinning/pinFile`, formdata, {
+    headers: {
+      ...formdata.getHeaders(),
+      useraccesstoken: accessToken,
+    }
+  });
+
+  console.log("decoo token:", pinResult.data);
+  return pinResult.data;
+}
 
 class RateService {
   async verifySignature(signature, data) {
@@ -113,12 +182,18 @@ class RateService {
       throw new HttpError(400, "You had already rated");
     }
 
+    const pinResult = await pinJsonToIpfs({ data, signature });
+    if (!pinResult.PinHash) {
+      throw new HttpError(500, "Failed to pin to ipfs");
+    }
+
     const now = new Date();
     const result = await rateCol.insertOne(
       {
         indexer,
         data,
         signature,
+        pinHash: pinResult.PinHash,
         createdAt: now,
         updatedAt: now,
       });
