@@ -13,25 +13,35 @@ const Wrapper = styled.div`
 const InfoWrapper = styled.div`
   display: flex;
   align-items: center;
+  @media screen and (max-width: 640px) {
+    margin-bottom: 26px;
+  }
 `;
 
 const AuthorWrapper = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
   font-size: 14px;
   line-height: 22px;
   color: rgba(0, 0, 0, 0.9);
-  & > :first-child {
-    margin-right: 8px;
-  }
-
 `;
 
 const TimeWrapper = styled.div`
-  font-size: 14px;
+  @media screen and (max-width: 640px) {
+    position: absolute;
+    top: 22px;
+    left: 34px;
+    font-size: 12px;
+  }
+  @media screen and (min-width: 640px) {
+    margin-left: 16px;
+    font-size: 14px;
+  }
+
   line-height: 22px;
   color: rgba(0, 0, 0, 0.3);
-  margin-left: 16px;
+  white-space: nowrap;
 `;
 
 const RateWrapper = styled.div`
@@ -65,17 +75,17 @@ export default function ReviewItem({ rate }) {
       <InfoWrapper>
         <AuthorWrapper>
           <User address={data.address} />
+          <TimeWrapper>
+            {dayjs().diff(dayjs(data.timestamp), "day") >= 1 ? (
+              dayjs(data.timestamp).format("YYYY-MM-DD")
+            ) : (
+              <FlexWrapper>
+                <TimeElapsed from={dayjs(data.timestamp).valueOf()} />
+                <span>ago</span>
+              </FlexWrapper>
+            )}
+          </TimeWrapper>
         </AuthorWrapper>
-        <TimeWrapper>
-          {dayjs().diff(dayjs(data.timestamp), "day") >= 1 ? (
-            dayjs(data.timestamp).format("YYYY-MM-DD HH:mm:ss")
-          ) : (
-            <FlexWrapper>
-              <TimeElapsed from={dayjs(data.timestamp).valueOf()} />
-              <span>ago</span>
-            </FlexWrapper>
-          )}
-        </TimeWrapper>
         <RateWrapper>
           <Stars rate={data.grade} />
         </RateWrapper>
