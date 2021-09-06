@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { isWeb3Injected, web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import { Modal } from "semantic-ui-react";
-import Addr from "../../components/Address";
 import { useIsMounted } from "../../utils/hooks";
+import AccountItem from "../../components/AccountItem";
+import ButtonPrimary from "../../components/ButtonPrimary";
 
 const SignInModal = styled(Modal)`
   .account-select-content {
@@ -26,6 +27,7 @@ const SelectAddress = ({ onSelect = ()=>{}, onClose = ()=>{} }) => {
   const [accountsModalOpen, setAccountsModalOpen] = useState(false);
   const [noExtensionModalOpen, setNoExtensionModalOpen] = useState(false)
   const [accounts, setAccounts] = useState([])
+  const [selectedAccount, setSelectedAccount] = useState(null);
 
   useEffect(() => {
     if (!accountsModalOpen && !noExtensionModalOpen) {
@@ -54,6 +56,9 @@ const SelectAddress = ({ onSelect = ()=>{}, onClose = ()=>{} }) => {
   }, [accountsModalOpen, noExtensionModalOpen, isMounted]);
 
   const selectAccount = async (account) => {
+    if (!account) {
+      return;
+    }
     setAccountsModalOpen(false);
     onSelect(account);
   };
@@ -74,20 +79,23 @@ const SelectAddress = ({ onSelect = ()=>{}, onClose = ()=>{} }) => {
       >
         <Modal.Header>Select accounts</Modal.Header>
         <Modal.Content className="account-select-content">
-          <ol>
-            {
-              accounts.map(account => {
-                return (
-                  <li key={account.address} onClick={async () => {
-                    await selectAccount(account)
-                  }}>
-                    <span>{account.name}</span>
-                    <Addr>{account.address}</Addr>
-                  </li>
-                )
-              })
-            }
-          </ol>
+          {accounts.map(account => (
+            <div
+              onClick={async () => {
+                setSelectedAccount(account);
+              }}
+            >
+              <AccountItem
+                accountName={account.name}
+                accountAddress={account.address}
+              />
+            </div>
+          ))}
+          <ButtonPrimary
+            onClick={async () => {
+              await selectAccount(selectedAccount);
+            }}
+          >Signature</ButtonPrimary>
         </Modal.Content>
       </SignInModal>
 
