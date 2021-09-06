@@ -18,4 +18,15 @@ router.post(
   projectsController.postProjectComment
 );
 
+router.get(
+  "/projects/:projectId/rates",
+  maybeAuth,
+  projectsController.getRates,
+);
+
+router.get(
+  "/projects/:projectId/ratestats",
+  projectsController.getRateStats,
+);
+
 module.exports = router;

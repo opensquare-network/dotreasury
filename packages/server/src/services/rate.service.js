@@ -150,6 +150,16 @@ class RateService {
         type: "bounty",
         index
       };
+    } else if ("project" === type) {
+      if (!index) {
+        throw new HttpError(400, "Project index is missing");
+      }
+
+      indexer = {
+        chain,
+        type: "project",
+        index
+      };
     } else {
       throw new HttpError(400, "Unknown treasury type");
     }

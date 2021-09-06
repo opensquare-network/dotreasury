@@ -2,6 +2,7 @@ const kusamaProjects = require("./data/kusama");
 const polkadotProjects = require("./data/polkadot");
 const { extractPage } = require("../../utils");
 const commentService = require("../../services/comment.service");
+const rateService = require("../../services/rate.service");
 const { HttpError } = require("../../exc");
 
 function sum(arr) {
@@ -131,6 +132,37 @@ class ProjectController {
       content,
       user
     );
+  }
+
+  async getRates(ctx) {
+    const { chain, projectId } = ctx.params;
+
+    const { page, pageSize } = extractPage(ctx);
+    if (pageSize === 0 || page < 0) {
+      ctx.status = 400;
+      return;
+    }
+
+    ctx.body = await rateService.getRates(
+      {
+        chain,
+        type: "project",
+        index: projectId,
+      },
+      page,
+      pageSize,
+      ctx.request.user
+    );
+  }
+
+  async getRateStats(ctx) {
+    const { chain, projectId } = ctx.params;
+
+    ctx.body = await rateService.getRateStats({
+      chain,
+      type: "project",
+      index: projectId,
+    });
   }
 }
 

@@ -49,11 +49,11 @@ export default function Review({ type, index }) {
   const totalPages = Math.ceil(rates.total / DEFAULT_PAGE_SIZE);
 
   useEffect(() => {
-    dispatch(fetchRates(chain, type, index, page - 1, DEFAULT_PAGE_SIZE));
+    dispatch(fetchRates(chain, type, index, page, DEFAULT_PAGE_SIZE));
   }, [dispatch, chain, type, index, page, rateStats, loggedIn]);
 
   const pageChange = (_, { activePage }) => {
-    setPage(activePage);
+    setPage(activePage - 1);
   };
 
   return (
