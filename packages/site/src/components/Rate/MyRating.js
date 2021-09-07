@@ -110,7 +110,7 @@ export default function MyRating({ type, index }) {
       rate,
       content.trim() === "" ? null : content.trim(),
       "1",
-      Date.now(),
+      parseInt(Date.now() / 1000),
       address,
     ));
 

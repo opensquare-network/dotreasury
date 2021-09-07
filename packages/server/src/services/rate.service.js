@@ -70,16 +70,16 @@ async function pinJsonToIpfs(data) {
 }
 
 class RateService {
-  async verifySignature(signature, data) {
+  async verifySignature(msg, address, signature) {
     if (!signature) {
       throw new HttpError(400, "Signature is missing");
     }
 
-    if (!data.address) {
-      throw new HttpError(400, "data.address is missing");
+    if (!address) {
+      throw new HttpError(400, "Address is missing");
     }
 
-    const isValid = isValidSignature(JSON.stringify(data), signature, data.address);
+    const isValid = isValidSignature(msg, signature, address);
     if (!isValid) {
       throw new HttpError(400, "Signature is invalid");
     }
@@ -87,8 +87,9 @@ class RateService {
     return true;
   }
 
-  async addRate(data, signature) {
-    await this.verifySignature(signature, data);
+  async addRate(data, address, signature) {
+    const msg = JSON.stringify(data);
+    await this.verifySignature(msg, address, signature);
 
     const {
       chain,
@@ -100,7 +101,6 @@ class RateService {
       comment,
       timestamp,
       version,
-      address,
     } = data;
 
     if (!data.type) {
@@ -182,12 +182,12 @@ class RateService {
 
     const rateCol = await getRateCollection();
 
-    const existRate = await rateCol.findOne({ indexer, "data.address": address });
+    const existRate = await rateCol.findOne({ indexer, address });
     if (existRate) {
       throw new HttpError(400, "You had already rated");
     }
 
-    const pinResult = await pinJsonToIpfs({ data, signature });
+    const pinResult = await pinJsonToIpfs({ msg, address, signature, version: "1" });
     if (!pinResult.PinHash) {
       throw new HttpError(500, "Failed to pin to ipfs");
     }
@@ -197,8 +197,10 @@ class RateService {
       {
         indexer,
         data,
+        address,
         signature,
         pinHash: pinResult.PinHash,
+        version: "1",
         createdAt: now,
         updatedAt: now,
       });

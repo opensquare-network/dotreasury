@@ -3,7 +3,7 @@ const rateService = require("../../services/rate.service");
 
 class RateController {
   async rate(ctx) {
-    const { data, signature } = ctx.request.body;
+    const { data, address, signature } = ctx.request.body;
     if (!data) {
       throw new HttpError(400, "Data is missing");
     }
@@ -12,7 +12,7 @@ class RateController {
       throw new HttpError(400, "Signature is missing");
     }
 
-    ctx.body = await rateService.addRate(data, signature);
+    ctx.body = await rateService.addRate(data, address, signature);
   }
 
   async setRateReaction(ctx) {

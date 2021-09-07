@@ -74,13 +74,13 @@ export default function ReviewItem({ rate }) {
     <Wrapper>
       <InfoWrapper>
         <AuthorWrapper>
-          <User address={data.address} />
+          <User address={rate.address} />
           <TimeWrapper>
-            {dayjs().diff(dayjs(data.timestamp), "day") >= 1 ? (
-              dayjs(data.timestamp).format("YYYY-MM-DD")
+            {dayjs().diff(dayjs(data.timestamp*1000), "day") >= 1 ? (
+              dayjs(data.timestamp*1000).format("YYYY-MM-DD")
             ) : (
               <FlexWrapper>
-                <TimeElapsed from={dayjs(data.timestamp).valueOf()} />
+                <TimeElapsed from={dayjs(data.timestamp*1000).valueOf()} />
                 <span>ago</span>
               </FlexWrapper>
             )}

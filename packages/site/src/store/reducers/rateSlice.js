@@ -51,7 +51,6 @@ export const addRate = (
     grade,
     comment,
     timestamp,
-    address,
     version,
   };
 
@@ -66,7 +65,7 @@ export const addRate = (
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ data, signature }),
+      body: JSON.stringify({ data, address, signature }),
     }
   );
 
