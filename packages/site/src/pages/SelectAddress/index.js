@@ -139,7 +139,6 @@ const SelectAddress = ({ onSelect = ()=>{}, onClose = ()=>{} }) => {
           setAccounts(accounts);
 
           const address = localStorage.getItem("lastSignatureAddress");
-          console.log(address);
           setSelectedAccount(accounts.find(item => item.address === address));
 
           setAccountsModalOpen(true);
