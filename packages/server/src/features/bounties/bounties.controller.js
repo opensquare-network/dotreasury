@@ -204,39 +204,6 @@ class BountiesController {
       user
     );
   }
-
-  async getRates(ctx) {
-    const { chain } = ctx.params;
-    const bountyIndex = parseInt(ctx.params.bountyIndex);
-
-    const { page, pageSize } = extractPage(ctx);
-    if (pageSize === 0 || page < 0) {
-      ctx.status = 400;
-      return;
-    }
-
-    ctx.body = await rateService.getRates(
-      {
-        chain,
-        type: "bounty",
-        index: bountyIndex,
-      },
-      page,
-      pageSize,
-      ctx.request.user
-    );
-  }
-
-  async getRateStats(ctx) {
-    const { chain } = ctx.params;
-    const bountyIndex = parseInt(ctx.params.bountyIndex);
-
-    ctx.body = await rateService.getRateStats({
-      chain,
-      type: "bounty",
-      index: bountyIndex,
-    });
-  }
 }
 
 module.exports = new BountiesController();

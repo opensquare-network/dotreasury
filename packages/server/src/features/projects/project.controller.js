@@ -150,8 +150,7 @@ class ProjectController {
         index: projectId,
       },
       page,
-      pageSize,
-      ctx.request.user
+      pageSize
     );
   }
 

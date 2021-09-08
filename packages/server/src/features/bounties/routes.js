@@ -29,15 +29,4 @@ router.post(
   bountiesController.postBountyComment
 );
 
-router.get(
-  "/bounties/:bountyIndex/rates",
-  maybeAuth,
-  bountiesController.getRates,
-);
-
-router.get(
-  "/bounties/:bountyIndex/ratestats",
-  bountiesController.getRateStats,
-);
-
 module.exports = router;

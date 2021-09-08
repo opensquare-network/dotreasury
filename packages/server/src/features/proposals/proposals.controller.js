@@ -224,8 +224,7 @@ class ProposalsController {
         index: proposalIndex,
       },
       page,
-      pageSize,
-      ctx.request.user
+      pageSize
     );
   }
 
