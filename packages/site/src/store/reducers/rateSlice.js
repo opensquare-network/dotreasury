@@ -47,7 +47,7 @@ export const addRate = (
   const data = {
     chain,
     type: type === "proposal" ? "treasury_proposal" : type,
-    ...(type === "tip" ? { blockHeight: index.blockHeight, hash: index.tipHash } : { index }),
+    index,
     grade,
     comment,
     timestamp,

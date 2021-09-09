@@ -41,6 +41,19 @@ if (!DECOO_IPFS_ENDPOINT) {
 
 const trimTailSlash = (url) => url.endsWith("/") ? url.substr(0, url.length - 1) : url;
 
+
+function getIndexer(chain, type, index) {
+  if (!index) {
+    throw new HttpError(400, "Index is missing");
+  }
+
+  return {
+    chain,
+    type,
+    index
+  };
+}
+
 async function pinJsonToIpfs(data) {
   const jsonData = JSON.stringify(data);
   const buf = Buffer.from(jsonData);
@@ -94,8 +107,6 @@ class RateService {
     const {
       chain,
       type,
-      blockHeight,
-      hash,
       index,
       grade,
       comment,
@@ -103,65 +114,22 @@ class RateService {
       version,
     } = data;
 
-    if (!data.type) {
+    if (!type) {
       throw new HttpError(400, "Treasury type is missing");
     }
 
-    if (!data.chain) {
+    if (!chain) {
       throw new HttpError(400, "Chain is missing");
     }
 
     let indexer = null;
 
-    if ("tip" === type) {
-      if (!hash) {
-        throw new HttpError(400, "Hash is missing");
-      }
-
-      if (!blockHeight) {
-        throw new HttpError(400, "Block height is missing");
-      }
-
-      indexer = {
-        chain,
-        type: "tip",
-        index: {
-          blockHeight,
-          tipHash: hash,
-        }
-      };
-    } else if ("treasury_proposal" === type) {
-      if (!index) {
-        throw new HttpError(400, "Proposal index is missing");
-      }
-
-      indexer = {
-        chain,
-        type: "proposal",
-        index
-      };
-    } else if ("bounty" === type) {
-      if (!index) {
-        throw new HttpError(400, "Bounty index is missing");
-      }
-
-      indexer = {
-        chain,
-        type: "bounty",
-        index
-      };
+    if ("treasury_proposal" === type) {
+      indexer = getIndexer(chain, "proposal", index);
     } else if ("project" === type) {
-      if (!index) {
-        throw new HttpError(400, "Project index is missing");
-      }
-
-      indexer = {
-        chain,
-        type: "project",
-        index
-      };
+      indexer = getIndexer(chain, "project", index);
     } else {
-      throw new HttpError(400, "Unknown treasury type");
+      throw new HttpError(400, "Unsupport treasury type");
     }
 
     if (grade < 1 || grade > 5) {
