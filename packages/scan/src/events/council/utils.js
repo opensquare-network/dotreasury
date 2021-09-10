@@ -87,11 +87,6 @@ async function getMotionVotingByHeight(height, motionHash) {
   return await getMotionVoting(blockHash, motionHash);
 }
 
-async function getMotionLatestIndex(hash) {
-  const motion = await getLatestMotionByHash(hash);
-  return motion?.index;
-}
-
 async function getLatestMotionByHash(hash) {
   const motionCol = await getMotionCollection();
   const motions = await motionCol.find({ hash }).sort({ index: -1 }).toArray();
@@ -106,5 +101,4 @@ module.exports = {
   getMotionVoting,
   getMotionVotingByHeight,
   getLatestMotionByHash,
-  getMotionLatestIndex,
 };

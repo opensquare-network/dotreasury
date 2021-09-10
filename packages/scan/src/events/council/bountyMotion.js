@@ -106,7 +106,9 @@ async function handleProposedForBounty(event, normalizedExtrinsic, extrinsic) {
 }
 
 async function updateBountyByVoteResult(hash, isApproved, indexer) {
-  const motion = await getLatestMotionByHash(hash);
+  const motionCol = await getMotionCollection();
+  const motion = await motionCol.findOne({ hash, isFinal: false });
+
   if (!motion || !isBountyMethod(motion.method)) {
     // it means this motion hash is not a treasury bounty motion hash
     return;
