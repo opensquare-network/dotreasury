@@ -3,7 +3,6 @@ const {
   isProposalMotion,
   getMotionVoting,
   extractCallIndexAndArgs,
-  getLatestMotionByHash,
 } = require("./utils");
 const { motionActions } = require("./constants");
 const {

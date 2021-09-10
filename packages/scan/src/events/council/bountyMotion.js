@@ -4,7 +4,6 @@ const {
   isBountyMethod,
   extractCallIndexAndArgs,
   getMotionVoting,
-  getLatestMotionByHash,
 } = require("./utils");
 const {
   Modules,

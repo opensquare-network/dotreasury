@@ -87,12 +87,6 @@ async function getMotionVotingByHeight(height, motionHash) {
   return await getMotionVoting(blockHash, motionHash);
 }
 
-async function getLatestMotionByHash(hash) {
-  const motionCol = await getMotionCollection();
-  const motions = await motionCol.find({ hash }).sort({ index: -1 }).toArray();
-  return motions[0];
-}
-
 module.exports = {
   isProposalMotion,
   isBountyMethod,
@@ -100,5 +94,4 @@ module.exports = {
   extractCallIndexAndArgs,
   getMotionVoting,
   getMotionVotingByHeight,
-  getLatestMotionByHash,
 };
