@@ -217,7 +217,14 @@ async function handleDisapprovedEvent(event, normalizedExtrinsic) {
     normalizedExtrinsic.extrinsicIndexer
   );
 
-  await col.updateOne({ hash, isFinal: false }, { isFinal: true });
+  await col.updateOne(
+    { hash, isFinal: false },
+    {
+      $set: {
+        isFinal: true,
+      },
+    }
+  );
 }
 
 async function handleExecutedEvent(event) {
