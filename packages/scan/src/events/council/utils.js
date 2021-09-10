@@ -3,6 +3,7 @@ const {
   BountyMethods,
   Modules,
   ProxyMethods,
+  MultisigMethods,
 } = require("../../utils/constants");
 const { getApi } = require("../../api");
 const { getMotionCollection } = require("../../mongo");
@@ -52,7 +53,7 @@ async function extractCallIndexAndArgs(normalizedExtrinsic, extrinsic) {
     return [call.section, call.method, call.toJSON().args];
   }
 
-  if ("utility" === section && "asMulti" === name) {
+  if (Modules.Multisig === section && MultisigMethods.asMulti === name) {
     const proposeCall = new GenericCall(
       extrinsic.registry,
       extrinsic.method.args[3].toHex()
