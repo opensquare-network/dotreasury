@@ -13,7 +13,7 @@ import PolygonLabel from "../../components/PolygonLabel";
 import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import Card from "../../components/Card";
-import Brunt from "../../components/Charts/brunt";
+import Burnt from "../../components/Charts/burnt";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -72,22 +72,22 @@ const EventWrapper = styled.div`
   }
 `;
 
-const BurntTable = ({ data,chartData, loading, footer }) => {
+const BurntTable = ({ data, chartData, loading, footer }) => {
   const symbol = useSelector(chainSymbolSelector);
 
   return (
     <CardWrapper>
-      <Brunt symbol={symbol} chartData={chartData} />
+      <Burnt symbol={symbol} chartData={chartData} />
       <Wrapper>
         <TableWrapper>
           <TableLoading loading={loading}>
             <StyledTable striped selectable unstackable>
               <colgroup>
-                <col span="1" style={{width: "25%"}}/>
-                <col span="1" style={{width: "15%"}}/>
-                <col span="1"/>
-                <col span="1" style={{width: "10%"}}/>
-                <col span="1" style={{width: "20%"}}/>
+                <col span="1" style={{ width: "25%" }} />
+                <col span="1" style={{ width: "15%" }} />
+                <col span="1" />
+                <col span="1" style={{ width: "10%" }} />
+                <col span="1" style={{ width: "20%" }} />
               </colgroup>
               <Table.Header>
                 <Table.Row>
