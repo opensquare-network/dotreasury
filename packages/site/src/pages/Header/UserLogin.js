@@ -14,7 +14,7 @@ import {
 import ButtonLabel from "../../components/ButtonLabel";
 import TextMinor from "../../components/TextMinor";
 import { TEXT_DARK_MAJOR } from "../../constants";
-import { useIndentity } from "../../utils/hooks";
+import { useIdentity } from "../../utils/hooks";
 import UserAvatar from "../../components/User/Avatar";
 import { getGravatarSrc } from "../../utils";
 import scanApi from "../../services/scanApi";
@@ -67,7 +67,7 @@ const UserLogin = ({ symbol }) => {
   const userProfile = useSelector(userProfileSelector);
   const chain = useSelector(chainSelector);
   const address = userProfile?.addresses?.filter((i) => i.chain === chain)[0];
-  const { name: addressName } = useIndentity(address && address.address);
+  const { name: addressName } = useIdentity(address && address.address);
   const [addressDisplayName, setAddressDisplayName] = useState("");
 
   useEffect(() => {

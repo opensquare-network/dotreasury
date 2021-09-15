@@ -2,7 +2,7 @@ import { useLayoutEffect, useState, useEffect, useRef } from "react";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { fetchIdentity as getIndentity } from "../services/identity";
+import { fetchIdentity as getIdentity } from "../services/identity";
 import { setShowMenuTabs } from "../store/reducers/menuSlice";
 import {
   chainSelector,
@@ -25,7 +25,7 @@ export const useWindowSize = () => {
 
 const displayCache = new Map();
 
-export const useIndentity = (address, map) => {
+export const useIdentity = (address, map) => {
   const [name, setName] = useState(null);
   const [badgeData, setBadgeData] = useState(null);
   const chain = useSelector(chainSelector);
@@ -36,7 +36,7 @@ export const useIndentity = (address, map) => {
       if (displayCache.has(`identity_${address}`)) {
         identity = displayCache.get(`identity_${address}`);
       } else {
-        identity = await getIndentity(chain, address);
+        identity = await getIdentity(chain, address);
         displayCache.set(`identity_${address}`, identity);
       }
       identity = identity?.info;
