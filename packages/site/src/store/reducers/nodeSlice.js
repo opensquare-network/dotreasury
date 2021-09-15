@@ -11,7 +11,7 @@ const nodeSlice = createSlice({
   reducers: {
     setCurrentNode(state, { payload }) {
       const { chain, url, refresh } = payload;
-      const boforeUrl = state.currentNode?.[chain];
+      const beforeUrl = state.currentNode?.[chain];
 
       let nodeUrl = null;
       try {
@@ -23,7 +23,7 @@ const nodeSlice = createSlice({
       localStorage.setItem("nodeUrl", JSON.stringify(nodeUrl));
 
       state.nodes[chain] = (state.nodes?.[chain] || []).map((item) => {
-        if (item.url === boforeUrl) {
+        if (item.url === beforeUrl) {
           return { ...item, update: true };
         } else {
           return item;
