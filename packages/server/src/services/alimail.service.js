@@ -4,7 +4,7 @@ class AliMail {
   #client = new Core({
     accessKeyId: process.env.ALI_MAIL_KEY,
     accessKeySecret: process.env.ALI_MAIL_SECRET,
-    endpoint: 'https://dm.aliyuncs.com',
+    endpoint: process.env.ALI_MAIL_ENDPOINT || 'https://dm.ap-southeast-1.aliyuncs.com',
     apiVersion: '2015-11-23'
   });
 
