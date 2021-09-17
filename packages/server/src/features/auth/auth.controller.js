@@ -280,11 +280,6 @@ class AuthController {
       });
     }
 
-    if (user.reset?.expires.getTime() > Date.now()) {
-      ctx.body = true;
-      return;
-    }
-
     const oneDay = 24 * 60 * 60 * 1000;
     const expires = new Date(Date.now() + oneDay);
     const token = randomBytes(12).toString("hex");
