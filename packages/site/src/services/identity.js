@@ -25,7 +25,7 @@ const delayQuery = debounce(() => {
 
     window
       .fetch(
-        `${process.env.REACT_APP_IDENTITY_SERVER_HOST}/${chain}/identities`,
+        `${process.env.REACT_APP_IDENTITY_SERVER_HOST}/${chain}/short-ids`,
         {
           method: "POST",
           headers: {

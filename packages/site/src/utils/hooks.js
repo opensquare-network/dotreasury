@@ -39,41 +39,10 @@ export const useIdentity = (address, map) => {
         identity = await getIdentity(chain, address);
         displayCache.set(`identity_${address}`, identity);
       }
-      identity = identity?.info;
-      if (isMounted && identity && identity.display) {
-        const judgements = identity.judgements.filter(
-          ([, judgement]) => !judgement.isFreePaid
-        );
-        const isGood = judgements.some(
-          ([, judgement]) =>
-            typeof judgement === "object" &&
-            (Object.keys(judgement).some((key) => key === "reasonable") ||
-              Object.keys(judgement).some((key) => key === "knownGood"))
-        );
-        const isBad = judgements.some(
-          ([, judgement]) =>
-            typeof judgement === "object" &&
-            (Object.keys(judgement).some((key) => key === "erroneous") ||
-              Object.keys(judgement).some((key) => key === "lowQuality"))
-        );
-        const displayName = isGood
-          ? identity.display
-          : (identity.display || "").replace(/[^\x20-\x7E]/g, "");
-        const displayParent =
-          identity.displayParent &&
-          (isGood
-            ? identity.displayParent
-            : identity.displayParent.replace(/[^\x20-\x7E]/g, ""));
-        setName(
-          displayParent ? `${displayParent}/${displayName}` : displayName
-        );
+      if (isMounted && identity) {
+        setName(identity.info?.display);
         setBadgeData({
-          isDisplay: !!displayName,
-          icon: isBad
-            ? "error"
-            : `${isGood ? "authorized" : "unauthorized"}${
-                identity.parent ? "-sub" : ""
-              }`,
+          status: identity.info?.status,
         });
       }
     };
