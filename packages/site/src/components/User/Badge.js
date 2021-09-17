@@ -13,7 +13,7 @@ const statusIconMap = new Map([
   ["NOT_VERIFIED", "error-grey"],
   ["VERIFIED", "auth"],
   ["ERRONEOUS", "error"],
-  ["VERIFIED_LINKED", "sub"],
+  ["VERIFIED_LINKED", "authorized-sub"],
   ["NOT_VERIFIED_LINKED", "sub-grey"],
   ["ERRONEOUS_LINKED", "sub-red"],
 ]);
