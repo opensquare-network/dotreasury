@@ -42,7 +42,7 @@ function extractPage(ctx) {
 function isValidSignature(signedMessage, signature, address) {
   const publicKey = decodeAddress(address);
   const hexPublicKey = u8aToHex(publicKey);
-  const result = signatureVerify(signedMessage, signature, hexPublicKey);
+  const result = signatureVerify(`<Bytes>${signedMessage}</Bytes>`, signature, hexPublicKey);
   return result.isValid;
 }
 
