@@ -5,8 +5,8 @@ let provider = null;
 let api = null;
 
 const defaultEndPoint = {
-  kusama: "wss://kusama.elara.patract.io",
-  polkadot: "wss://polkadot.elara.patract.io/",
+  kusama: "wss://pub.elara.patract.io/kusama",
+  polkadot: "wss://pub.elara.patract.io/polkadot",
 };
 
 function getEndPoint() {
