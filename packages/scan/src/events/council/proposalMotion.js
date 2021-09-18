@@ -3,7 +3,6 @@ const {
   isProposalMotion,
   getMotionVoting,
   extractCallIndexAndArgs,
-  getLatestMotionByHash,
 } = require("./utils");
 const { motionActions } = require("./constants");
 const {
@@ -52,6 +51,7 @@ async function handleProposedForProposal(
     method,
     treasuryProposalId,
     voting,
+    isFinal: false,
     state: {
       state: CouncilEvents.Proposed,
       eventData,
@@ -67,7 +67,8 @@ async function handleProposedForProposal(
 }
 
 async function updateProposalStateByProposeOrVote(hash, indexer) {
-  const motion = await getLatestMotionByHash(hash);
+  const motionCol = await getMotionCollection();
+  const motion = await motionCol.findOne({ hash, isFinal: false });
   if (!motion || !isProposalMotion(motion.method)) {
     // it means this motion hash is not a treasury proposal motion hash
     return;
@@ -97,7 +98,8 @@ async function updateProposalStateByProposeOrVote(hash, indexer) {
 }
 
 async function updateProposalStateByVoteResult(hash, isApproved, indexer) {
-  const motion = await getLatestMotionByHash(hash);
+  const motionCol = await getMotionCollection();
+  const motion = await motionCol.findOne({ hash, isFinal: false });
   if (!motion || !isProposalMotion(motion.method)) {
     // it means this motion hash is not a treasury proposal motion hash
     return;

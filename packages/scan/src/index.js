@@ -27,6 +27,8 @@ async function main() {
     return;
   }
 
+  let counter = 0;
+
   while (true) {
     const chainHeight = getLatestHeight();
     if (scanHeight > chainHeight) {
@@ -64,6 +66,13 @@ async function main() {
 
     const destHeight = blocks[(blocks || []).length - 1].height;
     scanHeight = destHeight + 1;
+    counter++;
+
+    if (counter % 500 === 0) {
+      // FIXME: this code is for memory leak
+      process.exit(0);
+    }
+
     logger.info(`block ${targetHeight} done`);
   }
 }
@@ -92,7 +101,7 @@ async function scanNormalizedBlock(block, blockEvents) {
 }
 
 async function test() {
-  const height = 8949167;
+  const height = 9047379;
   const api = await getApi();
   const blockHash = await api.rpc.chain.getBlockHash(height);
   const block = await api.rpc.chain.getBlock(blockHash);

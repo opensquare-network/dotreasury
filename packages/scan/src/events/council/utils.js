@@ -3,6 +3,7 @@ const {
   BountyMethods,
   Modules,
   ProxyMethods,
+  MultisigMethods,
 } = require("../../utils/constants");
 const { getApi } = require("../../api");
 const { getMotionCollection } = require("../../mongo");
@@ -52,7 +53,7 @@ async function extractCallIndexAndArgs(normalizedExtrinsic, extrinsic) {
     return [call.section, call.method, call.toJSON().args];
   }
 
-  if ("utility" === section && "asMulti" === name) {
+  if (Modules.Multisig === section && MultisigMethods.asMulti === name) {
     const proposeCall = new GenericCall(
       extrinsic.registry,
       extrinsic.method.args[3].toHex()
@@ -86,17 +87,6 @@ async function getMotionVotingByHeight(height, motionHash) {
   return await getMotionVoting(blockHash, motionHash);
 }
 
-async function getMotionLatestIndex(hash) {
-  const motion = await getLatestMotionByHash(hash);
-  return motion?.index;
-}
-
-async function getLatestMotionByHash(hash) {
-  const motionCol = await getMotionCollection();
-  const motions = await motionCol.find({ hash }).sort({ index: -1 }).toArray();
-  return motions[0];
-}
-
 module.exports = {
   isProposalMotion,
   isBountyMethod,
@@ -104,6 +94,4 @@ module.exports = {
   extractCallIndexAndArgs,
   getMotionVoting,
   getMotionVotingByHeight,
-  getLatestMotionByHash,
-  getMotionLatestIndex,
 };

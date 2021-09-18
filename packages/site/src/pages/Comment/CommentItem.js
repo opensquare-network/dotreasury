@@ -28,7 +28,7 @@ import {
 import TimeElapsed from "../../components/TimeElapsed";
 import { TEXT_DARK_DISABLE } from "../../constants";
 import UserAvatar from "../../components/User/Avatar";
-import { useIndentity } from "../../utils/hooks";
+import { useIdentity } from "../../utils/hooks";
 import { encodeSubstrateAddress } from "../../services/chainApi";
 import { chainSelector } from "../../store/reducers/chainSlice";
 
@@ -224,7 +224,7 @@ const CommentItem = ({ index, comment, onReplyButton, replyEvent }) => {
   const address = comment.author?.addresses?.filter(
     (i) => i.chain === chain
   )[0];
-  const { name: addressName } = useIndentity(
+  const { name: addressName } = useIdentity(
     address && encodeSubstrateAddress(address.address)
   );
 

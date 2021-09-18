@@ -1,5 +1,4 @@
 const { CouncilEvents, Modules } = require("../../utils/constants");
-const { getMotionLatestIndex } = require("./utils");
 const { getMotionCollection } = require("../../mongo");
 const { motionActions } = require("./constants");
 const {
@@ -47,9 +46,8 @@ async function handleVoteEvent(event, normalizedExtrinsic) {
   );
 
   const col = await getMotionCollection();
-  const index = await getMotionLatestIndex(hash);
   await col.updateOne(
-    { index },
+    { hash, isFinal: false },
     {
       $set: {
         voting,
@@ -82,9 +80,8 @@ async function handleClosedEvent(event, normalizedExtrinsic) {
   );
 
   const col = await getMotionCollection();
-  const index = await getMotionLatestIndex(hash);
   await col.updateOne(
-    { index },
+    { hash, isFinal: false },
     {
       $set: {
         voting,
@@ -115,7 +112,8 @@ async function handleApprovedEvent(event, normalizedExtrinsic) {
 
   let updateObj;
   // We will insert timeline with Closed event handling when >= firstKnowCouncilCloseEventHeight
-  const firstKnowCouncilCloseEventHeight = getFirstKnownCouncilCloseEventHeight();
+  const firstKnowCouncilCloseEventHeight =
+    getFirstKnownCouncilCloseEventHeight();
   if (
     normalizedExtrinsic.extrinsicIndexer.blockHeight <
     firstKnowCouncilCloseEventHeight
@@ -148,8 +146,7 @@ async function handleApprovedEvent(event, normalizedExtrinsic) {
   }
 
   const col = await getMotionCollection();
-  const index = await getMotionLatestIndex(hash);
-  await col.updateOne({ index }, updateObj);
+  await col.updateOne({ hash, isFinal: false }, updateObj);
 
   await updateProposalStateByVoteResult(
     hash,
@@ -173,7 +170,8 @@ async function handleDisapprovedEvent(event, normalizedExtrinsic) {
 
   let updateObj;
   // We will insert timeline with Closed event handling when >= firstKnowCouncilCloseEventHeight
-  const firstKnowCouncilCloseEventHeight = getFirstKnownCouncilCloseEventHeight();
+  const firstKnowCouncilCloseEventHeight =
+    getFirstKnownCouncilCloseEventHeight();
   if (
     normalizedExtrinsic.extrinsicIndexer.blockHeight <
     firstKnowCouncilCloseEventHeight
@@ -206,8 +204,7 @@ async function handleDisapprovedEvent(event, normalizedExtrinsic) {
   }
 
   const col = await getMotionCollection();
-  const index = await getMotionLatestIndex(hash);
-  await col.updateOne({ index }, updateObj);
+  await col.updateOne({ hash, isFinal: false }, updateObj);
 
   await updateProposalStateByVoteResult(
     hash,
@@ -219,6 +216,15 @@ async function handleDisapprovedEvent(event, normalizedExtrinsic) {
     true,
     normalizedExtrinsic.extrinsicIndexer
   );
+
+  await col.updateOne(
+    { hash, isFinal: false },
+    {
+      $set: {
+        isFinal: true,
+      },
+    }
+  );
 }
 
 async function handleExecutedEvent(event) {
@@ -226,11 +232,11 @@ async function handleExecutedEvent(event) {
   const [hash, result] = eventData;
 
   const col = await getMotionCollection();
-  const index = await getMotionLatestIndex(hash);
   await col.updateOne(
-    { index },
+    { hash, isFinal: false },
     {
       $set: {
+        isFinal: true,
         executed: {
           result,
           eventData,

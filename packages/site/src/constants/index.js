@@ -42,7 +42,7 @@ export const TreasuryAccount =
 export const REACTION_THUMBUP = 1;
 export const REACTION_THUMBDOWN = 2;
 
-export const DEFAULT_KUSAMA_NODE_URL = "wss://kusama.elara.patract.io";
+export const DEFAULT_KUSAMA_NODE_URL = "wss://pub.elara.patract.io/kusama";
 export const DEFAULT_KUSAMA_NODES = [
   {
     name: "Parity",
@@ -54,7 +54,7 @@ export const DEFAULT_KUSAMA_NODES = [
   },
   {
     name: "Patract Elara",
-    url: "wss://kusama.elara.patract.io",
+    url: "wss://pub.elara.patract.io/kusama",
   },
 ];
 
@@ -70,7 +70,7 @@ export const DEFAULT_POLKADOT_NODES = [
   },
   {
     name: "Patract Elara",
-    url: "wss://polkadot.elara.patract.io/",
+    url: "wss://pub.elara.patract.io/polkadot",
   },
 ];
 

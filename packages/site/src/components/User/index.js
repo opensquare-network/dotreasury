@@ -5,7 +5,7 @@ import Username from "./Username";
 import Avatar from "./Avatar";
 import Badge from "./Badge";
 import ExplorerLink from "../../components/ExplorerLink";
-import { useIndentity } from "../../utils/hooks";
+import { useIdentity } from "../../utils/hooks";
 import { mrgap } from "../../styles";
 
 const Wrapper = styled.div`
@@ -26,7 +26,7 @@ const BadgeWrapper = styled.div`
 `;
 
 const User = ({ address, ellipsis = true, popup = true }) => {
-  const { name, badgeData } = useIndentity(address);
+  const { name, badgeData } = useIdentity(address);
 
   return (
     <Wrapper>
