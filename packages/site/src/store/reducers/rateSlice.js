@@ -20,7 +20,8 @@ const rateSlice = createSlice({
       page: 0,
       pageSize: 10,
       total: 0,
-    }
+    },
+    loading: false,
   },
   reducers: {
     setRateStats(state, { payload }) {
@@ -28,11 +29,14 @@ const rateSlice = createSlice({
     },
     setRates(state, { payload }) {
       state.rates = payload;
-    }
+    },
+    setLoading(state, { payload }) {
+      state.loading = payload;
+    },
   },
 });
 
-export const { setRateStats, setRates } = rateSlice.actions;
+export const { setRateStats, setRates, setLoading } = rateSlice.actions;
 
 export const addRate = (
   chain,
@@ -42,7 +46,7 @@ export const addRate = (
   comment,
   version,
   timestamp,
-  address,
+  address
 ) => async (dispatch) => {
   const data = {
     chain,
@@ -54,28 +58,33 @@ export const addRate = (
     version,
   };
 
-  const signature = await signMessage(
-    JSON.stringify(data),
-    address
-  );
+  try {
+    dispatch(setLoading(true));
+    const signature = await signMessage(JSON.stringify(data), address);
 
-  const { error } = await api.fetch(`/rates`, {},
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ data, address, signature }),
-    }
-  );
-
-  if (error) {
-    dispatch(
-      addToast({
-        type: "error",
-        message: error.message,
-      })
+    const { error } = await api.fetch(
+      `/rates`,
+      {},
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ data, address, signature }),
+      }
     );
+
+    if (error) {
+      dispatch(
+        addToast({
+          type: "error",
+          message: error.message,
+        })
+      );
+    }
+    dispatch(setLoading(false));
+  } catch (error) {
+    dispatch(setLoading(false));
   }
 
   dispatch(fetchRateStats(chain, type, index));
@@ -85,26 +94,36 @@ export const fetchRateStats = (chain, type, index) => async (dispatch) => {
   const { result } = await api.fetch(
     `/${chain}/${pluralize(type)}/${index}/ratestats`
   );
-  dispatch(setRateStats(result || {
-    5: 0,
-    4: 0,
-    3: 0,
-    2: 0,
-    1: 0,
-  }));
+  dispatch(
+    setRateStats(
+      result || {
+        5: 0,
+        4: 0,
+        3: 0,
+        2: 0,
+        1: 0,
+      }
+    )
+  );
 };
 
-export const fetchRates = (chain, type, index, page, pageSize) => async (dispatch) => {
+export const fetchRates = (chain, type, index, page, pageSize) => async (
+  dispatch
+) => {
   const { result } = await api.maybeAuthFetch(
     `/${chain}/${pluralize(type)}/${index}/rates`,
-    { page, pageSize },
+    { page, pageSize }
   );
-  dispatch(setRates(result || {
-    items: [],
-    page: 0,
-    pageSize: 10,
-    total: 0,
-  }));
+  dispatch(
+    setRates(
+      result || {
+        items: [],
+        page: 0,
+        pageSize: 10,
+        total: 0,
+      }
+    )
+  );
 };
 
 export const setRateThumbUp = (rateId) => async (dispatch) => {
@@ -136,5 +155,6 @@ export const unsetRateReaction = (rateId) => async (dispatch) => {
 
 export const rateStatsSelector = (state) => state.rate.rateStats;
 export const ratesSelector = (state) => state.rate.rates;
+export const loadingSelector = (state) => state.rate.loading;
 
 export default rateSlice.reducer;

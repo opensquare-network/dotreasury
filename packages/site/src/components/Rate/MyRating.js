@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import StarsAction from "./StarsAction";
 import ButtonPrimary from "../ButtonPrimary";
 import SelectAddress from "../../pages/SelectAddress";
-import { addRate } from "../../store/reducers/rateSlice";
+import { addRate, loadingSelector } from "../../store/reducers/rateSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import { addToast } from "../../store/reducers/toastSlice";
 
@@ -72,6 +72,7 @@ export default function MyRating({ type, index }) {
   const [rate, setRate] = useState(0);
   const chain = useSelector(chainSelector);
   const [accountsModalOpen, setAccountsModalOpen] = useState(false);
+  const loading = useSelector(loadingSelector);
 
   const onChange = (e) => {
     let value = e.target.value;
@@ -82,13 +83,14 @@ export default function MyRating({ type, index }) {
   };
 
   const startRate = () => {
+    if (loading) return;
     if (rate < 1 || rate > 5) {
-      dispatch(addToast(
-        {
+      dispatch(
+        addToast({
           type: "error",
           message: "Please select 1 to 5 stars",
-        }
-      ));
+        })
+      );
       return;
     }
     setAccountsModalOpen(true);
@@ -103,20 +105,22 @@ export default function MyRating({ type, index }) {
     localStorage.setItem("lastSignatureAddress", account.address);
 
     const address = account.address;
-    dispatch(addRate(
-      chain,
-      type,
-      index,
-      rate,
-      content.trim() === "" ? null : content.trim(),
-      "1",
-      parseInt(Date.now() / 1000),
-      address,
-    ));
+    dispatch(
+      addRate(
+        chain,
+        type,
+        index,
+        rate,
+        content.trim() === "" ? null : content.trim(),
+        "1",
+        parseInt(Date.now() / 1000),
+        address
+      )
+    );
 
     setContent("");
     setRate(0);
-  }
+  };
 
   return (
     <Wrapper>
@@ -133,16 +137,16 @@ export default function MyRating({ type, index }) {
         <TextCount>{content.length}/140</TextCount>
       </TextareaWrapper>
       <ButtonWrapper>
-        <ButtonPrimary onClick={startRate}>Submit</ButtonPrimary>
+        <ButtonPrimary onClick={startRate} loading={loading}>
+          Submit
+        </ButtonPrimary>
       </ButtonWrapper>
-      {
-        accountsModalOpen && (
-          <SelectAddress
-            onClose={() => setAccountsModalOpen(false)}
-            onSelect={onSelectSignedAccount}
-          />
-        )
-      }
+      {accountsModalOpen && (
+        <SelectAddress
+          onClose={() => setAccountsModalOpen(false)}
+          onSelect={onSelectSignedAccount}
+        />
+      )}
     </Wrapper>
   );
 }
