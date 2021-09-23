@@ -15,7 +15,8 @@ import menuReducer from "./menuSlice";
 import nodeReducer from "./nodeSlice";
 import projectsReducer from "./projectSlice";
 import toastReducer from "./toastSlice";
-import transferReducder from "./transferSlice";
+import transferReducer from "./transferSlice";
+import rateReducer from "./rateSlice";
 
 export default combineReducers({
   test: testReducer,
@@ -34,5 +35,6 @@ export default combineReducers({
   menu: menuReducer,
   node: nodeReducer,
   projects: projectsReducer,
-  transfers: transferReducder,
+  transfers: transferReducer,
+  rate: rateReducer,
 });

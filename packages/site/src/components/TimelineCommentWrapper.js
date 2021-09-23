@@ -12,6 +12,9 @@ const TimelineCommentWrapper = styled.div`
     }
     & > div:last-child {
       grid-column: 2 / 4;
+      > :not(:first-child) {
+        margin-top: 24px;
+      }
     }
   }
 `;

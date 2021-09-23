@@ -2,6 +2,7 @@ const { getProposalCollection, getMotionCollection } = require("../../mongo");
 const { extractPage } = require("../../utils");
 const linkService = require("../../services/link.service");
 const commentService = require("../../services/comment.service");
+const rateService = require("../../services/rate.service");
 const { HttpError } = require("../../exc");
 
 class ProposalsController {
@@ -204,6 +205,38 @@ class ProposalsController {
       content,
       user
     );
+  }
+
+  async getRates(ctx) {
+    const { chain } = ctx.params;
+    const proposalIndex = parseInt(ctx.params.proposalIndex);
+
+    const { page, pageSize } = extractPage(ctx);
+    if (pageSize === 0 || page < 0) {
+      ctx.status = 400;
+      return;
+    }
+
+    ctx.body = await rateService.getRates(
+      {
+        chain,
+        type: "proposal",
+        index: proposalIndex,
+      },
+      page,
+      pageSize
+    );
+  }
+
+  async getRateStats(ctx) {
+    const { chain } = ctx.params;
+    const proposalIndex = parseInt(ctx.params.proposalIndex);
+
+    ctx.body = await rateService.getRateStats({
+      chain,
+      type: "proposal",
+      index: proposalIndex,
+    });
   }
 }
 

@@ -2,6 +2,7 @@ const { getBountyCollection, getMotionCollection } = require("../../mongo");
 const { extractPage } = require("../../utils");
 const linkService = require("../../services/link.service");
 const commentService = require("../../services/comment.service");
+const rateService = require("../../services/rate.service");
 
 const bountyStatus = (bounty) =>
   bounty?.status?.CuratorProposed ||

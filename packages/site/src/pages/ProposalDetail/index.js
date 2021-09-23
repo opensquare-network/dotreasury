@@ -25,6 +25,7 @@ import TimelineCommentWrapper from "../../components/TimelineCommentWrapper";
 import DetailGoBack from "../components/DetailGoBack";
 import { useChainRoute } from "../../utils/hooks";
 import DetailTableWrapper from "../../components/DetailTableWrapper";
+import Rate from "../../components/Rate";
 
 const ValueWrapper = styled.span`
   margin-right: 4px;
@@ -263,7 +264,10 @@ const ProposalDetail = () => {
       </DetailTableWrapper>
       <TimelineCommentWrapper>
         <Timeline data={timelineData} loading={loadingProposalDetail} />
-        <Comment type="proposal" index={parseInt(proposalIndex)} />
+        <div>
+          <Rate type="proposal" index={parseInt(proposalIndex)} />
+          <Comment type="proposal" index={parseInt(proposalIndex)} />
+        </div>
       </TimelineCommentWrapper>
     </>
   );
