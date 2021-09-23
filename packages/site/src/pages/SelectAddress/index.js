@@ -16,7 +16,6 @@ import { addToast } from "../../store/reducers/toastSlice";
 
 const StyledButtonPrimary = styled.button`
   width: 100%;
-  color: white !important;
   &.ui.button:hover,
   &.ui.button:active,
   &.ui.button:focus {
@@ -65,7 +64,6 @@ const StyledText = styled(Text)`
   font-weight: 500;
   margin-bottom: 8px;
   font-style: normal;
-  font-weight: 500;
   font-size: 14px;
   line-height: 24px;
   color: #1d253c;
@@ -128,7 +126,7 @@ const SelectAddress = ({ onSelect = () => {}, onClose = () => {} }) => {
             dispatch(
               addToast({
                 type: "error",
-                message: "Polkadot extension is not installed.",
+                message: "Polkadot{.js} extension not detected!",
               })
             );
             onClose();
