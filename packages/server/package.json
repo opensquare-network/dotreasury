@@ -10,7 +10,8 @@
     "staging": "pm2 start ecosystem.config.js --only doTreasury-api-staging --env production",
     "develop": "pm2 start ecosystem.config.js --only doTreasury-api-dev --env production",
     "dev": "pm2 start ecosystem.config.js --env development",
-    "pinrate": "pm2 start ecosystem.config.js --only doTreasury-pin-rate --env production",
+    "pinrate": "pm2 start ecosystem.config.js --only doTreasury-pin-rate-prod --env production",
+    "pinrate-staging": "pm2 start ecosystem.config.js --only doTreasury-pin-rate-staging --env production",
     "mig:prod": "pm2 start migration.config.js --env production",
     "mig:dev": "pm2 start migration.config.js --env development"
   },

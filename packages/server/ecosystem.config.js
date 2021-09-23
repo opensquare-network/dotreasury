@@ -1,5 +1,4 @@
-const commonPart = {
-  script: "src/index.js",
+const common = {
   log_date_format: "YYYY-MM-DD HH:mm Z",
   env: {
     NODE_ENV: "development",
@@ -7,7 +6,17 @@ const commonPart = {
   env_production: {
     NODE_ENV: "production",
   },
+}
+
+const commonPart = {
+  script: "src/index.js",
+  ...common,
 };
+
+const pinCommon = {
+  script: "src/scripts/pin-rate-to-ipfs.js",
+  ...common,
+}
 
 module.exports = {
   apps: [
@@ -20,19 +29,12 @@ module.exports = {
       ...commonPart,
     },
     {
-      name: "doTreasury-api-dev",
-      ...commonPart,
+      name: "doTreasury-pin-rate-prod",
+      ...pinCommon,
     },
     {
-      name: "doTreasury-pin-rate",
-      script: "src/scripts/pin-rate-to-ipfs.js",
-      log_date_format: "YYYY-MM-DD HH:mm Z",
-      env: {
-        NODE_ENV: "development",
-      },
-      env_production: {
-        NODE_ENV: "production",
-      },
+      name: "doTreasury-pin-rate-staging",
+      ...pinCommon,
     },
   ],
 };
