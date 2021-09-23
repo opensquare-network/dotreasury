@@ -1,7 +1,10 @@
+const { stringUpperFirst } = require("@polkadot/util");
+const { encodeAddress } = require("@polkadot/util-crypto");
 const ipfsService = require("./ipfs.service");
 const { getRateCollection } = require("../mongo-admin");
 const { HttpError } = require("../exc");
 const { isValidSignature } = require("../utils");
+const { SS58Format } = require("../contants");
 
 
 const DECOO_IPFS_ENDPOINT = process.env.DECOO_IPFS_ENDPOINT;
@@ -57,6 +60,9 @@ class RateService {
       throw new HttpError(400, "Chain is missing");
     }
 
+    const ss58Format = SS58Format[stringUpperFirst(chain)];
+    const encodedAddress = encodeAddress(address, ss58Format ?? SS58Format.Substrate);
+
     let indexer = null;
 
     if ("treasury_proposal" === type) {
@@ -87,7 +93,7 @@ class RateService {
     try {
       const pinResult = await ipfsService.pinJsonToIpfsWithTimeout({
         msg,
-        address,
+        address: encodedAddress,
         signature,
         version: "1",
       }, 3000);
@@ -101,7 +107,7 @@ class RateService {
     const rateCol = await getRateCollection();
     const result = await rateCol.updateOne(
       {
-        indexer, address
+        indexer, address: encodedAddress
       },
       {
         $set: {
