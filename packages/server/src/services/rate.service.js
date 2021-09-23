@@ -83,13 +83,6 @@ class RateService {
       throw new HttpError(400, "Version is missing");
     }
 
-    const rateCol = await getRateCollection();
-
-    const existRate = await rateCol.findOne({ indexer, address });
-    if (existRate) {
-      throw new HttpError(400, "You had already rated");
-    }
-
     let pinHash = undefined;
     try {
       const pinResult = await ipfsService.pinJsonToIpfsWithTimeout({
@@ -104,24 +97,32 @@ class RateService {
     }
 
     const now = new Date();
-    const result = await rateCol.insertOne({
-      indexer,
-      data,
-      address,
-      signature,
-      pinHash,
-      version: "1",
-      createdAt: now,
-      updatedAt: now,
-    });
+
+    const rateCol = await getRateCollection();
+    const result = await rateCol.updateOne(
+      {
+        indexer, address
+      },
+      {
+        $set: {
+          data,
+          signature,
+          pinHash,
+          version: "1",
+          updatedAt: now,
+        },
+        $setOnInsert: {
+          createdAt: now,
+        }
+      },
+      { upsert: true }
+    );
 
     if (!result.result.ok) {
       throw new HttpError(500, "Add rate error");
     }
 
-    const rateId = result.ops[0]._id;
-
-    return rateId;
+    return true;
   }
 
   async getRates(indexer, page, pageSize) {
