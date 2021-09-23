@@ -138,7 +138,7 @@ export default function MyRating({ type, index }) {
       </TextareaWrapper>
       <ButtonWrapper>
         <ButtonPrimary onClick={startRate} loading={loading}>
-          Submit
+          Sign
         </ButtonPrimary>
       </ButtonWrapper>
       {accountsModalOpen && (
