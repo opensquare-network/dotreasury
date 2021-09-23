@@ -16,7 +16,6 @@ import { addToast } from "../../store/reducers/toastSlice";
 
 const StyledButtonPrimary = styled.button`
   width: 100%;
-  color: white !important;
   &.ui.button:hover,
   &.ui.button:active,
   &.ui.button:focus {
@@ -65,7 +64,6 @@ const StyledText = styled(Text)`
   font-weight: 500;
   margin-bottom: 8px;
   font-style: normal;
-  font-weight: 500;
   font-size: 14px;
   line-height: 24px;
   color: #1d253c;
@@ -116,17 +114,22 @@ const SelectAddress = ({ onSelect = () => {}, onClose = () => {} }) => {
   const isMounted = useIsMounted();
 
   const [accountsModalOpen, setAccountsModalOpen] = useState(false);
-  const [noExtensionModalOpen, setNoExtensionModalOpen] = useState(false);
   const [accounts, setAccounts] = useState([]);
   const [selectedAccount, setSelectedAccount] = useState(null);
 
   useEffect(() => {
-    if (!accountsModalOpen && !noExtensionModalOpen) {
+    if (!accountsModalOpen) {
       (async function login() {
         await web3Enable("doTreasury");
         if (!isWeb3Injected) {
           if (isMounted.current) {
-            setNoExtensionModalOpen(true);
+            dispatch(
+              addToast({
+                type: "error",
+                message: "Polkadot{.js} extension not detected!",
+              })
+            );
+            onClose();
           }
           return;
         }
@@ -141,6 +144,17 @@ const SelectAddress = ({ onSelect = () => {}, onClose = () => {} }) => {
         );
 
         if (isMounted.current) {
+          if (accounts.length === 0) {
+            dispatch(
+              addToast({
+                type: "error",
+                message: "No accounts found.",
+              })
+            );
+            onClose();
+            return;
+          }
+
           setAccounts(accounts);
 
           const address = localStorage.getItem("lastSignatureAddress");
@@ -150,7 +164,7 @@ const SelectAddress = ({ onSelect = () => {}, onClose = () => {} }) => {
         }
       })();
     }
-  }, [accountsModalOpen, noExtensionModalOpen, isMounted]);
+  }, [dispatch, onClose, accountsModalOpen, isMounted]);
 
   const selectAccount = async () => {
     if (!selectedAccount) {
@@ -208,20 +222,6 @@ const SelectAddress = ({ onSelect = () => {}, onClose = () => {} }) => {
           </StyledButtonPrimary>
         </StyledCard>
       </StyledModal>
-
-      <Modal
-        size="mini"
-        open={noExtensionModalOpen}
-        onClose={() => {
-          onClose();
-          setNoExtensionModalOpen(false);
-        }}
-      >
-        <Modal.Header>Select accounts</Modal.Header>
-        <Modal.Content>
-          Polkadot extension was not found. Please install or enable it.
-        </Modal.Content>
-      </Modal>
     </>
   );
 };
