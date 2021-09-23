@@ -19,8 +19,15 @@ const statusIconMap = new Map([
 ]);
 
 const Badge = ({ status }) => {
-  if (status === "NO_ID") return null;
+  if (status === "NO_ID") {
+    return null;
+  }
+
   const icon = statusIconMap.get(status);
+  if (!icon) {
+    return null
+  }
+
   const imgSrc = `/imgs/badge-icons/${icon}.svg`;
   return <Wrapper>{icon && <Image src={imgSrc} />}</Wrapper>;
 };

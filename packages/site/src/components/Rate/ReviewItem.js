@@ -70,6 +70,7 @@ const FlexWrapper = styled.div`
 
 export default function ReviewItem({ rate }) {
   const data = rate.data;
+
   return (
     <Wrapper>
       <InfoWrapper>
