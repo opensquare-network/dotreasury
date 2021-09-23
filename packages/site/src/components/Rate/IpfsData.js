@@ -10,11 +10,21 @@ const DataIcon = styled.div`
   }
 `;
 
+const DataIconDisabled = styled.div`
+  width: 16px;
+  height: 16px;
+  background: url("/imgs/ipfs-data.svg");
+`;
+
 
 export default function IpfsData({ url }) {
   return (
-    <ExternalLink href={url}>
-      <DataIcon />
-    </ExternalLink>
+    !url
+    ? <DataIconDisabled />
+    : (
+      <ExternalLink href={url}>
+        <DataIcon />
+      </ExternalLink>
+    )
   )
 }

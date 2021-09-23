@@ -23,5 +23,16 @@ module.exports = {
       name: "doTreasury-api-dev",
       ...commonPart,
     },
+    {
+      name: "doTreasury-pin-rate",
+      script: "src/scripts/pin-rate-to-ipfs.js",
+      log_date_format: "YYYY-MM-DD HH:mm Z",
+      env: {
+        NODE_ENV: "development",
+      },
+      env_production: {
+        NODE_ENV: "production",
+      },
+    },
   ],
 };

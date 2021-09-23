@@ -90,7 +90,7 @@ export default function ReviewItem({ rate }) {
           <Stars rate={data.grade} />
         </RateWrapper>
         <IpfsWrapper>
-          <IpfsData url={`${rate.ipfsEndpoint}/${rate.pinHash}`} />
+          <IpfsData url={rate.pinHash && `${rate.ipfsEndpoint}/${rate.pinHash}`} />
         </IpfsWrapper>
       </InfoWrapper>
       <ContentWrapper>{data.comment}</ContentWrapper>
