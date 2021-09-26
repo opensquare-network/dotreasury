@@ -1,12 +1,27 @@
 const { getAllVersionChangeHeights } = require("../meta");
 const { getRegistryByHeight } = require("../../utils/registry");
 const findLast = require("lodash.findlast");
+const { getApi } = require("../../api");
+const { expandMetadata } = require("@polkadot/types");
 
 let versionChangedHeights = [];
 let registryMap = {};
+let decoratedMap = {};
+
+// For test
+function setSpecHeights(heights = []) {
+  versionChangedHeights = heights;
+}
 
 async function updateSpecs() {
   versionChangedHeights = await getAllVersionChangeHeights();
+}
+
+async function getMetadataByHeight(height) {
+  const api = await getApi();
+  const blockHash = await api.rpc.chain.getBlockHash(height);
+
+  return api.rpc.state.getMetadata(blockHash);
 }
 
 function getSpecHeights() {
@@ -31,8 +46,29 @@ async function findRegistry(height) {
   return registry;
 }
 
+async function findDecorated(height) {
+  const mostRecentChangeHeight = findLast(
+    versionChangedHeights,
+    (h) => h <= height
+  );
+  if (!mostRecentChangeHeight) {
+    throw new Error(`Can not find height ${height}`);
+  }
+
+  let decorated = decoratedMap[mostRecentChangeHeight];
+  if (!decorated) {
+    const metadata = await getMetadataByHeight(height);
+    decorated = expandMetadata(metadata.registry, metadata);
+    decoratedMap[height] = decorated;
+  }
+
+  return decorated;
+}
+
 module.exports = {
   updateSpecs,
   getSpecHeights,
   findRegistry,
+  findDecorated,
+  setSpecHeights,
 };
