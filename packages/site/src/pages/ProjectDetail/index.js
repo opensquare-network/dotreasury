@@ -14,6 +14,14 @@ import {
 } from "../../store/reducers/projectSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import { useChainRoute } from "../../utils/hooks";
+import Rate from "../../components/Rate";
+import styled from "styled-components";
+
+const CommentWrapper = styled.div`
+> :not(:first-child) {
+  margin-top: 24px;
+}
+`;
 
 const ProjectDetail = () => {
   useChainRoute();
@@ -57,7 +65,10 @@ const ProjectDetail = () => {
       <Detail data={detailData} projectData={projectDetail} />
       <RelatedLinks data={projectDetail.relatedLinks} />
       <Proposals data={projectDetail.proposals} />
-      <Comment type="project" index={projectId} />
+      <CommentWrapper>
+        <Rate type="project" index={projectId} />
+        <Comment type="project" index={projectId} />
+      </CommentWrapper>
     </>
   );
 };

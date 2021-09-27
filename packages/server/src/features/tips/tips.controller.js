@@ -1,6 +1,7 @@
 const { getTipCollection } = require("../../mongo");
 const linkService = require("../../services/link.service");
 const commentService = require("../../services/comment.service");
+const rateService = require("../../services/rate.service");
 const { extractPage } = require("../../utils");
 const { normalizeTip } = require("./utils");
 const { HttpError } = require("../../exc");

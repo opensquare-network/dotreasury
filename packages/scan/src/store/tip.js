@@ -1,3 +1,4 @@
+const { getTipMeta } = require("../chain/query/tip/meta");
 const {
   TipEvents,
   ProxyMethods,
@@ -19,31 +20,7 @@ const { getTipMethodNameAndArgs } = require("./utils");
 async function getTipMetaByBlockHeight(height, tipHash) {
   const api = await getApi();
   const blockHash = await api.rpc.chain.getBlockHash(height);
-  return await getTipMeta(blockHash, tipHash);
-}
-
-async function getTipMeta(blockHash, tipHash) {
-  const api = await getApi();
-  let rawMeta;
-  if (api.query.tips) {
-    rawMeta = await api.query.tips.tips.at(blockHash, tipHash);
-  } else {
-    rawMeta = await api.query.treasury.tips.at(blockHash, tipHash);
-  }
-  // FIXME: We should not change the origin meta data
-  // if (meta?.reason) {
-  //   const rawReasonText = await api.query.tips.reasons.at(blockHash, meta.reason);
-  //   meta.reasonText = rawReasonText.toHuman() || reasonFromArgs;
-  // }
-  // if (meta?.closes) {
-  //   meta.tipCountdown = api.consts.treasury.tipCountdown.toNumber();
-  // }
-  // if (meta?.tips) {
-  //   const members = await api.query.electionsPhragmen.members.at(blockHash);
-  //   meta.tippers = members.map(item => item[0].toJSON());
-  // }
-
-  return rawMeta.toJSON();
+  return await getTipMeta(tipHash, { blockHeight: height, blockHash });
 }
 
 async function getReasonStorageReasonText(reasonHash, blockHash) {
@@ -146,7 +123,7 @@ async function saveNewTip(hash, normalizedExtrinsic, extrinsic) {
   const indexer = normalizedExtrinsic.extrinsicIndexer;
 
   const finder = await getRealSigner(normalizedExtrinsic);
-  const meta = await getTipMeta(indexer.blockHash, hash);
+  const meta = await getTipMeta(hash, indexer);
   const reason =
     (await getTipReason(normalizedExtrinsic, extrinsic)) ||
     (await getReasonStorageReasonText(meta?.reason, indexer.blockHash));
@@ -192,7 +169,7 @@ async function saveNewTip(hash, normalizedExtrinsic, extrinsic) {
 
 async function updateTipByClosingEvent(hash, state, data, extrinsic) {
   const blockHash = extrinsic.extrinsicIndexer.blockHash;
-  const meta = await getTipMeta(blockHash, hash);
+  const meta = await getTipMeta(hash, extrinsic.extrinsicIndexer);
   const tippersCount = await getTippersCount(blockHash);
   const tipFindersFee = await getTipFindersFee(blockHash);
   const updates = {

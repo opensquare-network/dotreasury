@@ -337,11 +337,15 @@ class UserController {
       throw new HttpError(400, "Email is already verified.");
     }
 
-    mailService.sendVerificationEmail({
+    const isSent = await mailService.sendVerificationEmail({
       username: user.username,
       email: user.email,
       token: user.verifyToken,
     });
+
+    if (!isSent) {
+      throw new HttpError(500, "Fail to send verification email");
+    }
 
     ctx.body = true;
   }

@@ -19,13 +19,8 @@
     "test-scan": "jest packages/scan/src/test"
   },
   "devDependencies": {
-    "husky": "^4.3.5",
-    "pretty-quick": "^3.1.0"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
+    "husky": "^7.0.2",
+    "pinst": "^2.1.6"
   },
   "dependencies": {
     "prettier": "^2.2.1"

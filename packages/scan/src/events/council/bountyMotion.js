@@ -95,6 +95,7 @@ async function handleProposedForBounty(event, normalizedExtrinsic, extrinsic) {
     method,
     treasuryBountyId,
     voting,
+    isFinal: false,
     state: {
       state: CouncilEvents.Proposed,
       eventData,

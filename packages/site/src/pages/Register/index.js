@@ -188,13 +188,29 @@ function Register({ history }) {
       if (signupError) {
         setServerErrors(signupError);
       } else {
-        dispatch(
-          addToast({
-            type: "success",
-            message: "Sign up successfully! Please check your email to verify your account.",
-          })
-        );
         saveLoggedInResult(signupResult);
+        const {error: sendMailError} = await scanApi.authFetch(
+          `/user/resendverifyemail`,
+          {},
+          {
+            method: "POST",
+          }
+        );
+        if (sendMailError) {
+          dispatch(
+            addToast({
+              type: "error",
+              message: sendMailError.message,
+            })
+          );
+        } else {
+          dispatch(
+            addToast({
+              type: "success",
+              message: "Sign up successfully! Please check your email to verify your account.",
+            })
+          );
+        }
         history.push("/login");
       }
     } finally {

@@ -67,9 +67,9 @@ async function updateTipInDbByCall(
   );
 }
 
-async function getCommonTipUpdates(blockHash, tipHash) {
-  const tippersCount = await getTippersCount(blockHash);
-  const meta = await getTipMeta(blockHash, tipHash);
+async function getCommonTipUpdates(tipHash, indexer) {
+  const tippersCount = await getTippersCount(indexer.blockHash);
+  const meta = await getTipMeta(tipHash, indexer);
   return { tippersCount, meta, medianValue: computeTipValue(meta) };
 }
 
@@ -85,7 +85,7 @@ async function handleTipCall(call, author, extrinsicIndexer) {
     args: { hash, tip_value: tipValue },
   } = call.toJSON();
 
-  const updates = await getCommonTipUpdates(extrinsicIndexer.blockHash, hash);
+  const updates = await getCommonTipUpdates(hash, extrinsicIndexer);
   await updateTipInDbByCall(hash, updates, author, tipValue, extrinsicIndexer);
 }
 

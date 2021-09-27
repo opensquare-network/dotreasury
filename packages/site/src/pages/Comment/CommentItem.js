@@ -289,7 +289,7 @@ const CommentItem = ({ index, comment, onReplyButton, replyEvent }) => {
         )}
         <TimeWrapper>
           {dayjs().diff(dayjs(comment.createdAt), "day") >= 1 ? (
-            dayjs(comment.createdAt).format("YYYY-MM-DD HH:mm:ss")
+            dayjs(comment.createdAt).format("YYYY-MM-DD")
           ) : (
             <FlexWrapper>
               <TimeElapsed from={dayjs(comment.createdAt).valueOf()} />

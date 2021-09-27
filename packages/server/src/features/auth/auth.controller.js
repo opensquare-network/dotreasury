@@ -68,8 +68,6 @@ class AuthController {
       throw new HttpError(500, "Signup error, cannot create user.");
     }
 
-    mailService.sendVerificationEmail({ username, email, token: verifyToken });
-
     const insertedUser = result.ops[0];
     const accessToken = await authService.getSignedToken(insertedUser);
     const refreshToken = await authService.getRefreshToken(insertedUser);
@@ -303,11 +301,15 @@ class AuthController {
       throw new HttpError(500, "Failed to request password reset.");
     }
 
-    mailService.sendResetPasswordEmail({
+    const isSent = await mailService.sendResetPasswordEmail({
       username: user.username,
       email: user.email,
       token,
     });
+
+    if (!isSent) {
+      throw new HttpError(500, "Fail to send email");
+    }
 
     ctx.body = true;
   }
