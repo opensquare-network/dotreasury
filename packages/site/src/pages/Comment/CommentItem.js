@@ -187,6 +187,16 @@ const TimeWrapper = styled.div`
   color: ${TEXT_DARK_DISABLE};
 `;
 
+const CircleImage = styled(Image)`
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+`;
+
+const Username = styled(TextMinor)`
+  margin-right: 16px;
+`;
+
 const CommentItem = ({ index, comment, onReplyButton, replyEvent }) => {
   const upCountDefault =
     comment.reactions?.filter((r) => r.reaction === REACTION_THUMBUP)[0]
@@ -270,7 +280,13 @@ const CommentItem = ({ index, comment, onReplyButton, replyEvent }) => {
   return (
     <Wrapper id={comment._id} ref={commentRef} highLight={highLight}>
       <HeaderWrapper>
-        <User address={address?.address} />
+        {address?.address && <User address={address?.address} />}
+        {!address?.address && (
+          <>
+            <CircleImage src={comment.author?.avatar ?? "/imgs/avatar.png"} />
+            <Username>{comment.author?.username ?? "Deleted Account"}</Username>
+          </>
+        )}
         <TimeWrapper>
           {dayjs().diff(dayjs(comment.createdAt), "day") >= 1 ? (
             dayjs(comment.createdAt).format("YYYY-MM-DD HH:mm:ss")
