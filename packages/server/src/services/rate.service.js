@@ -77,7 +77,7 @@ class RateService {
       throw new HttpError(400, "Number of grade must between 1 to 5");
     }
 
-    if (comment?.length > 140) {
+    if (comment?.length > 280) {
       throw new HttpError(400, "Comment too long");
     }
 

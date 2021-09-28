@@ -76,8 +76,8 @@ export default function MyRating({ type, index }) {
 
   const onChange = (e) => {
     let value = e.target.value;
-    if (e.target.value.length > 140) {
-      value = value.substr(0, 140);
+    if (e.target.value.length > 280) {
+      value = value.substr(0, 280);
     }
     setContent(value);
   };
@@ -134,7 +134,7 @@ export default function MyRating({ type, index }) {
           value={content}
           onChange={onChange}
         />
-        <TextCount>{content.length}/140</TextCount>
+        <TextCount>{content.length}/280</TextCount>
       </TextareaWrapper>
       <ButtonWrapper>
         <ButtonPrimary onClick={startRate} loading={loading}>
