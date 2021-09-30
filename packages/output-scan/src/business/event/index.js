@@ -1,3 +1,4 @@
+const { handleMotionEvent } = require("./motion");
 const { handleTreasuryProposalEventWithoutExtrinsic } = require("./proposal");
 const { handleTreasuryProposalEvent } = require("./proposal");
 const { handleTipEvent } = require("./tip");
@@ -18,6 +19,7 @@ async function handleEventWithExtrinsic(
 
   await handleTipEvent(event, extrinsic, indexer);
   await handleTreasuryProposalEvent(event, extrinsic, indexer);
+  await handleMotionEvent(event, extrinsic, indexer);
 }
 
 async function handleEventWithoutExtrinsic(
