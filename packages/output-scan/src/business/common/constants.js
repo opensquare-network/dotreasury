@@ -126,6 +126,13 @@ const PreImageEvents = Object.freeze({
   PreimageReaped: "PreimageReaped",
 });
 
+const BalancesEvents = Object.freeze({
+  Transfer: "Transfer",
+});
+
+const KsmTreasuryAccount = "F3opxRbN5ZbjJNU511Kj2TLuzFcDq9BGduA9TgiECafpg29";
+const DotTreasuryAccount = "13UVJyLnbVp9RBZYFwFGyDvVd1y27Tt8tkntv6Q7JVPhFsTB";
+
 module.exports = {
   Modules,
   TipEvents,
@@ -147,4 +154,7 @@ module.exports = {
   SudoMethods,
   DemocracyExternalEvents,
   PreImageEvents,
+  BalancesEvents,
+  KsmTreasuryAccount,
+  DotTreasuryAccount,
 };

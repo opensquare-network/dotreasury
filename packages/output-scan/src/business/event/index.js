@@ -1,3 +1,4 @@
+const { handleTreasuryTransferOut } = require("./outTransfer");
 const { handleMotionEvent } = require("./motion");
 const { handleTreasuryProposalEventWithoutExtrinsic } = require("./proposal");
 const { handleTreasuryProposalEvent } = require("./proposal");
@@ -36,10 +37,24 @@ async function handleEventWithoutExtrinsic(
   await handleTreasuryProposalEventWithoutExtrinsic(event, indexer);
 }
 
+async function handleCommon(
+  blockIndexer,
+  event,
+  eventSort,
+) {
+  const indexer = {
+    ...blockIndexer,
+    eventIndex: eventSort,
+  };
+
+  await handleTreasuryTransferOut(event, indexer);
+}
 
 async function handleEvents(events, extrinsics, blockIndexer) {
   for (let sort = 0; sort < events.length; sort++) {
     const { event, phase } = events[sort];
+
+    await handleCommon(blockIndexer, event, sort);
 
     if (phase.isNull) {
       await handleEventWithoutExtrinsic(blockIndexer, event, sort, events);
