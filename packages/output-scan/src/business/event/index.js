@@ -1,3 +1,4 @@
+const { handleBurntEvent } = require("./burnt");
 const { handleTreasuryTransferOut } = require("./outTransfer");
 const { handleMotionEvent } = require("./motion");
 const { handleTreasuryProposalEventWithoutExtrinsic } = require("./proposal");
@@ -48,6 +49,7 @@ async function handleCommon(
   };
 
   await handleTreasuryTransferOut(event, indexer);
+  await handleBurntEvent(event, indexer);
 }
 
 async function handleEvents(events, extrinsics, blockIndexer) {

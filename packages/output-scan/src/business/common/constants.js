@@ -90,6 +90,11 @@ const TreasuryProposalMethods = Object.freeze({
   approveProposal: "approveProposal",
 });
 
+const TreasuryCommonEvent = Object.freeze({
+  Burnt: "Burnt",
+  Deposit: "Deposit",
+});
+
 const MotionState = Object.freeze({
   ApproveVoting: "ApproveVoting",
   RejectVoting: "RejectVoting",
@@ -157,4 +162,5 @@ module.exports = {
   BalancesEvents,
   KsmTreasuryAccount,
   DotTreasuryAccount,
+  TreasuryCommonEvent,
 };
