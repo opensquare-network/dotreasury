@@ -1,3 +1,4 @@
+const { handleAcceptCurator } = require("./bounty/acceptCurator");
 const { handleCloseTipCall } = require("./tip/close");
 const { handleTipCall } = require("./tip/tip");
 const { calcMultisigAddress } = require("../../utils/call");
@@ -15,6 +16,7 @@ const { GenericCall } = require("@polkadot/types");
 async function handleCall(call, author, extrinsicIndexer, events) {
   await handleTipCall(call, author, extrinsicIndexer, events);
   await handleCloseTipCall(call, author, extrinsicIndexer, events);
+  await handleAcceptCurator(call, author, extrinsicIndexer);
 }
 
 async function unwrapProxy(call, signer, extrinsicIndexer, events) {

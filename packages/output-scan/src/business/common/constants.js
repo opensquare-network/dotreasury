@@ -112,6 +112,23 @@ const BountyEvents = Object.freeze({
   BountyExtended: "BountyExtended",
 });
 
+const BountyStatus = Object.freeze({
+  Proposed: "Proposed",
+  Approved: "Approved",
+  /// The bounty is funded and waiting for curator assignment.
+  Funded: "Funded",
+  /// A curator has been proposed by the `ApproveOrigin`. Waiting for acceptance from the
+  /// curator.
+  CuratorProposed: "CuratorProposed",
+  /// The bounty is active and waiting to be awarded.
+  Active: "Active",
+  /// The bounty is awarded and waiting to released after a delay.
+  PendingPayout: "PendingPayout",
+  Rejected: "Rejected",
+  Canceled: "Canceled",
+  Claimed: "Claimed",
+});
+
 const TreasuryCommonEvent = Object.freeze({
   Burnt: "Burnt",
   Deposit: "Deposit",
@@ -187,4 +204,5 @@ module.exports = {
   TreasuryCommonEvent,
   BountyEvents,
   BountyMethods,
+  BountyStatus,
 };

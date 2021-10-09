@@ -6,6 +6,7 @@ const { handleTreasuryProposalEvent } = require("./proposal");
 const { handleTipEvent } = require("./tip");
 const {
   handleBountyEventWithExtrinsic,
+  handleBountyEventWithoutExtrinsic,
 } = require("./bounty")
 
 async function handleEventWithExtrinsic(
@@ -40,6 +41,7 @@ async function handleEventWithoutExtrinsic(
   };
 
   await handleTreasuryProposalEventWithoutExtrinsic(event, indexer);
+  await handleBountyEventWithoutExtrinsic(event, indexer);
 }
 
 async function handleCommon(

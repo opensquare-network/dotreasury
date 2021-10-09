@@ -1,7 +1,12 @@
 const { GenericCall } = require("@polkadot/types");
 const { createKeyMulti, encodeAddress } = require("@polkadot/util-crypto");
 const { getApi } = require("../api");
-const { logger } = require("../logger")
+const { logger } = require("../logger");
+const {
+  Modules,
+  ProxyMethods,
+  MultisigMethods,
+} = require("../business/common/constants");
 
 function tryInitCall(registry, callHex) {
   try {
@@ -34,8 +39,42 @@ function calcMultisigAddress(signatories, threshold, chainSS58) {
   return encodeAddress(multiPub, chainSS58);
 }
 
+function getRealCaller(call, caller) {
+  const { section, method } = call;
+
+  if (Modules.Proxy === section && ProxyMethods.proxy === method) {
+    return call.args[0].toJSON();
+  }
+
+  if (
+    Modules.Multisig === section &&
+    MultisigMethods.asMulti === method
+    // TODO:  Maybe other methods, check them out
+  ) {
+    const callHex = call.args[3];
+    const innerCall = new GenericCall(call.registry, callHex);
+    if (
+      Modules.Proxy === innerCall.section &&
+      ProxyMethods.proxy === innerCall.method
+    ) {
+      return innerCall.args[0].toJSON();
+    }
+
+    const threshold = call.args[0].toNumber();
+    const otherSignatories = call.args[1].toJSON();
+    return calcMultisigAddress(
+      [caller, ...otherSignatories],
+      threshold,
+      call.registry.chainSS58
+    );
+  }
+
+  return caller;
+}
+
 module.exports = {
   getCall,
   getMultiSigExtrinsicAddress,
   calcMultisigAddress,
+  getRealCaller,
 };

@@ -4,7 +4,7 @@ const { getBountyMeta } = require("../../common/bounty/meta");
 const {
   TimelineItemTypes,
   BountyMethods,
-  BountyEvents,
+  BountyStatus,
 } = require("../../common/constants")
 
 async function handleProposed(event, extrinsic, indexer) {
@@ -32,7 +32,7 @@ async function handleProposed(event, extrinsic, indexer) {
 
   const state = {
     indexer,
-    state: BountyEvents.BountyProposed,
+    state: BountyStatus.Proposed,
     data: event.data.toJSON(),
   }
 

@@ -17,6 +17,14 @@ async function getBountyMeta(bountyIndex, { blockHeight, blockHash }) {
   return rawMeta.toJSON();
 }
 
+async function getBountyMetaByHeight(bountyIndex, blockHeight) {
+  const api = await getApi();
+  const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
+
+  return await getBountyMeta(bountyIndex, { blockHash, blockHeight });
+}
+
 module.exports = {
   getBountyMeta,
+  getBountyMetaByHeight,
 }
