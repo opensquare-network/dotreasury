@@ -90,6 +90,28 @@ const TreasuryProposalMethods = Object.freeze({
   approveProposal: "approveProposal",
 });
 
+const BountyMethods = Object.freeze({
+  proposeBounty: "proposeBounty",
+  approveBounty: "approveBounty",
+  proposeCurator: "proposeCurator",
+  unassignCurator: "unassignCurator",
+  acceptCurator: "acceptCurator",
+  awardBounty: "awardBounty",
+  claimBounty: "claimBounty",
+  closeBounty: "closeBounty",
+  extendBountyExpiry: "extendBountyExpiry",
+});
+
+const BountyEvents = Object.freeze({
+  BountyProposed: "BountyProposed",
+  BountyRejected: "BountyRejected",
+  BountyBecameActive: "BountyBecameActive",
+  BountyAwarded: "BountyAwarded",
+  BountyClaimed: "BountyClaimed",
+  BountyCanceled: "BountyCanceled",
+  BountyExtended: "BountyExtended",
+});
+
 const TreasuryCommonEvent = Object.freeze({
   Burnt: "Burnt",
   Deposit: "Deposit",
@@ -163,4 +185,6 @@ module.exports = {
   KsmTreasuryAccount,
   DotTreasuryAccount,
   TreasuryCommonEvent,
+  BountyEvents,
+  BountyMethods,
 };

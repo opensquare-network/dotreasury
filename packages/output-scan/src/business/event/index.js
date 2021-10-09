@@ -4,6 +4,9 @@ const { handleMotionEvent } = require("./motion");
 const { handleTreasuryProposalEventWithoutExtrinsic } = require("./proposal");
 const { handleTreasuryProposalEvent } = require("./proposal");
 const { handleTipEvent } = require("./tip");
+const {
+  handleBountyEventWithExtrinsic,
+} = require("./bounty")
 
 async function handleEventWithExtrinsic(
   blockIndexer,
@@ -22,6 +25,7 @@ async function handleEventWithExtrinsic(
   await handleTipEvent(event, extrinsic, indexer);
   await handleTreasuryProposalEvent(event, extrinsic, indexer);
   await handleMotionEvent(event, extrinsic, indexer);
+  await handleBountyEventWithExtrinsic(event, extrinsic, indexer);
 }
 
 async function handleEventWithoutExtrinsic(
