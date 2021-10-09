@@ -5,9 +5,19 @@ const {
   CouncilEvents,
   TreasuryProposalMethods,
   Modules,
+  BountyMethods,
 } = require("../../common/constants");
 const { getVotingFromStorage } = require("../../common/motion/votingStorage");
 const { getMotionProposalCall } = require("../../common/motion/proposalStorage");
+
+function isBountyMotion(section, method) {
+  return [Modules.Treasury, Modules.Bounties].includes(section) && [
+    BountyMethods.approveBounty,
+    BountyMethods.proposeCurator,
+    BountyMethods.unassignCurator,
+    BountyMethods.closeBounty,
+  ].includes(method)
+}
 
 function extractBusinessFields(proposal = {}) {
   const { section, method, args } = proposal;
@@ -19,9 +29,16 @@ function extractBusinessFields(proposal = {}) {
     ].includes(method)
   ) {
     return {
-      isTreasury: true,
+      isTreasuryProposal: true,
       treasuryProposalIndex: args[0].value,
     };
+  }
+
+  if (isBountyMotion(section, method)) {
+    return {
+      isTreasuryBounty: true,
+      treasuryBountyId: args[0].value,
+    }
   }
 
   return {};

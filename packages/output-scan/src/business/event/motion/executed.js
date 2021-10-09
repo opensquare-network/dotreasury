@@ -1,3 +1,4 @@
+const { handleBusinessWhenMotionExecuted } = require("./hooks/executed");
 const { updateMotionByHash } = require("../../../mongo/service/motion");
 const {
   TimelineItemTypes,
@@ -24,6 +25,7 @@ async function handleExecuted(event, extrinsic, indexer) {
     indexer,
   };
 
+  await handleBusinessWhenMotionExecuted(hash, indexer);
   const updates = { state, isFinal: true };
   await updateMotionByHash(hash, updates, timelineItem);
 }

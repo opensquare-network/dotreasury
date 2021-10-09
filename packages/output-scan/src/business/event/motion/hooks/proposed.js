@@ -5,8 +5,8 @@ const {
 } = require("../../../common/constants");
 
 async function handleBusinessWhenMotionProposed(motionDbObj = {}, indexer) {
-  const { isTreasury, treasuryProposalIndex } = motionDbObj;
-  if (!isTreasury) {
+  const { isTreasuryProposal, treasuryProposalIndex } = motionDbObj;
+  if (!isTreasuryProposal) {
     return;
   }
 

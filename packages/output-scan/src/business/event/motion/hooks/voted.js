@@ -12,8 +12,8 @@ async function handleBusinessWhenMotionVoted(motionHash, voting, indexer) {
     return;
   }
 
-  const { isTreasury, treasuryProposalIndex } = motion;
-  if (!isTreasury) {
+  const { isTreasuryProposal, treasuryProposalIndex } = motion;
+  if (!isTreasuryProposal) {
     return;
   }
 
