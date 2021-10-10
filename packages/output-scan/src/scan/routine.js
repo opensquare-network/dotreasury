@@ -1,8 +1,9 @@
 const last = require("lodash.last");
-const { scanBlockFromDb } = require("./block");
+const { isUseMetaDb } = require("../env");
+const { scanNormalizedBlock } = require("./block");
+const { fetchBlocks } = require("./fetchBlocks");
 const { logger } = require("../logger");
 const { updateScanHeight } = require("../mongo/scanHeight");
-const { getBlocks } = require("../mongo/meta");
 const { updateSpecs } = require("../chain/specs");
 const { getSpecHeights } = require("../chain/specs");
 const { getScanStep } = require("../env");
@@ -26,12 +27,19 @@ async function beginRoutineScan() {
       targetHeight = scanHeight + step;
     }
 
-    const specHeights = getSpecHeights();
-    if (targetHeight > last(specHeights)) {
-      await updateSpecs();
+    if (isUseMetaDb()) {
+      const specHeights = getSpecHeights();
+      if (targetHeight > last(specHeights)) {
+        await updateSpecs();
+      }
     }
 
-    const blocks = await getBlocks(scanHeight, targetHeight);
+    const heights = [];
+    for (let i = scanHeight; i <= targetHeight; i++) {
+      heights.push(i)
+    }
+
+    const blocks = await fetchBlocks(heights);
     if ((blocks || []).length <= 0) {
       await sleep(1000);
       continue;
@@ -40,7 +48,7 @@ async function beginRoutineScan() {
     for (const block of blocks) {
       // TODO: do following operations in one transaction
       try {
-        await scanBlockFromDb(block);
+        await scanNormalizedBlock(block.block, block.events);
         await updateScanHeight(block.height);
       } catch (e) {
         await sleep(3000);
@@ -48,7 +56,7 @@ async function beginRoutineScan() {
       }
     }
 
-    const lastHeight = last(blocks).height
+    const lastHeight = last(blocks || []).height
     logger.info(`${lastHeight} scan finished!`)
   }
 }

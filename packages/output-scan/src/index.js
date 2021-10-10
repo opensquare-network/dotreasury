@@ -1,4 +1,5 @@
 require("dotenv").config();
+
 const { beginScan } = require("./scan");
 const { checkSpecs } = require("./chain/specs/check");
 const { updateSpecs } = require("./chain/specs");

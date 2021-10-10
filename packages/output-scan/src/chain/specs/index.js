@@ -1,8 +1,10 @@
 const findLast = require("lodash.findlast");
+const { ksmHeights, dotHeights } = require("./known");
 const { getAllVersionChangeHeights } = require("../../mongo/meta");
 const { getRegistryByHeight } = require("../registry");
 const { getApi } = require("../../api");
 const { expandMetadata } = require("@polkadot/types");
+const { isUseMetaDb, currentChain, CHAINS, } = require("../../env")
 
 let versionChangedHeights = [];
 let registryMap = {};
@@ -14,7 +16,17 @@ function setSpecHeights(heights = []) {
 }
 
 async function updateSpecs() {
-  versionChangedHeights = await getAllVersionChangeHeights();
+  if (isUseMetaDb()) {
+    versionChangedHeights = await getAllVersionChangeHeights();
+    return
+  }
+
+  const chain = currentChain();
+  if (CHAINS.KUSAMA === chain) {
+    versionChangedHeights = ksmHeights;
+  } else if (CHAINS.POLKADOT === chain) {
+    versionChangedHeights = dotHeights;
+  }
 }
 
 async function getMetadataByHeight(height) {

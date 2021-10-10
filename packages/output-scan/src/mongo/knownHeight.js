@@ -4,9 +4,9 @@ const { MongoClient } = require("mongodb");
 function getDbName() {
   const chain = currentChain();
   if ("kusama" === chain) {
-    return process.env.MONGO_DB_META_KSM_NAME || "known-heights-ksm";
+    return process.env.MONGO_DB_KNOWN_HEIGHTS_KSM || "known-heights-ksm";
   } else if ("polkadot" === chain) {
-    return process.env.MONGO_DB_META_DOT_NAME || "known-heights-dot";
+    return process.env.MONGO_DB_KNOWN_HEIGHTS_DOT || "known-heights-dot";
   }
 
   throw new Error("unknown chain");

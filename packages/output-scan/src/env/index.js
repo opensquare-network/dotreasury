@@ -1,5 +1,6 @@
 const scanStep = parseInt(process.env.SCAN_STEP) || 100;
-const useKnownHeights = !!process.env.USE_KNOWN_HEIGHTS
+const useKnownHeights = !!process.env.USE_KNOWN_HEIGHTS;
+const useMetaDb = !!process.env.USE_META_DB;
 const CHAINS = {
   POLKADOT: "polkadot",
   KUSAMA: "kusama",
@@ -32,10 +33,15 @@ function firstScanKnowHeights() {
   return useKnownHeights;
 }
 
+function isUseMetaDb() {
+  return useMetaDb;
+}
+
 module.exports = {
   currentChain,
   CHAINS,
   getScanStep,
   setChain,
   firstScanKnowHeights,
+  isUseMetaDb,
 };

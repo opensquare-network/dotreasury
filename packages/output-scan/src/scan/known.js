@@ -1,20 +1,20 @@
 const { getNextScanHeight } = require("../mongo/scanHeight");
-const { scanBlockFromDb } = require("./block");
+const { scanNormalizedBlock } = require("./block");
 const { sleep } = require("../utils/sleep");
 const { updateScanHeight } = require("../mongo/scanHeight");
-const { getBlocksByHeights } = require("../mongo/meta");
 const { getNextKnownHeights } = require("../mongo/service/known");
 const { logger } = require("../logger");
 const last = require("lodash.last");
+const { fetchBlocks } = require("./fetchBlocks");
 
 async function scanKnownHeights() {
   const toScanHeight = await getNextScanHeight();
   let heights = await getNextKnownHeights(toScanHeight);
   while (heights.length > 0) {
-    const blocks = await getBlocksByHeights(heights)
+    const blocks = await fetchBlocks(heights)
     for (const block of blocks) {
       try {
-        await scanBlockFromDb(block);
+        await scanNormalizedBlock(block.block.block, block.events);
         await updateScanHeight(block.height);
       } catch (e) {
         await sleep(0);
@@ -22,7 +22,7 @@ async function scanKnownHeights() {
       }
     }
 
-    const lastHeight = last(blocks).height
+    const lastHeight = last(blocks || [])?.height
     logger.info(`${lastHeight} scan finished! - known height scan`)
     heights = await getNextKnownHeights(lastHeight + 1);
   }
