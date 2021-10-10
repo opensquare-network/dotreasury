@@ -1,4 +1,5 @@
 const scanStep = parseInt(process.env.SCAN_STEP) || 100;
+const useKnownHeights = !!process.env.USE_KNOWN_HEIGHTS
 const CHAINS = {
   POLKADOT: "polkadot",
   KUSAMA: "kusama",
@@ -27,9 +28,14 @@ function getScanStep() {
   return scanStep;
 }
 
+function firstScanKnowHeights() {
+  return useKnownHeights;
+}
+
 module.exports = {
   currentChain,
   CHAINS,
   getScanStep,
   setChain,
+  firstScanKnowHeights,
 };

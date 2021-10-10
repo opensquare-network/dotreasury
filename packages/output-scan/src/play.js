@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { scanNormalizedBlock } = require("./scan");
+const { scanNormalizedBlock } = require("./scan/block");
 const { setSpecHeights } = require("./chain/specs");
 const { getApi } = require("./api")
 

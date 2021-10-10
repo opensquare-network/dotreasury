@@ -1,3 +1,4 @@
+const { beginScan } = require("./scan");
 require("dotenv").config();
 const { checkSpecs } = require("./chain/specs/check");
 const { updateSpecs } = require("./chain/specs");
@@ -8,6 +9,8 @@ async function main() {
   await updateHeight();
   await updateSpecs();
   checkSpecs();
+
+  await beginScan();
 }
 
 main()
