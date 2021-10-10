@@ -9,7 +9,7 @@ const last = require("lodash.last");
 
 async function scanKnownHeights() {
   const toScanHeight = await getNextScanHeight();
-  let heights = await getNextKnownHeights(toScanHeight + 1);
+  let heights = await getNextKnownHeights(toScanHeight);
   while (heights.length > 0) {
     const blocks = await getBlocksByHeights(heights)
     for (const block of blocks) {
