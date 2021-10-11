@@ -185,6 +185,10 @@ const StakingEvents = Object.freeze({
   EraPaid: "EraPaid",
 });
 
+const IdentityEvents = Object.freeze({
+  IdentityKilled: "IdentityKilled",
+});
+
 module.exports = {
   Modules,
   TipEvents,
@@ -214,4 +218,5 @@ module.exports = {
   BountyMethods,
   BountyStatus,
   StakingEvents,
+  IdentityEvents,
 };

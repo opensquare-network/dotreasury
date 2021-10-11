@@ -1,3 +1,4 @@
+const { handleKilledSlash } = require("./identity/killedSlash");
 const { handleTransfer } = require("./transfer");
 const { handleTreasurySlash } = require("./treasury");
 const { handleInflation } = require("./staking/inflation");
@@ -20,6 +21,7 @@ async function handleDeposit(
   await handleInflation(event, indexer, blockEvents);
   await handleTreasurySlash(event, indexer, blockEvents);
   await handleTransfer(event, indexer);
+  await handleKilledSlash(event, indexer, blockEvents);
 }
 
 async function handleCommon(
