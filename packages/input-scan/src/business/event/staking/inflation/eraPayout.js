@@ -21,10 +21,7 @@ async function handleEraPayout(event, indexer, blockEvents) {
   const balance = event.data[0].toString();
 
   const obj = {
-    indexer: {
-      ...indexer,
-      eventIndex: indexer.eventIndex - 1,
-    },
+    indexer,
     balance,
   }
   const col = await getIncomeInflationCollection();

@@ -28,10 +28,7 @@ async function handleKsmLegacyReward(event, indexer, blockEvents) {
 
   const balance = event.data[0].toString();
   const obj = {
-    indexer: {
-      ...indexer,
-      eventIndex: sort - 1,
-    },
+    indexer,
     balance,
   }
   const col = await getIncomeInflationCollection()
