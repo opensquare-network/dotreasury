@@ -5,7 +5,7 @@ const { getApi } = require("./api")
 
 async function test() {
   const blockHeights = [
-    6006978
+    6570587
   ];
 
   for (const height of blockHeights) {
