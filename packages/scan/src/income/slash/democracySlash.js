@@ -98,8 +98,7 @@ async function handleDemocracyCancelProposalSlash(
   const call = await getCall(blockHash, proposal.toHex());
 
   if (
-    Modules.Democracy !== call.section &&
-    DemocracyMethods.cancelProposal !== call.method
+    Modules.Democracy !== call.section || DemocracyMethods.cancelProposal !== call.method
   ) {
     return;
   }
