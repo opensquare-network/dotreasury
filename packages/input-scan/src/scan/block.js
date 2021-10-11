@@ -1,3 +1,4 @@
+const { handleEvents } = require("../business/event");
 const { getBlockIndexer } = require("../business/common/block/getBlockIndexer");
 const { findRegistry } = require("../chain/specs");
 const { GenericBlock } = require("@polkadot/types");
@@ -16,10 +17,8 @@ async function scanBlockFromDb(blockInDb) {
 }
 
 async function scanNormalizedBlock(block, blockEvents) {
-  console.log(block)
   const blockIndexer = getBlockIndexer(block);
-
-  console.log(`block ${blockIndexer.blockHeight}`)
+  await handleEvents(blockEvents, block.extrinsics, blockIndexer);
 }
 
 module.exports = {

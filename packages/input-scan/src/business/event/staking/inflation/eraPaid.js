@@ -1,0 +1,37 @@
+const { getIncomeInflationCollection } = require("../../../../mongo/data");
+const {
+  Modules,
+  StakingEvents
+} = require("../../../common/constants");
+
+async function handleEraPaid(event, indexer, blockEvents) {
+  const sort = indexer.eventIndex;
+  if (sort <= 0) {
+    return;
+  }
+
+  const preEvent = blockEvents[sort - 1];
+  const {
+    event: { section, method, },
+  } = preEvent;
+  if (section !== Modules.Staking || method !== StakingEvents.EraPaid) {
+    return;
+  }
+
+  const balance = event.data[0].toString();
+
+  const obj = {
+    indexer: {
+      ...indexer,
+      eventIndex: sort - 1,
+    },
+    balance,
+  }
+  const col = await getIncomeInflationCollection();
+  await col.insertOne(obj);
+  return obj;
+}
+
+module.exports = {
+  handleEraPaid,
+}
