@@ -1,4 +1,5 @@
 const findLast = require("lodash.findlast");
+const last = require("lodash.last");
 const { ksmHeights, dotHeights } = require("./known");
 const { getAllVersionChangeHeights } = require("../../mongo/meta");
 const { getRegistryByHeight } = require("../registry");
@@ -46,7 +47,7 @@ async function findRegistry(height) {
     (h) => h <= height
   );
   if (!mostRecentChangeHeight) {
-    throw new Error(`Can not find registry for height ${height}`);
+    throw new Error(`Can not find registry for height ${ height }`);
   }
 
   let registry = registryMap[mostRecentChangeHeight];
@@ -58,20 +59,31 @@ async function findRegistry(height) {
   return registry;
 }
 
+function newHeight(height) {
+  return versionChangedHeights.length <= 0 || height > last(versionChangedHeights)
+}
+
 async function findDecorated(height) {
-  const mostRecentChangeHeight = findLast(
-    versionChangedHeights,
-    (h) => h <= height
-  );
-  if (!mostRecentChangeHeight) {
-    throw new Error(`Can not find height ${height}`);
+  let targetHeight;
+  if (isUseMetaDb() && newHeight(height)) {
+    targetHeight = height;
+  } else {
+    targetHeight = findLast(
+      versionChangedHeights,
+      (h) => h <= height
+    );
+    if (!targetHeight) {
+      throw new Error(`Can not find height ${ height }`);
+    }
   }
 
-  let decorated = decoratedMap[mostRecentChangeHeight];
+  let decorated = decoratedMap[targetHeight];
   if (!decorated) {
     const metadata = await getMetadataByHeight(height);
     decorated = expandMetadata(metadata.registry, metadata);
-    decoratedMap[height] = decorated;
+    if (isUseMetaDb()) {
+      decoratedMap[height] = decorated;
+    }
   }
 
   return decorated;
