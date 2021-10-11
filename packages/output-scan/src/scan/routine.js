@@ -48,7 +48,7 @@ async function beginRoutineScan() {
     for (const block of blocks) {
       // TODO: do following operations in one transaction
       try {
-        await scanNormalizedBlock(block.block, block.events);
+        await scanNormalizedBlock(block.block.block, block.events);
         await updateScanHeight(block.height);
       } catch (e) {
         await sleep(3000);
@@ -57,6 +57,7 @@ async function beginRoutineScan() {
     }
 
     const lastHeight = last(blocks || []).height
+    scanHeight = lastHeight + 1;
     logger.info(`${lastHeight} scan finished!`)
   }
 }
