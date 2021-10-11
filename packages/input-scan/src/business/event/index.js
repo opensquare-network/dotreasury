@@ -1,3 +1,4 @@
+const { handleProposalSlash } = require("./treasury/proposalSlash");
 const { handleInflation } = require("./staking/inflation");
 const {
   Modules,
@@ -16,6 +17,7 @@ async function handleCommon(
   };
 
   await handleInflation(event, indexer, blockEvents);
+  await handleProposalSlash(event, indexer, blockEvents);
 }
 
 async function handleEvents(events, extrinsics, blockIndexer) {
