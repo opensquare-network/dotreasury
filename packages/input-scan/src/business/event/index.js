@@ -1,3 +1,4 @@
+const { handleCancelProposalSlash } = require("./democracy/cancelProposal");
 const { handleKilledSlash } = require("./identity/killedSlash");
 const { handleTransfer } = require("./transfer");
 const { handleTreasurySlash } = require("./treasury");
@@ -36,6 +37,7 @@ async function handleCommon(
   };
 
   await handleTransfer(event, indexer);
+  await handleCancelProposalSlash(event, indexer, blockEvents);
 }
 
 async function handleEvents(events, extrinsics, blockIndexer) {
