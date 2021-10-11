@@ -6,7 +6,7 @@
     "node": ">=15.0.0"
   },
   "scripts": {
-    "saveHeight": "ehco 'abc'"
+    "saveHeight": "node src/index.js"
   },
   "dependencies": {
     "dotenv": "^8.2.0",
