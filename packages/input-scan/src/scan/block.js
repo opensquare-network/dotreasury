@@ -1,3 +1,5 @@
+const { bigAdd, bigAdds } = require("../utils");
+const { getNowIncomeSeats } = require("../mongo/scanHeight");
 const { handleEvents } = require("../business/event");
 const { getBlockIndexer } = require("../business/common/block/getBlockIndexer");
 const { findRegistry } = require("../chain/specs");
@@ -18,7 +20,29 @@ async function scanBlockFromDb(blockInDb) {
 
 async function scanNormalizedBlock(block, blockEvents) {
   const blockIndexer = getBlockIndexer(block);
-  await handleEvents(blockEvents, block.extrinsics, blockIndexer);
+  const details = await handleEvents(blockEvents, block.extrinsics, blockIndexer);
+  const detailSlash = bigAdds([
+    details.treasurySlash,
+    details.idSlash,
+    details.democracySlash,
+    details.stakingSlash,
+  ])
+
+  const nowSeats = await getNowIncomeSeats()
+  const newSeats = {
+    inflation: bigAdd(nowSeats.inflation, details.inflation),
+    transfer: bigAdd(nowSeats.transfer, details.transfer),
+    slash: bigAdds(nowSeats.slash, detailSlash),
+    slashSeats: {
+      treasury: bigAdd(nowSeats.slashSeats.treasury, details.treasurySlash),
+      staking: bigAdd(nowSeats.slashSeats.staking, details.stakingSlash),
+      democracy: bigAdd(nowSeats.slashSeats.democracy, details.democracySlash),
+      identity: bigAdd(nowSeats.slashSeats.identity, details.idSlash),
+    }
+  }
+  
+  return newSeats;
+  // todo: save new seats
 }
 
 module.exports = {

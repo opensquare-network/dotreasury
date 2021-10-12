@@ -4,7 +4,7 @@ const {
   IdentityEvents,
 } = require("../../common/constants")
 
-async function handleKilledSlash(event, indexer, blockEvents) {
+async function handleIdentityKilledSlash(event, indexer, blockEvents) {
   const sort = indexer.eventIndex;
   if (sort >= blockEvents.length - 1) {
     return;
@@ -32,5 +32,5 @@ async function handleKilledSlash(event, indexer, blockEvents) {
 }
 
 module.exports = {
-  handleKilledSlash,
+  handleIdentityKilledSlash,
 }
