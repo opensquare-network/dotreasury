@@ -44,7 +44,7 @@ async function handleDeposit(
   }
   const sum = bigAdds(Object.values(items));
 
-  let others;
+  let others = 0;
   if (parseInt(sum) <= 0) {
     const othersObj = await handleOthers(event, indexer);
     others = othersObj.balance;
