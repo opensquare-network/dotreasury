@@ -11,7 +11,7 @@ const genesisIncomeSeats = {
     treasury: 0,
     staking: 0,
     democracy: 0,
-    electionsPhragmen: 0,
+    election: 0,
     identity: 0,
   },
 };

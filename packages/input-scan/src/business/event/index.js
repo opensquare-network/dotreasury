@@ -1,3 +1,6 @@
+const { handleOthers } = require("./others");
+const { bigAdds } = require("../../utils");
+const { handleElection } = require("./election");
 const { bigAdd } = require("../../utils");
 const { handleSlashEvent } = require("./staking/slash/slashOrSlashed");
 const { handleCancelProposalSlash } = require("./democracy/cancelProposal");
@@ -25,11 +28,31 @@ async function handleDeposit(
   const treasurySlash = await handleTreasurySlash(event, indexer, blockEvents);
   const maybeIdSlash = await handleIdentityKilledSlash(event, indexer, blockEvents);
   const idSlash = maybeIdSlash ? maybeIdSlash.balance : '0';
+  const electionSlash = await handleElection(event, indexer, blockEvents);
+  const maybeStaking = await handleSlashEvent(event, indexer, blockEvents);
+  const stakingSlash = maybeStaking ? maybeStaking.balance : '0';
+  const maybeDemocracy = await handleCancelProposalSlash(event, indexer, blockEvents);
+  const democracySlash = maybeDemocracy ? maybeDemocracy.balance : '0';
 
-  return {
+  const items = {
     inflation,
     treasurySlash,
     idSlash,
+    electionSlash,
+    stakingSlash,
+    democracySlash,
+  }
+  const sum = bigAdds(Object.values(items));
+
+  let others;
+  if (parseInt(sum) <= 0) {
+    const othersObj = await handleOthers(event, indexer);
+    others = othersObj.balance;
+  }
+
+  return {
+    ...items,
+    others,
   }
 }
 
@@ -37,7 +60,6 @@ async function handleCommon(
   blockIndexer,
   event,
   eventSort,
-  blockEvents,
 ) {
   const indexer = {
     ...blockIndexer,
@@ -47,15 +69,8 @@ async function handleCommon(
   const maybeTransfer = await handleTransfer(event, indexer);
   const transfer = maybeTransfer ? maybeTransfer.balance : '0';
 
-  const maybeDemocracy = await handleCancelProposalSlash(event, indexer, blockEvents);
-  const democracySlash = maybeDemocracy ? maybeDemocracy.balance : '0';
-  const maybeStaking = await handleSlashEvent(event, indexer);
-  const stakingSlash = maybeStaking ? maybeStaking.balance : '0';
-
   return {
     transfer,
-    democracySlash,
-    stakingSlash,
   }
 }
 
@@ -66,14 +81,14 @@ async function handleEvents(events, extrinsics, blockIndexer) {
   let idSlash = 0;
   let democracySlash = 0;
   let stakingSlash = 0;
+  let electionSlash = 0;
+  let others = 0;
 
   for (let sort = 0; sort < events.length; sort++) {
     const { event, } = events[sort];
 
     const commonObj = await handleCommon(blockIndexer, event, sort, events);
     transfer = bigAdd(transfer, commonObj.transfer);
-    democracySlash = bigAdd(democracySlash, commonObj.democracySlash);
-    stakingSlash = bigAdd(stakingSlash, commonObj.stakingSlash);
 
     const { section, method } = event;
     if (Modules.Treasury !== section || TreasuryCommonEvent.Deposit !== method) {
@@ -84,15 +99,21 @@ async function handleEvents(events, extrinsics, blockIndexer) {
     inflation = bigAdd(inflation, depositObj.inflation);
     treasurySlash = bigAdd(treasurySlash, depositObj.treasurySlash);
     idSlash = bigAdd(idSlash, depositObj.idSlash);
+    electionSlash = bigAdd(electionSlash, depositObj.electionSlash);
+    democracySlash = bigAdd(democracySlash, depositObj.democracySlash);
+    stakingSlash = bigAdd(stakingSlash, depositObj.stakingSlash);
+    others = bigAdd(others, depositObj.others);
   }
 
   return {
     inflation,
     transfer,
+    others,
     treasurySlash,
     idSlash,
     democracySlash,
     stakingSlash,
+    electionSlash,
   }
 }
 

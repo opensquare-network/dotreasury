@@ -12,7 +12,7 @@ async function handleIdentityKilledSlash(event, indexer, blockEvents) {
 
   const nextEvent = blockEvents[sort + 1];
   const {
-    event: { section, method, },
+    event: { section, method, data, },
   } = nextEvent;
   if (section !== Modules.Identity || method !== IdentityEvents.IdentityKilled) {
     return;

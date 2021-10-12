@@ -190,6 +190,12 @@ const IdentityEvents = Object.freeze({
   IdentityKilled: "IdentityKilled",
 });
 
+const ElectionsPhragmenEvents = Object.freeze({
+  CandidateSlashed: "CandidateSlashed",
+  SeatHolderSlashed: "SeatHolderSlashed",
+  NewTerm: "NewTerm",
+});
+
 module.exports = {
   Modules,
   TipEvents,
@@ -220,4 +226,5 @@ module.exports = {
   BountyStatus,
   StakingEvents,
   IdentityEvents,
+  ElectionsPhragmenEvents,
 };

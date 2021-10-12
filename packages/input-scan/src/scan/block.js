@@ -26,21 +26,24 @@ async function scanNormalizedBlock(block, blockEvents) {
     details.idSlash,
     details.democracySlash,
     details.stakingSlash,
+    details.electionSlash,
   ])
 
   const nowSeats = await getNowIncomeSeats()
   const newSeats = {
     inflation: bigAdd(nowSeats.inflation, details.inflation),
     transfer: bigAdd(nowSeats.transfer, details.transfer),
-    slash: bigAdds(nowSeats.slash, detailSlash),
+    slash: bigAdd(nowSeats.slash, detailSlash),
+    others: bigAdd(nowSeats.others, details.others),
     slashSeats: {
       treasury: bigAdd(nowSeats.slashSeats.treasury, details.treasurySlash),
       staking: bigAdd(nowSeats.slashSeats.staking, details.stakingSlash),
       democracy: bigAdd(nowSeats.slashSeats.democracy, details.democracySlash),
+      election: bigAdd(nowSeats.slashSeats.election, details.electionSlash),
       identity: bigAdd(nowSeats.slashSeats.identity, details.idSlash),
     }
   }
-  
+
   return newSeats;
   // todo: save new seats
 }

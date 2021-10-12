@@ -4,23 +4,27 @@ const {
   StakingEvents,
 } = require("../../../common/constants")
 
-async function handleSlashEvent(event, indexer) {
-  const { section, method } = event;
+async function handleSlashEvent(event, indexer, blockEvents) {
+  const sort = indexer.eventIndex;
+  if (sort <= 0) {
+    return;
+  }
+
+  const preEvent = blockEvents[sort - 1];
+  const {
+    event: { section, method, },
+  } = preEvent;
 
   if (Modules.Staking !== section ||
     ![StakingEvents.Slash, StakingEvents.Slashed].includes(method)) {
     return
   }
 
-  const validator = event.data[0].toString();
-  const balance = event.data[1].toString();
-
   const obj = {
     indexer,
     section,
     method,
-    validator,
-    balance,
+    balance: event.data[0].toString(),
   }
 
   const col = await getStakingSlashCollection()
