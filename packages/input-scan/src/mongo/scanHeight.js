@@ -41,15 +41,6 @@ async function getNowIncomeSeats() {
   return status.seats;
 }
 
-async function updateScanHeight(height) {
-  const statusCol = await getStatusCollection();
-  await statusCol.findOneAndUpdate(
-    { name: mainScanName },
-    { $set: { value: height } },
-    { upsert: true }
-  );
-}
-
 async function updateScanStatus(height, seats) {
   const statusCol = await getStatusCollection();
   await statusCol.findOneAndUpdate(
@@ -61,7 +52,6 @@ async function updateScanStatus(height, seats) {
 
 module.exports = {
   getNextScanHeight,
-  updateScanHeight,
   getNowIncomeSeats,
   updateScanStatus,
 };
