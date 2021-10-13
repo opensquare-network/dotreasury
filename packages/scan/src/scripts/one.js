@@ -1,3 +1,4 @@
+const { setSpecHeights } = require("../mongo/service/specs");
 require("dotenv").config();
 const { handleEvents } = require("../events");
 const { handleExtrinsics } = require("../extrinsic");
@@ -20,6 +21,7 @@ async function main() {
     process.exit(1);
   }
 
+  setSpecHeights([height]);
   await updateHeight();
   const api = await getApi();
   // const finalizedHeight = getLatestHeight();
