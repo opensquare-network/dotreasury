@@ -22,12 +22,12 @@ async function main() {
 
   await updateHeight();
   const api = await getApi();
-  const finalizedHeight = getLatestHeight();
-  console.log('finalizedHeight', finalizedHeight);
-  if (height > finalizedHeight) {
-    console.error("Block height can not be greater than the finalized height");
-    process.exit(1);
-  }
+  // const finalizedHeight = getLatestHeight();
+  // console.log('finalizedHeight', finalizedHeight);
+  // if (height > finalizedHeight) {
+  //   console.error("Block height can not be greater than the finalized height");
+  //   process.exit(1);
+  // }
 
   const blockHash = await api.rpc.chain.getBlockHash(height);
   const rawBlock = await api.rpc.chain.getBlock(blockHash);
