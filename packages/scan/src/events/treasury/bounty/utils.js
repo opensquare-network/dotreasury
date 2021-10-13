@@ -1,5 +1,4 @@
 const { findBlockApi } = require("../../../chain/spec");
-const { expandMetadata } = require("@polkadot/types");
 
 async function getBountyMeta(blockHash, bountyIndex) {
   const blockApi = await findBlockApi(blockHash);

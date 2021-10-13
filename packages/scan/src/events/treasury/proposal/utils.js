@@ -1,9 +1,8 @@
-const { expandMetadata } = require("@polkadot/types");
+const { findBlockApi } = require("../../../chain/spec");
 
-async function getProposalMeta(api, metadata, blockHash, proposalIndex) {
-  const decorated = expandMetadata(metadata.registry, metadata);
-  const key = [decorated.query.treasury.proposals, proposalIndex];
-  const rawMeta = await api.rpc.state.getStorage(key, blockHash);
+async function getProposalMeta(blockHash, proposalIndex) {
+  const blockApi = await findBlockApi(blockHash);
+  const rawMeta = await blockApi.query.treasury.proposals(proposalIndex);
   return rawMeta.toJSON();
 }
 

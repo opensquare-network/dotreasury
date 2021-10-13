@@ -18,9 +18,8 @@ describe("test get treasury proposal", () => {
 
   test("#0 of kusama works", async () => {
     const blockHash = await api.rpc.chain.getBlockHash(126165);
-    const metadata = await api.rpc.state.getMetadata(blockHash);
 
-    const meta = await getProposalMeta(api, metadata, blockHash, 0);
+    const meta = await getProposalMeta(blockHash, 0);
     expect(meta).toMatchObject({
       proposer: "H9eSvWe34vQDJAWckeTHWSqSChRat8bgKHG39GC1fjvEm7y",
       value: 50000000000000,
@@ -33,7 +32,7 @@ describe("test get treasury proposal", () => {
     const blockHash = await api.rpc.chain.getBlockHash(8463915);
     const metadata = await api.rpc.state.getMetadata(blockHash);
 
-    const meta = await getProposalMeta(api, metadata, blockHash, 100);
+    const meta = await getProposalMeta(blockHash, 100);
     expect(meta).toMatchObject({
       proposer: "ELkVhHcvaP9L43RK9SP6Wn3FBfusEN5EJe2gH7aA2ETiufP",
       value: 47419900000000,
