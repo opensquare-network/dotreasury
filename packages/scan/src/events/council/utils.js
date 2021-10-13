@@ -1,3 +1,4 @@
+const { findBlockApi } = require("../../chain/spec");
 const {
   ProposalMethods,
   BountyMethods,
@@ -6,7 +7,6 @@ const {
   MultisigMethods,
 } = require("../../utils/constants");
 const { getApi } = require("../../api");
-const { getMotionCollection } = require("../../mongo");
 const { GenericCall } = require("@polkadot/types");
 
 function isProposalMotion(method) {
@@ -75,8 +75,8 @@ async function extractCallIndexAndArgs(normalizedExtrinsic, extrinsic) {
 }
 
 async function getMotionVoting(blockHash, motionHash) {
-  const api = await getApi();
-  const votingObject = await api.query.council.voting.at(blockHash, motionHash);
+  const api = await findBlockApi(blockHash)
+  const votingObject = await api.query.council.voting(motionHash);
   return votingObject.toJSON();
 }
 

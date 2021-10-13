@@ -7,16 +7,7 @@ const {
 async function getBountyMetaByBlockHeight(height, bountyIndex) {
   const api = await getApi();
   const blockHash = await api.rpc.chain.getBlockHash(height);
-  return await getBountyMetaFromStorage(api, blockHash, bountyIndex);
-}
-
-async function getBountyDescription(blockHash, bountyIndex) {
-  const api = await getApi();
-  const description = await api.query.bounties.bountyDescriptions.at(
-    blockHash,
-    bountyIndex
-  );
-  return description.toHuman();
+  return await getBountyMetaFromStorage(blockHash, bountyIndex);
 }
 
 function isBountyModule(section) {
@@ -24,7 +15,6 @@ function isBountyModule(section) {
 }
 
 module.exports = {
-  getBountyDescription,
   getBountyMetaByBlockHeight,
   isBountyModule,
 };

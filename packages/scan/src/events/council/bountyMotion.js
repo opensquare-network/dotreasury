@@ -114,9 +114,7 @@ async function updateBountyByVoteResult(hash, isApproved, indexer) {
     return;
   }
 
-  const api = await getApi();
   const meta = await getBountyMeta(
-    api,
     indexer.blockHash,
     motion.treasuryBountyId
   );

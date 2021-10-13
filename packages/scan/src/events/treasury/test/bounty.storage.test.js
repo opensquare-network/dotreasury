@@ -19,7 +19,7 @@ describe("test get bounties", () => {
   test("#0 of kusama works", async () => {
     const blockHash = await api.rpc.chain.getBlockHash(4501546);
 
-    const meta = await getBountyMeta(api, blockHash, 0);
+    const meta = await getBountyMeta(blockHash, 0);
     expect(meta).toMatchObject({
       proposer: "GLVeryFRbg5hEKvQZcAnLvXZEXhiYaBjzSDwrXBXrfPF7wj",
       value: 1165000000000000,
@@ -35,7 +35,7 @@ describe("test get bounties", () => {
   test("#3 of kusama works", async () => {
     const blockHash = await api.rpc.chain.getBlockHash(6346948);
 
-    const meta = await getBountyMeta(api, blockHash, 3);
+    const meta = await getBountyMeta(blockHash, 3);
     expect(meta).toMatchObject({
       proposer: "H9eSvWe34vQDJAWckeTHWSqSChRat8bgKHG39GC1fjvEm7y",
       value: 1111000000000000,
@@ -50,14 +50,14 @@ describe("test get bounties", () => {
 
   test("#0 description of kusama works", async () => {
     const blockHash = await api.rpc.chain.getBlockHash(4501546);
-    const description = await getBountyDescription(api, blockHash, 0);
+    const description = await getBountyDescription(blockHash, 0);
 
     expect(description).toEqual("Kusama network UI Bounty");
   });
 
   test("#4 description of kusama works", async () => {
     const blockHash = await api.rpc.chain.getBlockHash(6924780);
-    const description = await getBountyDescription(api, blockHash, 4);
+    const description = await getBountyDescription(blockHash, 4);
 
     expect(description).toEqual("Council Alert App");
   });

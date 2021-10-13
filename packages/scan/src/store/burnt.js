@@ -1,5 +1,8 @@
+const { getTreasuryBalanceV2 } = require("../utils/freeBalance");
 const { getBurntCollection } = require("../mongo");
-const { getMetadataConstByBlockHash, getTreasuryBalance } = require("../utils");
+const {
+  getMetadataConstByBlockHash,
+} = require("../utils");
 
 async function getBurnPercent(blockHash) {
   const v = await getMetadataConstByBlockHash(blockHash, "Treasury", "Burn");
@@ -7,7 +10,7 @@ async function getBurnPercent(blockHash) {
 }
 
 async function saveNewBurnt(balance, eventIndexer) {
-  const treasuryBalance = await getTreasuryBalance(eventIndexer);
+  const treasuryBalance = await getTreasuryBalanceV2(eventIndexer.blockHash);
   const burnPercent = await getBurnPercent(eventIndexer.blockHash);
 
   const burntCol = await getBurntCollection();
