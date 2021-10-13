@@ -1,4 +1,5 @@
 const dayjs = require("dayjs");
+const { getTreasuryBalanceV2 } = require("../utils/freeBalance");
 const { bnToBn, stringUpperFirst } = require("@polkadot/util");
 const { getLastStatTime } = require("../mongo/statTime");
 const { getIncomeNextScanStatus } = require("../mongo/scanHeight");
@@ -9,7 +10,7 @@ const {
   getBurntCollection,
   getWeeklyStatsCollection,
 } = require("../mongo");
-const { bigAdd, getTreasuryBalance } = require("../utils");
+const { bigAdd, } = require("../utils");
 const { updateLastStatTime } = require("../mongo/statTime");
 
 async function shouldSaveStatHistory(blockIndexer) {
@@ -53,7 +54,7 @@ async function processStat(blockIndexer) {
 async function saveStats(indexer) {
   const output = await calcOutputStats();
   const { seats: income } = await getIncomeNextScanStatus();
-  const treasuryBalance = await getTreasuryBalance(indexer);
+  const treasuryBalance = await getTreasuryBalanceV2(indexer.blockHash);
 
   if (treasuryBalance === null) {
     return;

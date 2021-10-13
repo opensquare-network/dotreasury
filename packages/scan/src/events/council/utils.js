@@ -7,7 +7,6 @@ const {
   MultisigMethods,
 } = require("../../utils/constants");
 const { getApi } = require("../../api");
-const { getMotionCollection } = require("../../mongo");
 const { GenericCall } = require("@polkadot/types");
 
 function isProposalMotion(method) {
