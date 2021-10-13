@@ -1,3 +1,4 @@
+const { findBlockApi } = require("../chain/spec");
 const { findDecorated, } = require("../mongo/service/specs");
 const { TreasuryAccount } = require("./constants");
 
@@ -18,6 +19,24 @@ async function getBalance(api, metadata, { blockHeight, blockHash }) {
   return null;
 }
 
+async function getTreasuryBalanceV2(blockHash) {
+  const blockApi = await findBlockApi(blockHash);
+  if (blockApi.query.system?.account) {
+    const accountInfo = await blockApi.query.system.account(TreasuryAccount);
+    return accountInfo.data.free.toString();
+  }
+
+  if (blockApi.query.balances.freeBalance) {
+    const rawBalance = await blockApi.query.balances.freeBalance(TreasuryAccount);
+    if (rawBalance) {
+      return rawBalance.toString()
+    }
+  }
+
+  return null;
+}
+
 module.exports = {
   getTreasuryBalance: getBalance,
+  getTreasuryBalanceV2,
 };
