@@ -4,14 +4,12 @@ const { BountyMethods, Modules } = require("../../utils/constants");
 const { getRealCaller, findCallInSections } = require("../../utils");
 const { hexToString } = require("@polkadot/util");
 const { updateBountyInDb } = require("./bounty/common");
-const { getApi } = require("../../api");
 
 async function handleBountyExtended(event, normalizedExtrinsic, extrinsic) {
   const indexer = normalizedExtrinsic.extrinsicIndexer;
   const eventData = event.data.toJSON();
   const bountyIndex = eventData[0];
-  const api = await getApi();
-  const meta = await getBountyMeta(api, indexer.blockHash, bountyIndex);
+  const meta = await getBountyMeta(indexer.blockHash, bountyIndex);
 
   const caller = getRealCaller(extrinsic.method, normalizedExtrinsic.signer);
   const call = findCallInSections(

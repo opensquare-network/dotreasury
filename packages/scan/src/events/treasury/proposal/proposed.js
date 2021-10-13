@@ -5,18 +5,13 @@ const {
   ProposalEvents,
 } = require("../../../utils/constants");
 const { getProposalCollection } = require("../../../mongo");
-const { getApi } = require("../../../api");
 
 async function handleProposed(event, normalizedExtrinsic) {
   const eventData = event.data.toJSON();
   const [proposalIndex] = eventData;
 
-  const api = await getApi();
   const extrinsicIndexer = normalizedExtrinsic.extrinsicIndexer;
-  const metadata = await api.rpc.state.getMetadata(extrinsicIndexer.blockHash);
   const metaJson = await getProposalMeta(
-    api,
-    metadata,
     extrinsicIndexer.blockHash,
     proposalIndex
   );

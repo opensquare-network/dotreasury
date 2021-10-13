@@ -2,7 +2,6 @@ const { getBountyMeta } = require("./utils");
 const { Modules, BountyEvents } = require("../../../utils/constants");
 const { timelineItemTypes } = require("../../../utils/constants");
 const { updateBountyInDb } = require("./common");
-const { getApi } = require("../../../api");
 
 function isBountyBecameActiveEvent(section, method) {
   return (
@@ -19,8 +18,7 @@ async function handleBountyBecameActiveEvent(event, eventIndexer) {
 
   const eventData = event.data.toJSON();
   const bountyIndex = eventData[0];
-  const api = await getApi();
-  const meta = await getBountyMeta(api, eventIndexer.blockHash, bountyIndex);
+  const meta = await getBountyMeta(eventIndexer.blockHash, bountyIndex);
 
   const timelineItem = {
     type: timelineItemTypes.event,
