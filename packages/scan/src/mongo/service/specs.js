@@ -58,7 +58,8 @@ async function findDecorated(height) {
   let decorated = decoratedMap[mostRecentChangeHeight];
   if (!decorated) {
     const metadata = await getMetadataByHeight(height);
-    decorated = expandMetadata(metadata.registry, metadata);
+    const registry = await findRegistry(height);
+    decorated = expandMetadata(registry, metadata);
     decoratedMap[height] = decorated;
   }
 

@@ -9,7 +9,7 @@
     "test": "jest src/test"
   },
   "dependencies": {
-    "@polkadot/api": "5.7.1",
+    "@polkadot/api": "6.3.2-10",
     "bignumber.js": "^9.0.1",
     "dotenv": "^8.2.0",
     "log4js": "^6.3.0",

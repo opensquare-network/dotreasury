@@ -7,7 +7,7 @@ async function getBurnPercent(blockHash) {
 }
 
 async function saveNewBurnt(balance, eventIndexer) {
-  const treasuryBalance = await getTreasuryBalance(eventIndexer.blockHash);
+  const treasuryBalance = await getTreasuryBalance(eventIndexer);
   const burnPercent = await getBurnPercent(eventIndexer.blockHash);
 
   const burntCol = await getBurntCollection();

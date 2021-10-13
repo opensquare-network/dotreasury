@@ -1,15 +1,12 @@
+const { findDecorated, } = require("../mongo/service/specs");
 const { TreasuryAccount } = require("./constants");
-const { expandMetadata } = require("@polkadot/types");
 
-async function getBalance(api, metadata, blockHash) {
-  const decorated = expandMetadata(metadata.registry, metadata);
+async function getBalance(api, metadata, { blockHeight, blockHash }) {
+  const decorated = await findDecorated(blockHeight);
 
   if (decorated.query.system.account) {
-    const key = [decorated.query.system.account, TreasuryAccount];
-    const systemValue = await api.rpc.state.getStorage(key, blockHash);
-    if (systemValue) {
-      return systemValue.data.free.toJSON();
-    }
+    const accountInfo = await api.query.system.account.at(blockHash, TreasuryAccount);
+    return accountInfo.data.free.toString();
   }
 
   const key = [decorated.query.balances.freeBalance, TreasuryAccount];

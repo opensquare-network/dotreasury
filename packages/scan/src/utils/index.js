@@ -106,10 +106,10 @@ async function getMetadataConstsByBlockHash(blockHash, constants) {
   );
 }
 
-async function getTreasuryBalance(blockHash) {
+async function getTreasuryBalance({ blockHeight, blockHash }) {
   const api = await getApi();
   const metadata = await api.rpc.state.getMetadata(blockHash);
-  return await getTreasuryFreeBalance(api, metadata, blockHash);
+  return await getTreasuryFreeBalance(api, metadata, { blockHeight, blockHash });
 }
 
 function getRealCaller(call, caller) {
