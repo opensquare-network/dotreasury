@@ -14,6 +14,7 @@ const { handleIncomeEvents } = require("./income");
 const { getBlocks } = require("./mongo/meta");
 const { GenericBlock } = require("@polkadot/types");
 const last = require("lodash.last");
+const { setSpecHeights } = require("./mongo/service/specs");
 const { findRegistry } = require("./mongo/service/specs");
 
 async function main() {
@@ -101,7 +102,8 @@ async function scanNormalizedBlock(block, blockEvents) {
 }
 
 async function test() {
-  const height = 9047379;
+  const height = 9626275;
+  setSpecHeights([height]);
   const api = await getApi();
   const blockHash = await api.rpc.chain.getBlockHash(height);
   const block = await api.rpc.chain.getBlock(blockHash);
