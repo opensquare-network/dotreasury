@@ -9,10 +9,7 @@ async function testProposalData(api, height, proposalIndex, toTestMeta) {
   setSpecHeights([height]);
   const blockHash = await api.rpc.chain.getBlockHash(height);
 
-  const meta = await getTreasuryProposalMeta(proposalIndex, {
-    blockHash,
-    blockHeight: height,
-  });
+  const meta = await getTreasuryProposalMeta(blockHash, proposalIndex);
   expect(meta).toEqual(toTestMeta);
 }
 

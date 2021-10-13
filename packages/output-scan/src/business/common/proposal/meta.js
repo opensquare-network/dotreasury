@@ -1,16 +1,10 @@
-const { findDecorated } = require("../../../chain/specs");
-const { getApi } = require("../../../api");
+const { findBlockApi } = require("../../../chain/specs/blockApi");
 
-async function getTreasuryProposalMeta(
-  proposalIndex,
-  { blockHeight, blockHash }
-) {
-  const decorated = await findDecorated(blockHeight);
-  const key = [decorated.query.treasury.proposals, proposalIndex];
+async function getTreasuryProposalMeta(blockHash, proposalIndex) {
+  const blockApi = await findBlockApi(blockHash);
 
-  const api = await getApi();
-  const rawMeta = await api.rpc.state.getStorage(key, blockHash);
-  return rawMeta.toJSON();
+  const raw = await blockApi.query.treasury.proposals(proposalIndex);
+  return raw.toJSON();
 }
 
 module.exports = {

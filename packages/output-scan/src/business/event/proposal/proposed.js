@@ -7,7 +7,7 @@ const { logger } = require("../../../logger")
 async function saveNewTreasuryProposal(event, extrinsic, eventIndexer) {
   const [proposalIndex] = event.data.toJSON();
 
-  const meta = await getTreasuryProposalMeta(proposalIndex, eventIndexer);
+  const meta = await getTreasuryProposalMeta(eventIndexer.blockHash, proposalIndex);
   const { proposer, value, beneficiary } = meta;
 
   const timelineItem = {
