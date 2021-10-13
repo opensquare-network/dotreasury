@@ -23,6 +23,7 @@ async function main() {
   await updateHeight();
   const api = await getApi();
   const finalizedHeight = getLatestHeight();
+  console.log('finalizedHeight', finalizedHeight);
   if (height > finalizedHeight) {
     console.error("Block height can not be greater than the finalized height");
     process.exit(1);
