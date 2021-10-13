@@ -1,3 +1,4 @@
+const { findBlockApi } = require("../../chain/spec");
 const {
   ProposalMethods,
   BountyMethods,
@@ -75,8 +76,8 @@ async function extractCallIndexAndArgs(normalizedExtrinsic, extrinsic) {
 }
 
 async function getMotionVoting(blockHash, motionHash) {
-  const api = await getApi();
-  const votingObject = await api.query.council.voting.at(blockHash, motionHash);
+  const api = await findBlockApi(blockHash)
+  const votingObject = await api.query.council.voting(motionHash);
   return votingObject.toJSON();
 }
 
