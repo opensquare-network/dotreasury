@@ -21,10 +21,7 @@
     "test": "jest src/test"
   },
   "dependencies": {
-    "@polkadot/api": "5.7.1",
-    "@polkadot/types": "5.7.1",
-    "@polkadot/util": "7.4.1",
-    "@polkadot/util-crypto": "7.4.1",
+    "@polkadot/api": "6.3.2-10",
     "bignumber.js": "^9.0.1",
     "dayjs": "^1.10.4",
     "dotenv": "^8.2.0",
