@@ -7,7 +7,6 @@ const {
   ProxyMethods,
 } = require("../../utils/constants");
 const { getBountyCollection } = require("../../mongo");
-const { getApi } = require("../../api");
 
 function isBountyModule(section) {
   return [Modules.Treasury, Modules.Bounties].includes(section);
@@ -84,8 +83,7 @@ async function handleBountyAcceptCurator(normalizedExtrinsic, extrinsic) {
     return;
   }
 
-  const api = await getApi();
-  const meta = await getBountyMeta(api, indexer.blockHash, bountyIndex);
+  const meta = await getBountyMeta(indexer.blockHash, bountyIndex);
 
   const timelineItem = {
     name: BountyMethods.acceptCurator,
