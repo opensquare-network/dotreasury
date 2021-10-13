@@ -1,14 +1,12 @@
+const { findBlockApi } = require("../chain/spec");
 const { getProposalCollection } = require("../mongo");
-const { getApi } = require("../api");
 const { ProposalState } = require("../utils/constants");
 
 async function saveNewProposal(proposalIndex, nullableNormalizedExtrinsic) {
-  const api = await getApi();
   const indexer = nullableNormalizedExtrinsic.extrinsicIndexer;
-  const meta = await api.query.treasury.proposals.at(
-    indexer.blockHash,
-    proposalIndex
-  );
+
+  const blockApi = await findBlockApi(indexer.blockHash)
+  const meta = await blockApi.query.treasury.proposals(proposalIndex);
   const metaJson = meta.toJSON();
 
   let {
