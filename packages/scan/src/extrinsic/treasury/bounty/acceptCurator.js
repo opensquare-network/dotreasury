@@ -5,7 +5,6 @@ const {
   timelineItemTypes,
 } = require("../../../utils/constants");
 const { updateBountyInDb } = require("../../../events/treasury/bounty/common");
-const { getApi } = require("../../../api");
 
 async function handleAcceptCurator(call, caller, extrinsicIndexer) {
   if (
@@ -16,9 +15,7 @@ async function handleAcceptCurator(call, caller, extrinsicIndexer) {
   }
 
   const { bounty_id: bountyIndex } = call.toJSON().args;
-  const api = await getApi();
   const meta = await getBountyMeta(
-    api,
     extrinsicIndexer.blockHash,
     bountyIndex
   );
