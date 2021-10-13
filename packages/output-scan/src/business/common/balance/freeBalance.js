@@ -1,25 +1,20 @@
+const { findBlockApi } = require("../../../chain/specs/blockApi");
 const { currentChain, CHAINS, } = require("../../../env");
-const { findDecorated } = require("../../../chain/specs");
 const { KsmTreasuryAccount, DotTreasuryAccount } = require("../constants")
-const { getApi } = require("../../../api")
 
-async function getBalance({ blockHeight, blockHash }) {
-  const decorated = await findDecorated(blockHeight);
-
-  const api = await getApi();
+async function getBalance(blockHash) {
   const account = currentChain() === CHAINS.POLKADOT ? DotTreasuryAccount : KsmTreasuryAccount;
-  if (decorated.query.system.account) {
-    const key = [decorated.query.system.account, account];
-    const systemValue = await api.rpc.state.getStorage(key, blockHash);
-    if (systemValue) {
-      return systemValue.data.free.toString();
-    }
+  const blockApi = await findBlockApi(blockHash);
+  if (blockApi.query.system?.account) {
+    const accountInfo = await blockApi.query.system.account(account);
+    return accountInfo.data.free.toString();
   }
 
-  const key = [decorated.query.balances.freeBalance, account];
-  const freeBalanceValue = await api.rpc.state.getStorage(key, blockHash);
-  if (freeBalanceValue) {
-    return freeBalanceValue.toString();
+  if (blockApi.query.balances.freeBalance) {
+    const rawBalance = await blockApi.query.balances.freeBalance(TreasuryAccount);
+    if (rawBalance) {
+      return rawBalance.toString()
+    }
   }
 
   return null;

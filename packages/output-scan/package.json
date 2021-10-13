@@ -6,7 +6,7 @@
     "node": ">=15.0.0"
   },
   "scripts": {
-    "test": "jest src/test"
+    "test": "jest src"
   },
   "dependencies": {
     "@polkadot/api": "6.3.2-10",
@@ -24,6 +24,7 @@
   "jest": {
     "transformIgnorePatterns": [
       "node_modules/(?!(@polkadot|@babel)/)"
-    ]
+    ],
+    "testEnvironment": "./test/custom-test-env.js"
   }
 }

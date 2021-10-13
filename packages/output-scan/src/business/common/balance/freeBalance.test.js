@@ -10,9 +10,7 @@ async function testTreasuryBalance(api, height, targetBalance) {
   const blockHeight = height;
   setSpecHeights([blockHeight]);
   const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
-  const indexer = { blockHash, blockHeight };
-
-  const balance = await getTreasuryBalance(indexer);
+  const balance = await getTreasuryBalance(blockHash);
   expect(balance).toBe(targetBalance);
 }
 
