@@ -1,19 +1,17 @@
-const { findDecorated } = require("../../../chain/specs");
+const { findBlockApi } = require("../../../chain/specs/blockApi");
 const { getApi } = require("../../../api");
 
-async function getMotionVoting(motionHash, { blockHeight, blockHash }) {
-  const decorated = await findDecorated(blockHeight);
-  const key = [decorated.query.council.voting, motionHash];
+async function getMotionVoting(blockHash, motionHash) {
+  const blockApi = await findBlockApi(blockHash);
 
-  const api = await getApi();
-  const raw = await api.rpc.state.getStorage(key, blockHash);
+  const raw = await blockApi.query.council.voting(motionHash);
   return raw.toJSON();
 }
 
 async function getVotingFromStorageByHeight(motionHash, blockHeight) {
   const api = await getApi();
   const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
-  return await getMotionVoting(motionHash, { blockHash, blockHeight });
+  return await getMotionVoting(blockHash, motionHash);
 }
 
 module.exports = {
