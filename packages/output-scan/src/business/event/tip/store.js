@@ -17,7 +17,7 @@ const { getFinderFromMeta, computeTipValue, } = require("./utils");
 async function saveNewTip(event, extrinsic, indexer) {
   const [rawHash] = event.data;
   const hash = rawHash.toString();
-  const meta = await getTipMetaFromStorage(hash, indexer);
+  const meta = await getTipMetaFromStorage(indexer.blockHash, hash);
 
   const finder = getFinderFromMeta(meta);
   const medianValue = computeTipValue(meta);
@@ -31,7 +31,7 @@ async function saveNewTip(event, extrinsic, indexer) {
   );
   const method = newTipCall.method;
 
-  const reason = await getTipReason(reasonHash, indexer);
+  const reason = await getTipReason(indexer.blockHash, reasonHash);
   meta.reason = reason;
   const beneficiary = newTipCall.args[1].toJSON();
   meta.findersFee = TipMethods.reportAwesome === method;

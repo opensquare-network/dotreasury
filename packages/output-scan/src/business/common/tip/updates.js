@@ -8,10 +8,7 @@ async function getTipCommonUpdates(hash, { blockHeight, blockHash }) {
     throw new Error(`can not find tip in db. hash: ${ hash }`);
   }
 
-  const newMeta = await getTipMetaFromStorage(hash, {
-    blockHeight,
-    blockHash,
-  });
+  const newMeta = await getTipMetaFromStorage(blockHash, hash);
   const meta = {
     ...tipInDb.meta,
     tips: newMeta.tips,

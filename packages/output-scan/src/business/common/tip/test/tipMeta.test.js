@@ -10,10 +10,7 @@ async function testTipData(api, height, hash, toTestMeta) {
   setSpecHeights([height]);
   const blockHash = await api.rpc.chain.getBlockHash(height);
 
-  const meta = await getTipMetaFromStorage(hash, {
-    blockHeight: height,
-    blockHash,
-  });
+  const meta = await getTipMetaFromStorage(blockHash, hash);
   expect(meta).toEqual(toTestMeta);
 }
 
@@ -99,11 +96,8 @@ describe("test get tip", () => {
     const blockHash = await api.rpc.chain.getBlockHash(height);
 
     const reason = await getTipReason(
+      blockHash,
       "0xed3ce0d332276bfa17c27431bac4d8bf1807cbbe114b0c5b1cbf0e7dc07ace47",
-      {
-        blockHeight: height,
-        blockHash,
-      }
     );
     expect(reason).toEqual("https://twitter.com/ruitao_su/status/1208305894083022848");
   });
