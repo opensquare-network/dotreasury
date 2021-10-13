@@ -11,7 +11,7 @@ async function getBalance(blockHash) {
   }
 
   if (blockApi.query.balances.freeBalance) {
-    const rawBalance = await blockApi.query.balances.freeBalance(TreasuryAccount);
+    const rawBalance = await blockApi.query.balances.freeBalance(account);
     if (rawBalance) {
       return rawBalance.toString()
     }
