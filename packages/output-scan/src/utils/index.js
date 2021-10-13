@@ -18,23 +18,15 @@ function isHex(blockData) {
 }
 
 function getConstFromRegistry(registry, moduleName, constantName) {
-  const module = registry.metadata.modules.find(
-    (m) => m.name.toString() === moduleName
-  );
-  if (!module) {
+  const pallets = registry.metadata.pallets;
+  const pallet = pallets.find(p => p.name.toString() === moduleName);
+  if (!pallet) {
     return null;
   }
 
-  const targetConst = module.constants.find(
-    (c) => c.name.toString() === constantName
-  );
-  if (!targetConst) {
-    return null;
-  }
-
-  const typeName = targetConst.type.toString();
-  const Type = registry.get(typeName);
-  return new Type(registry, targetConst.value);
+  const constant = pallet.constants.find(c => c.name.toString() === constantName);
+  const typeName = registry.lookup.types[constant.type.toNumber()].type.def.asHistoricMetaCompat.toString();
+  return registry.createType(typeName, constant.value, true);
 }
 
 function getConstsFromRegistry(registry, constants) {
