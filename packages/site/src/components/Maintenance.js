@@ -19,7 +19,7 @@ const Maintenance = () => {
   return (
     <Wrapper>
       {width && width >= 900
-        ? "The website is currently undergoing maintenance. We will be back soon. Thank you for your patience."
+        ? "The website is currently under maintenance. We will be back soon. Thank you for your patience."
         : "The website under maintenance"}
     </Wrapper>
   );
