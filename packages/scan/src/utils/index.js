@@ -62,8 +62,15 @@ function getConstFromRegistry(registry, moduleName, constantName) {
   }
 
   const constant = pallet.constants.find(c => c.name.toString() === constantName);
-  const typeName = registry.lookup.types[constant.type.toNumber()].type.def.asHistoricMetaCompat.toString();
-  return registry.createType(typeName, constant.value, true);
+  const def = registry.lookup.types[constant.type.toNumber()].type.def;
+  if (def.isHistoricMetaCompat) {
+    const typeName = def.asHistoricMetaCompat.toString();
+    return registry.createType(typeName, constant.value, true);
+  } else if (def.isPrimitive) {
+    return registry.createType(def.asPrimitive.toString(), constant.value, true)
+  }
+
+  return null;
 }
 
 async function getMetadataConstByBlockHash(
