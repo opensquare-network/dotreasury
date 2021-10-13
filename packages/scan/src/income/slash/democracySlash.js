@@ -1,3 +1,4 @@
+const { findBlockApi } = require("../../chain/spec");
 const {
   Modules,
   DemocracyEvents,
@@ -90,10 +91,9 @@ async function handleDemocracyCancelProposalSlash(
   const blockHash = await api.rpc.chain.getBlockHash(
     extrinsicIndexer.blockHeight - 1
   );
-  const proposal = await api.query.council.proposalOf.at(
-    blockHash,
-    proposalHash
-  );
+
+  const blockApi = await findBlockApi(blockHash)
+  const proposal = await blockApi.query.council.proposalOf(proposalHash);
 
   const call = await getCall(blockHash, proposal.toHex());
 

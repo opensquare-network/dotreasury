@@ -1,3 +1,4 @@
+const { findBlockApi } = require("../chain/spec");
 const { getTipMeta } = require("../chain/query/tip/meta");
 const {
   TipEvents,
@@ -24,9 +25,8 @@ async function getTipMetaByBlockHeight(height, tipHash) {
 }
 
 async function getReasonStorageReasonText(reasonHash, blockHash) {
-  const api = await getApi();
-
-  const rawReasonText = await api.query.tips.reasons.at(blockHash, reasonHash);
+  const api = await findBlockApi(blockHash)
+  const rawReasonText = await api.query.tips.reasons(reasonHash);
   return rawReasonText.toHuman();
 }
 

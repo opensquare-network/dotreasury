@@ -10,21 +10,11 @@ async function getBountyMetaByBlockHeight(height, bountyIndex) {
   return await getBountyMetaFromStorage(blockHash, bountyIndex);
 }
 
-async function getBountyDescription(blockHash, bountyIndex) {
-  const api = await getApi();
-  const description = await api.query.bounties.bountyDescriptions.at(
-    blockHash,
-    bountyIndex
-  );
-  return description.toHuman();
-}
-
 function isBountyModule(section) {
   return [Modules.Treasury, Modules.Bounties].includes(section);
 }
 
 module.exports = {
-  getBountyDescription,
   getBountyMetaByBlockHeight,
   isBountyModule,
 };
