@@ -12,7 +12,7 @@ async function checkAndHandleBounty(motion, indexer) {
     return;
   }
 
-  const meta = await getBountyMeta(treasuryBountyId, indexer);
+  const meta = await getBountyMeta(indexer.blockHash, treasuryBountyId);
   await updateBounty(treasuryBountyId, { meta, });
 }
 

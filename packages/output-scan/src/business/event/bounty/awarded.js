@@ -9,7 +9,7 @@ async function handleBountyAwarded(event, extrinsic, indexer) {
   const eventData = event.data.toJSON();
   const [bountyIndex, beneficiary] = eventData;
 
-  const meta = await getBountyMeta(bountyIndex, indexer);
+  const meta = await getBountyMeta(indexer.blockHash, bountyIndex);
   const timelineItem = {
     type: TimelineItemTypes.extrinsic,
     name: event.method,

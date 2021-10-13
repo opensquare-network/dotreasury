@@ -15,7 +15,7 @@ async function handleAcceptCurator(call, caller, extrinsicIndexer) {
   }
 
   const { bounty_id: bountyIndex } = call.toJSON().args;
-  const meta = await getBountyMeta(bountyIndex, extrinsicIndexer);
+  const meta = await getBountyMeta(extrinsicIndexer.blockHash, bountyIndex);
 
   const timelineItem = {
     type: TimelineItemTypes.extrinsic,

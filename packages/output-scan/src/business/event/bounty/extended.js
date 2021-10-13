@@ -13,7 +13,7 @@ async function handleBountyExtended(event, extrinsic, indexer) {
   const eventData = event.data.toJSON();
   const bountyIndex = eventData[0];
 
-  const meta = await getBountyMeta(bountyIndex, indexer);
+  const meta = await getBountyMeta(indexer.blockHash, bountyIndex);
   const caller = getRealCaller(extrinsic.method, extrinsic.signer.toString());
 
   const call = findCallInSections(

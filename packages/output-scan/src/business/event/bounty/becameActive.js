@@ -11,7 +11,7 @@ async function handleBountyBecameActiveEvent(event, indexer) {
   const eventData = event.data.toJSON();
   const bountyIndex = eventData[0];
 
-  const meta = await getBountyMeta(bountyIndex, indexer);
+  const meta = await getBountyMeta(indexer.blockHash, bountyIndex);
 
   const timelineItem = {
     type: TimelineItemTypes.event,
