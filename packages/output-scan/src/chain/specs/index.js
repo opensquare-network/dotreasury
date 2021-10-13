@@ -4,12 +4,10 @@ const { ksmHeights, dotHeights } = require("./known");
 const { getAllVersionChangeHeights } = require("../../mongo/meta");
 const { getRegistryByHeight } = require("../registry");
 const { getApi } = require("../../api");
-const { expandMetadata } = require("@polkadot/types");
 const { isUseMetaDb, currentChain, CHAINS, } = require("../../env")
 
 let versionChangedHeights = [];
 let registryMap = {};
-let decoratedMap = {};
 
 // For test
 function setSpecHeights(heights = []) {
@@ -70,36 +68,9 @@ function newHeight(height) {
   return versionChangedHeights.length <= 0 || height > last(versionChangedHeights)
 }
 
-async function findDecorated(height) {
-  let targetHeight;
-  if (isUseMetaDb() && newHeight(height)) {
-    targetHeight = height;
-  } else {
-    targetHeight = findLast(
-      versionChangedHeights,
-      (h) => h <= height
-    );
-    if (!targetHeight) {
-      throw new Error(`Can not find height ${ height }`);
-    }
-  }
-
-  let decorated = decoratedMap[targetHeight];
-  if (!decorated) {
-    const metadata = await getMetadataByHeight(height);
-    decorated = expandMetadata(metadata.registry, metadata);
-    if (isUseMetaDb()) {
-      decoratedMap[height] = decorated;
-    }
-  }
-
-  return decorated;
-}
-
 module.exports = {
   updateSpecs,
   getSpecHeights,
   findRegistry,
-  findDecorated,
   setSpecHeights,
 };
