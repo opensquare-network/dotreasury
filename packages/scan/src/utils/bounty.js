@@ -7,7 +7,7 @@ const {
 async function getBountyMetaByBlockHeight(height, bountyIndex) {
   const api = await getApi();
   const blockHash = await api.rpc.chain.getBlockHash(height);
-  return await getBountyMetaFromStorage(api, blockHash, bountyIndex);
+  return await getBountyMetaFromStorage(blockHash, bountyIndex);
 }
 
 async function getBountyDescription(blockHash, bountyIndex) {

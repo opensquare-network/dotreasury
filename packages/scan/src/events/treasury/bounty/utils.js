@@ -1,34 +1,29 @@
+const { findBlockApi } = require("../../../chain/spec");
 const { expandMetadata } = require("@polkadot/types");
 
-async function getBountyMeta(api, blockHash, bountyIndex) {
-  const metadata = await api.rpc.state.getMetadata(blockHash);
-  const decorated = expandMetadata(metadata.registry, metadata);
-  let key;
-  if (decorated.query.bounties) {
-    key = [decorated.query.bounties.bounties, bountyIndex];
-  } else if (decorated.query.treasury.bounties) {
-    key = [decorated.query.treasury.bounties, bountyIndex];
+async function getBountyMeta(blockHash, bountyIndex) {
+  const blockApi = await findBlockApi(blockHash);
+
+  let rawMeta;
+  if (blockApi.query.treasury?.bounties) {
+    rawMeta = await blockApi.query.treasury?.bounties(bountyIndex);
   } else {
-    return null;
+    rawMeta = await blockApi.query.bounties.bounties(bountyIndex);
   }
 
-  const rawMeta = await api.rpc.state.getStorage(key, blockHash);
   return rawMeta.toJSON();
 }
 
-async function getBountyDescription(api, blockHash, bountyIndex) {
-  const metadata = await api.rpc.state.getMetadata(blockHash);
-  const decorated = expandMetadata(metadata.registry, metadata);
-  let key;
-  if (decorated.query.bounties) {
-    key = [decorated.query.bounties.bountyDescriptions, bountyIndex];
-  } else if (decorated.query.treasury.bountyDescriptions) {
-    key = [decorated.query.treasury.bountyDescriptions, bountyIndex];
+async function getBountyDescription(blockHash, bountyIndex) {
+  const blockApi = await findBlockApi(blockHash);
+
+  let rawMeta;
+  if (blockApi.query.treasury?.bountyDescriptions) {
+    rawMeta = await blockApi.query.treasury?.bountyDescriptions(bountyIndex);
   } else {
-    return null;
+    rawMeta = await blockApi.query.bounties.bountyDescriptions(bountyIndex);
   }
 
-  const rawMeta = await api.rpc.state.getStorage(key, blockHash);
   return rawMeta.toHuman();
 }
 

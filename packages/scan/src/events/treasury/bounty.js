@@ -14,7 +14,6 @@ const { handleBountyAwarded } = require("./bounty/awarded");
 const { handleBountyRejected } = require("./bounty/rejected");
 const { handleBountyClaimed } = require("./bounty/claimed");
 const { handleBountyCanceled } = require("./bounty/canceled");
-const { getApi } = require("../../api");
 
 function isBountyEvent(section, method) {
   return (
@@ -53,10 +52,8 @@ async function handleProposedEvent(event, normalizedExtrinsic, extrinsic) {
   const bountyIndex = eventData[0];
 
   const indexer = normalizedExtrinsic.extrinsicIndexer;
-  const api = await getApi();
-  const meta = await getBountyMeta(api, indexer.blockHash, bountyIndex);
+  const meta = await getBountyMeta(indexer.blockHash, bountyIndex);
   const description = await getBountyDescription(
-    api,
     indexer.blockHash,
     bountyIndex
   );
