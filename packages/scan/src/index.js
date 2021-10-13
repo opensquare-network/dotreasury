@@ -11,11 +11,11 @@ const { handleExtrinsics } = require("./extrinsic");
 const { handleEvents } = require("./events");
 const { processStat } = require("./stats");
 const { handleIncomeEvents } = require("./income");
-const { getBlocks } = require("./mongo/meta");
-const { GenericBlock } = require("@polkadot/types");
 const last = require("lodash.last");
+const { fetchBlocks } = require("./scan/fetchBlock");
 const { setSpecHeights } = require("./mongo/service/specs");
-const { findRegistry } = require("./mongo/service/specs");
+
+const scanStep = parseInt(process.env.SCAN_STEP) || 100;
 
 async function main() {
   await updateHeight();
@@ -39,8 +39,8 @@ async function main() {
     }
 
     let targetHeight = chainHeight;
-    if (scanHeight + 100 < chainHeight) {
-      targetHeight = scanHeight + 100;
+    if (scanHeight + scanStep < chainHeight) {
+      targetHeight = scanHeight + scanStep;
     }
 
     const specHeights = getSpecHeights();
@@ -48,7 +48,12 @@ async function main() {
       await updateSpecs();
     }
 
-    const blocks = await getBlocks(scanHeight, targetHeight);
+    const heights = [];
+    for (let i = scanHeight; i <= targetHeight; i++) {
+      heights.push(i);
+    }
+
+    const blocks = await fetchBlocks(heights);
     if ((blocks || []).length <= 0) {
       await sleep(1000);
       continue;
@@ -57,7 +62,7 @@ async function main() {
     for (const block of blocks) {
       // TODO: do following operations in one transaction
       try {
-        await scanBlock(block);
+        await scanNormalizedBlock(block.block, block.events);
         await updateScanHeight(block.height);
       } catch (e) {
         await sleep(3000);
@@ -77,19 +82,6 @@ async function main() {
 
     logger.info(`block ${targetHeight} done`);
   }
-}
-
-async function scanBlock(blockInDb) {
-  const registry = await findRegistry(blockInDb.height);
-
-  const block = new GenericBlock(registry, blockInDb.block.block);
-  const allEvents = registry.createType(
-    "Vec<EventRecord>",
-    blockInDb.events,
-    true
-  );
-
-  await scanNormalizedBlock(block, allEvents);
 }
 
 async function scanNormalizedBlock(block, blockEvents) {
