@@ -232,6 +232,7 @@ module.exports = {
   updateTipFinalState,
   updateTipByClosingEvent,
   getTippersCount,
+  getTipFindersFee,
   getTipMeta,
   computeTipValue,
   getTipMetaByBlockHeight,

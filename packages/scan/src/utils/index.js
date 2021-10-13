@@ -55,37 +55,15 @@ function gt(v1, v2) {
 }
 
 function getConstFromRegistry(registry, moduleName, constantName) {
-  let iterVersion = 0;
-  const metadata = registry.metadata.get("metadata");
-
-  while (iterVersion < 1000) {
-    if (!metadata[`isV${iterVersion}`]) {
-      iterVersion++;
-      continue;
-    }
-
-    const modules = metadata[`asV${iterVersion}`].get("modules");
-    const targetModule = modules.find(
-      (module) => module.name.toString() === moduleName
-    );
-    if (!targetModule) {
-      // TODO: should throw error
-      break;
-    }
-
-    const targetConstant = targetModule.constants.find(
-      (constant) => constant.name.toString() === constantName
-    );
-    if (!targetConstant) {
-      break;
-    }
-
-    const typeName = targetConstant.type.toString();
-    const Type = registry.registry.get(typeName);
-    return new Type(registry.registry, targetConstant.value);
+  const pallets = registry.metadata.pallets;
+  const pallet = pallets.find(p => p.name.toString() === moduleName);
+  if (!pallet) {
+    return null;
   }
 
-  return null;
+  const constant = pallet.constants.find(c => c.name.toString() === constantName);
+  const typeName = registry.lookup.types[constant.type.toNumber()].type.def.asHistoricMetaCompat.toString();
+  return registry.createType(typeName, constant.value, true);
 }
 
 async function getMetadataConstByBlockHash(
@@ -95,14 +73,14 @@ async function getMetadataConstByBlockHash(
 ) {
   const api = await getApi();
   const registry = await api.getBlockRegistry(blockHash);
-  return getConstFromRegistry(registry, moduleName, constantName);
+  return getConstFromRegistry(registry.registry, moduleName, constantName);
 }
 
 async function getMetadataConstsByBlockHash(blockHash, constants) {
   const api = await getApi();
   const registry = await api.getBlockRegistry(blockHash);
   return constants.map(({ moduleName, constantName }) =>
-    getConstFromRegistry(registry, moduleName, constantName)
+    getConstFromRegistry(registry.registry, moduleName, constantName)
   );
 }
 
@@ -211,4 +189,5 @@ module.exports = {
   getRealCaller,
   findTargetCall,
   findCallInSections,
+  getConstFromRegistry,
 };
