@@ -1,8 +1,5 @@
 const { findBlockApi } = require("../../../chain/specs/blockApi");
 const { getConstsFromRegistry } = require("../../../utils");
-const { getConstFromRegistry } = require("../../../utils");
-const { getApi } = require("../../../api");
-const { findDecorated } = require("../../../chain/specs");
 const {
   Modules,
   ProxyMethods,
@@ -87,24 +84,15 @@ function getNewTipCall(registry, call, reasonHash) {
   return null;
 }
 
-function getTippersCount(registry) {
-  const oldModuleValue = getConstFromRegistry(
-    registry,
-    "ElectionsPhragmen",
-    "DesiredMembers"
-  );
-
-  if (oldModuleValue) {
-    return oldModuleValue.toNumber();
+async function getTippersCountFromApi(blockHash) {
+  const blockApi = await findBlockApi(blockHash);
+  if (blockApi.consts.electionsPhragmen?.desiredMembers) {
+    return blockApi.consts.electionsPhragmen?.desiredMembers.toNumber()
+  } else if (blockApi.consts.phragmenElection?.desiredMembers) {
+    return blockApi.consts.phragmenElection?.desiredMembers.toNumber()
   }
 
-  const newModuleValue = getConstFromRegistry(
-    registry,
-    "PhragmenElection",
-    "DesiredMembers"
-  );
-
-  return newModuleValue ? newModuleValue.toNumber() : newModuleValue;
+  throw new Error("can not get elections desired members");
 }
 
 function getTipFindersFee(registry) {
@@ -124,8 +112,8 @@ function getTipFindersFee(registry) {
 
 module.exports = {
   getNewTipCall,
-  getTippersCount,
   getTipFindersFee,
   getTipMetaFromStorage,
   getTipReason,
+  getTippersCountFromApi,
 };

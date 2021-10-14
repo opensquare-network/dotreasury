@@ -1,3 +1,4 @@
+const { getTippersCountFromApi } = require("../../common/tip/utils");
 const { getBlockHash } = require("../../common");
 const { getTipCommonUpdates } = require("../../common/tip/updates");
 const { insertTip, updateTipByHash, } = require("../../../mongo/service/tip");
@@ -7,7 +8,6 @@ const {
   getTipFindersFee,
   getNewTipCall,
   getTipReason,
-  getTippersCount,
   getTipMetaFromStorage,
 } = require("../../common/tip/utils");
 const { findRegistry } = require("../../../chain/specs");
@@ -35,7 +35,7 @@ async function saveNewTip(event, extrinsic, indexer) {
   meta.reason = reason;
   const beneficiary = newTipCall.args[1].toJSON();
   meta.findersFee = TipMethods.reportAwesome === method;
-  const tippersCount = getTippersCount(registry);
+  const tippersCount = await getTippersCountFromApi(indexer.blockHash);
   const tipFindersFee = getTipFindersFee(registry);
 
   const timelineItem = {
