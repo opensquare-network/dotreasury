@@ -1,3 +1,4 @@
+const { getTippersCountFromApi } = require("../../store/tip");
 const {
   TipMethods,
   TipEvents,
@@ -7,7 +8,6 @@ const {
   dotTreasuryRefactorApplyHeight,
 } = require("../../utils/constants");
 const {
-  getTippersCount,
   getTipMeta,
   computeTipValue,
 } = require("../../store/tip");
@@ -68,7 +68,7 @@ async function updateTipInDbByCall(
 }
 
 async function getCommonTipUpdates(tipHash, indexer) {
-  const tippersCount = await getTippersCount(indexer.blockHash);
+  const tippersCount = await getTippersCountFromApi(indexer.blockHash);
   const meta = await getTipMeta(tipHash, indexer);
   return { tippersCount, meta, medianValue: computeTipValue(meta) };
 }
