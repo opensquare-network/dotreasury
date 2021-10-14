@@ -11,7 +11,7 @@ async function handleBurntEvent(event, indexer) {
 
   const balance = event.data[0].toString();
   const treasuryBalance = await getTreasuryBalance(indexer.blockHash);
-  const burnPercent = await getBurnPercent(indexer.blockHeight);
+  const burnPercent = await getBurnPercent(indexer.blockHash);
 
   const col = await getBurntCollection();
   await col.insertOne({

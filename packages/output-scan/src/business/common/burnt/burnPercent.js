@@ -1,11 +1,8 @@
-const { getConstFromRegistry } = require("../../../utils");
-const { findRegistry } = require("../../../chain/specs");
+const { findBlockApi } = require("../../../chain/specs/blockApi");
 
-async function getBurnPercent(blockHeight) {
-  const registry = await findRegistry(blockHeight);
-  const burnPercent = getConstFromRegistry(registry, "Treasury", "Burn");
-
-  return burnPercent.toHuman();
+async function getBurnPercent(blockHash) {
+  const blockApi = await findBlockApi(blockHash);
+  return blockApi.consts.treasury?.burn.toHuman()
 }
 
 module.exports = {

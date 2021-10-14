@@ -1,4 +1,4 @@
-const { getTippersCountFromApi } = require("./utils");
+const { getTippersCountFromApi, getTipFindersFeeFromApi } = require("./utils");
 const { setApi } = require("../../../api");
 jest.setTimeout(3000000);
 
@@ -9,6 +9,13 @@ async function testTippersCount(api, height, target) {
   const tipperCount = await getTippersCountFromApi(blockHash);
 
   expect(tipperCount).toEqual(target);
+}
+
+async function testGetTipFindersFee(api, height, target) {
+  const blockHash = await api.rpc.chain.getBlockHash(height);
+  const fee = await getTipFindersFeeFromApi(blockHash);
+
+  expect(fee).toEqual(target);
 }
 
 describe("test tip utils", () => {
@@ -33,6 +40,17 @@ describe("test tip utils", () => {
 
     for (const item of data) {
       await testTippersCount(api, item[0], item[1]);
+    }
+  })
+
+  test("getTipFindersFeeFromApi works", async () => {
+    const data = [
+      [323456, null],
+      [9623456, 20]
+    ]
+
+    for (const item of data) {
+      await testGetTipFindersFee(api, item[0], item[1]);
     }
   })
 })

@@ -1,7 +1,7 @@
+const { getTipFindersFeeFromApi } = require("./utils");
 const { getTippersCountFromApi } = require("./utils");
-const { findRegistry } = require("../../../chain/specs");
 const { getActiveTipByHash } = require("../../../mongo/service/tip");
-const { getTipFindersFee, getTipMetaFromStorage, } = require("./utils");
+const { getTipMetaFromStorage, } = require("./utils");
 
 async function getTipCommonUpdates(hash, { blockHeight, blockHash }) {
   const tipInDb = await getActiveTipByHash(hash);
@@ -15,9 +15,8 @@ async function getTipCommonUpdates(hash, { blockHeight, blockHash }) {
     tips: newMeta.tips,
     closes: newMeta.closes,
   };
-  const registry = await findRegistry(blockHeight);
   const tippersCount = await getTippersCountFromApi(blockHash);
-  const tipFindersFee = getTipFindersFee(registry);
+  const tipFindersFee = await getTipFindersFeeFromApi(blockHash);
 
   return { meta, tippersCount, tipFindersFee };
 }

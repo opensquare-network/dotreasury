@@ -1,5 +1,4 @@
 const { findBlockApi } = require("../../../chain/specs/blockApi");
-const { getConstsFromRegistry } = require("../../../utils");
 const {
   Modules,
   ProxyMethods,
@@ -95,24 +94,20 @@ async function getTippersCountFromApi(blockHash) {
   throw new Error("can not get elections desired members");
 }
 
-function getTipFindersFee(registry) {
-  const constants = getConstsFromRegistry(registry, [
-    {
-      moduleName: "Tips",
-      constantName: "TipFindersFee",
-    },
-    {
-      moduleName: "Treasury",
-      constantName: "TipFindersFee",
-    },
-  ]);
+async function getTipFindersFeeFromApi(blockHash) {
+  const blockApi = await findBlockApi(blockHash);
+  if (blockApi.consts.tips?.tipFindersFee) {
+    return blockApi.consts.tips?.tipFindersFee.toNumber()
+  } else if (blockApi.consts.treasury?.tipFindersFee) {
+    return blockApi.consts.treasury?.tipFindersFee.toNumber()
+  }
 
-  return (constants[0] ?? constants[1])?.toJSON();
+  return null;
 }
 
 module.exports = {
   getNewTipCall,
-  getTipFindersFee,
+  getTipFindersFeeFromApi,
   getTipMetaFromStorage,
   getTipReason,
   getTippersCountFromApi,
