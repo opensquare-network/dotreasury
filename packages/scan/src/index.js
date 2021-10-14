@@ -65,6 +65,7 @@ async function main() {
         await scanNormalizedBlock(block.block, block.events);
         await updateScanHeight(block.height);
       } catch (e) {
+        console.error(`Error with block scan ${block.height}`, e);
         logger.error(`Error with block scan ${block.height}`, e);
         await sleep(3000);
         process.exit(1)
