@@ -53,7 +53,7 @@ async function extractCallIndexAndArgs(normalizedExtrinsic, extrinsic) {
     return [call.section, call.method, call.toJSON().args];
   }
 
-  if (Modules.Multisig === section && MultisigMethods.asMulti === name) {
+  if ([Modules.Multisig, Modules.Utility].includes(section) && MultisigMethods.asMulti === name) {
     const proposeCall = new GenericCall(
       extrinsic.registry,
       extrinsic.method.args[3].toHex()
