@@ -46,6 +46,7 @@ describe("test tip utils", () => {
   test("getTipFindersFeeFromApi works", async () => {
     const data = [
       [323456, null],
+      [602672, 20],
       [9623456, 20]
     ]
 
