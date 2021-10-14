@@ -65,8 +65,9 @@ async function main() {
         await scanNormalizedBlock(block.block, block.events);
         await updateScanHeight(block.height);
       } catch (e) {
-        await sleep(3000);
+        console.error(`Error with block scan ${block.height}`, e);
         logger.error(`Error with block scan ${block.height}`, e);
+        await sleep(3000);
         process.exit(1)
       }
     }
@@ -96,7 +97,7 @@ async function scanNormalizedBlock(block, blockEvents) {
 }
 
 async function test() {
-  const height = 9641007;
+  const height = 2392677;
   setSpecHeights([height]);
   const api = await getApi();
   const blockHash = await api.rpc.chain.getBlockHash(height);
