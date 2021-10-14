@@ -1,7 +1,6 @@
 const { logger, incomeKnownHeightsLogger } = require("./logger");
 const BigNumber = require("bignumber.js");
 const { calcMultisigAddress } = require("./call");
-const { getApi } = require("../api");
 const {
   Modules,
   ProxyMethods,
