@@ -12,8 +12,6 @@ const { getTipCollection } = require("../mongo");
 const { getApi } = require("../api");
 const {
   median,
-  getMetadataConstByBlockHash,
-  getMetadataConstsByBlockHash,
 } = require("../utils");
 const { getCall, getMultiSigExtrinsicAddress } = require("../utils/call");
 const { getTipMethodNameAndArgs } = require("./utils");
@@ -41,39 +39,15 @@ async function getTippersCountFromApi(blockHash) {
   throw new Error("can not get elections desired members");
 }
 
-async function getTippersCount(blockHash) {
-  const oldModuleValue = await getMetadataConstByBlockHash(
-    blockHash,
-    "ElectionsPhragmen",
-    "DesiredMembers"
-  );
-
-  if (oldModuleValue) {
-    return oldModuleValue.toNumber();
+async function getTipFindersFeeFromApi(blockHash) {
+  const blockApi = await findBlockApi(blockHash);
+  if (blockApi.consts.tips?.tipFindersFee) {
+    return blockApi.consts.tips?.tipFindersFee.toNumber()
+  } else if (blockApi.consts.treasury?.tipFindersFee) {
+    return blockApi.consts.treasury?.tipFindersFee.toNumber()
   }
 
-  const newModuleValue = await getMetadataConstByBlockHash(
-    blockHash,
-    "PhragmenElection",
-    "DesiredMembers"
-  );
-
-  return newModuleValue ? newModuleValue.toNumber() : newModuleValue;
-}
-
-async function getTipFindersFee(blockHash) {
-  const constants = await getMetadataConstsByBlockHash(blockHash, [
-    {
-      moduleName: "Tips",
-      constantName: "TipFindersFee",
-    },
-    {
-      moduleName: "Treasury",
-      constantName: "TipFindersFee",
-    },
-  ]);
-
-  return (constants[0] ?? constants[1])?.toJSON();
+  return null;
 }
 
 function computeTipValue(tipMeta) {
@@ -140,7 +114,7 @@ async function saveNewTip(hash, normalizedExtrinsic, extrinsic) {
     (await getReasonStorageReasonText(meta?.reason, indexer.blockHash));
   const medianValue = computeTipValue(meta);
   const tippersCount = await getTippersCountFromApi(indexer.blockHash);
-  const tipFindersFee = await getTipFindersFee(indexer.blockHash);
+  const tipFindersFee = await getTipFindersFeeFromApi(indexer.blockHash);
 
   const [method, args] = await getTipMethodNameAndArgs(
     normalizedExtrinsic,
@@ -182,7 +156,7 @@ async function updateTipByClosingEvent(hash, state, data, extrinsic) {
   const blockHash = extrinsic.extrinsicIndexer.blockHash;
   const meta = await getTipMeta(hash, extrinsic.extrinsicIndexer);
   const tippersCount = await getTippersCountFromApi(blockHash);
-  const tipFindersFee = await getTipFindersFee(blockHash);
+  const tipFindersFee = await getTipFindersFeeFromApi(blockHash);
   const updates = {
     tippersCount,
     tipFindersFee,
@@ -242,10 +216,9 @@ module.exports = {
   saveNewTip,
   updateTipFinalState,
   updateTipByClosingEvent,
-  getTippersCount,
-  getTipFindersFee,
   getTipMeta,
   computeTipValue,
   getTipMetaByBlockHeight,
   getTippersCountFromApi,
+  getTipFindersFeeFromApi,
 };

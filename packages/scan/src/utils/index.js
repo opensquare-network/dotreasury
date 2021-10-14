@@ -9,7 +9,6 @@ const {
   UtilityMethods,
 } = require("./constants");
 const { GenericCall } = require("@polkadot/types");
-const { getTreasuryBalance: getTreasuryFreeBalance } = require("./freeBalance");
 
 const sleep = (time) => {
   return new Promise((resolve) => {
@@ -52,49 +51,6 @@ function bigAdd(v1, v2) {
 
 function gt(v1, v2) {
   return new BigNumber(v1).isGreaterThan(v2);
-}
-
-function getConstFromRegistry(registry, moduleName, constantName) {
-  const pallets = registry.metadata.pallets;
-  const pallet = pallets.find(p => p.name.toString() === moduleName);
-  if (!pallet) {
-    return null;
-  }
-
-  const constant = pallet.constants.find(c => c.name.toString() === constantName);
-  if (!constant) {
-    return null
-  }
-
-  const def = registry.lookup.types[constant.type.toNumber()].type.def;
-  if (def.isHistoricMetaCompat) {
-    const typeName = def.asHistoricMetaCompat.toString();
-    return registry.createType(typeName, constant.value, true);
-  } else if (def.isPrimitive) {
-    return registry.createType(def.asPrimitive.toString(), constant.value, true)
-  } else if (def.isComposite) {
-    return registry.createType(def.asComposite.fields.toJSON()[0].typeName, constant.value, true)
-  }
-
-  return null;
-}
-
-async function getMetadataConstByBlockHash(
-  blockHash,
-  moduleName,
-  constantName
-) {
-  const api = await getApi();
-  const registry = await api.getBlockRegistry(blockHash);
-  return getConstFromRegistry(registry.registry, moduleName, constantName);
-}
-
-async function getMetadataConstsByBlockHash(blockHash, constants) {
-  const api = await getApi();
-  const registry = await api.getBlockRegistry(blockHash);
-  return constants.map(({ moduleName, constantName }) =>
-    getConstFromRegistry(registry.registry, moduleName, constantName)
-  );
 }
 
 function getRealCaller(call, caller) {
@@ -197,10 +153,7 @@ module.exports = {
   incomeKnownHeightsLogger,
   bigAdd,
   gt,
-  getMetadataConstByBlockHash,
-  getMetadataConstsByBlockHash,
   getRealCaller,
   findTargetCall,
   findCallInSections,
-  getConstFromRegistry,
 };
