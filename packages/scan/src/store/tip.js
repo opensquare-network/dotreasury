@@ -24,7 +24,14 @@ async function getTipMetaByBlockHeight(height, tipHash) {
 
 async function getReasonStorageReasonText(reasonHash, blockHash) {
   const api = await findBlockApi(blockHash)
-  const rawReasonText = await api.query.tips.reasons(reasonHash);
+  let rawReasonText;
+  if (api.query.tips?.reasons) {
+    rawReasonText = await api.query.tips.reasons(reasonHash);
+  } else if (api.query.treasury?.reasons) {
+    rawReasonText = await api.query.treasury.reasons(reasonHash);
+  } else {
+    return null
+  }
   return rawReasonText.toHuman();
 }
 
