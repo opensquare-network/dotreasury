@@ -6,13 +6,12 @@ import "semantic-ui-css/semantic.min.css";
 import App from "./App";
 import store from "./store";
 import GlobalStyle from "./GlobalStyle";
-import Maintenance from "./components/Maintenance";
 
 ReactDOM.render(
   <React.Fragment>
     <GlobalStyle />
     <Provider store={store}>
-      <Maintenance />
+      {/*<Maintenance />*/}
       <App />
     </Provider>
   </React.Fragment>,
