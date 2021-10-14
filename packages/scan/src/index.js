@@ -1,19 +1,13 @@
 require("dotenv").config();
 const { updateSpecs, getSpecHeights } = require("./mongo/service/specs");
 const { getNextScanHeight, updateScanHeight } = require("./mongo/scanHeight");
-const { getApi } = require("./api");
 const { updateHeight } = require("./chain/latestHead");
 const { deleteDataFrom } = require("./clean");
 const { getLatestHeight } = require("./chain/latestHead");
 const { sleep, logger } = require("./utils");
-const { getBlockIndexer } = require("./block/getBlockIndexer");
-const { handleExtrinsics } = require("./extrinsic");
-const { handleEvents } = require("./events");
-const { processStat } = require("./stats");
-const { handleIncomeEvents } = require("./income");
 const last = require("lodash.last");
+const { scanNormalizedBlock } = require("./scan/scanNormalized");
 const { fetchBlocks } = require("./scan/fetchBlock");
-const { setSpecHeights } = require("./mongo/service/specs");
 
 const scanStep = parseInt(process.env.SCAN_STEP) || 100;
 
@@ -85,28 +79,5 @@ async function main() {
   }
 }
 
-async function scanNormalizedBlock(block, blockEvents) {
-  const blockIndexer = getBlockIndexer(block);
-
-  await handleExtrinsics(block.extrinsics, blockEvents, blockIndexer);
-  await handleEvents(blockEvents, blockIndexer, block.extrinsics);
-
-  await handleIncomeEvents(blockEvents, blockIndexer, block.extrinsics);
-
-  await processStat(blockIndexer);
-}
-
-async function test() {
-  const height = 2392677;
-  setSpecHeights([height]);
-  const api = await getApi();
-  const blockHash = await api.rpc.chain.getBlockHash(height);
-  const block = await api.rpc.chain.getBlock(blockHash);
-  const allEvents = await api.query.system.events.at(blockHash);
-
-  await scanNormalizedBlock(block.block, allEvents);
-}
-
 // FIXME: log the error
 main().catch(console.error);
-// test()
