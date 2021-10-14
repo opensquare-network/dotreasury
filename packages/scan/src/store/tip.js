@@ -30,6 +30,17 @@ async function getReasonStorageReasonText(reasonHash, blockHash) {
   return rawReasonText.toHuman();
 }
 
+async function getTippersCountFromApi(blockHash) {
+  const blockApi = await findBlockApi(blockHash);
+  if (blockApi.consts.electionsPhragmen?.desiredMembers) {
+    return blockApi.consts.electionsPhragmen?.desiredMembers.toNumber()
+  } else if (blockApi.consts.phragmenElection?.desiredMembers) {
+    return blockApi.consts.phragmenElection?.desiredMembers.toNumber()
+  }
+
+  throw new Error("can not get elections desired members");
+}
+
 async function getTippersCount(blockHash) {
   const oldModuleValue = await getMetadataConstByBlockHash(
     blockHash,
@@ -128,7 +139,7 @@ async function saveNewTip(hash, normalizedExtrinsic, extrinsic) {
     (await getTipReason(normalizedExtrinsic, extrinsic)) ||
     (await getReasonStorageReasonText(meta?.reason, indexer.blockHash));
   const medianValue = computeTipValue(meta);
-  const tippersCount = await getTippersCount(indexer.blockHash);
+  const tippersCount = await getTippersCountFromApi(indexer.blockHash);
   const tipFindersFee = await getTipFindersFee(indexer.blockHash);
 
   const [method, args] = await getTipMethodNameAndArgs(
@@ -170,7 +181,7 @@ async function saveNewTip(hash, normalizedExtrinsic, extrinsic) {
 async function updateTipByClosingEvent(hash, state, data, extrinsic) {
   const blockHash = extrinsic.extrinsicIndexer.blockHash;
   const meta = await getTipMeta(hash, extrinsic.extrinsicIndexer);
-  const tippersCount = await getTippersCount(blockHash);
+  const tippersCount = await getTippersCountFromApi(blockHash);
   const tipFindersFee = await getTipFindersFee(blockHash);
   const updates = {
     tippersCount,
@@ -236,4 +247,5 @@ module.exports = {
   getTipMeta,
   computeTipValue,
   getTipMetaByBlockHeight,
+  getTippersCountFromApi,
 };

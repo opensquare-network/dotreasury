@@ -1,4 +1,4 @@
-const { getTippersCount } = require("./tip");
+const { getTippersCountFromApi } = require("./tip");
 const { setSpecHeights } = require("../mongo/service/specs");
 const { setApi } = require("../api");
 const { getTipFindersFee } = require("./tip");
@@ -34,7 +34,7 @@ describe("test get ", () => {
     setSpecHeights([height]);
     const blockHash = await api.rpc.chain.getBlockHash(height);
 
-    const count = await getTippersCount(blockHash);
+    const count = await getTippersCountFromApi(blockHash);
     expect(count).toBe(13);
   })
 })
