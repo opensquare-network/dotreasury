@@ -2,16 +2,15 @@ const log4js = require("log4js");
 
 const logLevel = process.env.LOG_LEVEL || "debug";
 const isProduction = process.env.NODE_ENV === "production";
-const chain = process.env.CHAIN || "kusama";
 
 const scanFileCategory = "scan";
 
 log4js.configure({
   appenders: {
-    [scanFileCategory]: { type: "file", filename: `log/${chain}/scan.log` },
+    [scanFileCategory]: { type: "file", filename: `log/scan.log` },
     errorFile: {
       type: "file",
-      filename: `log/${chain}/errors.log`,
+      filename: `log/errors.log`,
     },
     errors: {
       type: "logLevelFilter",

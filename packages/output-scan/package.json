@@ -6,7 +6,8 @@
     "node": ">=15.0.0"
   },
   "scripts": {
-    "test": "jest src"
+    "test": "jest src",
+    "scan": "node src/index.js"
   },
   "dependencies": {
     "@polkadot/api": "6.3.2-10",
