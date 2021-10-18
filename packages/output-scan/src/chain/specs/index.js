@@ -3,7 +3,6 @@ const last = require("lodash.last");
 const { ksmHeights, dotHeights } = require("./known");
 const { getAllVersionChangeHeights } = require("../../mongo/meta");
 const { getRegistryByHeight } = require("../registry");
-const { getApi } = require("../../api");
 const { isUseMetaDb, currentChain, CHAINS, } = require("../../env")
 
 let versionChangedHeights = [];
@@ -26,13 +25,6 @@ async function updateSpecs() {
   } else if (CHAINS.POLKADOT === chain) {
     versionChangedHeights = dotHeights;
   }
-}
-
-async function getMetadataByHeight(height) {
-  const api = await getApi();
-  const blockHash = await api.rpc.chain.getBlockHash(height);
-
-  return api.rpc.state.getMetadata(blockHash);
 }
 
 function getSpecHeights() {
