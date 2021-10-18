@@ -48,7 +48,7 @@ async function beginRoutineScan() {
     for (const block of blocks) {
       // TODO: do following operations in one transaction
       try {
-        await scanNormalizedBlock(block.block.block, block.events);
+        await scanNormalizedBlock(block.block, block.events);
         await updateScanHeight(block.height);
       } catch (e) {
         await sleep(3000);
