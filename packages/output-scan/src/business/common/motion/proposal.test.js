@@ -13,7 +13,7 @@ const ksmTargetCall = {
   method: "approveProposal",
   args: [
     {
-      name: "proposal_id",
+      name: "proposalId",
       type: "Compact<ProposalIndex>",
       value: 0,
     },
@@ -26,7 +26,7 @@ const dotMotionCallByProxy = {
   method: "rejectProposal",
   args: [
     {
-      name: "proposal_id",
+      name: "proposalId",
       type: "Compact<ProposalIndex>",
       value: 33,
     },
