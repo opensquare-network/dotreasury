@@ -47,14 +47,14 @@ async function beginRoutineScan() {
 
     for (const block of blocks) {
       // TODO: do following operations in one transaction
-      if (block.height % 30000 === 0) {
-        console.log('restart process in case of memory leak');
-        process.exit(0);
-      }
-
       try {
         await scanNormalizedBlock(block.block, block.events);
         await updateScanHeight(block.height);
+
+        if (block.height % 30000 === 0) {
+          console.log(`${block.height} restart process in case of memory leak`);
+          process.exit(0);
+        }
       } catch (e) {
         await sleep(3000);
         logger.error(`Error with block scan ${ block.height }`, e);
