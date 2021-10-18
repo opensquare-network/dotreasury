@@ -1,15 +1,13 @@
-const { currentChain } = require("../env");
 const { MongoClient } = require("mongodb");
 
 function getDbName() {
-  const chain = currentChain();
-  if ("kusama" === chain) {
-    return process.env.MONGO_DB_KNOWN_HEIGHTS_KSM || "known-heights-ksm";
-  } else if ("polkadot" === chain) {
-    return process.env.MONGO_DB_KNOWN_HEIGHTS_DOT || "known-heights-dot";
+  const dbName = process.env.MONGO_DB_KNOWN_HEIGHTS;
+  if (!dbName) {
+    throw new Error("MONGO_DB_META_NAME not set");
   }
 
-  throw new Error("unknown chain");
+  return dbName;
+
 }
 
 const heightCollectionName = "height";
@@ -55,4 +53,3 @@ async function getHeightCollection() {
 module.exports = {
   getHeightCollection,
 }
-

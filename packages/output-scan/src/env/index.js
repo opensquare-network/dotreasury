@@ -1,6 +1,6 @@
 const scanStep = parseInt(process.env.SCAN_STEP) || 100;
 const useKnownHeights = !!process.env.USE_KNOWN_HEIGHTS;
-const useMetaDb = !!process.env.USE_META_DB;
+const useMetaDb = !!process.env.USE_META;
 const CHAINS = {
   POLKADOT: "polkadot",
   KUSAMA: "kusama",

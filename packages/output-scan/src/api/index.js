@@ -1,26 +1,18 @@
-const { currentChain } = require("../env");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 
 let provider = null;
 let api = null;
 
-const defaultEndPoint = {
-  kusama: "wss://pub.elara.patract.io/kusama",
-  polkadot: "wss://pub.elara.patract.io/polkadot",
-};
-
-function getEndPoint() {
-  const chain = currentChain();
-  if ("kusama" === chain) {
-    return process.env.KSM_WS_ENDPOINT || defaultEndPoint.kusama;
-  } else {
-    return process.env.DOT_WS_ENDPOINT || defaultEndPoint.polkadot;
-  }
-}
-
 async function getApi() {
   if (!api) {
-    provider = new WsProvider(getEndPoint(), 1000);
+    const wsEndpoint = process.env.WS_ENDPOINT;
+    if (!wsEndpoint) {
+      throw new Error("WS_ENDPOINT not set");
+    }
+
+    console.log(`Connect to endpoint:`, wsEndpoint);
+
+    provider = new WsProvider(wsEndpoint, 1000);
     api = await ApiPromise.create({ provider });
   }
 
