@@ -1,7 +1,7 @@
+const { getTipFindersFeeFromApi } = require("./tip");
 const { getTippersCountFromApi } = require("./tip");
 const { setSpecHeights } = require("../mongo/service/specs");
 const { setApi } = require("../api");
-const { getTipFindersFee } = require("./tip");
 jest.setTimeout(3000000);
 
 const { ApiPromise, WsProvider } = require("@polkadot/api");
@@ -25,7 +25,7 @@ describe("test get ", () => {
     setSpecHeights([height]);
     const blockHash = await api.rpc.chain.getBlockHash(height);
 
-    const fee = await getTipFindersFee(blockHash)
+    const fee = await getTipFindersFeeFromApi(blockHash)
     expect(fee).toEqual(20);
   })
 

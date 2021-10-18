@@ -1,12 +1,10 @@
+const { findBlockApi } = require("../chain/spec");
 const { getTreasuryBalanceV2 } = require("../utils/freeBalance");
 const { getBurntCollection } = require("../mongo");
-const {
-  getMetadataConstByBlockHash,
-} = require("../utils");
 
 async function getBurnPercent(blockHash) {
-  const v = await getMetadataConstByBlockHash(blockHash, "Treasury", "Burn");
-  return v ? v.toHuman() : v;
+  const blockApi = await findBlockApi(blockHash);
+  return blockApi.consts.treasury?.burn.toHuman()
 }
 
 async function saveNewBurnt(balance, eventIndexer) {

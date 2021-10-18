@@ -2,6 +2,7 @@ const { findRegistry } = require("../mongo/service/specs");
 const { getBlocksByHeights } = require("../mongo/meta");
 const { getApi } = require("../api");
 const { GenericBlock } = require("@polkadot/types");
+const { logger } = require("../utils/logger")
 
 async function fetchBlocks(heights = []) {
   if (process.env.USE_META) {
@@ -11,24 +12,36 @@ async function fetchBlocks(heights = []) {
   }
 }
 
+async function constructBlockFromDbData(blockInDb) {
+  const registry = await findRegistry(blockInDb.height);
+  const block = new GenericBlock(registry, blockInDb.block.block);
+  const allEvents = registry.createType(
+    "Vec<EventRecord>",
+    blockInDb.events,
+    true
+  );
+
+  return {
+    height: blockInDb.height,
+    block,
+    events: allEvents,
+  }
+}
+
 async function fetchBlocksFromDb(heights = []) {
   const blocksInDb = await getBlocksByHeights(heights);
 
   const blocks = [];
   for (const blockInDb of blocksInDb) {
-    const registry = await findRegistry(blockInDb.height);
-    const block = new GenericBlock(registry, blockInDb.block.block);
-    const allEvents = registry.createType(
-      "Vec<EventRecord>",
-      blockInDb.events,
-      true
-    );
+    let block
+    try {
+      block = await constructBlockFromDbData(blockInDb);
+    } catch (e) {
+      logger.error(`can not construct block from db data at ${ blockInDb.height }`, e)
+      block = await fetchOneBlockFromNode(blockInDb.height);
+    }
 
-    blocks.push({
-      height: blockInDb.height,
-      block,
-      events: allEvents,
-    })
+    blocks.push(block)
   }
 
   return blocks;
