@@ -3,7 +3,7 @@ const { MongoClient } = require("mongodb");
 function getDbName() {
   const dbName = process.env.MONGO_DB_NAME;
   if (!dbName) {
-    throw new Error("MONGO_DB_SCAN_NAME not set");
+    throw new Error("MONGO_DB_NAME not set");
   }
 
   return dbName;

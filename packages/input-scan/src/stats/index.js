@@ -33,11 +33,11 @@ async function updateStatHeight(height) {
 async function tryCreateStatPoint(indexer) {
   const nextStatHeight = await getNextStatHeight();
 
-  if (indexer.blockHeight < nextStatHeight) {
+  if (indexer.blockHeight !== nextStatHeight) {
     return;
   }
 
-  const { seats: income } = await getNowIncomeSeats();
+  const income = await getNowIncomeSeats();
   const treasuryBalance = await getTreasuryBalanceV2(indexer.blockHash);
 
   // Go on create one stat point

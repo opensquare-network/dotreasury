@@ -10,6 +10,8 @@ const { getScanStep } = require("../env");
 const { sleep } = require("../utils/sleep");
 const { getLatestHeight } = require("../chain/latestHead");
 const { getNextScanHeight } = require("../mongo/scanHeight");
+const { getBlockIndexer } = require("../block/getBlockIndexer");
+const { tryCreateStatPoint } = require("../stats");
 
 async function beginRoutineScan() {
   let scanHeight = await getNextScanHeight();
@@ -48,6 +50,9 @@ async function beginRoutineScan() {
     for (const block of blocks) {
       // TODO: do following operations in one transaction
       try {
+        const blockIndexer = getBlockIndexer(block);
+        await tryCreateStatPoint(blockIndexer);
+
         await scanNormalizedBlock(block.block, block.events);
         await updateScanHeight(block.height);
 

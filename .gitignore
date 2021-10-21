@@ -3,3 +3,5 @@ node_modules
 log
 .DS_Store
 .idea
+packages/input-scan/globalConfig.json
+packages/output-scan/globalConfig.json

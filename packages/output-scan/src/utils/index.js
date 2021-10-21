@@ -1,3 +1,5 @@
+const BigNumber = require("bignumber.js");
+
 function extractExtrinsicEvents(events, extrinsicIndex) {
   return events.filter((event) => {
     const { phase } = event;
@@ -17,8 +19,13 @@ function isHex(blockData) {
   return blockData.startsWith("0x");
 }
 
+function bigAdd(v1, v2) {
+  return new BigNumber(v1).plus(v2).toString();
+}
+
 module.exports = {
   isHex,
   isExtrinsicSuccess,
   extractExtrinsicEvents,
+  bigAdd,
 };

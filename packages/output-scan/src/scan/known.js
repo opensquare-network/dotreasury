@@ -6,6 +6,8 @@ const { getNextKnownHeights } = require("../mongo/service/known");
 const { logger } = require("../logger");
 const last = require("lodash.last");
 const { fetchBlocks } = require("./fetchBlocks");
+const { getBlockIndexer } = require("../block/getBlockIndexer");
+const { tryCreateStatPoint } = require("../stats");
 
 async function scanKnownHeights() {
   const toScanHeight = await getNextScanHeight();
@@ -14,6 +16,9 @@ async function scanKnownHeights() {
     const blocks = await fetchBlocks(heights)
     for (const block of blocks) {
       try {
+        const blockIndexer = getBlockIndexer(block);
+        await tryCreateStatPoint(blockIndexer);
+
         await scanNormalizedBlock(block.block, block.events);
         await updateScanHeight(block.height);
       } catch (e) {

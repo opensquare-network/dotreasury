@@ -1,16 +1,13 @@
-/**
- * @jest-environment node
- */
+const dotenv = require("dotenv");
+dotenv.config();
+
+jest.mock("./chain");
 
 const { tryCreateStatPoint } = require(".");
-const { getWeeklyStatsCollection } = require("../mongo/data");
-const { updateScanStatus } = require("../mongo/scanHeight");
-
-jest.mock("../utils/freeBalance");
+const { getWeeklyStatsCollection } = require("../mongo");
 
 describe("Stats Test", () => {
   beforeAll(async () => {
-    await updateScanStatus(100800, {});
   });
 
   afterAll(async () => {
@@ -18,7 +15,7 @@ describe("Stats Test", () => {
 
   test("Add stat point", async () => {
     await tryCreateStatPoint({
-      blockHeight: 100800,
+      blockHeight: 7349037,
       blockHash: "0x334f49cd193b01644c3db061d6445c6d64a54adb28942936a91657bb46a56c3b",
       blockTime: Date.now(),
     });
@@ -28,10 +25,14 @@ describe("Stats Test", () => {
     expect(item).toMatchObject({
       indexer: {
           blockHeight: 100800,
-          blockHash: "0x334f49cd193b01644c3db061d6445c6d64a54adb28942936a91657bb46a56c3b",
+          blockHash: "0x334f49cd193b01644c3db061d6445c6d64a54adb28942936a91657bb46aaaaaa",
       },
-      treasuryBalance: "1000000000000",
-      income: {},
+      output: {
+          proposal: 0,
+          tip: 0,
+          bounty: 0,
+          burnt: 0
+      }
     });
   })
 });
