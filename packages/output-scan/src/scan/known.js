@@ -16,7 +16,7 @@ async function scanKnownHeights() {
     const blocks = await fetchBlocks(heights)
     for (const block of blocks) {
       try {
-        const blockIndexer = getBlockIndexer(block);
+        const blockIndexer = getBlockIndexer(block.block);
         await tryCreateStatPoint(blockIndexer);
 
         await scanNormalizedBlock(block.block, block.events);

@@ -50,7 +50,7 @@ async function beginRoutineScan() {
     for (const block of blocks) {
       // TODO: do following operations in one transaction
       try {
-        const blockIndexer = getBlockIndexer(block);
+        const blockIndexer = getBlockIndexer(block.block);
         await tryCreateStatPoint(blockIndexer);
 
         await scanNormalizedBlock(block.block, block.events);
