@@ -114,28 +114,30 @@ async function calcOutput(
 }
 
 async function tryCreateStatPoint(nextBlockIndexer) {
-  const nextStatHeight = await getNextStatHeight();
+  while(true) {
+    const nextStatHeight = await getNextStatHeight();
 
-  if (nextBlockIndexer.blockHeight <= nextStatHeight) {
-    return;
-  }
+    if (nextBlockIndexer.blockHeight <= nextStatHeight) {
+      return;
+    }
 
-  const indexer = await getBlockIndexerByHeight(nextStatHeight);
-  const output = await calcOutputStats();
+    const indexer = await getBlockIndexerByHeight(nextStatHeight);
+    const output = await calcOutputStats();
 
-  // Go on create one stat point
-  const weeklyStatsCol = await getWeeklyStatsCollection();
-  await weeklyStatsCol.updateOne(
-    { indexer },
-    {
-      $set: {
-        output,
+    // Go on create one stat point
+    const weeklyStatsCol = await getWeeklyStatsCollection();
+    await weeklyStatsCol.updateOne(
+      { indexer },
+      {
+        $set: {
+          output,
+        },
       },
-    },
-    { upsert: true }
-  );
+      { upsert: true }
+    );
 
-  await updateStatHeight(nextStatHeight)
+    await updateStatHeight(nextStatHeight)
+  }
 }
 
 module.exports = {
