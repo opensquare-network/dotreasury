@@ -14,6 +14,8 @@ const { updateScanStatus } = require("../mongo/scanHeight");
 const { scanNormalizedBlock } = require("./block");
 const { fetchBlocks } = require("./fetchBlocks");
 const { logger } = require("../logger");
+const { tryCreateStatPoint } = require("../stats");
+const { getBlockIndexer } = require("../business/common/block/getBlockIndexer");
 
 async function beginScan() {
   let scanHeight = await getNextScanHeight();
@@ -57,8 +59,11 @@ async function oneStepScan(startHeight) {
   for (const block of blocks) {
     // TODO: do following operations in one transaction
     try {
-      const seats = await scanNormalizedBlock(block.block.block, block.events);
+      const seats = await scanNormalizedBlock(block.block, block.events);
       await updateScanStatus(block.height, seats);
+
+      const indexer = getBlockIndexer(block.block);
+      await tryCreateStatPoint(indexer);
     } catch (e) {
       await sleep(1000);
       logger.error(`Error with block scan ${ block.height }`, e);

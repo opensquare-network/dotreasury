@@ -1,7 +1,7 @@
 const { getStatusCollection } = require("./index");
 
 const genesisHeight = 1;
-const mainScanName = "main-scan-height";
+const mainScanName = "output-scan";
 
 async function getNextScanHeight() {
   const statusCol = await getStatusCollection();

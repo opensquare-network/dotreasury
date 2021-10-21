@@ -14,7 +14,7 @@ async function scanKnownHeights() {
     const blocks = await fetchBlocks(heights)
     for (const block of blocks) {
       try {
-        await scanNormalizedBlock(block.block.block, block.events);
+        await scanNormalizedBlock(block.block, block.events);
         await updateScanHeight(block.height);
       } catch (e) {
         await sleep(0);

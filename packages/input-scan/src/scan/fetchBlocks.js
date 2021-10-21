@@ -52,7 +52,7 @@ async function fetchOneBlockFromNode(height) {
 
   return {
     height,
-    block,
+    block: block.block,
     events: allEvents,
   }
 }

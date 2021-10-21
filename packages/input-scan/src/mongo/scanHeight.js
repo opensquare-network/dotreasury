@@ -1,7 +1,7 @@
 const { getStatusCollection } = require("./data");
 
 const genesisHeight = 1;
-const mainScanName = "main-scan";
+const mainScanName = "income-scan";
 const genesisIncomeSeats = {
   inflation: 0,
   slash: 0,
