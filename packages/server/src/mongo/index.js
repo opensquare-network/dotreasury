@@ -68,8 +68,12 @@ function getOthersIncomeCollection(chain) {
   return db(chain).getOthersIncomeCollection();
 }
 
-function getWeeklyStatsCollection(chain) {
-  return db(chain).getWeeklyStatsCollection();
+function getInputWeeklyStatsCollection(chain) {
+  return db(chain).getInputWeeklyStatsCollection();
+}
+
+function getOutputWeeklyStatsCollection(chain) {
+  return db(chain).getOutputWeeklyStatsCollection();
 }
 
 module.exports = {
@@ -89,5 +93,6 @@ module.exports = {
   getIdentitySlashCollection,
   getIncomeTransferCollection,
   getOthersIncomeCollection,
-  getWeeklyStatsCollection,
+  getInputWeeklyStatsCollection,
+  getOutputWeeklyStatsCollection,
 };

@@ -1,13 +1,42 @@
 const { bnToBn } = require("@polkadot/util");
-const { getWeeklyStatsCollection } = require("../../mongo");
+const {
+  getInputWeeklyStatsCollection,
+  getOutputWeeklyStatsCollection,
+} = require("../../mongo");
 const { getOverview } = require("../../websocket/store");
 
 class StatsController {
   async getWeeklyStatsHistory(ctx) {
     const { chain } = ctx.params;
-    const statsCol = await getWeeklyStatsCollection(chain);
-    const statsHistory = await statsCol.find({}).toArray();
-    ctx.body = statsHistory;
+    const inputWeeklyStatsCol = await getInputWeeklyStatsCollection(chain);
+    const outputWeeklyStatsCol = await getOutputWeeklyStatsCollection(chain);
+
+    const inputWeeklyStats = await inputWeeklyStatsCol.find({}).toArray();
+    const outputWeeklyStats = await outputWeeklyStatsCol.find({}).toArray();
+
+    // Merge result
+    const result = [];
+    for (let i = 0, o = 0; i < inputWeeklyStats.length && o < outputWeeklyStats.length;) {
+      const input = inputWeeklyStats[i];
+      const output =  outputWeeklyStats[o];
+      if (input.indexer.blockHeight === output.indexer.blockHeight) {
+        result.push({
+          ...input,
+          ...output,
+        });
+
+        i++;
+        o++;
+      } else if (input.indexer.blockHeight < output.indexer.blockHeight) {
+        i++;
+      } else if (input.indexer.blockHeight > output.indexer.blockHeight) {
+        o++;
+      } else {
+        // Impossible to go here
+      }
+    }
+
+    ctx.body = result;
   }
 
   async getTreasuryInOut(ctx) {

@@ -1,9 +1,12 @@
 const { MongoClient } = require("mongodb");
 const config = require("../../config");
 
-const dbName = config.mongo.ksmDbName || "dotreasury-ksm";
+const inputDbName = config.mongo.ksmInputDbName || "dotreasury-input-ksm";
+const outputDbName = config.mongo.ksmOutputDbName || "dotreasury-output-ksm";
 
 const statusCollectionName = "status";
+
+// output collections
 const tipCollectionName = "tip";
 const proposalCollectionName = "proposal";
 const bountyCollectionName = "bounty";
@@ -25,48 +28,55 @@ const incomeTransferCollectionName = "incomeTransfer";
 const weeklyStatsCollectionName = "weeklyStats";
 
 let client = null;
-let db = null;
+let inputDb = null;
+let outputDb = null;
 
 const mongoUrl = process.env.MONGO_URL || "mongodb://localhost:27017";
 let statusCol = null;
+
 let tipCol = null;
 let proposalCol = null;
 let bountyCol = null;
 let motionCol = null;
 let burntCol = null;
+let outputTransferCol = null;
+let outputWeeklyStatsCol = null;
+
 let incomeInflationCol = null;
 let stakingSlashCol = null;
 let treasurySlashCol = null;
 let electionsPhragmenSlashCol = null;
 let democracySlashCol = null;
 let identitySlashCol = null;
-let othersIncomeCol = null;
-let weeklyStatsCol = null;
-let outputTransferCol = null;
 let incomeTransferCol = null;
+let othersIncomeCol = null;
+let inputWeeklyStatsCol = null;
 
 async function initDb() {
   client = await MongoClient.connect(mongoUrl, {
     useUnifiedTopology: true,
   });
 
-  db = client.db(dbName);
-  statusCol = db.collection(statusCollectionName);
-  tipCol = db.collection(tipCollectionName);
-  proposalCol = db.collection(proposalCollectionName);
-  bountyCol = db.collection(bountyCollectionName);
-  motionCol = db.collection(motionCollectionName);
-  burntCol = db.collection(burntCollectionName);
-  incomeInflationCol = db.collection(incomeInflationCollectionName);
-  stakingSlashCol = db.collection(stakingSlashCollectionName);
-  treasurySlashCol = db.collection(treasurySlashCollectionName);
-  electionsPhragmenSlashCol = db.collection(electionSlashCollectionName);
-  democracySlashCol = db.collection(democracySlashCollectionName);
-  identitySlashCol = db.collection(identitySlashCollectionName);
-  othersIncomeCol = db.collection(othersIncomeCollectionName);
-  weeklyStatsCol = db.collection(weeklyStatsCollectionName);
-  outputTransferCol = db.collection(outputTransferCollectionName);
-  incomeTransferCol = db.collection(incomeTransferCollectionName);
+  inputDb = client.db(inputDbName);
+  statusCol = inputDb.collection(statusCollectionName);
+  incomeInflationCol = inputDb.collection(incomeInflationCollectionName);
+  stakingSlashCol = inputDb.collection(stakingSlashCollectionName);
+  treasurySlashCol = inputDb.collection(treasurySlashCollectionName);
+  electionsPhragmenSlashCol = inputDb.collection(electionSlashCollectionName);
+  democracySlashCol = inputDb.collection(democracySlashCollectionName);
+  identitySlashCol = inputDb.collection(identitySlashCollectionName);
+  incomeTransferCol = inputDb.collection(incomeTransferCollectionName);
+  othersIncomeCol = inputDb.collection(othersIncomeCollectionName);
+  inputWeeklyStatsCol = inputDb.collection(weeklyStatsCollectionName);
+
+  outputDb = client.db(outputDbName);
+  tipCol = outputDb.collection(tipCollectionName);
+  proposalCol = outputDb.collection(proposalCollectionName);
+  bountyCol = outputDb.collection(bountyCollectionName);
+  motionCol = outputDb.collection(motionCollectionName);
+  burntCol = outputDb.collection(burntCollectionName);
+  outputTransferCol = outputDb.collection(outputTransferCollectionName);
+  outputWeeklyStatsCol = outputDb.collection(weeklyStatsCollectionName);
 
   await _createIndexes();
 }
@@ -161,9 +171,14 @@ async function getOthersIncomeCollection() {
   return othersIncomeCol;
 }
 
-async function getWeeklyStatsCollection() {
-  await tryInit(weeklyStatsCol);
-  return weeklyStatsCol;
+async function getInputWeeklyStatsCollection() {
+  await tryInit(inputWeeklyStatsCol);
+  return inputWeeklyStatsCol;
+}
+
+async function getOutputWeeklyStatsCollection() {
+  await tryInit(outputWeeklyStatsCol);
+  return outputWeeklyStatsCol;
 }
 
 module.exports = {
@@ -183,5 +198,6 @@ module.exports = {
   getIdentitySlashCollection,
   getIncomeTransferCollection,
   getOthersIncomeCollection,
-  getWeeklyStatsCollection,
+  getInputWeeklyStatsCollection,
+  getOutputWeeklyStatsCollection,
 };
