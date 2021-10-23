@@ -78,10 +78,9 @@ async function handleDemocracyCancelProposalSlash(
     return;
   }
 
-  const meta = extrinsic.method.meta.toJSON();
   if (
     extrinsic.method.section !== Modules.Council ||
-    meta.name !== CouncilMethods.close
+    extrinsic.method.method !== CouncilMethods.close
   ) {
     return;
   }
@@ -98,7 +97,7 @@ async function handleDemocracyCancelProposalSlash(
   const call = await getCall(blockHash, proposal.toHex());
 
   if (
-    Modules.Democracy !== call.section &&
+    Modules.Democracy !== call.section ||
     DemocracyMethods.cancelProposal !== call.method
   ) {
     return;
