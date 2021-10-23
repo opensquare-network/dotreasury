@@ -5,7 +5,7 @@ const { getApi } = require("./api");
 const { setSpecHeights } = require("./mongo/service/specs");
 
 async function test() {
-  const height = 9779821;
+  const height = 9651285;
   setSpecHeights([height]);
   const api = await getApi();
   const blockHash = await api.rpc.chain.getBlockHash(height);
