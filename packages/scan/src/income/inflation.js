@@ -8,6 +8,39 @@ async function saveInflationRecord(data) {
   await col.insertOne(data);
 }
 
+async function checkEraPaid(event, sort, allBlockEvents, blockIndexer) {
+  const {
+    event: { data: treasuryDepositData },
+  } = event; // get deposit event data
+  if (sort <= 0) {
+    return;
+  }
+
+  const preEvent = allBlockEvents[sort - 1];
+  const {
+    event: { section, method, data: eraPaidData },
+  } = preEvent;
+  if (section !== Modules.Staking || method !== StakingEvents.EraPaid) {
+    return;
+  }
+
+  const treasuryDepositEventData = treasuryDepositData.toJSON();
+  const eraPaidEventData = eraPaidData.toJSON();
+  const balance = (treasuryDepositEventData || [])[0];
+
+  const data = {
+    indexer: blockIndexer,
+    eventSort: sort - 1,
+    balance,
+    treasuryDepositEventData,
+    eraPaidEventData,
+  };
+
+  await saveInflationRecord(data);
+
+  return data;
+}
+
 async function checkInflation1(event, sort, allBlockEvents, blockIndexer) {
   if (blockIndexer.blockHeight >= inflationEndHeight) {
     return;
@@ -52,6 +85,16 @@ async function handleStakingEraPayout(
   allBlockEvents,
   blockIndexer
 ) {
+  const eraPaidData = await checkEraPaid(
+    event,
+    sort,
+    allBlockEvents,
+    blockIndexer
+  )
+  if (eraPaidData) {
+    return eraPaidData;
+  }
+
   const inflationCheck1Data = await checkInflation1(
     event,
     sort,
