@@ -24,7 +24,16 @@ const proposals = [
     proposalId: 53,
     proposeTimePrice: 23.78,
     title:
-      "Cover cost for 07.2021 - 09.2021 of the social contract between Polkassembly and Polkadot/Kusama Treasury",
+      "Cover costs for 07.2021 - 09.2021 of the social contract between Polkassembly and Polkadot/Kusama Treasury",
+    achievements: [],
+  },
+  {
+    token: "ksm",
+    amount: 129,
+    proposalId: 116,
+    proposeTimePrice: 379,
+    title:
+      "Covers costs for 10.2021 - 12.2021 of the social contract between Polkassembly and Polkadot/Kusama Treasury",
     achievements: [],
   },
 ];

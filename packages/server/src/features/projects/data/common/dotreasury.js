@@ -18,15 +18,6 @@ const relatedLinks = [
 
 const proposals = [
   {
-    token: "ksm",
-    amount: 38.66,
-    proposalId: 103,
-    proposeTimePrice: 206.7,
-    title:
-      "Maintenance from 05.2021 to 07.2021 and part of M3 features development",
-    achievements: [],
-  },
-  {
     token: "dot",
     amount: 376,
     proposalId: 42,
@@ -63,6 +54,15 @@ const proposals = [
       "Scan scripts which scan the finalized blocks and extract the corresponding business.",
       "A restful server which serve the treasury business data.",
     ],
+  },
+  {
+    token: "ksm",
+    amount: 38.66,
+    proposalId: 103,
+    proposeTimePrice: 206.7,
+    title:
+      "Maintenance from 05.2021 to 07.2021 and part of M3 features development",
+    achievements: [],
   },
 ];
 
