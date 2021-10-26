@@ -17,7 +17,7 @@ class ProposalsController {
 
     const condition = {};
     if (status) {
-      condition["state.name"] = status;
+      condition["state.state"] = status;
     }
     const proposalCol = await getProposalCollection(chain);
 
@@ -44,7 +44,7 @@ class ProposalsController {
         beneficiary: item.beneficiary,
         links: item.links || [],
         latestState: {
-          state: item.state?.name,
+          state: item.state?.state,
           time: (
             item.state?.eventIndexer ||
             item.state?.extrinsicIndexer ||

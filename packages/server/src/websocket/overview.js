@@ -106,7 +106,7 @@ async function calcCount(
   outputTransferList = []
 ) {
   const unFinishedProposals = proposals.filter(
-    ({ state: { name } }) => name !== "Awarded" && name !== "Rejected"
+    ({ state: { name, state } }) => (name || state) !== "Awarded" && (name || state) !== "Rejected"
   );
   const proposal = {
     unFinished: unFinishedProposals.length,
@@ -162,7 +162,7 @@ async function calcOutput(
   outputTransferList = []
 ) {
   const spentProposals = proposals.filter(
-    ({ state: { name } }) => name === "Awarded"
+    ({ state: { name, state } }) => (name || state) === "Awarded"
   );
   const proposalSpent = spentProposals.reduce(
     (result, { value }) => bigAdd(result, value),
@@ -224,7 +224,7 @@ function addUsdtValue(currUsdtValue, nextSymbolValue, symbolPrice, chain) {
 
 function calcBestProposalBeneficiary(chain, proposals = []) {
   const spentProposals = proposals.filter(
-    ({ state: { name } }) => name === "Awarded"
+    ({ state: { name, state } }) => (name || state) === "Awarded"
   );
   const map = {};
   for (const { beneficiary, value, symbolPrice } of spentProposals) {
@@ -265,11 +265,12 @@ function calcBestTipProposers(chain, tips = []) {
   );
   const map = {};
   for (const { finder, medianValue, symbolPrice } of closedTips) {
+    const tipMedianValue = medianValue || 0;
     const perhaps = map[finder];
-    const tipValue = perhaps ? bigAdd(perhaps.value, medianValue) : medianValue;
+    const tipValue = perhaps ? bigAdd(perhaps.value, tipMedianValue) : tipMedianValue;
     const tipFiatValue = addUsdtValue(
       perhaps ? perhaps.fiatValue : 0,
-      medianValue,
+      tipMedianValue,
       symbolPrice || 0,
       chain
     );

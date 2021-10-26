@@ -82,7 +82,7 @@ async function initDb() {
 }
 
 async function _createIndexes() {
-  if (!db) {
+  if (!inputDb || !outputDb) {
     console.error("Please call initDb first");
     process.exit(1);
   }
