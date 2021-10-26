@@ -45,15 +45,15 @@ function isMotion(timelineItem) {
 
 function timelineItemHeight(timelineItem) {
   if (isMotion(timelineItem)) {
-    return timelineItem.timeline[0].extrinsic.extrinsicIndexer.blockHeight;
+    return timelineItem.timeline[0].indexer.blockHeight;
   }
 
   if ("extrinsic" === timelineItem.type) {
-    return timelineItem.extrinsicIndexer.blockHeight;
+    return timelineItem.indexer.blockHeight;
   }
 
   if ("event" === timelineItem.type) {
-    return timelineItem.eventIndexer.blockHeight;
+    return timelineItem.indexer.blockHeight;
   }
 
   return null;
@@ -79,7 +79,7 @@ function processTimeline(bountyDetail, scanHeight, symbol) {
               item.action === "Propose"
                 ? `Motion #${motion.index}`
                 : item.action,
-            extrinsicIndexer: item.extrinsic.extrinsicIndexer,
+            extrinsicIndexer: item.indexer,
             fields: (() => {
               if (item.action === "Propose") {
                 const [proposer, , , threshold] = item.eventData;
@@ -232,8 +232,8 @@ function processTimeline(bountyDetail, scanHeight, symbol) {
           }
 
           return {
-            extrinsicIndexer: item.extrinsicIndexer,
-            eventIndexer: item.eventIndexer,
+            extrinsicIndexer: item.indexer,
+            eventIndexer: item.indexer,
             name: item.name,
             fields,
           };

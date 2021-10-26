@@ -156,7 +156,9 @@ function normalizeMotionTimelineItem(motion, scanHeight) {
 function constructProposalProcessItem(item, symbolPrice) {
   let fields = [];
 
-  if (item.name === "Proposed") {
+  const method = (item.name || item.method);
+
+  if (method === "Proposed") {
     const { proposer, value, beneficiary } = item.args;
     fields = [
       {
@@ -174,16 +176,16 @@ function constructProposalProcessItem(item, symbolPrice) {
     ];
 
     return {
-      name: item.name,
-      extrinsicIndexer: item.extrinsicIndexer,
+      name: method,
+      extrinsicIndexer: item.extrinsicIndexer || item.indexer,
       fields,
     };
   }
 
-  if (item.name === "Rejected") {
+  if (method === "Rejected") {
     const { value } = item.args;
     return {
-      name: item.name,
+      name: method,
       eventIndexer: item.eventIndexer || item.indexer,
       fields: [
         {
@@ -194,10 +196,10 @@ function constructProposalProcessItem(item, symbolPrice) {
     };
   }
 
-  if (item.name === "Awarded") {
+  if (method === "Awarded") {
     const { value, beneficiary } = item.args;
     return {
-      name: item.name,
+      name: method,
       eventIndexer: item.eventIndexer || item.indexer,
       fields: [
         {
