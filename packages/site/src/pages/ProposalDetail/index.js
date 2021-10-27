@@ -42,15 +42,15 @@ function isMotion(timelineItem) {
 
 function timelineItemHeight(timelineItem) {
   if (isMotion(timelineItem)) {
-    return timelineItem.timeline[0].extrinsic.extrinsicIndexer.blockHeight;
+    return timelineItem.timeline[0].indexer.blockHeight;
   }
 
   if ("extrinsic" === timelineItem.type) {
-    return timelineItem.extrinsicIndexer.blockHeight;
+    return timelineItem.indexer.blockHeight;
   }
 
   if ("event" === timelineItem.type) {
-    return timelineItem.eventIndexer.blockHeight;
+    return timelineItem.indexer.blockHeight;
   }
 
   return timelineItem.indexer?.blockHeight;

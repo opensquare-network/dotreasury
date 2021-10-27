@@ -76,13 +76,13 @@ function processTimeline(bountyDetail, scanHeight, symbol) {
           defaultUnfold: !motion.result,
           subTimeline: (motion.timeline || []).map((item) => ({
             name:
-              item.action === "Propose"
+              item.method === "Propose"
                 ? `Motion #${motion.index}`
-                : item.action,
+                : item.method,
             extrinsicIndexer: item.indexer,
             fields: (() => {
-              if (item.action === "Propose") {
-                const [proposer, , , threshold] = item.eventData;
+              if (item.method === "Proposed") {
+                const { proposer, threshold } = item.args;
                 const ayes = motion.voting?.ayes?.length || 0;
                 const nays = motion.voting?.nays?.length || 0;
                 const proposalArgs = item.extrinsic?.args?.proposal?.args ?? {};
@@ -137,8 +137,8 @@ function processTimeline(bountyDetail, scanHeight, symbol) {
                     ),
                   },
                 ];
-              } else if (item.action === "Vote") {
-                const [voter, , agree] = item.eventData;
+              } else if (item.method === "Voted") {
+                const { voter, approve: agree } = item.args;
                 return [
                   {
                     value: (
@@ -150,7 +150,7 @@ function processTimeline(bountyDetail, scanHeight, symbol) {
                     ),
                   },
                 ];
-              } else if (item.action === "Close") {
+              } else if (item.method === "Closed") {
                 return [
                   {
                     title: motion.result,

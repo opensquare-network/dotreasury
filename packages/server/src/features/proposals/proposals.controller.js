@@ -100,7 +100,7 @@ class ProposalsController {
       .aggregate([
         {
           $group: {
-            _id: "$state.name",
+            _id: "$state.state",
             count: { $sum: 1 },
           },
         },
