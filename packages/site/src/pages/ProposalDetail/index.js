@@ -67,18 +67,18 @@ function normalizeMotionTimelineItem(motion, scanHeight) {
       motion.treasuryProposalId !== 15,
     end: motion.voting?.end,
     subTimeline: (motion.timeline || []).map((item) => ({
-      name: item.action === "Propose" ? `Motion #${motion.index}` : item.action,
-      extrinsicIndexer: item.extrinsic.extrinsicIndexer,
+      name: item.method === "Proposed" ? `Motion #${motion.index}` : item.method,
+      extrinsicIndexer: item.indexer,
       fields: (() => {
-        if (item.action === "Propose") {
-          const [proposer, , , threshold] = item.eventData;
+        if (item.method === "Proposed") {
+          const { proposer, threshold } = item.args;
           let ayes, nays;
           if (motion.voting) {
             ayes = motion.voting?.ayes?.length;
             nays = motion.voting?.nays?.length || 0;
           } else {
             const votes = motion.timeline.filter(
-              (item) => item.action === "Vote"
+              (item) => item.method === "Voted"
             );
             const map = votes.reduce(
               (result, { eventData: [voter, _, aye] }) => {
@@ -126,8 +126,8 @@ function normalizeMotionTimelineItem(motion, scanHeight) {
               ),
             },
           ];
-        } else if (item.action === "Vote") {
-          const [voter, , agree] = item.eventData;
+        } else if (item.method === "Voted") {
+          const { voter, approve: agree } = item.args;
           return [
             {
               value: (
@@ -139,7 +139,7 @@ function normalizeMotionTimelineItem(motion, scanHeight) {
               ),
             },
           ];
-        } else if (item.action === "Close") {
+        } else if (item.method === "Closed") {
           return [
             {
               title: motion.result,

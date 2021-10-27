@@ -116,7 +116,7 @@ const OthersIncomeTable = ({ data, loading, header, footer }) => {
                           </EventWrapper>
                         </ExplorerLink>
                       </Table.Cell>
-                      <Table.Cell>{`${item.section}(${item.method})`}</Table.Cell>
+                      <Table.Cell>{`treasury(Deposit)`}</Table.Cell>
                       <Table.Cell textAlign={"right"}>
                         <Balance value={item.balance} />
                       </Table.Cell>

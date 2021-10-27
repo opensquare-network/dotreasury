@@ -68,7 +68,7 @@ class ProposalsController {
 
     const motionCol = await getMotionCollection(chain);
     const proposalMotions = await motionCol
-      .find({ treasuryProposalId: proposalIndex })
+      .find({ treasuryProposalIndex: proposalIndex })
       .sort({ index: 1 })
       .toArray();
 
