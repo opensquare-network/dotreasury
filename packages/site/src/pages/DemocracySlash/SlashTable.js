@@ -109,13 +109,13 @@ const SlashTable = ({ data, loading, header, footer }) => {
                         </TimeWrapper>
                       </Table.Cell>
                       <Table.Cell>
-                        {item.eventSort ? (
+                        {item.indexer.eventIndex ? (
                           <ExplorerLink
                             href={`/block/${item.indexer.blockHeight}?tab=event`}
                           >
                             <EventWrapper>
                               <Image src={"/imgs/event.svg"} />
-                              <EventID>{`${item.indexer.blockHeight}-${item.eventSort}`}</EventID>
+                              <EventID>{`${item.indexer.blockHeight}-${item.indexer.eventIndex}`}</EventID>
                             </EventWrapper>
                           </ExplorerLink>
                         ) : (

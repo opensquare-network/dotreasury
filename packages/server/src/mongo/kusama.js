@@ -15,14 +15,14 @@ const burntCollectionName = "burnt";
 const outputTransferCollectionName = "outputTransfer";
 
 // income collections
-const incomeInflationCollectionName = "incomeInflation";
-const stakingSlashCollectionName = "incomeSlashStaking";
-const treasurySlashCollectionName = "incomeSlashTreasury";
-const electionSlashCollectionName = "incomeSlashElections";
-const democracySlashCollectionName = "incomeSlashDemocracy";
-const identitySlashCollectionName = "incomeSlashIdentity";
-const othersIncomeCollectionName = "incomeOthersBig";
-const incomeTransferCollectionName = "incomeTransfer";
+const incomeInflationCollectionName = "inflation";
+const stakingSlashCollectionName = "slashStaking";
+const treasurySlashCollectionName = "slashTreasury";
+const electionSlashCollectionName = "slashElections";
+const democracySlashCollectionName = "slashDemocracy";
+const identitySlashCollectionName = "slashIdentity";
+const othersIncomeCollectionName = "othersBig";
+const incomeTransferCollectionName = "transfer";
 
 // stats collections
 const weeklyStatsCollectionName = "weeklyStats";
