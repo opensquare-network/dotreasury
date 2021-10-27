@@ -36,7 +36,7 @@ const ButtonList = ({ extrinsicIndexer, eventIndexer, polkassembly }) => {
 
   const blockHeight =
     extrinsicIndexer?.blockHeight ?? eventIndexer?.blockHeight;
-  const extrinsicIndex = extrinsicIndexer?.index ?? 0;
+  const extrinsicIndex = extrinsicIndexer?.index || extrinsicIndexer?.extrinsicIndex || 0;
   const eventSort = eventIndexer?.eventSort || eventIndexer?.sort || eventIndexer?.eventIndex;
 
   const isExtrinsic = !!extrinsicIndexer;

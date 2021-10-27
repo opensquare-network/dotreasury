@@ -127,8 +127,8 @@ function processTimeline(bountyDetail, scanHeight, symbol) {
                     value: (
                       <Proposer
                         address={proposer}
-                        agree={motion.result && motion.result === "Approved"}
-                        value={motion.method}
+                        agree={motion.isFinal && motion.timeline.some(item => item.method === "Approved")}
+                        value={motion.proposal.method}
                         args={argItems}
                         threshold={threshold}
                         ayes={ayes}

@@ -116,9 +116,9 @@ function normalizeMotionTimelineItem(motion, scanHeight) {
               value: (
                 <Proposer
                   address={proposer}
-                  agree={motion.result && motion.result === "Approved"}
+                  agree={motion.isFinal && motion.timeline.some(item => item.method === "Approved")}
                   args={argItems}
-                  value={motion.method}
+                  value={motion.proposal.method}
                   threshold={threshold}
                   ayes={ayes}
                   nays={nays}
@@ -153,13 +153,13 @@ function normalizeMotionTimelineItem(motion, scanHeight) {
   };
 }
 
-function constructProposalProcessItem(item, symbolPrice) {
+function constructProposalProcessItem(item, proposalDetail) {
+  const { proposer, value, beneficiary, symbolPrice } = proposalDetail;
   let fields = [];
 
   const method = (item.name || item.method);
 
   if (method === "Proposed") {
-    const { proposer, value, beneficiary } = item.args;
     fields = [
       {
         title: "Proposer",
@@ -197,7 +197,6 @@ function constructProposalProcessItem(item, symbolPrice) {
   }
 
   if (method === "Awarded") {
-    const { value, beneficiary } = item.args;
     return {
       name: method,
       eventIndexer: item.eventIndexer || item.indexer,
@@ -229,7 +228,7 @@ function processTimeline(proposalDetail, scanHeight) {
       return normalizeMotionTimelineItem(item, scanHeight);
     }
 
-    return constructProposalProcessItem(item, proposalDetail.symbolPrice);
+    return constructProposalProcessItem(item, proposalDetail);
   });
 }
 
