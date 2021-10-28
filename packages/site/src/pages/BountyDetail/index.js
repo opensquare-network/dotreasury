@@ -73,7 +73,7 @@ function processTimeline(bountyDetail, scanHeight, symbol) {
     item.timeline
       ? ((motion) => ({
           index: motion.index,
-          defaultUnfold: !motion.result,
+          defaultUnfold: !motion.isFinal,
           subTimeline: (motion.timeline || []).map((item) => ({
             name:
               item.method === "Propose"
@@ -106,7 +106,7 @@ function processTimeline(bountyDetail, scanHeight, symbol) {
 
                 if (
                   scanHeight > 0 &&
-                  !motion.result &&
+                  !motion.isFinal &&
                   motion.voting?.end > scanHeight
                 ) {
                   const blocks = motion.voting?.end - scanHeight;
@@ -151,11 +151,7 @@ function processTimeline(bountyDetail, scanHeight, symbol) {
                   },
                 ];
               } else if (item.method === "Closed") {
-                return [
-                  {
-                    title: motion.result,
-                  },
-                ];
+                return [];
               } else {
                 return [];
               }

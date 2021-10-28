@@ -59,12 +59,12 @@ function timelineItemHeight(timelineItem) {
 function normalizeMotionTimelineItem(motion, scanHeight) {
   return {
     index: motion.index,
-    defaultUnfold: !motion.result && motion.voting?.end >= scanHeight,
+    defaultUnfold: !motion.isFinal && motion.voting?.end >= scanHeight,
     // FIXME: && motion.treasuryProposalId !== 15
     expired:
-      !motion.result &&
+      !motion.isFinal &&
       motion.voting?.end < scanHeight &&
-      motion.treasuryProposalId !== 15,
+      motion.treasuryProposalIndex !== 15,
     end: motion.voting?.end,
     subTimeline: (motion.timeline || []).map((item) => ({
       name: item.method === "Proposed" ? `Motion #${motion.index}` : item.method,
@@ -95,7 +95,7 @@ function normalizeMotionTimelineItem(motion, scanHeight) {
           const argItems = [];
           if (
             scanHeight > 0 &&
-            !motion.result &&
+            !motion.isFinal &&
             motion.voting?.end > scanHeight
           ) {
             const blocks = motion.voting?.end - scanHeight;
@@ -140,11 +140,7 @@ function normalizeMotionTimelineItem(motion, scanHeight) {
             },
           ];
         } else if (item.method === "Closed") {
-          return [
-            {
-              title: motion.result,
-            },
-          ];
+          return [];
         } else {
           return [];
         }
