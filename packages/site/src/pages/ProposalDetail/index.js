@@ -68,7 +68,8 @@ function normalizeMotionTimelineItem(motion, scanHeight) {
     end: motion.voting?.end,
     subTimeline: (motion.timeline || []).map((item) => ({
       name: item.method === "Proposed" ? `Motion #${motion.index}` : item.method,
-      extrinsicIndexer: item.indexer,
+      extrinsicIndexer: item.type === "extrinsic" ? item.indexer : undefined,
+      eventIndexer: item.type === "event" ? item.indexer : undefined,
       fields: (() => {
         if (item.method === "Proposed") {
           const { proposer, threshold } = item.args;
@@ -173,7 +174,8 @@ function constructProposalProcessItem(item, proposalDetail) {
 
     return {
       name: method,
-      extrinsicIndexer: item.extrinsicIndexer || item.indexer,
+      extrinsicIndexer: item.type === "extrinsic" ? item.indexer : undefined,
+      eventIndexer: item.type === "event" ? item.indexer : undefined,
       fields,
     };
   }
@@ -182,7 +184,8 @@ function constructProposalProcessItem(item, proposalDetail) {
     const { value } = item.args;
     return {
       name: method,
-      eventIndexer: item.eventIndexer || item.indexer,
+      extrinsicIndexer: item.type === "extrinsic" ? item.indexer : undefined,
+      eventIndexer: item.type === "event" ? item.indexer : undefined,
       fields: [
         {
           title: "Slashed",
@@ -195,7 +198,8 @@ function constructProposalProcessItem(item, proposalDetail) {
   if (method === "Awarded") {
     return {
       name: method,
-      eventIndexer: item.eventIndexer || item.indexer,
+      extrinsicIndexer: item.type === "extrinsic" ? item.indexer : undefined,
+      eventIndexer: item.type === "event" ? item.indexer : undefined,
       fields: [
         {
           title: "Beneficiary",

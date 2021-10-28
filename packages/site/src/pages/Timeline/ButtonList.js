@@ -34,15 +34,14 @@ const ButtonList = ({ extrinsicIndexer, eventIndexer, polkassembly }) => {
     })();
   }, [polkassembly, isMounted]);
 
-  const blockHeight =
-    extrinsicIndexer?.blockHeight ?? eventIndexer?.blockHeight;
-  const extrinsicIndex = extrinsicIndexer?.index || extrinsicIndexer?.extrinsicIndex || 0;
-  const eventSort = eventIndexer?.eventSort || eventIndexer?.sort || eventIndexer?.eventIndex;
+  const blockHeight = (extrinsicIndexer || eventIndexer)?.blockHeight;
+  const extrinsicIndex = (extrinsicIndexer || eventIndexer)?.extrinsicIndex || 0;
+  const eventSort = eventIndexer?.eventIndex;
 
   const isExtrinsic = !!extrinsicIndexer;
   const subscanLink = isExtrinsic
     ? `extrinsic/${blockHeight}-${extrinsicIndex}`
-    : `block/${blockHeight}?tab=event`;
+    : `extrinsic/${blockHeight}-${extrinsicIndex}?event=${blockHeight}-${eventSort}`;
 
   return (
     <Wrapper>

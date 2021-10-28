@@ -79,7 +79,8 @@ function processTimeline(bountyDetail, scanHeight, symbol) {
               item.method === "Propose"
                 ? `Motion #${motion.index}`
                 : item.method,
-            extrinsicIndexer: item.indexer,
+            extrinsicIndexer: item.type === "extrinsic" ? item.indexer : undefined,
+            eventIndexer: item.type === "event" ? item.indexer : undefined,
             fields: (() => {
               if (item.method === "Proposed") {
                 const { proposer, threshold } = item.args;
@@ -228,8 +229,8 @@ function processTimeline(bountyDetail, scanHeight, symbol) {
           }
 
           return {
-            extrinsicIndexer: item.indexer,
-            eventIndexer: item.indexer,
+            extrinsicIndexer: item.type === "extrinsic" ? item.indexer : undefined,
+            eventIndexer: item.type === "event" ? item.indexer : undefined,
             name: item.name,
             fields,
           };
