@@ -46,11 +46,13 @@ async function handleEventWithoutExtrinsic(
 
 async function handleCommon(
   blockIndexer,
+  phase,
   event,
   eventSort,
 ) {
   const indexer = {
     ...blockIndexer,
+    extrinsicIndex: phase.isNull ? undefined : phase.value.toNumber(),
     eventIndex: eventSort,
   };
 
@@ -62,7 +64,7 @@ async function handleEvents(events, extrinsics, blockIndexer) {
   for (let sort = 0; sort < events.length; sort++) {
     const { event, phase } = events[sort];
 
-    await handleCommon(blockIndexer, event, sort);
+    await handleCommon(blockIndexer, phase, event, sort);
 
     if (phase.isNull) {
       await handleEventWithoutExtrinsic(blockIndexer, event, sort, events);
