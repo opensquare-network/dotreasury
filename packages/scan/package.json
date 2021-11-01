@@ -21,7 +21,7 @@
     "test": "jest src/test"
   },
   "dependencies": {
-    "@polkadot/api": "6.4.3-7",
+    "@polkadot/api": "6.5.3-13",
     "bignumber.js": "^9.0.1",
     "dayjs": "^1.10.4",
     "dotenv": "^8.2.0",
