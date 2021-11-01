@@ -33,6 +33,16 @@ const proposals = [
       'Unfinalized business handling',
     ],
   },
+  {
+    token: "ksm",
+    amount: 69.52,
+    proposalId: 115,
+    proposeTimePrice: 347.2,
+    title:
+      "Statescan NFT business implementation and features polish",
+    achievements: [
+    ],
+  },
 ];
 
 module.exports = {

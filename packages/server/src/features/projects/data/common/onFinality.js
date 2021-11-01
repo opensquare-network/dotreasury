@@ -63,6 +63,22 @@ const proposals = [
     title: "High Performance Public Infrastructure (Ongoing Costs for Q2 2021)",
     achievements: [],
   },
+  {
+    token: "ksm",
+    amount: 110.42,
+    proposalId: 114,
+    proposeTimePrice: 317.1,
+    title: "High Performance Public Infrastructure (Ongoing Costs for Q3 2021)",
+    achievements: [],
+  },
+  {
+    token: "dot",
+    amount: 611.704,
+    proposalId: 72,
+    proposeTimePrice: 40.9,
+    title: "High Performance Public Infrastructure (Ongoing Costs for Q3 2021)",
+    achievements: [],
+  },
 ];
 
 module.exports = {
