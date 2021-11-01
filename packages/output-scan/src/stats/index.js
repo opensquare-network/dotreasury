@@ -12,7 +12,9 @@ const { bigAdd } = require("../utils");
 
 const lastStatsHeight = "last-outputstats-height";
 
-const weeklyBlocks = 3600*24*7 / 6;
+const oneHour = 3600;
+const oneWeek = oneHour * 24 * 7;
+const weeklyBlocks = oneWeek / 6;
 
 async function getNextStatHeight() {
   const statusCol = await getStatusCollection();
@@ -114,7 +116,7 @@ async function calcOutput(
 }
 
 async function tryCreateStatPoint(nextBlockIndexer) {
-  while(true) {
+  while (true) {
     const nextStatHeight = await getNextStatHeight();
 
     if (nextBlockIndexer.blockHeight <= nextStatHeight) {
