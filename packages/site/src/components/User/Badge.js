@@ -4,8 +4,9 @@ import { Image } from "semantic-ui-react";
 
 const Wrapper = styled.div`
   > img {
-    width: 18px;
-    height: 18px;
+    width: 14px;
+    height: 14px;
+    margin-right: 4px;
   }
 `;
 
@@ -25,7 +26,7 @@ const Badge = ({ status }) => {
 
   const icon = statusIconMap.get(status);
   if (!icon) {
-    return null
+    return null;
   }
 
   const imgSrc = `/imgs/badge-icons/${icon}.svg`;
