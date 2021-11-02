@@ -44,6 +44,7 @@ class ProposalsController {
         symbolPrice: item.symbolPrice,
         beneficiary: item.beneficiary,
         links: item.links || [],
+        description: item.description,
         latestState: {
           state: item.state?.name,
           time: (
