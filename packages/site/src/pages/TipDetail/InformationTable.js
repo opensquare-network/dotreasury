@@ -27,7 +27,7 @@ const InformationTable = ({ loading }) => {
 
   return (
     <TableLoading loading={loading}>
-      <Table selectable unstackable>
+      <Table unstackable>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>Information</Table.HeaderCell>

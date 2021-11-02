@@ -10,6 +10,7 @@ import {
 } from "../../store/reducers/proposalSlice";
 import { scanHeightSelector } from "../../store/reducers/chainSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
+import { fetchDescription } from "../../store/reducers/descriptionSlice";
 
 import InformationTable from "./InformationTable";
 import Timeline from "../Timeline";
@@ -246,6 +247,13 @@ const ProposalDetail = () => {
     };
   }, [dispatch, chain, proposalIndex]);
 
+  useEffect(() => {
+    dispatch(fetchDescription(chain, "proposal", proposalIndex));
+    return () => {
+      dispatch(fetchDescription());
+    };
+  }, [dispatch, chain, proposalIndex]);
+
   const loadingProposalDetail = useSelector(loadingProposalDetailSelector);
   const proposalDetail = useSelector(proposalDetailSelector);
   const scanHeight = useSelector(scanHeightSelector);
@@ -258,7 +266,11 @@ const ProposalDetail = () => {
     <>
       <DetailGoBack />
       <DetailTableWrapper title="Proposal" desc={`#${proposalIndex}`}>
-        <InformationTable loading={loadingProposalDetail} />
+        <InformationTable
+          loading={loadingProposalDetail}
+          chain={chain}
+          proposalIndex={proposalIndex}
+        />
         <ProposalLifeCycleTable loading={loadingProposalDetail} />
         <RelatedLinks type="proposal" index={parseInt(proposalIndex)} />
       </DetailTableWrapper>

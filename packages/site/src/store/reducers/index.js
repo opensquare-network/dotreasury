@@ -17,6 +17,7 @@ import projectsReducer from "./projectSlice";
 import toastReducer from "./toastSlice";
 import transferReducer from "./transferSlice";
 import rateReducer from "./rateSlice";
+import descriptionReducer from "./descriptionSlice";
 
 export default combineReducers({
   test: testReducer,
@@ -37,4 +38,5 @@ export default combineReducers({
   projects: projectsReducer,
   transfers: transferReducer,
   rate: rateReducer,
+  description: descriptionReducer,
 });

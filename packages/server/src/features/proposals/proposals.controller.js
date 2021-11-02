@@ -3,6 +3,7 @@ const { extractPage } = require("../../utils");
 const linkService = require("../../services/link.service");
 const commentService = require("../../services/comment.service");
 const rateService = require("../../services/rate.service");
+const descriptionService = require("../../services/description.service");
 const { HttpError } = require("../../exc");
 
 class ProposalsController {
@@ -237,6 +238,37 @@ class ProposalsController {
       type: "proposal",
       index: proposalIndex,
     });
+  }
+
+  async getProposalDescription(ctx) {
+    const { chain } = ctx.params;
+    const proposalIndex = parseInt(ctx.params.proposalIndex);
+
+    ctx.body = await descriptionService.getDescription({
+      indexer: {
+        chain,
+        type: "proposal",
+        index: proposalIndex,
+      },
+    });
+  }
+
+  async setProposalDescription(ctx) {
+    const { chain } = ctx.params;
+    const proposalIndex = parseInt(ctx.params.proposalIndex);
+    const { description } = ctx.request.body;
+
+    ctx.body = await descriptionService.setDescription(
+      {
+        indexer: {
+          chain,
+          type: "proposal",
+          index: proposalIndex,
+        },
+        description,
+      },
+      ctx.request.headers.signature
+    );
   }
 }
 

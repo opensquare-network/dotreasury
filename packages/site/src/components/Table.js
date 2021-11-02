@@ -6,6 +6,11 @@ const CustomTable = styled(Table)`
   border-radius: 8px !important;
   margin-top: 0 !important;
   border-color: #eee !important;
+  tr {
+    :hover {
+      background-color: #fdfdfd !important;
+    }
+  }
   td {
     border-top: 0 !important;
     border-bottom: 1px solid #f4f4f4;
@@ -53,8 +58,15 @@ const CustomTable = styled(Table)`
   .propose-time-cell {
     width: 280px !important;
   }
+  .new-propose-time-cell {
+    width: 180px !important;
+  }
   .related-links-cell {
     min-width: 120px !important;
+  }
+  .proposal-related-links-cell {
+    min-width: 160px !important;
+    max-width: 160px !important;
   }
   .description-cell {
     min-width: 432px !important;

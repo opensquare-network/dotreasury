@@ -44,9 +44,8 @@ const BeneficiaryTable = () => {
   return (
     <CardWrapper>
       <Title>Top Proposal Beneficiaries</Title>
-      {/* <Wrapper> */}
       <TableWrapper>
-        <Table striped selectable unstackable>
+        <Table unstackable>
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell>Beneficiary</Table.HeaderCell>

@@ -14,7 +14,6 @@ import {
   addLink,
   removeLink,
 } from "../../store/reducers/linkSlice";
-import AdminLogin from "../AdminLogin";
 import { nowAddressSelector } from "../../store/reducers/accountSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import Divider from "../../components/Divider";
@@ -81,8 +80,7 @@ const RelatedLinks = ({ type, index }) => {
   if (isAdmin || (links && links.length > 0)) {
     return (
       <Wrapper>
-        <AdminLogin />
-        <Table selectable unstackable>
+        <Table unstackable>
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell>
@@ -119,7 +117,6 @@ const RelatedLinks = ({ type, index }) => {
             ))}
           </Table.Body>
         </Table>
-
         <Modal
           size="small"
           open={openAddLinkModal}
@@ -154,7 +151,6 @@ const RelatedLinks = ({ type, index }) => {
             </Button>
           </Modal.Actions>
         </Modal>
-
         <Modal
           size="mini"
           open={openRemoveLinkModal}
