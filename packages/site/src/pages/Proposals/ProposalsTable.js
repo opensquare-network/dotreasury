@@ -107,8 +107,6 @@ const ProposalsTable = ({ data, loading, header, footer }) => {
     }
   };
 
-  console.log({ data });
-
   return (
     <CardWrapper>
       {header}
