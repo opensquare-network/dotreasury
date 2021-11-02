@@ -1,11 +1,11 @@
 const findLast = require("lodash.findlast");
 const last = require("lodash.last");
-const { ksmHeights, dotHeights } = require("./known");
 const { getAllVersionChangeHeights } = require("../../mongo/meta");
 const { getRegistryByHeight } = require("../registry");
 const { getApi } = require("../../api");
 const { expandMetadata } = require("@polkadot/types");
-const { isUseMetaDb, currentChain, CHAINS, } = require("../../env")
+const { isUseMetaDb, } = require("../../env")
+const { default: upgrades } = require("@polkadot/types-known/upgrades");
 
 let versionChangedHeights = [];
 let registryMap = {};
@@ -22,12 +22,13 @@ async function updateSpecs() {
     return
   }
 
-  const chain = currentChain();
-  if (CHAINS.KUSAMA === chain) {
-    versionChangedHeights = ksmHeights;
-  } else if (CHAINS.POLKADOT === chain) {
-    versionChangedHeights = dotHeights;
+  const api = await getApi();
+  const targetNetworkUpgrades = upgrades.find(upgrade => api.genesisHash.eq(upgrade.genesisHash));
+  if (!targetNetworkUpgrades) {
+    throw new Error("Can not find target upgrades");
   }
+
+  versionChangedHeights = targetNetworkUpgrades.versions.map(({ blockNumber }) => blockNumber.toNumber());
 }
 
 async function getMetadataByHeight(height) {
