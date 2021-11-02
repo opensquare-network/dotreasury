@@ -44,4 +44,14 @@ router.get(
   proposalsController.getRateStats,
 );
 
+router.get(
+  "/proposals/:proposalIndex/description",
+  proposalsController.getProposalDescription
+);
+router.put(
+  "/proposals/:proposalIndex/description",
+  proposalsController.setProposalDescription
+);
+
+
 module.exports = router;

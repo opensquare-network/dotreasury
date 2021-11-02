@@ -9,6 +9,7 @@ const commentCollectionName = "comment";
 const reactionCollectionName = "reaction";
 const attemptCollectionName = "attempt";
 const rateCollectionName = "rate";
+const descriptionCollectionName = "description";
 
 let client = null;
 let db = null;
@@ -20,6 +21,7 @@ let commentCol = null;
 let reactionCol = null;
 let attemptCol = null;
 let rateCol = null;
+let descriptionCol = null;
 
 async function initDb() {
   client = await MongoClient.connect(mongoUrl, {
@@ -33,6 +35,7 @@ async function initDb() {
   reactionCol = db.collection(reactionCollectionName);
   attemptCol = db.collection(attemptCollectionName);
   rateCol = db.collection(rateCollectionName);
+  descriptionCol = db.collection(descriptionCollectionName);
 
   await _createIndexes();
 }
@@ -56,6 +59,7 @@ async function _createIndexes() {
   commentCol.createIndex({ indexer: 1, createdAt: 1 });
 
   linkCol.createIndex({ indexer: 1 });
+  descriptionCol.createIndex({ indexer: 1 });
 
   rateCol.createIndex({ indexer: 1, createdAt: -1 });
 }
@@ -69,6 +73,11 @@ async function tryInit(col) {
 async function getLinkCollection() {
   await tryInit(linkCol);
   return linkCol;
+}
+
+async function getDescriptionCollection() {
+  await tryInit(descriptionCol);
+  return descriptionCol;
 }
 
 async function getUserCollection() {
@@ -106,6 +115,7 @@ module.exports = {
   initDb,
   withTransaction,
   getLinkCollection,
+  getDescriptionCollection,
   getUserCollection,
   getCommentCollection,
   getReactionCollection,
