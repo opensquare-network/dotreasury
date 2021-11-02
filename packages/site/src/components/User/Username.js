@@ -19,7 +19,7 @@ const TextUsername = styled(TextMinor)`
   }
 `;
 
-const Username = ({ address, name, ellipsis, popup }) => {
+const Username = ({ address, name, ellipsis, popup, popupContent }) => {
   const disabledPopup = useDisablePopup();
   let displayAddress;
   if (typeof address === "string") {
@@ -45,7 +45,9 @@ const Username = ({ address, name, ellipsis, popup }) => {
   const displayName = name ? name : displayAddress;
   return (
     <Popup
-      content={name ? `${name} ${address}` : address}
+      content={
+        popupContent ? popupContent : name ? `${name} ${address}` : address
+      }
       size="mini"
       disabled={!popup || disabledPopup}
       trigger={<TextUsername>{displayName}</TextUsername>}

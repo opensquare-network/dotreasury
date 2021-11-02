@@ -22,7 +22,7 @@ const BadgeWrapper = styled.div`
   align-items: center;
 `;
 
-const User = ({ address, ellipsis = true, popup = true }) => {
+const User = ({ address, ellipsis = true, popup = true, popupContent }) => {
   const { name, badgeData } = useIdentity(address);
 
   return (
@@ -38,6 +38,7 @@ const User = ({ address, ellipsis = true, popup = true }) => {
                 address={address}
                 ellipsis={ellipsis}
                 popup={popup}
+                popupContent={popupContent}
               />
             </ExplorerLink>
           </BadgeWrapper>

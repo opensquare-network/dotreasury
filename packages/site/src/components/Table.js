@@ -58,8 +58,15 @@ const CustomTable = styled(Table)`
   .propose-time-cell {
     width: 280px !important;
   }
+  .new-propose-time-cell {
+    width: 180px !important;
+  }
   .related-links-cell {
     min-width: 120px !important;
+  }
+  .proposal-related-links-cell {
+    min-width: 160px !important;
+    max-width: 160px !important;
   }
   .description-cell {
     min-width: 432px !important;

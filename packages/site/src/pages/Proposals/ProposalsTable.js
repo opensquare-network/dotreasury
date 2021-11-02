@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { useHistory } from "react-router";
@@ -18,6 +18,8 @@ import RelatedLInks from "../../components/RelatedLinks";
 import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import Card from "../../components/Card";
+import BeneficiaryContent from "./BeneficiaryContent";
+import DescriptionCell from "./DescriptionCell";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -51,9 +53,32 @@ const StyledTable = styled(Table)`
 
 const ProposeTimeWrapper = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  flex-direction: column;
   p:first-child {
     min-width: 154px;
+  }
+  > :first-child {
+    line-height: 22px;
+    color: rgba(0, 0, 0, 0.9) !important;
+  }
+  > :last-child {
+    * {
+      font-size: 12px;
+      line-height: 18px;
+      color: rgba(0, 0, 0, 0.3);
+    }
+    img {
+      width: 14px !important;
+      height: 14px !important;
+    }
+  }
+`;
+
+const BeneficiarySwitch = styled.div`
+  cursor: pointer;
+  :hover {
+    color: rgba(0, 0, 0, 0.9);
   }
 `;
 
@@ -74,6 +99,7 @@ const getStateWithVotingAyes = (item) => {
 const ProposalsTable = ({ data, loading, header, footer }) => {
   const history = useHistory();
   const symbol = useSelector(chainSymbolSelector);
+  const [isBeneficiary, setIsBeneficiary] = useState(true);
 
   const onClickRow = (proposalIndex) => {
     if (window.innerWidth < 1140) {
@@ -92,8 +118,14 @@ const ProposalsTable = ({ data, loading, header, footer }) => {
                 <Table.Row>
                   <Table.HeaderCell>Index</Table.HeaderCell>
                   <Table.HeaderCell>Propose time</Table.HeaderCell>
-                  <Table.HeaderCell>Beneficiary</Table.HeaderCell>
-                  <Table.HeaderCell>Proposer</Table.HeaderCell>
+                  <Table.HeaderCell>
+                    <BeneficiarySwitch
+                      onClick={() => setIsBeneficiary(!isBeneficiary)}
+                    >
+                      {isBeneficiary ? "Beneficiary" : "Proposer"}
+                    </BeneficiarySwitch>
+                  </Table.HeaderCell>
+                  <Table.HeaderCell>Description</Table.HeaderCell>
                   <Table.HeaderCell>Related links</Table.HeaderCell>
                   <Table.HeaderCell textAlign={"right"}>Value</Table.HeaderCell>
                   <Table.HeaderCell textAlign={"right"}>
@@ -113,7 +145,7 @@ const ProposalsTable = ({ data, loading, header, footer }) => {
                       <Table.Cell className="index-cell">
                         <TextMinor>{`#${item.proposalIndex}`}</TextMinor>
                       </Table.Cell>
-                      <Table.Cell className="propose-time-cell">
+                      <Table.Cell className="new-propose-time-cell">
                         <ProposeTimeWrapper>
                           <TextMinor>
                             {dayjs(parseInt(item.proposeTime)).format(
@@ -128,12 +160,32 @@ const ProposalsTable = ({ data, loading, header, footer }) => {
                         </ProposeTimeWrapper>
                       </Table.Cell>
                       <Table.Cell className="user-cell">
-                        <User address={item.beneficiary} />
+                        {isBeneficiary ? (
+                          <User
+                            address={item.beneficiary}
+                            popupContent={
+                              <BeneficiaryContent
+                                proposerAddress={item.proposer}
+                                beneficiaryAddress={item.beneficiary}
+                              />
+                            }
+                          />
+                        ) : (
+                          <User
+                            address={item.proposer}
+                            popupContent={
+                              <BeneficiaryContent
+                                proposerAddress={item.proposer}
+                                beneficiaryAddress={item.beneficiary}
+                              />
+                            }
+                          />
+                        )}
                       </Table.Cell>
-                      <Table.Cell className="user-cell">
-                        <User address={item.proposer} />
+                      <Table.Cell>
+                        <DescriptionCell />
                       </Table.Cell>
-                      <Table.Cell className="related-links-cell">
+                      <Table.Cell className="proposal-related-links-cell">
                         <RelatedLInks links={item.links} />
                       </Table.Cell>
                       <Table.Cell textAlign={"right"}>
