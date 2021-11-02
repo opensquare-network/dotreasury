@@ -76,7 +76,7 @@ const OthersIncomeTable = ({ data, loading, header, footer }) => {
       <Wrapper>
         <TableWrapper>
           <TableLoading loading={loading}>
-            <StyledTable striped selectable unstackable>
+            <StyledTable unstackable>
               <Table.Header>
                 <Table.Row>
                   <Table.HeaderCell>Time</Table.HeaderCell>

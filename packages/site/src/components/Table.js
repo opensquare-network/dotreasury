@@ -6,6 +6,11 @@ const CustomTable = styled(Table)`
   border-radius: 8px !important;
   margin-top: 0 !important;
   border-color: #eee !important;
+  tr {
+    :hover {
+      background-color: #fdfdfd !important;
+    }
+  }
   td {
     border-top: 0 !important;
     border-bottom: 1px solid #f4f4f4;

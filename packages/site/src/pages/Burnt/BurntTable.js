@@ -81,7 +81,7 @@ const BurntTable = ({ data, chartData, loading, footer }) => {
       <Wrapper>
         <TableWrapper>
           <TableLoading loading={loading}>
-            <StyledTable striped selectable unstackable>
+            <StyledTable unstackable>
               <colgroup>
                 <col span="1" style={{ width: "25%" }} />
                 <col span="1" style={{ width: "15%" }} />
