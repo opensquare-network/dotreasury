@@ -70,7 +70,7 @@ const TipLifeCycleTable = ({ loading }) => {
 
   return (
     <TableLoading loading={loading}>
-      <Table selectable unstackable>
+      <Table unstackable>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>Tip Life Cycle</Table.HeaderCell>

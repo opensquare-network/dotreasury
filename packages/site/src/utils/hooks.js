@@ -1,6 +1,7 @@
 import { useLayoutEffect, useState, useEffect, useRef } from "react";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import queryString from "query-string";
 
 import { fetchIdentity as getIdentity } from "../services/identity";
 import { setShowMenuTabs } from "../store/reducers/menuSlice";
@@ -197,4 +198,11 @@ export function useWhyDidYouUpdate(name, props) {
     }
     previousProps.current = props;
   });
+}
+
+export function useIsAdmin() {
+  const location = useLocation();
+  const q = queryString.parse(location.search);
+  const isAdmin = q.admin === "true";
+  return isAdmin;
 }

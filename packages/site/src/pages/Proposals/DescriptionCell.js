@@ -24,7 +24,10 @@ const DividerWrapper = styled.div`
 const DescriptionCell = () => {
   return (
     <Wrapper>
-      <div>DescriptionCell</div>
+      <div>
+        Leo diam amet suspendisse tincidunt sagittis, placerat quisque morbi
+        dis. Amet ipsum ultrices enim laoreet urna integer.
+      </div>
       <DividerWrapper>
         <div>Development</div>
         <div>Working</div>
