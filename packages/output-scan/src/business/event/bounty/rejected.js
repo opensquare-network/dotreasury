@@ -11,7 +11,7 @@ async function handleBountyRejected(event, extrinsic, indexer) {
   const [bountyIndex, slashed] = eventData;
 
   const meta = await getBountyMetaByHeight(bountyIndex, indexer.blockHeight - 1);
-  const caller = getRealCaller(extrinsic.method, extrinsic.signer);
+  const caller = getRealCaller(extrinsic.method, extrinsic.signer.toString());
   const timelineItem = {
     type: TimelineItemTypes.extrinsic,
     name: event.method,
