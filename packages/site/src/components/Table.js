@@ -59,7 +59,7 @@ const CustomTable = styled(Table)`
     width: 280px !important;
   }
   .new-propose-time-cell {
-    width: 180px !important;
+    max-width: 180px !important;
   }
   .related-links-cell {
     min-width: 120px !important;
@@ -73,6 +73,18 @@ const CustomTable = styled(Table)`
   }
   .date-cell {
     min-width: 140px !important;
+  }
+  .proposal-description-cell {
+    max-width: 368px !important;
+  }
+  .proposal-user-cell {
+    max-width: 164px !important;
+  }
+  .proposal-value-cell {
+    max-width: 136px !important;
+  }
+  .proposal-status-cell {
+    max-width: 128px !important;
   }
   td:first-child {
     font-weight: 400 !important;

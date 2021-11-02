@@ -5,6 +5,9 @@ const Wrapper = styled.div`
   font-size: 14px;
   line-height: 22px;
   color: rgba(0, 0, 0, 0.9);
+  > div {
+    overflow-wrap: break-word;
+  }
 `;
 
 const DividerWrapper = styled.div`
@@ -21,17 +24,11 @@ const DividerWrapper = styled.div`
   }
 `;
 
-const DescriptionCell = () => {
+const DescriptionCell = ({ description }) => {
+  console.log({ description });
   return (
     <Wrapper>
-      <div>
-        Leo diam amet suspendisse tincidunt sagittis, placerat quisque morbi
-        dis. Amet ipsum ultrices enim laoreet urna integer.
-      </div>
-      <DividerWrapper>
-        <div>Development</div>
-        <div>Working</div>
-      </DividerWrapper>
+      <div>{description?.description}</div>
     </Wrapper>
   );
 };

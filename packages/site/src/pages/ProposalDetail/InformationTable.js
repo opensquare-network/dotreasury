@@ -22,7 +22,11 @@ const IconButton = styled(Icon)`
 `;
 
 const DescriptionWrapper = styled.div`
-  word-wrap: break-word;
+  overflow-wrap: break-word;
+`;
+
+const StyledTable = styled(Table)`
+  table-layout: fixed;
 `;
 
 const InformationTable = ({ loading, chain, proposalIndex }) => {
@@ -64,7 +68,7 @@ const InformationTable = ({ loading, chain, proposalIndex }) => {
   return (
     <>
       <TableLoading loading={loading}>
-        <Table unstackable>
+        <StyledTable unstackable>
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell>
@@ -122,7 +126,7 @@ const InformationTable = ({ loading, chain, proposalIndex }) => {
                 </Table.Cell>
               </Table.Row>
             )}
-            {descriptionDetail?.description?.proposalType && (
+            {/* {descriptionDetail?.description?.proposalType && (
               <Table.Row>
                 <Table.Cell>
                   <TableCell title={"Proposal type"}>
@@ -143,9 +147,9 @@ const InformationTable = ({ loading, chain, proposalIndex }) => {
                   </TableCell>
                 </Table.Cell>
               </Table.Row>
-            )}
+            )} */}
           </Table.Body>
-        </Table>
+        </StyledTable>
       </TableLoading>
       <Modal
         size="small"
@@ -161,7 +165,7 @@ const InformationTable = ({ loading, chain, proposalIndex }) => {
               label="Description"
               onChange={(_, { value }) => setDescription(value)}
             />
-            <Form.Input
+            {/* <Form.Input
               value={proposalType}
               fluid
               label="Proposal type"
@@ -172,7 +176,7 @@ const InformationTable = ({ loading, chain, proposalIndex }) => {
               fluid
               label="Status"
               onChange={(_, { value }) => setStatus(value)}
-            />
+            /> */}
           </Form>
         </Modal.Content>
         <Modal.Actions>

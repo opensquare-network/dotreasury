@@ -25,13 +25,6 @@ const BeneficiaryContent = ({ proposerAddress, beneficiaryAddress }) => {
   const { name: beneficiaryName, badgeData: beneficiaryBadgeData } =
     useIdentity(beneficiaryAddress);
 
-  console.log({
-    proposerName,
-    proposerBadgeData,
-    beneficiaryName,
-    beneficiaryBadgeData,
-  });
-
   return (
     <Wrapper>
       <Title>Proposer</Title>
