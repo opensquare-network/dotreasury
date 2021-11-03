@@ -65,7 +65,7 @@ const CustomTable = styled(Table)`
     min-width: 120px !important;
   }
   .proposal-related-links-cell {
-    min-width: 160px !important;
+    width: 160px !important;
     max-width: 160px !important;
   }
   .description-cell {
@@ -75,6 +75,7 @@ const CustomTable = styled(Table)`
     min-width: 140px !important;
   }
   .proposal-description-cell {
+    width: 368px !important;
     max-width: 368px !important;
   }
   .proposal-user-cell {

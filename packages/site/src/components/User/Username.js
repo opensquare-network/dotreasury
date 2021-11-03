@@ -11,7 +11,6 @@ const TextUsername = styled(TextMinor)`
   flex-grow: 1;
   font-size: 14px;
   line-height: 22px;
-  font-family: SF Mono !important;
   color: rgba(0, 0, 0, 0.65) !important;
   &:hover {
     color: rgba(0, 0, 0, 0.9) !important;
