@@ -53,12 +53,8 @@ const InformationTable = ({ loading, chain, proposalIndex }) => {
       putDescription(
         chain,
         "proposal",
-        proposalIndex,
-        {
-          description,
-          proposalType,
-          status,
-        },
+        parseInt(proposalIndex),
+        description,
         nowAddress
       )
     );
