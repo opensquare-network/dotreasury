@@ -36,16 +36,10 @@ const InformationTable = ({ loading, chain, proposalIndex }) => {
   const descriptionDetail = useSelector(descriptionSelector);
   const [openDesModal, setOpenDesModal] = useState(false);
   const [description, setDescription] = useState("");
-  const [proposalType, setProposalType] = useState("");
-  const [status, setStatus] = useState("");
   const nowAddress = useSelector(nowAddressSelector);
 
   useEffect(() => {
-    if (descriptionDetail?.description) {
-      setDescription(descriptionDetail.description?.description ?? "");
-      setProposalType(descriptionDetail.description?.proposalType ?? "");
-      setStatus(descriptionDetail.description?.status ?? "");
-    }
+    setDescription(descriptionDetail?.description ?? "");
   }, [descriptionDetail]);
 
   const addDes = () => {
@@ -111,39 +105,17 @@ const InformationTable = ({ loading, chain, proposalIndex }) => {
                 </TableCell>
               </Table.Cell>
             </Table.Row>
-            {descriptionDetail?.description?.description && (
+            {descriptionDetail?.description && (
               <Table.Row>
                 <Table.Cell>
                   <TableCell title={"Description"}>
                     <DescriptionWrapper>
-                      {descriptionDetail.description.description}
+                      {descriptionDetail.description}
                     </DescriptionWrapper>
                   </TableCell>
                 </Table.Cell>
               </Table.Row>
             )}
-            {/* {descriptionDetail?.description?.proposalType && (
-              <Table.Row>
-                <Table.Cell>
-                  <TableCell title={"Proposal type"}>
-                    <DescriptionWrapper>
-                      {descriptionDetail.description.proposalType}
-                    </DescriptionWrapper>
-                  </TableCell>
-                </Table.Cell>
-              </Table.Row>
-            )}
-            {descriptionDetail?.description?.status && (
-              <Table.Row>
-                <Table.Cell>
-                  <TableCell title={"Status"}>
-                    <DescriptionWrapper>
-                      {descriptionDetail.description.status}
-                    </DescriptionWrapper>
-                  </TableCell>
-                </Table.Cell>
-              </Table.Row>
-            )} */}
           </Table.Body>
         </StyledTable>
       </TableLoading>
@@ -161,18 +133,6 @@ const InformationTable = ({ loading, chain, proposalIndex }) => {
               label="Description"
               onChange={(_, { value }) => setDescription(value)}
             />
-            {/* <Form.Input
-              value={proposalType}
-              fluid
-              label="Proposal type"
-              onChange={(_, { value }) => setProposalType(value)}
-            />
-            <Form.Input
-              value={status}
-              fluid
-              label="Status"
-              onChange={(_, { value }) => setStatus(value)}
-            /> */}
           </Form>
         </Modal.Content>
         <Modal.Actions>

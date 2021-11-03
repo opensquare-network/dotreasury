@@ -10,25 +10,10 @@ const Wrapper = styled.div`
   }
 `;
 
-const DividerWrapper = styled.div`
-  font-size: 12px;
-  line-height: 18px;
-  color: rgba(0, 0, 0, 0.3);
-  display: flex;
-  align-items: center;
-  > :not(:first-child) {
-    ::before {
-      content: "·";
-      margin: 0 4px;
-    }
-  }
-`;
-
 const DescriptionCell = ({ description }) => {
-  console.log({ description });
   return (
     <Wrapper>
-      <div>{description?.description}</div>
+      <div>{description}</div>
     </Wrapper>
   );
 };
