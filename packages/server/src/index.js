@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const Koa = require("koa");
 const bodyParser = require("koa-bodyparser");
 const logger = require("koa-logger");
@@ -8,8 +10,6 @@ const config = require("../config");
 const { initDb } = require("./mongo");
 const { initDb: initAdminDb } = require("./mongo-admin");
 const { listenAndEmitInfo } = require("./websocket");
-
-require("dotenv").config();
 
 const app = new Koa();
 
