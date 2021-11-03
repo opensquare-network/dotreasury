@@ -159,7 +159,7 @@ const ProposalsTable = ({ data, loading, header, footer }) => {
                           </ExplorerLink>
                         </ProposeTimeWrapper>
                       </Table.Cell>
-                      <Table.Cell className="user-cell">
+                      <Table.Cell className="proposal-user-cell">
                         {isBeneficiary ? (
                           <User
                             address={item.beneficiary}
@@ -182,20 +182,26 @@ const ProposalsTable = ({ data, loading, header, footer }) => {
                           />
                         )}
                       </Table.Cell>
-                      <Table.Cell>
-                        <DescriptionCell />
+                      <Table.Cell className="proposal-description-cell">
+                        <DescriptionCell description={item.description} />
                       </Table.Cell>
                       <Table.Cell className="proposal-related-links-cell">
                         <RelatedLInks links={item.links} />
                       </Table.Cell>
-                      <Table.Cell textAlign={"right"}>
+                      <Table.Cell
+                        className="proposal-value-cell"
+                        textAlign={"right"}
+                      >
                         <Balance
                           value={item.value}
                           currency={symbol}
                           usdt={item.symbolPrice}
                         />
                       </Table.Cell>
-                      <Table.Cell className="status-cell" textAlign={"right"}>
+                      <Table.Cell
+                        className="proposal-status-cell"
+                        textAlign={"right"}
+                      >
                         <PairTextVertical
                           value={getStateWithVotingAyes(item)}
                           detail={dayjs(parseInt(item.latestState.time)).format(
