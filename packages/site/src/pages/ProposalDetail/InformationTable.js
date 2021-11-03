@@ -132,6 +132,11 @@ const InformationTable = ({ loading, chain, proposalIndex }) => {
               fluid
               label="Description"
               onChange={(_, { value }) => setDescription(value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  addDes();
+                }
+              }}
             />
           </Form>
         </Modal.Content>
