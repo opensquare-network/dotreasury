@@ -18,10 +18,10 @@
     "ksmCalcPriceStaging": "pm2 start ecosystem.config.js --only ksm-calc-price-staging --env production",
     "dotCalcPriceDev": "pm2 start ecosystem.config.js --only dot-calc-price-dev --env production",
     "ksmCalcPriceDev": "pm2 start ecosystem.config.js --only ksm-calc-price-dev --env production",
-    "test": "jest src/test"
+    "test": "jest src"
   },
   "dependencies": {
-    "@polkadot/api": "6.4.3-7",
+    "@polkadot/api": "6.6.2-5",
     "bignumber.js": "^9.0.1",
     "dayjs": "^1.10.4",
     "dotenv": "^8.2.0",
