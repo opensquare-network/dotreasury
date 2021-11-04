@@ -44,7 +44,7 @@ const ProposalLifeCycleTable = ({ loading }) => {
 
   return (
     <TableLoading loading={loading}>
-      <Table selectable unstackable>
+      <Table unstackable>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>Proposal Life Cycle</Table.HeaderCell>

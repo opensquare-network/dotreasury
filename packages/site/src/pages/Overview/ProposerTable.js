@@ -50,7 +50,7 @@ const ProposerTable = () => {
       <Title>Top Tip Finders</Title>
       <Wrapper>
         <TableWrapper>
-          <Table striped selectable unstackable>
+          <Table unstackable>
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell>Finder</Table.HeaderCell>

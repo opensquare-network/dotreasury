@@ -20,7 +20,7 @@ const RelatedLinks = ({ data }) => {
   if (data && data.length > 0) {
     return (
       <Wrapper>
-        <Table selectable unstackable>
+        <Table unstackable>
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell>Related Links</Table.HeaderCell>

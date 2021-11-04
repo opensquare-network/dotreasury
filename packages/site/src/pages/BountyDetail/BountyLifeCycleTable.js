@@ -66,7 +66,7 @@ const BountyLifeCycleTable = ({ loading }) => {
 
   return (
     <TableLoading loading={loading}>
-      <Table selectable unstackable>
+      <Table unstackable>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>Bounty Life Cycle</Table.HeaderCell>
