@@ -183,6 +183,6 @@ export function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-export function toLocaleStringWithFixed(num, fixed = 2) {
+export function toLocaleStringWithFixed(num = 0, fixed = 2) {
   return num.toLocaleString(undefined, { minimumFractionDigits: fixed });
 }
