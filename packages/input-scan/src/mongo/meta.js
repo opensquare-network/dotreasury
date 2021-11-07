@@ -72,7 +72,8 @@ async function getVersionCollection() {
 async function getAllVersionChangeHeights() {
   const col = await getVersionCollection();
   const versions = await col.find({}).sort({ height: 1 }).toArray();
-  return (versions || []).map((v) => v.height);
+
+  return versions || [];
 }
 
 async function getBlocks(startHeight, endHeight) {

@@ -32,6 +32,16 @@ function setApi(targetApi) {
   api = targetApi;
 }
 
+// for test
+function setProvider(p) {
+  provider = p;
+}
+
+// for test
+function getProvider() {
+  return provider;
+}
+
 async function disconnect() {
   if (provider) {
     await provider.disconnect();
@@ -40,6 +50,8 @@ async function disconnect() {
 
 module.exports = {
   getApi,
+  setProvider,
+  getProvider,
   disconnect,
   setApi,
 };

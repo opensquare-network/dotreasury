@@ -40,7 +40,7 @@ async function oneStepScan(startHeight) {
 
   if (isUseMetaDb()) {
     const specHeights = getSpecHeights();
-    if (targetHeight > last(specHeights)) {
+    if (targetHeight > last(specHeights).height) {
       await updateSpecs();
     }
   }
