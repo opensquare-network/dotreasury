@@ -1,5 +1,5 @@
 const { ApiPromise, WsProvider } = require("@polkadot/api");
-const { setApi } = require("../../../api");
+const { setApi, setProvider } = require("../../../api");
 const { setChain, CHAINS, } = require("../../../env");
 
 jest.setTimeout(3000000);
@@ -11,6 +11,7 @@ describe("Burnt event", () => {
   beforeAll(async () => {
     provider = new WsProvider("wss://kusama.api.onfinality.io/public-ws", 1000);
     api = await ApiPromise.create({ provider });
+    setProvider(provider)
     setApi(api);
     setChain(CHAINS.KUSAMA);
   });

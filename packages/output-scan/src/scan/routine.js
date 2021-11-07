@@ -29,11 +29,9 @@ async function beginRoutineScan() {
       targetHeight = scanHeight + step;
     }
 
-    if (isUseMetaDb()) {
-      const specHeights = getSpecHeights();
-      if (targetHeight > last(specHeights)) {
-        await updateSpecs();
-      }
+    const specHeights = getSpecHeights();
+    if (targetHeight > last(specHeights).height) {
+      await updateSpecs(targetHeight);
     }
 
     const heights = [];

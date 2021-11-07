@@ -4,7 +4,7 @@ const {
   getMotionVoting,
   getVotingFromStorageByHeight,
 } = require("./votingStorage");
-const { setApi } = require("../../../api");
+const { setApi, setProvider } = require("../../../api");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 
 jest.setTimeout(3000000);
@@ -25,6 +25,7 @@ describe("test get kusama motion voting", () => {
   beforeAll(async () => {
     provider = new WsProvider("wss://pub.elara.patract.io/kusama", 1000);
     api = await ApiPromise.create({ provider });
+    setProvider(provider)
     setApi(api);
     setChain(CHAINS.KUSAMA);
   });
@@ -35,7 +36,7 @@ describe("test get kusama motion voting", () => {
 
   test("works", async () => {
     const blockHeight = 126209;
-    setSpecHeights([blockHeight]);
+    await setSpecHeights([blockHeight]);
     const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
     const indexer = { blockHash, blockHeight };
 
@@ -45,7 +46,7 @@ describe("test get kusama motion voting", () => {
 
   test("at height works", async () => {
     const blockHeight = 126209;
-    setSpecHeights([blockHeight]);
+    await setSpecHeights([blockHeight]);
 
     const voting = await getVotingFromStorageByHeight(
       ksmTestMotionHash,

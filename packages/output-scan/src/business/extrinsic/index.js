@@ -26,7 +26,7 @@ async function unwrapProxy(call, signer, extrinsicIndexer, events) {
 }
 
 async function handleMultisig(call, signer, extrinsicIndexer, events) {
-  const registry = await findRegistry(extrinsicIndexer.blockHeight);
+  const registry = await findRegistry(extrinsicIndexer);
   const callHex = call.args[3];
   const threshold = call.args[0].toNumber();
   const otherSignatories = call.args[1].toJSON();

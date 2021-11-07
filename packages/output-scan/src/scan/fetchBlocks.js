@@ -17,7 +17,10 @@ async function fetchBlocksFromDb(heights = []) {
 
   const blocks = [];
   for (const blockInDb of blocksInDb) {
-    const registry = await findRegistry(blockInDb.height);
+    const registry = await findRegistry({
+      blockHeight: blockInDb.height,
+      blockHash: blockInDb.blockHash,
+    });
     const block = new GenericBlock(registry, blockInDb.block.block);
     const allEvents = registry.createType(
       "Vec<EventRecord>",

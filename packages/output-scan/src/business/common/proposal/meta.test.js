@@ -1,12 +1,12 @@
 const { setSpecHeights } = require("../../../chain/specs");
-const { setApi } = require("../../../api");
+const { setApi, setProvider } = require("../../../api");
 jest.setTimeout(3000000);
 
 const { getTreasuryProposalMeta } = require("./meta");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 
 async function testProposalData(api, height, proposalIndex, toTestMeta) {
-  setSpecHeights([height]);
+  await setSpecHeights([height]);
   const blockHash = await api.rpc.chain.getBlockHash(height);
 
   const meta = await getTreasuryProposalMeta(blockHash, proposalIndex);
@@ -20,6 +20,7 @@ describe("test get treasury proposal", () => {
   beforeAll(async () => {
     provider = new WsProvider("wss://pub.elara.patract.io/kusama", 1000);
     api = await ApiPromise.create({ provider });
+    setProvider(provider)
     setApi(api);
   });
 

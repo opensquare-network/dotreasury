@@ -11,7 +11,7 @@ async function test() {
   ];
 
   for (const height of blockHeights) {
-    setSpecHeights([height - 1]);
+    await setSpecHeights([height - 1]);
 
     const api = await getApi();
     const blockHash = await api.rpc.chain.getBlockHash(height);

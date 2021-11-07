@@ -12,7 +12,7 @@ async function getMotionProposal(blockHash, motionHash) {
 
 async function getMotionProposalCall(motionHash, indexer) {
   const raw = await getMotionProposal(indexer.blockHash, motionHash);
-  const registry = await findRegistry(indexer.blockHeight);
+  const registry = await findRegistry(indexer);
   return normalizeCall(new GenericCall(registry, raw.toHex()));
 }
 

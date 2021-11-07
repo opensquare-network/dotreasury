@@ -30,8 +30,20 @@ async function disconnect() {
   }
 }
 
+// for test
+function setProvider(p) {
+  provider = p;
+}
+
+// for test
+function getProvider() {
+  return provider;
+}
+
 module.exports = {
   getApi,
+  setProvider,
+  getProvider,
   disconnect,
   setApi,
 };

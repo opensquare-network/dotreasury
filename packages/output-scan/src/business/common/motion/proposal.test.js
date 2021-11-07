@@ -1,7 +1,7 @@
 const { setSpecHeights } = require("../../../chain/specs");
 const { setChain } = require("../../../env");
 const { getMotionProposalCall } = require("./proposalStorage");
-const { setApi } = require("../../../api");
+const { setApi, setProvider } = require("../../../api");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 const { CHAINS } = require("../../../env")
 
@@ -41,6 +41,7 @@ describe("test get kusama motion proposal", () => {
     provider = new WsProvider("wss://kusama.api.onfinality.io/public-ws", 1000);
     api = await ApiPromise.create({ provider });
     setApi(api);
+    setProvider(provider);
     setChain(CHAINS.KUSAMA);
   });
 
@@ -50,7 +51,7 @@ describe("test get kusama motion proposal", () => {
 
   test("works", async () => {
     const blockHeight = 126209;
-    setSpecHeights([blockHeight]);
+    await setSpecHeights([blockHeight]);
     const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
     const indexer = { blockHash, blockHeight };
 
@@ -72,6 +73,7 @@ describe("test get polkadot motion proposal", () => {
       1000
     );
     api = await ApiPromise.create({ provider });
+    setProvider(provider)
     setApi(api);
     setChain(CHAINS.POLKADOT);
   });
@@ -82,7 +84,7 @@ describe("test get polkadot motion proposal", () => {
 
   test("by proxy works", async () => {
     const blockHeight = 3543099;
-    setSpecHeights([blockHeight]);
+    await setSpecHeights([blockHeight]);
     const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
     const indexer = { blockHash, blockHeight };
     const motionHash =

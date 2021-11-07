@@ -1,65 +1,50 @@
 const findLast = require("lodash.findlast");
-const last = require("lodash.last");
 const { getAllVersionChangeHeights } = require("../../mongo/meta");
-const { getRegistryByHeight } = require("../registry");
-const { isUseMetaDb, } = require("../../env");
-const { getApi } = require("../../api");
-const { default: upgrades } = require("@polkadot/types-known/upgrades");
+const { getApi, getProvider } = require("../../api");
 
 let versionChangedHeights = [];
-let registryMap = {};
 
 // For test
-function setSpecHeights(heights = []) {
-  versionChangedHeights = heights;
+async function setSpecHeights(heights = []) {
+  const api = await getApi();
+  for (const height of heights) {
+    const blockHash = await api.rpc.chain.getBlockHash(height);
+    const provider = getProvider()
+    const runtimeVersion = await provider.send('chain_getRuntimeVersion', [blockHash]);
+    versionChangedHeights.push({
+      height,
+      runtimeVersion,
+    })
+  }
 }
 
-async function updateSpecs() {
-  if (isUseMetaDb()) {
-    versionChangedHeights = await getAllVersionChangeHeights();
-    return
-  }
-
-  const api = await getApi();
-  const targetNetworkUpgrades = upgrades.find(upgrade => api.genesisHash.eq(upgrade.genesisHash));
-  if (!targetNetworkUpgrades) {
-    throw new Error("Can not find target upgrades");
-  }
-
-  versionChangedHeights = targetNetworkUpgrades.versions.map(({ blockNumber }) => blockNumber.toNumber());
+async function updateSpecs(toScanHeight) {
+  versionChangedHeights = await getAllVersionChangeHeights();
+  const spec = findMostRecentSpec(toScanHeight);
+  const index = versionChangedHeights.findIndex(v => v.height === spec.height);
+  versionChangedHeights.splice(0, index);
 }
 
 function getSpecHeights() {
   return versionChangedHeights;
 }
 
-async function findRegistry(height) {
-  let targetHeight;
-  if (isUseMetaDb() && newHeight(height)) {
-    targetHeight = height;
-  } else {
-    targetHeight = findLast(
-      versionChangedHeights,
-      (h) => h <= height
-    );
-    if (!targetHeight) {
-      throw new Error(`Can not find height ${ height }`);
-    }
-  }
-
-  let registry = registryMap[targetHeight];
-  if (!registry) {
-    registry = await getRegistryByHeight(targetHeight);
-    if (isUseMetaDb()) {
-      registryMap[targetHeight] = registry;
-    }
-  }
-
-  return registry;
+async function findRegistry({ blockHash, blockHeight: height }) {
+  const spec = findMostRecentSpec(height)
+  const api = await getApi()
+  return (await api.getBlockRegistry(blockHash, spec.runtimeVersion)).registry;
 }
 
-function newHeight(height) {
-  return versionChangedHeights.length <= 0 || height > last(versionChangedHeights)
+function findMostRecentSpec(height) {
+  const spec = findLast(
+    versionChangedHeights,
+    (h) => h.height <= height
+  );
+  if (!spec) {
+    throw new Error(`Can not find height ${ height }`);
+  }
+
+  return spec
 }
 
 module.exports = {

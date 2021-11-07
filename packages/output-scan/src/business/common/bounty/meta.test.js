@@ -1,12 +1,12 @@
 const { getBountyDescription } = require("./description");
 const { getBountyMeta } = require("./meta");
 const { setSpecHeights } = require("../../../chain/specs");
-const { setApi } = require("../../../api");
+const { setApi, setProvider, } = require("../../../api");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 jest.setTimeout(3000000);
 
 async function testBountyData(api, height, bountyIndex, toTestMeta) {
-  setSpecHeights([height]);
+  await setSpecHeights([height]);
   const blockHash = await api.rpc.chain.getBlockHash(height);
 
   const meta = await getBountyMeta(blockHash, bountyIndex);
@@ -14,7 +14,7 @@ async function testBountyData(api, height, bountyIndex, toTestMeta) {
 }
 
 async function testBountyDescription(api, height, bountyIndex, target) {
-  setSpecHeights([height]);
+  await setSpecHeights([height]);
   const blockHash = await api.rpc.chain.getBlockHash(height);
 
   const description = await getBountyDescription(blockHash, bountyIndex)
@@ -28,6 +28,7 @@ describe("test get treasury bounty", () => {
   beforeAll(async () => {
     provider = new WsProvider("wss://pub.elara.patract.io/kusama", 1000);
     api = await ApiPromise.create({ provider });
+    setProvider(provider)
     setApi(api);
   });
 

@@ -1,3 +1,4 @@
+const { getNextScanHeight } = require("./mongo/scanHeight");
 require("dotenv").config();
 
 const { beginScan } = require("./scan");
@@ -7,8 +8,10 @@ const { updateHeight } = require("./chain/latestHead");
 const { disconnect } = require("./api");
 
 async function main() {
+  let scanHeight = await getNextScanHeight();
+
   await updateHeight();
-  await updateSpecs();
+  await updateSpecs(scanHeight);
   checkSpecs();
 
   await beginScan();

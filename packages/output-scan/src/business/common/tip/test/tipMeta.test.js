@@ -1,5 +1,5 @@
 const { setSpecHeights } = require("../../../../chain/specs");
-const { setApi } = require("../../../../api");
+const { setApi, setProvider } = require("../../../../api");
 const { getTipReason } = require("../utils");
 const { getTipMetaFromStorage } = require("../utils");
 jest.setTimeout(3000000);
@@ -7,7 +7,7 @@ jest.setTimeout(3000000);
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 
 async function testTipData(api, height, hash, toTestMeta) {
-  setSpecHeights([height]);
+  await setSpecHeights([height]);
   const blockHash = await api.rpc.chain.getBlockHash(height);
 
   const meta = await getTipMetaFromStorage(blockHash, hash);
@@ -22,6 +22,7 @@ describe("test get tip", () => {
     provider = new WsProvider("wss://pub.elara.patract.io/kusama", 1000);
     api = await ApiPromise.create({ provider, });
 
+    setProvider(provider)
     setApi(api);
   });
 
@@ -92,7 +93,7 @@ describe("test get tip", () => {
 
   test("reason works", async () => {
     const height = 602672;
-    setSpecHeights([height]);
+    await setSpecHeights([height]);
     const blockHash = await api.rpc.chain.getBlockHash(height);
 
     const reason = await getTipReason(

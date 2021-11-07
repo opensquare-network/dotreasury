@@ -1,6 +1,6 @@
 const { getTreasuryBalance } = require("./freeBalance");
 const { setSpecHeights } = require("../../../chain/specs");
-const { setApi } = require("../../../api");
+const { setApi, setProvider } = require("../../../api");
 const { setChain, CHAINS, } = require("../../../env");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 
@@ -8,7 +8,7 @@ jest.setTimeout(3000000);
 
 async function testTreasuryBalance(api, height, targetBalance) {
   const blockHeight = height;
-  setSpecHeights([blockHeight]);
+  await setSpecHeights([blockHeight]);
   const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
   const balance = await getTreasuryBalance(blockHash);
   expect(balance).toBe(targetBalance);
@@ -21,6 +21,7 @@ describe("Getting balance of", () => {
   beforeAll(async () => {
     provider = new WsProvider("wss://kusama.api.onfinality.io/public-ws", 1000);
     api = await ApiPromise.create({ provider });
+    setProvider(provider);
     setApi(api);
     setChain(CHAINS.KUSAMA);
   });
