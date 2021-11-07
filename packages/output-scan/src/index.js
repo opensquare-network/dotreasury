@@ -1,6 +1,6 @@
-const { getNextScanHeight } = require("./mongo/scanHeight");
 require("dotenv").config();
 
+const { getNextScanHeight } = require("./mongo/scanHeight");
 const { beginScan } = require("./scan");
 const { checkSpecs } = require("./chain/specs/check");
 const { updateSpecs } = require("./chain/specs");
