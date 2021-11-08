@@ -20,9 +20,6 @@ async function setSpecHeights(heights = []) {
 
 async function updateSpecs(toScanHeight) {
   versionChangedHeights = await getAllVersionChangeHeights();
-  const spec = findMostRecentSpec(toScanHeight);
-  const index = versionChangedHeights.findIndex(v => v.height === spec.height);
-  versionChangedHeights.splice(0, index);
 }
 
 function findMostRecentSpec(height) {

@@ -12,6 +12,7 @@
     "@polkadot/api": "6.6.2-5",
     "bignumber.js": "^9.0.1",
     "dotenv": "^8.2.0",
+    "lodash.omit": "^4.5.0",
     "log4js": "^6.3.0",
     "mongodb": "^4.1.3"
   },
