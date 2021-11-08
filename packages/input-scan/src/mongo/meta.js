@@ -1,5 +1,6 @@
 const { currentChain } = require("../env");
 const { MongoClient } = require("mongodb");
+const omit = require("lodash.omit");
 
 function getDbName() {
   const chain = currentChain();
