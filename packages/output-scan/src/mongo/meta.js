@@ -1,4 +1,5 @@
 const { MongoClient } = require("mongodb");
+const omit = require("lodash.omit");
 
 function getDbName() {
   const dbName = process.env.MONGO_DB_META_NAME;
@@ -70,7 +71,14 @@ async function getAllVersionChangeHeights() {
   const col = await getVersionCollection();
   const versions = await col.find({}).sort({ height: 1 }).toArray();
 
-  return versions || [];
+  return (versions || []).map(v => {
+    return {
+      height: v.height,
+      runtimeVersion: {
+        ...(omit(v.runtimeVersion, ['apis']))
+      }
+    }
+  });
 }
 
 async function getBlocks(startHeight, endHeight) {

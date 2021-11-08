@@ -5,3 +5,4 @@ log
 .idea
 packages/input-scan/globalConfig.json
 packages/output-scan/globalConfig.json
+*.deploy.sh
