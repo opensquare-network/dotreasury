@@ -10,10 +10,9 @@ async function getApi() {
       throw new Error("WS_ENDPOINT not set");
     }
 
-    console.log(`Connect to endpoint:`, wsEndpoint);
-
     provider = new WsProvider(wsEndpoint, 1000);
     api = await ApiPromise.create({ provider });
+    console.log(`Connected to endpoint:`, wsEndpoint);
   }
 
   return api;
