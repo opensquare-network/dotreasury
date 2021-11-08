@@ -15,11 +15,18 @@ async function fetchBlocks(heights = []) {
 async function fetchBlocksFromDb(heights = []) {
   const blocksInDb = await getBlocksByHeights(heights);
 
+  const api = await getApi();
+
   const blocks = [];
   for (const blockInDb of blocksInDb) {
+    let blockHash = blockInDb.blockHash;
+    if (!blockHash) {
+      blockHash = await api.rpc.chain.getBlockHash(blockInDb.height);
+    }
+
     const registry = await findRegistry({
       blockHeight: blockInDb.height,
-      blockHash: blockInDb.blockHash,
+      blockHash,
     });
     const block = new GenericBlock(registry, blockInDb.block.block);
     const allEvents = registry.createType(
