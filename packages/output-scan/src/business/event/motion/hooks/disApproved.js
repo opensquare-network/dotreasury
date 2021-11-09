@@ -13,7 +13,9 @@ async function checkAndHandleBounty(motion, indexer) {
   }
 
   const meta = await getBountyMeta(indexer.blockHash, treasuryBountyId);
-  await updateBounty(treasuryBountyId, { meta, });
+  if (meta) {
+    await updateBounty(treasuryBountyId, { meta, });
+  }
 }
 
 async function checkAndHandleProposal(motion, indexer) {

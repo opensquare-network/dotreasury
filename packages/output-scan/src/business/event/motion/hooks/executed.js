@@ -19,6 +19,10 @@ async function handleBusinessWhenMotionExecuted(motionHash, indexer) {
   }
 
   const meta = await getBountyMeta(indexer.blockHash, treasuryBountyId);
+  if (!meta) {
+    return
+  }
+
   let updates = {
     meta,
   }
