@@ -1,5 +1,4 @@
 const last = require("lodash.last");
-const { isUseMetaDb } = require("../env");
 const { scanNormalizedBlock } = require("./block");
 const { fetchBlocks } = require("./fetchBlocks");
 const { logger } = require("../logger");
