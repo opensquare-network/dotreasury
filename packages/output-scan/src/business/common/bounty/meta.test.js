@@ -37,6 +37,17 @@ describe("test get treasury bounty", () => {
   });
 
   test("meta works", async () => {
+    await testBountyData(api, 6006977, 1, {
+      "proposer": "GLVeryFRbg5hEKvQZcAnLvXZEXhiYaBjzSDwrXBXrfPF7wj",
+      "value": 1530000000000000,
+      "fee": 0,
+      "curatorDeposit": 0,
+      "bond": 214999999980,
+      "status": {
+        "proposed": null
+      }
+    })
+
     await testBountyData(api, 4501546, 0, {
       "proposer": "GLVeryFRbg5hEKvQZcAnLvXZEXhiYaBjzSDwrXBXrfPF7wj",
       "value": 1165000000000000,
