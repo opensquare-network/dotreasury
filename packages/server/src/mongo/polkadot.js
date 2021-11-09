@@ -41,6 +41,7 @@ let motionCol = null;
 let burntCol = null;
 let outputTransferCol = null;
 let outputWeeklyStatsCol = null;
+let outputStatusCol = null;
 
 let incomeInflationCol = null;
 let stakingSlashCol = null;
@@ -77,6 +78,7 @@ async function initDb() {
   burntCol = outputDb.collection(burntCollectionName);
   outputTransferCol = outputDb.collection(outputTransferCollectionName);
   outputWeeklyStatsCol = outputDb.collection(weeklyStatsCollectionName);
+  outputStatusCol = outputDb.collection(statusCollectionName);
 
   await _createIndexes();
 }
@@ -99,6 +101,11 @@ async function tryInit(col) {
 async function getStatusCollection() {
   await tryInit(statusCol);
   return statusCol;
+}
+
+async function getOutputStatusCollection() {
+  await tryInit(outputStatusCol);
+  return outputStatusCol;
 }
 
 async function getTipCollection() {
@@ -200,4 +207,5 @@ module.exports = {
   getOthersIncomeCollection,
   getInputWeeklyStatsCollection,
   getOutputWeeklyStatsCollection,
+  getOutputStatusCollection,
 };

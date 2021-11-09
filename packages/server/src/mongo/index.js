@@ -12,6 +12,10 @@ function getStatusCollection(chain) {
   return db(chain).getStatusCollection();
 }
 
+function getOutputStatusCollection(chain) {
+  return db(chain).getOutputStatusCollection();
+}
+
 function getTipCollection(chain) {
   return db(chain).getTipCollection();
 }
@@ -95,4 +99,5 @@ module.exports = {
   getOthersIncomeCollection,
   getInputWeeklyStatsCollection,
   getOutputWeeklyStatsCollection,
+  getOutputStatusCollection,
 };
