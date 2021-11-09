@@ -52,14 +52,14 @@ async function beginRoutineScan() {
 
         await scanNormalizedBlock(block.block, block.events);
         await updateScanHeight(block.height);
-
-        // if (block.height % 30000 === 0) {
-        //   console.log(`${block.height} restart process in case of memory leak`);
-        //   process.exit(0);
-        // }
       } catch (e) {
         await sleep(3000);
         logger.error(`Error with block scan ${ block.height }`, e);
+      } finally {
+        if (block.height % 100000 === 0) {
+          console.log(`${block.height} restart process in case of memory leak`);
+          process.exit(0);
+        }
       }
     }
 

@@ -21,6 +21,7 @@ async function beginScan() {
   let scanHeight = await getNextScanHeight();
   while (true) {
     scanHeight = await oneStepScan(scanHeight);
+    await sleep(0);
   }
 }
 
