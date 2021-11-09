@@ -9,6 +9,8 @@ const { fetchBlocks } = require("./fetchBlocks");
 const { getBlockIndexer } = require("../block/getBlockIndexer");
 const { tryCreateStatPoint } = require("../stats");
 
+let count = 0;
+
 async function scanKnownHeights() {
   const toScanHeight = await getNextScanHeight();
   let heights = await getNextKnownHeights(toScanHeight);
@@ -23,12 +25,19 @@ async function scanKnownHeights() {
         await updateScanHeight(block.height);
       } catch (e) {
         await sleep(0);
-        logger.error(`Error with block scan ${block.height}`, e);
+        logger.error(`Error with block scan ${ block.height }`, e);
       }
     }
 
     const lastHeight = last(blocks || [])?.height
-    logger.info(`${lastHeight} scan finished! - known height scan`)
+    logger.info(`${ lastHeight } scan finished! - known height scan`)
+
+    count++
+    if (count % 10 === 0) {
+      console.log(`${ lastHeight } restart process in case of memory leak`);
+      process.exit(0);
+    }
+
     heights = await getNextKnownHeights(lastHeight + 1);
   }
 }
