@@ -1,4 +1,5 @@
 const findLast = require("lodash.findlast");
+const { getProvider } = require("../../api");
 const { getAllVersionChangeHeights } = require("../../mongo/meta");
 const { getApi } = require("../../api");
 

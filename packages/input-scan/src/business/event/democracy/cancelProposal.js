@@ -19,7 +19,7 @@ async function handleCancelProposalSlash(event, indexer, blockEvents) {
     return
   }
 
-  const proposalHash = event.data[0].toString()
+  const proposalHash = preEvent.event.data[0].toString()
   const call = await getMotionProposalByHeight(proposalHash, indexer.blockHeight - 1);
   if (Modules.Democracy !== call.section || DemocracyMethods.cancelProposal !== call.method) {
     return
