@@ -12,6 +12,7 @@ const {
   SudoMethods,
 } = require("../common/constants");
 const { GenericCall } = require("@polkadot/types");
+const { logger } = require("../../logger")
 
 async function handleCall(call, author, extrinsicIndexer, events) {
   await handleTipCall(call, author, extrinsicIndexer, events);
@@ -36,7 +37,14 @@ async function handleMultisig(call, signer, extrinsicIndexer, events) {
     registry.chainSS58
   );
 
-  const innerCall = new GenericCall(registry, callHex);
+  let innerCall;
+  try {
+    innerCall = new GenericCall(registry, callHex);
+  } catch (e) {
+    logger.error(`error when parse multiSig`, extrinsicIndexer);
+    return;
+  }
+
   await handleWrappedCall(innerCall, multisigAddr, extrinsicIndexer);
 }
 
