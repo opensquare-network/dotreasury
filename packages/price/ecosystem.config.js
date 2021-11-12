@@ -24,7 +24,7 @@ module.exports = {
     {
       name: "calc-price",
       script: "src/calcprice/index.js",
-      cron_restart: "* */5 * * *",
+      cron_restart: "*/3 * * * *",
       autorestart: false,
       log_date_format: "YYYY-MM-DD HH:mm Z",
       env: {
