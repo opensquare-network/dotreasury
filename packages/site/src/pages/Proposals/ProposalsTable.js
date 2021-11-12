@@ -94,8 +94,6 @@ const getStateWithVotingAyes = (item) => {
     }
   }
 
-  console.log('item', item)
-  console.log('state', state)
   return state;
 };
 
