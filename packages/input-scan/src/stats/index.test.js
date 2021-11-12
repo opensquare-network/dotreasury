@@ -8,7 +8,7 @@ const { updateScanStatus } = require("../mongo/scanHeight");
 
 jest.mock("../utils/freeBalance");
 
-describe("Stats Test", () => {
+xdescribe("Stats Test", () => {
   beforeAll(async () => {
     await updateScanStatus(100800, {});
   });
