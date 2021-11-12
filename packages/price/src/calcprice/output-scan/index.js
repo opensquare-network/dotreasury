@@ -1,6 +1,6 @@
 const { MongoClient } = require("mongodb");
 
-function DB(dbName) {
+function DB(dbUrl, dbName) {
   const tipCollectionName = "tip";
   const bountyCollectionName = "bounty";
   const proposalCollectionName = "proposal";
@@ -8,13 +8,12 @@ function DB(dbName) {
   let client = null;
   let db = null;
 
-  const mongoUrl = process.env.MONGO_URL || "mongodb://localhost:27017";
   let tipCol = null;
   let bountyCol = null;
   let proposalCol = null;
 
   async function initDb() {
-    client = await MongoClient.connect(mongoUrl, {
+    client = await MongoClient.connect(dbUrl, {
       useUnifiedTopology: true,
     });
 

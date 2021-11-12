@@ -19,6 +19,10 @@ const dbNames = {
   kusama: ksmDbName,
   polkadot: dotDbName,
 };
+const dbUrls = {
+  kusama: process.env.KSM_MONGO_URL,
+  polkadot: process.env.DOT_MONGO_URL,
+}
 
 const { getPrice } = require("./price");
 
@@ -48,12 +52,13 @@ async function savePrice(chain, col) {
 
 async function main() {
   for (const chain of ["kusama", "polkadot"]) {
+    const dbUrl = dbUrls[chain];
     const dbName = dbNames[chain];
     const {
       getTipCollection,
       getProposalCollection,
       getBountyCollection,
-    } = DB(dbName);
+    } = DB(dbUrl, dbName);
 
     const tipCol = await getTipCollection();
     await savePrice(chain, tipCol);
