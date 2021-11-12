@@ -7,7 +7,8 @@
   },
   "scripts": {
     "deploy:ksm": "pm2 start ecosystem.config.js --only ksm-price-tracker",
-    "deploy:dot": "pm2 start ecosystem.config.js --only dot-price-tracker"
+    "deploy:dot": "pm2 start ecosystem.config.js --only dot-price-tracker",
+    "deploy:calc": "pm2 start ecosystem.config.js --only calc-price"
   },
   "dependencies": {
     "abort-controller": "^3.0.0",
