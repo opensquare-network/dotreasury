@@ -10,7 +10,7 @@ async function handleRejected(event, eventIndexer) {
   const [proposalId, value] = eventData;
 
   const state = {
-    name: TreasuryProposalEvents.Rejected,
+    state: TreasuryProposalEvents.Rejected,
     data: eventData,
     indexer: eventIndexer,
   };

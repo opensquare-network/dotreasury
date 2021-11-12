@@ -83,16 +83,19 @@ const BeneficiarySwitch = styled.div`
 `;
 
 const getStateWithVotingAyes = (item) => {
-  const state = item.latestState.state;
+  const { state: stateValue, name } = item.latestState;
+  const state = stateValue || name;
   const isProposalVoting = ["ApproveVoting", "RejectVoting"].includes(state);
 
   if (isProposalVoting) {
     const nAyes = item.latestState.motionVoting?.ayes?.length;
     if (nAyes !== undefined) {
-      return state + ` (${nAyes})`;
+      return state + ` (${ nAyes })`;
     }
   }
 
+  console.log('item', item)
+  console.log('state', state)
   return state;
 };
 

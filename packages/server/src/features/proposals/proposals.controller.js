@@ -46,7 +46,7 @@ class ProposalsController {
         links: item.links || [],
         description: item.description,
         latestState: {
-          state: item.state?.state,
+          state: item.state?.state || item.state?.name,
           time: (
             item.state?.eventIndexer ||
             item.state?.extrinsicIndexer ||
