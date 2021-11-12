@@ -114,7 +114,7 @@ const SlashTable = ({ data, loading, header, footer }) => {
                         >
                           <EventWrapper>
                             <Image src={"/imgs/event.svg"} />
-                            <EventID>{`${item.indexer.blockHeight}-${item.eventSort}`}</EventID>
+                            <EventID>{`${item.indexer.blockHeight}-${item.indexer.eventIndex}`}</EventID>
                           </EventWrapper>
                         </ExplorerLink>
                       </Table.Cell>

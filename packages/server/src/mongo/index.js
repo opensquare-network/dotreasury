@@ -12,6 +12,10 @@ function getStatusCollection(chain) {
   return db(chain).getStatusCollection();
 }
 
+function getOutputStatusCollection(chain) {
+  return db(chain).getOutputStatusCollection();
+}
+
 function getTipCollection(chain) {
   return db(chain).getTipCollection();
 }
@@ -68,8 +72,12 @@ function getOthersIncomeCollection(chain) {
   return db(chain).getOthersIncomeCollection();
 }
 
-function getWeeklyStatsCollection(chain) {
-  return db(chain).getWeeklyStatsCollection();
+function getInputWeeklyStatsCollection(chain) {
+  return db(chain).getInputWeeklyStatsCollection();
+}
+
+function getOutputWeeklyStatsCollection(chain) {
+  return db(chain).getOutputWeeklyStatsCollection();
 }
 
 module.exports = {
@@ -89,5 +97,7 @@ module.exports = {
   getIdentitySlashCollection,
   getIncomeTransferCollection,
   getOthersIncomeCollection,
-  getWeeklyStatsCollection,
+  getInputWeeklyStatsCollection,
+  getOutputWeeklyStatsCollection,
+  getOutputStatusCollection,
 };

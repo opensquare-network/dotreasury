@@ -45,15 +45,15 @@ function isMotion(timelineItem) {
 
 function timelineItemHeight(timelineItem) {
   if (isMotion(timelineItem)) {
-    return timelineItem.timeline[0].extrinsic.extrinsicIndexer.blockHeight;
+    return timelineItem.timeline[0].indexer.blockHeight;
   }
 
   if ("extrinsic" === timelineItem.type) {
-    return timelineItem.extrinsicIndexer.blockHeight;
+    return timelineItem.indexer.blockHeight;
   }
 
   if ("event" === timelineItem.type) {
-    return timelineItem.eventIndexer.blockHeight;
+    return timelineItem.indexer.blockHeight;
   }
 
   return null;
@@ -73,16 +73,17 @@ function processTimeline(bountyDetail, scanHeight, symbol) {
     item.timeline
       ? ((motion) => ({
           index: motion.index,
-          defaultUnfold: !motion.result,
+          defaultUnfold: !motion.isFinal,
           subTimeline: (motion.timeline || []).map((item) => ({
             name:
-              item.action === "Propose"
+              item.method === "Propose"
                 ? `Motion #${motion.index}`
-                : item.action,
-            extrinsicIndexer: item.extrinsic.extrinsicIndexer,
+                : item.method,
+            extrinsicIndexer: item.type === "extrinsic" ? item.indexer : undefined,
+            eventIndexer: item.type === "event" ? item.indexer : undefined,
             fields: (() => {
-              if (item.action === "Propose") {
-                const [proposer, , , threshold] = item.eventData;
+              if (item.method === "Proposed") {
+                const { proposer, threshold } = item.args;
                 const ayes = motion.voting?.ayes?.length || 0;
                 const nays = motion.voting?.nays?.length || 0;
                 const proposalArgs = item.extrinsic?.args?.proposal?.args ?? {};
@@ -106,7 +107,7 @@ function processTimeline(bountyDetail, scanHeight, symbol) {
 
                 if (
                   scanHeight > 0 &&
-                  !motion.result &&
+                  !motion.isFinal &&
                   motion.voting?.end > scanHeight
                 ) {
                   const blocks = motion.voting?.end - scanHeight;
@@ -127,8 +128,8 @@ function processTimeline(bountyDetail, scanHeight, symbol) {
                     value: (
                       <Proposer
                         address={proposer}
-                        agree={motion.result && motion.result === "Approved"}
-                        value={motion.method}
+                        agree={motion.isFinal && motion.timeline.some(item => item.method === "Approved")}
+                        value={motion.proposal.method}
                         args={argItems}
                         threshold={threshold}
                         ayes={ayes}
@@ -137,8 +138,8 @@ function processTimeline(bountyDetail, scanHeight, symbol) {
                     ),
                   },
                 ];
-              } else if (item.action === "Vote") {
-                const [voter, , agree] = item.eventData;
+              } else if (item.method === "Voted") {
+                const { voter, approve: agree } = item.args;
                 return [
                   {
                     value: (
@@ -150,12 +151,8 @@ function processTimeline(bountyDetail, scanHeight, symbol) {
                     ),
                   },
                 ];
-              } else if (item.action === "Close") {
-                return [
-                  {
-                    title: motion.result,
-                  },
-                ];
+              } else if (item.method === "Closed") {
+                return [];
               } else {
                 return [];
               }
@@ -232,8 +229,8 @@ function processTimeline(bountyDetail, scanHeight, symbol) {
           }
 
           return {
-            extrinsicIndexer: item.extrinsicIndexer,
-            eventIndexer: item.eventIndexer,
+            extrinsicIndexer: item.type === "extrinsic" ? item.indexer : undefined,
+            eventIndexer: item.type === "event" ? item.indexer : undefined,
             name: item.name,
             fields,
           };

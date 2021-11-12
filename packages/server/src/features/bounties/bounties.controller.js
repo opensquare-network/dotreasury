@@ -13,11 +13,11 @@ const bountyStatus = (bounty) =>
   bounty?.status?.pendingPayout;
 
 const bountyStatusName = (bounty) => {
-  if (bounty.state?.name === "BountyRejected") {
+  if (bounty.state?.state === "BountyRejected") {
     return "Rejected";
-  } else if (bounty.state?.name === "BountyCanceled") {
+  } else if (bounty.state?.state === "BountyCanceled") {
     return "Canceled";
-  } else if (bounty.state?.name === "BountyClaimed") {
+  } else if (bounty.state?.state === "BountyClaimed") {
     return "Claimed";
   }
 

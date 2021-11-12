@@ -18,7 +18,7 @@ class ProposalsController {
 
     const condition = {};
     if (status) {
-      condition["state.name"] = status;
+      condition["state.state"] = status;
     }
     const proposalCol = await getProposalCollection(chain);
 
@@ -46,7 +46,7 @@ class ProposalsController {
         links: item.links || [],
         description: item.description,
         latestState: {
-          state: item.state?.name,
+          state: item.state?.state,
           time: (
             item.state?.eventIndexer ||
             item.state?.extrinsicIndexer ||
@@ -70,7 +70,7 @@ class ProposalsController {
 
     const motionCol = await getMotionCollection(chain);
     const proposalMotions = await motionCol
-      .find({ treasuryProposalId: proposalIndex })
+      .find({ treasuryProposalIndex: proposalIndex })
       .sort({ index: 1 })
       .toArray();
 
@@ -102,7 +102,7 @@ class ProposalsController {
       .aggregate([
         {
           $group: {
-            _id: "$state.name",
+            _id: "$state.state",
             count: { $sum: 1 },
           },
         },

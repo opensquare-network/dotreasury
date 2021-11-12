@@ -1,15 +1,16 @@
-const { getStatusCollection } = require("../../mongo");
+const { getStatusCollection, getOutputStatusCollection } = require("../../mongo");
 
 class StatusController {
   async getStatus(ctx) {
     const { chain } = ctx.params;
     const statusCol = await getStatusCollection(chain);
-    const status = await statusCol.find({}).toArray();
-    const result = {};
-    status.forEach(item => {
-      result[item.name] = item.value;
-    })
-    ctx.body = result;
+    const outputStatusCol = await getOutputStatusCollection(chain)
+    const output = await outputStatusCol.find({}).toArray();
+    const income = await statusCol.find({}).toArray();
+    ctx.body = {
+      income,
+      output
+    }
   }
 }
 

@@ -1,8 +1,11 @@
 module.exports = {
   mongo: {
-    url: "mongodb://localhost:27017",
-    ksmDbName: "dot-treasury-ksm",
-    dotDbName: "dot-treasury-dot",
+    ksmUrl: "mongodb://localhost:27017",
+    ksmInputDbName: "dotreasury-input-ksm",
+    ksmOutputDbName: "dotreasury-output-ksm",
+    dotUrl: "mongodb://localhost:27017",
+    dotInputDbName: "dotreasury-input-dot",
+    dotOutputDbName: "dotreasury-output-dot",
     adminDbName: "dot-treasury-admin",
   },
   server: {

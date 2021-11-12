@@ -51,10 +51,9 @@ function processTimeline(tipDetail, links) {
       const {
         tip_value: tipValue,
         who: beneficiary,
-        reason,
+        reason: reasonText,
         finder,
       } = timelineItem.args;
-      const reasonText = hexToString(reason);
       fields = [
         {
           title: "Funder",
@@ -115,9 +114,7 @@ function processTimeline(tipDetail, links) {
     }
 
     return {
-      extrinsicIndexer:
-        timelineItem.extrinsicIndexer ||
-        timelineItem.extrinsic?.extrinsicIndexer,
+      extrinsicIndexer: timelineItem.indexer,
       name: timelineItem.method,
       fields,
     };

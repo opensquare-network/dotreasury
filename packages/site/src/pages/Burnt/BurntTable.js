@@ -121,11 +121,11 @@ const BurntTable = ({ data, chartData, loading, footer }) => {
                       </Table.Cell>
                       <Table.Cell>
                         <ExplorerLink
-                          href={`/extrinsic/${item.indexer.blockHeight}-0?event=${item.indexer.blockHeight}-${item.indexer.sort}`}
+                          href={`/extrinsic/${item.indexer.blockHeight}-0?event=${item.indexer.blockHeight}-${item.indexer.eventIndex}`}
                         >
                           <EventWrapper>
                             <Image src={"/imgs/event.svg"} />
-                            <EventID>{`${item.indexer.blockHeight}-${item.indexer.sort}`}</EventID>
+                            <EventID>{`${item.indexer.blockHeight}-${item.indexer.eventIndex}`}</EventID>
                           </EventWrapper>
                         </ExplorerLink>
                       </Table.Cell>

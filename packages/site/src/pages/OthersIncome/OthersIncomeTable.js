@@ -112,11 +112,11 @@ const OthersIncomeTable = ({ data, loading, header, footer }) => {
                         >
                           <EventWrapper>
                             <Image src={"/imgs/event.svg"} />
-                            <EventID>{`${item.indexer.blockHeight}-${item.eventSort}`}</EventID>
+                            <EventID>{`${item.indexer.blockHeight}-${item.indexer.eventIndex}`}</EventID>
                           </EventWrapper>
                         </ExplorerLink>
                       </Table.Cell>
-                      <Table.Cell>{`${item.section}(${item.method})`}</Table.Cell>
+                      <Table.Cell>{`treasury(Deposit)`}</Table.Cell>
                       <Table.Cell textAlign={"right"}>
                         <Balance value={item.balance} />
                       </Table.Cell>

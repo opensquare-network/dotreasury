@@ -1,9 +1,12 @@
 const { MongoClient } = require("mongodb");
 const config = require("../../config");
 
-const dbName = config.mongo.dotDbName || "dotreasury-dot";
+const inputDbName = config.mongo.dotInputDbName || "dotreasury-input-dot";
+const outputDbName = config.mongo.dotOutputDbName || "dotreasury-output-dot";
 
 const statusCollectionName = "status";
+
+// output collections
 const tipCollectionName = "tip";
 const proposalCollectionName = "proposal";
 const bountyCollectionName = "bounty";
@@ -12,67 +15,76 @@ const burntCollectionName = "burnt";
 const outputTransferCollectionName = "outputTransfer";
 
 // income collections
-const incomeInflationCollectionName = "incomeInflation";
-const stakingSlashCollectionName = "incomeSlashStaking";
-const treasurySlashCollectionName = "incomeSlashTreasury";
-const electionSlashCollectionName = "incomeSlashElections";
-const democracySlashCollectionName = "incomeSlashDemocracy";
-const identitySlashCollectionName = "incomeSlashIdentity";
-const othersIncomeCollectionName = "incomeOthersBig";
-const incomeTransferCollectionName = "incomeTransfer";
+const incomeInflationCollectionName = "inflation";
+const stakingSlashCollectionName = "slashStaking";
+const treasurySlashCollectionName = "slashTreasury";
+const electionSlashCollectionName = "slashElections";
+const democracySlashCollectionName = "slashDemocracy";
+const identitySlashCollectionName = "slashIdentity";
+const othersIncomeCollectionName = "othersBig";
+const incomeTransferCollectionName = "transfer";
 
 // stats collections
 const weeklyStatsCollectionName = "weeklyStats";
 
 let client = null;
-let db = null;
+let inputDb = null;
+let outputDb = null;
 
-const mongoUrl = process.env.MONGO_URL || "mongodb://localhost:27017";
+const mongoUrl = config.mongo.dotUrl || "mongodb://localhost:27017";
 let statusCol = null;
+
 let tipCol = null;
 let proposalCol = null;
 let bountyCol = null;
 let motionCol = null;
 let burntCol = null;
+let outputTransferCol = null;
+let outputWeeklyStatsCol = null;
+let outputStatusCol = null;
+
 let incomeInflationCol = null;
 let stakingSlashCol = null;
 let treasurySlashCol = null;
 let electionsPhragmenSlashCol = null;
 let democracySlashCol = null;
 let identitySlashCol = null;
-let othersIncomeCol = null;
-let weeklyStatsCol = null;
-let outputTransferCol = null;
 let incomeTransferCol = null;
+let othersIncomeCol = null;
+let inputWeeklyStatsCol = null;
 
 async function initDb() {
   client = await MongoClient.connect(mongoUrl, {
     useUnifiedTopology: true,
   });
 
-  db = client.db(dbName);
-  statusCol = db.collection(statusCollectionName);
-  tipCol = db.collection(tipCollectionName);
-  proposalCol = db.collection(proposalCollectionName);
-  bountyCol = db.collection(bountyCollectionName);
-  motionCol = db.collection(motionCollectionName);
-  burntCol = db.collection(burntCollectionName);
-  incomeInflationCol = db.collection(incomeInflationCollectionName);
-  stakingSlashCol = db.collection(stakingSlashCollectionName);
-  treasurySlashCol = db.collection(treasurySlashCollectionName);
-  electionsPhragmenSlashCol = db.collection(electionSlashCollectionName);
-  democracySlashCol = db.collection(democracySlashCollectionName);
-  identitySlashCol = db.collection(identitySlashCollectionName);
-  othersIncomeCol = db.collection(othersIncomeCollectionName);
-  weeklyStatsCol = db.collection(weeklyStatsCollectionName);
-  outputTransferCol = db.collection(outputTransferCollectionName);
-  incomeTransferCol = db.collection(incomeTransferCollectionName);
+  inputDb = client.db(inputDbName);
+  statusCol = inputDb.collection(statusCollectionName);
+  incomeInflationCol = inputDb.collection(incomeInflationCollectionName);
+  stakingSlashCol = inputDb.collection(stakingSlashCollectionName);
+  treasurySlashCol = inputDb.collection(treasurySlashCollectionName);
+  electionsPhragmenSlashCol = inputDb.collection(electionSlashCollectionName);
+  democracySlashCol = inputDb.collection(democracySlashCollectionName);
+  identitySlashCol = inputDb.collection(identitySlashCollectionName);
+  incomeTransferCol = inputDb.collection(incomeTransferCollectionName);
+  othersIncomeCol = inputDb.collection(othersIncomeCollectionName);
+  inputWeeklyStatsCol = inputDb.collection(weeklyStatsCollectionName);
+
+  outputDb = client.db(outputDbName);
+  tipCol = outputDb.collection(tipCollectionName);
+  proposalCol = outputDb.collection(proposalCollectionName);
+  bountyCol = outputDb.collection(bountyCollectionName);
+  motionCol = outputDb.collection(motionCollectionName);
+  burntCol = outputDb.collection(burntCollectionName);
+  outputTransferCol = outputDb.collection(outputTransferCollectionName);
+  outputWeeklyStatsCol = outputDb.collection(weeklyStatsCollectionName);
+  outputStatusCol = outputDb.collection(statusCollectionName);
 
   await _createIndexes();
 }
 
 async function _createIndexes() {
-  if (!db) {
+  if (!inputDb || !outputDb) {
     console.error("Please call initDb first");
     process.exit(1);
   }
@@ -89,6 +101,11 @@ async function tryInit(col) {
 async function getStatusCollection() {
   await tryInit(statusCol);
   return statusCol;
+}
+
+async function getOutputStatusCollection() {
+  await tryInit(outputStatusCol);
+  return outputStatusCol;
 }
 
 async function getTipCollection() {
@@ -151,19 +168,24 @@ async function getIdentitySlashCollection() {
   return identitySlashCol;
 }
 
-async function getOthersIncomeCollection() {
-  await tryInit(othersIncomeCol);
-  return othersIncomeCol;
-}
-
 async function getIncomeTransferCollection() {
   await tryInit(incomeTransferCol);
   return incomeTransferCol;
 }
 
-async function getWeeklyStatsCollection() {
-  await tryInit(weeklyStatsCol);
-  return weeklyStatsCol;
+async function getOthersIncomeCollection() {
+  await tryInit(othersIncomeCol);
+  return othersIncomeCol;
+}
+
+async function getInputWeeklyStatsCollection() {
+  await tryInit(inputWeeklyStatsCol);
+  return inputWeeklyStatsCol;
+}
+
+async function getOutputWeeklyStatsCollection() {
+  await tryInit(outputWeeklyStatsCol);
+  return outputWeeklyStatsCol;
 }
 
 module.exports = {
@@ -183,5 +205,7 @@ module.exports = {
   getIdentitySlashCollection,
   getIncomeTransferCollection,
   getOthersIncomeCollection,
-  getWeeklyStatsCollection,
+  getInputWeeklyStatsCollection,
+  getOutputWeeklyStatsCollection,
+  getOutputStatusCollection,
 };

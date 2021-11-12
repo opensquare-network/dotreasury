@@ -43,15 +43,15 @@ function isMotion(timelineItem) {
 
 function timelineItemHeight(timelineItem) {
   if (isMotion(timelineItem)) {
-    return timelineItem.timeline[0].extrinsic.extrinsicIndexer.blockHeight;
+    return timelineItem.timeline[0].indexer.blockHeight;
   }
 
   if ("extrinsic" === timelineItem.type) {
-    return timelineItem.extrinsicIndexer.blockHeight;
+    return timelineItem.indexer.blockHeight;
   }
 
   if ("event" === timelineItem.type) {
-    return timelineItem.eventIndexer.blockHeight;
+    return timelineItem.indexer.blockHeight;
   }
 
   return timelineItem.indexer?.blockHeight;
@@ -60,26 +60,27 @@ function timelineItemHeight(timelineItem) {
 function normalizeMotionTimelineItem(motion, scanHeight) {
   return {
     index: motion.index,
-    defaultUnfold: !motion.result && motion.voting?.end >= scanHeight,
+    defaultUnfold: !motion.isFinal && motion.voting?.end >= scanHeight,
     // FIXME: && motion.treasuryProposalId !== 15
     expired:
-      !motion.result &&
+      !motion.isFinal &&
       motion.voting?.end < scanHeight &&
-      motion.treasuryProposalId !== 15,
+      motion.treasuryProposalIndex !== 15,
     end: motion.voting?.end,
     subTimeline: (motion.timeline || []).map((item) => ({
-      name: item.action === "Propose" ? `Motion #${motion.index}` : item.action,
-      extrinsicIndexer: item.extrinsic.extrinsicIndexer,
+      name: item.method === "Proposed" ? `Motion #${motion.index}` : item.method,
+      extrinsicIndexer: item.type === "extrinsic" ? item.indexer : undefined,
+      eventIndexer: item.type === "event" ? item.indexer : undefined,
       fields: (() => {
-        if (item.action === "Propose") {
-          const [proposer, , , threshold] = item.eventData;
+        if (item.method === "Proposed") {
+          const { proposer, threshold } = item.args;
           let ayes, nays;
           if (motion.voting) {
             ayes = motion.voting?.ayes?.length;
             nays = motion.voting?.nays?.length || 0;
           } else {
             const votes = motion.timeline.filter(
-              (item) => item.action === "Vote"
+              (item) => item.method === "Voted"
             );
             const map = votes.reduce(
               (result, { eventData: [voter, _, aye] }) => {
@@ -96,7 +97,7 @@ function normalizeMotionTimelineItem(motion, scanHeight) {
           const argItems = [];
           if (
             scanHeight > 0 &&
-            !motion.result &&
+            !motion.isFinal &&
             motion.voting?.end > scanHeight
           ) {
             const blocks = motion.voting?.end - scanHeight;
@@ -117,9 +118,9 @@ function normalizeMotionTimelineItem(motion, scanHeight) {
               value: (
                 <Proposer
                   address={proposer}
-                  agree={motion.result && motion.result === "Approved"}
+                  agree={motion.isFinal && motion.timeline.some(item => item.method === "Approved")}
                   args={argItems}
-                  value={motion.method}
+                  value={motion.proposal.method}
                   threshold={threshold}
                   ayes={ayes}
                   nays={nays}
@@ -127,8 +128,8 @@ function normalizeMotionTimelineItem(motion, scanHeight) {
               ),
             },
           ];
-        } else if (item.action === "Vote") {
-          const [voter, , agree] = item.eventData;
+        } else if (item.method === "Voted") {
+          const { voter, approve: agree } = item.args;
           return [
             {
               value: (
@@ -140,12 +141,8 @@ function normalizeMotionTimelineItem(motion, scanHeight) {
               ),
             },
           ];
-        } else if (item.action === "Close") {
-          return [
-            {
-              title: motion.result,
-            },
-          ];
+        } else if (item.method === "Closed") {
+          return [];
         } else {
           return [];
         }
@@ -154,11 +151,13 @@ function normalizeMotionTimelineItem(motion, scanHeight) {
   };
 }
 
-function constructProposalProcessItem(item, symbolPrice) {
+function constructProposalProcessItem(item, proposalDetail) {
+  const { proposer, value, beneficiary, symbolPrice } = proposalDetail;
   let fields = [];
 
-  if (item.name === "Proposed") {
-    const { proposer, value, beneficiary } = item.args;
+  const method = (item.name || item.method);
+
+  if (method === "Proposed") {
     fields = [
       {
         title: "Proposer",
@@ -175,17 +174,19 @@ function constructProposalProcessItem(item, symbolPrice) {
     ];
 
     return {
-      name: item.name,
-      extrinsicIndexer: item.extrinsicIndexer,
+      name: method,
+      extrinsicIndexer: item.type === "extrinsic" ? item.indexer : undefined,
+      eventIndexer: item.type === "event" ? item.indexer : undefined,
       fields,
     };
   }
 
-  if (item.name === "Rejected") {
+  if (method === "Rejected") {
     const { value } = item.args;
     return {
-      name: item.name,
-      eventIndexer: item.eventIndexer || item.indexer,
+      name: method,
+      extrinsicIndexer: item.type === "extrinsic" ? item.indexer : undefined,
+      eventIndexer: item.type === "event" ? item.indexer : undefined,
       fields: [
         {
           title: "Slashed",
@@ -195,11 +196,11 @@ function constructProposalProcessItem(item, symbolPrice) {
     };
   }
 
-  if (item.name === "Awarded") {
-    const { value, beneficiary } = item.args;
+  if (method === "Awarded") {
     return {
-      name: item.name,
-      eventIndexer: item.eventIndexer || item.indexer,
+      name: method,
+      extrinsicIndexer: item.type === "extrinsic" ? item.indexer : undefined,
+      eventIndexer: item.type === "event" ? item.indexer : undefined,
       fields: [
         {
           title: "Beneficiary",
@@ -228,7 +229,7 @@ function processTimeline(proposalDetail, scanHeight) {
       return normalizeMotionTimelineItem(item, scanHeight);
     }
 
-    return constructProposalProcessItem(item, proposalDetail.symbolPrice);
+    return constructProposalProcessItem(item, proposalDetail);
   });
 }
 

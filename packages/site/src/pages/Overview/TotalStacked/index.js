@@ -236,7 +236,7 @@ const TotalStacked = () => {
               {
                 name: "Election",
                 value: toPrecision(
-                  statsData.income.slashSeats.electionsPhragmen,
+                  statsData.income.slashSeats.election,
                   precision,
                   false
                 ),

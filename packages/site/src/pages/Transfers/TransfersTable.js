@@ -113,17 +113,17 @@ const TransfersTable = ({ data, loading, header, footer }) => {
                       </Table.Cell>
                       <Table.Cell>
                         <ExplorerLink
-                          href={`/extrinsic/${item.indexer.blockHeight}-${item.indexer.index}?event=${item.indexer.blockHeight}-${item.eventSort}`}
+                          href={`/extrinsic/${item.indexer.blockHeight}-${item.indexer.extrinsicIndex}?event=${item.indexer.blockHeight}-${item.indexer.eventIndex}`}
                         >
                           <EventWrapper>
                             <Image src={"/imgs/event.svg"} />
-                            <EventID>{`${item.indexer.blockHeight}-${item.eventSort}`}</EventID>
+                            <EventID>{`${item.indexer.blockHeight}-${item.indexer.eventIndex}`}</EventID>
                           </EventWrapper>
                         </ExplorerLink>
                       </Table.Cell>
                       <Table.Cell>
                         <User
-                          address={item.transferEventData[1]}
+                          address={item.eventData[1]}
                           ellipsis={false}
                         />
                       </Table.Cell>

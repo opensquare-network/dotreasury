@@ -1,0 +1,15 @@
+{
+  "name": "@dotreasury/known",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=15.0.0"
+  },
+  "scripts": {
+    "saveHeight": "node src/index.js"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "mongodb": "^4.1.3"
+  }
+}
