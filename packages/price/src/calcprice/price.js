@@ -54,9 +54,9 @@ async function getPrice(chain, time) {
   }
 
   const date = dayjs(time).format("YYYY-MM-DD");
-  if (process.env.CHAIN === "kusama") {
+  if (chain === "kusama") {
     return kusamaPriceData.get(date);
-  } else if (process.env.CHAIN === "polkadot") {
+  } else if (chain === "polkadot") {
     return polkadotPriceData.get(date);
   } else {
     return null;
