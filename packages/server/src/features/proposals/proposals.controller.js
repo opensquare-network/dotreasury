@@ -52,7 +52,7 @@ class ProposalsController {
             item.state?.extrinsicIndexer ||
             item.state?.indexer
           ).blockTime,
-          motionVoting: item.state?.motionVoting,
+          motionVoting: item.state?.data?.motionVoting,
         },
       })),
       page,
