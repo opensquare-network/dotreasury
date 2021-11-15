@@ -49,7 +49,7 @@ function processTimeline(tipDetail, links) {
     } else if (timelineItem.method === "tipNew") {
       const {
         tip_value: tipValue,
-        who: beneficiary,
+        beneficiary,
         reason: reasonText,
         finder,
       } = timelineItem.args;
