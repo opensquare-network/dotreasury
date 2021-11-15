@@ -30,7 +30,7 @@ function processTimeline(tipDetail, links) {
     let fields = [];
 
     if (timelineItem.method === "reportAwesome") {
-      const { reason, who: beneficiary, finder } = timelineItem.args;
+      const { reason, beneficiary, finder } = timelineItem.args;
       // const reasonText = hexToString(reason);
       fields = [
         {
