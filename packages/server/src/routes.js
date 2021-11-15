@@ -19,6 +19,7 @@ const commonFeatureRouters = [
   require("./features/users/routes"),
   require("./features/comments/routes"),
   require("./features/rate/routes"),
+  require("./features/scan/routes"),
 ];
 
 module.exports = (app) => {
