@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
-import { hexToString } from "@polkadot/util";
 import {
   setTipDetail,
   fetchTipCountdown,
@@ -32,7 +31,7 @@ function processTimeline(tipDetail, links) {
 
     if (timelineItem.method === "reportAwesome") {
       const { reason, who: beneficiary, finder } = timelineItem.args;
-      const reasonText = hexToString(reason);
+      // const reasonText = hexToString(reason);
       fields = [
         {
           title: "Finder",
@@ -44,7 +43,7 @@ function processTimeline(tipDetail, links) {
         },
         {
           title: "Reason",
-          value: <ClickableLink links={links}>{reasonText}</ClickableLink>,
+          value: <ClickableLink links={links}>{reason}</ClickableLink>,
         },
       ];
     } else if (timelineItem.method === "tipNew") {
