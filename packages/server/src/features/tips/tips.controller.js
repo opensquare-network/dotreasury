@@ -1,7 +1,6 @@
 const { getTipCollection } = require("../../mongo");
 const linkService = require("../../services/link.service");
 const commentService = require("../../services/comment.service");
-const rateService = require("../../services/rate.service");
 const { extractPage } = require("../../utils");
 const { normalizeTip } = require("./utils");
 const { HttpError } = require("../../exc");
@@ -32,7 +31,7 @@ class TipsController {
     const list = tipCol
       .find(condition, { timeline: 0 })
       .sort({
-        isClosedOrRetracted: 1,
+        isFinal: 1,
         "indexer.blockHeight": -1,
       })
       .skip(page * pageSize)
