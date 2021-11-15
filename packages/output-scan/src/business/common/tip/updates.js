@@ -1,3 +1,4 @@
+const { computeTipValue } = require("./median");
 const { getTipFindersFeeFromApi } = require("./utils");
 const { getTippersCountFromApi } = require("./utils");
 const { getActiveTipByHash } = require("../../../mongo/service/tip");
@@ -15,10 +16,11 @@ async function getTipCommonUpdates(hash, { blockHeight, blockHash }) {
     tips: newMeta.tips,
     closes: newMeta.closes,
   };
+  const medianValue = computeTipValue(newMeta)
   const tippersCount = await getTippersCountFromApi(blockHash);
   const tipFindersFee = await getTipFindersFeeFromApi(blockHash);
 
-  return { meta, tippersCount, tipFindersFee };
+  return { medianValue, meta, tippersCount, tipFindersFee };
 }
 
 module.exports = {

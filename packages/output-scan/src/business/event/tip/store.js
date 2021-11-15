@@ -1,3 +1,4 @@
+const { computeTipValue } = require("../../common/tip/median");
 const { getTipFindersFeeFromApi } = require("../../common/tip/utils");
 const { getTippersCountFromApi } = require("../../common/tip/utils");
 const { getBlockHash } = require("../../common");
@@ -12,7 +13,7 @@ const {
 } = require("../../common/tip/utils");
 const { findRegistry } = require("../../../chain/specs");
 const { TipMethods } = require("../../common/constants");
-const { getFinderFromMeta, computeTipValue, } = require("./utils");
+const { getFinderFromMeta, } = require("./utils");
 
 async function saveNewTip(event, extrinsic, indexer) {
   const [rawHash] = event.data;
