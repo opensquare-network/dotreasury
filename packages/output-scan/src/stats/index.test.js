@@ -1,16 +1,23 @@
-const dotenv = require("dotenv");
-dotenv.config();
-
 jest.mock("./chain");
 
 const { tryCreateStatPoint } = require(".");
-const { getWeeklyStatsCollection } = require("../mongo");
+const { getWeeklyStatsCollection, close } = require("../mongo");
 
 describe("Stats Test", () => {
+  const originalEnv = process.env;
+
   beforeAll(async () => {
+    jest.resetModules();
+    process.env = {
+      ...originalEnv,
+      MONGO_URL: "mongodb://localhost:27017",
+      MONGO_DB_NAME: "dotreasury-output-ksm-test",
+    };
   });
 
   afterAll(async () => {
+    await close();
+    process.env = originalEnv;
   });
 
   test("Add stat point", async () => {
