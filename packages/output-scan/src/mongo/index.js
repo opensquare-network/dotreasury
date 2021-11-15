@@ -109,7 +109,14 @@ async function getOutTransferCollection() {
   return outTransferCol;
 }
 
+async function close() {
+  if (client) {
+    await client.close();
+  }
+}
+
 module.exports = {
+  close,
   getStatusCollection,
   getTipCollection,
   getBountyCollection,
