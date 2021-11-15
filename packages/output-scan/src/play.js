@@ -5,8 +5,7 @@ const { getApi } = require("./api")
 
 async function test() {
   const blockHeights = [
-    5952693,
-    6006978
+    7690542
   ];
 
   for (const height of blockHeights) {
@@ -18,6 +17,7 @@ async function test() {
     const allEvents = await api.query.system.events.at(blockHash);
 
     await scanNormalizedBlock(block.block, allEvents);
+    console.log('finished')
   }
 }
 

@@ -90,11 +90,12 @@ async function handleExtrinsics(extrinsics = [], allEvents = [], blockIndexer) {
   let index = 0;
   for (const extrinsic of extrinsics) {
     const events = extractExtrinsicEvents(allEvents, index);
+    const extrinsicIndexer = { ...blockIndexer, extrinsicIndex: index++ };
+
     if (!isExtrinsicSuccess(events)) {
       continue;
     }
 
-    const extrinsicIndexer = { ...blockIndexer, extrinsicIndex: index++ };
     await extractAndHandleCall(extrinsic, events, extrinsicIndexer);
   }
 }
