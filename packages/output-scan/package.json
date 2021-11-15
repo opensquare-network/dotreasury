@@ -10,7 +10,7 @@
     "scan": "node src/index.js"
   },
   "dependencies": {
-    "@polkadot/api": "6.8.1",
+    "@polkadot/api": "6.8.2-4",
     "bignumber.js": "^9.0.1",
     "dotenv": "^8.2.0",
     "lodash.findlast": "^4.6.0",
