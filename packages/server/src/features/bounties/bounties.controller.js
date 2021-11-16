@@ -56,6 +56,7 @@ class BountiesController {
         title: item.description,
         value: item.meta?.value,
         symbolPrice: item.symbolPrice,
+        state: item.state,
         latestState: {
           state: bountyStatusName(item),
           indexer: item.state?.indexer || item.state?.eventIndexer,

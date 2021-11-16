@@ -132,7 +132,7 @@ const BountiesTable = ({ data, loading, header, footer }) => {
                         />
                       </Table.Cell>
                       <Table.Cell textAlign={"right"}>
-                        <CapText>{item.latestState?.state}</CapText>
+                        <CapText>{item.state.state}</CapText>
                       </Table.Cell>
                       <Table.Cell className="link-cell hidden">
                         <NavLink

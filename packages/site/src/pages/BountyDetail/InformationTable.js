@@ -42,7 +42,7 @@ const BountyStates = Object.freeze({
 
 function getBountyState(bountyDetail) {
   return (
-    BountyStates[capitalizeFirstLetter(bountyDetail.latestState?.state)] ?? -1
+    BountyStates[capitalizeFirstLetter(bountyDetail.state?.state)] ?? -1
   );
 }
 
