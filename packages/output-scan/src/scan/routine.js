@@ -3,8 +3,7 @@ const { scanNormalizedBlock } = require("./block");
 const { fetchBlocks } = require("./fetchBlocks");
 const { logger } = require("../logger");
 const { updateScanHeight } = require("../mongo/scanHeight");
-const { updateSpecs } = require("../chain/specs");
-const { getSpecHeights } = require("../chain/specs");
+const { getMetaScanHeight, updateSpecs } = require("../chain/specs");
 const { getScanStep } = require("../env");
 const { sleep } = require("../utils/sleep");
 const { getLatestHeight } = require("../chain/latestHead");
@@ -28,9 +27,8 @@ async function beginRoutineScan() {
       targetHeight = scanHeight + step;
     }
 
-    const specHeights = getSpecHeights();
-    if (targetHeight > last(specHeights).height) {
-      await updateSpecs(targetHeight);
+    if (targetHeight > getMetaScanHeight()) {
+      await updateSpecs();
     }
 
     const heights = [];

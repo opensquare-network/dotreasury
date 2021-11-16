@@ -1,8 +1,13 @@
 const findLast = require("lodash.findlast");
-const { getAllVersionChangeHeights } = require("../../mongo/meta");
+const { getAllVersionChangeHeights, getScanHeight } = require("../../mongo/meta");
 const { getApi, getProvider } = require("../../api");
 
 let versionChangedHeights = [];
+let metaScanHeight = 1;
+
+function getMetaScanHeight() {
+  return metaScanHeight;
+}
 
 // For test
 async function setSpecHeights(heights = []) {
@@ -16,10 +21,13 @@ async function setSpecHeights(heights = []) {
       runtimeVersion,
     })
   }
+
+  metaScanHeight = heights[heights.length - 1];
 }
 
-async function updateSpecs(toScanHeight) {
+async function updateSpecs() {
   versionChangedHeights = await getAllVersionChangeHeights();
+  metaScanHeight = await getScanHeight();
 }
 
 function getSpecHeights() {
@@ -49,4 +57,5 @@ module.exports = {
   getSpecHeights,
   findRegistry,
   setSpecHeights,
+  getMetaScanHeight,
 };

@@ -1,6 +1,6 @@
 const {
-  getSpecHeights,
   updateSpecs,
+  getMetaScanHeight
 } = require("../chain/specs");
 const {
   getScanStep,
@@ -40,8 +40,7 @@ async function oneStepScan(startHeight) {
   }
 
   if (isUseMetaDb()) {
-    const specHeights = getSpecHeights();
-    if (targetHeight > last(specHeights).height) {
+    if (targetHeight > getMetaScanHeight()) {
       await updateSpecs();
     }
   }
