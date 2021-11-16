@@ -11,7 +11,7 @@ async function insertProposal(proposalObj) {
   await col.insertOne(proposalObj);
 }
 
-async function updateProposal(proposalIndex, updates, timelineItem) {
+async function updateProposal(proposalIndex, updates, timelineItem, motionInfo) {
   const col = await getProposalCollection();
   let update = {
     $set: updates,
@@ -22,6 +22,13 @@ async function updateProposal(proposalIndex, updates, timelineItem) {
       ...update,
       $push: { timeline: timelineItem },
     };
+  }
+
+  if (motionInfo) {
+    update = {
+      ...update,
+      $push: { motions: motionInfo }
+    }
   }
 
   await col.updateOne({ proposalIndex }, update);

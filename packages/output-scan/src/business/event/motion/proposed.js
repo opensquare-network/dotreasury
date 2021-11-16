@@ -8,7 +8,7 @@ const {
   BountyMethods,
 } = require("../../common/constants");
 const { getVotingFromStorage } = require("../../common/motion/votingStorage");
-const { getMotionProposalCall } = require("../../common/motion/proposalStorage");
+const { getMotionCall, getMotionProposalCall } = require("../../common/motion/proposalStorage");
 
 function isBountyMotion(section, method) {
   return [Modules.Treasury, Modules.Bounties].includes(section) && [
@@ -44,11 +44,12 @@ function extractBusinessFields(proposal = {}) {
   return {};
 }
 
-async function handleProposed(event, extrinsic, indexer) {
+async function handleProposed(event, extrinsic, indexer, blockEvents) {
   const eventData = event.data.toJSON();
   const [proposer, motionIndex, hash, threshold] = eventData;
 
-  const proposal = await getMotionProposalCall(hash, indexer);
+  const rawProposal = await getMotionCall(hash, indexer);
+  const proposalCall = await getMotionProposalCall(hash, indexer);
   const voting = await getVotingFromStorage(indexer.blockHash, hash);
 
   const timelineItem = {
@@ -75,8 +76,8 @@ async function handleProposed(event, extrinsic, indexer) {
     proposer,
     index: motionIndex,
     threshold,
-    ...extractBusinessFields(proposal),
-    proposal,
+    ...extractBusinessFields(proposalCall),
+    proposal: proposalCall,
     voting,
     isFinal: false,
     state,
@@ -84,7 +85,7 @@ async function handleProposed(event, extrinsic, indexer) {
   };
 
   await insertMotion(obj);
-  await handleBusinessWhenMotionProposed(obj, indexer);
+  await handleBusinessWhenMotionProposed(obj, rawProposal, indexer, blockEvents);
 }
 
 module.exports = {
