@@ -83,8 +83,8 @@ function normalizeMotionTimelineItem(motion, scanHeight) {
               (item) => item.method === "Voted"
             );
             const map = votes.reduce(
-              (result, { eventData: [voter, _, aye] }) => {
-                result[voter] = aye;
+              (result, { args: { voter, approve } }) => {
+                result[voter] = approve;
                 return result;
               },
               {}
