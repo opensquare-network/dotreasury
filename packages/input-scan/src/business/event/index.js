@@ -2,7 +2,7 @@ const { handleOthers } = require("./others");
 const { bigAdds } = require("../../utils");
 const { handleElection } = require("./election");
 const { bigAdd } = require("../../utils");
-const { handleSlashEvent } = require("./staking/slash/slashOrSlashed");
+const { handleStakingSlash } = require("./staking/slash");
 const { handleCancelProposalSlash } = require("./democracy/cancelProposal");
 const { handleIdentityKilledSlash } = require("./identity/killedSlash");
 const { handleTransfer } = require("./transfer");
@@ -14,22 +14,17 @@ const {
 } = require("../../business/common/constants")
 
 async function handleDeposit(
-  blockIndexer,
+  indexer,
   event,
   eventSort,
   blockEvents,
 ) {
-  const indexer = {
-    ...blockIndexer,
-    eventIndex: eventSort,
-  };
-
   const inflation = await handleInflation(event, indexer, blockEvents);
   const treasurySlash = await handleTreasurySlash(event, indexer, blockEvents);
   const maybeIdSlash = await handleIdentityKilledSlash(event, indexer, blockEvents);
   const idSlash = maybeIdSlash ? maybeIdSlash.balance : '0';
   const electionSlash = await handleElection(event, indexer, blockEvents);
-  const maybeStaking = await handleSlashEvent(event, indexer, blockEvents);
+  const maybeStaking = await handleStakingSlash(event, indexer, blockEvents);
   const stakingSlash = maybeStaking ? maybeStaking.balance : '0';
   const maybeDemocracy = await handleCancelProposalSlash(event, indexer, blockEvents);
   const democracySlash = maybeDemocracy ? maybeDemocracy.balance : '0';
@@ -57,15 +52,10 @@ async function handleDeposit(
 }
 
 async function handleCommon(
-  blockIndexer,
+  indexer,
   event,
   eventSort,
 ) {
-  const indexer = {
-    ...blockIndexer,
-    eventIndex: eventSort,
-  };
-
   const maybeTransfer = await handleTransfer(event, indexer);
   const transfer = maybeTransfer ? maybeTransfer.balance : '0';
 
@@ -85,9 +75,15 @@ async function handleEvents(events, extrinsics, blockIndexer) {
   let others = 0;
 
   for (let sort = 0; sort < events.length; sort++) {
-    const { event, } = events[sort];
+    const { event, phase } = events[sort];
 
-    const commonObj = await handleCommon(blockIndexer, event, sort, events);
+    const indexer = {
+      ...blockIndexer,
+      extrinsicIndex: phase.isNull ? undefined : phase.value.toNumber(),
+      eventIndex: sort,
+    };
+
+    const commonObj = await handleCommon(indexer, event, sort, events);
     transfer = bigAdd(transfer, commonObj.transfer);
 
     const { section, method } = event;
@@ -95,7 +91,7 @@ async function handleEvents(events, extrinsics, blockIndexer) {
       continue;
     }
 
-    const depositObj = await handleDeposit(blockIndexer, event, sort, events);
+    const depositObj = await handleDeposit(indexer, event, sort, events);
     inflation = bigAdd(inflation, depositObj.inflation);
     treasurySlash = bigAdd(treasurySlash, depositObj.treasurySlash);
     idSlash = bigAdd(idSlash, depositObj.idSlash);

@@ -15,8 +15,7 @@ async function handleSlashEvent(event, indexer, blockEvents) {
     event: { section, method, },
   } = preEvent;
 
-  if (Modules.Staking !== section ||
-    ![StakingEvents.Slash, StakingEvents.Slashed].includes(method)) {
+  if (Modules.Staking !== section || StakingEvents.Slash !== method) {
     return
   }
 

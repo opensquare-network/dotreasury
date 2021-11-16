@@ -14,8 +14,9 @@ async function handleSeatHolderSlash(event, indexer, blockEvents) {
   const {
     event: { section, method, },
   } = nextEvent;
-  if (![Modules.ElectionsPhragmen, Modules.PhragmenElection].includes(section) ||
-    method !== ElectionsPhragmenEvents.SeatHolderSlashed) {
+  const isElectionModule = [Modules.ElectionsPhragmen, Modules.PhragmenElection].includes(section);
+  const isTargetEvent = method === ElectionsPhragmenEvents.SeatHolderSlashed
+  if (!isElectionModule || !isTargetEvent) {
     return;
   }
 

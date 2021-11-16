@@ -12,20 +12,14 @@ function nextDifferentIsNewTerm(allBlockEvents, sort) {
 
     const isDeposit = Modules.Treasury === section && TreasuryCommonEvent.Deposit === method;
     const isNewTerm = [Modules.ElectionsPhragmen, Modules.PhragmenElection].includes(section) &&
-      method !== ElectionsPhragmenEvents.NewTerm;
+      method === ElectionsPhragmenEvents.NewTerm;
 
     if (isDeposit) {
       i++;
       continue;
     }
 
-    if (!isDeposit && !isNewTerm) {
-      return false;
-    }
-
-    if (isNewTerm) {
-      return true;
-    }
+    return isNewTerm;
   }
 
   return false;

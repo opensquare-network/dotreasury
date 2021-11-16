@@ -173,6 +173,7 @@ const PreImageEvents = Object.freeze({
 
 const BalancesEvents = Object.freeze({
   Transfer: "Transfer",
+  Deposit: "Deposit",
 });
 
 const KsmTreasuryAccount = "F3opxRbN5ZbjJNU511Kj2TLuzFcDq9BGduA9TgiECafpg29";
