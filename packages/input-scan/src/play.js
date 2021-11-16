@@ -5,11 +5,11 @@ const { getApi } = require("./api")
 
 async function test() {
   const blockHeights = [
-    2072563
+    2504081
   ];
 
   for (const height of blockHeights) {
-    await setSpecHeights([2064961]);
+    await setSpecHeights([height]);
 
     const api = await getApi();
     const blockHash = await api.rpc.chain.getBlockHash(height);

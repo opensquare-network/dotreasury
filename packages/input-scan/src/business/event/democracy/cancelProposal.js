@@ -6,6 +6,10 @@ const {
   DemocracyMethods,
 } = require("../../common/constants")
 
+function isCancelProposal(section, method) {
+  return Modules.Democracy === section && DemocracyMethods.cancelProposal === method;
+}
+
 async function handleCancelProposalSlash(event, indexer, blockEvents) {
   const sort = indexer.eventIndex;
   if (sort <= 0) {
@@ -13,15 +17,19 @@ async function handleCancelProposalSlash(event, indexer, blockEvents) {
   }
 
   const preEvent = blockEvents[sort - 1];
-  const { event: { section, method, }, } = preEvent;
+  const { event: { section, method, data, }, } = preEvent;
 
   if (Modules.Council !== section || method !== CouncilEvents.Executed) {
     return
   }
 
+  if (!data[1].isOk) {
+    return
+  }
+
   const proposalHash = preEvent.event.data[0].toString()
   const call = await getMotionProposalByHeight(proposalHash, indexer.blockHeight - 1);
-  if (Modules.Democracy !== call.section || DemocracyMethods.cancelProposal !== call.method) {
+  if (!isCancelProposal(call.section, call.method)) {
     return
   }
   const proposalIndex = call.args[0].value;
