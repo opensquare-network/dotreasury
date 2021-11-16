@@ -20,7 +20,7 @@ async function constructBlockFromDbData(blockInDb) {
   });
   const block = new GenericBlock(registry, blockInDb.block.block);
   const allEvents = registry.createType(
-    "Vec<EventRecord>",
+    "Vec<FrameSystemEventRecord>",
     blockInDb.events,
     true
   );
