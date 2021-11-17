@@ -68,7 +68,7 @@ async function oneStepScan(startHeight) {
       await sleep(1000);
       logger.error(`Error with block scan ${ block.height }`, e);
     } finally {
-      if (block.height % 200000 === 0) {
+      if (block.height % 80000 === 0) {
         console.log(`${block.height} restart process in case of memory leak`);
         process.exit(0);
       }
