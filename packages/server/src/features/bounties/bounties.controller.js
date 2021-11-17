@@ -74,17 +74,30 @@ class BountiesController {
 
     const bountyCol = await getBountyCollection(chain);
     const bounty = await bountyCol.findOne({ bountyIndex });
-
-    const motionCol = await getMotionCollection(chain);
-    const bountyMotions = await motionCol
-      .find({ treasuryBountyId: bountyIndex })
-      .sort({ index: 1 })
-      .toArray();
-
     if (!bounty) {
       ctx.status = 404;
       return;
     }
+
+    const motionHashes = (bounty.motions || []).map(motionInfo => motionInfo.hash);
+
+    const motionCol = await getMotionCollection(chain);
+    const bountyMotions = await motionCol
+      .find({ hash: { $in: motionHashes } })
+      .sort({ index: 1 })
+      .toArray();
+
+    const motions = (bounty.motions || []).map(motionInfo => {
+      const targetMotion = (bountyMotions || []).find(
+        m => m.hash === motionInfo.hash &&
+          m.indexer.blockHeight === motionInfo.indexer.blockHeight
+      )
+
+      return {
+        motionInfo,
+        ...targetMotion,
+      }
+    })
 
     ctx.body = {
       bountyIndex: bounty.bountyIndex,
@@ -109,7 +122,7 @@ class BountiesController {
         data: bounty.state?.data,
       },
       timeline: bounty.timeline,
-      motions: bountyMotions,
+      motions,
     };
   }
 

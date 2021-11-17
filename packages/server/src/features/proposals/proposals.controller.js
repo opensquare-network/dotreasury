@@ -67,17 +67,31 @@ class ProposalsController {
 
     const proposalCol = await getProposalCollection(chain);
     const proposal = await proposalCol.findOne({ proposalIndex });
-
-    const motionCol = await getMotionCollection(chain);
-    const proposalMotions = await motionCol
-      .find({ treasuryProposalIndex: proposalIndex })
-      .sort({ index: 1 })
-      .toArray();
-
     if (!proposal) {
       ctx.status = 404;
       return;
     }
+
+    const motionHashes = (proposal.motions || []).map(motionInfo => motionInfo.hash);
+
+    const motionCol = await getMotionCollection(chain);
+    const proposalMotions = await motionCol
+      .find({
+        hash: { $in: motionHashes }
+      })
+      .sort({ index: 1 })
+      .toArray();
+
+    const motions = (proposal.motions || []).map(motionInfo => {
+      const targetMotion = (proposalMotions || []).find(
+        m => m.hash === motionInfo.hash && m.indexer.blockHeight === motionInfo.indexer.blockHeight
+      )
+
+      return {
+        motionInfo,
+        ...targetMotion,
+      }
+    })
 
     ctx.body = {
       indexer: proposal.indexer,
@@ -89,7 +103,7 @@ class ProposalsController {
       symbolPrice: proposal.symbolPrice,
       beneficiary: proposal.beneficiary,
       latestState: proposal.state,
-      motions: proposalMotions,
+      motions,
       timeline: proposal.timeline,
     };
   }
