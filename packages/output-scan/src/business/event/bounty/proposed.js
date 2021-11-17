@@ -42,7 +42,8 @@ async function handleProposed(event, extrinsic, indexer) {
     description,
     meta,
     state,
-    timeline
+    timeline,
+    motions: [],
   }
 
   await insertBounty(bountyObj);
