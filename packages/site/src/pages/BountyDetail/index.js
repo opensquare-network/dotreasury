@@ -76,7 +76,7 @@ function processTimeline(bountyDetail, scanHeight, symbol) {
           defaultUnfold: !motion.isFinal,
           subTimeline: (motion.timeline || []).map((item) => ({
             name:
-              item.method === "Propose"
+              ["Propose", "Proposed"].includes(item.method)
                 ? `Motion #${motion.index}`
                 : item.method,
             extrinsicIndexer: item.type === "extrinsic" ? item.indexer : undefined,
@@ -129,7 +129,7 @@ function processTimeline(bountyDetail, scanHeight, symbol) {
                       <Proposer
                         address={proposer}
                         agree={motion.isFinal && motion.timeline.some(item => item.method === "Approved")}
-                        value={motion.proposal.method}
+                        value={motion.motionInfo?.method}
                         args={argItems}
                         threshold={threshold}
                         ayes={ayes}
