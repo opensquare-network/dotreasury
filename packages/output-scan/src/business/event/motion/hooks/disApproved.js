@@ -4,26 +4,23 @@ const { updateProposal } = require("../../../../mongo/service/treasuryProposal")
 const { getMotionCollection } = require("../../../../mongo");
 const {
   TreasuryProposalEvents,
+  BountyStatus,
 } = require("../../../common/constants");
 
-async function checkAndHandleBounty(motion, indexer) {
-  const { isTreasuryBounty, treasuryBountyId } = motion;
-  if (!isTreasuryBounty) {
-    return;
-  }
+async function handleBounty(bountyIndex, indexer) {
+  const state = {
+    indexer,
+    // If a bounty proposal(close or approve) motion is not passed, we reset the treasury bounty state to `Proposed`
+    state: BountyStatus.Proposed,
+  };
 
-  const meta = await getBountyMeta(indexer.blockHash, treasuryBountyId);
+  const meta = await getBountyMeta(indexer.blockHash, bountyIndex);
   if (meta) {
-    await updateBounty(treasuryBountyId, { meta, });
+    await updateBounty(bountyIndex, { meta, state });
   }
 }
 
-async function checkAndHandleProposal(motion, indexer) {
-  const { isTreasuryProposal, treasuryProposalIndex } = motion;
-  if (!isTreasuryProposal) {
-    return;
-  }
-
+async function handleProposal(treasuryProposalIndex, indexer) {
   const state = {
     indexer,
     // If a treasury proposal motion is not passed, we reset the treasury proposal state to `Proposed`
@@ -40,8 +37,13 @@ async function handleBusinessWhenMotionDisApproved(motionHash, indexer) {
     return;
   }
 
-  await checkAndHandleBounty(motion, indexer);
-  await checkAndHandleProposal(motion, indexer);
+  for (const { index } of motion.treasuryProposals || []) {
+    await handleProposal(index, indexer);
+  }
+
+  for (const { index } of motion.treasuryBounties || []) {
+    await handleBounty(index, indexer);
+  }
 }
 
 module.exports = {

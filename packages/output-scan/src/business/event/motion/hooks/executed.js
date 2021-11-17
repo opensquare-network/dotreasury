@@ -10,22 +10,19 @@ const {
   TreasuryProposalEvents,
 } = require("../../../common/constants");
 
-async function handleRejectTreasuryProposal(motion, indexer) {
+async function handleRejectTreasuryProposal(proposalInfo, indexer) {
   if (currentChain() !== 'kusama') {
     return
   }
 
-  const { isTreasuryProposal, proposal: { method }, treasuryProposalIndex } = motion;
-  if (!isTreasuryProposal) {
-    return
-  }
+  const { index: proposalIndex, method } = proposalInfo;
 
   if (method !== TreasuryProposalMethods.rejectProposal) {
     return
   }
 
   // There is no Rejected event before kusama treasury proposal 11
-  if (treasuryProposalIndex > 10) {
+  if (proposalIndex > 10) {
     return
   }
 
@@ -34,7 +31,29 @@ async function handleRejectTreasuryProposal(motion, indexer) {
     indexer,
   };
 
-  await updateProposal(treasuryProposalIndex, { state });
+  await updateProposal(proposalIndex, { state });
+}
+
+async function handleBounty(bountyInfo, indexer) {
+  const { index: bountyIndex, method } = bountyInfo;
+
+  let updates = {};
+
+  const meta = await getBountyMeta(indexer.blockHash, bountyIndex);
+  if (meta) {
+    updates.meta = meta
+  }
+
+  if (BountyMethods.approveBounty === method) {
+    updates.state = {
+      indexer,
+      state: BountyStatus.Approved,
+    }
+  }
+
+  if (updates.meta || updates.state) {
+    await updateBounty(bountyIndex, updates);
+  }
 }
 
 async function handleBusinessWhenMotionExecuted(motionHash, indexer) {
@@ -44,34 +63,13 @@ async function handleBusinessWhenMotionExecuted(motionHash, indexer) {
     return;
   }
 
-  await handleRejectTreasuryProposal(motion, indexer);
-
-  const { isTreasuryBounty, treasuryBountyId } = motion;
-  if (!isTreasuryBounty) {
-    return;
+  for (const proposalInfo of motion.treasuryProposals || []) {
+    await handleRejectTreasuryProposal(proposalInfo, indexer);
   }
 
-  const meta = await getBountyMeta(indexer.blockHash, treasuryBountyId);
-  if (!meta) {
-    return
+  for (const bountyInfo of motion.treasuryBounties || []) {
+    await handleBounty(bountyInfo, motion, voting, indexer);
   }
-
-  let updates = {
-    meta,
-  }
-
-  const { proposal: { method } } = motion;
-  if (BountyMethods.approveBounty === method) {
-    updates = {
-      ...updates,
-      state: {
-        indexer,
-        state: BountyStatus.Approved,
-      }
-    }
-  }
-
-  await updateBounty(treasuryBountyId, updates);
 }
 
 module.exports = {

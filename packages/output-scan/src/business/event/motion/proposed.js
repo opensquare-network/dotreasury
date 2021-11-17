@@ -1,4 +1,9 @@
-const { handleBusinessWhenMotionProposed } = require("./hooks/proposed");
+const { handleWrappedCall } = require("../../common/call");
+const {
+  handleBusinessWhenMotionProposed,
+  isProposalMotion,
+  isBountyMotion,
+} = require("./hooks/proposed");
 const { insertMotion } = require("../../../mongo/service/motion");
 const {
   TimelineItemTypes,
@@ -33,6 +38,31 @@ async function handleProposed(event, extrinsic, indexer, blockEvents) {
     data: eventData,
   };
 
+  const treasuryProposals = [];
+  const treasuryBounties = [];
+  await handleWrappedCall(
+    rawProposal,
+    proposer,
+    indexer,
+    blockEvents,
+    (call) => {
+      const { section, method, args } = call;
+      if (isProposalMotion(section, method)) {
+        const treasuryProposalIndex = args[0].toJSON();
+        treasuryProposals.push({
+          index: treasuryProposalIndex,
+          method,
+        });
+      } else if (isBountyMotion(section, method)) {
+        const treasuryBountyIndex = args[0].toJSON();
+        treasuryBounties.push({
+          index: treasuryBountyIndex,
+          method,
+        });
+      }
+    },
+  )
+
   const obj = {
     indexer,
     hash,
@@ -44,6 +74,8 @@ async function handleProposed(event, extrinsic, indexer, blockEvents) {
     isFinal: false,
     state,
     timeline: [timelineItem],
+    treasuryProposals,
+    treasuryBounties,
   };
 
   await insertMotion(obj);
