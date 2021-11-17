@@ -82,16 +82,18 @@ async function handleBountyCall(motion, call, author, indexer) {
     stateName = 'ApproveVoting';
   }
 
-  if (stateName) {
-    updates = {
-      state: {
-        indexer,
-        state: 'CloseVoting',
-        data: {
-          motionState: motion.state,
-          motionVoting: motion.voting,
-        },
-      }
+  if (!stateName) {
+    return
+  }
+
+  updates = {
+    state: {
+      indexer,
+      state: stateName,
+      data: {
+        motionState: motion.state,
+        motionVoting: motion.voting,
+      },
     }
   }
 
