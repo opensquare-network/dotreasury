@@ -68,7 +68,7 @@ async function handleBusinessWhenMotionExecuted(motionHash, indexer) {
   }
 
   for (const bountyInfo of motion.treasuryBounties || []) {
-    await handleBounty(bountyInfo, motion, voting, indexer);
+    await handleBounty(bountyInfo, indexer);
   }
 }
 
