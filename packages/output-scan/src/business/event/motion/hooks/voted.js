@@ -1,3 +1,4 @@
+const { isStateChangeBountyMotion } = require("../../../common/bounty/utils/motion");
 const { updateBounty } = require("../../../../mongo/service/bounty");
 const { getMotionCollection } = require("../../../../mongo");
 const { updateProposal } = require("../../../../mongo/service/treasuryProposal");
@@ -34,11 +35,19 @@ async function updateProposalState(proposalInfo, motion, voting, indexer) {
 
 async function updateBountyState(bountyInfo, motion, voting, indexer) {
   const { index: bountyIndex, method } = bountyInfo;
+  if (!isStateChangeBountyMotion(method)) {
+    return
+  }
+
   let stateName;
   if (BountyMethods.closeBounty === method) {
     stateName = 'CloseVoting';
   } else if (BountyMethods.approveBounty === method) {
     stateName = 'ApproveVoting';
+  }
+
+  if (!stateName) {
+    return
   }
 
   const state = getState(stateName, motion, voting, indexer);

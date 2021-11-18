@@ -1,3 +1,4 @@
+const { isStateChangeBountyMotion } = require("../../../common/bounty/utils/motion");
 const { updateBounty } = require("../../../../mongo/service/bounty");
 const { handleWrappedCall } = require("../../../common/call");
 const { updateProposal } = require("../../../../mongo/service/treasuryProposal");
@@ -50,18 +51,9 @@ async function handleProposalCall(motion, call, author, indexer) {
   await updateProposal(treasuryProposalIndex, { state }, null, motionInfo);
 }
 
-function isBountyMotion(section, method) {
-  return [Modules.Treasury, Modules.Bounties].includes(section) && [
-    BountyMethods.approveBounty,
-    BountyMethods.proposeCurator,
-    BountyMethods.unassignCurator,
-    BountyMethods.closeBounty,
-  ].includes(method)
-}
-
 async function handleBountyCall(motion, call, author, indexer) {
-  const { section, method, args } = call;
-  if (!isBountyMotion(section, method)) {
+  const { method, args } = call;
+  if (!isStateChangeBountyMotion(method)) {
     return
   }
 

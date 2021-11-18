@@ -1,8 +1,8 @@
+const { isBountyMotion } = require("../../common/bounty/utils/motion");
 const { handleWrappedCall } = require("../../common/call");
 const {
   handleBusinessWhenMotionProposed,
   isProposalMotion,
-  isBountyMotion,
 } = require("./hooks/proposed");
 const { insertMotion } = require("../../../mongo/service/motion");
 const {

@@ -1,3 +1,4 @@
+const { isStateChangeBountyMotion } = require("../../../common/bounty/utils/motion");
 const { updateBounty } = require("../../../../mongo/service/bounty");
 const { getBountyMeta } = require("../../../common/bounty/meta");
 const { updateProposal } = require("../../../../mongo/service/treasuryProposal");
@@ -41,8 +42,10 @@ async function handleBusinessWhenMotionDisApproved(motionHash, indexer) {
     await handleProposal(index, indexer);
   }
 
-  for (const { index } of motion.treasuryBounties || []) {
-    await handleBounty(index, indexer);
+  for (const { index, method } of motion.treasuryBounties || []) {
+    if (isStateChangeBountyMotion(method)) {
+      await handleBounty(index, indexer);
+    }
   }
 }
 
