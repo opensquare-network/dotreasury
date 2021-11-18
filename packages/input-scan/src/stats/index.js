@@ -7,7 +7,7 @@ const weeklyBlocks = 3600*24*7 / 6;
 
 async function tryCreateStatPoint(indexer) {
 
-  if (indexer.blockHeight % weeklyBlocks !== 0) {
+  if (indexer.blockHeight % weeklyBlocks !== 1) {
     return;
   }
 
