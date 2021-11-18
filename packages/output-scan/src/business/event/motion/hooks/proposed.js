@@ -111,5 +111,4 @@ async function handleBusinessWhenMotionProposed(motionDbObj = {}, rawProposal, i
 module.exports = {
   handleBusinessWhenMotionProposed,
   isProposalMotion,
-  isBountyMotion,
 };
