@@ -10,6 +10,12 @@ async function getMotionProposal(blockHash, motionHash) {
   return await blockApi.query.council.proposalOf(motionHash);
 }
 
+async function getMotionCall(motionHash, indexer) {
+  const raw = await getMotionProposal(indexer.blockHash, motionHash);
+  const registry = await findRegistry(indexer);
+  return new GenericCall(registry, raw.toHex());
+}
+
 async function getMotionProposalCall(motionHash, indexer) {
   const raw = await getMotionProposal(indexer.blockHash, motionHash);
   const registry = await findRegistry(indexer);
@@ -18,5 +24,6 @@ async function getMotionProposalCall(motionHash, indexer) {
 
 module.exports = {
   getMotionProposal,
+  getMotionCall,
   getMotionProposalCall,
 };

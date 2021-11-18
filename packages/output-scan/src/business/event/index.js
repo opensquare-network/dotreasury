@@ -25,7 +25,7 @@ async function handleEventWithExtrinsic(
 
   await handleTipEvent(event, extrinsic, indexer);
   await handleTreasuryProposalEvent(event, extrinsic, indexer);
-  await handleMotionEvent(event, extrinsic, indexer);
+  await handleMotionEvent(event, extrinsic, indexer, blockEvents);
   await handleBountyEventWithExtrinsic(event, extrinsic, indexer);
 }
 

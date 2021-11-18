@@ -5,19 +5,9 @@ const {
   TreasuryProposalMethods,
 } = require("../../../common/constants");
 
-async function handleBusinessWhenMotionApproved(motionHash, indexer) {
-  const col = await getMotionCollection();
-  const motion = await col.findOne({ hash: motionHash, isFinal: false });
-  if (!motion) {
-    return;
-  }
+async function handleProposal(proposalInfo, indexer) {
+  const { index: treasuryProposalIndex, method } = proposalInfo;
 
-  const { isTreasuryProposal, treasuryProposalIndex } = motion;
-  if (!isTreasuryProposal) {
-    return;
-  }
-
-  const { method } = motion.proposal || {};
   const isApproved = TreasuryProposalMethods.approveProposal === method;
   if (!isApproved) {
     return;
@@ -29,6 +19,18 @@ async function handleBusinessWhenMotionApproved(motionHash, indexer) {
   };
 
   await updateProposal(treasuryProposalIndex, { state });
+}
+
+async function handleBusinessWhenMotionApproved(motionHash, indexer) {
+  const col = await getMotionCollection();
+  const motion = await col.findOne({ hash: motionHash, isFinal: false });
+  if (!motion) {
+    return;
+  }
+
+  for (const proposalInfo of motion.treasuryProposals || []) {
+    await handleProposal(proposalInfo, indexer);
+  }
 }
 
 module.exports = {

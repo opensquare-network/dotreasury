@@ -24,8 +24,7 @@ async function handleDeposit(
   const maybeIdSlash = await handleIdentityKilledSlash(event, indexer, blockEvents);
   const idSlash = maybeIdSlash ? maybeIdSlash.balance : '0';
   const electionSlash = await handleElection(event, indexer, blockEvents);
-  const maybeStaking = await handleStakingSlash(event, indexer, blockEvents);
-  const stakingSlash = maybeStaking ? maybeStaking.balance : '0';
+  const stakingSlash = await handleStakingSlash(event, indexer, blockEvents);
   const maybeDemocracy = await handleCancelProposalSlash(event, indexer, blockEvents);
   const democracySlash = maybeDemocracy ? maybeDemocracy.balance : '0';
 
