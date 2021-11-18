@@ -21,7 +21,7 @@ async function getNextStatHeight() {
   const heightInfo = await statusCol.findOne({ name: lastStatsHeight });
 
   if (!heightInfo) {
-    return weeklyBlocks;
+    return 1;
   } else if (typeof heightInfo.value === "number") {
     return heightInfo.value + weeklyBlocks;
   } else {
