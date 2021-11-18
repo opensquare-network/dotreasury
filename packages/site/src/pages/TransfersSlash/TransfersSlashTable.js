@@ -123,7 +123,7 @@ const TransfersTable = ({ data, loading, header, footer }) => {
                       </Table.Cell>
                       <Table.Cell>
                         <User
-                          address={item.transferEventData[0]}
+                          address={item.from}
                           ellipsis={false}
                         />
                       </Table.Cell>
