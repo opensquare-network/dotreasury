@@ -1,4 +1,5 @@
 const {
+  Modules,
   BountyMethods,
 } = require("../../../common/constants");
 
