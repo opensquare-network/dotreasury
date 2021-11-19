@@ -11,10 +11,16 @@ const { logger } = require("../logger");
 const { tryCreateStatPoint } = require("../stats");
 const { getBlockIndexer } = require("../business/common/block/getBlockIndexer");
 const { getHeadUsedInGB } = require("../utils/memoey");
+const { getApi } = require("../api");
 
 async function beginScan() {
   let scanHeight = await getNextScanHeight();
   while (true) {
+    const api = await getApi();
+    if (!api.isConnected) {
+      console.log("Api not connected, restart process");
+      process.exit(0);
+    }
     scanHeight = await oneStepScan(scanHeight);
     await sleep(0);
   }
