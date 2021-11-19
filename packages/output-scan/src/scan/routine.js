@@ -10,10 +10,17 @@ const { getLatestHeight } = require("../chain/latestHead");
 const { getNextScanHeight } = require("../mongo/scanHeight");
 const { getBlockIndexer } = require("../block/getBlockIndexer");
 const { tryCreateStatPoint } = require("../stats");
+const { getHeadUsedInGB } = require("../utils/memory");
+const { getApi } = require("../api");
 
 async function beginRoutineScan() {
   let scanHeight = await getNextScanHeight();
   while (true) {
+    const api = await getApi();
+    if (!api.isConnected) {
+      console.log("Api not connected, restart process");
+      process.exit(0);
+    }
     const chainHeight = getLatestHeight();
     if (scanHeight > chainHeight) {
       // Just wait if the to scan height greater than current chain height
@@ -33,7 +40,7 @@ async function beginRoutineScan() {
 
     const heights = [];
     for (let i = scanHeight; i <= targetHeight; i++) {
-      heights.push(i)
+      heights.push(i);
     }
 
     const blocks = await fetchBlocks(heights);
@@ -52,21 +59,23 @@ async function beginRoutineScan() {
         await updateScanHeight(block.height);
       } catch (e) {
         await sleep(3000);
-        logger.error(`Error with block scan ${ block.height }`, e);
+        logger.error(`Error with block scan ${block.height}`, e);
       } finally {
-        if (block.height % 100000 === 0) {
-          console.log(`${block.height} restart process in case of memory leak`);
+        if (getHeadUsedInGB() > 1) {
+          console.log(
+            `${getHeadUsedInGB()}GB heap used, restart process in case of memory leak`
+          );
           process.exit(0);
         }
       }
     }
 
-    const lastHeight = last(blocks || []).height
+    const lastHeight = last(blocks || []).height;
     scanHeight = lastHeight + 1;
-    logger.info(`${lastHeight} scan finished!`)
+    logger.info(`${lastHeight} scan finished!`);
   }
 }
 
 module.exports = {
   beginRoutineScan,
-}
+};

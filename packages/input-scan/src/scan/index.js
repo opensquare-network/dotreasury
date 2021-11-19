@@ -1,11 +1,5 @@
-const {
-  updateSpecs,
-  getMetaScanHeight
-} = require("../chain/specs");
-const {
-  getScanStep,
-  isUseMetaDb,
-} = require("../env");
+const { updateSpecs, getMetaScanHeight } = require("../chain/specs");
+const { getScanStep, isUseMetaDb } = require("../env");
 const { sleep } = require("../utils/sleep");
 const { getLatestHeight } = require("../chain/latestHead");
 const { getNextScanHeight } = require("../mongo/scanHeight");
@@ -16,10 +10,17 @@ const { fetchBlocks } = require("./fetchBlocks");
 const { logger } = require("../logger");
 const { tryCreateStatPoint } = require("../stats");
 const { getBlockIndexer } = require("../business/common/block/getBlockIndexer");
+const { getHeadUsedInGB } = require("../utils/memory");
+const { getApi } = require("../api");
 
 async function beginScan() {
   let scanHeight = await getNextScanHeight();
   while (true) {
+    const api = await getApi();
+    if (!api.isConnected) {
+      console.log("Api not connected, restart process");
+      process.exit(0);
+    }
     scanHeight = await oneStepScan(scanHeight);
     await sleep(0);
   }
@@ -47,13 +48,12 @@ async function oneStepScan(startHeight) {
 
   const heights = [];
   for (let i = startHeight; i <= targetHeight; i++) {
-    heights.push(i)
+    heights.push(i);
   }
-
   const blocks = await fetchBlocks(heights);
   if ((blocks || []).length <= 0) {
     await sleep(1000);
-    return startHeight
+    return startHeight;
   }
 
   for (const block of blocks) {
@@ -66,20 +66,21 @@ async function oneStepScan(startHeight) {
       await tryCreateStatPoint(indexer);
     } catch (e) {
       await sleep(1000);
-      logger.error(`Error with block scan ${ block.height }`, e);
+      logger.error(`Error with block scan ${block.height}`, e);
     } finally {
-      if (block.height % 80000 === 0) {
-        console.log(`${block.height} restart process in case of memory leak`);
+      if (getHeadUsedInGB() > 1) {
+        console.log(
+          `${getHeadUsedInGB()}GB heap used, restart process in case of memory leak`
+        );
         process.exit(0);
       }
     }
   }
-
-  const lastHeight = last(blocks || []).height
-  logger.info(`${lastHeight} scan finished!`)
+  const lastHeight = last(blocks || []).height;
+  logger.info(`${lastHeight} scan finished!`);
   return lastHeight + 1;
 }
 
 module.exports = {
   beginScan,
-}
+};
