@@ -11,6 +11,8 @@ async function main() {
   await beginScan();
 }
 
-main().then(async () => {
-  await closeDb()
-}).catch(console.error)
+main()
+  .then(async () => {
+    await closeDb();
+  })
+  .catch(console.error);
