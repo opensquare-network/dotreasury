@@ -10,7 +10,7 @@ const { fetchBlocks } = require("./fetchBlocks");
 const { logger } = require("../logger");
 const { tryCreateStatPoint } = require("../stats");
 const { getBlockIndexer } = require("../business/common/block/getBlockIndexer");
-const { getHeadUsedInGB } = require("../utils/memoey");
+const { getHeadUsedInGB } = require("../utils/memory");
 const { getApi } = require("../api");
 
 async function beginScan() {
