@@ -11,10 +11,16 @@ const { getNextScanHeight } = require("../mongo/scanHeight");
 const { getBlockIndexer } = require("../block/getBlockIndexer");
 const { tryCreateStatPoint } = require("../stats");
 const { getHeadUsedInGB } = require("../utils/memory");
+const { getApi } = require("../api");
 
 async function beginRoutineScan() {
   let scanHeight = await getNextScanHeight();
   while (true) {
+    const api = await getApi();
+    if (!api.isConnected) {
+      console.log("Api not connected, restart process");
+      process.exit(0);
+    }
     const chainHeight = getLatestHeight();
     if (scanHeight > chainHeight) {
       // Just wait if the to scan height greater than current chain height
