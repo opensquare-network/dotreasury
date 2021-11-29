@@ -10,7 +10,7 @@ const data = {
 };
 
 function setScanHeight(chain, height) {
-  data[chain]?.scanHeight = height;
+  data[chain].scanHeight = height;
 }
 
 function getScanHeight(chain) {
@@ -18,7 +18,7 @@ function getScanHeight(chain) {
 }
 
 function setOverview(chain, arg) {
-  data[chain]?.overview = arg;
+  data[chain].overview = arg;
 }
 
 function getOverview(chain) {
