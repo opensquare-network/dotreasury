@@ -31,7 +31,7 @@ describe("Stats Test", () => {
     const item = await weeklyCol.findOne();
     expect(item).toMatchObject({
       indexer: {
-          blockHeight: 100800,
+          blockHeight: 1,
           blockHash: "0x334f49cd193b01644c3db061d6445c6d64a54adb28942936a91657bb46aaaaaa",
       },
       output: {
