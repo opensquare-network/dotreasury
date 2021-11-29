@@ -14,7 +14,7 @@ function setScanHeight(chain, height) {
 }
 
 function getScanHeight(chain) {
-  return data[chain].scanHeight;
+  return data[chain]?.scanHeight;
 }
 
 function setOverview(chain, arg) {
@@ -22,7 +22,7 @@ function setOverview(chain, arg) {
 }
 
 function getOverview(chain) {
-  return data[chain].overview;
+  return data[chain]?.overview;
 }
 
 module.exports = {
