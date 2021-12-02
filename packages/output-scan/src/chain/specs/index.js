@@ -1,5 +1,5 @@
 const findLast = require("lodash.findlast");
-const { getAllVersionChangeHeights, getScanHeight } = require("../../mongo/meta");
+const { meta: { getAllVersionChangeHeights, getScanHeight } } = require("@dotreasury/common");
 const { getApi, getProvider } = require("@dotreasury/common");
 
 let versionChangedHeights = [];

@@ -1,4 +1,4 @@
-const { findBlockApi } = require("../../../chain/specs/blockApi");
+const { findBlockApi } = require("@dotreasury/common");
 const {
   Modules,
   ProxyMethods,
