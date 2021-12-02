@@ -1,5 +1,5 @@
 const { setSpecHeights } = require("../../../../chain/specs");
-const { setApi, setProvider } = require("../../../../api");
+const { setApi, setProvider } = require("@dotreasury/common");
 const { getTipReason } = require("../utils");
 const { getTipMetaFromStorage } = require("../utils");
 jest.setTimeout(3000000);

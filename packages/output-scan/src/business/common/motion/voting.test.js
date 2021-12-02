@@ -4,7 +4,7 @@ const {
   getMotionVoting,
   getVotingFromStorageByHeight,
 } = require("./votingStorage");
-const { setApi, setProvider } = require("../../../api");
+const { setApi, setProvider } = require("@dotreasury/common");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 
 jest.setTimeout(3000000);

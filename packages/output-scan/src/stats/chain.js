@@ -1,4 +1,4 @@
-const { getApi } = require("../api");
+const { getApi } = require("@dotreasury/common");
 const { getBlockIndexer } = require("../block/getBlockIndexer");
 
 async function getBlockIndexerByHeight(blockHeight) {

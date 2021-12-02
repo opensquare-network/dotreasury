@@ -11,7 +11,7 @@ const { getNextScanHeight } = require("../mongo/scanHeight");
 const { getBlockIndexer } = require("../block/getBlockIndexer");
 const { tryCreateStatPoint } = require("../stats");
 const { getHeadUsedInGB } = require("../utils/memory");
-const { getApi } = require("../api");
+const { getApi } = require("@dotreasury/common");
 
 async function beginRoutineScan() {
   let scanHeight = await getNextScanHeight();

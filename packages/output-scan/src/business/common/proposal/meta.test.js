@@ -1,5 +1,5 @@
 const { setSpecHeights } = require("../../../chain/specs");
-const { setApi, setProvider } = require("../../../api");
+const { setApi, setProvider } = require("@dotreasury/common");
 jest.setTimeout(3000000);
 
 const { getTreasuryProposalMeta } = require("./meta");

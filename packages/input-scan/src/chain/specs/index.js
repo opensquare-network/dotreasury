@@ -1,7 +1,6 @@
 const findLast = require("lodash.findlast");
-const { getProvider } = require("../../api");
 const { getAllVersionChangeHeights, getScanHeight } = require("../../mongo/meta");
-const { getApi } = require("../../api");
+const { getApi, getProvider } = require("@dotreasury/common");
 
 let versionChangedHeights = [];
 let metaScanHeight = 1;

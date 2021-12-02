@@ -1,6 +1,6 @@
 const { GenericCall } = require("@polkadot/types");
 const { createKeyMulti, encodeAddress } = require("@polkadot/util-crypto");
-const { getApi } = require("../api");
+const { getApi } = require("@dotreasury/common");
 const { logger } = require("../logger");
 const {
   Modules,

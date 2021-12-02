@@ -1,4 +1,4 @@
-const { getApi } = require("../api");
+const { getApi } = require("@dotreasury/common");
 const { TypeRegistry, Metadata } = require("@polkadot/types");
 const {
   getSpecTypes,

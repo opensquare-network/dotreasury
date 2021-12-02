@@ -1,6 +1,6 @@
 const { getTreasuryBalance } = require("./freeBalance");
 const { setSpecHeights } = require("../../../chain/specs");
-const { setApi, setProvider } = require("../../../api");
+const { setApi, setProvider } = require("@dotreasury/common");
 const { setChain, CHAINS, } = require("../../../env");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 

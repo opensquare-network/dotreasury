@@ -1,5 +1,5 @@
 const { ApiPromise, WsProvider } = require("@polkadot/api");
-const { setApi, setProvider } = require("../../../api");
+const { setApi, setProvider } = require("@dotreasury/common");
 const { setChain, CHAINS, } = require("../../../env");
 
 jest.setTimeout(3000000);

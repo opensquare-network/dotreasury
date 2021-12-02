@@ -11,7 +11,7 @@ const { logger } = require("../logger");
 const { tryCreateStatPoint } = require("../stats");
 const { getBlockIndexer } = require("../business/common/block/getBlockIndexer");
 const { getHeadUsedInGB } = require("../utils/memory");
-const { getApi } = require("../api");
+const { getApi } = require("@dotreasury/common");
 
 async function beginScan() {
   let scanHeight = await getNextScanHeight();

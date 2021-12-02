@@ -4,7 +4,7 @@ const { beginScan } = require("./scan");
 const { checkSpecs } = require("./chain/specs/check");
 const { updateSpecs } = require("./chain/specs");
 const { updateHeight } = require("./chain/latestHead");
-const { disconnect } = require("./api");
+const { disconnect } = require("@dotreasury/common");
 
 async function main() {
   await updateHeight();
