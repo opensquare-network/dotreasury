@@ -1,8 +1,8 @@
-const { getApi } = require("@dotreasury/common");
+const { getApi } = require("./api");
 
 let latestHeight = null;
 
-async function updateHeight() {
+async function subscribeChainHeight() {
   const api = await getApi();
 
   await new Promise((resolve) => {
@@ -18,6 +18,6 @@ function getLatestHeight() {
 }
 
 module.exports = {
-  updateHeight,
+  subscribeChainHeight,
   getLatestHeight,
 };
