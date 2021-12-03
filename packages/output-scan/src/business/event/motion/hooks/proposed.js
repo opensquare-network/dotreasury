@@ -8,7 +8,7 @@ const {
   MotionState,
   BountyMethods,
 } = require("../../../common/constants");
-const { logger } = require("../../../../logger");
+const { logger } = require("@dotreasury/common");
 
 function isProposalMotion(section, method) {
   return Modules.Treasury === section &&

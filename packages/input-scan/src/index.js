@@ -1,11 +1,10 @@
 require("dotenv").config();
 const { beginScan } = require("./scan");
-const { updateSpecs } = require("./chain/specs");
-const { updateHeight } = require("./chain/latestHead");
+const { chainHeight: { subscribeChainHeight }, specs: { updateSpecs } } = require("@dotreasury/common");
 const { closeDb } = require("./mongo/data");
 
 async function main() {
-  await updateHeight();
+  await subscribeChainHeight();
   await updateSpecs();
 
   await beginScan();

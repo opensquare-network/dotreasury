@@ -1,17 +1,15 @@
 const last = require("lodash.last");
 const { scanNormalizedBlock } = require("./block");
-const { fetchBlocks } = require("./fetchBlocks");
-const { logger } = require("../logger");
 const { updateScanHeight } = require("../mongo/scanHeight");
-const { getMetaScanHeight, updateSpecs } = require("../chain/specs");
-const { getScanStep } = require("../env");
-const { sleep } = require("../utils/sleep");
-const { getLatestHeight } = require("../chain/latestHead");
 const { getNextScanHeight } = require("../mongo/scanHeight");
-const { getBlockIndexer } = require("../block/getBlockIndexer");
 const { tryCreateStatPoint } = require("../stats");
-const { getHeadUsedInGB } = require("../utils/memory");
-const { getApi } = require("../api");
+const {
+  getApi, logger, env: { getScanStep }, chainHeight: { getLatestHeight },
+  specs: { getMetaScanHeight, updateSpecs },
+  fetchBlocks,
+  getBlockIndexer,
+  utils: { sleep, getHeadUsedInGB },
+} = require("@dotreasury/common");
 
 async function beginRoutineScan() {
   let scanHeight = await getNextScanHeight();
@@ -59,11 +57,11 @@ async function beginRoutineScan() {
         await updateScanHeight(block.height);
       } catch (e) {
         await sleep(3000);
-        logger.error(`Error with block scan ${block.height}`, e);
+        logger.error(`Error with block scan ${ block.height }`, e);
       } finally {
         if (getHeadUsedInGB() > 1) {
           console.log(
-            `${getHeadUsedInGB()}GB heap used, restart process in case of memory leak`
+            `${ getHeadUsedInGB() }GB heap used, restart process in case of memory leak`
           );
           process.exit(0);
         }
@@ -72,7 +70,7 @@ async function beginRoutineScan() {
 
     const lastHeight = last(blocks || []).height;
     scanHeight = lastHeight + 1;
-    logger.info(`${lastHeight} scan finished!`);
+    logger.info(`${ lastHeight } scan finished!`);
   }
 }
 

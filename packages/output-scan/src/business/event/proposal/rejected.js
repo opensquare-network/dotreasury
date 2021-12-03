@@ -3,7 +3,7 @@ const {
   TreasuryProposalEvents,
   TimelineItemTypes,
 } = require("../../common/constants");
-const { logger } = require("../../../logger")
+const { logger } = require("@dotreasury/common");
 
 async function handleRejected(event, eventIndexer) {
   const eventData = event.data.toJSON();

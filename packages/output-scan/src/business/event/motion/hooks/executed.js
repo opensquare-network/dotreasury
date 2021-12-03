@@ -1,5 +1,5 @@
 const { updateProposal } = require("../../../../mongo/service/treasuryProposal");
-const { currentChain } = require("../../../../env");
+const { env: { currentChain } } = require("@dotreasury/common");
 const { updateBounty } = require("../../../../mongo/service/bounty");
 const { getBountyMeta } = require("../../../common/bounty/meta");
 const { getMotionCollection } = require("../../../../mongo");

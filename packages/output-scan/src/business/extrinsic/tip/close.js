@@ -3,7 +3,7 @@ const { TimelineItemTypes } = require("../../common/constants");
 const { TipEvents } = require("../../common/constants");
 const { getTipCommonUpdates } = require("../../common/tip/updates");
 const { getBlockHash } = require("../../common");
-const { currentChain, CHAINS } = require("../../../env");
+const { env: { currentChain, CHAINS } } = require("@dotreasury/common");
 const {
   Modules,
   TipMethods,

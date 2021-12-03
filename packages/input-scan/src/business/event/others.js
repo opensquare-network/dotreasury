@@ -1,5 +1,5 @@
 const { getOthersIncomeCollection } = require("../../mongo/data");
-const { gt } = require("../../utils");
+const { utils: { gt } } = require("@dotreasury/common");
 const tooMuchGas = 0.1 * Math.pow(10, 12);
 
 async function handleOthers(event, indexer) {

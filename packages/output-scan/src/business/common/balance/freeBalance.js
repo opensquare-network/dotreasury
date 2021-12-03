@@ -1,5 +1,7 @@
-const { findBlockApi } = require("../../../chain/specs/blockApi");
-const { currentChain, CHAINS, } = require("../../../env");
+const {
+  findBlockApi,
+  env: { currentChain, CHAINS }
+} = require("@dotreasury/common");
 const { KsmTreasuryAccount, DotTreasuryAccount } = require("../constants")
 
 async function getBalance(blockHash) {

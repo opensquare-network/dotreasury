@@ -11,7 +11,7 @@ const {
   getTipReason,
   getTipMetaFromStorage,
 } = require("../../common/tip/utils");
-const { findRegistry } = require("../../../chain/specs");
+const { specs: { findRegistry } } = require("@dotreasury/common");
 const { TipMethods } = require("../../common/constants");
 const { getFinderFromMeta, } = require("./utils");
 

@@ -6,9 +6,11 @@ const {
   SudoMethods,
 } = require("../constants");
 const { calcMultisigAddress } = require("../../../utils/call");
-const { findRegistry } = require("../../../chain/specs");
 const { GenericCall } = require("@polkadot/types");
-const { logger } = require("../../../logger")
+const {
+  logger,
+  specs: { findRegistry },
+} = require("@dotreasury/common")
 
 async function unwrapProxy(call, signer, indexer, events, cb) {
   const real = call.args[0].toJSON();

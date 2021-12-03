@@ -1,4 +1,4 @@
-const { findBlockApi } = require("../../../chain/specs/blockApi");
+const { findBlockApi } = require("@dotreasury/common");
 
 async function getBurnPercent(blockHash) {
   const blockApi = await findBlockApi(blockHash);

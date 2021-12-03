@@ -2,7 +2,7 @@ const { insertProposal } = require("../../../mongo/service/treasuryProposal");
 const { TreasuryProposalEvents } = require("../../common/constants");
 const { TimelineItemTypes } = require("../../common/constants");
 const { getTreasuryProposalMeta } = require("../../common/proposal/meta");
-const { logger } = require("../../../logger")
+const { logger } = require("@dotreasury/common");
 
 async function saveNewTreasuryProposal(event, extrinsic, eventIndexer) {
   const [proposalIndex] = event.data.toJSON();

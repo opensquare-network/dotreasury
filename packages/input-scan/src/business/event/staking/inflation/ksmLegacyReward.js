@@ -4,9 +4,11 @@ const {
   StakingEvents
 } = require("../../../common/constants");
 const {
-  currentChain,
-  CHAINS,
-} = require("../../../../env");
+  env: {
+    currentChain,
+    CHAINS,
+  }
+} = require("@dotreasury/common");
 
 async function handleKsmLegacyReward(event, indexer, blockEvents) {
   if (CHAINS.KUSAMA !== currentChain() || indexer.blockHeight >= 1379482) {
