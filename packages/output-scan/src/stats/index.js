@@ -8,7 +8,7 @@ const {
   getBurntCollection,
   getWeeklyStatsCollection,
 } = require("../mongo");
-const { bigAdd } = require("../utils");
+const { utils: { bigAdd } } = require("@dotreasury/common");
 
 const lastStatsHeight = "last-outputstats-height";
 

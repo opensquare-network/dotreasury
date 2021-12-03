@@ -2,7 +2,6 @@ const { handleAcceptCurator } = require("./bounty/acceptCurator");
 const { handleCloseTipCall } = require("./tip/close");
 const { handleTipCall } = require("./tip/tip");
 const { calcMultisigAddress } = require("../../utils/call");
-const { extractExtrinsicEvents, isExtrinsicSuccess } = require("../../utils");
 const {
   Modules,
   MultisigMethods,
@@ -14,6 +13,7 @@ const { GenericCall } = require("@polkadot/types");
 const {
   logger,
   specs: { findRegistry },
+  utils: { extractExtrinsicEvents, isExtrinsicSuccess }
 } = require("@dotreasury/common")
 
 async function handleCall(call, author, extrinsicIndexer, events) {

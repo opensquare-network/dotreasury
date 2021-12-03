@@ -1,9 +1,12 @@
 const { getNextScanHeight } = require("../mongo/scanHeight");
 const { scanNormalizedBlock } = require("./block");
-const { sleep } = require("../utils/sleep");
 const { updateScanHeight } = require("../mongo/scanHeight");
 const { getNextKnownHeights } = require("../mongo/service/known");
-const { logger, fetchBlocks, getBlockIndexer } = require("@dotreasury/common");
+const {
+  logger,
+  fetchBlocks, getBlockIndexer,
+  utils: { sleep },
+} = require("@dotreasury/common");
 const last = require("lodash.last");
 const { tryCreateStatPoint } = require("../stats");
 

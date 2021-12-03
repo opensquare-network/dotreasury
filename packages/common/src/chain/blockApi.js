@@ -1,4 +1,4 @@
-const { getApi } = require("@dotreasury/common");
+const { getApi } = require("./api");
 let blockApiMap = {};
 
 function setBlockApi(blockHash, api) {

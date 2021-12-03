@@ -1,4 +1,4 @@
-const { bigAdd } = require("../../../utils");
+const { utils: { bigAdd } } = require("@dotreasury/common");
 const { handleTipSlash } = require("./tipSlash");
 const { handleBountySlash } = require("./bountySlash");
 const { handleProposalSlash } = require("./proposalSlash");

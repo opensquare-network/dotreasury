@@ -1,7 +1,6 @@
 const { handleOthers } = require("./others");
-const { bigAdds } = require("../../utils");
+const { utils: { bigAdds, bigAdd } } = require("@dotreasury/common");
 const { handleElection } = require("./election");
-const { bigAdd } = require("../../utils");
 const { handleStakingSlash } = require("./staking/slash");
 const { handleCancelProposalSlash } = require("./democracy/cancelProposal");
 const { handleIdentityKilledSlash } = require("./identity/killedSlash");
