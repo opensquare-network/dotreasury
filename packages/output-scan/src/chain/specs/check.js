@@ -1,4 +1,4 @@
-const { logger } = require("../../logger");
+const { logger } = require("@dotreasury/common");
 const { getSpecHeights } = require("./index");
 
 function checkSpecs() {

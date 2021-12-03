@@ -3,7 +3,7 @@ const {
   TimelineItemTypes,
 } = require("../../common/constants");
 const { updateProposal } = require("../../../mongo/service/treasuryProposal");
-const { logger } = require("../../../logger")
+const { logger } = require("@dotreasury/common");
 
 async function handleAwarded(event, eventIndexer) {
   const eventData = event.data.toJSON();

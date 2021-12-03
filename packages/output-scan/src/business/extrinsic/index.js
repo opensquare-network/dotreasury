@@ -12,7 +12,7 @@ const {
   SudoMethods,
 } = require("../common/constants");
 const { GenericCall } = require("@polkadot/types");
-const { logger } = require("../../logger")
+const { logger } = require("@dotreasury/common")
 
 async function handleCall(call, author, extrinsicIndexer, events) {
   await handleTipCall(call, author, extrinsicIndexer, events);

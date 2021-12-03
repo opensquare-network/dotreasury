@@ -1,7 +1,6 @@
 const last = require("lodash.last");
 const { scanNormalizedBlock } = require("./block");
 const { fetchBlocks } = require("./fetchBlocks");
-const { logger } = require("../logger");
 const { updateScanHeight } = require("../mongo/scanHeight");
 const { getMetaScanHeight, updateSpecs } = require("../chain/specs");
 const { getScanStep } = require("../env");
@@ -11,7 +10,7 @@ const { getNextScanHeight } = require("../mongo/scanHeight");
 const { getBlockIndexer } = require("../block/getBlockIndexer");
 const { tryCreateStatPoint } = require("../stats");
 const { getHeadUsedInGB } = require("../utils/memory");
-const { getApi } = require("@dotreasury/common");
+const { getApi, logger } = require("@dotreasury/common");
 
 async function beginRoutineScan() {
   let scanHeight = await getNextScanHeight();

@@ -7,7 +7,7 @@ const {
   MotionState,
   BountyMethods,
 } = require("../../../common/constants");
-const { logger } = require("../../../../logger")
+const { logger } = require("@dotreasury/common");
 
 function getState(name, motion, voting, indexer) {
   return {
