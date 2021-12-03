@@ -4,6 +4,7 @@ const blockApi = require("./chain/blockApi");
 const log = require("./logger");
 const env = require("./env");
 const chainHeight = require("./chain/latestHead");
+const specs = require("./chain/specs");
 
 module.exports = {
   ...apiObj,
@@ -12,4 +13,5 @@ module.exports = {
   ...log,
   env,
   chainHeight,
+  specs,
 }

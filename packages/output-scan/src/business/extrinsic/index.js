@@ -2,7 +2,6 @@ const { handleAcceptCurator } = require("./bounty/acceptCurator");
 const { handleCloseTipCall } = require("./tip/close");
 const { handleTipCall } = require("./tip/tip");
 const { calcMultisigAddress } = require("../../utils/call");
-const { findRegistry } = require("../../chain/specs");
 const { extractExtrinsicEvents, isExtrinsicSuccess } = require("../../utils");
 const {
   Modules,
@@ -12,7 +11,10 @@ const {
   SudoMethods,
 } = require("../common/constants");
 const { GenericCall } = require("@polkadot/types");
-const { logger } = require("@dotreasury/common")
+const {
+  logger,
+  specs: { findRegistry },
+} = require("@dotreasury/common")
 
 async function handleCall(call, author, extrinsicIndexer, events) {
   await handleTipCall(call, author, extrinsicIndexer, events);

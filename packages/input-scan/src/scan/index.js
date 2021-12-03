@@ -1,5 +1,3 @@
-const { updateSpecs, getMetaScanHeight } = require("../chain/specs");
-const { env: { getScanStep, isUseMetaDb } } = require("@dotreasury/common");
 const { sleep } = require("../utils/sleep");
 const { getNextScanHeight } = require("../mongo/scanHeight");
 const last = require("lodash.last");
@@ -9,7 +7,13 @@ const { fetchBlocks } = require("./fetchBlocks");
 const { tryCreateStatPoint } = require("../stats");
 const { getBlockIndexer } = require("../business/common/block/getBlockIndexer");
 const { getHeadUsedInGB } = require("../utils/memory");
-const { getApi, logger, chainHeight: { getLatestHeight } } = require("@dotreasury/common");
+const {
+  getApi, logger, chainHeight: { getLatestHeight },
+  env: { getScanStep, isUseMetaDb },
+  specs: {
+    updateSpecs, getMetaScanHeight,
+  }
+} = require("@dotreasury/common");
 
 async function beginScan() {
   let scanHeight = await getNextScanHeight();

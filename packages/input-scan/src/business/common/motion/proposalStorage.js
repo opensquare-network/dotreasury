@@ -1,9 +1,9 @@
 const { normalizeCall } = require("./utils");
-const {
-  findRegistry,
-} = require("../../../chain/specs");
 const { GenericCall } = require("@polkadot/types");
-const { getApi, findBlockApi } = require("@dotreasury/common");
+const {
+  getApi, findBlockApi,
+  specs: { findRegistry }
+} = require("@dotreasury/common");
 
 async function getMotionProposal(blockHash, motionHash) {
   const blockApi = await findBlockApi(blockHash);

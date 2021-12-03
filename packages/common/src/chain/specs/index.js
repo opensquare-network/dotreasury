@@ -1,6 +1,7 @@
 const findLast = require("lodash.findlast");
-const { meta: { getAllVersionChangeHeights, getScanHeight } } = require("@dotreasury/common");
-const { getApi, getProvider } = require("@dotreasury/common");
+const { getAllVersionChangeHeights, getScanHeight } = require("../../mongo/meta");
+const { getApi, getProvider } = require("../api");
+const { logger } = require("../../logger");
 
 let versionChangedHeights = [];
 let metaScanHeight = 1;
@@ -30,6 +31,16 @@ async function updateSpecs() {
   metaScanHeight = await getScanHeight();
 }
 
+function getSpecHeights() {
+  return versionChangedHeights;
+}
+
+async function findRegistry({ blockHash, blockHeight: height }) {
+  const spec = findMostRecentSpec(height)
+  const api = await getApi()
+  return (await api.getBlockRegistry(blockHash, spec.runtimeVersion)).registry;
+}
+
 function findMostRecentSpec(height) {
   const spec = findLast(
     versionChangedHeights,
@@ -42,14 +53,12 @@ function findMostRecentSpec(height) {
   return spec
 }
 
-function getSpecHeights() {
-  return versionChangedHeights;
-}
-
-async function findRegistry({ blockHash, blockHeight: height }) {
-  const spec = findMostRecentSpec(height)
-  const api = await getApi()
-  return (await api.getBlockRegistry(blockHash, spec.runtimeVersion)).registry;
+function checkSpecs() {
+  const specHeights = getSpecHeights();
+  if (specHeights.length <= 0 || specHeights[0] > 1) {
+    logger.error("No specHeights or invalid");
+    throw "No specHeights or invalid";
+  }
 }
 
 module.exports = {
@@ -58,4 +67,5 @@ module.exports = {
   findRegistry,
   setSpecHeights,
   getMetaScanHeight,
+  checkSpecs,
 };

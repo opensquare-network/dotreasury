@@ -1,9 +1,8 @@
-const { findRegistry } = require("../chain/specs");
 const {
   meta: { getBlocksByHeights },
   env: { isUseMetaDb },
+  getApi, logger, specs: { findRegistry },
 } = require("@dotreasury/common");
-const { getApi, logger } = require("@dotreasury/common");
 const { GenericBlock } = require("@polkadot/types");
 
 async function fetchBlocks(heights = []) {
