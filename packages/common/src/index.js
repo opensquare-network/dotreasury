@@ -5,6 +5,7 @@ const log = require("./logger");
 const env = require("./env");
 const chainHeight = require("./chain/latestHead");
 const specs = require("./chain/specs");
+const { fetchBlocks } = require("./chain/fetchBlocks");
 
 module.exports = {
   ...apiObj,
@@ -14,4 +15,5 @@ module.exports = {
   env,
   chainHeight,
   specs,
+  fetchBlocks,
 }

@@ -3,9 +3,8 @@ const { scanNormalizedBlock } = require("./block");
 const { sleep } = require("../utils/sleep");
 const { updateScanHeight } = require("../mongo/scanHeight");
 const { getNextKnownHeights } = require("../mongo/service/known");
-const { logger } = require("@dotreasury/common");
+const { logger, fetchBlocks } = require("@dotreasury/common");
 const last = require("lodash.last");
-const { fetchBlocks } = require("./fetchBlocks");
 const { getBlockIndexer } = require("../block/getBlockIndexer");
 const { tryCreateStatPoint } = require("../stats");
 

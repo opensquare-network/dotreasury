@@ -1,9 +1,9 @@
-const {
-  meta: { getBlocksByHeights },
-  env: { isUseMetaDb },
-  getApi, logger, specs: { findRegistry },
-} = require("@dotreasury/common");
+const { getApi } = require("./api");
+const { getBlocksByHeights } = require("../mongo/meta");
+const { findRegistry } = require("./specs");
+const { isUseMetaDb } = require("../env");
 const { GenericBlock } = require("@polkadot/types");
+const { logger } = require("../logger");
 
 async function fetchBlocks(heights = []) {
   if (isUseMetaDb()) {
@@ -41,7 +41,8 @@ async function fetchBlocksFromDb(heights = []) {
     try {
       block = await constructBlockFromDbData(blockInDb);
     } catch (e) {
-      logger.error(`can not construct block from db data at ${ blockInDb.height }`, e)
+      logger.error(`can not construct block from db data at ${ blockInDb.height }`, e);
+      console.error(`can not construct block from db data at ${ blockInDb.height }`, e);
       block = await fetchOneBlockFromNode(blockInDb.height);
     }
 
