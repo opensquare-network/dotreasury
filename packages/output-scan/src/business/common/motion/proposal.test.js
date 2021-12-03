@@ -1,9 +1,7 @@
 const { setSpecHeights } = require("../../../chain/specs");
-const { setChain } = require("../../../env");
 const { getMotionProposalCall } = require("./proposalStorage");
-const { setApi, setProvider } = require("@dotreasury/common");
+const { setApi, setProvider, env: { CHAINS, setChain } } = require("@dotreasury/common");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
-const { CHAINS } = require("../../../env")
 
 jest.setTimeout(3000000);
 

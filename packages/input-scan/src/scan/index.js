@@ -1,5 +1,5 @@
 const { updateSpecs, getMetaScanHeight } = require("../chain/specs");
-const { getScanStep, isUseMetaDb } = require("../env");
+const { env: { getScanStep, isUseMetaDb } } = require("@dotreasury/common");
 const { sleep } = require("../utils/sleep");
 const { getLatestHeight } = require("../chain/latestHead");
 const { getNextScanHeight } = require("../mongo/scanHeight");
@@ -65,18 +65,18 @@ async function oneStepScan(startHeight) {
       await tryCreateStatPoint(indexer);
     } catch (e) {
       await sleep(1000);
-      logger.error(`Error with block scan ${block.height}`, e);
+      logger.error(`Error with block scan ${ block.height }`, e);
     } finally {
       if (getHeadUsedInGB() > 1) {
         console.log(
-          `${getHeadUsedInGB()}GB heap used, restart process in case of memory leak`
+          `${ getHeadUsedInGB() }GB heap used, restart process in case of memory leak`
         );
         process.exit(0);
       }
     }
   }
   const lastHeight = last(blocks || []).height;
-  logger.info(`${lastHeight} scan finished!`);
+  logger.info(`${ lastHeight } scan finished!`);
   return lastHeight + 1;
 }
 

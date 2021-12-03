@@ -1,4 +1,4 @@
-const { CHAINS, currentChain, } = require("../../../env");
+const { env: { CHAINS, currentChain, } } = require("@dotreasury/common");
 const { getTreasurySlashCollection } = require("../../../mongo/data");
 const {
   Modules,

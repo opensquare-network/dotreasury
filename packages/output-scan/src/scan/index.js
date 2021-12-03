@@ -1,6 +1,6 @@
 const { beginRoutineScan } = require("./routine");
 const { scanKnownHeights } = require("./known");
-const { firstScanKnowHeights } = require("../env");
+const { env: { firstScanKnowHeights } } = require("@dotreasury/common");
 
 async function beginScan() {
   if (firstScanKnowHeights()) {

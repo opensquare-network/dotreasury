@@ -1,7 +1,9 @@
 const { getBurnPercent } = require("./burnPercent");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
-const { setApi, setProvider } = require("@dotreasury/common");
-const { setChain, CHAINS, } = require("../../../env");
+const {
+  setApi, setProvider,
+  env: { setChain, CHAINS }
+} = require("@dotreasury/common");
 
 jest.setTimeout(3000000);
 
