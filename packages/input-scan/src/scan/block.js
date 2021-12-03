@@ -1,7 +1,7 @@
 const { bigAdd, bigAdds } = require("../utils");
 const { getNowIncomeSeats } = require("../mongo/scanHeight");
 const { handleEvents } = require("../business/event");
-const { getBlockIndexer } = require("../business/common/block/getBlockIndexer");
+const { getBlockIndexer } = require("@dotreasury/common");
 
 async function scanNormalizedBlock(block, blockEvents) {
   const blockIndexer = getBlockIndexer(block);

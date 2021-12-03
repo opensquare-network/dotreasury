@@ -3,13 +3,13 @@ const { scanNormalizedBlock } = require("./block");
 const { updateScanHeight } = require("../mongo/scanHeight");
 const { sleep } = require("../utils/sleep");
 const { getNextScanHeight } = require("../mongo/scanHeight");
-const { getBlockIndexer } = require("../block/getBlockIndexer");
 const { tryCreateStatPoint } = require("../stats");
 const { getHeadUsedInGB } = require("../utils/memory");
 const {
   getApi, logger, env: { getScanStep }, chainHeight: { getLatestHeight },
   specs: { getMetaScanHeight, updateSpecs },
   fetchBlocks,
+  getBlockIndexer,
 } = require("@dotreasury/common");
 
 async function beginRoutineScan() {
