@@ -1,4 +1,8 @@
-const { setSpecHeights } = require("../../../chain/specs");
+const {
+  specs: {
+    setSpecHeights
+  }
+} = require("@dotreasury/common");
 const {
   getMotionVoting,
   getVotingFromStorageByHeight,

@@ -1,7 +1,11 @@
 const { getBountyDescription } = require("./description");
 const { getBountyMeta } = require("./meta");
-const { setSpecHeights } = require("../../../chain/specs");
-const { setApi, setProvider, } = require("@dotreasury/common");
+const {
+  setApi, setProvider,
+  specs: {
+    setSpecHeights
+  }
+} = require("@dotreasury/common");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 jest.setTimeout(3000000);
 

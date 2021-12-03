@@ -1,5 +1,5 @@
 const { getTreasuryBalance } = require("./freeBalance");
-const { setSpecHeights } = require("../../../chain/specs");
+const { specs: { setSpecHeights } } = require("@dotreasury/common");
 const {
   setApi, setProvider,
   env: { setChain, CHAINS }
