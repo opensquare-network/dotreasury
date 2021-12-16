@@ -2,6 +2,7 @@ const findLast = require("lodash.findlast");
 const { getAllVersionChangeHeights, getScanHeight } = require("../../mongo/meta");
 const { getApi, getProvider } = require("../api");
 const { logger } = require("../../logger");
+const { hexToU8a, isHex } = require("@polkadot/util");
 
 let versionChangedHeights = [];
 let metaScanHeight = 1;
@@ -36,9 +37,14 @@ function getSpecHeights() {
 }
 
 async function findRegistry({ blockHash, blockHeight: height }) {
+  let u8aHash = blockHash;
+  if (isHex(blockHash)) {
+    u8aHash = hexToU8a(u8aHash);
+  }
+
   const spec = findMostRecentSpec(height)
   const api = await getApi()
-  return (await api.getBlockRegistry(blockHash, spec.runtimeVersion)).registry;
+  return (await api.getBlockRegistry(u8aHash, spec.runtimeVersion)).registry;
 }
 
 function findMostRecentSpec(height) {
