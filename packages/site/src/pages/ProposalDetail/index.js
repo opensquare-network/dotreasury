@@ -118,7 +118,7 @@ function normalizeMotionTimelineItem(motion, scanHeight) {
               value: (
                 <Proposer
                   address={proposer}
-                  agree={motion.isFinal && motion.timeline.some(item => item.method === "Approved")}
+                  agree={ ayes >= threshold }
                   args={argItems}
                   value={motion.proposal.method}
                   threshold={threshold}
