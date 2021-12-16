@@ -6,10 +6,14 @@ const {
   DotTreasuryAccount,
 } = require("../common/constants");
 
-async function handleTreasuryTransferOut(event, indexer) {
+async function handleTreasuryTransferOut(event, indexer, extrinsic) {
   const { section, method, } = event;
   if (section !== Modules.Balances || BalancesEvents.Transfer !== method) {
     return;
+  }
+
+  if (Modules.Sudo !== extrinsic?.method?.section) {
+    return
   }
 
   const eventData = event.data.toJSON();

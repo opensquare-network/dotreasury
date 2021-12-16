@@ -27,6 +27,8 @@ async function handleEventWithExtrinsic(
   await handleTreasuryProposalEvent(event, extrinsic, indexer);
   await handleMotionEvent(event, extrinsic, indexer, blockEvents);
   await handleBountyEventWithExtrinsic(event, extrinsic, indexer);
+
+  await handleTreasuryTransferOut(event, indexer, extrinsic);
 }
 
 async function handleEventWithoutExtrinsic(
@@ -56,7 +58,6 @@ async function handleCommon(
     eventIndex: eventSort,
   };
 
-  await handleTreasuryTransferOut(event, indexer);
   await handleBurntEvent(event, indexer);
 }
 

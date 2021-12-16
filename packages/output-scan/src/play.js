@@ -1,12 +1,15 @@
 require("dotenv").config();
 const { scanNormalizedBlock } = require("./scan/block");
-const { setSpecHeights } = require("./chain/specs");
-const { getApi } = require("@dotreasury/common");
+const {
+  getApi,
+  specs: { setSpecHeights }
+} = require("@dotreasury/common");
 
 async function test() {
   const blockHeights = [
-    4582172,
+    // 4582172,
     // 7610879
+    42190,
   ];
 
   for (const height of blockHeights) {
