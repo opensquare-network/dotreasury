@@ -9,10 +9,8 @@ async function getChainScanHeight(chain) {
   const incomeScan = (income || []).find(item => item.name === 'income-scan');
   const outScan = (output || []).find(item => item.name === 'output-scan');
   return {
-    [chain]: {
-      income: incomeScan.height,
-      output: outScan.value,
-    }
+    income: incomeScan.height,
+    output: outScan.value,
   }
 }
 
