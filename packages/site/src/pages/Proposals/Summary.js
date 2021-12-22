@@ -23,7 +23,7 @@ import {
   fetchTreasury,
   treasurySelector,
 } from "../../store/reducers/burntSlice";
-import { toLocaleStringWithFixed } from "../../utils";
+import { abbreviateBigNumber } from "../../utils";
 
 const Wrapper = styled(Card)`
   padding: 16px 20px 8px;
@@ -148,7 +148,7 @@ const Summary = () => {
       <Item className="right available">
         <Title>Available</Title>
         <ValueWrapper>
-          <Value>{toLocaleStringWithFixed(treasury.free, 0)}</Value>
+          <Value>{abbreviateBigNumber(treasury.free)}</Value>
           <Unit>{symbol}</Unit>
         </ValueWrapper>
       </Item>
@@ -156,7 +156,7 @@ const Summary = () => {
         <Title>Next burn</Title>
         <ValueWrapper>
           <Value>
-            {toLocaleStringWithFixed(treasury.burnPercent * treasury.free, 4)}
+            {abbreviateBigNumber(treasury.burnPercent * treasury.free)}
           </Value>
           <Unit>{symbol}</Unit>
         </ValueWrapper>
