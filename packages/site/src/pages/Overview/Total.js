@@ -41,7 +41,6 @@ const TotalText = styled(TextMinor)`
 
 const Total = ({ total, children }) => {
   const symbol = useSelector(chainSymbolSelector);
-  total = total.toFixed(2).replace(/\D00/, "");
   return (
     <Wrapper>
       {children}
