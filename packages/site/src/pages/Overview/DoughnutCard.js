@@ -5,8 +5,8 @@ import Card from "../../components/Card";
 import Doughnut from "../../components/CustomDoughnut";
 import List from "./CustomList";
 import Total from "./Total";
-
 import Text from "../../components/Text";
+import { abbreviateBigNumber } from "../../utils";
 
 const Title = styled(Text)`
   font-size: 16px;
@@ -66,7 +66,7 @@ const DoughnutCard = ({ title, data, status, clickEvent, children }) => {
     }
     return acc + (findDisabled(current.name) ? 0 : current.value ?? 0);
   };
-  const total = data.labels?.reduce(totalReduce, 0);
+  const total = abbreviateBigNumber(data.labels?.reduce(totalReduce, 0));
   return (
     <CardWrapper>
       <Title>{title}</Title>
