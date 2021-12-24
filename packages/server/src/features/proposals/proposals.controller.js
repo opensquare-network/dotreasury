@@ -271,7 +271,7 @@ class ProposalsController {
   async setProposalDescription(ctx) {
     const { chain } = ctx.params;
     const proposalIndex = parseInt(ctx.params.proposalIndex);
-    const { description } = ctx.request.body;
+    const { description, proposalType, status } = ctx.request.body;
 
     ctx.body = await descriptionService.setDescription(
       {
@@ -281,6 +281,8 @@ class ProposalsController {
           index: proposalIndex,
         },
         description,
+        proposalType,
+        status,
       },
       ctx.request.headers.signature
     );
