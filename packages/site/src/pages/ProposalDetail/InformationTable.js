@@ -36,10 +36,14 @@ const InformationTable = ({ loading, chain, proposalIndex }) => {
   const descriptionDetail = useSelector(descriptionSelector);
   const [openDesModal, setOpenDesModal] = useState(false);
   const [description, setDescription] = useState("");
+  const [proposalType, setProposalType] = useState("");
+  const [status, setStatus] = useState("");
   const nowAddress = useSelector(nowAddressSelector);
 
   useEffect(() => {
     setDescription(descriptionDetail?.description ?? "");
+    setProposalType(descriptionDetail?.tags?.proposalType ?? "");
+    setStatus(descriptionDetail?.tags?.status ?? "");
   }, [descriptionDetail]);
 
   const addDes = () => {
@@ -49,11 +53,19 @@ const InformationTable = ({ loading, chain, proposalIndex }) => {
         "proposal",
         parseInt(proposalIndex),
         description,
+        proposalType,
+        status,
         nowAddress
       )
     );
     setOpenDesModal(false);
   };
+
+  const onKeyDown = (e) => {
+    if (e.key === "Enter") {
+      addDes();
+    }
+  }
 
   return (
     <>
@@ -132,11 +144,33 @@ const InformationTable = ({ loading, chain, proposalIndex }) => {
               fluid
               label="Description"
               onChange={(_, { value }) => setDescription(value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  addDes();
-                }
-              }}
+              onKeyDown={onKeyDown}
+            />
+            <Form.Select
+              options={[
+                {text:"", value:""},
+                {text:"Development", value:"Development"},
+                {text:"Event", value:"Event"},
+                {text:"Maintenance", value:"Maintenance"},
+              ]}
+              value={proposalType}
+              fluid
+              label="Proposal Type"
+              onChange={(_, { value }) => setProposalType(value)}
+              onKeyDown={onKeyDown}
+            />
+            <Form.Select
+              options={[
+                {text:"", value:""},
+                {text:"Working", value:"Working"},
+                {text:"Review", value:"Review"},
+                {text:"Delivered", value:"Delivered"},
+              ]}
+              value={status}
+              fluid
+              label="Status"
+              onChange={(_, { value }) => setStatus(value)}
+              onKeyDown={onKeyDown}
             />
           </Form>
         </Modal.Content>
