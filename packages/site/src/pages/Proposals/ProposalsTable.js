@@ -184,7 +184,7 @@ const ProposalsTable = ({ data, loading, header, footer }) => {
                         )}
                       </Table.Cell>
                       <Table.Cell className="proposal-description-cell">
-                        <DescriptionCell description={item.description} />
+                        <DescriptionCell description={item.description} tags={item.tags} />
                       </Table.Cell>
                       <Table.Cell className="proposal-related-links-cell">
                         <RelatedLInks links={item.links} />
