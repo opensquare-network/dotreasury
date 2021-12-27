@@ -15,6 +15,7 @@ import {
   putDescription,
 } from "../../store/reducers/descriptionSlice";
 import { nowAddressSelector } from "../../store/reducers/accountSlice";
+import Tag from "../../components/Tag";
 
 const IconButton = styled(Icon)`
   margin-left: 6px !important;
@@ -124,6 +125,24 @@ const InformationTable = ({ loading, chain, proposalIndex }) => {
                     <DescriptionWrapper>
                       {descriptionDetail.description}
                     </DescriptionWrapper>
+                  </TableCell>
+                </Table.Cell>
+              </Table.Row>
+            )}
+            {descriptionDetail?.tags?.proposalType && (
+              <Table.Row>
+                <Table.Cell>
+                  <TableCell title={"Proposal Type"}>
+                    <Tag text={descriptionDetail.tags.proposalType}/>
+                  </TableCell>
+                </Table.Cell>
+              </Table.Row>
+            )}
+            {descriptionDetail?.tags?.status && (
+              <Table.Row>
+                <Table.Cell>
+                  <TableCell title={"Work Status"}>
+                    <Tag text={descriptionDetail.tags.status}/>
                   </TableCell>
                 </Table.Cell>
               </Table.Row>
