@@ -45,6 +45,7 @@ class ProposalsController {
         beneficiary: item.beneficiary,
         links: item.links || [],
         description: item.description,
+        tags: item.tags ?? {},
         latestState: {
           state: item.state?.state || item.state?.name,
           time: (
