@@ -51,40 +51,40 @@ export const getLinkNameAndSrc = (link) => {
     let src = "";
     let name = "";
     if (url.host.endsWith("youtube.com") || url.host.endsWith("youtu.be")) {
-      src = "imgs/youtube-logo.svg";
+      src = "/imgs/youtube-logo.svg";
       name = "YouTube";
     } else if (
       url.host.endsWith("github.com") ||
       url.host.endsWith("github.io")
     ) {
-      src = "imgs/github-logo.svg";
+      src = "/imgs/github-logo.svg";
       name = "GitHub";
     } else if (url.host.endsWith("medium.com")) {
-      src = "imgs/medium-logo.svg";
+      src = "/imgs/medium-logo.svg";
       name = "Medium";
     } else if (url.host.endsWith("polkassembly.io")) {
-      src = "imgs/polkassembly-logo.svg";
+      src = "/imgs/polkassembly-logo.svg";
       name = "Polkassembly";
     } else if (url.host.endsWith("twitter.com")) {
-      src = "imgs/twitter-logo.svg";
+      src = "/imgs/twitter-logo.svg";
       name = "Twitter";
     } else if (url.host === "t.me") {
-      src = "imgs/telegram-logo.svg";
+      src = "/imgs/telegram-logo.svg";
       name = "Telegram";
     } else if (url.host.endsWith("docs.google.com")) {
-      src = "imgs/googledoc-logo.svg";
+      src = "/imgs/googledoc-logo.svg";
       name = "Google Docs";
     } else if (url.host.endsWith("drive.google.com")) {
-      src = "imgs/googledrive-logo.svg";
+      src = "/imgs/googledrive-logo.svg";
       name = "Google Drive";
     } else if (url.host.endsWith("opensquare.network")) {
-      src = "imgs/opensquare-icon-logo.svg";
+      src = "/imgs/opensquare-icon-logo.svg";
       name = "OpenSquare";
     } else if (url.host.endsWith("dotreasury.com")) {
-      src = "imgs/dotreasury-logo.svg";
+      src = "/imgs/dotreasury-logo.svg";
       name = "doTreasury";
     } else {
-      src = "imgs/link-icon.svg";
+      src = "/imgs/link-icon.svg";
     }
 
     if (!name) {
@@ -155,7 +155,7 @@ export const getGravatarSrc = (email) => {
       email.trim().toLocaleLowerCase()
     )}?d=https://www.dotreasury.com/imgs/avatar.png`;
   }
-  return "imgs/avatar.png";
+  return "/imgs/avatar.png";
 };
 
 export function networkFromSymbol(symbol) {
