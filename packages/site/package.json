@@ -2,7 +2,7 @@
   "name": "@dotreasury/site",
   "version": "0.1.0",
   "license": "Apache-2.0",
-  "homepage": "https://www.dotreasury.com",
+  "homepage": ".",
   "dependencies": {
     "@polkadot/api": "6.12.1",
     "@polkadot/extension-dapp": "0.42.2",
