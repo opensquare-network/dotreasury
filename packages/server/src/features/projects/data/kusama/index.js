@@ -13,6 +13,13 @@ const polkastats = require("../common/polkaStats");
 const subscan = require("../common/subscan");
 const statescan = require("./statescan");
 const polkassembly = require("../common/polkassembly");
+const speckWallet = require("./speckWallet");
+const dwellir = require("dwellir");
+const nomi = require("nomi");
+const novaWallet = require("novaWallet");
+const parachainsInfo = require("parachainsInfo");
+const patractLabs = require("packages/server/src/features/projects/data/common/patractLabs");
+const polkashotsIo = require("packages/server/src/features/projects/data/common/polkashotsIo");
 
 const projects = [
   polkassembly,
@@ -30,6 +37,13 @@ const projects = [
   localKSM,
   kusamaProject,
   rotki,
+  speckWallet,
+  dwellir,
+  nomi,
+  novaWallet,
+  parachainsInfo,
+  patractLabs,
+  polkashotsIo,
 ];
 
 module.exports = [...projects].sort((p1, p2) => p2.startTime - p1.startTime);
