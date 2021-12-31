@@ -1,6 +1,7 @@
 import React from "react";
 import {
-  BrowserRouter as Router,
+  BrowserRouter,
+  HashRouter,
   Redirect,
   Route,
   Switch,
@@ -51,6 +52,11 @@ export default function App() {
   usePreload();
 
   connect(chain);
+
+  const Router =
+    process.env.REACT_APP_ROUTER_TYPE === "HashRouter"
+      ? HashRouter
+      : BrowserRouter;
 
   return (
     <Router>
