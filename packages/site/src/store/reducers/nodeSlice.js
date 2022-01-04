@@ -32,7 +32,10 @@ const nodeSlice = createSlice({
       state.currentNode = nodeUrl;
 
       if (refresh) {
-        window.location.href = `/${symbolFromNetwork(chain).toLowerCase()}`;
+        window.location.href =
+          process.env.REACT_APP_ROUTER_TYPE === "HashRouter"
+            ? `/#/${symbolFromNetwork(chain).toLowerCase()}`
+            : `/${symbolFromNetwork(chain).toLowerCase()}`;
       }
     },
     setNodesDelay(state, { payload }) {
