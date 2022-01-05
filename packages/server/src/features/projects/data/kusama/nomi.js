@@ -2,7 +2,7 @@ const id = "Nomi";
 const name = "Nomi";
 const description = "Nomi is a decision support tool for Nominators in NPoS networks.";
 const logo = "nomi-logo.svg";
-const startTime = 1591848372015;
+const startTime = 1640772510004;
 
 const relatedLinks = [
   {
@@ -14,9 +14,9 @@ const relatedLinks = [
 const proposals = [
   {
     token: "ksm",
-    amount: 165.732,
+    amount: 173.882,
     proposalId: 126,
-    proposeTimePrice: 475.49,
+    proposeTimePrice: 300.64,
     title: "Nomi Tool Proposal: Nomi is a decision support tool for Nominators in NPoS networks",
     achievements: [
       "Selecting the best performing Validators in the network",
