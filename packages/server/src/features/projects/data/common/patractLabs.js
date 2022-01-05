@@ -2,7 +2,7 @@ const id = "Patract Labs";
 const name = "Patract Labs";
 const description = "Patract is developing development tools and services for Polkadot’s Wasm contract technology.";
 const logo = "patract-logo.svg";
-const startTime = 1636422810000;
+const startTime = 1639473696009;
 
 const relatedLinks = [
   {
@@ -14,19 +14,19 @@ const relatedLinks = [
 const proposals = [
   {
     token: "dot",
-    amount: 165.732,
-    proposalId: 123,
-    proposeTimePrice: 475.49,
-    title: "Patract Labs' maintenance cost for Polkadot of 2021\n",
+    amount: 1770,
+    proposalId: 78,
+    proposeTimePrice: 26.14,
+    title: "Patract Labs' maintenance cost for Polkadot of 2021",
     achievements: [
     ],
   },
   {
     token: "ksm",
-    amount: 165.732,
+    amount: 234,
     proposalId: 123,
-    proposeTimePrice: 475.49,
-    title: "Patract Labs.io maintenance",
+    proposeTimePrice: 277.77,
+    title: "Patract Labs' maintenance cost for Kusama of 2021",
     achievements: [
     ],
   },
