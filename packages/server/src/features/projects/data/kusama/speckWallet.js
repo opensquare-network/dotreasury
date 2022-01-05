@@ -2,7 +2,7 @@ const id = "SpeckWallet";
 const name = "SpeckWallet";
 const description = "A new user-friendly wallet extension for the Polkadot ecosystem.";
 const logo = "SpeckWallet-logo.svg";
-const startTime = 1636422810000;
+const startTime = 1636451610051;
 
 const relatedLinks = [
   {
@@ -16,7 +16,7 @@ const proposals = [
     token: "ksm",
     amount: 165.732,
     proposalId: 118,
-    proposeTimePrice: 475.49,
+    proposeTimePrice: 403.06,
     title: "Speck Wallet - A new user-friendly wallet extension for the Polkadot ecosystem",
     achievements: [
       "Sending and receiving funds",
