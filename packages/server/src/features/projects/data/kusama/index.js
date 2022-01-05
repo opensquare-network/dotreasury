@@ -14,12 +14,12 @@ const subscan = require("../common/subscan");
 const statescan = require("./statescan");
 const polkassembly = require("../common/polkassembly");
 const speckWallet = require("./speckWallet");
-const dwellir = require("dwellir");
-const nomi = require("nomi");
-const novaWallet = require("novaWallet");
-const parachainsInfo = require("parachainsInfo");
-const patractLabs = require("packages/server/src/features/projects/data/common/patractLabs");
-const polkashotsIo = require("packages/server/src/features/projects/data/common/polkashotsIo");
+const dwellir = require("./dwellir");
+const nomi = require("./nomi");
+const novaWallet = require("./novaWallet");
+const parachainsInfo = require("./parachainsInfo");
+const patractLabs = require("../common/patractLabs");
+const polkashotsIo = require("../common/polkashotsIo");
 
 const projects = [
   polkassembly,

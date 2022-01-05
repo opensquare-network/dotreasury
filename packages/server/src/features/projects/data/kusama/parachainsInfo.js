@@ -1,13 +1,13 @@
-const id = "Pparachain.Info";
-const name = "Pparachain.Info!";
-const title = "Pparachain.Info!";
+const id = "Parachain.Info";
+const name = "Parachain.Info!";
+const title = "Parachain.Info!";
 const description = "Parachains.info provides users of the Polkadot ecosystem with a centralised repository of unbiased information regarding parachain projects and auctions.";
-const logo = "Pparachain.Info-logo.svg";
+const logo = "parachainInfo-logo.svg";
 const startTime = 1610334804000;
 const relatedLinks = [
   {
     link: "https://parachains.info/",
-    description: "Pparachain.Info Website",
+    description: "Parachain.Info Website",
   },
 ];
 

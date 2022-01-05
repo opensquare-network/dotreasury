@@ -1,7 +1,7 @@
 const id = "PolkaShots";
 const name = "PolkaShots.io";
 const description = "A repository of Polkadot node database snapshots - regularly updated and fast to download from anywhere in the world.";
-const logo = "SpeckWallet-logo.svg";
+const logo = "polkashots-logo.svg";
 const startTime = 1636422810000;
 
 const relatedLinks = [

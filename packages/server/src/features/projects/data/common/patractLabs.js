@@ -1,7 +1,7 @@
 const id = "Patract Labs";
 const name = "Patract Labs";
 const description = "Patract is developing development tools and services for Polkadot’s Wasm contract technology.";
-const logo = "SpeckWallet-logo.svg";
+const logo = "patract-logo.svg";
 const startTime = 1636422810000;
 
 const relatedLinks = [
