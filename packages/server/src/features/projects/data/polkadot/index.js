@@ -5,7 +5,6 @@ const elara = require("./elara");
 const europa = require("./europa");
 const zkmega = require("./zkmega");
 const stylo = require("./stylo");
-const polkaworld = require("./polkaworld");
 const tee = require("./substrate-tee");
 const polkascan = require("../common/polkascan");
 const onfinality = require("../common/onFinality");
@@ -28,7 +27,6 @@ const projects = [
   europa,
   zkmega,
   stylo,
-  polkaworld,
   tee,
 ];
 
