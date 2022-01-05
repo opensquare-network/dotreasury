@@ -157,7 +157,7 @@ const Proposals = ({data}) => {
         <Header>Proposals</Header>
         <div>
           {(data || []).map((item, index) => {
-              const link = (item.type === "tip") ? `tip/${item.tipId}` : `proposals/${item.proposalId}`;
+              const link = (item.type === "tip") ? `tips/${item.tipId}` : `proposals/${item.proposalId}`;
               const id = (item.type === "tip") ? item.tipId : item.proposalId;
               return <ContentWrapper key={index}>
                 <VerticalWrapper>
