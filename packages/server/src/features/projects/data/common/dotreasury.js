@@ -18,6 +18,14 @@ const relatedLinks = [
 
 const proposals = [
   {
+    type: "tip",
+    token: "dot",
+    amount: 133,
+    tipId: 42,
+    tipTimePrice: 53.10,
+    reason: "To OpenSquare for Dotreasury.com maintenance - from 08.2021 to 10.2021 (more info on PA)",
+  },
+  {
     token: "dot",
     amount: 376,
     proposalId: 42,
