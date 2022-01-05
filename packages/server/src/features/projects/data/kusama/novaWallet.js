@@ -1,8 +1,8 @@
 const id = "Nova Wallet";
 const name = "Nova Wallet";
-const description = "DApp browser, Statemine/Statemint integration, NFT support, Staking & UI rework and improvements.";
+const description = "iOS/Android mobile app for Polkadot & Kusama ecosystem, supporting multi-asset (more than 15 networks), DOT/KSM staking, DOT/KSM crowdloans & convenient, secure account management.";
 const logo = "nova-logo.svg";
-const startTime = 1591848372015;
+const startTime = 1638949644016;
 
 const relatedLinks = [
   {
@@ -18,12 +18,15 @@ const relatedLinks = [
 const proposals = [
   {
     token: "ksm",
-    amount: 165.732,
+    amount: 780.71,
     proposalId: 122,
-    proposeTimePrice: 475.49,
+    proposeTimePrice: 303.45,
     title: "Nova Wallet Proposal: DApp browser, Statemine/Statemint integration, NFT support, Staking & UI rework and improvements",
     achievements: [
-      ""
+      "DApp browser implementation",
+      "Statemine/Statemint tokens integration",
+      "Uniques (NFT) pallet integration, RMRK v1 integration",
+      "Staking & overall UI rework/improvements based on community feedback",
     ],
   },
 ];
