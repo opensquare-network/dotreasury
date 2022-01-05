@@ -2,7 +2,7 @@ const id = "PolkaShots";
 const name = "PolkaShots.io";
 const description = "A repository of Polkadot node database snapshots - regularly updated and fast to download from anywhere in the world.";
 const logo = "polkashots-logo.svg";
-const startTime = 1636422810000;
+const startTime = 1639631958017;
 
 const relatedLinks = [
   {
@@ -14,9 +14,9 @@ const relatedLinks = [
 const proposals = [
   {
     token: "dot",
-    amount: 165.732,
+    amount: 514.24,
     proposalId: 80,
-    proposeTimePrice: 475.49,
+    proposeTimePrice: 28.18,
     title: "Polkashots.io maintenance",
     achievements: [
       "A functioning infrastructure to provide usable blockchain database snapshots for the Kusama network, to the benefit of node operators and validators",
@@ -28,9 +28,9 @@ const proposals = [
   },
   {
     token: "ksm",
-    amount: 165.732,
-    proposalId: 118,
-    proposeTimePrice: 475.49,
+    amount: 32.34,
+    proposalId: 124,
+    proposeTimePrice: 286.91,
     title: "Polkashots.io maintenance",
     achievements: [
       "A functioning infrastructure to provide usable blockchain database snapshots for the Kusama network, to the benefit of node operators and validators",
