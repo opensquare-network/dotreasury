@@ -255,6 +255,9 @@ const ScanHeight = () => {
   useOutsideClick(symbolRef, () => {
     setSymbolOpen(false);
   });
+  useOutsideClick(netWorkRef, () => {
+    setNetorkOpen(false);
+  });
 
   const switchNode = (node) => {
     if (node === chain) return;
