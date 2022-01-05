@@ -21,7 +21,7 @@ const proposals = [
     type: "tip",
     token: "dot",
     amount: 133,
-    tipId: 42,
+    tipId: `7553415_0x80e202e8d3cc1c9b86d0243096092f45108ef873a2e9b69d70e7f09b6ce9592d`,
     tipTimePrice: 53.10,
     reason: "To OpenSquare for Dotreasury.com maintenance - from 08.2021 to 10.2021 (more info on PA)",
   },
