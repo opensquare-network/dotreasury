@@ -3,11 +3,13 @@ const { getTipFindersFeeFromApi } = require("./utils");
 const { getTippersCountFromApi } = require("./utils");
 const { getActiveTipByHash } = require("../../../mongo/service/tip");
 const { getTipMetaFromStorage, } = require("./utils");
+const { logger } = require("@dotreasury/common")
 
 async function getTipCommonUpdates(hash, { blockHeight, blockHash }) {
   const tipInDb = await getActiveTipByHash(hash);
   if (!tipInDb) {
-    throw new Error(`can not find tip in db. hash: ${ hash }`);
+    logger.error(`can not find tip in db. hash: ${ hash } at ${ blockHeight }`)
+    return
   }
 
   const newMeta = await getTipMetaFromStorage(blockHash, hash);
