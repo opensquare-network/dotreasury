@@ -18,6 +18,7 @@ import {
 import { useOutsideClick } from "../../utils/hooks";
 import useUpdateNodesDelay from "../../utils/useUpdateNodesDelay";
 import { addToast } from "../../store/reducers/toastSlice";
+import ExternalLink from "../../components/ExternalLink";
 
 const Wrapper = styled.div`
   position: relative;
@@ -337,6 +338,13 @@ const ScanHeight = () => {
                 <div>Kusama</div>
                 <div className="unit">KSM</div>
               </SymbolItem>
+              <ExternalLink href="https://edg.dotreasury.com/">
+                <SymbolItem onClick={() => setNetorkOpen(false)}>
+                  <Image src="/imgs/logo-edgeware.svg" />
+                  <div>Edgeware</div>
+                  <div className="unit">EDG</div>
+                </SymbolItem>
+              </ExternalLink>
             </SymbolWrapper>
           )}
         </Button>
