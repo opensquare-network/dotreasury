@@ -2,7 +2,6 @@
   "name": "@dotreasury/site",
   "version": "0.1.0",
   "license": "Apache-2.0",
-  "homepage": ".",
   "dependencies": {
     "@open-wc/webpack-import-meta-loader": "^0.4.7",
     "@polkadot/api": "7.3.1",
