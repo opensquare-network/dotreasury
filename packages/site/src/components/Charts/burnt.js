@@ -172,7 +172,7 @@ function Burnt({ chartData, symbol }) {
           />
         </svg>
       </HeaderWrapper>
-      <div style={{ overflow: "scroll" }}>
+      <div style={{ overflow: "scroll", direction:"rtl" }}>
         <ChartWrapper
           w={chartData.length > 18 ? `${chartData.length * 14}px` : "100%"}
           style={{
