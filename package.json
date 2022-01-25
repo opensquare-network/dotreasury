@@ -15,7 +15,7 @@
     "deploy": "yarn workspace @dotreasury/site deploy",
     "build": "yarn workspace @dotreasury/site build",
     "server-prod": "yarn workspace @dotreasury/server prod",
-    "test-scan": "jest packages/scan/src/test"
+    "test": "yarn workspace @dotreasury/output-scan test"
   },
   "devDependencies": {
     "husky": "^7.0.2",

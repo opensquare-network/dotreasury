@@ -107,6 +107,39 @@ class PolkassemblyApi extends Api {
       return null;
     }
   }
+
+  async getBountyUrl(bountyIndex) {
+    if (bountyIndex === undefined || bountyIndex === null) {
+      return null;
+    }
+
+    const { result } = await this.fetch(
+      "/v1/graphql",
+      {},
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          operationName: "BountyPostAndComments",
+          variables: { id: bountyIndex },
+          query: `
+          query BountyPostAndComments($id: Int!) {
+            posts(where: {onchain_link: {onchain_bounty_id: {_eq: $id}}}) {
+              __typename
+            }
+          }`,
+        }),
+      }
+    );
+
+    if (result?.data?.posts?.length > 0) {
+      return `https://${chain}.polkassembly.io/bounty/${bountyIndex}`;
+    } else {
+      return null;
+    }
+  }
 }
 
 export default new PolkassemblyApi(`https://${chain}.polkassembly.io`);

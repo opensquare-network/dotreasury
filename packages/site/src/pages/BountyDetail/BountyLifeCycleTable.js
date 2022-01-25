@@ -17,8 +17,9 @@ import PolygonLabel from "../../components/PolygonLabel";
 import ExplorerLink from "../../components/ExplorerLink";
 import { useIsMounted } from "../../utils/hooks";
 import { estimateBlocksTime } from "../../services/chainApi";
-
+import polkaassemblyApi from "../../services/polkassembly";
 import { bountyDetailSelector } from "../../store/reducers/bountySlice";
+import RelatedLinks from "../../components/RelatedLinks";
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -38,6 +39,22 @@ const BountyLifeCycleTable = ({ loading }) => {
   const [updateDueTimeLeft, setUpdateDueTimeLeft] = useState("");
   const isMounted = useIsMounted();
   const chain = useSelector(chainSelector);
+  const [bountyUrl, setBountyUrl] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      if (bountyDetail) {
+        const url = await polkaassemblyApi.getBountyUrl(
+          bountyDetail.bountyIndex
+        );
+        if (isMounted.current) {
+          setBountyUrl(url);
+        }
+      } else {
+        setBountyUrl(null);
+      }
+    })();
+  }, [bountyDetail, isMounted]);
 
   useEffect(() => {
     if (bountyDetail.updateDue) {
@@ -169,6 +186,22 @@ const BountyLifeCycleTable = ({ loading }) => {
               </TableCell>
             </Table.Cell>
           </Table.Row>
+          {bountyUrl && (
+            <Table.Row>
+              <Table.Cell>
+                <TableCell title="Bounty Page">
+                  <RelatedLinks
+                    links={[
+                      {
+                        link: bountyUrl,
+                        description: "Bounty discusssion",
+                      },
+                    ]}
+                  />
+                </TableCell>
+              </Table.Cell>
+            </Table.Row>
+          )}
         </Table.Body>
       </Table>
     </TableLoading>

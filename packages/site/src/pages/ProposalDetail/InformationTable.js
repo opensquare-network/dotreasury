@@ -167,7 +167,7 @@ const InformationTable = ({ loading, chain, proposalIndex }) => {
             />
             <Form.Select
               options={[
-                {text:"", value:""},
+                {text:"————", value:""},
                 {text:"Development", value:"Development"},
                 {text:"Event", value:"Event"},
                 {text:"Maintenance", value:"Maintenance"},
@@ -180,7 +180,7 @@ const InformationTable = ({ loading, chain, proposalIndex }) => {
             />
             <Form.Select
               options={[
-                {text:"", value:""},
+                {text:"————", value:""},
                 {text:"Working", value:"Working"},
                 {text:"Review", value:"Review"},
                 {text:"Delivered", value:"Delivered"},

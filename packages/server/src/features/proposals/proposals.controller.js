@@ -23,14 +23,39 @@ class ProposalsController {
     const proposalCol = await getProposalCollection(chain);
 
     const total = proposalCol.countDocuments(condition);
-    const list = proposalCol
-      .find(condition, { timeline: 0 })
-      .sort({
-        "indexer.blockHeight": -1,
-      })
-      .skip(page * pageSize)
-      .limit(pageSize)
-      .toArray();
+    const list = proposalCol.aggregate([
+      { $match: condition },
+      {
+        $addFields: {
+          sort: {
+            $switch: {
+              branches: [
+                { case: { $eq: ["$state.state", "ApproveVoting"] }, then: 10 },
+                { case: { $eq: ["$state.state", "RejectVoting"] }, then: 9 },
+                { case: { $eq: ["$state.state", "Proposed"] }, then: 8 },
+                { case: { $eq: ["$state.state", "Approved"] }, then: 7 },
+              ],
+              default: 0,
+            }
+          }
+        }
+      },
+      {
+        $sort: {
+          sort: -1,
+          "indexer.blockHeight": -1,
+        }
+      },
+      { $skip: page * pageSize },
+      { $limit: pageSize },
+      {
+        $project: {
+          sort: 0,
+          timeline: 0,
+        }
+      }
+    ]).toArray();
+
     const result = await Promise.all([total, list]);
 
     ctx.body = {
