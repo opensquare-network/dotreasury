@@ -1,7 +1,7 @@
 const id = "Dwellir";
 const name = "Dwellir";
 const description = "Dwellir is an infrastructure provider for the decentralized web. We provide in the crypto space validator services for networks such as Ethereum, Kusama, Polkadot.";
-const logo = "Dwellir-logo.svg";
+const logo = "dwellir-logo.svg";
 const startTime = 1631277348000;
 
 const relatedLinks = [
