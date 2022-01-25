@@ -6,8 +6,8 @@ const startTime = 1640772510004;
 
 const relatedLinks = [
   {
-    link: "https://beta.turboflakes.io/#/kusama?#nomi",
-    description: "NovaWallet Website",
+    link: "https://www.turboflakes.io",
+    description: "Turboflakes",
   }
 ];
 
