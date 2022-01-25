@@ -24,10 +24,12 @@ const Header = styled.div`
 
 const ContentWrapper = styled.div`
   display: flex;
+
   & > div:last-child {
     flex-grow: 1;
     margin-left: 12px;
   }
+
   &:last-child {
     .bar {
       visibility: hidden;
@@ -39,6 +41,7 @@ const VerticalWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: stretch;
+
   & > div:last-child {
     flex-grow: 1;
   }
@@ -48,6 +51,7 @@ const CircleWrapper = styled.div`
   width: 24px;
   height: 24px;
   padding: 6px;
+
   div {
     box-sizing: border-box;
     width: 100%;
@@ -55,6 +59,7 @@ const CircleWrapper = styled.div`
     border: 3px solid ${PRIMARY_THEME_COLOR};
     border-radius: 50%;
   }
+
   flex: 0 0 auto;
 `;
 
@@ -73,13 +78,16 @@ const FlexWrapper = styled.div`
 
 const TextWrapper = styled.div`
   flex-grow: 1;
+
   & * {
     display: inline !important;
     line-height: 24px !important;
   }
+
   > img {
     margin-right: 4px;
   }
+
   & > a > p:hover {
     text-decoration: underline;
   }
@@ -95,6 +103,15 @@ const NumberText = styled(Text)`
   margin-right: 12px;
 `;
 
+const NumberTextAbbr = styled(NumberText)`
+  display: inline-block !important;
+  max-width: 135px;
+  height: 17px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
 const CardWrapper = styled.div`
   padding: 8px 0;
   margin-top: 8px;
@@ -107,9 +124,11 @@ const Item = styled.div`
   @media screen and (max-width: 640px) {
     flex-wrap: wrap;
   }
+
   :not(:last-child) {
     margin-bottom: 8px;
   }
+
   & > :first-child {
     min-width: 140px;
   }
@@ -117,9 +136,11 @@ const Item = styled.div`
 
 const ExpenseWrapper = styled.div`
   display: flex;
+
   & > .unit {
     margin-left: 8px;
   }
+
   & > .dollar {
     margin-left: 8px;
   }
@@ -129,67 +150,70 @@ const TextDollar = styled(Text)`
   color: rgba(29, 37, 60, 0.24);
 `;
 
-const Proposals = ({ data }) => {
+const Proposals = ({data}) => {
   if (data) {
     return (
       <Wrapper>
         <Header>Proposals</Header>
         <div>
-          {(data || []).map((item, index) => (
-            <ContentWrapper key={index}>
-              <VerticalWrapper>
-                <CircleWrapper>
-                  <div />
-                </CircleWrapper>
-                <Bar className="bar" />
-              </VerticalWrapper>
-              <VerticalWrapper>
-                <FlexWrapper>
-                  <TextWrapper>
-                    <Image
-                      width={24}
-                      src={
-                        item.token === "ksm"
-                          ? "/imgs/logo-kusama.svg"
-                          : "/imgs/logo-polkadot.svg"
-                      }
-                    />
-                    <NavLink to={`/${item.token}/proposals/${item.proposalId}`}>
-                      <NumberText>{`#${item.proposalId}`}</NumberText>
-                    </NavLink>
-                    <BoldText>{item.title}</BoldText>
-                  </TextWrapper>
-                </FlexWrapper>
-                <CardWrapper>
-                  <Item>
-                    <Text>Expense</Text>
-                    <ExpenseWrapper>
-                      <Text>{item.amount.toLocaleString() ?? 0}</Text>
-                      <TextMinor className="unit">
-                        {item.token?.toUpperCase()}
-                      </TextMinor>
-                      {item.amount && item.proposeTimePrice && (
-                        <TextDollar className="dollar">{`≈ $${toLocaleStringWithFixed(
-                          item.amount * item.proposeTimePrice,
-                          2
-                        ).replace(/\D00/, "")}`}</TextDollar>
-                      )}
-                    </ExpenseWrapper>
-                  </Item>
-                  {(item.achievements || []).length > 0 && (
+          {(data || []).map((item, index) => {
+              const link = (item.type === "tip") ? `tips/${item.tipId}` : `proposals/${item.proposalId}`;
+              const id = (item.type === "tip") ? item.tipId : item.proposalId;
+              return <ContentWrapper key={index}>
+                <VerticalWrapper>
+                  <CircleWrapper>
+                    <div/>
+                  </CircleWrapper>
+                  <Bar className="bar"/>
+                </VerticalWrapper>
+                <VerticalWrapper>
+                  <FlexWrapper>
+                    <TextWrapper>
+                      <Image
+                        width={24}
+                        src={
+                          item.token === "ksm"
+                            ? "/imgs/logo-kusama.svg"
+                            : "/imgs/logo-polkadot.svg"
+                        }
+                      />
+                      <NavLink to={`/${item.token}/${link}`}>
+                        <NumberTextAbbr>{`#${id}`}</NumberTextAbbr>
+                      </NavLink>
+                      <BoldText>{item.title ?? item.reason}</BoldText>
+                    </TextWrapper>
+                  </FlexWrapper>
+                  <CardWrapper>
                     <Item>
-                      <Text>Achievement</Text>
-                      <div>
-                        {(item.achievements || []).map((item, index) => (
-                          <TextMinor key={index}>{item}</TextMinor>
-                        ))}
-                      </div>
+                      <Text>{item.type === "tip" ? "Tip" : "Expense"}</Text>
+                      <ExpenseWrapper>
+                        <Text>{item.amount.toLocaleString() ?? 0}</Text>
+                        <TextMinor className="unit">
+                          {item.token?.toUpperCase()}
+                        </TextMinor>
+                        {item.amount && item.proposeTimePrice && (
+                          <TextDollar className="dollar">{`≈ $${toLocaleStringWithFixed(
+                            item.amount * item.proposeTimePrice,
+                            2
+                          ).replace(/\D00/, "")}`}</TextDollar>
+                        )}
+                      </ExpenseWrapper>
                     </Item>
-                  )}
-                </CardWrapper>
-              </VerticalWrapper>
-            </ContentWrapper>
-          ))}
+                    {(item.achievements || []).length > 0 && (
+                      <Item>
+                        <Text>Achievement</Text>
+                        <div>
+                          {(item.achievements || []).map((item, index) => (
+                            <TextMinor key={index}>{item}</TextMinor>
+                          ))}
+                        </div>
+                      </Item>
+                    )}
+                  </CardWrapper>
+                </VerticalWrapper>
+              </ContentWrapper>
+            }
+          )}
         </div>
       </Wrapper>
     );

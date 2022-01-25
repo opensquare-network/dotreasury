@@ -16,10 +16,26 @@ const relatedLinks = [
 const proposals = [
   {
     token: "dot",
+    amount: 1676,
+    proposalId: 74,
+    proposeTimePrice: 53.02,
+    title: "PolkaWorld Ops and Maintenance proposal for 12/2021 - 2/2022",
+    achievements: [],
+  },
+  {
+    token: "dot",
     amount: 4357,
     proposalId: 63,
     proposeTimePrice: 18.29,
     title: "operational costs of 09.2021.09 - 11.2021",
+    achievements: [],
+  },
+  {
+    token: "dot",
+    amount: 1885.98,
+    proposalId: 48,
+    proposeTimePrice: 35.98,
+    title: "Cover operation cost for 06.2021 - 08.2021",
     achievements: [],
   },
   {
@@ -32,14 +48,6 @@ const proposals = [
       "Home page developed to support posts and banners",
       "Wiki page developed",
     ],
-  },
-  {
-    token: "dot",
-    amount: 1885.98,
-    proposalId: 48,
-    proposeTimePrice: 35.98,
-    title: "Cover operation cost for 06.2021 - 08.2021",
-    achievements: [],
   },
 ];
 
