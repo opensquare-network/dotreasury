@@ -57,11 +57,25 @@ const ProposeTimeWrapper = styled.div`
 
 const CapText = styled(Text)`
   text-transform: capitalize;
+  white-space: nowrap;
 `;
 
 const TableRow = styled(Table.Row)`
   height: 50px;
 `;
+
+const getStateWithVotingAyes = (item) => {
+  const state = item.state?.state;
+  const isVoting = ["ApproveVoting", "RejectVoting"].includes(state);
+
+  if (isVoting) {
+    const nAyes = item.state.data.motionVoting?.ayes?.length;
+    if (nAyes !== undefined) {
+      return state + ` (${ nAyes })`;
+    }
+  }
+  return state;
+};
 
 const BountiesTable = ({ data, loading, header, footer }) => {
   const history = useHistory();
@@ -132,7 +146,7 @@ const BountiesTable = ({ data, loading, header, footer }) => {
                         />
                       </Table.Cell>
                       <Table.Cell textAlign={"right"}>
-                        <CapText>{item.state?.state}</CapText>
+                        <CapText>{getStateWithVotingAyes(item)}</CapText>
                       </Table.Cell>
                       <Table.Cell className="link-cell hidden">
                         <NavLink
