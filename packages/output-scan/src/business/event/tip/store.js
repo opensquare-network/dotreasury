@@ -4,15 +4,13 @@ const { getTippersCountFromApi } = require("../../common/tip/utils");
 const { getBlockHash } = require("../../common");
 const { getTipCommonUpdates } = require("../../common/tip/updates");
 const { insertTip, updateTipByHash, } = require("../../../mongo/service/tip");
-const { TipEvents } = require("../../common/constants");
-const { TimelineItemTypes } = require("../../common/constants");
+const { TimelineItemTypes, TipMethods, TipEvents } = require("../../common/constants");
 const {
   getNewTipCall,
   getTipReason,
   getTipMetaFromStorage,
 } = require("../../common/tip/utils");
 const { specs: { findRegistry } } = require("@dotreasury/common");
-const { TipMethods } = require("../../common/constants");
 const { getFinderFromMeta, } = require("./utils");
 
 async function saveNewTip(event, extrinsic, indexer) {
@@ -39,6 +37,11 @@ async function saveNewTip(event, extrinsic, indexer) {
   const tippersCount = await getTippersCountFromApi(indexer.blockHash);
   const tipFindersFee = await getTipFindersFeeFromApi(indexer.blockHash);
 
+  let tipValue;
+  if (method === TipMethods.tipNew) {
+    tipValue = newTipCall.args[2].toString();
+  }
+
   const timelineItem = {
     type: TimelineItemTypes.extrinsic,
     method,
@@ -46,6 +49,7 @@ async function saveNewTip(event, extrinsic, indexer) {
       reason,
       beneficiary,
       finder,
+      tipValue,
     },
     indexer,
   };
