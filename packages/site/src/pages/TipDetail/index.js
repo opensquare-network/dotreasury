@@ -48,7 +48,7 @@ function processTimeline(tipDetail, links) {
       ];
     } else if (timelineItem.method === "tipNew") {
       const {
-        tip_value: tipValue,
+        tipValue,
         beneficiary,
         reason: reasonText,
         finder,

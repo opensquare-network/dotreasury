@@ -35,6 +35,7 @@ async function saveNewTip(event, extrinsic, indexer) {
   const reason = await getTipReason(indexer.blockHash, reasonHash);
   meta.reason = reason;
   const beneficiary = newTipCall.args[1].toJSON();
+  const tipValue = newTipCall.args[2].toString();
   meta.findersFee = TipMethods.reportAwesome === method;
   const tippersCount = await getTippersCountFromApi(indexer.blockHash);
   const tipFindersFee = await getTipFindersFeeFromApi(indexer.blockHash);
@@ -46,6 +47,7 @@ async function saveNewTip(event, extrinsic, indexer) {
       reason,
       beneficiary,
       finder,
+      tipValue,
     },
     indexer,
   };
