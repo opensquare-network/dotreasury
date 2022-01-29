@@ -42,6 +42,7 @@ const ScanHeightWrapper = styled.div`
   padding-right: 0;
   cursor: pointer;
   div.blockHeight {
+    padding-right: 8px;
     display: flex;
     flex-grow: 1;
   }
