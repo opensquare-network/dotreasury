@@ -2,7 +2,6 @@ import React, { useState, useRef } from "react";
 import styled, { css } from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { Image } from "semantic-ui-react";
-import ExplorerLink from "../../components/ExplorerLink";
 import Card from "../../components/Card";
 
 import { TEXT_DARK_MAJOR, TEXT_DARK_MINOR } from "../../constants";
@@ -40,10 +39,22 @@ const ScanHeightWrapper = styled.div`
   background: #fbfbfb;
   height: 32px;
   padding: 4px 8px;
+  padding-right: 0;
+  cursor: pointer;
+  div.blockHeight {
+    padding-right: 8px;
+    display: flex;
+    flex-grow: 1;
+  }
+  :hover {
+    button {
+      background: #fafafa;
+    }
+  }
 `;
 
 const Label = styled.div`
-  font-family: "Inter";
+  font-family: "Inter", sans-serif;
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
@@ -62,9 +73,6 @@ const DarkMinorLabel = styled(Label)`
 const DarkMajorLabel = styled(Label)`
   margin-right: 4px;
   color: ${TEXT_DARK_MAJOR};
-  &:hover {
-    text-decoration-line: underline;
-  }
   @media screen and (max-width: 600px) {
     display: none;
   }
@@ -126,14 +134,14 @@ const SymbolItem = styled.div`
   :hover {
     background: #fafafa;
   }
-  ${(p) =>
-    p.isActive &&
-    css`
-      background: #fafafa;
-    `}
   @media screen and (max-width: 600px) {
     padding: 11px 24px;
   }
+  ${(p) =>
+          p.isActive &&
+          css`
+      background: #fafafa;
+    `}
 `;
 
 const NetworkWrapper = styled.div`
@@ -289,65 +297,64 @@ const ScanHeight = () => {
   return (
     <NetworkWrapper>
       <Wrapper>
-        <ScanHeightWrapper>
-          <Kusama
-            src={
-              chain === "polkadot"
-                ? "/imgs/logo-polkadot.svg"
-                : "/imgs/logo-kusama.svg"
-            }
-          />
-          <DarkMinorLabel>Height</DarkMinorLabel>
-          <ExplorerLink href={`/block/${scanHeight}`}>
-            <DarkMajorLabel>{`#${scanHeight}`}</DarkMajorLabel>
-          </ExplorerLink>
+        <ScanHeightWrapper  onClick={() => {
+          setSymbolOpen(!symbolOpen);
+        }}>
+          <div className="blockHeight">
+            <Kusama
+                src={
+                  chain === "polkadot"
+                      ? "/imgs/logo-polkadot.svg"
+                      : "/imgs/logo-kusama.svg"
+                }
+            />
+            <DarkMinorLabel>Height</DarkMinorLabel>
+            <DarkMajorLabel>{`#${scanHeight.toLocaleString()}`}</DarkMajorLabel>
+          </div>
+          <Button
+              ref={symbolRef}
+              isActive={symbolOpen}
+          >
+            <Image
+                src={`${
+                    symbolOpen
+                        ? "/imgs/icon-triangle-up.svg"
+                        : "/imgs/icon-triangle-down.svg"
+                }`}
+            />
+            {symbolOpen && (
+                <SymbolWrapper>
+                  <SymbolItem
+                      isActive={chain === "polkadot"}
+                      onClick={() => {
+                        switchNode("polkadot");
+                      }}
+                  >
+                    <Image src="/imgs/logo-polkadot.svg" />
+                    <div>Polkadot</div>
+                    <div className="unit">DOT</div>
+                  </SymbolItem>
+                  <SymbolItem
+                      isActive={chain === "kusama"}
+                      onClick={() => {
+                        switchNode("kusama");
+                      }}
+                  >
+                    <Image src="/imgs/logo-kusama.svg" />
+                    <div>Kusama</div>
+                    <div className="unit">KSM</div>
+                  </SymbolItem>
+                  <ExternalLink href="https://edg.dotreasury.com/">
+                    <SymbolItem onClick={() => setNetorkOpen(false)}>
+                      <Image src="/imgs/logo-edgeware.svg" />
+                      <div>Edgeware</div>
+                      <div className="unit">EDG</div>
+                    </SymbolItem>
+                  </ExternalLink>
+                </SymbolWrapper>
+            )}
+          </Button>
         </ScanHeightWrapper>
-        <Button
-          onClick={() => {
-            setSymbolOpen(!symbolOpen);
-          }}
-          ref={symbolRef}
-          isActive={symbolOpen}
-        >
-          <Image
-            src={`${
-              symbolOpen
-                ? "/imgs/icon-triangle-up.svg"
-                : "/imgs/icon-triangle-down.svg"
-            }`}
-          />
-          {symbolOpen && (
-            <SymbolWrapper>
-              <SymbolItem
-                isActive={chain === "polkadot"}
-                onClick={() => {
-                  switchNode("polkadot");
-                }}
-              >
-                <Image src="/imgs/logo-polkadot.svg" />
-                <div>Polkadot</div>
-                <div className="unit">DOT</div>
-              </SymbolItem>
-              <SymbolItem
-                isActive={chain === "kusama"}
-                onClick={() => {
-                  switchNode("kusama");
-                }}
-              >
-                <Image src="/imgs/logo-kusama.svg" />
-                <div>Kusama</div>
-                <div className="unit">KSM</div>
-              </SymbolItem>
-              <ExternalLink href="https://edg.dotreasury.com/">
-                <SymbolItem onClick={() => setNetorkOpen(false)}>
-                  <Image src="/imgs/logo-edgeware.svg" />
-                  <div>Edgeware</div>
-                  <div className="unit">EDG</div>
-                </SymbolItem>
-              </ExternalLink>
-            </SymbolWrapper>
-          )}
-        </Button>
       </Wrapper>
       <NetworkButton
         isActive={networkOpen}
