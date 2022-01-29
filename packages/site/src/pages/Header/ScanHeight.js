@@ -2,7 +2,6 @@ import React, { useState, useRef } from "react";
 import styled, { css } from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { Image } from "semantic-ui-react";
-import ExplorerLink from "../../components/ExplorerLink";
 import Card from "../../components/Card";
 
 import { TEXT_DARK_MAJOR, TEXT_DARK_MINOR } from "../../constants";
@@ -43,7 +42,7 @@ const ScanHeightWrapper = styled.div`
 `;
 
 const Label = styled.div`
-  font-family: "Inter";
+  font-family: "Inter", sans-serif;
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
@@ -62,9 +61,6 @@ const DarkMinorLabel = styled(Label)`
 const DarkMajorLabel = styled(Label)`
   margin-right: 4px;
   color: ${TEXT_DARK_MAJOR};
-  &:hover {
-    text-decoration-line: underline;
-  }
   @media screen and (max-width: 600px) {
     display: none;
   }
@@ -126,14 +122,14 @@ const SymbolItem = styled.div`
   :hover {
     background: #fafafa;
   }
-  ${(p) =>
-    p.isActive &&
-    css`
-      background: #fafafa;
-    `}
   @media screen and (max-width: 600px) {
     padding: 11px 24px;
   }
+  ${(p) =>
+          p.isActive &&
+          css`
+      background: #fafafa;
+    `}
 `;
 
 const NetworkWrapper = styled.div`
@@ -298,9 +294,7 @@ const ScanHeight = () => {
             }
           />
           <DarkMinorLabel>Height</DarkMinorLabel>
-          <ExplorerLink href={`/block/${scanHeight}`}>
-            <DarkMajorLabel>{`#${scanHeight}`}</DarkMajorLabel>
-          </ExplorerLink>
+          <DarkMajorLabel>{`#${scanHeight.toLocaleString()}`}</DarkMajorLabel>
         </ScanHeightWrapper>
         <Button
           onClick={() => {
