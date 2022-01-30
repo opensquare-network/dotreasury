@@ -299,7 +299,9 @@ const ScanHeight = () => {
       <Wrapper>
         <ScanHeightWrapper  onClick={() => {
           setSymbolOpen(!symbolOpen);
-        }}>
+        }}
+        ref={symbolRef}
+        >
           <div className="blockHeight">
             <Kusama
                 src={
@@ -312,7 +314,6 @@ const ScanHeight = () => {
             <DarkMajorLabel>{`#${scanHeight.toLocaleString()}`}</DarkMajorLabel>
           </div>
           <Button
-              ref={symbolRef}
               isActive={symbolOpen}
           >
             <Image
