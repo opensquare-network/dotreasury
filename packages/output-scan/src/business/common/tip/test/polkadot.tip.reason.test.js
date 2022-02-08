@@ -10,7 +10,7 @@ describe("test get tip", () => {
   let provider;
 
   beforeAll(async () => {
-    provider = new WsProvider("wss://pub.elara.patract.io/polkadot", 1000);
+    provider = new WsProvider("wss://polkadot.api.onfinality.io/public-ws", 1000);
     api = await ApiPromise.create({ provider, });
 
     setProvider(provider)
