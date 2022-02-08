@@ -29,7 +29,7 @@ describe("test get kusama motion voting", () => {
   let provider;
 
   beforeAll(async () => {
-    provider = new WsProvider("wss://pub.elara.patract.io/kusama", 1000);
+    provider = new WsProvider("wss://kusama.api.onfinality.io/public-ws", 1000);
     api = await ApiPromise.create({ provider });
     setProvider(provider)
     setApi(api);
