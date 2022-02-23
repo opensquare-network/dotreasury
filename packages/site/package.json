@@ -4,9 +4,9 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@open-wc/webpack-import-meta-loader": "^0.4.7",
+    "@osn/polkadot-react-identicon": "^1.0.2",
     "@polkadot/api": "7.7.1",
     "@polkadot/extension-dapp": "0.42.7",
-    "@osn/polkadot-react-identicon": "^1.0.2",
     "@reduxjs/toolkit": "^1.7.2",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
@@ -69,7 +69,6 @@
   },
   "devDependencies": {
     "@types/socket.io-client": "^1.4.34",
-    "react-app-rewired": "^2.1.8",
     "patch-package": "^6.4.7",
     "postinstall-postinstall": "^2.1.0"
   }
