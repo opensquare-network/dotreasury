@@ -1,9 +1,14 @@
 {
   "name": "dotreasury",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/semantic-ui-css"
+    ]
+  },
   "repository": "git@github.com:opensquare-network/dotreasury.git",
   "author": "OpenSquare <https://www.opensquare.network/>",
   "license": "Apache-2.0",
