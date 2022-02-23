@@ -7,7 +7,7 @@
     "@polkadot/api": "7.7.1",
     "@polkadot/extension-dapp": "0.42.7",
     "@polkadot/react-identicon": "1.0.1",
-    "@reduxjs/toolkit": "^1.5.0",
+    "@reduxjs/toolkit": "^1.7.2",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -20,16 +20,16 @@
     "md5": "^2.3.0",
     "pluralize": "^8.0.0",
     "query-string": "^6.13.8",
-    "react": "^17.0.1",
+    "react": "^17.0.2",
     "react-chartjs-2": "^2.11.1",
-    "react-dom": "^17.0.1",
+    "react-dom": "^17.0.2",
     "react-hook-form": "^6.14.2",
     "react-markdown": "^5.0.3",
     "react-mde": "^11.0.6",
     "react-redux": "^7.2.2",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.1",
+    "react-scripts": "5.0.0",
     "react-test-renderer": "^17.0.1",
     "redux": "^4.0.5",
     "rxjs": "^6.6.3",
@@ -38,13 +38,14 @@
     "socket.io-client": "^3.0.4",
     "styled-components": "^5.2.1",
     "use-deep-compare-effect": "^1.6.1",
-    "web-vitals": "^0.2.4"
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
-    "test": "react-app-rewired test",
-    "eject": "react-scripts eject"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "postinstall": "patch-package"
   },
   "eslintConfig": {
     "extends": [
@@ -68,6 +69,8 @@
   },
   "devDependencies": {
     "@types/socket.io-client": "^1.4.34",
-    "react-app-rewired": "^2.1.8"
+    "react-app-rewired": "^2.1.8",
+    "patch-package": "^6.4.7",
+    "postinstall-postinstall": "^2.1.0"
   }
 }
