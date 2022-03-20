@@ -46,6 +46,30 @@ const proposals = [
     title: "Cover operation cost for 03.2021 - 05.2021",
     achievements: [],
   },
+  {
+    token: "dot",
+    amount: 568,
+    proposalId: 68,
+    proposeTimePrice: 36.86,
+    title: "The Infrastructure Costs of Subscan for Polkadot Network from June 2021 to August 2021",
+    achievements: [],
+  },
+  {
+    token: "dot",
+    amount: 671,
+    proposalId: 94,
+    proposeTimePrice: 14.413,
+    title: "Cloudflare Enterprise Plan for Subscan from January 2022 to April 2022",
+    achievements: [],
+  },
+  {
+    token: "dot",
+    amount: 1483,
+    proposalId: 95,
+    proposeTimePrice: 14.413,
+    title: "The Infrastructure Costs of Subscan for Polkadot Network from Sep 2021 to Dec 2021",
+    achievements: [],
+  },
 ];
 
 module.exports = {
