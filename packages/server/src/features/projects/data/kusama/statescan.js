@@ -43,6 +43,16 @@ const proposals = [
     achievements: [
     ],
   },
+  {
+    token: "ksm",
+    amount: 25.82,
+    proposalId: 127,
+    proposeTimePrice: 250.982,
+    title:
+      "Statescan maintenance from 09.2021 to 12.2021",
+    achievements: [
+    ],
+  },
 ];
 
 module.exports = {

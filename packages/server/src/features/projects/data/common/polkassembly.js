@@ -36,6 +36,24 @@ const proposals = [
       "Covers costs for 10.2021 - 12.2021 of the social contract between Polkassembly and Polkadot/Kusama Treasury",
     achievements: [],
   },
+  {
+    token: "dot",
+    amount: 1581.67,
+    proposalId: 83,
+    proposeTimePrice: 24.14,
+    title:
+      "Polkassembly Social Contract Q1 2022",
+    achievements: [],
+  },
+  {
+    token: "dot",
+    amount: 4690,
+    proposalId: 99,
+    proposeTimePrice: 17.12,
+    title:
+      "Polkassembly Product Improvement",
+    achievements: [],
+  },
 ];
 
 module.exports = {
