@@ -12,10 +12,10 @@ const relatedLinks = [];
 const proposals = [
   {
     token: "dot",
-    amount: 260,
-    proposalId: 50,
-    proposeTimePrice: 40.38,
-    title: "Cover 04.2021 operating cost",
+    amount: 3668.02,
+    proposalId: 66,
+    proposeTimePrice: 30.40,
+    title: "The 2021/9-2022/2 operating cost for the nonprofit organization Polkadot Ecology Research Institute",
     achievements: [],
   },
   {
@@ -24,6 +24,14 @@ const proposals = [
     proposalId: 55,
     proposeTimePrice: 15.97,
     title: "Cover operating cost for 06.2021 - 06.2021",
+    achievements: [],
+  },
+  {
+    token: "dot",
+    amount: 260,
+    proposalId: 50,
+    proposeTimePrice: 40.38,
+    title: "Cover 04.2021 operating cost",
     achievements: [],
   },
 ];
