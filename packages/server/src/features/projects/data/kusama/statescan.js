@@ -20,17 +20,12 @@ const relatedLinks = [
 const proposals = [
   {
     token: "ksm",
-    amount: 79.48,
-    proposalId: 103,
-    proposeTimePrice: 194.4,
+    amount: 25.82,
+    proposalId: 127,
+    proposeTimePrice: 250.982,
     title:
-      "Implement Statemine and Westmint",
+      "Statescan maintenance from 09.2021 to 12.2021",
     achievements: [
-      'Basic pages like blocks, extrinsics, events, assets list and detail',
-      'Asset lifecycle scan and view',
-      'Cross chain asset teleports',
-      'Make pages SSR',
-      'Unfinalized business handling',
     ],
   },
   {
@@ -45,12 +40,17 @@ const proposals = [
   },
   {
     token: "ksm",
-    amount: 25.82,
-    proposalId: 127,
-    proposeTimePrice: 250.982,
+    amount: 79.48,
+    proposalId: 103,
+    proposeTimePrice: 194.4,
     title:
-      "Statescan maintenance from 09.2021 to 12.2021",
+      "Implement Statemine and Westmint",
     achievements: [
+      'Basic pages like blocks, extrinsics, events, assets list and detail',
+      'Asset lifecycle scan and view',
+      'Cross chain asset teleports',
+      'Make pages SSR',
+      'Unfinalized business handling',
     ],
   },
 ];
