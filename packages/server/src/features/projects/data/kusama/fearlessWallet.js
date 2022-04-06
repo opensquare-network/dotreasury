@@ -9,7 +9,7 @@ const proposals = [
   {
     token: "ksm",
     amount: 563.53,
-    proposalId: 74,
+    proposalId: 102,
     proposeTimePrice: 206.98,
     title: "Multi-asset & networks support proposal",
     achievements: [],
@@ -25,6 +25,14 @@ const proposals = [
       "General app improvements",
       "Native mobile libraries expansion",
     ],
+  },
+  {
+    token: "dot",
+    amount: 8677.405,
+    proposalId: 33,
+    proposeTimePrice: 15.27,
+    title: "Fearless Wallet - Stage 3 Proposal - Staking, Libraries expansion, App Improvements",
+    achievements: [],
   },
   {
     token: "ksm",
