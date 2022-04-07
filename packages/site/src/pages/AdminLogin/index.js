@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import {
   isWeb3Injected,
-  web3Accounts,
   web3Enable,
 } from "@polkadot/extension-dapp";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,6 +11,7 @@ import Addr from "../../components/Address";
 import queryString from "query-string";
 import { useLocation, useHistory } from "react-router-dom";
 import { useIsMounted } from "../../utils/hooks";
+import { polkadotWeb3Accounts } from "../../utils/extension";
 
 const SignInModal = styled(Modal)`
   .account-select-content {
@@ -52,7 +52,7 @@ const AdminLogin = () => {
           }
           return;
         }
-        const extensionAccounts = await web3Accounts();
+        const extensionAccounts = await polkadotWeb3Accounts();
         const accounts = extensionAccounts.map(
           ({ address, meta: { name } }) => {
             return {

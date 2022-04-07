@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import {
   isWeb3Injected,
-  web3Accounts,
   web3Enable,
 } from "@polkadot/extension-dapp";
 import { Image, Modal } from "semantic-ui-react";
@@ -13,6 +12,7 @@ import Title from "../../components/Title";
 import Text from "../../components/Text";
 import { useDispatch } from "react-redux";
 import { addToast } from "../../store/reducers/toastSlice";
+import { polkadotWeb3Accounts } from "../../utils/extension";
 
 const StyledButtonPrimary = styled.button`
   width: 100%;
@@ -133,7 +133,7 @@ const SelectAddress = ({ onSelect = () => {}, onClose = () => {} }) => {
           }
           return;
         }
-        const extensionAccounts = await web3Accounts();
+        const extensionAccounts = await polkadotWeb3Accounts();
         const accounts = extensionAccounts.map(
           ({ address, meta: { name } }) => {
             return {

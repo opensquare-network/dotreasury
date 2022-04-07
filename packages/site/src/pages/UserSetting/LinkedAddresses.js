@@ -3,7 +3,6 @@ import styled, { css } from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import {
   isWeb3Injected,
-  web3Accounts,
   web3Enable,
 } from "@polkadot/extension-dapp";
 
@@ -28,6 +27,7 @@ import {
 import ChainHeader from "./ChainHeader";
 import NoAddress from "./NoAddress";
 import DownloadPolkadot from "../../components/DownloadPolkadot";
+import { polkadotWeb3Accounts } from "../../utils/extension";
 
 const StyledTextMinor = styled(TextMinor)`
   margin-bottom: 16px;
@@ -92,7 +92,7 @@ const LinkedAddress = () => {
       }
       return;
     }
-    const extensionAccounts = await web3Accounts();
+    const extensionAccounts = await polkadotWeb3Accounts();
     const accounts = extensionAccounts.map((item) => {
       const {
         address,
