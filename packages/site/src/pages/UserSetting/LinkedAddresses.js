@@ -27,7 +27,7 @@ import {
 import ChainHeader from "./ChainHeader";
 import NoAddress from "./NoAddress";
 import DownloadPolkadot from "../../components/DownloadPolkadot";
-import { polkadotWeb3Accounts } from "../../utils/extension";
+import { substrateWeb3Accounts } from "../../utils/extension";
 
 const StyledTextMinor = styled(TextMinor)`
   margin-bottom: 16px;
@@ -92,7 +92,7 @@ const LinkedAddress = () => {
       }
       return;
     }
-    const extensionAccounts = await polkadotWeb3Accounts();
+    const extensionAccounts = await substrateWeb3Accounts();
     const accounts = extensionAccounts.map((item) => {
       const {
         address,

@@ -11,7 +11,7 @@ import Addr from "../../components/Address";
 import queryString from "query-string";
 import { useLocation, useHistory } from "react-router-dom";
 import { useIsMounted } from "../../utils/hooks";
-import { polkadotWeb3Accounts } from "../../utils/extension";
+import { substrateWeb3Accounts } from "../../utils/extension";
 
 const SignInModal = styled(Modal)`
   .account-select-content {
@@ -52,7 +52,7 @@ const AdminLogin = () => {
           }
           return;
         }
-        const extensionAccounts = await polkadotWeb3Accounts();
+        const extensionAccounts = await substrateWeb3Accounts();
         const accounts = extensionAccounts.map(
           ({ address, meta: { name } }) => {
             return {

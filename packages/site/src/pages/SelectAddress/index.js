@@ -12,7 +12,7 @@ import Title from "../../components/Title";
 import Text from "../../components/Text";
 import { useDispatch } from "react-redux";
 import { addToast } from "../../store/reducers/toastSlice";
-import { polkadotWeb3Accounts } from "../../utils/extension";
+import { substrateWeb3Accounts } from "../../utils/extension";
 
 const StyledButtonPrimary = styled.button`
   width: 100%;
@@ -133,7 +133,7 @@ const SelectAddress = ({ onSelect = () => {}, onClose = () => {} }) => {
           }
           return;
         }
-        const extensionAccounts = await polkadotWeb3Accounts();
+        const extensionAccounts = await substrateWeb3Accounts();
         const accounts = extensionAccounts.map(
           ({ address, meta: { name } }) => {
             return {
