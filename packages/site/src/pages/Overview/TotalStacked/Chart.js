@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import Text from "../../../components/Text";
 import { useSelector } from "react-redux";
 import { chainSelector } from "../../../store/reducers/chainSlice";
+import { abbreviateBigNumber } from "../../../utils";
 
 const LegendWrapper = styled.div`
   display: flex;
@@ -63,7 +64,8 @@ const LineChart = ({ data, onHover }) => {
         {
           position: "right",
           ticks: {
-            stepSize: chain === "kusama" ? 100000 : 4000000,
+            stepSize: chain === "kusama" ? 200000 : 8000000,
+            callback:(y) => abbreviateBigNumber(y),
           },
         },
       ],
