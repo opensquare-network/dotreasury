@@ -20,6 +20,15 @@ const relatedLinks = [
 
 const proposals = [
   {
+    token: "ksm",
+    amount: 8.9,
+    proposalId: 89,
+    proposeTimePrice: 390.78,
+    title: "Stylo wallet - recurring payment to cover maintenance costs",
+    achievements: [
+    ],
+  },
+  {
     token: "dot",
     amount: 159,
     proposalId: 39,

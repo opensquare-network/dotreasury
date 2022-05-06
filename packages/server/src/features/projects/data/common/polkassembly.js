@@ -20,11 +20,20 @@ const relatedLinks = [
 const proposals = [
   {
     token: "dot",
-    amount: 1849,
-    proposalId: 53,
-    proposeTimePrice: 23.78,
+    amount: 4690,
+    proposalId: 99,
+    proposeTimePrice: 17.12,
     title:
-      "Cover costs for 07.2021 - 09.2021 of the social contract between Polkassembly and Polkadot/Kusama Treasury",
+      "Polkassembly Product Improvement",
+    achievements: [],
+  },
+  {
+    token: "dot",
+    amount: 1581.67,
+    proposalId: 83,
+    proposeTimePrice: 24.14,
+    title:
+      "Polkassembly Social Contract Q1 2022",
     achievements: [],
   },
   {
@@ -34,6 +43,15 @@ const proposals = [
     proposeTimePrice: 379,
     title:
       "Covers costs for 10.2021 - 12.2021 of the social contract between Polkassembly and Polkadot/Kusama Treasury",
+    achievements: [],
+  },
+  {
+    token: "dot",
+    amount: 1849,
+    proposalId: 53,
+    proposeTimePrice: 23.78,
+    title:
+      "Cover costs for 07.2021 - 09.2021 of the social contract between Polkassembly and Polkadot/Kusama Treasury",
     achievements: [],
   },
 ];

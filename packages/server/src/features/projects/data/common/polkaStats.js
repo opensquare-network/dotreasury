@@ -15,6 +15,22 @@ const relatedLinks = [
 
 const proposals = [
   {
+    token: "dot",
+    amount: 37.08,
+    proposalId: 34,
+    proposeTimePrice: 20.54,
+    title: "Operation costs for Polkadot, 21.12.2020 to 21.03.2021",
+    achievements: [],
+  },
+  {
+    token: "ksm",
+    amount: 6.27,
+    proposalId: 77,
+    proposeTimePrice: 118.08,
+    title: "Operation costs for Kusama, 17.12.2020 - 17.03.2021",
+    achievements: [],
+  },
+  {
     token: "ksm",
     amount: 23.07,
     proposalId: 47,
@@ -28,22 +44,6 @@ const proposals = [
     proposalId: 12,
     proposeTimePrice: 4,
     title: "PolkaStats hardware operational costs treasury expense proposal",
-    achievements: [],
-  },
-  {
-    token: "ksm",
-    amount: 6.27,
-    proposalId: 77,
-    proposeTimePrice: 118.08,
-    title: "Operation costs for Kusama, 17.12.2020 - 17.03.2021",
-    achievements: [],
-  },
-  {
-    token: "dot",
-    amount: 37.08,
-    proposalId: 34,
-    proposeTimePrice: 20.54,
-    title: "Operation costs for Polkadot, 21.12.2020 to 21.03.2021",
     achievements: [],
   },
 ];

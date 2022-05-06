@@ -30,6 +30,15 @@ const proposals = [
     achievements: [
     ],
   },
+  {
+    token: "ksm",
+    amount: 136.22,
+    proposalId: 125,
+    proposeTimePrice: 290.637,
+    title: "Update 1, RPC-node Dwellir maintenance",
+    achievements: [
+    ],
+  },
 ];
 
 module.exports = {

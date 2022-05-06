@@ -39,10 +39,10 @@ import {
 import { useIsMounted } from "../../utils/hooks";
 import {
   isWeb3Injected,
-  web3Accounts,
   web3Enable,
 } from "@polkadot/extension-dapp";
 import { chainSelector } from "../../store/reducers/chainSlice";
+import { substrateWeb3Accounts } from "../../utils/extension";
 
 const CardWrapper = styled(Card)`
   max-width: 424px;
@@ -170,7 +170,7 @@ function Login({ location }) {
           }
           return;
         }
-        const extensionAccounts = await web3Accounts();
+        const extensionAccounts = await substrateWeb3Accounts();
         const accounts = extensionAccounts.map((item) => {
           const {
             address,

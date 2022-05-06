@@ -44,6 +44,6 @@
   "devDependencies": {
     "@types/koa-router": "^7.4.1",
     "@types/socket.io": "^2.1.12",
-    "pm2": "^4.5.1"
+    "pm2": "^5.2.0"
   }
 }

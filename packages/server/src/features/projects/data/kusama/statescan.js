@@ -20,6 +20,26 @@ const relatedLinks = [
 const proposals = [
   {
     token: "ksm",
+    amount: 25.82,
+    proposalId: 127,
+    proposeTimePrice: 250.982,
+    title:
+      "Statescan maintenance from 09.2021 to 12.2021",
+    achievements: [
+    ],
+  },
+  {
+    token: "ksm",
+    amount: 69.52,
+    proposalId: 115,
+    proposeTimePrice: 347.2,
+    title:
+      "Statescan NFT business implementation and features polish",
+    achievements: [
+    ],
+  },
+  {
+    token: "ksm",
     amount: 79.48,
     proposalId: 103,
     proposeTimePrice: 194.4,
@@ -31,16 +51,6 @@ const proposals = [
       'Cross chain asset teleports',
       'Make pages SSR',
       'Unfinalized business handling',
-    ],
-  },
-  {
-    token: "ksm",
-    amount: 69.52,
-    proposalId: 115,
-    proposeTimePrice: 347.2,
-    title:
-      "Statescan NFT business implementation and features polish",
-    achievements: [
     ],
   },
 ];
