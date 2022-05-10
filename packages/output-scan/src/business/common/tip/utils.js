@@ -73,7 +73,10 @@ function getNewTipCall(registry, call, reasonHash) {
     return findNewTipCallFromMulti(registry, call, reasonHash);
   }
 
-  if (Modules.Utility === section && UtilityMethods.batch === method) {
+  if (Modules.Utility === section && [
+    UtilityMethods.batch,
+    UtilityMethods.batchAll,
+  ].includes(method)) {
     return findNewTipCallFromBatch(registry, call, reasonHash);
   }
 

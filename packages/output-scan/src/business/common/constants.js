@@ -58,6 +58,7 @@ const MultisigMethods = Object.freeze({
 
 const UtilityMethods = Object.freeze({
   batch: "batch",
+  batchAll: "batchAll",
 });
 
 const TimelineItemTypes = Object.freeze({

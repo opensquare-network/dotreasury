@@ -72,7 +72,10 @@ async function handleWrappedCall(call, signer, extrinsicIndexer, events) {
     MultisigMethods.asMulti === method
   ) {
     await handleMultisig(...arguments);
-  } else if (Modules.Utility === section && UtilityMethods.batch === method) {
+  } else if (Modules.Utility === section && [
+    UtilityMethods.batch,
+    UtilityMethods.batchAll,
+  ].includes(method)) {
     await unwrapBatch(...arguments);
   } else if (Modules.Sudo === section && SudoMethods.sudo) {
     await unwrapSudo(...arguments);
