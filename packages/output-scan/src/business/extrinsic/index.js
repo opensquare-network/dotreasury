@@ -23,9 +23,9 @@ const {
 } = require("@dotreasury/common")
 
 async function handleCall(call, author, extrinsicIndexer, wrappedEvents) {
-  await handleTipCall(call, author, extrinsicIndexer, wrappedEvents);
-  await handleCloseTipCall(call, author, extrinsicIndexer, wrappedEvents);
-  await handleAcceptCurator(call, author, extrinsicIndexer, wrappedEvents);
+  await handleTipCall(...arguments);
+  await handleCloseTipCall(...arguments);
+  await handleAcceptCurator(...arguments);
 }
 
 async function unwrapProxy(call, signer, extrinsicIndexer, wrappedEvents) {
