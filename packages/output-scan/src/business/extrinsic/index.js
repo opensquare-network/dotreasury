@@ -1,3 +1,4 @@
+const { WrappedEvents } = require("../../utils/wrappedEvents");
 const { handleAcceptCurator } = require("./bounty/acceptCurator");
 const { handleCloseTipCall } = require("./tip/close");
 const { handleTipCall } = require("./tip/tip");
@@ -62,7 +63,7 @@ async function unwrapSudo(call, signer, extrinsicIndexer, events) {
   await handleWrappedCall(innerCall, signer, extrinsicIndexer, events);
 }
 
-async function handleWrappedCall(call, signer, extrinsicIndexer, events) {
+async function handleWrappedCall(call, signer, extrinsicIndexer, wrappedEvents) {
   const { section, method } = call;
 
   if (Modules.Proxy === section && ProxyMethods.proxy === method) {
@@ -84,24 +85,25 @@ async function handleWrappedCall(call, signer, extrinsicIndexer, events) {
   await handleCall(...arguments);
 }
 
-async function extractAndHandleCall(extrinsic, events = [], extrinsicIndexer) {
+async function extractAndHandleCall(extrinsic, wrappedEvents = [], extrinsicIndexer) {
   const signer = extrinsic.signer.toString();
   const call = extrinsic.method;
 
-  await handleWrappedCall(call, signer, extrinsicIndexer, events);
+  await handleWrappedCall(call, signer, extrinsicIndexer, wrappedEvents);
 }
 
 async function handleExtrinsics(extrinsics = [], allEvents = [], blockIndexer) {
   let index = 0;
   for (const extrinsic of extrinsics) {
     const events = extractExtrinsicEvents(allEvents, index);
-    const extrinsicIndexer = { ...blockIndexer, extrinsicIndex: index++ };
+    const wrappedEvents = new WrappedEvents(events, 0, false);
 
     if (!isExtrinsicSuccess(events)) {
       continue;
     }
 
-    await extractAndHandleCall(extrinsic, events, extrinsicIndexer);
+    const extrinsicIndexer = { ...blockIndexer, extrinsicIndex: index++ };
+    await extractAndHandleCall(extrinsic, wrappedEvents, extrinsicIndexer);
   }
 }
 
