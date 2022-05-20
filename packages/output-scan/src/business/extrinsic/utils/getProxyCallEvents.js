@@ -9,13 +9,13 @@ function getProxyInnerCallEvents(wrappedEvents) {
 
   let events = source.slice(0, index);
   if (index < 0) {
-    events = source;
+    return wrappedEvents;
   }
 
   return new WrappedEvents(
     events,
     wrappedEvents.offset,
-    index >= 0 ? true : wrappedEvents.wrapped
+    true
   );
 }
 
