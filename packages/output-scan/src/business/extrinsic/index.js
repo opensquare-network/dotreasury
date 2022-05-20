@@ -1,3 +1,4 @@
+const { isSudoOk, getSudoInnerCallEvents } = require("./utils/sudo");
 const { getBatchInnerCallEvents } = require("./utils/batch");
 const { isMultisigExecutedOk, getMultisigInnerCallEvents } = require("./utils/multisig");
 const { getProxyInnerCallEvents } = require("./utils/getProxyCallEvents");
@@ -86,9 +87,14 @@ async function unwrapBatch(call, signer, extrinsicIndexer, wrappedEvents) {
   }
 }
 
-async function unwrapSudo(call, signer, extrinsicIndexer, events) {
-  const innerCall = call.args[0];
-  await handleWrappedCall(innerCall, signer, extrinsicIndexer, events);
+async function unwrapSudo(call, signer, extrinsicIndexer, wrappedEvents) {
+  const { method } = call;
+  if (!isSudoOk(wrappedEvents.events, method)) {
+    return
+  }
+
+  const innerCallEvents = getSudoInnerCallEvents(wrappedEvents, method);
+  await handleWrappedCall(call.args[0], signer, extrinsicIndexer, innerCallEvents);
 }
 
 async function handleWrappedCall(call, signer, extrinsicIndexer, wrappedEvents) {
@@ -106,7 +112,10 @@ async function handleWrappedCall(call, signer, extrinsicIndexer, wrappedEvents) 
     UtilityMethods.batchAll,
   ].includes(method)) {
     await unwrapBatch(...arguments);
-  } else if (Modules.Sudo === section && SudoMethods.sudo) {
+  } else if (Modules.Sudo === section && [
+    SudoMethods.sudo,
+    SudoMethods.sudoAs,
+  ].includes(method)) {
     await unwrapSudo(...arguments);
   }
 

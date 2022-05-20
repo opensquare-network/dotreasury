@@ -19,6 +19,12 @@ const Modules = Object.freeze({
 
 const SudoMethods = Object.freeze({
   sudo: "sudo",
+  sudoAs: "sudoAs",
+});
+
+const SudoEvents = Object.freeze({
+  Sudid: "Sudid",
+  SudoAsDone: "SudoAsDone",
 });
 
 const DemocracyMethods = Object.freeze({
@@ -214,6 +220,7 @@ module.exports = {
   DemocracyExternalStates,
   TechnicalCommitteeEvents,
   SudoMethods,
+  SudoEvents,
   DemocracyExternalEvents,
   PreImageEvents,
   BalancesEvents,
