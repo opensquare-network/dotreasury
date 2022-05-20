@@ -1,3 +1,4 @@
+const { getBatchInnerCallEvents } = require("./utils/batch");
 const { isMultisigExecutedOk, getMultisigInnerCallEvents } = require("./utils/multisig");
 const { getProxyInnerCallEvents } = require("./utils/getProxyCallEvents");
 const { isProxyExecutedOk } = require("./utils/isProxyExecutedOk");
@@ -80,8 +81,8 @@ async function unwrapBatch(call, signer, extrinsicIndexer, wrappedEvents) {
 
   const innerCalls = call.args[0];
   for (let index = 0; index < endIndex; index++) {
-    const innerCall = innerCalls[index];
-    await handleWrappedCall(innerCall, signer, extrinsicIndexer, wrappedEvents);
+    const innerCallEvents = getBatchInnerCallEvents(wrappedEvents, index);
+    await handleWrappedCall(innerCalls[index], signer, extrinsicIndexer, innerCallEvents);
   }
 }
 

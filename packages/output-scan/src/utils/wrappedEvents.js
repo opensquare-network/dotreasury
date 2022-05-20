@@ -1,5 +1,5 @@
 class WrappedEvents {
-  #isCallEvents = false; // `true` means the events of the extrinsic, while `false` means the events of the call
+  #isCallEvents = false; // `true` means the events of one call
   #offset = 0;
   #events = [];
 
