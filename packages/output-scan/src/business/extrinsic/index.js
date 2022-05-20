@@ -1,3 +1,4 @@
+const { findInterrupted } = require("./batch/checkInterrupted");
 const { WrappedEvents } = require("../../utils/wrappedEvents");
 const { handleAcceptCurator } = require("./bounty/acceptCurator");
 const { handleCloseTipCall } = require("./tip/close");
@@ -17,10 +18,10 @@ const {
   utils: { extractExtrinsicEvents, isExtrinsicSuccess }
 } = require("@dotreasury/common")
 
-async function handleCall(call, author, extrinsicIndexer, events) {
-  await handleTipCall(call, author, extrinsicIndexer, events);
-  await handleCloseTipCall(call, author, extrinsicIndexer, events);
-  await handleAcceptCurator(call, author, extrinsicIndexer);
+async function handleCall(call, author, extrinsicIndexer, wrappedEvents) {
+  await handleTipCall(call, author, extrinsicIndexer, wrappedEvents);
+  await handleCloseTipCall(call, author, extrinsicIndexer, wrappedEvents);
+  await handleAcceptCurator(call, author, extrinsicIndexer, wrappedEvents);
 }
 
 async function unwrapProxy(call, signer, extrinsicIndexer, events) {
@@ -48,13 +49,26 @@ async function handleMultisig(call, signer, extrinsicIndexer, events) {
     return;
   }
 
-  await handleWrappedCall(innerCall, multisigAddr, extrinsicIndexer);
+  await handleWrappedCall(innerCall, multisigAddr, extrinsicIndexer, events);
 }
 
-async function unwrapBatch(call, signer, extrinsicIndexer, events) {
-  // TODO: not handle call after the BatchInterrupted event
-  for (const innerCall of call.args[0]) {
-    await handleWrappedCall(innerCall, signer, extrinsicIndexer, events);
+async function unwrapBatch(call, signer, extrinsicIndexer, wrappedEvents) {
+  const method = call.method;
+  const interruptedEvent = findInterrupted(wrappedEvents);
+
+  if (UtilityMethods.batchAll === method && interruptedEvent) {
+      return
+  }
+
+  let endIndex = call.args[0].length;
+  if (interruptedEvent) {
+    endIndex = interruptedEvent.event?.data[0].toNumber();
+  }
+
+  const innerCalls = call.args[0];
+  for (let index = 0; index < endIndex; index++) {
+    const innerCall = innerCalls[index];
+    await handleWrappedCall(innerCall, signer, extrinsicIndexer, wrappedEvents);
   }
 }
 

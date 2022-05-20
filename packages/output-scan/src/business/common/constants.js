@@ -61,6 +61,12 @@ const UtilityMethods = Object.freeze({
   batchAll: "batchAll",
 });
 
+const UtilityEvents = Object.freeze({
+  BatchInterrupted: "BatchInterrupted",
+  BatchCompleted: "BatchCompleted",
+  ItemCompleted: "ItemCompleted",
+});
+
 const TimelineItemTypes = Object.freeze({
   extrinsic: "extrinsic",
   event: "event",
@@ -185,6 +191,7 @@ module.exports = {
   ProxyMethods,
   MultisigMethods,
   UtilityMethods,
+  UtilityEvents,
   TimelineItemTypes,
   CouncilEvents,
   KaruraModules,
