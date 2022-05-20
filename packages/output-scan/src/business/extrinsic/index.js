@@ -1,3 +1,10 @@
+const { isSudoOk, getSudoInnerCallEvents } = require("./utils/sudo");
+const { getBatchInnerCallEvents } = require("./utils/batch");
+const { isMultisigExecutedOk, getMultisigInnerCallEvents } = require("./utils/multisig");
+const { getProxyInnerCallEvents } = require("./utils/getProxyCallEvents");
+const { isProxyExecutedOk } = require("./utils/isProxyExecutedOk");
+const { findInterrupted } = require("./utils/checkInterrupted");
+const { WrappedEvents } = require("../../utils/wrappedEvents");
 const { handleAcceptCurator } = require("./bounty/acceptCurator");
 const { handleCloseTipCall } = require("./tip/close");
 const { handleTipCall } = require("./tip/tip");
@@ -16,19 +23,28 @@ const {
   utils: { extractExtrinsicEvents, isExtrinsicSuccess }
 } = require("@dotreasury/common")
 
-async function handleCall(call, author, extrinsicIndexer, events) {
-  await handleTipCall(call, author, extrinsicIndexer, events);
-  await handleCloseTipCall(call, author, extrinsicIndexer, events);
-  await handleAcceptCurator(call, author, extrinsicIndexer);
+async function handleCall(call, author, extrinsicIndexer, wrappedEvents) {
+  await handleTipCall(...arguments);
+  await handleCloseTipCall(...arguments);
+  await handleAcceptCurator(...arguments);
 }
 
-async function unwrapProxy(call, signer, extrinsicIndexer, events) {
+async function unwrapProxy(call, signer, extrinsicIndexer, wrappedEvents) {
+  if (!isProxyExecutedOk(wrappedEvents?.events)) {
+    return
+  }
+
+  const innerCallEvents = getProxyInnerCallEvents(wrappedEvents);
   const real = call.args[0].toJSON();
   const innerCall = call.args[2];
-  await handleWrappedCall(innerCall, real, extrinsicIndexer, events);
+  await handleWrappedCall(innerCall, real, extrinsicIndexer, innerCallEvents);
 }
 
-async function handleMultisig(call, signer, extrinsicIndexer, events) {
+async function handleMultisig(call, signer, extrinsicIndexer, wrappedEvents) {
+  if (!isMultisigExecutedOk(wrappedEvents.events)) {
+    return
+  }
+
   const registry = await findRegistry(extrinsicIndexer);
   const callHex = call.args[3];
   const threshold = call.args[0].toNumber();
@@ -47,22 +63,41 @@ async function handleMultisig(call, signer, extrinsicIndexer, events) {
     return;
   }
 
-  await handleWrappedCall(innerCall, multisigAddr, extrinsicIndexer);
+  const innerCallEvents = getMultisigInnerCallEvents(wrappedEvents);
+  await handleWrappedCall(innerCall, multisigAddr, extrinsicIndexer, innerCallEvents);
 }
 
-async function unwrapBatch(call, signer, extrinsicIndexer, events) {
-  // TODO: not handle call after the BatchInterrupted event
-  for (const innerCall of call.args[0]) {
-    await handleWrappedCall(innerCall, signer, extrinsicIndexer, events);
+async function unwrapBatch(call, signer, extrinsicIndexer, wrappedEvents) {
+  const method = call.method;
+  const interruptedEvent = findInterrupted(wrappedEvents);
+
+  if (UtilityMethods.batchAll === method && interruptedEvent) {
+      return
+  }
+
+  let endIndex = call.args[0].length;
+  if (interruptedEvent) {
+    endIndex = interruptedEvent.event?.data[0].toNumber();
+  }
+
+  const innerCalls = call.args[0];
+  for (let index = 0; index < endIndex; index++) {
+    const innerCallEvents = getBatchInnerCallEvents(wrappedEvents, index);
+    await handleWrappedCall(innerCalls[index], signer, extrinsicIndexer, innerCallEvents);
   }
 }
 
-async function unwrapSudo(call, signer, extrinsicIndexer, events) {
-  const innerCall = call.args[0];
-  await handleWrappedCall(innerCall, signer, extrinsicIndexer, events);
+async function unwrapSudo(call, signer, extrinsicIndexer, wrappedEvents) {
+  const { method } = call;
+  if (!isSudoOk(wrappedEvents.events, method)) {
+    return
+  }
+
+  const innerCallEvents = getSudoInnerCallEvents(wrappedEvents, method);
+  await handleWrappedCall(call.args[0], signer, extrinsicIndexer, innerCallEvents);
 }
 
-async function handleWrappedCall(call, signer, extrinsicIndexer, events) {
+async function handleWrappedCall(call, signer, extrinsicIndexer, wrappedEvents) {
   const { section, method } = call;
 
   if (Modules.Proxy === section && ProxyMethods.proxy === method) {
@@ -77,31 +112,35 @@ async function handleWrappedCall(call, signer, extrinsicIndexer, events) {
     UtilityMethods.batchAll,
   ].includes(method)) {
     await unwrapBatch(...arguments);
-  } else if (Modules.Sudo === section && SudoMethods.sudo) {
+  } else if (Modules.Sudo === section && [
+    SudoMethods.sudo,
+    SudoMethods.sudoAs,
+  ].includes(method)) {
     await unwrapSudo(...arguments);
   }
 
   await handleCall(...arguments);
 }
 
-async function extractAndHandleCall(extrinsic, events = [], extrinsicIndexer) {
+async function extractAndHandleCall(extrinsic, wrappedEvents = [], extrinsicIndexer) {
   const signer = extrinsic.signer.toString();
   const call = extrinsic.method;
 
-  await handleWrappedCall(call, signer, extrinsicIndexer, events);
+  await handleWrappedCall(call, signer, extrinsicIndexer, wrappedEvents);
 }
 
 async function handleExtrinsics(extrinsics = [], allEvents = [], blockIndexer) {
   let index = 0;
   for (const extrinsic of extrinsics) {
     const events = extractExtrinsicEvents(allEvents, index);
-    const extrinsicIndexer = { ...blockIndexer, extrinsicIndex: index++ };
+    const wrappedEvents = new WrappedEvents(events, 0, false);
 
     if (!isExtrinsicSuccess(events)) {
       continue;
     }
 
-    await extractAndHandleCall(extrinsic, events, extrinsicIndexer);
+    const extrinsicIndexer = { ...blockIndexer, extrinsicIndex: index++ };
+    await extractAndHandleCall(extrinsic, wrappedEvents, extrinsicIndexer);
   }
 }
 

@@ -19,6 +19,12 @@ const Modules = Object.freeze({
 
 const SudoMethods = Object.freeze({
   sudo: "sudo",
+  sudoAs: "sudoAs",
+});
+
+const SudoEvents = Object.freeze({
+  Sudid: "Sudid",
+  SudoAsDone: "SudoAsDone",
 });
 
 const DemocracyMethods = Object.freeze({
@@ -52,13 +58,27 @@ const ProxyMethods = Object.freeze({
   proxy: "proxy",
 });
 
+const ProxyEvents = Object.freeze({
+  ProxyExecuted: "ProxyExecuted",
+});
+
 const MultisigMethods = Object.freeze({
   asMulti: "asMulti",
+});
+
+const MultisigEvents = Object.freeze({
+  MultisigExecuted: "MultisigExecuted",
 });
 
 const UtilityMethods = Object.freeze({
   batch: "batch",
   batchAll: "batchAll",
+});
+
+const UtilityEvents = Object.freeze({
+  BatchInterrupted: "BatchInterrupted",
+  BatchCompleted: "BatchCompleted",
+  ItemCompleted: "ItemCompleted",
 });
 
 const TimelineItemTypes = Object.freeze({
@@ -183,8 +203,11 @@ module.exports = {
   TipEvents,
   TipMethods,
   ProxyMethods,
+  ProxyEvents,
   MultisigMethods,
+  MultisigEvents,
   UtilityMethods,
+  UtilityEvents,
   TimelineItemTypes,
   CouncilEvents,
   KaruraModules,
@@ -197,6 +220,7 @@ module.exports = {
   DemocracyExternalStates,
   TechnicalCommitteeEvents,
   SudoMethods,
+  SudoEvents,
   DemocracyExternalEvents,
   PreImageEvents,
   BalancesEvents,
