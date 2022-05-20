@@ -52,6 +52,10 @@ const ProxyMethods = Object.freeze({
   proxy: "proxy",
 });
 
+const ProxyEvents = Object.freeze({
+  ProxyExecuted: "ProxyExecuted",
+});
+
 const MultisigMethods = Object.freeze({
   asMulti: "asMulti",
 });
@@ -189,6 +193,7 @@ module.exports = {
   TipEvents,
   TipMethods,
   ProxyMethods,
+  ProxyEvents,
   MultisigMethods,
   UtilityMethods,
   UtilityEvents,

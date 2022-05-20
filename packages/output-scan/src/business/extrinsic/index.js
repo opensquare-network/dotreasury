@@ -1,4 +1,6 @@
-const { findInterrupted } = require("./batch/checkInterrupted");
+const { getProxyInnerCallEvents } = require("./utils/getProxyCallEvents");
+const { isProxyExecutedOk } = require("./utils/isProxyExecutedOk");
+const { findInterrupted } = require("./utils/checkInterrupted");
 const { WrappedEvents } = require("../../utils/wrappedEvents");
 const { handleAcceptCurator } = require("./bounty/acceptCurator");
 const { handleCloseTipCall } = require("./tip/close");
@@ -24,10 +26,15 @@ async function handleCall(call, author, extrinsicIndexer, wrappedEvents) {
   await handleAcceptCurator(call, author, extrinsicIndexer, wrappedEvents);
 }
 
-async function unwrapProxy(call, signer, extrinsicIndexer, events) {
+async function unwrapProxy(call, signer, extrinsicIndexer, wrappedEvents) {
+  if (!isProxyExecutedOk(wrappedEvents?.events)) {
+    return
+  }
+
+  const innerCallEvents = getProxyInnerCallEvents(wrappedEvents);
   const real = call.args[0].toJSON();
   const innerCall = call.args[2];
-  await handleWrappedCall(innerCall, real, extrinsicIndexer, events);
+  await handleWrappedCall(innerCall, real, extrinsicIndexer, innerCallEvents);
 }
 
 async function handleMultisig(call, signer, extrinsicIndexer, events) {
