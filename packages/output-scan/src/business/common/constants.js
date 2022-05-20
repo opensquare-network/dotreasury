@@ -60,6 +60,10 @@ const MultisigMethods = Object.freeze({
   asMulti: "asMulti",
 });
 
+const MultisigEvents = Object.freeze({
+  MultisigExecuted: "MultisigExecuted",
+});
+
 const UtilityMethods = Object.freeze({
   batch: "batch",
   batchAll: "batchAll",
@@ -195,6 +199,7 @@ module.exports = {
   ProxyMethods,
   ProxyEvents,
   MultisigMethods,
+  MultisigEvents,
   UtilityMethods,
   UtilityEvents,
   TimelineItemTypes,

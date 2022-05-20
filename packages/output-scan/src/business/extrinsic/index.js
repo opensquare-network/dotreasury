@@ -1,3 +1,4 @@
+const { isMultisigExecutedOk, getMultisigInnerCallEvents } = require("./utils/multisig");
 const { getProxyInnerCallEvents } = require("./utils/getProxyCallEvents");
 const { isProxyExecutedOk } = require("./utils/isProxyExecutedOk");
 const { findInterrupted } = require("./utils/checkInterrupted");
@@ -37,7 +38,11 @@ async function unwrapProxy(call, signer, extrinsicIndexer, wrappedEvents) {
   await handleWrappedCall(innerCall, real, extrinsicIndexer, innerCallEvents);
 }
 
-async function handleMultisig(call, signer, extrinsicIndexer, events) {
+async function handleMultisig(call, signer, extrinsicIndexer, wrappedEvents) {
+  if (!isMultisigExecutedOk(wrappedEvents.events)) {
+    return
+  }
+
   const registry = await findRegistry(extrinsicIndexer);
   const callHex = call.args[3];
   const threshold = call.args[0].toNumber();
@@ -56,7 +61,8 @@ async function handleMultisig(call, signer, extrinsicIndexer, events) {
     return;
   }
 
-  await handleWrappedCall(innerCall, multisigAddr, extrinsicIndexer, events);
+  const innerCallEvents = getMultisigInnerCallEvents(wrappedEvents);
+  await handleWrappedCall(innerCall, multisigAddr, extrinsicIndexer, innerCallEvents);
 }
 
 async function unwrapBatch(call, signer, extrinsicIndexer, wrappedEvents) {
