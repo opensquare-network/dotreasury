@@ -31,6 +31,7 @@ let proposalCol = null;
 let motionCol = null;
 let burntCol = null;
 let outTransferCol = null;
+let childBountyCol = null;
 
 let weeklyStatsCol = null;
 
@@ -50,6 +51,7 @@ async function initDb() {
   burntCol = db.collection(burntCollectionName);
   weeklyStatsCol = db.collection(weeklyStatsCollectionName);
   outTransferCol = db.collection(outTransferColName);
+  childBountyCol = db.collection("childBounty");
 
   await _createIndexes();
 }
@@ -72,6 +74,11 @@ async function tryInit(col) {
 async function getMotionCollection() {
   await tryInit(motionCol);
   return motionCol;
+}
+
+async function getChildBountyCollection() {
+  await tryInit(childBountyCol);
+  return childBountyCol;
 }
 
 async function getStatusCollection() {
@@ -125,4 +132,5 @@ module.exports = {
   getBurntCollection,
   getWeeklyStatsCollection,
   getOutTransferCollection,
+  getChildBountyCollection,
 };

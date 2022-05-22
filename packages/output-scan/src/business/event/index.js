@@ -47,33 +47,36 @@ async function handleEventWithoutExtrinsic(
 }
 
 async function handleCommon(
-  blockIndexer,
-  phase,
+  indexer,
   event,
-  eventSort,
+  extrinsic
 ) {
-  const indexer = {
-    ...blockIndexer,
-    extrinsicIndex: phase.isNull ? undefined : phase.value.toNumber(),
-    eventIndex: eventSort,
-  };
-
-  await handleBurntEvent(event, indexer);
+  await handleBurntEvent(event, indexer, extrinsic);
 }
 
 async function handleEvents(events, extrinsics, blockIndexer) {
   for (let sort = 0; sort < events.length; sort++) {
     const { event, phase } = events[sort];
 
-    await handleCommon(blockIndexer, phase, event, sort);
+    let indexer = {
+      ...blockIndexer,
+      eventIndex: sort,
+    }
+
+    let extrinsic, extrinsicIndex;
+    if (!phase.isNull) {
+      extrinsicIndex = phase.value.toNumber();
+      indexer = { ...indexer, extrinsicIndex };
+      extrinsic = extrinsics[extrinsicIndex];
+    }
+
+    await handleCommon(indexer, phase, event, sort, extrinsics);
 
     if (phase.isNull) {
       await handleEventWithoutExtrinsic(blockIndexer, event, sort, events);
       continue;
     }
 
-    const extrinsicIndex = phase.value.toNumber();
-    const extrinsic = extrinsics[extrinsicIndex];
     await handleEventWithExtrinsic(
       blockIndexer,
       event,
