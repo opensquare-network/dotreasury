@@ -22,6 +22,7 @@ let db = null;
 const mongoUrl = process.env.MONGO_URL || "mongodb://localhost:27017";
 let tipCol = null;
 let bountyCol = null;
+let childBountyCol = null;
 let proposalCol = null;
 let motionCol = null;
 let burntCol = null;
@@ -41,6 +42,7 @@ async function initDb() {
   motionCol = db.collection(motionCollectionName);
   burntCol = db.collection(burntCollectionName);
   outTransferCol = db.collection(outTransferColName);
+  childBountyCol = db.collection("childBounty");
 
   await _createIndexes();
 }
@@ -85,6 +87,11 @@ async function getBurntCollection() {
   return burntCol;
 }
 
+async function getChildBountyCollection() {
+  await tryInit(childBountyCol);
+  return childBountyCol;
+}
+
 async function getOutTransferCollection() {
   await tryInit(outTransferCol);
   return outTransferCol;
@@ -102,4 +109,5 @@ module.exports = {
   getBurntCollection,
   getOutTransferCollection,
   closeDataDbClient,
+  getChildBountyCollection,
 };
