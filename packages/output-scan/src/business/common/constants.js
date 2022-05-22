@@ -15,7 +15,7 @@ const Modules = Object.freeze({
   Balances: "balances",
   Sudo: "sudo",
   TechnicalCommittee: "technicalCommittee",
-  ChildBounties: "ChildBounties",
+  ChildBounties: "childBounties",
 });
 
 const ChildBountiesEvents = Object.freeze({

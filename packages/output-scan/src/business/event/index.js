@@ -1,3 +1,4 @@
+const { handleChildBountiesEvents } = require("./child-bounties");
 const { handleBurntEvent } = require("./burnt");
 const { handleTreasuryTransferOut } = require("./outTransfer");
 const { handleMotionEvent } = require("./motion");
@@ -47,11 +48,12 @@ async function handleEventWithoutExtrinsic(
 }
 
 async function handleCommon(
-  indexer,
   event,
+  indexer,
   extrinsic
 ) {
   await handleBurntEvent(event, indexer, extrinsic);
+  await handleChildBountiesEvents(event, indexer, extrinsic);
 }
 
 async function handleEvents(events, extrinsics, blockIndexer) {
@@ -70,7 +72,7 @@ async function handleEvents(events, extrinsics, blockIndexer) {
       extrinsic = extrinsics[extrinsicIndex];
     }
 
-    await handleCommon(indexer, phase, event, sort, extrinsics);
+    await handleCommon(event, indexer, extrinsics);
 
     if (phase.isNull) {
       await handleEventWithoutExtrinsic(blockIndexer, event, sort, events);
