@@ -35,7 +35,7 @@ async function handleAcceptCurator(call, author, indexer) {
   }
 
   const timelineItem = {
-    type: TimelineItemTypes.event,
+    type: TimelineItemTypes.extrinsic,
     name: ChildBountiesMethods.acceptCurator,
     args: { curator, },
     indexer,
