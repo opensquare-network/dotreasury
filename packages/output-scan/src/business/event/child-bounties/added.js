@@ -38,6 +38,8 @@ async function handleAdded(event, indexer) {
     indexer,
     parentBountyId,
     index: childBountyId,
+    value: meta?.value,
+    fee: meta?.fee,
     description,
     meta,
     state,

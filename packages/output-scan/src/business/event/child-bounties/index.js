@@ -4,6 +4,7 @@ const {
 } = require("../../common/constants");
 const { handleAdded } = require("./added");
 const { handleCanceled } = require("./canceled");
+const { handleAwarded } = require("./awarded");
 const { handleClaimed } = require("./claimed");
 
 function isTargetEvent(section) {
@@ -19,6 +20,7 @@ async function handleChildBountiesEvents(event, indexer, extrinsic) {
   if (ChildBountiesEvents.Added === method) {
     await handleAdded(...arguments);
   } else if (ChildBountiesEvents.Awarded === method) {
+    await handleAwarded(...arguments);
   } else if (ChildBountiesEvents.Claimed === method) {
     await handleClaimed(...arguments);
   } else if (ChildBountiesEvents.Canceled === method) {
