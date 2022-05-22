@@ -42,6 +42,7 @@ async function handleAdded(event, indexer) {
     meta,
     state,
     timeline,
+    isFinal: false,
   }
 
   await insertChildBounty(bountyObj);
