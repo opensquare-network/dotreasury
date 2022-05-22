@@ -166,6 +166,7 @@ const BountyStatus = Object.freeze({
 
 const ChildBountyState = Object.freeze({
   Added: "Added",
+  CuratorProposed: "CuratorProposed",
   Active: "Active",
   PendingPayout: "PendingPayout",
   Rejected: "Rejected",
