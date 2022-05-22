@@ -23,12 +23,14 @@ const {
   utils: { extractExtrinsicEvents, isExtrinsicSuccess }
 } = require("@dotreasury/common")
 const { handleProposeCurator } = require("./child-bounties/propose-curator")
+const { handleAcceptCurator: handleAcceptChildBountyCurator } = require("./child-bounties/accept-curator")
 
 async function handleCall(call, author, extrinsicIndexer, wrappedEvents) {
   await handleTipCall(...arguments);
   await handleCloseTipCall(...arguments);
   await handleAcceptCurator(...arguments);
   await handleProposeCurator(...arguments);
+  await handleAcceptChildBountyCurator(...arguments);
 }
 
 async function unwrapProxy(call, signer, extrinsicIndexer, wrappedEvents) {
