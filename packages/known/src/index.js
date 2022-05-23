@@ -8,6 +8,7 @@ const { getProposalHeights } = require("./heights/proposal");
 const { getBurntHeights } = require("./heights/burnt");
 const { getTipHeights } = require("./heights/tip");
 const { getOutTransferHeights } = require("./heights/outTransfer");
+const { getChildBountyHeights } = require("./heights/childBounty");
 
 async function main() {
   const proposalHeights = await getProposalHeights();
@@ -27,6 +28,9 @@ async function main() {
 
   const outTransferHeights = await getOutTransferHeights();
   await saveKnownHeights(outTransferHeights);
+
+  const childBountyHeights = await getChildBountyHeights();
+  await saveKnownHeights(childBountyHeights);
 }
 
 main()

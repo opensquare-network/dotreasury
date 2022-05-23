@@ -41,7 +41,10 @@ function findTargetCall(call, targetSection, targetMethod) {
     return findTargetCallFromMultisig(...arguments);
   }
 
-  if (Modules.Utility === section && UtilityMethods.batch === method) {
+  if (Modules.Utility === section && [
+    UtilityMethods.batch,
+    UtilityMethods.batchAll,
+  ].includes(method)) {
     return findTargetCallFromBatch(...arguments);
   }
 

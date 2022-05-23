@@ -15,10 +15,30 @@ const Modules = Object.freeze({
   Balances: "balances",
   Sudo: "sudo",
   TechnicalCommittee: "technicalCommittee",
+  ChildBounties: "childBounties",
+});
+
+const ChildBountiesEvents = Object.freeze({
+  Added: "Added",
+  Awarded: "Awarded",
+  Claimed: "Claimed",
+  Canceled: "Canceled",
+})
+
+const ChildBountiesMethods = Object.freeze({
+  proposeCurator: "proposeCurator",
+  acceptCurator: "acceptCurator",
+  unassignCurator: "unassignCurator",
 });
 
 const SudoMethods = Object.freeze({
   sudo: "sudo",
+  sudoAs: "sudoAs",
+});
+
+const SudoEvents = Object.freeze({
+  Sudid: "Sudid",
+  SudoAsDone: "SudoAsDone",
 });
 
 const DemocracyMethods = Object.freeze({
@@ -52,12 +72,27 @@ const ProxyMethods = Object.freeze({
   proxy: "proxy",
 });
 
+const ProxyEvents = Object.freeze({
+  ProxyExecuted: "ProxyExecuted",
+});
+
 const MultisigMethods = Object.freeze({
   asMulti: "asMulti",
 });
 
+const MultisigEvents = Object.freeze({
+  MultisigExecuted: "MultisigExecuted",
+});
+
 const UtilityMethods = Object.freeze({
   batch: "batch",
+  batchAll: "batchAll",
+});
+
+const UtilityEvents = Object.freeze({
+  BatchInterrupted: "BatchInterrupted",
+  BatchCompleted: "BatchCompleted",
+  ItemCompleted: "ItemCompleted",
 });
 
 const TimelineItemTypes = Object.freeze({
@@ -129,6 +164,16 @@ const BountyStatus = Object.freeze({
   Claimed: "Claimed",
 });
 
+const ChildBountyState = Object.freeze({
+  Added: "Added",
+  CuratorProposed: "CuratorProposed",
+  Active: "Active",
+  PendingPayout: "PendingPayout",
+  Rejected: "Rejected",
+  Canceled: "Canceled",
+  Claimed: "Claimed",
+})
+
 const TreasuryCommonEvent = Object.freeze({
   Burnt: "Burnt",
   Deposit: "Deposit",
@@ -182,8 +227,11 @@ module.exports = {
   TipEvents,
   TipMethods,
   ProxyMethods,
+  ProxyEvents,
   MultisigMethods,
+  MultisigEvents,
   UtilityMethods,
+  UtilityEvents,
   TimelineItemTypes,
   CouncilEvents,
   KaruraModules,
@@ -196,6 +244,7 @@ module.exports = {
   DemocracyExternalStates,
   TechnicalCommitteeEvents,
   SudoMethods,
+  SudoEvents,
   DemocracyExternalEvents,
   PreImageEvents,
   BalancesEvents,
@@ -205,4 +254,7 @@ module.exports = {
   BountyEvents,
   BountyMethods,
   BountyStatus,
+  ChildBountiesEvents,
+  ChildBountiesMethods,
+  ChildBountyState,
 };
