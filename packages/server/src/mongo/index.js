@@ -28,6 +28,10 @@ function getBountyCollection(chain) {
   return db(chain).getBountyCollection();
 }
 
+function getChildBountyCollection(chain) {
+  return db(chain).getChildBountyCollection();
+}
+
 function getMotionCollection(chain) {
   return db(chain).getMotionCollection();
 }
@@ -86,6 +90,7 @@ module.exports = {
   getTipCollection,
   getProposalCollection,
   getBountyCollection,
+  getChildBountyCollection,
   getMotionCollection,
   getBurntCollection,
   getOutputTransferCollection,

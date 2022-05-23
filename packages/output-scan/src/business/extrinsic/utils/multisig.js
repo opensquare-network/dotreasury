@@ -28,8 +28,7 @@ function isMultisigExecutedOk(events = []) {
     return false
   }
 
-  const resultArgIndex = event.event.meta.args.findIndex(arg => arg.toString() === 'DispatchResult')
-  return event.event?.data[resultArgIndex].isOk;
+  return event.event?.data[4].isOk;
 }
 
 module.exports = {

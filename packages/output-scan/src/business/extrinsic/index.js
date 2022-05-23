@@ -22,11 +22,17 @@ const {
   specs: { findRegistry },
   utils: { extractExtrinsicEvents, isExtrinsicSuccess }
 } = require("@dotreasury/common")
+const { handleProposeCurator } = require("./child-bounties/propose-curator")
+const { handleAcceptCurator: handleAcceptChildBountyCurator } = require("./child-bounties/accept-curator")
+const { handleUnassignChildBountyCurator } = require("./child-bounties/unassign-curator");
 
 async function handleCall(call, author, extrinsicIndexer, wrappedEvents) {
   await handleTipCall(...arguments);
   await handleCloseTipCall(...arguments);
   await handleAcceptCurator(...arguments);
+  await handleProposeCurator(...arguments);
+  await handleAcceptChildBountyCurator(...arguments);
+  await handleUnassignChildBountyCurator(...arguments);
 }
 
 async function unwrapProxy(call, signer, extrinsicIndexer, wrappedEvents) {
@@ -72,7 +78,7 @@ async function unwrapBatch(call, signer, extrinsicIndexer, wrappedEvents) {
   const interruptedEvent = findInterrupted(wrappedEvents);
 
   if (UtilityMethods.batchAll === method && interruptedEvent) {
-      return
+    return
   }
 
   let endIndex = call.args[0].length;

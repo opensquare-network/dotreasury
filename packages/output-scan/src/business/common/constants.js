@@ -15,6 +15,20 @@ const Modules = Object.freeze({
   Balances: "balances",
   Sudo: "sudo",
   TechnicalCommittee: "technicalCommittee",
+  ChildBounties: "childBounties",
+});
+
+const ChildBountiesEvents = Object.freeze({
+  Added: "Added",
+  Awarded: "Awarded",
+  Claimed: "Claimed",
+  Canceled: "Canceled",
+})
+
+const ChildBountiesMethods = Object.freeze({
+  proposeCurator: "proposeCurator",
+  acceptCurator: "acceptCurator",
+  unassignCurator: "unassignCurator",
 });
 
 const SudoMethods = Object.freeze({
@@ -150,6 +164,16 @@ const BountyStatus = Object.freeze({
   Claimed: "Claimed",
 });
 
+const ChildBountyState = Object.freeze({
+  Added: "Added",
+  CuratorProposed: "CuratorProposed",
+  Active: "Active",
+  PendingPayout: "PendingPayout",
+  Rejected: "Rejected",
+  Canceled: "Canceled",
+  Claimed: "Claimed",
+})
+
 const TreasuryCommonEvent = Object.freeze({
   Burnt: "Burnt",
   Deposit: "Deposit",
@@ -230,4 +254,7 @@ module.exports = {
   BountyEvents,
   BountyMethods,
   BountyStatus,
+  ChildBountiesEvents,
+  ChildBountiesMethods,
+  ChildBountyState,
 };
