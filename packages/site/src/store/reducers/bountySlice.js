@@ -10,6 +10,12 @@ const bountySlice = createSlice({
       pageSize: 10,
       total: 0,
     },
+    childBounties: {
+      items: [],
+      page: 0,
+      pageSize: 10,
+      total: 0,
+    },
     loading: false,
     bountyDetail: {},
     loadingBountyDetail: false,
@@ -17,6 +23,9 @@ const bountySlice = createSlice({
   reducers: {
     setBounties(state, { payload }) {
       state.bounties = payload;
+    },
+    setChildBounties(state, { payload }) {
+      state.childBounties = payload;
     },
     setLoading(state, { payload }) {
       state.loading = payload;
@@ -32,6 +41,7 @@ const bountySlice = createSlice({
 
 export const {
   setBounties,
+  setChildBounties,
   setLoading,
   setBountyDetail,
   setLoadingBountyDetail,
@@ -68,7 +78,7 @@ export const fetchChildBounties =
         page,
         pageSize,
       });
-      dispatch(setBounties(result || {}));
+      dispatch(setChildBounties(result || {}));
     } finally {
       dispatch(setLoading(false));
     }
