@@ -84,19 +84,6 @@ export const fetchChildBounties =
     }
   };
 
-export const fetchChildBountyDetail =
-  (chain, bountyIndex) => async (dispatch) => {
-    dispatch(setLoadingBountyDetail(true));
-    try {
-      const { result } = await api.fetch(
-        `/${chain}/child-bounties/${bountyIndex}`
-      );
-      dispatch(setBountyDetail(result || {}));
-    } finally {
-      dispatch(setLoadingBountyDetail(false));
-    }
-  };
-
 export const bountyListSelector = (state) => state.bounties.bounties;
 export const loadingSelector = (state) => state.bounties.loading;
 export const bountyDetailSelector = (state) => state.bounties.bountyDetail;
