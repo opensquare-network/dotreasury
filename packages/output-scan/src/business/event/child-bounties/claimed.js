@@ -13,7 +13,7 @@ async function handleClaimed(event, indexer) {
 
   const timelineItem = {
     type: TimelineItemTypes.event,
-    name: ChildBountiesEvents.Canceled,
+    name: ChildBountiesEvents.Claimed,
     args: {
       payout,
       beneficiary,
