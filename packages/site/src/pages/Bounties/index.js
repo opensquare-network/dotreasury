@@ -50,7 +50,7 @@ const DEFAULT_QUERY_PAGE = 1;
 
 const TYPES = {
   bounties: "bounties",
-  childBounties: "childBounties",
+  childBounties: "child-bounties",
 };
 
 const Bounties = () => {
