@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 
 import ResponsivePagination from "../../components/ResponsivePagination";
 import BountiesTable from "./BountiesTable";
+import ChildBountiesTable from "./ChildBountiesTable";
 import { useDispatch, useSelector } from "react-redux";
 import { useChainRoute, useQuery, useLocalStorage } from "../../utils/hooks";
 import { useHistory } from "react-router";
@@ -87,57 +88,68 @@ const Bounties = () => {
 
   const totalPages = Math.ceil(total / pageSize);
 
+  const header = (
+    <HeaderWrapper>
+      <TitleGroup>
+        <Title
+          active={type === TYPES.bounties}
+          onClick={() => {
+            setType(TYPES.bounties);
+          }}
+        >
+          Bounties
+        </Title>
+        <Title
+          active={type === TYPES.childBounties}
+          onClick={() => {
+            setType(TYPES.childBounties);
+          }}
+        >
+          Child Bounties
+        </Title>
+      </TitleGroup>
+    </HeaderWrapper>
+  );
+
+  const footer = (
+    <ResponsivePagination
+      activePage={tablePage}
+      totalPages={totalPages}
+      pageSize={pageSize}
+      setPageSize={(pageSize) => {
+        setTablePage(DEFAULT_QUERY_PAGE);
+        setPageSize(pageSize);
+        history.push({
+          search: null,
+        });
+      }}
+      onPageChange={(_, { activePage }) => {
+        history.push({
+          search:
+            activePage === DEFAULT_QUERY_PAGE ? null : `?page=${activePage}`,
+        });
+        setTablePage(activePage);
+      }}
+    />
+  );
+
   return (
     <>
-      <BountiesTable
-        data={bounties}
-        loading={loading}
-        header={
-          <HeaderWrapper>
-            <TitleGroup>
-              <Title
-                active={type === TYPES.bounties}
-                onClick={() => {
-                  setType(TYPES.bounties);
-                }}
-              >
-                Bounties
-              </Title>
-              <Title
-                active={type === TYPES.childBounties}
-                onClick={() => {
-                  setType(TYPES.childBounties);
-                }}
-              >
-                Child Bounties
-              </Title>
-            </TitleGroup>
-          </HeaderWrapper>
-        }
-        footer={
-          <ResponsivePagination
-            activePage={tablePage}
-            totalPages={totalPages}
-            pageSize={pageSize}
-            setPageSize={(pageSize) => {
-              setTablePage(DEFAULT_QUERY_PAGE);
-              setPageSize(pageSize);
-              history.push({
-                search: null,
-              });
-            }}
-            onPageChange={(_, { activePage }) => {
-              history.push({
-                search:
-                  activePage === DEFAULT_QUERY_PAGE
-                    ? null
-                    : `?page=${activePage}`,
-              });
-              setTablePage(activePage);
-            }}
-          />
-        }
-      />
+      {isChildBounties ? (
+        <ChildBountiesTable
+          data={bounties}
+          loading={loading}
+          header={header}
+          footer={footer}
+        />
+      ) : (
+        <BountiesTable
+          data={bounties}
+          loading={loading}
+          header={header}
+          footer={footer}
+        />
+      )}
     </>
   );
 };
