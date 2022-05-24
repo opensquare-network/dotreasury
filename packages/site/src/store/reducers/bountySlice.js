@@ -12,6 +12,7 @@ const bountySlice = createSlice({
     },
     loading: false,
     bountyDetail: {},
+    childBountyDetail: {},
     loadingBountyDetail: false,
   },
   reducers: {
@@ -24,6 +25,9 @@ const bountySlice = createSlice({
     setBountyDetail(state, { payload }) {
       state.bountyDetail = payload;
     },
+    setChildBountyDetail(state, { payload }) {
+      state.childBountyDetail = payload;
+    },
     setLoadingBountyDetail(state, { payload }) {
       state.loadingBountyDetail = payload;
     },
@@ -34,6 +38,7 @@ export const {
   setBounties,
   setLoading,
   setBountyDetail,
+  setChildBountyDetail,
   setLoadingBountyDetail,
 } = bountySlice.actions;
 
@@ -58,9 +63,20 @@ export const fetchBountyDetail = (chain, bountyIndex) => async (dispatch) => {
   }
 };
 
+export const fetchChildBountyDetail = (chain, bountyIndex) => async (dispatch) => {
+  dispatch(setLoadingBountyDetail(true));
+  try {
+    const { result } = await api.fetch(`/${chain}/child-bounties/${bountyIndex}`);
+    dispatch(setChildBountyDetail(result || {}));
+  } finally {
+    dispatch(setLoadingBountyDetail(false));
+  }
+};
+
 export const bountyListSelector = (state) => state.bounties.bounties;
 export const loadingSelector = (state) => state.bounties.loading;
 export const bountyDetailSelector = (state) => state.bounties.bountyDetail;
+export const childBountyDetailSelector = (state) => state.bounties.childBountyDetail;
 export const loadingBountyDetailSelector = (state) =>
   state.bounties.loadingBountyDetail;
 
