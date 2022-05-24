@@ -1,4 +1,4 @@
-const { env: { getScanStep } } = require("@dotreasury/common");
+const { env: { getScanStep } } = require("@osn/scan-common");
 const { getHeightCollection } = require("../knownHeight");
 
 async function getNextKnownHeights(beginHeight) {

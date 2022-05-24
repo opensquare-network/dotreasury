@@ -1,7 +1,9 @@
 const {
-  Modules,
-  ChildBountiesEvents,
-} = require("../../common/constants");
+  consts: {
+    Modules,
+    ChildBountiesEvents,
+  }
+} = require("@osn/scan-common");
 const { handleAdded } = require("./added");
 const { handleCanceled } = require("./canceled");
 const { handleAwarded } = require("./awarded");

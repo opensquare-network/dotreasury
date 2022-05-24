@@ -1,9 +1,9 @@
 const {
-  setApi, setProvider,
-  specs: {
+  chain: {
+    setApi, setProvider,
     setSpecHeights
-  }
-} = require("@dotreasury/common");
+  },
+} = require("@osn/scan-common");
 jest.setTimeout(3000000);
 
 const { getTreasuryProposalMeta } = require("./meta");

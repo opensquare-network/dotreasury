@@ -1,10 +1,12 @@
 const { getDemocracySlashCollection } = require("../../../mongo/data");
 const { getMotionProposalByHeight } = require("../../common/motion/proposalStorage");
 const {
-  Modules,
-  CouncilEvents,
-  DemocracyMethods,
-} = require("../../common/constants")
+  consts: {
+    Modules,
+    CouncilEvents,
+    DemocracyMethods,
+  }
+} = require("@osn/scan-common")
 
 function isCancelProposal(section, method) {
   return Modules.Democracy === section && DemocracyMethods.cancelProposal === method;

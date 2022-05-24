@@ -2,9 +2,11 @@ const { handleAwarded } = require("./awarded");
 const { handleRejected } = require("./rejected");
 const { saveNewTreasuryProposal } = require("./proposed");
 const {
-  Modules,
-  TreasuryProposalEvents,
-} = require("../../common/constants");
+  consts: {
+    Modules,
+    TreasuryProposalEvents,
+  }
+} = require("@osn/scan-common")
 
 function isTreasuryProposalEvent(section, method) {
   if (![Modules.Treasury].includes(section)) {

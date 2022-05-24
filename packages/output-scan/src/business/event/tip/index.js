@@ -1,4 +1,8 @@
-const { Modules, TipEvents } = require("../../common/constants");
+const {
+  consts: {
+    Modules, TipEvents
+  }
+} = require("@osn/scan-common")
 const { saveNewTip } = require("./store");
 const {
   updateTipWithClosing,

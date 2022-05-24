@@ -1,4 +1,4 @@
-const { findBlockApi } = require("@dotreasury/common");
+const { chain: { findBlockApi } } = require("@osn/scan-common");
 
 async function getTreasuryProposalMeta(blockHash, proposalIndex) {
   const blockApi = await findBlockApi(blockHash);

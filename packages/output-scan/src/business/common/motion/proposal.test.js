@@ -1,10 +1,12 @@
 const { getMotionProposalCall } = require("./proposalStorage");
 const {
-  setApi, setProvider, env: { CHAINS, setChain },
-  specs: {
+  chain: {
+    setApi, setProvider,
     setSpecHeights
-  }
-} = require("@dotreasury/common");
+  },
+  consts: { CHAINS },
+  env: { setChain },
+} = require("@osn/scan-common");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 
 jest.setTimeout(3000000);

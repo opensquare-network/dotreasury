@@ -1,4 +1,4 @@
-const { getBlockIndexer } = require("@dotreasury/common");
+const { chain: { getBlockIndexer } } = require("@osn/scan-common");
 const { handleEvents } = require("../business/event");
 const { handleExtrinsics } = require("../business/extrinsic");
 

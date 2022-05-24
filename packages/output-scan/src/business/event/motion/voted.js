@@ -4,9 +4,11 @@ const {
   getVotingFromStorage,
 } = require("../../common/motion/votingStorage");
 const {
-  TimelineItemTypes,
-  CouncilEvents,
-} = require("../../common/constants");
+  consts: {
+    TimelineItemTypes,
+    CouncilEvents,
+  }
+} = require("@osn/scan-common")
 
 async function handleVoted(event, extrinsic, indexer) {
   const eventData = event.data.toJSON();

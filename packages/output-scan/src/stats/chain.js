@@ -1,4 +1,4 @@
-const { getApi, getBlockIndexer } = require("@dotreasury/common");
+const { chain: { getApi, getBlockIndexer } } = require("@osn/scan-common");
 
 async function getBlockIndexerByHeight(blockHeight) {
   const api = await getApi();

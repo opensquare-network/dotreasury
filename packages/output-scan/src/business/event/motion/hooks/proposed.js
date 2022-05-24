@@ -3,12 +3,14 @@ const { updateBounty } = require("../../../../mongo/service/bounty");
 const { handleWrappedCall } = require("../../../common/call");
 const { updateProposal } = require("../../../../mongo/service/treasuryProposal");
 const {
-  Modules,
-  TreasuryProposalMethods,
-  MotionState,
-  BountyMethods,
-} = require("../../../common/constants");
-const { logger } = require("@dotreasury/common");
+  logger,
+  consts: {
+    Modules,
+    TreasuryProposalMethods,
+    MotionState,
+    BountyMethods,
+  }
+} = require("@osn/scan-common");
 
 function isProposalMotion(section, method) {
   return Modules.Treasury === section &&

@@ -3,7 +3,7 @@ const { getTipFindersFeeFromApi } = require("./utils");
 const { getTippersCountFromApi } = require("./utils");
 const { getActiveTipByHash } = require("../../../mongo/service/tip");
 const { getTipMetaFromStorage, } = require("./utils");
-const { logger } = require("@dotreasury/common")
+const { logger } = require("@osn/scan-common")
 
 async function getTipCommonUpdates(hash, { blockHeight, blockHash }) {
   const tipInDb = await getActiveTipByHash(hash);

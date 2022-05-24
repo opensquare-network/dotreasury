@@ -1,7 +1,6 @@
 const {
-  findBlockApi,
-  specs: { findRegistry },
-} = require("@dotreasury/common");
+  chain: { findBlockApi, findRegistry },
+} = require("@osn/scan-common");
 const { normalizeCall } = require("./utils");
 const { GenericCall } = require("@polkadot/types");
 

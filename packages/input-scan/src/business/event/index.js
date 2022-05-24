@@ -1,5 +1,11 @@
 const { handleOthers } = require("./others");
-const { utils: { bigAdds, bigAdd } } = require("@dotreasury/common");
+const {
+  utils: { bigAdds, bigAdd },
+  consts: {
+    Modules,
+    TreasuryCommonEvent,
+  }
+} = require("@osn/scan-common");
 const { handleElection } = require("./election");
 const { handleStakingSlash } = require("./staking/slash");
 const { handleCancelProposalSlash } = require("./democracy/cancelProposal");
@@ -7,10 +13,6 @@ const { handleIdentityKilledSlash } = require("./identity/killedSlash");
 const { handleTransfer } = require("./transfer");
 const { handleTreasurySlash } = require("./treasury");
 const { handleInflation } = require("./staking/inflation");
-const {
-  Modules,
-  TreasuryCommonEvent,
-} = require("../../business/common/constants")
 
 async function handleDeposit(
   indexer,

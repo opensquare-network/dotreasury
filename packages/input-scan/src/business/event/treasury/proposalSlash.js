@@ -1,9 +1,12 @@
-const { env: { CHAINS, currentChain, } } = require("@dotreasury/common");
-const { getTreasurySlashCollection } = require("../../../mongo/data");
 const {
-  Modules,
-  TreasuryProposalEvents,
-} = require("../../common/constants")
+  env: { currentChain, },
+  consts: {
+    CHAINS,
+    Modules,
+    TreasuryProposalEvents,
+  }
+} = require("@osn/scan-common");
+const { getTreasurySlashCollection } = require("../../../mongo/data");
 
 const knownProposalSlash = [
   {

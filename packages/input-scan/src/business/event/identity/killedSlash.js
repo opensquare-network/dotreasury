@@ -1,8 +1,10 @@
 const { getIdentitySlashCollection } = require("../../../mongo/data");
 const {
-  Modules,
-  IdentityEvents,
-} = require("../../common/constants")
+  consts: {
+    Modules,
+    IdentityEvents,
+  }
+} = require("@osn/scan-common");
 
 async function handleIdentityKilledSlash(event, indexer, blockEvents) {
   const sort = indexer.eventIndex;
