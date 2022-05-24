@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import React, { useEffect, useMemo, useState } from "react";
+import styled, { css } from "styled-components";
 
 import ResponsivePagination from "../../components/ResponsivePagination";
 import BountiesTable from "./BountiesTable";
@@ -9,6 +9,7 @@ import { useHistory } from "react-router";
 
 import {
   fetchBounties,
+  fetchChildBounties,
   loadingSelector,
   bountyListSelector,
 } from "../../store/reducers/bountySlice";
@@ -22,14 +23,35 @@ const HeaderWrapper = styled.div`
   align-items: center;
 `;
 
+const TitleGroup = styled.div`
+  display: flex;
+  gap: 32px;
+`;
 const Title = styled(Text)`
+  cursor: pointer;
   font-size: 16px;
   line-height: 24px;
-  font-weight: 700;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.3);
+
+  :hover {
+    color: rgba(0, 0, 0, 0.65);
+  }
+
+  ${(p) =>
+    p.active &&
+    css`
+      color: rgba(0, 0, 0, 0.9) !important;
+    `}
 `;
 
-const DEFAULT_PAGE_SIZE = 20;
+const DEFAULT_PAGE_SIZE = 5;
 const DEFAULT_QUERY_PAGE = 1;
+
+const TYPES = {
+  bounties: "bounties",
+  childBounties: "childBounties",
+};
 
 const Bounties = () => {
   useChainRoute();
@@ -45,6 +67,10 @@ const Bounties = () => {
     DEFAULT_PAGE_SIZE
   );
 
+  // bounties | childBounties
+  const [type, setType] = useState(TYPES.bounties);
+  const isChildBounties = useMemo(() => type === TYPES.childBounties, [type]);
+
   const dispatch = useDispatch();
   const history = useHistory();
   const { items: bounties, total } = useSelector(bountyListSelector);
@@ -52,8 +78,12 @@ const Bounties = () => {
   const chain = useSelector(chainSelector);
 
   useEffect(() => {
-    dispatch(fetchBounties(chain, tablePage - 1, pageSize));
-  }, [dispatch, chain, tablePage, pageSize]);
+    dispatch(
+      isChildBounties
+        ? fetchChildBounties(chain, tablePage - 1, pageSize)
+        : fetchBounties(chain, tablePage - 1, pageSize)
+    );
+  }, [isChildBounties, dispatch, chain, tablePage, pageSize]);
 
   const totalPages = Math.ceil(total / pageSize);
 
@@ -64,7 +94,24 @@ const Bounties = () => {
         loading={loading}
         header={
           <HeaderWrapper>
-            <Title>Bounties</Title>
+            <TitleGroup>
+              <Title
+                active={type === TYPES.bounties}
+                onClick={() => {
+                  setType(TYPES.bounties);
+                }}
+              >
+                Bounties
+              </Title>
+              <Title
+                active={type === TYPES.childBounties}
+                onClick={() => {
+                  setType(TYPES.childBounties);
+                }}
+              >
+                Child Bounties
+              </Title>
+            </TitleGroup>
           </HeaderWrapper>
         }
         footer={
