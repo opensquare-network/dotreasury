@@ -1,8 +1,10 @@
 const { getChildBounty, getChildBountyDescriptions } = require("../child-bounty");
 const {
-  getApi,
+  chain: {
+    getApi,
+  },
   test: { setPolkadot, disconnect }
-} = require("@dotreasury/common");
+} = require("@osn/scan-common");
 
 describe("Child bounty", () => {
   beforeAll(async () => {

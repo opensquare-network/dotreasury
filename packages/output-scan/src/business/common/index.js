@@ -1,4 +1,4 @@
-const { getApi } = require("@dotreasury/common");
+const { chain: { getApi } } = require("@osn/scan-common");
 
 async function getBlockHash(height) {
   const api = await getApi();

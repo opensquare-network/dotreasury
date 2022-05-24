@@ -1,8 +1,10 @@
 const { getTreasurySlashCollection } = require("../../../mongo/data");
 const {
-  Modules,
-  TipEvents,
-} = require("../../common/constants")
+  consts: {
+    Modules,
+    TipEvents,
+  }
+} = require("@osn/scan-common")
 
 async function handleTipSlash(event, indexer, blockEvents) {
   const sort = indexer.eventIndex;

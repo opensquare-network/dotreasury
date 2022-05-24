@@ -1,4 +1,8 @@
-const { findBlockApi } = require("@dotreasury/common");
+const {
+  chain: {
+    findBlockApi
+  }
+} = require("@osn/scan-common");
 
 const TreasuryAccount = "F3opxRbN5ZbjJNU511Kj2TLuzFcDq9BGduA9TgiECafpg29";
 

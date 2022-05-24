@@ -2,10 +2,12 @@ const { insertBounty } = require("../../../mongo/service/bounty");
 const { getBountyDescription } = require("../../common/bounty/description");
 const { getBountyMeta } = require("../../common/bounty/meta");
 const {
-  TimelineItemTypes,
-  BountyMethods,
-  BountyStatus,
-} = require("../../common/constants")
+  consts: {
+    TimelineItemTypes,
+    BountyMethods,
+    BountyStatus,
+  }
+} = require("@osn/scan-common");
 
 async function handleProposed(event, extrinsic, indexer) {
   const eventData = event.data.toJSON();

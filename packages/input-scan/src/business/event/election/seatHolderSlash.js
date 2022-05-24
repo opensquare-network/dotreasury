@@ -1,8 +1,10 @@
 const { getElectionSlashCollection } = require("../../../mongo/data");
 const {
-  Modules,
-  ElectionsPhragmenEvents,
-} = require("../../common/constants")
+  consts: {
+    Modules,
+    ElectionsPhragmenEvents,
+  }
+} = require("@osn/scan-common");
 
 async function handleSeatHolderSlash(event, indexer, blockEvents) {
   const sort = indexer.eventIndex;

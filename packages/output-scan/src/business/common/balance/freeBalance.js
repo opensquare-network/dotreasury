@@ -1,8 +1,11 @@
 const {
-  findBlockApi,
-  env: { currentChain, CHAINS }
-} = require("@dotreasury/common");
-const { KsmTreasuryAccount, DotTreasuryAccount } = require("../constants")
+  chain: { findBlockApi },
+  env: { currentChain, },
+  consts: {
+    CHAINS,
+    KsmTreasuryAccount, DotTreasuryAccount
+  }
+} = require("@osn/scan-common");
 
 async function getBalance(blockHash) {
   const account = currentChain() === CHAINS.POLKADOT ? DotTreasuryAccount : KsmTreasuryAccount;

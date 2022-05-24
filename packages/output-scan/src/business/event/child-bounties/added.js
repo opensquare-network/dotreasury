@@ -1,8 +1,10 @@
 const { insertChildBounty } = require("../../../mongo/service/childBounty");
 const {
-  ChildBountyState,
-  TimelineItemTypes,
-} = require("../../common/constants");
+  consts: {
+    ChildBountyState,
+    TimelineItemTypes,
+  }
+} = require("@osn/scan-common");
 const { getChildBounty, getChildBountyDescriptions } = require("../../common/child-bounties/child-bounty");
 
 async function handleAdded(event, indexer) {

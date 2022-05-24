@@ -1,10 +1,12 @@
 const { updateBounty } = require("../../../mongo/service/bounty");
 const { getBountyMeta } = require("../../common/bounty/meta");
 const {
-  Modules,
-  BountyMethods,
-  TimelineItemTypes,
-} = require("../../common/constants");
+  consts: {
+    Modules,
+    BountyMethods,
+    TimelineItemTypes,
+  }
+} = require("@osn/scan-common")
 
 async function handleAcceptCurator(call, caller, extrinsicIndexer) {
   if (

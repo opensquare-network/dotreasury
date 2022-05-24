@@ -1,7 +1,11 @@
 const { getBurnPercent } = require("../common/burnt/burnPercent");
 const { getBurntCollection } = require("../../mongo");
 const { getTreasuryBalance } = require("../common/balance/freeBalance");
-const { TreasuryCommonEvent, Modules } = require("../common/constants");
+const {
+  consts: {
+    TreasuryCommonEvent, Modules
+  }
+} = require("@osn/scan-common");
 
 async function handleBurntEvent(event, indexer) {
   const { section, method, } = event;

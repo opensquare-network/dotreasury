@@ -1,5 +1,4 @@
-const { specs: { setSpecHeights } } = require("@dotreasury/common");
-const { setApi, setProvider } = require("@dotreasury/common");
+const { chain: { setSpecHeights, setApi, setProvider } } = require("@osn/scan-common");
 const { getTipReason } = require("../utils");
 jest.setTimeout(3000000);
 

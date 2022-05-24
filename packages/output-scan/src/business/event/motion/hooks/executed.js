@@ -1,14 +1,16 @@
 const { updateProposal } = require("../../../../mongo/service/treasuryProposal");
-const { env: { currentChain } } = require("@dotreasury/common");
+const {
+  env: { currentChain },
+  consts: {
+    BountyMethods,
+    BountyStatus,
+    TreasuryProposalMethods,
+    TreasuryProposalEvents,
+  }
+} = require("@osn/scan-common");
 const { updateBounty } = require("../../../../mongo/service/bounty");
 const { getBountyMeta } = require("../../../common/bounty/meta");
 const { getMotionCollection } = require("../../../../mongo");
-const {
-  BountyMethods,
-  BountyStatus,
-  TreasuryProposalMethods,
-  TreasuryProposalEvents,
-} = require("../../../common/constants");
 
 async function handleRejectTreasuryProposal(proposalInfo, indexer) {
   if (currentChain() !== 'kusama') {

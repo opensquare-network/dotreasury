@@ -1,13 +1,15 @@
 const { updateTipByHash } = require("../../../mongo/service/tip");
-const { TimelineItemTypes } = require("../../common/constants");
-const { TipEvents } = require("../../common/constants");
 const { getTipCommonUpdates } = require("../../common/tip/updates");
 const { getBlockHash } = require("../../common");
-const { env: { currentChain, CHAINS } } = require("@dotreasury/common");
 const {
-  Modules,
-  TipMethods,
-} = require("../../common/constants");
+  env: { currentChain }, consts: {
+    CHAINS,
+    Modules,
+    TipMethods,
+    TimelineItemTypes,
+    TipEvents,
+  }
+} = require("@osn/scan-common");
 
 const tipCloseByExtrinsicHeight = 1906628;
 

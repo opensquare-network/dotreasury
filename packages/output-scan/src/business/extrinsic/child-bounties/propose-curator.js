@@ -1,11 +1,13 @@
 const { updateChildBounty } = require("../../../mongo/service/childBounty");
 const { getChildBounty } = require("../../common/child-bounties/child-bounty");
 const {
-  Modules,
-  ChildBountiesMethods,
-  ChildBountyState,
-  TimelineItemTypes,
-} = require("../../common/constants");
+  consts: {
+    Modules,
+    ChildBountiesMethods,
+    ChildBountyState,
+    TimelineItemTypes,
+  }
+} = require("@osn/scan-common");
 
 async function handleProposeCurator(call, author, indexer) {
   if (

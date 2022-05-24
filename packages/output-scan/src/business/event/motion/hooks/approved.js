@@ -1,9 +1,11 @@
 const { updateProposal } = require("../../../../mongo/service/treasuryProposal");
 const { getMotionCollection } = require("../../../../mongo");
 const {
-  CouncilEvents,
-  TreasuryProposalMethods,
-} = require("../../../common/constants");
+  consts: {
+    CouncilEvents,
+    TreasuryProposalMethods,
+  }
+} = require("@osn/scan-common")
 
 async function handleProposal(proposalInfo, indexer) {
   const { index: treasuryProposalIndex, method } = proposalInfo;

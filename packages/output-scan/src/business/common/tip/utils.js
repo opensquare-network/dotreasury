@@ -1,11 +1,13 @@
-const { findBlockApi } = require("@dotreasury/common");
 const {
-  Modules,
-  ProxyMethods,
-  MultisigMethods,
-  UtilityMethods,
-  TipMethods,
-} = require("../constants");
+  chain: { findBlockApi },
+  consts: {
+    Modules,
+    ProxyMethods,
+    MultisigMethods,
+    UtilityMethods,
+    TipMethods,
+  }
+} = require("@osn/scan-common");
 const { GenericCall } = require("@polkadot/types");
 const { blake2AsHex } = require("@polkadot/util-crypto");
 const { isHex, hexToString } = require("@polkadot/util");

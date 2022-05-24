@@ -1,5 +1,5 @@
 const { getTippersCountFromApi, getTipFindersFeeFromApi } = require("./utils");
-const { setApi } = require("@dotreasury/common");
+const { chain: { setApi } } = require("@osn/scan-common");
 jest.setTimeout(3000000);
 
 const { ApiPromise, WsProvider } = require("@polkadot/api");
