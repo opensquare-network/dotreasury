@@ -128,7 +128,10 @@ const BountiesTable = ({ data, loading, header, footer }) => {
                           <ExplorerLink
                             href={`/block/${item.proposeAtBlockHeight}`}
                           >
-                            <PolygonLabel value={item.proposeAtBlockHeight} />
+                            <PolygonLabel
+                              fontSize={12}
+                              value={item.proposeAtBlockHeight}
+                            />
                           </ExplorerLink>
                         </ProposeTimeWrapper>
                       </Table.Cell>
