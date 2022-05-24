@@ -1775,10 +1775,10 @@
     util "npm:util"
     web-vitals "^2.1.4"
 
-"@osn/scan-common@0.0.2":
-  version "0.0.2"
-  resolved "https://registry.npmjs.org/@osn/scan-common/-/scan-common-0.0.2.tgz#fc3321703640cf3f0ce575608ee536278e501c22"
-  integrity sha512-vWtYhz6ZgjxmpD0JPUzHvmm53oSzOpghcBhqB4xSZ9OF2EBg9uw8uqIgNtO3/j9+N4D8CxxqqawkePHv/JewaA==
+"@osn/scan-common@0.0.3":
+  version "0.0.3"
+  resolved "https://registry.npmjs.org/@osn/scan-common/-/scan-common-0.0.3.tgz#0db21d0f92c66c2b79299e0780ed7ab2c587459d"
+  integrity sha512-REUahtpFwAmXqkQaKYn6/eR/mKMdjRq2AaDs/OMdQWoVjRJXrHFwyGImRuw1OzrM+yHObddEqN9l6weyzAxW2A==
   dependencies:
     "@polkadot/api" "^8.5.1"
     "@polkadot/types" "^8.5.1"
