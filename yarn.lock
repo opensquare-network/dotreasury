@@ -4203,6 +4203,13 @@ bson@^1.1.4:
   resolved "https://registry.npmjs.org/bson/-/bson-1.1.6.tgz#fb819be9a60cd677e0853aee4ca712a785d6618a"
   integrity sha512-EvVNVeGo4tHxwi8L6bPj3y3itEvStdwvvlojVxxbyYfoaxJ6keLgrTuKdyfEAszFK+H3olzBuafE0yoh0D1gdg==
 
+bson@^4.6.3:
+  version "4.6.4"
+  resolved "https://registry.npmjs.org/bson/-/bson-4.6.4.tgz#e66d4a334f1ab230dfcfb9ec4ea9091476dd372e"
+  integrity sha512-TdQ3FzguAu5HKPPlr0kYQCyrYUYh8tFM+CMTpxjNzVzxeiJY00Rtuj3LXLHSgiGvmaWlZ8PE+4KyM2thqE38pQ==
+  dependencies:
+    buffer "^5.6.0"
+
 buffer-crc32@~0.2.3:
   version "0.2.13"
   resolved "https://registry.npmjs.org/buffer-crc32/-/buffer-crc32-0.2.13.tgz#0d333e3f00eac50aa1454abd30ef8c2a5d9a7242"
@@ -9619,7 +9626,19 @@ mongodb-memory-server@7.6.3:
     mongodb-memory-server-core "7.6.3"
     tslib "^2.3.0"
 
-mongodb@^3.6.6, mongodb@^3.7.3:
+mongodb@4.6.0:
+  version "4.6.0"
+  resolved "https://registry.npmjs.org/mongodb/-/mongodb-4.6.0.tgz#a69216da61f4cb1498d68cb396c52313fa39cef6"
+  integrity sha512-1gsxVXmjFTPJ+CkMG9olE4bcVsyY8lBJN9m5B5vj+LZ7wkBqq3PO8RVmNX9GwCBOBz1KV0zM00vPviUearSv7A==
+  dependencies:
+    bson "^4.6.3"
+    denque "^2.0.1"
+    mongodb-connection-string-url "^2.5.2"
+    socks "^2.6.2"
+  optionalDependencies:
+    saslprep "^1.0.3"
+
+mongodb@^3.7.3:
   version "3.7.3"
   resolved "https://registry.npmjs.org/mongodb/-/mongodb-3.7.3.tgz#b7949cfd0adc4cc7d32d3f2034214d4475f175a5"
   integrity sha512-Psm+g3/wHXhjBEktkxXsFMZvd3nemI0r3IPsE0bU+4//PnvNWKkzhZcEsbPcYiWqe8XqXJJEg4Tgtr7Raw67Yw==
