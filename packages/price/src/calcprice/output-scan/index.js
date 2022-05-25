@@ -4,6 +4,7 @@ function DB(dbUrl, dbName) {
   const tipCollectionName = "tip";
   const bountyCollectionName = "bounty";
   const proposalCollectionName = "proposal";
+  const childBountyCollectionName = "childBounty";
 
   let client = null;
   let db = null;
@@ -21,6 +22,7 @@ function DB(dbUrl, dbName) {
     db = client.db(dbName);
     tipCol = db.collection(tipCollectionName);
     bountyCol = db.collection(bountyCollectionName);
+    childBountyCol = db.collection(childBountyCollectionName);
     proposalCol = db.collection(proposalCollectionName);
 
     await _createIndexes();
@@ -51,6 +53,11 @@ function DB(dbUrl, dbName) {
     return bountyCol;
   }
 
+  async function getChildBountyCollection() {
+    await tryInit(childBountyCol);
+    return childBountyCol;
+  }
+
   async function getProposalCollection() {
     await tryInit(proposalCol);
     return proposalCol;
@@ -59,6 +66,7 @@ function DB(dbUrl, dbName) {
   return {
     getTipCollection,
     getBountyCollection,
+    getChildBountyCollection,
     getProposalCollection,
   };
 }
