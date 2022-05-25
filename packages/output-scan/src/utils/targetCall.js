@@ -1,10 +1,12 @@
 const { GenericCall } = require("@polkadot/types");
 const {
-  Modules,
-  ProxyMethods,
-  MultisigMethods,
-  UtilityMethods,
-} = require("../business/common/constants");
+  consts: {
+    Modules,
+    ProxyMethods,
+    MultisigMethods,
+    UtilityMethods,
+  }
+} = require("@osn/scan-common");
 
 function findTargetCallFromProxy(proxyCall, targetSection, targetMethod) {
   const innerCall = proxyCall.args[2];

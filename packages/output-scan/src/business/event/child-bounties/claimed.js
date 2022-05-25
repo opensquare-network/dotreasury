@@ -1,9 +1,11 @@
 const { updateChildBounty } = require("../../../mongo/service/childBounty");
 const {
-  ChildBountyState,
-  ChildBountiesEvents,
-  TimelineItemTypes,
-} = require("../../common/constants");
+  consts: {
+    ChildBountyState,
+    ChildBountiesEvents,
+    TimelineItemTypes,
+  }
+} = require("@osn/scan-common");
 
 async function handleClaimed(event, indexer) {
   const data = event.data.toJSON();
@@ -11,7 +13,7 @@ async function handleClaimed(event, indexer) {
 
   const timelineItem = {
     type: TimelineItemTypes.event,
-    name: ChildBountiesEvents.Canceled,
+    name: ChildBountiesEvents.Claimed,
     args: {
       payout,
       beneficiary,

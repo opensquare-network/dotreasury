@@ -1,10 +1,12 @@
 const { updateChildBounty } = require("../../../mongo/service/childBounty");
 const { getChildBounty } = require("../../common/child-bounties/child-bounty");
 const {
-  ChildBountyState,
-  ChildBountiesEvents,
-  TimelineItemTypes,
-} = require("../../common/constants");
+  consts: {
+    ChildBountyState,
+    ChildBountiesEvents,
+    TimelineItemTypes,
+  }
+} = require("@osn/scan-common")
 
 async function handleAwarded(event, indexer) {
   const data = event.data.toJSON();

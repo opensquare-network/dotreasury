@@ -4,13 +4,17 @@ const { getTippersCountFromApi } = require("../../common/tip/utils");
 const { getBlockHash } = require("../../common");
 const { getTipCommonUpdates } = require("../../common/tip/updates");
 const { insertTip, updateTipByHash, } = require("../../../mongo/service/tip");
-const { TimelineItemTypes, TipMethods, TipEvents } = require("../../common/constants");
 const {
   getNewTipCall,
   getTipReason,
   getTipMetaFromStorage,
 } = require("../../common/tip/utils");
-const { specs: { findRegistry } } = require("@dotreasury/common");
+const {
+  chain: { findRegistry },
+  consts: {
+    TimelineItemTypes, TipMethods, TipEvents
+  }
+} = require("@osn/scan-common");
 const { getFinderFromMeta, } = require("./utils");
 
 async function saveNewTip(event, extrinsic, indexer) {

@@ -1,9 +1,11 @@
 const { getStakingSlashCollection } = require("../../../../mongo/data");
 const {
-  Modules,
-  StakingEvents,
-  BalancesEvents,
-} = require("../../../common/constants")
+  consts: {
+    Modules,
+    StakingEvents,
+    BalancesEvents,
+  }
+} = require("@osn/scan-common");
 
 function isSlashedEvent(section, method) {
   return Modules.Staking === section && StakingEvents.Slashed === method

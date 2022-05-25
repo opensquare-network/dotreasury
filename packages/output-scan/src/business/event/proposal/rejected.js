@@ -1,9 +1,11 @@
 const { updateProposal } = require("../../../mongo/service/treasuryProposal");
 const {
-  TreasuryProposalEvents,
-  TimelineItemTypes,
-} = require("../../common/constants");
-const { logger } = require("@dotreasury/common");
+  logger,
+  consts: {
+    TreasuryProposalEvents,
+    TimelineItemTypes,
+  }
+} = require("@osn/scan-common");
 
 async function handleRejected(event, eventIndexer) {
   const eventData = event.data.toJSON();

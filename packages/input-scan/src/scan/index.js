@@ -4,15 +4,17 @@ const { updateScanStatus } = require("../mongo/scanHeight");
 const { scanNormalizedBlock } = require("./block");
 const { tryCreateStatPoint } = require("../stats");
 const {
-  getApi, logger, chainHeight: { getLatestHeight },
-  env: { getScanStep, isUseMetaDb },
-  specs: {
+  chain: {
+    getApi,
+    getLatestHeight,
     updateSpecs, getMetaScanHeight,
+    fetchBlocks,
+    getBlockIndexer,
   },
-  fetchBlocks,
-  getBlockIndexer,
+  logger,
+  env: { getScanStep, isUseMetaDb },
   utils: { sleep, getHeadUsedInGB },
-} = require("@dotreasury/common");
+} = require("@osn/scan-common");
 
 async function beginScan() {
   let scanHeight = await getNextScanHeight();

@@ -1,14 +1,14 @@
 const { getIncomeInflationCollection } = require("../../../../mongo/data");
 const {
-  Modules,
-  StakingEvents
-} = require("../../../common/constants");
-const {
   env: {
     currentChain,
+  },
+  consts: {
     CHAINS,
+    Modules,
+    StakingEvents,
   }
-} = require("@dotreasury/common");
+} = require("@osn/scan-common");
 
 async function handleKsmLegacyReward(event, indexer, blockEvents) {
   if (CHAINS.KUSAMA !== currentChain() || indexer.blockHeight >= 1379482) {

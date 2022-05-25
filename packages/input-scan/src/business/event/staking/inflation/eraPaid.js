@@ -1,9 +1,11 @@
 const { getIncomeInflationCollection } = require("../../../../mongo/data");
 const {
-  Modules,
-  StakingEvents,
-  BalancesEvents,
-} = require("../../../common/constants");
+  consts: {
+    Modules,
+    StakingEvents,
+    BalancesEvents,
+  }
+} = require("@osn/scan-common");
 
 function isBalancesDeposit(section, method) {
   return Modules.Balances === section && BalancesEvents.Deposit === method

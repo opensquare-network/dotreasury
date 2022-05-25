@@ -1,4 +1,4 @@
-const { getApi, findBlockApi } = require("@dotreasury/common");
+const { chain: { getApi, findBlockApi } } = require("@osn/scan-common");
 
 async function getMotionVoting(blockHash, motionHash) {
   const blockApi = await findBlockApi(blockHash);

@@ -1,8 +1,10 @@
 const { getTreasurySlashCollection } = require("../../../mongo/data");
 const {
-  Modules,
-  BountyEvents,
-} = require("../../common/constants")
+  consts: {
+    Modules,
+    BountyEvents,
+  }
+} = require("@osn/scan-common");
 
 async function handleBountySlash(event, indexer, blockEvents) {
   const sort = indexer.eventIndex;

@@ -1,9 +1,13 @@
 const { getTreasuryBalance } = require("./freeBalance");
-const { specs: { setSpecHeights } } = require("@dotreasury/common");
 const {
-  setApi, setProvider,
-  env: { setChain, CHAINS }
-} = require("@dotreasury/common");
+  chain:
+    {
+      setSpecHeights,
+      setApi, setProvider,
+    },
+  consts: { CHAINS },
+  env: { setChain, }
+} = require("@osn/scan-common");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 
 jest.setTimeout(3000000);

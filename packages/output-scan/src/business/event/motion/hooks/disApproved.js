@@ -4,9 +4,11 @@ const { getBountyMeta } = require("../../../common/bounty/meta");
 const { updateProposal } = require("../../../../mongo/service/treasuryProposal");
 const { getMotionCollection } = require("../../../../mongo");
 const {
-  TreasuryProposalEvents,
-  BountyStatus,
-} = require("../../../common/constants");
+  consts: {
+    TreasuryProposalEvents,
+    BountyStatus,
+  }
+} = require("@osn/scan-common")
 
 async function handleBounty(bountyIndex, indexer) {
   const state = {

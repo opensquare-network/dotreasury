@@ -1,8 +1,10 @@
 const { getIncomeInflationCollection } = require("../../../../mongo/data");
 const {
-  Modules,
-  StakingEvents,
-} = require("../../../common/constants");
+  consts: {
+    Modules,
+    StakingEvents,
+  }
+} = require("@osn/scan-common")
 
 async function handleEraPayout(event, indexer, blockEvents) {
   const sort = indexer.eventIndex;

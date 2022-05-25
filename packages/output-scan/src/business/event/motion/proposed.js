@@ -6,9 +6,11 @@ const {
 } = require("./hooks/proposed");
 const { insertMotion } = require("../../../mongo/service/motion");
 const {
-  TimelineItemTypes,
-  CouncilEvents,
-} = require("../../common/constants");
+  consts: {
+    TimelineItemTypes,
+    CouncilEvents,
+  }
+} = require("@osn/scan-common")
 const { getVotingFromStorage } = require("../../common/motion/votingStorage");
 const { getMotionCall, getMotionProposalCall } = require("../../common/motion/proposalStorage");
 

@@ -1,9 +1,11 @@
 const { getElectionSlashCollection } = require("../../../mongo/data");
 const {
-  Modules,
-  ElectionsPhragmenEvents,
-  TreasuryCommonEvent,
-} = require("../../common/constants")
+  consts: {
+    Modules,
+    ElectionsPhragmenEvents,
+    TreasuryCommonEvent,
+  }
+} = require("@osn/scan-common");
 
 function nextDifferentIsNewTerm(allBlockEvents, sort) {
   let i = sort + 1;

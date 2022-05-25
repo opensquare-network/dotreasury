@@ -1,16 +1,18 @@
-const {
-  Modules,
-  MultisigMethods,
-  ProxyMethods,
-  UtilityMethods,
-  SudoMethods,
-} = require("../constants");
-const { calcMultisigAddress } = require("../../../utils/call");
 const { GenericCall } = require("@polkadot/types");
 const {
   logger,
-  specs: { findRegistry },
-} = require("@dotreasury/common")
+  chain: { findRegistry },
+  consts: {
+    Modules,
+    MultisigMethods,
+    ProxyMethods,
+    UtilityMethods,
+    SudoMethods,
+  },
+  utils: {
+    calcMultisigAddress
+  }
+} = require("@osn/scan-common")
 
 async function unwrapProxy(call, signer, indexer, events, cb) {
   const real = call.args[0].toJSON();

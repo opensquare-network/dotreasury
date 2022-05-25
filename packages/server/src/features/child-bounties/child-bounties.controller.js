@@ -17,6 +17,7 @@ async function queryChildBounties(ctx, chain, q = {}) {
       }
     })
     .sort({
+      index: -1,
       "indexer.blockHeight": -1,
     })
     .skip(page * pageSize)

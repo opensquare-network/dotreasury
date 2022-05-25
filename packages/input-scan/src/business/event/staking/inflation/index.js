@@ -1,4 +1,4 @@
-const { utils: { bigAdd } } = require("@dotreasury/common");
+const { utils: { bigAdd } } = require("@osn/scan-common");
 const { handleEraPaid } = require("./eraPaid");
 const { handleEraPayout } = require("./eraPayout");
 const { handleKsmLegacyReward } = require("./ksmLegacyReward");

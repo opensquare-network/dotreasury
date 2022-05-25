@@ -47,13 +47,7 @@ const StyledTable = styled(Table)`
   }
 `;
 
-const ProposeTimeWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  p:first-child {
-    min-width: 154px;
-  }
-`;
+const ProposeTimeWrapper = styled.div``;
 
 const CapText = styled(Text)`
   text-transform: capitalize;
@@ -71,19 +65,21 @@ const getStateWithVotingAyes = (item) => {
   if (isVoting) {
     const nAyes = item.state.data.motionVoting?.ayes?.length;
     if (nAyes !== undefined) {
-      return state + ` (${ nAyes })`;
+      return state + ` (${nAyes})`;
     }
   }
   return state;
 };
 
-const BountiesTable = ({ data, loading, header, footer }) => {
+const BountiesTable = ({ type = "", data, loading, header, footer }) => {
   const history = useHistory();
   const symbol = useSelector(chainSymbolSelector);
 
+  const getDetailRoute = (index) => `/${symbol.toLowerCase()}/${type}/${index}`;
+
   const onClickRow = (bountyIndex) => {
     if (window.innerWidth < 1140) {
-      history.push(`/${symbol.toLowerCase()}/bounties/${bountyIndex}`);
+      history.push(getDetailRoute(bountyIndex));
     }
   };
 
@@ -128,7 +124,10 @@ const BountiesTable = ({ data, loading, header, footer }) => {
                           <ExplorerLink
                             href={`/block/${item.proposeAtBlockHeight}`}
                           >
-                            <PolygonLabel value={item.proposeAtBlockHeight} />
+                            <PolygonLabel
+                              fontSize={12}
+                              value={item.proposeAtBlockHeight}
+                            />
                           </ExplorerLink>
                         </ProposeTimeWrapper>
                       </Table.Cell>
@@ -149,11 +148,7 @@ const BountiesTable = ({ data, loading, header, footer }) => {
                         <CapText>{getStateWithVotingAyes(item)}</CapText>
                       </Table.Cell>
                       <Table.Cell className="link-cell hidden">
-                        <NavLink
-                          to={`/${symbol.toLowerCase()}/bounties/${
-                            item.bountyIndex
-                          }`}
-                        >
+                        <NavLink to={getDetailRoute(item.bountyIndex)}>
                           <RightButton />
                         </NavLink>
                       </Table.Cell>
