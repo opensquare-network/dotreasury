@@ -3,7 +3,6 @@ import styled, { css } from "styled-components";
 
 import ResponsivePagination from "../../components/ResponsivePagination";
 import BountiesTable from "./BountiesTable";
-import ChildBountiesTable from "./ChildBountiesTable";
 import { useDispatch, useSelector } from "react-redux";
 import { useChainRoute, useQuery, useLocalStorage } from "../../utils/hooks";
 import { useHistory } from "react-router";
@@ -69,7 +68,6 @@ const Bounties = () => {
     DEFAULT_PAGE_SIZE
   );
 
-  // bounties | childBounties
   const [type, setType] = useState(TYPES.bounties);
   const isChildBounties = useMemo(() => type === TYPES.childBounties, [type]);
 
@@ -96,6 +94,21 @@ const Bounties = () => {
       (isChildBounties ? childBountiesTotal : bountiesTotal) / pageSize
     );
   }, [isChildBounties, bountiesTotal, childBountiesTotal, pageSize]);
+
+  const tableData = useMemo(() => {
+    if (isChildBounties) {
+      return childBounties.map((item) => {
+        return {
+          bountyIndex: item.index,
+          proposeTime: item.indexer?.blockTime,
+          proposeAtBlockHeight: item.indexer?.blockHeight,
+          title: item.description,
+          ...item,
+        };
+      });
+    }
+    return bounties;
+  }, [bounties, childBounties, isChildBounties]);
 
   const header = (
     <HeaderWrapper>
@@ -143,23 +156,13 @@ const Bounties = () => {
   );
 
   return (
-    <>
-      {isChildBounties ? (
-        <ChildBountiesTable
-          data={childBounties}
-          loading={loading}
-          header={header}
-          footer={footer}
-        />
-      ) : (
-        <BountiesTable
-          data={bounties}
-          loading={loading}
-          header={header}
-          footer={footer}
-        />
-      )}
-    </>
+    <BountiesTable
+      type={type}
+      data={tableData}
+      loading={loading}
+      header={header}
+      footer={footer}
+    />
   );
 };
 

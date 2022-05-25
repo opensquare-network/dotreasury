@@ -71,13 +71,15 @@ const getStateWithVotingAyes = (item) => {
   return state;
 };
 
-const BountiesTable = ({ data, loading, header, footer }) => {
+const BountiesTable = ({ type = "", data, loading, header, footer }) => {
   const history = useHistory();
   const symbol = useSelector(chainSymbolSelector);
 
+  const getDetailRoute = (index) => `/${symbol.toLowerCase()}/${type}/${index}`;
+
   const onClickRow = (bountyIndex) => {
     if (window.innerWidth < 1140) {
-      history.push(`/${symbol.toLowerCase()}/bounties/${bountyIndex}`);
+      history.push(getDetailRoute(bountyIndex));
     }
   };
 
@@ -146,11 +148,7 @@ const BountiesTable = ({ data, loading, header, footer }) => {
                         <CapText>{getStateWithVotingAyes(item)}</CapText>
                       </Table.Cell>
                       <Table.Cell className="link-cell hidden">
-                        <NavLink
-                          to={`/${symbol.toLowerCase()}/bounties/${
-                            item.bountyIndex
-                          }`}
-                        >
+                        <NavLink to={getDetailRoute(item.bountyIndex)}>
                           <RightButton />
                         </NavLink>
                       </Table.Cell>
