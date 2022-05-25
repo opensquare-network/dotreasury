@@ -79,7 +79,7 @@ class ChildBountiesController {
     ctx.body = await commentService.getComments(
       {
         chain,
-        type: "childBounty",
+        type: "child-bounty",
         index: bountyIndex,
       },
       page,
@@ -106,7 +106,7 @@ class ChildBountiesController {
     ctx.body = await commentService.postComment(
       {
         chain,
-        type: "childBounty",
+        type: "child-bounty",
         index: bountyIndex,
       },
       content,
