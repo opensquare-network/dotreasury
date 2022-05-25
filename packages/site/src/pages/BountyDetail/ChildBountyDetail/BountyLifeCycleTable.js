@@ -18,7 +18,7 @@ import ExplorerLink from "../../../components/ExplorerLink";
 import { useIsMounted } from "../../../utils/hooks";
 import { estimateBlocksTime } from "../../../services/chainApi";
 import polkaassemblyApi from "../../../services/polkassembly";
-import { bountyDetailSelector, childBountyDetailSelector } from "../../../store/reducers/bountySlice";
+import { childBountyDetailSelector } from "../../../store/reducers/bountySlice";
 import RelatedLinks from "../../../components/RelatedLinks";
 
 const FlexWrapper = styled.div`
