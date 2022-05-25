@@ -92,8 +92,10 @@ const Bounties = () => {
   }, [isChildBounties, dispatch, chain, tablePage, pageSize]);
 
   const totalPages = useMemo(() => {
-    return isChildBounties ? childBountiesTotal : bountiesTotal;
-  }, [isChildBounties]);
+    return Math.ceil(
+      (isChildBounties ? childBountiesTotal : bountiesTotal) / pageSize
+    );
+  }, [isChildBounties, bountiesTotal, childBountiesTotal]);
 
   const header = (
     <HeaderWrapper>
