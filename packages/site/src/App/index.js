@@ -20,6 +20,7 @@ import Burnt from "../pages/Burnt";
 import TipDetail from "../pages/TipDetail";
 import ProposalDetail from "../pages/ProposalDetail";
 import BountyDetail from "../pages/BountyDetail";
+import ChildBountyDetail from "../pages/BountyDetail/ChildBountyDetail/index";
 import Overview from "../pages/Overview";
 import Projects from "../pages/Projects";
 import ProjectDetail from "../pages/ProjectDetail";
@@ -98,6 +99,11 @@ export default function App() {
                 exact
                 path="/:symbol(ksm|dot)/bounties/:bountyIndex"
                 component={BountyDetail}
+              />
+              <Route
+                exact
+                path="/:symbol(ksm|dot)/childbounties/:bountyIndex"
+                component={ChildBountyDetail}
               />
               <Route exact path="/:symbol(ksm|dot)/burnt" component={Burnt} />
               <Route
