@@ -13,6 +13,7 @@ import {
   fetchChildBounties,
   loadingSelector,
   bountyListSelector,
+  childBountyListSelector,
 } from "../../store/reducers/bountySlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import Text from "../../components/Text";
@@ -46,7 +47,7 @@ const Title = styled(Text)`
     `}
 `;
 
-const DEFAULT_PAGE_SIZE = 5;
+const DEFAULT_PAGE_SIZE = 20;
 const DEFAULT_QUERY_PAGE = 1;
 
 const TYPES = {
@@ -74,7 +75,11 @@ const Bounties = () => {
 
   const dispatch = useDispatch();
   const history = useHistory();
-  const { items: bounties, total } = useSelector(bountyListSelector);
+  const { items: bounties, total: bountiesTotal } =
+    useSelector(bountyListSelector);
+  const { items: childBounties, total: childBountiesTotal } = useSelector(
+    childBountyListSelector
+  );
   const loading = useSelector(loadingSelector);
   const chain = useSelector(chainSelector);
 
@@ -86,7 +91,10 @@ const Bounties = () => {
     );
   }, [isChildBounties, dispatch, chain, tablePage, pageSize]);
 
-  const totalPages = Math.ceil(total / pageSize);
+  // const totalPages = Math.ceil(total / pageSize);
+  const totalPages = useMemo(() => {
+    return isChildBounties ? childBountiesTotal : bountiesTotal;
+  }, [isChildBounties]);
 
   const header = (
     <HeaderWrapper>
@@ -137,7 +145,7 @@ const Bounties = () => {
     <>
       {isChildBounties ? (
         <ChildBountiesTable
-          data={bounties}
+          data={childBounties}
           loading={loading}
           header={header}
           footer={footer}
