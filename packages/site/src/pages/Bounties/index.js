@@ -91,7 +91,6 @@ const Bounties = () => {
     );
   }, [isChildBounties, dispatch, chain, tablePage, pageSize]);
 
-  // const totalPages = Math.ceil(total / pageSize);
   const totalPages = useMemo(() => {
     return isChildBounties ? childBountiesTotal : bountiesTotal;
   }, [isChildBounties]);
