@@ -75,9 +75,9 @@ const BountiesTable = ({ data, loading, header, footer }) => {
   const history = useHistory();
   const symbol = useSelector(chainSymbolSelector);
 
-  const onClickRow = (bountyIndex) => {
+  const onClickRow = (index) => {
     if (window.innerWidth < 1140) {
-      history.push(`/${symbol.toLowerCase()}/bounties/${bountyIndex}`);
+      history.push(`/${symbol.toLowerCase()}/child-bounties/${index}`);
     }
   };
 
@@ -107,24 +107,24 @@ const BountiesTable = ({ data, loading, header, footer }) => {
                   data.map((item, index) => (
                     <TableRow
                       key={index}
-                      onClick={() => onClickRow(item.bountyIndex)}
+                      onClick={() => onClickRow(item.index)}
                     >
                       <Table.Cell className="index-cell">
-                        <TextMinor>{`#${item.bountyIndex}`}</TextMinor>
+                        <TextMinor>{`#${item.index}`}</TextMinor>
                       </Table.Cell>
                       <Table.Cell className="propose-time-cell">
                         <ProposeTimeWrapper>
                           <TextMinor>
-                            {dayjs(parseInt(item.proposeTime)).format(
+                            {dayjs(parseInt(item.indexer?.blockTime)).format(
                               "YYYY-MM-DD HH:mm:ss"
                             )}
                           </TextMinor>
                           <ExplorerLink
-                            href={`/block/${item.proposeAtBlockHeight}`}
+                            href={`/block/${item.indexer?.blockHeight}`}
                           >
                             <PolygonLabel
                               fontSize={12}
-                              value={item.proposeAtBlockHeight}
+                              value={item.indexer?.blockHeight}
                             />
                           </ExplorerLink>
                         </ProposeTimeWrapper>
@@ -133,7 +133,7 @@ const BountiesTable = ({ data, loading, header, footer }) => {
                         {item.curator ? <User address={item.curator} /> : "--"}
                       </Table.Cell>
                       <Table.Cell className="title-cell">
-                        <Text>{item.title}</Text>
+                        <Text>{item.description}</Text>
                       </Table.Cell>
                       <Table.Cell className="balance-cell" textAlign={"right"}>
                         <Balance
@@ -147,8 +147,8 @@ const BountiesTable = ({ data, loading, header, footer }) => {
                       </Table.Cell>
                       <Table.Cell className="link-cell hidden">
                         <NavLink
-                          to={`/${symbol.toLowerCase()}/bounties/${
-                            item.bountyIndex
+                          to={`/${symbol.toLowerCase()}/child-bounties/${
+                            item.index
                           }`}
                         >
                           <RightButton />

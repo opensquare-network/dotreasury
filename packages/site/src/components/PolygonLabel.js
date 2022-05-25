@@ -14,9 +14,11 @@ const Label = styled.span`
   font-family: "Inter";
   font-style: normal;
   font-weight: normal;
-  font-size: 14px;
   line-height: 24px;
   color: ${TEXT_DARK_MINOR};
+  ${(p) => css`
+    font-size: ${p.fontSize}px;
+  `}
   ${(p) =>
     !p.noHover &&
     css`
@@ -27,11 +29,13 @@ const Label = styled.span`
     `}
 `;
 
-const PolygonLabel = ({ value, noHover }) => {
+const PolygonLabel = ({ value, noHover, fontSize = 14 }) => {
   return (
     <Wrapper>
       <Image src={"/imgs/polygon.svg"} />
-      <Label noHover={noHover}>{value}</Label>
+      <Label noHover={noHover} fontSize={fontSize}>
+        {value}
+      </Label>
     </Wrapper>
   );
 };
