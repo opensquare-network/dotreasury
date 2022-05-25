@@ -8,6 +8,16 @@ const router = new Router();
 router.get("/child-bounties", childBountiesController.getBounties);
 router.get("/child-bounties/:bountyIndex", childBountiesController.getBountyDetail);
 
+router.get("/child-bounties/:bountyIndex/links", childBountiesController.getBountyLinks);
+router.post(
+  "/child-bounties/:bountyIndex/links",
+  childBountiesController.createBountyLink
+);
+router.delete(
+  "/child-bounties/:bountyIndex/links/:linkIndex",
+  childBountiesController.deleteBountyLink
+);
+
 router.get(
   "/child-bounties/:bountyIndex/comments",
   maybeAuth,

@@ -1,5 +1,6 @@
 const { extractPage } = require("../../utils");
 const { getChildBountyCollection } = require("../../mongo");
+const linkService = require("../../services/link.service");
 const commentService = require("../../services/comment.service");
 
 async function queryChildBounties(ctx, chain, q = {}) {
@@ -68,6 +69,57 @@ class ChildBountiesController {
   async getBounties(ctx) {
     const { chain } = ctx.params;
     ctx.body = await queryChildBounties(ctx, chain, {});
+  }
+
+  // Links API
+  async getBountyLinks(ctx) {
+    const { chain } = ctx.params;
+    const bountyIndex = parseInt(ctx.params.bountyIndex);
+
+    ctx.body = await linkService.getLinks({
+      indexer: {
+        chain,
+        type: "child-bounty",
+        index: bountyIndex,
+      },
+    });
+  }
+
+  async createBountyLink(ctx) {
+    const { chain } = ctx.params;
+    const bountyIndex = parseInt(ctx.params.bountyIndex);
+    const { link, description } = ctx.request.body;
+
+    ctx.body = await linkService.createLink(
+      {
+        indexer: {
+          chain,
+          type: "child-bounty",
+          index: bountyIndex,
+        },
+        link,
+        description,
+      },
+      ctx.request.headers.signature
+    );
+  }
+
+  async deleteBountyLink(ctx) {
+    const { chain } = ctx.params;
+    const bountyIndex = parseInt(ctx.params.bountyIndex);
+    const linkIndex = parseInt(ctx.params.linkIndex);
+
+    ctx.body = await linkService.deleteLink(
+      {
+        indexer: {
+          chain,
+          type: "child-bounty",
+          index: bountyIndex,
+        },
+        linkIndex,
+      },
+      ctx.request.headers.signature
+    );
   }
 
   // Comments API
