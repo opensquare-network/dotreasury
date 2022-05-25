@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useCallback } from "react";
 import styled, { css } from "styled-components";
 
 import ResponsivePagination from "../../components/ResponsivePagination";
@@ -17,6 +17,7 @@ import {
 } from "../../store/reducers/bountySlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import Text from "../../components/Text";
+import StatusFilter from "../../components/StatusFilter";
 
 const HeaderWrapper = styled.div`
   padding: 20px 24px;
@@ -55,6 +56,11 @@ const TYPES = {
   childBounties: "child-bounties",
 };
 
+const FILTER_OPTIONS = {
+  bounties: ["Proposed", "Rejected", "Active", "Claimed"],
+  "child-bounties": [],
+};
+
 const Bounties = () => {
   useChainRoute();
 
@@ -69,7 +75,8 @@ const Bounties = () => {
     DEFAULT_PAGE_SIZE
   );
 
-  // bounties | childBounties
+  const [filterData, setFilterData] = useState({});
+
   const [type, setType] = useState(TYPES.bounties);
   const isChildBounties = useMemo(() => type === TYPES.childBounties, [type]);
 
@@ -86,16 +93,21 @@ const Bounties = () => {
   useEffect(() => {
     dispatch(
       isChildBounties
-        ? fetchChildBounties(chain, tablePage - 1, pageSize)
-        : fetchBounties(chain, tablePage - 1, pageSize)
+        ? fetchChildBounties(chain, tablePage - 1, pageSize, filterData)
+        : fetchBounties(chain, tablePage - 1, pageSize, filterData)
     );
-  }, [isChildBounties, dispatch, chain, tablePage, pageSize]);
+  }, [isChildBounties, dispatch, chain, tablePage, pageSize, filterData]);
 
   const totalPages = useMemo(() => {
     return Math.ceil(
       (isChildBounties ? childBountiesTotal : bountiesTotal) / pageSize
     );
   }, [isChildBounties, bountiesTotal, childBountiesTotal, pageSize]);
+
+  const filterQuery = useCallback((data) => {
+    setFilterData(data);
+    setTablePage(1);
+  }, []);
 
   const header = (
     <HeaderWrapper>
@@ -117,6 +129,7 @@ const Bounties = () => {
           Child Bounties
         </Title>
       </TitleGroup>
+      <StatusFilter query={filterQuery} options={FILTER_OPTIONS[type]} />
     </HeaderWrapper>
   );
 

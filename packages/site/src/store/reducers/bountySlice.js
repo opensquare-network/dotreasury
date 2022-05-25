@@ -48,7 +48,7 @@ export const {
 } = bountySlice.actions;
 
 export const fetchBounties =
-  (chain, page = 0, pageSize = 30) =>
+  (chain, page = 0, pageSize = 30, filterData) =>
   async (dispatch) => {
     dispatch(setLoading(true));
 
@@ -56,6 +56,7 @@ export const fetchBounties =
       const { result } = await api.fetch(`/${chain}/bounties`, {
         page,
         pageSize,
+        ...filterData,
       });
       dispatch(setBounties(result || {}));
     } finally {
@@ -74,7 +75,7 @@ export const fetchBountyDetail = (chain, bountyIndex) => async (dispatch) => {
 };
 
 export const fetchChildBounties =
-  (chain, page = 0, pageSize = 30) =>
+  (chain, page = 0, pageSize = 30, filterData) =>
   async (dispatch) => {
     dispatch(setLoading(true));
 
@@ -82,6 +83,7 @@ export const fetchChildBounties =
       const { result } = await api.fetch(`/${chain}/child-bounties`, {
         page,
         pageSize,
+        ...filterData,
       });
       dispatch(setChildBounties(result || {}));
     } finally {
