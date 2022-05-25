@@ -95,7 +95,7 @@ const Bounties = () => {
     return Math.ceil(
       (isChildBounties ? childBountiesTotal : bountiesTotal) / pageSize
     );
-  }, [isChildBounties, bountiesTotal, childBountiesTotal]);
+  }, [isChildBounties, bountiesTotal, childBountiesTotal, pageSize]);
 
   const header = (
     <HeaderWrapper>
