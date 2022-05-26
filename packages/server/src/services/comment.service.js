@@ -16,7 +16,7 @@ class CommentService {
 
     if (page === "last") {
       const totalPages = Math.ceil(total / pageSize);
-      page = totalPages - 1;
+      page = Math.max(0, totalPages - 1);
     }
 
     const comments = await commentCol
