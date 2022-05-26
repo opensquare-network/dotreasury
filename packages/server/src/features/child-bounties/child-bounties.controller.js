@@ -2,6 +2,7 @@ const { extractPage } = require("../../utils");
 const { getChildBountyCollection } = require("../../mongo");
 const linkService = require("../../services/link.service");
 const commentService = require("../../services/comment.service");
+const { HttpError } = require("../../exc");
 
 async function queryChildBounties(ctx, chain, q = {}) {
   const { page, pageSize } = extractPage(ctx);
@@ -150,7 +151,7 @@ class ChildBountiesController {
     }
 
     const bountyCol = await getChildBountyCollection(chain);
-    const bounty = await bountyCol.findOne({ bountyIndex });
+    const bounty = await bountyCol.findOne({ index: bountyIndex });
     if (!bounty) {
       throw new HttpError(404, "Bounty not found");
     }
