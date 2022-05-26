@@ -56,7 +56,7 @@ const ChildBountyDetail = () => {
       <TimelineCommentWrapper>
         <Timeline data={timelineData} loading={loadingBountyDetail} />
         {/*todo comment API is noe bind yet*/}
-        <Comment type="bounty" index={parseInt(bountyIndex)} />
+        <Comment type="child-bounty" index={parseInt(bountyIndex)} />
       </TimelineCommentWrapper>
     </>
   );
