@@ -149,7 +149,7 @@ class ChildBountiesController {
       throw new HttpError(400, "Comment content is missing");
     }
 
-    const bountyCol = await getBountyCollection(chain);
+    const bountyCol = await getChildBountyCollection(chain);
     const bounty = await bountyCol.findOne({ bountyIndex });
     if (!bounty) {
       throw new HttpError(404, "Bounty not found");
