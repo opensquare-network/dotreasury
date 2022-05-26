@@ -155,11 +155,11 @@ class CommentService {
       updatedAt: now,
     });
 
-    if (!result.result.ok) {
+    if (!result.acknowledged) {
       throw new HttpError(500, "Post comment error.");
     }
 
-    const commentId = result.ops[0]._id;
+    const commentId = result.insertedId;
 
     // Count position
     const commentPosition = await commentCol.countDocuments({
@@ -287,11 +287,11 @@ class CommentService {
       { session }
     );
 
-    if (!result.result.ok) {
+    if (!result.acknowledged) {
       throw new HttpError(500, "Delete comment error.");
     }
 
-    if (result.result.n === 0) {
+    if (result.deletedCount === 0) {
       throw new HttpError(403, "Cannot delete comment.");
     }
 
@@ -301,7 +301,7 @@ class CommentService {
       { session }
     );
 
-    if (!result.result.ok) {
+    if (!result.acknowledged) {
       throw new HttpError(500, "Delete comment reactions error.");
     }
 
@@ -316,11 +316,11 @@ class CommentService {
       userId: user._id,
     });
 
-    if (!result.result.ok) {
+    if (!result.acknowledged) {
       throw new HttpError(500, "Db error, clean reaction.");
     }
 
-    if (result.result.nModified === 0) {
+    if (result.modifiedCount === 0) {
       return false;
     }
 
@@ -357,7 +357,7 @@ class CommentService {
       { upsert: true }
     );
 
-    if (!result.result.ok) {
+    if (!result.acknowledged) {
       throw new HttpError(500, "Db error, update reaction.");
     }
 

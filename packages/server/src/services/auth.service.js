@@ -53,7 +53,7 @@ class AuthService {
       }
     );
 
-    if (!result.result.ok) {
+    if (!result.acknowledged) {
       throw new HttpError(500, "Error in generating refresh token");
     }
 
