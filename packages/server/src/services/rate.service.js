@@ -124,7 +124,7 @@ class RateService {
       { upsert: true }
     );
 
-    if (!result.result.ok) {
+    if (!result.acknowledged) {
       throw new HttpError(500, "Add rate error");
     }
 
