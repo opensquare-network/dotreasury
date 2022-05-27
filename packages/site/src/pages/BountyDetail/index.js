@@ -315,7 +315,7 @@ const BountyDetail = () => {
         <RelatedLinks type="bounty" index={parseInt(bountyIndex)} />
       </DetailTableWrapper>
 
-      <ChildBountiesTable />
+      <ChildBountiesTable index={parseInt(bountyIndex)} />
 
       <TimelineCommentWrapper>
         <Timeline data={timelineData} loading={loadingBountyDetail} />
