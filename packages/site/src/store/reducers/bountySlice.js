@@ -16,6 +16,12 @@ const bountySlice = createSlice({
       pageSize: 10,
       total: 0,
     },
+    childBountiesByParentIndex: {
+      items: [],
+      page: 0,
+      pageSize: 10,
+      total: 0,
+    },
     loading: false,
     bountyDetail: {},
     childBountyDetail: {},
@@ -27,6 +33,9 @@ const bountySlice = createSlice({
     },
     setChildBounties(state, { payload }) {
       state.childBounties = payload;
+    },
+    setChildBountiesByParentIndex(state, { payload }) {
+      state.childBountiesByParentIndex = payload;
     },
     setLoading(state, { payload }) {
       state.loading = payload;
@@ -46,6 +55,7 @@ const bountySlice = createSlice({
 export const {
   setBounties,
   setChildBounties,
+  setChildBountiesByParentIndex,
   setLoading,
   setBountyDetail,
   setChildBountyDetail,
@@ -63,6 +73,24 @@ export const fetchBounties =
         pageSize,
       });
       dispatch(setBounties(result || {}));
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+export const fetchChildBountiesByParentIndex =
+  (chain, bountyIndex, page = 1, pageSize = 30) =>
+  async (dispatch) => {
+    dispatch(setLoading(true));
+    try {
+      const { result } = await api.fetch(
+        `/${chain}/bounties/${bountyIndex}/child-bounties`,
+        {
+          page,
+          pageSize,
+        }
+      );
+      dispatch(setChildBountiesByParentIndex(result || {}));
     } finally {
       dispatch(setLoading(false));
     }
@@ -105,6 +133,8 @@ export const fetchChildBounties =
 
 export const bountyListSelector = (state) => state.bounties.bounties;
 export const childBountyListSelector = (state) => state.bounties.childBounties;
+export const childBountyByParentIndexListSelector = (state) =>
+  state.bounties.childBountiesByParentIndex;
 export const loadingSelector = (state) => state.bounties.loading;
 export const bountyDetailSelector = (state) => state.bounties.bountyDetail;
 export const childBountyDetailSelector = (state) => state.bounties.childBountyDetail;

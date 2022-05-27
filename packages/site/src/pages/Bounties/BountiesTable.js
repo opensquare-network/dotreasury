@@ -116,6 +116,7 @@ function TableExpandableRow({
   item = {},
   expandable = false,
   isChild = false,
+  routable = true,
   symbol,
 }) {
   const history = useHistory();
@@ -181,13 +182,15 @@ function TableExpandableRow({
         <Table.Cell textAlign={"right"}>
           <CapText>{getStateWithVotingAyes(item)}</CapText>
         </Table.Cell>
-        <Table.Cell className="link-cell hidden">
-          {detailRoute && (
-            <NavLink to={detailRoute}>
-              <RightButton />
-            </NavLink>
-          )}
-        </Table.Cell>
+        {routable && (
+          <Table.Cell className="link-cell hidden">
+            {detailRoute && (
+              <NavLink to={detailRoute}>
+                <RightButton />
+              </NavLink>
+            )}
+          </Table.Cell>
+        )}
       </TableRow>
 
       {/* child bounties */}
@@ -216,11 +219,9 @@ const BountiesTable = ({
   loading,
   header,
   footer,
-  rowProps = {
-    expandable: false,
-    isChild: false,
-  },
+  rowProps = {},
 }) => {
+  const { expandable = false, isChild = false, routable = true } = rowProps;
   const symbol = useSelector(chainSymbolSelector);
 
   return (
@@ -232,7 +233,7 @@ const BountiesTable = ({
             <StyledTable unstackable>
               <Table.Header>
                 <Table.Row>
-                  {rowProps.expandable && <Table.HeaderCell />}
+                  {expandable && <Table.HeaderCell />}
                   <Table.HeaderCell>Index</Table.HeaderCell>
                   <Table.HeaderCell>Propose Time</Table.HeaderCell>
                   <Table.HeaderCell>Curator</Table.HeaderCell>
@@ -241,7 +242,7 @@ const BountiesTable = ({
                   <Table.HeaderCell textAlign={"right"}>
                     Status
                   </Table.HeaderCell>
-                  <Table.HeaderCell className="hidden" />
+                  {routable && <Table.HeaderCell className="hidden" />}
                 </Table.Row>
               </Table.Header>
               <Table.Body>
@@ -249,7 +250,9 @@ const BountiesTable = ({
                   data.length > 0 &&
                   data.map((item, index) => (
                     <TableExpandableRow
-                      {...rowProps}
+                      expandable={expandable}
+                      isChild={isChild}
+                      routable={routable}
                       type={type}
                       key={index}
                       item={item}
