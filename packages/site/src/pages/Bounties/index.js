@@ -152,7 +152,6 @@ const Bounties = () => {
     <BountiesTable
       rowProps={{
         expandable: !isChildBounties,
-        isChild: isChildBounties,
       }}
       type={type}
       data={tableData}
