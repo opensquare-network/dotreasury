@@ -95,21 +95,20 @@ const getStateWithVotingAyes = (item) => {
 };
 
 function TableExpandableRow({
+  type = "",
   item = {},
   expandable = false,
   isChild = false,
   symbol,
-  onClickRow = () => {},
-  detailRoute = "",
 }) {
+  const history = useHistory();
   const [expanded, setExpanded] = useState(false);
 
-  const handleRowClick = (row) => {
-    if (isChild) {
-      return;
+  const detailRoute = `/${symbol.toLowerCase()}/${type}/${item.bountyIndex}`;
+  const onClickRow = () => {
+    if (window.innerWidth < 1140) {
+      history.push(detailRoute);
     }
-
-    onClickRow(row.bountyIndex);
   };
 
   useEffect(() => {
@@ -118,15 +117,13 @@ function TableExpandableRow({
 
   return (
     <>
-      <TableRow
-        className={isChild ? "child" : ""}
-        onClick={() => handleRowClick(item)}
-      >
+      <TableRow className={isChild ? "child" : ""} onClick={onClickRow}>
         {expandable && (
           <Table.Cell className="">
             {!!item.childBounties?.length && (
               <ExpandToggleButton
-                onClick={() => {
+                onClick={(event) => {
+                  event.stopPropagation();
                   setExpanded(!expanded);
                 }}
               >
@@ -179,14 +176,20 @@ function TableExpandableRow({
 
       {/* child bounties */}
       {expanded &&
-        item.childBounties?.map((childItem, childIndex) => (
-          <TableExpandableRow
-            key={childIndex}
-            item={compatChildBountyData(childItem)}
-            expandable
-            isChild
-          />
-        ))}
+        item.childBounties?.map((childItem, childIndex) => {
+          const item = compatChildBountyData(childItem);
+
+          return (
+            <TableExpandableRow
+              key={childIndex}
+              item={item}
+              symbol={symbol}
+              type="childbounties"
+              expandable
+              isChild
+            />
+          );
+        })}
     </>
   );
 }
@@ -202,16 +205,7 @@ const BountiesTable = ({
     isChild: false,
   },
 }) => {
-  const history = useHistory();
   const symbol = useSelector(chainSymbolSelector);
-
-  const getDetailRoute = (index) => `/${symbol.toLowerCase()}/${type}/${index}`;
-
-  const onClickRow = (bountyIndex) => {
-    if (window.innerWidth < 1140) {
-      history.push(getDetailRoute(bountyIndex));
-    }
-  };
 
   return (
     <CardWrapper>
@@ -243,8 +237,6 @@ const BountiesTable = ({
                       type={type}
                       key={index}
                       item={item}
-                      onClickRow={onClickRow}
-                      detailRoute={getDetailRoute(item.bountyIndex)}
                       symbol={symbol}
                     />
                   ))) || <TableNoDataCell />}
