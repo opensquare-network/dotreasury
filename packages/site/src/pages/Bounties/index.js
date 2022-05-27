@@ -150,6 +150,7 @@ const Bounties = () => {
 
   return (
     <BountiesTable
+      rowExpandable={!isChildBounties}
       type={type}
       data={tableData}
       loading={loading}
