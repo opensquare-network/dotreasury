@@ -3,7 +3,6 @@ import styled from "styled-components";
 import BountiesTable from "../Bounties/BountiesTable";
 import { PRIMARY_THEME_COLOR, SECONDARY_THEME_COLOR } from "../../constants";
 import ResponsivePagination from "../../components/ResponsivePagination";
-import { useHistory } from "react-router";
 import { useQuery, useLocalStorage } from "../../utils/hooks";
 import { useEffect, useMemo, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -46,7 +45,6 @@ const PAGE_KEY = "child-bounties-page";
 
 function ChildBountiesTable({ index }) {
   const dispatch = useDispatch();
-  const history = useHistory();
 
   const searchPage = parseInt(useQuery().get(PAGE_KEY));
   const queryPage =
@@ -94,17 +92,8 @@ function ChildBountiesTable({ index }) {
       setPageSize={(pageSize) => {
         setTablePage(DEFAULT_QUERY_PAGE);
         setPageSize(pageSize);
-        history.push({
-          search: null,
-        });
       }}
       onPageChange={(_, { activePage }) => {
-        history.push({
-          search:
-            activePage === DEFAULT_QUERY_PAGE
-              ? null
-              : `?${PAGE_KEY}=${activePage}`,
-        });
         setTablePage(activePage);
       }}
     />
