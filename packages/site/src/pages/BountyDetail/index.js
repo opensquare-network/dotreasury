@@ -30,6 +30,7 @@ import {
 } from "../../store/reducers/chainSlice";
 import DetailGoBack from "../components/DetailGoBack";
 import { useChainRoute } from "../../utils/hooks";
+import ChildBountiesTable from "./ChildBountiesTable";
 
 const ValueWrapper = styled.span`
   margin-right: 4px;
@@ -72,208 +73,211 @@ export function processTimeline(bountyDetail, scanHeight, symbol) {
   ).map((item) =>
     item.timeline
       ? ((motion) => ({
-        index: motion.index,
-        defaultUnfold: !motion.isFinal,
-        subTimeline: (motion.timeline || []).map((item) => ({
-          name:
-            ["Propose", "Proposed"].includes(item.method)
+          index: motion.index,
+          defaultUnfold: !motion.isFinal,
+          subTimeline: (motion.timeline || []).map((item) => ({
+            name: ["Propose", "Proposed"].includes(item.method)
               ? `Motion #${motion.index}`
               : item.method,
-          extrinsicIndexer: item.type === "extrinsic" ? item.indexer : undefined,
-          eventIndexer: item.type === "event" ? item.indexer : undefined,
-          fields: (() => {
-            if (item.method === "Proposed") {
-              const { proposer, threshold } = item.args;
-              const ayes = motion.voting?.ayes?.length || 0;
-              const nays = motion.voting?.nays?.length || 0;
-              const proposalArgs = item.extrinsic?.args?.proposal?.args ?? {};
-              const argItems = Object.keys(proposalArgs)
-                .filter((key) => key !== "bounty_id")
-                .map((key) => {
-                  const val = proposalArgs[key];
-                  return {
-                    title: stringToWords(key),
-                    value: (() => {
-                      if (key === "curator") {
-                        return <User address={val.id || val} />;
-                      } else if (key === "fee") {
-                        return <Balance value={val} currency={symbol} />;
-                      } else {
-                        return val;
-                      }
-                    })(),
-                  };
-                });
+            extrinsicIndexer:
+              item.type === "extrinsic" ? item.indexer : undefined,
+            eventIndexer: item.type === "event" ? item.indexer : undefined,
+            fields: (() => {
+              if (item.method === "Proposed") {
+                const { proposer, threshold } = item.args;
+                const ayes = motion.voting?.ayes?.length || 0;
+                const nays = motion.voting?.nays?.length || 0;
+                const proposalArgs = item.extrinsic?.args?.proposal?.args ?? {};
+                const argItems = Object.keys(proposalArgs)
+                  .filter((key) => key !== "bounty_id")
+                  .map((key) => {
+                    const val = proposalArgs[key];
+                    return {
+                      title: stringToWords(key),
+                      value: (() => {
+                        if (key === "curator") {
+                          return <User address={val.id || val} />;
+                        } else if (key === "fee") {
+                          return <Balance value={val} currency={symbol} />;
+                        } else {
+                          return val;
+                        }
+                      })(),
+                    };
+                  });
 
-              if (
-                scanHeight > 0 &&
-                !motion.isFinal &&
-                motion.voting?.end > scanHeight
-              ) {
-                const blocks = motion.voting?.end - scanHeight;
-                argItems.push({
-                  title: "Voting end",
-                  value: (
-                    <BlocksTime
-                      blocks={blocks}
-                      ValueWrapper={ValueWrapper}
-                      UnitWrapper={UnitWrapper}
-                    />
-                  ),
-                });
+                if (
+                  scanHeight > 0 &&
+                  !motion.isFinal &&
+                  motion.voting?.end > scanHeight
+                ) {
+                  const blocks = motion.voting?.end - scanHeight;
+                  argItems.push({
+                    title: "Voting end",
+                    value: (
+                      <BlocksTime
+                        blocks={blocks}
+                        ValueWrapper={ValueWrapper}
+                        UnitWrapper={UnitWrapper}
+                      />
+                    ),
+                  });
+                }
+
+                return [
+                  {
+                    value: (
+                      <Proposer
+                        address={proposer}
+                        agree={
+                          motion.isFinal &&
+                          motion.timeline.some(
+                            (item) => item.method === "Approved"
+                          )
+                        }
+                        value={motion.motionInfo?.method}
+                        args={argItems}
+                        threshold={threshold}
+                        ayes={ayes}
+                        nays={nays}
+                      />
+                    ),
+                  },
+                ];
+              } else if (item.method === "Voted") {
+                const { voter, approve: agree } = item.args;
+                return [
+                  {
+                    value: (
+                      <Voter
+                        address={voter}
+                        agree={agree}
+                        value={agree ? "Aye" : "Nay"}
+                      />
+                    ),
+                  },
+                ];
+              } else if (item.method === "Closed") {
+                return [];
+              } else {
+                return [];
               }
-
-              return [
-                {
-                  value: (
-                    <Proposer
-                      address={proposer}
-                      agree={motion.isFinal && motion.timeline.some(item => item.method === "Approved")}
-                      value={motion.motionInfo?.method}
-                      args={argItems}
-                      threshold={threshold}
-                      ayes={ayes}
-                      nays={nays}
-                    />
-                  ),
-                },
-              ];
-            } else if (item.method === "Voted") {
-              const { voter, approve: agree } = item.args;
-              return [
-                {
-                  value: (
-                    <Voter
-                      address={voter}
-                      agree={agree}
-                      value={agree ? "Aye" : "Nay"}
-                    />
-                  ),
-                },
-              ];
-            } else if (item.method === "Closed") {
-              return [];
-            } else {
-              return [];
-            }
-          })(),
-        })),
-      }))(item)
+            })(),
+          })),
+        }))(item)
       : ((item) => {
-        let fields = [];
+          let fields = [];
 
-        if (item.name === "proposeBounty") {
-          const { proposer, value, description } = item.args;
-          fields = [
-            {
-              title: "Proposer",
-              value: <User address={proposer} />,
-            },
-            {
-              title: "Value",
-              value: <Balance value={value} currency={symbol} />,
-            },
-            {
-              title: "Title",
-              value: description,
-            },
-          ];
-        }
-        else if ( item.name==="proposeCurator") {
-          const {curator, fee} = item.args;
-          fields = [
-            {
-              title: "Curator",
-              value: <User address={curator}/>,
-            },
-            {
-              title: "Fee",
-              value: <Balance value={fee} currency={symbol}/>,
-            },
-          ];
-        }
-        else if (item.name === "acceptCurator") {
-          const { caller, curator } = item.args;
-          fields = [
-            {
-              title: "Curator",
-              value: <User address={caller ?? curator} />,
-            },
-          ];
-        } else if (item.name === "BountyAwarded" || item.name ==="Awarded") {
-          const { beneficiary } = item.args || {};
-          fields = [
-            {
-              title: "Beneficiary",
-              value: <User address={beneficiary} />,
-            },
-          ];
-        } else if (item.name === "BountyExtended") {
-          const { caller, remark } = item.args;
-          fields = [
-            {
-              title: "Signer",
-              value: <User address={caller} />,
-            },
-            {
-              title: "Remark",
-              value: remark,
-            },
-          ];
-        } else if (item.name === "BountyRejected") {
-          const { caller, slashed } = item.args;
-          fields = [
-            {
-              title: "Closed by",
-              value: <User address={caller} />,
-            },
-            {
-              title: "Proposer slashed",
-              value: <Balance value={slashed} currency={symbol} />,
-            },
-          ];
-        } else if (item.name === "BountyClaimed") {
-          const [, , claimer] = item.eventData || [];
-          fields = [
-            {
-              title: "Beneficiary",
-              value: <User address={claimer} />,
-            },
-          ];
-        } else if (item.name ==="Added"){
-          const { description, value } = item.args;
-          fields = [
-            {
-              title: "Title",
-              value: description,
-            },
-            {
-              title: "Value",
-              value: <Balance value={value} currency={symbol} />,
-            },
-          ];
-        }
-        else if (item.name ==="Canceled"){
-          const { beneficiary, payout } = item.args;
-          fields = [
-            {
-              title: "Beneficiary",
-              value: <User address={beneficiary} />,
-            },
-            {
-              title: "Payout",
-              value: <Balance value={payout} currency={symbol} />,
-            },
-          ];
-        }
+          if (item.name === "proposeBounty") {
+            const { proposer, value, description } = item.args;
+            fields = [
+              {
+                title: "Proposer",
+                value: <User address={proposer} />,
+              },
+              {
+                title: "Value",
+                value: <Balance value={value} currency={symbol} />,
+              },
+              {
+                title: "Title",
+                value: description,
+              },
+            ];
+          } else if (item.name === "proposeCurator") {
+            const { curator, fee } = item.args;
+            fields = [
+              {
+                title: "Curator",
+                value: <User address={curator} />,
+              },
+              {
+                title: "Fee",
+                value: <Balance value={fee} currency={symbol} />,
+              },
+            ];
+          } else if (item.name === "acceptCurator") {
+            const { caller, curator } = item.args;
+            fields = [
+              {
+                title: "Curator",
+                value: <User address={caller ?? curator} />,
+              },
+            ];
+          } else if (item.name === "BountyAwarded" || item.name === "Awarded") {
+            const { beneficiary } = item.args || {};
+            fields = [
+              {
+                title: "Beneficiary",
+                value: <User address={beneficiary} />,
+              },
+            ];
+          } else if (item.name === "BountyExtended") {
+            const { caller, remark } = item.args;
+            fields = [
+              {
+                title: "Signer",
+                value: <User address={caller} />,
+              },
+              {
+                title: "Remark",
+                value: remark,
+              },
+            ];
+          } else if (item.name === "BountyRejected") {
+            const { caller, slashed } = item.args;
+            fields = [
+              {
+                title: "Closed by",
+                value: <User address={caller} />,
+              },
+              {
+                title: "Proposer slashed",
+                value: <Balance value={slashed} currency={symbol} />,
+              },
+            ];
+          } else if (item.name === "BountyClaimed") {
+            const [, , claimer] = item.eventData || [];
+            fields = [
+              {
+                title: "Beneficiary",
+                value: <User address={claimer} />,
+              },
+            ];
+          } else if (item.name === "Added") {
+            const { description, value } = item.args;
+            fields = [
+              {
+                title: "Title",
+                value: description,
+              },
+              {
+                title: "Value",
+                value: <Balance value={value} currency={symbol} />,
+              },
+            ];
+          } else if (item.name === "Canceled") {
+            const { beneficiary, payout } = item.args;
+            fields = [
+              {
+                title: "Beneficiary",
+                value: <User address={beneficiary} />,
+              },
+              {
+                title: "Payout",
+                value: <Balance value={payout} currency={symbol} />,
+              },
+            ];
+          }
 
-        return {
-          extrinsicIndexer: item.type === "extrinsic" ? item.indexer : undefined,
-          eventIndexer: item.type === "event" ? item.indexer : undefined,
-          name: item.name,
-          fields,
-        };
-      })(item)
+          return {
+            extrinsicIndexer:
+              item.type === "extrinsic" ? item.indexer : undefined,
+            eventIndexer: item.type === "event" ? item.indexer : undefined,
+            name: item.name,
+            fields,
+          };
+        })(item)
   );
 }
 
@@ -310,6 +314,9 @@ const BountyDetail = () => {
         <BountyLifeCycleTable loading={loadingBountyDetail} />
         <RelatedLinks type="bounty" index={parseInt(bountyIndex)} />
       </DetailTableWrapper>
+
+      <ChildBountiesTable />
+
       <TimelineCommentWrapper>
         <Timeline data={timelineData} loading={loadingBountyDetail} />
         <Comment type="bounty" index={parseInt(bountyIndex)} />
