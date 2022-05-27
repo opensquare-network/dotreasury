@@ -153,16 +153,14 @@ function TableExpandableRow({
 
       {/* child bounties */}
       {expanded &&
-        [...item.childBounties]
-          ?.reverse()
-          ?.map((childItem, childIndex) => (
-            <TableExpandableRow
-              key={childIndex}
-              item={compatChildBountyData(childItem)}
-              expandable
-              isChild
-            />
-          ))}
+        item.childBounties?.map((childItem, childIndex) => (
+          <TableExpandableRow
+            key={childIndex}
+            item={compatChildBountyData(childItem)}
+            expandable
+            isChild
+          />
+        ))}
     </>
   );
 }
