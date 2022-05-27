@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useState } from "react";
+import styled, { css } from "styled-components";
 import { NavLink, useHistory } from "react-router-dom";
 import dayjs from "dayjs";
 
@@ -16,6 +16,7 @@ import ExplorerLink from "../../components/ExplorerLink";
 import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import Card from "../../components/Card";
+import { compatChildBountyData } from "./utils";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -56,6 +57,10 @@ const CapText = styled(Text)`
 
 const TableRow = styled(Table.Row)`
   height: 50px;
+
+  &.child {
+    background-color: rgba(250, 250, 250, 1);
+  }
 `;
 
 const getStateWithVotingAyes = (item) => {
@@ -71,7 +76,105 @@ const getStateWithVotingAyes = (item) => {
   return state;
 };
 
-const BountiesTable = ({ type = "", data, loading, header, footer }) => {
+function TableExpandableRow({
+  item = {},
+  expandable = false,
+  isChild = false,
+  symbol,
+  onClickRow = () => {},
+  detailRoute = "",
+}) {
+  const [expanded, setExpanded] = useState(false);
+
+  const handleRowClick = (row) => {
+    if (isChild) {
+      return;
+    }
+
+    onClickRow(row.bountyIndex);
+  };
+
+  return (
+    <>
+      <TableRow
+        className={isChild ? "child" : ""}
+        onClick={() => handleRowClick(item)}
+      >
+        {expandable && (
+          <Table.Cell className="">
+            {!!item.childBounties?.length && (
+              <button
+                onClick={() => {
+                  setExpanded(!expanded);
+                }}
+              >
+                +
+              </button>
+            )}
+          </Table.Cell>
+        )}
+        <Table.Cell className="index-cell">
+          <TextMinor>{`#${item.bountyIndex}`}</TextMinor>
+        </Table.Cell>
+        <Table.Cell className="propose-time-cell">
+          <ProposeTimeWrapper>
+            <TextMinor>
+              {dayjs(parseInt(item.proposeTime)).format("YYYY-MM-DD HH:mm:ss")}
+            </TextMinor>
+            <ExplorerLink href={`/block/${item.proposeAtBlockHeight}`}>
+              <PolygonLabel fontSize={12} value={item.proposeAtBlockHeight} />
+            </ExplorerLink>
+          </ProposeTimeWrapper>
+        </Table.Cell>
+        <Table.Cell className="user-cell">
+          {item.curator ? <User address={item.curator} /> : "--"}
+        </Table.Cell>
+        <Table.Cell className="title-cell">
+          <Text>{item.title}</Text>
+        </Table.Cell>
+        <Table.Cell className="balance-cell" textAlign={"right"}>
+          <Balance
+            value={item.value}
+            currency={symbol}
+            usdt={item.symbolPrice}
+          />
+        </Table.Cell>
+        <Table.Cell textAlign={"right"}>
+          <CapText>{getStateWithVotingAyes(item)}</CapText>
+        </Table.Cell>
+        <Table.Cell className="link-cell hidden">
+          {detailRoute && (
+            <NavLink to={detailRoute}>
+              <RightButton />
+            </NavLink>
+          )}
+        </Table.Cell>
+      </TableRow>
+
+      {/* child bounties */}
+      {expanded &&
+        [...item.childBounties]
+          ?.reverse()
+          ?.map((childItem, childIndex) => (
+            <TableExpandableRow
+              key={childIndex}
+              item={compatChildBountyData(childItem)}
+              expandable
+              isChild
+            />
+          ))}
+    </>
+  );
+}
+
+const BountiesTable = ({
+  type = "",
+  data,
+  loading,
+  header,
+  footer,
+  rowExpandable = false,
+}) => {
   const history = useHistory();
   const symbol = useSelector(chainSymbolSelector);
 
@@ -92,6 +195,7 @@ const BountiesTable = ({ type = "", data, loading, header, footer }) => {
             <StyledTable unstackable>
               <Table.Header>
                 <Table.Row>
+                  {rowExpandable && <Table.HeaderCell />}
                   <Table.HeaderCell>Index</Table.HeaderCell>
                   <Table.HeaderCell>Propose Time</Table.HeaderCell>
                   <Table.HeaderCell>Curator</Table.HeaderCell>
@@ -107,52 +211,15 @@ const BountiesTable = ({ type = "", data, loading, header, footer }) => {
                 {(data &&
                   data.length > 0 &&
                   data.map((item, index) => (
-                    <TableRow
+                    <TableExpandableRow
+                      expandable={rowExpandable}
+                      type={type}
                       key={index}
-                      onClick={() => onClickRow(item.bountyIndex)}
-                    >
-                      <Table.Cell className="index-cell">
-                        <TextMinor>{`#${item.bountyIndex}`}</TextMinor>
-                      </Table.Cell>
-                      <Table.Cell className="propose-time-cell">
-                        <ProposeTimeWrapper>
-                          <TextMinor>
-                            {dayjs(parseInt(item.proposeTime)).format(
-                              "YYYY-MM-DD HH:mm:ss"
-                            )}
-                          </TextMinor>
-                          <ExplorerLink
-                            href={`/block/${item.proposeAtBlockHeight}`}
-                          >
-                            <PolygonLabel
-                              fontSize={12}
-                              value={item.proposeAtBlockHeight}
-                            />
-                          </ExplorerLink>
-                        </ProposeTimeWrapper>
-                      </Table.Cell>
-                      <Table.Cell className="user-cell">
-                        {item.curator ? <User address={item.curator} /> : "--"}
-                      </Table.Cell>
-                      <Table.Cell className="title-cell">
-                        <Text>{item.title}</Text>
-                      </Table.Cell>
-                      <Table.Cell className="balance-cell" textAlign={"right"}>
-                        <Balance
-                          value={item.value}
-                          currency={symbol}
-                          usdt={item.symbolPrice}
-                        />
-                      </Table.Cell>
-                      <Table.Cell textAlign={"right"}>
-                        <CapText>{getStateWithVotingAyes(item)}</CapText>
-                      </Table.Cell>
-                      <Table.Cell className="link-cell hidden">
-                        <NavLink to={getDetailRoute(item.bountyIndex)}>
-                          <RightButton />
-                        </NavLink>
-                      </Table.Cell>
-                    </TableRow>
+                      item={item}
+                      onClickRow={onClickRow}
+                      detailRoute={getDetailRoute(item.bountyIndex)}
+                      symbol={symbol}
+                    />
                   ))) || <TableNoDataCell />}
               </Table.Body>
             </StyledTable>
