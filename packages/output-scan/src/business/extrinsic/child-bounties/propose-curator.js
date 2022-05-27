@@ -19,14 +19,10 @@ async function handleProposeCurator(call, author, indexer) {
 
   const parentBountyId = call.args[0].toNumber();
   const childBountyId = call.args[1].toNumber();
+  const curator = call.args[2].toString();
+  const fee = call.args[3].toNumber();
 
   const meta = await getChildBounty(parentBountyId, childBountyId, indexer);
-  const {
-    fee,
-    status: {
-      curatorProposed: { curator } = {}
-    } = {}
-  } = meta || {};
 
   const updates = {
     meta,

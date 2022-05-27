@@ -19,17 +19,12 @@ async function handleAcceptCurator(call, author, indexer) {
 
   const parentBountyId = call.args[0].toNumber();
   const childBountyId = call.args[1].toNumber();
-  const meta = await getChildBounty(parentBountyId, childBountyId, indexer);
 
-  const {
-    status: {
-      active: { curator } = {}
-    } = {}
-  } = meta || {};
+  const meta = await getChildBounty(parentBountyId, childBountyId, indexer);
 
   const updates = {
     meta,
-    curator,
+    curator: author,
     state: {
       indexer,
       state: ChildBountyState.Active,
@@ -39,7 +34,7 @@ async function handleAcceptCurator(call, author, indexer) {
   const timelineItem = {
     type: TimelineItemTypes.extrinsic,
     name: ChildBountiesMethods.acceptCurator,
-    args: { curator, },
+    args: { curator: author, },
     indexer,
   };
 
