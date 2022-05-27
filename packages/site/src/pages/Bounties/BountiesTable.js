@@ -157,7 +157,7 @@ function TableExpandableRow({
           <TextMinor>{`#${item.bountyIndex}`}</TextMinor>
         </Table.Cell>
         {/* TODO: standalone child bounties table */}
-        {type === "childbounties" && (
+        {type === "child-bounties" && (
           <Table.Cell className="index-cell">
             <TextMinor>{`#${item.parentBountyId}`}</TextMinor>
           </Table.Cell>
@@ -209,7 +209,6 @@ function TableExpandableRow({
               key={childIndex}
               item={item}
               symbol={symbol}
-              type="childbounties"
               expandable
               isChild
             />
@@ -242,7 +241,7 @@ const BountiesTable = ({
                   {expandable && <Table.HeaderCell />}
                   <Table.HeaderCell>Index</Table.HeaderCell>
                   {/* TODO: standalone child bounties table */}
-                  {type === "childbounties" && (
+                  {type === "child-bounties" && (
                     <Table.HeaderCell>Parent</Table.HeaderCell>
                   )}
                   <Table.HeaderCell>Propose Time</Table.HeaderCell>
