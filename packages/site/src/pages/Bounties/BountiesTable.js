@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { NavLink, useHistory } from "react-router-dom";
 import dayjs from "dayjs";
 
@@ -63,6 +63,19 @@ const TableRow = styled(Table.Row)`
   }
 `;
 
+const ExpandToggleButton = styled.button`
+  border: 1px solid rgba(204, 204, 204, 1);
+  background-color: transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const getStateWithVotingAyes = (item) => {
   const state = item.state?.state;
   const isVoting = ["ApproveVoting", "RejectVoting"].includes(state);
@@ -103,13 +116,16 @@ function TableExpandableRow({
         {expandable && (
           <Table.Cell className="">
             {!!item.childBounties?.length && (
-              <button
+              <ExpandToggleButton
                 onClick={() => {
                   setExpanded(!expanded);
                 }}
               >
-                +
-              </button>
+                <img
+                  src={`/imgs/${expanded ? "subtract" : "add"}.svg`}
+                  alt="toggle"
+                />
+              </ExpandToggleButton>
             )}
           </Table.Cell>
         )}
