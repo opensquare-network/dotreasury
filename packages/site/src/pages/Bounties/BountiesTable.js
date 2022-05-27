@@ -48,7 +48,29 @@ const StyledTable = styled(Table)`
   }
 `;
 
-const ProposeTimeWrapper = styled.div``;
+const ProposeTimeWrapper = styled.div`
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  p:first-child {
+    min-width: 154px;
+  }
+  > :first-child {
+    line-height: 22px;
+    color: rgba(0, 0, 0, 0.9) !important;
+  }
+  > :last-child {
+    * {
+      font-size: 12px;
+      line-height: 18px;
+      color: rgba(0, 0, 0, 0.3);
+    }
+    img {
+      width: 14px !important;
+      height: 14px !important;
+    }
+  }
+`;
 
 const CapText = styled(Text)`
   text-transform: capitalize;
