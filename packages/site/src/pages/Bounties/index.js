@@ -16,6 +16,7 @@ import {
 } from "../../store/reducers/bountySlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import Text from "../../components/Text";
+import { compatChildBountyData } from "./utils";
 
 const HeaderWrapper = styled.div`
   padding: 20px 24px;
@@ -97,15 +98,7 @@ const Bounties = () => {
 
   const tableData = useMemo(() => {
     if (isChildBounties) {
-      return childBounties.map((item) => {
-        return {
-          bountyIndex: item.index,
-          proposeTime: item.indexer?.blockTime,
-          proposeAtBlockHeight: item.indexer?.blockHeight,
-          title: item.description,
-          ...item,
-        };
-      });
+      return childBounties.map(compatChildBountyData);
     }
     return bounties;
   }, [bounties, childBounties, isChildBounties]);
