@@ -154,7 +154,6 @@ const Bounties = () => {
         expandable: !isChildBounties,
         isChild: isChildBounties,
       }}
-      rowExpandable={!isChildBounties}
       type={type}
       data={tableData}
       loading={loading}
