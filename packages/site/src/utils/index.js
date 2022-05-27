@@ -83,6 +83,9 @@ export const getLinkNameAndSrc = (link) => {
     } else if (url.host.endsWith("dotreasury.com")) {
       src = "/imgs/dotreasury-logo.svg";
       name = "doTreasury";
+    } else if (url.host.endsWith("subsquare.io")) {
+      src = "/imgs/subsquare-logo.svg";
+      name = "Subsquare";
     } else {
       src = "/imgs/link-icon.svg";
     }
