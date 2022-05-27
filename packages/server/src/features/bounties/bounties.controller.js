@@ -81,7 +81,7 @@ class BountiesController {
     ctx.body = {
       items: bounties.map(item => ({
         ...normalizeBountyListItem(item),
-        childBounties: item.childBounties.map(normalizeBountyListItem),
+        childBounties: item.childBounties,
       })),
       page,
       pageSize,
