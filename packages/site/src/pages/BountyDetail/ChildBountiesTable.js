@@ -106,6 +106,7 @@ function ChildBountiesTable({ index }) {
         data={tableData}
         header={header}
         footer={footer}
+        rowProps={{ routable: false }}
       />
     </Wrapper>
   );
