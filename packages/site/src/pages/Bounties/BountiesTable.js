@@ -10,7 +10,6 @@ import Balance from "../../components/Balance";
 import RightButton from "../../components/RightButton";
 import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
-import TextAccessory from "../../components/TextAccessory";
 import TableNoDataCell from "../../components/TableNoDataCell";
 import PolygonLabel from "../../components/PolygonLabel";
 import ExplorerLink from "../../components/ExplorerLink";
@@ -77,10 +76,6 @@ const ExpandToggleButton = styled.button`
   justify-content: center;
 `;
 
-const ChildIndex = styled(TextAccessory)`
-  font-size: 12px;
-`;
-
 const getStateWithVotingAyes = (item) => {
   const state = item.state?.state;
   const isVoting = ["ApproveVoting", "RejectVoting"].includes(state);
@@ -137,7 +132,6 @@ function TableExpandableRow({
         )}
         <Table.Cell className="index-cell">
           <TextMinor>{`#${item.bountyIndex}`}</TextMinor>
-          {isChild && <ChildIndex>Child</ChildIndex>}
         </Table.Cell>
         <Table.Cell className="propose-time-cell">
           <ProposeTimeWrapper>
