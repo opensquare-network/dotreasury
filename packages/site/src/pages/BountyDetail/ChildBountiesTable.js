@@ -5,7 +5,15 @@ import { PRIMARY_THEME_COLOR, SECONDARY_THEME_COLOR } from "../../constants";
 import ResponsivePagination from "../../components/ResponsivePagination";
 import { useHistory } from "react-router";
 import { useQuery, useLocalStorage } from "../../utils/hooks";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  fetchChildBountiesByParentIndex,
+  childBountyByParentIndexListSelector,
+  loadingSelector,
+} from "../../store/reducers/bountySlice";
+import { chainSelector } from "../../store/reducers/chainSlice";
+import { compatChildBountyData } from "../Bounties/utils";
 
 const Wrapper = styled.div`
   margin-top: 24px;
@@ -34,11 +42,13 @@ const Header = styled.div`
 
 const DEFAULT_PAGE_SIZE = 20;
 const DEFAULT_QUERY_PAGE = 1;
+const PAGE_KEY = "child-bounties-page";
 
-function ChildBountiesTable() {
+function ChildBountiesTable({ index }) {
+  const dispatch = useDispatch();
   const history = useHistory();
 
-  const searchPage = parseInt(useQuery().get("page"));
+  const searchPage = parseInt(useQuery().get(PAGE_KEY));
   const queryPage =
     searchPage && !isNaN(searchPage) && searchPage > 0
       ? searchPage
@@ -48,9 +58,33 @@ function ChildBountiesTable() {
     "bountiesDetailChildBountiesPageSize",
     DEFAULT_PAGE_SIZE
   );
+
+  const { items: childBounties, total } = useSelector(
+    childBountyByParentIndexListSelector
+  );
+  const loading = useSelector(loadingSelector);
+  const chain = useSelector(chainSelector);
+
+  useEffect(() => {
+    dispatch(
+      fetchChildBountiesByParentIndex(chain, index, tablePage - 1, pageSize)
+    );
+  }, [dispatch, chain, tablePage, pageSize]);
+
   const totalPages = useMemo(() => {
-    return Math.ceil(1 / pageSize);
-  }, [pageSize]);
+    return Math.ceil(total / pageSize);
+  }, [total, pageSize]);
+
+  const tableData = useMemo(() => {
+    return childBounties.map(compatChildBountyData);
+  }, [childBounties]);
+
+  const header = (
+    <Header>
+      <span>Child Bounties</span>
+      <Label>{total}</Label>
+    </Header>
+  );
 
   const footer = (
     <ResponsivePagination
@@ -67,7 +101,9 @@ function ChildBountiesTable() {
       onPageChange={(_, { activePage }) => {
         history.push({
           search:
-            activePage === DEFAULT_QUERY_PAGE ? null : `?page=${activePage}`,
+            activePage === DEFAULT_QUERY_PAGE
+              ? null
+              : `?${PAGE_KEY}=${activePage}`,
         });
         setTablePage(activePage);
       }}
@@ -77,12 +113,9 @@ function ChildBountiesTable() {
   return (
     <Wrapper>
       <BountiesTable
-        header={
-          <Header>
-            <span>Child Bounties</span>
-            <Label>0</Label>
-          </Header>
-        }
+        loading={loading}
+        data={tableData}
+        header={header}
         footer={footer}
       />
     </Wrapper>
