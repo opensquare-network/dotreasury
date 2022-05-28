@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { NavLink, useHistory } from "react-router-dom";
 import dayjs from "dayjs";
@@ -160,7 +160,9 @@ function TableExpandableRow({
         {/* TODO: standalone child bounties table */}
         {type === "child-bounties" && showParent && (
           <Table.Cell className="index-cell">
-            <TextMinor>{`#${item.parentBountyId}`}</TextMinor>
+            <NavLink to={`./bounties/${item.parentBountyId}`}>
+              <TextMinor>{`#${item.parentBountyId}`}</TextMinor>
+            </NavLink>
           </Table.Cell>
         )}
         <Table.Cell className="propose-time-cell">
