@@ -27,7 +27,6 @@ async function handleProposeCurator(call, author, indexer) {
   const updates = {
     meta,
     fee,
-    curator,
     state: {
       indexer,
       state: ChildBountyState.CuratorProposed,
