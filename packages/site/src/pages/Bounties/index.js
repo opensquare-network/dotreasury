@@ -52,10 +52,10 @@ const DEFAULT_QUERY_PAGE = 1;
 
 const TYPES = {
   bounties: "bounties",
-  childBounties: "childbounties",
+  childBounties: "child-bounties",
 };
 
-const Bounties = () => {
+const Bounties = ({ type }) => {
   useChainRoute();
 
   const searchPage = parseInt(useQuery().get("page"));
@@ -69,7 +69,6 @@ const Bounties = () => {
     DEFAULT_PAGE_SIZE
   );
 
-  const [type, setType] = useState(TYPES.bounties);
   const isChildBounties = useMemo(() => type === TYPES.childBounties, [type]);
 
   const dispatch = useDispatch();
@@ -109,7 +108,7 @@ const Bounties = () => {
         <Title
           active={type === TYPES.bounties}
           onClick={() => {
-            setType(TYPES.bounties);
+            history.push("/dot/bounties");
           }}
         >
           Bounties
@@ -117,7 +116,7 @@ const Bounties = () => {
         <Title
           active={type === TYPES.childBounties}
           onClick={() => {
-            setType(TYPES.childBounties);
+            history.push("/dot/child-bounties");
           }}
         >
           Child Bounties

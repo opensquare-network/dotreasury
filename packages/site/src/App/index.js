@@ -75,11 +75,12 @@ export default function App() {
                 path="/:symbol(ksm|dot)/proposals"
                 component={Proposals}
               />
-              <Route
-                exact
-                path="/:symbol(ksm|dot)/bounties"
-                component={Bounties}
-              />
+              <Route exact path="/:symbol(ksm|dot)/bounties">
+                <Bounties type="bounties" />
+              </Route>
+              <Route exact path="/:symbol(ksm|dot)/child-bounties">
+                <Bounties type="child-bounties" />
+              </Route>
               <Route
                 exact
                 path="/:symbol(ksm|dot)/transfers"
@@ -102,7 +103,7 @@ export default function App() {
               />
               <Route
                 exact
-                path="/:symbol(ksm|dot)/childbounties/:bountyIndex"
+                path="/:symbol(ksm|dot)/child-bounties/:bountyIndex"
                 component={ChildBountyDetail}
               />
               <Route exact path="/:symbol(ksm|dot)/burnt" component={Burnt} />

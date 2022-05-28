@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { NavLink, useHistory } from "react-router-dom";
 import dayjs from "dayjs";
@@ -116,6 +116,7 @@ function TableExpandableRow({
   item = {},
   expandable = false,
   isChild = false,
+  showParent = false,
   routable = true,
   symbol,
 }) {
@@ -157,9 +158,11 @@ function TableExpandableRow({
           <TextMinor>{`#${item.bountyIndex}`}</TextMinor>
         </Table.Cell>
         {/* TODO: standalone child bounties table */}
-        {type === "childbounties" && (
+        {type === "child-bounties" && showParent && (
           <Table.Cell className="index-cell">
-            <TextMinor>{`#${item.parentBountyId}`}</TextMinor>
+            <NavLink to={`./bounties/${item.parentBountyId}`}>
+              <TextMinor>{`#${item.parentBountyId}`}</TextMinor>
+            </NavLink>
           </Table.Cell>
         )}
         <Table.Cell className="propose-time-cell">
@@ -206,10 +209,11 @@ function TableExpandableRow({
 
           return (
             <TableExpandableRow
+              type="child-bounties"
+              showParent={false}
               key={childIndex}
               item={item}
               symbol={symbol}
-              type="childbounties"
               expandable
               isChild
             />
@@ -242,7 +246,7 @@ const BountiesTable = ({
                   {expandable && <Table.HeaderCell />}
                   <Table.HeaderCell>Index</Table.HeaderCell>
                   {/* TODO: standalone child bounties table */}
-                  {type === "childbounties" && (
+                  {type === "child-bounties" && (
                     <Table.HeaderCell>Parent</Table.HeaderCell>
                   )}
                   <Table.HeaderCell>Propose Time</Table.HeaderCell>
@@ -262,6 +266,7 @@ const BountiesTable = ({
                     <TableExpandableRow
                       expandable={expandable}
                       isChild={isChild}
+                      showParent={true}
                       routable={routable}
                       type={type}
                       key={index}
