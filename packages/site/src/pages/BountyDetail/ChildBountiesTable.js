@@ -67,7 +67,7 @@ function ChildBountiesTable({ index }) {
     dispatch(
       fetchChildBountiesByParentIndex(chain, index, tablePage - 1, pageSize)
     );
-  }, [dispatch, chain, tablePage, pageSize]);
+  }, [dispatch, chain, index, tablePage, pageSize]);
 
   const totalPages = useMemo(() => {
     return Math.ceil(total / pageSize);
