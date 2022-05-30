@@ -12,7 +12,7 @@ import {
   loadingSelector,
 } from "../../store/reducers/bountySlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
-import { compatChildBountyData } from "../Bounties/utils";
+import { compatChildBountyData } from "../ChildBounties/utils";
 
 const Wrapper = styled.div`
   margin-top: 24px;
