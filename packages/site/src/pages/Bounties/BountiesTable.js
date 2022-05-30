@@ -16,7 +16,7 @@ import ExplorerLink from "../../components/ExplorerLink";
 import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import Card from "../../components/Card";
-import { compatChildBountyData } from "./utils";
+import { compatChildBountyData } from "../ChildBounties/utils";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -98,6 +98,13 @@ const ExpandToggleButton = styled.button`
   justify-content: center;
 `;
 
+const HeaderWrapper = styled.div`
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 const getStateWithVotingAyes = (item) => {
   const state = item.state?.state;
   const isVoting = ["ApproveVoting", "RejectVoting"].includes(state);
@@ -114,11 +121,8 @@ const getStateWithVotingAyes = (item) => {
 function TableExpandableRow({
   type = "",
   item = {},
-  expandable = false,
   isChild = false,
-  showParent = false,
-  routable = true,
-  symbol,
+  symbol = "",
 }) {
   const history = useHistory();
   const [expanded, setExpanded] = useState(false);
@@ -137,34 +141,24 @@ function TableExpandableRow({
   return (
     <>
       <TableRow className={isChild ? "child" : ""} onClick={onClickRow}>
-        {expandable && (
-          <Table.Cell className="">
-            {!!item.childBounties?.length && (
-              <ExpandToggleButton
-                onClick={(event) => {
-                  event.stopPropagation();
-                  setExpanded(!expanded);
-                }}
-              >
-                <img
-                  src={`/imgs/${expanded ? "subtract" : "add"}.svg`}
-                  alt="toggle"
-                />
-              </ExpandToggleButton>
-            )}
-          </Table.Cell>
-        )}
+        <Table.Cell className="">
+          {!!item.childBounties?.length && (
+            <ExpandToggleButton
+              onClick={(event) => {
+                event.stopPropagation();
+                setExpanded(!expanded);
+              }}
+            >
+              <img
+                src={`/imgs/${expanded ? "subtract" : "add"}.svg`}
+                alt="toggle"
+              />
+            </ExpandToggleButton>
+          )}
+        </Table.Cell>
         <Table.Cell className="index-cell">
           <TextMinor>{`#${item.bountyIndex}`}</TextMinor>
         </Table.Cell>
-        {/* TODO: standalone child bounties table */}
-        {type === "child-bounties" && showParent && (
-          <Table.Cell className="index-cell">
-            <NavLink to={`./bounties/${item.parentBountyId}`}>
-              <TextMinor>{`#${item.parentBountyId}`}</TextMinor>
-            </NavLink>
-          </Table.Cell>
-        )}
         <Table.Cell className="propose-time-cell">
           <ProposeTimeWrapper>
             <TextMinor>
@@ -191,15 +185,11 @@ function TableExpandableRow({
         <Table.Cell textAlign={"right"}>
           <CapText>{getStateWithVotingAyes(item)}</CapText>
         </Table.Cell>
-        {routable && (
-          <Table.Cell className="link-cell hidden">
-            {detailRoute && (
-              <NavLink to={detailRoute}>
-                <RightButton />
-              </NavLink>
-            )}
-          </Table.Cell>
-        )}
+        <Table.Cell className="link-cell hidden">
+          <NavLink to={detailRoute}>
+            <RightButton />
+          </NavLink>
+        </Table.Cell>
       </TableRow>
 
       {/* child bounties */}
@@ -210,11 +200,9 @@ function TableExpandableRow({
           return (
             <TableExpandableRow
               type="child-bounties"
-              showParent={false}
               key={childIndex}
               item={item}
               symbol={symbol}
-              expandable
               isChild
             />
           );
@@ -231,24 +219,20 @@ const BountiesTable = ({
   footer,
   rowProps = {},
 }) => {
-  const { expandable = false, isChild = false, routable = true } = rowProps;
+  const { isChild = false } = rowProps;
   const symbol = useSelector(chainSymbolSelector);
 
   return (
     <CardWrapper>
-      {header}
+      {header && <HeaderWrapper>{header}</HeaderWrapper>}
       <Wrapper>
         <TableWrapper>
           <TableLoading loading={loading}>
             <StyledTable unstackable>
               <Table.Header>
                 <Table.Row>
-                  {expandable && <Table.HeaderCell />}
+                  <Table.HeaderCell />
                   <Table.HeaderCell>Index</Table.HeaderCell>
-                  {/* TODO: standalone child bounties table */}
-                  {type === "child-bounties" && (
-                    <Table.HeaderCell>Parent</Table.HeaderCell>
-                  )}
                   <Table.HeaderCell>Propose Time</Table.HeaderCell>
                   <Table.HeaderCell>Curator</Table.HeaderCell>
                   <Table.HeaderCell>Title</Table.HeaderCell>
@@ -256,7 +240,7 @@ const BountiesTable = ({
                   <Table.HeaderCell textAlign={"right"}>
                     Status
                   </Table.HeaderCell>
-                  {routable && <Table.HeaderCell className="hidden" />}
+                  <Table.HeaderCell className="hidden" />
                 </Table.Row>
               </Table.Header>
               <Table.Body>
@@ -264,10 +248,7 @@ const BountiesTable = ({
                   data.length > 0 &&
                   data.map((item, index) => (
                     <TableExpandableRow
-                      expandable={expandable}
                       isChild={isChild}
-                      showParent={true}
-                      routable={routable}
                       type={type}
                       key={index}
                       item={item}
