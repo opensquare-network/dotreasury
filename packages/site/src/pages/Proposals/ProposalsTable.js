@@ -16,7 +16,7 @@ import ExplorerLink from "../../components/ExplorerLink";
 import TableNoDataCell from "../../components/TableNoDataCell";
 import RelatedLInks from "../../components/RelatedLinks";
 import { useSelector } from "react-redux";
-import { chainSymbolSelector } from "../../store/reducers/chainSlice";
+import { chainSelector, chainSymbolSelector } from "../../store/reducers/chainSlice";
 import Card from "../../components/Card";
 import BeneficiaryContent from "./BeneficiaryContent";
 import DescriptionCell from "./DescriptionCell";
@@ -100,12 +100,24 @@ const getStateWithVotingAyes = (item) => {
 const ProposalsTable = ({ data, loading, header, footer }) => {
   const history = useHistory();
   const symbol = useSelector(chainSymbolSelector);
+  const chain = useSelector(chainSelector);
   const [isBeneficiary, setIsBeneficiary] = useState(true);
 
   const onClickRow = (proposalIndex) => {
     if (window.innerWidth < 1140) {
       history.push(`/${symbol.toLowerCase()}/proposals/${proposalIndex}`);
     }
+  };
+
+  const getLinks = (item) => {
+    const links = [...item.links];
+    if (chain === "kusama") {
+      links.unshift({
+        link: `https://${chain}.subsquare.io/treasury/proposal/${item.proposalIndex}`,
+        description: "Treasury proposal page",
+      });
+    }
+    return links;
   };
 
   return (
@@ -187,7 +199,7 @@ const ProposalsTable = ({ data, loading, header, footer }) => {
                         <DescriptionCell description={item.description} tags={item.tags} />
                       </Table.Cell>
                       <Table.Cell className="proposal-related-links-cell">
-                        <RelatedLInks links={item.links} />
+                        <RelatedLInks links={getLinks(item)} />
                       </Table.Cell>
                       <Table.Cell
                         className="proposal-value-cell"
