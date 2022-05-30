@@ -13,6 +13,7 @@ import RelatedLinks from "../../components/RelatedLinks";
 import { useIsMounted } from "../../utils/hooks";
 import polkaassemblyApi from "../../services/polkassembly";
 import { proposalDetailSelector } from "../../store/reducers/proposalSlice";
+import { chainSelector } from "../../store/reducers/chainSlice";
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -23,6 +24,7 @@ const FlexWrapper = styled.div`
 `;
 
 const ProposalLifeCycleTable = ({ loading }) => {
+  const chain = useSelector(chainSelector);
   const proposalDetail = useSelector(proposalDetailSelector);
   const [proposalUrl, setProposalUrl] = useState(null);
   const isMounted = useIsMounted();
@@ -41,6 +43,20 @@ const ProposalLifeCycleTable = ({ loading }) => {
       }
     })();
   }, [proposalDetail, isMounted]);
+
+  const links = [];
+  if (chain === "kusama") {
+    links.push({
+      link: `https://${chain}.subsquare.io/treasury/proposal/${proposalDetail.proposalIndex}`,
+      description: "Treasury proposal discusssion",
+    });
+  }
+  if (proposalUrl) {
+    links.push({
+      link: proposalUrl,
+      description: "Treasury proposal discusssion",
+    });
+  }
 
   return (
     <TableLoading loading={loading}>
@@ -79,18 +95,11 @@ const ProposalLifeCycleTable = ({ loading }) => {
               </TableCell>
             </Table.Cell>
           </Table.Row>
-          {proposalUrl && (
+          {links.length && (
             <Table.Row>
               <Table.Cell>
                 <TableCell title="Proposal Page">
-                  <RelatedLinks
-                    links={[
-                      {
-                        link: proposalUrl,
-                        description: "Treasury proposal discusssion",
-                      },
-                    ]}
-                  />
+                  <RelatedLinks links={links} />
                 </TableCell>
               </Table.Cell>
             </Table.Row>
