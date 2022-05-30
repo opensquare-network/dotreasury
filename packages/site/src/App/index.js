@@ -16,6 +16,7 @@ import Footer from "../pages/Footer";
 import Tips from "../pages/Tips";
 import Proposals from "../pages/Proposals";
 import Bounties from "../pages/Bounties";
+import ChildBounties from "../pages/ChildBounties";
 import Burnt from "../pages/Burnt";
 import TipDetail from "../pages/TipDetail";
 import ProposalDetail from "../pages/ProposalDetail";
@@ -75,12 +76,16 @@ export default function App() {
                 path="/:symbol(ksm|dot)/proposals"
                 component={Proposals}
               />
-              <Route exact path="/:symbol(ksm|dot)/bounties">
-                <Bounties type="bounties" />
-              </Route>
-              <Route exact path="/:symbol(ksm|dot)/child-bounties">
-                <Bounties type="child-bounties" />
-              </Route>
+              <Route
+                exact
+                path="/:symbol(ksm|dot)/bounties"
+                component={Bounties}
+              />
+              <Route
+                exact
+                path="/:symbol(ksm|dot)/child-bounties"
+                component={ChildBounties}
+              />
               <Route
                 exact
                 path="/:symbol(ksm|dot)/transfers"

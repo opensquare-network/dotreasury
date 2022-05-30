@@ -1,24 +1,25 @@
 // @ts-check
 import React, { useEffect, useMemo, useState } from "react";
 
-import Nav from "./Nav";
-import Pagination from "./Pagination";
-import BountiesTable from "./BountiesTable";
+import Pagination from "../Bounties/Pagination";
+import Nav from "../Bounties/Nav";
+import ChildBountiesTable from "./ChildBountiesTable";
 import { useDispatch, useSelector } from "react-redux";
 import { useChainRoute, useQuery, useLocalStorage } from "../../utils/hooks";
 
 import {
-  fetchBounties,
+  fetchChildBounties,
+  childBountyListSelector,
   loadingSelector,
-  bountyListSelector,
 } from "../../store/reducers/bountySlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
+import { compatChildBountyData } from "./utils";
 
 const DEFAULT_PAGE_SIZE = 20;
 const DEFAULT_QUERY_PAGE = 1;
 const QUERY_PAGE_KEY = "page";
 
-const Bounties = () => {
+const ChildBounties = () => {
   useChainRoute();
 
   const searchPage = parseInt(useQuery().get(QUERY_PAGE_KEY));
@@ -33,23 +34,25 @@ const Bounties = () => {
   );
 
   const dispatch = useDispatch();
-  const { items: bounties, total: bountiesTotal } =
-    useSelector(bountyListSelector);
+  const { items: childBounties, total } = useSelector(childBountyListSelector);
   const loading = useSelector(loadingSelector);
   const chain = useSelector(chainSelector);
 
   useEffect(() => {
-    dispatch(fetchBounties(chain, tablePage - 1, pageSize));
+    dispatch(fetchChildBounties(chain, tablePage - 1, pageSize));
   }, [dispatch, chain, tablePage, pageSize]);
 
   const totalPages = useMemo(
-    () => Math.ceil(bountiesTotal / pageSize),
-    [bountiesTotal, pageSize]
+    () => Math.ceil(total / pageSize),
+    [total, pageSize]
   );
 
-  const tableData = useMemo(() => bounties, [bounties]);
+  const tableData = useMemo(
+    () => childBounties.map(compatChildBountyData),
+    [childBounties]
+  );
 
-  const header = <Nav active="Bounties" />;
+  const header = <Nav active="Child Bounties" />;
 
   const footer = (
     <Pagination
@@ -64,7 +67,7 @@ const Bounties = () => {
   );
 
   return (
-    <BountiesTable
+    <ChildBountiesTable
       data={tableData}
       loading={loading}
       header={header}
@@ -73,4 +76,4 @@ const Bounties = () => {
   );
 };
 
-export default Bounties;
+export default ChildBounties;

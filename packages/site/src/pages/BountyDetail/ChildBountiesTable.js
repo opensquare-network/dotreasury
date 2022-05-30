@@ -1,9 +1,9 @@
 import { Label } from "semantic-ui-react";
 import styled from "styled-components";
-import BountiesTable from "../Bounties/BountiesTable";
+import ChildBountiesTable from "../ChildBounties/ChildBountiesTable";
 import { PRIMARY_THEME_COLOR, SECONDARY_THEME_COLOR } from "../../constants";
-import ResponsivePagination from "../../components/ResponsivePagination";
-import { useQuery, useLocalStorage } from "../../utils/hooks";
+import Pagination from "../Bounties/Pagination";
+import { useLocalStorage } from "../../utils/hooks";
 import { useEffect, useMemo, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -12,7 +12,7 @@ import {
   loadingSelector,
 } from "../../store/reducers/bountySlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
-import { compatChildBountyData } from "../Bounties/utils";
+import { compatChildBountyData } from "../ChildBounties/utils";
 
 const Wrapper = styled.div`
   margin-top: 24px;
@@ -20,7 +20,6 @@ const Wrapper = styled.div`
 
 const Header = styled.div`
   max-width: 100%;
-  padding: 20px 24px;
   font-weight: bold;
   font-size: 16px;
   line-height: 24px;
@@ -40,18 +39,11 @@ const Header = styled.div`
 `;
 
 const DEFAULT_PAGE_SIZE = 20;
-const DEFAULT_QUERY_PAGE = 1;
-const PAGE_KEY = "child-bounties-page";
 
-function ChildBountiesTable({ index }) {
+function ChildTable({ index }) {
   const dispatch = useDispatch();
 
-  const searchPage = parseInt(useQuery().get(PAGE_KEY));
-  const queryPage =
-    searchPage && !isNaN(searchPage) && searchPage > 0
-      ? searchPage
-      : DEFAULT_QUERY_PAGE;
-  const [tablePage, setTablePage] = useState(queryPage);
+  const [tablePage, setTablePage] = useState(1);
   const [pageSize, setPageSize] = useLocalStorage(
     "bountiesDetailChildBountiesPageSize",
     DEFAULT_PAGE_SIZE
@@ -85,31 +77,28 @@ function ChildBountiesTable({ index }) {
   );
 
   const footer = (
-    <ResponsivePagination
-      activePage={tablePage}
+    <Pagination
+      page={tablePage}
+      setPage={setTablePage}
       totalPages={totalPages}
       pageSize={pageSize}
-      setPageSize={(pageSize) => {
-        setTablePage(DEFAULT_QUERY_PAGE);
-        setPageSize(pageSize);
-      }}
-      onPageChange={(_, { activePage }) => {
-        setTablePage(activePage);
-      }}
+      setPageSize={setPageSize}
+      persist={false}
     />
   );
 
   return (
     <Wrapper>
-      <BountiesTable
+      <ChildBountiesTable
+        showNavigation={false}
+        showParent={false}
         loading={loading}
         data={tableData}
         header={header}
         footer={footer}
-        rowProps={{ routable: false }}
       />
     </Wrapper>
   );
 }
 
-export default ChildBountiesTable;
+export default ChildTable;
