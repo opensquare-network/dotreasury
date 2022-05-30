@@ -11,6 +11,7 @@ function Pagination({
   setPageSize,
   pageKey = "page",
   defaultQueryPage,
+  persist = true,
 }) {
   const history = useHistory();
   return (
@@ -21,17 +22,21 @@ function Pagination({
       setPageSize={(pageSize) => {
         setPage(defaultQueryPage);
         setPageSize(pageSize);
-        history.push({
-          search: null,
-        });
+        if (persist) {
+          history.push({
+            search: null,
+          });
+        }
       }}
       onPageChange={(_, { activePage }) => {
-        history.push({
-          search:
-            activePage === defaultQueryPage
-              ? null
-              : `?${pageKey}=${activePage}`,
-        });
+        if (persist) {
+          history.push({
+            search:
+              activePage === defaultQueryPage
+                ? null
+                : `?${pageKey}=${activePage}`,
+          });
+        }
         setPage(activePage);
       }}
     />
