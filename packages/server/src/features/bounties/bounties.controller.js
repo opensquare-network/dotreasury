@@ -64,8 +64,17 @@ class BountiesController {
         {
           $lookup: {
             from: "childBounty",
-            localField: "bountyIndex",
-            foreignField: "parentBountyId",
+            let: { bountyIndex: "$bountyIndex" },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $eq: ["$parentBountyId", "$$bountyIndex"],
+                  }
+                }
+              },
+              { $sort: { index: -1 } }
+            ],
             as: "childBounties",
           }
         },
