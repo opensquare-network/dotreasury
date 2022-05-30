@@ -104,7 +104,13 @@ const getStateWithVotingAyes = (item) => {
   return state;
 };
 
-function TableExpandableRow({ type = "", item = {}, routable = true, symbol }) {
+function TableExpandableRow({
+  type = "",
+  item = {},
+  showNavigation = true,
+  showParent = true,
+  symbol,
+}) {
   const history = useHistory();
 
   const detailRoute = `/${symbol.toLowerCase()}/${type}/${item.bountyIndex}`;
@@ -120,11 +126,13 @@ function TableExpandableRow({ type = "", item = {}, routable = true, symbol }) {
         <Table.Cell className="index-cell">
           <TextMinor>{`#${item.bountyIndex}`}</TextMinor>
         </Table.Cell>
-        <Table.Cell className="index-cell">
-          <NavLink to={`./bounties/${item.parentBountyId}`}>
-            <TextMinor>{`#${item.parentBountyId}`}</TextMinor>
-          </NavLink>
-        </Table.Cell>
+        {showParent && (
+          <Table.Cell className="index-cell">
+            <NavLink to={`./bounties/${item.parentBountyId}`}>
+              <TextMinor>{`#${item.parentBountyId}`}</TextMinor>
+            </NavLink>
+          </Table.Cell>
+        )}
         <Table.Cell className="propose-time-cell">
           <ProposeTimeWrapper>
             <TextMinor>
@@ -151,7 +159,7 @@ function TableExpandableRow({ type = "", item = {}, routable = true, symbol }) {
         <Table.Cell textAlign={"right"}>
           <CapText>{getStateWithVotingAyes(item)}</CapText>
         </Table.Cell>
-        {routable && (
+        {showNavigation && (
           <Table.Cell className="link-cell hidden">
             {detailRoute && (
               <NavLink to={detailRoute}>
@@ -165,8 +173,14 @@ function TableExpandableRow({ type = "", item = {}, routable = true, symbol }) {
   );
 }
 
-const BountiesTable = ({ data, loading, header, footer, rowProps = {} }) => {
-  const { routable = true } = rowProps;
+const BountiesTable = ({
+  data,
+  loading,
+  header,
+  footer,
+  showNavigation = true,
+  showParent = true,
+}) => {
   const symbol = useSelector(chainSymbolSelector);
 
   return (
@@ -179,7 +193,7 @@ const BountiesTable = ({ data, loading, header, footer, rowProps = {} }) => {
               <Table.Header>
                 <Table.Row>
                   <Table.HeaderCell>Index</Table.HeaderCell>
-                  <Table.HeaderCell>Parent</Table.HeaderCell>
+                  {showParent && <Table.HeaderCell>Parent</Table.HeaderCell>}
                   <Table.HeaderCell>Propose Time</Table.HeaderCell>
                   <Table.HeaderCell>Curator</Table.HeaderCell>
                   <Table.HeaderCell>Title</Table.HeaderCell>
@@ -187,7 +201,7 @@ const BountiesTable = ({ data, loading, header, footer, rowProps = {} }) => {
                   <Table.HeaderCell textAlign={"right"}>
                     Status
                   </Table.HeaderCell>
-                  {routable && <Table.HeaderCell className="hidden" />}
+                  {showNavigation && <Table.HeaderCell className="hidden" />}
                 </Table.Row>
               </Table.Header>
               <Table.Body>
@@ -195,11 +209,12 @@ const BountiesTable = ({ data, loading, header, footer, rowProps = {} }) => {
                   data.length > 0 &&
                   data.map((item, index) => (
                     <TableExpandableRow
-                      routable={routable}
+                      showNavigation={showNavigation}
                       type="child-bounties"
                       key={index}
                       item={item}
                       symbol={symbol}
+                      showParent={showParent}
                     />
                   ))) || <TableNoDataCell />}
               </Table.Body>
