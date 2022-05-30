@@ -18,7 +18,7 @@ const DEFAULT_PAGE_SIZE = 20;
 const DEFAULT_QUERY_PAGE = 1;
 const QUERY_PAGE_KEY = "page";
 
-const Bounties = ({ type }) => {
+const Bounties = () => {
   useChainRoute();
 
   const searchPage = parseInt(useQuery().get(QUERY_PAGE_KEY));
@@ -65,7 +65,6 @@ const Bounties = ({ type }) => {
 
   return (
     <BountiesTable
-      type={type}
       data={tableData}
       loading={loading}
       header={header}

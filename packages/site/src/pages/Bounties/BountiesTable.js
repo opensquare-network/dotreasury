@@ -211,14 +211,7 @@ function TableExpandableRow({
   );
 }
 
-const BountiesTable = ({
-  type = "",
-  data,
-  loading,
-  header,
-  footer,
-  rowProps = {},
-}) => {
+const BountiesTable = ({ data, loading, header, footer, rowProps = {} }) => {
   const { isChild = false } = rowProps;
   const symbol = useSelector(chainSymbolSelector);
 
@@ -249,7 +242,7 @@ const BountiesTable = ({
                   data.map((item, index) => (
                     <TableExpandableRow
                       isChild={isChild}
-                      type={type}
+                      type="bounties"
                       key={index}
                       item={item}
                       symbol={symbol}
