@@ -111,7 +111,7 @@ const BountiesTable = ({ data, loading, header, footer }) => {
       cellRender: (value) => <TextMinor>#{value}</TextMinor>,
     },
     {
-      key: "proposeTime",
+      key: "propose-time",
       title: "Propose Time",
       cellClassName: "propose-time-cell",
       cellRender: (_, item) => (
@@ -160,7 +160,7 @@ const BountiesTable = ({ data, loading, header, footer }) => {
       ),
     },
     {
-      key: "navigation",
+      key: "navigate-button",
       title: "",
       cellClassName: "link-cell hidden",
       cellRender: (_, item) => {
