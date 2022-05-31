@@ -62,7 +62,7 @@ export const DEFAULT_KUSAMA_NODES = [
   {
     name: "RadiumBlock",
     url: "wss://kusama.public.curie.radiumblock.co/ws",
-  }
+  },
 ];
 
 export const DEFAULT_POLKADOT_NODE_URL = "wss://rpc.polkadot.io/";
@@ -85,3 +85,5 @@ export const CHAINS = {
   POLKADOT: "dot",
   KUSAMA: "ksm",
 };
+
+export const DEFAULT_PAGE_SIZE = 20;
