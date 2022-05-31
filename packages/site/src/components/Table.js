@@ -3,6 +3,7 @@ import { Table as SemanticTable } from "semantic-ui-react";
 import _get from "lodash.get";
 import Text from "./Text";
 import { useEffect, useState } from "react";
+import TableNoDataCell from "./TableNoDataCell";
 
 const CustomTable = styled(SemanticTable)`
   overflow: hidden !important;
@@ -247,19 +248,23 @@ export function Table({
       </TableHeader>
 
       <TableBody>
-        {data.map((item, index) => {
-          return (
-            <TableBodyRow
-              key={index}
-              onClick={onRowClick}
-              item={item}
-              columns={columns}
-              tree={tree}
-              treeKey={treeKey}
-              treeDataTransform={treeDataTransform}
-            />
-          );
-        })}
+        {data.length ? (
+          data.map((item, index) => {
+            return (
+              <TableBodyRow
+                key={index}
+                onClick={onRowClick}
+                item={item}
+                columns={columns}
+                tree={tree}
+                treeKey={treeKey}
+                treeDataTransform={treeDataTransform}
+              />
+            );
+          })
+        ) : (
+          <TableNoDataCell />
+        )}
       </TableBody>
     </CustomTable>
   );
