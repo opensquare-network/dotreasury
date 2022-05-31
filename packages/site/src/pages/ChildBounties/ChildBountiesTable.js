@@ -37,7 +37,13 @@ const HeaderWrapper = styled.div`
   align-items: center;
 `;
 
-const ChildBountiesTable = ({ data, loading, header, footer }) => {
+const ChildBountiesTable = ({
+  data,
+  loading,
+  header,
+  footer,
+  showParent = true,
+}) => {
   const symbol = useSelector(chainSymbolSelector);
   const history = useHistory();
 
@@ -50,18 +56,20 @@ const ChildBountiesTable = ({ data, loading, header, footer }) => {
     }
   };
 
-  // next to `index`
-  columns.splice(1, 0, {
-    key: "parent",
-    title: "Parent",
-    dataIndex: "parentBountyId",
-    cellProps: "index-cell",
-    cellRender: (value) => (
-      <NavLink to={`./bounties/${value}`}>
-        <TextMinor>{`#${value}`}</TextMinor>
-      </NavLink>
-    ),
-  });
+  if (showParent) {
+    // next to `index`
+    columns.splice(1, 0, {
+      key: "parent",
+      title: "Parent",
+      dataIndex: "parentBountyId",
+      cellProps: "index-cell",
+      cellRender: (value) => (
+        <NavLink to={`./bounties/${value}`}>
+          <TextMinor>{`#${value}`}</TextMinor>
+        </NavLink>
+      ),
+    });
+  }
 
   return (
     <CardWrapper>
