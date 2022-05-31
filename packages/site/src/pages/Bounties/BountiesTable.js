@@ -4,12 +4,11 @@ import { useHistory } from "react-router-dom";
 
 import { Table } from "../../components/Table";
 import TableLoading from "../../components/TableLoading";
-import TableNoDataCell from "../../components/TableNoDataCell";
 import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import Card from "../../components/Card";
 import { compatChildBountyData } from "../ChildBounties/utils";
-import { useColumns } from "./columns";
+import { useColumns } from "./tableColumns";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -57,7 +56,7 @@ const BountiesTable = ({ data, loading, header, footer }) => {
       <Wrapper>
         <TableWrapper>
           <TableLoading loading={loading}>
-            {(data && data.length > 0 && (
+            {data && (
               <Table
                 tree
                 treeKey="childBounties"
@@ -66,7 +65,7 @@ const BountiesTable = ({ data, loading, header, footer }) => {
                 data={data}
                 onRowClick={onRowClick}
               />
-            )) || <TableNoDataCell />}
+            )}
           </TableLoading>
         </TableWrapper>
       </Wrapper>
