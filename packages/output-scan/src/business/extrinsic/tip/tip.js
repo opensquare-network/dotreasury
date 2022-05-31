@@ -1,8 +1,10 @@
 const {
-  TipMethods,
-  Modules,
-  TimelineItemTypes,
-} = require("../../common/constants");
+  consts: {
+    TipMethods,
+    Modules,
+    TimelineItemTypes,
+  }
+} = require("@osn/scan-common")
 const { updateTipByHash } = require("../../../mongo/service/tip");
 const { getTipCommonUpdates } = require("../../common/tip/updates");
 

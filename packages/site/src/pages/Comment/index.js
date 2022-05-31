@@ -74,8 +74,7 @@ const Comment = ({ type, index }) => {
 
   useDeepCompareEffect(() => {
     (async () => {
-      if (!index) return;
-
+      if (isNaN(parseInt(index))) return;
       setLoadingList(true);
       try {
         await dispatch(

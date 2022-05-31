@@ -2,9 +2,12 @@ require("dotenv").config();
 
 const { beginScan } = require("./scan");
 const {
-  disconnect, chainHeight: { subscribeChainHeight },
-  specs: { updateSpecs, checkSpecs }
-} = require("@dotreasury/common");
+  chain: {
+    disconnect,
+    subscribeChainHeight,
+    updateSpecs, checkSpecs,
+  },
+} = require("@osn/scan-common");
 
 async function main() {
   await subscribeChainHeight();

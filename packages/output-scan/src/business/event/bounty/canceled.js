@@ -2,9 +2,11 @@ const { updateBounty } = require("../../../mongo/service/bounty");
 const { getRealCaller } = require("../../../utils/call");
 const { getBountyMetaByHeight } = require("../../common/bounty/meta");
 const {
-  TimelineItemTypes,
-  BountyStatus,
-} = require("../../common/constants");
+  consts: {
+    TimelineItemTypes,
+    BountyStatus,
+  }
+} = require("@osn/scan-common");
 
 async function handleBountyCanceled(event, extrinsic, indexer) {
   const eventData = event.data.toJSON();

@@ -1,6 +1,11 @@
 const { getNowIncomeSeats } = require("../mongo/scanHeight");
 const { handleEvents } = require("../business/event");
-const { getBlockIndexer, utils: { bigAdds, bigAdd } } = require("@dotreasury/common");
+const {
+  chain: {
+    getBlockIndexer,
+  },
+  utils: { bigAdds, bigAdd }
+} = require("@osn/scan-common");
 
 async function scanNormalizedBlock(block, blockEvents) {
   const blockIndexer = getBlockIndexer(block);

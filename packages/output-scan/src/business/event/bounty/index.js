@@ -4,9 +4,11 @@ const { handleBountyCanceled } = require("./canceled");
 const { handleBountyClaimed } = require("./claimed");
 const { handleBountyRejected } = require("./rejected");
 const {
-  Modules,
-  BountyEvents,
-} = require("../../common/constants");
+  consts: {
+    Modules,
+    BountyEvents,
+  }
+} = require("@osn/scan-common")
 const { handleProposed, } = require("./proposed");
 const { handleBountyAwarded } = require("./awarded")
 

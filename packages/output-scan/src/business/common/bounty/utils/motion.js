@@ -1,7 +1,9 @@
 const {
-  Modules,
-  BountyMethods,
-} = require("../../../common/constants");
+  consts: {
+    Modules,
+    BountyMethods,
+  }
+} = require("@osn/scan-common")
 
 function isStateChangeBountyMotion(method) {
   return [

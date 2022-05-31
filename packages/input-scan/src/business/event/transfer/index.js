@@ -1,10 +1,12 @@
 const { getIncomeTransferCollection } = require("../../../mongo/data");
 const {
-  Modules,
-  BalancesEvents,
-  KsmTreasuryAccount,
-  DotTreasuryAccount,
-} = require("../../common/constants")
+  consts: {
+    Modules,
+    BalancesEvents,
+    KsmTreasuryAccount,
+    DotTreasuryAccount,
+  }
+} = require("@osn/scan-common");
 
 async function handleTransfer(event, indexer,) {
   const { section, method, } = event;

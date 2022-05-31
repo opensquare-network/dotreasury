@@ -56,19 +56,23 @@ class AuthController {
     const verifyToken = randomBytes(12).toString("hex");
 
     const now = new Date();
-    const result = await userCol.insertOne({
+    const user = {
       username,
       email,
       hashedPassword,
       verifyToken,
       createdAt: now,
-    });
+    };
+    const result = await userCol.insertOne(user);
 
-    if (!result.result.ok) {
+    if (!result.acknowledged) {
       throw new HttpError(500, "Signup error, cannot create user.");
     }
 
-    const insertedUser = result.ops[0];
+    const insertedUser = {
+      _id: result.insertedId,
+      ...user,
+    };
     const accessToken = await authService.getSignedToken(insertedUser);
     const refreshToken = await authService.getRefreshToken(insertedUser);
 
@@ -115,11 +119,11 @@ class AuthController {
       }
     );
 
-    if (!result.result.ok) {
+    if (!result.acknowledged) {
       throw new HttpError(500, "Db error: email verification.");
     }
 
-    if (result.result.nModified === 0) {
+    if (result.modifiedCount === 0) {
       throw new HttpError(500, "Failed to verify email.");
     }
 
@@ -195,22 +199,21 @@ class AuthController {
     }
 
     const attemptCol = await getAttemptCollection();
-    const result = await attemptCol.insertOne({
+    const attempt = {
       type: "login",
       userId: user._id,
       address,
       challenge: randomBytes(12).toString("hex"),
       createdAt: new Date(),
-    });
+    };
+    const result = await attemptCol.insertOne(attempt);
 
-    if (!result.result.ok) {
+    if (!result.acknowledged) {
       throw new HttpError(500, "Db error: start address login.");
     }
 
-    const attempt = result.ops[0];
-
     ctx.body = {
-      attemptId: attempt._id,
+      attemptId: result.insertedId,
       challenge: attempt.challenge,
     };
   }
@@ -293,11 +296,11 @@ class AuthController {
       }
     );
 
-    if (!result.result.ok) {
+    if (!result.acknowledged) {
       throw new HttpError(500, "Db error: request password reset.");
     }
 
-    if (result.result.nModified === 0) {
+    if (result.modifiedCount === 0) {
       throw new HttpError(500, "Failed to request password reset.");
     }
 
@@ -358,11 +361,11 @@ class AuthController {
       }
     );
 
-    if (!result.result.ok) {
+    if (!result.acknowledged) {
       throw new HttpError(500, "Db error: request password reset.");
     }
 
-    if (result.result.nModified === 0) {
+    if (result.modifiedCount === 0) {
       throw new HttpError(500, "Failed to reset password.");
     }
 

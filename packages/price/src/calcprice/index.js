@@ -58,6 +58,7 @@ async function main() {
       getTipCollection,
       getProposalCollection,
       getBountyCollection,
+      getChildBountyCollection,
     } = DB(dbUrl, dbName);
 
     const tipCol = await getTipCollection();
@@ -68,6 +69,9 @@ async function main() {
 
     const bountyCol = await getBountyCollection();
     await savePrice(chain, bountyCol);
+
+    const childBountyCol = await getChildBountyCollection();
+    await savePrice(chain, childBountyCol);
 
     console.log("Update price successful:", dbName);
   }

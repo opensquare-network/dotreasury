@@ -4,9 +4,9 @@ const { updateScanHeight } = require("../mongo/scanHeight");
 const { getNextKnownHeights } = require("../mongo/service/known");
 const {
   logger,
-  fetchBlocks, getBlockIndexer,
+  chain: { fetchBlocks, getBlockIndexer },
   utils: { sleep },
-} = require("@dotreasury/common");
+} = require("@osn/scan-common");
 const last = require("lodash.last");
 const { tryCreateStatPoint } = require("../stats");
 

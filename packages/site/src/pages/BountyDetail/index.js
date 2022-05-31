@@ -30,6 +30,7 @@ import {
 } from "../../store/reducers/chainSlice";
 import DetailGoBack from "../components/DetailGoBack";
 import { useChainRoute } from "../../utils/hooks";
+import ChildBountiesTable from "./ChildBountiesTable";
 
 const ValueWrapper = styled.span`
   margin-right: 4px;
@@ -65,7 +66,7 @@ function mergeExtrinsicsAndMotions(timelineItems, motions) {
   return result;
 }
 
-function processTimeline(bountyDetail, scanHeight, symbol) {
+export function processTimeline(bountyDetail, scanHeight, symbol) {
   return mergeExtrinsicsAndMotions(
     bountyDetail.timeline || [],
     bountyDetail.motions || []
@@ -75,11 +76,11 @@ function processTimeline(bountyDetail, scanHeight, symbol) {
           index: motion.index,
           defaultUnfold: !motion.isFinal,
           subTimeline: (motion.timeline || []).map((item) => ({
-            name:
-              ["Propose", "Proposed"].includes(item.method)
-                ? `Motion #${motion.index}`
-                : item.method,
-            extrinsicIndexer: item.type === "extrinsic" ? item.indexer : undefined,
+            name: ["Propose", "Proposed"].includes(item.method)
+              ? `Motion #${motion.index}`
+              : item.method,
+            extrinsicIndexer:
+              item.type === "extrinsic" ? item.indexer : undefined,
             eventIndexer: item.type === "event" ? item.indexer : undefined,
             fields: (() => {
               if (item.method === "Proposed") {
@@ -128,7 +129,12 @@ function processTimeline(bountyDetail, scanHeight, symbol) {
                     value: (
                       <Proposer
                         address={proposer}
-                        agree={motion.isFinal && motion.timeline.some(item => item.method === "Approved")}
+                        agree={
+                          motion.isFinal &&
+                          motion.timeline.some(
+                            (item) => item.method === "Approved"
+                          )
+                        }
                         value={motion.motionInfo?.method}
                         args={argItems}
                         threshold={threshold}
@@ -178,15 +184,34 @@ function processTimeline(bountyDetail, scanHeight, symbol) {
                 value: description,
               },
             ];
-          } else if (item.name === "acceptCurator") {
-            const { caller } = item.args;
+          } else if (item.name === "proposeCurator") {
+            const { curator, fee } = item.args;
             fields = [
               {
                 title: "Curator",
-                value: <User address={caller} />,
+                value: <User address={curator} />,
+              },
+              {
+                title: "Fee",
+                value: <Balance value={fee} currency={symbol} />,
               },
             ];
-          } else if (item.name === "BountyAwarded") {
+          } else if (item.name === "acceptCurator") {
+            const { caller, curator, deposit } = item.args;
+            fields = [
+              {
+                title: "Curator",
+                value: <User address={caller ?? curator} />,
+              },
+            ];
+
+            if (typeof deposit !== 'undefined') {
+              fields.push({
+                title: "Deposit",
+                value: <Balance value={ deposit } currency={ symbol }/>,
+              })
+            }
+          } else if (item.name === "BountyAwarded" || item.name === "Awarded") {
             const { beneficiary } = item.args || {};
             fields = [
               {
@@ -226,10 +251,35 @@ function processTimeline(bountyDetail, scanHeight, symbol) {
                 value: <User address={claimer} />,
               },
             ];
+          } else if (item.name === "Added") {
+            const { description, value } = item.args;
+            fields = [
+              {
+                title: "Title",
+                value: description,
+              },
+              {
+                title: "Value",
+                value: <Balance value={value} currency={symbol} />,
+              },
+            ];
+          } else if (item.name === "Canceled") {
+            const { beneficiary, payout } = item.args;
+            fields = [
+              {
+                title: "Beneficiary",
+                value: <User address={beneficiary} />,
+              },
+              {
+                title: "Payout",
+                value: <Balance value={payout} currency={symbol} />,
+              },
+            ];
           }
 
           return {
-            extrinsicIndexer: item.type === "extrinsic" ? item.indexer : undefined,
+            extrinsicIndexer:
+              item.type === "extrinsic" ? item.indexer : undefined,
             eventIndexer: item.type === "event" ? item.indexer : undefined,
             name: item.name,
             fields,
@@ -271,6 +321,9 @@ const BountyDetail = () => {
         <BountyLifeCycleTable loading={loadingBountyDetail} />
         <RelatedLinks type="bounty" index={parseInt(bountyIndex)} />
       </DetailTableWrapper>
+
+      <ChildBountiesTable index={parseInt(bountyIndex)} />
+
       <TimelineCommentWrapper>
         <Timeline data={timelineData} loading={loadingBountyDetail} />
         <Comment type="bounty" index={parseInt(bountyIndex)} />

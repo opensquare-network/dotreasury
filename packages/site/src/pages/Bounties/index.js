@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+// @ts-check
+import React, { useEffect, useMemo, useState } from "react";
 
-import ResponsivePagination from "../../components/ResponsivePagination";
+import Nav from "./Nav";
+import Pagination from "./Pagination";
 import BountiesTable from "./BountiesTable";
 import { useDispatch, useSelector } from "react-redux";
 import { useChainRoute, useQuery, useLocalStorage } from "../../utils/hooks";
-import { useHistory } from "react-router";
 
 import {
   fetchBounties,
@@ -13,28 +13,15 @@ import {
   bountyListSelector,
 } from "../../store/reducers/bountySlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
-import Text from "../../components/Text";
-
-const HeaderWrapper = styled.div`
-  padding: 20px 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const Title = styled(Text)`
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 700;
-`;
 
 const DEFAULT_PAGE_SIZE = 20;
 const DEFAULT_QUERY_PAGE = 1;
+const QUERY_PAGE_KEY = "page";
 
 const Bounties = () => {
   useChainRoute();
 
-  const searchPage = parseInt(useQuery().get("page"));
+  const searchPage = parseInt(useQuery().get(QUERY_PAGE_KEY));
   const queryPage =
     searchPage && !isNaN(searchPage) && searchPage > 0
       ? searchPage
@@ -46,8 +33,8 @@ const Bounties = () => {
   );
 
   const dispatch = useDispatch();
-  const history = useHistory();
-  const { items: bounties, total } = useSelector(bountyListSelector);
+  const { items: bounties, total: bountiesTotal } =
+    useSelector(bountyListSelector);
   const loading = useSelector(loadingSelector);
   const chain = useSelector(chainSelector);
 
@@ -55,43 +42,34 @@ const Bounties = () => {
     dispatch(fetchBounties(chain, tablePage - 1, pageSize));
   }, [dispatch, chain, tablePage, pageSize]);
 
-  const totalPages = Math.ceil(total / pageSize);
+  const totalPages = useMemo(
+    () => Math.ceil(bountiesTotal / pageSize),
+    [bountiesTotal, pageSize]
+  );
+
+  const tableData = useMemo(() => bounties, [bounties]);
+
+  const header = <Nav active="Bounties" />;
+
+  const footer = (
+    <Pagination
+      page={tablePage}
+      setPage={setTablePage}
+      totalPages={totalPages}
+      pageSize={pageSize}
+      setPageSize={setPageSize}
+      pageKey={QUERY_PAGE_KEY}
+      defaultQueryPage={DEFAULT_QUERY_PAGE}
+    />
+  );
 
   return (
-    <>
-      <BountiesTable
-        data={bounties}
-        loading={loading}
-        header={
-          <HeaderWrapper>
-            <Title>Bounties</Title>
-          </HeaderWrapper>
-        }
-        footer={
-          <ResponsivePagination
-            activePage={tablePage}
-            totalPages={totalPages}
-            pageSize={pageSize}
-            setPageSize={(pageSize) => {
-              setTablePage(DEFAULT_QUERY_PAGE);
-              setPageSize(pageSize);
-              history.push({
-                search: null,
-              });
-            }}
-            onPageChange={(_, { activePage }) => {
-              history.push({
-                search:
-                  activePage === DEFAULT_QUERY_PAGE
-                    ? null
-                    : `?page=${activePage}`,
-              });
-              setTablePage(activePage);
-            }}
-          />
-        }
-      />
-    </>
+    <BountiesTable
+      data={tableData}
+      loading={loading}
+      header={header}
+      footer={footer}
+    />
   );
 };
 

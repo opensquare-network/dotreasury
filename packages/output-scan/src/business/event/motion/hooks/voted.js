@@ -3,11 +3,13 @@ const { updateBounty } = require("../../../../mongo/service/bounty");
 const { getMotionCollection } = require("../../../../mongo");
 const { updateProposal } = require("../../../../mongo/service/treasuryProposal");
 const {
-  TreasuryProposalMethods,
-  MotionState,
-  BountyMethods,
-} = require("../../../common/constants");
-const { logger } = require("@dotreasury/common");
+  logger,
+  consts: {
+    TreasuryProposalMethods,
+    MotionState,
+    BountyMethods,
+  }
+} = require("@osn/scan-common");
 
 function getState(name, motion, voting, indexer) {
   return {

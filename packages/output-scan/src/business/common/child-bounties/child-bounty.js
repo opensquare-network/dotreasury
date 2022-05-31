@@ -1,4 +1,6 @@
-const { findBlockApi } = require("@dotreasury/common/src/chain/blockApi");
+const {
+  chain: { findBlockApi },
+} = require("@osn/scan-common");
 
 async function getChildBounty(parentBountyId, childBountyId, indexer) {
   const blockApi = await findBlockApi(indexer.blockHash);

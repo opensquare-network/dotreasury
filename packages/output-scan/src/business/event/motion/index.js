@@ -5,9 +5,11 @@ const { handleClosed } = require("./closed");
 const { handleVoted } = require("./voted");
 const { handleProposed } = require("./proposed");
 const {
-  Modules,
-  CouncilEvents,
-} = require("../../common/constants");
+  consts: {
+    Modules,
+    CouncilEvents,
+  }
+} = require("@osn/scan-common")
 
 function isCouncilModule(section) {
   return Modules.Council === section;

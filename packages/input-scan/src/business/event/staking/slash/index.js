@@ -1,4 +1,4 @@
-const { utils: { bigAdd } } = require("@dotreasury/common");
+const { utils: { bigAdd } } = require("@osn/scan-common");
 const { handleSlashedEvent } = require("./slashed");
 const { handleSlashEvent } = require("./slash");
 

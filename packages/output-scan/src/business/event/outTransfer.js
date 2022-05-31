@@ -1,10 +1,12 @@
 const { getOutTransferCollection } = require("../../mongo");
 const {
-  Modules,
-  BalancesEvents,
-  KsmTreasuryAccount,
-  DotTreasuryAccount,
-} = require("../common/constants");
+  consts: {
+    Modules,
+    BalancesEvents,
+    KsmTreasuryAccount,
+    DotTreasuryAccount,
+  }
+} = require("@osn/scan-common");
 
 async function handleTreasuryTransferOut(event, indexer, extrinsic) {
   const { section, method, } = event;

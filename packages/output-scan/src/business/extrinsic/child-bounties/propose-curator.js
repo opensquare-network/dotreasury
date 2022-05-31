@@ -1,11 +1,13 @@
 const { updateChildBounty } = require("../../../mongo/service/childBounty");
 const { getChildBounty } = require("../../common/child-bounties/child-bounty");
 const {
-  Modules,
-  ChildBountiesMethods,
-  ChildBountyState,
-  TimelineItemTypes,
-} = require("../../common/constants");
+  consts: {
+    Modules,
+    ChildBountiesMethods,
+    ChildBountyState,
+    TimelineItemTypes,
+  }
+} = require("@osn/scan-common");
 
 async function handleProposeCurator(call, author, indexer) {
   if (
@@ -17,19 +19,14 @@ async function handleProposeCurator(call, author, indexer) {
 
   const parentBountyId = call.args[0].toNumber();
   const childBountyId = call.args[1].toNumber();
+  const curator = call.args[2].toString();
+  const fee = call.args[3].toNumber();
 
   const meta = await getChildBounty(parentBountyId, childBountyId, indexer);
-  const {
-    fee,
-    status: {
-      curatorProposed: { curator } = {}
-    } = {}
-  } = meta || {};
 
   const updates = {
     meta,
     fee,
-    curator,
     state: {
       indexer,
       state: ChildBountyState.CuratorProposed,

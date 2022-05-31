@@ -1,11 +1,13 @@
 const { GenericCall } = require("@polkadot/types");
 const { createKeyMulti, encodeAddress } = require("@polkadot/util-crypto");
-const { getApi, logger } = require("@dotreasury/common");
 const {
-  Modules,
-  ProxyMethods,
-  MultisigMethods,
-} = require("../business/common/constants");
+  chain: { getApi }, logger,
+  consts: {
+    Modules,
+    ProxyMethods,
+    MultisigMethods,
+  }
+} = require("@osn/scan-common")
 
 function tryInitCall(registry, callHex) {
   try {

@@ -3,10 +3,12 @@ const { findCallInSections } = require("../../../utils/targetCall");
 const { getRealCaller } = require("../../../utils/call");
 const { getBountyMeta } = require("../../common/bounty/meta");
 const {
-  Modules,
-  TimelineItemTypes,
-  BountyMethods,
-} = require("../../common/constants");
+  consts: {
+    Modules,
+    TimelineItemTypes,
+    BountyMethods,
+  }
+} = require("@osn/scan-common");
 const { hexToString } = require("@polkadot/util");
 
 async function handleBountyExtended(event, extrinsic, indexer) {

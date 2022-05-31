@@ -1,7 +1,8 @@
-const { getBountyCollection, getMotionCollection } = require("../../mongo");
+const { getBountyCollection, getMotionCollection, getChildBountyCollection } = require("../../mongo");
 const { extractPage } = require("../../utils");
 const linkService = require("../../services/link.service");
 const commentService = require("../../services/comment.service");
+const { HttpError } = require("../../exc");
 
 const bountyStatus = (bounty) =>
   bounty?.status?.CuratorProposed ||
@@ -23,6 +24,24 @@ const bountyStatusName = (bounty) => {
   return Object.keys(bounty.meta.status)[0];
 };
 
+const normalizeBountyListItem = (item) => ({
+  bountyIndex: item.bountyIndex,
+  proposeTime: item.indexer.blockTime,
+  proposeAtBlockHeight: item.indexer.blockHeight,
+  curator: bountyStatus(item.meta)?.curator,
+  updateDue: bountyStatus(item.meta)?.updateDue,
+  beneficiary: bountyStatus(item.meta)?.beneficiary,
+  unlockAt: bountyStatus(item.meta)?.unlockAt,
+  title: item.description,
+  value: item.meta?.value,
+  symbolPrice: item.symbolPrice,
+  state: item.state,
+  latestState: {
+    state: bountyStatusName(item),
+    indexer: item.state?.indexer || item.state?.eventIndexer,
+  },
+});
+
 class BountiesController {
   async getBounties(ctx) {
     const { chain } = ctx.params;
@@ -34,32 +53,44 @@ class BountiesController {
 
     const bountyCol = await getBountyCollection(chain);
     const bounties = await bountyCol
-      .find({}, { timeline: 0 })
-      .sort({
-        "indexer.blockHeight": -1,
-      })
-      .skip(page * pageSize)
-      .limit(pageSize)
-      .toArray();
+      .aggregate([
+        {
+          $sort: {
+            "indexer.blockHeight": -1,
+          }
+        },
+        { $skip: pageSize * page },
+        { $limit: pageSize },
+        {
+          $lookup: {
+            from: "childBounty",
+            let: { bountyIndex: "$bountyIndex" },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $eq: ["$parentBountyId", "$$bountyIndex"],
+                  }
+                }
+              },
+              { $sort: { index: -1 } }
+            ],
+            as: "childBounties",
+          }
+        },
+        {
+          $project: {
+            timeline: 0,
+            "childBounties.timeline": 0,
+          }
+        }
+      ]).toArray();
     const total = await bountyCol.estimatedDocumentCount();
 
     ctx.body = {
-      items: bounties.map((item) => ({
-        bountyIndex: item.bountyIndex,
-        proposeTime: item.indexer.blockTime,
-        proposeAtBlockHeight: item.indexer.blockHeight,
-        curator: bountyStatus(item.meta)?.curator,
-        updateDue: bountyStatus(item.meta)?.updateDue,
-        beneficiary: bountyStatus(item.meta)?.beneficiary,
-        unlockAt: bountyStatus(item.meta)?.unlockAt,
-        title: item.description,
-        value: item.meta?.value,
-        symbolPrice: item.symbolPrice,
-        state: item.state,
-        latestState: {
-          state: bountyStatusName(item),
-          indexer: item.state?.indexer || item.state?.eventIndexer,
-        },
+      items: bounties.map(item => ({
+        ...normalizeBountyListItem(item),
+        childBounties: item.childBounties,
       })),
       page,
       pageSize,

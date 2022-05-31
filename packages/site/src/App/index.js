@@ -16,10 +16,12 @@ import Footer from "../pages/Footer";
 import Tips from "../pages/Tips";
 import Proposals from "../pages/Proposals";
 import Bounties from "../pages/Bounties";
+import ChildBounties from "../pages/ChildBounties";
 import Burnt from "../pages/Burnt";
 import TipDetail from "../pages/TipDetail";
 import ProposalDetail from "../pages/ProposalDetail";
 import BountyDetail from "../pages/BountyDetail";
+import ChildBountyDetail from "../pages/BountyDetail/ChildBountyDetail/index";
 import Overview from "../pages/Overview";
 import Projects from "../pages/Projects";
 import ProjectDetail from "../pages/ProjectDetail";
@@ -81,6 +83,11 @@ export default function App() {
               />
               <Route
                 exact
+                path="/:symbol(ksm|dot)/child-bounties"
+                component={ChildBounties}
+              />
+              <Route
+                exact
                 path="/:symbol(ksm|dot)/transfers"
                 component={Transfers}
               />
@@ -98,6 +105,11 @@ export default function App() {
                 exact
                 path="/:symbol(ksm|dot)/bounties/:bountyIndex"
                 component={BountyDetail}
+              />
+              <Route
+                exact
+                path="/:symbol(ksm|dot)/child-bounties/:bountyIndex"
+                component={ChildBountyDetail}
               />
               <Route exact path="/:symbol(ksm|dot)/burnt" component={Burnt} />
               <Route
