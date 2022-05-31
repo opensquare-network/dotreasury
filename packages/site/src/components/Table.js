@@ -105,6 +105,12 @@ const CustomTable = styled(SemanticTable)`
   .no-data {
     height: 120px !important;
   }
+
+  @media screen and (max-width: 1141px) {
+    .hidden {
+      display: none;
+    }
+  }
 `;
 export default CustomTable;
 

@@ -118,6 +118,7 @@ export function useColumns(symbol = "") {
     {
       key: "navigate-button",
       title: "",
+      headerCellClassName: "hidden",
       cellClassName: "link-cell hidden",
       cellRender: (_, item) => {
         return (
