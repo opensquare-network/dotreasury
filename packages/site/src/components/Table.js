@@ -168,7 +168,6 @@ function TableBodyRow({
   };
 
   const treeData = (_get(item, treeKey) ?? []).map(treeDataTransform);
-  console.log(treeData);
 
   return (
     <>
