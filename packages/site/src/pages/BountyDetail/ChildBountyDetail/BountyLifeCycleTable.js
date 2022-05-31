@@ -95,12 +95,12 @@ const BountyLifeCycleTable = ({ loading }) => {
               <TableCell title={"Created"}>
                 <FlexWrapper>
                   <div>
-                    <DateShow value={bountyDetail.indexer.blockTime} />
+                    <DateShow value={bountyDetail?.indexer?.blockTime} />
                   </div>
                   <ExplorerLink
-                    href={`/block/${bountyDetail.indexer.blockHeight}`}
+                    href={`/block/${bountyDetail?.indexer?.blockHeight}`}
                   >
-                    <PolygonLabel value={bountyDetail.indexer.blockHeight} />
+                    <PolygonLabel value={bountyDetail?.indexer?.blockHeight} />
                   </ExplorerLink>
                 </FlexWrapper>
               </TableCell>
