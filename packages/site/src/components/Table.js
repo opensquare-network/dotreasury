@@ -1,12 +1,19 @@
 import styled from "styled-components";
-import { Table } from "semantic-ui-react";
+import { Table as SemanticTable } from "semantic-ui-react";
+import _get from "lodash.get";
+import Text from "./Text";
+import { useEffect, useState } from "react";
+import TableNoDataCell from "./TableNoDataCell";
 
-const CustomTable = styled(Table)`
+const CustomTable = styled(SemanticTable)`
   overflow: hidden !important;
   border-radius: 8px !important;
   margin-top: 0 !important;
   border-color: #eee !important;
   tr {
+    &.tree {
+      background-color: rgba(250, 250, 250, 1);
+    }
     :hover {
       background-color: #fdfdfd !important;
     }
@@ -90,5 +97,175 @@ const CustomTable = styled(Table)`
   td:first-child {
     font-weight: 400 !important;
   }
+
+  .short-padding {
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+  }
+  .no-data {
+    height: 120px !important;
+  }
 `;
 export default CustomTable;
+
+const TreeToggleButton = styled.button`
+  border: 1px solid rgba(204, 204, 204, 1);
+  background-color: transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const {
+  Header: TableHeader,
+  Row: TableRow,
+  HeaderCell: TableHeaderCell,
+  Body: TableBody,
+  Cell: TableCell,
+} = CustomTable;
+
+function TableBodyRow({
+  onClick,
+  columns,
+  tree,
+  treeKey,
+  treeDataTransform,
+  item,
+  className = "",
+}) {
+  const [expanded, setExpanded] = useState(false);
+
+  useEffect(() => {
+    setExpanded(false);
+  }, [item, setExpanded]);
+
+  if (!item) {
+    return null;
+  }
+
+  const renderCells = (columns) => {
+    return columns.map((column, columnIndex) => {
+      const {
+        key = columnIndex,
+        cellRender,
+        dataIndex,
+        cellClassName = "",
+        cellProps,
+      } = column;
+
+      const cellValue = _get(item, dataIndex);
+
+      return (
+        <TableCell key={key} {...cellProps} className={cellClassName}>
+          {cellRender?.(cellValue, item) || <Text>{cellValue}</Text>}
+        </TableCell>
+      );
+    });
+  };
+
+  const treeData = (_get(item, treeKey) ?? []).map(treeDataTransform);
+
+  return (
+    <>
+      <TableRow onClick={() => onClick(item)} className={className}>
+        {tree && (
+          <TableCell>
+            {!!treeData.length && (
+              <TreeToggleButton
+                onClick={(event) => {
+                  event.stopPropagation();
+                  setExpanded(!expanded);
+                }}
+              >
+                <img
+                  src={`/imgs/${expanded ? "subtract" : "add"}.svg`}
+                  alt="toggle"
+                />
+              </TreeToggleButton>
+            )}
+          </TableCell>
+        )}
+        {renderCells(columns)}
+      </TableRow>
+
+      {expanded &&
+        treeData.map((item, index) => {
+          return (
+            <TableBodyRow
+              key={index}
+              onClick={onClick}
+              item={item}
+              columns={columns}
+              tree={tree}
+              treeKey={treeKey}
+              treeDataTransform={treeDataTransform}
+              className="tree"
+            />
+          );
+        })}
+    </>
+  );
+}
+
+export function Table({
+  data = [],
+  columns = [],
+  tree = false,
+  treeKey = "children",
+  treeDataTransform = (data) => data,
+  onRowClick = () => {},
+}) {
+  return (
+    <CustomTable unstackable>
+      <TableHeader>
+        <TableRow>
+          {tree && <TableHeaderCell />}
+
+          {columns.map((column, index) => {
+            const {
+              key = index,
+              title,
+              headerCellProps,
+              headerCellClassName = "",
+            } = column;
+
+            return (
+              <TableHeaderCell
+                key={key}
+                {...headerCellProps}
+                className={headerCellClassName}
+              >
+                {title}
+              </TableHeaderCell>
+            );
+          })}
+        </TableRow>
+      </TableHeader>
+
+      <TableBody>
+        {data.length ? (
+          data.map((item, index) => {
+            return (
+              <TableBodyRow
+                key={index}
+                onClick={onRowClick}
+                item={item}
+                columns={columns}
+                tree={tree}
+                treeKey={treeKey}
+                treeDataTransform={treeDataTransform}
+              />
+            );
+          })
+        ) : (
+          <TableNoDataCell />
+        )}
+      </TableBody>
+    </CustomTable>
+  );
+}
