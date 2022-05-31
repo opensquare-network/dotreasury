@@ -95,12 +95,12 @@ const BountyLifeCycleTable = ({ loading }) => {
               <TableCell title={"Created"}>
                 <FlexWrapper>
                   <div>
-                    <DateShow value={bountyDetail.proposeTime} />
+                    <DateShow value={bountyDetail.indexer.blockTime} />
                   </div>
                   <ExplorerLink
-                    href={`/block/${bountyDetail.proposeAtBlockHeight}`}
+                    href={`/block/${bountyDetail.indexer.blockHeight}`}
                   >
-                    <PolygonLabel value={bountyDetail.proposeAtBlockHeight} />
+                    <PolygonLabel value={bountyDetail.indexer.blockHeight} />
                   </ExplorerLink>
                 </FlexWrapper>
               </TableCell>
@@ -111,7 +111,6 @@ const BountyLifeCycleTable = ({ loading }) => {
               <TableCell title="Status">
                 <FlexWrapper>
                   <CapText>{bountyDetail.state?.state}</CapText>
-                  {/* <ElapsedTimeLabel time={bountyDetail.latestState?.indexer?.blockTime} /> */}
                   <div />
                 </FlexWrapper>
               </TableCell>
@@ -122,25 +121,6 @@ const BountyLifeCycleTable = ({ loading }) => {
               <TableCell title={"Curator"}>
                 {bountyDetail.curator ? (
                   <User address={bountyDetail.curator} />
-                ) : (
-                  "--"
-                )}
-              </TableCell>
-            </Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>
-              <TableCell title={"Update Due"}>
-                {bountyDetail.updateDue ? (
-                  <FlexWrapper>
-                    <div>
-                      {updateDueTimeLeft ? `${updateDueTimeLeft} left` : "--"}
-                    </div>
-                    <PolygonLabel
-                      value={bountyDetail.updateDue}
-                      noHover={true}
-                    />
-                  </FlexWrapper>
                 ) : (
                   "--"
                 )}
