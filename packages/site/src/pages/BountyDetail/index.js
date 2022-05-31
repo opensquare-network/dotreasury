@@ -205,7 +205,7 @@ export function processTimeline(bountyDetail, scanHeight, symbol) {
               },
             ];
 
-            if (deposit) {
+            if (typeof deposit !== 'undefined') {
               fields.push({
                 title: "Deposit",
                 value: <Balance value={ deposit } currency={ symbol }/>,
