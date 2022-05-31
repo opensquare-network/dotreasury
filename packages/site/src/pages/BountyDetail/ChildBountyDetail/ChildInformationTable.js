@@ -106,7 +106,7 @@ const ChildInformationTable = ({ loading }) => {
                     "--"
                   ) : (
                     <AlignItemWrapper>
-                      <Balance value={bountyDetail.curatorDeposit} />
+                      <Balance value={bountyDetail.deposit} />
                     </AlignItemWrapper>
                   )}
                   {getBountyState(bountyDetail) >=

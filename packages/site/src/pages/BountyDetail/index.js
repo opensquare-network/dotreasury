@@ -197,13 +197,20 @@ export function processTimeline(bountyDetail, scanHeight, symbol) {
               },
             ];
           } else if (item.name === "acceptCurator") {
-            const { caller, curator } = item.args;
+            const { caller, curator, deposit } = item.args;
             fields = [
               {
                 title: "Curator",
                 value: <User address={caller ?? curator} />,
               },
             ];
+
+            if (deposit) {
+              fields.push({
+                title: "Deposit",
+                value: <Balance value={ deposit } currency={ symbol }/>,
+              })
+            }
           } else if (item.name === "BountyAwarded" || item.name === "Awarded") {
             const { beneficiary } = item.args || {};
             fields = [
