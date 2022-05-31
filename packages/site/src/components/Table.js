@@ -225,9 +225,11 @@ export function Table({
   treeKey = "children",
   treeDataTransform = (data) => data,
   onRowClick = () => {},
+  colgroup,
 }) {
   return (
     <CustomTable unstackable>
+      {colgroup}
       <TableHeader>
         <TableRow>
           {tree && <TableHeaderCell />}
