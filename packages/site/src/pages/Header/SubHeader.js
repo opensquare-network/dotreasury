@@ -200,8 +200,8 @@ const TabExampleSecondaryPointing = () => {
               exact: true,
               key: "bounties",
               active:
-                `/${symbol}/bounties` === pathname ||
-                pathname.indexOf(`/${symbol}/bounties`) === 0,
+                pathname.indexOf(`/${symbol}/bounties`) === 0 ||
+                pathname.indexOf(`/${symbol}/child-bounties`) === 0,
             },
           },
           {
