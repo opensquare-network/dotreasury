@@ -14,7 +14,7 @@ import {
 } from "../../store/reducers/incomeSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import Text from "../../components/Text";
-import { DEFAULT_PAGE_SIZE } from "../../constants";
+import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../constants";
 
 const HeaderWrapper = styled.div`
   padding: 20px 24px;
@@ -35,8 +35,6 @@ const SubTitle = styled.span`
   font-family: Inter;
   font-weight: normal;
 `;
-
-const DEFAULT_QUERY_PAGE = 1;
 
 const Inflation = () => {
   useChainRoute();

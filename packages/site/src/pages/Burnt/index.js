@@ -12,10 +12,9 @@ import {
   loadingBurntListSelector, burntChartSelector, fetchBurntChart,
 } from "../../store/reducers/burntSlice";
 import {chainSelector} from "../../store/reducers/chainSlice";
-import { DEFAULT_PAGE_SIZE } from "../../constants";
 
 
-const DEFAULT_QUERY_PAGE = 1;
+import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../constants";
 
 const Burnt = () => {
   useChainRoute();

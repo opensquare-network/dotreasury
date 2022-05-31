@@ -22,7 +22,7 @@ import { useQuery } from "../../utils/hooks";
 import { useLocation } from "react-router-dom";
 import { useHistory } from "react-router";
 import NoComment from "./NoComment";
-import { DEFAULT_PAGE_SIZE } from "../../constants";
+import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../constants";
 
 const Header = styled.div`
   padding: 20px 24px;
@@ -36,8 +36,6 @@ const Wrapper = styled(Card)`
   padding: 0;
   position: relative;
 `;
-
-const DEFAULT_QUERY_PAGE = 1;
 
 const Comment = ({ type, index }) => {
   const commentRef = useRef(null);
