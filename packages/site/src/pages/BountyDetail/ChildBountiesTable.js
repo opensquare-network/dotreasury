@@ -90,7 +90,6 @@ function ChildTable({ index }) {
   return (
     <Wrapper>
       <ChildBountiesTable
-        showNavigation={false}
         showParent={false}
         loading={loading}
         data={tableData}
