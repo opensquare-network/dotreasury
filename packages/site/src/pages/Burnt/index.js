@@ -14,8 +14,7 @@ import {
 import {chainSelector} from "../../store/reducers/chainSlice";
 
 
-const DEFAULT_PAGE_SIZE = 20;
-const DEFAULT_QUERY_PAGE = 1;
+import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../constants";
 
 const Burnt = () => {
   useChainRoute();

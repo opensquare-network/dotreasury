@@ -13,6 +13,7 @@ import {
 } from "../../store/reducers/bountySlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import { compatChildBountyData } from "../ChildBounties/utils";
+import { DEFAULT_PAGE_SIZE } from "../../constants";
 
 const Wrapper = styled.div`
   margin-top: 24px;
@@ -37,8 +38,6 @@ const Header = styled.div`
     font-weight: 400;
   }
 `;
-
-const DEFAULT_PAGE_SIZE = 20;
 
 function ChildTable({ index }) {
   const dispatch = useDispatch();
