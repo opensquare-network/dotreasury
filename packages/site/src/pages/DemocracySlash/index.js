@@ -6,6 +6,7 @@ import SlashTable from "./SlashTable";
 import { useDispatch, useSelector } from "react-redux";
 import { useChainRoute, useQuery, useLocalStorage } from "../../utils/hooks";
 import { useHistory } from "react-router";
+import { DEFAULT_PAGE_SIZE } from "../../constants";
 
 import {
   fetchDemocracySlashList,
@@ -28,7 +29,6 @@ const Title = styled(Text)`
   font-weight: 700;
 `;
 
-const DEFAULT_PAGE_SIZE = 20;
 const DEFAULT_QUERY_PAGE = 1;
 
 const DemocracySlash = () => {

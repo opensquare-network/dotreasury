@@ -14,6 +14,7 @@ import {
 } from "../../store/reducers/incomeSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import Text from "../../components/Text";
+import { DEFAULT_PAGE_SIZE } from "../../constants";
 
 const HeaderWrapper = styled.div`
   padding: 20px 24px;
@@ -28,7 +29,6 @@ const Title = styled(Text)`
   font-weight: 700;
 `;
 
-const DEFAULT_PAGE_SIZE = 20;
 const DEFAULT_QUERY_PAGE = 1;
 
 const OthersIncome = () => {
