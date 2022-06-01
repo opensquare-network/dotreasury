@@ -10,8 +10,15 @@ export function useColumns() {
     return `/${symbol.toLowerCase()}/${type}/${row.bountyIndex}`;
   };
 
-  const { index, proposeTime, curator, title, value, status, detailRoute } =
-    useTableColumns({ getDetailRoute });
+  const {
+    index,
+    proposeTime,
+    curator,
+    title,
+    value,
+    bountiesStatus,
+    detailRoute,
+  } = useTableColumns({ getDetailRoute });
 
   const columns = [
     index,
@@ -19,7 +26,7 @@ export function useColumns() {
     curator,
     title,
     value,
-    status,
+    bountiesStatus,
     detailRoute,
   ];
 

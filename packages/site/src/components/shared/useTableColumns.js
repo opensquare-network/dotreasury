@@ -164,7 +164,7 @@ const title = {
   dataIndex: "title",
   cellClassName: "title-cell",
 };
-const status = {
+const bountiesStatus = {
   key: "status",
   title: "Status",
   headerCellProps: { textAlign: "right" },
@@ -199,7 +199,7 @@ export function useTableColumns(options) {
     index,
     curator,
     title,
-    status,
+    bountiesStatus,
     detailRoute: detailRoute(options),
   };
 }
