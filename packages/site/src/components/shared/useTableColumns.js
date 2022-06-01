@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 import dayjs from "dayjs";
 import { Image } from "semantic-ui-react";
+import { NavLink } from "react-router-dom";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import ExplorerLink from "../ExplorerLink";
 import Text from "../Text";
@@ -49,6 +50,24 @@ const EventID = styled(Text)`
     text-decoration-line: underline;
   }
 `;
+
+const CapText = styled(Text)`
+  text-transform: capitalize;
+  white-space: nowrap;
+`;
+
+export const getStateWithVotingAyes = (item) => {
+  const state = item.state?.state;
+  const isVoting = ["ApproveVoting", "RejectVoting"].includes(state);
+
+  if (isVoting) {
+    const nAyes = item.state.data.motionVoting?.ayes?.length;
+    if (nAyes !== undefined) {
+      return state + ` (${nAyes})`;
+    }
+  }
+  return state;
+};
 
 const proposeTime = {
   key: "propose-time",
@@ -124,8 +143,50 @@ const remnant = (symbol) => ({
       <Balance value={item.treasuryBalance} currency={symbol} />
     ),
 });
+const index = {
+  key: "index",
+  title: "Index",
+  dataIndex: "bountyIndex",
+  cellClassName: "index-cell",
+  cellRender: (value) => <TextMinor>#{value}</TextMinor>,
+};
+const curator = {
+  key: "curator",
+  title: "Curator",
+  dataIndex: "curator",
+  cellClassName: "user-cell",
+  cellRender: (_, item) =>
+    item.curator ? <User address={item.curator} /> : "--",
+};
+const title = {
+  key: "title",
+  title: "Title",
+  dataIndex: "title",
+  cellClassName: "title-cell",
+};
+const status = {
+  key: "status",
+  title: "Status",
+  headerCellProps: { textAlign: "right" },
+  cellProps: { textAlign: "right" },
+  cellClassName: "status-cell",
+  cellRender: (_, item) => <CapText>{getStateWithVotingAyes(item)}</CapText>,
+};
+const detailRoute = (options) => ({
+  key: "detailRoute",
+  title: "",
+  headerCellClassName: "hidden",
+  cellClassName: "link-cell hidden",
+  cellRender: (_, item) => {
+    return (
+      <NavLink to={options?.getDetailRoute?.(item)}>
+        <RightButton />
+      </NavLink>
+    );
+  },
+});
 
-export function useTableColumns() {
+export function useTableColumns(options) {
   const symbol = useSelector(chainSymbolSelector);
 
   return {
@@ -135,5 +196,10 @@ export function useTableColumns() {
     value: value(symbol),
     per,
     remnant: remnant(symbol),
+    index,
+    curator,
+    title,
+    status,
+    detailRoute: detailRoute(options),
   };
 }
