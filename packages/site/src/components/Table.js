@@ -162,9 +162,14 @@ function TableBodyRow({
         dataIndex,
         cellClassName = "",
         cellProps,
+        show = true,
       } = column;
 
       const cellValue = _get(item, dataIndex);
+
+      if (!show) {
+        return null;
+      }
 
       return (
         <TableCell key={key} {...cellProps} className={cellClassName}>
@@ -240,7 +245,12 @@ export function Table({
               title,
               headerCellProps,
               headerCellClassName = "",
+              show = true,
             } = column;
+
+            if (!show) {
+              return null;
+            }
 
             return (
               <TableHeaderCell
