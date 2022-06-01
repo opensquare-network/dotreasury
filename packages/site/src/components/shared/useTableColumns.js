@@ -119,7 +119,9 @@ const value = (symbol) => ({
   headerCellProps: { textAlign: "right" },
   cellProps: { textAlign: "right" },
   cellClassName: "balance-cell",
-  cellRender: (_, item) => <Balance value={item.balance} currency={symbol} />,
+  cellRender: (_, item) => (
+    <Balance value={item.value} currency={symbol} usdt={item.symbolPrice} />
+  ),
 });
 const per = {
   key: "per",
