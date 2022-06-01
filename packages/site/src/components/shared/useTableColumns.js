@@ -11,6 +11,10 @@ import PolygonLabel from "../PolygonLabel";
 import User from "../User";
 import Balance from "../Balance";
 import RightButton from "../RightButton";
+import BeneficiaryContent from "../../pages/Proposals/BeneficiaryContent";
+import DescriptionCell from "../../pages/Proposals/DescriptionCell";
+import RelatedLinks from "../RelatedLinks";
+import PairTextVertical from "../PairTextVertical";
 
 const ProposeTimeWrapper = styled.div`
   display: flex;
@@ -56,7 +60,7 @@ const CapText = styled(Text)`
   white-space: nowrap;
 `;
 
-export const getStateWithVotingAyes = (item) => {
+export const getBountyStateWithVotingAyes = (item) => {
   const state = item.state?.state;
   const isVoting = ["ApproveVoting", "RejectVoting"].includes(state);
 
@@ -66,6 +70,21 @@ export const getStateWithVotingAyes = (item) => {
       return state + ` (${nAyes})`;
     }
   }
+  return state;
+};
+
+const getProposalStateWithVotingAyes = (item) => {
+  const { state: stateValue, name } = item.latestState;
+  const state = stateValue || name;
+  const isProposalVoting = ["ApproveVoting", "RejectVoting"].includes(state);
+
+  if (isProposalVoting) {
+    const nAyes = item.latestState.motionVoting?.ayes?.length;
+    if (nAyes !== undefined) {
+      return state + ` (${nAyes})`;
+    }
+  }
+
   return state;
 };
 
@@ -172,21 +191,90 @@ const bountiesStatus = {
   headerCellProps: { textAlign: "right" },
   cellProps: { textAlign: "right" },
   cellClassName: "status-cell",
-  cellRender: (_, item) => <CapText>{getStateWithVotingAyes(item)}</CapText>,
+  cellRender: (_, item) => (
+    <CapText>{getBountyStateWithVotingAyes(item)}</CapText>
+  ),
 };
 const detailRoute = (options) => ({
-  key: "detailRoute",
+  key: "detail-route",
   title: "",
   headerCellClassName: "hidden",
   cellClassName: "link-cell hidden",
   cellRender: (_, item) => {
     return (
-      <NavLink to={options?.getDetailRoute?.(item)}>
+      <NavLink to={options?.getDetailRoute?.(item) ?? ""}>
         <RightButton />
       </NavLink>
     );
   },
 });
+const beneficiary = {
+  key: "beneficiary",
+  title: "Beneficiary",
+  headerCellClassName: "proposal-beneficiary-header",
+  cellClassName: "proposal-user-cell proposal-beneficiary-cell",
+  cellRender: (_, item) => (
+    <User
+      address={item.beneficiary}
+      popupContent={
+        <BeneficiaryContent
+          proposerAddress={item.proposer}
+          beneficiaryAddress={item.beneficiary}
+        />
+      }
+    />
+  ),
+};
+const proposer = {
+  key: "proposer",
+  title: "Proposer",
+  headerCellClassName: "proposal-proposer-header",
+  cellClassName: "proposal-user-cell proposal-proposer-cell",
+  cellRender: (_, item) => (
+    <User
+      address={item.proposer}
+      popupContent={
+        <BeneficiaryContent
+          proposerAddress={item.proposer}
+          beneficiaryAddress={item.beneficiary}
+        />
+      }
+    />
+  ),
+};
+const proposalIndex = {
+  ...bountyIndex,
+  dataIndex: "proposalIndex",
+};
+const description = {
+  key: "description",
+  title: "Description",
+  cellClassName: "proposal-description-cell",
+  cellRender: (_, item) => (
+    <DescriptionCell description={item.description} tags={item.tags} />
+  ),
+};
+const relatedLinks = (options) => ({
+  key: "related-links",
+  title: "Related Links",
+  cellClassName: "porposal-related-links-cell",
+  cellRender: (_, item) => (
+    <RelatedLinks links={options?.getRelatedLinks?.(item)} />
+  ),
+});
+const proposalStatus = {
+  key: "proposal-status",
+  title: "Status",
+  headerCellProps: { textAlign: "right" },
+  cellProps: { textAlign: "right" },
+  cellClassName: "proposal-status-cell",
+  cellRender: (_, item) => (
+    <PairTextVertical
+      value={getProposalStateWithVotingAyes(item)}
+      detail={dayjs(parseInt(item.latestState.time)).format("YYYY-MM-DD HH:mm")}
+    />
+  ),
+};
 
 export function useTableColumns(options) {
   const symbol = useSelector(chainSymbolSelector);
@@ -203,5 +291,11 @@ export function useTableColumns(options) {
     title,
     bountiesStatus,
     detailRoute: detailRoute(options),
+    beneficiary,
+    proposer,
+    proposalIndex,
+    description,
+    relatedLinks: relatedLinks(options),
+    proposalStatus,
   };
 }
