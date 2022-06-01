@@ -8,7 +8,7 @@ import TextMinor from "../../components/TextMinor";
 import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import Card from "../../components/Card";
-import { useColumns } from "../Bounties/tableColumns";
+import { useColumns } from "../Bounties/columns";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;

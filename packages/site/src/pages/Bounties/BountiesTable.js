@@ -4,11 +4,9 @@ import { useHistory } from "react-router-dom";
 
 import { Table } from "../../components/Table";
 import TableLoading from "../../components/TableLoading";
-import { useSelector } from "react-redux";
-import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import Card from "../../components/Card";
 import { compatChildBountyData } from "../ChildBounties/utils";
-import { useColumns } from "./tableColumns";
+import { useColumns } from "./columns";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -38,10 +36,9 @@ const HeaderWrapper = styled.div`
 `;
 
 const BountiesTable = ({ data, loading, header, footer }) => {
-  const symbol = useSelector(chainSymbolSelector);
   const history = useHistory();
 
-  const { columns, getDetailRoute } = useColumns(symbol);
+  const { columns, getDetailRoute } = useColumns();
 
   const onRowClick = (row) => {
     if (window.innerWidth < 1140) {
