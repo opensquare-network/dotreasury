@@ -15,6 +15,9 @@ import BeneficiaryContent from "../../pages/Proposals/BeneficiaryContent";
 import DescriptionCell from "../../pages/Proposals/DescriptionCell";
 import RelatedLinks from "../RelatedLinks";
 import PairTextVertical from "../PairTextVertical";
+import ReasonText from "../../pages/Tips/ReasonText";
+import ReasonLink from "../../pages/Tips/ReasonLink";
+import { TipStatus } from "../../constants";
 
 const ProposeTimeWrapper = styled.div`
   display: flex;
@@ -275,6 +278,64 @@ const proposalStatus = {
     />
   ),
 };
+const tipsBeneficiary = {
+  key: "beneficiary",
+  title: "Beneficiary",
+  cellClassName: "user-cell",
+  cellRender: (_, item) => <User address={item.beneficiary} />,
+};
+const finder = {
+  key: "finder",
+  title: "Finder",
+  headerCellClassName: "hidden",
+  cellClassName: "user-cell hidden",
+  cellRender: (_, item) => <User address={item.finder} />,
+};
+const reason = {
+  key: "reason",
+  title: "Reason",
+  cellRender: (_, item) => (
+    <ReasonText>
+      <ReasonLink text={item.reason} />
+    </ReasonText>
+  ),
+};
+const tipsValue = (symbol) => {
+  const v = value(symbol);
+
+  return {
+    ...v,
+    key: "tipsValue",
+    cellRender: (_, item) => {
+      if (item.showStatus === TipStatus.Retracted) {
+        return "--";
+      }
+
+      item.value = item.medianValue;
+      return v.cellRender(_, item);
+    },
+  };
+};
+const tipsStatus = {
+  key: "tips-status",
+  title: "Status",
+  headerCellProps: { textAlign: "right" },
+  cellProps: { textAlign: "right" },
+  cellClassName: "status-cell short-padding",
+  cellRender: (_, item) =>
+    item.showTime ? (
+      <PairTextVertical
+        value={item.showStatus}
+        detail={dayjs(parseInt(item.latestState.time)).format(
+          "YYYY-MM-DD HH:mm"
+        )}
+      />
+    ) : item.showStatus === TipStatus.Tipping ? (
+      `${item.showStatus} (${item.tipsCount})`
+    ) : (
+      item.showStatus
+    ),
+};
 
 export function useTableColumns(options) {
   const symbol = useSelector(chainSymbolSelector);
@@ -297,5 +358,10 @@ export function useTableColumns(options) {
     description,
     relatedLinks: relatedLinks(options),
     proposalStatus,
+    tipsBeneficiary,
+    finder,
+    reason,
+    tipsStatus,
+    tipsValue: tipsValue(symbol),
   };
 }
