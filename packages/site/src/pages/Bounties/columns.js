@@ -11,7 +11,7 @@ export function useColumns() {
   };
 
   const {
-    index,
+    bountyIndex,
     proposeTime,
     curator,
     title,
@@ -21,7 +21,7 @@ export function useColumns() {
   } = useTableColumns({ getDetailRoute });
 
   const columns = [
-    index,
+    bountyIndex,
     proposeTime,
     curator,
     title,

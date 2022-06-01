@@ -145,7 +145,7 @@ const remnant = (symbol) => ({
       <Balance value={item.treasuryBalance} currency={symbol} />
     ),
 });
-const index = {
+const bountyIndex = {
   key: "index",
   title: "Index",
   dataIndex: "bountyIndex",
@@ -198,7 +198,7 @@ export function useTableColumns(options) {
     value: value(symbol),
     per,
     remnant: remnant(symbol),
-    index,
+    bountyIndex,
     curator,
     title,
     bountiesStatus,
