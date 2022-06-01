@@ -1,4 +1,6 @@
 import { useTableColumns } from "../../components/shared/useTableColumns";
+import { useSelector } from "react-redux";
+import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 
 export function useColumns() {
   const symbol = useSelector(chainSymbolSelector);
