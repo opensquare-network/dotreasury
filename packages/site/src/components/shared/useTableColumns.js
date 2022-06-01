@@ -257,7 +257,7 @@ const description = {
 const relatedLinks = (options) => ({
   key: "related-links",
   title: "Related Links",
-  cellClassName: "porposal-related-links-cell",
+  cellClassName: "proposal-related-links-cell",
   cellRender: (_, item) => (
     <RelatedLinks links={options?.getRelatedLinks?.(item)} />
   ),
