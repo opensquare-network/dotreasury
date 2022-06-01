@@ -63,7 +63,7 @@ const CustomTable = styled(SemanticTable)`
     min-width: 100px !important;
   }
   .propose-time-cell {
-    width: 280px !important;
+    width: 200px !important;
   }
   .new-propose-time-cell {
     max-width: 180px !important;
