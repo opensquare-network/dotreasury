@@ -65,9 +65,6 @@ const CustomTable = styled(SemanticTable)`
   .propose-time-cell {
     width: 200px !important;
   }
-  .new-propose-time-cell {
-    max-width: 180px !important;
-  }
   .related-links-cell {
     min-width: 120px !important;
   }
@@ -105,7 +102,6 @@ const CustomTable = styled(SemanticTable)`
   .no-data {
     height: 120px !important;
   }
-
   @media screen and (max-width: 1141px) {
     .hidden {
       display: none;
