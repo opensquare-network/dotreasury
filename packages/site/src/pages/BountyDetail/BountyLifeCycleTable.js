@@ -81,6 +81,20 @@ const BountyLifeCycleTable = ({ loading }) => {
     }
   }, [chain, bountyDetail, scanHeight, isMounted]);
 
+  const links = [];
+  if (chain === "kusama" && bountyDetail) {
+    links.push({
+      link: `https://${chain}.subsquare.io/treasury/bounty/${bountyDetail.bountyIndex}`,
+      description: "Bounty discusssion",
+    });
+  }
+  if (bountyUrl) {
+    links.push({
+      link: bountyUrl,
+      description: "Bounty discusssion",
+    });
+  }
+
   return (
     <TableLoading loading={loading}>
       <Table unstackable>
@@ -190,14 +204,7 @@ const BountyLifeCycleTable = ({ loading }) => {
             <Table.Row>
               <Table.Cell>
                 <TableCell title="Bounty Page">
-                  <RelatedLinks
-                    links={[
-                      {
-                        link: bountyUrl,
-                        description: "Bounty discusssion",
-                      },
-                    ]}
-                  />
+                  <RelatedLinks links={links} />
                 </TableCell>
               </Table.Cell>
             </Table.Row>
