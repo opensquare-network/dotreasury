@@ -1,6 +1,8 @@
 import styled, { css } from "styled-components";
 import Text from "../../components/Text";
 import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 
 const NavWrapper = styled.div`
   display: flex;
@@ -29,14 +31,17 @@ const NavItem = styled(Text)`
 `;
 
 function Nav({ active = "" }) {
+  const symbol = useSelector(chainSymbolSelector);
+  const name = symbol.toLowerCase();
+
   const items = [
     {
       label: "Bounties",
-      to: "/dot/bounties",
+      to: `/${name}/bounties`,
     },
     {
       label: "Child Bounties",
-      to: "/dot/child-bounties",
+      to: `/${name}/child-bounties`,
     },
   ];
 
