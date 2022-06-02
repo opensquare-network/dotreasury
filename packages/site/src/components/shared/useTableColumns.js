@@ -305,7 +305,7 @@ const tipsValue = (symbol) => {
 
   return {
     ...v,
-    key: "tipsValue",
+    key: "tips-value",
     cellRender: (_, item) => {
       if (item.showStatus === TipStatus.Retracted) {
         return "--";
@@ -336,6 +336,17 @@ const tipsStatus = {
       item.showStatus
     ),
 };
+const burntValue = (symbol) => {
+  const v = value(symbol);
+
+  return {
+    ...v,
+    key: "burnt-value",
+    cellRender: (_, item) => {
+      return <Balance value={item.balance} currency={symbol} />;
+    },
+  };
+};
 
 export function useTableColumns(options) {
   const symbol = useSelector(chainSymbolSelector);
@@ -363,5 +374,6 @@ export function useTableColumns(options) {
     reason,
     tipsStatus,
     tipsValue: tipsValue(symbol),
+    burntValue: burntValue(symbol),
   };
 }

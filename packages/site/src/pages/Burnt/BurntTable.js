@@ -31,8 +31,8 @@ const TableWrapper = styled.div`
 
 const BurntTable = ({ data, chartData, loading, footer }) => {
   const symbol = useSelector(chainSymbolSelector);
-  const { time, eventId, value, per, remnant } = useTableColumns();
-  const columns = [time, eventId, value, per, remnant];
+  const { time, eventId, burntValue, per, remnant } = useTableColumns();
+  const columns = [time, eventId, burntValue, per, remnant];
 
   return (
     <CardWrapper>
