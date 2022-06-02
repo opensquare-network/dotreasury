@@ -20,7 +20,7 @@ import {
   normalizedTipDetailSelector,
   tipCountdownSelector,
 } from "../../store/reducers/tipSlice";
-import { scanHeightSelector } from "../../store/reducers/chainSlice";
+import { scanHeightSelector, chainSelector } from "../../store/reducers/chainSlice";
 import RelatedLinks from "../../components/RelatedLinks";
 
 const FlexWrapper = styled.div`
@@ -42,6 +42,7 @@ const TippersLabel = styled.div`
 `;
 
 const TipLifeCycleTable = ({ loading }) => {
+  const chain = useSelector(chainSelector);
   const tipDetail = useSelector(normalizedTipDetailSelector);
   const tipCountdown = useSelector(tipCountdownSelector);
   const scanHeight = useSelector(scanHeightSelector);
@@ -67,6 +68,20 @@ const TipLifeCycleTable = ({ loading }) => {
       }
     })();
   }, [tipDetail, isMounted]);
+
+  const links = [];
+  if (chain === "kusama" && tipDetail) {
+    links.push({
+      link: `https://${chain}.subsquare.io/treasury/tip/${tipDetail.proposeAtBlockHeight}_${tipDetail.hash}`,
+      description: "Tip proposal discusssion",
+    });
+  }
+  if (tipUrl) {
+    links.push({
+      link: tipUrl,
+      description: "Tip proposal discusssion",
+    });
+  }
 
   return (
     <TableLoading loading={loading}>
@@ -151,14 +166,7 @@ const TipLifeCycleTable = ({ loading }) => {
             <Table.Row>
               <Table.Cell>
                 <TableCell title="Tip Page">
-                  <RelatedLinks
-                    links={[
-                      {
-                        link: tipUrl,
-                        description: "Tip proposal discusssion",
-                      },
-                    ]}
-                  />
+                  <RelatedLinks links={links} />
                 </TableCell>
               </Table.Cell>
             </Table.Row>
