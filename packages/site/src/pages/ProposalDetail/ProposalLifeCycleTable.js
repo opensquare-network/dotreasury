@@ -45,7 +45,7 @@ const ProposalLifeCycleTable = ({ loading }) => {
   }, [proposalDetail, isMounted]);
 
   const links = [];
-  if (chain === "kusama") {
+  if (chain === "kusama" && proposalDetail) {
     links.push({
       link: `https://${chain}.subsquare.io/treasury/proposal/${proposalDetail.proposalIndex}`,
       description: "Treasury proposal discusssion",
