@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import Table from "../../../components/Table";
@@ -6,13 +6,14 @@ import TableLoading from "../../../components/TableLoading";
 import TableCell from "../../../components/TableCell";
 import User from "../../../components/User";
 import Text from "../../../components/Text";
-import { scanHeightSelector } from "../../../store/reducers/chainSlice";
+import {
+  chainSelector,
+  scanHeightSelector,
+} from "../../../store/reducers/chainSlice";
 import Label from "../../../components/Label";
 import DateShow from "../../../components/DateShow";
 import PolygonLabel from "../../../components/PolygonLabel";
 import ExplorerLink from "../../../components/ExplorerLink";
-import { useIsMounted } from "../../../utils/hooks";
-import polkaassemblyApi from "../../../services/polkassembly";
 import { childBountyDetailSelector } from "../../../store/reducers/bountySlice";
 import RelatedLinks from "../../../components/RelatedLinks";
 
@@ -31,23 +32,15 @@ const CapText = styled(Text)`
 const BountyLifeCycleTable = ({ loading }) => {
   const bountyDetail = useSelector(childBountyDetailSelector);
   const scanHeight = useSelector(scanHeightSelector);
-  const isMounted = useIsMounted();
-  const [bountyUrl, setBountyUrl] = useState(null);
+  const chain = useSelector(chainSelector);
 
-  useEffect(() => {
-    (async () => {
-      if (bountyDetail) {
-        const url = await polkaassemblyApi.getBountyUrl(
-          bountyDetail.bountyIndex
-        );
-        if (isMounted.current) {
-          setBountyUrl(url);
-        }
-      } else {
-        setBountyUrl(null);
-      }
-    })();
-  }, [bountyDetail, isMounted]);
+  const links = [];
+  if (["kusama", "polkadot"].includes(chain) && bountyDetail) {
+    links.push({
+      link: `https://${chain}.subsquare.io/treasury/child-bounty/${bountyDetail.parentBountyId}_${bountyDetail.index}`,
+      description: "Child bounty discusssion",
+    });
+  }
 
   return (
     <TableLoading loading={loading}>
@@ -134,18 +127,11 @@ const BountyLifeCycleTable = ({ loading }) => {
               </TableCell>
             </Table.Cell>
           </Table.Row>
-          {bountyUrl && (
+          {links.length && (
             <Table.Row>
               <Table.Cell>
-                <TableCell title="Bounty Page">
-                  <RelatedLinks
-                    links={[
-                      {
-                        link: bountyUrl,
-                        description: "Bounty discusssion",
-                      },
-                    ]}
-                  />
+                <TableCell title="Child bounty Page">
+                  <RelatedLinks links={links} />
                 </TableCell>
               </Table.Cell>
             </Table.Row>
