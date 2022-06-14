@@ -70,7 +70,7 @@ const TipLifeCycleTable = ({ loading }) => {
   }, [tipDetail, isMounted]);
 
   const links = [];
-  if (chain === "kusama" && tipDetail) {
+  if (["kusama", "polkadot"].includes(chain) && tipDetail) {
     links.push({
       link: `https://${chain}.subsquare.io/treasury/tip/${tipDetail.proposeAtBlockHeight}_${tipDetail.hash}`,
       description: "Tip proposal discusssion",
@@ -162,7 +162,7 @@ const TipLifeCycleTable = ({ loading }) => {
               </TableCell>
             </Table.Cell>
           </Table.Row>
-          {tipUrl && (
+          {links.length && (
             <Table.Row>
               <Table.Cell>
                 <TableCell title="Tip Page">
