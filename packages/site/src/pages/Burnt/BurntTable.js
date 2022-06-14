@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import Card from "../../components/Card";
 import Burnt from "../../components/Charts/burnt";
-import { useColumns } from "./tableColumns";
+import { useTableColumns } from "../../components/shared/useTableColumns";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -31,7 +31,8 @@ const TableWrapper = styled.div`
 
 const BurntTable = ({ data, chartData, loading, footer }) => {
   const symbol = useSelector(chainSymbolSelector);
-  const { columns } = useColumns();
+  const { time, eventId, burntValue, per, remnant } = useTableColumns();
+  const columns = [time, eventId, burntValue, per, remnant];
 
   return (
     <CardWrapper>

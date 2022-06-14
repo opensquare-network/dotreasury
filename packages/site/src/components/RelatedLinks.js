@@ -9,7 +9,6 @@ import { useDisablePopup } from "../utils/hooks";
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
   > :not(:last-child) {
     margin-right: 8px;
   }

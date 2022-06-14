@@ -63,10 +63,7 @@ const CustomTable = styled(SemanticTable)`
     min-width: 100px !important;
   }
   .propose-time-cell {
-    width: 280px !important;
-  }
-  .new-propose-time-cell {
-    max-width: 180px !important;
+    width: 200px !important;
   }
   .related-links-cell {
     min-width: 120px !important;
@@ -105,7 +102,6 @@ const CustomTable = styled(SemanticTable)`
   .no-data {
     height: 120px !important;
   }
-
   @media screen and (max-width: 1141px) {
     .hidden {
       display: none;
@@ -162,9 +158,14 @@ function TableBodyRow({
         dataIndex,
         cellClassName = "",
         cellProps,
+        show = true,
       } = column;
 
       const cellValue = _get(item, dataIndex);
+
+      if (!show) {
+        return null;
+      }
 
       return (
         <TableCell key={key} {...cellProps} className={cellClassName}>
@@ -240,7 +241,12 @@ export function Table({
               title,
               headerCellProps,
               headerCellClassName = "",
+              show = true,
             } = column;
+
+            if (!show) {
+              return null;
+            }
 
             return (
               <TableHeaderCell
