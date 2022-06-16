@@ -37,7 +37,7 @@ const BountyLifeCycleTable = ({ loading }) => {
   const links = [];
   if (["kusama", "polkadot"].includes(chain) && bountyDetail) {
     links.push({
-      link: `https://${chain}.subsquare.io/treasury/child-bounty/${bountyDetail.parentBountyId}_${bountyDetail.index}`,
+      link: `https://${chain}.subsquare.io/treasury/child-bounty/${bountyDetail.index}`,
       description: "Child bounty discusssion",
     });
   }
