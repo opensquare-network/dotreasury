@@ -90,7 +90,39 @@ const proposals = [
     title: "Part of social contract: 6 month extension for the continuation",
     achievements: [],
   },
-];
+  {
+    token: "dot",
+    amount: 1287.23,
+    proposalId: 89,
+    proposeTimePrice: 19.62,
+    title: "Continuation of Maintenance & Support for Python Libraries from 1 October 2021 to 31 December 2021",
+    achievements: [],
+  },
+  {
+    token: "dot",
+    amount: 841.08,
+    proposalId: 109,
+    proposeTimePrice: 17.34,
+    title: "Continuation of Maintenance & Support for Python Libraries from 1 October 2021 to 31 December 2021",
+    achievements: [],
+  },
+  {
+    token: "ksm",
+    amount: 201.083,
+    proposalId: 147,
+    proposeTimePrice: 162.5,
+    title: "MVP for Polkascan Calendar Application",
+    achievements: [],
+  },
+  {
+    token: "ksm",
+    amount: 1148.348,
+    proposalId: 164,
+    proposeTimePrice: 47.89,
+    title: "Open-sourcing Polkascan block-explorer stack",
+    achievements: [],
+  },
+].reverse();
 
 module.exports = {
   id,
