@@ -5,7 +5,6 @@ import { Segment, Dimmer, Image } from "semantic-ui-react";
 const Wrapper = styled.div`
   .ui.segment {
     padding: 0;
-    border: 0;
     width: fit-content;
     min-width: 100%;
     background: transparent !important;
