@@ -13,6 +13,7 @@ const peri = require("../polkadot/peri");
 const subscan = require("../common/subscan");
 const polkassembly = require("../common/polkassembly");
 const polkaworld = require("./polkaworld");
+const dwellir = require("../common/dwellir");
 
 const projects = [
   polkaworld,
@@ -30,6 +31,7 @@ const projects = [
   zkmega,
   stylo,
   tee,
+  dwellir,
 ];
 
 module.exports = [...projects].sort((p1, p2) => p2.startTime - p1.startTime);
