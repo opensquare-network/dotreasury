@@ -15,6 +15,14 @@ const relatedLinks = [
 
 const proposals = [
   {
+    token: "ksm",
+    amount: 2.939,
+    proposalId: 106,
+    proposeTimePrice: 323.65,
+    title: "PolkaStats operation costs for Kusama network from 01.09.2021 to 01.12.2021",
+    achievements: [],
+  },
+  {
     token: "dot",
     amount: 37.08,
     proposalId: 34,

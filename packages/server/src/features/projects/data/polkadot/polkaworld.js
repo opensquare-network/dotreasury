@@ -16,6 +16,14 @@ const relatedLinks = [
 const proposals = [
   {
     token: "dot",
+    amount: 5489,
+    proposalId: 119,
+    proposeTimePrice: 10.27,
+    title: "PolkaWorld Ops and Maintenance proposal: 2022/6 - 2022/8",
+    achievements: [],
+  },
+  {
+    token: "dot",
     amount: 3447,
     proposalId: 91,
     proposeTimePrice: 17.49,

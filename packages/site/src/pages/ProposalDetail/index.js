@@ -10,7 +10,7 @@ import {
 } from "../../store/reducers/proposalSlice";
 import { scanHeightSelector } from "../../store/reducers/chainSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
-import { fetchDescription } from "../../store/reducers/descriptionSlice";
+import { fetchDescription, setDescription } from "../../store/reducers/descriptionSlice";
 
 import InformationTable from "./InformationTable";
 import Timeline from "../Timeline";
@@ -251,7 +251,7 @@ const ProposalDetail = () => {
   useEffect(() => {
     dispatch(fetchDescription(chain, "proposal", proposalIndex));
     return () => {
-      dispatch(fetchDescription());
+      dispatch(setDescription());
     };
   }, [dispatch, chain, proposalIndex]);
 

@@ -13,6 +13,33 @@ const relatedLinks = [
 
 const proposals = [
   {
+    token: "dot",
+    amount: 974.24,
+    proposalId: 107,
+    proposeTimePrice: 18.42,
+    title:
+      "Polkadot RPC services Dwellir Q2 2022",
+    achievements: [],
+  },
+  {
+    token: "ksm",
+    amount: 332.69,
+    proposalId: 143,
+    proposeTimePrice: 185.6,
+    title: "Update 2, RPC-node Dwellir",
+    achievements: [
+    ],
+  },
+  {
+    token: "dot",
+    amount: 484.4,
+    proposalId: 81,
+    proposeTimePrice: 29.88,
+    title:
+      "Proposal: Polkadot RPC node Dwellir",
+    achievements: [],
+  },
+  {
     token: "ksm",
     amount: 136.22,
     proposalId: 125,
@@ -27,15 +54,6 @@ const proposals = [
     proposalId: 109,
     proposeTimePrice: 396.45,
     title: "Kusama RPC-node Dwellir",
-    achievements: [
-    ],
-  },
-  {
-    token: "ksm",
-    amount: 136.22,
-    proposalId: 125,
-    proposeTimePrice: 290.637,
-    title: "Update 1, RPC-node Dwellir maintenance",
     achievements: [
     ],
   },
