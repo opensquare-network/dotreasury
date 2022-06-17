@@ -18,6 +18,19 @@ const relatedLinks = [
 const proposals = [
   {
     token: "ksm",
+    amount: 4454,
+    proposalId: 158,
+    proposeTimePrice: 67.4,
+    title: "Nova Wallet 2nd Proposal: Cold Wallets, Cross-chain transfers, Governance, Community-selected features",
+    achievements: [
+      "Cold Wallets integration: Watch mode, Parity Signer, Ledger",
+      "Cross-chain transfers: Polkadot/Kusama <—> Parachains",
+      "Governance: The first iteration of the upcoming Governance 2.0",
+      "Community-selected features: Based on requests from the community",
+    ],
+  },
+  {
+    token: "ksm",
     amount: 780.71,
     proposalId: 122,
     proposeTimePrice: 303.45,
