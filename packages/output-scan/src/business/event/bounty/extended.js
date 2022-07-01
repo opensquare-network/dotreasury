@@ -30,13 +30,13 @@ async function handleBountyExtended(event, extrinsic, indexer) {
     );
   }
 
-  const { _remark: remark } = call.toJSON().args;
+  const remarkHex = call.args[1].toHex();
   const timelineItem = {
     type: TimelineItemTypes.extrinsic,
     name: event.method,
     args: {
       caller,
-      remark: hexToString(remark),
+      remark: hexToString(remarkHex),
     },
     eventData,
     indexer,
