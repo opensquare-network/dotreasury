@@ -235,7 +235,7 @@ class AuthController {
       throw new HttpError(400, "Incorrect login attempt id");
     }
 
-    const success = isValidSignature(
+    const success = await isValidSignature(
       attempt.challenge,
       challengeAnswer,
       attempt.address
