@@ -39,7 +39,7 @@ function extractPage(ctx) {
   };
 }
 
-function isValidSignature(signedMessage, signature, address) {
+async function isValidSignature(signedMessage, signature, address) {
   await cryptoWaitReady();
   try {
     const result = signatureVerify(signedMessage, signature, address);
