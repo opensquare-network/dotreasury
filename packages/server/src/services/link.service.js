@@ -93,7 +93,7 @@ class LinkService {
       throw new HttpError(401, "Unauthorized");
     }
 
-    const isValid = isValidSignature(message, signature, address);
+    const isValid = await isValidSignature(message, signature, address);
     if (!isValid) {
       throw new HttpError(400, "Signature is invalid");
     }

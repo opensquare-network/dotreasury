@@ -1,6 +1,6 @@
 const crypto = require("crypto");
 const {
-  decodeAddress,
+  cryptoWaitReady,
   encodeAddress,
   signatureVerify,
 } = require("@polkadot/util-crypto");
@@ -40,11 +40,13 @@ function extractPage(ctx) {
 }
 
 function isValidSignature(signedMessage, signature, address) {
-  const publicKey = decodeAddress(address);
-  const hexPublicKey = u8aToHex(publicKey);
-  const wrappedMsg = `<Bytes>${signedMessage}</Bytes>`;
-  const result = signatureVerify(wrappedMsg, signature, hexPublicKey);
-  return result.isValid;
+  await cryptoWaitReady();
+  try {
+    const result = signatureVerify(signedMessage, signature, address);
+    return result.isValid;
+  } catch (e) {
+    return false;
+  }
 }
 
 function validateAddress(address, chain) {
