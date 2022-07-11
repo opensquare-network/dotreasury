@@ -63,6 +63,7 @@ const ChildBountiesTable = ({
       title: "Parent",
       dataIndex: "parentBountyId",
       cellProps: "index-cell",
+      cellClassName: "index-cell",
       cellRender: (value) => (
         <NavLink to={`./bounties/${value}`}>
           <TextMinor>{`#${value}`}</TextMinor>
