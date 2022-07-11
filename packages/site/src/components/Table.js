@@ -55,6 +55,7 @@ const CustomTable = styled(SemanticTable)`
   }
   .title-cell {
     min-width: 208px !important;
+    word-break: break-all;
   }
   .update-due-cell {
     min-width: 100px !important;
