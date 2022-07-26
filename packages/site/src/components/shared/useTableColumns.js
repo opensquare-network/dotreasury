@@ -15,8 +15,8 @@ import BeneficiaryContent from "../../pages/Proposals/BeneficiaryContent";
 import DescriptionCell from "../../pages/Proposals/DescriptionCell";
 import RelatedLinks from "../RelatedLinks";
 import PairTextVertical from "../PairTextVertical";
-import ReasonText from "../../pages/Tips/ReasonText";
-import ReasonLink from "../../pages/Tips/ReasonLink";
+import TextWrapper from "./TextWrapper";
+import TextLinks from "./TextLinks";
 import { TipStatus } from "../../constants";
 
 const ProposeTimeWrapper = styled.div`
@@ -182,12 +182,20 @@ const curator = {
   cellRender: (_, item) =>
     item.curator ? <User address={item.curator} /> : "--",
 };
-const title = {
+const title = options=>( {
   key: "title",
   title: "Title",
   dataIndex: "title",
   cellClassName: "title-cell",
-};
+  cellRender: (value, item) => {
+    if(options.recognizeLinks) {
+      return <TextWrapper maxWidth={347}>
+        <TextLinks text={item.title} />
+      </TextWrapper>
+    }
+    return item.title;
+  }
+});
 const bountiesStatus = {
   key: "status",
   title: "Status",
@@ -295,9 +303,9 @@ const reason = {
   key: "reason",
   title: "Reason",
   cellRender: (_, item) => (
-    <ReasonText>
-      <ReasonLink text={item.reason} />
-    </ReasonText>
+    <TextWrapper>
+      <TextLinks text={item.reason} />
+    </TextWrapper>
   ),
 };
 const tipsValue = (symbol) => {
@@ -360,7 +368,7 @@ export function useTableColumns(options) {
     remnant: remnant(symbol),
     bountyIndex,
     curator,
-    title,
+    title: title(options),
     bountiesStatus,
     detailRoute: detailRoute(options),
     beneficiary,
