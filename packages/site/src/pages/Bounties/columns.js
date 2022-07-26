@@ -18,7 +18,7 @@ export function useColumns() {
     value,
     bountiesStatus,
     detailRoute,
-  } = useTableColumns({ getDetailRoute });
+  } = useTableColumns({getDetailRoute, recognizeLinks: true});
 
   const columns = [
     bountyIndex,
