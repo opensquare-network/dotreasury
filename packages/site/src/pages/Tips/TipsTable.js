@@ -68,7 +68,7 @@ const TipsTable = ({ data, loading, header, footer }) => {
     tipsStatus,
     detailRoute,
     relatedLinks,
-  } = useTableColumns({ getRelatedLinks,getDetailRoute });
+  } = useTableColumns({ getRelatedLinks, getDetailRoute, compact:true });
   const columns = [
     tipsBeneficiary,
     finder,

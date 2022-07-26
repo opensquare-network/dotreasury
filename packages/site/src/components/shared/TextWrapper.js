@@ -13,7 +13,7 @@ const TextWrapper = styled.div`
       `
     }else{
       return css`
-        min-width: 450px;
+        min-width: 420px;
       `
     }
   }}
