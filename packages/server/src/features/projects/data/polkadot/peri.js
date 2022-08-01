@@ -12,6 +12,14 @@ const relatedLinks = [];
 const proposals = [
   {
     token: "dot",
+    amount: 5317,
+    proposalId: 102,
+    proposeTimePrice: 22.23,
+    title: "The 2022/3-2022/8 operating cost for the nonprofit organization Polkadot Ecology Research Institute",
+    achievements: [],
+  },
+  {
+    token: "dot",
     amount: 3668.02,
     proposalId: 66,
     proposeTimePrice: 30.40,

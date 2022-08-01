@@ -6,7 +6,7 @@ const {
 
 async function test() {
   const blockHeights = [
-    10356353,
+    13329084,
   ];
 
   for (const height of blockHeights) {

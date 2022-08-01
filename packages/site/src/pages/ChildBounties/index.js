@@ -14,9 +14,8 @@ import {
 } from "../../store/reducers/bountySlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import { compatChildBountyData } from "./utils";
+import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../constants";
 
-const DEFAULT_PAGE_SIZE = 20;
-const DEFAULT_QUERY_PAGE = 1;
 const QUERY_PAGE_KEY = "page";
 
 const ChildBounties = () => {

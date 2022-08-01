@@ -95,7 +95,7 @@ const ProposalLifeCycleTable = ({ loading }) => {
               </TableCell>
             </Table.Cell>
           </Table.Row>
-          {links.length && (
+          {links.length > 0 && (
             <Table.Row>
               <Table.Cell>
                 <TableCell title="Proposal Page">

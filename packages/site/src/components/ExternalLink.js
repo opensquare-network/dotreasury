@@ -4,6 +4,7 @@ export default function ExternalLink({ href, children }) {
   return (
     <a
       href={href}
+      title={href}
       target="_blank"
       rel="noopener noreferrer"
       onClick={(e) => { e.stopPropagation(); }}

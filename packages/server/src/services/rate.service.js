@@ -38,7 +38,7 @@ class RateService {
       throw new HttpError(400, "Address is missing");
     }
 
-    const isValid = isValidSignature(msg, signature, address);
+    const isValid = await isValidSignature(msg, signature, address);
     if (!isValid) {
       throw new HttpError(400, "Signature is invalid");
     }

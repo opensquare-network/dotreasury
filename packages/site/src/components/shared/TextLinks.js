@@ -1,9 +1,9 @@
 import React from "react";
 
-import ClickableLink from "../../components/ClickableLink";
+import ClickableLink from "../ClickableLink";
 import {useLinks} from "../../utils/hooks";
 
-const ReasonLink = ({text}) => {
+const TextLinks = ({text}) => {
   const links = useLinks(text);
 
   return (
@@ -15,4 +15,4 @@ const ReasonLink = ({text}) => {
   )
 }
 
-export default ReasonLink
+export default TextLinks

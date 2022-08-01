@@ -65,7 +65,7 @@ class UserController {
       });
     }
 
-    const success = isValidSignature(challenge, challengeAnswer, address);
+    const success = await isValidSignature(challenge, challengeAnswer, address);
     if (!success) {
       throw new HttpError(400, {
         challengeAnswer: ["Incorrect challenge answer."],
