@@ -178,6 +178,7 @@ const curator = {
   key: "curator",
   title: "Curator",
   dataIndex: "curator",
+  headerCellClassName: "curator-header",
   cellClassName: "user-cell",
   cellRender: (_, item) =>
     item.curator ? <User address={item.curator} /> : "--",
