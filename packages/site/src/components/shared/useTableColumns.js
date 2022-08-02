@@ -178,6 +178,7 @@ const curator = {
   key: "curator",
   title: "Curator",
   dataIndex: "curator",
+  headerCellClassName: "curator-header",
   cellClassName: "user-cell",
   cellRender: (_, item) =>
     item.curator ? <User address={item.curator} /> : "--",
@@ -223,7 +224,7 @@ const beneficiary = {
   key: "beneficiary",
   title: "Beneficiary",
   headerCellClassName: "proposal-beneficiary-header",
-  cellClassName: "proposal-user-cell proposal-beneficiary-cell",
+  cellClassName: "proposal-user-cell proposal-beneficiary-cell user-cell",
   cellRender: (_, item) => (
     <User
       address={item.beneficiary}
@@ -240,7 +241,7 @@ const proposer = {
   key: "proposer",
   title: "Proposer",
   headerCellClassName: "proposal-proposer-header",
-  cellClassName: "proposal-user-cell proposal-proposer-cell",
+  cellClassName: "proposal-user-cell proposal-proposer-cell user-cell",
   cellRender: (_, item) => (
     <User
       address={item.proposer}

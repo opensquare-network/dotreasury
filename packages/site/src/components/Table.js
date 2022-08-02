@@ -35,8 +35,8 @@ const CustomTable = styled(SemanticTable)`
     color: rgba(0, 0, 0, 0.3) !important;
   }
   .user-cell {
-    width: 192px !important;
-    max-width: 192px !important;
+    width: 176px !important;
+    max-width: 176px !important;
   }
   .balance-cell {
     width: 139px !important;
@@ -84,7 +84,7 @@ const CustomTable = styled(SemanticTable)`
     max-width: 368px !important;
   }
   .proposal-user-cell {
-    max-width: 164px !important;
+    /* max-width: 164px !important; */
   }
   .proposal-value-cell {
     max-width: 136px !important;
