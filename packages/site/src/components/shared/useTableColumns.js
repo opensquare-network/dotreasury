@@ -225,17 +225,20 @@ const beneficiary = {
   title: "Beneficiary",
   headerCellClassName: "proposal-beneficiary-header",
   cellClassName: "proposal-user-cell proposal-beneficiary-cell user-cell",
-  cellRender: (_, item) => (
-    <User
-      address={item.beneficiary}
-      popupContent={
-        <BeneficiaryContent
-          proposerAddress={item.proposer}
-          beneficiaryAddress={item.beneficiary}
-        />
-      }
-    />
-  ),
+  cellRender: (_, item) =>
+    item.beneficiary ? (
+      <User
+        address={item.beneficiary}
+        popupContent={
+          <BeneficiaryContent
+            proposerAddress={item.proposer}
+            beneficiaryAddress={item.beneficiary}
+          />
+        }
+      />
+    ) : (
+      "--"
+    ),
 };
 const proposer = {
   key: "proposer",
