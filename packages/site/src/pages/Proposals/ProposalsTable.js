@@ -34,9 +34,7 @@ const TableWrapper = styled.div`
   .proposal-beneficiary-header,
   .proposal-proposer-header {
     cursor: pointer !important;
-    :hover {
-      color: rgba(0, 0, 0, 0.9) !important;
-    }
+    color: rgba(0, 0, 0, 0.65) !important;
   }
 `;
 

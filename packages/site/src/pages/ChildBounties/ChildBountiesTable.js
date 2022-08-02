@@ -28,6 +28,12 @@ const Wrapper = styled.div`
 
 const TableWrapper = styled.div`
   overflow: scroll;
+
+  .proposal-beneficiary-header,
+  .curator-header {
+    cursor: pointer !important;
+    color: rgba(0, 0, 0, 0.65) !important;
+  }
 `;
 
 const HeaderWrapper = styled.div`
