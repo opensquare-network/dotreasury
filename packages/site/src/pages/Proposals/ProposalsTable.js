@@ -39,7 +39,7 @@ const TableWrapper = styled.div`
   }
 `;
 
-const fetchProposalTitle = (data = [], chain) => {
+const completeProposalsWithTitle = (data = [], chain) => {
   return data.map(async (proposal) => {
     if (!proposal.description) {
       //improve: implement a brief API for this to speed up the loading
@@ -63,7 +63,7 @@ const ProposalsTable = ({ data, loading, header, footer }) => {
       return;
     }
 
-    Promise.all(fetchProposalTitle(data, chain)).then((res) => {
+    Promise.all(completeProposalsWithTitle(data, chain)).then((res) => {
       setTableData(res);
     });
   }, [data, chain]);
