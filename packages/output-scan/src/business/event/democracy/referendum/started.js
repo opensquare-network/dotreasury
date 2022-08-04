@@ -1,5 +1,7 @@
 const { getReferendumInfoFromStorage } = require("../../../common/democracy/referendum");
 const omit = require("lodash.omit");
+const { handleBusinessWhenReferendumStarted } = require("./hooks/started");
+const { queryPreimageCall } = require("../../../common/democracy/preimage");
 const { insertDemocracyReferendum } = require("../../../../mongo/service/democracyReferendum");
 const {
   consts: {
@@ -17,7 +19,12 @@ async function handleStarted(event, indexer) {
     indexer
   );
 
-  const meta = omit(referendumInfo?.ongoing, ['tally'])
+  if (!referendumInfo) {
+    // this is because the preimage has not been uploaded to chain since the referendum has started. We just ignore this
+    // now.
+    return;
+  }
+
   const state = {
     indexer,
     state: ReferendumEvents.Started,
@@ -34,6 +41,7 @@ async function handleStarted(event, indexer) {
     indexer,
   };
 
+  const meta = omit(referendumInfo?.ongoing, ['tally'])
   await insertDemocracyReferendum({
     indexer,
     referendumIndex,
@@ -42,6 +50,11 @@ async function handleStarted(event, indexer) {
     state,
     timeline: [timelineItem],
   });
+
+  const call = await queryPreimageCall(meta.proposalHash, indexer);
+  if (call) {
+    await handleBusinessWhenReferendumStarted(referendumIndex, meta, call, indexer);
+  }
 }
 
 module.exports = {

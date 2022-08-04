@@ -1,3 +1,4 @@
+const { handleStarted } = require("./started");
 const {
   consts: {
     Modules,
@@ -9,7 +10,7 @@ const {
 
 function reachTheLowestHandleHeight(height) {
   const chain = currentChain();
-  if (CHAINS.POLKADOT === chain && height >= 10886400) {
+  if (CHAINS.POLKADOT === chain && height >= 10483200) {
     return true
   }
 
@@ -33,4 +34,12 @@ async function handleReferendumEvent(event, indexer, blockEvents) {
   if (!isReferendumEvent(section, method)) {
     return;
   }
+
+  if (ReferendumEvents.Started === method) {
+    await handleStarted(...arguments);
+  }
+}
+
+module.exports = {
+  handleReferendumEvent,
 }

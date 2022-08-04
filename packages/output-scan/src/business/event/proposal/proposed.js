@@ -39,6 +39,7 @@ async function saveNewTreasuryProposal(event, extrinsic, eventIndexer) {
     state,
     timeline: [timelineItem],
     motions: [],
+    referendums: [],
   };
 
   await insertProposal(obj);

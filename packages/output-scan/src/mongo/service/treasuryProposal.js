@@ -11,6 +11,22 @@ async function insertProposal(proposalObj) {
   await col.insertOne(proposalObj);
 }
 
+async function updateProposalWithReferendum(proposalIndex, updates, referendumInfo) {
+  const col = await getProposalCollection();
+  let update = {
+    $set: updates,
+  };
+
+  if (referendumInfo) {
+    update = {
+      ...update,
+      $push: { referendums: referendumInfo }
+    }
+  }
+
+  await col.updateOne({ proposalIndex }, update);
+}
+
 async function updateProposal(proposalIndex, updates, timelineItem, motionInfo) {
   const col = await getProposalCollection();
   let update = {
@@ -37,4 +53,5 @@ async function updateProposal(proposalIndex, updates, timelineItem, motionInfo) 
 module.exports = {
   insertProposal,
   updateProposal,
+  updateProposalWithReferendum,
 };
