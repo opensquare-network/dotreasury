@@ -20,6 +20,11 @@ const Wrapper = styled.div`
 const BadgeWrapper = styled.div`
   display: flex;
   align-items: center;
+  overflow: hidden;
+
+  a {
+    overflow: hidden;
+  }
 `;
 
 const User = ({ address, ellipsis = true, popup = true, popupContent }) => {

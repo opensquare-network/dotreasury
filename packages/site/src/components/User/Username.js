@@ -12,6 +12,8 @@ const TextUsername = styled(TextMinor)`
   font-size: 14px;
   line-height: 22px;
   color: rgba(0, 0, 0, 0.65) !important;
+  text-overflow: ellipsis;
+  overflow: hidden;
   &:hover {
     color: rgba(0, 0, 0, 0.9) !important;
     text-decoration-line: underline;
