@@ -8,7 +8,7 @@ const {
     ReferendumEvents,
     TimelineItemTypes,
   }
-} = require("@osn/scan-common")
+} = require("@osn/scan-common");
 
 async function handleStarted(event, indexer) {
   const eventData = event.data.toJSON();
@@ -49,9 +49,11 @@ async function handleStarted(event, indexer) {
     info: referendumInfo,
     state,
     timeline: [timelineItem],
+    treasuryProposals: [],
   });
 
   const call = await queryPreimageCall(meta.proposalHash, indexer);
+  // note that the preimage maybe submitted after referendum started, but currently we will not handle this branch.
   if (call) {
     await handleBusinessWhenReferendumStarted(referendumIndex, meta, call, indexer);
   }

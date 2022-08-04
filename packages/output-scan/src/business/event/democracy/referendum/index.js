@@ -1,3 +1,8 @@
+const { handlePreimageMissing } = require("./preimageMissing");
+const { handlePreimageInvalid } = require("./preimageInvalid");
+const { handleExecuted } = require("./executed");
+const { handleNotPassed } = require("./notPassed");
+const { handlePassed } = require("./passed");
 const { handleStarted } = require("./started");
 const {
   consts: {
@@ -37,6 +42,16 @@ async function handleReferendumEvent(event, indexer, blockEvents) {
 
   if (ReferendumEvents.Started === method) {
     await handleStarted(...arguments);
+  } else if (ReferendumEvents.Passed === method) {
+    await handlePassed(...arguments);
+  } else if (ReferendumEvents.NotPassed === method) {
+    await handleNotPassed(...arguments);
+  } else if (ReferendumEvents.Executed === method) {
+    await handleExecuted(event, indexer);
+  } else if (ReferendumEvents.PreimageInvalid === method) {
+    await handlePreimageInvalid(event, indexer);
+  } else if (ReferendumEvents.PreimageMissing === method) {
+    await handlePreimageMissing(event, indexer);
   }
 }
 

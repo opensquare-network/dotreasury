@@ -1,3 +1,4 @@
+const { updateReferendumWithTreasuryProposal } = require("../../../../../mongo/service/democracyReferendum");
 const { updateProposalWithReferendum } = require("../../../../../mongo/service/treasuryProposal");
 const { handleWrappedCall } = require("../../../../common/call");
 const {
@@ -43,6 +44,11 @@ async function handleProposal(referendumInfo, call, indexer) {
     method,
     treasuryProposalIndex,
     indexer
+  });
+
+  await updateReferendumWithTreasuryProposal(referendumIndex, {
+    index: treasuryProposalIndex,
+    method,
   });
 }
 

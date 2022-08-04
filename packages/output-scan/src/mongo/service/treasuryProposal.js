@@ -1,5 +1,10 @@
 const { getProposalCollection } = require("../index");
 
+async function getTreasuryProposal(proposalIndex) {
+  const col = await getProposalCollection();
+  return await col.findOne({ proposalIndex });
+}
+
 async function insertProposal(proposalObj) {
   const col = await getProposalCollection();
   const { proposalIndex } = proposalObj;
@@ -54,4 +59,5 @@ module.exports = {
   insertProposal,
   updateProposal,
   updateProposalWithReferendum,
+  getTreasuryProposal,
 };
