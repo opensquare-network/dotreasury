@@ -45,7 +45,7 @@ const completeProposalsWithTitle = (data = [], chain) => {
       //improve: implement a brief API for this to speed up the loading
       const apiUrl = `https://${chain}.subsquare.io/api/treasury/proposals/${proposal.proposalIndex}`;
       const { result } = await api.fetch(apiUrl);
-      return { ...proposal, description: result.title };
+      return { ...proposal, description: result?.title };
     }
     return proposal;
   });
