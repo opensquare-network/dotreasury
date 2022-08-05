@@ -1,3 +1,4 @@
+const { handleReferendumEvent } = require("./democracy/referendum");
 const { handleChildBountiesEvents } = require("./child-bounties");
 const { handleBurntEvent } = require("./burnt");
 const { handleTreasuryTransferOut } = require("./outTransfer");
@@ -54,6 +55,7 @@ async function handleCommon(
 ) {
   await handleBurntEvent(event, indexer, extrinsic);
   await handleChildBountiesEvents(event, indexer, extrinsic);
+  await handleReferendumEvent(...arguments);
 }
 
 async function handleEvents(events, extrinsics, blockIndexer) {
