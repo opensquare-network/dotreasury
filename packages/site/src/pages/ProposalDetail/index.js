@@ -30,6 +30,7 @@ import DetailGoBack from "../components/DetailGoBack";
 import { useChainRoute } from "../../utils/hooks";
 import DetailTableWrapper from "../../components/DetailTableWrapper";
 import Rate from "../../components/Rate";
+import { TYPE_COUNCIL_MOTION } from "../../constants";
 
 const ValueWrapper = styled.span`
   margin-right: 4px;
@@ -73,7 +74,9 @@ function normalizeMotionTimelineItem(motion, scanHeight) {
     subTimeline: (motion.timeline || []).map((item) => ({
       name:
         item.method === "Proposed" ? `Motion #${motion.index}` : item.method,
-      ...(item.method === "Proposed" ? { motionIndex: motion.index } : {}),
+      ...(item.method === "Proposed"
+        ? { motionIndex: motion.index, type: TYPE_COUNCIL_MOTION }
+        : {}),
       extrinsicIndexer: item.type === "extrinsic" ? item.indexer : undefined,
       eventIndexer: item.type === "event" ? item.indexer : undefined,
       fields: (() => {

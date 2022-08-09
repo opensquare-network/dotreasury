@@ -12,6 +12,7 @@ import TextMinor from "../../components/TextMinor";
 import { mrgap } from "../../styles";
 import { useSelector } from "react-redux";
 import { chainSelector } from "../../store/reducers/chainSlice";
+import { TYPE_COUNCIL_MOTION } from "../../constants";
 
 const Wrapper = styled.div`
   &:last-child .bar {
@@ -66,7 +67,7 @@ const TextMinorWrapper = styled(TextMinor)`
 `;
 
 const makeLinkUrl = (chain, data) => {
-  if (data.name.includes("Motion") && data.motionIndex > -1) {
+  if (data?.type === TYPE_COUNCIL_MOTION) {
     return `https://${chain}.subsquare.io/council/motion/${data.motionIndex}`;
   }
 };
