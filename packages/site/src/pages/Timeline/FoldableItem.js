@@ -8,7 +8,7 @@ import { PRIMARY_THEME_COLOR } from "../../constants";
 import { getBlockTime } from "../../services/chainApi";
 import { useIsMounted } from "../../utils/hooks";
 import { useSelector } from "react-redux";
-import { chainSelector } from "../../store/reducers/chainSlice"
+import { chainSelector } from "../../store/reducers/chainSlice";
 
 const Wrapper = styled.div`
   display: flex;
