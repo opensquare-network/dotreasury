@@ -10,6 +10,8 @@ import ButtonList from "./ButtonList";
 import DateShow from "../../components/DateShow";
 import TextMinor from "../../components/TextMinor";
 import { mrgap } from "../../styles";
+import { useSelector } from "react-redux";
+import { chainSelector } from "../../store/reducers/chainSlice";
 
 const Wrapper = styled.div`
   &:last-child .bar {
@@ -63,6 +65,13 @@ const TextMinorWrapper = styled(TextMinor)`
   white-space: nowrap;
 `;
 
+const makeLinkUrl = (chain, eventName) => {
+  if (eventName.includes("Motion")) {
+    const index = eventName.match(/\d+/);
+    return `https://${chain}.subsquare.io/council/motion/${index}`;
+  }
+};
+
 const Item = ({
   data,
   polkassembly,
@@ -70,6 +79,8 @@ const Item = ({
   isUnfold,
   hideButtonList = false,
 }) => {
+  const chain = useSelector(chainSelector);
+  const link = makeLinkUrl(chain, data.name);
   return (
     <Wrapper>
       <FlexWrapper>
@@ -85,7 +96,7 @@ const Item = ({
                   value={(data.extrinsicIndexer || data.eventIndexer).blockTime}
                 />
               </TextMinorWrapper>
-              <Label text={data.name} />
+              <Label text={data.name} link={link} />
             </TimeLableWrapper>
             <UnfoldButton
               src="/imgs/btn-unfold.svg"
