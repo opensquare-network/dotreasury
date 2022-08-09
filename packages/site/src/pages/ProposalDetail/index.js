@@ -10,7 +10,10 @@ import {
 } from "../../store/reducers/proposalSlice";
 import { scanHeightSelector } from "../../store/reducers/chainSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
-import { fetchDescription, setDescription } from "../../store/reducers/descriptionSlice";
+import {
+  fetchDescription,
+  setDescription,
+} from "../../store/reducers/descriptionSlice";
 
 import InformationTable from "./InformationTable";
 import Timeline from "../Timeline";
@@ -68,7 +71,9 @@ function normalizeMotionTimelineItem(motion, scanHeight) {
       motion.treasuryProposalIndex !== 15,
     end: motion.voting?.end,
     subTimeline: (motion.timeline || []).map((item) => ({
-      name: item.method === "Proposed" ? `Motion #${motion.index}` : item.method,
+      name:
+        item.method === "Proposed" ? `Motion #${motion.index}` : item.method,
+      ...(item.method === "Proposed" ? { motionIndex: motion.index } : {}),
       extrinsicIndexer: item.type === "extrinsic" ? item.indexer : undefined,
       eventIndexer: item.type === "event" ? item.indexer : undefined,
       fields: (() => {
@@ -82,13 +87,10 @@ function normalizeMotionTimelineItem(motion, scanHeight) {
             const votes = motion.timeline.filter(
               (item) => item.method === "Voted"
             );
-            const map = votes.reduce(
-              (result, { args: { voter, approve } }) => {
-                result[voter] = approve;
-                return result;
-              },
-              {}
-            );
+            const map = votes.reduce((result, { args: { voter, approve } }) => {
+              result[voter] = approve;
+              return result;
+            }, {});
             const values = Object.values(map);
             ayes = values.filter((v) => v).length;
             nays = values.length - ayes;
@@ -118,7 +120,7 @@ function normalizeMotionTimelineItem(motion, scanHeight) {
               value: (
                 <Proposer
                   address={proposer}
-                  agree={ ayes >= threshold }
+                  agree={ayes >= threshold}
                   args={argItems}
                   value={motion.proposal.method}
                   threshold={threshold}
@@ -155,7 +157,7 @@ function constructProposalProcessItem(item, proposalDetail) {
   const { proposer, value, beneficiary, symbolPrice } = proposalDetail;
   let fields = [];
 
-  const method = (item.name || item.method);
+  const method = item.name || item.method;
 
   if (method === "Proposed") {
     fields = [

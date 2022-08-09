@@ -65,10 +65,9 @@ const TextMinorWrapper = styled(TextMinor)`
   white-space: nowrap;
 `;
 
-const makeLinkUrl = (chain, eventName) => {
-  if (eventName.includes("Motion")) {
-    const index = eventName.match(/\d+/);
-    return `https://${chain}.subsquare.io/council/motion/${index}`;
+const makeLinkUrl = (chain, data) => {
+  if (data.name.includes("Motion") && data.motionIndex > -1) {
+    return `https://${chain}.subsquare.io/council/motion/${data.motionIndex}`;
   }
 };
 
@@ -80,7 +79,7 @@ const Item = ({
   hideButtonList = false,
 }) => {
   const chain = useSelector(chainSelector);
-  const link = makeLinkUrl(chain, data.name);
+  const link = makeLinkUrl(chain, data);
   return (
     <Wrapper>
       <FlexWrapper>
