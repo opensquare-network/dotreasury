@@ -34,7 +34,7 @@ const TipLabel = styled.a`
 const Label = ({ text, link = "" }) => {
   return (
     <Wrapper>
-      <TipLabel href={link}>
+      <TipLabel href={link} target="_blank">
         <span>{stringCamlToWords(text)}</span>
         {link && <Image src={"/imgs/arrow.svg"} />}
       </TipLabel>
