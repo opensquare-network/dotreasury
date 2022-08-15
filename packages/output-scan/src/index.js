@@ -7,12 +7,15 @@ const {
     subscribeChainHeight,
     updateSpecs, checkSpecs,
   },
+  env: { isUseMetaDb },
 } = require("@osn/scan-common");
 
 async function main() {
   await subscribeChainHeight();
-  await updateSpecs();
-  checkSpecs();
+  if (isUseMetaDb()) {
+    await updateSpecs();
+    checkSpecs();
+  }
 
   await beginScan();
 }
