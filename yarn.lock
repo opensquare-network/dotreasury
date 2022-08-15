@@ -1802,27 +1802,10 @@
     util "npm:util"
     web-vitals "^2.1.4"
 
-"@osn/scan-common@0.0.19":
-  version "0.0.19"
-  resolved "https://registry.npmjs.org/@osn/scan-common/-/scan-common-0.0.19.tgz#f00757967698715d74c87cc9005d5543a3299d69"
-  integrity sha512-QAlvWVZ7/uMgLCOMnNnSHnpN5jDSu5vOiN6FZhWztYXvozVc5yttx4QV/HGLlTB7o/vDAP9EqP8rIGWVcPFuFQ==
-  dependencies:
-    "@polkadot/api" "8.11.3"
-    "@polkadot/api-derive" "8.11.3"
-    "@polkadot/types" "8.11.3"
-    "@polkadot/util" "9.7.2"
-    "@polkadot/util-crypto" "9.7.2"
-    bignumber.js "^9.0.2"
-    lodash.findlast "^4.6.0"
-    lodash.last "^3.0.0"
-    lodash.omit "^4.5.0"
-    log4js "^6.5.1"
-    mongodb "^4.6.0"
-
-"@osn/scan-common@0.0.22":
-  version "0.0.22"
-  resolved "https://registry.npmjs.org/@osn/scan-common/-/scan-common-0.0.22.tgz#ddd5fce173153e078b01bcd75f6819fb256ef13f"
-  integrity sha512-QlgmIWb6RVlWDxFKdCazRV5j8PNxEBU7RWRbzgcT9BefxpmZ00NFnyx/qHVc9f3jh48gnagsMxbIQucncasjQQ==
+"@osn/scan-common@0.0.23":
+  version "0.0.23"
+  resolved "https://registry.npmjs.org/@osn/scan-common/-/scan-common-0.0.23.tgz#e84332243187847b5e71cd81ee3973786c1fa139"
+  integrity sha512-5ZsULuTpzlChHZQrnKaik0NW0wSeH7fFazSWxH+WiIlTpwDZc13LyCoJEUrNYV/EEZCeq2PmP5rnMLKuQ2vVtg==
   dependencies:
     "@polkadot/api" "8.11.3"
     "@polkadot/api-derive" "8.11.3"
