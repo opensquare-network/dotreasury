@@ -9,7 +9,7 @@ import {
   getThresholdOfSimplyMajority,
   getThresholdOfSuperMajorityAgainst,
   getThresholdOfSuperMajorityApprove,
-} from "./referendumUtil";
+} from "./util";
 
 const Wrapper = styled.div`
   display: flex;
