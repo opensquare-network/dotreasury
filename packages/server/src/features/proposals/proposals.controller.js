@@ -1,10 +1,64 @@
-const { getProposalCollection, getMotionCollection } = require("../../mongo");
+const {
+  getProposalCollection,
+  getMotionCollection,
+  getReferendumCollection,
+} = require("../../mongo");
 const { extractPage } = require("../../utils");
 const linkService = require("../../services/link.service");
 const commentService = require("../../services/comment.service");
 const rateService = require("../../services/rate.service");
 const descriptionService = require("../../services/description.service");
 const { HttpError } = require("../../exc");
+
+async function getProposalMotions(proposal, chain) {
+  const motionHashes = (proposal.motions || []).map(motionInfo => motionInfo.hash);
+
+  const motionCol = await getMotionCollection(chain);
+  const proposalMotions = await motionCol
+    .find({
+      hash: { $in: motionHashes }
+    })
+    .sort({ index: 1 })
+    .toArray();
+
+  const motions = (proposal.motions || []).map(motionInfo => {
+    const targetMotion = (proposalMotions || []).find(
+      m => m.hash === motionInfo.hash && m.indexer.blockHeight === motionInfo.indexer.blockHeight
+    )
+
+    return {
+      motionInfo,
+      ...targetMotion,
+    }
+  });
+
+  return motions;
+}
+
+async function getProposalReferendums(proposal, chain) {
+  const referendumIndexes = (proposal.referendums || []).map(referendumInfo => referendumInfo.referendumIndex);
+
+  const referendumCol = await getReferendumCollection(chain);
+  const proposalReferendums = await referendumCol
+    .find({
+      referendumIndex: { $in: referendumIndexes }
+    })
+    .sort({ referendumIndex: 1 })
+    .toArray();
+
+  const referendums = (proposal.referendums || []).map(referendumInfo => {
+    const targetReferendum = (proposalReferendums || []).find(
+      r => r.referendumIndex === referendumInfo.referendumIndex
+    )
+
+    return {
+      referendumInfo,
+      ...targetReferendum,
+    }
+  });
+
+  return referendums;
+}
 
 class ProposalsController {
   async getProposals(ctx) {
@@ -98,26 +152,8 @@ class ProposalsController {
       return;
     }
 
-    const motionHashes = (proposal.motions || []).map(motionInfo => motionInfo.hash);
-
-    const motionCol = await getMotionCollection(chain);
-    const proposalMotions = await motionCol
-      .find({
-        hash: { $in: motionHashes }
-      })
-      .sort({ index: 1 })
-      .toArray();
-
-    const motions = (proposal.motions || []).map(motionInfo => {
-      const targetMotion = (proposalMotions || []).find(
-        m => m.hash === motionInfo.hash && m.indexer.blockHeight === motionInfo.indexer.blockHeight
-      )
-
-      return {
-        motionInfo,
-        ...targetMotion,
-      }
-    })
+    const motions = await getProposalMotions(proposal, chain);
+    const referendums = await getProposalReferendums(proposal, chain);
 
     ctx.body = {
       indexer: proposal.indexer,
@@ -130,6 +166,7 @@ class ProposalsController {
       beneficiary: proposal.beneficiary,
       latestState: proposal.state,
       motions,
+      referendums,
       timeline: proposal.timeline,
     };
   }

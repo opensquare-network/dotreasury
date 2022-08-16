@@ -90,3 +90,4 @@ export const DEFAULT_PAGE_SIZE = 20;
 export const DEFAULT_QUERY_PAGE = 1;
 
 export const TYPE_COUNCIL_MOTION = "council-motion";
+export const TYPE_DEMOCRACY_REFERENDUM = "democracy-referendum";

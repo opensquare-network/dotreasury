@@ -12,7 +12,7 @@ import TextMinor from "../../components/TextMinor";
 import { mrgap } from "../../styles";
 import { useSelector } from "react-redux";
 import { chainSelector } from "../../store/reducers/chainSlice";
-import { TYPE_COUNCIL_MOTION } from "../../constants";
+import { TYPE_COUNCIL_MOTION, TYPE_DEMOCRACY_REFERENDUM } from "../../constants";
 
 const Wrapper = styled.div`
   &:last-child .bar {
@@ -69,6 +69,8 @@ const TextMinorWrapper = styled(TextMinor)`
 const makeLinkUrl = (chain, data) => {
   if (data?.type === TYPE_COUNCIL_MOTION) {
     return `https://${chain}.subsquare.io/council/motion/${data.motionIndex}`;
+  } else if (data?.type === TYPE_DEMOCRACY_REFERENDUM) {
+    return `https://${chain}.subsquare.io/democracy/referendum/${data.referendumIndex}`;
   }
 };
 
@@ -116,6 +118,7 @@ const Item = ({
                 extrinsicIndexer={data.extrinsicIndexer}
                 eventIndexer={data.eventIndexer}
                 polkassembly={polkassembly}
+                type={data.type}
               />
             )}
           </CardWrapper>
