@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Voter from "../../../components/Voter";
 import Proposer from "../../../components/Proposer";
 import BlocksTime from "../../../components/BlocksTime";
-import { TYPE_COUNCIL_MOTION } from "../../../constants";
+import { TimelineItemType } from "../../../constants";
 
 const ValueWrapper = styled.span`
   margin-right: 4px;
@@ -84,6 +84,36 @@ function createVoteField(item) {
   ];
 }
 
+function createSubTimelineItem(motion, item, scanHeight) {
+  const result = {};
+
+  if (item.method === "Proposed") {
+    result.motionIndex = motion.index;
+    result.type = TimelineItemType.CouncilMotion;
+    result.name = `Motion #${motion.index}`;
+  } else {
+    result.name = item.method;
+  }
+
+  if (item.type === "extrinsic") {
+    result.extrinsicIndexer = item.indexer;
+  } else if (item.type === "event") {
+    result.eventIndexer = item.indexer;
+  }
+
+  if (item.method === "Proposed") {
+    result.fields = createProposeField(motion, item, scanHeight);
+  } else if (item.method === "Voted") {
+    result.fields = createVoteField(item);
+  } else if (item.method === "Closed") {
+    result.fields = [];
+  } else {
+    result.fields = [];
+  }
+
+  return result;
+}
+
 export function normalizeMotionTimelineItem(motion, scanHeight) {
   return {
     index: motion.index,
@@ -94,25 +124,8 @@ export function normalizeMotionTimelineItem(motion, scanHeight) {
       motion.voting?.end < scanHeight &&
       motion.treasuryProposalIndex !== 15,
     end: motion.voting?.end,
-    subTimeline: (motion.timeline || []).map((item) => ({
-      ...(item.method === "Proposed"
-        ? { motionIndex: motion.index, type: TYPE_COUNCIL_MOTION }
-        : {}),
-      name:
-        item.method === "Proposed" ? `Motion #${motion.index}` : item.method,
-      extrinsicIndexer: item.type === "extrinsic" ? item.indexer : undefined,
-      eventIndexer: item.type === "event" ? item.indexer : undefined,
-      fields: (() => {
-        if (item.method === "Proposed") {
-          return createProposeField(motion, item, scanHeight);
-        } else if (item.method === "Voted") {
-          return createVoteField(item);
-        } else if (item.method === "Closed") {
-          return [];
-        } else {
-          return [];
-        }
-      })(),
-    })),
+    subTimeline: (motion.timeline || []).map(
+      item => createSubTimelineItem(motion, item, scanHeight)
+    ),
   };
 }

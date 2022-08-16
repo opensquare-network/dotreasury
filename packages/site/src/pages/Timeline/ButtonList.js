@@ -9,7 +9,7 @@ import { mrgap } from "../../styles";
 import polkassemblyApi from "../../services/polkassembly";
 import { useSelector } from "react-redux";
 import { chainSelector } from "../../store/reducers/chainSlice";
-import { TYPE_COUNCIL_MOTION, TYPE_DEMOCRACY_REFERENDUM } from "../../constants";
+import { TimelineItemType } from "../../constants";
 
 const Wrapper = styled.div`
   margin-top: 8px;
@@ -29,7 +29,7 @@ const ButtonList = ({ extrinsicIndexer, eventIndexer, polkassembly, type }) => {
     (async () => {
       if (polkassembly === undefined || !type) return;
 
-      if (type === TYPE_COUNCIL_MOTION) {
+      if (type === TimelineItemType.CouncilMotion) {
         setSubsquareUrl(`https://${chain}.subsquare.io/council/motion/${polkassembly}`);
         const url = await polkassemblyApi.getMotionUrl(polkassembly);
         if (isMounted.current) {
@@ -37,7 +37,7 @@ const ButtonList = ({ extrinsicIndexer, eventIndexer, polkassembly, type }) => {
         }
       }
 
-      if (type === TYPE_DEMOCRACY_REFERENDUM) {
+      if (type === TimelineItemType.DemocracyReferendum) {
         setSubsquareUrl(`https://${chain}.subsquare.io/democracy/referendum/${polkassembly}`);
         const url = await polkassemblyApi.getReferendumUrl(polkassembly);
         if (isMounted.current) {

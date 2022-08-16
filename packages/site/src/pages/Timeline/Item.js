@@ -12,7 +12,7 @@ import TextMinor from "../../components/TextMinor";
 import { mrgap } from "../../styles";
 import { useSelector } from "react-redux";
 import { chainSelector } from "../../store/reducers/chainSlice";
-import { TYPE_COUNCIL_MOTION, TYPE_DEMOCRACY_REFERENDUM } from "../../constants";
+import { TimelineItemType } from "../../constants";
 
 const Wrapper = styled.div`
   &:last-child .bar {
@@ -67,9 +67,9 @@ const TextMinorWrapper = styled(TextMinor)`
 `;
 
 const makeLinkUrl = (chain, data) => {
-  if (data?.type === TYPE_COUNCIL_MOTION) {
+  if (data?.type === TimelineItemType.CouncilMotion) {
     return `https://${chain}.subsquare.io/council/motion/${data.motionIndex}`;
-  } else if (data?.type === TYPE_DEMOCRACY_REFERENDUM) {
+  } else if (data?.type === TimelineItemType.DemocracyReferendum) {
     return `https://${chain}.subsquare.io/democracy/referendum/${data.referendumIndex}`;
   }
 };
