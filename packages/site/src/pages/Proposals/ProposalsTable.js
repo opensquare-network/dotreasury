@@ -62,6 +62,7 @@ const ProposalsTable = ({ data, loading, header, footer }) => {
     if (!(data.length > 0)) {
       return;
     }
+    setTableData(data);
 
     Promise.all(completeProposalsWithTitle(data, chain)).then((res) => {
       setTableData(res);
