@@ -14,7 +14,7 @@ const TipLabel = styled.a`
   display: flex;
   gap: 4px;
   background: ${SECONDARY_THEME_COLOR};
-  padding: 2px 12px;
+  padding: 2px 8px;
   border-radius: 4px;
   font-family: "Inter", serif;
   font-size: 12px;
