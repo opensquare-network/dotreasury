@@ -1,18 +1,16 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled, { css } from "styled-components";
 
-import { ReactComponent as Circle } from "./circle.svg";
+import { ReactComponent as Circle } from "./timeline-loading.svg";
 import Label from "./Label";
 import Bar from "./Bar";
 
-import CardItem from "./CardItem";
 import ButtonList from "./ButtonList";
 import DateShow from "../../components/DateShow";
 import TextMinor from "../../components/TextMinor";
 import { mrgap } from "../../styles";
 import { useSelector } from "react-redux";
 import { chainSelector } from "../../store/reducers/chainSlice";
-import FoldContext from "./FoldContext";
 import { makeLinkUrl } from "./util";
 
 const Wrapper = styled.div`
@@ -53,27 +51,15 @@ const CardWrapper = styled.div`
   margin: 8px 0 32px;
 `;
 
-const UnfoldButton = styled.img`
-  cursor: pointer;
-  display: none;
-  ${(p) =>
-    p.isUnfold &&
-    css`
-      transform: rotate(0.5turn);
-    `}
-`;
-
 const TextMinorWrapper = styled(TextMinor)`
   white-space: nowrap;
 `;
 
-const Item = ({
+const LoadingItem = ({
   data,
   polkassembly,
   hideButtonList = false,
 }) => {
-  const { isUnfold, setIsUnfold } = useContext(FoldContext);
-
   const chain = useSelector(chainSelector);
   const link = makeLinkUrl(chain, data);
   return (
@@ -93,19 +79,8 @@ const Item = ({
               </TextMinorWrapper>
               <Label text={data.name} link={link} />
             </TimeLableWrapper>
-            <UnfoldButton
-              src="/imgs/btn-unfold.svg"
-              className="unfold-btn"
-              onClick={() => setIsUnfold(!isUnfold)}
-              isUnfold={isUnfold}
-            />
           </FlexWrapper>
           <CardWrapper>
-            {data.fields.map(({ title, value }, index) => (
-              <CardItem key={index} title={title}>
-                {value}
-              </CardItem>
-            ))}
             {!hideButtonList && (
               <ButtonList
                 extrinsicIndexer={data.extrinsicIndexer}
@@ -121,4 +96,4 @@ const Item = ({
   );
 };
 
-export default Item;
+export default LoadingItem;

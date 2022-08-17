@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Keyshape -->
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <defs>
+        <mask id="path-2-inside-1_2838_27818" fill="white">
+            <path d="M18,12C18,11.2121,17.8448,10.4319,17.5433,9.7039C17.2417,8.97595,16.7998,8.31451,16.2426,7.75736C15.6855,7.20021,15.0241,6.75825,14.2961,6.45672C13.5681,6.15519,12.7879,6,12,6L12,9C12.394,9,12.7841,9.0776,13.1481,9.22836C13.512,9.37913,13.8427,9.6001,14.1213,9.87868C14.3999,10.1573,14.6209,10.488,14.7716,10.8519C14.9224,11.2159,15,11.606,15,12L18,12Z" transform="translate(15,9) translate(-15,-9)"/>
+        </mask>
+    </defs>
+    <style>
+@keyframes a0_t { 0% { transform: translate(12px,12px) rotate(0deg) translate(-6px,-6px); } 100% { transform: translate(12px,12px) rotate(360deg) translate(-6px,-6px); } }
+    </style>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M12,15C13.6569,15,15,13.6569,15,12C15,10.3431,13.6569,9,12,9C10.3431,9,9,10.3431,9,12C9,13.6569,10.3431,15,12,15ZM12,18C15.3137,18,18,15.3137,18,12C18,8.68629,15.3137,6,12,6C8.68629,6,6,8.68629,6,12C6,15.3137,8.68629,18,12,18Z" fill="#FFC5CE" transform="translate(12,12) translate(-12,-12)"/>
+    <g transform="translate(12,12) translate(-6,-6)" style="animation: 0.8s linear infinite both a0_t;">
+        <path d="M18,12C18,11.2121,17.8448,10.4319,17.5433,9.7039C17.2417,8.97595,16.7998,8.31451,16.2426,7.75736C15.6855,7.20021,15.0241,6.75825,14.2961,6.45672C13.5681,6.15519,12.7879,6,12,6L12,9C12.394,9,12.7841,9.0776,13.1481,9.22836C13.512,9.37913,13.8427,9.6001,14.1213,9.87868C14.3999,10.1573,14.6209,10.488,14.7716,10.8519C14.9224,11.2159,15,11.606,15,12L18,12Z" fill="white" stroke="#F23252" stroke-width="6" mask="url(#path-2-inside-1_2838_27818)" transform="translate(9,3) translate(-15,-9)"/>
+        <rect width="12" height="12" fill="none" stroke-width="6" stroke="none" transform="translate(6,6) translate(-6,-6)"/>
+    </g>
+</svg>

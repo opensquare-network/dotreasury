@@ -99,14 +99,22 @@ const Contents = styled(Headers)`
   color: rgba(0, 0, 0, 0.9);
 `;
 
-const ReferendumVote = ({ referendum }) => {
+const NoData = styled.div`
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: rgba(0, 0, 0, 0.3);
+`;
+
+const ReferendumVote = ({ threshold, tally, electorate }) => {
   const symbol = useSelector(chainSymbolSelector);
   const decimals = getPrecision(symbol);
 
-  const nAyes = toPrecision(referendum?.tally?.ayes ?? 0, decimals);
-  const nNays = toPrecision(referendum?.tally?.nays ?? 0, decimals);
-  const nTurnout = toPrecision(referendum?.tally?.turnout ?? 0, decimals);
-  const nElectorate = toPrecision(referendum?.tally?.electorate ?? 0, decimals);
+  const nAyes = toPrecision(tally?.ayes ?? 0, decimals);
+  const nNays = toPrecision(tally?.nays ?? 0, decimals);
+  const nTurnout = toPrecision(tally?.turnout ?? 0, decimals);
+  const nElectorate = toPrecision(electorate ?? 0, decimals);
 
   let nAyesPercent = 50;
   let nNaysPercent = 50;
@@ -141,6 +149,9 @@ const ReferendumVote = ({ referendum }) => {
     }
   ];
 
+  if (!tally || !electorate) {
+    return <NoData>Unable to load the data</NoData>;
+  }
 
   return (
     <Wrapper>
@@ -149,24 +160,24 @@ const ReferendumVote = ({ referendum }) => {
           <AyesBar precent={nAyesPercent} />
           <NaysBar precent={nNaysPercent} />
 
-          {(referendum?.meta?.threshold || "").toLowerCase() === "simplemajority" && (
+          {(threshold || "").toLowerCase() === "simplemajority" && (
             <Threshold threshold={getThresholdOfSimplyMajority()} />
           )}
 
-          {(referendum?.meta?.threshold || "").toLowerCase() === "supermajorityapprove" && (
+          {(threshold || "").toLowerCase() === "supermajorityapprove" && (
             <Threshold
               threshold={getThresholdOfSuperMajorityApprove(
-                referendum?.tally?.turnout ?? 0,
-                referendum?.tally?.electorate
+                tally?.turnout ?? 0,
+                electorate
               )}
             />
           )}
 
-          {(referendum?.meta?.threshold || "").toLowerCase() === "supermajorityagainst" && (
+          {(threshold || "").toLowerCase() === "supermajorityagainst" && (
             <Threshold
               threshold={getThresholdOfSuperMajorityAgainst(
-                referendum?.tally?.turnout ?? 0,
-                referendum?.tally?.electorate
+                tally?.turnout ?? 0,
+                electorate
               )}
             />
           )}
@@ -182,7 +193,7 @@ const ReferendumVote = ({ referendum }) => {
 
         <Contents>
           <span>{nAyesPercent}%</span>
-          <span>{referendum?.meta?.threshold}</span>
+          <span>{threshold}</span>
           <span>{nNaysPercent}%</span>
         </Contents>
       </div>
