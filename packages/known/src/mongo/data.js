@@ -27,6 +27,7 @@ let proposalCol = null;
 let motionCol = null;
 let burntCol = null;
 let outTransferCol = null;
+let democracyReferendumCol = null;
 
 async function initDb() {
   client = await MongoClient.connect(mongoUrl, {
@@ -43,6 +44,7 @@ async function initDb() {
   burntCol = db.collection(burntCollectionName);
   outTransferCol = db.collection(outTransferColName);
   childBountyCol = db.collection("childBounty");
+  democracyReferendumCol = db.collection("democracyReferendum");
 
   await _createIndexes();
 }
@@ -97,6 +99,11 @@ async function getOutTransferCollection() {
   return outTransferCol;
 }
 
+async function getDemocracyReferendumCollection() {
+  await tryInit(democracyReferendumCol);
+  return democracyReferendumCol;
+}
+
 async function closeDataDbClient() {
   await client.close()
 }
@@ -110,4 +117,5 @@ module.exports = {
   getOutTransferCollection,
   closeDataDbClient,
   getChildBountyCollection,
+  getDemocracyReferendumCollection,
 };
