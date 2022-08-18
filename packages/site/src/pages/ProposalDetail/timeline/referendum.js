@@ -92,7 +92,7 @@ function createSubTimelineItem(referendum, item, tally, electorate) {
   if (item.method === "Started") {
     result.referendumIndex = referendum.referendumIndex;
     result.type = TimelineItemType.DemocracyReferendum;
-    result.name = `Referenda`;
+    result.name = `Referendum`;
   } else {
     result.name = item.method;
   }
