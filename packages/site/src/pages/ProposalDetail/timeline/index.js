@@ -98,7 +98,11 @@ export function processTimeline(proposalDetail, scanHeight) {
     return [];
   }
 
-  const allItems = [...timeline, ...motions, ...referendums];
+  const allItems = [
+    ...timeline,
+    ...(motions || []),
+    ...(referendums || []),
+  ];
   allItems.sort((a, b) => timelineItemHeight(a) - timelineItemHeight(b));
 
   return allItems.map((item) => {
