@@ -11,6 +11,7 @@ const tipCollectionName = "tip";
 const proposalCollectionName = "proposal";
 const bountyCollectionName = "bounty";
 const motionCollectionName = "motion";
+const referendumCollectionName = "democracyReferendum";
 const burntCollectionName = "burnt";
 const outputTransferCollectionName = "outputTransfer";
 
@@ -39,6 +40,7 @@ let proposalCol = null;
 let bountyCol = null;
 let childBountyCol = null;
 let motionCol = null;
+let referendumCol = null;
 let burntCol = null;
 let outputTransferCol = null;
 let outputWeeklyStatsCol = null;
@@ -77,6 +79,7 @@ async function initDb() {
   bountyCol = outputDb.collection(bountyCollectionName);
   childBountyCol = outputDb.collection("childBounty");
   motionCol = outputDb.collection(motionCollectionName);
+  referendumCol = outputDb.collection(referendumCollectionName);
   burntCol = outputDb.collection(burntCollectionName);
   outputTransferCol = outputDb.collection(outputTransferCollectionName);
   outputWeeklyStatsCol = outputDb.collection(weeklyStatsCollectionName);
@@ -133,6 +136,11 @@ async function getChildBountyCollection() {
 async function getMotionCollection() {
   await tryInit(motionCol);
   return motionCol;
+}
+
+async function getReferendumCollection() {
+  await tryInit(referendumCol);
+  return referendumCol;
 }
 
 async function getBurntCollection() {
@@ -203,6 +211,7 @@ module.exports = {
   getBountyCollection,
   getChildBountyCollection,
   getMotionCollection,
+  getReferendumCollection,
   getBurntCollection,
   getOutputTransferCollection,
   getIncomeInflationCollection,
