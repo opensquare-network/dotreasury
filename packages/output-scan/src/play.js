@@ -6,7 +6,9 @@ const {
 
 async function test() {
   const blockHeights = [
-    13329084,
+    13626071,
+    13708800,
+    13809600,
   ];
 
   for (const height of blockHeights) {
@@ -18,9 +20,9 @@ async function test() {
     const allEvents = await api.query.system.events.at(blockHash);
 
     await scanNormalizedBlock(block.block, allEvents);
-    console.log('finished')
   }
 
+  console.log('finished')
   process.exit(0);
 }
 

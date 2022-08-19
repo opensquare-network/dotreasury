@@ -15,8 +15,8 @@ import BeneficiaryContent from "../../pages/Proposals/BeneficiaryContent";
 import DescriptionCell from "../../pages/Proposals/DescriptionCell";
 import RelatedLinks from "../RelatedLinks";
 import PairTextVertical from "../PairTextVertical";
-import ReasonText from "../../pages/Tips/ReasonText";
-import ReasonLink from "../../pages/Tips/ReasonLink";
+import TextWrapper from "./TextWrapper";
+import TextLinks from "./TextLinks";
 import { TipStatus } from "../../constants";
 
 const ProposeTimeWrapper = styled.div`
@@ -178,16 +178,25 @@ const curator = {
   key: "curator",
   title: "Curator",
   dataIndex: "curator",
+  headerCellClassName: "curator-header",
   cellClassName: "user-cell",
   cellRender: (_, item) =>
     item.curator ? <User address={item.curator} /> : "--",
 };
-const title = {
+const title = options=>( {
   key: "title",
   title: "Title",
   dataIndex: "title",
   cellClassName: "title-cell",
-};
+  cellRender: (value, item) => {
+    if(options.recognizeLinks) {
+      return <TextWrapper maxWidth={347}>
+        <TextLinks text={item.title} />
+      </TextWrapper>
+    }
+    return item.title;
+  }
+});
 const bountiesStatus = {
   key: "status",
   title: "Status",
@@ -215,24 +224,27 @@ const beneficiary = {
   key: "beneficiary",
   title: "Beneficiary",
   headerCellClassName: "proposal-beneficiary-header",
-  cellClassName: "proposal-user-cell proposal-beneficiary-cell",
-  cellRender: (_, item) => (
-    <User
-      address={item.beneficiary}
-      popupContent={
-        <BeneficiaryContent
-          proposerAddress={item.proposer}
-          beneficiaryAddress={item.beneficiary}
-        />
-      }
-    />
-  ),
+  cellClassName: "proposal-user-cell proposal-beneficiary-cell user-cell",
+  cellRender: (_, item) =>
+    item.beneficiary ? (
+      <User
+        address={item.beneficiary}
+        popupContent={
+          <BeneficiaryContent
+            proposerAddress={item.proposer}
+            beneficiaryAddress={item.beneficiary}
+          />
+        }
+      />
+    ) : (
+      "--"
+    ),
 };
 const proposer = {
   key: "proposer",
   title: "Proposer",
   headerCellClassName: "proposal-proposer-header",
-  cellClassName: "proposal-user-cell proposal-proposer-cell",
+  cellClassName: "proposal-user-cell proposal-proposer-cell user-cell",
   cellRender: (_, item) => (
     <User
       address={item.proposer}
@@ -259,7 +271,7 @@ const description = {
 };
 const relatedLinks = (options) => ({
   key: "related-links",
-  title: "Related Links",
+  title: options?.compact ? "Links" : "Related Links",
   cellClassName: "proposal-related-links-cell",
   cellRender: (_, item) => (
     <RelatedLinks links={options?.getRelatedLinks?.(item)} />
@@ -295,9 +307,9 @@ const reason = {
   key: "reason",
   title: "Reason",
   cellRender: (_, item) => (
-    <ReasonText>
-      <ReasonLink text={item.reason} />
-    </ReasonText>
+    <TextWrapper>
+      <TextLinks text={item.reason} />
+    </TextWrapper>
   ),
 };
 const tipsValue = (symbol) => {
@@ -360,7 +372,7 @@ export function useTableColumns(options) {
     remnant: remnant(symbol),
     bountyIndex,
     curator,
-    title,
+    title: title(options),
     bountiesStatus,
     detailRoute: detailRoute(options),
     beneficiary,

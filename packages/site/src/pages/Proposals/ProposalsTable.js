@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router";
 
@@ -11,6 +11,7 @@ import {
 } from "../../store/reducers/chainSlice";
 import Card from "../../components/Card";
 import { useTableColumns } from "../../components/shared/useTableColumns";
+import api from "../../services/scanApi";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -34,17 +35,39 @@ const TableWrapper = styled.div`
   .proposal-beneficiary-header,
   .proposal-proposer-header {
     cursor: pointer !important;
-    :hover {
-      color: rgba(0, 0, 0, 0.9) !important;
-    }
+    color: rgba(0, 0, 0, 0.65) !important;
   }
 `;
+
+const completeProposalsWithTitle = (data = [], chain) => {
+  return data.map(async (proposal) => {
+    if (!proposal.description) {
+      //improve: implement a brief API for this to speed up the loading
+      const apiUrl = `https://${chain}.subsquare.io/api/treasury/proposals/${proposal.proposalIndex}`;
+      const { result } = await api.fetch(apiUrl);
+      return { ...proposal, description: result?.title };
+    }
+    return proposal;
+  });
+};
 
 const ProposalsTable = ({ data, loading, header, footer }) => {
   const history = useHistory();
   const symbol = useSelector(chainSymbolSelector);
   const chain = useSelector(chainSelector);
   const [isBeneficiary, setIsBeneficiary] = useState(true);
+  const [tableData, setTableData] = useState(data);
+
+  useEffect(() => {
+    if (!(data.length > 0)) {
+      return;
+    }
+    setTableData(data);
+
+    Promise.all(completeProposalsWithTitle(data, chain)).then((res) => {
+      setTableData(res);
+    });
+  }, [data, chain]);
 
   const onRowClick = (row) => {
     if (window.innerWidth < 1140) {
@@ -110,7 +133,7 @@ const ProposalsTable = ({ data, loading, header, footer }) => {
       <Wrapper>
         <TableWrapper>
           <TableLoading loading={loading}>
-            <Table columns={columns} data={data} onRowClick={onRowClick} />
+            <Table columns={columns} data={tableData} onRowClick={onRowClick} />
           </TableLoading>
         </TableWrapper>
       </Wrapper>

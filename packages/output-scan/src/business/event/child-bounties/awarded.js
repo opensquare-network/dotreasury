@@ -30,6 +30,7 @@ async function handleAwarded(event, indexer) {
     name: ChildBountiesEvents.Awarded,
     args: {
       beneficiary,
+      unlockAt,
     },
     indexer,
   };

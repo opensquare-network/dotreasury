@@ -5,7 +5,7 @@ import { useHistory } from "react-router";
 import { Table } from "../../components/Table";
 import TableLoading from "../../components/TableLoading.js";
 import { useSelector } from "react-redux";
-import { chainSymbolSelector } from "../../store/reducers/chainSlice";
+import { chainSelector, chainSymbolSelector } from "../../store/reducers/chainSlice";
 import Card from "../../components/Card";
 import { useTableColumns } from "../../components/shared/useTableColumns";
 
@@ -31,8 +31,23 @@ const TableWrapper = styled.div`
 
 const TipsTable = ({ data, loading, header, footer }) => {
   const history = useHistory();
+  const chain = useSelector(chainSelector);
   const symbol = useSelector(chainSymbolSelector);
 
+  const getRelatedLinks = (item) => {
+    const links = [];
+    if (["kusama", "polkadot"].includes(chain)) {
+      links.unshift({
+        link: `https://polkadot.polkassembly.io/tip/${item.hash}`,
+        description: "Treasury tip page",
+      });
+      links.unshift({
+        link: `https://${chain}.subsquare.io/treasury/tip/${item.proposeAtBlockHeight}_${item.hash}`,
+        description: "Treasury tip page",
+      });
+    }
+    return links;
+  };
   const getDetailRoute = (row) => {
     return `/${symbol.toLowerCase()}/tips/${row.proposeAtBlockHeight}_${
       row.hash
@@ -52,11 +67,13 @@ const TipsTable = ({ data, loading, header, footer }) => {
     tipsValue,
     tipsStatus,
     detailRoute,
-  } = useTableColumns({ getDetailRoute });
+    relatedLinks,
+  } = useTableColumns({ getRelatedLinks, getDetailRoute, compact:true });
   const columns = [
     tipsBeneficiary,
     finder,
     reason,
+    relatedLinks,
     tipsValue,
     tipsStatus,
     detailRoute,

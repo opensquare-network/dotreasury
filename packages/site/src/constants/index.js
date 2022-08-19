@@ -88,3 +88,8 @@ export const CHAINS = {
 
 export const DEFAULT_PAGE_SIZE = 20;
 export const DEFAULT_QUERY_PAGE = 1;
+
+export const TimelineItemType = {
+  CouncilMotion: "council-motion",
+  DemocracyReferendum: "democracy-referendum",
+};
