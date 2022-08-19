@@ -2,7 +2,8 @@ const {
   consts: { Modules, ElectionsPhragmenEvents },
 } = require("@osn/scan-common");
 const {
-  insertNewTermData,
+  upsertTerm,
+  batchUpsertTermCouncilor,
 } = require("../../mongo/services");
 
 async function handleElectionNewTerm(event, indexer, extrinsic) {
@@ -26,7 +27,9 @@ async function handleElectionNewTerm(event, indexer, extrinsic) {
       balance: balance.toBigInt().toString(),
     })
   }
-  await insertNewTermData(indexer, { members });
+
+  await upsertTerm(indexer, { members });
+  await batchUpsertTermCouncilor(indexer.blockHeight, members);
 }
 
 module.exports = {

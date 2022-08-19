@@ -19,6 +19,8 @@ let db = null;
 
 let statusCol = null;
 let termsCol = null;
+// Store councilor and term
+let termCouncilorCol = null;
 
 async function initDb() {
   client = await MongoClient.connect(mongoUrl, {
@@ -30,6 +32,7 @@ async function initDb() {
   db = client.db(dbName);
   statusCol = db.collection(statusCollectionName);
   termsCol = db.collection(termsCollectionName);
+  termCouncilorCol = db.collection('termCouncilor');
 
   await _createIndexes();
 }
@@ -40,6 +43,8 @@ async function _createIndexes() {
     process.exit(1);
   }
 
+  await termsCol.createIndex({ 'indexer.blockHeight': 1 }, { unique: true });
+  await termCouncilorCol.createIndex({ blockHeight: 1, address: 1 });
   // TODO: create indexes for better query performance
 }
 
@@ -59,6 +64,11 @@ async function getTermsCollection() {
   return termsCol;
 }
 
+async function getTermCouncilorCollection() {
+  await tryInit(termCouncilorCol);
+  return termCouncilorCol;
+}
+
 async function close() {
   if (client) {
     await client.close();
@@ -69,4 +79,5 @@ module.exports = {
   closeDb: close,
   getStatusCollection,
   getTermsCollection,
+  getTermCouncilorCollection,
 }
