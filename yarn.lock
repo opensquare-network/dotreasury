@@ -1802,10 +1802,10 @@
     util "npm:util"
     web-vitals "^2.1.4"
 
-"@osn/scan-common@0.0.23":
-  version "0.0.23"
-  resolved "https://registry.npmjs.org/@osn/scan-common/-/scan-common-0.0.23.tgz#e84332243187847b5e71cd81ee3973786c1fa139"
-  integrity sha512-5ZsULuTpzlChHZQrnKaik0NW0wSeH7fFazSWxH+WiIlTpwDZc13LyCoJEUrNYV/EEZCeq2PmP5rnMLKuQ2vVtg==
+"@osn/scan-common@0.0.20":
+  version "0.0.20"
+  resolved "https://registry.npmjs.org/@osn/scan-common/-/scan-common-0.0.20.tgz#8e94fc3178aefd86b7fada8003c50821ba799006"
+  integrity sha512-Ux1JWLzZ4dudOobnYUlmbmvPzCouxNk/msiwhldJQjl0HrMn2GFsumAKQuqh0TytsQuh1GVdDHpYdTV1DSdRjw==
   dependencies:
     "@polkadot/api" "8.11.3"
     "@polkadot/api-derive" "8.11.3"
@@ -1819,10 +1819,10 @@
     log4js "^6.5.1"
     mongodb "^4.6.0"
 
-"@osn/scan-common@0.0.20":
-  version "0.0.20"
-  resolved "https://registry.npmjs.org/@osn/scan-common/-/scan-common-0.0.20.tgz#8e94fc3178aefd86b7fada8003c50821ba799006"
-  integrity sha512-Ux1JWLzZ4dudOobnYUlmbmvPzCouxNk/msiwhldJQjl0HrMn2GFsumAKQuqh0TytsQuh1GVdDHpYdTV1DSdRjw==
+"@osn/scan-common@0.0.23":
+  version "0.0.23"
+  resolved "https://registry.npmjs.org/@osn/scan-common/-/scan-common-0.0.23.tgz#e84332243187847b5e71cd81ee3973786c1fa139"
+  integrity sha512-5ZsULuTpzlChHZQrnKaik0NW0wSeH7fFazSWxH+WiIlTpwDZc13LyCoJEUrNYV/EEZCeq2PmP5rnMLKuQ2vVtg==
   dependencies:
     "@polkadot/api" "8.11.3"
     "@polkadot/api-derive" "8.11.3"
@@ -9192,6 +9192,11 @@ lodash.debounce@^4.0.8:
   version "4.0.8"
   resolved "https://registry.npmjs.org/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
   integrity sha1-gteb/zCmfEAF/9XiUVMArZyk168=
+
+lodash.difference@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.npmjs.org/lodash.difference/-/lodash.difference-4.5.0.tgz#9ccb4e505d486b91651345772885a2df27fd017c"
+  integrity sha512-dS2j+W26TQ7taQBGN8Lbbq04ssV3emRw4NY58WErlTO29pIqS0HmoT5aJ9+TUQ1N3G+JOZSji4eugsWwGp9yPA==
 
 lodash.findlast@^4.6.0:
   version "4.6.0"

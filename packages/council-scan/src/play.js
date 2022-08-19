@@ -10,7 +10,9 @@ const { handleBlock } = require("./scan/block");
 
 async function test() {
   const blockHeights = [
-    13320000,
+    // 13320000,
+    12470400,
+    12480986,
   ];
 
   const api = await getApi();

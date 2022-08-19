@@ -1,3 +1,4 @@
+const { handleRenounced } = require("./renounced");
 const { handleElectionNewTerm } = require("./newTerm");
 
 async function handleEvents(events = [], extrinsics = [], blockIndexer) {
@@ -17,6 +18,7 @@ async function handleEvents(events = [], extrinsics = [], blockIndexer) {
     }
 
     await handleElectionNewTerm(event, indexer, extrinsic);
+    await handleRenounced(event, indexer);
   }
 }
 

@@ -1,5 +1,6 @@
+const { isElectionModule } = require("./common");
 const {
-  consts: { Modules, ElectionsPhragmenEvents },
+  consts: { ElectionsPhragmenEvents },
 } = require("@osn/scan-common");
 const {
   upsertTerm,
@@ -8,13 +9,7 @@ const {
 
 async function handleElectionNewTerm(event, indexer, extrinsic) {
   const { section, method } = event;
-  if (
-    ![
-      Modules.ElectionsPhragmen,
-      Modules.PhragmenElection,
-    ].includes(section) ||
-    ElectionsPhragmenEvents.NewTerm !== method
-  ) {
+  if (!isElectionModule(section) || ElectionsPhragmenEvents.NewTerm !== method) {
     return
   }
 
@@ -28,7 +23,7 @@ async function handleElectionNewTerm(event, indexer, extrinsic) {
     })
   }
 
-  await upsertTerm(indexer, { members });
+  await upsertTerm(indexer, members);
   await batchUpsertTermCouncilor(indexer.blockHeight, members);
 }
 

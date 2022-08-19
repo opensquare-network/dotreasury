@@ -21,6 +21,7 @@ let statusCol = null;
 let termsCol = null;
 // Store councilor and term
 let termCouncilorCol = null;
+let renouncementCol = null;
 
 async function initDb() {
   client = await MongoClient.connect(mongoUrl, {
@@ -33,6 +34,7 @@ async function initDb() {
   statusCol = db.collection(statusCollectionName);
   termsCol = db.collection(termsCollectionName);
   termCouncilorCol = db.collection('termCouncilor');
+  renouncementCol = db.collection("renouncement");
 
   await _createIndexes();
 }
@@ -69,6 +71,11 @@ async function getTermCouncilorCollection() {
   return termCouncilorCol;
 }
 
+async function getRenouncementCollection() {
+  await tryInit(renouncementCol);
+  return renouncementCol;
+}
+
 async function close() {
   if (client) {
     await client.close();
@@ -80,4 +87,5 @@ module.exports = {
   getStatusCollection,
   getTermsCollection,
   getTermCouncilorCollection,
+  getRenouncementCollection,
 }

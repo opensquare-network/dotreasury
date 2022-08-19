@@ -1,16 +1,32 @@
-const { getTermsCollection, getTermCouncilorCollection } = require("./index");
+const {
+  getTermsCollection,
+  getTermCouncilorCollection,
+} = require("./index");
 
-async function upsertTerm(indexer, data) {
+async function upsertTerm(indexer, members) {
   const col = await getTermsCollection();
   await col.update(
     { 'indexer.blockHeight': indexer.blockHeight },
     {
       "$set": {
         indexer,
-        ...data,
+        members,
       }
     },
     { upsert: true },
+  )
+}
+
+async function upsertRenouncement(blockHeight, addedMembers, removedMembers) {
+  const col = await getTermsCollection();
+  await col.update(
+    { blockHeight },
+    {
+      "$set": {
+        addedMembers,
+        removedMembers,
+      }
+    }
   )
 }
 
@@ -38,4 +54,5 @@ async function batchUpsertTermCouncilor(blockHeight, members = []) {
 module.exports = {
   upsertTerm,
   batchUpsertTermCouncilor,
+  upsertRenouncement,
 }
