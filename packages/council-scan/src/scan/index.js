@@ -1,3 +1,4 @@
+const { handleBlock } = require("./block");
 const {
   scan: { oneStepScan },
   utils: { sleep },
