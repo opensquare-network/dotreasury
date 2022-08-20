@@ -5,8 +5,8 @@
   "dependencies": {
     "@open-wc/webpack-import-meta-loader": "^0.4.7",
     "@osn/polkadot-react-identicon": "^1.0.6",
-    "@polkadot/api": "8.11.3",
-    "@polkadot/extension-dapp": "0.44.2-3",
+    "@polkadot/api": "9.2.2",
+    "@polkadot/extension-dapp": "0.44.5",
     "@reduxjs/toolkit": "^1.7.2",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",

@@ -18,8 +18,8 @@
   "dependencies": {
     "@alicloud/pop-core": "^1.7.10",
     "@koa/cors": "^3.1.0",
-    "@polkadot/util": "9.7.2",
-    "@polkadot/util-crypto": "9.7.2",
+    "@polkadot/util": "10.1.4",
+    "@polkadot/util-crypto": "10.1.4",
     "argon2": "^0.27.1",
     "axios": "^0.21.3",
     "bignumber.js": "^9.0.1",
