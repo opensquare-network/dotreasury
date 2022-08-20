@@ -8,7 +8,7 @@ const dotUsdtCollectionName = "dotUsdt";
 let client = null;
 let db = null;
 
-const mongoUrl = process.env.MONGO_URL || "mongodb://localhost:27017";
+const mongoUrl = process.env.MONGO_URL || "mongodb://127.0.0.1:27017";
 let ksmUsdtCol = null;
 let dotUsdtCol = null;
 

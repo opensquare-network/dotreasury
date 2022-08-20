@@ -1,15 +1,14 @@
 require("dotenv").config();
 const { getBountyHeights } = require("./heights/bounty");
 const { getMotionHeights } = require("./heights/motion");
-const { closeKnownClient } = require("./mongo/knownHeight");
 const { closeDataDbClient } = require("./mongo/data");
-const { saveKnownHeights } = require("./mongo/service/known");
 const { getProposalHeights } = require("./heights/proposal");
 const { getBurntHeights } = require("./heights/burnt");
 const { getTipHeights } = require("./heights/tip");
 const { getOutTransferHeights } = require("./heights/outTransfer");
 const { getChildBountyHeights } = require("./heights/childBounty");
 const { getReferendumHeights } = require("./heights/referendum");
+const { mongo: { known: { saveKnownHeights, closeKnownClient } } } = require("@osn/scan-common");
 
 async function main() {
   const proposalHeights = await getProposalHeights();

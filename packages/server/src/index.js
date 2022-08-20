@@ -47,7 +47,7 @@ Promise.all([initDb(), initAdminDb()])
     const port = config.server.port || 3213;
 
     server.listen(port, () =>
-      console.log(`✅  The server is running at http://localhost:${port}/`)
+      console.log(`✅  The server is running at http://127.0.0.1:${port}/`)
     );
   })
   .catch((err) => {

@@ -10,7 +10,7 @@ describe("Stats Test", () => {
     jest.resetModules();
     process.env = {
       ...originalEnv,
-      MONGO_URL: "mongodb://localhost:27017",
+      MONGO_URL: "mongodb://127.0.0.1:27017",
       MONGO_DB_NAME: "dotreasury-output-ksm-test",
     };
   });
