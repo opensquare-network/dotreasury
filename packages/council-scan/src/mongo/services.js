@@ -1,6 +1,7 @@
 const {
   getTermsCollection,
   getTermCouncilorCollection,
+  getRenouncementCollection,
 } = require("./index");
 
 async function upsertTerm(indexer, members) {
@@ -18,7 +19,7 @@ async function upsertTerm(indexer, members) {
 }
 
 async function upsertRenouncement(blockHeight, addedMembers, removedMembers) {
-  const col = await getTermsCollection();
+  const col = await getRenouncementCollection();
   await col.update(
     { blockHeight },
     {
