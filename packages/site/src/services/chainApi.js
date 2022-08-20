@@ -122,3 +122,13 @@ export const encodeSubstrateAddress = (address) => {
     return "";
   }
 };
+
+export async function getElectorate(api) {
+  const issuance = await api.query.balances.totalIssuance();
+  return issuance.toBigInt().toString()
+}
+
+export async function getReferendumInfo(api, referendumIndex) {
+  const referendumInfo = await api.query.democracy.referendumInfoOf(referendumIndex);
+  return referendumInfo.toJSON();
+}

@@ -36,6 +36,10 @@ function getMotionCollection(chain) {
   return db(chain).getMotionCollection();
 }
 
+function getReferendumCollection(chain) {
+  return db(chain).getReferendumCollection();
+}
+
 function getBurntCollection(chain) {
   return db(chain).getBurntCollection();
 }
@@ -92,6 +96,7 @@ module.exports = {
   getBountyCollection,
   getChildBountyCollection,
   getMotionCollection,
+  getReferendumCollection,
   getBurntCollection,
   getOutputTransferCollection,
   getIncomeInflationCollection,

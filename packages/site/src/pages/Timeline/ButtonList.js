@@ -9,6 +9,7 @@ import { mrgap } from "../../styles";
 import polkassemblyApi from "../../services/polkassembly";
 import { useSelector } from "react-redux";
 import { chainSelector } from "../../store/reducers/chainSlice";
+import { TimelineItemType } from "../../constants";
 
 const Wrapper = styled.div`
   margin-top: 8px;
@@ -18,21 +19,33 @@ const Wrapper = styled.div`
   `}
 `;
 
-const ButtonList = ({ extrinsicIndexer, eventIndexer, polkassembly }) => {
-  const [motionUrl, setMotionUrl] = useState(null);
+const ButtonList = ({ extrinsicIndexer, eventIndexer, polkassembly, type }) => {
+  const [polkassemblyUrl, setPolkassemblyUrl] = useState(null);
+  const [subsquareUrl, setSubsquareUrl] = useState(null);
   const isMounted = useIsMounted();
   const chain = useSelector(chainSelector);
 
   useEffect(() => {
     (async () => {
-      if (polkassembly !== undefined) {
+      if (polkassembly === undefined || !type) return;
+
+      if (type === TimelineItemType.CouncilMotion) {
+        setSubsquareUrl(`https://${chain}.subsquare.io/council/motion/${polkassembly}`);
         const url = await polkassemblyApi.getMotionUrl(polkassembly);
         if (isMounted.current) {
-          setMotionUrl(url);
+          setPolkassemblyUrl(url);
+        }
+      }
+
+      if (type === TimelineItemType.DemocracyReferendum) {
+        setSubsquareUrl(`https://${chain}.subsquare.io/democracy/referendum/${polkassembly}`);
+        const url = await polkassemblyApi.getReferendumUrl(polkassembly);
+        if (isMounted.current) {
+          setPolkassemblyUrl(url);
         }
       }
     })();
-  }, [polkassembly, isMounted]);
+  }, [polkassembly, type, chain, isMounted]);
 
   const blockHeight = (extrinsicIndexer || eventIndexer)?.blockHeight;
   const extrinsicIndex = (extrinsicIndexer || eventIndexer)?.extrinsicIndex || 0;
@@ -67,9 +80,14 @@ const ButtonList = ({ extrinsicIndexer, eventIndexer, polkassembly }) => {
       >
         <ImageButton src={"/imgs/subscan-logo.svg"} />
       </ExplorerLink>
-      {motionUrl && (
-        <ExternalLink href={motionUrl}>
+      {polkassemblyUrl && (
+        <ExternalLink href={polkassemblyUrl}>
           <ImageButton src={"/imgs/polkassembly-logo.svg"} />
+        </ExternalLink>
+      )}
+      {subsquareUrl && (
+        <ExternalLink href={subsquareUrl}>
+          <ImageButton src={"/imgs/timeline-subsquare-link.svg"} />
         </ExternalLink>
       )}
     </Wrapper>

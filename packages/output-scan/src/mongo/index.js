@@ -32,6 +32,7 @@ let motionCol = null;
 let burntCol = null;
 let outTransferCol = null;
 let childBountyCol = null;
+let democracyReferendumCol = null;
 
 let weeklyStatsCol = null;
 
@@ -52,6 +53,7 @@ async function initDb() {
   weeklyStatsCol = db.collection(weeklyStatsCollectionName);
   outTransferCol = db.collection(outTransferColName);
   childBountyCol = db.collection("childBounty");
+  democracyReferendumCol = db.collection("democracyReferendum");
 
   await _createIndexes();
 }
@@ -116,6 +118,11 @@ async function getOutTransferCollection() {
   return outTransferCol;
 }
 
+async function getDemocracyReferendumCollection() {
+  await tryInit(democracyReferendumCol);
+  return democracyReferendumCol;
+}
+
 async function close() {
   if (client) {
     await client.close();
@@ -133,4 +140,5 @@ module.exports = {
   getWeeklyStatsCollection,
   getOutTransferCollection,
   getChildBountyCollection,
+  getDemocracyReferendumCollection,
 };

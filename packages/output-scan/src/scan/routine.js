@@ -6,7 +6,7 @@ const { tryCreateStatPoint } = require("../stats");
 const {
   chain: { getApi, getMetaScanHeight, updateSpecs, fetchBlocks, getBlockIndexer, getLatestHeight },
   logger,
-  env: { getScanStep },
+  env: { getScanStep, isUseMetaDb },
   utils: { sleep, getHeadUsedInGB },
 } = require("@osn/scan-common");
 
@@ -31,7 +31,7 @@ async function beginRoutineScan() {
       targetHeight = scanHeight + step;
     }
 
-    if (targetHeight > getMetaScanHeight()) {
+    if (targetHeight > getMetaScanHeight() && isUseMetaDb()) {
       await updateSpecs();
     }
 

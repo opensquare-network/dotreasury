@@ -42,6 +42,41 @@ class PolkassemblyApi extends Api {
     }
   }
 
+  async getReferendumUrl(referendumIndex) {
+    if (referendumIndex === undefined || referendumIndex === null) {
+      return null;
+    }
+
+    const { result } = await this.fetch(
+      "/v1/graphql",
+      {},
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          operationName: "ReferendumPostAndComments",
+          variables: { id: referendumIndex },
+          query: `
+          query ReferendumPostAndComments($id: Int!) {
+            posts(where: {
+              onchain_link: { onchain_referendum_id: { _eq: $id } }
+            }) {
+              __typename
+            }
+          }`,
+        }),
+      }
+    );
+
+    if (result?.data?.posts?.length > 0) {
+      return `https://${chain}.polkassembly.io/referendum/${referendumIndex}`;
+    } else {
+      return null;
+    }
+  }
+
   async getProposalUrl(proposalIndex) {
     if (proposalIndex === undefined || proposalIndex === null) {
       return null;

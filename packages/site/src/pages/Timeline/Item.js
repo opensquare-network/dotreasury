@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled, { css } from "styled-components";
 
-import Circle from "./Circle";
+import { ReactComponent as Circle } from "./circle.svg";
 import Label from "./Label";
 import Bar from "./Bar";
 
@@ -10,6 +10,10 @@ import ButtonList from "./ButtonList";
 import DateShow from "../../components/DateShow";
 import TextMinor from "../../components/TextMinor";
 import { mrgap } from "../../styles";
+import { useSelector } from "react-redux";
+import { chainSelector } from "../../store/reducers/chainSlice";
+import FoldContext from "./FoldContext";
+import { makeLinkUrl } from "./util";
 
 const Wrapper = styled.div`
   &:last-child .bar {
@@ -66,10 +70,12 @@ const TextMinorWrapper = styled(TextMinor)`
 const Item = ({
   data,
   polkassembly,
-  onUnfoldBtnClick,
-  isUnfold,
   hideButtonList = false,
 }) => {
+  const { isUnfold, setIsUnfold } = useContext(FoldContext);
+
+  const chain = useSelector(chainSelector);
+  const link = makeLinkUrl(chain, data);
   return (
     <Wrapper>
       <FlexWrapper>
@@ -85,12 +91,12 @@ const Item = ({
                   value={(data.extrinsicIndexer || data.eventIndexer).blockTime}
                 />
               </TextMinorWrapper>
-              <Label text={data.name} />
+              <Label text={data.name} link={link} />
             </TimeLableWrapper>
             <UnfoldButton
               src="/imgs/btn-unfold.svg"
               className="unfold-btn"
-              onClick={onUnfoldBtnClick}
+              onClick={() => setIsUnfold(!isUnfold)}
               isUnfold={isUnfold}
             />
           </FlexWrapper>
@@ -105,6 +111,7 @@ const Item = ({
                 extrinsicIndexer={data.extrinsicIndexer}
                 eventIndexer={data.eventIndexer}
                 polkassembly={polkassembly}
+                type={data.type}
               />
             )}
           </CardWrapper>
