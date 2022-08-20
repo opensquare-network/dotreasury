@@ -32,7 +32,7 @@ let client = null;
 let inputDb = null;
 let outputDb = null;
 
-const mongoUrl = config.mongo.ksmUrl || "mongodb://localhost:27017";
+const mongoUrl = config.mongo.ksmUrl || "mongodb://127.0.0.1:27017";
 let statusCol = null;
 
 let tipCol = null;
