@@ -1,11 +1,11 @@
 require("dotenv").config();
 
-const { getTermsCollection, getRenouncementCollection, } = require("../mongo");
+const { getTermsCollection, getRenouncementCollection, closeDb, } = require("../mongo");
 const { saveKnownHeights, closeKnownClient, } = require("../mongo/knownHeight");
 
 async function saveHeights() {
   const termsCol = await getTermsCollection();
-  const terms = await termsCol.find({});
+  const terms = await termsCol.find({}).toArray();
   let heights = [];
   for (const record of terms) {
     heights.push(record.indexer.blockHeight);
@@ -14,7 +14,7 @@ async function saveHeights() {
   await saveKnownHeights(termHeights);
 
   const renouncementCol = await getRenouncementCollection();
-  const records = await renouncementCol.find({});
+  const records = await renouncementCol.find({}).toArray();
   heights = [];
   for (const record of records) {
     heights.push(record.blockHeight);
@@ -22,7 +22,9 @@ async function saveHeights() {
   const renounceHeights = [...new Set(heights)];
   await saveKnownHeights(renounceHeights);
 
+  await closeDb();
   await closeKnownClient();
+  console.log('heights saved');
 }
 
 (async () => {
