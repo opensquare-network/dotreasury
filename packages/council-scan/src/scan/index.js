@@ -1,3 +1,4 @@
+const { scanKnownHeights } = require("./known");
 const { handleBlock } = require("./block");
 const {
   scan: { oneStepScan },
@@ -10,7 +11,7 @@ const { getNextScanHeight } = require("../mongo/scanHeight");
 
 async function beginScan() {
   if (firstScanKnowHeights()) {
-    // todo: scan known heights
+    await scanKnownHeights();
   }
 
   let scanHeight = await getNextScanHeight();
