@@ -1,7 +1,11 @@
 require("dotenv").config();
 
 const { getTermsCollection, getRenouncementCollection, closeDb, } = require("../mongo");
-const { saveKnownHeights, closeKnownClient, } = require("../mongo/knownHeight");
+const {
+  mongo: {
+    known: { saveKnownHeights, closeKnownClient }
+  }
+} = require("@osn/scan-common")
 
 async function saveHeights() {
   const termsCol = await getTermsCollection();

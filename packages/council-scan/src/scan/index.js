@@ -1,8 +1,7 @@
-const { scanKnownHeights } = require("./known");
 const { handleBlock } = require("./block");
 const {
-  scan: { oneStepScan },
-  utils: { sleep },
+  scan: { oneStepScan, scanKnownHeights },
+  utils: { sleep, emptyFn },
   env: {
     firstScanKnowHeights,
   }
@@ -10,11 +9,12 @@ const {
 const { getNextScanHeight } = require("../mongo/scanHeight");
 
 async function beginScan() {
+  let scanHeight = await getNextScanHeight();
   if (firstScanKnowHeights()) {
-    await scanKnownHeights();
+    await scanKnownHeights(scanHeight, emptyFn, handleBlock);
   }
 
-  let scanHeight = await getNextScanHeight();
+  scanHeight = await getNextScanHeight();
   while (true) {
     scanHeight = await oneStepScan(scanHeight, handleBlock);
     await sleep(0);
