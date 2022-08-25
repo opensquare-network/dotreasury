@@ -1,13 +1,20 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit'
 
+const storeAccount = localStorage.getItem("account");
+const account = storeAccount && JSON.parse(storeAccount);
+
 const accountSlice = createSlice({
   name: 'account',
   initialState: {
-    account: null,
+    account,
   },
   reducers: {
     setAccount(state, { payload }) {
       state.account = payload;
+      localStorage.setItem(
+        "account",
+        JSON.stringify(payload)
+      );
     },
     removeAccount(state) {
       state.account = null;
