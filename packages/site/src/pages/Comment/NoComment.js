@@ -4,7 +4,6 @@ import { ReactComponent as EmptySVG } from "./empty.svg";
 
 const Wrapper = styled.div`
   width: 100%;
-  min-height: 456px;
   display: flex;
   align-items: center;
   justify-content: center;
