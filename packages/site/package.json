@@ -13,7 +13,6 @@
     "@osn/rich-text-editor": "^0.1.55",
     "@polkadot/api": "9.2.2",
     "@polkadot/extension-dapp": "0.44.5",
-    "@polkadot/util": "^10.1.6",
     "@reduxjs/toolkit": "^1.7.2",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
