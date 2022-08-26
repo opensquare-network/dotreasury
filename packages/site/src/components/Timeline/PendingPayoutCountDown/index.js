@@ -1,13 +1,11 @@
-import CountDown from "@osn/common-ui/CountDown";
-import Flex from "@osn/common-ui/styled/Flex";
-import Gap from "@osn/common-ui/Gap";
+import CountDown from "../../../components/OsnCountDown";
 import { useSelector } from "react-redux";
 import { estimateBlocksTime } from "../../../services/chainApi";
 import {
   scanHeightSelector,
   chainSelector,
 } from "../../../store/reducers/chainSlice";
-import { EstimateTime } from "./styled";
+import { EstimateTime, Gap, Flex } from "./styled";
 import { extractTime } from "@polkadot/util";
 import { useEffect, useState } from "react";
 import { parseEstimateTime } from "./parseEstimateTime";
@@ -36,7 +34,7 @@ export default function PendingPayoutCountDown({
         startBlockHeight={unlockBlockHeight}
       />
 
-      <Gap inline mr={5} />
+      <Gap />
 
       <EstimateTime>
         {awardBlockHeight > scanHeight ? parseEstimateTime(estimatedTime) : 0}
