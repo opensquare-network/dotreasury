@@ -5,7 +5,6 @@ import { Image } from "semantic-ui-react";
 import Logo from "./Logo";
 import { NavLink } from "react-router-dom";
 import ScanHeight from "./ScanHeight";
-import UserLogin from "./UserLogin";
 import MenuSwitch from "./MenuSwitch";
 import { useMenuTab } from "../../utils/hooks";
 import { useSelector } from "react-redux";
@@ -150,7 +149,6 @@ const HeaderExamplePage = () => {
           <NavLink to={`/${symbol}/projects`}>
             <MenuSwitch menuTabsName="Projects" />
           </NavLink>
-          <UserLogin symbol={symbol} />
         </Right>
         <ScanHeightWrapper>
           <ScanHeight />
