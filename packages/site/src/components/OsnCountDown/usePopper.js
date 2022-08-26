@@ -32,7 +32,7 @@ export function usePopper({ refRef, popperRef, showTooltip }) {
         ],
       })
     );
-  }, [refRef, popperRef]);
+  }, [showTooltip, refRef, popperRef]);
 
   return {
     popperVisible,
