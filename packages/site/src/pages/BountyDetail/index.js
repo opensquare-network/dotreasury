@@ -214,10 +214,7 @@ export function processTimeline(bountyDetail, scanHeight, symbol) {
             }
           } else if (item.name === "BountyAwarded" || item.name === "Awarded") {
             const { beneficiary } = item.args || {};
-            const isClaimed =
-              bountyDetail?.timeline?.findIndex?.(
-                (i) => i.name === "Claimed"
-              ) >= 1;
+            const isClaimed = bountyDetail.state.state === "Claimed";
 
             fields = [
               {
