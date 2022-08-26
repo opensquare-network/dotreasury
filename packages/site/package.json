@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "license": "Apache-2.0",
   "dependencies": {
-    "@craco/craco": "^6.4.5",
     "@open-wc/webpack-import-meta-loader": "^0.4.7",
     "@osn/common": "^1.1.0",
     "@osn/common-ui": "^1.13.0",
@@ -49,10 +48,10 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "craco start",
-    "build": "craco build",
-    "test": "craco test",
-    "eject": "craco eject",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
     "postinstall": "patch-package"
   },
   "eslintConfig": {
