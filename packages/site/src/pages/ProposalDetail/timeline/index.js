@@ -3,6 +3,7 @@ import User from "../../../components/User";
 import Balance from "../../../components/Balance";
 import { normalizeMotionTimelineItem } from "./motion";
 import { normalizeReferendumTimelineItem } from "./referendum";
+import PendingPayoutCountDown from "../../../components/Timeline/PendingPayoutCountDown";
 
 function isMotion(timelineItem) {
   return !!timelineItem.motionInfo;
@@ -29,7 +30,14 @@ function timelineItemHeight(timelineItem) {
 }
 
 function constructProposalProcessItem(item, proposalDetail) {
-  const { proposer, value, beneficiary, symbolPrice } = proposalDetail;
+  const {
+    proposer,
+    value,
+    beneficiary,
+    symbolPrice,
+    latestState = {},
+    indexer = {},
+  } = proposalDetail;
   let fields = [];
 
   const method = item.name || item.method;
@@ -86,6 +94,17 @@ function constructProposalProcessItem(item, proposalDetail) {
         {
           title: "Value",
           value: <Balance value={value} />,
+        },
+        {
+          title: "Pending Payout",
+          value: (
+            <div>
+              <PendingPayoutCountDown
+                awardBlockHeight={latestState?.indexer?.blockHeight}
+                unlockBlockHeight={indexer?.blockHeight}
+              />
+            </div>
+          ),
         },
       ],
     };
