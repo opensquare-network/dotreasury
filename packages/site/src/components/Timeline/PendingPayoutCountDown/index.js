@@ -24,7 +24,7 @@ export default function PendingPayoutCountDown({
       const time = extractTime(Math.abs(v));
       setEstimatedTime(time);
     });
-  }, [scanHeight, awardBlockHeight, unlockBlockHeight]);
+  }, [chain, scanHeight, awardBlockHeight]);
 
   return (
     <Flex>
