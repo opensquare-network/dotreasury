@@ -31,6 +31,7 @@ import {
 import DetailGoBack from "../components/DetailGoBack";
 import { useChainRoute } from "../../utils/hooks";
 import ChildBountiesTable from "./ChildBountiesTable";
+import BountyPendingPayoutCountDown from "../../components/Timeline/BountyPendingPayoutCountDown";
 
 const ValueWrapper = styled.span`
   margin-right: 4px;
@@ -213,10 +214,23 @@ export function processTimeline(bountyDetail, scanHeight, symbol) {
             }
           } else if (item.name === "BountyAwarded" || item.name === "Awarded") {
             const { beneficiary } = item.args || {};
+            const isClaimed =
+              bountyDetail?.timeline?.findIndex?.(
+                (i) => i.name === "Claimed"
+              ) >= 1;
+
             fields = [
               {
                 title: "Beneficiary",
                 value: <User address={beneficiary} />,
+              },
+              !isClaimed && {
+                title: "Pending Payout",
+                value: (
+                  <div>
+                    <BountyPendingPayoutCountDown bountyDetail={bountyDetail} />
+                  </div>
+                ),
               },
             ];
           } else if (item.name === "BountyExtended") {
