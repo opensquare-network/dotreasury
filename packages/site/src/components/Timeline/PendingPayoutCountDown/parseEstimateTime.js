@@ -1,3 +1,5 @@
+// copied from subsquare
+
 export function parseEstimateTime(time) {
   const { days, hours, minutes, seconds } = time ?? {};
 
