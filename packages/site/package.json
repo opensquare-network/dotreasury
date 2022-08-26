@@ -4,7 +4,6 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@open-wc/webpack-import-meta-loader": "^0.4.7",
-    "@osn/common-ui": "^1.13.0",
     "@osn/polkadot-react-identicon": "^1.0.6",
     "@polkadot/api": "9.2.2",
     "@polkadot/extension-dapp": "0.44.5",
