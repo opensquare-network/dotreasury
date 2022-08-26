@@ -1,4 +1,6 @@
-import { CountDown, Flex, Gap } from "@osn/common-ui";
+import CountDown from "@osn/common-ui/CountDown";
+import Flex from "@osn/common-ui/styled/Flex";
+import Gap from "@osn/common-ui/Gap";
 import { useSelector } from "react-redux";
 import { estimateBlocksTime } from "../../../services/chainApi";
 import {
