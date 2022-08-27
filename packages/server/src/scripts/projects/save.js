@@ -117,6 +117,10 @@ async function saveOneProject(project) {
     throw new Error(`No funds found for project ${ project.id }`);
   }
 
+  const latestTime = allFunds.reduce((result, fund) => {
+    return Math.max(fund.indexer.blockTime, result);
+  }, allFunds[0].indexer.blockTime);
+
   const kusamaCount = allFunds.filter(item => item.token === 'ksm').length;
   const polkadotCount = allFunds.filter(item => item.token === 'dot').length;
 
@@ -130,6 +134,7 @@ async function saveOneProject(project) {
     ...omit(project, ['proposals', 'startTime']),
     funds,
     startTime,
+    latestTime,
   }
 
   const projectCol = await getProjectCollection();
