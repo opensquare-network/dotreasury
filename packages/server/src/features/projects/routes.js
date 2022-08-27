@@ -8,6 +8,7 @@ const router = new Router();
 router.get("/projects", projectsController.getProjects);
 router.get("/projects_v2", projectsV2Controller.getProjects);
 router.get("/projects/:projectId", projectsController.getProject);
+router.get("/projects_v2/:projectId", projectsV2Controller.getProject);
 
 router.get(
   "/projects/:projectId/comments",

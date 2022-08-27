@@ -1,5 +1,5 @@
 const { extractPage } = require("../../utils");
-const { getProjectCollection } = require("../../mongo-admin");
+const { getProjectCollection, getProjectFundCollection } = require("../../mongo-admin");
 
 class ProjectV2Controller {
   async getProjects(ctx) {
@@ -10,7 +10,7 @@ class ProjectV2Controller {
       return;
     }
 
-    const q = chain === 'kusama' ? { 'funds.kusama': { $gt: 0 } } : { 'funds.polkadot': { $gt: 0 } }
+    const q = chain === 'kusama' ? { 'fundsCount.kusama': { $gt: 0 } } : { 'fundsCount.polkadot': { $gt: 0 } }
 
     const projectCol = await getProjectCollection();
     const items = await projectCol
@@ -26,6 +26,22 @@ class ProjectV2Controller {
       page,
       pageSize,
       total,
+    }
+  }
+
+  async getProject(ctx) {
+    const projectId = ctx.params.projectId;
+    const projectCol = await getProjectCollection();
+    const project = await projectCol.findOne({ id: projectId });
+
+    const fundsCol = await getProjectFundCollection();
+    const funds = await fundsCol.find({ projectId }).sort({
+      'indexer.blockHeight': -1,
+    }).toArray();
+
+    ctx.body = {
+      ...project,
+      funds,
     }
   }
 }

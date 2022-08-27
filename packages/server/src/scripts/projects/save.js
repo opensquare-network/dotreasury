@@ -124,7 +124,7 @@ async function saveOneProject(project) {
   const kusamaCount = allFunds.filter(item => item.token === 'ksm').length;
   const polkadotCount = allFunds.filter(item => item.token === 'dot').length;
 
-  const funds = {
+  const fundsCount = {
     kusama: kusamaCount,
     polkadot: polkadotCount,
   }
@@ -132,7 +132,7 @@ async function saveOneProject(project) {
   const startTime = allFunds[0].indexer.blockTime;
   const obj = {
     ...omit(project, ['proposals', 'startTime']),
-    funds,
+    fundsCount,
     startTime,
     latestTime,
   }
