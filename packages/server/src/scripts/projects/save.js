@@ -121,8 +121,16 @@ async function saveOneProject(project) {
     return Math.max(fund.indexer.blockTime, result);
   }, allFunds[0].indexer.blockTime);
 
-  const kusamaCount = allFunds.filter(item => item.token === 'ksm').length;
-  const polkadotCount = allFunds.filter(item => item.token === 'dot').length;
+  const ksmFunds = allFunds.filter(item => item.token === 'ksm');
+  const dotFunds = allFunds.filter(item => item.token === 'dot');
+  const kusamaCount = ksmFunds.length;
+  const polkadotCount = dotFunds.length;
+  const kusamaValue = ksmFunds.reduce((result, fund) => {
+    return new BigNumber(result).plus(fund.value).toNumber();
+  }, 0);
+  const polkadotValue = dotFunds.reduce((result, fund) => {
+    return new BigNumber(result).plus(fund.value).toNumber();
+  }, 0);
 
   const fundsCount = {
     kusama: kusamaCount,
@@ -133,6 +141,10 @@ async function saveOneProject(project) {
   const obj = {
     ...omit(project, ['proposals', 'startTime']),
     fundsCount,
+    fundsValue: {
+      kusama: kusamaValue,
+      polkadot: polkadotValue,
+    },
     startTime,
     latestTime,
   }
