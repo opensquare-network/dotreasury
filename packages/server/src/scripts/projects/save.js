@@ -2,14 +2,15 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 /**
- * This script save project funds to database.
+ * This script save project related data(fund items and project itself) to database.
  */
 
 const kusamaProjects = require("../../features/projects/data/kusama");
 const polkadotProjects = require("../../features/projects/data/polkadot");
 const { getProposalCollection, getTipCollection } = require("../../mongo/index");
-const { getProjectFundCollection } = require("../../mongo-admin");
+const { getProjectFundCollection, getProjectCollection } = require("../../mongo-admin");
 const BigNumber = require("bignumber.js");
+const omit = require("lodash.omit");
 
 const types = Object.freeze({
   proposal: "proposal",
@@ -109,6 +110,32 @@ async function saveOneProjectFunds(funds = [], projectId) {
   }
 }
 
+async function saveOneProject(project) {
+  const fundCol = await getProjectFundCollection();
+  const allFunds = await fundCol.find({ projectId: project.id }).sort({ 'indexer.blockHeight': 1 }).toArray();
+  if (allFunds.length <= 0) {
+    throw new Error(`No funds found for project ${ project.id }`);
+  }
+
+  const kusamaCount = allFunds.filter(item => item.token === 'ksm').length;
+  const polkadotCount = allFunds.filter(item => item.token === 'dot').length;
+
+  const funds = {
+    kusama: kusamaCount,
+    polkadot: polkadotCount,
+  }
+
+  const startTime = allFunds[0].indexer.blockTime;
+  const obj = {
+    ...omit(project, ['proposals', 'startTime']),
+    funds,
+    startTime,
+  }
+
+  const projectCol = await getProjectCollection();
+  await projectCol.findOneAndUpdate({ id: project.id }, { $set: obj }, { upsert: true });
+}
+
 ;(async () => {
   const projectSet = new Set();
   for (const project of [
@@ -121,6 +148,7 @@ async function saveOneProjectFunds(funds = [], projectId) {
     }
 
     await saveOneProjectFunds(project.proposals, project.id);
+    await saveOneProject(project);
     projectSet.add(project.id);
     console.log(`project ${ project.name } saved!`)
   }
