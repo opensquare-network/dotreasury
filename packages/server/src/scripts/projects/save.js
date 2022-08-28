@@ -119,7 +119,7 @@ async function saveOneProject(project) {
 
   const fiatValue = allFunds.reduce((result, { fiatValue = 0 }) => {
     return new BigNumber(result).plus(fiatValue).toNumber();
-  }, 0);
+  }, 0)
 
   const latestTime = allFunds.reduce((result, fund) => {
     return Math.max(fund.indexer.blockTime, result);
