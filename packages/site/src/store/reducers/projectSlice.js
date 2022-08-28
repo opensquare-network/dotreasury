@@ -53,7 +53,7 @@ export const fetchProjects = (chain, page = 0, pageSize = 30) => async (
 export const fetchProjectDetail = (chain, projectId) => async (dispatch) => {
   dispatch(setLoadingProjectDetail(true));
   try {
-    const { result } = await api.fetch(`/${chain}/projects/${projectId}`);
+    const { result } = await api.fetch(`/${chain}/projects_v2/${projectId}`);
     dispatch(setProjectDetail(result || {}));
   } finally {
     dispatch(setLoadingProjectDetail(false));

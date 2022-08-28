@@ -99,7 +99,7 @@ const TipsTable = ({ data, loading, header, footer }) => {
                         <ProjectExpense
                           expenseDot={item.fundsValue.polkadot}
                           expenseKsm={item.fundsValue.kusama}
-                          dollar={item.dollar}
+                          dollar={item.fiatValue}
                         />
                       </Table.Cell>
                       <Table.Cell className="date-cell">
