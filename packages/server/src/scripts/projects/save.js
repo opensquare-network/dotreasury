@@ -117,6 +117,10 @@ async function saveOneProject(project) {
     throw new Error(`No funds found for project ${ project.id }`);
   }
 
+  const fiatValue = allFunds.reduce((result, { fiatValue = 0 }) => {
+    return new BigNumber(result).plus(fiatValue).toNumber();
+  }, 0);
+
   const latestTime = allFunds.reduce((result, fund) => {
     return Math.max(fund.indexer.blockTime, result);
   }, allFunds[0].indexer.blockTime);
@@ -140,6 +144,7 @@ async function saveOneProject(project) {
   const startTime = allFunds[0].indexer.blockTime;
   const obj = {
     ...omit(project, ['proposals', 'startTime']),
+    fiatValue,
     fundsCount,
     fundsValue: {
       kusama: kusamaValue,

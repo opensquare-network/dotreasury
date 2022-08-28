@@ -57,12 +57,16 @@ const Balance = ({
   isUnitPrice = true,
   horizontal = false,
 }) => {
+  console.log('value', value);
   const symbol = useSelector(chainSymbolSelector);
   let usdtNumber = Number(usdt);
   if (value === null || value === undefined) value = 0;
   const precision = toPrecision(value, getPrecision(currency || symbol), false);
+  console.log('precision', precision);
   const localePrecision = Number(precision).toLocaleString();
   if (isUnitPrice) usdtNumber = usdtNumber * precision;
+  console.log('localePrecision', localePrecision);
+
   return (
     <Wrapper reverse={reverse} horizontal={horizontal}>
       <PairText value={localePrecision} unit={currency || symbol} />

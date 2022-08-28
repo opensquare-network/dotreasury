@@ -40,7 +40,7 @@ export const fetchProjects = (chain, page = 0, pageSize = 30) => async (
   dispatch(setLoading(true));
 
   try {
-    const { result } = await api.fetch(`/${chain}/projects`, {
+    const { result } = await api.fetch(`/${chain}/projects_v2`, {
       page,
       pageSize,
     });
