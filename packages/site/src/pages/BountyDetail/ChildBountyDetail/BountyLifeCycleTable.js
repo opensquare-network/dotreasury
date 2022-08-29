@@ -17,6 +17,7 @@ import ExplorerLink from "../../../components/ExplorerLink";
 import { childBountyDetailSelector } from "../../../store/reducers/bountySlice";
 import RelatedLinks from "../../../components/RelatedLinks";
 import EstimateBlockTimeCountDown from "../../../components/EstimateBlockTimeCountdown";
+import BountyPendingPayoutCountDown from "../../../components/BountyPendingPayoutCountDown";
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -73,7 +74,10 @@ const BountyLifeCycleTable = ({ loading }) => {
               <TableCell title="Status">
                 <FlexWrapper>
                   <CapText>{bountyDetail.state?.state}</CapText>
-                  <div />
+                  {/* FIXME: only display in `PendingPayout` ? */}
+                  {bountyDetail.state?.state === "PendingPayout" && (
+                    <BountyPendingPayoutCountDown bountyDetail={bountyDetail} />
+                  )}
                 </FlexWrapper>
               </TableCell>
             </Table.Cell>
