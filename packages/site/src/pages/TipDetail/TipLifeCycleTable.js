@@ -5,25 +5,18 @@ import { useSelector } from "react-redux";
 import Table from "../../components/Table";
 import TableLoading from "../../components/TableLoading";
 import TableCell from "../../components/TableCell";
-import Progress from "../../components/Progress";
-import TipCountDownLabel from "./TipCountDownLabel";
 import BarProgress from "../../components/BarProgress";
 import ElapsedTimeLabel from "../../components/ElapsedTimeLabel";
 import DateShow from "../../components/DateShow";
 import PolygonLabel from "../../components/PolygonLabel";
 import ExplorerLink from "../../components/ExplorerLink";
+import EstimateBlockTimeCountDown from "../../components/EstimateBlockTimeCountdown";
 
 import polkaassemblyApi from "../../services/polkassembly";
 import { useIsMounted } from "../../utils/hooks";
 
-import {
-  normalizedTipDetailSelector,
-  tipCountdownSelector,
-} from "../../store/reducers/tipSlice";
-import {
-  scanHeightSelector,
-  chainSelector,
-} from "../../store/reducers/chainSlice";
+import { normalizedTipDetailSelector } from "../../store/reducers/tipSlice";
+import { chainSelector } from "../../store/reducers/chainSlice";
 import RelatedLinks from "../../components/RelatedLinks";
 
 const FlexWrapper = styled.div`
@@ -47,15 +40,9 @@ const TippersLabel = styled.div`
 const TipLifeCycleTable = ({ loading }) => {
   const chain = useSelector(chainSelector);
   const tipDetail = useSelector(normalizedTipDetailSelector);
-  const tipCountdown = useSelector(tipCountdownSelector);
-  const scanHeight = useSelector(scanHeightSelector);
   const tippersCount = tipDetail.tippersCount;
   const [tipUrl, setTipUrl] = useState(null);
   const isMounted = useIsMounted();
-
-  const begin = tipDetail.closeFromBlockHeight - tipCountdown;
-  const goneBlocks = Math.max(scanHeight - begin, 0);
-  const percentage = goneBlocks > tipCountdown ? 1 : goneBlocks / tipCountdown;
 
   const thresholdTotalCount = tippersCount ? (tippersCount + 1) / 2 : 0;
 
@@ -143,25 +130,20 @@ const TipLifeCycleTable = ({ loading }) => {
               <TableCell title="Closes">
                 {tipDetail.closeFromBlockHeight ? (
                   <FlexWrapper>
-                    <BarWrapper>
-                      <Progress percent={percentage * 100} />
-                    </BarWrapper>
-                    <TipCountDownLabel
-                      scanHeight={scanHeight}
-                      closes={tipDetail.closeFromBlockHeight}
+                    <ExplorerLink
+                      href={`/block/${tipDetail.closeFromBlockHeight}`}
+                    >
+                      <PolygonLabel value={tipDetail.closeFromBlockHeight} />
+                    </ExplorerLink>
+                    <EstimateBlockTimeCountDown
+                      startBlockHeight={tipDetail.proposeAtBlockHeight}
+                      endBlockHeight={tipDetail.closeFromBlockHeight}
                     />
                   </FlexWrapper>
                 ) : (
-                  <FlexWrapper>
-                    <BarWrapper>
-                      <Progress percent={0} />
-                    </BarWrapper>
-                    <TipCountDownLabel
-                      scanHeight={scanHeight}
-                      closes={tipDetail.closeFromBlockHeight}
-                    />
-                  </FlexWrapper>
+                  "--"
                 )}
+                {/* FIXME: how to display while `closeFromBlockHeight` is null */}
               </TableCell>
             </Table.Cell>
           </Table.Row>
