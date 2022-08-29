@@ -9,8 +9,8 @@ export default function BountyPendingPayoutCountDown({ bountyDetail }) {
 
   return (
     <EstimateTimeCountDown
-      blockHeight={awardBlockHeight}
-      denominator={unlockAt}
+      startBlockHeight={awardBlockHeight}
+      endBlockHeight={unlockAt}
     />
   );
 }
