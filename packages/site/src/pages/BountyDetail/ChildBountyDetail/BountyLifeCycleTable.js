@@ -16,6 +16,7 @@ import PolygonLabel from "../../../components/PolygonLabel";
 import ExplorerLink from "../../../components/ExplorerLink";
 import { childBountyDetailSelector } from "../../../store/reducers/bountySlice";
 import RelatedLinks from "../../../components/RelatedLinks";
+import EstimateBlockTimeCountDown from "../../../components/EstimateBlockTimeCountdown";
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -120,6 +121,11 @@ const BountyLifeCycleTable = ({ loading }) => {
                         <PolygonLabel value={bountyDetail.unlockAt} />
                       </ExplorerLink>
                     )}
+
+                    <EstimateBlockTimeCountDown
+                      startBlockHeight={bountyDetail?.indexer?.blockHeight}
+                      endBlockHeight={bountyDetail?.unlockAt}
+                    />
                   </FlexWrapper>
                 ) : (
                   "--"
