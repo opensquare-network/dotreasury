@@ -56,6 +56,7 @@ class BountiesController {
       .aggregate([
         {
           $sort: {
+            stateSort: 1,
             "indexer.blockHeight": -1,
           }
         },
