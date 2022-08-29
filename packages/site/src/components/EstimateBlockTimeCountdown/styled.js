@@ -7,7 +7,7 @@ export const EstimateTime = styled.span`
   font-size: 14px;
   line-height: 24px;
   /* text_dark_major */
-  color: "#1e2134";
+  color: #1e2134;
 `;
 
 export const Gap = styled.span`
