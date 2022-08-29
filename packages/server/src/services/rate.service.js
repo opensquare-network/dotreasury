@@ -17,7 +17,7 @@ const trimTailSlash = (url) =>
   url.endsWith("/") ? url.substr(0, url.length - 1) : url;
 
 function getIndexer(chain, type, index) {
-  if (!index) {
+  if (index === undefined) {
     throw new HttpError(400, "Index is missing");
   }
 
@@ -68,7 +68,10 @@ class RateService {
     if ("treasury_proposal" === type) {
       indexer = getIndexer(chain, "proposal", index);
     } else if ("project" === type) {
-      indexer = getIndexer(chain, "project", index);
+      if (index === undefined) {
+        throw new HttpError(400, "Index is missing");
+      }
+      indexer = { type: "project", index };
     } else {
       throw new HttpError(400, "Unsupport treasury type");
     }
