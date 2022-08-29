@@ -11,29 +11,32 @@ import {
 import { useEstimateTime } from "../../utils/useEstimateTime";
 import { useMemo } from "react";
 
-export default function EstimateTimeCountDown({ blockHeight, denominator }) {
+export default function EstimateTimeCountDown({
+  startBlockHeight = 0,
+  endBlockHeight = 0,
+}) {
   const scanHeight = useSelector(scanHeightSelector);
 
-  const { estimatedTimeString } = useEstimateTime(blockHeight);
+  const { estimatedTimeString } = useEstimateTime(endBlockHeight);
 
   const diffHeight = useMemo(() => {
-    if (scanHeight > blockHeight) {
+    if (scanHeight > endBlockHeight) {
       return 0;
     }
 
-    return blockHeight - scanHeight;
-  }, [scanHeight, blockHeight]);
+    return endBlockHeight - scanHeight;
+  }, [scanHeight, endBlockHeight]);
 
   return (
     <Flex>
       <CountDown
-        numerator={scanHeight}
-        denominator={denominator}
+        numerator={scanHeight - startBlockHeight}
+        denominator={endBlockHeight - startBlockHeight}
         tooltipContent={
           <div>
             <TooltipDiffHeight>{diffHeight}</TooltipDiffHeight>
             <TooltipInfoHeight>
-              {scanHeight} / {blockHeight}
+              {scanHeight} / {endBlockHeight}
             </TooltipInfoHeight>
           </div>
         }
@@ -42,7 +45,7 @@ export default function EstimateTimeCountDown({ blockHeight, denominator }) {
       <Gap />
 
       <EstimateTime>
-        {blockHeight > scanHeight ? estimatedTimeString : 0}
+        {endBlockHeight > scanHeight ? estimatedTimeString : 0}
       </EstimateTime>
     </Flex>
   );
