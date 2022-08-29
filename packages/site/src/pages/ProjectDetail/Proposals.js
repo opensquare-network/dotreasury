@@ -7,7 +7,9 @@ import { PRIMARY_THEME_COLOR } from "../../constants";
 import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
 import Card from "../../components/Card";
-import { toLocaleStringWithFixed } from "../../utils";
+import { getPrecision, toLocaleStringWithFixed, toPrecision } from "../../utils";
+import { useSelector } from "react-redux";
+import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 
 const Wrapper = styled(Card)`
   padding: 20px 24px;
@@ -151,6 +153,8 @@ const TextDollar = styled(Text)`
 `;
 
 const Proposals = ({data}) => {
+  const symbol = useSelector(chainSymbolSelector);
+
   if (data) {
     return (
       <Wrapper>
@@ -187,7 +191,9 @@ const Proposals = ({data}) => {
                     <Item>
                       <Text>{item.type === "tip" ? "Tip" : "Expense"}</Text>
                       <ExpenseWrapper>
-                        <Text>{item.amount.toLocaleString() ?? 0}</Text>
+                        <Text>{
+                          Number(toPrecision(item.value, getPrecision(symbol))).toLocaleString()
+                        }</Text>
                         <TextMinor className="unit">
                           {item.token?.toUpperCase()}
                         </TextMinor>
