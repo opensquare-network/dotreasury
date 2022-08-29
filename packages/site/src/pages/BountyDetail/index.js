@@ -31,7 +31,7 @@ import {
 import DetailGoBack from "../components/DetailGoBack";
 import { useChainRoute } from "../../utils/hooks";
 import ChildBountiesTable from "./ChildBountiesTable";
-import BountyPendingPayoutCountDown from "../../components/Timeline/BountyPendingPayoutCountDown";
+import BountyPendingPayoutCountDown from "../../components/BountyPendingPayoutCountDown";
 
 const ValueWrapper = styled.span`
   margin-right: 4px;
