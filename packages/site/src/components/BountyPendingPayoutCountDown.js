@@ -1,4 +1,4 @@
-import EstimateBlockTimeCountDown from "../../EstimateBlockTimeCountdown";
+import EstimateBlockTimeCountDown from "./EstimateBlockTimeCountdown";
 
 export default function BountyPendingPayoutCountDown({ bountyDetail }) {
   const { timeline = [] } = bountyDetail ?? {};
