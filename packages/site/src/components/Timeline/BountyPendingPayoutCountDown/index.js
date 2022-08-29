@@ -1,4 +1,4 @@
-import EstimateTimeCountDown from "../../EstimateTimeCountdown";
+import EstimateBlockTimeCountDown from "../../EstimateBlockTimeCountdown";
 
 export default function BountyPendingPayoutCountDown({ bountyDetail }) {
   const { timeline = [] } = bountyDetail ?? {};
@@ -8,7 +8,7 @@ export default function BountyPendingPayoutCountDown({ bountyDetail }) {
   const awardBlockHeight = awardTimeline?.indexer?.blockHeight;
 
   return (
-    <EstimateTimeCountDown
+    <EstimateBlockTimeCountDown
       startBlockHeight={awardBlockHeight}
       endBlockHeight={unlockAt}
     />

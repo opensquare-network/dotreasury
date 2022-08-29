@@ -11,7 +11,7 @@ import {
 import { useEstimateTime } from "../../utils/useEstimateTime";
 import { useMemo } from "react";
 
-export default function EstimateTimeCountDown({
+export default function EstimateBlockTimeCountDown({
   startBlockHeight = 0,
   endBlockHeight = 0,
 }) {
