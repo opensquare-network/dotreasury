@@ -1,14 +1,15 @@
 import CountDown from "../../../components/OsnCountDown";
 import { useSelector } from "react-redux";
-import { estimateBlocksTime } from "../../../services/chainApi";
+import { scanHeightSelector } from "../../../store/reducers/chainSlice";
 import {
-  scanHeightSelector,
-  chainSelector,
-} from "../../../store/reducers/chainSlice";
-import { EstimateTime, Gap, Flex } from "./styled";
-import { extractTime } from "@polkadot/util";
-import { useEffect, useState } from "react";
-import { parseEstimateTime } from "./parseEstimateTime";
+  EstimateTime,
+  Gap,
+  Flex,
+  TooltipDiffHeight,
+  TooltipInfoHeight,
+} from "./styled";
+import { useMemo } from "react";
+import { useEstimateTime } from "../../../utils/useEstimateTime";
 
 export default function BountyPendingPayoutCountDown({ bountyDetail }) {
   const { timeline = [] } = bountyDetail ?? {};
@@ -17,30 +18,37 @@ export default function BountyPendingPayoutCountDown({ bountyDetail }) {
   const unlockAt = awardTimeline?.args?.unlockAt;
   const awardBlockHeight = awardTimeline?.indexer?.blockHeight;
 
-  const chain = useSelector(chainSelector);
   const scanHeight = useSelector(scanHeightSelector);
 
-  const [estimatedTime, setEstimatedTime] = useState({});
+  const { estimatedTimeString } = useEstimateTime(awardBlockHeight);
 
-  useEffect(() => {
-    estimateBlocksTime(chain, scanHeight - awardBlockHeight).then((v) => {
-      const time = extractTime(Math.abs(v));
-      setEstimatedTime(time);
-    });
-  }, [chain, scanHeight, awardBlockHeight]);
+  const diffHeight = useMemo(() => {
+    if (scanHeight > unlockAt) {
+      return 0;
+    }
+
+    return unlockAt - scanHeight;
+  }, [scanHeight, unlockAt]);
 
   return (
     <Flex>
       <CountDown
-        blockHeight={scanHeight}
-        endBlockHeight={unlockAt}
-        startBlockHeight={awardBlockHeight}
+        numerator={scanHeight}
+        denominator={unlockAt}
+        tooltipContent={
+          <div>
+            <TooltipDiffHeight>{diffHeight}</TooltipDiffHeight>
+            <TooltipInfoHeight>
+              {scanHeight} / {unlockAt}
+            </TooltipInfoHeight>
+          </div>
+        }
       />
 
       <Gap />
 
       <EstimateTime>
-        {awardBlockHeight > scanHeight ? parseEstimateTime(estimatedTime) : 0}
+        {awardBlockHeight > scanHeight ? estimatedTimeString : 0}
       </EstimateTime>
     </Flex>
   );
