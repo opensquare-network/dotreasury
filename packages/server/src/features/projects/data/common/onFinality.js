@@ -17,6 +17,10 @@ const relatedLinks = [
 const proposals = [
   {
     token: "dot",
+    proposalId: 157,
+  },
+  {
+    token: "dot",
     amount: 7404,
     proposalId: 112,
     proposeTimePrice: 14.56,
