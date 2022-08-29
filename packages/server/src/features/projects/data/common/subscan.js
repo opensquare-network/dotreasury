@@ -70,18 +70,6 @@ const proposals = [
     title: "The Infrastructure Costs of Subscan for Polkadot Network from Sep 2021 to Dec 2021",
     achievements: [],
   },
-  {
-    token: "dot",
-    proposalId: 108,
-  },
-  {
-    token: "dot",
-    proposalId: 151,
-  },
-  {
-    token: "ksm",
-    proposalId: 191,
-  },
 ];
 
 module.exports = {

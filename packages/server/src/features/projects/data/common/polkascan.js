@@ -107,10 +107,6 @@ const proposals = [
     achievements: [],
   },
   {
-    token: "dot",
-    proposalId: 140,
-  },
-  {
     token: "ksm",
     amount: 201.083,
     proposalId: 147,
@@ -125,10 +121,6 @@ const proposals = [
     proposeTimePrice: 47.89,
     title: "Open-sourcing Polkascan block-explorer stack",
     achievements: [],
-  },
-  {
-    token: "ksm",
-    proposalId: 173,
   },
 ].reverse();
 
