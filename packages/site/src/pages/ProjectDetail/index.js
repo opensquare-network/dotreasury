@@ -40,31 +40,12 @@ const ProjectDetail = () => {
 
   const projectDetail = useSelector(projectDetailSelector);
 
-  const detailData = {
-    name: projectDetail.name,
-    logo: projectDetail.logo,
-    description: projectDetail.description,
-    proposals: projectDetail.proposals?.length,
-    expense: projectDetail.proposals?.reduce(
-      (previous, current) => previous + (current.amount ?? 0),
-      0
-    ),
-    dollar: projectDetail.proposals
-      ?.reduce(
-        (previous, current) =>
-          previous + (current.amount ?? 0) * (current.proposeTimePrice ?? 0),
-        0
-      )
-      .toFixed(2)
-      .replace(/\D00/, ""),
-  };
-
   return (
     <>
       <DetailGoBack />
-      <Detail data={detailData} projectData={projectDetail} />
+      <Detail projectData={projectDetail} />
       <RelatedLinks data={projectDetail.relatedLinks} />
-      <Proposals data={projectDetail.proposals} />
+      <Proposals data={projectDetail.funds} />
       <CommentWrapper>
         <Rate type="project" index={projectId} />
         <Comment type="project" index={projectId} />
