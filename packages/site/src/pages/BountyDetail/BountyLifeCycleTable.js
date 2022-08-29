@@ -35,6 +35,13 @@ const CapText = styled(Text)`
   text-transform: capitalize;
 `;
 
+const CountDownWrapper = styled.div`
+  display: inline-flex;
+  span {
+    color: rgba(0, 0, 0, 0.3);
+  }
+`;
+
 const BountyLifeCycleTable = ({ loading }) => {
   const bountyDetail = useSelector(bountyDetailSelector);
   const scanHeight = useSelector(scanHeightSelector);
@@ -129,7 +136,11 @@ const BountyLifeCycleTable = ({ loading }) => {
                   <CapText>{bountyDetail.state?.state}</CapText>
                   {/* FIXME: only display in `PendingPayout` ? */}
                   {bountyDetail.state?.state === "PendingPayout" && (
-                    <BountyPendingPayoutCountDown bountyDetail={bountyDetail} />
+                    <CountDownWrapper>
+                      <BountyPendingPayoutCountDown
+                        bountyDetail={bountyDetail}
+                      />
+                    </CountDownWrapper>
                   )}
                 </FlexWrapper>
               </TableCell>
@@ -198,10 +209,12 @@ const BountyLifeCycleTable = ({ loading }) => {
                       </ExplorerLink>
                     )}
 
-                    <EstimateBlockTimeCountDown
-                      startBlockHeight={bountyDetail?.indexer?.blockHeight}
-                      endBlockHeight={bountyDetail?.unlockAt}
-                    />
+                    <CountDownWrapper>
+                      <EstimateBlockTimeCountDown
+                        startBlockHeight={bountyDetail?.indexer?.blockHeight}
+                        endBlockHeight={bountyDetail?.unlockAt}
+                      />
+                    </CountDownWrapper>
                   </FlexWrapper>
                 ) : (
                   "--"
