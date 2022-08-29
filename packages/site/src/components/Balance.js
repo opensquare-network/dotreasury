@@ -63,6 +63,7 @@ const Balance = ({
   const precision = toPrecision(value, getPrecision(currency || symbol), false);
   const localePrecision = Number(precision).toLocaleString();
   if (isUnitPrice) usdtNumber = usdtNumber * precision;
+
   return (
     <Wrapper reverse={reverse} horizontal={horizontal}>
       <PairText value={localePrecision} unit={currency || symbol} />
