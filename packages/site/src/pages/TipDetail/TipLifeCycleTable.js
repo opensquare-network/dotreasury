@@ -20,7 +20,10 @@ import {
   normalizedTipDetailSelector,
   tipCountdownSelector,
 } from "../../store/reducers/tipSlice";
-import { scanHeightSelector, chainSelector } from "../../store/reducers/chainSlice";
+import {
+  scanHeightSelector,
+  chainSelector,
+} from "../../store/reducers/chainSlice";
 import RelatedLinks from "../../components/RelatedLinks";
 
 const FlexWrapper = styled.div`
