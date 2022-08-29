@@ -3,46 +3,45 @@ dotenv.config();
 
 const { getBountyCollection, getChildBountyCollection } = require("../mongo");
 
-function getStateSort(state) {
-  switch (state) {
-    case "CuratorProposed": {
-      return 1;
-    }
-    case "PendingPayout": {
-      return 2;
-    }
-    case "Active": {
-      return 3;
-    }
-    case "Added":
-    case "Proposed": {
-      return 4;
-    }
-    case "Canceled":
-    case "Rejected":
-    case "Claimed": {
-      return 5;
-    }
-    default: {
-      return 6;
-    }
-  }
+function getBountyStateSort(state) {
+  return {
+    "CuratorProposed": 1,
+    "PendingPayout": 2,
+    "Active": 3,
+    "Approved": 4,
+    "Proposed": 5,
+    "Rejected": 6,
+    "Canceled": 6,
+    "Claimed": 6,
+  }[state] || 1;
 }
 
-async function updateSort(col) {
+function getChildBountyStateSort(state) {
+  return {
+    "CuratorProposed": 1,
+    "PendingPayout": 2,
+    "Active": 3,
+    "Added": 4,
+    "Canceled": 5,
+    "Claimed": 5,
+  }[state] || 1;
+}
+
+async function updateSort(col, isChildBounty = false) {
   const items = await col.find().toArray();
   for (const item of items) {
-    const stateSort = getStateSort(item.state?.state)
+    const state = item.state?.state;
+    const stateSort = isChildBounty ? getChildBountyStateSort(state) : getBountyStateSort(state);
     await col.updateOne({ _id: item._id }, { $set: { stateSort } });
   }
 }
 
 async function updateSortForChain(chain) {
   const bountyCol = await getBountyCollection(chain);
-  await updateSort(bountyCol);
+  await updateSort(bountyCol, false);
 
   const childBountyCol = await getChildBountyCollection(chain);
-  await updateSort(childBountyCol);
+  await updateSort(childBountyCol, true);
 }
 
 async function main() {
@@ -50,4 +49,4 @@ async function main() {
   await updateSortForChain("polkadot");
 }
 
-main().finally(() => process.exit());
+main().finally(() => process.exit(0));
