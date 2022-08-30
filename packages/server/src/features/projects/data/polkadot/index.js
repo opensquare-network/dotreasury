@@ -14,6 +14,7 @@ const subscan = require("../common/subscan");
 const polkassembly = require("../common/polkassembly");
 const polkaworld = require("./polkaworld");
 const dwellir = require("../common/dwellir");
+const decoded2022 = require("../common/decoded-2022");
 
 const projects = [
   polkaworld,
@@ -32,6 +33,7 @@ const projects = [
   stylo,
   tee,
   dwellir,
+  decoded2022,
 ];
 
 module.exports = [...projects].sort((p1, p2) => p2.startTime - p1.startTime);
