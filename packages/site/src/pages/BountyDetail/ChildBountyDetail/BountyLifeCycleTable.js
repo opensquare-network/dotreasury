@@ -81,7 +81,6 @@ const BountyLifeCycleTable = ({ loading }) => {
               <TableCell title="Status">
                 <FlexWrapper>
                   <CapText>{bountyDetail.state?.state}</CapText>
-                  {/* FIXME: only display in `PendingPayout` ? */}
                   {bountyDetail.state?.state === "PendingPayout" && (
                     <CountDownWrapper>
                       <BountyPendingPayoutCountDown
