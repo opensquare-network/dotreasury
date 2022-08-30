@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { overviewSelector } from "../../store/reducers/overviewSlice";
 import {
   fetchTipFinders,
   tipFindersSelector,
@@ -30,9 +29,6 @@ const Title = styled(Text)`
 `;
 
 export default function TipFinders() {
-  const overview = useSelector(overviewSelector);
-  const data = overview.bestTipFinders || [];
-
   const searchPage = parseInt(useQuery().get("page"));
   const queryPage =
     searchPage && !isNaN(searchPage) && searchPage > 0
@@ -58,7 +54,7 @@ export default function TipFinders() {
 
   return (
     <TipFindersTable
-      data={data}
+      data={tipFinders}
       loading={loading}
       header={
         <TitleContainer>
