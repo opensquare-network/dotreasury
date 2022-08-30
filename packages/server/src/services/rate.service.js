@@ -7,9 +7,9 @@ const { isValidSignature } = require("../utils");
 const { SS58Format } = require("../contants");
 
 
-const DECOO_IPFS_ENDPOINT = process.env.DECOO_IPFS_ENDPOINT;
-if (!DECOO_IPFS_ENDPOINT) {
-  console.error("DECOO_IPFS_ENDPOINT is not properly configured");
+const IPFS_ENDPOINT = process.env.IPFS_ENDPOINT;
+if (!IPFS_ENDPOINT) {
+  console.error("IPFS_ENDPOINT is not properly configured");
   process.exit();
 }
 
@@ -157,7 +157,7 @@ class RateService {
       ])
       .toArray();
 
-    const ipfsEndpoint = trimTailSlash(DECOO_IPFS_ENDPOINT);
+    const ipfsEndpoint = trimTailSlash(IPFS_ENDPOINT);
     return {
       items: rates.map((r) => ({ ...r, ipfsEndpoint })),
       page,
