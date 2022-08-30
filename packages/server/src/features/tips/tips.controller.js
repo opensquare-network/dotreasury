@@ -54,7 +54,7 @@ class TipsController {
     const total = await tipFinderCol.estimatedDocumentCount();
     const items = await tipFinderCol
       .find({})
-      .sort({ fiatValue: -1 })
+      .sort({ count: -1 })
       .skip(page * pageSize)
       .limit(pageSize)
       .toArray();
