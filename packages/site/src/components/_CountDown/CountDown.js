@@ -2,24 +2,18 @@ import { primary_yellow_100, primary_yellow_500 } from "./styles";
 import { select } from "d3-selection";
 import { arc } from "d3-shape";
 import { useEffect, useMemo, useRef } from "react";
-import {
-  CountDownWrapper,
-  PopperArrow,
-  PopperContainer,
-  PopperInfoDiffHeight,
-  PopperInfoHeight,
-  SVG,
-} from "./styled";
+import { CountDownWrapper, PopperArrow, PopperContainer, SVG } from "./styled";
 import { usePopper } from "./usePopper";
+
 export default function CountDown(props) {
   const {
-    blockHeight = 0,
-    startBlockHeight = 0,
-    endBlockHeight = 0,
+    numerator = 0,
+    denominator = 0,
     size = 12,
     foregroundColor = primary_yellow_500,
     backgroundColor = primary_yellow_100,
     showTooltip = true,
+    tooltipContent,
   } = props ?? {};
 
   const svgElement = useRef(null);
@@ -32,24 +26,15 @@ export default function CountDown(props) {
     showTooltip,
   });
 
-  const diffHeight = useMemo(() => {
-    if (blockHeight > endBlockHeight) {
-      return 0;
-    }
-
-    return endBlockHeight - blockHeight;
-  }, [endBlockHeight, blockHeight]);
-
   const percent = useMemo(() => {
-    const v =
-      (blockHeight - startBlockHeight) / (endBlockHeight - startBlockHeight);
+    const v = numerator / denominator;
 
     if (v >= 1) {
       return 100;
     }
 
     return parseInt(v * 100);
-  }, [blockHeight, endBlockHeight, startBlockHeight]);
+  }, [numerator, denominator]);
 
   useEffect(() => {
     const outerRadius = size / 2;
@@ -94,12 +79,7 @@ export default function CountDown(props) {
 
       {showTooltip && (
         <PopperContainer ref={popperElement} data-show={popperVisible}>
-          <div>
-            <PopperInfoDiffHeight>{diffHeight}</PopperInfoDiffHeight>
-            <PopperInfoHeight>
-              {blockHeight} / {endBlockHeight}
-            </PopperInfoHeight>
-          </div>
+          {tooltipContent}
           <PopperArrow ref={arrowElement} data-popper-arrow />
         </PopperContainer>
       )}

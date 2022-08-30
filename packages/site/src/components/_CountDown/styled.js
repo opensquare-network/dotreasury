@@ -1,6 +1,4 @@
 import styled from "styled-components";
-import { text_light_major, text_light_minor } from "./styles";
-import { p_12_normal, p_14_medium } from "./styles";
 
 export const CountDownWrapper = styled.div`
   display: inline-flex;
@@ -63,15 +61,4 @@ export const PopperContainer = styled.div`
   &[data-popper-placement^="right"] > ${PopperArrow} {
     left: -4px;
   }
-`;
-
-export const PopperInfoDiffHeight = styled.p`
-  ${p_14_medium};
-  color: ${text_light_major};
-  margin: 0;
-`;
-export const PopperInfoHeight = styled.p`
-  ${p_12_normal};
-  color: ${text_light_minor};
-  margin: 0;
 `;

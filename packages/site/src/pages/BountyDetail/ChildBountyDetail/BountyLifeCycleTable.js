@@ -16,6 +16,8 @@ import PolygonLabel from "../../../components/PolygonLabel";
 import ExplorerLink from "../../../components/ExplorerLink";
 import { childBountyDetailSelector } from "../../../store/reducers/bountySlice";
 import RelatedLinks from "../../../components/RelatedLinks";
+import EstimateBlockTimeCountDown from "../../../components/EstimateBlockTimeCountdown";
+import BountyPendingPayoutCountDown from "../../../components/BountyPendingPayoutCountDown";
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -27,6 +29,13 @@ const FlexWrapper = styled.div`
 
 const CapText = styled(Text)`
   text-transform: capitalize;
+`;
+
+const CountDownWrapper = styled.div`
+  display: inline-flex;
+  span {
+    color: rgba(0, 0, 0, 0.3);
+  }
 `;
 
 const BountyLifeCycleTable = ({ loading }) => {
@@ -72,7 +81,13 @@ const BountyLifeCycleTable = ({ loading }) => {
               <TableCell title="Status">
                 <FlexWrapper>
                   <CapText>{bountyDetail.state?.state}</CapText>
-                  <div />
+                  {bountyDetail.state?.state === "PendingPayout" && (
+                    <CountDownWrapper>
+                      <BountyPendingPayoutCountDown
+                        bountyDetail={bountyDetail}
+                      />
+                    </CountDownWrapper>
+                  )}
                 </FlexWrapper>
               </TableCell>
             </Table.Cell>
@@ -120,6 +135,13 @@ const BountyLifeCycleTable = ({ loading }) => {
                         <PolygonLabel value={bountyDetail.unlockAt} />
                       </ExplorerLink>
                     )}
+
+                    <CountDownWrapper>
+                      <EstimateBlockTimeCountDown
+                        startBlockHeight={bountyDetail?.indexer?.blockHeight}
+                        endBlockHeight={bountyDetail?.unlockAt}
+                      />
+                    </CountDownWrapper>
                   </FlexWrapper>
                 ) : (
                   "--"
