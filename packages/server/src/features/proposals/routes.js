@@ -7,6 +7,7 @@ const router = new Router();
 
 router.get("/proposals", proposalsController.getProposals);
 router.get("/proposals/summary", proposalsController.getProposalSummary);
+router.get("/proposals/beneficiaries", proposalsController.getProposalBeneficiaries);
 router.get("/proposals/:proposalIndex", proposalsController.getProposalDetail);
 
 router.get(

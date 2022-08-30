@@ -5,6 +5,8 @@ const {
   getBurntCollection,
   getStatusCollection,
   getOutputTransferCollection,
+  getTipFinderCollection,
+  getProposalBeneficiaryCollection,
 } = require("../mongo");
 const { bigAdd } = require("../utils");
 const { setOverview, getOverview } = require("./store");
@@ -250,13 +252,26 @@ function calcBestProposalBeneficiary(chain, proposals = []) {
       return {
         beneficiary,
         value,
-        fiatValue,
+        fiatValue: fiatValue.toNumber(),
         count,
       };
     }
   );
 
+  saveBeneficiaries(beneficiaries, chain).catch(console.error);
+
   return sortByValue(beneficiaries).slice(0, 10);
+}
+
+async function saveBeneficiaries(beneficiaries, chain) {
+  const proposalBeneficiaryCol = await getProposalBeneficiaryCollection(chain);
+  for (const item of beneficiaries) {
+    await proposalBeneficiaryCol.updateOne(
+      { beneficiary: item.beneficiary },
+      { $set: item },
+      { upsert: true }
+    );
+  }
 }
 
 function calcBestTipProposers(chain, tips = []) {
@@ -284,13 +299,26 @@ function calcBestTipProposers(chain, tips = []) {
       return {
         finder,
         value,
-        fiatValue,
+        fiatValue: fiatValue.toNumber(),
         count,
       };
     }
   );
 
+  saveFinders(finders, chain).catch(console.error);
+
   return sortByCount(finders).slice(0, 10);
+}
+
+async function saveFinders(finders, chain) {
+  const tipFinderCol = await getTipFinderCollection(chain);
+  for (const item of finders) {
+    await tipFinderCol.updateOne(
+      { finder: item.finder },
+      { $set: item },
+      { upsert: true }
+    );
+  }
 }
 
 module.exports = {
