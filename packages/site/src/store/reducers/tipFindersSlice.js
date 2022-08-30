@@ -29,8 +29,7 @@ export const fetchTipFinders =
     dispatch(setLoading(true));
 
     try {
-      // FIXME: tip finders fetch url
-      const { result } = await api.fetch(`/${chain}/tip-finders`, {
+      const { result } = await api.fetch(`/${chain}/tips/finders`, {
         page,
         pageSize,
       });
