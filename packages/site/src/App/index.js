@@ -19,6 +19,7 @@ import Bounties from "../pages/Bounties";
 import ChildBounties from "../pages/ChildBounties";
 import Burnt from "../pages/Burnt";
 import TipDetail from "../pages/TipDetail";
+import TipFinders from "../pages/TipFinders";
 import ProposalDetail from "../pages/ProposalDetail";
 import BountyDetail from "../pages/BountyDetail";
 import ChildBountyDetail from "../pages/BountyDetail/ChildBountyDetail/index";
@@ -90,6 +91,11 @@ export default function App() {
                 exact
                 path="/:symbol(ksm|dot)/transfers"
                 component={Transfers}
+              />
+              <Route
+                exact
+                path="/:symbol(ksm|dot)/tip-finders"
+                component={TipFinders}
               />
               <Route
                 exact

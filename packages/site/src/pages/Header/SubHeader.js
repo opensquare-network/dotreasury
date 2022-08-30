@@ -16,6 +16,7 @@ import OthersIncomeMenu from "./OthersIncomeMenu";
 import ProjectsMenu from "./ProjectsMenu";
 import TransfersMenu from "./TransfersMenu";
 import TansfersSlashMenu from "./TansfersSlashMenu";
+import TipFindersMenu from "./TipFindersMenu";
 import { fetchIncomeCount } from "../../store/reducers/incomeSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { showMenuTabsSelector } from "../../store/reducers/menuSlice";
@@ -348,6 +349,18 @@ const TabExampleSecondaryPointing = () => {
               active:
                 `/${symbol}/projects` === pathname ||
                 pathname.indexOf(`/${symbol}/projects`) === 0,
+            },
+          },
+        ]
+      : showMenuTabs === "TipFinders"
+      ? [
+          {
+            menuItem: {
+              id: "tipFindersTab",
+              to: `/${symbol}/tip-finders`,
+              key: "tipFinders",
+              content: <TipFindersMenu />,
+              active: true,
             },
           },
         ]
