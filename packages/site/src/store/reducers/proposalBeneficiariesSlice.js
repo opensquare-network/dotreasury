@@ -14,7 +14,7 @@ const proposalBeneficiaries = createSlice({
   },
   reducers: {
     setProposalBeneficiaries(state, { payload }) {
-      state.tipFinders = payload;
+      state.proposalBeneficiaries = payload;
     },
     setLoading(state, { payload }) {
       state.loading = payload;
