@@ -41,8 +41,7 @@ const proposals = [
   {
     token: "ksm",
     amount: 79.48,
-    proposalId: 103,
-    proposeTimePrice: 194.4,
+    proposalId: 96,
     title:
       "Implement Statemine and Westmint",
     achievements: [

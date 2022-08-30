@@ -68,10 +68,10 @@ const ChildBountiesTable = ({
       key: "parent",
       title: "Parent",
       dataIndex: "parentBountyId",
-      cellProps: "index-cell",
+      // cellProps: "index-cell", // todo: check why this cause an error
       cellClassName: "index-cell",
       cellRender: (value) => (
-        <NavLink to={`./bounties/${value}`}>
+        <NavLink to={`./bounties/${value}`} key={value}>
           <TextMinor>{`#${value}`}</TextMinor>
         </NavLink>
       ),

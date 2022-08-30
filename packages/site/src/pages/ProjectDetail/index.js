@@ -8,9 +8,10 @@ import RelatedLinks from "./RelatedLinks";
 import Detail from "./Detail";
 import Proposals from "./Proposals";
 import {
-  setProjectDetail,
   fetchProjectDetail,
+  fetchProjects,
   projectDetailSelector,
+  setProjectDetail,
 } from "../../store/reducers/projectSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import { useChainRoute } from "../../utils/hooks";
@@ -37,6 +38,10 @@ const ProjectDetail = () => {
       dispatch(setProjectDetail({}));
     };
   }, [dispatch, chain, projectId]);
+
+  useEffect(() => {
+    dispatch(fetchProjects(chain, 0, 10));
+  }, [dispatch, chain]);
 
   const projectDetail = useSelector(projectDetailSelector);
 
