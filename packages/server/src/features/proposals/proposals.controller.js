@@ -2,6 +2,7 @@ const {
   getProposalCollection,
   getMotionCollection,
   getReferendumCollection,
+  getProposalBeneficiaryCollection,
 } = require("../../mongo");
 const { extractPage } = require("../../utils");
 const linkService = require("../../services/link.service");
@@ -138,6 +139,26 @@ class ProposalsController {
       page,
       pageSize,
       total: result[0],
+    };
+  }
+
+  async getProposalBeneficiaries(ctx) {
+    const { chain } = ctx.params;
+    const { page, pageSize } = extractPage(ctx);
+    const proposalBeneficiaryCol = await getProposalBeneficiaryCollection(chain);
+    const total = await proposalBeneficiaryCol.estimatedDocumentCount();
+    const items = await proposalBeneficiaryCol
+      .find({})
+      .sort({ fiatValue: -1 })
+      .skip(page * pageSize)
+      .limit(pageSize)
+      .toArray();
+
+    ctx.body = {
+      items,
+      page,
+      pageSize,
+      total,
     };
   }
 

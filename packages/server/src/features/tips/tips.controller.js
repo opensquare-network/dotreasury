@@ -1,4 +1,4 @@
-const { getTipCollection } = require("../../mongo");
+const { getTipCollection, getTipFinderCollection } = require("../../mongo");
 const linkService = require("../../services/link.service");
 const commentService = require("../../services/comment.service");
 const { extractPage } = require("../../utils");
@@ -44,6 +44,26 @@ class TipsController {
       page,
       pageSize,
       total: result[0],
+    };
+  }
+
+  async getTipFinders(ctx) {
+    const { chain } = ctx.params;
+    const { page, pageSize } = extractPage(ctx);
+    const tipFinderCol = await getTipFinderCollection(chain);
+    const total = await tipFinderCol.estimatedDocumentCount();
+    const items = await tipFinderCol
+      .find({})
+      .sort({ fiatValue: -1 })
+      .skip(page * pageSize)
+      .limit(pageSize)
+      .toArray();
+
+    ctx.body = {
+      items,
+      page,
+      pageSize,
+      total,
     };
   }
 
