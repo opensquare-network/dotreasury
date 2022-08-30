@@ -197,9 +197,9 @@ const Proposals = ({data}) => {
                         <TextMinor className="unit">
                           {item.token?.toUpperCase()}
                         </TextMinor>
-                        {item.amount && item.proposeTimePrice && (
+                        {(
                           <TextDollar className="dollar">{`≈ $${toLocaleStringWithFixed(
-                            item.amount * item.proposeTimePrice,
+                            item.fiatValue,
                             2
                           ).replace(/\D00/, "")}`}</TextDollar>
                         )}

@@ -18,6 +18,9 @@ const ButtonContent = styled.div`
 
 export default function SubSquare({ type, index}) {
   const chain = useSelector(chainSelector);
+  if (type === 'project') {
+    return null;
+  }
 
   let link = "";
   if (type === "proposal") {
