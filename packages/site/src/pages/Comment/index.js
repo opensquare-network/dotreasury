@@ -37,6 +37,7 @@ const Wrapper = styled(Card)`
 `;
 
 const Comment = ({ type, index }) => {
+  console.log('type', type, 'index', index);
   const commentRef = useRef(null);
   const history = useHistory();
   const dispatch = useDispatch();
@@ -69,7 +70,10 @@ const Comment = ({ type, index }) => {
 
   useDeepCompareEffect(() => {
     (async () => {
-      if (isNaN(parseInt(index))) return;
+      if (type !== 'project ' && isNaN(parseInt(index))) {
+        return
+      }
+
       setLoadingList(true);
       try {
         await dispatch(
