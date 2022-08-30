@@ -143,7 +143,6 @@ const TipLifeCycleTable = ({ loading }) => {
                 ) : (
                   "--"
                 )}
-                {/* FIXME: how to display while `closeFromBlockHeight` is null */}
               </TableCell>
             </Table.Cell>
           </Table.Row>
