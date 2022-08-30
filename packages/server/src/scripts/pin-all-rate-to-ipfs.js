@@ -5,7 +5,7 @@ const { pinRates } = require("./pin/pinRate");
 
 async function main() {
   try {
-    await pinRates();
+    await pinRates(true);
     console.log(`Last pin at:`, new Date());
   } catch (e) {
     console.error(e);
