@@ -71,7 +71,7 @@ const BeneficiaryTable = () => {
         <Title>Top Proposal Beneficiaries</Title>
         <NavLink to={`/${symbol}/proposal-beneficiaries`}>
           <LinkButton>
-            Detail
+            All
             <GrayImage src="/imgs/caret-right.svg" width={24} />
           </LinkButton>
         </NavLink>
