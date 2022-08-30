@@ -36,7 +36,7 @@ class ProjectV2Controller {
 
     const fundsCol = await getProjectFundCollection();
     const funds = await fundsCol.find({ projectId }).sort({
-      'indexer.blockHeight': -1,
+      'indexer.blockTime': -1,
     }).toArray();
 
     ctx.body = {
