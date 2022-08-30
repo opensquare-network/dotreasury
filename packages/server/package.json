@@ -18,6 +18,7 @@
   "dependencies": {
     "@alicloud/pop-core": "^1.7.10",
     "@koa/cors": "^3.1.0",
+    "@osn/ipfs": "^0.0.4",
     "@polkadot/util": "10.1.4",
     "@polkadot/util-crypto": "10.1.4",
     "argon2": "^0.27.1",
@@ -36,6 +37,7 @@
     "lodash.omit": "^4.5.0",
     "markdown-it": "^12.3.2",
     "mongodb": "4.6.0",
+    "multiformats": "^9.7.1",
     "nodemailer": "^6.4.17",
     "pluralize": "^8.0.0",
     "socket.io": "^3.0.4",

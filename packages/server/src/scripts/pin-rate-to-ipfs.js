@@ -14,13 +14,13 @@ async function startPin() {
 
     try {
       const msg = JSON.stringify(rate.data);
-      const pinResult = await ipfsService.pinJsonToIpfs({
+      const added = await ipfsService.ipfsAdd({
         msg,
         address: rate.address,
         signature: rate.signature,
         version: "1",
       });
-      pinHash = pinResult.PinHash;
+      pinHash = added?.cid?.toV1().toString();
       console.log(`Pin hash: ${pinHash}`);
     } catch (e) {
       console.error(e);
