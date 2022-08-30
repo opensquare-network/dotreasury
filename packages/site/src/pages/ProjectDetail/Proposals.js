@@ -197,12 +197,10 @@ const Proposals = ({data}) => {
                         <TextMinor className="unit">
                           {item.token?.toUpperCase()}
                         </TextMinor>
-                        {item.amount && item.proposeTimePrice && (
-                          <TextDollar className="dollar">{`≈ $${toLocaleStringWithFixed(
-                            item.amount * item.proposeTimePrice,
-                            2
-                          ).replace(/\D00/, "")}`}</TextDollar>
-                        )}
+                        <TextDollar className="dollar">{`≈ $${toLocaleStringWithFixed(
+                          item.fiatValue,
+                          2
+                        ).replace(/\D00/, "")}`}</TextDollar>
                       </ExpenseWrapper>
                     </Item>
                     {(item.achievements || []).length > 0 && (
