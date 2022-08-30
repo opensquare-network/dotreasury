@@ -15,7 +15,7 @@ class ProjectV2Controller {
     const projectCol = await getProjectCollection();
     const items = await projectCol
       .find(q)
-      .sort({ latestTime: -1 })
+      .sort({ fiatValue: -1 })
       .skip(page * pageSize)
       .limit(pageSize)
       .toArray();
