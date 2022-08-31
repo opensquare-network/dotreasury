@@ -79,7 +79,7 @@ async function handleEvents(events, extrinsics, blockIndexer) {
 
     const indexer = {
       ...blockIndexer,
-      extrinsicIndex: phase.isNull ? undefined : phase.value.toNumber(),
+      extrinsicIndex: phase.isNone ? undefined : phase.value.toNumber(),
       eventIndex: sort,
     };
 

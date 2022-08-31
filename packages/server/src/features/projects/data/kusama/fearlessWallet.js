@@ -8,6 +8,10 @@ const startTime = 1590044478000;
 const proposals = [
   {
     token: "ksm",
+    proposalId: 178,
+  },
+  {
+    token: "ksm",
     amount: 563.53,
     proposalId: 102,
     proposeTimePrice: 206.98,

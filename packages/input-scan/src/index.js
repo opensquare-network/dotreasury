@@ -1,13 +1,17 @@
 require("dotenv").config();
 const { beginScan } = require("./scan");
 const {
-  chain: { subscribeChainHeight, updateSpecs },
+  chain: { subscribeChainHeight, updateSpecs, checkSpecs },
+  env: { isUseMetaDb },
 } = require("@osn/scan-common");
 const { closeDb } = require("./mongo/data");
 
 async function main() {
   await subscribeChainHeight();
-  await updateSpecs();
+  if (isUseMetaDb()) {
+    await updateSpecs();
+    checkSpecs();
+  }
 
   await beginScan();
 }

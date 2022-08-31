@@ -7,9 +7,9 @@ const { isValidSignature } = require("../utils");
 const { SS58Format } = require("../contants");
 
 
-const DECOO_IPFS_ENDPOINT = process.env.DECOO_IPFS_ENDPOINT;
-if (!DECOO_IPFS_ENDPOINT) {
-  console.error("DECOO_IPFS_ENDPOINT is not properly configured");
+const IPFS_ENDPOINT = process.env.IPFS_ENDPOINT;
+if (!IPFS_ENDPOINT) {
+  console.error("IPFS_ENDPOINT is not properly configured");
   process.exit();
 }
 
@@ -17,7 +17,7 @@ const trimTailSlash = (url) =>
   url.endsWith("/") ? url.substr(0, url.length - 1) : url;
 
 function getIndexer(chain, type, index) {
-  if (!index) {
+  if (index === undefined) {
     throw new HttpError(400, "Index is missing");
   }
 
@@ -68,7 +68,10 @@ class RateService {
     if ("treasury_proposal" === type) {
       indexer = getIndexer(chain, "proposal", index);
     } else if ("project" === type) {
-      indexer = getIndexer(chain, "project", index);
+      if (index === undefined) {
+        throw new HttpError(400, "Index is missing");
+      }
+      indexer = { type: "project", index };
     } else {
       throw new HttpError(400, "Unsupport treasury type");
     }
@@ -154,7 +157,7 @@ class RateService {
       ])
       .toArray();
 
-    const ipfsEndpoint = trimTailSlash(DECOO_IPFS_ENDPOINT);
+    const ipfsEndpoint = trimTailSlash(IPFS_ENDPOINT);
     return {
       items: rates.map((r) => ({ ...r, ipfsEndpoint })),
       page,

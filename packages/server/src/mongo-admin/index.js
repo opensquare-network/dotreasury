@@ -14,7 +14,7 @@ const descriptionCollectionName = "description";
 let client = null;
 let db = null;
 
-const mongoUrl = process.env.MONGO_URL || "mongodb://localhost:27017";
+const mongoUrl = process.env.MONGO_URL || "mongodb://127.0.0.1:27017";
 let linkCol = null;
 let userCol = null;
 let commentCol = null;
@@ -22,6 +22,10 @@ let reactionCol = null;
 let attemptCol = null;
 let rateCol = null;
 let descriptionCol = null;
+
+// Funded projects related
+let projectCol = null;
+let projectFundCol = null; // the fund items for projects, including proposals, tips, bounties, child bounties.
 
 async function initDb() {
   client = await MongoClient.connect(mongoUrl, {
@@ -36,6 +40,9 @@ async function initDb() {
   attemptCol = db.collection(attemptCollectionName);
   rateCol = db.collection(rateCollectionName);
   descriptionCol = db.collection(descriptionCollectionName);
+
+  projectCol = db.collection("project");
+  projectFundCol = db.collection("projectFund");
 
   await _createIndexes();
 }
@@ -105,6 +112,16 @@ async function getRateCollection() {
   return rateCol;
 }
 
+async function getProjectCollection() {
+  await tryInit(projectCol);
+  return projectCol;
+}
+
+async function getProjectFundCollection() {
+  await tryInit(projectFundCol);
+  return projectFundCol;
+}
+
 function withTransaction(fn, options) {
   return client.withSession((session) => {
     return session.withTransaction(fn, options);
@@ -121,4 +138,6 @@ module.exports = {
   getReactionCollection,
   getAttemptCollection,
   getRateCollection,
+  getProjectCollection,
+  getProjectFundCollection,
 };

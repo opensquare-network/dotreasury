@@ -19,6 +19,7 @@ import Bounties from "../pages/Bounties";
 import ChildBounties from "../pages/ChildBounties";
 import Burnt from "../pages/Burnt";
 import TipDetail from "../pages/TipDetail";
+import TipFinders from "../pages/TipFinders";
 import ProposalDetail from "../pages/ProposalDetail";
 import BountyDetail from "../pages/BountyDetail";
 import ChildBountyDetail from "../pages/BountyDetail/ChildBountyDetail/index";
@@ -44,6 +45,7 @@ import Privacy from "../pages/Privacy";
 import Transfers from "../pages/Transfers";
 import TransfersSlash from "../pages/TransfersSlash";
 import AdminLogin from "../pages/AdminLogin";
+import ProposalBeneficiaries from "../pages/ProposalBeneficiaries";
 
 import { usePreload } from "../utils/hooks";
 import { useSelector } from "react-redux";
@@ -93,8 +95,18 @@ export default function App() {
               />
               <Route
                 exact
+                path="/:symbol(ksm|dot)/tip-finders"
+                component={TipFinders}
+              />
+              <Route
+                exact
                 path="/:symbol(ksm|dot)/tips/:tipId"
                 component={TipDetail}
+              />
+              <Route
+                exact
+                path="/:symbol(ksm|dot)/proposal-beneficiaries"
+                component={ProposalBeneficiaries}
               />
               <Route
                 exact

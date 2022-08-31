@@ -12,6 +12,8 @@ const proposalCollectionName = "proposal";
 const bountyCollectionName = "bounty";
 const motionCollectionName = "motion";
 const referendumCollectionName = "democracyReferendum";
+const tipFinderCollectionName = "tipFinder";
+const proposalBeneficiaryCollectionName = "proposalBeneficiary";
 const burntCollectionName = "burnt";
 const outputTransferCollectionName = "outputTransfer";
 
@@ -32,7 +34,7 @@ let client = null;
 let inputDb = null;
 let outputDb = null;
 
-const mongoUrl = config.mongo.ksmUrl || "mongodb://localhost:27017";
+const mongoUrl = config.mongo.ksmUrl || "mongodb://127.0.0.1:27017";
 let statusCol = null;
 
 let tipCol = null;
@@ -41,6 +43,8 @@ let bountyCol = null;
 let childBountyCol = null;
 let motionCol = null;
 let referendumCol = null;
+let tipFinderCol = null;
+let proposalBeneficiaryCol = null;
 let burntCol = null;
 let outputTransferCol = null;
 let outputWeeklyStatsCol = null;
@@ -80,6 +84,8 @@ async function initDb() {
   childBountyCol = outputDb.collection("childBounty");
   motionCol = outputDb.collection(motionCollectionName);
   referendumCol = outputDb.collection(referendumCollectionName);
+  tipFinderCol = outputDb.collection(tipFinderCollectionName);
+  proposalBeneficiaryCol = outputDb.collection(proposalBeneficiaryCollectionName);
   burntCol = outputDb.collection(burntCollectionName);
   outputTransferCol = outputDb.collection(outputTransferCollectionName);
   outputWeeklyStatsCol = outputDb.collection(weeklyStatsCollectionName);
@@ -141,6 +147,16 @@ async function getMotionCollection() {
 async function getReferendumCollection() {
   await tryInit(referendumCol);
   return referendumCol;
+}
+
+async function getTipFinderCollection() {
+  await tryInit(tipFinderCol);
+  return tipFinderCol;
+}
+
+async function getProposalBeneficiaryCollection() {
+  await tryInit(proposalBeneficiaryCol);
+  return proposalBeneficiaryCol;
 }
 
 async function getBurntCollection() {
@@ -212,6 +228,8 @@ module.exports = {
   getChildBountyCollection,
   getMotionCollection,
   getReferendumCollection,
+  getTipFinderCollection,
+  getProposalBeneficiaryCollection,
   getBurntCollection,
   getOutputTransferCollection,
   getIncomeInflationCollection,

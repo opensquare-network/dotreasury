@@ -29,7 +29,6 @@ const chainSlice = createSlice({
         return;
       }
       state.chain = payload;
-      console.log(payload, state.chain);
 
       localStorage.setItem(chainStorageKey, payload);
     },

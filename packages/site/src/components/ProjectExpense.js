@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { toLocaleStringWithFixed } from "../utils";
+import { getPrecision, toLocaleStringWithFixed, toPrecision } from "../utils";
+import { CHAINS } from "../constants";
 
 const ExpenseWrapper = styled.div`
   display: flex;
@@ -34,14 +35,25 @@ const DollarWrapper = styled.div`
   text-align: right;
 `;
 
+function NormalizedValue({ value, symbol }) {
+  const precisionValue = toPrecision(value, getPrecision(symbol), false);
+  const localeValue = Number(precisionValue).toLocaleString();
+
+  return `${ localeValue } ${ (symbol || '').toUpperCase() }`;
+}
+
 export default function ProjectExpense({ expenseDot, expenseKsm, dollar }) {
   const numberDollar = Number(dollar);
   return (
     <div>
       <ExpenseWrapper>
-        {expenseDot > 0 && <div>{`${expenseDot.toLocaleString()} DOT`}</div>}
+        { expenseDot > 0 && <div>
+          <NormalizedValue value={ expenseDot } symbol={CHAINS.POLKADOT} />
+        </div> }
         <PlusWrapper>+</PlusWrapper>
-        {expenseKsm > 0 && <div>{`${expenseKsm.toLocaleString()} KSM`}</div>}
+        {expenseKsm > 0 && <div>
+          <NormalizedValue value={ expenseKsm } symbol={CHAINS.KUSAMA} />
+        </div>}
       </ExpenseWrapper>
       {!isNaN(numberDollar) && (
         <DollarWrapper>
