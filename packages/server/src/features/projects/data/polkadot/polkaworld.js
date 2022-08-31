@@ -1,4 +1,4 @@
-const id = "polkaworld";
+const id = "polka-world";
 const name = "PolkaWorld";
 const title = "Polkadot Chinese community";
 const description =
@@ -14,6 +14,10 @@ const relatedLinks = [
 ];
 
 const proposals = [
+  {
+    token: "dot",
+    proposalId: 160,
+  },
   {
     token: "dot",
     amount: 5489,

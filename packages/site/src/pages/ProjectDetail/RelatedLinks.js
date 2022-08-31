@@ -17,7 +17,7 @@ const Wrapper = styled(Card)`
 `;
 
 const RelatedLinks = ({ data }) => {
-  if (data && data.length > 0) {
+  if ((data || []).length > 0) {
     return (
       <Wrapper>
         <Table unstackable>

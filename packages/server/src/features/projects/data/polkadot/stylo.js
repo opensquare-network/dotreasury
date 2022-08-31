@@ -40,6 +40,16 @@ const proposals = [
       "Features include: simple message signing, derivation in a similar way than Polkadot-js extension, unlock with fingerprint instead of pin, metadata update over QR code.",
     ],
   },
+  {
+    token: "dot",
+    type: "tip",
+    tipId: `0x899aa64528fccd7c5aeafa83a1b85016f26d144315e8a087246c321748aea96f`,
+  },
+  {
+    token: "ksm",
+    type: "tip",
+    tipId: `0xcfd6e3fe4b395c981eb4fa6f601123df5c62c81c24619a5b48062a0184251f61`,
+  },
 ];
 
 module.exports = {
