@@ -26,7 +26,8 @@ const IconImage = styled(Image)`
 `;
 
 const NameContentWrapper = styled.div`
-  flex: 1 1 774px;
+  max-width: 600px;
+  flex: 1 1 600px;
 `;
 
 const NameWrapper = styled.div`
