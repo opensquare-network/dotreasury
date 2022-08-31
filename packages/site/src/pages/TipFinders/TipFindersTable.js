@@ -31,6 +31,10 @@ const TableRow = styled(Table.Row)`
   height: 50px;
 `;
 
+const TableCell = styled(Table.Cell)`
+  width: 160px;
+`;
+
 export default function TipFindersTable({ data, loading, header, footer }) {
   return (
     <CardWrapper>
@@ -56,16 +60,16 @@ export default function TipFindersTable({ data, loading, header, footer }) {
                       <Table.Cell>
                         <User address={item.finder} />
                       </Table.Cell>
-                      <Table.Cell textAlign={"right"}>
+                      <TableCell textAlign={"right"}>
                         <Text>{item.count}</Text>
-                      </Table.Cell>
-                      <Table.Cell textAlign={"right"}>
+                      </TableCell>
+                      <TableCell textAlign={"right"}>
                         <Balance
                           value={item.value}
                           usdt={item.fiatValue}
                           isUnitPrice={false}
                         />
-                      </Table.Cell>
+                      </TableCell>
                     </TableRow>
                   ))
                 ) : (

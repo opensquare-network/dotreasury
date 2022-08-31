@@ -31,6 +31,10 @@ const TableRow = styled(Table.Row)`
   height: 50px;
 `;
 
+const TableCell = styled(Table.Cell)`
+  width: 160px;
+`;
+
 export default function ProposalBeneficiariesTable({
   data,
   loading,
@@ -63,17 +67,17 @@ export default function ProposalBeneficiariesTable({
                       <Table.Cell>
                         <User address={item.beneficiary} />
                       </Table.Cell>
-                      <Table.Cell textAlign={"right"}>
+                      <TableCell textAlign={"right"}>
                         <Balance
                           value={item.value}
                           usdt={item.fiatValue}
                           reverse
                           isUnitPrice={false}
                         />
-                      </Table.Cell>
-                      <Table.Cell textAlign={"right"}>
+                      </TableCell>
+                      <TableCell textAlign={"right"}>
                         <Text>{item.count}</Text>
-                      </Table.Cell>
+                      </TableCell>
                     </TableRow>
                   ))
                 ) : (

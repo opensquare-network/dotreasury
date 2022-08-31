@@ -60,6 +60,10 @@ const TableRow = styled(Table.Row)`
   height: 50px;
 `;
 
+const TableCell = styled(Table.Cell)`
+  width: 160px;
+`;
+
 const BeneficiaryTable = () => {
   const symbol = useSelector(chainSymbolSelector)?.toLowerCase();
   const overview = useSelector(overviewSelector);
@@ -97,17 +101,17 @@ const BeneficiaryTable = () => {
                   <Table.Cell>
                     <User address={item.beneficiary} />
                   </Table.Cell>
-                  <Table.Cell textAlign={"right"}>
+                  <TableCell textAlign={"right"}>
                     <Balance
                       value={item.value}
                       usdt={item.fiatValue}
                       reverse
                       isUnitPrice={false}
                     />
-                  </Table.Cell>
-                  <Table.Cell textAlign={"right"}>
+                  </TableCell>
+                  <TableCell textAlign={"right"}>
                     <Text>{item.count}</Text>
-                  </Table.Cell>
+                  </TableCell>
                 </TableRow>
               ))
             ) : (
