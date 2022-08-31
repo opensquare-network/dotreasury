@@ -49,10 +49,10 @@ export default function ProposalBeneficiariesTable({
                 <Table.Row>
                   <Table.HeaderCell>Beneficiary</Table.HeaderCell>
                   <Table.HeaderCell textAlign={"right"}>
-                    Proposal count
+                    Total value
                   </Table.HeaderCell>
                   <Table.HeaderCell textAlign={"right"}>
-                    Total value
+                    Proposal count
                   </Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
@@ -64,15 +64,15 @@ export default function ProposalBeneficiariesTable({
                         <User address={item.beneficiary} />
                       </Table.Cell>
                       <Table.Cell textAlign={"right"}>
-                        <Text>{item.count}</Text>
-                      </Table.Cell>
-                      <Table.Cell textAlign={"right"}>
                         <Balance
                           value={item.value}
                           usdt={item.fiatValue}
                           reverse
                           isUnitPrice={false}
                         />
+                      </Table.Cell>
+                      <Table.Cell textAlign={"right"}>
+                        <Text>{item.count}</Text>
                       </Table.Cell>
                     </TableRow>
                   ))

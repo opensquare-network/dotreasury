@@ -43,10 +43,10 @@ export default function TipFindersTable({ data, loading, header, footer }) {
               <Table.Header>
                 <Table.Row>
                   <Table.HeaderCell>Finder</Table.HeaderCell>
+                  <Table.HeaderCell textAlign={"right"}>Count</Table.HeaderCell>
                   <Table.HeaderCell textAlign={"right"}>
                     Total value
                   </Table.HeaderCell>
-                  <Table.HeaderCell textAlign={"right"}>Count</Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
               <Table.Body>
@@ -57,14 +57,14 @@ export default function TipFindersTable({ data, loading, header, footer }) {
                         <User address={item.finder} />
                       </Table.Cell>
                       <Table.Cell textAlign={"right"}>
+                        <Text>{item.count}</Text>
+                      </Table.Cell>
+                      <Table.Cell textAlign={"right"}>
                         <Balance
                           value={item.value}
                           usdt={item.fiatValue}
                           isUnitPrice={false}
                         />
-                      </Table.Cell>
-                      <Table.Cell textAlign={"right"}>
-                        <Text>{item.count}</Text>
                       </Table.Cell>
                     </TableRow>
                   ))
