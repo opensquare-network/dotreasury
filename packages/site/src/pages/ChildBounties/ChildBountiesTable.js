@@ -50,10 +50,9 @@ const ChildBountiesTable = ({
   footer,
   showParent = true,
 }) => {
-  const symbol = useSelector(chainSymbolSelector);
   const history = useHistory();
 
-  const { columns, getDetailRoute } = useColumns(symbol);
+  const { columns, getDetailRoute } = useColumns({ defaultCurator: false });
 
   const onRowClick = (row) => {
     if (window.innerWidth < 1140) {

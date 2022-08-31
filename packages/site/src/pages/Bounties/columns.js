@@ -3,9 +3,11 @@ import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import { useState } from "react";
 
-export function useColumns() {
+export function useColumns(options) {
+  const { defaultCurator = true } = options ?? {};
+
   const symbol = useSelector(chainSymbolSelector);
-  const [isCurator, setIsCurator] = useState(true);
+  const [isCurator, setIsCurator] = useState(defaultCurator);
 
   const getDetailRoute = (row) => {
     const type = row.parentBountyId >= 0 ? "child-bounties" : "bounties";
