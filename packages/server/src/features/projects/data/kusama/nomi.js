@@ -1,4 +1,4 @@
-const id = "Nomi";
+const id = "nomi";
 const name = "Nomi";
 const description = "Nomi is a decision support tool for Nominators in NPoS networks.";
 const logo = "nomi-logo.svg";

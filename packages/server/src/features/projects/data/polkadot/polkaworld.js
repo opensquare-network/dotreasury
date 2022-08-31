@@ -1,4 +1,4 @@
-const id = "polkaworld";
+const id = "polka-world";
 const name = "PolkaWorld";
 const title = "Polkadot Chinese community";
 const description =

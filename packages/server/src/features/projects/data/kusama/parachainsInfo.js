@@ -1,4 +1,4 @@
-const id = "Parachain.Info";
+const id = "parachain-info";
 const name = "Parachain.Info!";
 const title = "Parachain.Info!";
 const description = "Parachains.info provides users of the Polkadot ecosystem with a centralised repository of unbiased information regarding parachain projects and auctions.";
