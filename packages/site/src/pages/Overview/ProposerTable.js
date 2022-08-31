@@ -75,7 +75,7 @@ const ProposerTable = () => {
         <Title>Top Tip Finders</Title>
         <NavLink to={`/${symbol}/tip-finders`}>
           <LinkButton>
-            All
+            View All
             <GrayImage src="/imgs/caret-right.svg" width={24} />
           </LinkButton>
         </NavLink>
