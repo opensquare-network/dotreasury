@@ -35,12 +35,22 @@ const TableCell = styled(Table.Cell)`
   width: 160px;
 `;
 
+const TableSerialNumberCell = styled(Table.Cell)`
+  width: 80px;
+`;
+
 export default function ProposalBeneficiariesTable({
   data,
   loading,
   header,
   footer,
+  page,
+  pageSize,
 }) {
+  function resolveSerialNumber(index) {
+    return (page - 1) * pageSize + index + 1;
+  }
+
   return (
     <CardWrapper>
       {header}
@@ -51,6 +61,7 @@ export default function ProposalBeneficiariesTable({
             <Table unstackable>
               <Table.Header>
                 <Table.Row>
+                  <Table.HeaderCell>#</Table.HeaderCell>
                   <Table.HeaderCell>Beneficiary</Table.HeaderCell>
                   <Table.HeaderCell textAlign={"right"}>
                     Total value
@@ -64,6 +75,9 @@ export default function ProposalBeneficiariesTable({
                 {data && data.length > 0 ? (
                   data.map((item, index) => (
                     <TableRow key={index}>
+                      <TableSerialNumberCell>
+                        {resolveSerialNumber(index)}
+                      </TableSerialNumberCell>
                       <Table.Cell>
                         <User address={item.beneficiary} />
                       </Table.Cell>

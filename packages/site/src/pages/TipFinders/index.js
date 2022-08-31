@@ -56,6 +56,8 @@ export default function TipFinders() {
     <TipFindersTable
       data={tipFinders}
       loading={loading}
+      page={tablePage}
+      pageSize={pageSize}
       header={
         <TitleContainer>
           <Title>Tip Finders</Title>

@@ -35,7 +35,22 @@ const TableCell = styled(Table.Cell)`
   width: 160px;
 `;
 
-export default function TipFindersTable({ data, loading, header, footer }) {
+const TableSerialNumberCell = styled(Table.Cell)`
+  width: 80px;
+`;
+
+export default function TipFindersTable({
+  data,
+  loading,
+  header,
+  footer,
+  page,
+  pageSize,
+}) {
+  function resolveSerialNumber(index) {
+    return (page - 1) * pageSize + index + 1;
+  }
+
   return (
     <CardWrapper>
       {header}
@@ -46,6 +61,7 @@ export default function TipFindersTable({ data, loading, header, footer }) {
             <Table unstackable>
               <Table.Header>
                 <Table.Row>
+                  <Table.HeaderCell>#</Table.HeaderCell>
                   <Table.HeaderCell>Finder</Table.HeaderCell>
                   <Table.HeaderCell textAlign={"right"}>Count</Table.HeaderCell>
                   <Table.HeaderCell textAlign={"right"}>
@@ -57,6 +73,9 @@ export default function TipFindersTable({ data, loading, header, footer }) {
                 {data && data.length > 0 ? (
                   data.map((item, index) => (
                     <TableRow key={index}>
+                      <TableSerialNumberCell>
+                        {resolveSerialNumber(index)}
+                      </TableSerialNumberCell>
                       <Table.Cell>
                         <User address={item.finder} />
                       </Table.Cell>
