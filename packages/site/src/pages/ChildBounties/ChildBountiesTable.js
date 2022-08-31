@@ -5,8 +5,6 @@ import { NavLink, useHistory } from "react-router-dom";
 import { Table } from "../../components/Table";
 import TableLoading from "../../components/TableLoading";
 import TextMinor from "../../components/TextMinor";
-import { useSelector } from "react-redux";
-import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import Card from "../../components/Card";
 import { useColumns } from "../Bounties/columns";
 
