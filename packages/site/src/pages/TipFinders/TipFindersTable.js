@@ -6,6 +6,7 @@ import User from "../../components/User";
 import Balance from "../../components/Balance";
 import Text from "../../components/Text";
 import TableLoading from "../../components/TableLoading";
+import { resolveTableSerialNumber } from "../../utils/resolveTableSerialNumber";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -47,10 +48,6 @@ export default function TipFindersTable({
   page,
   pageSize,
 }) {
-  function resolveSerialNumber(index) {
-    return (page - 1) * pageSize + index + 1;
-  }
-
   return (
     <CardWrapper>
       {header}
@@ -74,7 +71,7 @@ export default function TipFindersTable({
                   data.map((item, index) => (
                     <TableRow key={index}>
                       <TableSerialNumberCell>
-                        {resolveSerialNumber(index)}
+                        {resolveTableSerialNumber(index + 1, page, pageSize)}
                       </TableSerialNumberCell>
                       <Table.Cell>
                         <User address={item.finder} />
