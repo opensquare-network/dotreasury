@@ -1,4 +1,4 @@
-const id = "Dwellir";
+const id = "dwellir";
 const name = "Dwellir";
 const description = "Dwellir is an infrastructure provider for the decentralized web. We provide in the crypto space validator services for networks such as Ethereum, Kusama, Polkadot.";
 const logo = "dwellir-logo.svg";

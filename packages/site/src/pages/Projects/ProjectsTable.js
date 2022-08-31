@@ -91,15 +91,15 @@ const TipsTable = ({ data, loading, header, footer }) => {
                       </Table.Cell>
                       <Table.Cell textAlign={"right"}>
                         <ProjectProposals
-                          dotProposalsCount={item.dotProposalsCount}
-                          ksmProposalsCount={item.ksmProposalsCount}
+                          dotProposalsCount={item.fundsCount.polkadot}
+                          ksmProposalsCount={item.fundsCount.kusama}
                         />
                       </Table.Cell>
                       <Table.Cell className="balance-cell" textAlign={"right"}>
                         <ProjectExpense
-                          expenseDot={item.expenseDot}
-                          expenseKsm={item.expenseKsm}
-                          dollar={item.dollar}
+                          expenseDot={item.fundsValue.polkadot}
+                          expenseKsm={item.fundsValue.kusama}
+                          dollar={item.fiatValue}
                         />
                       </Table.Cell>
                       <Table.Cell className="date-cell">

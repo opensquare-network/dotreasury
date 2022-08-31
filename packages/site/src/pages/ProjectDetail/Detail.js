@@ -26,7 +26,8 @@ const IconImage = styled(Image)`
 `;
 
 const NameContentWrapper = styled.div`
-  flex: 1 1 774px;
+  max-width: 600px;
+  flex: 1 1 600px;
 `;
 
 const NameWrapper = styled.div`
@@ -80,13 +81,18 @@ const ExpenseContentWrapper = styled.div`
   }
 `;
 
-const Detail = ({ data, projectData }) => {
-  const { name, logo, description, dollar } = data;
+const Detail = ({ projectData }) => {
+  const { name, logo, description, } = projectData;
   const {
-    expenseDot,
-    expenseKsm,
-    dotProposalsCount,
-    ksmProposalsCount,
+    fundsCount: {
+      kusama: kusamaFundCount = 0,
+      polkadot: polkadotFundCount = 0,
+    } = {},
+    fundsValue: {
+      kusama: kusamaFundValue = 0,
+      polkadot: polkadotFundValue = 0,
+    } = {},
+    fiatValue = 0,
   } = projectData;
 
   return (
@@ -105,16 +111,16 @@ const Detail = ({ data, projectData }) => {
       <ProposalWrapper>
         <CustomTextMinor>Proposals</CustomTextMinor>
         <ProjectProposals
-          dotProposalsCount={dotProposalsCount}
-          ksmProposalsCount={ksmProposalsCount}
+          dotProposalsCount={polkadotFundCount}
+          ksmProposalsCount={kusamaFundCount}
         />
       </ProposalWrapper>
       <ExpenseContentWrapper>
         <CustomTextMinor>Expense</CustomTextMinor>
         <ProjectExpense
-          expenseDot={expenseDot}
-          expenseKsm={expenseKsm}
-          dollar={dollar}
+          expenseDot={polkadotFundValue}
+          expenseKsm={kusamaFundValue}
+          dollar={ fiatValue }
         />
       </ExpenseContentWrapper>
     </Wrapper>

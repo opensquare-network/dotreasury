@@ -3,11 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { Dimmer, Image } from "semantic-ui-react";
 import useDeepCompareEffect from "use-deep-compare-effect";
+import isNil from "lodash.isnil";
 
 import Card from "../../components/Card";
-import Input from "./Input";
 import CommentList from "./CommentList";
-import { unique } from "../../utils/index";
 import {
   fetchComments,
   commentsSelector,
@@ -23,6 +22,7 @@ import { useLocation } from "react-router-dom";
 import { useHistory } from "react-router";
 import NoComment from "./NoComment";
 import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../constants";
+import SubSquare from "./SubSquare";
 
 const Header = styled.div`
   padding: 20px 24px;
@@ -39,7 +39,6 @@ const Wrapper = styled(Card)`
 
 const Comment = ({ type, index }) => {
   const commentRef = useRef(null);
-  const inputRef = useRef(null);
   const history = useHistory();
   const dispatch = useDispatch();
   const { hash } = useLocation();
@@ -50,7 +49,6 @@ const Comment = ({ type, index }) => {
     dispatch(setLastNewPost(hashCommentId));
   }, [dispatch, hashCommentId]);
 
-  const [content, setContent] = useState("");
   const [loadingList, setLoadingList] = useState(false);
 
   let searchPage = useQuery().get("page");
@@ -72,7 +70,10 @@ const Comment = ({ type, index }) => {
 
   useDeepCompareEffect(() => {
     (async () => {
-      if (isNaN(parseInt(index))) return;
+      if (isNil(index)) {
+        return
+      }
+
       setLoadingList(true);
       try {
         await dispatch(
@@ -102,27 +103,6 @@ const Comment = ({ type, index }) => {
     }
   }, [searchPage, actualPage, hashCommentId]);
 
-  const setReplyToCallback = useCallback(
-    (reply) => {
-      setContent(reply);
-      inputRef.current.scrollIntoView();
-      inputRef.current.querySelector("textarea")?.focus();
-    },
-    [inputRef]
-  );
-
-  const authors = unique(
-    (comments?.items || [])
-      .map((item) => item.author?.username)
-      .filter((v) => !!v)
-  );
-
-  const replyEvent = useCallback(
-    (user) => {
-      setReplyToCallback(`[@${user}](https://dotreasury.com/user/${user}) `);
-    },
-    [setReplyToCallback]
-  );
 
   const pageChange = useCallback(
     (_, { activePage }) => {
@@ -132,6 +112,10 @@ const Comment = ({ type, index }) => {
     },
     [history]
   );
+
+  if (type === 'project' && (comments?.items?.length || []) <= 0) {
+    return null;
+  }
 
   return (
     <div>
@@ -147,8 +131,6 @@ const Comment = ({ type, index }) => {
           <div>
             <CommentList
               comments={comments}
-              onReplyButton={setReplyToCallback}
-              replyEvent={replyEvent}
             />
             <ResponsivePagination
               activePage={comments.page + 1}
@@ -157,15 +139,7 @@ const Comment = ({ type, index }) => {
             />
           </div>
         )}
-        <Input
-          type={type}
-          index={index}
-          authors={authors}
-          content={content}
-          setContent={setContent}
-          pageSize={DEFAULT_PAGE_SIZE}
-          ref={inputRef}
-        />
+        <SubSquare type={type} index={index} />
       </Wrapper>
     </div>
   );

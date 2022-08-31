@@ -1,4 +1,4 @@
-const id = "SpeckWallet";
+const id = "speck-wallet";
 const name = "SpeckWallet";
 const description = "A new user-friendly wallet extension for the Polkadot ecosystem.";
 const logo = "speckWallet-logo.svg";

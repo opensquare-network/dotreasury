@@ -9,7 +9,7 @@ const Wrapper = styled.div`
     border-top-right-radius: 8px;
   }
 `;
-const CommentList = memo(({ comments, onReplyButton, replyEvent }) => {
+const CommentList = memo(({ comments }) => {
   if (comments?.items.length > 0) {
     const startFrom = comments.page * comments.pageSize;
     return (
@@ -19,8 +19,6 @@ const CommentList = memo(({ comments, onReplyButton, replyEvent }) => {
             comment={item}
             index={startFrom + index}
             key={index}
-            onReplyButton={onReplyButton}
-            replyEvent={replyEvent}
           />
         ))}
       </Wrapper>

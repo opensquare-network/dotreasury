@@ -245,7 +245,6 @@ function Login({ location }) {
 
   const doWeb3Login = async () => {
     const address = selectedAccount[`${chain}Address`];
-    console.log(address);
     const { result, error } = await api.fetch(
       `/auth/login/${chain}/${address}`
     );

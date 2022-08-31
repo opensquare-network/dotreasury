@@ -1,4 +1,4 @@
-const id = "Parachain.Info";
+const id = "parachain-info";
 const name = "Parachain.Info!";
 const title = "Parachain.Info!";
 const description = "Parachains.info provides users of the Polkadot ecosystem with a centralised repository of unbiased information regarding parachain projects and auctions.";
@@ -12,6 +12,11 @@ const relatedLinks = [
 ];
 
 const proposals = [
+  {
+    type: "tip",
+    token: "ksm",
+    tipId: `0xb4828177a51a4062826fd252fd4ea20c08aae3ab9167e1e72eea668b785220a0`,
+  },
   {
     token: "ksm",
     amount: 36.31,

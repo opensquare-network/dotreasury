@@ -9,6 +9,11 @@ import Text from "../../components/Text";
 import Card from "../../components/Card";
 import TableNoDataCell from "../../components/TableNoDataCell";
 import { overviewSelector } from "../../store/reducers/overviewSlice";
+import { NavLink } from "react-router-dom";
+import TextMinor from "../../components/TextMinor";
+import GrayImage from "../../components/GrayImage";
+import { TEXT_DARK_MAJOR } from "../../constants";
+import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -30,20 +35,52 @@ const Title = styled(Text)`
   font-size: 16px;
   line-height: 24px;
   font-weight: 700;
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 20px 24px;
+`;
+
+const LinkButton = styled(TextMinor)`
+  display: flex;
+  :hover {
+    color: ${TEXT_DARK_MAJOR};
+    & > :last-child {
+      -webkit-filter: grayscale(0);
+      filter: grayscale(0);
+      opacity: 1;
+    }
+  }
 `;
 
 const TableRow = styled(Table.Row)`
   height: 50px;
 `;
 
+const TableCell = styled(Table.Cell)`
+  width: 160px;
+`;
+
 const BeneficiaryTable = () => {
+  const symbol = useSelector(chainSymbolSelector)?.toLowerCase();
   const overview = useSelector(overviewSelector);
   const data = overview.bestProposalBeneficiaries || [];
 
   return (
     <CardWrapper>
-      <Title>Top Proposal Beneficiaries</Title>
+      <TitleContainer>
+        <Title>Top Proposal Beneficiaries</Title>
+        <NavLink to={`/${symbol}/proposal-beneficiaries`}>
+          <LinkButton>
+            View All
+            <GrayImage src="/imgs/caret-right.svg" width={24} />
+          </LinkButton>
+        </NavLink>
+      </TitleContainer>
+
       <TableWrapper>
         <Table unstackable>
           <Table.Header>
@@ -64,17 +101,17 @@ const BeneficiaryTable = () => {
                   <Table.Cell>
                     <User address={item.beneficiary} />
                   </Table.Cell>
-                  <Table.Cell textAlign={"right"}>
+                  <TableCell textAlign={"right"}>
                     <Balance
                       value={item.value}
                       usdt={item.fiatValue}
                       reverse
                       isUnitPrice={false}
                     />
-                  </Table.Cell>
-                  <Table.Cell textAlign={"right"}>
+                  </TableCell>
+                  <TableCell textAlign={"right"}>
                     <Text>{item.count}</Text>
-                  </Table.Cell>
+                  </TableCell>
                 </TableRow>
               ))
             ) : (

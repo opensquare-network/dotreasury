@@ -1,4 +1,4 @@
-const id = "PolkaShots";
+const id = "polkashots";
 const name = "PolkaShots.io";
 const description = "A repository of Polkadot node database snapshots - regularly updated and fast to download from anywhere in the world.";
 const logo = "polkashots-logo.svg";

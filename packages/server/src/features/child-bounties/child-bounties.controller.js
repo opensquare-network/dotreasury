@@ -20,6 +20,7 @@ async function queryChildBounties(ctx, chain, q = {}) {
       }
     })
     .sort({
+      stateSort: 1,
       index: -1,
       "indexer.blockHeight": -1,
     })

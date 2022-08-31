@@ -9,6 +9,11 @@ import Text from "../../components/Text";
 import Card from "../../components/Card";
 import TableNoDataCell from "../../components/TableNoDataCell";
 import { overviewSelector } from "../../store/reducers/overviewSlice";
+import { NavLink } from "react-router-dom";
+import TextMinor from "../../components/TextMinor";
+import GrayImage from "../../components/GrayImage";
+import { TEXT_DARK_MAJOR } from "../../constants";
+import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -34,27 +39,60 @@ const Title = styled(Text)`
   font-size: 16px;
   line-height: 24px;
   font-weight: 700;
-  padding: 20px 24px;
 `;
 
 const TableRow = styled(Table.Row)`
   height: 50px;
 `;
 
+const TableCell = styled(Table.Cell)`
+  width: 160px;
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+`;
+
+const LinkButton = styled(TextMinor)`
+  display: flex;
+  :hover {
+    color: ${TEXT_DARK_MAJOR};
+    & > :last-child {
+      -webkit-filter: grayscale(0);
+      filter: grayscale(0);
+      opacity: 1;
+    }
+  }
+`;
+
 const ProposerTable = () => {
+  const symbol = useSelector(chainSymbolSelector)?.toLowerCase();
   const overview = useSelector(overviewSelector);
   const data = overview.bestTipFinders || [];
 
   return (
     <CardWrapper>
-      <Title>Top Tip Finders</Title>
+      <TitleContainer>
+        <Title>Top Tip Finders</Title>
+        <NavLink to={`/${symbol}/tip-finders`}>
+          <LinkButton>
+            View All
+            <GrayImage src="/imgs/caret-right.svg" width={24} />
+          </LinkButton>
+        </NavLink>
+      </TitleContainer>
       <Wrapper>
         <TableWrapper>
           <Table unstackable>
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell>Finder</Table.HeaderCell>
-                <Table.HeaderCell textAlign={"right"}>Count</Table.HeaderCell>
+                <Table.HeaderCell textAlign={"right"}>
+                  Tip Count
+                </Table.HeaderCell>
                 <Table.HeaderCell textAlign={"right"}>
                   Total value
                 </Table.HeaderCell>
@@ -67,16 +105,16 @@ const ProposerTable = () => {
                     <Table.Cell>
                       <User address={item.finder} />
                     </Table.Cell>
-                    <Table.Cell textAlign={"right"}>
+                    <TableCell textAlign={"right"}>
                       <Text>{item.count}</Text>
-                    </Table.Cell>
-                    <Table.Cell textAlign={"right"}>
+                    </TableCell>
+                    <TableCell textAlign={"right"}>
                       <Balance
                         value={item.value}
                         usdt={item.fiatValue}
                         isUnitPrice={false}
                       />
-                    </Table.Cell>
+                    </TableCell>
                   </TableRow>
                 ))
               ) : (

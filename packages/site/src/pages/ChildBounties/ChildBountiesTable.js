@@ -5,8 +5,6 @@ import { NavLink, useHistory } from "react-router-dom";
 import { Table } from "../../components/Table";
 import TableLoading from "../../components/TableLoading";
 import TextMinor from "../../components/TextMinor";
-import { useSelector } from "react-redux";
-import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import Card from "../../components/Card";
 import { useColumns } from "../Bounties/columns";
 
@@ -50,10 +48,9 @@ const ChildBountiesTable = ({
   footer,
   showParent = true,
 }) => {
-  const symbol = useSelector(chainSymbolSelector);
   const history = useHistory();
 
-  const { columns, getDetailRoute } = useColumns(symbol);
+  const { columns, getDetailRoute } = useColumns({ defaultCurator: false });
 
   const onRowClick = (row) => {
     if (window.innerWidth < 1140) {
@@ -68,10 +65,10 @@ const ChildBountiesTable = ({
       key: "parent",
       title: "Parent",
       dataIndex: "parentBountyId",
-      cellProps: "index-cell",
+      // cellProps: "index-cell", // todo: check why this cause an error
       cellClassName: "index-cell",
       cellRender: (value) => (
-        <NavLink to={`./bounties/${value}`}>
+        <NavLink to={`./bounties/${value}`} key={value}>
           <TextMinor>{`#${value}`}</TextMinor>
         </NavLink>
       ),

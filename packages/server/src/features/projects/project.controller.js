@@ -90,7 +90,6 @@ class ProjectController {
 
   // Comments API
   async getProjectComments(ctx) {
-    const { chain } = ctx.params;
     const { page, pageSize } = extractPage(ctx);
     const projectId = ctx.params.projectId;
 
@@ -100,7 +99,6 @@ class ProjectController {
 
     ctx.body = await commentService.getComments(
       {
-        chain,
         type: "project",
         index: projectId,
       },
@@ -111,7 +109,6 @@ class ProjectController {
   }
 
   async postProjectComment(ctx) {
-    const { chain } = ctx.params;
     const projectId = ctx.params.projectId;
     const { content } = ctx.request.body;
     const user = ctx.request.user;
@@ -125,7 +122,6 @@ class ProjectController {
 
     ctx.body = await commentService.postComment(
       {
-        chain,
         type: "project",
         index: projectId,
       },
@@ -135,7 +131,7 @@ class ProjectController {
   }
 
   async getRates(ctx) {
-    const { chain, projectId } = ctx.params;
+    const { projectId } = ctx.params;
 
     const { page, pageSize } = extractPage(ctx);
     if (pageSize === 0 || page < 0) {
@@ -145,7 +141,6 @@ class ProjectController {
 
     ctx.body = await rateService.getRates(
       {
-        chain,
         type: "project",
         index: projectId,
       },
@@ -155,10 +150,9 @@ class ProjectController {
   }
 
   async getRateStats(ctx) {
-    const { chain, projectId } = ctx.params;
+    const { projectId } = ctx.params;
 
     ctx.body = await rateService.getRateStats({
-      chain,
       type: "project",
       index: projectId,
     });

@@ -1,4 +1,4 @@
-const id = "Nova Wallet";
+const id = "nova-wallet";
 const name = "Nova Wallet";
 const description = "iOS/Android mobile app for Polkadot & Kusama ecosystem, supporting multi-asset (more than 15 networks), DOT/KSM staking, DOT/KSM crowdloans & convenient, secure account management.";
 const logo = "nova-logo.svg";
@@ -16,6 +16,10 @@ const relatedLinks = [
 ];
 
 const proposals = [
+  {
+    token: "dot",
+    proposalId: 150,
+  },
   {
     token: "ksm",
     amount: 4454,

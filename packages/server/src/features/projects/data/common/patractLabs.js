@@ -1,4 +1,4 @@
-const id = "Patract Labs";
+const id = "patract-labs";
 const name = "Patract Labs";
 const description = "Patract is developing development tools and services for Polkadot’s Wasm contract technology.";
 const logo = "patract-logo.svg";

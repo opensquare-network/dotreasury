@@ -40,6 +40,14 @@ function getReferendumCollection(chain) {
   return db(chain).getReferendumCollection();
 }
 
+function getTipFinderCollection(chain) {
+  return db(chain).getTipFinderCollection();
+}
+
+function getProposalBeneficiaryCollection(chain) {
+  return db(chain).getProposalBeneficiaryCollection();
+}
+
 function getBurntCollection(chain) {
   return db(chain).getBurntCollection();
 }
@@ -97,6 +105,8 @@ module.exports = {
   getChildBountyCollection,
   getMotionCollection,
   getReferendumCollection,
+  getTipFinderCollection,
+  getProposalBeneficiaryCollection,
   getBurntCollection,
   getOutputTransferCollection,
   getIncomeInflationCollection,

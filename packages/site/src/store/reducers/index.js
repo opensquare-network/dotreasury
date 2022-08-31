@@ -18,6 +18,8 @@ import toastReducer from "./toastSlice";
 import transferReducer from "./transferSlice";
 import rateReducer from "./rateSlice";
 import descriptionReducer from "./descriptionSlice";
+import tipFindersReducer from "./tipFindersSlice";
+import proposalBeneficiariesReducer from "./proposalBeneficiariesSlice";
 
 export default combineReducers({
   test: testReducer,
@@ -39,4 +41,6 @@ export default combineReducers({
   transfers: transferReducer,
   rate: rateReducer,
   description: descriptionReducer,
+  tipFinders: tipFindersReducer,
+  proposalBeneficiaries: proposalBeneficiariesReducer,
 });
