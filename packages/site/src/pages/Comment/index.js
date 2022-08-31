@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { Dimmer, Image } from "semantic-ui-react";
 import useDeepCompareEffect from "use-deep-compare-effect";
+import isNil from "lodash.isnil";
 
 import Card from "../../components/Card";
 import CommentList from "./CommentList";
@@ -69,7 +70,7 @@ const Comment = ({ type, index }) => {
 
   useDeepCompareEffect(() => {
     (async () => {
-      if (type !== 'project' && isNaN(parseInt(index))) {
+      if (isNil(index)) {
         return
       }
 
