@@ -113,7 +113,7 @@ const Comment = ({ type, index }) => {
     [history]
   );
 
-  if (type === 'project' && comments.items.length <= 0) {
+  if (type === 'project' && (comments?.items?.length || []) <= 0) {
     return null;
   }
 
