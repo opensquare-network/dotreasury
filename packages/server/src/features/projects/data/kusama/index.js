@@ -21,6 +21,7 @@ const parachainsInfo = require("./parachainsInfo");
 const patractLabs = require("../common/patractLabs");
 const polkashotsIo = require("../common/polkashotsIo");
 const decoded2022 = require("../common/decoded-2022");
+const brightTreasury = require("../common/brightTreasury");
 
 const projects = [
   polkassembly,
@@ -46,6 +47,7 @@ const projects = [
   patractLabs,
   polkashotsIo,
   decoded2022,
+  brightTreasury,
 ];
 
 module.exports = [...projects].sort((p1, p2) => p2.startTime - p1.startTime);
