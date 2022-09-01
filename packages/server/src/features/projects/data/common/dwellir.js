@@ -13,6 +13,11 @@ const relatedLinks = [
 
 const proposals = [
   {
+    type: "child-bounty",
+    token: "ksm",
+    id: 7,
+  },
+  {
     token: "dot",
     amount: 974.24,
     proposalId: 107,

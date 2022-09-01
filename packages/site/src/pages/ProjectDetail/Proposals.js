@@ -152,6 +152,48 @@ const TextDollar = styled(Text)`
   color: rgba(29, 37, 60, 0.24);
 `;
 
+const types = Object.freeze({
+  proposal: "proposal",
+  tip: "tip",
+  childBounty: "child-bounty",
+})
+
+function getFundLink(item = {}) {
+  if (item.type === types.tip) {
+    return `tips/${item.tipId}`;
+  } else if (item.type === types.childBounty) {
+    return `child-bounties/${item.id}`;
+  } else if (item.type === types.proposal) {
+    return `proposals/${item.proposalId}`;
+  }
+
+  throw new Error(`Unknown project fund type ${ item?.type }`);
+}
+
+function getFundId(item = {}) {
+  if (item.type === types.tip) {
+    return item.tipId;
+  } else if (item.type === types.childBounty) {
+    return item.id;
+  } else if (item.type === types.proposal) {
+    return item.proposalId;
+  }
+
+  throw new Error(`Unknown project fund type ${ item?.type }`);
+}
+
+function getFundTypeName(type) {
+  if (type === types.tip) {
+    return 'Tip';
+  } else if (type === types.childBounty) {
+    return 'Child Bounty';
+  } else if (type === types.proposal) {
+    return "Proposal";
+  }
+
+  throw new Error(`Unknown project fund type ${ type }`);
+}
+
 const Proposals = ({data}) => {
   const symbol = useSelector(chainSymbolSelector);
 
@@ -161,8 +203,8 @@ const Proposals = ({data}) => {
         <Header>Proposals</Header>
         <div>
           {(data || []).map((item, index) => {
-              const link = (item.type === "tip") ? `tips/${item.tipId}` : `proposals/${item.proposalId}`;
-              const id = (item.type === "tip") ? item.tipId : item.proposalId;
+              const link = getFundLink(item);
+              const id = getFundId(item);
               return <ContentWrapper key={index}>
                 <VerticalWrapper>
                   <CircleWrapper>
@@ -182,7 +224,7 @@ const Proposals = ({data}) => {
                         }
                       />
                       <NavLink to={`/${item.token}/${link}`}>
-                        <NumberTextAbbr>{`#${id}`}</NumberTextAbbr>
+                        <NumberTextAbbr>{ `${ getFundTypeName(item.type) } #${ id }` }</NumberTextAbbr>
                       </NavLink>
                       <BoldText>{item.title ?? item.reason}</BoldText>
                     </TextWrapper>

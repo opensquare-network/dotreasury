@@ -7,7 +7,7 @@ dotenv.config();
 
 const kusamaProjects = require("../../features/projects/data/kusama");
 const polkadotProjects = require("../../features/projects/data/polkadot");
-const { getProposalCollection, getTipCollection } = require("../../mongo/index");
+const { getProposalCollection, getTipCollection, getChildBountyCollection } = require("../../mongo/index");
 const { getProjectFundCollection, getProjectCollection } = require("../../mongo-admin");
 const BigNumber = require("bignumber.js");
 const omit = require("lodash.omit");
@@ -16,7 +16,7 @@ const types = Object.freeze({
   proposal: "proposal",
   tip: "tip",
   bounty: "bounty",
-  childBounty: "childBounty",
+  childBounty: "child-bounty",
 })
 
 function getChainName(token) {
@@ -96,9 +96,36 @@ async function saveOneTip(tip = {}, projectId) {
   await fundCol.findOneAndUpdate({ type: types.tip, token, id: tipId }, { $set: obj }, { upsert: true });
 }
 
+async function saveOneChildBounty(childBounty = {}, projectId) {
+  const { id, token } = childBounty;
+  const chain = getChainName(token);
+  const childBountyCol = await getChildBountyCollection(chain);
+  const childBountyInDb = await childBountyCol.findOne({ index: id });
+  if (!childBountyInDb) {
+    throw new Error(`Can not find child bounty #${ id } from ${ chain }`);
+  }
+
+  const { symbolPrice = 0, value, indexer } = childBountyInDb;
+  const fiatValue = calcFiatValue(value, getDecimals(chain), symbolPrice);
+  const obj = {
+    projectId,
+    ...childBounty,
+    indexer,
+    value,
+    symbolPrice,
+    fiatValue,
+    title: childBountyInDb.description,
+  }
+
+  const fundCol = await getProjectFundCollection();
+  await fundCol.findOneAndUpdate({ type: types.childBounty, token, id }, { $set: obj }, { upsert: true });
+}
+
 async function saveOneFund(fund = {}, projectId) {
-  if (fund.type === 'tip') {
+  if (fund.type === types.tip) {
     await saveOneTip(fund, projectId);
+  } else if (fund.type === types.childBounty) {
+    await saveOneChildBounty(fund, projectId);
   } else {
     await saveOneProposal(fund, projectId);
   }
@@ -158,7 +185,17 @@ async function saveOneProject(project) {
   await projectCol.findOneAndUpdate({ id: project.id }, { $set: obj }, { upsert: true });
 }
 
+async function clearData() {
+  const projectCol = await getProjectCollection();
+  await projectCol.deleteMany({});
+
+  const fundCol = await getProjectFundCollection();
+  await fundCol.deleteMany({});
+}
+
 ;(async () => {
+  await clearData();
+
   const projectSet = new Set();
   for (const project of [
     ...kusamaProjects,
