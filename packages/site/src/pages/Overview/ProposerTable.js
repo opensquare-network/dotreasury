@@ -45,6 +45,10 @@ const TableRow = styled(Table.Row)`
   height: 50px;
 `;
 
+const TableCell = styled(Table.Cell)`
+  width: 160px;
+`;
+
 const TitleContainer = styled.div`
   display: flex;
   align-items: center;
@@ -75,7 +79,7 @@ const ProposerTable = () => {
         <Title>Top Tip Finders</Title>
         <NavLink to={`/${symbol}/tip-finders`}>
           <LinkButton>
-            All
+            View All
             <GrayImage src="/imgs/caret-right.svg" width={24} />
           </LinkButton>
         </NavLink>
@@ -86,7 +90,9 @@ const ProposerTable = () => {
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell>Finder</Table.HeaderCell>
-                <Table.HeaderCell textAlign={"right"}>Count</Table.HeaderCell>
+                <Table.HeaderCell textAlign={"right"}>
+                  Tip Count
+                </Table.HeaderCell>
                 <Table.HeaderCell textAlign={"right"}>
                   Total value
                 </Table.HeaderCell>
@@ -99,16 +105,16 @@ const ProposerTable = () => {
                     <Table.Cell>
                       <User address={item.finder} />
                     </Table.Cell>
-                    <Table.Cell textAlign={"right"}>
+                    <TableCell textAlign={"right"}>
                       <Text>{item.count}</Text>
-                    </Table.Cell>
-                    <Table.Cell textAlign={"right"}>
+                    </TableCell>
+                    <TableCell textAlign={"right"}>
                       <Balance
                         value={item.value}
                         usdt={item.fiatValue}
                         isUnitPrice={false}
                       />
-                    </Table.Cell>
+                    </TableCell>
                   </TableRow>
                 ))
               ) : (

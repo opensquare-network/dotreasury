@@ -58,6 +58,8 @@ export default function ProposalBeneficiaries() {
     <ProposalBeneficiariesTable
       data={proposalBeneficiaries}
       loading={loading}
+      page={tablePage}
+      pageSize={pageSize}
       header={
         <TitleContainer>
           <Title>Proposal Beneficiaries</Title>

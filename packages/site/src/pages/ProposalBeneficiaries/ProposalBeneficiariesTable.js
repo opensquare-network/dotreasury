@@ -6,6 +6,7 @@ import User from "../../components/User";
 import Balance from "../../components/Balance";
 import Text from "../../components/Text";
 import TableLoading from "../../components/TableLoading";
+import { resolveTableSerialNumber } from "../../utils/resolveTableSerialNumber";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -31,11 +32,21 @@ const TableRow = styled(Table.Row)`
   height: 50px;
 `;
 
+const TableCell = styled(Table.Cell)`
+  width: 160px;
+`;
+
+const TableSerialNumberCell = styled(Table.Cell)`
+  width: 80px;
+`;
+
 export default function ProposalBeneficiariesTable({
   data,
   loading,
   header,
   footer,
+  page,
+  pageSize,
 }) {
   return (
     <CardWrapper>
@@ -47,12 +58,13 @@ export default function ProposalBeneficiariesTable({
             <Table unstackable>
               <Table.Header>
                 <Table.Row>
+                  <Table.HeaderCell>#</Table.HeaderCell>
                   <Table.HeaderCell>Beneficiary</Table.HeaderCell>
                   <Table.HeaderCell textAlign={"right"}>
-                    Proposal count
+                    Total value
                   </Table.HeaderCell>
                   <Table.HeaderCell textAlign={"right"}>
-                    Total value
+                    Proposal count
                   </Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
@@ -60,20 +72,23 @@ export default function ProposalBeneficiariesTable({
                 {data && data.length > 0 ? (
                   data.map((item, index) => (
                     <TableRow key={index}>
+                      <TableSerialNumberCell>
+                        {resolveTableSerialNumber(index + 1, page, pageSize)}
+                      </TableSerialNumberCell>
                       <Table.Cell>
                         <User address={item.beneficiary} />
                       </Table.Cell>
-                      <Table.Cell textAlign={"right"}>
-                        <Text>{item.count}</Text>
-                      </Table.Cell>
-                      <Table.Cell textAlign={"right"}>
+                      <TableCell textAlign={"right"}>
                         <Balance
                           value={item.value}
                           usdt={item.fiatValue}
                           reverse
                           isUnitPrice={false}
                         />
-                      </Table.Cell>
+                      </TableCell>
+                      <TableCell textAlign={"right"}>
+                        <Text>{item.count}</Text>
+                      </TableCell>
                     </TableRow>
                   ))
                 ) : (

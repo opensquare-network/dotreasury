@@ -6,6 +6,7 @@ import User from "../../components/User";
 import Balance from "../../components/Balance";
 import Text from "../../components/Text";
 import TableLoading from "../../components/TableLoading";
+import { resolveTableSerialNumber } from "../../utils/resolveTableSerialNumber";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -31,7 +32,22 @@ const TableRow = styled(Table.Row)`
   height: 50px;
 `;
 
-export default function TipFindersTable({ data, loading, header, footer }) {
+const TableCell = styled(Table.Cell)`
+  width: 160px;
+`;
+
+const TableSerialNumberCell = styled(Table.Cell)`
+  width: 80px;
+`;
+
+export default function TipFindersTable({
+  data,
+  loading,
+  header,
+  footer,
+  page,
+  pageSize,
+}) {
   return (
     <CardWrapper>
       {header}
@@ -42,30 +58,34 @@ export default function TipFindersTable({ data, loading, header, footer }) {
             <Table unstackable>
               <Table.Header>
                 <Table.Row>
+                  <Table.HeaderCell>#</Table.HeaderCell>
                   <Table.HeaderCell>Finder</Table.HeaderCell>
+                  <Table.HeaderCell textAlign={"right"}>Count</Table.HeaderCell>
                   <Table.HeaderCell textAlign={"right"}>
                     Total value
                   </Table.HeaderCell>
-                  <Table.HeaderCell textAlign={"right"}>Count</Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
               <Table.Body>
                 {data && data.length > 0 ? (
                   data.map((item, index) => (
                     <TableRow key={index}>
+                      <TableSerialNumberCell>
+                        {resolveTableSerialNumber(index + 1, page, pageSize)}
+                      </TableSerialNumberCell>
                       <Table.Cell>
                         <User address={item.finder} />
                       </Table.Cell>
-                      <Table.Cell textAlign={"right"}>
+                      <TableCell textAlign={"right"}>
+                        <Text>{item.count}</Text>
+                      </TableCell>
+                      <TableCell textAlign={"right"}>
                         <Balance
                           value={item.value}
                           usdt={item.fiatValue}
                           isUnitPrice={false}
                         />
-                      </Table.Cell>
-                      <Table.Cell textAlign={"right"}>
-                        <Text>{item.count}</Text>
-                      </Table.Cell>
+                      </TableCell>
                     </TableRow>
                   ))
                 ) : (

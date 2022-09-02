@@ -5,7 +5,10 @@ import { useHistory } from "react-router";
 import { Table } from "../../components/Table";
 import TableLoading from "../../components/TableLoading.js";
 import { useSelector } from "react-redux";
-import { chainSelector, chainSymbolSelector } from "../../store/reducers/chainSlice";
+import {
+  chainSelector,
+  chainSymbolSelector,
+} from "../../store/reducers/chainSlice";
 import Card from "../../components/Card";
 import { useTableColumns } from "../../components/shared/useTableColumns";
 
@@ -38,7 +41,7 @@ const TipsTable = ({ data, loading, header, footer }) => {
     const links = [];
     if (["kusama", "polkadot"].includes(chain)) {
       links.unshift({
-        link: `https://polkadot.polkassembly.io/tip/${item.hash}`,
+        link: `https://${chain}.polkassembly.io/tip/${item.hash}`,
         description: "Treasury tip page",
       });
       links.unshift({
@@ -68,7 +71,7 @@ const TipsTable = ({ data, loading, header, footer }) => {
     tipsStatus,
     detailRoute,
     relatedLinks,
-  } = useTableColumns({ getRelatedLinks, getDetailRoute, compact:true });
+  } = useTableColumns({ getRelatedLinks, getDetailRoute, compact: true });
   const columns = [
     tipsBeneficiary,
     finder,
