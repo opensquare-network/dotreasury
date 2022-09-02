@@ -32,10 +32,12 @@ export default function ConnectWallet() {
           <ConnectButton onClick={() => setModalVisible(true)}>Connect Wallet</ConnectButton>
         )
       }
-      <ConnectWalletModal
-        visible={modalVisible}
-        setVisible={setModalVisible}
-      />
+      {modalVisible && (
+        <ConnectWalletModal
+          visible={modalVisible}
+          setVisible={setModalVisible}
+        />
+      )}
     </Wrapper>
   );
 }

@@ -31,4 +31,9 @@ export const accountSelector = state => state.account.account;
 export const isLoginSelector = createSelector(accountSelector, account => !!account);
 export const nowAddressSelector = state => state.account.account?.address;
 
+export const logout = () => (dispatch) => {
+  dispatch(setAccount(null));
+  localStorage.removeItem("account");
+};
+
 export default accountSlice.reducer;

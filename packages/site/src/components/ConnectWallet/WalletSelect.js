@@ -5,6 +5,7 @@ import { useIsMounted } from "../../utils/hooks";
 import { substrateWeb3Accounts } from "../../utils/extension";
 import Wallets from "./Wallets";
 import { ReactComponent as CaretSVG } from "./caret-right.svg";
+import { ReactComponent as Loading } from "./loading.svg";
 
 const WalletOptions = styled.ul`
   all: unset;
@@ -116,12 +117,15 @@ const Wallet = ({ wallet, onClick, selected = false, loading = false }) => {
         <Logo className={wallet.title} alt={wallet.title} />
         <span className="wallet-title">{wallet.title}</span>
       </WalletTitle>
-      {installed ? (
-        <CaretSVG className="caret-right" />
+      {!loading && installed !== null ? (
+        installed ? (
+          <CaretSVG className="caret-right" />
+        ) : (
+          <span className="wallet-not-installed">Not installed</span>
+        )
       ) : (
-        <span className="wallet-not-installed">Not installed</span>
+        <Loading />
       )}
-      {/* {(loading || installed === null) && <Loading />} */}
     </WalletOption>
   );
 };

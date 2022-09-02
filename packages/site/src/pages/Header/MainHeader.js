@@ -10,7 +10,6 @@ import { useMenuTab } from "../../utils/hooks";
 import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import ConnectWallet from "../../components/ConnectWallet";
-import UserLogin from "./UserLogin";
 
 const Wrapper = styled.header`
   height: 76px;

@@ -100,7 +100,6 @@ export default function ConnectWalletModal({
             />
             <ConnectButton onClick={onConnect}>Connect</ConnectButton>
           </Connect>
-
         ) : (
           <WalletSelect
             setAccounts={setAccounts}
