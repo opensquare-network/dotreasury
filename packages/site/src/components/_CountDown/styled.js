@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+const popperTriangleWidth = 6;
+
 export const CountDownWrapper = styled.div`
   display: inline-flex;
 `;
@@ -21,24 +23,22 @@ export const PopperArrow = styled.div`
   &,
   &::before {
     position: absolute;
-    width: 8px;
-    height: 8px;
-    background: inherit;
+    border: ${popperTriangleWidth}px solid transparent;
+    left: -${popperTriangleWidth}px;
+    border-top-color: rgba(0, 0, 0, 0.72);
   }
 
   &::before {
     visibility: visible;
     content: "";
-    transform: rotate(45deg);
   }
 `;
 
 export const PopperContainer = styled.div`
-  background: #333;
+  background-color: rgba(0, 0, 0, 0.72);
   color: white;
   font-weight: bold;
-  padding: 4px 8px;
-  font-size: 13px;
+  padding: 8px;
   border-radius: 4px;
   display: none;
 
@@ -47,18 +47,13 @@ export const PopperContainer = styled.div`
   }
 
   &[data-popper-placement^="top"] > ${PopperArrow} {
-    bottom: -4px;
+    bottom: -${popperTriangleWidth}px;
   }
 
   &[data-popper-placement^="bottom"] > ${PopperArrow} {
-    top: -4px;
-  }
-
-  &[data-popper-placement^="left"] > ${PopperArrow} {
-    right: -4px;
-  }
-
-  &[data-popper-placement^="right"] > ${PopperArrow} {
-    left: -4px;
+    top: -${popperTriangleWidth * 3}px;
+    &::before {
+      transform: rotate(180deg);
+    }
   }
 `;
