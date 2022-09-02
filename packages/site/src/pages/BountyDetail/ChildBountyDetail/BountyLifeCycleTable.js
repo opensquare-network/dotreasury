@@ -42,6 +42,10 @@ const BountyLifeCycleTable = ({ loading }) => {
   const bountyDetail = useSelector(childBountyDetailSelector);
   const scanHeight = useSelector(scanHeightSelector);
   const chain = useSelector(chainSelector);
+  const awardedItem = ([...bountyDetail?.timeline || []]).reverse().find(item => item.name === 'Awarded');
+
+  const showCountDown = awardedItem && bountyDetail.unlockAt;
+  const startCountDownHeight = awardedItem?.indexer?.blockHeight;
 
   const links = [];
   if (["kusama", "polkadot"].includes(chain) && bountyDetail) {
@@ -121,7 +125,7 @@ const BountyLifeCycleTable = ({ loading }) => {
                   scanHeight < bountyDetail.unlockAt ? "Unlock" : "Unlocked"
                 } At`}
               >
-                {bountyDetail.unlockAt ? (
+                {showCountDown ? (
                   <FlexWrapper>
                     {scanHeight < bountyDetail.unlockAt ? (
                       <>
@@ -138,7 +142,7 @@ const BountyLifeCycleTable = ({ loading }) => {
 
                     <CountDownWrapper>
                       <EstimateBlockTimeCountDown
-                        startBlockHeight={bountyDetail?.indexer?.blockHeight}
+                        startBlockHeight={startCountDownHeight}
                         endBlockHeight={bountyDetail?.unlockAt}
                       />
                     </CountDownWrapper>

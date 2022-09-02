@@ -50,6 +50,10 @@ const BountyLifeCycleTable = ({ loading }) => {
   const chain = useSelector(chainSelector);
   const [bountyUrl, setBountyUrl] = useState(null);
 
+  const awardedItem = ([...bountyDetail?.timeline || []]).reverse().find(item => item.name === 'BountyAwarded');
+  const showCountDown = awardedItem && bountyDetail.unlockAt;
+  const startCountDownHeight = awardedItem?.indexer?.blockHeight;
+
   useEffect(() => {
     (async () => {
       if (bountyDetail) {
@@ -193,7 +197,7 @@ const BountyLifeCycleTable = ({ loading }) => {
                   scanHeight < bountyDetail.unlockAt ? "Unlock" : "Unlocked"
                 } At`}
               >
-                {bountyDetail.unlockAt ? (
+                {showCountDown ? (
                   <FlexWrapper>
                     {scanHeight < bountyDetail.unlockAt ? (
                       <>
@@ -210,7 +214,7 @@ const BountyLifeCycleTable = ({ loading }) => {
 
                     <CountDownWrapper>
                       <EstimateBlockTimeCountDown
-                        startBlockHeight={bountyDetail?.indexer?.blockHeight}
+                        startBlockHeight={startCountDownHeight}
                         endBlockHeight={bountyDetail?.unlockAt}
                       />
                     </CountDownWrapper>
