@@ -2,9 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 
-import DetailGoBack from "../components/DetailGoBack";
 import Comment from "../Comment";
-import RelatedLinks from "./RelatedLinks";
 import Detail from "./Detail";
 import Proposals from "./Proposals";
 import {
@@ -19,9 +17,9 @@ import Rate from "../../components/Rate";
 import styled from "styled-components";
 
 const CommentWrapper = styled.div`
-> :not(:first-child) {
-  margin-top: 24px;
-}
+  > :not(:first-child) {
+    margin-top: 24px;
+  }
 `;
 
 const ProjectDetail = () => {
@@ -47,9 +45,7 @@ const ProjectDetail = () => {
 
   return (
     <>
-      <DetailGoBack />
       <Detail projectData={projectDetail} />
-      <RelatedLinks data={projectDetail.relatedLinks} />
       <Proposals data={projectDetail.funds} />
       <CommentWrapper>
         <Rate type="project" index={projectId} />
