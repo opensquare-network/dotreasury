@@ -164,7 +164,11 @@ const TipDetail = () => {
       <DetailTableWrapper title="Tip" desc={getShortTipId(tipDetail)}>
         <InformationTable loading={loadingTipDetail} />
         <TipLifeCycleTable loading={loadingTipDetail} />
-        <RelatedLinks type="tip" index={getTipIndex(tipDetail)} />
+        <RelatedLinks
+          type="tip"
+          index={getTipIndex(tipDetail)}
+          owner={tipDetail?.finder}
+        />
       </DetailTableWrapper>
       <TimelineCommentWrapper>
         <Timeline data={timelineData} loading={loadingTipDetail} />

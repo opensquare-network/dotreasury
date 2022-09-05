@@ -1,19 +1,5 @@
 const { getLinkCollection } = require("../mongo-admin");
-const { isValidSignature } = require("../utils");
-const { HttpError } = require("../exc");
-const { decodeAddress } = require("@polkadot/util-crypto");
-
-let admins = null;
-async function checkAdmin(address) {
-  if (!admins) {
-    admins = (process.env.ADMINS || "")
-      .split("|")
-      .filter((addr) => addr !== "")
-      .map((addr) => decodeAddress(addr));
-  }
-  const lookup = decodeAddress(address);
-  return admins.some((admin) => Buffer.compare(admin, lookup) === 0);
-}
+const { verifyAdminSignature, ADMINS } = require("../utils");
 
 class LinkService {
   async getLinks({ indexer, getReason }) {
@@ -78,33 +64,11 @@ class LinkService {
     return updatedTipLinks?.links ?? [];
   }
 
-  async verifySignature(addressAndSignature, message) {
-    if (!addressAndSignature) {
-      throw new HttpError(400, "Signature is missing");
-    }
-
-    const [address, signature] = addressAndSignature.split("/");
-    if (!address || !signature) {
-      throw new HttpError(400, "Signature is invalid");
-    }
-
-    const isAdmin = await checkAdmin(address);
-    if (!isAdmin) {
-      throw new HttpError(401, "Unauthorized");
-    }
-
-    const isValid = await isValidSignature(message, signature, address);
-    if (!isValid) {
-      throw new HttpError(400, "Signature is invalid");
-    }
-
-    return true;
-  }
-
-  async createLink({ indexer, link, description }, addressAndSignature) {
-    await this.verifySignature(
+  async createLink({ indexer, link, description }, addressAndSignature, admins = ADMINS) {
+    await verifyAdminSignature(
       addressAndSignature,
-      JSON.stringify({ ...indexer, link, description })
+      JSON.stringify({ ...indexer, link, description }),
+      admins,
     );
 
     const linkCol = await getLinkCollection();
@@ -125,10 +89,11 @@ class LinkService {
     return true;
   }
 
-  async deleteLink({ indexer, linkIndex }, addressAndSignature) {
-    await this.verifySignature(
+  async deleteLink({ indexer, linkIndex }, addressAndSignature, admins = ADMINS) {
+    await verifyAdminSignature(
       addressAndSignature,
-      JSON.stringify({ ...indexer, linkIndex })
+      JSON.stringify({ ...indexer, linkIndex }),
+      admins,
     );
 
     const linkCol = await getLinkCollection();

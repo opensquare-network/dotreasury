@@ -4,7 +4,7 @@ const {
   getReferendumCollection,
   getProposalBeneficiaryCollection,
 } = require("../../mongo");
-const { extractPage } = require("../../utils");
+const { extractPage, ADMINS } = require("../../utils");
 const linkService = require("../../services/link.service");
 const commentService = require("../../services/comment.service");
 const rateService = require("../../services/rate.service");
@@ -59,6 +59,14 @@ async function getProposalReferendums(proposal, chain) {
   });
 
   return referendums;
+}
+
+async function getAdmins(chain, proposalIndex) {
+  const col = await getProposalCollection(chain);
+  const proposal = await col.findOne({ proposalIndex });
+  owner = proposal?.proposer;
+
+  return [...ADMINS, owner];
 }
 
 class ProposalsController {
@@ -231,6 +239,8 @@ class ProposalsController {
     const proposalIndex = parseInt(ctx.params.proposalIndex);
     const { link, description } = ctx.request.body;
 
+    const admins = await getAdmins(chain, proposalIndex);
+
     ctx.body = await linkService.createLink(
       {
         indexer: {
@@ -241,7 +251,8 @@ class ProposalsController {
         link,
         description,
       },
-      ctx.request.headers.signature
+      ctx.request.headers.signature,
+      admins,
     );
   }
 
@@ -249,6 +260,8 @@ class ProposalsController {
     const { chain } = ctx.params;
     const proposalIndex = parseInt(ctx.params.proposalIndex);
     const linkIndex = parseInt(ctx.params.linkIndex);
+
+    const admins = await getAdmins(chain, proposalIndex);
 
     ctx.body = await linkService.deleteLink(
       {
@@ -259,7 +272,8 @@ class ProposalsController {
         },
         linkIndex,
       },
-      ctx.request.headers.signature
+      ctx.request.headers.signature,
+      admins,
     );
   }
 
@@ -357,6 +371,8 @@ class ProposalsController {
     const proposalIndex = parseInt(ctx.params.proposalIndex);
     const { description, proposalType, status } = ctx.request.body;
 
+    const admins = await getAdmins(chain, proposalIndex);
+
     ctx.body = await descriptionService.setDescription(
       {
         indexer: {
@@ -368,7 +384,8 @@ class ProposalsController {
         proposalType,
         status,
       },
-      ctx.request.headers.signature
+      ctx.request.headers.signature,
+      admins,
     );
   }
 }

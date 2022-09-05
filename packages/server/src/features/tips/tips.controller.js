@@ -1,7 +1,7 @@
 const { getTipCollection, getTipFinderCollection } = require("../../mongo");
 const linkService = require("../../services/link.service");
 const commentService = require("../../services/comment.service");
-const { extractPage } = require("../../utils");
+const { extractPage, ADMINS } = require("../../utils");
 const { normalizeTip } = require("./utils");
 const { HttpError } = require("../../exc");
 
@@ -14,6 +14,17 @@ function getCondition(ctx) {
   }
 
   return condition;
+}
+
+async function getAdmins(chain, blockHeight, tipHash) {
+  const col = await getTipCollection(chain);
+  const tip = await col.findOne({
+    "indexer.blockHeight": blockHeight,
+    hash: tipHash,
+  });
+  owner = tip?.finder;
+
+  return [...ADMINS, owner];
 }
 
 class TipsController {
@@ -157,6 +168,8 @@ class TipsController {
 
     const { link, description } = ctx.request.body;
 
+    const admins = await getAdmins(chain, blockHeight, tipHash);
+
     ctx.body = await linkService.createLink(
       {
         indexer: {
@@ -170,7 +183,8 @@ class TipsController {
         link,
         description,
       },
-      ctx.request.headers.signature
+      ctx.request.headers.signature,
+      admins,
     );
   }
 
@@ -178,6 +192,8 @@ class TipsController {
     const { tipHash, chain } = ctx.params;
     const blockHeight = parseInt(ctx.params.blockHeight);
     const linkIndex = parseInt(ctx.params.linkIndex);
+
+    const admins = await getAdmins(chain, blockHeight, tipHash);
 
     ctx.body = await linkService.deleteLink(
       {
@@ -191,7 +207,8 @@ class TipsController {
         },
         linkIndex,
       },
-      ctx.request.headers.signature
+      ctx.request.headers.signature,
+      admins,
     );
   }
 

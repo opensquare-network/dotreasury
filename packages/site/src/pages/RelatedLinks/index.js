@@ -42,7 +42,7 @@ const DividerWrapper = styled(Divider)`
   border-top: 1px solid #eeeeee !important;
 `;
 
-const RelatedLinks = ({ type, index }) => {
+const RelatedLinks = ({ type, index, owner }) => {
   const dispatch = useDispatch();
   const location = useLocation();
   const chain = useSelector(chainSelector);
@@ -94,7 +94,7 @@ const RelatedLinks = ({ type, index }) => {
   };
 
   const q = queryString.parse(location.search);
-  const isAdmin = q.admin === "true";
+  const isAdmin = account?.address === owner || q.admin === "true";
 
   if (isAdmin || (links && links.length > 0)) {
     return (
