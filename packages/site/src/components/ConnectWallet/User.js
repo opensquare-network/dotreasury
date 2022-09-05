@@ -1,11 +1,10 @@
 import styled from "styled-components";
-import UserAvatar from "../User/Avatar";
-import Address from "../Address";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { useRef } from "react";
 import { useOutsideClick } from "../../utils/hooks";
 import { logout } from "../../store/reducers/accountSlice";
+import UserIdentity from "../User";
 
 const Wrapper = styled.div`
   cursor: pointer;
@@ -17,14 +16,6 @@ const Wrapper = styled.div`
   border: 1px solid #DDDDDD;
   border-radius: 4px;
   gap: 8px;
-`;
-
-const Addr = styled.div`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 20px;
-  color: rgba(0, 0, 0, 0.9);
 `;
 
 const MenuWrapper = styled.div`
@@ -109,10 +100,12 @@ export default function User({
   return (
     <>
       <Wrapper onClick={() => setShowMenu(true)}>
-        <UserAvatar address={address} size={20} />
-        <Addr>
-          <Address>{address}</Address>
-        </Addr>
+        <UserIdentity
+          address={address}
+          avatarSize={20}
+          popup={false}
+          noLink={true}
+        />
         {showMenu && Menu}
       </Wrapper>
     </>

@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Popup } from "semantic-ui-react";
 
 import TextMinor from "../TextMinor";
@@ -11,14 +11,20 @@ const TextUsername = styled(TextMinor)`
   flex-grow: 1;
   font-size: 14px;
   line-height: 22px;
-  color: rgba(0, 0, 0, 0.65) !important;
-  &:hover {
-    color: rgba(0, 0, 0, 0.9) !important;
-    text-decoration-line: underline;
-  }
+  ${p => p.noLink
+    ? css`
+      color: rgba(0, 0, 0, 0.9) !important;
+    `
+    : css`
+      color: rgba(0, 0, 0, 0.65) !important;
+      &:hover {
+        color: rgba(0, 0, 0, 0.9) !important;
+        text-decoration-line: underline;
+      }
+  `}
 `;
 
-const Username = ({ address, name, ellipsis, popup, popupContent }) => {
+const Username = ({ address, name, ellipsis, popup, popupContent, noLink }) => {
   const disabledPopup = useDisablePopup();
   let displayAddress;
   if (typeof address === "string") {
@@ -49,7 +55,7 @@ const Username = ({ address, name, ellipsis, popup, popupContent }) => {
       }
       size="mini"
       disabled={!popup || disabledPopup}
-      trigger={<TextUsername>{displayName}</TextUsername>}
+      trigger={<TextUsername noLink={noLink}>{displayName}</TextUsername>}
     />
   );
 };
