@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import pluralize from "pluralize";
 import api from "../../services/scanApi";
-import { signMessage } from "../../services/chainApi";
+import { signMessageWithExtension } from "../../services/chainApi";
 import { addToast } from "./toastSlice";
 import { REACTION_THUMBUP } from "../../constants";
 
@@ -46,7 +46,8 @@ export const addRate = (
   comment,
   version,
   timestamp,
-  address
+  address,
+  extensionName
 ) => async (dispatch) => {
   const data = {
     chain,
@@ -60,7 +61,7 @@ export const addRate = (
 
   try {
     dispatch(setLoading(true));
-    const signature = await signMessage(JSON.stringify(data), address);
+    const signature = await signMessageWithExtension(JSON.stringify(data), address, extensionName);
 
     const { error } = await api.fetch(
       `/rates`,

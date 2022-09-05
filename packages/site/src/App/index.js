@@ -44,7 +44,6 @@ import UserAgreement from "../pages/UserAgreement";
 import Privacy from "../pages/Privacy";
 import Transfers from "../pages/Transfers";
 import TransfersSlash from "../pages/TransfersSlash";
-import AdminLogin from "../pages/AdminLogin";
 import ProposalBeneficiaries from "../pages/ProposalBeneficiaries";
 
 import { usePreload } from "../utils/hooks";
@@ -189,7 +188,6 @@ export default function App() {
         </PageWrapper>
         <Footer />
         <Toast />
-        <AdminLogin />
       </Wrapper>
     </Router>
   );

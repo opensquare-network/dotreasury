@@ -14,8 +14,9 @@ import {
   descriptionSelector,
   putDescription,
 } from "../../store/reducers/descriptionSlice";
-import { nowAddressSelector } from "../../store/reducers/accountSlice";
+import { accountSelector } from "../../store/reducers/accountSlice";
 import Tag from "../../components/Tag";
+import { addToast } from "../../store/reducers/toastSlice";
 
 const IconButton = styled(Icon)`
   margin-left: 6px !important;
@@ -39,7 +40,7 @@ const InformationTable = ({ loading, chain, proposalIndex }) => {
   const [description, setDescription] = useState("");
   const [proposalType, setProposalType] = useState("");
   const [status, setStatus] = useState("");
-  const nowAddress = useSelector(nowAddressSelector);
+  const account = useSelector(accountSelector);
 
   useEffect(() => {
     setDescription(descriptionDetail?.description ?? "");
@@ -48,6 +49,16 @@ const InformationTable = ({ loading, chain, proposalIndex }) => {
   }, [descriptionDetail]);
 
   const addDes = () => {
+    if (!account) {
+      dispatch(
+        addToast({
+          type: "error",
+          message: "Please connect wallet",
+        })
+      );
+      return;
+    }
+
     dispatch(
       putDescription(
         chain,
@@ -56,7 +67,8 @@ const InformationTable = ({ loading, chain, proposalIndex }) => {
         description,
         proposalType,
         status,
-        nowAddress
+        account.address,
+        account.extension,
       )
     );
     setOpenDesModal(false);
