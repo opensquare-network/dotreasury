@@ -130,7 +130,7 @@ const InformationTable = ({ loading, chain, proposalIndex }) => {
                 </TableCell>
               </Table.Cell>
             </Table.Row>
-            {descriptionDetail?.description && (
+            {descriptionDetail?.description ? (
               <Table.Row>
                 <Table.Cell>
                   <TableCell title={"Description"}>
@@ -140,8 +140,8 @@ const InformationTable = ({ loading, chain, proposalIndex }) => {
                   </TableCell>
                 </Table.Cell>
               </Table.Row>
-            )}
-            {descriptionDetail?.tags?.proposalType && (
+            ) : null}
+            {descriptionDetail?.tags?.proposalType ? (
               <Table.Row>
                 <Table.Cell>
                   <TableCell title={"Proposal Type"}>
@@ -149,8 +149,8 @@ const InformationTable = ({ loading, chain, proposalIndex }) => {
                   </TableCell>
                 </Table.Cell>
               </Table.Row>
-            )}
-            {descriptionDetail?.tags?.status && (
+            ) : null}
+            {descriptionDetail?.tags?.status ? (
               <Table.Row>
                 <Table.Cell>
                   <TableCell title={"Work Status"}>
@@ -158,7 +158,7 @@ const InformationTable = ({ loading, chain, proposalIndex }) => {
                   </TableCell>
                 </Table.Cell>
               </Table.Row>
-            )}
+            ) : null}
           </Table.Body>
         </StyledTable>
       </TableLoading>
