@@ -75,6 +75,28 @@ export const signMessage = async (text, address) => {
   return result.signature;
 };
 
+export const signMessageWithExtension = async (text, address, extensionName) => {
+  if (!extensionName) {
+    throw new Error(`Signing extension is not specified.`);
+  }
+
+  const extension = window?.injectedWeb3?.[extensionName];
+  if (!extension) {
+    throw new Error(`Extension is not found: ${extensionName}`);
+  }
+
+  const injector = await extension.enable("doTreasury");
+
+  const data = stringToHex(text);
+  const result = await injector.signer.signRaw({
+    type: "bytes",
+    data,
+    address,
+  });
+
+  return result.signature;
+};
+
 const extractBlockTime = (extrinsics) => {
   const setTimeExtrinsic = extrinsics.find(
     (ex) => ex.method.section === "timestamp" && ex.method.method === "set"
@@ -122,6 +144,18 @@ export const encodeSubstrateAddress = (address) => {
     return "";
   }
 };
+
+export const encodeChainAddress = (address, chain) => {
+  let encodedAddress = encodeSubstrateAddress(address);
+
+  if (chain === "kusama") {
+    encodedAddress = encodeKusamaAddress(address);
+  } else if (chain === "polkadot") {
+    encodedAddress = encodePolkadotAddress(address);
+  }
+
+  return encodedAddress;
+}
 
 export async function getElectorate(api) {
   const issuance = await api.query.balances.totalIssuance();

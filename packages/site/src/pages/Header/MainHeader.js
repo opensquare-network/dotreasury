@@ -9,6 +9,7 @@ import MenuSwitch from "./MenuSwitch";
 import { useMenuTab } from "../../utils/hooks";
 import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
+import ConnectWallet from "../../components/ConnectWallet";
 
 const Wrapper = styled.header`
   height: 76px;
@@ -149,6 +150,7 @@ const HeaderExamplePage = () => {
           <NavLink to={`/${symbol}/projects`}>
             <MenuSwitch menuTabsName="Projects" />
           </NavLink>
+          <ConnectWallet />
         </Right>
         <ScanHeightWrapper>
           <ScanHeight />

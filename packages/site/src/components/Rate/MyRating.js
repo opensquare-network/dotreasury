@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 
 import StarsAction from "./StarsAction";
 import ButtonPrimary from "../ButtonPrimary";
-import SelectAddress from "../../pages/SelectAddress";
 import { addRate, loadingSelector } from "../../store/reducers/rateSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import { addToast } from "../../store/reducers/toastSlice";
+import { accountSelector } from "../../store/reducers/accountSlice";
 
 const Wrapper = styled.div`
   padding: 0 24px;
@@ -71,8 +71,8 @@ export default function MyRating({ type, index }) {
   const [content, setContent] = useState("");
   const [rate, setRate] = useState(0);
   const chain = useSelector(chainSelector);
-  const [accountsModalOpen, setAccountsModalOpen] = useState(false);
   const loading = useSelector(loadingSelector);
+  const account = useSelector(accountSelector);
 
   const onChange = (e) => {
     let value = e.target.value;
@@ -93,18 +93,20 @@ export default function MyRating({ type, index }) {
       );
       return;
     }
-    setAccountsModalOpen(true);
-  };
 
-  const onSelectSignedAccount = (account) => {
-    setAccountsModalOpen(false);
     if (!account) {
+      dispatch(
+        addToast({
+          type: "error",
+          message: "Please connect wallet",
+        })
+      );
       return;
     }
 
-    localStorage.setItem("lastSignatureAddress", account.address);
-
     const address = account.address;
+    const extensionName = account.extension;
+
     dispatch(
       addRate(
         chain,
@@ -114,7 +116,8 @@ export default function MyRating({ type, index }) {
         content.trim() === "" ? null : content.trim(),
         "1",
         parseInt(Date.now() / 1000),
-        address
+        address,
+        extensionName,
       )
     );
 
@@ -141,12 +144,6 @@ export default function MyRating({ type, index }) {
           Sign
         </ButtonPrimary>
       </ButtonWrapper>
-      {accountsModalOpen && (
-        <SelectAddress
-          onClose={() => setAccountsModalOpen(false)}
-          onSelect={onSelectSignedAccount}
-        />
-      )}
     </Wrapper>
   );
 }

@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import pluralize from "pluralize";
 import api from "../../services/scanApi";
-import { signMessage } from "../../services/chainApi";
+import { signMessageWithExtension } from "../../services/chainApi";
 
 const linkSlice = createSlice({
   name: "links",
@@ -46,9 +46,10 @@ export const addLink = (
   index,
   link,
   description,
-  address
+  address,
+  extensionName
 ) => async (dispatch) => {
-  const signature = await signMessage(
+  const signature = await signMessageWithExtension(
     JSON.stringify({
       chain,
       type,
@@ -56,7 +57,8 @@ export const addLink = (
       link,
       description,
     }),
-    address
+    address,
+    extensionName
   );
 
   await api.fetch(
@@ -74,17 +76,18 @@ export const addLink = (
   dispatch(fetchLinks(chain, type, index));
 };
 
-export const removeLink = (chain, type, index, linkIndex, address) => async (
+export const removeLink = (chain, type, index, linkIndex, address, extensionName) => async (
   dispatch
 ) => {
-  const signature = await signMessage(
+  const signature = await signMessageWithExtension(
     JSON.stringify({
       chain,
       type,
       index,
       linkIndex,
     }),
-    address
+    address,
+    extensionName
   );
 
   await api.fetch(

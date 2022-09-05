@@ -22,25 +22,36 @@ const BadgeWrapper = styled.div`
   align-items: center;
 `;
 
-const User = ({ address, ellipsis = true, popup = true, popupContent }) => {
+const User = ({ address, ellipsis = true, popup = true, popupContent, avatarSize = 22, noLink = false }) => {
   const { name, badgeData } = useIdentity(address);
+
+  let username = (
+    <Username
+      name={name}
+      address={address}
+      ellipsis={ellipsis}
+      popup={popup}
+      popupContent={popupContent}
+      noLink={noLink}
+    />
+  );
+
+  if (!noLink) {
+    username = (
+      <ExplorerLink href={`/account/${address}`}>
+        {username}
+      </ExplorerLink>
+    );
+  }
 
   return (
     <>
       {address ? (
         <Wrapper>
-          <Avatar address={address} size={22} />
+          <Avatar address={address} size={avatarSize} />
           <BadgeWrapper>
             <Badge {...badgeData} />
-            <ExplorerLink href={`/account/${address}`}>
-              <Username
-                name={name}
-                address={address}
-                ellipsis={ellipsis}
-                popup={popup}
-                popupContent={popupContent}
-              />
-            </ExplorerLink>
+            {username}
           </BadgeWrapper>
         </Wrapper>
       ) : (

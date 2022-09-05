@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Dropdown } from "semantic-ui-react";
+import { encodeAddress } from "@polkadot/util-crypto";
 
-import Text from "./Text";
-
+import Text from "../Text";
 import AccountItem from "./AccountItem";
 
 const Wrapper = styled.div``;
@@ -39,26 +39,48 @@ const StyledDropdown = styled(Dropdown)`
   }
 `;
 
-const AccountSelector = ({ chain, accounts, onSelect = () => {} }) => {
-  const filteredAccounts = accounts.filter((item) => item[`${chain}Address`]);
+const getSS58Prefix = (chain) => {
+  if (chain === "kusama") {
+    return 2;
+  } else if (chain === "polkadot") {
+    return 0;
+  } else {
+    return 42;
+  }
+}
 
+const AccountSelector = ({ chain, accounts, onSelect = () => {} }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [filteredAccounts, setFilteredAccounts] = useState([]);
+
+  useEffect(() => {
+    const filteredAccounts = accounts
+      .filter((item) => item.type !== "ethereum")
+      .map(item => ({
+        ...item,
+        address: encodeAddress(item.address, getSS58Prefix(chain))
+      }));
+    setFilteredAccounts(filteredAccounts);
+  }, [chain, accounts]);
+
   useEffect(() => {
     onSelect(filteredAccounts[selectedIndex]);
   }, [filteredAccounts, onSelect, selectedIndex]);
+
   const options = filteredAccounts.map((item, index) => ({
     key: index,
     value: index,
     content: (
       <AccountItem
         accountName={item.name}
-        accountAddress={item[`${chain}Address`]}
+        accountAddress={item.address}
       />
     ),
   }));
+
   return (
     <Wrapper>
-      <Label>Choose linked account</Label>
+      <Label>Account</Label>
       <DropdownWrapper>
         <StyledDropdown
           selection
@@ -70,7 +92,7 @@ const AccountSelector = ({ chain, accounts, onSelect = () => {} }) => {
         <AccountItem
           accountName={filteredAccounts?.[selectedIndex]?.name}
           accountAddress={
-            filteredAccounts?.[selectedIndex]?.[`${chain}Address`]
+            filteredAccounts?.[selectedIndex]?.address
           }
           header
         />
