@@ -69,12 +69,13 @@ export default function ConnectWalletModal({
 
   const onConnect = useCallback(() => {
     const account = {
+      extension: selectedWallet,
       chain,
       address: selectedAccount.address
     };
     dispatch(setAccount(account));
     setVisible(false);
-  }, [dispatch, selectedAccount, chain, setVisible]);
+  }, [dispatch, selectedWallet, selectedAccount, chain, setVisible]);
 
   return (
     <StyledModal

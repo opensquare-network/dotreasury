@@ -1,4 +1,5 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit'
+import { encodeChainAddress } from '../../services/chainApi';
 
 const storeAccount = localStorage.getItem("account");
 const account = storeAccount && JSON.parse(storeAccount);
@@ -35,5 +36,39 @@ export const logout = () => (dispatch) => {
   dispatch(setAccount(null));
   localStorage.removeItem("account");
 };
+
+export const checkAccount = () => async (dispatch) => {
+  const store = (await import("..")).default;
+  const account = store.getState().account.account;
+  if (!account) {
+    return;
+  }
+
+  const extension = window?.injectedWeb3?.[account.extension];
+  if (!extension) {
+    dispatch(setAccount(null));
+    return;
+  }
+
+  let wallet;
+  try {
+    wallet = await extension.enable("doTreasury");
+  } catch (e) {
+    console.error(e);
+    dispatch(setAccount(null));
+    return;
+  }
+
+  const extensionAccounts = await wallet.accounts?.get();
+
+  if (
+    !extensionAccounts.some(item => {
+      return item.address === encodeChainAddress(account.address)
+    })
+  ) {
+    dispatch(setAccount(null));
+    return;
+  }
+}
 
 export default accountSlice.reducer;

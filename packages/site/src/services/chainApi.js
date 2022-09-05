@@ -123,6 +123,18 @@ export const encodeSubstrateAddress = (address) => {
   }
 };
 
+export const encodeChainAddress = (address, chain) => {
+  let encodedAddress = encodeSubstrateAddress(address);
+
+  if (chain === "kusama") {
+    encodedAddress = encodeKusamaAddress(address);
+  } else if (chain === "polkadot") {
+    encodedAddress = encodeKusamaAddress(address);
+  }
+
+  return encodedAddress;
+}
+
 export async function getElectorate(api) {
   const issuance = await api.query.balances.totalIssuance();
   return issuance.toBigInt().toString()

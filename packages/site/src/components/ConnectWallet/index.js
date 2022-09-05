@@ -1,7 +1,9 @@
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components"
-import { accountSelector } from "../../store/reducers/accountSlice";
+import { encodeChainAddress } from "../../services/chainApi";
+import { accountSelector, checkAccount } from "../../store/reducers/accountSlice";
+import { chainSelector } from "../../store/reducers/chainSlice";
 import ConnectWalletModal from "./ConnectWalletModal";
 import User from "./User";
 
@@ -20,14 +22,22 @@ const ConnectButton = styled.div`
 `;
 
 export default function ConnectWallet() {
+  const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
   const account = useSelector(accountSelector);
+  const chain = useSelector(chainSelector);
+
+  useEffect(() => {
+    dispatch(checkAccount());
+  }, [dispatch]);
+
+  const encodedAddress = encodeChainAddress(account?.address, chain);
 
   return (
     <Wrapper>
       {
         account ? (
-          <User address={account?.address} />
+          <User address={encodedAddress} />
         ) : (
           <ConnectButton onClick={() => setModalVisible(true)}>Connect Wallet</ConnectButton>
         )
