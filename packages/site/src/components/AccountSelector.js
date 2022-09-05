@@ -6,9 +6,7 @@ import Text from "./Text";
 
 import AccountItem from "./AccountItem";
 
-const Wrapper = styled.div`
-  /* margin-bottom: 24px; */
-`;
+const Wrapper = styled.div``;
 
 const Label = styled(Text)`
   font-weight: 500;

@@ -29,7 +29,7 @@ const Addr = styled.div`
 
 const MenuWrapper = styled.div`
   cursor: auto;
-  min-width: 240px;
+  min-width: 200px;
   position: absolute;
   right: 0;
   top: 100%;
@@ -66,6 +66,9 @@ const MenuItem = styled.div`
   font-size: 14px;
   line-height: 20px;
   color: rgba(0, 0, 0, 0.9);
+  :hover {
+    background-color: #fafafa;
+  }
 `;
 
 const LogoutWrapper = styled.div`
