@@ -1,5 +1,6 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit'
 import { encodeChainAddress } from '../../services/chainApi';
+import { sleep } from '../../utils';
 
 const storeAccount = localStorage.getItem("account");
 const account = storeAccount && JSON.parse(storeAccount);
@@ -43,6 +44,8 @@ export const checkAccount = () => async (dispatch) => {
   if (!account) {
     return;
   }
+
+  await sleep(2000);
 
   const extension = window?.injectedWeb3?.[account.extension];
   if (!extension) {
