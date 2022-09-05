@@ -151,7 +151,7 @@ export const encodeChainAddress = (address, chain) => {
   if (chain === "kusama") {
     encodedAddress = encodeKusamaAddress(address);
   } else if (chain === "polkadot") {
-    encodedAddress = encodeKusamaAddress(address);
+    encodedAddress = encodePolkadotAddress(address);
   }
 
   return encodedAddress;
