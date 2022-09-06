@@ -45,7 +45,7 @@ const normalizeBountyListItem = (item) => ({
 async function getAdmins(chain, bountyIndex) {
   const col = await getBountyCollection(chain);
   const bounty = await col.findOne({ bountyIndex });
-  owner = bounty?.meta?.proposer;
+  const owner = bounty?.meta?.proposer;
 
   return [...ADMINS, owner];
 }

@@ -22,7 +22,7 @@ async function getAdmins(chain, blockHeight, tipHash) {
     "indexer.blockHeight": blockHeight,
     hash: tipHash,
   });
-  owner = tip?.finder;
+  const owner = tip?.finder;
 
   return [...ADMINS, owner];
 }

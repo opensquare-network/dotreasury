@@ -64,7 +64,7 @@ async function getProposalReferendums(proposal, chain) {
 async function getAdmins(chain, proposalIndex) {
   const col = await getProposalCollection(chain);
   const proposal = await col.findOne({ proposalIndex });
-  owner = proposal?.proposer;
+  const owner = proposal?.proposer;
 
   return [...ADMINS, owner];
 }
