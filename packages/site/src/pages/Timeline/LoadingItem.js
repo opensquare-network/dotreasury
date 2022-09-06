@@ -87,6 +87,7 @@ const LoadingItem = ({
                 eventIndexer={data.eventIndexer}
                 polkassembly={polkassembly}
                 type={data.type}
+                chain={chain}
               />
             )}
           </CardWrapper>
