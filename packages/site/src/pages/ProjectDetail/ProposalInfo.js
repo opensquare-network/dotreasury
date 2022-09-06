@@ -6,6 +6,7 @@ import ProjectExpense from "../../components/ProjectExpense";
 import { ellipsis } from "../../utils/ellipsis";
 import ButtonList from "../../pages/Timeline/ButtonList";
 import { networkFromSymbol } from "../../utils";
+import dayjs from "dayjs";
 
 const ProposalLink = styled(NavLink)`
   display: inline-flex;
@@ -125,8 +126,9 @@ export default function ProposalInfo({ item }) {
         </ProposalDetail>
         <ProposalDetail>
           <ProposalDetailLabel>Proposed time</ProposalDetailLabel>
-          {/* FIXME: is this proposedTime? */}
-          <ProposalDetailValue>{item?.indexer?.blockTime}</ProposalDetailValue>
+          <ProposalDetailValue>
+            {dayjs(item?.indexer?.blockTime).format("YYYY-MM-DD HH:mm:ss")}
+          </ProposalDetailValue>
         </ProposalDetail>
         <ProposalDetail>
           <ProposalDetailLabel>
