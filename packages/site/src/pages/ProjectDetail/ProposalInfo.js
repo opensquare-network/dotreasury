@@ -36,6 +36,10 @@ const ProposalDetailWrapper = styled.div`
 const ProposalDetail = styled.div`
   display: flex;
   padding: 6px 0;
+
+  @media screen and (max-width: 900px) {
+    display: block;
+  }
 `;
 
 const ProposalDetailLabel = styled.div`
@@ -50,6 +54,10 @@ const ProposalDetailValue = styled.div`
   /* text-dark/major */
   color: rgba(0, 0, 0, 0.9);
   ${p_14_normal};
+
+  @media screen and (max-width: 900px) {
+    margin-top: 8px;
+  }
 `;
 
 const ProposalDetailAchievement = styled.ol`
