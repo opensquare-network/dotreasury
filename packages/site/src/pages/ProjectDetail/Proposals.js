@@ -8,6 +8,7 @@ import ProposalInfo from "./ProposalInfo";
 const Wrapper = styled(Card)`
   padding: 20px 24px;
   margin-bottom: 24px;
+  min-height: 176px;
 `;
 
 const Header = styled.div`
@@ -71,34 +72,34 @@ const ProposalInfoWrapper = styled.div`
 `;
 
 const Proposals = ({ data }) => {
-  if (data) {
-    return (
-      <Wrapper>
-        <Header>Proposals</Header>
-        <div>
-          {(data || []).map((item, index) => {
-            return (
-              <ContentWrapper key={index}>
-                <VerticalWrapper>
-                  <CircleWrapper>
-                    <div />
-                  </CircleWrapper>
-                  <Bar className="bar" />
-                </VerticalWrapper>
-                <VerticalWrapper>
-                  <ProposalInfoWrapper>
-                    <ProposalInfo item={item} />
-                  </ProposalInfoWrapper>
-                </VerticalWrapper>
-              </ContentWrapper>
-            );
-          })}
-        </div>
-      </Wrapper>
-    );
-  } else {
-    return null;
-  }
+  return (
+    <Wrapper>
+      {data && (
+        <>
+          <Header>Proposals</Header>
+          <div>
+            {(data || []).map((item, index) => {
+              return (
+                <ContentWrapper key={index}>
+                  <VerticalWrapper>
+                    <CircleWrapper>
+                      <div />
+                    </CircleWrapper>
+                    <Bar className="bar" />
+                  </VerticalWrapper>
+                  <VerticalWrapper>
+                    <ProposalInfoWrapper>
+                      <ProposalInfo item={item} />
+                    </ProposalInfoWrapper>
+                  </VerticalWrapper>
+                </ContentWrapper>
+              );
+            })}
+          </div>
+        </>
+      )}
+    </Wrapper>
+  );
 };
 
 export default Proposals;
