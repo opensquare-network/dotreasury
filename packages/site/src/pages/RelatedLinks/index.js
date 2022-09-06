@@ -3,9 +3,6 @@ import useDeepCompareEffect from "use-deep-compare-effect";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Icon, Modal, Form } from "semantic-ui-react";
-import queryString from "query-string";
-import { useLocation } from "react-router-dom";
-
 import LinkItem from "../../components/LinkItem";
 import {
   setLinks,
@@ -19,6 +16,7 @@ import { chainSelector } from "../../store/reducers/chainSlice";
 import Divider from "../../components/Divider";
 import Table from "../../components/Table";
 import { addToast } from "../../store/reducers/toastSlice";
+import { useIsAdminQuery } from "../../utils/hooks";
 
 const Wrapper = styled.div`
   table {
@@ -42,9 +40,8 @@ const DividerWrapper = styled(Divider)`
   border-top: 1px solid #eeeeee !important;
 `;
 
-const RelatedLinks = ({ type, index }) => {
+const RelatedLinks = ({ type, index, owner }) => {
   const dispatch = useDispatch();
-  const location = useLocation();
   const chain = useSelector(chainSelector);
 
   useDeepCompareEffect(() => {
@@ -93,8 +90,8 @@ const RelatedLinks = ({ type, index }) => {
     dispatch(removeLink(chain, type, index, linkIndex, account.address, account.extension));
   };
 
-  const q = queryString.parse(location.search);
-  const isAdmin = q.admin === "true";
+  const isAdminQuery = useIsAdminQuery();
+  const isAdmin = account?.address === owner || isAdminQuery;
 
   if (isAdmin || (links && links.length > 0)) {
     return (

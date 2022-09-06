@@ -64,9 +64,14 @@ const ProposalDetail = () => {
           loading={loadingProposalDetail}
           chain={chain}
           proposalIndex={proposalIndex}
+          proposer={proposalDetail?.proposer}
         />
         <ProposalLifeCycleTable loading={loadingProposalDetail} />
-        <RelatedLinks type="proposal" index={parseInt(proposalIndex)} />
+        <RelatedLinks
+          type="proposal"
+          index={parseInt(proposalIndex)}
+          owner={proposalDetail?.proposer}
+        />
       </DetailTableWrapper>
       <TimelineCommentWrapper>
         <Timeline data={timelineData} loading={loadingProposalDetail} />

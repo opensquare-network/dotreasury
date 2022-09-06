@@ -8,7 +8,6 @@ import TableLoading from "../../components/TableLoading";
 import TableCell from "../../components/TableCell";
 import User from "../../components/User";
 import Balance from "../../components/Balance";
-import { useIsAdmin } from "../../utils/hooks";
 import { proposalDetailSelector } from "../../store/reducers/proposalSlice";
 import {
   descriptionSelector,
@@ -17,6 +16,7 @@ import {
 import { accountSelector } from "../../store/reducers/accountSlice";
 import Tag from "../../components/Tag";
 import { addToast } from "../../store/reducers/toastSlice";
+import { useIsAdminQuery } from "../../utils/hooks";
 
 const IconButton = styled(Icon)`
   margin-left: 6px !important;
@@ -31,9 +31,8 @@ const StyledTable = styled(Table)`
   table-layout: fixed;
 `;
 
-const InformationTable = ({ loading, chain, proposalIndex }) => {
+const InformationTable = ({ loading, chain, proposalIndex, proposer }) => {
   const dispatch = useDispatch();
-  const isAdmin = useIsAdmin();
   const proposalDetail = useSelector(proposalDetailSelector);
   const descriptionDetail = useSelector(descriptionSelector);
   const [openDesModal, setOpenDesModal] = useState(false);
@@ -41,6 +40,9 @@ const InformationTable = ({ loading, chain, proposalIndex }) => {
   const [proposalType, setProposalType] = useState("");
   const [status, setStatus] = useState("");
   const account = useSelector(accountSelector);
+
+  const isAdminQuery = useIsAdminQuery();
+  const isAdmin = proposer === account?.address || isAdminQuery;
 
   useEffect(() => {
     setDescription(descriptionDetail?.description ?? "");

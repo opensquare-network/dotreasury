@@ -204,7 +204,7 @@ export function useWhyDidYouUpdate(name, props) {
   });
 }
 
-export function useIsAdmin() {
+export function useIsAdminQuery() {
   const location = useLocation();
   const q = queryString.parse(location.search);
   const isAdmin = q.admin === "true";
