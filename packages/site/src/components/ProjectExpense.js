@@ -6,10 +6,9 @@ import { CHAINS } from "../constants";
 const ExpenseWrapper = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-end;
   font-size: 14px;
-  line-height: 22px;
-  color: rgba(0, 0, 0, 0.65);
+  line-height: 20px;
+  color: rgba(0, 0, 0, 0.9);
   white-space: nowrap;
 `;
 
@@ -32,28 +31,31 @@ const DollarWrapper = styled.div`
   line-height: 18px;
   color: rgba(0, 0, 0, 0.3);
   white-space: nowrap;
-  text-align: right;
 `;
 
 function NormalizedValue({ value, symbol }) {
   const precisionValue = toPrecision(value, getPrecision(symbol), false);
   const localeValue = Number(precisionValue).toLocaleString();
 
-  return `${ localeValue } ${ (symbol || '').toUpperCase() }`;
+  return `${localeValue} ${(symbol || "").toUpperCase()}`;
 }
 
 export default function ProjectExpense({ expenseDot, expenseKsm, dollar }) {
   const numberDollar = Number(dollar);
   return (
     <div>
-      <ExpenseWrapper>
-        { expenseDot > 0 && <div>
-          <NormalizedValue value={ expenseDot } symbol={CHAINS.POLKADOT} />
-        </div> }
+      <ExpenseWrapper className="project-expense-wrapper">
+        {expenseDot > 0 && (
+          <div>
+            <NormalizedValue value={expenseDot} symbol={CHAINS.POLKADOT} />
+          </div>
+        )}
         <PlusWrapper>+</PlusWrapper>
-        {expenseKsm > 0 && <div>
-          <NormalizedValue value={ expenseKsm } symbol={CHAINS.KUSAMA} />
-        </div>}
+        {expenseKsm > 0 && (
+          <div>
+            <NormalizedValue value={expenseKsm} symbol={CHAINS.KUSAMA} />
+          </div>
+        )}
       </ExpenseWrapper>
       {!isNaN(numberDollar) && (
         <DollarWrapper>
