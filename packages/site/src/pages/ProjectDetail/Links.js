@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { getLinkNameAndSrc } from "../../utils";
 import { Image } from "semantic-ui-react";
 import ExternalLink from "../../components/ExternalLink";
+import { p_14_medium } from "../../styles/text";
 
 const LinksWrapper = styled.ul`
   list-style: none;
@@ -19,14 +20,14 @@ const LinkWrapper = styled.span`
   img {
     display: inline-block !important;
     margin-right: 4px;
+    width: 16.67px;
+    height: 16.67px;
   }
 `;
 
 const LinkText = styled.span`
   color: rgba(0, 0, 0, 0.9);
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 20px;
+  ${p_14_medium};
 `;
 
 export default function Links({ links }) {
