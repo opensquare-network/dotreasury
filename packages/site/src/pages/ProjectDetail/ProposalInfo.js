@@ -121,8 +121,6 @@ export default function ProposalInfo({ item }) {
   const isKSM = item.token === "ksm";
   const isProposal = item.type === types.proposal;
 
-  console.log(item);
-
   return (
     <div>
       <ProposalLink to={`/${item.token}/${link}`}>
