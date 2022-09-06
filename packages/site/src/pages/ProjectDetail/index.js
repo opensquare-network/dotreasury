@@ -17,6 +17,7 @@ import { useChainRoute } from "../../utils/hooks";
 import Rate from "../../components/Rate";
 import styled from "styled-components";
 import TableLoading from "../../components/TableLoading";
+import DetailGoBack from "../../pages/components/DetailGoBack";
 
 const CommentWrapper = styled.div`
   > :not(:first-child) {
@@ -48,6 +49,8 @@ const ProjectDetail = () => {
 
   return (
     <>
+      <DetailGoBack />
+
       <TableLoading loading={loading}>
         <Detail projectData={projectDetail} />
       </TableLoading>
