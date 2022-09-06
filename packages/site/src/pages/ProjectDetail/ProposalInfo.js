@@ -104,6 +104,7 @@ export default function ProposalInfo({ item }) {
   const id = getFundId(item);
 
   const isKSM = item.token === "ksm";
+  const isProposal = item.type === types.proposal;
 
   return (
     <div>
@@ -113,7 +114,7 @@ export default function ProposalInfo({ item }) {
           src={isKSM ? "/imgs/logo-kusama.svg" : "/imgs/logo-polkadot.svg"}
         />
         <ProposalType>{getFundTypeName(item.type)}</ProposalType>
-        <ProposalId>#{isKSM ? id : ellipsis(id || "")}</ProposalId>
+        <ProposalId>#{isProposal ? id : ellipsis(id || "")}</ProposalId>
       </ProposalLink>
       <ProposalDetailWrapper>
         <ProposalDetail>
