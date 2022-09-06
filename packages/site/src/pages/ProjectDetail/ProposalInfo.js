@@ -4,6 +4,8 @@ import { NavLink } from "react-router-dom";
 import { p_14_medium, p_14_normal } from "../../styles/text";
 import ProjectExpense from "../../components/ProjectExpense";
 import { ellipsis } from "../../utils/ellipsis";
+import ButtonList from "../../pages/Timeline/ButtonList";
+import { networkFromSymbol } from "../../utils";
 
 const ProposalLink = styled(NavLink)`
   display: inline-flex;
@@ -153,7 +155,13 @@ export default function ProposalInfo({ item }) {
           </ProposalDetail>
         )}
       </ProposalDetailWrapper>
-      ICONS
+
+      <ButtonList
+        extrinsicIndexer={item.indexer}
+        eventIndexer={item.indexer}
+        type={item.type}
+        chain={networkFromSymbol(item.token)}
+      />
     </div>
   );
 }
