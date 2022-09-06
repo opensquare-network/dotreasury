@@ -21,6 +21,7 @@ const Wrapper = styled(Card)`
 
   @media screen and (max-width: 900px) {
     display: block;
+    padding: 0;
   }
 `;
 
@@ -30,7 +31,7 @@ const NetworkDetailWrapper = styled.div`
   padding-right: 48px;
 
   @media screen and (max-width: 900px) {
-    padding-right: 0;
+    padding: 24px;
     display: block;
   }
 `;
@@ -83,12 +84,13 @@ const Divider = styled.div`
   @media screen and (max-width: 900px) {
     width: 100%;
     height: 1px;
-    margin: 24px 0;
+    margin: 0;
   }
 `;
 
 const ProposalExpenseWrapper = styled.div`
   flex-basis: 400px;
+  padding: 24px;
 `;
 
 const LinksWrapper = styled.div`
