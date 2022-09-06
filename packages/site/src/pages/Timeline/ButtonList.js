@@ -7,8 +7,6 @@ import ExternalLink from "../../components/ExternalLink";
 import { useIsMounted } from "../../utils/hooks";
 import { mrgap } from "../../styles";
 import polkassemblyApi from "../../services/polkassembly";
-import { useSelector } from "react-redux";
-import { chainSelector } from "../../store/reducers/chainSlice";
 import { TimelineItemType } from "../../constants";
 
 const Wrapper = styled.div`
@@ -19,11 +17,16 @@ const Wrapper = styled.div`
   `}
 `;
 
-const ButtonList = ({ extrinsicIndexer, eventIndexer, polkassembly, type }) => {
+const ButtonList = ({
+  extrinsicIndexer,
+  eventIndexer,
+  polkassembly,
+  type,
+  chain,
+}) => {
   const [polkassemblyUrl, setPolkassemblyUrl] = useState(null);
   const [subsquareUrl, setSubsquareUrl] = useState(null);
   const isMounted = useIsMounted();
-  const chain = useSelector(chainSelector);
 
   useEffect(() => {
     (async () => {
