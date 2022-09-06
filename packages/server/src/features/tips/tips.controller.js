@@ -40,7 +40,7 @@ class TipsController {
     const tipCol = await getTipCollection(chain);
     const total = tipCol.countDocuments(condition);
     const list = tipCol
-      .find(condition, { timeline: 0 })
+      .find(condition)
       .sort({
         isFinal: 1,
         "indexer.blockHeight": -1,
