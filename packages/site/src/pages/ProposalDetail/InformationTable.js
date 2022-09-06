@@ -16,8 +16,7 @@ import {
 import { accountSelector } from "../../store/reducers/accountSlice";
 import Tag from "../../components/Tag";
 import { addToast } from "../../store/reducers/toastSlice";
-import queryString from "query-string";
-import { useLocation } from "react-router";
+import { useIsAdminQuery } from "../../utils/hooks";
 
 const IconButton = styled(Icon)`
   margin-left: 6px !important;
@@ -34,7 +33,6 @@ const StyledTable = styled(Table)`
 
 const InformationTable = ({ loading, chain, proposalIndex, proposer }) => {
   const dispatch = useDispatch();
-  const location = useLocation();
   const proposalDetail = useSelector(proposalDetailSelector);
   const descriptionDetail = useSelector(descriptionSelector);
   const [openDesModal, setOpenDesModal] = useState(false);
@@ -43,8 +41,8 @@ const InformationTable = ({ loading, chain, proposalIndex, proposer }) => {
   const [status, setStatus] = useState("");
   const account = useSelector(accountSelector);
 
-  const q = queryString.parse(location.search);
-  const isAdmin = proposer === account?.address || q.admin === "true";
+  const isAdminQuery = useIsAdminQuery();
+  const isAdmin = proposer === account?.address || isAdminQuery;
 
   useEffect(() => {
     setDescription(descriptionDetail?.description ?? "");
