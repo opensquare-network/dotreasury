@@ -10,11 +10,13 @@ import {
   fetchProjects,
   projectDetailSelector,
   setProjectDetail,
+  loadingSelector,
 } from "../../store/reducers/projectSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import { useChainRoute } from "../../utils/hooks";
 import Rate from "../../components/Rate";
 import styled from "styled-components";
+import TableLoading from "../../components/TableLoading";
 
 const CommentWrapper = styled.div`
   > :not(:first-child) {
@@ -29,6 +31,7 @@ const ProjectDetail = () => {
 
   const dispatch = useDispatch();
   const chain = useSelector(chainSelector);
+  const loading = useSelector(loadingSelector);
 
   useEffect(() => {
     dispatch(fetchProjectDetail(chain, projectId));
@@ -45,8 +48,14 @@ const ProjectDetail = () => {
 
   return (
     <>
-      <Detail projectData={projectDetail} />
-      <Proposals data={projectDetail.funds} />
+      <TableLoading loading={loading}>
+        <Detail projectData={projectDetail} />
+      </TableLoading>
+
+      <TableLoading loading={loading}>
+        <Proposals data={projectDetail.funds} />
+      </TableLoading>
+
       <CommentWrapper>
         <Rate type="project" index={projectId} />
         <Comment type="project" index={projectId} />
