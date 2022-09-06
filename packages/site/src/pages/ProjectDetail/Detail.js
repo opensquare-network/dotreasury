@@ -18,16 +18,30 @@ const Wrapper = styled(Card)`
       text-align: left !important;
     }
   }
+
+  @media screen and (max-width: 900px) {
+    display: block;
+  }
 `;
 
 const NetworkDetailWrapper = styled.div`
   display: flex;
   flex: 1;
   padding-right: 48px;
+
+  @media screen and (max-width: 900px) {
+    padding-right: 0;
+    display: block;
+  }
 `;
 
 const IconImage = styled(Image)`
   margin-right: 24px;
+
+  @media screen and (max-width: 900px) {
+    margin-right: 0;
+    margin-bottom: 12px;
+  }
 `;
 
 const NetworkDetailInfo = styled.div`
@@ -65,10 +79,20 @@ const Divider = styled.div`
   height: inherit;
   background-color: #f4f4f4;
   margin: 0 24px;
+
+  @media screen and (max-width: 900px) {
+    width: 100%;
+    height: 1px;
+    margin: 24px 0;
+  }
 `;
 
 const ProposalExpenseWrapper = styled.div`
   flex-basis: 400px;
+`;
+
+const LinksWrapper = styled.div`
+  margin-top: 16px;
 `;
 
 const Detail = ({ projectData }) => {
@@ -101,7 +125,9 @@ const Detail = ({ projectData }) => {
             <TextMinor>{description}</TextMinor>
           </div>
 
-          <Links links={relatedLinks} />
+          <LinksWrapper>
+            <Links links={relatedLinks} />
+          </LinksWrapper>
         </NetworkDetailInfo>
       </NetworkDetailWrapper>
 
