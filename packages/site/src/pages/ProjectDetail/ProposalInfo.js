@@ -4,9 +4,9 @@ import { NavLink } from "react-router-dom";
 import { p_14_medium, p_14_normal } from "../../styles/text";
 import ProjectExpense from "../../components/ProjectExpense";
 import { ellipsis } from "../../utils/ellipsis";
-import ButtonList from "../../pages/Timeline/ButtonList";
 import { networkFromSymbol } from "../../utils";
 import dayjs from "dayjs";
+import ProposalInfoLinkList from "./ProposalInfoLinkList";
 
 const ProposalLink = styled(NavLink)`
   display: inline-flex;
@@ -30,6 +30,10 @@ const ProposalId = styled.p`
 `;
 
 const ProposalDetailWrapper = styled.div`
+  margin-top: 8px;
+`;
+
+const ProposalLinkListWrapper = styled.div`
   margin-top: 8px;
 `;
 
@@ -117,6 +121,8 @@ export default function ProposalInfo({ item }) {
   const isKSM = item.token === "ksm";
   const isProposal = item.type === types.proposal;
 
+  console.log(item);
+
   return (
     <div>
       <ProposalLink to={`/${item.token}/${link}`}>
@@ -166,12 +172,14 @@ export default function ProposalInfo({ item }) {
         )}
       </ProposalDetailWrapper>
 
-      <ButtonList
-        extrinsicIndexer={item.indexer}
-        eventIndexer={item.indexer}
-        type={item.type}
-        chain={networkFromSymbol(item.token)}
-      />
+      <ProposalLinkListWrapper>
+        <ProposalInfoLinkList
+          id={id}
+          type={item.type}
+          chain={networkFromSymbol(item.token)}
+          indexer={item?.indexer}
+        />
+      </ProposalLinkListWrapper>
     </div>
   );
 }
