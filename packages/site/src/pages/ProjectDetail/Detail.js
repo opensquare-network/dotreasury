@@ -73,7 +73,6 @@ const ProposalExpenseWrapper = styled.div`
 
 const Detail = ({ projectData }) => {
   const { name, logo, description, relatedLinks } = projectData;
-  console.log(projectData);
   const {
     fundsCount: {
       kusama: kusamaFundCount = 0,
