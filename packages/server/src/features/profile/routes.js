@@ -8,6 +8,7 @@ router.get("/account/:address/beneficiary/counts", beneficiaryController.getBene
 router.get("/account/:address/beneficiary/tips", beneficiaryController.getBeneficiaryTips);
 router.get("/account/:address/beneficiary/proposals", beneficiaryController.getBeneficiaryProposals);
 router.get("/account/:address/beneficiary/bounties", beneficiaryController.getBeneficiaryBounties);
+router.get("/account/:address/beneficiary/child-bounties", beneficiaryController.getBeneficiaryChildBounties);
 
 router.get("/account/:address/proposer/counts", proposerController.getProposerCounts);
 router.get("/account/:address/proposer/tips", proposerController.getProposerTips);
