@@ -1,6 +1,8 @@
+import { web3Enable } from '@polkadot/extension-dapp';
 import { createSelector, createSlice } from '@reduxjs/toolkit'
-import { encodeChainAddress } from '../../services/chainApi';
+import { encodeChainAddress, encodeSubstrateAddress } from '../../services/chainApi';
 import { sleep } from '../../utils';
+import { substrateWeb3Accounts } from '../../utils/extension';
 
 const storeAccount = localStorage.getItem("account");
 const account = storeAccount && JSON.parse(storeAccount);
@@ -46,6 +48,15 @@ export const checkAccount = () => async (dispatch) => {
   }
 
   await sleep(2000);
+
+  if (account.extension === "other") {
+    await web3Enable("doTreasury");
+    const accounts = await substrateWeb3Accounts();
+    if (!accounts.some(item => item.address === encodeSubstrateAddress(account.address))) {
+      dispatch(setAccount(null));
+    }
+    return;
+  }
 
   const extension = window?.injectedWeb3?.[account.extension];
   if (!extension) {

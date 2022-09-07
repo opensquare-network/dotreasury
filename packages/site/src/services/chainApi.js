@@ -1,5 +1,5 @@
 import { ApiPromise, WsProvider } from "@polkadot/api";
-import { isWeb3Injected, web3FromAddress } from "@polkadot/extension-dapp";
+import { isWeb3Injected, web3Enable, web3FromAddress } from "@polkadot/extension-dapp";
 import { stringToHex } from "@polkadot/util";
 import { encodeAddress } from "@polkadot/keyring";
 
@@ -80,12 +80,19 @@ export const signMessageWithExtension = async (text, address, extensionName) => 
     throw new Error(`Signing extension is not specified.`);
   }
 
+  let injector = null;
+
   const extension = window?.injectedWeb3?.[extensionName];
-  if (!extension) {
-    throw new Error(`Extension is not found: ${extensionName}`);
+  if (extension) {
+    injector = await extension.enable("doTreasury");
+  } else {
+    await web3Enable("doTreasury");
+    injector = await web3FromAddress(address);
   }
 
-  const injector = await extension.enable("doTreasury");
+  if (!injector) {
+    throw new Error(`Injector is not found`);
+  }
 
   const data = stringToHex(text);
   const result = await injector.signer.signRaw({
