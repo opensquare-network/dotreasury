@@ -14,5 +14,6 @@ router.get("/account/:address/proposer/counts", proposerController.getProposerCo
 router.get("/account/:address/proposer/tips", proposerController.getProposerTips);
 router.get("/account/:address/proposer/proposals", proposerController.getProposerProposals);
 router.get("/account/:address/proposer/bounties", proposerController.getProposerBounties);
+router.get("/account/:address/proposer/child-bounties", proposerController.getProposerChildBounties);
 
 module.exports = router;

@@ -2,6 +2,7 @@ const {
   getTipCollection,
   getProposalCollection,
   getBountyCollection,
+  getChildBountyCollection,
 } = require("../../mongo");
 const { extractPage } = require("../../utils");
 
@@ -17,10 +18,14 @@ async function getProposerCounts(ctx) {
   const bountyCol = await getBountyCollection(chain);
   const bountiesCount = await bountyCol.countDocuments({ "meta.proposer": address });
 
+  const childBountyCol = await getChildBountyCollection(chain);
+  const childBountiesCount = await childBountyCol.countDocuments({ proposer: address });
+
   ctx.body = {
     tipsCount,
     proposalsCount,
     bountiesCount,
+    childBountiesCount,
   };
 }
 
@@ -90,9 +95,32 @@ async function getProposerBounties(ctx) {
   };
 }
 
+async function getProposerChildBounties(ctx) {
+  const { chain, address } = ctx.params;
+  const { page, pageSize } = extractPage(ctx);
+
+  const q = { proposer: address };
+  const childBountyCol = await getChildBountyCollection(chain);
+  const total = await childBountyCol.countDocuments(q);
+  const items = await childBountyCol
+    .find(q)
+    .sort({ "indexer.blockHeight": -1 })
+    .skip(page * pageSize)
+    .limit(pageSize)
+    .toArray();
+
+  ctx.body = {
+    items,
+    page,
+    pageSize,
+    total,
+  };
+}
+
 module.exports = {
   getProposerCounts,
   getProposerTips,
   getProposerProposals,
   getProposerBounties,
+  getProposerChildBounties,
 };
