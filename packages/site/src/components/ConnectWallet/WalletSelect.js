@@ -86,30 +86,38 @@ export const setOtherWallet = async (address, setWallet) => {
 const useInjectedWeb3 = () => {
   const isMounted = useIsMounted();
   const [injectedWeb3, setInjectedWeb3] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    if (typeof window !== "undefined" && window.injectedWeb3) {
+    if (typeof window !== "undefined") {
       setTimeout(() => {
         if (isMounted.current) {
+          setLoading(false);
           setInjectedWeb3(window.injectedWeb3);
         }
       }, 1000);
     }
   }, [isMounted]);
-  return injectedWeb3;
+
+  return { loading, injectedWeb3 };
 };
 
 const Wallet = ({ wallet, onClick, selected = false, loading = false }) => {
   const [installed, setInstalled] = useState(null);
-  const injectedWeb3 = useInjectedWeb3();
+  const { loading: loadingInjectedWeb3, injectedWeb3 } = useInjectedWeb3();
   const isMounted = useIsMounted();
   const Logo = wallet.logo;
 
   useEffect(() => {
     // update if installed changes
-    if (injectedWeb3 && isMounted.current) {
+    if (loadingInjectedWeb3) {
+      return;
+    }
+
+    if (isMounted.current) {
       setInstalled(!!injectedWeb3?.[wallet?.extensionName]);
     }
-  }, [injectedWeb3, isMounted, wallet]);
+  }, [loadingInjectedWeb3, injectedWeb3, isMounted, wallet?.extensionName]);
 
   return (
     <WalletOption selected={selected} onClick={onClick} installed={installed}>
@@ -136,17 +144,19 @@ export default function WalletSelect({
 }) {
   const isMounted = useIsMounted();
   const [waitingPermissionWallet, setWaitingPermissionWallet] = useState(null);
-  const injectedWeb3 = useInjectedWeb3();
+  const { injectedWeb3 } = useInjectedWeb3();
 
   useEffect(() => {
     if (!injectedWeb3) {
       return;
     }
+
     for (let wallet of Wallets) {
       if (injectedWeb3[wallet.extensionName]) {
         return;
       }
     }
+
     (async () => {
       await web3Enable("doTreasury");
       const extensionAccounts = await substrateWeb3Accounts();
@@ -162,10 +172,11 @@ export default function WalletSelect({
       });
 
       if (isMounted.current) {
+        onSelect("other");
         setAccounts(accounts);
       }
     })();
-  }, [injectedWeb3, isMounted, setAccounts]);
+  }, [injectedWeb3, isMounted, onSelect, setAccounts]);
 
   const loadAccounts = (selectedWallet) => {
     (async () => {

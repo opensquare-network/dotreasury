@@ -92,7 +92,7 @@ export default function ConnectWalletModal({
         By connecting wallet, I have read and agree to doTreasury’s the terms of the User Agreement and Privacy Notice.
       </Description>
       {
-        (selectedWallet && accounts) ? (
+        (selectedWallet && accounts?.length > 0) ? (
           <Connect>
             <AccountSelect
               chain={chain}
