@@ -45,6 +45,7 @@ import Privacy from "../pages/Privacy";
 import Transfers from "../pages/Transfers";
 import TransfersSlash from "../pages/TransfersSlash";
 import ProposalBeneficiaries from "../pages/ProposalBeneficiaries";
+import Participants from "../pages/Participants";
 
 import { usePreload } from "../utils/hooks";
 import { useSelector } from "react-redux";
@@ -173,6 +174,11 @@ export default function App() {
                 exact
                 path="/:symbol(ksm|dot)/income/others"
                 component={OthersIncome}
+              />
+              <Route
+                exact
+                path="/:symbol(ksm|dot)/participants"
+                component={Participants}
               />
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
