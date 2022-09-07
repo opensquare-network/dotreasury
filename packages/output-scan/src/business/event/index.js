@@ -74,7 +74,7 @@ async function handleEvents(events, extrinsics, blockIndexer) {
       extrinsic = extrinsics[extrinsicIndex];
     }
 
-    await handleCommon(event, indexer, extrinsics);
+    await handleCommon(event, indexer, extrinsic);
 
     if (phase.isNone) {
       await handleEventWithoutExtrinsic(blockIndexer, event, sort, events);

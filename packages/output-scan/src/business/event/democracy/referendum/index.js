@@ -30,7 +30,7 @@ function isReferendumEvent(section, method) {
   return ReferendumEvents.hasOwnProperty(method);
 }
 
-async function handleReferendumEvent(event, indexer, blockEvents) {
+async function handleReferendumEvent(event, indexer) {
   if (!reachTheLowestHandleHeight(indexer.blockHeight)) {
     return
   }
