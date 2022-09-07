@@ -123,6 +123,8 @@ export const useMenuTab = () => {
       ? "TipFinders"
       : pathname === `/${symbol}/proposal-beneficiaries`
       ? "ProposalBeneficiaries"
+      : pathname.startsWith(`/${symbol}/participants`)
+      ? "Participants"
       : "Home";
     dispatch(setShowMenuTabs(menuTabsName));
   }, [pathname, dispatch, symbol]);
