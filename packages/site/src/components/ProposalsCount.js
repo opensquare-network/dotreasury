@@ -1,8 +1,8 @@
 import { Fragment } from "react";
 import { Image } from "semantic-ui-react";
 import styled from "styled-components";
-import { TEXT_DARK_ACCESSORY, TEXT_DARK_MAJOR } from "../../constants";
-import { p_14_normal } from "../../styles/text";
+import { TEXT_DARK_ACCESSORY, TEXT_DARK_MAJOR } from "../constants";
+import { p_14_normal } from "../styles/text";
 
 const Wrapper = styled.div`
   display: flex;
@@ -27,9 +27,11 @@ const SymbolWrapper = styled.span`
   margin-right: 4px;
 `;
 
-export default function ProposalsCellContent({ data }) {
-  const { proposals, bounties, tips } = data ?? {};
-
+/**
+ * @description Count proposals, bounties and tips
+ * @example 2 P(roposals) + 1 B(ounties) + 4 T(ips)
+ */
+export default function ProposalsCount({ proposals, bounties, tips }) {
   const symbols = [];
   const makeSymbol = (count, symbolIconUrl) => {
     return (
