@@ -1,5 +1,15 @@
 import { css } from "styled-components";
 
+// headings
+export const h4_16_semibold = css`
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+`;
+
+// paragraphs
 export const p_14_medium = css`
   font-family: "Inter";
   font-style: normal;
@@ -7,7 +17,6 @@ export const p_14_medium = css`
   font-size: 14px;
   line-height: 20px;
 `;
-
 export const p_14_normal = css`
   font-family: "Inter";
   font-style: normal;
