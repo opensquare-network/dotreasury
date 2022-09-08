@@ -32,7 +32,11 @@ async function updateParticipants(chain) {
     proposers: bountyProposers,
     beneficiaries: bountyBeneficiaries
   } = await statBounties(chain);
-  const { counts: childBounties } = await statChildBounties(chain);
+  const {
+    counts: childBounties,
+    proposers: childBountyProposers,
+    beneficiaries: childBountyBeneficiaries
+  } = await statChildBounties(chain);
 
   const participants = new Set([
     ...Object.keys(tips),
@@ -46,8 +50,14 @@ async function updateParticipants(chain) {
     const proposalsCount = proposals[address] ?? 0;
     const bountiesCount = bounties[address] ?? 0;
     const childBountiesCount = childBounties[address] ?? 0;
-    const isProposer = tipProposers.has(address) || proposalProposers.has(address) || bountyProposers.has(address);
-    const isBeneficiary = tipBeneficiaries.has(address) || proposalBeneficiaries.has(address) || bountyBeneficiaries.has(address);
+    const isProposer = tipProposers.has(address) ||
+      proposalProposers.has(address) ||
+      bountyProposers.has(address) ||
+      childBountyProposers.has(address);
+    const isBeneficiary = tipBeneficiaries.has(address) ||
+      proposalBeneficiaries.has(address) ||
+      bountyBeneficiaries.has(address) ||
+      childBountyBeneficiaries.has(address);
 
     await saveParticipant(chain, address, {
       tips: tipsCount,
