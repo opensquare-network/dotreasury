@@ -51,27 +51,29 @@ export default function Participants() {
       loading={loading}
       header={<Title>Participants</Title>}
       footer={
-        <ResponsivePagination
-          activePage={tablePage}
-          totalPages={totalPages}
-          pageSize={pageSize}
-          setPageSize={(size) => {
-            setTablePage(DEFAULT_QUERY_PAGE);
-            setPageSize(size);
-            history.push({
-              search: null,
-            });
-          }}
-          onPageChange={(_, { activePage }) => {
-            history.push({
-              search:
-                activePage === DEFAULT_QUERY_PAGE
-                  ? null
-                  : `?page=${activePage}`,
-            });
-            setTablePage(activePage);
-          }}
-        />
+        !!tableData?.length && (
+          <ResponsivePagination
+            activePage={tablePage}
+            totalPages={totalPages}
+            pageSize={pageSize}
+            setPageSize={(size) => {
+              setTablePage(DEFAULT_QUERY_PAGE);
+              setPageSize(size);
+              history.push({
+                search: null,
+              });
+            }}
+            onPageChange={(_, { activePage }) => {
+              history.push({
+                search:
+                  activePage === DEFAULT_QUERY_PAGE
+                    ? null
+                    : `?page=${activePage}`,
+              });
+              setTablePage(activePage);
+            }}
+          />
+        )
       }
     />
   );
