@@ -1,5 +1,5 @@
 import Tag from "../../components/Tag/Tag";
-import ProposalsCellContent from "./ProposalsCellContent";
+import ProposalsCount from "../../components/ProposalsCount";
 
 const id = {
   key: "id",
@@ -30,7 +30,7 @@ const proposals = {
   cellProps: { textAlign: "right" },
   cellRender() {
     // FIXME: pass data
-    return <ProposalsCellContent />;
+    return <ProposalsCount />;
   },
 };
 
