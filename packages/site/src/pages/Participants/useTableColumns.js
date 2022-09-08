@@ -1,3 +1,5 @@
+import Tag from "../../components/Tag/Tag";
+
 const id = {
   key: "id",
   title: "ID",
@@ -11,7 +13,11 @@ const role = {
   key: "role",
   title: "Role",
   cellRender() {
-    return <div>role</div>;
+    return (
+      <div>
+        <Tag rounded>Role</Tag>
+      </div>
+    );
   },
 };
 
