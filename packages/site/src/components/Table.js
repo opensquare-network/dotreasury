@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 import { Table as SemanticTable } from "semantic-ui-react";
 import _get from "lodash.get";
+import _set from "lodash.set";
 import Text from "./Text";
 import { useEffect, useState } from "react";
 import TableNoDataCell from "./TableNoDataCell";
@@ -167,11 +168,12 @@ function TableBodyRow({
         cellRender,
         dataIndex,
         cellClassName = "",
-        cellProps,
+        cellProps = {},
         show = true,
         width,
       } = column;
 
+      _set(cellProps, "style.width", width);
       const cellValue = _get(item, dataIndex);
 
       if (!show) {
@@ -179,12 +181,7 @@ function TableBodyRow({
       }
 
       return (
-        <TableCell
-          key={key}
-          width={width}
-          {...cellProps}
-          className={cellClassName}
-        >
+        <TableCell key={key} {...cellProps} className={cellClassName}>
           {cellRender?.(cellValue, item) || <Text>{cellValue}</Text>}
         </TableCell>
       );
@@ -255,7 +252,7 @@ export function Table({
             const {
               key = index,
               title,
-              headerCellProps,
+              headerCellProps = {},
               headerCellClassName = "",
               show = true,
               width,
@@ -265,10 +262,11 @@ export function Table({
               return null;
             }
 
+            _set(headerCellProps, "style.width", width);
+
             return (
               <TableHeaderCell
                 key={key}
-                width={width}
                 {...headerCellProps}
                 className={headerCellClassName}
               >
