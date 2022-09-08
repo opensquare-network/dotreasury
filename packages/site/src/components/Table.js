@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Table as SemanticTable } from "semantic-ui-react";
 import _get from "lodash.get";
 import Text from "./Text";
@@ -124,13 +124,22 @@ const TreeToggleButton = styled.button`
   justify-content: center;
 `;
 
-const {
-  Header: TableHeader,
-  Row: TableRow,
-  HeaderCell: TableHeaderCell,
-  Body: TableBody,
-  Cell: TableCell,
-} = CustomTable;
+const { Header: TableHeader, Row: TableRow, Body: TableBody } = CustomTable;
+
+const TableHeaderCell = styled(CustomTable.HeaderCell)`
+  ${(p) =>
+    p.width &&
+    css`
+      width: ${p.width};
+    `}
+`;
+const TableCell = styled(CustomTable.Cell)`
+  ${(p) =>
+    p.width &&
+    css`
+      width: ${p.width};
+    `}
+`;
 
 function TableBodyRow({
   onClick,
@@ -160,6 +169,7 @@ function TableBodyRow({
         cellClassName = "",
         cellProps,
         show = true,
+        width,
       } = column;
 
       const cellValue = _get(item, dataIndex);
@@ -169,7 +179,12 @@ function TableBodyRow({
       }
 
       return (
-        <TableCell key={key} {...cellProps} className={cellClassName}>
+        <TableCell
+          key={key}
+          width={width}
+          {...cellProps}
+          className={cellClassName}
+        >
           {cellRender?.(cellValue, item) || <Text>{cellValue}</Text>}
         </TableCell>
       );
@@ -243,6 +258,7 @@ export function Table({
               headerCellProps,
               headerCellClassName = "",
               show = true,
+              width,
             } = column;
 
             if (!show) {
@@ -252,6 +268,7 @@ export function Table({
             return (
               <TableHeaderCell
                 key={key}
+                width={width}
                 {...headerCellProps}
                 className={headerCellClassName}
               >
