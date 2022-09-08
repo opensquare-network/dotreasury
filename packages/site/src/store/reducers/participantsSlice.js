@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import api from "../../services/scanApi";
 
 const participantsSlice = createSlice({
   name: "participants",
@@ -21,15 +22,15 @@ const participantsSlice = createSlice({
 
 export const { setLoading, setParticipants } = participantsSlice.actions;
 
-// FIXME: participants fetch
 export const fetchParticipants =
   (chain, page, pageSize) => async (dispatch) => {
     dispatch(setLoading(true));
 
     try {
-      const { result } = {
-        result: participantsSlice.getInitialState().participants,
-      };
+      const { result } = api.fetch(`/${chain}/participants`, {
+        page,
+        pageSize,
+      });
       dispatch(setParticipants(result || {}));
     } finally {
       dispatch(setLoading(false));
