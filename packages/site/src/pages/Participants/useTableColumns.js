@@ -3,7 +3,7 @@ import ProposalsCount from "../../components/ProposalsCount";
 import User from "../../components/User";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { chainSelector } from "../../store/reducers/chainSlice";
+import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 
 const id = (options) => {
   return {
@@ -49,7 +49,7 @@ const proposals = {
 };
 
 export function useTableColumns() {
-  const chain = useSelector(chainSelector);
+  const chain = useSelector(chainSymbolSelector);
 
   return {
     id: id({ chain }),
