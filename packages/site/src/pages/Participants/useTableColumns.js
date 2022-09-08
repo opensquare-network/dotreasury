@@ -1,4 +1,5 @@
 import Tag from "../../components/Tag/Tag";
+import ProposalsCellContent from "./ProposalsCellContent";
 
 const id = {
   key: "id",
@@ -28,7 +29,8 @@ const proposals = {
   headerCellProps: { textAlign: "right" },
   cellProps: { textAlign: "right" },
   cellRender() {
-    return <div>proposals</div>;
+    // FIXME: pass data
+    return <ProposalsCellContent />;
   },
 };
 
