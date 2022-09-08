@@ -24,3 +24,10 @@ export const p_14_normal = css`
   font-size: 14px;
   line-height: 20px;
 `;
+export const p_12_medium = css`
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+`;
