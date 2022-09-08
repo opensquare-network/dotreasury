@@ -22,16 +22,19 @@ const participantsSlice = createSlice({
 export const { setLoading, setParticipants } = participantsSlice.actions;
 
 // FIXME: participants fetch
-export const fetchParticipants = () => async (dispatch) => {
-  dispatch(setLoading(true));
+export const fetchParticipants =
+  (chain, page, pageSize) => async (dispatch) => {
+    dispatch(setLoading(true));
 
-  try {
-    const { result } = {};
-    dispatch(setParticipants(result || {}));
-  } finally {
-    dispatch(setLoading(false));
-  }
-};
+    try {
+      const { result } = {
+        result: participantsSlice.getInitialState().participants,
+      };
+      dispatch(setParticipants(result || {}));
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
 
 export const participantsSelector = (state) => state.participants.participants;
 export const loadingSelector = (state) => state.participants.loading;
