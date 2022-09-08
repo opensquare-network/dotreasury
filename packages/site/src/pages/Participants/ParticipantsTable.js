@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { Table } from "../../components/Table";
 import TableLoading from "../../components/TableLoading";
 import Card from "../../components/Card";
+import { useTableColumns } from "./useTableColumns";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -37,13 +38,19 @@ const HeaderWrapper = styled.div`
 `;
 
 export default function ParticipantsTable({ data, loading, header, footer }) {
+  const { id, role, proposals } = useTableColumns();
+
+  const columns = [id, role, proposals];
+
   return (
     <CardWrapper>
       {header && <HeaderWrapper>{header}</HeaderWrapper>}
 
       <Wrapper>
         <TableWrapper>
-          <TableLoading loading={loading}>{data && <Table />}</TableLoading>
+          <TableLoading loading={loading}>
+            {data && <Table data={data} columns={columns} />}
+          </TableLoading>
         </TableWrapper>
       </Wrapper>
 
