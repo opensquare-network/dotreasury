@@ -1,9 +1,10 @@
-export const TEXT_DARK_MAJOR = "#1D253C";
+export const TEXT_DARK_MAJOR = "rgba(0, 0, 0, 0.9)";
 export const TEXT_DARK_ACCESSORY = "rgba(0, 0, 0, 0.3)";
 export const TEXT_DARK_MINOR = "rgba(29, 37, 60, 0.64)";
 export const TEXT_DARK_DISABLE = "rgba(29, 37, 60, 0.24)";
 export const Tertiary_Blue_500 = "#086DE3";
 export const Tertiary_Green_500 = "#0EAB0E";
+export const Greyscale_Grey_100 = "#fafafa";
 export const PRIMARY_THEME_COLOR = "#DF405D";
 export const SECONDARY_THEME_COLOR = "#FFEEF1";
 export const WARNING_COLOR = "#EC4730";
