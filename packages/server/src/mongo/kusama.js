@@ -16,6 +16,7 @@ const tipFinderCollectionName = "tipFinder";
 const proposalBeneficiaryCollectionName = "proposalBeneficiary";
 const burntCollectionName = "burnt";
 const outputTransferCollectionName = "outputTransfer";
+const participantCollectionName = "participant";
 
 // income collections
 const incomeInflationCollectionName = "inflation";
@@ -49,6 +50,7 @@ let burntCol = null;
 let outputTransferCol = null;
 let outputWeeklyStatsCol = null;
 let outputStatusCol = null;
+let participantCol = null;
 
 let incomeInflationCol = null;
 let stakingSlashCol = null;
@@ -90,6 +92,7 @@ async function initDb() {
   outputTransferCol = outputDb.collection(outputTransferCollectionName);
   outputWeeklyStatsCol = outputDb.collection(weeklyStatsCollectionName);
   outputStatusCol = outputDb.collection(statusCollectionName);
+  participantCol = outputDb.collection(participantCollectionName);
 
   await _createIndexes();
 }
@@ -219,6 +222,11 @@ async function getOutputWeeklyStatsCollection() {
   return outputWeeklyStatsCol;
 }
 
+async function getParticipantCollection() {
+  await tryInit(participantCol);
+  return participantCol;
+}
+
 module.exports = {
   initDb,
   getStatusCollection,
@@ -243,4 +251,5 @@ module.exports = {
   getInputWeeklyStatsCollection,
   getOutputWeeklyStatsCollection,
   getOutputStatusCollection,
+  getParticipantCollection,
 };

@@ -96,6 +96,10 @@ function getOutputWeeklyStatsCollection(chain) {
   return db(chain).getOutputWeeklyStatsCollection();
 }
 
+function getParticipantCollection(chain) {
+  return db(chain).getParticipantCollection();
+}
+
 module.exports = {
   initDb,
   getStatusCollection,
@@ -120,4 +124,5 @@ module.exports = {
   getInputWeeklyStatsCollection,
   getOutputWeeklyStatsCollection,
   getOutputStatusCollection,
+  getParticipantCollection,
 };
