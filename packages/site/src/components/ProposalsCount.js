@@ -29,7 +29,7 @@ const SymbolWrapper = styled.span`
 
 /**
  * @description Count proposals, bounties and tips
- * @example 2 P(roposals) + 1 B(ounties) + 4 T(ips)
+ * @example 2P(roposals) + 1B(ounties) + 4T(ips)
  */
 export default function ProposalsCount({ proposals, bounties, tips }) {
   const symbols = [];
