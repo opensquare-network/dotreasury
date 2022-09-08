@@ -1,9 +1,14 @@
+import styled from "styled-components";
 import Tag from "../../components/Tag/Tag";
 import ProposalsCount from "../../components/ProposalsCount";
 import User from "../../components/User";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
+
+const IDWrapper = styled.div`
+  display: inline-block;
+`;
 
 const id = (options) => {
   return {
@@ -13,12 +18,14 @@ const id = (options) => {
     cellRender() {
       // FIXME: link to, address
       return (
-        <NavLink to={`/${options?.chain}/participants`}>
-          <User
-            noLink
-            address="GLVeryFRbg5hEKvQZcAnLvXZEXhiYaBjzSDwrXBXrfPF7wj"
-          />
-        </NavLink>
+        <IDWrapper>
+          <NavLink to={`/${options?.chainSymbol}/participants`}>
+            <User
+              noLink
+              address="GLVeryFRbg5hEKvQZcAnLvXZEXhiYaBjzSDwrXBXrfPF7wj"
+            />
+          </NavLink>
+        </IDWrapper>
       );
     },
   };
@@ -49,10 +56,13 @@ const proposals = {
 };
 
 export function useTableColumns() {
-  const chain = useSelector(chainSymbolSelector);
+  const chainSymbol = useSelector(chainSymbolSelector);
+  const options = {
+    chainSymbol: chainSymbol?.toLowerCase(),
+  };
 
   return {
-    id: id({ chain }),
+    id: id(options),
     role,
     proposals,
   };
