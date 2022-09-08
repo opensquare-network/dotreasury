@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { Image } from "semantic-ui-react";
 import styled from "styled-components";
 import { TEXT_DARK_ACCESSORY, TEXT_DARK_MAJOR } from "../../constants";
@@ -32,11 +33,11 @@ export default function ProposalsCellContent({ data }) {
   const symbols = [];
   const makeSymbol = (count, symbolIconUrl) => {
     return (
-      <>
+      <Fragment key={symbolIconUrl}>
         <SymbolWrapper>{count}</SymbolWrapper>
         <Image src={symbolIconUrl} />
         <PlusWrapper>+</PlusWrapper>
-      </>
+      </Fragment>
     );
   };
 
