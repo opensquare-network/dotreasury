@@ -125,22 +125,13 @@ const TreeToggleButton = styled.button`
   justify-content: center;
 `;
 
-const { Header: TableHeader, Row: TableRow, Body: TableBody } = CustomTable;
-
-const TableHeaderCell = styled(CustomTable.HeaderCell)`
-  ${(p) =>
-    p.width &&
-    css`
-      width: ${p.width};
-    `}
-`;
-const TableCell = styled(CustomTable.Cell)`
-  ${(p) =>
-    p.width &&
-    css`
-      width: ${p.width};
-    `}
-`;
+const {
+  Header: TableHeader,
+  Row: TableRow,
+  HeaderCell: TableHeaderCell,
+  Body: TableBody,
+  Cell: TableCell,
+} = CustomTable;
 
 function TableBodyRow({
   onClick,
@@ -258,11 +249,11 @@ export function Table({
               width,
             } = column;
 
+            _set(headerCellProps, "style.width", width);
+
             if (!show) {
               return null;
             }
-
-            _set(headerCellProps, "style.width", width);
 
             return (
               <TableHeaderCell
