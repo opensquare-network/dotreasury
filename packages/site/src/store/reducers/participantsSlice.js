@@ -27,7 +27,7 @@ export const fetchParticipants =
     dispatch(setLoading(true));
 
     try {
-      const { result } = api.fetch(`/${chain}/participants`, {
+      const { result } = await api.fetch(`/${chain}/participants`, {
         page,
         pageSize,
       });
