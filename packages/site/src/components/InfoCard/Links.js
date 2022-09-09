@@ -7,7 +7,8 @@ import { p_14_medium } from "../../styles/text";
 const LinksWrapper = styled.ul`
   list-style: none;
   display: flex;
-  gap: 4px;
+  flex-wrap: wrap;
+  gap: 8px;
 `;
 
 const LinkWrapper = styled.span`
@@ -20,8 +21,8 @@ const LinkWrapper = styled.span`
   img {
     display: inline-block !important;
     margin-right: 4px;
-    width: 16.67px;
-    height: 16.67px;
+    width: 20px;
+    height: 20px;
   }
 `;
 
