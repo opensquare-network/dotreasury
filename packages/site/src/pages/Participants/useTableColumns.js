@@ -15,15 +15,13 @@ const id = (options) => {
     key: "id",
     title: "ID",
     width: "320px",
-    cellRender() {
-      // FIXME: link to, address
+    cellRender(_, data) {
       return (
         <IDWrapper>
-          <NavLink to={`/${options?.chainSymbol}/participants`}>
-            <User
-              noLink
-              address="GLVeryFRbg5hEKvQZcAnLvXZEXhiYaBjzSDwrXBXrfPF7wj"
-            />
+          <NavLink
+            to={`/${options?.chainSymbol}/participants/${data?.address}`}
+          >
+            <User noLink address={data?.address} />
           </NavLink>
         </IDWrapper>
       );
@@ -34,11 +32,14 @@ const id = (options) => {
 const role = {
   key: "role",
   title: "Role",
-  cellRender() {
+  cellRender(_, data) {
     return (
-      <div>
-        <Tag rounded>Role</Tag>
-      </div>
+      <>
+        {/* FIXME: council member, currently not include this field from data */}
+        {data?.isCouncilMember && <Tag rounded>Council Member</Tag>}
+        {data?.isBeneficiary && <Tag rounded>Benecifiary</Tag>}
+        {data?.isProposer && <Tag rounded>Proposer</Tag>}
+      </>
     );
   },
 };
@@ -49,9 +50,14 @@ const proposals = {
   width: "468px",
   headerCellProps: { textAlign: "right" },
   cellProps: { textAlign: "right" },
-  cellRender() {
-    // FIXME: pass data
-    return <ProposalsCount />;
+  cellRender(_, data) {
+    return (
+      <ProposalsCount
+        proposals={data?.proposals}
+        bounties={data?.bounties + data?.childBounties}
+        tips={data?.tips}
+      />
+    );
   },
 };
 
