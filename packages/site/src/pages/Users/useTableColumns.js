@@ -10,6 +10,10 @@ const IDWrapper = styled.div`
   display: inline-block;
 `;
 
+const ProposalsWrapper = styled.div`
+  display: inline-flex;
+`;
+
 const id = (options) => {
   return {
     key: "id",
@@ -52,11 +56,13 @@ const proposals = {
   cellProps: { textAlign: "right" },
   cellRender(_, data) {
     return (
-      <ProposalsCount
-        proposals={data?.proposals}
-        bounties={data?.bounties + data?.childBounties}
-        tips={data?.tips}
-      />
+      <ProposalsWrapper>
+        <ProposalsCount
+          proposals={data?.proposals}
+          bounties={data?.bounties + data?.childBounties}
+          tips={data?.tips}
+        />
+      </ProposalsWrapper>
     );
   },
 };
