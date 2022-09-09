@@ -1,5 +1,6 @@
 // used in pages
-// - project detail - users detail
+// - project detail
+// - users detail
 
 import {
   InfoCardWrapper,
