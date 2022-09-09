@@ -83,7 +83,9 @@ export const InfoCardDivider = styled.div`
 `;
 
 export const InfoCardExtraWrapper = styled.div`
-  padding: 24px;
+  @media screen and (max-width: 900px) {
+    padding: 24px;
+  }
 `;
 
 export const InfoCardExtraItemWrapper = styled.div`
