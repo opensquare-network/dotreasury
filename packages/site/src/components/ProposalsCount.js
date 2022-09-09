@@ -7,7 +7,6 @@ import { p_14_normal } from "../styles/text";
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-end;
   ${p_14_normal};
 `;
 
