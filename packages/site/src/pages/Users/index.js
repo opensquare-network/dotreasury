@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import ParticipantsTable from "./ParticipantsTable";
+import UsersTable from "./UsersTable";
 import { h4_16_semibold } from "../../styles/text";
 import ResponsivePagination from "../../components/ResponsivePagination";
 import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../constants";
@@ -8,10 +8,10 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import {
-  fetchParticipants,
+  fetchUsers,
   loadingSelector,
-  participantsSelector,
-} from "../../store/reducers/participantsSlice";
+  usersSelector,
+} from "../../store/reducers/usersSlice";
 import { useEffect } from "react";
 import { useHistory } from "react-router";
 
@@ -35,21 +35,21 @@ export default function Participants() {
 
   const dispatch = useDispatch();
   const history = useHistory();
-  const { items: tableData, total } = useSelector(participantsSelector);
+  const { items: tableData, total } = useSelector(usersSelector);
   const loading = useSelector(loadingSelector);
   const chain = useSelector(chainSelector);
 
   const totalPages = Math.ceil(total / pageSize);
 
   useEffect(() => {
-    dispatch(fetchParticipants(chain, tablePage - 1, pageSize));
+    dispatch(fetchUsers(chain, tablePage - 1, pageSize));
   }, [dispatch, chain, tablePage, pageSize]);
 
   return (
-    <ParticipantsTable
+    <UsersTable
       data={tableData}
       loading={loading}
-      header={<Title>Participants</Title>}
+      header={<Title>Users</Title>}
       footer={
         !!tableData?.length && (
           <ResponsivePagination
