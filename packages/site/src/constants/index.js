@@ -5,6 +5,7 @@ export const TEXT_DARK_DISABLE = "rgba(29, 37, 60, 0.24)";
 export const Tertiary_Blue_500 = "#086DE3";
 export const Tertiary_Green_500 = "#0EAB0E";
 export const Greyscale_Grey_100 = "#fafafa";
+export const Greyscale_Grey_200 = "#f4f4f4";
 export const PRIMARY_THEME_COLOR = "#DF405D";
 export const SECONDARY_THEME_COLOR = "#FFEEF1";
 export const WARNING_COLOR = "#EC4730";
