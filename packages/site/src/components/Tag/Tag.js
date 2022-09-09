@@ -13,6 +13,10 @@ const TagWrapper = styled.span`
     css`
       border-radius: 9999px;
     `}
+
+  & + & {
+    margin-left: 8px;
+  }
 `;
 
 /**
