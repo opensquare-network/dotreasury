@@ -35,17 +35,24 @@ export const InfoCardDetailWrapper = styled.div`
   }
 `;
 
-export const InfoCardIcon = styled(Image)`
+export const InfoCardIconWrapper = styled.div`
   margin-right: 24px;
-  width: 64px;
-  height: 64px;
-  display: inline-flex;
-  align-items: center;
+  min-width: 64px;
+  min-height: 64px;
+  max-width: 64px;
+  max-height: 64px;
 
   @media screen and (max-width: 900px) {
     margin-right: 0;
     margin-bottom: 12px;
   }
+`;
+
+export const InfoCardIcon = styled(Image)`
+  min-width: inherit;
+  min-height: inherit;
+  max-width: inherit;
+  max-height: inherit;
 `;
 
 export const InfoCardDetail = styled.div`

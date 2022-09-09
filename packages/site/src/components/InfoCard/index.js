@@ -14,6 +14,7 @@ import {
   InfoCardExtraItemWrapper,
   InfoCardExtraItemLabel,
   InfoCardDivider,
+  InfoCardIconWrapper,
 } from "./styled";
 import Links from "./Links";
 
@@ -21,7 +22,9 @@ function InfoCard({ icon, title, description, links, extra }) {
   return (
     <InfoCardWrapper>
       <InfoCardDetailWrapper>
-        <InfoCardIcon src={icon} />
+        <InfoCardIconWrapper>
+          {typeof icon === "string" ? <InfoCardIcon src={icon} /> : icon}
+        </InfoCardIconWrapper>
 
         <InfoCardDetail>
           <div>
