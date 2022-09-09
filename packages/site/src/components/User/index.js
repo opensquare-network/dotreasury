@@ -22,15 +22,7 @@ const BadgeWrapper = styled.div`
   align-items: center;
 `;
 
-const User = ({
-  address,
-  ellipsis = true,
-  popup = true,
-  popupContent,
-  avatar = true,
-  avatarSize = 22,
-  noLink = false,
-}) => {
+const User = ({ address, ellipsis = true, popup = true, popupContent, avatarSize = 22, noLink = false }) => {
   const { name, badgeData } = useIdentity(address);
 
   let username = (
@@ -56,7 +48,7 @@ const User = ({
     <>
       {address ? (
         <Wrapper>
-          {avatar && <Avatar address={address} size={avatarSize} />}
+          <Avatar address={address} size={avatarSize} />
           <BadgeWrapper>
             <Badge {...badgeData} />
             {username}
