@@ -21,6 +21,7 @@ import descriptionReducer from "./descriptionSlice";
 import tipFindersReducer from "./tipFindersSlice";
 import proposalBeneficiariesReducer from "./proposalBeneficiariesSlice";
 import usersReducer from "./usersSlice";
+import usersDetailReducer from "./usersDetailSlice";
 
 export default combineReducers({
   test: testReducer,
@@ -45,4 +46,5 @@ export default combineReducers({
   tipFinders: tipFindersReducer,
   proposalBeneficiaries: proposalBeneficiariesReducer,
   users: usersReducer,
+  usersDetail: usersDetailReducer,
 });
