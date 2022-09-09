@@ -9,6 +9,7 @@ const usersDetailSlice = createSlice({
   initialState: {
     detail: null,
     loading: false,
+    counts: {},
   },
   reducers: {
     setUsersDetail(state, { payload }) {
@@ -17,10 +18,14 @@ const usersDetailSlice = createSlice({
     setLoading(state, { payload }) {
       state.loading = payload;
     },
+    setCounts(state, { payload }) {
+      state.counts = payload;
+    },
   },
 });
 
-export const { setLoading, setUsersDetail } = usersDetailSlice.actions;
+export const { setLoading, setUsersDetail, setCounts } =
+  usersDetailSlice.actions;
 
 export const fetchUsersDetail = (chain, address) => async (dispatch) => {
   dispatch(setLoading(true));
@@ -33,7 +38,24 @@ export const fetchUsersDetail = (chain, address) => async (dispatch) => {
   }
 };
 
+/**
+ * @description fetch user counts
+ */
+export const fetchUsersCounts = (chain, address, role) => async (dispatch) => {
+  try {
+    const { result } = await api.fetch(
+      `/${chain}/account/${address}/${role}/counts`
+    );
+    dispatch(setCounts(result));
+  } finally {
+  }
+};
+export const resetUsersCounts = () => (dispatch) => {
+  dispatch(setCounts({}));
+};
+
 export const usersDetailSelector = (state) => state.usersDetail.detail;
 export const loadingSelector = (state) => state.usersDetail.loading;
+export const countsSelector = (state) => state.usersDetail.counts;
 
 export default usersDetailSlice.reducer;
