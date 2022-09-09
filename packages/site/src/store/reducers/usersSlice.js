@@ -1,4 +1,4 @@
-// page users store
+// page `/:symbol/users`
 
 import { createSlice } from "@reduxjs/toolkit";
 import api from "../../services/scanApi";
