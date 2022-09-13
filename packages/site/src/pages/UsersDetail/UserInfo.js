@@ -11,25 +11,45 @@ import {
   countsSelector,
   fetchUsersCounts,
   resetUsersCounts,
+  countsLoadingSelector,
 } from "../../store/reducers/usersDetailSlice";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { chainSelector } from "../../store/reducers/chainSlice";
+import { USER_ROLES } from "../../constants";
+import { Image } from "semantic-ui-react";
 
 export default function UserInfo({ role, setRole = () => {} }) {
   const { address } = useParams();
   const { name, badgeData } = useIdentity(address);
   const dispatch = useDispatch();
   const counts = useSelector(countsSelector);
+  const countsLoading = useSelector(countsLoadingSelector);
   const chain = useSelector(chainSelector);
+
+  const shouldShowProposals = useMemo(
+    () => [USER_ROLES.Beneficiary, USER_ROLES.Proposer].includes(role),
+    [role]
+  );
+  const hasCounts = useMemo(() => {
+    return [
+      counts?.proposalsCount,
+      counts?.bountiesCount,
+      counts?.childBountiesCount,
+      counts?.tipsCount,
+    ].some((n) => n);
+  }, [counts]);
 
   useEffect(() => {
     dispatch(fetchUsersCounts(chain, address, role));
 
-    return () => dispatch(resetUsersCounts());
+    return () => {
+      dispatch(resetUsersCounts());
+    };
   }, [dispatch, chain, role, address]);
 
   return (
     <InfoCard
+      minHeight={148}
       title={
         <>
           {badgeData && <Badge {...badgeData} />}
@@ -41,18 +61,31 @@ export default function UserInfo({ role, setRole = () => {} }) {
       extra={
         <>
           <InfoCardExtraItem label="Select a role">
-            <Tag rounded>Beneficiary</Tag>
-            <Tag rounded>Proposer</Tag>
+            {Object.values(USER_ROLES).map((r) => (
+              <Tag
+                rounded
+                hoverable
+                color={r === role && "pink"}
+                onClick={() => setRole(r)}
+              >
+                {r}
+              </Tag>
+            ))}
           </InfoCardExtraItem>
 
-          {/* FIXME: condition to display counts */}
-          {role === "beneficiary" && (
+          {shouldShowProposals && (
             <InfoCardExtraItem label="Proposals">
-              <ProposalsCount
-                proposals={counts?.proposalsCount}
-                bounties={counts?.bountiesCount + counts?.childBountiesCount}
-                tips={counts?.tipsCount}
-              />
+              {countsLoading ? (
+                <Image width={20} height={20} src="/imgs/loading.svg" />
+              ) : hasCounts ? (
+                <ProposalsCount
+                  proposals={counts?.proposalsCount}
+                  bounties={counts?.bountiesCount + counts?.childBountiesCount}
+                  tips={counts?.tipsCount}
+                />
+              ) : (
+                <span>--</span>
+              )}
             </InfoCardExtraItem>
           )}
         </>
