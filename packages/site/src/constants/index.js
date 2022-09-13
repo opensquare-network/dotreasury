@@ -97,3 +97,12 @@ export const TimelineItemType = {
   CouncilMotion: "council-motion",
   DemocracyReferendum: "democracy-referendum",
 };
+
+/**
+ * @description used in page users
+ */
+export const USER_ROLES = {
+  // Councilor: "Councilor",
+  Beneficiary: "Beneficiary",
+  Proposer: "Proposer",
+};
