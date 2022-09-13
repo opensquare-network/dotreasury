@@ -26,7 +26,7 @@ export default function UserInfo({ role, setRole = () => {} }) {
     dispatch(fetchUsersCounts(chain, address, role));
 
     return () => dispatch(resetUsersCounts());
-  }, [dispatch, role, address]);
+  }, [dispatch, chain, role, address]);
 
   return (
     <InfoCard
