@@ -49,7 +49,7 @@ export const fetchUsersCounts = (chain, address, role) => async (dispatch) => {
   dispatch(setCountsLoading(true));
   try {
     const { result } = await api.fetch(
-      `/${chain}/account/${address}/${role}/counts`
+      makeUsersProposalsApiUrl(chain, address, role, "/counts")
     );
     dispatch(setCounts(result));
   } finally {
@@ -66,3 +66,7 @@ export const countsSelector = (state) => state.usersDetail.counts;
 export const countsLoadingSelector = (state) => state.usersDetail.countsLoading;
 
 export default usersDetailSlice.reducer;
+
+function makeUsersProposalsApiUrl(chain, address, role, extra = "") {
+  return `/${chain}/account/${address}/${role}${extra}`;
+}
