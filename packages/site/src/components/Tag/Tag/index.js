@@ -29,11 +29,17 @@ const TagWrapper = styled.span`
       }
     `}
 
-${(p) =>
+  ${(p) =>
     p.color === "pink" &&
     css`
       color: ${Primary_Theme_Pink_500};
       background-color: ${Primary_Theme_Pink_100};
+    `}
+  
+  ${(p) =>
+    p.size === "small" &&
+    css`
+      padding: 0 8px;
     `}
 
   & + & {
@@ -51,6 +57,7 @@ export default function Tag(props) {
     rounded = false,
     hoverable = false,
     color,
+    size,
     ...restProps
   } = props ?? {};
 
@@ -59,6 +66,7 @@ export default function Tag(props) {
       rounded={rounded}
       hoverable={hoverable}
       color={color}
+      size={size}
       {...restProps}
     >
       {children}
