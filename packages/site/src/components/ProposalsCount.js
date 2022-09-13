@@ -30,27 +30,39 @@ const SymbolWrapper = styled.span`
  * @description Count proposals, bounties and tips
  * @example 2P(roposals) + 1B(ounties) + 4T(ips)
  */
-export default function ProposalsCount({ proposals, bounties, tips }) {
-  const symbols = [];
-  const makeSymbol = (count, symbolIconUrl) => {
-    return (
-      <Fragment key={symbolIconUrl}>
-        <SymbolWrapper>{count}</SymbolWrapper>
-        <Image src={symbolIconUrl} />
-        <PlusWrapper>+</PlusWrapper>
-      </Fragment>
-    );
-  };
+export default function ProposalsCount({
+  proposals,
+  bounties,
+  tips,
+  showZero = false,
+}) {
+  const symbols = [
+    {
+      count: proposals,
+      icon: "/imgs/symbol-proposals.svg",
+    },
+    {
+      count: bounties,
+      icon: "/imgs/symbol-bounties.svg",
+    },
+    {
+      count: tips,
+      icon: "/imgs/symbol-tips.svg",
+    },
+  ];
 
-  if (proposals) {
-    symbols.push(makeSymbol(proposals, "/imgs/symbol-proposals.svg"));
-  }
-  if (bounties) {
-    symbols.push(makeSymbol(bounties, "/imgs/symbol-bounties.svg"));
-  }
-  if (tips) {
-    symbols.push(makeSymbol(tips, "/imgs/symbol-tips.svg"));
-  }
-
-  return <Wrapper>{symbols}</Wrapper>;
+  return (
+    <Wrapper>
+      {symbols.map(
+        (i, k) =>
+          (i.count || showZero) && (
+            <Fragment key={k}>
+              <SymbolWrapper>{i.count}</SymbolWrapper>
+              <Image src={i.icon} />
+              <PlusWrapper>+</PlusWrapper>
+            </Fragment>
+          )
+      )}
+    </Wrapper>
+  );
 }
