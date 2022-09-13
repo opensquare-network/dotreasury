@@ -18,9 +18,9 @@ import {
 } from "./styled";
 import Links from "./Links";
 
-function InfoCard({ icon, title, description, links, extra }) {
+function InfoCard({ icon, title, description, links, extra, minHeight }) {
   return (
-    <InfoCardWrapper>
+    <InfoCardWrapper minHeight={minHeight}>
       <InfoCardDetailWrapper>
         <InfoCardIconWrapper>
           {typeof icon === "string" ? <InfoCardIcon src={icon} /> : icon}

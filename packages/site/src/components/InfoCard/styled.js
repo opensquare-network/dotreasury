@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Image } from "semantic-ui-react";
 import { h3_18_semibold, p_14_normal, p_12_normal } from "../../styles/text";
 import {
@@ -12,6 +12,13 @@ export const InfoCardWrapper = styled(Card)`
   padding: 24px;
   margin-bottom: 24px;
   display: flex;
+
+  ${(p) =>
+    p.minHeight &&
+    css`
+      min-height: ${p.minHeight}px;
+    `}
+
   @media screen and (max-width: 481px) {
     & * {
       text-align: left !important;
