@@ -6,11 +6,19 @@ const { normalizeTip } = require("./utils");
 const { HttpError } = require("../../exc");
 
 function getCondition(ctx) {
-  const { status } = ctx.request.query;
+  const { status, beneficiary, finder, proposer } = ctx.request.query;
 
   const condition = {};
   if (status) {
     condition["state.state"] = { $in: status.split("||") };
+  }
+
+  if (beneficiary) {
+    condition["meta.who"] = beneficiary;
+  }
+
+  if (finder || proposer) {
+    condition["finder"] = finder || proposer;
   }
 
   return condition;
