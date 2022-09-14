@@ -25,6 +25,7 @@ import {
 import { useChainRoute, useLocalStorage, useQuery } from "../../../utils/hooks";
 import Tag from "../../../components/Tag/Tag";
 import TipsTable from "./TipsTable";
+import TipsTableFilter from "./TipsTableFilter";
 
 const TABLE_TABS = {
   Tips: "Tips",
@@ -48,6 +49,10 @@ export default function ProposalsTable({ role }) {
   const [pageSize, setPageSize] = useLocalStorage(
     "usersPageSize",
     DEFAULT_PAGE_SIZE
+  );
+  const searchStatus = useQuery().get("status");
+  const [filterData, setFilterData] = useState(
+    searchStatus && { status: searchStatus }
   );
 
   const counts = useSelector(usersCountsSelector);
@@ -77,7 +82,7 @@ export default function ProposalsTable({ role }) {
 
   useEffect(() => {
     const fetch = tableFetches[tableTab];
-    dispatch(fetch(chain, address, role, tablePage - 1, pageSize));
+    dispatch(fetch(chain, address, role, tablePage - 1, pageSize, filterData));
 
     return () => {
       dispatch(resetUsersProposals());
@@ -89,6 +94,7 @@ export default function ProposalsTable({ role }) {
     role,
     tablePage,
     pageSize,
+    filterData,
     tableTab,
     tableFetches,
   ]);
@@ -110,6 +116,14 @@ export default function ProposalsTable({ role }) {
             </TableTitle>
           ))}
         </TableTitleWrapper>
+
+        {tableTab === TABLE_TABS.Tips && (
+          <TipsTableFilter
+            filterData={filterData}
+            setFilterData={setFilterData}
+            setTablePage={setTablePage}
+          />
+        )}
       </TableHeaderWrapper>
 
       <Wrapper>
