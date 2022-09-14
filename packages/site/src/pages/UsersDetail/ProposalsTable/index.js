@@ -1,18 +1,20 @@
 import { parseInt } from "lodash";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
-import styled, { css } from "styled-components";
-import Card from "../../../components/Card";
+import { useHistory, useParams } from "react-router";
 import TableLoading from "../../../components/TableLoading";
 import { Table } from "../../../components/Table";
-import {
-  TEXT_DARK_MAJOR,
-  DEFAULT_PAGE_SIZE,
-  DEFAULT_QUERY_PAGE,
-  TEXT_DARK_ACCESSORY,
-} from "../../../constants";
+import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../../constants";
 import { chainSelector } from "../../../store/reducers/chainSlice";
+import {
+  CardWrapper,
+  Wrapper,
+  TableWrapper,
+  TableHeaderWrapper,
+  TableTitleLabel,
+  TableTitle,
+  TableTitleWrapper,
+} from "./styled";
 import {
   proposalsBountiesSelector,
   proposalsChildBountiesSelector,
@@ -21,65 +23,18 @@ import {
   fetchUsersProposalsTips,
   fetchUsersProposalsBounties,
   fetchUsersProposalsChildBounties,
+  proposalsLoadingSelector,
   usersCountsSelector,
 } from "../../../store/reducers/usersDetailSlice";
 import { useChainRoute, useLocalStorage, useQuery } from "../../../utils/hooks";
-import { h4_16_semibold } from "../../../styles/text";
 import Tag from "../../../components/Tag/Tag";
+import ResponsivePagination from "../../../components/ResponsivePagination";
 
-const CardWrapper = styled(Card)`
-  overflow-x: hidden;
-  padding: 0;
-  table {
-    border-radius: 0 !important;
-    border: none !important;
-  }
-  @media screen and (max-width: 600px) {
-    border-radius: 0;
-  }
-`;
-
-const Wrapper = styled.div`
-  overflow: hidden;
-`;
-
-const TableWrapper = styled.div`
-  overflow: scroll;
-`;
-
-const TableHeaderWrapper = styled.div`
-  padding: 20px 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const TableTitleLabel = styled.span`
-  margin-right: 8px;
-  color: ${TEXT_DARK_ACCESSORY};
-
-  ${(p) =>
-    p.active &&
-    css`
-      color: ${TEXT_DARK_MAJOR};
-    `}
-`;
-const TableTitle = styled.h4`
-  display: inline-block;
-  margin: 0;
-  ${h4_16_semibold};
-
-  & + & {
-    margin-left: 32px;
-  }
-
-  &:hover {
-    cursor: pointer;
-  }
-`;
-const TableTitleWrapper = styled.div`
-  display: flex;
-`;
+const TABLE_TABS = {
+  Tips: "Tips",
+  Bounties: "Bounties",
+  ChildBounties: "ChildBounties",
+};
 
 export default function ProposalsTable({ role }) {
   useChainRoute();
@@ -87,6 +42,7 @@ export default function ProposalsTable({ role }) {
   const chain = useSelector(chainSelector);
   const { address } = useParams();
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const searchPage = parseInt(useQuery().get("page"));
   const queryPage =
@@ -100,6 +56,7 @@ export default function ProposalsTable({ role }) {
   );
 
   const counts = useSelector(usersCountsSelector);
+  const loading = useSelector(proposalsLoadingSelector);
   const { items: proposalsTips, total: proposalsTipsTotal } = useSelector(
     proposalsTipsSelector
   );
@@ -108,31 +65,70 @@ export default function ProposalsTable({ role }) {
   const { items: proposalsChildBounties, total: proposalsChildBountiesTotal } =
     useSelector(proposalsChildBountiesSelector);
 
-  useEffect(() => {
-    dispatch(
-      fetchUsersProposalsTips(chain, address, role, tablePage - 1, pageSize)
-    );
+  const [tableDataMetas] = useState({
+    [TABLE_TABS.Tips]: {
+      items: proposalsTips,
+      total: proposalsTipsTotal,
+    },
+    [TABLE_TABS.Bounties]: {
+      items: proposalsBounties,
+      total: proposalsBountiesTotal,
+    },
+    [TABLE_TABS.ChildBounties]: {
+      items: proposalsChildBounties,
+      total: proposalsChildBountiesTotal,
+    },
+  });
 
-    return () => {
-      dispatch(resetUsersProposals());
-    };
-  }, [dispatch, role]);
+  const [tableFetches] = useState({
+    [TABLE_TABS.Tips]: fetchUsersProposalsTips,
+    [TABLE_TABS.Bounties]: fetchUsersProposalsBounties,
+    [TABLE_TABS.ChildBounties]: fetchUsersProposalsChildBounties,
+  });
 
   const tableTitles = [
     {
-      label: "Tips",
+      label: TABLE_TABS.Tips,
       count: counts?.tipsCount,
     },
     {
-      label: "Bounties",
+      label: TABLE_TABS.Bounties,
       count: counts?.bountiesCount,
     },
     {
-      label: "Child Bounties",
+      label: TABLE_TABS.ChildBounties,
       count: counts?.childBountiesCount,
     },
   ];
   const [tableTab, setTableTab] = useState(tableTitles[0].label);
+
+  const tableData = useMemo(() => {
+    const { items, total } = tableDataMetas[tableTab];
+    const totalPages = Math.ceil(total / pageSize);
+
+    return {
+      items,
+      totalPages,
+    };
+  }, [tableTab, pageSize, tableDataMetas]);
+
+  useEffect(() => {
+    const fetch = tableFetches[tableTab];
+    dispatch(fetch(chain, address, role, tablePage - 1, pageSize));
+
+    return () => {
+      dispatch(resetUsersProposals());
+    };
+  }, [
+    dispatch,
+    chain,
+    address,
+    role,
+    tablePage,
+    pageSize,
+    tableTab,
+    tableFetches,
+  ]);
 
   return (
     <CardWrapper>
@@ -154,11 +150,35 @@ export default function ProposalsTable({ role }) {
       </TableHeaderWrapper>
       <Wrapper>
         <TableWrapper>
-          <TableLoading>
-            <Table unstackable></Table>
+          <TableLoading loading={loading}>
+            <Table unstackable data={tableData.items}></Table>
           </TableLoading>
         </TableWrapper>
       </Wrapper>
+
+      {tableData.items?.length && (
+        <ResponsivePagination
+          activePage={tablePage}
+          totalPages={tableData.totalPages}
+          pageSize={pageSize}
+          setPageSize={(pageSize) => {
+            setTablePage(DEFAULT_QUERY_PAGE);
+            setPageSize(pageSize);
+            history.push({
+              search: null,
+            });
+          }}
+          onPageChange={(_, { activePage }) => {
+            history.push({
+              search:
+                activePage === DEFAULT_QUERY_PAGE
+                  ? null
+                  : `?page=${activePage}`,
+            });
+            setTablePage(activePage);
+          }}
+        />
+      )}
     </CardWrapper>
   );
 }
