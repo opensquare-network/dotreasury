@@ -1,31 +1,14 @@
 import { parseInt } from "lodash";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
-import TableLoading from "../../../components/TableLoading";
+import { useCallback, useMemo, useState } from "react";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router";
 import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../../constants";
-import { chainSelector } from "../../../store/reducers/chainSlice";
-import {
-  CardWrapper,
-  Wrapper,
-  TableWrapper,
-  TableHeaderWrapper,
-  TableTitleLabel,
-  TableTitle,
-  TableTitleWrapper,
-} from "./styled";
-import {
-  resetUsersProposals,
-  fetchUsersProposalsTips,
-  fetchUsersProposalsBounties,
-  fetchUsersProposalsChildBounties,
-  proposalsLoadingSelector,
-  usersCountsSelector,
-} from "../../../store/reducers/usersDetailSlice";
+import { TableTitleLabel, TableTitle, TableTitleWrapper } from "./styled";
+import { usersCountsSelector } from "../../../store/reducers/usersDetailSlice";
 import { useChainRoute, useLocalStorage, useQuery } from "../../../utils/hooks";
 import Tag from "../../../components/Tag/Tag";
 import TipsTable from "./TipsTable";
-import TipsTableFilter from "./TipsTableFilter";
+import ResponsivePagination from "../../../components/ResponsivePagination";
 
 const TABLE_TABS = {
   Tips: "Tips",
@@ -36,9 +19,7 @@ const TABLE_TABS = {
 export default function ProposalsTable({ role }) {
   useChainRoute();
 
-  const chain = useSelector(chainSelector);
-  const { address } = useParams();
-  const dispatch = useDispatch();
+  const history = useHistory();
 
   const searchPage = parseInt(useQuery().get("page"));
   const queryPage =
@@ -50,19 +31,27 @@ export default function ProposalsTable({ role }) {
     "usersPageSize",
     DEFAULT_PAGE_SIZE
   );
+
   const searchStatus = useQuery().get("status");
-  const [filterData, setFilterData] = useState(
-    searchStatus && { status: searchStatus }
+  const [filterData, setFilterData] = useState(() => {
+    const v = {};
+    if (searchStatus) {
+      v.status = searchStatus;
+    }
+    return v;
+  });
+  const filterQuery = useCallback(
+    (data) => {
+      setFilterData(data);
+      setTablePage(1);
+      history.push({
+        search: data.status ? `status=${data.status}` : null,
+      });
+    },
+    [history]
   );
 
   const counts = useSelector(usersCountsSelector);
-  const loading = useSelector(proposalsLoadingSelector);
-
-  const [tableFetches] = useState({
-    [TABLE_TABS.Tips]: fetchUsersProposalsTips,
-    [TABLE_TABS.Bounties]: fetchUsersProposalsBounties,
-    [TABLE_TABS.ChildBounties]: fetchUsersProposalsChildBounties,
-  });
 
   const tableTitles = [
     {
@@ -79,65 +68,67 @@ export default function ProposalsTable({ role }) {
     },
   ];
   const [tableTab, setTableTab] = useState(tableTitles[0].label);
+  const isTips = useMemo(() => tableTab === TABLE_TABS.Tips, [tableTab]);
+  const isBounties = useMemo(
+    () => tableTab === TABLE_TABS.Bounties,
+    [tableTab]
+  );
+  const isChildBounties = useMemo(
+    () => tableTab === TABLE_TABS.ChildBounties,
+    [tableTab]
+  );
 
-  useEffect(() => {
-    const fetch = tableFetches[tableTab];
-    dispatch(fetch(chain, address, role, tablePage - 1, pageSize, filterData));
+  const header = (
+    <TableTitleWrapper>
+      {tableTitles.map((i) => (
+        <TableTitle key={i.label} onClick={() => setTableTab(i.label)}>
+          <TableTitleLabel active={tableTab === i.label}>
+            {i.label}
+          </TableTitleLabel>
+          {!!i.count && (
+            <Tag key={i.label} rounded color="pink" size="small">
+              {i.count}
+            </Tag>
+          )}
+        </TableTitle>
+      ))}
+    </TableTitleWrapper>
+  );
 
-    return () => {
-      dispatch(resetUsersProposals());
-    };
-  }, [
-    dispatch,
-    chain,
-    address,
-    role,
-    tablePage,
-    pageSize,
-    filterData,
-    tableTab,
-    tableFetches,
-  ]);
+  const footer = (totalPages) => (
+    <ResponsivePagination
+      activePage={tablePage}
+      totalPages={totalPages}
+      pageSize={pageSize}
+      setPageSize={(pageSize) => {
+        setTablePage(DEFAULT_QUERY_PAGE);
+        setPageSize(pageSize);
+        history.push({
+          search: null,
+        });
+      }}
+      onPageChange={(_, { activePage }) => {
+        history.push({
+          search:
+            activePage === DEFAULT_QUERY_PAGE ? null : `?page=${activePage}`,
+        });
+        setTablePage(activePage);
+      }}
+    />
+  );
 
   return (
-    <CardWrapper>
-      <TableHeaderWrapper>
-        <TableTitleWrapper>
-          {tableTitles.map((i) => (
-            <TableTitle key={i.label} onClick={() => setTableTab(i.label)}>
-              <TableTitleLabel active={tableTab === i.label}>
-                {i.label}
-              </TableTitleLabel>
-              {!!i.count && (
-                <Tag key={i.label} rounded color="pink" size="small">
-                  {i.count}
-                </Tag>
-              )}
-            </TableTitle>
-          ))}
-        </TableTitleWrapper>
-
-        {tableTab === TABLE_TABS.Tips && (
-          <TipsTableFilter
-            filterData={filterData}
-            setFilterData={setFilterData}
-            setTablePage={setTablePage}
-          />
-        )}
-      </TableHeaderWrapper>
-
-      <Wrapper>
-        <TableWrapper>
-          <TableLoading loading={loading}>
-            <TipsTable
-              tablePage={tablePage}
-              setTablePage={setTablePage}
-              pageSize={pageSize}
-              setPageSize={setPageSize}
-            />
-          </TableLoading>
-        </TableWrapper>
-      </Wrapper>
-    </CardWrapper>
+    <>
+      {isTips && (
+        <TipsTable
+          header={header}
+          footer={footer}
+          tablePage={tablePage}
+          pageSize={pageSize}
+          filterData={filterData}
+          filterQuery={filterQuery}
+        />
+      )}
+    </>
   );
 }

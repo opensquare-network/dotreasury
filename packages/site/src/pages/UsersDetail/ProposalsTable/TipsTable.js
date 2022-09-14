@@ -1,58 +1,50 @@
-import { useSelector } from "react-redux";
-import { Table } from "../../../components/Table";
-import { proposalsTipsSelector } from "../../../store/reducers/usersDetailSlice";
-import { useTableColumns } from "../../../components/shared/useTableColumns";
+import { useDispatch, useSelector } from "react-redux";
 import { noop } from "lodash";
-import { DEFAULT_QUERY_PAGE } from "../../../constants";
-import { TableWrapper } from "./styled";
-import ResponsivePagination from "../../../components/ResponsivePagination";
-import { useHistory } from "react-router";
+import TipsTableOrigin from "../../Tips/TipsTable";
+import TipsTableFilter from "../../Tips/Filter";
+import {
+  fetchTips,
+  loadingSelector,
+  normalizedTipListSelector,
+} from "../../../store/reducers/tipSlice";
+import { useEffect } from "react";
+import { chainSelector } from "../../../store/reducers/chainSlice";
+import { TableHeaderWrapper } from "./styled";
 
 export default function TipsTable({
+  header,
+  footer = noop,
   tablePage,
-  setTablePage = noop,
   pageSize,
-  setPageSize = noop,
+  filterData,
+  filterQuery = noop,
 }) {
-  const history = useHistory();
-  const { items, total } = useSelector(proposalsTipsSelector);
+  const chain = useSelector(chainSelector);
+  const dispatch = useDispatch();
 
-  const { tipsBeneficiary, finder, reason, tipsValue, tipsStatus } =
-    useTableColumns();
-
-  const columns = [tipsBeneficiary, finder, reason, tipsValue, tipsStatus];
+  const { items, total } = useSelector(normalizedTipListSelector);
+  const loading = useSelector(loadingSelector);
 
   const totalPages = Math.ceil(total / pageSize);
 
-  return (
-    <>
-      <TableWrapper>
-        <Table data={items} columns={columns} />
-      </TableWrapper>
+  useEffect(() => {
+    dispatch(fetchTips(chain, tablePage - 1, pageSize, filterData));
+  }, [dispatch, chain, tablePage, pageSize, filterData]);
 
-      {items?.length && (
-        <ResponsivePagination
-          activePage={tablePage}
-          totalPages={totalPages}
-          pageSize={pageSize}
-          setPageSize={(pageSize) => {
-            setTablePage(DEFAULT_QUERY_PAGE);
-            setPageSize(pageSize);
-            history.push({
-              search: null,
-            });
-          }}
-          onPageChange={(_, { activePage }) => {
-            history.push({
-              search:
-                activePage === DEFAULT_QUERY_PAGE
-                  ? null
-                  : `?page=${activePage}`,
-            });
-            setTablePage(activePage);
-          }}
-        />
-      )}
-    </>
+  return (
+    <TipsTableOrigin
+      header={
+        <TableHeaderWrapper>
+          {header}
+          <TipsTableFilter
+            value={filterData?.status || "-1"}
+            query={filterQuery}
+          />
+        </TableHeaderWrapper>
+      }
+      loading={loading}
+      data={items}
+      footer={!!items?.length && footer(totalPages)}
+    />
   );
 }
