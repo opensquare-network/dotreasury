@@ -1,7 +1,7 @@
 import { parseInt } from "lodash";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router";
+import { useParams } from "react-router";
 import TableLoading from "../../../components/TableLoading";
 import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../../constants";
 import { chainSelector } from "../../../store/reducers/chainSlice";
@@ -15,9 +15,6 @@ import {
   TableTitleWrapper,
 } from "./styled";
 import {
-  proposalsBountiesSelector,
-  proposalsChildBountiesSelector,
-  proposalsTipsSelector,
   resetUsersProposals,
   fetchUsersProposalsTips,
   fetchUsersProposalsBounties,
@@ -27,7 +24,6 @@ import {
 } from "../../../store/reducers/usersDetailSlice";
 import { useChainRoute, useLocalStorage, useQuery } from "../../../utils/hooks";
 import Tag from "../../../components/Tag/Tag";
-import ResponsivePagination from "../../../components/ResponsivePagination";
 import TipsTable from "./TipsTable";
 
 const TABLE_TABS = {
@@ -42,7 +38,6 @@ export default function ProposalsTable({ role }) {
   const chain = useSelector(chainSelector);
   const { address } = useParams();
   const dispatch = useDispatch();
-  const history = useHistory();
 
   const searchPage = parseInt(useQuery().get("page"));
   const queryPage =
@@ -57,28 +52,6 @@ export default function ProposalsTable({ role }) {
 
   const counts = useSelector(usersCountsSelector);
   const loading = useSelector(proposalsLoadingSelector);
-  const { items: proposalsTips, total: proposalsTipsTotal } = useSelector(
-    proposalsTipsSelector
-  );
-  const { items: proposalsBounties, total: proposalsBountiesTotal } =
-    useSelector(proposalsBountiesSelector);
-  const { items: proposalsChildBounties, total: proposalsChildBountiesTotal } =
-    useSelector(proposalsChildBountiesSelector);
-
-  const [tableDataMetas] = useState({
-    [TABLE_TABS.Tips]: {
-      items: proposalsTips,
-      total: proposalsTipsTotal,
-    },
-    [TABLE_TABS.Bounties]: {
-      items: proposalsBounties,
-      total: proposalsBountiesTotal,
-    },
-    [TABLE_TABS.ChildBounties]: {
-      items: proposalsChildBounties,
-      total: proposalsChildBountiesTotal,
-    },
-  });
 
   const [tableFetches] = useState({
     [TABLE_TABS.Tips]: fetchUsersProposalsTips,
@@ -101,16 +74,6 @@ export default function ProposalsTable({ role }) {
     },
   ];
   const [tableTab, setTableTab] = useState(tableTitles[0].label);
-
-  const tableData = useMemo(() => {
-    const { items, total } = tableDataMetas[tableTab];
-    const totalPages = Math.ceil(total / pageSize);
-
-    return {
-      items,
-      totalPages,
-    };
-  }, [tableTab, pageSize, tableDataMetas]);
 
   useEffect(() => {
     const fetch = tableFetches[tableTab];
@@ -153,7 +116,6 @@ export default function ProposalsTable({ role }) {
         <TableWrapper>
           <TableLoading loading={loading}>
             <TipsTable
-              data={proposalsTips}
               tablePage={tablePage}
               setTablePage={setTablePage}
               pageSize={pageSize}

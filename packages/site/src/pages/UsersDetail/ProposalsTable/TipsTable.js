@@ -4,7 +4,7 @@ import { proposalsTipsSelector } from "../../../store/reducers/usersDetailSlice"
 import { useTableColumns } from "../../../components/shared/useTableColumns";
 import { noop } from "lodash";
 import { DEFAULT_QUERY_PAGE } from "../../../constants";
-import { Wrapper, TableWrapper } from "./styled";
+import { TableWrapper } from "./styled";
 import ResponsivePagination from "../../../components/ResponsivePagination";
 import { useHistory } from "react-router";
 
