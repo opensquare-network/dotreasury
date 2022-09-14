@@ -127,6 +127,8 @@ export const proposalsBountiesSelector = (state) =>
   state.usersDetail.proposalsBounties;
 export const proposalsChildBountiesSelector = (state) =>
   state.usersDetail.proposalsChildBounties;
+export const proposalsLoadingSelector = (state) =>
+  state.usersDetail.proposalsLoading;
 
 export default usersDetailSlice.reducer;
 
