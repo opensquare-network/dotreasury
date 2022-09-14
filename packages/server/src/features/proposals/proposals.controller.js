@@ -69,22 +69,36 @@ async function getAdmins(chain, proposalIndex) {
   return [...ADMINS, owner];
 }
 
+function getCondition(ctx) {
+  const { status, beneficiary, proposer } = ctx.request.query;
+
+  const condition = {}
+  if (status) {
+    condition["state.state"] = status;
+  }
+
+  if (beneficiary) {
+    condition["beneficiary"] = beneficiary;
+  }
+
+  if (proposer) {
+    condition["proposer"] = proposer;
+  }
+
+  return condition;
+}
+
 class ProposalsController {
   async getProposals(ctx) {
     const { chain } = ctx.params;
     const { page, pageSize } = extractPage(ctx);
-    const { status } = ctx.request.query;
     if (pageSize === 0 || page < 0) {
       ctx.status = 400;
       return;
     }
 
-    const condition = {};
-    if (status) {
-      condition["state.state"] = status;
-    }
+    const condition = getCondition(ctx);
     const proposalCol = await getProposalCollection(chain);
-
     const total = proposalCol.countDocuments(condition);
     const list = proposalCol.aggregate([
       { $match: condition },

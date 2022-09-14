@@ -50,6 +50,21 @@ async function getAdmins(chain, bountyIndex) {
   return [...ADMINS, owner];
 }
 
+function getCondition(ctx) {
+  const { beneficiary, proposer } = ctx.request.query;
+
+  const condition = {}
+  if (beneficiary) {
+    condition["meta.status.pendingPayout.beneficiary"] = beneficiary;
+  }
+
+  if (proposer) {
+    condition["meta.proposer"] = proposer;
+  }
+
+  return condition;
+}
+
 class BountiesController {
   async getBounties(ctx) {
     const { chain } = ctx.params;
@@ -59,9 +74,11 @@ class BountiesController {
       return;
     }
 
+    const condition = getCondition(ctx);
     const bountyCol = await getBountyCollection(chain);
     const bounties = await bountyCol
       .aggregate([
+        { $match: condition },
         {
           $sort: {
             stateSort: 1,
