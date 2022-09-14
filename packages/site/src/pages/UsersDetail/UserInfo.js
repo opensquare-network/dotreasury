@@ -8,7 +8,7 @@ import { ellipsis } from "../../utils/ellipsis";
 import ProposalsCount from "../../components/ProposalsCount";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  countsSelector,
+  usersCountsSelector,
   fetchUsersCounts,
   resetUsersCounts,
   countsLoadingSelector,
@@ -22,7 +22,7 @@ export default function UserInfo({ role, setRole = () => {} }) {
   const { address } = useParams();
   const { name, badgeData } = useIdentity(address);
   const dispatch = useDispatch();
-  const counts = useSelector(countsSelector);
+  const counts = useSelector(usersCountsSelector);
   const countsLoading = useSelector(countsLoadingSelector);
   const chain = useSelector(chainSelector);
 

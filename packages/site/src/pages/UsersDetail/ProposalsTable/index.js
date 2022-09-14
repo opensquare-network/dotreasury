@@ -21,7 +21,7 @@ import {
   fetchUsersProposalsTips,
   fetchUsersProposalsBounties,
   fetchUsersProposalsChildBounties,
-  countsSelector,
+  usersCountsSelector,
 } from "../../../store/reducers/usersDetailSlice";
 import { useChainRoute, useLocalStorage, useQuery } from "../../../utils/hooks";
 import { h4_16_semibold } from "../../../styles/text";
@@ -99,7 +99,7 @@ export default function ProposalsTable({ role }) {
     DEFAULT_PAGE_SIZE
   );
 
-  const counts = useSelector(countsSelector);
+  const counts = useSelector(usersCountsSelector);
   const { items: proposalsTips, total: proposalsTipsTotal } = useSelector(
     proposalsTipsSelector
   );

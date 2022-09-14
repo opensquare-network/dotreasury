@@ -119,7 +119,7 @@ export const resetUsersProposals = () => (dispatch) => {
 
 export const usersDetailSelector = (state) => state.usersDetail.detail;
 export const loadingSelector = (state) => state.usersDetail.loading;
-export const countsSelector = (state) => state.usersDetail.counts;
+export const usersCountsSelector = (state) => state.usersDetail.counts;
 export const countsLoadingSelector = (state) => state.usersDetail.countsLoading;
 
 export const proposalsTipsSelector = (state) => state.usersDetail.proposalsTips;
