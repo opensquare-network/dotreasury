@@ -14,6 +14,7 @@ export default function BountiesTable({
   footer = noop,
   tablePage,
   pageSize,
+  filterData,
 }) {
   const chain = useSelector(chainSelector);
   const dispatch = useDispatch();
@@ -24,8 +25,8 @@ export default function BountiesTable({
   const totalPages = Math.ceil(total / pageSize);
 
   useEffect(() => {
-    dispatch(fetchBounties(chain, tablePage - 1, pageSize));
-  }, [dispatch, chain, tablePage, pageSize]);
+    dispatch(fetchBounties(chain, tablePage - 1, pageSize, filterData));
+  }, [dispatch, chain, tablePage, pageSize, filterData]);
 
   return (
     <BountiesTableOrigin

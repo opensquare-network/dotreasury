@@ -15,6 +15,7 @@ export default function ChildBountiesTable({
   footer = noop,
   tablePage,
   pageSize,
+  filterData,
 }) {
   const chain = useSelector(chainSelector);
   const dispatch = useDispatch();
@@ -25,8 +26,8 @@ export default function ChildBountiesTable({
   const totalPages = Math.ceil(total / pageSize);
 
   useEffect(() => {
-    dispatch(fetchChildBounties(chain, tablePage - 1, pageSize));
-  }, [dispatch, chain, tablePage, pageSize]);
+    dispatch(fetchChildBounties(chain, tablePage - 1, pageSize, filterData));
+  }, [dispatch, chain, tablePage, pageSize, filterData]);
 
   const items = useMemo(() => data.map(compatChildBountyData), [data]);
 
