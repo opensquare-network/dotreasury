@@ -149,14 +149,14 @@ function makeFetchUsersProposalsTableList(
   endpoint = "",
   resultDataSetter = noop
 ) {
-  return (chain, address, role, page, pageSize) => {
+  return (chain, address, role, page, pageSize, filterData) => {
     return async (dispatch) => {
       dispatch(setProposalsLoading(true));
 
       try {
         const { result } = await api.fetch(
           makeUsersProposalsApiUrl(chain, address, role, endpoint),
-          { page, pageSize }
+          { page, pageSize, ...filterData }
         );
         dispatch(resultDataSetter(result));
       } finally {
