@@ -4,6 +4,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { noop } from "lodash";
 import api from "../../services/scanApi";
+import { normalizeTip } from "./tipSlice";
 
 const usersDetailSlice = createSlice({
   name: "usersDetail",
@@ -122,7 +123,15 @@ export const loadingSelector = (state) => state.usersDetail.loading;
 export const usersCountsSelector = (state) => state.usersDetail.counts;
 export const countsLoadingSelector = (state) => state.usersDetail.countsLoading;
 
-export const proposalsTipsSelector = (state) => state.usersDetail.proposalsTips;
+export const proposalsTipsSelector = (state) => {
+  const tips = state.usersDetail.proposalsTips;
+  const items = tips?.items?.map?.(normalizeTip);
+
+  return {
+    ...tips,
+    items,
+  };
+};
 export const proposalsBountiesSelector = (state) =>
   state.usersDetail.proposalsBounties;
 export const proposalsChildBountiesSelector = (state) =>
