@@ -63,6 +63,7 @@ export default function UserInfo({ role, setRole = () => {} }) {
           <InfoCardExtraItem label="Select a role">
             {Object.values(USER_ROLES).map((r) => (
               <Tag
+                key={r.role}
                 rounded
                 hoverable
                 color={r === role && "pink"}
