@@ -8,6 +8,7 @@ import { usersCountsSelector } from "../../../store/reducers/usersDetailSlice";
 import { useChainRoute, useLocalStorage, useQuery } from "../../../utils/hooks";
 import Tag from "../../../components/Tag/Tag";
 import TipsTable from "./TipsTable";
+import BountiesTable from "./BountiesTable";
 import ResponsivePagination from "../../../components/ResponsivePagination";
 
 const TABLE_TABS = {
@@ -127,6 +128,15 @@ export default function ProposalsTable({ role }) {
           pageSize={pageSize}
           filterData={filterData}
           filterQuery={filterQuery}
+        />
+      )}
+
+      {isBounties && (
+        <BountiesTable
+          header={header}
+          footer={footer}
+          tablePage={tablePage}
+          pageSize={pageSize}
         />
       )}
     </>
