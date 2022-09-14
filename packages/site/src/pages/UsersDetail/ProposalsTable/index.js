@@ -3,7 +3,6 @@ import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router";
 import TableLoading from "../../../components/TableLoading";
-import { Table } from "../../../components/Table";
 import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../../constants";
 import { chainSelector } from "../../../store/reducers/chainSlice";
 import {
@@ -29,6 +28,7 @@ import {
 import { useChainRoute, useLocalStorage, useQuery } from "../../../utils/hooks";
 import Tag from "../../../components/Tag/Tag";
 import ResponsivePagination from "../../../components/ResponsivePagination";
+import TipsTable from "./TipsTable";
 
 const TABLE_TABS = {
   Tips: "Tips",
@@ -140,7 +140,7 @@ export default function ProposalsTable({ role }) {
                 {i.label}
               </TableTitleLabel>
               {!!i.count && (
-                <Tag rounded color="pink" size="small">
+                <Tag key={i.label} rounded color="pink" size="small">
                   {i.count}
                 </Tag>
               )}
@@ -148,37 +148,20 @@ export default function ProposalsTable({ role }) {
           ))}
         </TableTitleWrapper>
       </TableHeaderWrapper>
+
       <Wrapper>
         <TableWrapper>
           <TableLoading loading={loading}>
-            <Table unstackable data={tableData.items}></Table>
+            <TipsTable
+              data={proposalsTips}
+              tablePage={tablePage}
+              setTablePage={setTablePage}
+              pageSize={pageSize}
+              setPageSize={setPageSize}
+            />
           </TableLoading>
         </TableWrapper>
       </Wrapper>
-
-      {tableData.items?.length && (
-        <ResponsivePagination
-          activePage={tablePage}
-          totalPages={tableData.totalPages}
-          pageSize={pageSize}
-          setPageSize={(pageSize) => {
-            setTablePage(DEFAULT_QUERY_PAGE);
-            setPageSize(pageSize);
-            history.push({
-              search: null,
-            });
-          }}
-          onPageChange={(_, { activePage }) => {
-            history.push({
-              search:
-                activePage === DEFAULT_QUERY_PAGE
-                  ? null
-                  : `?page=${activePage}`,
-            });
-            setTablePage(activePage);
-          }}
-        />
-      )}
     </CardWrapper>
   );
 }
