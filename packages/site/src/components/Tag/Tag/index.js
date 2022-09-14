@@ -65,7 +65,7 @@ export default function Tag(props) {
     <TagWrapper
       rounded={rounded}
       hoverable={hoverable}
-      color={color}
+      color={color?.toString()}
       size={size}
       {...restProps}
     >
