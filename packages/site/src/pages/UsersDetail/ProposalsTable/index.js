@@ -9,6 +9,7 @@ import { useChainRoute, useLocalStorage, useQuery } from "../../../utils/hooks";
 import Tag from "../../../components/Tag/Tag";
 import TipsTable from "./TipsTable";
 import BountiesTable from "./BountiesTable";
+import ChildBountiesTable from "./ChildBountiesTable";
 import ResponsivePagination from "../../../components/ResponsivePagination";
 
 const TABLE_TABS = {
@@ -133,6 +134,15 @@ export default function ProposalsTable({ role }) {
 
       {isBounties && (
         <BountiesTable
+          header={header}
+          footer={footer}
+          tablePage={tablePage}
+          pageSize={pageSize}
+        />
+      )}
+
+      {isChildBounties && (
+        <ChildBountiesTable
           header={header}
           footer={footer}
           tablePage={tablePage}
