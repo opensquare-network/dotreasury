@@ -1,9 +1,12 @@
+// user
+// state.user
+
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 import api from "../../services/scanApi";
 import { encodeSubstrateAddress } from "../../services/chainApi";
 
 const userSlice = createSlice({
-  name: "users",
+  name: "user",
   initialState: {
     loggedInUser: JSON.parse(localStorage.getItem("loggedInUser")),
     userProfile: null,
@@ -27,11 +30,8 @@ const userSlice = createSlice({
   },
 });
 
-export const {
-  setLoggedInUser,
-  setUserProfile,
-  setVerifyEmailSendTime,
-} = userSlice.actions;
+export const { setLoggedInUser, setUserProfile, setVerifyEmailSendTime } =
+  userSlice.actions;
 
 export const fetchUserProfile = () => async (dispatch) => {
   const { result } = await api.authFetch("/user/profile");
@@ -44,13 +44,13 @@ export const fetchUserProfile = () => async (dispatch) => {
   dispatch(setUserProfile(result || null));
 };
 
-export const loggedInUserSelector = (state) => state.users.loggedInUser;
+export const loggedInUserSelector = (state) => state.user.loggedInUser;
 export const isLoggedInSelector = createSelector(
   loggedInUserSelector,
   (user) => !!user
 );
-export const userProfileSelector = (state) => state.users.userProfile;
+export const userProfileSelector = (state) => state.user.userProfile;
 export const verifyEmailSendTimeSelector = (state) =>
-  state.users.verifyEmailSendTime;
+  state.user.verifyEmailSendTime;
 
 export default userSlice.reducer;
