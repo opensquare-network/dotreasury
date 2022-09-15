@@ -33,7 +33,7 @@ export default combineReducers({
   chain: chainReducer,
   account: accountReducer,
   overview: overviewReducer,
-  users: userReducer,
+  user: userReducer,
   comments: commentReducer,
   toast: toastReducer,
   income: incomeReducer,
