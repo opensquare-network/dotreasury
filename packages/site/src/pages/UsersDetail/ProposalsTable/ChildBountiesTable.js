@@ -9,6 +9,7 @@ import {
 } from "../../../store/reducers/bountySlice";
 import { useEffect, useMemo } from "react";
 import { compatChildBountyData } from "../../ChildBounties/utils";
+import { resolveFilterData } from "./resolveFilterData";
 
 export default function ChildBountiesTable({
   header,
@@ -16,6 +17,8 @@ export default function ChildBountiesTable({
   tablePage,
   pageSize,
   filterData,
+  role,
+  address,
 }) {
   const chain = useSelector(chainSelector);
   const dispatch = useDispatch();
@@ -26,8 +29,15 @@ export default function ChildBountiesTable({
   const totalPages = Math.ceil(total / pageSize);
 
   useEffect(() => {
-    dispatch(fetchChildBounties(chain, tablePage - 1, pageSize, filterData));
-  }, [dispatch, chain, tablePage, pageSize, filterData]);
+    dispatch(
+      fetchChildBounties(
+        chain,
+        tablePage - 1,
+        pageSize,
+        resolveFilterData(filterData, { role, address })
+      )
+    );
+  }, [dispatch, chain, tablePage, pageSize, filterData, role, address]);
 
   const items = useMemo(() => data.map(compatChildBountyData), [data]);
 

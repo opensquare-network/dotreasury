@@ -2,11 +2,7 @@ import { parseInt } from "lodash";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router";
-import {
-  DEFAULT_PAGE_SIZE,
-  DEFAULT_QUERY_PAGE,
-  USER_ROLES,
-} from "../../../constants";
+import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../../constants";
 import { TableTitleLabel, TableTitle, TableTitleWrapper } from "./styled";
 import { usersCountsSelector } from "../../../store/reducers/usersDetailSlice";
 import { useChainRoute, useLocalStorage, useQuery } from "../../../utils/hooks";
@@ -15,7 +11,6 @@ import TipsTable from "./TipsTable";
 import BountiesTable from "./BountiesTable";
 import ChildBountiesTable from "./ChildBountiesTable";
 import ResponsivePagination from "../../../components/ResponsivePagination";
-import { omit } from "lodash";
 
 const TABLE_TABS = {
   Tips: "Tips",
@@ -93,23 +88,6 @@ export default function ProposalsTable({ role }) {
     setTablePage(1);
   }, [role, tableTab, history]);
 
-  // prevents:
-  // - duplicate http request
-  // - duplicate filter data
-  useEffect(() => {
-    setFilterData((_v) => {
-      const v = omit(
-        _v,
-        Object.values(USER_ROLES).map((r) => r.toLowerCase())
-      );
-
-      return {
-        ...v,
-        [role?.toLowerCase()]: address,
-      };
-    });
-  }, [role, address]);
-
   const header = (
     <TableTitleWrapper>
       {tableTitles.map((i) => (
@@ -159,6 +137,8 @@ export default function ProposalsTable({ role }) {
           pageSize={pageSize}
           filterData={filterData}
           filterQuery={filterQuery}
+          role={role}
+          address={address}
         />
       )}
 
@@ -169,6 +149,8 @@ export default function ProposalsTable({ role }) {
           tablePage={tablePage}
           pageSize={pageSize}
           filterData={filterData}
+          role={role}
+          address={address}
         />
       )}
 
@@ -179,6 +161,8 @@ export default function ProposalsTable({ role }) {
           tablePage={tablePage}
           pageSize={pageSize}
           filterData={filterData}
+          role={role}
+          address={address}
         />
       )}
     </>

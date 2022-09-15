@@ -8,6 +8,7 @@ import {
   bountyListSelector,
 } from "../../../store/reducers/bountySlice";
 import { useEffect } from "react";
+import { resolveFilterData } from "./resolveFilterData";
 
 export default function BountiesTable({
   header,
@@ -15,6 +16,8 @@ export default function BountiesTable({
   tablePage,
   pageSize,
   filterData,
+  role,
+  address,
 }) {
   const chain = useSelector(chainSelector);
   const dispatch = useDispatch();
@@ -25,8 +28,15 @@ export default function BountiesTable({
   const totalPages = Math.ceil(total / pageSize);
 
   useEffect(() => {
-    dispatch(fetchBounties(chain, tablePage - 1, pageSize, filterData));
-  }, [dispatch, chain, tablePage, pageSize, filterData]);
+    dispatch(
+      fetchBounties(
+        chain,
+        tablePage - 1,
+        pageSize,
+        resolveFilterData(filterData, { role, address })
+      )
+    );
+  }, [dispatch, chain, tablePage, pageSize, filterData, role, address]);
 
   return (
     <BountiesTableOrigin
