@@ -40,7 +40,7 @@ export default function UserInfo({ role, setRole = () => {} }) {
   }, [counts]);
 
   useEffect(() => {
-    dispatch(fetchUsersCounts(chain, address, role));
+    dispatch(fetchUsersCounts(chain, address, role?.toLowerCase()));
 
     return () => {
       dispatch(resetUsersCounts());
@@ -61,9 +61,9 @@ export default function UserInfo({ role, setRole = () => {} }) {
       extra={
         <>
           <InfoCardExtraItem label="Select a role">
-            {Object.values(USER_ROLES).map((r) => (
+            {Object.values(USER_ROLES).map((r, idx) => (
               <Tag
-                key={r.role}
+                key={idx}
                 rounded
                 hoverable
                 color={r === role && "pink"}
