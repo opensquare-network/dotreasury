@@ -3,6 +3,7 @@ const config = require("../../config");
 
 const inputDbName = config.mongo.dotInputDbName || "dotreasury-input-dot";
 const outputDbName = config.mongo.dotOutputDbName || "dotreasury-output-dot";
+const councilDbName = config.mongo.ksmCouncilDbName || "dotreasury-council-ksm";
 
 const statusCollectionName = "status";
 
@@ -28,12 +29,17 @@ const identitySlashCollectionName = "slashIdentity";
 const othersIncomeCollectionName = "othersBig";
 const incomeTransferCollectionName = "transfer";
 
+// council collections
+const termsCollectionName = "terms";
+const termCouncilorCollectionName = "termCouncilor";
+
 // stats collections
 const weeklyStatsCollectionName = "weeklyStats";
 
 let client = null;
 let inputDb = null;
 let outputDb = null;
+let councilDb = null;
 
 const mongoUrl = config.mongo.dotUrl || "mongodb://127.0.0.1:27017";
 let statusCol = null;
@@ -61,6 +67,9 @@ let identitySlashCol = null;
 let incomeTransferCol = null;
 let othersIncomeCol = null;
 let inputWeeklyStatsCol = null;
+
+let termsCol = null;
+let termCouncilorCol = null;
 
 async function initDb() {
   client = await MongoClient.connect(mongoUrl, {
@@ -93,6 +102,10 @@ async function initDb() {
   outputWeeklyStatsCol = outputDb.collection(weeklyStatsCollectionName);
   outputStatusCol = outputDb.collection(statusCollectionName);
   participantCol = outputDb.collection(participantCollectionName);
+
+  councilDb = client.db(councilDbName);
+  termsCol = councilDb.collection(termsCollectionName);
+  termCouncilorCol = councilDb.collection(termCouncilorCollectionName);
 
   await _createIndexes();
 }
@@ -227,6 +240,16 @@ async function getParticipantCollection() {
   return participantCol;
 }
 
+async function getTermsCollection() {
+  await tryInit(termsCol);
+  return termsCol;
+}
+
+async function getTermCouncilorCollection() {
+  await tryInit(termCouncilorCol);
+  return termCouncilorCol;
+}
+
 module.exports = {
   initDb,
   getStatusCollection,
@@ -252,4 +275,6 @@ module.exports = {
   getOutputWeeklyStatsCollection,
   getOutputStatusCollection,
   getParticipantCollection,
+  getTermsCollection,
+  getTermCouncilorCollection,
 };

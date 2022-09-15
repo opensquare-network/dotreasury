@@ -1,6 +1,7 @@
 const Router = require("koa-router");
 const beneficiaryController = require("./beneficiary.controller");
 const proposerController = require("./proposer.controller");
+const councilorController = require("./councilor.controller");
 
 const router = new Router();
 
@@ -15,5 +16,7 @@ router.get("/account/:address/proposer/tips", proposerController.getProposerTips
 router.get("/account/:address/proposer/proposals", proposerController.getProposerProposals);
 router.get("/account/:address/proposer/bounties", proposerController.getProposerBounties);
 router.get("/account/:address/proposer/child-bounties", proposerController.getProposerChildBounties);
+
+router.get("/account/:address/councilor/terms", councilorController.getCouncilorTerms);
 
 module.exports = router;
