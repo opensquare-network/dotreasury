@@ -29,6 +29,7 @@ let tipCol = null;
 let bountyCol = null;
 let proposalCol = null;
 let motionCol = null;
+let motionVoterCol = null;
 let burntCol = null;
 let outTransferCol = null;
 let childBountyCol = null;
@@ -49,6 +50,7 @@ async function initDb() {
   bountyCol = db.collection(bountyCollectionName);
   proposalCol = db.collection(proposalCollectionName);
   motionCol = db.collection(motionCollectionName);
+  motionVoterCol = db.collection("motionVoter");
   burntCol = db.collection(burntCollectionName);
   weeklyStatsCol = db.collection(weeklyStatsCollectionName);
   outTransferCol = db.collection(outTransferColName);
@@ -76,6 +78,11 @@ async function tryInit(col) {
 async function getMotionCollection() {
   await tryInit(motionCol);
   return motionCol;
+}
+
+async function getMotionVoterCollection() {
+  await tryInit(motionVoterCol);
+  return motionVoterCol;
 }
 
 async function getChildBountyCollection() {
@@ -136,6 +143,7 @@ module.exports = {
   getBountyCollection,
   getProposalCollection,
   getMotionCollection,
+  getMotionVoterCollection,
   getBurntCollection,
   getWeeklyStatsCollection,
   getOutTransferCollection,

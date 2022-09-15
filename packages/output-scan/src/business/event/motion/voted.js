@@ -1,3 +1,4 @@
+const { insertMotionVoter } = require("../../../mongo/service/motionVoter");
 const { handleBusinessWhenMotionVoted } = require("./hooks/voted");
 const { updateMotionByHash } = require("../../../mongo/service/motion");
 const {
@@ -29,6 +30,7 @@ async function handleVoted(event, extrinsic, indexer) {
 
   await updateMotionByHash(hash, updates, timelineItem);
   await handleBusinessWhenMotionVoted(hash, voting, indexer);
+  await insertMotionVoter(hash, voter, approve, indexer);
 }
 
 module.exports = {
