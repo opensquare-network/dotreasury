@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Image } from "semantic-ui-react";
 import { h3_18_semibold, p_14_normal, p_12_normal } from "../../styles/text";
 import {
@@ -12,6 +12,13 @@ export const InfoCardWrapper = styled(Card)`
   padding: 24px;
   margin-bottom: 24px;
   display: flex;
+
+  ${(p) =>
+    p.minHeight &&
+    css`
+      min-height: ${p.minHeight}px;
+    `}
+
   @media screen and (max-width: 481px) {
     & * {
       text-align: left !important;
@@ -35,17 +42,24 @@ export const InfoCardDetailWrapper = styled.div`
   }
 `;
 
-export const InfoCardIcon = styled(Image)`
+export const InfoCardIconWrapper = styled.div`
   margin-right: 24px;
-  width: 64px;
-  height: 64px;
-  display: inline-flex;
-  align-items: center;
+  min-width: 64px;
+  min-height: 64px;
+  max-width: 64px;
+  max-height: 64px;
 
   @media screen and (max-width: 900px) {
     margin-right: 0;
     margin-bottom: 12px;
   }
+`;
+
+export const InfoCardIcon = styled(Image)`
+  min-width: inherit;
+  min-height: inherit;
+  max-width: inherit;
+  max-height: inherit;
 `;
 
 export const InfoCardDetail = styled.div`

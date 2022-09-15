@@ -14,14 +14,17 @@ import {
   InfoCardExtraItemWrapper,
   InfoCardExtraItemLabel,
   InfoCardDivider,
+  InfoCardIconWrapper,
 } from "./styled";
 import Links from "./Links";
 
-function InfoCard({ icon, title, description, links, extra }) {
+function InfoCard({ icon, title, description, links, extra, minHeight }) {
   return (
-    <InfoCardWrapper>
+    <InfoCardWrapper minHeight={minHeight}>
       <InfoCardDetailWrapper>
-        <InfoCardIcon src={icon} />
+        <InfoCardIconWrapper>
+          {typeof icon === "string" ? <InfoCardIcon src={icon} /> : icon}
+        </InfoCardIconWrapper>
 
         <InfoCardDetail>
           <div>

@@ -46,6 +46,7 @@ import Transfers from "../pages/Transfers";
 import TransfersSlash from "../pages/TransfersSlash";
 import ProposalBeneficiaries from "../pages/ProposalBeneficiaries";
 import Users from "../pages/Users";
+import UsersDetail from "../pages/UsersDetail";
 
 import { usePreload } from "../utils/hooks";
 import { useSelector } from "react-redux";
@@ -176,6 +177,11 @@ export default function App() {
                 component={OthersIncome}
               />
               <Route exact path="/:symbol(ksm|dot)/users" component={Users} />
+              <Route
+                exact
+                path="/:symbol(ksm|dot)/users/:address"
+                component={UsersDetail}
+              />
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
               <Route exact path="/settings/:tabname?" component={UserSetting} />

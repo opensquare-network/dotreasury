@@ -75,7 +75,7 @@ export const fetchTipCountdown = (chain) => async (dispatch) => {
 const tipFinalStates = ["TipRetracted", "TipClosed"];
 const showStatusMap = tipStatusMap;
 
-function normalizeTip(tip) {
+export function normalizeTip(tip) {
   const showTime = tipFinalStates.includes(tip.latestState?.state);
   const showStatus = showStatusMap[tip.latestState?.state];
 
