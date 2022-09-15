@@ -30,8 +30,11 @@ const userSlice = createSlice({
   },
 });
 
-export const { setLoggedInUser, setUserProfile, setVerifyEmailSendTime } =
-  userSlice.actions;
+export const {
+  setLoggedInUser,
+  setUserProfile,
+  setVerifyEmailSendTime,
+} = userSlice.actions;
 
 export const fetchUserProfile = () => async (dispatch) => {
   const { result } = await api.authFetch("/user/profile");
