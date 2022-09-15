@@ -100,6 +100,14 @@ function getParticipantCollection(chain) {
   return db(chain).getParticipantCollection();
 }
 
+function getTermsCollection(chain) {
+  return db(chain).getTermsCollection();
+}
+
+function getTermCouncilorCollection(chain) {
+  return db(chain).getTermCouncilorCollection();
+}
+
 module.exports = {
   initDb,
   getStatusCollection,
@@ -125,4 +133,6 @@ module.exports = {
   getOutputWeeklyStatsCollection,
   getOutputStatusCollection,
   getParticipantCollection,
+  getTermsCollection,
+  getTermCouncilorCollection,
 };
