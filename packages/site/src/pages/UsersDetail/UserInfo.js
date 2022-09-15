@@ -40,7 +40,7 @@ export default function UserInfo({ role, setRole = () => {} }) {
   }, [counts]);
 
   useEffect(() => {
-    dispatch(fetchUsersCounts(chain, address, role));
+    dispatch(fetchUsersCounts(chain, address, role?.toLowerCase()));
 
     return () => {
       dispatch(resetUsersCounts());
