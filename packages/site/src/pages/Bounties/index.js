@@ -11,6 +11,7 @@ import {
   fetchBounties,
   loadingSelector,
   bountyListSelector,
+  resetBounties,
 } from "../../store/reducers/bountySlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../constants";
@@ -39,6 +40,10 @@ const Bounties = () => {
 
   useEffect(() => {
     dispatch(fetchBounties(chain, tablePage - 1, pageSize));
+
+    return () => {
+      dispatch(resetBounties());
+    };
   }, [dispatch, chain, tablePage, pageSize]);
 
   const totalPages = useMemo(
