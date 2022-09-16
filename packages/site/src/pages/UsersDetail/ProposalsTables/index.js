@@ -7,18 +7,20 @@ import { TableTitleLabel, TableTitle, TableTitleWrapper } from "./styled";
 import { usersCountsSelector } from "../../../store/reducers/usersDetailSlice";
 import { useChainRoute, useLocalStorage, useQuery } from "../../../utils/hooks";
 import Tag from "../../../components/Tag/Tag";
+import ProposalsTable from "./ProposalsTable";
 import TipsTable from "./TipsTable";
 import BountiesTable from "./BountiesTable";
 import ChildBountiesTable from "./ChildBountiesTable";
 import ResponsivePagination from "../../../components/ResponsivePagination";
 
 const TABLE_TABS = {
+  Proposals: "Proposals",
   Tips: "Tips",
   Bounties: "Bounties",
   ChildBounties: "ChildBounties",
 };
 
-export default function ProposalsTable({ role }) {
+export default function ProposalsTables({ role }) {
   useChainRoute();
 
   const history = useHistory();
@@ -58,6 +60,10 @@ export default function ProposalsTable({ role }) {
 
   const tableTitles = [
     {
+      label: TABLE_TABS.Proposals,
+      count: counts?.proposalsCount,
+    },
+    {
       label: TABLE_TABS.Tips,
       count: counts?.tipsCount,
     },
@@ -71,6 +77,11 @@ export default function ProposalsTable({ role }) {
     },
   ];
   const [tableTab, setTableTab] = useState(tableTitles[0].label);
+
+  const isProposals = useMemo(
+    () => tableTab === TABLE_TABS.Proposals,
+    [tableTab]
+  );
   const isTips = useMemo(() => tableTab === TABLE_TABS.Tips, [tableTab]);
   const isBounties = useMemo(
     () => tableTab === TABLE_TABS.Bounties,
@@ -129,6 +140,19 @@ export default function ProposalsTable({ role }) {
 
   return (
     <>
+      {isProposals && (
+        <ProposalsTable
+          header={header}
+          footer={footer}
+          tablePage={tablePage}
+          pageSize={pageSize}
+          filterData={filterData}
+          filterQuery={filterQuery}
+          role={role}
+          address={address}
+        />
+      )}
+
       {isTips && (
         <TipsTable
           header={header}

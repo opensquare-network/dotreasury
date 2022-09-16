@@ -59,9 +59,6 @@ const ProposalsTable = ({ data, loading, header, footer }) => {
   const [tableData, setTableData] = useState(data);
 
   useEffect(() => {
-    if (!(data.length > 0)) {
-      return;
-    }
     setTableData(data);
 
     Promise.all(completeProposalsWithTitle(data, chain)).then((res) => {
