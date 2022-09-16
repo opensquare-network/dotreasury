@@ -93,6 +93,9 @@ export const getLinkNameAndSrc = (link) => {
     } else if (url.host.endsWith("matrix.to")) {
       src = "/imgs/element-logo.svg";
       name = "Element";
+    } else if (url.host.endsWith("subscan.io")) {
+      src = "/imgs/subscan-logo.svg";
+      name = "Subscan";
     } else {
       src = "/imgs/link-icon.svg";
     }
