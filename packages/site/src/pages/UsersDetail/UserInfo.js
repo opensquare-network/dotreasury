@@ -17,6 +17,12 @@ import { useEffect, useMemo } from "react";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import { USER_ROLES } from "../../constants";
 import { Image } from "semantic-ui-react";
+import styled from "styled-components";
+
+const InfoCardTitleWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
 export default function UserInfo({ role, setRole = () => {} }) {
   const { address } = useParams();
@@ -51,10 +57,10 @@ export default function UserInfo({ role, setRole = () => {} }) {
     <InfoCard
       minHeight={148}
       title={
-        <>
+        <InfoCardTitleWrapper>
           {badgeData && <Badge {...badgeData} />}
           {name ?? ellipsis(address)}
-        </>
+        </InfoCardTitleWrapper>
       }
       icon={<Avatar address={address} size={64} />}
       description={address}
