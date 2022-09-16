@@ -4,8 +4,11 @@ import { USER_ROLES } from "../../constants";
 import DetailGoBack from "../components/DetailGoBack";
 import UserInfo from "./UserInfo";
 import ProposalsTable from "./ProposalsTable";
+import { useEnsureUsersCount } from "./useEnsureUsersCount";
 
 export default function UsersDetail() {
+  useEnsureUsersCount();
+
   // FIXME: default should be Councilor or from api
   const [role, setRole] = useState(USER_ROLES.Beneficiary);
 
