@@ -8,6 +8,7 @@ import {
   fetchTips,
   loadingSelector,
   normalizedTipListSelector,
+  resetTips,
 } from "../../store/reducers/tipSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import { useChainRoute, useQuery, useLocalStorage } from "../../utils/hooks";
@@ -60,6 +61,10 @@ const Tips = () => {
 
   useEffect(() => {
     dispatch(fetchTips(chain, tablePage - 1, pageSize, filterData));
+
+    return () => {
+      dispatch(resetTips());
+    };
   }, [dispatch, chain, tablePage, pageSize, filterData]);
 
   const filterQuery = useCallback(

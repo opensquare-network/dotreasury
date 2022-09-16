@@ -11,6 +11,7 @@ import {
   fetchChildBounties,
   childBountyListSelector,
   loadingSelector,
+  resetChildBounties,
 } from "../../store/reducers/bountySlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import { compatChildBountyData } from "./utils";
@@ -39,6 +40,10 @@ const ChildBounties = () => {
 
   useEffect(() => {
     dispatch(fetchChildBounties(chain, tablePage - 1, pageSize));
+
+    return () => {
+      dispatch(resetChildBounties());
+    };
   }, [dispatch, chain, tablePage, pageSize]);
 
   const totalPages = useMemo(

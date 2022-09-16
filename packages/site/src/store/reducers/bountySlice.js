@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { EMPTY_TABLE_DATA } from "../../constants";
 import api from "../../services/scanApi";
 
 const bountySlice = createSlice({
@@ -78,6 +79,9 @@ export const fetchBounties =
       dispatch(setLoading(false));
     }
   };
+export const resetBounties = () => (dispatch) => {
+  dispatch(setBounties(EMPTY_TABLE_DATA));
+};
 
 export const fetchChildBountiesByParentIndex =
   (chain, bountyIndex, page = 1, pageSize = 30) =>
@@ -132,6 +136,9 @@ export const fetchChildBounties =
       dispatch(setLoading(false));
     }
   };
+export const resetChildBounties = () => (dispatch) => {
+  dispatch(setChildBounties(EMPTY_TABLE_DATA));
+};
 
 export const bountyListSelector = (state) => state.bounties.bounties;
 export const childBountyListSelector = (state) => state.bounties.childBounties;

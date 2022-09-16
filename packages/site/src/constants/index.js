@@ -106,3 +106,13 @@ export const USER_ROLES = {
   Beneficiary: "Beneficiary",
   Proposer: "Proposer",
 };
+
+/**
+ * @description empty table data structure
+ */
+export const EMPTY_TABLE_DATA = {
+  items: [],
+  page: 0,
+  pageSize: 10,
+  total: 0,
+};

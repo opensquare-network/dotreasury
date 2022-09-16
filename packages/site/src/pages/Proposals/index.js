@@ -13,6 +13,7 @@ import {
   fetchProposals,
   loadingSelector,
   proposalListSelector,
+  resetProposals,
 } from "../../store/reducers/proposalSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import Text from "../../components/Text";
@@ -54,6 +55,10 @@ const Proposals = () => {
 
   useEffect(() => {
     dispatch(fetchProposals(chain, tablePage - 1, pageSize, filterData));
+
+    return () => {
+      dispatch(resetProposals());
+    };
   }, [dispatch, chain, tablePage, pageSize, filterData]);
 
   const totalPages = Math.ceil(total / pageSize);
