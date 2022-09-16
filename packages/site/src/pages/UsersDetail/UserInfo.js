@@ -24,6 +24,22 @@ const InfoCardTitleWrapper = styled.div`
   align-items: center;
 `;
 
+function createLinks(chain, address, otherLinks = []) {
+  const links = [];
+
+  otherLinks.forEach(item => links.push(item));
+
+  links.push({
+    link: `https://${chain}.subsquare.io/user/${address}`,
+  });
+
+  links.push({
+    link: `https://${chain}.subscan.io/account/${address}`,
+  });
+
+  return links;
+}
+
 export default function UserInfo({ role, setRole = () => {} }) {
   const { address } = useParams();
   const { name, badgeData } = useIdentity(address);
@@ -31,7 +47,7 @@ export default function UserInfo({ role, setRole = () => {} }) {
   const counts = useSelector(usersCountsSelector);
   const countsLoading = useSelector(countsLoadingSelector);
   const chain = useSelector(chainSelector);
-  const [links, setLinks] = useState([]);
+  const [links, setLinks] = useState(createLinks(chain, address));
 
   const shouldShowProposals = useMemo(
     () => [USER_ROLES.Beneficiary, USER_ROLES.Proposer].includes(role),
@@ -91,7 +107,7 @@ export default function UserInfo({ role, setRole = () => {} }) {
         });
       }
 
-      setLinks(links);
+      setLinks(createLinks(chain, address, links));
     });
   }, [chain, address]);
 
