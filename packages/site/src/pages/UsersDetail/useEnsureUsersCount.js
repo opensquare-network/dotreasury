@@ -15,5 +15,5 @@ export function useEnsureUsersCount() {
     if (!total) {
       dispatch(fetchUsers(chain, 0, 1));
     }
-  }, []);
+  }, [dispatch, chain, total]);
 }
