@@ -50,7 +50,11 @@ export const getLinkNameAndSrc = (link) => {
 
     let src = "";
     let name = "";
-    if (url.host.endsWith("youtube.com") || url.host.endsWith("youtu.be")) {
+
+    if (url.protocol === "mailto:") {
+      src = "/imgs/email-logo.svg";
+      name = "Email";
+    } else if (url.host.endsWith("youtube.com") || url.host.endsWith("youtu.be")) {
       src = "/imgs/youtube-logo.svg";
       name = "YouTube";
     } else if (
@@ -86,6 +90,9 @@ export const getLinkNameAndSrc = (link) => {
     } else if (url.host.endsWith("subsquare.io")) {
       src = "/imgs/subsquare-logo.svg";
       name = "Subsquare";
+    } else if (url.host.endsWith("matrix.to")) {
+      src = "/imgs/element-logo.svg";
+      name = "Element";
     } else {
       src = "/imgs/link-icon.svg";
     }

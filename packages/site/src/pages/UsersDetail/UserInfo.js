@@ -17,6 +17,7 @@ import { useEffect, useMemo } from "react";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import { USER_ROLES } from "../../constants";
 import styled from "styled-components";
+import { useState } from "react";
 
 const InfoCardTitleWrapper = styled.div`
   display: flex;
@@ -30,6 +31,7 @@ export default function UserInfo({ role, setRole = () => {} }) {
   const counts = useSelector(usersCountsSelector);
   const countsLoading = useSelector(countsLoadingSelector);
   const chain = useSelector(chainSelector);
+  const [links, setLinks] = useState([]);
 
   const shouldShowProposals = useMemo(
     () => [USER_ROLES.Beneficiary, USER_ROLES.Proposer].includes(role),
@@ -52,6 +54,47 @@ export default function UserInfo({ role, setRole = () => {} }) {
     };
   }, [dispatch, chain, role, address]);
 
+  useEffect(() => {
+    fetch(
+      `${process.env.REACT_APP_IDENTITY_SERVER_HOST}/${chain}/identity/${address}`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    )
+    .then((resp) => resp.json())
+    .then((data) => {
+      const links = [];
+
+      const info = data?.info;
+      if (info?.email) {
+        links.push({
+          link: `mailto:${info.email}`,
+        });
+      }
+      if (info?.riot) {
+        links.push({
+          link: `https://matrix.to/#/${info.riot}`,
+        });
+      }
+      if (info?.twitter) {
+        links.push({
+          link: `https://www.twitter.com/${info.twitter}`,
+        });
+      }
+      if (info?.web) {
+        links.push({
+          link: info.web,
+        });
+      }
+
+      setLinks(links);
+    });
+  }, [chain, address]);
+
   return (
     <InfoCard
       minHeight={148}
@@ -63,6 +106,7 @@ export default function UserInfo({ role, setRole = () => {} }) {
       }
       icon={<Avatar address={address} size={64} />}
       description={address}
+      links={links}
       extra={
         <>
           <InfoCardExtraItem label="Select a role">
