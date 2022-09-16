@@ -44,13 +44,13 @@ export default function Links({ links }) {
 }
 
 function Link({ link }) {
-  const [, src] = getLinkNameAndSrc(link.link);
+  const [name, src] = getLinkNameAndSrc(link.link);
 
   return (
     <ExternalLink href={link.link}>
       <LinkWrapper>
         <Image src={src} />
-        <LinkText>{link.description}</LinkText>
+        <LinkText>{link.description ?? name}</LinkText>
       </LinkWrapper>
     </ExternalLink>
   );
