@@ -1,3 +1,4 @@
+const { insertMotionVoter } = require("../../../mongo/service/motionVoter");
 const { isBountyMotion } = require("../../common/bounty/utils/motion");
 const { handleWrappedCall } = require("../../common/call");
 const {
@@ -82,6 +83,10 @@ async function handleProposed(event, extrinsic, indexer, blockEvents) {
 
   await insertMotion(obj);
   await handleBusinessWhenMotionProposed(obj, rawProposal, indexer, blockEvents);
+
+  if ((voting?.ayes || []).length > 0) {
+    await insertMotionVoter(hash, voting.ayes[0], true, indexer);
+  }
 }
 
 module.exports = {

@@ -1,3 +1,4 @@
+const { insertTipper } = require("../../../mongo/service/tipper");
 const { computeTipValue } = require("../../common/tip/median");
 const { getTipFindersFeeFromApi } = require("../../common/tip/utils");
 const { getTippersCountFromApi } = require("../../common/tip/utils");
@@ -79,6 +80,10 @@ async function saveNewTip(event, extrinsic, indexer) {
   };
 
   await insertTip(obj);
+  if ((meta?.tips || []).length > 0) {
+    const [tipper, value] = meta.tips[0]
+    await insertTipper(hash, tipper, value, indexer);
+  }
 }
 
 async function updateTipWithClosing(tipHash, indexer) {

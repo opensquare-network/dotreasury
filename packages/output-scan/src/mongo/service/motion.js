@@ -35,7 +35,13 @@ async function updateMotionByHash(hash, updates, timelineItem) {
   await col.updateOne({ hash: hash, isFinal: false }, update);
 }
 
+async function getUnFinalMotion(hash) {
+  const col = await getMotionCollection();
+  return await col.findOne({ hash, isFinal: false });
+}
+
 module.exports = {
   insertMotion,
   updateMotionByHash,
+  getUnFinalMotion,
 };
