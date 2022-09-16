@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import { USER_ROLES } from "../../constants";
 import DetailGoBack from "../components/DetailGoBack";
 import UserInfo from "./UserInfo";
-import ProposalsTable from "./ProposalsTable";
+import ProposalsTables from "./ProposalsTables";
 import { useEnsureUsersCount } from "./useEnsureUsersCount";
 
 export default function UsersDetail() {
@@ -23,7 +23,7 @@ export default function UsersDetail() {
 
       <UserInfo role={role} setRole={setRole} />
 
-      {proposalsRole && <ProposalsTable role={role} />}
+      {proposalsRole && <ProposalsTables role={role} />}
     </div>
   );
 }
