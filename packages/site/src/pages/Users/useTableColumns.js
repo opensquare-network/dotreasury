@@ -57,7 +57,8 @@ const proposals = {
       <ProposalsWrapper>
         <ProposalsCount
           proposals={data?.proposals}
-          bounties={data?.bounties + data?.childBounties}
+          bounties={data?.bounties}
+          childBounties={data?.childBounties}
           tips={data?.tips}
         />
       </ProposalsWrapper>

@@ -28,12 +28,13 @@ const SymbolWrapper = styled.span`
 
 /**
  * @description Count proposals, bounties and tips
- * @example 2P(roposals) + 1B(ounties) + 4T(ips)
+ * @example 2P(roposals) + 4T(ips) + 1B(ounties) + 2b(child bounties)
  */
 export default function ProposalsCount({
   proposals,
   bounties,
   tips,
+  childBounties,
   showZero = false,
 }) {
   const symbols = [
@@ -42,12 +43,16 @@ export default function ProposalsCount({
       icon: "/imgs/symbol-proposals.svg",
     },
     {
+      count: tips,
+      icon: "/imgs/symbol-tips.svg",
+    },
+    {
       count: bounties,
       icon: "/imgs/symbol-bounties.svg",
     },
     {
-      count: tips,
-      icon: "/imgs/symbol-tips.svg",
+      count: childBounties,
+      icon: "/imgs/symbol-child-bounties.svg",
     },
   ];
 

@@ -128,7 +128,8 @@ export default function UserInfo({ role, setRole = () => {} }) {
               {hasCounts ? (
                 <ProposalsCount
                   proposals={counts?.proposalsCount}
-                  bounties={counts?.bountiesCount + counts?.childBountiesCount}
+                  bounties={counts?.bountiesCount}
+                  childBounties={counts?.childBountiesCount}
                   tips={counts?.tipsCount}
                 />
               ) : (
