@@ -26,6 +26,7 @@ let db = null;
 const mongoUrl = process.env.MONGO_URL || "mongodb://127.0.0.1:27017";
 let statusCol = null;
 let tipCol = null;
+let tipperCol = null;
 let bountyCol = null;
 let proposalCol = null;
 let motionCol = null;
@@ -47,6 +48,7 @@ async function initDb() {
   db = client.db(dbName);
   statusCol = db.collection(statusCollectionName);
   tipCol = db.collection(tipCollectionName);
+  tipperCol = db.collection("tipper");
   bountyCol = db.collection(bountyCollectionName);
   proposalCol = db.collection(proposalCollectionName);
   motionCol = db.collection(motionCollectionName);
@@ -100,6 +102,11 @@ async function getTipCollection() {
   return tipCol;
 }
 
+async function getTipperCollection() {
+  await tryInit(tipperCol);
+  return tipperCol;
+}
+
 async function getBountyCollection() {
   await tryInit(bountyCol);
   return bountyCol;
@@ -140,6 +147,7 @@ module.exports = {
   close,
   getStatusCollection,
   getTipCollection,
+  getTipperCollection,
   getBountyCollection,
   getProposalCollection,
   getMotionCollection,

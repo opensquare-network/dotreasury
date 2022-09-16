@@ -1,3 +1,4 @@
+const { insertTipper } = require("../../../mongo/service/tipper");
 const {
   consts: {
     TipMethods,
@@ -32,6 +33,7 @@ async function handleTipCall(call, author, extrinsicIndexer) {
   };
 
   await updateTipByHash(hash, updates, timelineItem);
+  await insertTipper(hash, author, tipValue, extrinsicIndexer);
 }
 
 module.exports = {

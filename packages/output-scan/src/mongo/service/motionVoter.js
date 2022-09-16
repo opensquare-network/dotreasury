@@ -14,6 +14,7 @@ async function insertMotionVoter(motionHash, voter, aye, indexer) {
   await col.insertOne({
     indexer,
     motionHeight,
+    motionHash,
     voter,
     aye,
   });
