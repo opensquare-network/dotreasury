@@ -16,7 +16,6 @@ import {
 import { useEffect, useMemo } from "react";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import { USER_ROLES } from "../../constants";
-import { Image } from "semantic-ui-react";
 import styled from "styled-components";
 
 const InfoCardTitleWrapper = styled.div`
@@ -80,18 +79,16 @@ export default function UserInfo({ role, setRole = () => {} }) {
             ))}
           </InfoCardExtraItem>
 
-          {shouldShowProposals && (
+          {shouldShowProposals && !countsLoading && (
             <InfoCardExtraItem label="Proposals">
-              {countsLoading ? (
-                <Image width={20} height={20} src="/imgs/loading.svg" />
-              ) : hasCounts ? (
+              {hasCounts ? (
                 <ProposalsCount
                   proposals={counts?.proposalsCount}
                   bounties={counts?.bountiesCount + counts?.childBountiesCount}
                   tips={counts?.tipsCount}
                 />
               ) : (
-                <span>--</span>
+                <span>0</span>
               )}
             </InfoCardExtraItem>
           )}
