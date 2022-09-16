@@ -4,9 +4,11 @@ import styled from "styled-components";
 import Username from "./Username";
 import Avatar from "./Avatar";
 import Badge from "./Badge";
-import ExplorerLink from "../../components/ExplorerLink";
 import { useIdentity } from "../../utils/hooks";
 import DeletedAccount from "./DeletedAccount";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { chainSelector } from "../../store/reducers/chainSlice";
 
 const Wrapper = styled.div`
   display: flex;
@@ -24,6 +26,8 @@ const BadgeWrapper = styled.div`
 
 const User = ({ address, ellipsis = true, popup = true, popupContent, avatarSize = 22, noLink = false }) => {
   const { name, badgeData } = useIdentity(address);
+  const chain = useSelector(chainSelector);
+  const chainUrl = chain === "kusama" ? "ksm" : "dot";
 
   let username = (
     <Username
@@ -38,9 +42,9 @@ const User = ({ address, ellipsis = true, popup = true, popupContent, avatarSize
 
   if (!noLink) {
     username = (
-      <ExplorerLink href={`/account/${address}`}>
+      <Link to={`/${chainUrl}/users/${address}`}>
         {username}
-      </ExplorerLink>
+      </Link>
     );
   }
 
