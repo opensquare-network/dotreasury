@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { chainSelector } from "../../../store/reducers/chainSlice";
 import { resolveFilterData } from "./resolveFilterData";
 import ProposalsTableOrigin from "../../Proposals/ProposalsTable";
-import ProposalsTableFilter from "../../Proposals/Filter";
 import { useEffect } from "react";
 import {
   fetchProposals,
@@ -18,7 +17,6 @@ export default function ProposalsTable({
   tablePage,
   pageSize,
   filterData,
-  filterQuery = noop,
   role,
   address,
 }) {
@@ -43,15 +41,7 @@ export default function ProposalsTable({
 
   return (
     <ProposalsTableOrigin
-      header={
-        <TableHeaderWrapper>
-          {header}
-          <ProposalsTableFilter
-            value={filterData?.status || "-1"}
-            query={filterQuery}
-          />
-        </TableHeaderWrapper>
-      }
+      header={<TableHeaderWrapper>{header}</TableHeaderWrapper>}
       loading={loading}
       data={items}
       footer={!!items.length && footer(totalPages)}
