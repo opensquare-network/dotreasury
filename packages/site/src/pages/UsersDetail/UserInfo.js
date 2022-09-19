@@ -67,6 +67,10 @@ export default function UserInfo({ role, setRole = () => {} }) {
   }, [counts]);
 
   useEffect(() => {
+    if (!shouldShowProposals) {
+      return;
+    }
+
     dispatch(fetchUsersCounts(chain, address, role?.toLowerCase()));
 
     return () => {
