@@ -6,14 +6,15 @@ import UserInfo from "./UserInfo";
 import ProposalsTables from "./ProposalsTables";
 import { useEnsureUsersCount } from "./useEnsureUsersCount";
 import { useResetTableData } from "./useResetTableData";
+import Councilor from "./Councilor";
 
 export default function UsersDetail() {
   useEnsureUsersCount();
   useResetTableData();
 
-  // FIXME: default should be Councilor or from api
-  const [role, setRole] = useState(USER_ROLES.Beneficiary);
+  const [role, setRole] = useState(USER_ROLES.Councilor);
 
+  const councilorRole = useMemo(() => role === USER_ROLES.Councilor, [role]);
   const proposalsRole = useMemo(
     () => [USER_ROLES.Beneficiary, USER_ROLES.Proposer].includes(role),
     [role]
@@ -24,6 +25,8 @@ export default function UsersDetail() {
       <DetailGoBack />
 
       <UserInfo role={role} setRole={setRole} />
+
+      {councilorRole && <Councilor role={role} />}
 
       {proposalsRole && <ProposalsTables role={role} />}
     </div>
