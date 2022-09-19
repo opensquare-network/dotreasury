@@ -14,10 +14,14 @@ import {
   countsLoadingSelector,
 } from "../../store/reducers/usersDetailSlice";
 import { useEffect, useMemo } from "react";
-import { chainSelector } from "../../store/reducers/chainSlice";
+import {
+  chainSelector,
+  chainSymbolSelector,
+} from "../../store/reducers/chainSlice";
 import { USER_ROLES } from "../../constants";
 import styled from "styled-components";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const InfoCardTitleWrapper = styled.div`
   display: flex;
@@ -44,6 +48,9 @@ function createLinks(chain, address, otherLinks = []) {
   return links;
 }
 
+const assertShowProposalsRole = (role) =>
+  [USER_ROLES.Beneficiary, USER_ROLES.Proposer].includes(role);
+
 export default function UserInfo({ role, setRole = () => {} }) {
   const { address } = useParams();
   const { name, badgeData } = useIdentity(address);
@@ -51,12 +58,14 @@ export default function UserInfo({ role, setRole = () => {} }) {
   const counts = useSelector(usersCountsSelector);
   const countsLoading = useSelector(countsLoadingSelector);
   const chain = useSelector(chainSelector);
+  const chainSymbol = useSelector(chainSymbolSelector);
   const [links, setLinks] = useState(createLinks(chain, address));
 
   const shouldShowProposals = useMemo(
-    () => [USER_ROLES.Beneficiary, USER_ROLES.Proposer].includes(role),
+    () => assertShowProposalsRole(role),
     [role]
   );
+
   const hasCounts = useMemo(() => {
     return [
       counts?.proposalsCount,
@@ -133,15 +142,21 @@ export default function UserInfo({ role, setRole = () => {} }) {
         <>
           <InfoCardExtraItem label="Select a role">
             {Object.values(USER_ROLES).map((r, idx) => (
-              <Tag
-                key={idx}
-                rounded
-                hoverable
-                color={r === role && "pink"}
-                onClick={() => setRole(r)}
+              <Link
+                to={`/${chainSymbol}/users/${address}${
+                  assertShowProposalsRole(r) ? "/proposals" : ""
+                }`}
               >
-                {r}
-              </Tag>
+                <Tag
+                  key={idx}
+                  rounded
+                  hoverable
+                  color={r === role && "pink"}
+                  onClick={() => setRole(r)}
+                >
+                  {r}
+                </Tag>
+              </Link>
             ))}
           </InfoCardExtraItem>
 

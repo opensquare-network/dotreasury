@@ -12,19 +12,20 @@ import TipsTable from "./TipsTable";
 import BountiesTable from "./BountiesTable";
 import ChildBountiesTable from "./ChildBountiesTable";
 import ResponsivePagination from "../../../components/ResponsivePagination";
+import { Link } from "react-router-dom";
 
 const TABLE_TABS = {
-  Proposals: "Proposals",
-  Tips: "Tips",
-  Bounties: "Bounties",
-  ChildBounties: "ChildBounties",
+  Proposals: "proposals",
+  Tips: "tips",
+  Bounties: "bounties",
+  ChildBounties: "child-bounties",
 };
 
 export default function ProposalsTables({ role }) {
   useChainRoute();
 
   const history = useHistory();
-  const { address } = useParams();
+  const { address, tableTab: tableTabParam } = useParams();
 
   const searchPage = parseInt(useQuery().get("page"));
   const queryPage =
@@ -58,20 +59,8 @@ export default function ProposalsTables({ role }) {
       count: counts?.childBountiesCount,
     },
   ];
-  const [tableTab, setTableTab] = useState(tableTitles[0].label);
-
-  const isProposals = useMemo(
-    () => tableTab === TABLE_TABS.Proposals,
-    [tableTab]
-  );
-  const isTips = useMemo(() => tableTab === TABLE_TABS.Tips, [tableTab]);
-  const isBounties = useMemo(
-    () => tableTab === TABLE_TABS.Bounties,
-    [tableTab]
-  );
-  const isChildBounties = useMemo(
-    () => tableTab === TABLE_TABS.ChildBounties,
-    [tableTab]
+  const [tableTab, setTableTab] = useState(
+    tableTabParam || tableTitles[0].label
   );
 
   useEffect(() => {
@@ -84,15 +73,19 @@ export default function ProposalsTables({ role }) {
   const header = (
     <TableTitleWrapper>
       {tableTitles.map((i) => (
-        <TableTitle key={i.label} onClick={() => setTableTab(i.label)}>
-          <TableTitleLabel active={tableTab === i.label}>
-            {i.label}
-          </TableTitleLabel>
-          {!!i.count && (
-            <Tag key={i.label} rounded color="pink" size="small">
-              {i.count}
-            </Tag>
-          )}
+        <TableTitle
+          key={i.label}
+          active={tableTab === i.label}
+          onClick={() => setTableTab(i.label)}
+        >
+          <Link to={`${i.label}`}>
+            <TableTitleLabel>{i.label.replace("-", " ")}</TableTitleLabel>
+            {!!i.count && (
+              <Tag key={i.label} rounded color="pink" size="small">
+                {i.count}
+              </Tag>
+            )}
+          </Link>
         </TableTitle>
       ))}
     </TableTitleWrapper>
@@ -118,6 +111,46 @@ export default function ProposalsTables({ role }) {
         setTablePage(activePage);
       }}
     />
+  );
+
+  return (
+    <>
+      <Tables
+        header={header}
+        footer={footer}
+        tablePage={tablePage}
+        pageSize={pageSize}
+        filterData={filterData}
+        role={role}
+        address={address}
+      />
+    </>
+  );
+}
+
+function Tables({
+  header,
+  footer,
+  tablePage,
+  pageSize,
+  filterData,
+  role,
+  address,
+}) {
+  const { tableTab } = useParams();
+
+  const isProposals = useMemo(
+    () => tableTab === TABLE_TABS.Proposals,
+    [tableTab]
+  );
+  const isTips = useMemo(() => tableTab === TABLE_TABS.Tips, [tableTab]);
+  const isBounties = useMemo(
+    () => tableTab === TABLE_TABS.Bounties,
+    [tableTab]
+  );
+  const isChildBounties = useMemo(
+    () => tableTab === TABLE_TABS.ChildBounties,
+    [tableTab]
   );
 
   return (
