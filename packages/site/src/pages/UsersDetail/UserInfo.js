@@ -24,6 +24,10 @@ const InfoCardTitleWrapper = styled.div`
   align-items: center;
 `;
 
+const InfoCardDescriptionAddress = styled.span`
+  word-break: break-all;
+`;
+
 function createLinks(chain, address, otherLinks = []) {
   const links = [];
 
@@ -121,7 +125,9 @@ export default function UserInfo({ role, setRole = () => {} }) {
         </InfoCardTitleWrapper>
       }
       icon={<Avatar address={address} size={64} />}
-      description={address}
+      description={
+        <InfoCardDescriptionAddress>{address}</InfoCardDescriptionAddress>
+      }
       links={links}
       extra={
         <>

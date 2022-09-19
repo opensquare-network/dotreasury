@@ -39,6 +39,7 @@ export const InfoCardDetailWrapper = styled.div`
   @media screen and (max-width: 900px) {
     padding: 24px;
     display: block;
+    margin-right: 0;
   }
 `;
 
