@@ -182,6 +182,11 @@ export default function App() {
                 path="/:symbol(ksm|dot)/users/:address"
                 component={UsersDetail}
               />
+              <Route
+                exact
+                path="/:symbol(ksm|dot)/users/:address/:tableTab"
+                component={UsersDetail}
+              />
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
               <Route exact path="/settings/:tabname?" component={UserSetting} />
