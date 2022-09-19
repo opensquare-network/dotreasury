@@ -1,5 +1,5 @@
 import { parseInt } from "lodash";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router";
 import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../../constants";
@@ -37,25 +37,7 @@ export default function ProposalsTables({ role }) {
     DEFAULT_PAGE_SIZE
   );
 
-  const searchStatus = useQuery().get("status");
-  const [filterData, setFilterData] = useState(() => {
-    const v = {};
-    if (searchStatus) {
-      v.status = searchStatus;
-    }
-    return v;
-  });
-  const filterQuery = useCallback(
-    (data) => {
-      setFilterData(data);
-      setTablePage(1);
-      history.push({
-        search: data.status ? `status=${data.status}` : null,
-      });
-    },
-    [history]
-  );
-
+  const [filterData] = useState({});
   const counts = useSelector(usersCountsSelector);
 
   const tableTitles = [
@@ -147,7 +129,6 @@ export default function ProposalsTables({ role }) {
           tablePage={tablePage}
           pageSize={pageSize}
           filterData={filterData}
-          filterQuery={filterQuery}
           role={role}
           address={address}
         />
@@ -160,7 +141,6 @@ export default function ProposalsTables({ role }) {
           tablePage={tablePage}
           pageSize={pageSize}
           filterData={filterData}
-          filterQuery={filterQuery}
           role={role}
           address={address}
         />

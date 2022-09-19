@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { noop } from "lodash";
 import TipsTableOrigin from "../../Tips/TipsTable";
-import TipsTableFilter from "../../Tips/Filter";
 import {
   fetchTips,
   loadingSelector,
@@ -18,7 +17,6 @@ export default function TipsTable({
   tablePage,
   pageSize,
   filterData,
-  filterQuery = noop,
   role,
   address,
 }) {
@@ -43,15 +41,7 @@ export default function TipsTable({
 
   return (
     <TipsTableOrigin
-      header={
-        <TableHeaderWrapper>
-          {header}
-          <TipsTableFilter
-            value={filterData?.status || "-1"}
-            query={filterQuery}
-          />
-        </TableHeaderWrapper>
-      }
+      header={<TableHeaderWrapper>{header}</TableHeaderWrapper>}
       loading={loading}
       data={items}
       footer={!!items?.length && footer(totalPages)}
