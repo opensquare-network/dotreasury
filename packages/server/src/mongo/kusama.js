@@ -18,6 +18,8 @@ const proposalBeneficiaryCollectionName = "proposalBeneficiary";
 const burntCollectionName = "burnt";
 const outputTransferCollectionName = "outputTransfer";
 const participantCollectionName = "participant";
+const motionVoterCollectionName = "motionVoter";
+const tipperCollectionName = "tipper";
 
 // income collections
 const incomeInflationCollectionName = "inflation";
@@ -57,6 +59,8 @@ let outputTransferCol = null;
 let outputWeeklyStatsCol = null;
 let outputStatusCol = null;
 let participantCol = null;
+let motionVoterCol = null;
+let tipperCol = null;
 
 let incomeInflationCol = null;
 let stakingSlashCol = null;
@@ -102,6 +106,8 @@ async function initDb() {
   outputWeeklyStatsCol = outputDb.collection(weeklyStatsCollectionName);
   outputStatusCol = outputDb.collection(statusCollectionName);
   participantCol = outputDb.collection(participantCollectionName);
+  motionVoterCol = outputDb.collection(motionVoterCollectionName);
+  tipperCol = outputDb.collection(tipperCollectionName);
 
   councilDb = client.db(councilDbName);
   termsCol = councilDb.collection(termsCollectionName);
@@ -250,6 +256,16 @@ async function getTermCouncilorCollection() {
   return termCouncilorCol;
 }
 
+async function getMotionVoterCollection() {
+  await tryInit(motionVoterCol);
+  return motionVoterCol;
+}
+
+async function getTipperCollection() {
+  await tryInit(tipperCol);
+  return tipperCol;
+}
+
 module.exports = {
   initDb,
   getStatusCollection,
@@ -277,4 +293,6 @@ module.exports = {
   getParticipantCollection,
   getTermsCollection,
   getTermCouncilorCollection,
+  getMotionVoterCollection,
+  getTipperCollection,
 };
