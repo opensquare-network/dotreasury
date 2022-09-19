@@ -55,4 +55,5 @@ export const TableTitle = styled.h4`
 `;
 export const TableTitleWrapper = styled.div`
   display: flex;
+  overflow-x: scroll;
 `;
