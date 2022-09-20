@@ -50,6 +50,10 @@ export const TableTitle = styled.h4`
   a {
     display: block;
     color: ${TEXT_DARK_ACCESSORY};
+
+    &:hover {
+      color: ${TEXT_DARK_MAJOR};
+    }
   }
 
   ${(p) =>
