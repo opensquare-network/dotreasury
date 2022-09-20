@@ -12,6 +12,7 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "@uiw/react-heat-map": "^2.0.4",
     "bignumber.js": "^9.0.1",
     "chart.js": "^2.9.4",
     "copy-to-clipboard": "^3.3.1",
