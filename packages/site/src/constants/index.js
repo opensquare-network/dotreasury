@@ -7,6 +7,7 @@ export const Tertiary_Green_500 = "#0EAB0E";
 export const Greyscale_Grey_100 = "#fafafa";
 export const Greyscale_Grey_200 = "#f4f4f4";
 export const Primary_Theme_Pink_100 = "#FFF0F3";
+export const Primary_Theme_Pink_200 = "#ffc5c3";
 export const Primary_Theme_Pink_500 = "#F23252";
 export const PRIMARY_THEME_COLOR = "#DF405D";
 export const SECONDARY_THEME_COLOR = "#FFEEF1";
