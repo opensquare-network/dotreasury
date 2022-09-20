@@ -143,7 +143,7 @@ export default function UserInfo({ role, setRole = () => {} }) {
           <InfoCardExtraItem label="Select a role">
             {Object.values(USER_ROLES).map((r, idx) => (
               <Link
-                to={`/${chainSymbol}/users/${address}${
+                to={`/${chainSymbol?.toLowerCase()}/users/${address}${
                   assertShowProposalsRole(r) ? "/proposals" : ""
                 }`}
               >
