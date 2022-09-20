@@ -9,7 +9,7 @@ import { sendTx } from "../../../utils/sendTx";
 import { isSameAddress } from "../../../utils";
 import OnChainActionButton from "../../../components/OnChainActionButton";
 
-export default function ClaimButton({ parentBountyId, index, beneficiary, onInBlock, onFinalized }) {
+export default function ClaimButton({ parentBountyId, index, beneficiary, onFinalized }) {
   const api = useApi();
   const dispatch = useDispatch();
   const account = useSelector(accountSelector);
@@ -45,7 +45,6 @@ export default function ClaimButton({ parentBountyId, index, beneficiary, onInBl
         dispatch,
         signerAddress: account.address,
         isMounted,
-        onInBlock,
         onFinalized,
       });
     } finally {
