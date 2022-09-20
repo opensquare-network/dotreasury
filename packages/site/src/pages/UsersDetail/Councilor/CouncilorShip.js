@@ -7,6 +7,14 @@ import ActivityCalendar from "@uiw/react-heat-map";
 import { CouncilorShipCardTitle, CouncilorShipCardWrapper } from "./styled";
 import dayjs from "dayjs";
 import { Greyscale_Grey_200, Primary_Theme_Pink_200 } from "../../../constants";
+import { useEffect } from "react";
+import {
+  councilorShipSelector,
+  fetchCouncilorShipTerms,
+} from "../../../store/reducers/usersDetailSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { chainSelector } from "../../../store/reducers/chainSlice";
+import { useParams } from "react-router";
 
 const ActivityCalendarWrapper = styled.div`
   display: flex;
@@ -29,8 +37,6 @@ const ActivityCalendarContent = styled.div`
 `;
 
 export default function CouncilorShip() {
-  // console.log(mock);
-
   const ONE_YEAR_DAYS_WIDTH = 1920;
   const ONE_WEEK_COLUMN_WIDTH = 14.2;
 
@@ -39,6 +45,16 @@ export default function CouncilorShip() {
     Math.floor(ONE_YEAR_DAYS_WIDTH / ONE_WEEK_COLUMN_WIDTH),
     "week"
   );
+
+  const dispatch = useDispatch();
+  const chain = useSelector(chainSelector);
+  const { address } = useParams();
+
+  const councilorShip = useSelector(councilorShipSelector);
+
+  useEffect(() => {
+    dispatch(fetchCouncilorShipTerms(chain, address));
+  }, [dispatch]);
 
   return (
     <CouncilorShipCardWrapper>
@@ -52,7 +68,7 @@ export default function CouncilorShip() {
             width={ONE_YEAR_DAYS_WIDTH}
             startDate={offsetDate.toDate()}
             endDate={dayjs().toDate()}
-            value={[]}
+            value={compatActivityCalendarValue(councilorShip)}
             rectSize={12}
             rectProps={{
               rx: 2,
@@ -68,4 +84,13 @@ export default function CouncilorShip() {
       </ActivityCalendarWrapper>
     </CouncilorShipCardWrapper>
   );
+}
+
+function compatActivityCalendarValue(councilorShip = []) {
+  return councilorShip.map((i) => {
+    return {
+      date: dayjs(i.indexer.blockTime).format("YYYY/MM/DD"),
+      count: 1,
+    };
+  });
 }
