@@ -2,7 +2,7 @@ import { useParams } from "react-router";
 import InfoCard, { InfoCardExtraItem } from "../../components/InfoCard";
 import Avatar from "../../components/User/Avatar";
 import Badge from "../../components/User/Badge";
-import Tag from "../../components/Tag/Tag";
+import TagOrigin from "../../components/Tag/Tag";
 import { useIdentity } from "../../utils/hooks";
 import { ellipsis } from "../../utils/ellipsis";
 import ProposalsCount from "../../components/ProposalsCount";
@@ -30,6 +30,11 @@ const InfoCardTitleWrapper = styled.div`
 
 const InfoCardDescriptionAddress = styled.span`
   word-break: break-all;
+`;
+
+const Tag = styled(TagOrigin)`
+  text-transform: capitalize;
+  display: inline-block;
 `;
 
 function createLinks(chain, address, otherLinks = []) {
