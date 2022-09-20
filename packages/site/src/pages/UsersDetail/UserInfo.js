@@ -53,9 +53,6 @@ function createLinks(chain, address, otherLinks = []) {
   return links;
 }
 
-const assertShowProposalsRole = (role) =>
-  [USER_ROLES.Beneficiary, USER_ROLES.Proposer].includes(role);
-
 export default function UserInfo({ role, setRole = () => {} }) {
   const { address } = useParams();
   const { name, badgeData } = useIdentity(address);
@@ -67,7 +64,7 @@ export default function UserInfo({ role, setRole = () => {} }) {
   const [links, setLinks] = useState(createLinks(chain, address));
 
   const shouldShowProposals = useMemo(
-    () => assertShowProposalsRole(role),
+    () => [USER_ROLES.Beneficiary, USER_ROLES.Proposer].includes(role),
     [role]
   );
 
@@ -147,11 +144,7 @@ export default function UserInfo({ role, setRole = () => {} }) {
         <>
           <InfoCardExtraItem label="Select a role">
             {Object.values(USER_ROLES).map((r, idx) => (
-              <Link
-                to={`/${chainSymbol}/users/${address}${
-                  assertShowProposalsRole(r) ? "/proposals" : ""
-                }`}
-              >
+              <Link to={`/${chainSymbol}/users/${address}/${r}/proposals`}>
                 <Tag
                   key={idx}
                   rounded
