@@ -60,10 +60,12 @@ const ChildBountyDetail = () => {
 
   const waitAndUpdate = useCallback(
     async (blockHash) => {
-      dispatch(newSuccessToast("Rewards claimed"));
+      dispatch(newSuccessToast("Rewards claimed", 1000));
 
       const toastId = newToastId();
-      dispatch(newPendingToast(toastId, "Waiting to sync on-chain data..."));
+      setTimeout(() => {
+        dispatch(newPendingToast(toastId, "Waiting to sync on-chain data..."));
+      }, 1000);
 
       const block = await api.rpc.chain.getBlock(blockHash);
       const targetHeight = block.block.header.number.toNumber();

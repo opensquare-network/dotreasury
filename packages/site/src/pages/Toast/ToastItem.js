@@ -63,7 +63,7 @@ const Content = styled(TextMinor)`
 
 const TOAST_TYPES = ["success", "error", "pending"];
 
-const ToastItem = ({ type, title, message, id, sticky }) => {
+const ToastItem = ({ type, title, message, id, sticky, timeout = 5000 }) => {
   const [tranClass, setTranClass] = useState("");
   const isMounted = useIsMounted();
   const dispatch = useDispatch();
@@ -74,8 +74,8 @@ const ToastItem = ({ type, title, message, id, sticky }) => {
     }
     setTimeout(() => {
       dispatch(removeToast(id));
-    }, 5000);
-  }, [dispatch, id, sticky]);
+    }, timeout);
+  }, [dispatch, id, sticky, timeout]);
 
   useEffect(() => {
     setTimeout(() => {
