@@ -58,7 +58,7 @@ const ChildBountyDetail = () => {
     setTimelineData(processTimeline(bountyDetail, scanHeight, symbol));
   }, [bountyDetail, scanHeight, symbol]);
 
-  const waitAndUpdate = useCallback(
+  const waitScanAndUpdate = useCallback(
     async (blockHash) => {
       dispatch(newSuccessToast("Rewards claimed", 1000));
 
@@ -97,7 +97,7 @@ const ChildBountyDetail = () => {
         beneficiary={bountyDetail?.beneficiary}
         parentBountyId={bountyDetail?.parentBountyId}
         index={bountyDetail?.index}
-        onFinalized={(blockHash) => waitAndUpdate(blockHash)}
+        onFinalized={waitScanAndUpdate}
       />
     </div>
   );
