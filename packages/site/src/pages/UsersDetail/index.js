@@ -7,12 +7,17 @@ import ProposalsTables from "./ProposalsTables";
 import { useEnsureUsersCount } from "./useEnsureUsersCount";
 import { useResetTableData } from "./useResetTableData";
 import Councilor from "./Councilor";
+import { useParams } from "react-router";
 
 export default function UsersDetail() {
   useEnsureUsersCount();
   useResetTableData();
 
   const [role, setRole] = useState(USER_ROLES.Councilor);
+  const { role: roleParam } = useParams();
+
+  // FIXME: default should be Councilor or from api
+  const [role, setRole] = useState(roleParam || USER_ROLES.Beneficiary);
 
   const councilorRole = useMemo(() => role === USER_ROLES.Councilor, [role]);
   const proposalsRole = useMemo(

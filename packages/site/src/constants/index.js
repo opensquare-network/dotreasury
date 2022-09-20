@@ -102,9 +102,9 @@ export const TimelineItemType = {
  * @description used in page users
  */
 export const USER_ROLES = {
-  Councilor: "Councilor",
-  Beneficiary: "Beneficiary",
-  Proposer: "Proposer",
+  // Councilor: "Councilor",
+  Beneficiary: "beneficiary",
+  Proposer: "proposer",
 };
 
 /**
