@@ -2,7 +2,6 @@ import { emptyFunction } from ".";
 import {
   newErrorToast,
   newPendingToast,
-  newSuccessToast,
   newToastId,
   removeToast,
   updatePendingToast,
@@ -28,6 +27,7 @@ export function getDispatchError(dispatchError) {
 }
 
 export async function sendTx({
+  txName = "Pending",
   tx,
   signer,
   dispatch,
@@ -42,35 +42,39 @@ export async function sendTx({
   method: methodName,
 }) {
   const toastId = newToastId();
-  dispatch(newPendingToast(toastId, "Waiting for signing..."));
+  dispatch(newPendingToast(toastId, "Waiting for signing...", `${txName} (1/3)`));
 
   try {
     setLoading(true);
+
+    let blockHash = null;
 
     const unsub = await tx.signAndSend(
       signerAddress,
       { signer },
       ({ events = [], status }) => {
         if (status.isFinalized) {
-          onFinalized(signerAddress);
+          dispatch(removeToast(toastId));
           unsub();
+          onFinalized(blockHash);
         }
 
         if (status.isInBlock) {
-          // Transaction went through
-          dispatch(removeToast(toastId));
+          blockHash = status.asInBlock.toString();
 
+          // Transaction went through
           for (const event of events) {
             const { section, method, data } = event.event;
             if (section === "system" && method === "ExtrinsicFailed") {
               const [dispatchError] = data;
               const message = getDispatchError(dispatchError);
+              dispatch(removeToast(toastId));
               dispatch(newErrorToast(`Extrinsic failed: ${message}`));
               return;
             }
           }
 
-          dispatch(newSuccessToast("InBlock"));
+          dispatch(updatePendingToast(toastId, "Inblock, waiting for finalization...", `${txName} (3/3)`));
 
           for (const event of events) {
             const { section, method, data } = event.event;
@@ -89,8 +93,7 @@ export async function sendTx({
       }
     );
 
-    dispatch(updatePendingToast(toastId, "Broadcasting"));
-
+    dispatch(updatePendingToast(toastId, "Submitted, waiting for wrapping...", `${txName} (2/3)`));
     onSubmitted(signerAddress);
     onClose();
   } catch (e) {

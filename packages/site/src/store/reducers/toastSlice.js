@@ -37,18 +37,20 @@ export const { addToast, removeToast, updateToast } = toastSlice.actions;
 
 export const newToastId = () => count++;
 
-export const newPendingToast = (id, message) =>
+export const newPendingToast = (id, message, title) =>
   addToast({
     id,
     type: "pending",
+    title,
     message,
     sticky: true,
   });
 
-export const updatePendingToast = (id, message) =>
+export const updatePendingToast = (id, message, title) =>
   updateToast({
     id,
     message,
+    title,
   });
 
 export const newSuccessToast = (message) =>

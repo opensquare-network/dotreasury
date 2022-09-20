@@ -74,6 +74,7 @@ export default function ClaimButton({ parentBountyId, index, beneficiary, onInBl
       const tx = api.tx.childBounties.claimChildBounty(parentBountyId, index);
 
       await sendTx({
+        txName: "Claim Rewards",
         tx,
         signer: injector.signer,
         dispatch,

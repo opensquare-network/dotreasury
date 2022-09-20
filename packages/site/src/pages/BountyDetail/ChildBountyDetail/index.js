@@ -1,11 +1,10 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import {
   loadingBountyDetailSelector,
   fetchChildBountyDetail,
   childBountyDetailSelector,
-  setChildBountyDetail,
 } from "../../../store/reducers/bountySlice";
 
 import Timeline from "../../Timeline";
@@ -20,13 +19,13 @@ import {
   scanHeightSelector,
 } from "../../../store/reducers/chainSlice";
 import DetailGoBack from "../../components/DetailGoBack";
-import { useChainRoute, useIsMounted } from "../../../utils/hooks";
+import { useChainRoute } from "../../../utils/hooks";
 import ChildInformationTable from "./ChildInformationTable";
 import { processTimeline } from "../index";
 import ClaimButton from "./ClaimButton";
 import { newPendingToast, newToastId, removeToast } from "../../../store/reducers/toastSlice";
 import { sleep } from "../../../utils";
-import api from "../../../services/scanApi";
+import useApi from "../../../hooks/useApi";
 
 const ChildBountyDetail = () => {
   useChainRoute();
@@ -35,7 +34,7 @@ const ChildBountyDetail = () => {
   const dispatch = useDispatch();
   const [timelineData, setTimelineData] = useState([]);
   const toastId = newToastId();
-  const isMounted = useIsMounted();
+  const api = useApi();
 
   const symbol = useSelector(chainSymbolSelector);
   const chain = useSelector(chainSelector);
@@ -51,40 +50,41 @@ const ChildBountyDetail = () => {
   const bountyDetail = useSelector(childBountyDetailSelector);
   const scanHeight = useSelector(scanHeightSelector);
 
+  const refScanHeight = useRef();
+  useEffect(() => {
+    refScanHeight.current = scanHeight;
+  }, [scanHeight]);
+
   useEffect(() => {
     setTimelineData(processTimeline(bountyDetail, scanHeight, symbol));
   }, [bountyDetail, scanHeight, symbol]);
 
-  const onClaimInBlock = useCallback(() => {
-    dispatch(newPendingToast(toastId, "Waiting to sync on-chain data..."));
-  }, [dispatch, toastId]);
+  const waitAndUpdate = useCallback(
+    async (blockHash) => {
+      dispatch(newPendingToast(toastId, "Waiting to sync on-chain data..."));
 
-  const updateDetailForState = useCallback(
-    async (endState) => {
-      let times = 6;
+      const block = await api.rpc.chain.getBlock(blockHash);
+      const targetHeight = block.block.header.number.toNumber();
 
       try {
-        while (times-- > 0) {
-          if (!isMounted.current) {
+        let times = 6;
+        while (true) {
+          times--;
+          if (times === 0) {
             return;
           }
-
           await sleep(10000);
-
-          const { result } = await api.fetch(`/${chain}/child-bounties/${bountyDetail.index}`);
-
-          if (result?.state?.state === endState) {
-            if (isMounted.current) {
-              dispatch(setChildBountyDetail(result));
-            }
-            return;
+          if (refScanHeight.current >= targetHeight) {
+            break;
           }
         }
+
+        dispatch(fetchChildBountyDetail(chain, bountyDetail?.index));
       } finally {
         dispatch(removeToast(toastId));
       }
     },
-    [dispatch, toastId, bountyDetail, isMounted, chain]
+    [api, refScanHeight, dispatch, toastId, bountyDetail, chain]
   );
 
   const buttons = (
@@ -93,8 +93,7 @@ const ChildBountyDetail = () => {
         beneficiary={bountyDetail?.beneficiary}
         parentBountyId={bountyDetail?.parentBountyId}
         index={bountyDetail?.index}
-        onInBlock={onClaimInBlock}
-        onFinalized={() => updateDetailForState("Claimed")}
+        onFinalized={(blockHash) => waitAndUpdate(blockHash)}
       />
     </div>
   );
