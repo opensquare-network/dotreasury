@@ -87,7 +87,7 @@ export default function UserInfo({ role, setRole = () => {} }) {
     return () => {
       dispatch(resetUsersCounts());
     };
-  }, [dispatch, chain, role, address]);
+  }, [dispatch, chain, role, address, shouldShowProposals]);
 
   useEffect(() => {
     fetch(
