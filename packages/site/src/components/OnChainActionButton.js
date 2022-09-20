@@ -21,6 +21,7 @@ const OnChainActionButton = styled.div`
     color: white;
     background: #F292A4;
     opacity: 1;
+    pointer-events: none;
   ` : css`
     :hover {
       background: #E75973;

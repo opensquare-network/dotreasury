@@ -22,10 +22,6 @@ export default function ClaimButton({ parentBountyId, index, beneficiary, onInBl
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
   const doClaim = async () => {
-    if (disabled) {
-      return;
-    }
-
     if (!api) {
       return showErrorToast("Chain network is not connected yet");
     }
