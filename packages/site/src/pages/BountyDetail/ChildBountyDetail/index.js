@@ -23,7 +23,7 @@ import { useChainRoute } from "../../../utils/hooks";
 import ChildInformationTable from "./ChildInformationTable";
 import { processTimeline } from "../index";
 import ClaimButton from "./ClaimButton";
-import { newPendingToast, newToastId, removeToast } from "../../../store/reducers/toastSlice";
+import { newPendingToast, newSuccessToast, newToastId, removeToast } from "../../../store/reducers/toastSlice";
 import { sleep } from "../../../utils";
 import useApi from "../../../hooks/useApi";
 
@@ -33,7 +33,6 @@ const ChildBountyDetail = () => {
   const { bountyIndex } = useParams();
   const dispatch = useDispatch();
   const [timelineData, setTimelineData] = useState([]);
-  const toastId = newToastId();
   const api = useApi();
 
   const symbol = useSelector(chainSymbolSelector);
@@ -61,6 +60,9 @@ const ChildBountyDetail = () => {
 
   const waitAndUpdate = useCallback(
     async (blockHash) => {
+      dispatch(newSuccessToast("Rewards claimed"));
+
+      const toastId = newToastId();
       dispatch(newPendingToast(toastId, "Waiting to sync on-chain data..."));
 
       const block = await api.rpc.chain.getBlock(blockHash);
@@ -84,7 +86,7 @@ const ChildBountyDetail = () => {
         dispatch(removeToast(toastId));
       }
     },
-    [api, refScanHeight, dispatch, toastId, bountyDetail, chain]
+    [api, refScanHeight, dispatch, bountyDetail, chain]
   );
 
   const buttons = (
