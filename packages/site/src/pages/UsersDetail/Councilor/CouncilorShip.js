@@ -50,7 +50,7 @@ export default function CouncilorShip() {
   const chain = useSelector(chainSelector);
   const { address } = useParams();
 
-  const councilorShip = useSelector(councilorShipSelector);
+  const councilorShip = useSelector(councilorShipSelector) || [];
 
   useEffect(() => {
     dispatch(fetchCouncilorShipTerms(chain, address));
