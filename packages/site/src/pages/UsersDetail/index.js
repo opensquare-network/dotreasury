@@ -13,7 +13,6 @@ export default function UsersDetail() {
   useEnsureUsersCount();
   useResetTableData();
 
-  const [role, setRole] = useState(USER_ROLES.Councilor);
   const { role: roleParam } = useParams();
 
   // FIXME: default should be Councilor or from api
