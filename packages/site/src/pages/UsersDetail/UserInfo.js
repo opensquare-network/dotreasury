@@ -58,7 +58,7 @@ export default function UserInfo({ role, setRole = () => {} }) {
   const counts = useSelector(usersCountsSelector);
   const countsLoading = useSelector(countsLoadingSelector);
   const chain = useSelector(chainSelector);
-  const chainSymbol = useSelector(chainSymbolSelector);
+  const chainSymbol = useSelector(chainSymbolSelector).toLowerCase();
   const [links, setLinks] = useState(createLinks(chain, address));
 
   const shouldShowProposals = useMemo(
@@ -143,7 +143,7 @@ export default function UserInfo({ role, setRole = () => {} }) {
           <InfoCardExtraItem label="Select a role">
             {Object.values(USER_ROLES).map((r, idx) => (
               <Link
-                to={`/${chainSymbol?.toLowerCase()}/users/${address}${
+                to={`/${chainSymbol}/users/${address}${
                   assertShowProposalsRole(r) ? "/proposals" : ""
                 }`}
               >
