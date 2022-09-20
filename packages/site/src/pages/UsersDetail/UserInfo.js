@@ -2,7 +2,7 @@ import { useParams } from "react-router";
 import InfoCard, { InfoCardExtraItem } from "../../components/InfoCard";
 import Avatar from "../../components/User/Avatar";
 import Badge from "../../components/User/Badge";
-import Tag from "../../components/Tag/Tag";
+import TagOrigin from "../../components/Tag/Tag";
 import { useIdentity } from "../../utils/hooks";
 import { ellipsis } from "../../utils/ellipsis";
 import ProposalsCount from "../../components/ProposalsCount";
@@ -14,10 +14,14 @@ import {
   countsLoadingSelector,
 } from "../../store/reducers/usersDetailSlice";
 import { useEffect, useMemo } from "react";
-import { chainSelector } from "../../store/reducers/chainSlice";
+import {
+  chainSelector,
+  chainSymbolSelector,
+} from "../../store/reducers/chainSlice";
 import { USER_ROLES } from "../../constants";
 import styled from "styled-components";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const InfoCardTitleWrapper = styled.div`
   display: flex;
@@ -26,6 +30,11 @@ const InfoCardTitleWrapper = styled.div`
 
 const InfoCardDescriptionAddress = styled.span`
   word-break: break-all;
+`;
+
+const Tag = styled(TagOrigin)`
+  text-transform: capitalize;
+  display: inline-block;
 `;
 
 function createLinks(chain, address, otherLinks = []) {
@@ -51,12 +60,14 @@ export default function UserInfo({ role, setRole = () => {} }) {
   const counts = useSelector(usersCountsSelector);
   const countsLoading = useSelector(countsLoadingSelector);
   const chain = useSelector(chainSelector);
+  const chainSymbol = useSelector(chainSymbolSelector).toLowerCase();
   const [links, setLinks] = useState(createLinks(chain, address));
 
   const shouldShowProposals = useMemo(
     () => [USER_ROLES.Beneficiary, USER_ROLES.Proposer].includes(role),
     [role]
   );
+
   const hasCounts = useMemo(() => {
     return [
       counts?.proposalsCount,
@@ -133,15 +144,17 @@ export default function UserInfo({ role, setRole = () => {} }) {
         <>
           <InfoCardExtraItem label="Select a role">
             {Object.values(USER_ROLES).map((r, idx) => (
-              <Tag
-                key={idx}
-                rounded
-                hoverable
-                color={r === role && "pink"}
-                onClick={() => setRole(r)}
-              >
-                {r}
-              </Tag>
+              <Link to={`/${chainSymbol}/users/${address}/${r}/proposals`}>
+                <Tag
+                  key={idx}
+                  rounded
+                  hoverable
+                  color={r === role && "pink"}
+                  onClick={() => setRole(r)}
+                >
+                  {r}
+                </Tag>
+              </Link>
             ))}
           </InfoCardExtraItem>
 

@@ -103,8 +103,8 @@ export const TimelineItemType = {
  */
 export const USER_ROLES = {
   // Councilor: "Councilor",
-  Beneficiary: "Beneficiary",
-  Proposer: "Proposer",
+  Beneficiary: "beneficiary",
+  Proposer: "proposer",
 };
 
 /**

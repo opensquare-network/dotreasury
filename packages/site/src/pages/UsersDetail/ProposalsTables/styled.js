@@ -31,14 +31,8 @@ export const TableHeaderWrapper = styled.div`
 `;
 
 export const TableTitleLabel = styled.span`
+  text-transform: capitalize;
   margin-right: 8px;
-  color: ${TEXT_DARK_ACCESSORY};
-
-  ${(p) =>
-    p.active &&
-    css`
-      color: ${TEXT_DARK_MAJOR};
-    `}
 `;
 export const TableTitle = styled.h4`
   display: inline-block;
@@ -52,6 +46,23 @@ export const TableTitle = styled.h4`
   &:hover {
     cursor: pointer;
   }
+
+  a {
+    display: block;
+    color: ${TEXT_DARK_ACCESSORY};
+
+    &:hover {
+      color: ${TEXT_DARK_MAJOR};
+    }
+  }
+
+  ${(p) =>
+    p.active &&
+    css`
+      a {
+        color: ${TEXT_DARK_MAJOR};
+      }
+    `}
 `;
 export const TableTitleWrapper = styled.div`
   display: flex;
