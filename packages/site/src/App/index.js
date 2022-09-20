@@ -184,7 +184,7 @@ export default function App() {
               />
               <Route
                 exact
-                path="/:symbol(ksm|dot)/users/:address/:tableTab"
+                path="/:symbol(ksm|dot)/users/:address/:role/:tableTab?"
                 component={UsersDetail}
               />
               <Route exact path="/login" component={Login} />
