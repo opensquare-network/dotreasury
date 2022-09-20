@@ -5,6 +5,7 @@ import {
   loadingBountyDetailSelector,
   fetchChildBountyDetail,
   childBountyDetailSelector,
+  setChildBountyDetail,
 } from "../../../store/reducers/bountySlice";
 
 import Timeline from "../../Timeline";
@@ -41,7 +42,7 @@ const ChildBountyDetail = () => {
   useEffect(() => {
     dispatch(fetchChildBountyDetail(chain, bountyIndex));
     return () => {
-      dispatch(fetchChildBountyDetail({}));
+      dispatch(setChildBountyDetail({}));
     };
   }, [dispatch, chain, bountyIndex]);
 
