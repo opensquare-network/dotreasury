@@ -71,12 +71,15 @@ const Content = styled(TextMinor)`
 
 const TOAST_TYPES = ["success", "error"];
 
-const ToastItem = ({ type, message, id }) => {
+const ToastItem = ({ type, message, id, sticky }) => {
   const [tranClass, setTranClass] = useState("");
   const isMounted = useIsMounted();
   const dispatch = useDispatch();
   let closeSrc = "/imgs/close.svg";
   switch (type) {
+    case "pending":
+      closeSrc = "/imgs/close-success.svg";
+      break;
     case "success":
       closeSrc = "/imgs/close-success.svg";
       break;
@@ -86,12 +89,16 @@ const ToastItem = ({ type, message, id }) => {
     default:
       break;
   }
-    
+
   useEffect(() => {
+    if (sticky) {
+      return;
+    }
     setTimeout(() => {
       dispatch(removeToast(id));
     }, 5000);
-  });
+  }, [dispatch, id, sticky]);
+
   useEffect(() => {
     setTimeout(() => {
       if (isMounted.current) {

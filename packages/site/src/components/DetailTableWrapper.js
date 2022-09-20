@@ -19,6 +19,7 @@ const TitleWrapper = styled.div`
   padding: 20px 24px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 `;
 
 const Title = styled.div`
@@ -36,12 +37,15 @@ const Desc = styled.div`
   margin-left: 8px;
 `;
 
-export default function DetailTableWrapper({ title, desc, children }) {
+export default function DetailTableWrapper({ title, desc, buttons = null, children }) {
   return (
     <CustomCard>
       <TitleWrapper>
-        <Title>{title}</Title>
-        {desc && <Desc>{desc}</Desc>}
+        <div style={{ display: "flex" }}>
+          <Title>{title}</Title>
+          {desc && <Desc>{desc}</Desc>}
+        </div>
+        {buttons}
       </TitleWrapper>
       {children}
     </CustomCard>
