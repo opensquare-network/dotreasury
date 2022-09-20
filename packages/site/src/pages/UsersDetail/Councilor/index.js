@@ -1,3 +1,5 @@
-export default function Councilor() {
-  return <div>councilor</div>;
+import CouncilorShip from "./CouncilorShip";
+
+export default function Councilor({ role }) {
+  return <CouncilorShip />;
 }
