@@ -54,7 +54,7 @@ export default function CouncilorShip() {
 
   useEffect(() => {
     dispatch(fetchCouncilorShipTerms(chain, address));
-  }, [dispatch]);
+  }, [dispatch, chain, address]);
 
   return (
     <CouncilorShipCardWrapper>
