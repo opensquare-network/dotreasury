@@ -62,6 +62,10 @@ const ChildBountyDetail = () => {
     async (blockHash) => {
       dispatch(newSuccessToast("Rewards claimed", 1000));
 
+      if (!api) {
+        return;
+      }
+
       const toastId = newToastId();
       setTimeout(() => {
         dispatch(newPendingToast(toastId, "Waiting to sync on-chain data..."));
