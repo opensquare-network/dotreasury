@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { p_12_normal } from "../../../../styles/text";
+import styled, { css } from "styled-components";
+import { p_12_normal, p_14_medium } from "../../../../styles/text";
 import {
   Primary_Theme_Pink_400,
   TEXT_DARK_DISABLE,
@@ -7,6 +7,11 @@ import {
 
 // some vars from @uiw/react-heat-map
 const TOP_PAD = 20;
+
+const outline = css`
+  outline: 2px solid rgba(0, 0, 0, 0.02);
+  outline-offset: -2px;
+`;
 
 export const HeatMapWrapper = styled.div`
   display: flex;
@@ -16,8 +21,7 @@ export const HeatMapWrapper = styled.div`
   flex-direction: column;
 
   rect {
-    outline: 2px solid rgb(0 0 0 / 0.02);
-    outline-offset: -2px;
+    ${outline};
 
     &:hover {
       stroke: none !important;
@@ -54,7 +58,31 @@ export const ActivityCalendarWeekLabels = styled.ul`
 `;
 
 export const ActivityCalendarWeekLabelsWrapper = styled.div`
-  margin-right: 18px;
+  margin-right: 12px;
 `;
 
 export const ActivityCalendarWrapper = styled.div``;
+
+export const LegendWrapper = styled.span`
+  display: inline-flex;
+  align-items: center;
+  ${p_14_medium};
+
+  svg {
+    margin-right: 12px;
+
+    rect {
+      ${outline};
+    }
+  }
+`;
+
+export const ActivityCalendarLegendWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+
+  ${LegendWrapper} + ${LegendWrapper} {
+    margin-left: 16px;
+  }
+`;
