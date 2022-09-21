@@ -27,6 +27,7 @@ import ClaimButton from "./ClaimButton";
 import { newPendingToast, newSuccessToast, newToastId, removeToast } from "../../../store/reducers/toastSlice";
 import { sleep } from "../../../utils";
 import useApi from "../../../hooks/useApi";
+import { getBlockHeightFromHash } from "../../../services/chainApi";
 
 const ChildBountyDetail = () => {
   useChainRoute();
@@ -68,30 +69,26 @@ const ChildBountyDetail = () => {
       }
 
       const toastId = newToastId();
-      setTimeout(() => {
+      setTimeout(async () => {
         dispatch(newPendingToast(toastId, "Waiting to sync on-chain data..."));
-      }, 1000);
+        try {
+          const targetHeight = await getBlockHeightFromHash(api, blockHash);
 
-      const block = await api.rpc.chain.getBlock(blockHash);
-      const targetHeight = block.block.header.number.toNumber();
+          let times = 6;
+          while (times-- > 0) {
+            await sleep(10000);
+            if (refScanHeight.current >= targetHeight) {
+              break;
+            }
+          }
 
-      try {
-        let times = 6;
-        while (true) {
-          times--;
-          if (times === 0) {
-            return;
-          }
-          await sleep(10000);
-          if (refScanHeight.current >= targetHeight) {
-            break;
-          }
+          dispatch(fetchChildBountyDetail(chain, bountyDetail?.index));
+        } catch (e) {
+          // ignore
+        } finally {
+          dispatch(removeToast(toastId));
         }
-
-        dispatch(fetchChildBountyDetail(chain, bountyDetail?.index));
-      } finally {
-        dispatch(removeToast(toastId));
-      }
+      }, 1000);
     },
     [api, refScanHeight, dispatch, bountyDetail, chain]
   );
@@ -99,9 +96,7 @@ const ChildBountyDetail = () => {
   const buttons = (
     <div style={{ display: "flex" }}>
       <ClaimButton
-        beneficiary={bountyDetail?.beneficiary}
-        parentBountyId={bountyDetail?.parentBountyId}
-        index={bountyDetail?.index}
+        childBounty={bountyDetail}
         onFinalized={waitScanAndUpdate}
       />
     </div>

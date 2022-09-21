@@ -8,16 +8,22 @@ import { useIsMounted } from "../../../utils/hooks";
 import { sendTx } from "../../../utils/sendTx";
 import { isSameAddress } from "../../../utils";
 import OnChainActionButton from "../../../components/OnChainActionButton";
+import { scanHeightSelector } from "../../../store/reducers/chainSlice";
+import Popper from "../../../components/Popper";
+import { TooltipInfoText } from "../../../components/Popper/styled";
 
-export default function ClaimButton({ parentBountyId, index, beneficiary, onFinalized }) {
+export default function ClaimButton({ childBounty, onFinalized }) {
   const api = useApi();
   const dispatch = useDispatch();
   const account = useSelector(accountSelector);
   const [isLoading, setIsLoading] = useState(false);
+  const scanHeight = useSelector(scanHeightSelector);
   const isMounted = useIsMounted();
 
-  const isBeneficiary = isSameAddress(account?.address, beneficiary);
-  const disabled = !isBeneficiary || isLoading;
+  const isBeneficiary = isSameAddress(account?.address, childBounty?.beneficiary);
+  const isPendingPayout = childBounty?.state?.state === "PendingPayout";
+  const isUnlocked = childBounty?.unlockAt <= scanHeight;
+  const disabled = false;//!isBeneficiary || !isPendingPayout || !isUnlocked || isLoading;
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
@@ -26,7 +32,7 @@ export default function ClaimButton({ parentBountyId, index, beneficiary, onFina
       return showErrorToast("Chain network is not connected yet");
     }
 
-    if (parentBountyId === undefined || index === undefined) {
+    if (!childBounty) {
       return;
     }
 
@@ -36,7 +42,7 @@ export default function ClaimButton({ parentBountyId, index, beneficiary, onFina
       web3Enable("doTreasury");
       const injector = await web3FromSource(account.extension);
 
-      const tx = api.tx.childBounties.claimChildBounty(parentBountyId, index);
+      const tx = api.tx.childBounties.claimChildBounty(childBounty.parentBountyId, childBounty.index);
 
       await sendTx({
         txName: "Claim Rewards",
@@ -52,12 +58,24 @@ export default function ClaimButton({ parentBountyId, index, beneficiary, onFina
     }
   };
 
+  let tooltipContent = "";
+  if (!isPendingPayout) {
+    tooltipContent = "Only pending payout bounty is claimable";
+  } else if (!isBeneficiary) {
+    tooltipContent = "Only the beneficiary can claim this bounty";
+  } else if (!isUnlocked) {
+    tooltipContent = "Can only be claimed when chain height reach unlock height";
+  }
+
   return (
-    <OnChainActionButton
-      onClick={doClaim}
-      disabled={disabled}
-    >
-      Claim Rewards
-    </OnChainActionButton>
+    <Popper showTooltip={!!tooltipContent} tooltipContent={<TooltipInfoText>{tooltipContent}</TooltipInfoText>}>
+      <OnChainActionButton
+        onClick={doClaim}
+        disabled={disabled}
+      >
+        Claim Rewards
+      </OnChainActionButton>
+    </Popper>
+
   )
 }
