@@ -1,7 +1,7 @@
 export const TEXT_DARK_MAJOR = "rgba(0, 0, 0, 0.9)";
 export const TEXT_DARK_ACCESSORY = "rgba(0, 0, 0, 0.3)";
-export const TEXT_DARK_MINOR = "rgba(29, 37, 60, 0.64)";
-export const TEXT_DARK_DISABLE = "rgba(29, 37, 60, 0.24)";
+export const TEXT_DARK_MINOR = "rgba(0, 0, 0, 0.65)";
+export const TEXT_DARK_DISABLE = "rgba(0, 0, 0, 0.15)";
 export const Tertiary_Blue_500 = "#086DE3";
 export const Tertiary_Green_500 = "#0EAB0E";
 export const Greyscale_Grey_100 = "#fafafa";
