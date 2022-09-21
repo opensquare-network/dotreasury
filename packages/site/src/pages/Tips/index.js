@@ -16,6 +16,7 @@ import { useHistory } from "react-router";
 import Text from "../../components/Text";
 import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../constants";
 import NewTipButton from "./NewTipButton";
+import useWaitSyncBlock from "../../utils/useWaitSyncBlock";
 
 const HeaderWrapper = styled.div`
   padding: 20px 24px;
@@ -79,6 +80,15 @@ const Tips = () => {
     [history]
   );
 
+  const refreshTips = useCallback(
+    () => {
+      dispatch(fetchTips(chain, tablePage - 1, pageSize, filterData));
+    },
+    [dispatch, chain, tablePage, pageSize, filterData]
+  );
+
+  const onFinalized = useWaitSyncBlock("Tips created", refreshTips);
+
   return (
     <>
       <TipsTable
@@ -88,7 +98,7 @@ const Tips = () => {
           <HeaderWrapper>
             <Title>Tips</Title>
             <div style={{ display: "flex", gap: "16px" }}>
-              <NewTipButton />
+              <NewTipButton onFinalized={onFinalized} />
               <Filter value={filterData.status ?? "-1"} query={filterQuery} />
             </div>
           </HeaderWrapper>

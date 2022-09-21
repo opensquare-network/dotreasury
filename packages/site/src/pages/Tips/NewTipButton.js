@@ -4,7 +4,7 @@ import OnChainActionButton from "../../components/OnChainActionButton";
 import NewTipModal from "./NewTipModal";
 import { accountSelector } from "../../store/reducers/accountSlice";
 
-export default function NewTipButton() {
+export default function NewTipButton({ onFinalized }) {
   const account = useSelector(accountSelector);
   const [showNewTipModel, setShowNewTipModel] = useState(false);
 
@@ -16,7 +16,11 @@ export default function NewTipButton() {
       >
         New Tip
       </OnChainActionButton>
-      <NewTipModal visible={showNewTipModel} setVisible={setShowNewTipModel} />
+      <NewTipModal
+        visible={showNewTipModel}
+        setVisible={setShowNewTipModel}
+        onFinalized={onFinalized}
+      />
     </>
   );
 }

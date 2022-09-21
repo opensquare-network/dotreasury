@@ -14,6 +14,11 @@ import { accountSelector } from "../../../store/reducers/accountSlice";
 import { newErrorToast } from "../../../store/reducers/toastSlice";
 import { sendTx } from "../../../utils/sendTx";
 import { useIsMounted } from "../../../utils/hooks";
+import { isAddress } from "@polkadot/util-crypto";
+import BigNumber from "bignumber.js";
+import useCouncilMembers from "../../../utils/useCouncilMembers";
+import { getPrecision } from "../../../utils";
+import { chainSymbolSelector } from "../../../store/reducers/chainSlice";
 
 const StyledModal = styled(Modal)`
   padding: 32px;
@@ -71,6 +76,10 @@ export default function NewTipModal({ visible, setVisible, onFinalized }) {
   const account = useSelector(accountSelector);
   const api = useApi();
   const isMounted = useIsMounted();
+  const councilMembers = useCouncilMembers();
+  const isCouncilor = councilMembers?.includes(account?.address);
+  const symbol = useSelector(chainSymbolSelector);
+  const precision = getPrecision(symbol);
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
@@ -93,7 +102,30 @@ export default function NewTipModal({ visible, setVisible, onFinalized }) {
   }, [newTips]);
 
   const submit = async () => {
-    console.log(newTips);
+    // Check data
+    for (const newTip of newTips) {
+      if (!newTip.beneficiary) {
+        return showErrorToast("Beneficiary is empty");
+      }
+      if (!isAddress(newTip.beneficiary)) {
+        return showErrorToast("Invalid beneficiary address");
+      }
+      if (isCouncilor) {
+        if (!newTip.value) {
+          return showErrorToast("Value cannot be empty");
+        }
+        const bnValue = new BigNumber(newTip.value);
+        if (bnValue.isNaN()) {
+          return showErrorToast("Value must be number");
+        }
+        if (!bnValue.gt(0)) {
+          return showErrorToast("Value must larger then 0");
+        }
+      }
+      if (!newTip.reason) {
+        return showErrorToast("Reason cannot be empty");
+      }
+    }
 
     if (!api) {
       return showErrorToast("Chain network is not connected yet");
@@ -105,12 +137,26 @@ export default function NewTipModal({ visible, setVisible, onFinalized }) {
       web3Enable("doTreasury");
       const injector = await web3FromSource(account.extension);
 
-      const txs = newTips.map(item => api.tx.tips.reportAwesome(item.reason, item.beneficiary));
-      const txBatch = api.tx.utility.batch(txs);
+      const txs = newTips.map(item => {
+        if (isCouncilor) {
+          return api.tx.tips.tipNew(
+            item.reason,
+            item.beneficiary,
+            parseInt(item.value) * Math.pow(10, precision)
+          );
+        } else {
+          return api.tx.tips.reportAwesome(item.reason, item.beneficiary);
+        }
+      });
+
+      let tx = txs[0];
+      if (txs.length > 1) {
+        tx = api.tx.utility.batch(txs);
+      }
 
       await sendTx({
         txName: "New Tips",
-        tx: txBatch,
+        tx,
         signer: injector.signer,
         dispatch,
         signerAddress: account.address,
@@ -139,7 +185,7 @@ export default function NewTipModal({ visible, setVisible, onFinalized }) {
           <TipInputs
             key={tipData.id}
             index={index}
-            isCouncilor={true}
+            isCouncilor={isCouncilor}
             canDelete={newTips.length > 1}
             onDelete={() => onDelete(index)}
             tipData={tipData}
