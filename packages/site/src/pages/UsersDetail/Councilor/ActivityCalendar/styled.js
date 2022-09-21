@@ -30,6 +30,11 @@ export const HeatMapWrapper = styled.div`
   }
 `;
 
+export const ActivityCalendarContent = styled.div`
+  display: flex;
+  height: 135px;
+`;
+
 export const ActivityCalendarWeekLabels = styled.ul`
   list-style: none;
   padding: 0;
@@ -52,7 +57,4 @@ export const ActivityCalendarWeekLabelsWrapper = styled.div`
   margin-right: 18px;
 `;
 
-export const ActivityCalendarWrapper = styled.div`
-  display: flex;
-  height: 135px;
-`;
+export const ActivityCalendarWrapper = styled.div``;
