@@ -65,18 +65,18 @@ export default function TipInputs({ index, isCouncilor, canDelete, onDelete }) {
             </div>
             {canDelete && <TextButton className="hover-only" onClick={onDelete}>Delete</TextButton>}
           </FieldTitle>
-          <CustomInput />
+          <CustomInput placeholder="Please fill beneficiary address..." />
         </Field>
         {isCouncilor && (
           <Field>
             <FieldTitle>Value</FieldTitle>
-            <AssetInput symbol={symbol} />
+            <AssetInput symbol={symbol} placeholder="0" />
           </Field>
         )}
       </Fields>
       <Field>
         <FieldTitle>Reason</FieldTitle>
-        <CustomInput />
+        <CustomInput placeholder="Please fill reason..." />
       </Field>
     </Wrapper>
   )

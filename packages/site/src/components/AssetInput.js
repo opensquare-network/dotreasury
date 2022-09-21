@@ -21,6 +21,14 @@ const Input = styled.input`
   background: none;
   outline: none;
   height: 22px;
+
+  ::placeholder {
+    color: rgba(0, 0, 0, 0.15);
+  }
+
+  &:focus::placeholder {
+    color: #cccccc !important;
+  }
 `;
 
 const Suffix = styled.div`
@@ -32,11 +40,11 @@ const Suffix = styled.div`
   color: rgba(0, 0, 0, 0.9);
 `;
 
-export default function AssetInput({ symbol }) {
+export default function AssetInput({ symbol, placeholder = 0 }) {
   const inputRef = useRef();
   return (
     <Wrapper onClick={() => inputRef.current?.focus()}>
-      <Input ref={inputRef}></Input>
+      <Input ref={inputRef} placeholder={placeholder} />
       <Suffix>{symbol}</Suffix>
     </Wrapper>
   )
