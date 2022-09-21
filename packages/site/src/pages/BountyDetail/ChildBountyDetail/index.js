@@ -28,6 +28,7 @@ import { newPendingToast, newSuccessToast, newToastId, removeToast } from "../..
 import { sleep } from "../../../utils";
 import useApi from "../../../hooks/useApi";
 import { getBlockHeightFromHash } from "../../../services/chainApi";
+import { Flex } from "../../../components/styled";
 
 const ChildBountyDetail = () => {
   useChainRoute();
@@ -94,12 +95,12 @@ const ChildBountyDetail = () => {
   );
 
   const buttons = (
-    <div style={{ display: "flex" }}>
+    <Flex>
       <ClaimButton
         childBounty={bountyDetail}
         onFinalized={waitScanAndUpdate}
       />
-    </div>
+    </Flex>
   );
 
   return (

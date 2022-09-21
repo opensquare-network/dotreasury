@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import Card from "./Card";
+import { Flex } from "./styled";
 
 const CustomCard = styled(Card)`
   padding: 0;
@@ -41,10 +42,10 @@ export default function DetailTableWrapper({ title, desc, buttons = null, childr
   return (
     <CustomCard>
       <TitleWrapper>
-        <div style={{ display: "flex" }}>
+        <Flex>
           <Title>{title}</Title>
           {desc && <Desc>{desc}</Desc>}
-        </div>
+        </Flex>
         {buttons}
       </TitleWrapper>
       {children}

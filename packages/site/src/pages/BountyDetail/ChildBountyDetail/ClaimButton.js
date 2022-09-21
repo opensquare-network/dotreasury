@@ -23,7 +23,7 @@ export default function ClaimButton({ childBounty, onFinalized }) {
   const isBeneficiary = isSameAddress(account?.address, childBounty?.beneficiary);
   const isPendingPayout = childBounty?.state?.state === "PendingPayout";
   const isUnlocked = childBounty?.unlockAt <= scanHeight;
-  const disabled = false;//!isBeneficiary || !isPendingPayout || !isUnlocked || isLoading;
+  const disabled = !isBeneficiary || !isPendingPayout || !isUnlocked || isLoading;
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
