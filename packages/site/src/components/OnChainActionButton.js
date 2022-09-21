@@ -7,8 +7,10 @@ const OnChainActionButton = styled.div`
   flex-direction: row;
   align-items: center;
   padding: 4px 8px;
+
   background: ${PRIMARY_THEME_COLOR};
   border-radius: 4px;
+
   font-style: normal;
   font-weight: 500;
   font-size: 12px;
