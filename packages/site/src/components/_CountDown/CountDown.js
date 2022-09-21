@@ -2,8 +2,8 @@ import { primary_yellow_100, primary_yellow_500 } from "./styles";
 import { select } from "d3-selection";
 import { arc } from "d3-shape";
 import { useEffect, useMemo, useRef } from "react";
-import { CountDownWrapper, PopperArrow, PopperContainer, SVG } from "./styled";
-import { usePopper } from "./usePopper";
+import { SVG } from "./styled";
+import Popper from "../Popper";
 
 export default function CountDown(props) {
   const {
@@ -17,14 +17,6 @@ export default function CountDown(props) {
   } = props ?? {};
 
   const svgElement = useRef(null);
-  const popperElement = useRef(null);
-  const arrowElement = useRef(null);
-
-  const { popperVisible, hidePopper, showPopper } = usePopper({
-    refRef: svgElement,
-    popperRef: popperElement,
-    showTooltip,
-  });
 
   const percent = useMemo(() => {
     const v = numerator / denominator;
@@ -63,12 +55,7 @@ export default function CountDown(props) {
   }, [percent, size, svgElement]);
 
   return (
-    <CountDownWrapper
-      onMouseEnter={showPopper}
-      onFocus={showPopper}
-      onMouseLeave={hidePopper}
-      onBlur={hidePopper}
-    >
+    <Popper showTooltip={showTooltip} tooltipContent={tooltipContent}>
       <SVG
         ref={svgElement}
         width={size}
@@ -76,13 +63,6 @@ export default function CountDown(props) {
         foregroundColor={foregroundColor}
         backgroundColor={backgroundColor}
       />
-
-      {showTooltip && (
-        <PopperContainer ref={popperElement} data-show={popperVisible}>
-          {tooltipContent}
-          <PopperArrow ref={arrowElement} data-popper-arrow />
-        </PopperContainer>
-      )}
-    </CountDownWrapper>
+    </Popper>
   );
 }

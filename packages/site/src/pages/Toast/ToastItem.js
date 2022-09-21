@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { Image } from "semantic-ui-react";
 
 import Text from "../../components/Text";
@@ -10,7 +10,7 @@ import { useIsMounted } from "../../utils/hooks";
 
 const Wrapper = styled.div`
   width: 320px;
-  padding: 8px 16px;
+  padding: 16px;
   box-shadow: 0px 4px 24px rgba(29, 37, 60, 0.08);
   border-radius: 8px;
   p {
@@ -21,14 +21,6 @@ const Wrapper = styled.div`
   }
   background: #FFF;
   border: 1px solid #EEE;
-  ${p => p.type === "success" && css`
-    background: #EEF9EF;
-    border-color: #C8ECC9;
-  `}
-  ${p => p.type === "error" && css`
-    background: #FFF4F2;
-    border-color: #FFD8D3;
-  `}
   transform: translateX(200%);
   transition: all 0.25s ease-out;
   &.tran {
@@ -69,29 +61,22 @@ const Content = styled(TextMinor)`
   padding-left: 32px;
 `
 
-const TOAST_TYPES = ["success", "error"];
+const TOAST_TYPES = ["success", "error", "pending"];
 
-const ToastItem = ({ type, message, id }) => {
+const ToastItem = ({ type, title, message, id, sticky, timeout = 5000 }) => {
   const [tranClass, setTranClass] = useState("");
   const isMounted = useIsMounted();
   const dispatch = useDispatch();
-  let closeSrc = "/imgs/close.svg";
-  switch (type) {
-    case "success":
-      closeSrc = "/imgs/close-success.svg";
-      break;
-    case "error":
-      closeSrc = "/imgs/close-error.svg";
-      break;
-    default:
-      break;
-  }
-    
+
   useEffect(() => {
+    if (sticky) {
+      return;
+    }
     setTimeout(() => {
       dispatch(removeToast(id));
-    }, 5000);
-  });
+    }, timeout);
+  }, [dispatch, id, sticky, timeout]);
+
   useEffect(() => {
     setTimeout(() => {
       if (isMounted.current) {
@@ -109,9 +94,9 @@ const ToastItem = ({ type, message, id }) => {
             <Image src={`/imgs/toast-${type}.svg`} />
           )}
         </ImageWrapper>
-        <Title>{type}</Title>
+        <Title>{title}</Title>
         <CloseButton>
-          <Image src={closeSrc}
+          <Image src="/imgs/toast-close.svg"
             onClick={() => {
               dispatch(removeToast(id));
             }} />

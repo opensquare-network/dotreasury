@@ -32,9 +32,17 @@ const Toast = () => {
     <Wrapper>
       <Container>
         <ToastList>
-          {(toasts || []).map(({ type, message, id }) => 
-            <ToastItem type={type} message={message} id={id} key={id} />
-          )}
+          {(toasts || []).map(({ type, title, message, id, sticky, timeout }) => (
+            <ToastItem
+              type={type}
+              title={title || type}
+              message={message}
+              id={id}
+              key={id}
+              sticky={sticky}
+              timeout={timeout}
+            />
+          ))}
         </ToastList>
       </Container>
     </Wrapper>
