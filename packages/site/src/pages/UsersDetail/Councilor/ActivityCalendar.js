@@ -1,8 +1,8 @@
 // NOTE: hard code here
-// - ONE_YEAR_DAYS_WIDTH
+// - WIDTH
 // - ONE_WEEK_COLUMN_WIDTH
 
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import HeatMap from "@uiw/react-heat-map";
 import dayjs from "dayjs";
 import {
@@ -10,7 +10,12 @@ import {
   Primary_Theme_Pink_200,
   Primary_Theme_Pink_300,
   Primary_Theme_Pink_400,
+  TEXT_DARK_DISABLE,
 } from "../../../constants";
+import { p_12_normal } from "../../../styles/text";
+
+// some vars from @uiw/react-heat-map
+const TOP_PAD = 20;
 
 const HeatMapWrapper = styled.div`
   display: flex;
@@ -18,10 +23,6 @@ const HeatMapWrapper = styled.div`
   overflow: hidden;
   align-items: flex-end;
   flex-direction: column;
-
-  ${(p) => css`
-    max-wdith: ${p.maxWidth}px;
-  `}
 
   rect {
     outline: 2px solid rgb(0 0 0 / 0.02);
@@ -33,17 +34,35 @@ const HeatMapWrapper = styled.div`
     }
 
     &:active {
-      fill: none !important;
+      fill: ${Primary_Theme_Pink_400} !important;
     }
   }
 `;
 
-const ActivityCalendarWeekLabels = styled.div`
-  margin-right: 8px;
+const ActivityCalendarWeekLabels = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-top: ${TOP_PAD}px !important;
+
+  li {
+    color: ${TEXT_DARK_DISABLE};
+    ${p_12_normal};
+    line-height: 12px;
+    margin-top: 4px !important;
+
+    &:first-child {
+      margin-top: 0 !important;
+    }
+  }
+`;
+const ActivityCalendarWeekLabelsWrapper = styled.div`
+  margin-right: 18px;
 `;
 
 const ActivityCalendarWrapper = styled.div`
   display: flex;
+  height: 135px;
 `;
 
 export default function ActivityCalendar({ value, ...props }) {
@@ -59,9 +78,17 @@ export default function ActivityCalendar({ value, ...props }) {
     "week"
   );
 
+  const weekLabels = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
   return (
-    <ActivityCalendarWrapper max-width={WIDTH}>
-      <ActivityCalendarWeekLabels>week</ActivityCalendarWeekLabels>
+    <ActivityCalendarWrapper>
+      <ActivityCalendarWeekLabelsWrapper>
+        <ActivityCalendarWeekLabels>
+          {weekLabels.map((w) => (
+            <li key={w}>{w}</li>
+          ))}
+        </ActivityCalendarWeekLabels>
+      </ActivityCalendarWeekLabelsWrapper>
 
       <HeatMapWrapper>
         <HeatMap
