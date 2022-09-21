@@ -7,6 +7,13 @@ import Signer from "./Signer";
 import TipInputs from "./TipInputs";
 import { useCallback, useState } from "react";
 import ButtonPrimary from "../../../components/ButtonPrimary";
+import useApi from "../../../hooks/useApi";
+import { web3Enable, web3FromSource } from "@polkadot/extension-dapp";
+import { useDispatch, useSelector } from "react-redux";
+import { accountSelector } from "../../../store/reducers/accountSlice";
+import { newErrorToast } from "../../../store/reducers/toastSlice";
+import { sendTx } from "../../../utils/sendTx";
+import { useIsMounted } from "../../../utils/hooks";
 
 const StyledModal = styled(Modal)`
   padding: 32px;
@@ -56,12 +63,21 @@ const Minus = styled(MinusSVG)`
   cursor: pointer;
 `;
 
-export default function NewTipModal({ visible, setVisible }) {
-  const [newTips, setNewTips] = useState([{}, {}]);
+export default function NewTipModal({ visible, setVisible, onFinalized }) {
+  const dispatch = useDispatch();
+  const [newTips, setNewTips] = useState([{ id: 0 }]);
+  const [count, setCount] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const account = useSelector(accountSelector);
+  const api = useApi();
+  const isMounted = useIsMounted();
+
+  const showErrorToast = (message) => dispatch(newErrorToast(message));
 
   const onAdd = useCallback(() => {
-    setNewTips([...newTips, {}]);
-  }, [newTips])
+    setNewTips([...newTips, { id: count }]);
+    setCount(count + 1);
+  }, [newTips, count])
 
   const onMinus = useCallback(() => {
     if (newTips.length > 1) {
@@ -75,6 +91,37 @@ export default function NewTipModal({ visible, setVisible }) {
       ...newTips.slice(index + 1, newTips.length),
     ]);
   }, [newTips]);
+
+  const submit = async () => {
+    console.log(newTips);
+
+    if (!api) {
+      return showErrorToast("Chain network is not connected yet");
+    }
+
+    setIsLoading(true);
+
+    try {
+      web3Enable("doTreasury");
+      const injector = await web3FromSource(account.extension);
+
+      const txs = newTips.map(item => api.tx.tips.reportAwesome(item.reason, item.beneficiary));
+      const txBatch = api.tx.utility.batch(txs);
+
+      await sendTx({
+        txName: "New Tips",
+        tx: txBatch,
+        signer: injector.signer,
+        dispatch,
+        signerAddress: account.address,
+        isMounted,
+        onSubmitted: () => setVisible(false),
+        onFinalized,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <StyledModal
@@ -90,7 +137,7 @@ export default function NewTipModal({ visible, setVisible }) {
       <Batch>
         {newTips.map((tipData, index) => (
           <TipInputs
-            key={index}
+            key={tipData.id}
             index={index}
             isCouncilor={true}
             canDelete={newTips.length > 1}
@@ -104,7 +151,7 @@ export default function NewTipModal({ visible, setVisible }) {
           <Add onClick={onAdd} />
           <Minus onClick={onMinus} />
         </div>
-        <ButtonPrimary>Submit</ButtonPrimary>
+        <ButtonPrimary disabled={isLoading} onClick={submit}>Submit</ButtonPrimary>
       </Footer>
     </StyledModal>
   );}

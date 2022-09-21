@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import styled from "styled-components";
+import { emptyFunction } from "../utils"
 
 const Wrapper = styled.div`
   cursor: text;
@@ -40,11 +41,16 @@ const Suffix = styled.div`
   color: rgba(0, 0, 0, 0.9);
 `;
 
-export default function AssetInput({ symbol, placeholder = 0 }) {
+export default function AssetInput({ symbol, placeholder = 0, defaultValue, onChange = emptyFunction }) {
   const inputRef = useRef();
   return (
     <Wrapper onClick={() => inputRef.current?.focus()}>
-      <Input ref={inputRef} placeholder={placeholder} />
+      <Input
+        ref={inputRef}
+        placeholder={placeholder}
+        defaultValue={defaultValue}
+        onChange={onChange}
+      />
       <Suffix>{symbol}</Suffix>
     </Wrapper>
   )

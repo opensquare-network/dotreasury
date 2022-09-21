@@ -52,8 +52,9 @@ const TextButton = styled.div`
   color: #E90B0B;
 `;
 
-export default function TipInputs({ index, isCouncilor, canDelete, onDelete }) {
+export default function TipInputs({ index, isCouncilor, canDelete, onDelete, tipData }) {
   const symbol = useSelector(chainSymbolSelector);
+
   return (
     <Wrapper>
       <Fields>
@@ -63,20 +64,32 @@ export default function TipInputs({ index, isCouncilor, canDelete, onDelete }) {
               <span>Beneficiary</span>
               <span style={{ color: "rgba(0, 0, 0, 0.3)" }}>#{index}</span>
             </div>
-            {canDelete && <TextButton className="hover-only" onClick={onDelete}>Delete</TextButton>}
+            {canDelete && (
+              <TextButton className="hover-only" onClick={onDelete}>Delete</TextButton>
+            )}
           </FieldTitle>
-          <CustomInput placeholder="Please fill beneficiary address..." />
+          <CustomInput
+            placeholder="Please fill beneficiary address..."
+            onChange={e => tipData.beneficiary = e.target.value}
+          />
         </Field>
         {isCouncilor && (
           <Field>
             <FieldTitle>Value</FieldTitle>
-            <AssetInput symbol={symbol} placeholder="0" />
+            <AssetInput
+              symbol={symbol}
+              placeholder="0"
+              onChange={e => tipData.value = e.target.value}
+            />
           </Field>
         )}
       </Fields>
       <Field>
         <FieldTitle>Reason</FieldTitle>
-        <CustomInput placeholder="Please fill reason..." />
+        <CustomInput
+          placeholder="Please fill reason..."
+          onChange={e => tipData.reason = e.target.value}
+        />
       </Field>
     </Wrapper>
   )
