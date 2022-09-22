@@ -6,6 +6,7 @@ const { statTips } = require("./statTips");
 const { statProposals } = require("./statProposals");
 const { statBounties } = require("./statBounties");
 const { statChildBounties } = require("./statChildBounties");
+const { statCouncilors } = require("./statCouncilors");
 
 async function saveParticipant(chain, address, data) {
   const participantCol = await getParticipantCollection(chain);
@@ -37,12 +38,14 @@ async function updateParticipants(chain) {
     proposers: childBountyProposers,
     beneficiaries: childBountyBeneficiaries
   } = await statChildBounties(chain);
+  const { councilors } = await statCouncilors(chain);
 
   const participants = new Set([
     ...Object.keys(tips),
     ...Object.keys(proposals),
     ...Object.keys(bounties),
     ...Object.keys(childBounties),
+    ...councilors,
   ]);
 
   for (const address of participants) {
@@ -58,6 +61,7 @@ async function updateParticipants(chain) {
       proposalBeneficiaries.has(address) ||
       bountyBeneficiaries.has(address) ||
       childBountyBeneficiaries.has(address);
+    const isCouncilor = councilors.has(address);
 
     await saveParticipant(chain, address, {
       tips: tipsCount,
@@ -67,6 +71,7 @@ async function updateParticipants(chain) {
       total: tipsCount + proposalsCount + bountiesCount + childBountiesCount,
       isProposer,
       isBeneficiary,
+      isCouncilor,
     });
   }
 }
