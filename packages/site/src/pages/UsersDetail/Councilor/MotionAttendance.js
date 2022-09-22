@@ -21,7 +21,7 @@ export default function MotionAttendance() {
 
   useEffect(() => {
     dispatch(fetchMotionAttendance(chain, address));
-  }, [dispatch]);
+  }, [dispatch, chain, address]);
 
   return (
     <Loading loading={loading}>
