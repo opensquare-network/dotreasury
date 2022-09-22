@@ -20,10 +20,11 @@ export default function ClaimButton({ childBounty, onFinalized }) {
   const scanHeight = useSelector(scanHeightSelector);
   const isMounted = useIsMounted();
 
+  const isLoggedIn = !!account;
   const isBeneficiary = isSameAddress(account?.address, childBounty?.beneficiary);
   const isPendingPayout = childBounty?.state?.state === "PendingPayout";
   const isUnlocked = childBounty?.unlockAt <= scanHeight;
-  const disabled = !isBeneficiary || !isPendingPayout || !isUnlocked || isLoading;
+  const disabled = !isLoggedIn || !isBeneficiary || !isPendingPayout || !isUnlocked || isLoading;
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
@@ -61,6 +62,8 @@ export default function ClaimButton({ childBounty, onFinalized }) {
   let tooltipContent = "";
   if (!isPendingPayout) {
     tooltipContent = "Only pending payout bounty is claimable";
+  } else if (!isLoggedIn) {
+    tooltipContent = "Please connect wallet first";
   } else if (!isBeneficiary) {
     tooltipContent = "Only the beneficiary can claim this bounty";
   } else if (!isUnlocked) {

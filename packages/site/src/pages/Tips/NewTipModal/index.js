@@ -14,11 +14,12 @@ import { accountSelector } from "../../../store/reducers/accountSlice";
 import { newErrorToast } from "../../../store/reducers/toastSlice";
 import { sendTx } from "../../../utils/sendTx";
 import { useIsMounted } from "../../../utils/hooks";
-import { isAddress } from "@polkadot/util-crypto";
+import { checkInputAddress, checkInputValue } from "../../../utils";
 import BigNumber from "bignumber.js";
 import useCouncilMembers from "../../../utils/useCouncilMembers";
 import { getPrecision } from "../../../utils";
 import { chainSymbolSelector } from "../../../store/reducers/chainSlice";
+import { useRef } from "react";
 
 const StyledModal = styled(Modal)`
   padding: 32px;
@@ -57,6 +58,9 @@ const Batch = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
+
+  max-height: 60vh;
+  overflow-y: scroll;
 `;
 
 const Close = styled(CloseSVG)`
@@ -89,6 +93,7 @@ export default function NewTipModal({ visible, setVisible, onFinalized }) {
   const isCouncilor = councilMembers?.includes(account?.address);
   const symbol = useSelector(chainSymbolSelector);
   const precision = getPrecision(symbol);
+  const refBatchInputs = useRef();
 
   useEffect(() => { setNewTips([{ id: 0 }]) }, [visible]);
 
@@ -97,7 +102,12 @@ export default function NewTipModal({ visible, setVisible, onFinalized }) {
   const onAdd = useCallback(() => {
     setNewTips([...newTips, { id: count }]);
     setCount(count + 1);
-  }, [newTips, count])
+    setTimeout(() => {
+      if (refBatchInputs.current) {
+        refBatchInputs.current.scrollTop = refBatchInputs.current.scrollHeight;
+      }
+    }, 200);
+  }, [newTips, count, refBatchInputs])
 
   const onMinus = useCallback(() => {
     if (newTips.length > 1) {
@@ -118,35 +128,22 @@ export default function NewTipModal({ visible, setVisible, onFinalized }) {
     for (const newTip of newTips) {
       newTip.errorMessage = null;
 
-      if (!newTip.beneficiary) {
-        newTip.errorMessage = "Beneficiary cannot be empty";
+      let errorMessage = checkInputAddress(newTip.beneficiary, "Beneficiary");
+      if (errorMessage) {
+        newTip.errorMessage = errorMessage;
         validationFail = true;
         continue;
       }
-      if (!isAddress(newTip.beneficiary)) {
-        newTip.errorMessage = "Invalid beneficiary address";
-        validationFail = true;
-        continue;
-      }
+
       if (isCouncilor) {
-        if (!newTip.value) {
-          newTip.errorMessage = "Value cannot be empty";
-          validationFail = true;
-          continue;
-        }
-        const bnValue = new BigNumber(newTip.value);
-        if (bnValue.isNaN()) {
-          newTip.errorMessage = "Value must be number";
-          validationFail = true;
-          setNewTips([...newTips]);
-          continue;
-        }
-        if (!bnValue.gt(0)) {
-          newTip.errorMessage = "Value must larger then 0";
+        errorMessage = checkInputValue(newTip.value)
+        if (errorMessage) {
+          newTip.errorMessage = errorMessage;
           validationFail = true;
           continue;
         }
       }
+
       if (!newTip.reason) {
         newTip.errorMessage = "Reason cannot be empty";
         validationFail = true;
@@ -171,10 +168,13 @@ export default function NewTipModal({ visible, setVisible, onFinalized }) {
 
       const txs = newTips.map(item => {
         if (isCouncilor) {
+          const tipValue = new BigNumber(item.value)
+            .times(Math.pow(10, precision))
+            .toString();
           return api.tx.tips.tipNew(
             item.reason,
             item.beneficiary,
-            parseInt(item.value) * Math.pow(10, precision)
+            tipValue,
           );
         } else {
           return api.tx.tips.reportAwesome(item.reason, item.beneficiary);
@@ -212,7 +212,7 @@ export default function NewTipModal({ visible, setVisible, onFinalized }) {
         <Close onClick={() => setVisible(false)} />
       </Header>
       <Signer isCouncilor={isCouncilor} />
-      <Batch>
+      <Batch ref={refBatchInputs}>
         {newTips.map((tipData, index) => (
           <TipInputs
             key={tipData.id}

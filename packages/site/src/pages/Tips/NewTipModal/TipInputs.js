@@ -71,7 +71,7 @@ export default function TipInputs({ index, isCouncilor, canDelete, onDelete, tip
           <FieldTitle>
             <div style={{ display: "flex", gap: "4px" }}>
               <span>Beneficiary</span>
-              <span style={{ color: "rgba(0, 0, 0, 0.3)" }}>#{index}</span>
+              <span style={{ color: "rgba(0, 0, 0, 0.3)" }}>#{index + 1}</span>
             </div>
             {canDelete && (
               <TextButton className="hover-only" onClick={onDelete}>Delete</TextButton>
