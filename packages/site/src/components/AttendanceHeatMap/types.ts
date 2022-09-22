@@ -1,4 +1,4 @@
-type Data = any;
+type Data = { type: "active" | "negative" | "inActive" } & Record<string, any>;
 
 export type AttendanceHeatMapProps = {
   data: Data[];
