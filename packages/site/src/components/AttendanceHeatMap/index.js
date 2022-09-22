@@ -24,11 +24,21 @@ export default function AttendanceHeatMap(props) {
     legendInactiveText = "Inactive",
   } = props ?? {};
 
+  function getDotColor(type) {
+    const colors = {
+      activeColor,
+      negativeColor,
+      inActiveColor,
+    };
+
+    return colors[type + "Color"];
+  }
+
   return (
     <AttendanceHeatMapWrapper>
       <AttendanceHeatMapContent>
         {data?.map((i, idx) => (
-          <AttendanceHeatMapDot key={idx} />
+          <AttendanceHeatMapDot key={idx} color={getDotColor(i.type)} />
         ))}
       </AttendanceHeatMapContent>
 
