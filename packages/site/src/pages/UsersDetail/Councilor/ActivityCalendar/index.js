@@ -114,7 +114,11 @@ export default function ActivityCalendar({ value, ...props }) {
       <Popper ref={popperRef} visible={popperVisible} style={popperStyle}>
         <PopperContent>
           <PopperContentCount>Count: {popperData.count}</PopperContentCount>
-          <PopperContentDate>{popperData.date}</PopperContentDate>
+          <PopperContentDate>
+            {dayjs(popperData.meta.indexer.blockTime).format(
+              "YYYY-MM-DD HH:mm:ss"
+            )}
+          </PopperContentDate>
         </PopperContent>
       </Popper>
     </ActivityCalendarWrapper>
