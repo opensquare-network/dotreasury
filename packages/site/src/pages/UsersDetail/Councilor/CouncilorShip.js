@@ -1,4 +1,4 @@
-import { CouncilorShipCardTitle, CouncilorShipCardWrapper } from "./styled";
+import { CardTitle, Card } from "./styled";
 import dayjs from "dayjs";
 import { useEffect } from "react";
 import {
@@ -22,11 +22,11 @@ export default function CouncilorShip() {
   }, [dispatch, chain, address]);
 
   return (
-    <CouncilorShipCardWrapper>
-      <CouncilorShipCardTitle>Councilor Ship</CouncilorShipCardTitle>
+    <Card>
+      <CardTitle>Councilor Ship</CardTitle>
 
       <ActivityCalendar value={compatActivityCalendarValue(councilorShip)} />
-    </CouncilorShipCardWrapper>
+    </Card>
   );
 }
 
