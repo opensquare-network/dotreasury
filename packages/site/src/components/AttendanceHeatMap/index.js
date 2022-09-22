@@ -27,7 +27,7 @@ export default function AttendanceHeatMap(props) {
   return (
     <AttendanceHeatMapWrapper>
       <AttendanceHeatMapContent>
-        {data.map((i, idx) => (
+        {data?.map((i, idx) => (
           <AttendanceHeatMapDot key={idx} />
         ))}
       </AttendanceHeatMapContent>
