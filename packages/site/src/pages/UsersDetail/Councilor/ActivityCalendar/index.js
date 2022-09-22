@@ -25,10 +25,7 @@ import {
 } from "./styled";
 import { useRef } from "react";
 import { useState } from "react";
-import Popper, {
-  getRects,
-  getRectPositions,
-} from "../../../../components/Popper";
+import Popper, { getRects, getRectPositions } from "../Popper";
 
 export default function ActivityCalendar({ value, ...props }) {
   const rectSize = 12;
