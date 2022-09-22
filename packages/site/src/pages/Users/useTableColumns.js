@@ -37,8 +37,7 @@ const role = {
   cellRender(_, data) {
     return (
       <>
-        {/* FIXME: council member, currently not include this field from data */}
-        {data?.isCouncilMember && <Tag rounded>Council Member</Tag>}
+        {data?.isCouncilor && <Tag rounded>Councilor</Tag>}
         {data?.isBeneficiary && <Tag rounded>Benecifiary</Tag>}
         {data?.isProposer && <Tag rounded>Proposer</Tag>}
       </>
