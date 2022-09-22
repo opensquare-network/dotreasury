@@ -2,6 +2,7 @@ const {
   getTermsCollection,
   getMotionVoterCollection,
   getTipperCollection,
+  getMotionCollection,
 } = require("../../mongo");
 
 async function getCouncilorTerms(ctx) {
@@ -45,40 +46,55 @@ async function getCouncilorTerms(ctx) {
 async function getMotionVoters(ctx) {
   const { chain, address } = ctx.params;
 
-  const motionVoterCol = await getMotionVoterCollection(chain);
-  const items = await motionVoterCol.aggregate(
+  const motionCol = await getMotionCollection(chain);
+  const items = await motionCol.aggregate(
     [
       {
-        $match: { voter: address }
-      },
-      {
-        $sort: { "indexer.blockHeight": -1 }
-      },
-      {
-        $group: {
-          _id: {
-            motionHeight: "$motionHeight",
-            motionHash: "$motionHash",
-          },
-          votes: {
-            $push: {
-              indexer: "$indexer",
-              aye: "$aye",
-            }
-          },
+        $sort: {
+          "indexer.blockHeight": -1,
+          "indexer.eventIndex": -1,
         }
       },
       {
         $project: {
           _id: 0,
-          motionHeight: "$_id.motionHeight",
-          motionHash: "$_id.motionHash",
-          votes: "$votes"
+          motionHeight: "$indexer.blockHeight",
+          motionHash: "$hash",
         }
       },
       {
-        $sort: { motionHeight: -1 }
-      }
+        $lookup: {
+          from: "motionVoter",
+          let: { motionHeight: "$motionHeight", motionHash: "$motionHash" },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $eq: ["$motionHeight", "$$motionHeight"] },
+                    { $eq: ["$motionHash", "$$motionHash"] },
+                    { $eq: ["$voter", address] },
+                  ]
+                }
+              }
+            },
+            {
+              $sort: {
+                "indexer.blockHeight": -1,
+                "indexer.eventIndex": -1,
+              }
+            },
+            {
+              $project: {
+                _id: 0,
+                indexer: "$indexer",
+                aye: "$aye",
+              }
+            }
+          ],
+          as: "votes",
+        }
+      },
     ]).toArray();
 
   ctx.body = items;
