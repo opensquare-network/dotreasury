@@ -21,7 +21,7 @@ import {
 import { USER_ROLES } from "../../constants";
 import styled from "styled-components";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
 const InfoCardTitleWrapper = styled.div`
   display: flex;
@@ -35,6 +35,12 @@ const InfoCardDescriptionAddress = styled.span`
 const Tag = styled(TagOrigin)`
   text-transform: capitalize;
   display: inline-block;
+`;
+
+const Link = styled(RouterLink)`
+  & + & {
+    margin-left: 8px;
+  }
 `;
 
 function createLinks(chain, address, otherLinks = []) {
@@ -149,12 +155,12 @@ export default function UserInfo({ role, setRole = () => {} }) {
           <InfoCardExtraItem label="Select a role">
             {Object.values(USER_ROLES).map((r, idx) => (
               <Link
+                key={idx}
                 to={`/${chainSymbol}/users/${address}/${r}${
                   isProposalsRole(r) ? "/proposals" : ""
                 }`}
               >
                 <Tag
-                  key={idx}
                   rounded
                   hoverable
                   color={r === role && "pink"}

@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import Card from "./Card";
+import { Flex } from "./styled";
 
 const CustomCard = styled(Card)`
   padding: 0;
@@ -19,6 +20,7 @@ const TitleWrapper = styled.div`
   padding: 20px 24px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 `;
 
 const Title = styled.div`
@@ -36,12 +38,15 @@ const Desc = styled.div`
   margin-left: 8px;
 `;
 
-export default function DetailTableWrapper({ title, desc, children }) {
+export default function DetailTableWrapper({ title, desc, buttons = null, children }) {
   return (
     <CustomCard>
       <TitleWrapper>
-        <Title>{title}</Title>
-        {desc && <Desc>{desc}</Desc>}
+        <Flex>
+          <Title>{title}</Title>
+          {desc && <Desc>{desc}</Desc>}
+        </Flex>
+        {buttons}
       </TitleWrapper>
       {children}
     </CustomCard>

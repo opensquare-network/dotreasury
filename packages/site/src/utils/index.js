@@ -1,5 +1,6 @@
 import BigNumber from "bignumber.js";
 import { stringUpperFirst, stringCamelCase } from "@polkadot/util";
+import { encodeAddress } from "@polkadot/util-crypto";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import md5 from "md5";
@@ -223,4 +224,18 @@ export function abbreviateBigNumber(x, fixed = 2) {
   });
   BigNumber.config({ FORMAT: fmt });
   return new BigNumber(n.dividedBy(divideBy).toFixed(fixed)).toFormat();
+}
+
+export function emptyFunction() {}
+
+export function isSameAddress(addr1, addr2) {
+  if (!addr1 || !addr2) {
+    return false;
+  }
+
+  try {
+    return encodeAddress(addr1, 42) === encodeAddress(addr2, 42);
+  } catch (e) {
+    return false;
+  }
 }
