@@ -1,6 +1,5 @@
 const {
   getTermsCollection,
-  getMotionVoterCollection,
   getTipperCollection,
   getMotionCollection,
 } = require("../../mongo");
