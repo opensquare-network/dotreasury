@@ -19,13 +19,23 @@ import {
   ActivityCalendarContent,
   ActivityCalendarLegendWrapper,
   LegendWrapper,
+  PopperContent,
+  PopperContentCount,
+  PopperContentDate,
 } from "./styled";
+import { useRef } from "react";
+import { useState } from "react";
+import Popper, {
+  getRects,
+  getRectPositions,
+} from "../../../../components/Popper";
 
 export default function ActivityCalendar({ value, ...props }) {
   const rectSize = 12;
   const rectSpace = 4;
 
-  const WIDTH = 1909;
+  // NOTE: reduce heatmap width will increase performance
+  const WIDTH = 1237;
   const ONE_WEEK_COLUMN_WIDTH = rectSize + rectSpace + 0.1;
 
   const currentDate = dayjs();
@@ -35,6 +45,24 @@ export default function ActivityCalendar({ value, ...props }) {
   );
 
   const weekLabels = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+  const popperRef = useRef(null);
+
+  const [popperVisible, setPopperVisible] = useState(false);
+  const [popperStyle, setPopperStyle] = useState({});
+  const [popperData, setPopperData] = useState({});
+
+  function showPopper(e, data) {
+    const rects = getRects({ trigger: e.target, popper: popperRef.current });
+    const positions = getRectPositions(rects);
+
+    setPopperData(data);
+    setPopperStyle({ left: positions.left, top: positions.top - 5 });
+    setPopperVisible(true);
+  }
+  function hidePopper() {
+    setPopperVisible(false);
+  }
 
   return (
     <ActivityCalendarWrapper>
@@ -68,6 +96,15 @@ export default function ActivityCalendar({ value, ...props }) {
             startDate={offsetDate.toDate()}
             endDate={currentDate.toDate()}
             weekLabels={false}
+            rectRender={(props, data) => (
+              <rect
+                {...props}
+                onMouseEnter={(e) => showPopper(e, data)}
+                onFocus={(e) => showPopper(e, data)}
+                onMouseLeave={hidePopper}
+                onBlur={hidePopper}
+              />
+            )}
           />
         </HeatMapWrapper>
       </ActivityCalendarContent>
@@ -76,6 +113,13 @@ export default function ActivityCalendar({ value, ...props }) {
         <Legend fill={Primary_Theme_Pink_200}>Active</Legend>
         <Legend fill={Greyscale_Grey_200}>Inactive</Legend>
       </ActivityCalendarLegendWrapper>
+
+      <Popper ref={popperRef} visible={popperVisible} style={popperStyle}>
+        <PopperContent>
+          <PopperContentCount>Count: {popperData.count}</PopperContentCount>
+          <PopperContentDate>{popperData.date}</PopperContentDate>
+        </PopperContent>
+      </Popper>
     </ActivityCalendarWrapper>
   );
 }

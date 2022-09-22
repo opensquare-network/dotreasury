@@ -86,3 +86,12 @@ export const ActivityCalendarLegendWrapper = styled.div`
     margin-left: 16px;
   }
 `;
+
+export const PopperContent = styled.div``;
+export const PopperContentCount = styled.p`
+  margin-bottom: 0;
+  ${p_14_medium};
+`;
+export const PopperContentDate = styled.p`
+  ${p_12_normal};
+`;
