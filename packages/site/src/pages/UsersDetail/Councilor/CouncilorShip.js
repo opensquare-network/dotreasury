@@ -35,6 +35,7 @@ function compatActivityCalendarValue(councilorShip = []) {
     return {
       date: dayjs(i.indexer.blockTime).format("YYYY/MM/DD"),
       count: 1,
+      meta: i,
     };
   });
 }
