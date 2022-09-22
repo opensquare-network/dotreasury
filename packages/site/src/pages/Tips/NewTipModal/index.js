@@ -5,7 +5,7 @@ import { ReactComponent as MinusSVG } from "./minus.svg";
 import { ReactComponent as AddSVG } from "./add.svg";
 import Signer from "./Signer";
 import TipInputs from "./TipInputs";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import ButtonPrimary from "../../../components/ButtonPrimary";
 import useApi from "../../../hooks/useApi";
 import { web3Enable, web3FromSource } from "@polkadot/extension-dapp";
@@ -27,6 +27,15 @@ const StyledModal = styled(Modal)`
   }
   > :nth-child(2) {
     margin-bottom: 24px;
+  }
+
+  @media screen and (max-width: 600px) {
+    .address {
+      display: none;
+    }
+    & {
+      padding: 16px !important;
+    }
   }
 `;
 
@@ -81,6 +90,8 @@ export default function NewTipModal({ visible, setVisible, onFinalized }) {
   const symbol = useSelector(chainSymbolSelector);
   const precision = getPrecision(symbol);
 
+  useEffect(() => { setNewTips([{ id: 0 }]) }, [visible]);
+
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
   const onAdd = useCallback(() => {
@@ -103,28 +114,49 @@ export default function NewTipModal({ visible, setVisible, onFinalized }) {
 
   const submit = async () => {
     // Check data
+    let validationFail = false;
     for (const newTip of newTips) {
+      newTip.errorMessage = null;
+
       if (!newTip.beneficiary) {
-        return showErrorToast("Beneficiary is empty");
+        newTip.errorMessage = "Beneficiary cannot be empty";
+        validationFail = true;
+        continue;
       }
       if (!isAddress(newTip.beneficiary)) {
-        return showErrorToast("Invalid beneficiary address");
+        newTip.errorMessage = "Invalid beneficiary address";
+        validationFail = true;
+        continue;
       }
       if (isCouncilor) {
         if (!newTip.value) {
-          return showErrorToast("Value cannot be empty");
+          newTip.errorMessage = "Value cannot be empty";
+          validationFail = true;
+          continue;
         }
         const bnValue = new BigNumber(newTip.value);
         if (bnValue.isNaN()) {
-          return showErrorToast("Value must be number");
+          newTip.errorMessage = "Value must be number";
+          validationFail = true;
+          setNewTips([...newTips]);
+          continue;
         }
         if (!bnValue.gt(0)) {
-          return showErrorToast("Value must larger then 0");
+          newTip.errorMessage = "Value must larger then 0";
+          validationFail = true;
+          continue;
         }
       }
       if (!newTip.reason) {
-        return showErrorToast("Reason cannot be empty");
+        newTip.errorMessage = "Reason cannot be empty";
+        validationFail = true;
+        continue;
       }
+    }
+
+    if (validationFail) {
+      setNewTips([...newTips]);
+      return;
     }
 
     if (!api) {
@@ -179,7 +211,7 @@ export default function NewTipModal({ visible, setVisible, onFinalized }) {
         <Title>New Tip</Title>
         <Close onClick={() => setVisible(false)} />
       </Header>
-      <Signer />
+      <Signer isCouncilor={isCouncilor} />
       <Batch>
         {newTips.map((tipData, index) => (
           <TipInputs

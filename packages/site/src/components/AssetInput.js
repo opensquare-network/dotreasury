@@ -22,6 +22,7 @@ const Input = styled.input`
   background: none;
   outline: none;
   height: 22px;
+  width: 60px;
 
   ::placeholder {
     color: rgba(0, 0, 0, 0.15);

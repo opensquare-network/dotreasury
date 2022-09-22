@@ -3,6 +3,7 @@ import AssetInput from "../../../components/AssetInput";
 import CustomInput from "../../../components/Input";
 import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../../store/reducers/chainSlice";
+import { ErrorMessage } from "../../../components/styled";
 
 const Wrapper = styled.div`
   display: flex;
@@ -23,12 +24,17 @@ const Wrapper = styled.div`
       display: block;
     }
   }
+
+  .error {
+    margin-bottom: 8px;
+  }
 `;
 
 const Fields = styled.div`
   display: flex;
   gap: 16px;
   flex-grow: 1;
+  flex-wrap: wrap;
 `;
 
 const Field = styled.div`
@@ -57,6 +63,9 @@ export default function TipInputs({ index, isCouncilor, canDelete, onDelete, tip
 
   return (
     <Wrapper>
+      {tipData?.errorMessage && (
+        <ErrorMessage className="error">{tipData?.errorMessage}</ErrorMessage>
+      )}
       <Fields>
         <Field>
           <FieldTitle>

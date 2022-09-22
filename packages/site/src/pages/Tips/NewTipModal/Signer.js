@@ -3,17 +3,33 @@ import styled from "styled-components";
 import { ReactComponent as PolkadotLogo } from "../../../components/ConnectWallet/Wallets/polkadot.svg";
 import { ReactComponent as SubWalletLogo } from "../../../components/ConnectWallet/Wallets/subWallet.svg";
 import { ReactComponent as TalismanLogo } from "../../../components/ConnectWallet/Wallets/talisman.svg";
+import Popper from "../../../components/Popper";
+import { TooltipInfoText } from "../../../components/Popper/styled";
 import { accountSelector } from "../../../store/reducers/accountSlice";
+import { ellipsis } from "../../../utils/ellipsis";
+import CouncilorTag from "./CouncilorTag";
 
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
   padding: 12px 16px;
-  gap: 16px;
+  justify-content: space-between;
 
   background: #FAFAFA;
   border: 1px solid #F4F4F4;
   border-radius: 4px;
+
+  @media screen and (max-width: 600px) {
+    .address {
+      display: none;
+    }
+  }
+`;
+
+const Left = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
 `;
 
 const ExtensionName = styled.div`
@@ -32,7 +48,7 @@ const Address = styled.div`
   color: rgba(0, 0, 0, 0.3);
 `;
 
-export default function Signer() {
+export default function Signer({ isCouncilor }) {
   const account = useSelector(accountSelector);
 
   let walletLogo = null;
@@ -59,9 +75,19 @@ export default function Signer() {
 
   return (
     <Wrapper>
-      {walletLogo}
-      <ExtensionName>{walletName}</ExtensionName>
-      <Address>{account?.address}</Address>
+      <Left>
+        {walletLogo}
+        <ExtensionName>{walletName}</ExtensionName>
+        <Address className="address">
+          <Popper
+            showTooltip={true}
+            tooltipContent={<TooltipInfoText>{account?.address}</TooltipInfoText>}
+          >
+            {ellipsis(account?.address)}
+          </Popper>
+        </Address>
+      </Left>
+      {isCouncilor && <CouncilorTag />}
     </Wrapper>
   );
 }
