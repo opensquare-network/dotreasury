@@ -26,7 +26,7 @@ import {
 import { useRef } from "react";
 import { useState } from "react";
 import Popper from "../Popper";
-import { createPopper } from "@popperjs/core";
+import { usePopper } from "../../../../components/Popper/usePopper";
 
 export default function ActivityCalendar({ value, ...props }) {
   const rectSize = 12;
@@ -44,29 +44,27 @@ export default function ActivityCalendar({ value, ...props }) {
 
   const weekLabels = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
+  const [triggerRef, setTriggerRefFn] = useState({ current: null });
+  const setTriggerRef = (el) => setTriggerRefFn({ current: el });
   const popperRef = useRef(null);
 
-  const [popperVisible, setPopperVisible] = useState(false);
   const [popperData, setPopperData] = useState({});
 
-  function showPopper(e, data) {
-    createPopper(e.target, popperRef.current, {
-      placement: "top",
-      modifiers: [
-        {
-          name: "offset",
-          options: {
-            offset: [0, rectSize],
-          },
-        },
-      ],
-    });
+  const {
+    popperVisible,
+    hidePopper,
+    showPopper: showPopperFn,
+  } = usePopper({
+    refRef: triggerRef,
+    popperRef: popperRef,
+    showTooltip: true,
+    offset: [0, 12],
+  });
 
+  function showPopper(e, data) {
+    setTriggerRef(e.target);
+    showPopperFn();
     setPopperData(data);
-    setPopperVisible(true);
-  }
-  function hidePopper() {
-    setPopperVisible(false);
   }
 
   return (
