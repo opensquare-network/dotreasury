@@ -1,7 +1,7 @@
 const {
   getTermsCollection,
-  getTipperCollection,
   getMotionCollection,
+  getTipCollection,
 } = require("../../mongo");
 
 async function getCouncilorTerms(ctx) {
@@ -101,40 +101,66 @@ async function getMotionVoters(ctx) {
 
 async function getTippers(ctx) {
   const { chain, address } = ctx.params;
+  const { from_time, to_time } = ctx.query;
 
-  const tipperCol = await getTipperCollection(chain);
-  const items = await tipperCol.aggregate(
+  const q = {};
+
+  if (from_time && to_time) {
+    q.$and = [
+      { "indexer.blockTime": { $gt: from_time } },
+      { "indexer.blockTime": { $lt: to_time } },
+    ];
+  }
+
+  const tipCol = await getTipCollection(chain);
+  const items = await tipCol.aggregate(
     [
+      { $match: q },
       {
-        $match: { tipper: address }
-      },
-      {
-        $sort: { "indexer.blockHeight": -1 }
-      },
-      {
-        $group: {
-          _id: {
-            tipHeight: "$tipHeight",
-            tipHash: "$tipHash",
-          },
-          tips: {
-            $push: {
-              indexer: "$indexer",
-              value: "$value",
-            }
-          },
+        $sort: {
+          "indexer.blockHeight": -1,
+          "indexer.eventIndex": -1,
         }
       },
       {
         $project: {
           _id: 0,
-          tipHeight: "$_id.tipHeight",
-          tipHash: "$_id.tipHash",
-          tips: "$tips"
+          tipHeight: "$indexer.blockHeight",
+          tipHash: "$hash",
         }
       },
       {
-        $sort: { tipHeight: -1 }
+        $lookup: {
+          from: "tipper",
+          let: { tipHeight: "$tipHeight", tipHash: "$tipHash" },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $eq: ["$tipHeight", "$$tipHeight"] },
+                    { $eq: ["$tipHash", "$$tipHash"] },
+                    { $eq: ["$tipper", address] },
+                  ]
+                }
+              }
+            },
+            {
+              $sort: {
+                "indexer.blockHeight": -1,
+                "indexer.eventIndex": -1,
+              }
+            },
+            {
+              $project: {
+                _id: 0,
+                indexer: "$indexer",
+                value: "$value",
+              }
+            }
+          ],
+          as: "tips",
+        }
       },
     ]).toArray();
 
