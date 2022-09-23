@@ -9,8 +9,8 @@ import { sendTx } from "../../../utils/sendTx";
 import { isSameAddress } from "../../../utils";
 import OnChainActionButton from "../../../components/OnChainActionButton";
 import { scanHeightSelector } from "../../../store/reducers/chainSlice";
-import Popper from "../../../components/Popper";
-import { TooltipInfoText } from "../../../components/Popper/styled";
+import Tooltip from "../../../components/Tooltip";
+import { TooltipInfoText } from "../../../components/Tooltip/styled";
 
 export default function ClaimButton({ childBounty, onFinalized }) {
   const api = useApi();
@@ -68,14 +68,14 @@ export default function ClaimButton({ childBounty, onFinalized }) {
   }
 
   return (
-    <Popper showTooltip={!!tooltipContent} tooltipContent={<TooltipInfoText>{tooltipContent}</TooltipInfoText>}>
+    <Tooltip showTooltip={!!tooltipContent} tooltipContent={<TooltipInfoText>{tooltipContent}</TooltipInfoText>}>
       <OnChainActionButton
         onClick={doClaim}
         disabled={disabled}
       >
         Claim Rewards
       </OnChainActionButton>
-    </Popper>
+    </Tooltip>
 
   )
 }

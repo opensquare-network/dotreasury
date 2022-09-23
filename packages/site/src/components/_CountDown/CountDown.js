@@ -3,7 +3,7 @@ import { select } from "d3-selection";
 import { arc } from "d3-shape";
 import { useEffect, useMemo, useRef } from "react";
 import { SVG } from "./styled";
-import Popper from "../Popper";
+import Tooltip from "../Tooltip";
 
 export default function CountDown(props) {
   const {
@@ -55,7 +55,7 @@ export default function CountDown(props) {
   }, [percent, size, svgElement]);
 
   return (
-    <Popper showTooltip={showTooltip} tooltipContent={tooltipContent}>
+    <Tooltip showTooltip={showTooltip} tooltipContent={tooltipContent}>
       <SVG
         ref={svgElement}
         width={size}
@@ -63,6 +63,6 @@ export default function CountDown(props) {
         foregroundColor={foregroundColor}
         backgroundColor={backgroundColor}
       />
-    </Popper>
+    </Tooltip>
   );
 }

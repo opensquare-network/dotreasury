@@ -1,15 +1,16 @@
 import styled from "styled-components";
+import { p_14_medium } from "../../styles/text";
 
-const popperTriangleWidth = 6;
+const triangleWidth = 6;
 
-export const PopperArrow = styled.div`
+export const TooltipArrow = styled.div`
   visibility: hidden;
 
   &,
   &::before {
     position: absolute;
-    border: ${popperTriangleWidth}px solid transparent;
-    left: -${popperTriangleWidth}px;
+    border: ${triangleWidth}px solid transparent;
+    left: -${triangleWidth}px;
     border-top-color: rgba(0, 0, 0, 0.72);
   }
 
@@ -19,7 +20,7 @@ export const PopperArrow = styled.div`
   }
 `;
 
-export const PopperContainer = styled.div`
+export const TooltipContainer = styled.div`
   background-color: rgba(0, 0, 0, 0.72);
   color: white;
   font-weight: bold;
@@ -31,12 +32,12 @@ export const PopperContainer = styled.div`
     display: block;
   }
 
-  &[data-popper-placement^="top"] > ${PopperArrow} {
-    bottom: -${popperTriangleWidth}px;
+  &[data-popper-placement^="top"] > ${TooltipArrow} {
+    bottom: -${triangleWidth}px;
   }
 
-  &[data-popper-placement^="bottom"] > ${PopperArrow} {
-    top: -${popperTriangleWidth * 3}px;
+  &[data-popper-placement^="bottom"] > ${TooltipArrow} {
+    top: -${triangleWidth * 3}px;
     &::before {
       transform: rotate(180deg);
     }
@@ -44,12 +45,9 @@ export const PopperContainer = styled.div`
 `;
 
 export const TooltipTitleText = styled.p`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 24px;
   color: #fff;
   margin: 0;
+  ${p_14_medium};
 `;
 
 export const TooltipInfoText = styled.p`
