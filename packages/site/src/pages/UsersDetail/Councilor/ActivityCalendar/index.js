@@ -25,7 +25,8 @@ import {
 } from "./styled";
 import { useRef } from "react";
 import { useState } from "react";
-import Popper, { getRects, getRectPositions } from "../Popper";
+import Popper from "../Popper";
+import { createPopper } from "@popperjs/core";
 
 export default function ActivityCalendar({ value, ...props }) {
   const rectSize = 12;
@@ -46,15 +47,22 @@ export default function ActivityCalendar({ value, ...props }) {
   const popperRef = useRef(null);
 
   const [popperVisible, setPopperVisible] = useState(false);
-  const [popperStyle, setPopperStyle] = useState({});
   const [popperData, setPopperData] = useState({});
 
   function showPopper(e, data) {
-    const rects = getRects({ trigger: e.target, popper: popperRef.current });
-    const positions = getRectPositions(rects);
+    createPopper(e.target, popperRef.current, {
+      placement: "top",
+      modifiers: [
+        {
+          name: "offset",
+          options: {
+            offset: [0, rectSize],
+          },
+        },
+      ],
+    });
 
     setPopperData(data);
-    setPopperStyle({ left: positions.left, top: positions.top - 5 });
     setPopperVisible(true);
   }
   function hidePopper() {
@@ -111,7 +119,7 @@ export default function ActivityCalendar({ value, ...props }) {
         <Legend fill={Greyscale_Grey_200}>Inactive</Legend>
       </ActivityCalendarLegendWrapper>
 
-      <Popper ref={popperRef} visible={popperVisible} style={popperStyle}>
+      <Popper ref={popperRef} visible={popperVisible}>
         <PopperContent>
           <PopperContentCount>
             Count: {popperData.count || 0}

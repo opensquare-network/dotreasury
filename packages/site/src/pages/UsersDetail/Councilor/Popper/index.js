@@ -13,5 +13,3 @@ function Popper({ children, visible = false, style }, ref) {
 }
 
 export default forwardRef(Popper);
-
-export * from "./utils";
