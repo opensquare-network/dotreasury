@@ -11,7 +11,7 @@ export default function Tooltip({
   children,
   showTooltip = true,
   tooltipContent,
-  offset,
+  tooltipOffset,
 }) {
   const refElement = useRef(null);
   const tooltipElement = useRef(null);
@@ -20,7 +20,7 @@ export default function Tooltip({
     triggerRef: refElement,
     popperRef: tooltipElement,
     showTooltip,
-    offset,
+    offset: tooltipOffset,
   });
 
   return (
