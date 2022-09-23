@@ -7,9 +7,9 @@ export function useTooltip({
   showTooltip,
   offset = [0, 8],
 }) {
-  const [tooltipVisible, setTooltipVisible] = useState(false);
+  const [visible, setVisible] = useState(false);
 
-  function handleShowTooltip() {
+  function show() {
     if (!showTooltip) {
       return;
     }
@@ -26,20 +26,20 @@ export function useTooltip({
       ],
     });
 
-    setTooltipVisible(true);
+    setVisible(true);
   }
 
-  function handleHideTooltip() {
+  function hide() {
     if (!showTooltip) {
       return;
     }
 
-    setTooltipVisible(false);
+    setVisible(false);
   }
 
   return {
-    tooltipVisible,
-    handleShowTooltip,
-    handleHideTooltip,
+    visible,
+    show,
+    hide,
   };
 }

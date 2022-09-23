@@ -9,14 +9,14 @@ const Wrapper = styled.div`
 
 export default function Tooltip({
   children,
-  showTooltip,
+  showTooltip = true,
   tooltipContent,
   offset,
 }) {
   const refElement = useRef(null);
   const tooltipElement = useRef(null);
 
-  const { tooltipVisible, handleShowTooltip, handleHideTooltip } = useTooltip({
+  const { visible, show, hide } = useTooltip({
     triggerRef: refElement,
     popperRef: tooltipElement,
     showTooltip,
@@ -26,14 +26,14 @@ export default function Tooltip({
   return (
     <Wrapper
       ref={refElement}
-      onMouseEnter={handleShowTooltip}
-      onFocus={handleShowTooltip}
-      onMouseLeave={handleHideTooltip}
-      onBlur={handleHideTooltip}
+      onMouseEnter={show}
+      onFocus={show}
+      onMouseLeave={hide}
+      onBlur={hide}
     >
       {children}
       {showTooltip && (
-        <TooltipContainer ref={tooltipElement} data-show={tooltipVisible}>
+        <TooltipContainer ref={tooltipElement} data-show={visible}>
           {tooltipContent}
           <TooltipArrow data-popper-arrow />
         </TooltipContainer>
