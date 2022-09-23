@@ -4,7 +4,7 @@ import { createPopper } from "@popperjs/core";
 export function useTooltip({
   triggerRef,
   popperRef,
-  showTooltip,
+  showTooltip = true,
   offset = [0, 8],
 }) {
   const [visible, setVisible] = useState(false);
