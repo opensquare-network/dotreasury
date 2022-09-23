@@ -19,9 +19,6 @@ import {
   ActivityCalendarContent,
   ActivityCalendarLegendWrapper,
   LegendWrapper,
-  TooltipContent,
-  TooltipContentCount,
-  TooltipContentDate,
 } from "./styled";
 import { useRef } from "react";
 import { useState } from "react";
@@ -29,9 +26,15 @@ import {
   TooltipContainer,
   TooltipArrow,
 } from "../../../../components/Tooltip/styled";
-import { showTooltip } from "../../../../components/Tooltip/utils";
+import { showTooltip as showTooltipFn } from "../../../../components/Tooltip/utils";
+import { noop } from "lodash";
 
-export default function ActivityCalendar({ value, ...props }) {
+export default function ActivityCalendar({
+  value,
+  showTooltip = true,
+  tooltipContentRender = noop,
+  ...props
+}) {
   const rectSize = 12;
   const rectSpace = 4;
 
@@ -53,7 +56,7 @@ export default function ActivityCalendar({ value, ...props }) {
   const [tooltipVisible, setTooltipVisible] = useState(false);
 
   function show(e, data) {
-    showTooltip(e.target, popperRef.current, { offset: [0, 12] });
+    showTooltipFn(e.target, popperRef.current, { offset: [0, 12] });
     setPopperData(data);
     setTooltipVisible(true);
   }
@@ -112,19 +115,12 @@ export default function ActivityCalendar({ value, ...props }) {
         <Legend fill={Greyscale_Grey_200}>Inactive</Legend>
       </ActivityCalendarLegendWrapper>
 
-      <TooltipContainer ref={popperRef} data-show={tooltipVisible}>
-        <TooltipContent>
-          <TooltipContentCount>
-            Count: {popperData.count || 0}
-          </TooltipContentCount>
-          <TooltipContentDate>
-            {dayjs(popperData.meta?.indexer?.blockTime).format(
-              "YYYY-MM-DD HH:mm:ss"
-            )}
-          </TooltipContentDate>
-        </TooltipContent>
-        <TooltipArrow data-popper-arrow />
-      </TooltipContainer>
+      {showTooltip && (
+        <TooltipContainer ref={popperRef} data-show={tooltipVisible}>
+          {tooltipContentRender(popperData)}
+          <TooltipArrow data-popper-arrow />
+        </TooltipContainer>
+      )}
     </ActivityCalendarWrapper>
   );
 }
