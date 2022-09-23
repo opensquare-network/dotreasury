@@ -27,18 +27,18 @@ export default function CouncilorShip() {
       <CardTitle>Councilor Ship</CardTitle>
 
       <ActivityCalendar
-        value={compatActivityCalendarValue(councilorShip)}
+        value={compatActivityCalendarData(councilorShip)}
         showTooltip
         tooltipContentRender={(data) => (
           <div>
             <TooltipContentCount>Count: {data.count || 0}</TooltipContentCount>
-            {data.count && (
-              <TooltipContentDate>
-                {dayjs(data.meta?.indexer?.blockTime).format(
-                  "YYYY-MM-DD HH:mm:ss"
-                )}
-              </TooltipContentDate>
-            )}
+            <TooltipContentDate>
+              {data.meta
+                ? dayjs(data.meta?.indexer?.blockTime).format(
+                    "YYYY-MM-DD HH:mm:ss"
+                  )
+                : dayjs(data.date).format("YYYY-MM-DD")}
+            </TooltipContentDate>
           </div>
         )}
       />
@@ -46,7 +46,7 @@ export default function CouncilorShip() {
   );
 }
 
-function compatActivityCalendarValue(councilorShip = []) {
+function compatActivityCalendarData(councilorShip = []) {
   return councilorShip.map((i) => {
     return {
       date: dayjs(i.indexer.blockTime).format("YYYY/MM/DD"),
