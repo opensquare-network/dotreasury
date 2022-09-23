@@ -19,14 +19,17 @@ import {
   ActivityCalendarContent,
   ActivityCalendarLegendWrapper,
   LegendWrapper,
-  PopperContent,
-  PopperContentCount,
-  PopperContentDate,
+  TooltipContent,
+  TooltipContentCount,
+  TooltipContentDate,
 } from "./styled";
 import { useRef } from "react";
 import { useState } from "react";
-import Popper from "../Popper";
-import { usePopper } from "../../../../components/Popper/usePopper";
+import {
+  TooltipContainer,
+  TooltipArrow,
+} from "../../../../components/Tooltip/styled";
+import { showTooltip } from "../../../../components/Tooltip/utils";
 
 export default function ActivityCalendar({ value, ...props }) {
   const rectSize = 12;
@@ -44,27 +47,19 @@ export default function ActivityCalendar({ value, ...props }) {
 
   const weekLabels = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-  const [triggerRef, setTriggerRefFn] = useState({ current: null });
-  const setTriggerRef = (el) => setTriggerRefFn({ current: el });
   const popperRef = useRef(null);
 
   const [popperData, setPopperData] = useState({});
+  const [tooltipVisible, setTooltipVisible] = useState(false);
 
-  const {
-    popperVisible,
-    hidePopper,
-    showPopper: showPopperFn,
-  } = usePopper({
-    refRef: triggerRef,
-    popperRef: popperRef,
-    showTooltip: true,
-    offset: [0, 12],
-  });
-
-  function showPopper(e, data) {
-    setTriggerRef(e.target);
-    showPopperFn();
+  function show(e, data) {
+    showTooltip(e.target, popperRef.current, { offset: [0, 12] });
     setPopperData(data);
+    setTooltipVisible(true);
+  }
+
+  function hide() {
+    setTooltipVisible(false);
   }
 
   return (
@@ -102,10 +97,10 @@ export default function ActivityCalendar({ value, ...props }) {
             rectRender={(props, data) => (
               <rect
                 {...props}
-                onMouseEnter={(e) => showPopper(e, data)}
-                onFocus={(e) => showPopper(e, data)}
-                onMouseLeave={hidePopper}
-                onBlur={hidePopper}
+                onMouseEnter={(e) => show(e, data)}
+                onFocus={(e) => show(e, data)}
+                onMouseLeave={hide}
+                onBlur={hide}
               />
             )}
           />
@@ -117,18 +112,19 @@ export default function ActivityCalendar({ value, ...props }) {
         <Legend fill={Greyscale_Grey_200}>Inactive</Legend>
       </ActivityCalendarLegendWrapper>
 
-      <Popper ref={popperRef} visible={popperVisible}>
-        <PopperContent>
-          <PopperContentCount>
+      <TooltipContainer ref={popperRef} data-show={tooltipVisible}>
+        <TooltipContent>
+          <TooltipContentCount>
             Count: {popperData.count || 0}
-          </PopperContentCount>
-          <PopperContentDate>
+          </TooltipContentCount>
+          <TooltipContentDate>
             {dayjs(popperData.meta?.indexer?.blockTime).format(
               "YYYY-MM-DD HH:mm:ss"
             )}
-          </PopperContentDate>
-        </PopperContent>
-      </Popper>
+          </TooltipContentDate>
+        </TooltipContent>
+        <TooltipArrow data-popper-arrow />
+      </TooltipContainer>
     </ActivityCalendarWrapper>
   );
 }

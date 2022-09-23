@@ -87,11 +87,11 @@ export const ActivityCalendarLegendWrapper = styled.div`
   }
 `;
 
-export const PopperContent = styled.div``;
-export const PopperContentCount = styled.p`
+export const TooltipContent = styled.div``;
+export const TooltipContentCount = styled.p`
   margin-bottom: 0;
   ${p_14_medium};
 `;
-export const PopperContentDate = styled.p`
+export const TooltipContentDate = styled.p`
   ${p_12_normal};
 `;
