@@ -1,14 +1,14 @@
-import { CardTitle, Card } from "./styled";
+import { CardTitle, Card } from "../styled";
 import dayjs from "dayjs";
 import { useEffect } from "react";
 import {
   councilorShipSelector,
   fetchCouncilorShipTerms,
-} from "../../../store/reducers/usersDetailSlice";
+} from "../../../../store/reducers/usersDetailSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { chainSelector } from "../../../store/reducers/chainSlice";
+import { chainSelector } from "../../../../store/reducers/chainSlice";
 import { useParams } from "react-router";
-import ActivityCalendar from "./ActivityCalendar";
+import ActivityCalendar from "../ActivityCalendar";
 
 export default function CouncilorShip() {
   const dispatch = useDispatch();
