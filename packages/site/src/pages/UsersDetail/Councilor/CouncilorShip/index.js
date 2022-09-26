@@ -47,11 +47,13 @@ export default function CouncilorShip() {
 }
 
 function compatActivityCalendarData(councilorShip = []) {
-  return councilorShip.map((i) => {
-    return {
-      date: dayjs(i.indexer.blockTime).format("YYYY/MM/DD"),
-      count: 1,
-      meta: i,
-    };
-  });
+  return councilorShip
+    .filter((i) => i.isCouncilor)
+    .map((i) => {
+      return {
+        date: dayjs(i.indexer.blockTime).format("YYYY/MM/DD"),
+        count: 1,
+        meta: i,
+      };
+    });
 }
