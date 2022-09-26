@@ -58,21 +58,27 @@ const TextButton = styled.div`
   color: #E90B0B;
 `;
 
+const Number = styled.div`
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: rgba(0, 0, 0, 0.3);
+`;
+
 export default function TipInputs({ index, isCouncilor, canDelete, onDelete, tipData }) {
   const symbol = useSelector(chainSymbolSelector);
 
   return (
     <Wrapper>
+      <Number>#{index + 1}</Number>
       {tipData?.errorMessage && (
         <ErrorMessage className="error">{tipData?.errorMessage}</ErrorMessage>
       )}
       <Fields>
         <Field>
           <FieldTitle>
-            <div style={{ display: "flex", gap: "4px" }}>
-              <span>Beneficiary</span>
-              <span style={{ color: "rgba(0, 0, 0, 0.3)" }}>#{index + 1}</span>
-            </div>
+            <span>Beneficiary</span>
             {canDelete && (
               <TextButton className="hover-only" onClick={onDelete}>Delete</TextButton>
             )}
