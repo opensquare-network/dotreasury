@@ -5,6 +5,8 @@ import {
   councilorShipSelector,
   councilorShipLoadingSelector,
   fetchCouncilorShipTerms,
+  setCouncilorShip,
+  resetCouncilorShipTerms,
 } from "../../../../store/reducers/usersDetailSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { chainSelector } from "../../../../store/reducers/chainSlice";
@@ -23,6 +25,10 @@ export default function CouncilorShip() {
 
   useEffect(() => {
     dispatch(fetchCouncilorShipTerms(chain, address));
+
+    return () => {
+      dispatch(resetCouncilorShipTerms());
+    };
   }, [dispatch, chain, address]);
 
   return (
