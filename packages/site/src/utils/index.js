@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js";
-import { stringUpperFirst, stringCamelCase } from "@polkadot/util";
-import { encodeAddress } from "@polkadot/util-crypto";
+import { stringUpperFirst, stringCamelCase, isHex, hexToU8a } from "@polkadot/util";
+import { encodeAddress, decodeAddress } from "@polkadot/util-crypto";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import md5 from "md5";
@@ -238,4 +238,44 @@ export function isSameAddress(addr1, addr2) {
   } catch (e) {
     return false;
   }
+}
+
+export function isAddress(address) {
+  try {
+    encodeAddress(isHex(address) ? hexToU8a(address) : decodeAddress(address));
+
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
+export function checkInputValue(value, valueName = "Value") {
+  if (!value) {
+    return `${valueName} cannot be empty`;
+  }
+
+  const bnValue = new BigNumber(value);
+
+  if (bnValue.isNaN()) {
+    return `${valueName} must be number`;
+  }
+
+  if (!bnValue.gt(0)) {
+    return `${valueName} must larger then 0`;
+  }
+
+  return null;
+}
+
+export function checkInputAddress(address, addressName) {
+  if (!address) {
+    return `${addressName || "Address"} cannot be empty`;
+  }
+
+  if (!isAddress(address)) {
+    return `Invalid ${addressName ? addressName.toLowerCase() : ""} address`;
+  }
+
+  return null;
 }

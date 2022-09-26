@@ -16,7 +16,6 @@ const OnChainActionButton = styled.div`
   font-size: 12px;
   line-height: 16px;
   color: white;
-
   ${p => p.disabled ? css`
     color: white;
     background: #F292A4;
