@@ -76,9 +76,9 @@ export default function MotionAttendance() {
               </TooltipContentDetailItem>
             </TooltipContentDetail>
           )}
-          legendActiveText="Aye"
-          legendNegativeText="Nay"
-          legendInactiveText="No vote"
+          legendActiveText={MOTION_HEAT_MAP_TEXT.active}
+          legendNegativeText={MOTION_HEAT_MAP_TEXT.negative}
+          legendInactiveText={MOTION_HEAT_MAP_TEXT.inActive}
         />
       </Card>
     </Loading>
