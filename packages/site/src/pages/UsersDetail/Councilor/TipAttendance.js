@@ -23,7 +23,6 @@ import AttendanceHeatMap from "../../../components/AttendanceHeatMap";
 import { Link } from "react-router-dom";
 import { makeInSiteTipLink } from "../../../utils/url";
 import { ellipsis } from "../../../utils/ellipsis";
-import Balance from "../../../components/Balance";
 import { toPrecision, getPrecision } from "../../../utils";
 
 export default function TipAttendance() {
