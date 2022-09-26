@@ -74,9 +74,6 @@ export const resetUsersCounts = () => (dispatch) => {
   dispatch(setCounts(null));
 };
 
-/**
- *
- */
 export const fetchCouncilorShipTerms = (chain, address) => async (dispatch) => {
   dispatch(setCouncilorShipLoading(true));
   try {
