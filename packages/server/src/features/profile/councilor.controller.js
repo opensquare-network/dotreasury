@@ -59,6 +59,7 @@ async function getMotionVoters(ctx) {
           _id: 0,
           motionHeight: "$indexer.blockHeight",
           motionHash: "$hash",
+          motionIndex: "$index",
         }
       },
       {
