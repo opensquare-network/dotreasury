@@ -27,7 +27,7 @@ export default function useWaitSyncBlock(toastMessage, callback) {
 
     const toastId = newToastId();
     setTimeout(async () => {
-      dispatch(newPendingToast(toastId, "Waiting to sync on-chain data..."));
+      dispatch(newPendingToast(toastId, "Syncing on-chain data..."));
       try {
         const targetHeight = await getBlockHeightFromHash(api, blockHash);
 
