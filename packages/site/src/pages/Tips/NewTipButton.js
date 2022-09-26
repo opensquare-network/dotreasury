@@ -3,8 +3,8 @@ import { useSelector } from "react-redux";
 import OnChainActionButton from "../../components/OnChainActionButton";
 import NewTipModal from "./NewTipModal";
 import { accountSelector } from "../../store/reducers/accountSlice";
-import Popper from "../../components/Popper";
-import { TooltipInfoText } from "../../components/Popper/styled";
+import Tooltip from "../../components/Tooltip";
+import { TooltipInfoText } from "../../components/Tooltip/styled";
 
 export default function NewTipButton({ onFinalized }) {
   const account = useSelector(accountSelector);
@@ -18,7 +18,7 @@ export default function NewTipButton({ onFinalized }) {
   }
 
   return (
-    <Popper
+    <Tooltip
       showTooltip={!!tooltipContent}
       tooltipContent={<TooltipInfoText>{tooltipContent}</TooltipInfoText>}
     >
@@ -33,6 +33,6 @@ export default function NewTipButton({ onFinalized }) {
         setVisible={setShowNewTipModel}
         onFinalized={onFinalized}
       />
-    </Popper>
+    </Tooltip>
   );
 }

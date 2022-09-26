@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { ReactComponent as PolkadotLogo } from "../../../components/ConnectWallet/Wallets/polkadot.svg";
 import { ReactComponent as SubWalletLogo } from "../../../components/ConnectWallet/Wallets/subWallet.svg";
 import { ReactComponent as TalismanLogo } from "../../../components/ConnectWallet/Wallets/talisman.svg";
-import Popper from "../../../components/Popper";
-import { TooltipInfoText } from "../../../components/Popper/styled";
+import Tooltip from "../../../components/Tooltip";
+import { TooltipInfoText } from "../../../components/Tooltip/styled";
 import { accountSelector } from "../../../store/reducers/accountSlice";
 import { ellipsis } from "../../../utils/ellipsis";
 import CouncilorTag from "./CouncilorTag";
@@ -79,12 +79,12 @@ export default function Signer({ isCouncilor }) {
         {walletLogo}
         <ExtensionName>{walletName}</ExtensionName>
         <Address className="address">
-          <Popper
+          <Tooltip
             showTooltip={true}
             tooltipContent={<TooltipInfoText>{account?.address}</TooltipInfoText>}
           >
             {ellipsis(account?.address)}
-          </Popper>
+          </Tooltip>
         </Address>
       </Left>
       {isCouncilor && <CouncilorTag />}

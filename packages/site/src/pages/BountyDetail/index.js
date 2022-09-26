@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import styled from "styled-components";
@@ -32,6 +32,9 @@ import DetailGoBack from "../components/DetailGoBack";
 import { useChainRoute } from "../../utils/hooks";
 import ChildBountiesTable from "./ChildBountiesTable";
 import BountyPendingPayoutCountDown from "../../components/BountyPendingPayoutCountDown";
+import { Flex } from "../../components/styled";
+import ClaimButton from "./ClaimButton";
+import useWaitSyncBlock from "../../utils/useWaitSyncBlock";
 
 const ValueWrapper = styled.span`
   margin-right: 4px;
@@ -324,10 +327,25 @@ const BountyDetail = () => {
     setTimelineData(processTimeline(bountyDetail, scanHeight, symbol));
   }, [bountyDetail, scanHeight, symbol]);
 
+  const refreshData = useCallback(() => {
+    dispatch(fetchBountyDetail(chain, bountyIndex));
+  }, [dispatch, chain, bountyIndex]);
+
+  const waitScanAndUpdate = useWaitSyncBlock("Rewards claimed", refreshData);
+
+  const buttons = (
+    <Flex>
+      <ClaimButton
+        bounty={bountyDetail}
+        onFinalized={waitScanAndUpdate}
+      />
+    </Flex>
+  );
+
   return (
     <>
       <DetailGoBack />
-      <DetailTableWrapper title="Bounty" desc={`#${bountyIndex}`}>
+      <DetailTableWrapper title="Bounty" desc={`#${bountyIndex}`} buttons={buttons}>
         <InformationTable loading={loadingBountyDetail} />
         <BountyLifeCycleTable loading={loadingBountyDetail} />
         <RelatedLinks type="bounty" index={parseInt(bountyIndex)} />
