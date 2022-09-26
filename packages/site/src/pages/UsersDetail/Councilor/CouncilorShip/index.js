@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import { useEffect } from "react";
 import {
   councilorShipSelector,
+  councilorShipLoadingSelector,
   fetchCouncilorShipTerms,
 } from "../../../../store/reducers/usersDetailSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,6 +11,7 @@ import { chainSelector } from "../../../../store/reducers/chainSlice";
 import { useParams } from "react-router";
 import ActivityCalendar from "../ActivityCalendar";
 import { TooltipContentDate, TooltipContentCount } from "./styled";
+import Loading from "../../../../components/TableLoading";
 
 export default function CouncilorShip() {
   const dispatch = useDispatch();
@@ -17,32 +19,37 @@ export default function CouncilorShip() {
   const { address } = useParams();
 
   const councilorShip = useSelector(councilorShipSelector) || [];
+  const loading = useSelector(councilorShipLoadingSelector);
 
   useEffect(() => {
     dispatch(fetchCouncilorShipTerms(chain, address));
   }, [dispatch, chain, address]);
 
   return (
-    <Card>
-      <CardTitle>Councilor Ship</CardTitle>
+    <Loading loading={loading}>
+      <Card>
+        <CardTitle>Councilor Ship</CardTitle>
 
-      <ActivityCalendar
-        value={compatActivityCalendarData(councilorShip)}
-        showTooltip
-        tooltipContentRender={(data) => (
-          <div>
-            <TooltipContentCount>Count: {data.count || 0}</TooltipContentCount>
-            <TooltipContentDate>
-              {data.meta
-                ? dayjs(data.meta?.indexer?.blockTime).format(
-                    "YYYY-MM-DD HH:mm:ss"
-                  )
-                : dayjs(data.date).format("YYYY-MM-DD")}
-            </TooltipContentDate>
-          </div>
-        )}
-      />
-    </Card>
+        <ActivityCalendar
+          value={compatActivityCalendarData(councilorShip)}
+          showTooltip
+          tooltipContentRender={(data) => (
+            <div>
+              <TooltipContentCount>
+                Count: {data.count || 0}
+              </TooltipContentCount>
+              <TooltipContentDate>
+                {data.meta
+                  ? dayjs(data.meta?.indexer?.blockTime).format(
+                      "YYYY-MM-DD HH:mm:ss"
+                    )
+                  : dayjs(data.date).format("YYYY-MM-DD")}
+              </TooltipContentDate>
+            </div>
+          )}
+        />
+      </Card>
+    </Loading>
   );
 }
 
