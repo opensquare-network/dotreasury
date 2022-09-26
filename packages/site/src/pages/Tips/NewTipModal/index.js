@@ -60,7 +60,20 @@ const Batch = styled.div`
   gap: 16px;
 
   max-height: 60vh;
-  overflow-y: scroll;
+  overflow-y: auto;
+
+  ::-webkit-scrollbar {
+    display: block;
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: rgba(0,0,0,0);
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #CCCCCC;
+    border-radius: 3px;
+  }
+
 `;
 
 const Close = styled(CloseSVG)`
