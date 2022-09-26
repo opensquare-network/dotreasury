@@ -1,9 +1,20 @@
 export function makeSubsquareLink(chain, category, page, id) {
-  let url = `https://${chain}.subsquare.io/${category}/${page}`;
+  const domain = `https://${chain}.subsquare.io`;
+
+  const pathnames = [category, page];
 
   if (id) {
-    url += `/${id}`;
+    pathnames.push(id);
   }
 
-  return url;
+  const url = new URL(makeUrlPathname(...pathnames), domain);
+  return url.toString();
+}
+
+export function makeInSiteTipLink(symbol, page, tipHeight, tipHash) {
+  return makeUrlPathname(symbol, page, `${tipHeight}_${tipHash}`);
+}
+
+function makeUrlPathname(...path) {
+  return "/" + path.join("/");
 }
