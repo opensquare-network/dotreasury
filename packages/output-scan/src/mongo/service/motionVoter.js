@@ -13,6 +13,7 @@ async function insertMotionVoter(motionHash, voter, aye, indexer) {
   const col = await getMotionVoterCollection();
   await col.insertOne({
     indexer,
+    motionIndex: motion.index,
     motionHeight,
     motionHash,
     voter,
