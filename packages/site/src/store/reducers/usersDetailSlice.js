@@ -85,6 +85,7 @@ export const fetchCouncilorShipTerms = (chain, address) => async (dispatch) => {
     dispatch(setCouncilorShipLoading(false));
   }
 };
+export const resetCouncilorShipTerms = makeReset(setCouncilorShip, null);
 
 export const fetchMotionAttendance = (chain, address) => async (dispatch) => {
   dispatch(setMotionAttendanceLoading(true));
@@ -127,4 +128,7 @@ export default usersDetailSlice.reducer;
 
 function makeApiUrl(chain, address, role, endpoint = "") {
   return `/${chain}/account/${address}/${role}${endpoint}`;
+}
+function makeReset(setter, data) {
+  return () => (dispatch) => dispatch(setter(data));
 }
