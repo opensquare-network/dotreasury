@@ -24,10 +24,9 @@ export const TooltipContentDetailItem = styled.div`
 `;
 export const TooltipContentDetail = styled.div`
   ${(p) =>
-    p.gap &&
     css`
       ${TooltipContentDetailItem} {
-        gap: ${p.gap}px;
+        gap: ${p.gap || 20}px;
       }
     `}
 `;
