@@ -5,7 +5,6 @@ import {
   councilorShipSelector,
   councilorShipLoadingSelector,
   fetchCouncilorShipTerms,
-  setCouncilorShip,
   resetCouncilorShipTerms,
 } from "../../../../store/reducers/usersDetailSlice";
 import { useDispatch, useSelector } from "react-redux";
