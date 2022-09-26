@@ -43,5 +43,9 @@ export const TooltipContentDetailItemValue = styled.div`
     color: inherit;
     text-decoration: underline;
     ${p_12_normal};
+
+    &:hover {
+      color: inherit;
+    }
   }
 `;
