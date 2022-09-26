@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 type Data = { type: "active" | "negative" | "inActive" } & Record<string, any>;
 
 export type AttendanceHeatMapProps = {
@@ -20,4 +22,7 @@ export type AttendanceHeatMapProps = {
   legendActiveText?: string;
   legendNegativeText?: string;
   legendInactiveText?: string;
+
+  showTooltip?: boolean | ((data: Data) => boolean);
+  tooltipContentRender?(data: Data): ReactNode;
 };

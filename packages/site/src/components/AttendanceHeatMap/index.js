@@ -7,6 +7,8 @@ import {
   AttendanceHeatMapContent,
 } from "./styled";
 import { Greyscale_Grey_200 } from "../../constants";
+import Tooltip from "../../components/Tooltip";
+import { noop } from "rxjs";
 
 /**
  * @param {import("./types").AttendanceHeatMapProps} props
@@ -22,6 +24,8 @@ export default function AttendanceHeatMap(props) {
     legendActiveText = "Active",
     legendNegativeText = "Negative",
     legendInactiveText = "Inactive",
+    showTooltip = true,
+    tooltipContentRender = noop,
   } = props ?? {};
 
   function getDotColor(type) {
@@ -37,9 +41,22 @@ export default function AttendanceHeatMap(props) {
   return (
     <AttendanceHeatMapWrapper>
       <AttendanceHeatMapContent>
-        {data?.map((i, idx) => (
-          <AttendanceHeatMapDot key={idx} color={getDotColor(i.type)} />
-        ))}
+        {data?.map((i, idx) => {
+          const shouldShowTooltip =
+            typeof showTooltip === "function" ? showTooltip(i) : showTooltip;
+
+          const dot = (
+            <AttendanceHeatMapDot key={idx} color={getDotColor(i.type)} />
+          );
+
+          return shouldShowTooltip ? (
+            <Tooltip key={idx} tooltipContent={tooltipContentRender(i)}>
+              {dot}
+            </Tooltip>
+          ) : (
+            dot
+          );
+        })}
       </AttendanceHeatMapContent>
 
       {legend && (
