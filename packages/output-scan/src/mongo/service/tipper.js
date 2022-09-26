@@ -11,13 +11,17 @@ async function insertTipper(tipHash, tipper, value, indexer) {
 
   const tipHeight = tip.indexer.blockHeight;
   const col = await getTipperCollection();
-  await col.insertOne({
-    indexer,
-    tipHeight,
-    tipHash,
-    tipper,
-    value,
-  });
+  await col.updateOne(
+    {
+      tipHeight,
+      tipHash,
+      tipper,
+    },
+    {
+      $set: { indexer, value },
+    },
+    { upsert: true },
+  )
 }
 
 module.exports = {

@@ -11,14 +11,18 @@ async function insertMotionVoter(motionHash, voter, aye, indexer) {
 
   const motionHeight = motion.indexer.blockHeight;
   const col = await getMotionVoterCollection();
-  await col.insertOne({
-    indexer,
-    motionIndex: motion.index,
-    motionHeight,
-    motionHash,
-    voter,
-    aye,
-  });
+  await col.updateOne(
+    {
+      motionHeight,
+      motionHash,
+      voter,
+    },
+    {
+      $setOnInsert: { motionIndex: motion.index },
+      $set: { indexer, aye },
+    },
+    { upsert: true },
+  );
 }
 
 module.exports = {
