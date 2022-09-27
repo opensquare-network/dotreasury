@@ -22,6 +22,11 @@ export const CardTitleDescription = styled.small`
   margin-left: 8px;
   color: ${TEXT_DARK_ACCESSORY};
   ${p_12_normal}
+
+  @media screen and (max-width: 900px) {
+    display: block;
+    margin-left: 0;
+  }
 `;
 
 export const TooltipContentDetailItem = styled.div`
