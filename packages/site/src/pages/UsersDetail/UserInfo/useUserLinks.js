@@ -1,8 +1,7 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { chainSelector } from "../../../store/reducers/chainSlice";
-import { useIdentity } from "../../../utils/hooks";
 import {
   ensureLinkProtocol,
   makeSubscanLink,
@@ -12,7 +11,8 @@ import {
 export function useUserLinks() {
   const { address } = useParams();
   const chain = useSelector(chainSelector);
-  const { email, riot, twitter, web } = useIdentity(address);
+
+  const { email, riot, twitter, web } = useFetchIdentity(address);
 
   const links = useMemo(() => {
     const items = [];
@@ -48,7 +48,29 @@ export function useUserLinks() {
     }
 
     return items.concat(fixedItems);
-  }, [chain, email, riot, twitter, web]);
+  }, [chain, address, email, riot, twitter, web]);
 
   return links;
+}
+
+// TODO: may should move to hooks
+function useFetchIdentity(chain, address) {
+  const [info, setInfo] = useState(null);
+
+  fetch(
+    `${process.env.REACT_APP_IDENTITY_SERVER_HOST}/${chain}/identity/${address}`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    }
+  )
+    .then((resp) => resp.json())
+    .then((data) => {
+      setInfo(data.info);
+    });
+
+  return info;
 }
