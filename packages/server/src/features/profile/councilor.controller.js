@@ -3,6 +3,8 @@ const {
   getMotionCollection,
   getTipCollection,
 } = require("../../mongo");
+const rateService = require("../../services/rate.service");
+const { extractPage } = require("../../utils");
 
 async function getCouncilorTerms(ctx) {
   const { chain, address } = ctx.params;
@@ -168,8 +170,40 @@ async function getTippers(ctx) {
   ctx.body = items;
 }
 
+async function getRates(ctx) {
+  const { chain, address } = ctx.params;
+
+  const { page, pageSize } = extractPage(ctx);
+  if (pageSize === 0 || page < 0) {
+    ctx.status = 400;
+    return;
+  }
+
+  ctx.body = await rateService.getRates(
+    {
+      chain,
+      type: "councilor",
+      index: address,
+    },
+    page,
+    pageSize
+  );
+}
+
+async function getRateStats(ctx) {
+  const { chain, address } = ctx.params;
+
+  ctx.body = await rateService.getRateStats({
+    chain,
+    type: "councilor",
+    index: address,
+  });
+}
+
 module.exports = {
   getCouncilorTerms,
   getMotionVoters,
   getTippers,
+  getRates,
+  getRateStats,
 };
