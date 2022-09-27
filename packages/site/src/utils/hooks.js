@@ -32,7 +32,6 @@ export const useIdentity = (address) => {
   /** @type {[{
    *  name: string
    *  badgeData: any
-   *  email?: string
    *  riot?: string
    *  twitter?: string
    *  web?: string
