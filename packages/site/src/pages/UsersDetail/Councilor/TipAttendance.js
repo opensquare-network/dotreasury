@@ -14,6 +14,7 @@ import { useEffect } from "react";
 import {
   Card,
   CardTitle,
+  CardTitleDescription,
   TooltipContentDetail,
   TooltipContentDetailItem,
   TooltipContentDetailItemLabel,
@@ -46,7 +47,10 @@ export default function TipAttendance() {
   return (
     <Loading loading={loading}>
       <Card>
-        <CardTitle>Tip Attendance</CardTitle>
+        <CardTitle>
+          Tip Attendance
+          <CardTitleDescription>Blocks low to high</CardTitleDescription>
+        </CardTitle>
 
         <AttendanceHeatMap
           data={compatAttendanceHeatMapData(tips)}

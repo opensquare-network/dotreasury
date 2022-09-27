@@ -1,6 +1,7 @@
 import {
   Card,
   CardTitle,
+  CardTitleDescription,
   TooltipContentDetail,
   TooltipContentDetailItem,
   TooltipContentDetailItemLabel,
@@ -41,7 +42,10 @@ export default function MotionAttendance() {
   return (
     <Loading loading={loading}>
       <Card>
-        <CardTitle>Motion Attendance</CardTitle>
+        <CardTitle>
+          Motion Attendance
+          <CardTitleDescription>Blocks low to high</CardTitleDescription>
+        </CardTitle>
 
         <AttendanceHeatMap
           data={compatAttendanceHeatMapData(motions)}

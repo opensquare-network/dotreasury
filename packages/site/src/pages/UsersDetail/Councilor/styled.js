@@ -4,6 +4,7 @@ import {
   TEXT_LIGHT_MAJOR,
   TEXT_LIGHT_MINOR,
   TEXT_DARK_MAJOR,
+  TEXT_DARK_ACCESSORY,
 } from "../../../constants";
 import { h4_16_semibold, p_12_normal } from "../../../styles/text";
 
@@ -16,6 +17,11 @@ export const CardTitle = styled.h4`
   color: ${TEXT_DARK_MAJOR};
   margin-bottom: 24px;
   ${h4_16_semibold};
+`;
+export const CardTitleDescription = styled.small`
+  margin-left: 8px;
+  color: ${TEXT_DARK_ACCESSORY};
+  ${p_12_normal}
 `;
 
 export const TooltipContentDetailItem = styled.div`
