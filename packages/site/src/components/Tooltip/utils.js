@@ -6,6 +6,7 @@ export function showTooltip(target, popper, options) {
   let instance;
 
   instance = createPopper(target, popper, {
+    strategy: "fixed",
     placement,
     modifiers: [
       {
