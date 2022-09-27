@@ -32,9 +32,9 @@ export const useIdentity = (address) => {
   /** @type {[{
    *  name: string
    *  badgeData: any
-   *  riot?: string
-   *  twitter?: string
-   *  web?: string
+   *  riot: string
+   *  twitter: string
+   *  web: string
    * }, Function]}
    */
   const [info, setInfo] = useState({});
@@ -53,15 +53,14 @@ export const useIdentity = (address) => {
         const value = {
           ...identity.info,
           name: identity.info?.display,
-          status: {
-            badgeData: identity.info?.status,
-          },
+          badgeData: identity.info?.status,
         };
 
         setInfo(value);
       }
     };
 
+    setInfo({});
     fetchIdentity();
 
     return () => {
