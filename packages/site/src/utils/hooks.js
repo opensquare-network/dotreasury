@@ -53,8 +53,8 @@ export const useIdentity = (address) => {
         const value = {
           ...identity.info,
           name: identity.info?.display,
-          badgeData: {
-            status: identity.info?.status,
+          status: {
+            badgeData: identity.info?.status,
           },
         };
 
