@@ -22,6 +22,7 @@ import { USER_ROLES } from "../../constants";
 import styled from "styled-components";
 import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
+import { ensureLinkProtocol } from "../../utils/url";
 
 const InfoCardTitleWrapper = styled.div`
   display: flex;
@@ -46,7 +47,7 @@ const Link = styled(RouterLink)`
 function createLinks(chain, address, otherLinks = []) {
   const links = [];
 
-  otherLinks.forEach(item => links.push(item));
+  otherLinks.forEach((item) => links.push(item));
 
   links.push({
     link: `https://${chain}.subsquare.io/user/${address}`,
@@ -106,34 +107,35 @@ export default function UserInfo({ role, setRole = () => {} }) {
         },
       }
     )
-    .then((resp) => resp.json())
-    .then((data) => {
-      const links = [];
+      .then((resp) => resp.json())
+      .then((data) => {
+        const links = [];
 
-      const info = data?.info;
-      if (info?.email) {
-        links.push({
-          link: `mailto:${info.email}`,
-        });
-      }
-      if (info?.riot) {
-        links.push({
-          link: `https://matrix.to/#/${info.riot}`,
-        });
-      }
-      if (info?.twitter) {
-        links.push({
-          link: `https://www.twitter.com/${info.twitter}`,
-        });
-      }
-      if (info?.web) {
-        links.push({
-          link: info.web,
-        });
-      }
+        const info = data?.info;
+        if (info?.email) {
+          links.push({
+            link: `mailto:${info.email}`,
+          });
+        }
+        if (info?.riot) {
+          links.push({
+            link: `https://matrix.to/#/${info.riot}`,
+          });
+        }
+        if (info?.twitter) {
+          links.push({
+            link: `https://www.twitter.com/${info.twitter}`,
+          });
+        }
+        if (info?.web) {
+          links.push({
+            link: ensureLinkProtocol(info.web),
+            description: "Web",
+          });
+        }
 
-      setLinks(createLinks(chain, address, links));
-    });
+        setLinks(createLinks(chain, address, links));
+      });
   }, [chain, address]);
 
   return (
