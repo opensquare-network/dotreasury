@@ -51,17 +51,8 @@ export default function TipAttendance() {
         <AttendanceHeatMap
           data={compatAttendanceHeatMapData(tips)}
           activeColor="#B0D1F9"
-          showTooltip={(data) => data.type !== "inActive"}
           tooltipContentRender={(data) => (
             <TooltipContentDetail gap={35}>
-              <TooltipContentDetailItem>
-                <TooltipContentDetailItemLabel>
-                  Created height
-                </TooltipContentDetailItemLabel>
-                <TooltipContentDetailItemValue>
-                  {data.meta.tipHeight}
-                </TooltipContentDetailItemValue>
-              </TooltipContentDetailItem>
               <TooltipContentDetailItem>
                 <TooltipContentDetailItemLabel>
                   Tip hash
@@ -81,10 +72,20 @@ export default function TipAttendance() {
               </TooltipContentDetailItem>
               <TooltipContentDetailItem>
                 <TooltipContentDetailItemLabel>
+                  Tip height
+                </TooltipContentDetailItemLabel>
+                <TooltipContentDetailItemValue>
+                  {data.meta.tipHeight}
+                </TooltipContentDetailItemValue>
+              </TooltipContentDetailItem>
+              <TooltipContentDetailItem>
+                <TooltipContentDetailItemLabel>
                   Value
                 </TooltipContentDetailItemLabel>
                 <TooltipContentDetailItemValue>
-                  {parseValue(data.meta.tips?.[0]?.value)} {chainSymbol}
+                  {data.meta.tips?.length
+                    ? `${parseValue(data.meta.tips?.[0]?.value)} ${chainSymbol}`
+                    : "-"}
                 </TooltipContentDetailItemValue>
               </TooltipContentDetailItem>
             </TooltipContentDetail>
