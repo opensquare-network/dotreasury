@@ -17,9 +17,9 @@ const StyledSegment = styled(Segment)`
   border-radius: 8px !important;
 `
 
-const LoadingTable = ({children, loading}) => {
+const LoadingTable = ({ children, loading, ...restProps }) => {
   return (
-    <Wrapper>
+    <Wrapper {...restProps}>
       <StyledSegment>
         <Dimmer active={loading} inverted>
           <Image src="/imgs/loading.svg" />
