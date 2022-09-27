@@ -1,28 +1,27 @@
 import { useParams } from "react-router";
-import InfoCard, { InfoCardExtraItem } from "../../components/InfoCard";
-import Avatar from "../../components/User/Avatar";
-import Badge from "../../components/User/Badge";
-import TagOrigin from "../../components/Tag/Tag";
-import { useIdentity } from "../../utils/hooks";
-import { ellipsis } from "../../utils/ellipsis";
-import ProposalsCount from "../../components/ProposalsCount";
+import InfoCard, { InfoCardExtraItem } from "../../../components/InfoCard";
+import Avatar from "../../../components/User/Avatar";
+import Badge from "../../../components/User/Badge";
+import TagOrigin from "../../../components/Tag/Tag";
+import { useIdentity } from "../../../utils/hooks";
+import { ellipsis } from "../../../utils/ellipsis";
+import ProposalsCount from "../../../components/ProposalsCount";
 import { useDispatch, useSelector } from "react-redux";
 import {
   usersCountsSelector,
   fetchUsersCounts,
   resetUsersCounts,
   countsLoadingSelector,
-} from "../../store/reducers/usersDetailSlice";
+} from "../../../store/reducers/usersDetailSlice";
 import { useEffect, useMemo } from "react";
 import {
   chainSelector,
   chainSymbolSelector,
-} from "../../store/reducers/chainSlice";
-import { USER_ROLES } from "../../constants";
+} from "../../../store/reducers/chainSlice";
+import { USER_ROLES } from "../../../constants";
 import styled from "styled-components";
-import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { ensureLinkProtocol } from "../../utils/url";
+import { useUserLinks } from "./useUserLinks";
 
 const InfoCardTitleWrapper = styled.div`
   display: flex;
@@ -44,22 +43,6 @@ const Link = styled(RouterLink)`
   }
 `;
 
-function createLinks(chain, address, otherLinks = []) {
-  const links = [];
-
-  otherLinks.forEach((item) => links.push(item));
-
-  links.push({
-    link: `https://${chain}.subsquare.io/user/${address}`,
-  });
-
-  links.push({
-    link: `https://${chain}.subscan.io/account/${address}`,
-  });
-
-  return links;
-}
-
 const isProposalsRole = (role) =>
   [USER_ROLES.Beneficiary, USER_ROLES.Proposer].includes(role);
 
@@ -71,9 +54,10 @@ export default function UserInfo({ role, setRole = () => {} }) {
   const countsLoading = useSelector(countsLoadingSelector);
   const chain = useSelector(chainSelector);
   const chainSymbol = useSelector(chainSymbolSelector).toLowerCase();
-  const [links, setLinks] = useState(createLinks(chain, address));
 
   const shouldShowProposals = useMemo(() => isProposalsRole(role), [role]);
+
+  const links = useUserLinks();
 
   const hasCounts = useMemo(() => {
     return [
@@ -95,48 +79,6 @@ export default function UserInfo({ role, setRole = () => {} }) {
       dispatch(resetUsersCounts());
     };
   }, [dispatch, chain, role, address, shouldShowProposals]);
-
-  useEffect(() => {
-    fetch(
-      `${process.env.REACT_APP_IDENTITY_SERVER_HOST}/${chain}/identity/${address}`,
-      {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      }
-    )
-      .then((resp) => resp.json())
-      .then((data) => {
-        const links = [];
-
-        const info = data?.info;
-        if (info?.email) {
-          links.push({
-            link: `mailto:${info.email}`,
-          });
-        }
-        if (info?.riot) {
-          links.push({
-            link: `https://matrix.to/#/${info.riot}`,
-          });
-        }
-        if (info?.twitter) {
-          links.push({
-            link: `https://www.twitter.com/${info.twitter}`,
-          });
-        }
-        if (info?.web) {
-          links.push({
-            link: ensureLinkProtocol(info.web),
-            description: "Web",
-          });
-        }
-
-        setLinks(createLinks(chain, address, links));
-      });
-  }, [chain, address]);
 
   return (
     <InfoCard
