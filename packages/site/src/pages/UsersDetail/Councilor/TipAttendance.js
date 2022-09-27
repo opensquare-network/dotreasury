@@ -25,6 +25,7 @@ import { Link } from "react-router-dom";
 import { makeInSiteTipLink } from "../../../utils/url";
 import { ellipsis } from "../../../utils/ellipsis";
 import { toPrecision, getPrecision } from "../../../utils";
+import { sortBy } from "lodash";
 
 export default function TipAttendance() {
   const chain = useSelector(chainSelector);
@@ -103,7 +104,9 @@ export default function TipAttendance() {
 }
 
 function compatAttendanceHeatMapData(tips = []) {
-  return tips.map((i) => {
+  const sorted = sortBy(tips, "tipHeight");
+
+  return sorted.map((i) => {
     return {
       type: i?.tips?.length ? "active" : "inActive",
       meta: i,
