@@ -20,5 +20,13 @@ router.get("/account/:address/proposer/child-bounties", proposerController.getPr
 router.get("/account/:address/councilor/terms", councilorController.getCouncilorTerms);
 router.get("/account/:address/councilor/motions", councilorController.getMotionVoters);
 router.get("/account/:address/councilor/tippers", councilorController.getTippers);
+router.get(
+  "/account/:address/councilor/rates",
+  councilorController.getRates,
+);
+router.get(
+  "/account/:address/councilor/ratestats",
+  councilorController.getRateStats,
+);
 
 module.exports = router;

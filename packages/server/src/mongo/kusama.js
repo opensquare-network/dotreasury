@@ -123,6 +123,17 @@ async function _createIndexes() {
   }
 
   // TODO: create indexes for better query performance
+  motionVoterCol.createIndex({
+    motionHash: 1,
+    motionHeight: 1,
+    voter: 1,
+  });
+
+  tipperCol.createIndex({
+    tipHash: 1,
+    tipHeight: 1,
+    tipper: 1,
+  });
 }
 
 async function tryInit(col) {
