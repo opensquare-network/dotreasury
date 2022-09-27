@@ -46,7 +46,6 @@ export default function MotionAttendance() {
         <AttendanceHeatMap
           data={compatAttendanceHeatMapData(motions)}
           negative
-          showTooltip={(data) => data.type !== "inActive"}
           tooltipContentRender={(data) => (
             <TooltipContentDetail gap={35}>
               <TooltipContentDetailItem>
@@ -71,7 +70,10 @@ export default function MotionAttendance() {
                   Vote
                 </TooltipContentDetailItemLabel>
                 <TooltipContentDetailItemValue>
-                  {MOTION_HEAT_MAP_TEXT[data.type]}
+                  {MOTION_HEAT_MAP_TEXT[data.type] !==
+                  MOTION_HEAT_MAP_TEXT.inActive
+                    ? MOTION_HEAT_MAP_TEXT[data.type]
+                    : "-"}
                 </TooltipContentDetailItemValue>
               </TooltipContentDetailItem>
             </TooltipContentDetail>
