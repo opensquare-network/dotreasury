@@ -23,7 +23,7 @@ import DetailGoBack from "../../components/DetailGoBack";
 import { useChainRoute } from "../../../utils/hooks";
 import ChildInformationTable from "./ChildInformationTable";
 import { processTimeline } from "../index";
-import ClaimButton from "../ClaimButton";
+import ClaimButton from "./ClaimButton";
 import { Flex } from "../../../components/styled";
 import useWaitSyncBlock from "../../../utils/useWaitSyncBlock";
 
