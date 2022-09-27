@@ -11,8 +11,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { chainSelector } from "../../../../store/reducers/chainSlice";
 import { useParams } from "react-router";
 import ActivityCalendar from "../ActivityCalendar";
-import { TooltipContentDate, TooltipContentCount } from "./styled";
-import Loading from "../../../../components/TableLoading";
+import {
+  TooltipContentDate,
+  TooltipContentCount,
+  CouncilorShipLoading,
+} from "./styled";
 
 export default function CouncilorShip() {
   const dispatch = useDispatch();
@@ -31,7 +34,7 @@ export default function CouncilorShip() {
   }, [dispatch, chain, address]);
 
   return (
-    <Loading loading={loading}>
+    <CouncilorShipLoading loading={loading}>
       <Card>
         <CardTitle>Councilor Ship</CardTitle>
 
@@ -54,7 +57,7 @@ export default function CouncilorShip() {
           )}
         />
       </Card>
-    </Loading>
+    </CouncilorShipLoading>
   );
 }
 
