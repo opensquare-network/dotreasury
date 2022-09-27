@@ -20,6 +20,7 @@ import { useParams } from "react-router";
 import Loading from "../../../components/TableLoading";
 import { makeSubsquareLink } from "../../../utils/url";
 import ExternalLink from "../../../components/ExternalLink";
+import { sortBy } from "lodash";
 
 const MOTION_HEAT_MAP_TEXT = {
   active: "Aye",
@@ -92,7 +93,9 @@ export default function MotionAttendance() {
 }
 
 function compatAttendanceHeatMapData(motions = []) {
-  return motions.map((i) => {
+  const sorted = sortBy(motions, "motionHeight");
+
+  return sorted.map((i) => {
     const latestVote = i.votes?.[0];
 
     return {
