@@ -26,19 +26,10 @@ export const useWindowSize = () => {
 
 const displayCache = new Map();
 
-export const useIdentity = (address) => {
+export const useIdentity = (address, map) => {
+  const [name, setName] = useState(null);
+  const [badgeData, setBadgeData] = useState(null);
   const chain = useSelector(chainSelector);
-
-  /** @type {[{
-   *  name: string
-   *  badgeData: any
-   *  riot: string
-   *  twitter: string
-   *  web: string
-   * }, Function]}
-   */
-  const [info, setInfo] = useState({});
-
   useEffect(() => {
     let isMounted = true;
     const fetchIdentity = async () => {
@@ -50,25 +41,20 @@ export const useIdentity = (address) => {
         displayCache.set(`identity_${address}`, identity);
       }
       if (isMounted && identity) {
-        const value = {
-          ...identity.info,
-          name: identity.info?.display,
-          badgeData: identity.info?.status,
-        };
-
-        setInfo(value);
+        setName(identity.info?.display);
+        setBadgeData({
+          status: identity.info?.status,
+        });
       }
     };
-
-    setInfo({});
+    setName(null);
+    setBadgeData(null);
     fetchIdentity();
-
     return () => {
       isMounted = false;
     };
   }, [address, chain]);
-
-  return info;
+  return { name, badgeData };
 };
 
 export function useQuery() {
