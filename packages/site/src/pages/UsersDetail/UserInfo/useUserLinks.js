@@ -12,7 +12,7 @@ export function useUserLinks() {
   const { address } = useParams();
   const chain = useSelector(chainSelector);
 
-  const { email, riot, twitter, web } = useFetchIdentity(address);
+  const { email, riot, twitter, web } = useFetchIdentity(chain, address);
 
   const links = useMemo(() => {
     const items = [];
@@ -55,7 +55,7 @@ export function useUserLinks() {
 
 // TODO: may should move to hooks
 function useFetchIdentity(chain, address) {
-  const [info, setInfo] = useState(null);
+  const [info, setInfo] = useState({});
 
   fetch(
     `${process.env.REACT_APP_IDENTITY_SERVER_HOST}/${chain}/identity/${address}`,
