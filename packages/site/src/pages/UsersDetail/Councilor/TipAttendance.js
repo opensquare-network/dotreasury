@@ -59,7 +59,7 @@ export default function TipAttendance() {
                   Created height
                 </TooltipContentDetailItemLabel>
                 <TooltipContentDetailItemValue>
-                  #{data.meta.tipHeight}
+                  {data.meta.tipHeight}
                 </TooltipContentDetailItemValue>
               </TooltipContentDetailItem>
               <TooltipContentDetailItem>
