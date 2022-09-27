@@ -34,7 +34,7 @@ function ReferendumSubTimeline({ referendum, scanHeight }) {
     getReferendumInfo(api, referendum?.referendumIndex)
       .then((referendumInfo) => {
         if (isMounted.current) {
-          setTally(referendumInfo?.ongoing);
+          setTally(referendumInfo?.ongoing?.tally);
         }
       }).finally(() => {
         setIsTallyLoading(false);
