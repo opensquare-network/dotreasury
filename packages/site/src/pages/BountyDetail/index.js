@@ -337,7 +337,7 @@ const BountyDetail = () => {
 
       <TimelineCommentWrapper>
         <Timeline data={timelineData} loading={loadingBountyDetail} />
-        <Comment type="bounties" index={parseInt(bountyIndex)} />
+        <Comment type="bounty" index={parseInt(bountyIndex)} />
       </TimelineCommentWrapper>
     </>
   );

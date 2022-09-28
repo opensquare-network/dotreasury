@@ -172,7 +172,7 @@ const TipDetail = () => {
       </DetailTableWrapper>
       <TimelineCommentWrapper>
         <Timeline data={timelineData} loading={loadingTipDetail} />
-        <Comment type="tips" index={getTipIndex(tipDetail)} />
+        <Comment type="tip" index={getTipIndex(tipDetail)} />
       </TimelineCommentWrapper>
     </>
   );
