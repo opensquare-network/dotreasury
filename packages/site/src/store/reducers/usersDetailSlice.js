@@ -98,6 +98,7 @@ export const fetchMotionAttendance = (chain, address) => async (dispatch) => {
     dispatch(setMotionAttendanceLoading(false));
   }
 };
+export const resetMotionAttendance = makeReset(setMotionAttendance, null);
 
 export const fetchTipAttendance = (chain, address) => async (dispatch) => {
   dispatch(setTipAttendanceLoading(true));
@@ -110,6 +111,7 @@ export const fetchTipAttendance = (chain, address) => async (dispatch) => {
     dispatch(setTipAttendanceLoading(false));
   }
 };
+export const resetTipAttendance = makeReset(setTipAttendance, null);
 
 export const usersCountsSelector = (state) => state.usersDetail.counts;
 export const countsLoadingSelector = (state) => state.usersDetail.countsLoading;
