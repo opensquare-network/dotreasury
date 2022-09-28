@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import pluralize from "pluralize";
 import api from "../../services/scanApi";
 import { signMessageWithExtension } from "../../services/chainApi";
 import { addToast } from "./toastSlice";
@@ -91,7 +92,9 @@ export const addRate = (
 };
 
 export const fetchRateStats = (chain, type, index) => async (dispatch) => {
-  const { result } = await api.fetch(`/${chain}/${type}/${index}/ratestats`);
+  const { result } = await api.fetch(
+    `/${chain}/${pluralize(type)}/${index}/ratestats`
+  );
   dispatch(
     setRateStats(
       result || {
@@ -109,7 +112,7 @@ export const fetchRates = (chain, type, index, page, pageSize) => async (
   dispatch
 ) => {
   const { result } = await api.maybeAuthFetch(
-    `/${chain}/${type}/${index}/rates`,
+    `/${chain}/${pluralize(type)}/${index}/rates`,
     { page, pageSize }
   );
   dispatch(
