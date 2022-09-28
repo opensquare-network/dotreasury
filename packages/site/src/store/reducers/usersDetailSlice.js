@@ -3,6 +3,12 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 import api from "../../services/scanApi";
+import {
+  userDetailProposalCounts,
+  userDetailCouncilorTerms,
+  userDetailCouncilorMotions,
+  userDetailCouncilrTips,
+} from "../../services/urls";
 
 const usersDetailSlice = createSlice({
   name: "usersDetail",
@@ -63,7 +69,7 @@ export const fetchUsersCounts = (chain, address, role) => async (dispatch) => {
   dispatch(setCountsLoading(true));
   try {
     const { result } = await api.fetch(
-      makeApiUrl(chain, address, role, "/counts")
+      userDetailProposalCounts(chain, address, role)
     );
     dispatch(setCounts(result));
   } finally {
@@ -78,7 +84,7 @@ export const fetchCouncilorShipTerms = (chain, address) => async (dispatch) => {
   dispatch(setCouncilorShipLoading(true));
   try {
     const { result } = await api.fetch(
-      makeApiUrl(chain, address, "councilor", "/terms")
+      userDetailCouncilorTerms(chain, address)
     );
     dispatch(setCouncilorShip(result));
   } finally {
@@ -91,7 +97,7 @@ export const fetchMotionAttendance = (chain, address) => async (dispatch) => {
   dispatch(setMotionAttendanceLoading(true));
   try {
     const { result } = await api.fetch(
-      makeApiUrl(chain, address, "councilor", "/motions")
+      userDetailCouncilorMotions(chain, address)
     );
     dispatch(setMotionAttendance(result));
   } finally {
@@ -103,9 +109,7 @@ export const resetMotionAttendance = makeReset(setMotionAttendance, null);
 export const fetchTipAttendance = (chain, address) => async (dispatch) => {
   dispatch(setTipAttendanceLoading(true));
   try {
-    const { result } = await api.fetch(
-      makeApiUrl(chain, address, "councilor", "/tippers")
-    );
+    const { result } = await api.fetch(userDetailCouncilrTips(chain, address));
     dispatch(setTipAttendance(result));
   } finally {
     dispatch(setTipAttendanceLoading(false));
@@ -128,9 +132,6 @@ export const tipAttendanceLoadingSelector = (state) =>
 
 export default usersDetailSlice.reducer;
 
-function makeApiUrl(chain, address, role, endpoint = "") {
-  return `/${chain}/account/${address}/${role}${endpoint}`;
-}
 function makeReset(setter, data) {
   return () => (dispatch) => dispatch(setter(data));
 }
