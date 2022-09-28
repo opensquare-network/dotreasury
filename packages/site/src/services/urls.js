@@ -13,6 +13,6 @@ export function userDetailCouncilorTerms(chain, address) {
 export function userDetailCouncilorMotions(chain, address) {
   return makeUrlPathname(chain, "account", address, "councilor", "motions");
 }
-export function userDetailCouncilrTips(chain, address) {
+export function userDetailCouncilorTips(chain, address) {
   return makeUrlPathname(chain, "account", address, "councilor", "tippers");
 }

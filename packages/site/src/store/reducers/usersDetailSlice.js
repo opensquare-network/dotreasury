@@ -7,7 +7,7 @@ import {
   userDetailProposalCounts,
   userDetailCouncilorTerms,
   userDetailCouncilorMotions,
-  userDetailCouncilrTips,
+  userDetailCouncilorTips,
 } from "../../services/urls";
 
 const usersDetailSlice = createSlice({
@@ -109,7 +109,7 @@ export const resetMotionAttendance = makeReset(setMotionAttendance, null);
 export const fetchTipAttendance = (chain, address) => async (dispatch) => {
   dispatch(setTipAttendanceLoading(true));
   try {
-    const { result } = await api.fetch(userDetailCouncilrTips(chain, address));
+    const { result } = await api.fetch(userDetailCouncilorTips(chain, address));
     dispatch(setTipAttendance(result));
   } finally {
     dispatch(setTipAttendanceLoading(false));
