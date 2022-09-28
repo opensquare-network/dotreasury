@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { chainSelector } from "../../../store/reducers/chainSlice";
@@ -57,20 +57,22 @@ export function useUserLinks() {
 function useFetchIdentity(chain, address) {
   const [info, setInfo] = useState({});
 
-  fetch(
-    `${process.env.REACT_APP_IDENTITY_SERVER_HOST}/${chain}/identity/${address}`,
-    {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    }
-  )
-    .then((resp) => resp.json())
-    .then((data) => {
-      setInfo(data.info);
-    });
+  useEffect(() => {
+    fetch(
+      `${process.env.REACT_APP_IDENTITY_SERVER_HOST}/${chain}/identity/${address}`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((resp) => resp.json())
+      .then((data) => {
+        setInfo(data?.info);
+      });
+  }, [chain, address]);
 
   return info;
 }
