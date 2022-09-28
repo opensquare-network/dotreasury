@@ -16,3 +16,9 @@ export function userDetailCouncilorMotions(chain, address) {
 export function userDetailCouncilorTips(chain, address) {
   return makeUrlPathname(chain, "account", address, "councilor", "tippers");
 }
+export function userDetailCouncilorRates(chain, address) {
+  return makeUrlPathname(chain, "account", address, "councilor", "rates");
+}
+export function userDetailCouncilorRateStats(chain, address) {
+  return makeUrlPathname(chain, "account", address, "councilor", "ratestats");
+}
