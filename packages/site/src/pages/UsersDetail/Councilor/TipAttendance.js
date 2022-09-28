@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../../components/TableLoading";
 import {
   fetchTipAttendance,
+  resetTipAttendance,
   tipAttendanceLoadingSelector,
   tipAttendanceSelector,
 } from "../../../store/reducers/usersDetailSlice";
@@ -38,6 +39,10 @@ export default function TipAttendance() {
 
   useEffect(() => {
     dispatch(fetchTipAttendance(chain, address));
+
+    return () => {
+      dispatch(resetTipAttendance());
+    };
   }, [dispatch, chain, address]);
 
   function parseValue(value) {

@@ -12,6 +12,7 @@ import {
   motionAttendanceSelector,
   fetchMotionAttendance,
   motionAttendanceLoadingSelector,
+  resetMotionAttendance,
 } from "../../../store/reducers/usersDetailSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { chainSelector } from "../../../store/reducers/chainSlice";
@@ -38,6 +39,10 @@ export default function MotionAttendance() {
 
   useEffect(() => {
     dispatch(fetchMotionAttendance(chain, address));
+
+    return () => {
+      dispatch(resetMotionAttendance());
+    };
   }, [dispatch, chain, address]);
 
   return (
