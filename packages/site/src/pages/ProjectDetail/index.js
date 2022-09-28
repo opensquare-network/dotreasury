@@ -61,7 +61,7 @@ const ProjectDetail = () => {
 
       <CommentWrapper>
         <Rate type="projects" index={projectId} />
-        <Comment type="project" index={projectId} />
+        <Comment type="projects" index={projectId} />
       </CommentWrapper>
     </>
   );

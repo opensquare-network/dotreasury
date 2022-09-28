@@ -112,7 +112,7 @@ const ChildBountyDetail = () => {
       </DetailTableWrapper>
       <TimelineCommentWrapper>
         <Timeline data={timelineData} loading={loadingBountyDetail} />
-        <Comment type="child-bounty" index={parseInt(bountyIndex)} />
+        <Comment type="child-bounties" index={parseInt(bountyIndex)} />
       </TimelineCommentWrapper>
     </>
   );

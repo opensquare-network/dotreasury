@@ -77,7 +77,7 @@ const ProposalDetail = () => {
         <Timeline data={timelineData} loading={loadingProposalDetail} />
         <div>
           <Rate type="proposals" index={parseInt(proposalIndex)} />
-          <Comment type="proposal" index={parseInt(proposalIndex)} />
+          <Comment type="proposals" index={parseInt(proposalIndex)} />
         </div>
       </TimelineCommentWrapper>
     </>
