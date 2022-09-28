@@ -5,6 +5,7 @@ import {
   TooltipContentDetailItem,
   TooltipContentDetailItemLabel,
   TooltipContentDetailItemValue,
+  CardTitleDescription,
 } from "../styled";
 import dayjs from "dayjs";
 import { useEffect } from "react";
@@ -17,8 +18,10 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { chainSelector } from "../../../../store/reducers/chainSlice";
 import { useParams } from "react-router";
-import ActivityCalendar from "../ActivityCalendar";
 import { CouncilorShipLoading } from "./styled";
+import { sortBy } from "lodash";
+import HeatMap from "../../../../components/HeatMap";
+import { Primary_Theme_Pink_200 } from "../../../../constants";
 
 export default function CouncilorShip() {
   const dispatch = useDispatch();
@@ -39,26 +42,29 @@ export default function CouncilorShip() {
   return (
     <CouncilorShipLoading loading={loading}>
       <Card>
-        <CardTitle>Councilor Ship</CardTitle>
+        <CardTitle>
+          Councilor Ship
+          <CardTitleDescription>Terms old to new</CardTitleDescription>
+        </CardTitle>
 
-        <ActivityCalendar
-          value={compatActivityCalendarData(councilorShip)}
-          showTooltip
+        <HeatMap
+          data={compatActivityCalendarData(councilorShip)}
+          activeColor={Primary_Theme_Pink_200}
           tooltipContentRender={(data) => {
-            // FIXME: councilor multi-terms
             return <CouncilorInfo data={data} />;
           }}
         />
-      </Card>
+      </Card>{" "}
     </CouncilorShipLoading>
   );
 }
 
 function compatActivityCalendarData(councilorShip = []) {
-  return councilorShip.map((i) => {
+  const sorted = sortBy(councilorShip, "indexer.blockHeight");
+
+  return sorted.map((i) => {
     return {
-      date: dayjs(i.indexer.blockTime).format("YYYY/MM/DD"),
-      count: 1,
+      type: i.isCouncilor ? "active" : "inActive",
       meta: i,
     };
   });
@@ -80,15 +86,13 @@ function CouncilorInfo({ data }) {
           Start time
         </TooltipContentDetailItemLabel>
         <TooltipContentDetailItemValue>
-          {data.count
-            ? dayjs(data.meta?.indexer?.blockTime).format("YYYY-MM-DD HH:mm:ss")
-            : "-"}
+          {dayjs(data.meta?.indexer?.blockTime).format("YYYY-MM-DD HH:mm:ss")}
         </TooltipContentDetailItemValue>
       </TooltipContentDetailItem>
       <TooltipContentDetailItem>
         <TooltipContentDetailItemLabel>Elected</TooltipContentDetailItemLabel>
         <TooltipContentDetailItemValue>
-          {data.count ? "True" : "False"}
+          {data.meta?.isCouncilor ? "True" : "False"}
         </TooltipContentDetailItemValue>
       </TooltipContentDetailItem>
     </TooltipContentDetail>
