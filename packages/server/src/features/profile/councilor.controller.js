@@ -30,13 +30,15 @@ async function getCouncilorTerms(ctx) {
       },
       {
         $addFields: {
-          member: { $first: "$members" },
           isCouncilor: { $ne: [{ $size: "$members" }, 0] }
         }
       },
       {
         $project: {
+          _id: 0,
           members: 0,
+          "indexer.blockHash": 0,
+          "indexer.eventIndex": 0,
         }
       }
     ]).toArray();
@@ -89,12 +91,16 @@ async function getMotionVoters(ctx) {
             {
               $project: {
                 _id: 0,
-                indexer: "$indexer",
                 aye: "$aye",
               }
             }
           ],
           as: "votes",
+        }
+      },
+      {
+        $project: {
+          motionHash: 0,
         }
       },
     ]).toArray();
@@ -157,7 +163,6 @@ async function getTippers(ctx) {
             {
               $project: {
                 _id: 0,
-                indexer: "$indexer",
                 value: "$value",
               }
             }
