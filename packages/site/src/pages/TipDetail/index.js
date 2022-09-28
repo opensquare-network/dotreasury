@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import {
@@ -24,6 +24,15 @@ import TimelineCommentWrapper from "../../components/TimelineCommentWrapper";
 import DetailGoBack from "../components/DetailGoBack";
 import { useChainRoute } from "../../utils/hooks";
 import DetailTableWrapper from "../../components/DetailTableWrapper";
+import { Flex } from "../../components/styled";
+import CloseButton from "./Actions/CloseButton";
+import useWaitSyncBlock from "../../utils/useWaitSyncBlock";
+import RetractedButton from "./Actions/RetractButton";
+import styled from "styled-components";
+
+const ActionButtons = styled(Flex)`
+  gap: 16px;
+`;
 
 function processTimeline(tipDetail, links) {
   return (tipDetail.timeline || []).map((timelineItem) => {
@@ -158,10 +167,30 @@ const TipDetail = () => {
     setTimelineData(processTimeline(tipDetail, links));
   }, [tipDetail, links]);
 
+  const refreshData = useCallback(() => {
+    dispatch(fetchTipDetail(chain, tipId));
+  }, [dispatch, chain, tipId]);
+
+  const onTipClosed = useWaitSyncBlock("Tip closed", refreshData);
+  const onTipRetracted = useWaitSyncBlock("Tip retracted", refreshData);
+
+  const buttons = (
+    <ActionButtons>
+      <CloseButton
+        tipDetail={tipDetail}
+        onFinalized={onTipClosed}
+      />
+      <RetractedButton
+        tipDetail={tipDetail}
+        onFinalized={onTipRetracted}
+      />
+    </ActionButtons>
+  );
+
   return (
     <>
       <DetailGoBack />
-      <DetailTableWrapper title="Tip" desc={getShortTipId(tipDetail)}>
+      <DetailTableWrapper title="Tip" desc={getShortTipId(tipDetail)} buttons={buttons}>
         <InformationTable loading={loadingTipDetail} />
         <TipLifeCycleTable loading={loadingTipDetail} />
         <RelatedLinks

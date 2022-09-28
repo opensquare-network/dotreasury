@@ -1,27 +1,24 @@
 import styled, { css } from "styled-components";
-import { PRIMARY_THEME_COLOR } from "../constants";
 
-const OnChainActionButton = styled.div`
+const OnChainActionButtonSecondary = styled.div`
   cursor: pointer;
   display: flex;
   flex-direction: row;
   align-items: center;
   padding: 4px 8px;
-
-  background: ${PRIMARY_THEME_COLOR};
+  background-color: white;
+  border: 1px solid #DDDDDD;
   border-radius: 4px;
 
   font-style: normal;
   font-weight: 500;
   font-size: 12px;
   line-height: 16px;
-  color: white;
+  color: rgba(0, 0, 0, 0.9);
   ${p => p.disabled && css`
-    color: white;
-    background: #F292A4;
-    opacity: 1;
+    color: rgba(0, 0, 0, 0.15);
     pointer-events: none;
   `}
 `;
 
-export default OnChainActionButton;
+export default OnChainActionButtonSecondary;
