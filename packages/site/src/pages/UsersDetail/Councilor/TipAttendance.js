@@ -85,7 +85,7 @@ export default function TipAttendance() {
                   Tip height
                 </TooltipContentDetailItemLabel>
                 <TooltipContentDetailItemValue>
-                  {data.meta.tipHeight}
+                  {data.meta.tipHeight.toLocaleString?.()}
                 </TooltipContentDetailItemValue>
               </TooltipContentDetailItem>
               <TooltipContentDetailItem>

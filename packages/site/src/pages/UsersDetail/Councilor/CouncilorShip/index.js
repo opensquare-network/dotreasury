@@ -72,7 +72,7 @@ function CouncilorInfo({ data }) {
           Start height
         </TooltipContentDetailItemLabel>
         <TooltipContentDetailItemValue>
-          {data.meta?.indexer?.blockHeight || "-"}
+          {data.meta?.indexer?.blockHeight?.toLocaleString?.() || "-"}
         </TooltipContentDetailItemValue>
       </TooltipContentDetailItem>
       <TooltipContentDetailItem>
