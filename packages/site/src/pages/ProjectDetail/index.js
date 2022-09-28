@@ -60,7 +60,7 @@ const ProjectDetail = () => {
       </TableLoading>
 
       <CommentWrapper>
-        <Rate type="project" index={projectId} />
+        <Rate type="projects" index={projectId} />
         <Comment type="project" index={projectId} />
       </CommentWrapper>
     </>
