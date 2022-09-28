@@ -7,7 +7,7 @@ import {
   TooltipContentDetailItemLabel,
   TooltipContentDetailItemValue,
 } from "./styled";
-import AttendanceHeatMap from "../../../components/AttendanceHeatMap";
+import HeatMap from "../../../components/HeatMap";
 import {
   motionAttendanceSelector,
   fetchMotionAttendance,
@@ -53,7 +53,8 @@ export default function MotionAttendance() {
           <CardTitleDescription>Blocks low to high</CardTitleDescription>
         </CardTitle>
 
-        <AttendanceHeatMap
+        <HeatMap
+          dotStyle="circle"
           data={compatAttendanceHeatMapData(motions)}
           negative
           tooltipContentRender={(data) => (

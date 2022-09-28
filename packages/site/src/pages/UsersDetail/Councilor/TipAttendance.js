@@ -21,7 +21,7 @@ import {
   TooltipContentDetailItemLabel,
   TooltipContentDetailItemValue,
 } from "./styled";
-import AttendanceHeatMap from "../../../components/AttendanceHeatMap";
+import HeatMap from "../../../components/HeatMap";
 import { Link } from "react-router-dom";
 import { makeInSiteTipLink } from "../../../utils/url";
 import { ellipsis } from "../../../utils/ellipsis";
@@ -58,7 +58,8 @@ export default function TipAttendance() {
           <CardTitleDescription>Blocks low to high</CardTitleDescription>
         </CardTitle>
 
-        <AttendanceHeatMap
+        <HeatMap
+          dotStyle="circle"
           data={compatAttendanceHeatMapData(tips)}
           activeColor="#B0D1F9"
           tooltipContentRender={(data) => (
