@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import pluralize from "pluralize";
 import { REACTION_THUMBDOWN, REACTION_THUMBUP } from "../../constants";
 import api from "../../services/scanApi";
 
@@ -45,7 +44,7 @@ export const fetchComments = (chain, type, index, page, pageSize) => async (
   dispatch
 ) => {
   const { result } = await api.maybeAuthFetch(
-    `/${chain}/${pluralize(type)}/${index}/comments`,
+    `/${chain}/${type}/${index}/comments`,
     {
       page,
       pageSize,
@@ -67,7 +66,7 @@ export const postComment = (chain, type, index, content) => async (
   dispatch
 ) => {
   const { result } = await api.authFetch(
-    `/${chain}/${pluralize(type)}/${index}/comments`,
+    `/${chain}/${(type)}/${index}/comments`,
     {},
     {
       method: "POST",
