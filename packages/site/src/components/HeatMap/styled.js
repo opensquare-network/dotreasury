@@ -2,9 +2,9 @@ import styled, { css } from "styled-components";
 import { p_14_medium } from "../../styles/text";
 import { Greyscale_Grey_200 } from "../../constants";
 
-export const AttendanceHeatMapWrapper = styled.div``;
+export const HeatMapWrapper = styled.div``;
 
-export const AttendanceHeatMapDot = styled.span`
+export const HeatMapDot = styled.span`
   width: 12px;
   height: 12px;
 
@@ -29,26 +29,26 @@ export const AttendanceHeatMapDot = styled.span`
     `}
 `;
 
-export const AttendanceHeatMapContent = styled.div`
+export const HeatMapContent = styled.div`
   display: flex;
   gap: 3.92px;
   flex-wrap: wrap;
 `;
 
-export const AttendanceHeatMapLegendWrapper = styled.div`
+export const HeatMapLegendWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
   margin-top: 8px;
 `;
-export const AttendanceHeatMapLegendContent = styled.div`
+export const HeatMapLegendContent = styled.div`
   display: flex;
 `;
-export const AttendanceHeatMapLegend = styled.span`
+export const HeatMapLegend = styled.span`
   display: inline-flex;
   align-items: center;
   ${p_14_medium};
 
-  ${AttendanceHeatMapDot} {
+  ${HeatMapDot} {
     width: 10px;
     height: 10px;
     margin-right: 12px;

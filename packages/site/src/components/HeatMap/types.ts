@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 type Data = { type: "active" | "negative" | "inActive" } & Record<string, any>;
 type DotStyle = "rect" | "circle";
 
-export type AttendanceHeatMapProps = {
+export type HeatMapProps = {
   data: Data[];
 
   /**

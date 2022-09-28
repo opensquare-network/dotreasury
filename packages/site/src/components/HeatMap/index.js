@@ -1,17 +1,17 @@
 import {
-  AttendanceHeatMapLegendWrapper,
-  AttendanceHeatMapWrapper,
-  AttendanceHeatMapLegendContent,
-  AttendanceHeatMapLegend,
-  AttendanceHeatMapDot,
-  AttendanceHeatMapContent,
+  HeatMapLegendWrapper,
+  HeatMapWrapper,
+  HeatMapLegendContent,
+  HeatMapLegend,
+  HeatMapDot,
+  HeatMapContent,
 } from "./styled";
 import { Greyscale_Grey_200 } from "../../constants";
 import Tooltip from "../../components/Tooltip";
 import { noop } from "rxjs";
 
 /**
- * @param {import("./types").AttendanceHeatMapProps} props
+ * @param {import("./types").HeatMapProps} props
  */
 export default function AttendanceHeatMap(props) {
   const {
@@ -40,14 +40,14 @@ export default function AttendanceHeatMap(props) {
   }
 
   return (
-    <AttendanceHeatMapWrapper>
-      <AttendanceHeatMapContent>
+    <HeatMapWrapper>
+      <HeatMapContent>
         {data?.map((i, idx) => {
           const shouldShowTooltip =
             typeof showTooltip === "function" ? showTooltip(i) : showTooltip;
 
           const dot = (
-            <AttendanceHeatMapDot
+            <HeatMapDot
               key={idx}
               color={getDotColor(i.type)}
               dotStyle={dotStyle}
@@ -62,31 +62,28 @@ export default function AttendanceHeatMap(props) {
             dot
           );
         })}
-      </AttendanceHeatMapContent>
+      </HeatMapContent>
 
       {legend && (
-        <AttendanceHeatMapLegendWrapper>
-          <AttendanceHeatMapLegendContent>
-            <AttendanceHeatMapLegend>
-              <AttendanceHeatMapDot color={activeColor} dotStyle={dotStyle} />
+        <HeatMapLegendWrapper>
+          <HeatMapLegendContent>
+            <HeatMapLegend>
+              <HeatMapDot color={activeColor} dotStyle={dotStyle} />
               {legendActiveText}
-            </AttendanceHeatMapLegend>
+            </HeatMapLegend>
             {negative && (
-              <AttendanceHeatMapLegend>
-                <AttendanceHeatMapDot
-                  color={negativeColor}
-                  dotStyle={dotStyle}
-                />
+              <HeatMapLegend>
+                <HeatMapDot color={negativeColor} dotStyle={dotStyle} />
                 {legendNegativeText}
-              </AttendanceHeatMapLegend>
+              </HeatMapLegend>
             )}
-            <AttendanceHeatMapLegend>
-              <AttendanceHeatMapDot color={inActiveColor} dotStyle={dotStyle} />
+            <HeatMapLegend>
+              <HeatMapDot color={inActiveColor} dotStyle={dotStyle} />
               {legendInactiveText}
-            </AttendanceHeatMapLegend>
-          </AttendanceHeatMapLegendContent>
-        </AttendanceHeatMapLegendWrapper>
+            </HeatMapLegend>
+          </HeatMapLegendContent>
+        </HeatMapLegendWrapper>
       )}
-    </AttendanceHeatMapWrapper>
+    </HeatMapWrapper>
   );
 }
