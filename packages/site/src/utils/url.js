@@ -41,7 +41,7 @@ export function ensureLinkProtocol(link = "", protocol = "https:") {
   return makeUrl(value);
 }
 
-function makeUrlPathname(...path) {
+export function makeUrlPathname(...path) {
   return "/" + path.join("/");
 }
 
