@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 
 type Data = { type: "active" | "negative" | "inActive" } & Record<string, any>;
+type DotStyle = "rect" | "circle";
 
 export type AttendanceHeatMapProps = {
   data: Data[];
@@ -25,4 +26,9 @@ export type AttendanceHeatMapProps = {
 
   showTooltip?: boolean | ((data: Data) => boolean);
   tooltipContentRender?(data: Data): ReactNode;
+
+  /**
+   * @default "rect"
+   */
+  dotStyle: DotStyle;
 };

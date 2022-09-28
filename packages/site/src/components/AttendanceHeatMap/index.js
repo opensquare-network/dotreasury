@@ -26,6 +26,7 @@ export default function AttendanceHeatMap(props) {
     legendInactiveText = "Inactive",
     showTooltip = true,
     tooltipContentRender = noop,
+    dotStyle = "rect",
   } = props ?? {};
 
   function getDotColor(type) {
@@ -46,7 +47,11 @@ export default function AttendanceHeatMap(props) {
             typeof showTooltip === "function" ? showTooltip(i) : showTooltip;
 
           const dot = (
-            <AttendanceHeatMapDot key={idx} color={getDotColor(i.type)} />
+            <AttendanceHeatMapDot
+              key={idx}
+              color={getDotColor(i.type)}
+              dotStyle={dotStyle}
+            />
           );
 
           return shouldShowTooltip ? (
@@ -63,17 +68,20 @@ export default function AttendanceHeatMap(props) {
         <AttendanceHeatMapLegendWrapper>
           <AttendanceHeatMapLegendContent>
             <AttendanceHeatMapLegend>
-              <AttendanceHeatMapDot color={activeColor} />
+              <AttendanceHeatMapDot color={activeColor} dotStyle={dotStyle} />
               {legendActiveText}
             </AttendanceHeatMapLegend>
             {negative && (
               <AttendanceHeatMapLegend>
-                <AttendanceHeatMapDot color={negativeColor} />
+                <AttendanceHeatMapDot
+                  color={negativeColor}
+                  dotStyle={dotStyle}
+                />
                 {legendNegativeText}
               </AttendanceHeatMapLegend>
             )}
             <AttendanceHeatMapLegend>
-              <AttendanceHeatMapDot color={inActiveColor} />
+              <AttendanceHeatMapDot color={inActiveColor} dotStyle={dotStyle} />
               {legendInactiveText}
             </AttendanceHeatMapLegend>
           </AttendanceHeatMapLegendContent>

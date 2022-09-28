@@ -5,7 +5,6 @@ import { Greyscale_Grey_200 } from "../../constants";
 export const AttendanceHeatMapWrapper = styled.div``;
 
 export const AttendanceHeatMapDot = styled.span`
-  border-radius: 9999px;
   width: 12px;
   height: 12px;
 
@@ -14,6 +13,14 @@ export const AttendanceHeatMapDot = styled.span`
   outline-color: rgba(0, 0, 0, 0.02);
 
   background-color: ${Greyscale_Grey_200};
+
+  border-radius: 2px;
+
+  ${(p) =>
+    p.dotStyle === "circle" &&
+    css`
+      border-radius: 9999px;
+    `}
 
   ${(p) =>
     p.color &&
