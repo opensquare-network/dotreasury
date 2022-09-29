@@ -22,6 +22,8 @@ import { USER_ROLES } from "../../../constants";
 import styled from "styled-components";
 import { Link as RouterLink } from "react-router-dom";
 import { useUserLinks } from "./useUserLinks";
+import { makeInSiteUserDetailLink } from "../../../utils/url";
+import { isProposalsRole } from "../utils";
 
 const InfoCardTitleWrapper = styled.div`
   display: flex;
@@ -42,9 +44,6 @@ const Link = styled(RouterLink)`
     margin-left: 8px;
   }
 `;
-
-const isProposalsRole = (role) =>
-  [USER_ROLES.Beneficiary, USER_ROLES.Proposer].includes(role);
 
 export default function UserInfo({ role, setRole = () => {} }) {
   const { address } = useParams();
@@ -100,9 +99,12 @@ export default function UserInfo({ role, setRole = () => {} }) {
             {Object.values(USER_ROLES).map((r, idx) => (
               <Link
                 key={idx}
-                to={`/${chainSymbol}/users/${address}/${r}${
-                  isProposalsRole(r) ? "/proposals" : ""
-                }`}
+                to={makeInSiteUserDetailLink(
+                  chainSymbol,
+                  address,
+                  r,
+                  isProposalsRole(r) ? "proposals" : ""
+                )}
               >
                 <Tag
                   rounded

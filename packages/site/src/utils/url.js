@@ -28,8 +28,8 @@ export function makeInSiteTipLink(symbol, page, tipHeight, tipHash) {
  * @link `/:symbol/users/:address`
  * @description page user detail
  */
-export function makeInSiteUserDetailLink(symbol, address, role) {
-  return makeUrlPathname(symbol, "users", address, role);
+export function makeInSiteUserDetailLink(symbol, address, role, tableTab) {
+  return makeUrlPathname(symbol, "users", address, role, tableTab);
 }
 
 /**
