@@ -22,6 +22,7 @@ import { bountyDetailSelector } from "../../store/reducers/bountySlice";
 import RelatedLinks from "../../components/RelatedLinks";
 import EstimateBlockTimeCountDown from "../../components/EstimateBlockTimeCountdown";
 import BountyPendingPayoutCountDown from "../../components/BountyPendingPayoutCountDown";
+import { USER_ROLES } from "../../constants";
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -50,7 +51,9 @@ const BountyLifeCycleTable = ({ loading }) => {
   const chain = useSelector(chainSelector);
   const [bountyUrl, setBountyUrl] = useState(null);
 
-  const awardedItem = ([...bountyDetail?.timeline || []]).reverse().find(item => item.name === 'BountyAwarded');
+  const awardedItem = [...(bountyDetail?.timeline || [])]
+    .reverse()
+    .find((item) => item.name === "BountyAwarded");
   const showCountDown = awardedItem && bountyDetail.unlockAt;
   const startCountDownHeight = awardedItem?.indexer?.blockHeight;
 
@@ -153,7 +156,10 @@ const BountyLifeCycleTable = ({ loading }) => {
             <Table.Cell>
               <TableCell title={"Curator"}>
                 {bountyDetail.curator ? (
-                  <User address={bountyDetail.curator} />
+                  <User
+                    role={USER_ROLES.Proposer}
+                    address={bountyDetail.curator}
+                  />
                 ) : (
                   "--"
                 )}
@@ -183,7 +189,10 @@ const BountyLifeCycleTable = ({ loading }) => {
             <Table.Cell>
               <TableCell title={"Beneficiary"}>
                 {bountyDetail.beneficiary ? (
-                  <User address={bountyDetail.beneficiary} />
+                  <User
+                    role={USER_ROLES.Beneficiary}
+                    address={bountyDetail.beneficiary}
+                  />
                 ) : (
                   "--"
                 )}

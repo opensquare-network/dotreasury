@@ -5,7 +5,7 @@ import Table from "../../components/Table";
 import TableCell from "../../components/TableCell";
 import User from "../../components/User";
 import Balance from "../../components/Balance";
-import { TipStatus } from "../../constants";
+import { TipStatus, USER_ROLES } from "../../constants";
 import TableLoading from "../../components/TableLoading";
 import ClickableLink from "../../components/ClickableLink";
 
@@ -37,14 +37,17 @@ const InformationTable = ({ loading }) => {
           <Table.Row>
             <Table.Cell>
               <TableCell title={"Finder"}>
-                <User address={tipDetail.finder} />
+                <User role={USER_ROLES.Proposer} address={tipDetail.finder} />
               </TableCell>
             </Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.Cell>
               <TableCell title={"Beneficiary"}>
-                <User address={tipDetail.beneficiary} />
+                <User
+                  role={USER_ROLES.Beneficiary}
+                  address={tipDetail.beneficiary}
+                />
               </TableCell>
             </Table.Cell>
           </Table.Row>
