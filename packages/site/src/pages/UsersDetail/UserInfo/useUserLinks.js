@@ -70,7 +70,9 @@ function useFetchIdentity(chain, address) {
     )
       .then((resp) => resp.json())
       .then((data) => {
-        setInfo(data?.info);
+        if (data?.info) {
+          setInfo(data.info);
+        }
       });
   }, [chain, address]);
 
