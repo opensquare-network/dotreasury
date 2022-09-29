@@ -22,6 +22,8 @@ import { CouncilorShipLoading } from "./styled";
 import { sortBy } from "lodash";
 import HeatMap from "../../../../components/HeatMap";
 import { Primary_Theme_Pink_200 } from "../../../../constants";
+import ExternalLink from "../../../../components/ExternalLink";
+import { makeSubscanLink } from "../../../../utils/url";
 
 export default function CouncilorShip() {
   const dispatch = useDispatch();
@@ -51,7 +53,7 @@ export default function CouncilorShip() {
           data={compatActivityCalendarData(councilorShip)}
           activeColor={Primary_Theme_Pink_200}
           tooltipContentRender={(data) => {
-            return <CouncilorInfo data={data} />;
+            return <CouncilorInfo chain={chain} data={data} />;
           }}
         />
       </Card>{" "}
@@ -70,7 +72,7 @@ function compatActivityCalendarData(councilorShip = []) {
   });
 }
 
-function CouncilorInfo({ data }) {
+function CouncilorInfo({ chain, data }) {
   return (
     <TooltipContentDetail gap={30}>
       <TooltipContentDetailItem>
@@ -78,7 +80,15 @@ function CouncilorInfo({ data }) {
           Start height
         </TooltipContentDetailItemLabel>
         <TooltipContentDetailItemValue>
-          {data.meta?.indexer?.blockHeight?.toLocaleString?.() || "-"}
+          <ExternalLink
+            href={makeSubscanLink(
+              chain,
+              "block",
+              data.meta?.indexer?.blockHeight
+            )}
+          >
+            {data.meta?.indexer?.blockHeight?.toLocaleString?.() || "-"}
+          </ExternalLink>
         </TooltipContentDetailItemValue>
       </TooltipContentDetailItem>
       <TooltipContentDetailItem>
