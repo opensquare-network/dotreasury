@@ -25,6 +25,14 @@ export function makeInSiteTipLink(symbol, page, tipHeight, tipHash) {
 }
 
 /**
+ * @link `/:symbol/users/:address`
+ * @description page user detail
+ */
+export function makeInSiteUserDetailLink(symbol, address, role) {
+  return makeUrlPathname(symbol, "users", address, role);
+}
+
+/**
  * @description ensure link protocol
  * @example google.com -> https://google.com
  */
@@ -41,8 +49,8 @@ export function ensureLinkProtocol(link = "", protocol = "https:") {
   return makeUrl(value);
 }
 
-export function makeUrlPathname(...path) {
-  return "/" + path.join("/");
+export function makeUrlPathname(...paths) {
+  return "/" + paths.filter(Boolean).join("/");
 }
 
 function isExternalLink(link = "") {

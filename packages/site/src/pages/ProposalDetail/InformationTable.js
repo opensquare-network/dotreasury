@@ -17,6 +17,7 @@ import { accountSelector } from "../../store/reducers/accountSlice";
 import Tag from "../../components/Tag";
 import { addToast } from "../../store/reducers/toastSlice";
 import { useIsAdminQuery } from "../../utils/hooks";
+import { USER_ROLES } from "../../constants";
 
 const IconButton = styled(Icon)`
   margin-left: 6px !important;
@@ -110,14 +111,20 @@ const InformationTable = ({ loading, chain, proposalIndex, proposer }) => {
             <Table.Row>
               <Table.Cell>
                 <TableCell title={"Proposer"}>
-                  <User address={proposalDetail.proposer} />
+                  <User
+                    role={USER_ROLES.Proposer}
+                    address={proposalDetail.proposer}
+                  />
                 </TableCell>
               </Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>
                 <TableCell title={"Beneficiary"}>
-                  <User address={proposalDetail.beneficiary} />
+                  <User
+                    role={USER_ROLES.Beneficiary}
+                    address={proposalDetail.beneficiary}
+                  />
                 </TableCell>
               </Table.Cell>
             </Table.Row>
