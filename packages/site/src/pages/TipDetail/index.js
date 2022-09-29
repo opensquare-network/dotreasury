@@ -29,6 +29,7 @@ import CloseButton from "./Actions/CloseButton";
 import useWaitSyncBlock from "../../utils/useWaitSyncBlock";
 import RetractedButton from "./Actions/RetractButton";
 import styled from "styled-components";
+import { USER_ROLES } from "../../constants";
 
 const ActionButtons = styled(Flex)`
   gap: 16px;
@@ -44,11 +45,11 @@ function processTimeline(tipDetail, links) {
       fields = [
         {
           title: "Finder",
-          value: <User address={finder} />,
+          value: <User role={USER_ROLES.Proposer} address={finder} />,
         },
         {
           title: "Beneficiary",
-          value: <User address={beneficiary} />,
+          value: <User role={USER_ROLES.Beneficiary} address={beneficiary} />,
         },
         {
           title: "Reason",
@@ -65,11 +66,11 @@ function processTimeline(tipDetail, links) {
       fields = [
         {
           title: "Funder",
-          value: <User address={finder} />,
+          value: <User role={USER_ROLES.Proposer} address={finder} />,
         },
         {
           title: "Beneficiary",
-          value: <User address={beneficiary} />,
+          value: <User role={USER_ROLES.Beneficiary} address={beneficiary} />,
         },
         {
           title: "Tip value",
@@ -94,11 +95,16 @@ function processTimeline(tipDetail, links) {
       fields = [
         {
           title: "Closed by",
-          value: <User address={who} />,
+          value: <User role={USER_ROLES.Councilor} address={who} />,
         },
         {
           title: "Beneficiary",
-          value: <User address={tipDetail.beneficiary} />,
+          value: (
+            <User
+              role={USER_ROLES.Beneficiary}
+              address={tipDetail.beneficiary}
+            />
+          ),
         },
         {
           title: "Final tip value",
@@ -176,21 +182,19 @@ const TipDetail = () => {
 
   const buttons = (
     <ActionButtons>
-      <CloseButton
-        tipDetail={tipDetail}
-        onFinalized={onTipClosed}
-      />
-      <RetractedButton
-        tipDetail={tipDetail}
-        onFinalized={onTipRetracted}
-      />
+      <CloseButton tipDetail={tipDetail} onFinalized={onTipClosed} />
+      <RetractedButton tipDetail={tipDetail} onFinalized={onTipRetracted} />
     </ActionButtons>
   );
 
   return (
     <>
       <DetailGoBack />
-      <DetailTableWrapper title="Tip" desc={getShortTipId(tipDetail)} buttons={buttons}>
+      <DetailTableWrapper
+        title="Tip"
+        desc={getShortTipId(tipDetail)}
+        buttons={buttons}
+      >
         <InformationTable loading={loadingTipDetail} />
         <TipLifeCycleTable loading={loadingTipDetail} />
         <RelatedLinks

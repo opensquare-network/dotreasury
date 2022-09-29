@@ -10,6 +10,7 @@ import Balance from "../../components/Balance";
 
 import { bountyDetailSelector } from "../../store/reducers/bountySlice";
 import { capitalizeFirstLetter } from "../../utils";
+import { USER_ROLES } from "../../constants";
 
 const ReturnedText = styled.div`
   color: rgba(0, 0, 0, 0.3);
@@ -41,9 +42,7 @@ const BountyStates = Object.freeze({
 });
 
 function getBountyState(bountyDetail) {
-  return (
-    BountyStates[capitalizeFirstLetter(bountyDetail.state?.state)] ?? -1
-  );
+  return BountyStates[capitalizeFirstLetter(bountyDetail.state?.state)] ?? -1;
 }
 
 const InformationTable = ({ loading }) => {
@@ -67,7 +66,10 @@ const InformationTable = ({ loading }) => {
           <Table.Row>
             <Table.Cell>
               <TableCell title={"Proposer"}>
-                <User address={bountyDetail.proposer} />
+                <User
+                  role={USER_ROLES.Proposer}
+                  address={bountyDetail.proposer}
+                />
               </TableCell>
             </Table.Cell>
           </Table.Row>
