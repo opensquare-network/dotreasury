@@ -95,7 +95,7 @@ function processTimeline(tipDetail, links) {
       fields = [
         {
           title: "Closed by",
-          value: <User address={who} />,
+          value: <User role={USER_ROLES.Councilor} address={who} />,
         },
         {
           title: "Beneficiary",
