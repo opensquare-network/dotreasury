@@ -12,7 +12,7 @@ import { overviewSelector } from "../../store/reducers/overviewSlice";
 import { NavLink } from "react-router-dom";
 import TextMinor from "../../components/TextMinor";
 import GrayImage from "../../components/GrayImage";
-import { TEXT_DARK_MAJOR } from "../../constants";
+import { TEXT_DARK_MAJOR, USER_ROLES } from "../../constants";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 
 const CardWrapper = styled(Card)`
@@ -99,7 +99,10 @@ const BeneficiaryTable = () => {
               data.map((item, index) => (
                 <TableRow key={index}>
                   <Table.Cell>
-                    <User address={item.beneficiary} />
+                    <User
+                      role={USER_ROLES.Beneficiary}
+                      address={item.beneficiary}
+                    />
                   </Table.Cell>
                   <TableCell textAlign={"right"}>
                     <Balance
