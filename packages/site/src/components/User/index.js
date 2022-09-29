@@ -8,7 +8,8 @@ import { useIdentity } from "../../utils/hooks";
 import DeletedAccount from "./DeletedAccount";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { chainSelector } from "../../store/reducers/chainSlice";
+import { chainSymbolSelector } from "../../store/reducers/chainSlice";
+import { makeInSiteUserDetailLink } from "../../utils/url";
 
 const Wrapper = styled.div`
   display: flex;
@@ -24,10 +25,17 @@ const BadgeWrapper = styled.div`
   align-items: center;
 `;
 
-const User = ({ address, ellipsis = true, popup = true, popupContent, avatarSize = 22, noLink = false }) => {
+const User = ({
+  address,
+  ellipsis = true,
+  popup = true,
+  popupContent,
+  avatarSize = 22,
+  noLink = false,
+  role = "",
+}) => {
   const { name, badgeData } = useIdentity(address);
-  const chain = useSelector(chainSelector);
-  const chainUrl = chain === "kusama" ? "ksm" : "dot";
+  const symbol = useSelector(chainSymbolSelector).toLowerCase();
 
   let username = (
     <Username
@@ -42,7 +50,7 @@ const User = ({ address, ellipsis = true, popup = true, popupContent, avatarSize
 
   if (!noLink) {
     username = (
-      <Link to={`/${chainUrl}/users/${address}`}>
+      <Link to={makeInSiteUserDetailLink(symbol, address, role)}>
         {username}
       </Link>
     );
