@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createPopper } from "@popperjs/core";
+import { showTooltip as showTooltipFn } from "./utils";
 
 export function useTooltip({
   triggerRef,
@@ -14,18 +14,10 @@ export function useTooltip({
       return;
     }
 
-    createPopper(triggerRef.current, popperRef.current, {
-      placement: "top",
-      modifiers: [
-        {
-          name: "offset",
-          options: {
-            offset,
-          },
-        },
-      ],
+    const instance = showTooltipFn(triggerRef.current, popperRef.current, {
+      offset,
     });
-
+    instance?.update?.();
     setVisible(true);
   }
 

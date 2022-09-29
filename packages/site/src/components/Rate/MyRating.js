@@ -133,7 +133,7 @@ export default function MyRating({ type, index }) {
       </TitleWrapper>
       <TextareaWrapper>
         <StyledTextarea
-          placeholder="What do you think about this proposal? (optional)"
+          placeholder={`What do you think about this ${type}? (optional)`}
           value={content}
           onChange={onChange}
         />
