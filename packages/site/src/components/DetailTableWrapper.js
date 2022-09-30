@@ -19,8 +19,11 @@ const CustomCard = styled(Card)`
 const TitleWrapper = styled.div`
   padding: 20px 24px;
   display: flex;
-  align-items: center;
+  gap: 16px;
   justify-content: space-between;
+  @media screen and (max-width: 640px) {
+    flex-direction: column;
+  }
 `;
 
 const Title = styled.div`
