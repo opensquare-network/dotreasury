@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import Balance from "../../../../components/Balance";
 import useApi from "../../../../hooks/useApi";
 import { accountSelector } from "../../../../store/reducers/accountSlice";
 import { chainSymbolSelector } from "../../../../store/reducers/chainSlice";
-import { isSameAddress } from "../../../../utils";
+import { getPrecision, isSameAddress, toPrecision } from "../../../../utils";
 import Loading from "../../../../components/LoadingCircle";
 
 const Wrapper = styled.div`
@@ -58,6 +57,8 @@ export default function Tipping({ tipDetail }) {
   const [isLoading, setIsLoading] = useState(false);
   const api = useApi();
   const tipHash = tipDetail?.hash;
+  const precision = toPrecision(tipValue, getPrecision(symbol), false);
+  const localePrecision = Number(precision).toLocaleString();
 
   useEffect(() => {
     if (!api) {
@@ -97,7 +98,7 @@ export default function Tipping({ tipDetail }) {
         <TippingContainer>
           <TippingValue>
             <span>Tipping</span>
-            <Balance value={tipValue} currency={symbol} />
+            <span>{localePrecision} {symbol}</span>
           </TippingValue>
           <Message>Resubmiting the tip will overwrite the current tipping record</Message>
         </TippingContainer>
