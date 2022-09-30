@@ -8,6 +8,8 @@ const { getTipHeights } = require("./heights/tip");
 const { getOutTransferHeights } = require("./heights/outTransfer");
 const { getChildBountyHeights } = require("./heights/childBounty");
 const { getReferendumHeights } = require("./heights/referendum");
+const { getMotionVoterHeights } = require("./heights/motionVoter");
+const { getTipHeights: getHeightsFromTipper } = require("./heights/tipper");
 const { mongo: { known: { saveKnownHeights, closeKnownClient } } } = require("@osn/scan-common");
 
 async function main() {
@@ -34,6 +36,12 @@ async function main() {
 
   const referendumHeights = await getReferendumHeights();
   await saveKnownHeights(referendumHeights);
+
+  const motionVoterHeights = await getMotionVoterHeights();
+  await saveKnownHeights(motionVoterHeights);
+
+  const tipperHeights = await getHeightsFromTipper();
+  await saveKnownHeights(tipperHeights);
 }
 
 main()
