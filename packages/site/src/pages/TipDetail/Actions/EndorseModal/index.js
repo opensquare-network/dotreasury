@@ -17,6 +17,7 @@ import { sendTx } from "../../../../utils/sendTx";
 import { useIsMounted } from "../../../../utils/hooks";
 import BigNumber from "bignumber.js";
 import { useEffect } from "react";
+import useCouncilMembers from "../../../../utils/useCouncilMembers";
 
 const Footer = styled.div`
   display: flex;
@@ -43,6 +44,9 @@ export default function EndorseModal({ tipDetail, visible, setVisible, onFinaliz
   const [inputTipValue, setInputTipValue] = useState();
   const api = useApi();
   const tipHash = tipDetail?.hash;
+  const councilMembers = useCouncilMembers();
+
+  const isCouncilor = councilMembers?.includes(account?.address);
 
   useEffect(() => {
     if (tipDetail) {
@@ -113,7 +117,7 @@ export default function EndorseModal({ tipDetail, visible, setVisible, onFinaliz
         </Field>
       </InputsPanel>
       <Footer>
-        <ButtonPrimary disabled={isLoading} onClick={submit}>Submit</ButtonPrimary>
+        <ButtonPrimary disabled={isLoading || !isCouncilor} onClick={submit}>Submit</ButtonPrimary>
       </Footer>
     </ActionModal>
   );
