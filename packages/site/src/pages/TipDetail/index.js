@@ -30,6 +30,7 @@ import useWaitSyncBlock from "../../utils/useWaitSyncBlock";
 import RetractedButton from "./Actions/RetractButton";
 import styled from "styled-components";
 import { USER_ROLES } from "../../constants";
+import EndorseButton from "./Actions/EndorseButton";
 
 const ActionButtons = styled(Flex)`
   gap: 16px;
@@ -179,11 +180,22 @@ const TipDetail = () => {
 
   const onTipClosed = useWaitSyncBlock("Tip closed", refreshData);
   const onTipRetracted = useWaitSyncBlock("Tip retracted", refreshData);
+  const onTipEndorsed = useWaitSyncBlock("Tip endorsed", refreshData);
 
   const buttons = (
     <ActionButtons>
-      <CloseButton tipDetail={tipDetail} onFinalized={onTipClosed} />
-      <RetractedButton tipDetail={tipDetail} onFinalized={onTipRetracted} />
+      <EndorseButton
+        tipDetail={tipDetail}
+        onFinalized={onTipEndorsed}
+      />
+      <CloseButton
+        tipDetail={tipDetail}
+        onFinalized={onTipClosed}
+      />
+      <RetractedButton
+        tipDetail={tipDetail}
+        onFinalized={onTipRetracted}
+      />
     </ActionButtons>
   );
 

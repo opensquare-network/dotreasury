@@ -1,9 +1,6 @@
 import styled from "styled-components";
-import { Modal } from "semantic-ui-react";
-import { ReactComponent as CloseSVG } from "./close.svg";
 import { ReactComponent as MinusSVG } from "./minus.svg";
 import { ReactComponent as AddSVG } from "./add.svg";
-import Signer from "./Signer";
 import TipInputs from "./TipInputs";
 import { useCallback, useEffect, useState } from "react";
 import ButtonPrimary from "../../../components/ButtonPrimary";
@@ -20,39 +17,8 @@ import useCouncilMembers from "../../../utils/useCouncilMembers";
 import { getPrecision } from "../../../utils";
 import { chainSymbolSelector } from "../../../store/reducers/chainSlice";
 import { useRef } from "react";
-
-const StyledModal = styled(Modal)`
-  padding: 32px;
-  > :nth-child(1) {
-    margin-bottom: 16px;
-  }
-  > :nth-child(2) {
-    margin-bottom: 24px;
-  }
-
-  @media screen and (max-width: 600px) {
-    .address {
-      display: none;
-    }
-    & {
-      padding: 16px !important;
-    }
-  }
-`;
-
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const Title = styled.div`
-  font-style: normal;
-  font-weight: 600;
-  font-size: 18px;
-  line-height: 28px;
-  color: rgba(0, 0, 0, 0.9);
-`;
+import ActionModal from "../../../components/ActionModal";
+import Signer from "../../../components/ActionSigner";
 
 const Batch = styled.div`
   display: flex;
@@ -74,10 +40,6 @@ const Batch = styled.div`
     border-radius: 3px;
   }
 
-`;
-
-const Close = styled(CloseSVG)`
-  cursor: pointer;
 `;
 
 const Footer = styled.div`
@@ -215,16 +177,8 @@ export default function NewTipModal({ visible, setVisible, onFinalized }) {
   };
 
   return (
-    <StyledModal
-      size="small"
-      open={visible}
-      onClose={() => setVisible(false)}
-    >
-      <Header>
-        <Title>New Tip</Title>
-        <Close onClick={() => setVisible(false)} />
-      </Header>
-      <Signer isCouncilor={isCouncilor} />
+    <ActionModal title="New Tip" visible={visible} setVisible={setVisible}>
+      <Signer />
       <Batch ref={refBatchInputs}>
         {newTips.map((tipData, index) => (
           <TipInputs
@@ -244,5 +198,5 @@ export default function NewTipModal({ visible, setVisible, onFinalized }) {
         </div>
         <ButtonPrimary disabled={isLoading} onClick={submit}>Submit</ButtonPrimary>
       </Footer>
-    </StyledModal>
+    </ActionModal>
   );}

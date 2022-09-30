@@ -1,13 +1,14 @@
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { ReactComponent as PolkadotLogo } from "../../../components/ConnectWallet/Wallets/polkadot.svg";
-import { ReactComponent as SubWalletLogo } from "../../../components/ConnectWallet/Wallets/subWallet.svg";
-import { ReactComponent as TalismanLogo } from "../../../components/ConnectWallet/Wallets/talisman.svg";
-import Tooltip from "../../../components/Tooltip";
-import { TooltipInfoText } from "../../../components/Tooltip/styled";
-import { accountSelector } from "../../../store/reducers/accountSlice";
-import { ellipsis } from "../../../utils/ellipsis";
+import { ReactComponent as PolkadotLogo } from "../ConnectWallet/Wallets/polkadot.svg";
+import { ReactComponent as SubWalletLogo } from "../ConnectWallet/Wallets/subWallet.svg";
+import { ReactComponent as TalismanLogo } from "../ConnectWallet/Wallets/talisman.svg";
+import Tooltip from "../Tooltip";
+import { TooltipInfoText } from "../Tooltip/styled";
+import { accountSelector } from "../../store/reducers/accountSlice";
+import { ellipsis } from "../../utils/ellipsis";
 import CouncilorTag from "./CouncilorTag";
+import useCouncilMembers from "../../utils/useCouncilMembers";
 
 const Wrapper = styled.div`
   display: flex;
@@ -48,8 +49,10 @@ const Address = styled.div`
   color: rgba(0, 0, 0, 0.3);
 `;
 
-export default function Signer({ isCouncilor }) {
+export default function Signer() {
   const account = useSelector(accountSelector);
+  const councilMembers = useCouncilMembers();
+  const isCouncilor = councilMembers?.includes(account?.address);
 
   let walletLogo = null;
   let walletName = "";
