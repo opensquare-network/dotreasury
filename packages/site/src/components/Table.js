@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { Table as SemanticTable } from "semantic-ui-react";
 import _get from "lodash.get";
 import _set from "lodash.set";
