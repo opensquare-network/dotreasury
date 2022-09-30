@@ -180,12 +180,13 @@ const TipDetail = () => {
 
   const onTipClosed = useWaitSyncBlock("Tip closed", refreshData);
   const onTipRetracted = useWaitSyncBlock("Tip retracted", refreshData);
+  const onTipEndorsed = useWaitSyncBlock("Tip endorsed", refreshData);
 
   const buttons = (
     <ActionButtons>
       <EndorseButton
         tipDetail={tipDetail}
-        onFinalized={onTipClosed}
+        onFinalized={onTipEndorsed}
       />
       <CloseButton
         tipDetail={tipDetail}
