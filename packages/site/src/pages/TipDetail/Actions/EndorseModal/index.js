@@ -91,6 +91,7 @@ export default function EndorseModal({ tipDetail, visible, setVisible, onFinaliz
         dispatch,
         signerAddress: account.address,
         isMounted,
+        onSubmitted: () => setVisible(false),
         onFinalized,
       });
     } finally {
