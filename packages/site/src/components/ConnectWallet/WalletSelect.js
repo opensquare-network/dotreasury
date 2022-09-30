@@ -5,7 +5,7 @@ import { useIsMounted } from "../../utils/hooks";
 import { substrateWeb3Accounts } from "../../utils/extension";
 import Wallets from "./Wallets";
 import { ReactComponent as CaretSVG } from "./caret-right.svg";
-import { ReactComponent as Loading } from "./loading.svg";
+import Loading from "../LoadingCircle";
 
 const WalletOptions = styled.ul`
   all: unset;

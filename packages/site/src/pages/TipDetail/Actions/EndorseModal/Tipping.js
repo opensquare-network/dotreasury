@@ -6,6 +6,7 @@ import useApi from "../../../../hooks/useApi";
 import { accountSelector } from "../../../../store/reducers/accountSlice";
 import { chainSymbolSelector } from "../../../../store/reducers/chainSlice";
 import { isSameAddress } from "../../../../utils";
+import Loading from "../../../../components/LoadingCircle";
 
 const Wrapper = styled.div`
   display: flex;
@@ -53,7 +54,7 @@ const Message = styled.div`
 export default function Tipping({ tipDetail }) {
   const account = useSelector(accountSelector);
   const symbol = useSelector(chainSymbolSelector);
-  const [tipValue, setTipValue] = useState(0);
+  const [tipValue, setTipValue] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const api = useApi();
   const tipHash = tipDetail?.hash;
@@ -71,11 +72,11 @@ export default function Tipping({ tipDetail }) {
       return;
     }
 
+    setTipValue(null);
     setIsLoading(true);
     api.query.tips.tips(tipHash).then((data) => {
       const { tips } = data.toJSON();
       setIsLoading(false);
-      setTipValue(null);
       for (const [address, value] of tips) {
         if (isSameAddress(address, account?.address)) {
           setTipValue(value);
@@ -85,16 +86,22 @@ export default function Tipping({ tipDetail }) {
   }, [api, tipHash, account]);
 
   return (
-    (isLoading || tipValue === null)  ? (
-      <NoTipping>No tipping record</NoTipping>
+    isLoading ? (
+      <NoTipping>
+        <Loading size={20} />
+      </NoTipping>
     ) : (
-      <TippingContainer>
-        <TippingValue>
-          <span>Tipping</span>
-          <Balance value={tipValue} currency={symbol} />
-        </TippingValue>
-        <Message>Resubmiting the tip will overwrite the current tipping record</Message>
-      </TippingContainer>
+      tipValue === null ? (
+        <NoTipping>No tipping record</NoTipping>
+      ) : (
+        <TippingContainer>
+          <TippingValue>
+            <span>Tipping</span>
+            <Balance value={tipValue} currency={symbol} />
+          </TippingValue>
+          <Message>Resubmiting the tip will overwrite the current tipping record</Message>
+        </TippingContainer>
+      )
     )
   );
 }
