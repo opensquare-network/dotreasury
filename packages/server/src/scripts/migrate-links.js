@@ -62,10 +62,11 @@ const migrateDescription = async (chain) => {
   }
 };
 
-(async () => {
+async function main() {
   await migrateLink("kusama");
   await migrateLink("polkadot");
   await migrateDescription("kusama");
   await migrateDescription("polkadot");
-  process.exit(0);
-})();
+}
+
+module.exports = main;
