@@ -39,7 +39,7 @@ function processTimeline(tipDetail, links) {
         },
         {
           title: "Beneficiary",
-          value: <User address={beneficiary} />,
+          value: <User address={beneficiary?.id || beneficiary} />,
         },
         {
           title: "Reason",
@@ -171,7 +171,9 @@ const TipDetail = () => {
         />
       </DetailTableWrapper>
       <TimelineCommentWrapper>
-        <Timeline data={timelineData} loading={loadingTipDetail} />
+        <Timeline
+          data={timelineData}
+          loading={loadingTipDetail} />
         <Comment type="tip" index={getTipIndex(tipDetail)} />
       </TimelineCommentWrapper>
     </>
