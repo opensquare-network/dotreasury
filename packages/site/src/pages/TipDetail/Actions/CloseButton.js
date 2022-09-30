@@ -65,6 +65,8 @@ export default function CloseButton({ tipDetail, onFinalized }) {
     tooltipContent = "The tip is already closed";
   } else if (isRetracted) {
     tooltipContent = "The tip is already retracted";
+  } else if (!closing) {
+    tooltipContent = "This tip has not gotten enough endorsements";
   } else if (!canClose) {
     tooltipContent = "Not ready to close, please wait until the countdown is end";
   } else if (!isLoggedIn) {

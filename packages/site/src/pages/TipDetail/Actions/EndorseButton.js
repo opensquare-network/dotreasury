@@ -25,7 +25,7 @@ export default function EndorseButton({ tipDetail, onFinalized }) {
   } else if (isRetracted) {
     tooltipContent = "The tip is already retracted";
   } else if (!isCouncilor) {
-    tooltipContent = "Only the councilor can endorse the tip";
+    tooltipContent = "Only councilors can endorse tips";
   } else if (!isLoggedIn) {
     tooltipContent = "Please connect wallet first";
   }
