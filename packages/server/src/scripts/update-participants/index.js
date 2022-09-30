@@ -18,6 +18,8 @@ async function saveParticipant(chain, address, data) {
 }
 
 async function updateParticipants(chain) {
+  console.log(`Update participants of ${chain}`);
+
   const {
     counts: tips,
     proposers: tipProposers,
@@ -81,7 +83,4 @@ async function main() {
   await updateParticipants("polkadot");
 }
 
-main()
-  .catch(console.error)
-  .finally(() => process.exit());
-
+module.exports = main;

@@ -37,6 +37,8 @@ async function updateSort(col, isChildBounty = false) {
 }
 
 async function updateSortForChain(chain) {
+  console.log(`Update bounty sort of ${chain}`);
+
   const bountyCol = await getBountyCollection(chain);
   await updateSort(bountyCol, false);
 
@@ -49,4 +51,4 @@ async function main() {
   await updateSortForChain("polkadot");
 }
 
-main().finally(() => process.exit(0));
+module.exports = main;
