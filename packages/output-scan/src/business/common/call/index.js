@@ -15,7 +15,7 @@ const {
 } = require("@osn/scan-common")
 
 async function unwrapProxy(call, signer, indexer, events, cb) {
-  const real = call.args[0].toJSON();
+  const real = call.args[0].toString();
   const innerCall = call.args[2];
   await handleWrappedCall(innerCall, real, indexer, events, cb);
 }
