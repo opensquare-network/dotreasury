@@ -11,12 +11,6 @@ async function main() {
   }
 
   try {
-    await pinRateToIpfs();
-  } catch (e) {
-    console.error(e.message);
-  }
-
-  try {
     await updateSort();
   } catch (e) {
     console.error(e.message);
@@ -24,6 +18,12 @@ async function main() {
 
   try {
     await updateParticipants();
+  } catch (e) {
+    console.error(e.message);
+  }
+
+  try {
+    await pinRateToIpfs();
   } catch (e) {
     console.error(e.message);
   }
