@@ -15,6 +15,8 @@ const OnChainActionButtonSecondary = styled.div`
   font-size: 12px;
   line-height: 16px;
   color: rgba(0, 0, 0, 0.9);
+
+  white-space: nowrap;
   ${p => p.disabled && css`
     color: rgba(0, 0, 0, 0.15);
     pointer-events: none;
