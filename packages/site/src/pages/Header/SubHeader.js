@@ -18,6 +18,7 @@ import TransfersMenu from "./TransfersMenu";
 import TansfersSlashMenu from "./TansfersSlashMenu";
 import TipFindersMenu from "./TipFindersMenu";
 import ProposalBeneficiariesMenu from "./ProposalBeneficiariesMenu";
+import UsersMenu from "./UsersMenu";
 import { fetchIncomeCount } from "../../store/reducers/incomeSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { showMenuTabsSelector } from "../../store/reducers/menuSlice";
@@ -373,6 +374,18 @@ const TabExampleSecondaryPointing = () => {
               to: `/${symbol}/proposal-beneficiaries`,
               key: "proposalBeneficiaries",
               content: <ProposalBeneficiariesMenu />,
+              active: true,
+            },
+          },
+        ]
+      : showMenuTabs === "Users"
+      ? [
+          {
+            menuItem: {
+              id: "UsersTab",
+              to: `/${symbol}/users`,
+              key: "users",
+              content: <UsersMenu />,
               active: true,
             },
           },

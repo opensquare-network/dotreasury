@@ -3,8 +3,8 @@ const {
   cryptoWaitReady,
   encodeAddress,
   signatureVerify,
+  decodeAddress,
 } = require("@polkadot/util-crypto");
-const { u8aToHex } = require("@polkadot/util");
 const BigNumber = require("bignumber.js");
 const { stringUpperFirst } = require("@polkadot/util");
 const { SS58Format } = require("../contants");
@@ -76,6 +76,40 @@ function md5(str) {
   return md5.update(str).digest("hex");
 }
 
+const ADMINS = (process.env.ADMINS || "").split("|");
+
+async function checkAdmin(address, admins) {
+  const adminsBuffers = admins
+    .filter((addr) => !!addr)
+    .map((addr) => decodeAddress(addr));
+
+  const lookup = decodeAddress(address);
+  return adminsBuffers.some((admin) => Buffer.compare(admin, lookup) === 0);
+}
+
+async function verifyAdminSignature(addressAndSignature, message, admins) {
+  if (!addressAndSignature) {
+    throw new HttpError(400, "Signature is missing");
+  }
+
+  const [address, signature] = addressAndSignature.split("/");
+  if (!address || !signature) {
+    throw new HttpError(400, "Signature is invalid");
+  }
+
+  const isAdmin = await checkAdmin(address, admins);
+  if (!isAdmin) {
+    throw new HttpError(401, "Unauthorized");
+  }
+
+  const isValid = await isValidSignature(message, signature, address);
+  if (!isValid) {
+    throw new HttpError(400, "Signature is invalid");
+  }
+
+  return true;
+}
+
 module.exports = {
   extractPage,
   isValidSignature,
@@ -83,4 +117,7 @@ module.exports = {
   handler,
   bigAdd,
   md5,
+  ADMINS,
+  checkAdmin,
+  verifyAdminSignature,
 };

@@ -1,19 +1,38 @@
 const { getTipCollection, getTipFinderCollection } = require("../../mongo");
 const linkService = require("../../services/link.service");
 const commentService = require("../../services/comment.service");
-const { extractPage } = require("../../utils");
+const { extractPage, ADMINS } = require("../../utils");
 const { normalizeTip } = require("./utils");
 const { HttpError } = require("../../exc");
 
 function getCondition(ctx) {
-  const { status } = ctx.request.query;
+  const { status, beneficiary, finder, proposer } = ctx.request.query;
 
   const condition = {};
   if (status) {
     condition["state.state"] = { $in: status.split("||") };
   }
 
+  if (beneficiary) {
+    condition["meta.who"] = beneficiary;
+  }
+
+  if (finder || proposer) {
+    condition["finder"] = finder || proposer;
+  }
+
   return condition;
+}
+
+async function getAdmins(chain, blockHeight, tipHash) {
+  const col = await getTipCollection(chain);
+  const tip = await col.findOne({
+    "indexer.blockHeight": blockHeight,
+    hash: tipHash,
+  });
+  const owner = tip?.finder;
+
+  return [...ADMINS, owner];
 }
 
 class TipsController {
@@ -29,7 +48,7 @@ class TipsController {
     const tipCol = await getTipCollection(chain);
     const total = tipCol.countDocuments(condition);
     const list = tipCol
-      .find(condition, { timeline: 0 })
+      .find(condition)
       .sort({
         isFinal: 1,
         "indexer.blockHeight": -1,
@@ -157,6 +176,8 @@ class TipsController {
 
     const { link, description } = ctx.request.body;
 
+    const admins = await getAdmins(chain, blockHeight, tipHash);
+
     ctx.body = await linkService.createLink(
       {
         indexer: {
@@ -170,7 +191,8 @@ class TipsController {
         link,
         description,
       },
-      ctx.request.headers.signature
+      ctx.request.headers.signature,
+      admins,
     );
   }
 
@@ -178,6 +200,8 @@ class TipsController {
     const { tipHash, chain } = ctx.params;
     const blockHeight = parseInt(ctx.params.blockHeight);
     const linkIndex = parseInt(ctx.params.linkIndex);
+
+    const admins = await getAdmins(chain, blockHeight, tipHash);
 
     ctx.body = await linkService.deleteLink(
       {
@@ -191,7 +215,8 @@ class TipsController {
         },
         linkIndex,
       },
-      ctx.request.headers.signature
+      ctx.request.headers.signature,
+      admins,
     );
   }
 

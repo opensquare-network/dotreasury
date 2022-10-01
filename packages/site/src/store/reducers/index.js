@@ -20,6 +20,8 @@ import rateReducer from "./rateSlice";
 import descriptionReducer from "./descriptionSlice";
 import tipFindersReducer from "./tipFindersSlice";
 import proposalBeneficiariesReducer from "./proposalBeneficiariesSlice";
+import usersReducer from "./usersSlice";
+import usersDetailReducer from "./usersDetailSlice";
 
 export default combineReducers({
   test: testReducer,
@@ -31,7 +33,7 @@ export default combineReducers({
   chain: chainReducer,
   account: accountReducer,
   overview: overviewReducer,
-  users: userReducer,
+  user: userReducer,
   comments: commentReducer,
   toast: toastReducer,
   income: incomeReducer,
@@ -43,4 +45,6 @@ export default combineReducers({
   description: descriptionReducer,
   tipFinders: tipFindersReducer,
   proposalBeneficiaries: proposalBeneficiariesReducer,
+  users: usersReducer,
+  usersDetail: usersDetailReducer,
 });

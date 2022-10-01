@@ -15,7 +15,7 @@ import EstimateBlockTimeCountDown from "../../components/EstimateBlockTimeCountd
 import polkaassemblyApi from "../../services/polkassembly";
 import { useIsMounted } from "../../utils/hooks";
 
-import { normalizedTipDetailSelector } from "../../store/reducers/tipSlice";
+import { normalizedTipDetailSelector, tipCountdownSelector } from "../../store/reducers/tipSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import RelatedLinks from "../../components/RelatedLinks";
 
@@ -43,6 +43,7 @@ const TipLifeCycleTable = ({ loading }) => {
   const tippersCount = tipDetail.tippersCount;
   const [tipUrl, setTipUrl] = useState(null);
   const isMounted = useIsMounted();
+  const tipCountdown = useSelector(tipCountdownSelector);
 
   const thresholdTotalCount = tippersCount ? (tippersCount + 1) / 2 : 0;
 
@@ -136,7 +137,7 @@ const TipLifeCycleTable = ({ loading }) => {
                       <PolygonLabel value={tipDetail.closeFromBlockHeight} />
                     </ExplorerLink>
                     <EstimateBlockTimeCountDown
-                      startBlockHeight={tipDetail.proposeAtBlockHeight}
+                      startBlockHeight={tipDetail.closeFromBlockHeight - tipCountdown}
                       endBlockHeight={tipDetail.closeFromBlockHeight}
                     />
                   </FlexWrapper>

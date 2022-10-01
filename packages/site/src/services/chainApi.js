@@ -1,5 +1,5 @@
 import { ApiPromise, WsProvider } from "@polkadot/api";
-import { isWeb3Injected, web3FromAddress } from "@polkadot/extension-dapp";
+import { isWeb3Injected, web3Enable, web3FromAddress } from "@polkadot/extension-dapp";
 import { stringToHex } from "@polkadot/util";
 import { encodeAddress } from "@polkadot/keyring";
 
@@ -75,6 +75,35 @@ export const signMessage = async (text, address) => {
   return result.signature;
 };
 
+export const signMessageWithExtension = async (text, address, extensionName) => {
+  if (!extensionName) {
+    throw new Error(`Signing extension is not specified.`);
+  }
+
+  let injector = null;
+
+  const extension = window?.injectedWeb3?.[extensionName];
+  if (extension) {
+    injector = await extension.enable("doTreasury");
+  } else {
+    await web3Enable("doTreasury");
+    injector = await web3FromAddress(address);
+  }
+
+  if (!injector) {
+    throw new Error(`Injector is not found`);
+  }
+
+  const data = stringToHex(text);
+  const result = await injector.signer.signRaw({
+    type: "bytes",
+    data,
+    address,
+  });
+
+  return result.signature;
+};
+
 const extractBlockTime = (extrinsics) => {
   const setTimeExtrinsic = extrinsics.find(
     (ex) => ex.method.section === "timestamp" && ex.method.method === "set"
@@ -123,6 +152,18 @@ export const encodeSubstrateAddress = (address) => {
   }
 };
 
+export const encodeChainAddress = (address, chain) => {
+  let encodedAddress = encodeSubstrateAddress(address);
+
+  if (chain === "kusama") {
+    encodedAddress = encodeKusamaAddress(address);
+  } else if (chain === "polkadot") {
+    encodedAddress = encodePolkadotAddress(address);
+  }
+
+  return encodedAddress;
+}
+
 export async function getElectorate(api) {
   const issuance = await api.query.balances.totalIssuance();
   return issuance.toBigInt().toString()
@@ -131,4 +172,10 @@ export async function getElectorate(api) {
 export async function getReferendumInfo(api, referendumIndex) {
   const referendumInfo = await api.query.democracy.referendumInfoOf(referendumIndex);
   return referendumInfo.toJSON();
+}
+
+export async function getBlockHeightFromHash(api, blockHash) {
+  const block = await api.rpc.chain.getBlock(blockHash);
+  const targetHeight = block.block.header.number.toNumber();
+  return targetHeight;
 }

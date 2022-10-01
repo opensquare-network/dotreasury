@@ -21,10 +21,12 @@ let db = null;
 
 const mongoUrl = process.env.MONGO_URL || "mongodb://127.0.0.1:27017";
 let tipCol = null;
+let tipperCol = null;
 let bountyCol = null;
 let childBountyCol = null;
 let proposalCol = null;
 let motionCol = null;
+let motionVoterCol = null;
 let burntCol = null;
 let outTransferCol = null;
 let democracyReferendumCol = null;
@@ -38,9 +40,11 @@ async function initDb() {
   console.log('dbName:', dbName);
   db = client.db(dbName);
   tipCol = db.collection(tipCollectionName);
+  tipperCol = db.collection("tipper");
   bountyCol = db.collection(bountyCollectionName);
   proposalCol = db.collection(proposalCollectionName);
   motionCol = db.collection(motionCollectionName);
+  motionVoterCol = db.collection("motionVoter");
   burntCol = db.collection(burntCollectionName);
   outTransferCol = db.collection(outTransferColName);
   childBountyCol = db.collection("childBounty");
@@ -69,9 +73,19 @@ async function getMotionCollection() {
   return motionCol;
 }
 
+async function getMotionVoterCollection() {
+  await tryInit(motionVoterCol);
+  return motionVoterCol;
+}
+
 async function getTipCollection() {
   await tryInit(tipCol);
   return tipCol;
+}
+
+async function getTipperCollection() {
+  await tryInit(tipperCol);
+  return tipperCol;
 }
 
 async function getBountyCollection() {
@@ -110,9 +124,11 @@ async function closeDataDbClient() {
 
 module.exports = {
   getTipCollection,
+  getTipperCollection,
   getBountyCollection,
   getProposalCollection,
   getMotionCollection,
+  getMotionVoterCollection,
   getBurntCollection,
   getOutTransferCollection,
   closeDataDbClient,

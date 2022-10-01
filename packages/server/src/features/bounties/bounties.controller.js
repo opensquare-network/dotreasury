@@ -1,4 +1,4 @@
-const { getBountyCollection, getMotionCollection, getChildBountyCollection } = require("../../mongo");
+const { getBountyCollection, getMotionCollection } = require("../../mongo");
 const { extractPage } = require("../../utils");
 const linkService = require("../../services/link.service");
 const commentService = require("../../services/comment.service");
@@ -42,6 +42,29 @@ const normalizeBountyListItem = (item) => ({
   },
 });
 
+async function getAdmins(chain, bountyIndex) {
+  const col = await getBountyCollection(chain);
+  const bounty = await col.findOne({ bountyIndex });
+  const owner = bounty?.meta?.proposer;
+
+  return [...ADMINS, owner];
+}
+
+function getCondition(ctx) {
+  const { beneficiary, proposer } = ctx.request.query;
+
+  const condition = {}
+  if (beneficiary) {
+    condition["meta.status.pendingPayout.beneficiary"] = beneficiary;
+  }
+
+  if (proposer) {
+    condition["meta.proposer"] = proposer;
+  }
+
+  return condition;
+}
+
 class BountiesController {
   async getBounties(ctx) {
     const { chain } = ctx.params;
@@ -51,9 +74,11 @@ class BountiesController {
       return;
     }
 
+    const condition = getCondition(ctx);
     const bountyCol = await getBountyCollection(chain);
     const bounties = await bountyCol
       .aggregate([
+        { $match: condition },
         {
           $sort: {
             stateSort: 1,
@@ -175,6 +200,8 @@ class BountiesController {
     const bountyIndex = parseInt(ctx.params.bountyIndex);
     const { link, description } = ctx.request.body;
 
+    const admins = await getAdmins(chain, bountyIndex);
+
     ctx.body = await linkService.createLink(
       {
         indexer: {
@@ -185,7 +212,8 @@ class BountiesController {
         link,
         description,
       },
-      ctx.request.headers.signature
+      ctx.request.headers.signature,
+      admins,
     );
   }
 
@@ -193,6 +221,8 @@ class BountiesController {
     const { chain } = ctx.params;
     const bountyIndex = parseInt(ctx.params.bountyIndex);
     const linkIndex = parseInt(ctx.params.linkIndex);
+
+    const admins = await getAdmins(chain, bountyIndex);
 
     ctx.body = await linkService.deleteLink(
       {
@@ -203,7 +233,8 @@ class BountiesController {
         },
         linkIndex,
       },
-      ctx.request.headers.signature
+      ctx.request.headers.signature,
+      admins,
     );
   }
 

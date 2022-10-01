@@ -12,4 +12,4 @@ async function main() {
   }
 }
 
-main().finally(() => process.exit());
+module.exports = main;

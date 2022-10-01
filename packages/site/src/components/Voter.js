@@ -5,6 +5,7 @@ import { Image } from "semantic-ui-react";
 import User from "./User";
 import Text from "./Text";
 import { mrgap } from "../styles";
+import { USER_ROLES } from "../constants";
 
 const Wrapper = styled.div`
   display: flex;
@@ -28,7 +29,7 @@ const ImageWrapper = styled.div`
 const Voter = ({address, agree, value}) => {
   return (
     <Wrapper>
-      <User address={address} />
+      <User role={USER_ROLES.Councilor} address={address} />
       <PassWrapper>
         <Text>{value}</Text>
         {

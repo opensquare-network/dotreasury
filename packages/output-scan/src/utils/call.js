@@ -44,7 +44,7 @@ function getRealCaller(call, caller) {
   const { section, method } = call;
 
   if (Modules.Proxy === section && ProxyMethods.proxy === method) {
-    return call.args[0].toJSON();
+    return call.args[0].toString();
   }
 
   if (
@@ -58,7 +58,7 @@ function getRealCaller(call, caller) {
       Modules.Proxy === innerCall.section &&
       ProxyMethods.proxy === innerCall.method
     ) {
-      return innerCall.args[0].toJSON();
+      return innerCall.args[0].toString();
     }
 
     const threshold = call.args[0].toNumber();

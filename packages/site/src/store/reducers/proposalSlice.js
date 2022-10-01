@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { EMPTY_TABLE_DATA } from "../../constants";
 import api from "../../services/scanApi";
 
 const proposalSlice = createSlice({
@@ -62,6 +63,9 @@ export const fetchProposals = (
     dispatch(setLoading(false));
   }
 };
+export const resetProposals = () => (dispatch) => {
+  dispatch(setProposals(EMPTY_TABLE_DATA));
+}
 
 export const fetchProposalDetail = (chain, proposalIndex) => async (dispatch) => {
   dispatch(setLoadingProposalDetail(true));

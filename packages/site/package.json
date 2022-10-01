@@ -5,8 +5,8 @@
   "dependencies": {
     "@open-wc/webpack-import-meta-loader": "^0.4.7",
     "@osn/polkadot-react-identicon": "^1.0.6",
-    "@polkadot/api": "9.2.2",
-    "@polkadot/extension-dapp": "0.44.5",
+    "@polkadot/api": "9.4.1",
+    "@polkadot/extension-dapp": "0.44.6",
     "@popperjs/core": "^2.11.6",
     "@reduxjs/toolkit": "^1.7.2",
     "@testing-library/jest-dom": "^5.11.4",
@@ -22,6 +22,7 @@
     "lodash.debounce": "^4.0.8",
     "lodash.get": "^4.4.2",
     "lodash.isnil": "^4.0.0",
+    "lodash.set": "^4.3.2",
     "md5": "^2.3.0",
     "pluralize": "^8.0.0",
     "query-string": "^6.13.8",

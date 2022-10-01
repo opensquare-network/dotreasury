@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import {
@@ -24,6 +24,17 @@ import TimelineCommentWrapper from "../../components/TimelineCommentWrapper";
 import DetailGoBack from "../components/DetailGoBack";
 import { useChainRoute } from "../../utils/hooks";
 import DetailTableWrapper from "../../components/DetailTableWrapper";
+import { Flex } from "../../components/styled";
+import CloseButton from "./Actions/CloseButton";
+import useWaitSyncBlock from "../../utils/useWaitSyncBlock";
+import RetractedButton from "./Actions/RetractButton";
+import styled from "styled-components";
+import { USER_ROLES } from "../../constants";
+import EndorseButton from "./Actions/EndorseButton";
+
+const ActionButtons = styled(Flex)`
+  gap: 16px;
+`;
 
 function processTimeline(tipDetail, links) {
   return (tipDetail.timeline || []).map((timelineItem) => {
@@ -35,11 +46,11 @@ function processTimeline(tipDetail, links) {
       fields = [
         {
           title: "Finder",
-          value: <User address={finder} />,
+          value: <User role={USER_ROLES.Proposer} address={finder} />,
         },
         {
           title: "Beneficiary",
-          value: <User address={beneficiary} />,
+          value: <User role={USER_ROLES.Beneficiary} address={beneficiary?.id || beneficiary} />,
         },
         {
           title: "Reason",
@@ -56,11 +67,11 @@ function processTimeline(tipDetail, links) {
       fields = [
         {
           title: "Funder",
-          value: <User address={finder} />,
+          value: <User role={USER_ROLES.Proposer} address={finder} />,
         },
         {
           title: "Beneficiary",
-          value: <User address={beneficiary} />,
+          value: <User role={USER_ROLES.Beneficiary} address={beneficiary?.id || beneficiary} />,
         },
         {
           title: "Tip value",
@@ -85,11 +96,16 @@ function processTimeline(tipDetail, links) {
       fields = [
         {
           title: "Closed by",
-          value: <User address={who} />,
+          value: <User role={USER_ROLES.Councilor} address={who} />,
         },
         {
           title: "Beneficiary",
-          value: <User address={tipDetail.beneficiary} />,
+          value: (
+            <User
+              role={USER_ROLES.Beneficiary}
+              address={tipDetail.beneficiary}
+            />
+          ),
         },
         {
           title: "Final tip value",
@@ -158,16 +174,51 @@ const TipDetail = () => {
     setTimelineData(processTimeline(tipDetail, links));
   }, [tipDetail, links]);
 
+  const refreshData = useCallback(() => {
+    dispatch(fetchTipDetail(chain, tipId));
+  }, [dispatch, chain, tipId]);
+
+  const onTipClosed = useWaitSyncBlock("Tip closed", refreshData);
+  const onTipRetracted = useWaitSyncBlock("Tip retracted", refreshData);
+  const onTipEndorsed = useWaitSyncBlock("Tip endorsed", refreshData);
+
+  const buttons = (
+    <ActionButtons>
+      <EndorseButton
+        tipDetail={tipDetail}
+        onFinalized={onTipEndorsed}
+      />
+      <CloseButton
+        tipDetail={tipDetail}
+        onFinalized={onTipClosed}
+      />
+      <RetractedButton
+        tipDetail={tipDetail}
+        onFinalized={onTipRetracted}
+      />
+    </ActionButtons>
+  );
+
   return (
     <>
       <DetailGoBack />
-      <DetailTableWrapper title="Tip" desc={getShortTipId(tipDetail)}>
+      <DetailTableWrapper
+        title="Tip"
+        desc={getShortTipId(tipDetail)}
+        buttons={buttons}
+      >
         <InformationTable loading={loadingTipDetail} />
         <TipLifeCycleTable loading={loadingTipDetail} />
-        <RelatedLinks type="tip" index={getTipIndex(tipDetail)} />
+        <RelatedLinks
+          type="tip"
+          index={getTipIndex(tipDetail)}
+          owner={tipDetail?.finder}
+        />
       </DetailTableWrapper>
       <TimelineCommentWrapper>
-        <Timeline data={timelineData} loading={loadingTipDetail} />
+        <Timeline
+          data={timelineData}
+          loading={loadingTipDetail} />
         <Comment type="tip" index={getTipIndex(tipDetail)} />
       </TimelineCommentWrapper>
     </>

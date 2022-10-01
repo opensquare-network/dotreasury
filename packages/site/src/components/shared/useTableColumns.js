@@ -17,7 +17,7 @@ import RelatedLinks from "../RelatedLinks";
 import PairTextVertical from "../PairTextVertical";
 import TextWrapper from "./TextWrapper";
 import TextLinks from "./TextLinks";
-import { TipStatus } from "../../constants";
+import { TipStatus, USER_ROLES } from "../../constants";
 
 const ProposeTimeWrapper = styled.div`
   display: flex;
@@ -181,21 +181,27 @@ const curator = {
   headerCellClassName: "curator-header",
   cellClassName: "user-cell",
   cellRender: (_, item) =>
-    item.curator ? <User address={item.curator} /> : "--",
+    item.curator ? (
+      <User role={USER_ROLES.Proposer} address={item.curator} />
+    ) : (
+      "--"
+    ),
 };
-const title = options=>( {
+const title = (options) => ({
   key: "title",
   title: "Title",
   dataIndex: "title",
   cellClassName: "title-cell",
   cellRender: (value, item) => {
-    if(options.recognizeLinks) {
-      return <TextWrapper maxWidth={347}>
-        <TextLinks text={item.title} />
-      </TextWrapper>
+    if (options.recognizeLinks) {
+      return (
+        <TextWrapper maxWidth={347}>
+          <TextLinks text={item.title} />
+        </TextWrapper>
+      );
     }
     return item.title;
-  }
+  },
 });
 const bountiesStatus = {
   key: "status",
@@ -228,6 +234,7 @@ const beneficiary = {
   cellRender: (_, item) =>
     item.beneficiary ? (
       <User
+        role={USER_ROLES.Beneficiary}
         address={item.beneficiary}
         popupContent={
           <BeneficiaryContent
@@ -247,6 +254,7 @@ const proposer = {
   cellClassName: "proposal-user-cell proposal-proposer-cell user-cell",
   cellRender: (_, item) => (
     <User
+      role={USER_ROLES.Proposer}
       address={item.proposer}
       popupContent={
         <BeneficiaryContent
@@ -294,14 +302,18 @@ const tipsBeneficiary = {
   key: "beneficiary",
   title: "Beneficiary",
   cellClassName: "user-cell",
-  cellRender: (_, item) => <User address={item.beneficiary} />,
+  cellRender: (_, item) => (
+    <User role={USER_ROLES.Beneficiary} address={item.beneficiary} />
+  ),
 };
 const finder = {
   key: "finder",
   title: "Finder",
   headerCellClassName: "hidden",
   cellClassName: "user-cell hidden",
-  cellRender: (_, item) => <User address={item.finder} />,
+  cellRender: (_, item) => (
+    <User role={USER_ROLES.Proposer} address={item.finder} />
+  ),
 };
 const reason = {
   key: "reason",

@@ -1,3 +1,4 @@
+const { findExtrinsicRealAuthor } = require("../../common/extrinsic/author");
 const { insertChildBounty } = require("../../../mongo/service/childBounty");
 const {
   consts: {
@@ -7,7 +8,7 @@ const {
 } = require("@osn/scan-common");
 const { getChildBounty, getChildBountyDescriptions } = require("../../common/child-bounties/child-bounty");
 
-async function handleAdded(event, indexer) {
+async function handleAdded(event, indexer, extrinsic) {
   const data = event.data.toJSON()
   const [parentBountyId, childBountyId] = data;
 
@@ -15,6 +16,8 @@ async function handleAdded(event, indexer) {
     getChildBounty(parentBountyId, childBountyId, indexer),
     getChildBountyDescriptions(childBountyId, indexer),
   ])
+
+  const proposer = await findExtrinsicRealAuthor(extrinsic, indexer);
 
   const state = {
     indexer,
@@ -39,6 +42,7 @@ async function handleAdded(event, indexer) {
   const bountyObj = {
     indexer,
     parentBountyId,
+    proposer,
     index: childBountyId,
     value: meta?.value,
     fee: meta?.fee,

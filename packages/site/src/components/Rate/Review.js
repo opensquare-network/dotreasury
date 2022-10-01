@@ -35,7 +35,7 @@ const PaginationWrapper = styled.div`
   }
 `;
 
-const DEFAULT_PAGE_SIZE = 3;
+const DEFAULT_PAGE_SIZE = 10;
 
 export default function Review({ type, index }) {
   const dispatch = useDispatch();

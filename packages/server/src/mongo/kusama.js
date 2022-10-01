@@ -3,6 +3,7 @@ const config = require("../../config");
 
 const inputDbName = config.mongo.ksmInputDbName || "dotreasury-input-ksm";
 const outputDbName = config.mongo.ksmOutputDbName || "dotreasury-output-ksm";
+const councilDbName = config.mongo.ksmCouncilDbName || "dotreasury-council-ksm";
 
 const statusCollectionName = "status";
 
@@ -16,6 +17,9 @@ const tipFinderCollectionName = "tipFinder";
 const proposalBeneficiaryCollectionName = "proposalBeneficiary";
 const burntCollectionName = "burnt";
 const outputTransferCollectionName = "outputTransfer";
+const participantCollectionName = "participant";
+const motionVoterCollectionName = "motionVoter";
+const tipperCollectionName = "tipper";
 
 // income collections
 const incomeInflationCollectionName = "inflation";
@@ -27,12 +31,17 @@ const identitySlashCollectionName = "slashIdentity";
 const othersIncomeCollectionName = "othersBig";
 const incomeTransferCollectionName = "transfer";
 
+// council collections
+const termsCollectionName = "terms";
+const termCouncilorCollectionName = "termCouncilor";
+
 // stats collections
 const weeklyStatsCollectionName = "weeklyStats";
 
 let client = null;
 let inputDb = null;
 let outputDb = null;
+let councilDb = null;
 
 const mongoUrl = config.mongo.ksmUrl || "mongodb://127.0.0.1:27017";
 let statusCol = null;
@@ -49,6 +58,9 @@ let burntCol = null;
 let outputTransferCol = null;
 let outputWeeklyStatsCol = null;
 let outputStatusCol = null;
+let participantCol = null;
+let motionVoterCol = null;
+let tipperCol = null;
 
 let incomeInflationCol = null;
 let stakingSlashCol = null;
@@ -59,6 +71,9 @@ let identitySlashCol = null;
 let incomeTransferCol = null;
 let othersIncomeCol = null;
 let inputWeeklyStatsCol = null;
+
+let termsCol = null;
+let termCouncilorCol = null;
 
 async function initDb() {
   client = await MongoClient.connect(mongoUrl, {
@@ -90,6 +105,13 @@ async function initDb() {
   outputTransferCol = outputDb.collection(outputTransferCollectionName);
   outputWeeklyStatsCol = outputDb.collection(weeklyStatsCollectionName);
   outputStatusCol = outputDb.collection(statusCollectionName);
+  participantCol = outputDb.collection(participantCollectionName);
+  motionVoterCol = outputDb.collection(motionVoterCollectionName);
+  tipperCol = outputDb.collection(tipperCollectionName);
+
+  councilDb = client.db(councilDbName);
+  termsCol = councilDb.collection(termsCollectionName);
+  termCouncilorCol = councilDb.collection(termCouncilorCollectionName);
 
   await _createIndexes();
 }
@@ -101,6 +123,17 @@ async function _createIndexes() {
   }
 
   // TODO: create indexes for better query performance
+  motionVoterCol.createIndex({
+    motionHash: 1,
+    motionHeight: 1,
+    voter: 1,
+  });
+
+  tipperCol.createIndex({
+    tipHash: 1,
+    tipHeight: 1,
+    tipper: 1,
+  });
 }
 
 async function tryInit(col) {
@@ -219,6 +252,31 @@ async function getOutputWeeklyStatsCollection() {
   return outputWeeklyStatsCol;
 }
 
+async function getParticipantCollection() {
+  await tryInit(participantCol);
+  return participantCol;
+}
+
+async function getTermsCollection() {
+  await tryInit(termsCol);
+  return termsCol;
+}
+
+async function getTermCouncilorCollection() {
+  await tryInit(termCouncilorCol);
+  return termCouncilorCol;
+}
+
+async function getMotionVoterCollection() {
+  await tryInit(motionVoterCol);
+  return motionVoterCol;
+}
+
+async function getTipperCollection() {
+  await tryInit(tipperCol);
+  return tipperCol;
+}
+
 module.exports = {
   initDb,
   getStatusCollection,
@@ -243,4 +301,9 @@ module.exports = {
   getInputWeeklyStatsCollection,
   getOutputWeeklyStatsCollection,
   getOutputStatusCollection,
+  getParticipantCollection,
+  getTermsCollection,
+  getTermCouncilorCollection,
+  getMotionVoterCollection,
+  getTipperCollection,
 };

@@ -7,6 +7,7 @@ import Balance from "../../components/Balance";
 import Text from "../../components/Text";
 import TableLoading from "../../components/TableLoading";
 import { resolveTableSerialNumber } from "../../utils/resolveTableSerialNumber";
+import { USER_ROLES } from "../../constants";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -76,7 +77,10 @@ export default function ProposalBeneficiariesTable({
                         {resolveTableSerialNumber(index + 1, page, pageSize)}
                       </TableSerialNumberCell>
                       <Table.Cell>
-                        <User address={item.beneficiary} />
+                        <User
+                          role={USER_ROLES.Beneficiary}
+                          address={item.beneficiary}
+                        />
                       </Table.Cell>
                       <TableCell textAlign={"right"}>
                         <Balance

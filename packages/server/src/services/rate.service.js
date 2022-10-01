@@ -65,15 +65,21 @@ class RateService {
 
     let indexer = null;
 
-    if ("treasury_proposal" === type) {
+    if (
+      [
+        "treasury_proposal",
+      ].includes(type)
+    ) {
       indexer = getIndexer(chain, "proposal", index);
+    } else if ("councilor" === type) {
+      indexer = getIndexer(chain, "councilor", index);
     } else if ("project" === type) {
       if (index === undefined) {
         throw new HttpError(400, "Index is missing");
       }
       indexer = { type: "project", index };
     } else {
-      throw new HttpError(400, "Unsupport treasury type");
+      throw new HttpError(400, "Unsupport vote type");
     }
 
     if (grade < 1 || grade > 5) {

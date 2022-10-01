@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { EMPTY_TABLE_DATA } from "../../constants";
 import api from "../../services/scanApi";
 
 const bountySlice = createSlice({
@@ -63,7 +64,7 @@ export const {
 } = bountySlice.actions;
 
 export const fetchBounties =
-  (chain, page = 0, pageSize = 30) =>
+  (chain, page = 0, pageSize = 30, filterData) =>
   async (dispatch) => {
     dispatch(setLoading(true));
 
@@ -71,12 +72,16 @@ export const fetchBounties =
       const { result } = await api.fetch(`/${chain}/bounties`, {
         page,
         pageSize,
+        ...filterData,
       });
       dispatch(setBounties(result || {}));
     } finally {
       dispatch(setLoading(false));
     }
   };
+export const resetBounties = () => (dispatch) => {
+  dispatch(setBounties(EMPTY_TABLE_DATA));
+};
 
 export const fetchChildBountiesByParentIndex =
   (chain, bountyIndex, page = 1, pageSize = 30) =>
@@ -116,7 +121,7 @@ export const fetchChildBountyDetail = (chain, bountyIndex) => async (dispatch) =
   }
 };
 export const fetchChildBounties =
-  (chain, page = 0, pageSize = 30) =>
+  (chain, page = 0, pageSize = 30, filterData) =>
   async (dispatch) => {
     dispatch(setLoading(true));
 
@@ -124,12 +129,16 @@ export const fetchChildBounties =
       const { result } = await api.fetch(`/${chain}/child-bounties`, {
         page,
         pageSize,
+        ...filterData,
       });
       dispatch(setChildBounties(result || {}));
     } finally {
       dispatch(setLoading(false));
     }
   };
+export const resetChildBounties = () => (dispatch) => {
+  dispatch(setChildBounties(EMPTY_TABLE_DATA));
+};
 
 export const bountyListSelector = (state) => state.bounties.bounties;
 export const childBountyListSelector = (state) => state.bounties.childBounties;

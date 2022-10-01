@@ -1,9 +1,18 @@
-export const TEXT_DARK_MAJOR = "#1D253C";
+export const TEXT_DARK_MAJOR = "rgba(0, 0, 0, 0.9)";
 export const TEXT_DARK_ACCESSORY = "rgba(0, 0, 0, 0.3)";
-export const TEXT_DARK_MINOR = "rgba(29, 37, 60, 0.64)";
-export const TEXT_DARK_DISABLE = "rgba(29, 37, 60, 0.24)";
+export const TEXT_DARK_MINOR = "rgba(0, 0, 0, 0.65)";
+export const TEXT_DARK_DISABLE = "rgba(0, 0, 0, 0.15)";
+export const TEXT_LIGHT_MAJOR = "#ffffff";
+export const TEXT_LIGHT_MINOR = "rgba(255, 255, 255, 0.8)";
 export const Tertiary_Blue_500 = "#086DE3";
 export const Tertiary_Green_500 = "#0EAB0E";
+export const Greyscale_Grey_100 = "#fafafa";
+export const Greyscale_Grey_200 = "#f4f4f4";
+export const Primary_Theme_Pink_100 = "#FFF0F3";
+export const Primary_Theme_Pink_200 = "#ffc5ce";
+export const Primary_Theme_Pink_300 = "#FC7C91";
+export const Primary_Theme_Pink_400 = "#F8526E";
+export const Primary_Theme_Pink_500 = "#F23252";
 export const PRIMARY_THEME_COLOR = "#DF405D";
 export const SECONDARY_THEME_COLOR = "#FFEEF1";
 export const WARNING_COLOR = "#EC4730";
@@ -92,4 +101,23 @@ export const DEFAULT_QUERY_PAGE = 1;
 export const TimelineItemType = {
   CouncilMotion: "council-motion",
   DemocracyReferendum: "democracy-referendum",
+};
+
+/**
+ * @description used in page users
+ */
+export const USER_ROLES = {
+  Councilor: "councilor",
+  Beneficiary: "beneficiary",
+  Proposer: "proposer",
+};
+
+/**
+ * @description empty table data structure
+ */
+export const EMPTY_TABLE_DATA = {
+  items: [],
+  page: 0,
+  pageSize: 10,
+  total: 0,
 };

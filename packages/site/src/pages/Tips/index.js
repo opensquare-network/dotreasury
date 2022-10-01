@@ -8,18 +8,22 @@ import {
   fetchTips,
   loadingSelector,
   normalizedTipListSelector,
+  resetTips,
 } from "../../store/reducers/tipSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import { useChainRoute, useQuery, useLocalStorage } from "../../utils/hooks";
 import { useHistory } from "react-router";
 import Text from "../../components/Text";
 import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../constants";
+import NewTipButton from "./NewTipButton";
+import useWaitSyncBlock from "../../utils/useWaitSyncBlock";
 
 const HeaderWrapper = styled.div`
   padding: 20px 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 16px;
 `;
 
 const Title = styled(Text)`
@@ -60,6 +64,10 @@ const Tips = () => {
 
   useEffect(() => {
     dispatch(fetchTips(chain, tablePage - 1, pageSize, filterData));
+
+    return () => {
+      dispatch(resetTips());
+    };
   }, [dispatch, chain, tablePage, pageSize, filterData]);
 
   const filterQuery = useCallback(
@@ -73,6 +81,15 @@ const Tips = () => {
     [history]
   );
 
+  const refreshTips = useCallback(
+    () => {
+      dispatch(fetchTips(chain, tablePage - 1, pageSize, filterData));
+    },
+    [dispatch, chain, tablePage, pageSize, filterData]
+  );
+
+  const onFinalized = useWaitSyncBlock("Tips created", refreshTips);
+
   return (
     <>
       <TipsTable
@@ -81,7 +98,10 @@ const Tips = () => {
         header={
           <HeaderWrapper>
             <Title>Tips</Title>
-            <Filter value={filterData.status ?? "-1"} query={filterQuery} />
+            <div style={{ display: "flex", gap: "16px" }}>
+              <NewTipButton onFinalized={onFinalized} />
+              <Filter value={filterData.status ?? "-1"} query={filterQuery} />
+            </div>
           </HeaderWrapper>
         }
         footer={

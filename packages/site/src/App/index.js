@@ -44,8 +44,9 @@ import UserAgreement from "../pages/UserAgreement";
 import Privacy from "../pages/Privacy";
 import Transfers from "../pages/Transfers";
 import TransfersSlash from "../pages/TransfersSlash";
-import AdminLogin from "../pages/AdminLogin";
 import ProposalBeneficiaries from "../pages/ProposalBeneficiaries";
+import Users from "../pages/Users";
+import UsersDetail from "../pages/UsersDetail";
 
 import { usePreload } from "../utils/hooks";
 import { useSelector } from "react-redux";
@@ -175,6 +176,17 @@ export default function App() {
                 path="/:symbol(ksm|dot)/income/others"
                 component={OthersIncome}
               />
+              <Route exact path="/:symbol(ksm|dot)/users" component={Users} />
+              <Route
+                exact
+                path="/:symbol(ksm|dot)/users/:address"
+                component={UsersDetail}
+              />
+              <Route
+                exact
+                path="/:symbol(ksm|dot)/users/:address/:role/:tableTab?"
+                component={UsersDetail}
+              />
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
               <Route exact path="/settings/:tabname?" component={UserSetting} />
@@ -189,7 +201,6 @@ export default function App() {
         </PageWrapper>
         <Footer />
         <Toast />
-        <AdminLogin />
       </Wrapper>
     </Router>
   );

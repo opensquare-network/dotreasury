@@ -13,6 +13,8 @@ const chainFeatureRouters = [
   require("./features/projects/routes"),
   require("./features/outputtransfers/routes"),
   require("./features/child-bounties/routes"),
+  require("./features/profile/routes"),
+  require("./features/participant/routes"),
 ];
 
 const commonFeatureRouters = [

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import styled from "styled-components";
@@ -32,6 +32,10 @@ import DetailGoBack from "../components/DetailGoBack";
 import { useChainRoute } from "../../utils/hooks";
 import ChildBountiesTable from "./ChildBountiesTable";
 import BountyPendingPayoutCountDown from "../../components/BountyPendingPayoutCountDown";
+import { Flex } from "../../components/styled";
+import ClaimButton from "./ClaimButton";
+import useWaitSyncBlock from "../../utils/useWaitSyncBlock";
+import { USER_ROLES } from "../../constants";
 
 const ValueWrapper = styled.span`
   margin-right: 4px;
@@ -97,7 +101,12 @@ export function processTimeline(bountyDetail, scanHeight, symbol) {
                       title: stringToWords(key),
                       value: (() => {
                         if (key === "curator") {
-                          return <User address={val.id || val} />;
+                          return (
+                            <User
+                              role={USER_ROLES.Proposer}
+                              address={val.id || val}
+                            />
+                          );
                         } else if (key === "fee") {
                           return <Balance value={val} currency={symbol} />;
                         } else {
@@ -174,7 +183,7 @@ export function processTimeline(bountyDetail, scanHeight, symbol) {
             fields = [
               {
                 title: "Proposer",
-                value: <User address={proposer} />,
+                value: <User role={USER_ROLES.Proposer} address={proposer} />,
               },
               {
                 title: "Value",
@@ -190,7 +199,7 @@ export function processTimeline(bountyDetail, scanHeight, symbol) {
             fields = [
               {
                 title: "Curator",
-                value: <User address={curator} />,
+                value: <User role={USER_ROLES.Proposer} address={curator} />,
               },
               {
                 title: "Fee",
@@ -202,15 +211,20 @@ export function processTimeline(bountyDetail, scanHeight, symbol) {
             fields = [
               {
                 title: "Curator",
-                value: <User address={caller ?? curator} />,
+                value: (
+                  <User
+                    role={USER_ROLES.Proposer}
+                    address={caller ?? curator}
+                  />
+                ),
               },
             ];
 
-            if (typeof deposit !== 'undefined') {
+            if (typeof deposit !== "undefined") {
               fields.push({
                 title: "Deposit",
-                value: <Balance value={ deposit } currency={ symbol }/>,
-              })
+                value: <Balance value={deposit} currency={symbol} />,
+              });
             }
           } else if (item.name === "BountyAwarded" || item.name === "Awarded") {
             const { beneficiary } = item.args || {};
@@ -219,7 +233,9 @@ export function processTimeline(bountyDetail, scanHeight, symbol) {
             fields = [
               {
                 title: "Beneficiary",
-                value: <User address={beneficiary} />,
+                value: (
+                  <User role={USER_ROLES.Beneficiary} address={beneficiary} />
+                ),
               },
               !isClaimed && {
                 title: "Pending Payout",
@@ -235,7 +251,7 @@ export function processTimeline(bountyDetail, scanHeight, symbol) {
             fields = [
               {
                 title: "Signer",
-                value: <User address={caller} />,
+                value: <User role={USER_ROLES.Proposer} address={caller} />,
               },
               {
                 title: "Remark",
@@ -247,7 +263,7 @@ export function processTimeline(bountyDetail, scanHeight, symbol) {
             fields = [
               {
                 title: "Closed by",
-                value: <User address={caller} />,
+                value: <User role={USER_ROLES.Councilor} address={caller} />,
               },
               {
                 title: "Proposer slashed",
@@ -259,7 +275,7 @@ export function processTimeline(bountyDetail, scanHeight, symbol) {
             fields = [
               {
                 title: "Beneficiary",
-                value: <User address={claimer} />,
+                value: <User role={USER_ROLES.Beneficiary} address={claimer} />,
               },
             ];
           } else if (item.name === "Added") {
@@ -279,7 +295,9 @@ export function processTimeline(bountyDetail, scanHeight, symbol) {
             fields = [
               {
                 title: "Beneficiary",
-                value: <User address={beneficiary} />,
+                value: (
+                  <User role={USER_ROLES.Beneficiary} address={beneficiary} />
+                ),
               },
               {
                 title: "Payout",
@@ -324,10 +342,26 @@ const BountyDetail = () => {
     setTimelineData(processTimeline(bountyDetail, scanHeight, symbol));
   }, [bountyDetail, scanHeight, symbol]);
 
+  const refreshData = useCallback(() => {
+    dispatch(fetchBountyDetail(chain, bountyIndex));
+  }, [dispatch, chain, bountyIndex]);
+
+  const waitScanAndUpdate = useWaitSyncBlock("Rewards claimed", refreshData);
+
+  const buttons = (
+    <Flex>
+      <ClaimButton bounty={bountyDetail} onFinalized={waitScanAndUpdate} />
+    </Flex>
+  );
+
   return (
     <>
       <DetailGoBack />
-      <DetailTableWrapper title="Bounty" desc={`#${bountyIndex}`}>
+      <DetailTableWrapper
+        title="Bounty"
+        desc={`#${bountyIndex}`}
+        buttons={buttons}
+      >
         <InformationTable loading={loadingBountyDetail} />
         <BountyLifeCycleTable loading={loadingBountyDetail} />
         <RelatedLinks type="bounty" index={parseInt(bountyIndex)} />

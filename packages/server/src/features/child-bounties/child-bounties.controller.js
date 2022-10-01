@@ -4,6 +4,21 @@ const linkService = require("../../services/link.service");
 const commentService = require("../../services/comment.service");
 const { HttpError } = require("../../exc");
 
+function getCondition(ctx) {
+  const { beneficiary, proposer } = ctx.request.query;
+
+  const condition = {}
+  if (beneficiary) {
+    condition["beneficiary"] = beneficiary;
+  }
+
+  if (proposer) {
+    condition["proposer"] = proposer;
+  }
+
+  return condition;
+}
+
 async function queryChildBounties(ctx, chain, q = {}) {
   const { page, pageSize } = extractPage(ctx);
   if (pageSize === 0 || page < 0) {
@@ -70,7 +85,9 @@ class ChildBountiesController {
 
   async getBounties(ctx) {
     const { chain } = ctx.params;
-    ctx.body = await queryChildBounties(ctx, chain, {});
+
+    const condition = getCondition(ctx);
+    ctx.body = await queryChildBounties(ctx, chain, condition);
   }
 
   // Links API

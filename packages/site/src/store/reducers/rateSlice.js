@@ -1,9 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import pluralize from "pluralize";
 import api from "../../services/scanApi";
-import { signMessage } from "../../services/chainApi";
+import { signMessageWithExtension } from "../../services/chainApi";
 import { addToast } from "./toastSlice";
 import { REACTION_THUMBUP } from "../../constants";
+import {
+  userDetailCouncilorRates,
+  userDetailCouncilorRateStats
+} from "../../services/urls";
 
 const rateSlice = createSlice({
   name: "rate",
@@ -46,7 +50,8 @@ export const addRate = (
   comment,
   version,
   timestamp,
-  address
+  address,
+  extensionName
 ) => async (dispatch) => {
   const data = {
     chain,
@@ -60,7 +65,7 @@ export const addRate = (
 
   try {
     dispatch(setLoading(true));
-    const signature = await signMessage(JSON.stringify(data), address);
+    const signature = await signMessageWithExtension(JSON.stringify(data), address, extensionName);
 
     const { error } = await api.fetch(
       `/rates`,
@@ -91,9 +96,12 @@ export const addRate = (
 };
 
 export const fetchRateStats = (chain, type, index) => async (dispatch) => {
-  const { result } = await api.fetch(
-    `/${chain}/${pluralize(type)}/${index}/ratestats`
-  );
+  const url =
+    type === 'councilor'
+      ? userDetailCouncilorRateStats(chain, index)
+      : `/${chain}/${pluralize(type)}/${index}/ratestats`
+
+  const { result } = await api.fetch(url);
   dispatch(
     setRateStats(
       result || {
@@ -110,10 +118,11 @@ export const fetchRateStats = (chain, type, index) => async (dispatch) => {
 export const fetchRates = (chain, type, index, page, pageSize) => async (
   dispatch
 ) => {
-  const { result } = await api.maybeAuthFetch(
-    `/${chain}/${pluralize(type)}/${index}/rates`,
-    { page, pageSize }
-  );
+  const url =
+    type === "councilor"
+      ? userDetailCouncilorRates(chain, index)
+      : `/${chain}/${pluralize(type)}/${index}/rates`
+  const { result } = await api.maybeAuthFetch(url, { page, pageSize });
   dispatch(
     setRates(
       result || {

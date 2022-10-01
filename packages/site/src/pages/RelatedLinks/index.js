@@ -3,9 +3,6 @@ import useDeepCompareEffect from "use-deep-compare-effect";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Icon, Modal, Form } from "semantic-ui-react";
-import queryString from "query-string";
-import { useLocation } from "react-router-dom";
-
 import LinkItem from "../../components/LinkItem";
 import {
   setLinks,
@@ -14,10 +11,12 @@ import {
   addLink,
   removeLink,
 } from "../../store/reducers/linkSlice";
-import { nowAddressSelector } from "../../store/reducers/accountSlice";
+import { accountSelector } from "../../store/reducers/accountSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import Divider from "../../components/Divider";
 import Table from "../../components/Table";
+import { addToast } from "../../store/reducers/toastSlice";
+import { useIsAdminQuery } from "../../utils/hooks";
 
 const Wrapper = styled.div`
   table {
@@ -41,9 +40,8 @@ const DividerWrapper = styled(Divider)`
   border-top: 1px solid #eeeeee !important;
 `;
 
-const RelatedLinks = ({ type, index }) => {
+const RelatedLinks = ({ type, index, owner }) => {
   const dispatch = useDispatch();
-  const location = useLocation();
   const chain = useSelector(chainSelector);
 
   useDeepCompareEffect(() => {
@@ -56,7 +54,7 @@ const RelatedLinks = ({ type, index }) => {
   }, [dispatch, chain, type, index]);
 
   const links = useSelector(linksSelector);
-  const nowAddress = useSelector(nowAddressSelector);
+  const account = useSelector(accountSelector);
 
   const [openAddLinkModal, setOpenAddLinkModal] = useState(false);
   const [openRemoveLinkModal, setOpenRemoveLinkModal] = useState(false);
@@ -65,17 +63,35 @@ const RelatedLinks = ({ type, index }) => {
   const [linkIndex, setLinkIndex] = useState(null);
 
   const addRelatedLink = async (link, description) => {
+    if (!account) {
+      dispatch(
+        addToast({
+          type: "error",
+          message: "Please connect wallet",
+        })
+      );
+      return;
+    }
     setOpenAddLinkModal(false);
-    dispatch(addLink(chain, type, index, link, description, nowAddress));
+    dispatch(addLink(chain, type, index, link, description, account.address, account.extension));
   };
 
   const removeRelatedLink = async (linkIndex) => {
+    if (!account) {
+      dispatch(
+        addToast({
+          type: "error",
+          message: "Please connect wallet",
+        })
+      );
+      return;
+    }
     setOpenRemoveLinkModal(false);
-    dispatch(removeLink(chain, type, index, linkIndex, nowAddress));
+    dispatch(removeLink(chain, type, index, linkIndex, account.address, account.extension));
   };
 
-  const q = queryString.parse(location.search);
-  const isAdmin = q.admin === "true";
+  const isAdminQuery = useIsAdminQuery();
+  const isAdmin = account?.address === owner || isAdminQuery;
 
   if (isAdmin || (links && links.length > 0)) {
     return (

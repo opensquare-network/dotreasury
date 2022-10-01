@@ -9,7 +9,7 @@
     "saveHeight": "node src/index.js"
   },
   "dependencies": {
-    "@osn/scan-common": "0.1.0",
+    "@osn/scan-common": "0.1.15",
     "dotenv": "^8.2.0",
     "mongodb": "^4.1.3"
   }

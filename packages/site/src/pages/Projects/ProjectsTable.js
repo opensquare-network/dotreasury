@@ -44,6 +44,12 @@ const StyledTable = styled(Table)`
   .no-data {
     height: 120px !important;
   }
+
+  .balance-cell {
+    .project-expense-wrapper {
+      justify-content: flex-end;
+    }
+  }
 `;
 
 const TipsTable = ({ data, loading, header, footer }) => {

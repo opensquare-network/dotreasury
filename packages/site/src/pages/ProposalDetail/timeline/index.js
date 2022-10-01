@@ -3,6 +3,7 @@ import User from "../../../components/User";
 import Balance from "../../../components/Balance";
 import { normalizeMotionTimelineItem } from "./motion";
 import { normalizeReferendumTimelineItem } from "./referendum";
+import { USER_ROLES } from "../../../constants";
 
 function isMotion(timelineItem) {
   return !!timelineItem.motionInfo;
@@ -38,7 +39,7 @@ function constructProposalProcessItem(item, proposalDetail) {
     fields = [
       {
         title: "Proposer",
-        value: <User address={proposer} />,
+        value: <User role={USER_ROLES.Proposer} address={proposer} />,
       },
       {
         title: "Value",
@@ -46,7 +47,7 @@ function constructProposalProcessItem(item, proposalDetail) {
       },
       {
         title: "Beneficiary",
-        value: <User address={beneficiary} />,
+        value: <User role={USER_ROLES.Beneficiary} address={beneficiary} />,
       },
     ];
 
@@ -81,7 +82,7 @@ function constructProposalProcessItem(item, proposalDetail) {
       fields: [
         {
           title: "Beneficiary",
-          value: <User address={beneficiary} />,
+          value: <User role={USER_ROLES.Beneficiary} address={beneficiary} />,
         },
         {
           title: "Value",

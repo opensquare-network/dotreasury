@@ -1,5 +1,6 @@
 import BigNumber from "bignumber.js";
-import { stringUpperFirst, stringCamelCase } from "@polkadot/util";
+import { stringUpperFirst, stringCamelCase, isHex, hexToU8a } from "@polkadot/util";
+import { encodeAddress, decodeAddress } from "@polkadot/util-crypto";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import md5 from "md5";
@@ -50,7 +51,11 @@ export const getLinkNameAndSrc = (link) => {
 
     let src = "";
     let name = "";
-    if (url.host.endsWith("youtube.com") || url.host.endsWith("youtu.be")) {
+
+    if (url.protocol === "mailto:") {
+      src = "/imgs/email-logo.svg";
+      name = "Email";
+    } else if (url.host.endsWith("youtube.com") || url.host.endsWith("youtu.be")) {
       src = "/imgs/youtube-logo.svg";
       name = "YouTube";
     } else if (
@@ -86,6 +91,12 @@ export const getLinkNameAndSrc = (link) => {
     } else if (url.host.endsWith("subsquare.io")) {
       src = "/imgs/subsquare-logo.svg";
       name = "Subsquare";
+    } else if (url.host.endsWith("matrix.to")) {
+      src = "/imgs/element-logo.svg";
+      name = "Element";
+    } else if (url.host.endsWith("subscan.io")) {
+      src = "/imgs/subscan-logo.svg";
+      name = "Subscan";
     } else {
       src = "/imgs/link-icon.svg";
     }
@@ -213,4 +224,58 @@ export function abbreviateBigNumber(x, fixed = 2) {
   });
   BigNumber.config({ FORMAT: fmt });
   return new BigNumber(n.dividedBy(divideBy).toFixed(fixed)).toFormat();
+}
+
+export function emptyFunction() {}
+
+export function isSameAddress(addr1, addr2) {
+  if (!addr1 || !addr2) {
+    return false;
+  }
+
+  try {
+    return encodeAddress(addr1, 42) === encodeAddress(addr2, 42);
+  } catch (e) {
+    return false;
+  }
+}
+
+export function isAddress(address) {
+  try {
+    encodeAddress(isHex(address) ? hexToU8a(address) : decodeAddress(address));
+
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
+export function checkInputValue(value, valueName = "Value") {
+  if (!value) {
+    return `${valueName} cannot be empty`;
+  }
+
+  const bnValue = new BigNumber(value);
+
+  if (bnValue.isNaN()) {
+    return `${valueName} must be number`;
+  }
+
+  if (!bnValue.gt(0)) {
+    return `${valueName} must larger then 0`;
+  }
+
+  return null;
+}
+
+export function checkInputAddress(address, addressName) {
+  if (!address) {
+    return `${addressName || "Address"} cannot be empty`;
+  }
+
+  if (!isAddress(address)) {
+    return `Invalid ${addressName ? addressName.toLowerCase() : ""} address`;
+  }
+
+  return null;
 }

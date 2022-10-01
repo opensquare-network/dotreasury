@@ -1,7 +1,7 @@
 import { createSlice, createSelector } from "@reduxjs/toolkit";
 import api from "../../services/scanApi";
 import { getTipCountdown } from "../../services/chainApi";
-import { tipStatusMap } from "../../constants";
+import { EMPTY_TABLE_DATA, tipStatusMap } from "../../constants";
 
 const tipSlice = createSlice({
   name: "tips",
@@ -56,6 +56,9 @@ export const fetchTips = (chain, page = 0, pageSize = 30, filterData = {}) => as
     dispatch(setLoading(false));
   }
 };
+export const resetTips = () => (dispatch) => {
+  dispatch(setTips(EMPTY_TABLE_DATA));
+}
 
 export const fetchTipDetail = (chain, tipId) => async (dispatch) => {
   dispatch(setLoadingTipDetail(true));
@@ -75,7 +78,7 @@ export const fetchTipCountdown = (chain) => async (dispatch) => {
 const tipFinalStates = ["TipRetracted", "TipClosed"];
 const showStatusMap = tipStatusMap;
 
-function normalizeTip(tip) {
+export function normalizeTip(tip) {
   const showTime = tipFinalStates.includes(tip.latestState?.state);
   const showStatus = showStatusMap[tip.latestState?.state];
 

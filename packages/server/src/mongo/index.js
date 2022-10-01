@@ -96,6 +96,26 @@ function getOutputWeeklyStatsCollection(chain) {
   return db(chain).getOutputWeeklyStatsCollection();
 }
 
+function getParticipantCollection(chain) {
+  return db(chain).getParticipantCollection();
+}
+
+function getTermsCollection(chain) {
+  return db(chain).getTermsCollection();
+}
+
+function getTermCouncilorCollection(chain) {
+  return db(chain).getTermCouncilorCollection();
+}
+
+function getMotionVoterCollection(chain) {
+  return db(chain).getMotionVoterCollection();
+}
+
+function getTipperCollection(chain) {
+  return db(chain).getTipperCollection();
+}
+
 module.exports = {
   initDb,
   getStatusCollection,
@@ -120,4 +140,9 @@ module.exports = {
   getInputWeeklyStatsCollection,
   getOutputWeeklyStatsCollection,
   getOutputStatusCollection,
+  getParticipantCollection,
+  getTermsCollection,
+  getTermCouncilorCollection,
+  getMotionVoterCollection,
+  getTipperCollection,
 };

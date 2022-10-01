@@ -123,6 +123,8 @@ export const useMenuTab = () => {
       ? "TipFinders"
       : pathname === `/${symbol}/proposal-beneficiaries`
       ? "ProposalBeneficiaries"
+      : pathname.startsWith(`/${symbol}/users`)
+      ? "Users"
       : "Home";
     dispatch(setShowMenuTabs(menuTabsName));
   }, [pathname, dispatch, symbol]);
@@ -204,7 +206,7 @@ export function useWhyDidYouUpdate(name, props) {
   });
 }
 
-export function useIsAdmin() {
+export function useIsAdminQuery() {
   const location = useLocation();
   const q = queryString.parse(location.search);
   const isAdmin = q.admin === "true";
