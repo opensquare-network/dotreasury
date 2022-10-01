@@ -12,6 +12,7 @@ import { isProposalsRole } from "./utils";
 import { makeInSiteUserDetailLink } from "../../utils/url";
 import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
+import Grade from "./Councilor/Grade";
 
 export default function UsersDetail() {
   useEnsureUsersCount();
@@ -48,6 +49,8 @@ export default function UsersDetail() {
       {councilorRole && <Councilor role={role} />}
 
       {proposalsRole && <ProposalsTables role={role} />}
+
+      <Grade />
     </div>
   );
 }

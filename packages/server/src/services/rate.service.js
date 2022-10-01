@@ -73,6 +73,8 @@ class RateService {
       indexer = getIndexer(chain, "proposal", index);
     } else if ("councilor" === type) {
       indexer = getIndexer(chain, "councilor", index);
+    } else if ("user" === type) {
+      indexer = getIndexer(chain, "user", index);
     } else if ("project" === type) {
       if (index === undefined) {
         throw new HttpError(400, "Index is missing");

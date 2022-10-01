@@ -2,6 +2,7 @@ const Router = require("koa-router");
 const beneficiaryController = require("./beneficiary.controller");
 const proposerController = require("./proposer.controller");
 const councilorController = require("./councilor.controller");
+const { getUserRates, getUserRateStats } = require("./user.controller");
 
 const router = new Router();
 
@@ -28,5 +29,8 @@ router.get(
   "/account/:address/councilor/ratestats",
   councilorController.getRateStats,
 );
+
+router.get("/account/:address/rates", getUserRates)
+router.get("/account/:address/ratestats", getUserRateStats);
 
 module.exports = router;
