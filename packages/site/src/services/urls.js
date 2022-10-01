@@ -22,3 +22,7 @@ export function userDetailCouncilorRates(chain, address) {
 export function userDetailCouncilorRateStats(chain, address) {
   return makeUrlPathname(chain, "account", address, "councilor", "ratestats");
 }
+
+export function userDetailRateStats(chain, address) {
+  return makeUrlPathname(chain, "account", address, "ratestats");
+}
