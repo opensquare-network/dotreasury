@@ -71,7 +71,7 @@ function processTimeline(tipDetail, links) {
         },
         {
           title: "Beneficiary",
-          value: <User role={USER_ROLES.Beneficiary} address={beneficiary} />,
+          value: <User role={USER_ROLES.Beneficiary} address={beneficiary?.id || beneficiary} />,
         },
         {
           title: "Tip value",
