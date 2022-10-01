@@ -3,7 +3,7 @@ const config = require("../../config");
 
 const inputDbName = config.mongo.dotInputDbName || "dotreasury-input-dot";
 const outputDbName = config.mongo.dotOutputDbName || "dotreasury-output-dot";
-const councilDbName = config.mongo.dotOutputDbName || "dotreasury-council-dot";
+const councilDbName = config.mongo.dotCouncilDbName || "dotreasury-council-dot";
 
 const statusCollectionName = "status";
 
