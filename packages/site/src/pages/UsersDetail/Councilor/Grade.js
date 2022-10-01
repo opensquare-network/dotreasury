@@ -10,7 +10,7 @@ export default function Grade() {
   const { address } = useParams();
 
   return <MarginWrapper>
-    <Rate type="user" index={ address } />;
+    <Rate type="user" index={ address } />
   </MarginWrapper>
 
 }

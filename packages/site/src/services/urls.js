@@ -19,6 +19,11 @@ export function userDetailCouncilorTips(chain, address) {
 export function userDetailCouncilorRates(chain, address) {
   return makeUrlPathname(chain, "account", address, "councilor", "rates");
 }
+
+export function userDetailRates(chain, address) {
+  return makeUrlPathname(chain, "account", address, "rates");
+}
+
 export function userDetailCouncilorRateStats(chain, address) {
   return makeUrlPathname(chain, "account", address, "councilor", "ratestats");
 }

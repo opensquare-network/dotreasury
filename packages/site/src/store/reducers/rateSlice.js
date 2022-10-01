@@ -4,7 +4,12 @@ import api from "../../services/scanApi";
 import { signMessageWithExtension } from "../../services/chainApi";
 import { addToast } from "./toastSlice";
 import { REACTION_THUMBUP } from "../../constants";
-import { userDetailCouncilorRates, userDetailCouncilorRateStats, userDetailRateStats } from "../../services/urls";
+import {
+  userDetailCouncilorRates,
+  userDetailCouncilorRateStats,
+  userDetailRates,
+  userDetailRateStats
+} from "../../services/urls";
 
 const rateSlice = createSlice({
   name: "rate",
@@ -121,7 +126,7 @@ export const fetchRates = (chain, type, index, page, pageSize) => async (
   if (type === "councilor") {
     url = userDetailCouncilorRates(chain, index);
   } else if (type === "user") {
-    url = userDetailRateStats(chain, index);
+    url = userDetailRates(chain, index);
   }
 
   const { result } = await api.maybeAuthFetch(url, { page, pageSize });
