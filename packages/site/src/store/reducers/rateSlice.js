@@ -4,10 +4,7 @@ import api from "../../services/scanApi";
 import { signMessageWithExtension } from "../../services/chainApi";
 import { addToast } from "./toastSlice";
 import { REACTION_THUMBUP } from "../../constants";
-import {
-  userDetailCouncilorRates,
-  userDetailCouncilorRateStats
-} from "../../services/urls";
+import { userDetailCouncilorRates, userDetailCouncilorRateStats, userDetailRateStats } from "../../services/urls";
 
 const rateSlice = createSlice({
   name: "rate",
@@ -96,10 +93,12 @@ export const addRate = (
 };
 
 export const fetchRateStats = (chain, type, index) => async (dispatch) => {
-  const url =
-    type === 'councilor'
-      ? userDetailCouncilorRateStats(chain, index)
-      : `/${chain}/${pluralize(type)}/${index}/ratestats`
+  let url = `/${chain}/${pluralize(type)}/${index}/ratestats`;
+  if (type === 'councilor') {
+    url = userDetailCouncilorRateStats(chain, index)
+  } else if (type === 'user') {
+    url = userDetailRateStats(chain, index);
+  }
 
   const { result } = await api.fetch(url);
   dispatch(
@@ -118,10 +117,13 @@ export const fetchRateStats = (chain, type, index) => async (dispatch) => {
 export const fetchRates = (chain, type, index, page, pageSize) => async (
   dispatch
 ) => {
-  const url =
-    type === "councilor"
-      ? userDetailCouncilorRates(chain, index)
-      : `/${chain}/${pluralize(type)}/${index}/rates`
+  let url = `/${chain}/${pluralize(type)}/${index}/rates`;
+  if (type === "councilor") {
+    url = userDetailCouncilorRates(chain, index);
+  } else if (type === "user") {
+    url = userDetailRateStats(chain, index);
+  }
+
   const { result } = await api.maybeAuthFetch(url, { page, pageSize });
   dispatch(
     setRates(
