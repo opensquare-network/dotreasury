@@ -20,7 +20,7 @@ const OnChainActionButton = styled.div`
   white-space: nowrap;
   ${p => p.disabled && css`
     color: white;
-    background: #F292A4;
+    background: #CCCCCC;
     opacity: 1;
     pointer-events: none;
   `}
