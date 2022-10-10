@@ -199,4 +199,5 @@ export default function NewTipModal({ visible, setVisible, onFinalized }) {
         <ButtonPrimary disabled={isLoading} onClick={submit}>Submit</ButtonPrimary>
       </Footer>
     </ActionModal>
-  );}
+  );
+}
