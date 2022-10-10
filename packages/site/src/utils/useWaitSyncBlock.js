@@ -39,9 +39,10 @@ export default function useWaitSyncBlock(toastMessage, callback) {
           }
         }
 
-        callback();
+        const reachingFinalizedBlock = times >= 0;
+        callback(reachingFinalizedBlock);
       } catch (e) {
-        // ignore
+        console.error(e);
       } finally {
         dispatch(removeToast(toastId));
       }

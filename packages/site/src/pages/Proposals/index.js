@@ -20,6 +20,7 @@ import Text from "../../components/Text";
 import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../constants";
 import useWaitSyncBlock from "../../utils/useWaitSyncBlock";
 import NewProposalButton from "./NewProposalButton";
+import { newSuccessToast } from "../../store/reducers/toastSlice";
 
 const HeaderWrapper = styled.div`
   padding: 20px 24px;
@@ -71,8 +72,11 @@ const Proposals = () => {
   }, []);
 
   const refreshProposals = useCallback(
-    () => {
+    (reachingFinalizedBlock) => {
       dispatch(fetchProposals(chain, tablePage - 1, pageSize, filterData));
+      if (reachingFinalizedBlock) {
+        dispatch(newSuccessToast("Sync finished. Please provide context info for your proposal on subsquare or polkassembly."));
+      }
     },
     [dispatch, chain, tablePage, pageSize, filterData]
   );
