@@ -42,7 +42,7 @@ async function queryChildBounties(ctx, chain, q = {}) {
     .skip(page * pageSize)
     .limit(pageSize)
     .toArray();
-  const total = await col.estimatedDocumentCount();
+  const total = await col.countDocuments(q);
 
   return {
     items: bounties,
