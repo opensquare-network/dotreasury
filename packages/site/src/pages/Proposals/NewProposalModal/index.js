@@ -19,6 +19,7 @@ import CustomInput from "../../../components/Input";
 import AssetInput from "../../../components/AssetInput";
 import useProposalBond from "../../../hooks/useProposalBond";
 import TextBox from "../../../components/TextBox";
+import useBalance from "../../../utils/useBalance";
 
 const Footer = styled.div`
   display: flex;
@@ -61,6 +62,7 @@ export default function NewProposalModal({ visible, setVisible, onFinalized }) {
     api,
     proposalValue,
   });
+  const { balance } = useBalance(api, account?.address);
 
   const submit = async () => {
     if (!api) {
@@ -85,6 +87,10 @@ export default function NewProposalModal({ visible, setVisible, onFinalized }) {
       return;
     }
 
+    if (bond.gt(balance)) {
+      setErrorMessage(`Account does not have enough funds`);
+      return;
+    }
 
     setIsLoading(true);
 

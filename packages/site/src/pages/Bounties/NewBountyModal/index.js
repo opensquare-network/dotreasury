@@ -64,41 +64,6 @@ export default function NewBountyModal({ visible, setVisible, onFinalized }) {
   } = useBountyConsts(api);
   const { balance } = useBalance(api, account?.address);
 
-  const checkNonEmptyInput = useCallback(() => {
-    if (bountyTitle) {
-      if (countUtf8Bytes(bountyTitle) > maximumReasonLength) {
-        return `The maximum size of bounty title is ${bountyValueMinimum} bytes`;
-      }
-    }
-
-    if (inputValue) {
-      const errorMsg = checkInputValue(inputValue);
-      if (errorMsg) {
-        return errorMsg;
-      }
-
-      const maxInputValue = toPrecision(bountyValueMinimum, precision, false);
-      if (new BigNumber(inputValue).lt(maxInputValue)) {
-        return `The minimum of bounty value is ${maxInputValue} ${symbol}`;
-      }
-    }
-
-    if (bond) {
-      if (new BigNumber(bond).gt(balance)) {
-        return `Account does not have enough funds`;
-      }
-    }
-  }, [
-    precision,
-    symbol,
-    inputValue,
-    bountyTitle,
-    bountyValueMinimum,
-    maximumReasonLength,
-    bond,
-    balance,
-  ])
-
   const submit = async () => {
     if (!api) {
       return showErrorToast("Chain network is not connected yet");
@@ -115,14 +80,25 @@ export default function NewBountyModal({ visible, setVisible, onFinalized }) {
       return;
     }
 
-    if (!inputValue) {
-      setErrorMessage("Value is required");
-      return
+    if (countUtf8Bytes(bountyTitle) > maximumReasonLength) {
+      setErrorMessage(`Bounty title is too long`);
+      return;
     }
 
-    const errorMessage = checkNonEmptyInput();
-    if (errorMessage) {
-      setErrorMessage(errorMessage);
+    let errorMsg = checkInputValue(inputValue);
+    if (errorMsg) {
+      setErrorMessage(errorMsg);
+      return;
+    }
+
+    const minInputValue = toPrecision(bountyValueMinimum, precision, false);
+    if (new BigNumber(inputValue).lt(minInputValue)) {
+      setErrorMessage(`The minimum of bounty value is ${minInputValue} ${symbol}`);
+      return;
+    }
+
+    if (new BigNumber(bond).gt(balance)) {
+      setErrorMessage(`Account does not have enough funds`);
       return;
     }
 
