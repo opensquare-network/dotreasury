@@ -1,6 +1,6 @@
 import { web3Enable, web3FromSource } from "@polkadot/extension-dapp";
 import BigNumber from "bignumber.js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import ActionModal from "../../../components/ActionModal";
@@ -54,6 +54,8 @@ export default function NewBountyModal({ visible, setVisible, onFinalized }) {
   const isMounted = useIsMounted();
   const symbol = useSelector(chainSymbolSelector);
   const precision = getPrecision(symbol);
+
+  useEffect(() => setErrorMessage(), [visible]);
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
