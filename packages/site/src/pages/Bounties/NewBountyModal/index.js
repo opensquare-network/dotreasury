@@ -46,8 +46,8 @@ const Body = styled.div`
 export default function NewBountyModal({ visible, setVisible, onFinalized }) {
   const dispatch = useDispatch();
   const [errorMessage, setErrorMessage] = useState();
-  const [bountyTitle, setBountyTitle] = useState("");
-  const [inputValue, setInputValue] = useState("");
+  const [bountyTitle, setBountyTitle] = useState();
+  const [inputValue, setInputValue] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const account = useSelector(accountSelector);
   const api = useApi();
@@ -55,7 +55,11 @@ export default function NewBountyModal({ visible, setVisible, onFinalized }) {
   const symbol = useSelector(chainSymbolSelector);
   const precision = getPrecision(symbol);
 
-  useEffect(() => setErrorMessage(), [visible]);
+  useEffect(() =>{
+    setErrorMessage();
+    setBountyTitle("");
+    setInputValue("");
+  }, [visible]);
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
