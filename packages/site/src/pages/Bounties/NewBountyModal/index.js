@@ -1,6 +1,6 @@
 import { web3Enable, web3FromSource } from "@polkadot/extension-dapp";
 import BigNumber from "bignumber.js";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import ActionModal from "../../../components/ActionModal";
@@ -10,15 +10,18 @@ import useApi from "../../../hooks/useApi";
 import { accountSelector } from "../../../store/reducers/accountSlice";
 import { chainSymbolSelector } from "../../../store/reducers/chainSlice";
 import { newErrorToast } from "../../../store/reducers/toastSlice";
-import { checkInputAddress, checkInputValue, getPrecision, toPrecision } from "../../../utils";
+import { checkInputValue, getPrecision, toPrecision } from "../../../utils";
 import { useIsMounted } from "../../../utils/hooks";
 import { sendTx } from "../../../utils/sendTx";
 import { ErrorMessage } from "../../../components/styled";
 import { Field, FieldTitle } from "../../../components/ActionModal/styled";
 import CustomInput from "../../../components/Input";
 import AssetInput from "../../../components/AssetInput";
-import useProposalBond from "../../../hooks/useProposalBond";
 import TextBox from "../../../components/TextBox";
+import useBountyBond from "../../../hooks/useBountyBond";
+import useBountyConsts from "../../../hooks/useBountyConsts";
+import { countUtf8Bytes } from "../../../utils/bountyHelper";
+import useBalance from "../../../utils/useBalance";
 
 const Footer = styled.div`
   display: flex;
@@ -40,10 +43,10 @@ const Body = styled.div`
   }
 `;
 
-export default function NewProposalModal({ visible, setVisible, onFinalized }) {
+export default function NewBountyModal({ visible, setVisible, onFinalized }) {
   const dispatch = useDispatch();
   const [errorMessage, setErrorMessage] = useState();
-  const [beneficiary, setBeneficiary] = useState();
+  const [bountyTitle, setBountyTitle] = useState();
   const [inputValue, setInputValue] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const account = useSelector(accountSelector);
@@ -54,13 +57,47 @@ export default function NewProposalModal({ visible, setVisible, onFinalized }) {
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
-  const proposalValue = new BigNumber(inputValue).times(
-    Math.pow(10, precision)
-  );
-  const bond = useProposalBond({
-    api,
-    proposalValue,
-  });
+  const bond = useBountyBond(api, bountyTitle);
+  const {
+    bountyValueMinimum,
+    maximumReasonLength,
+  } = useBountyConsts(api);
+  const { balance } = useBalance(api, account?.address);
+
+  const checkNonEmptyInput = useCallback(() => {
+    if (bountyTitle) {
+      if (countUtf8Bytes(bountyTitle) > maximumReasonLength) {
+        return `The maximum size of bounty title is ${bountyValueMinimum} bytes`;
+      }
+    }
+
+    if (inputValue) {
+      const errorMsg = checkInputValue(inputValue);
+      if (errorMsg) {
+        return errorMsg;
+      }
+
+      const maxInputValue = toPrecision(bountyValueMinimum, precision, false);
+      if (new BigNumber(inputValue).lt(maxInputValue)) {
+        return `The minimum of bounty value is ${maxInputValue} ${symbol}`;
+      }
+    }
+
+    if (bond) {
+      if (new BigNumber(bond).gt(balance)) {
+        return `Account does not have enough funds`;
+      }
+    }
+  }, [
+    precision,
+    symbol,
+    inputValue,
+    bountyTitle,
+    bountyValueMinimum,
+    maximumReasonLength,
+    bond,
+    balance,
+  ])
 
   const submit = async () => {
     if (!api) {
@@ -73,18 +110,21 @@ export default function NewProposalModal({ visible, setVisible, onFinalized }) {
 
     setErrorMessage();
 
-    let errorMessage = checkInputAddress(beneficiary, "Beneficiary");
+    if (!bountyTitle) {
+      setErrorMessage("Bounty title is required");
+      return;
+    }
+
+    if (!inputValue) {
+      setErrorMessage("Value is required");
+      return
+    }
+
+    const errorMessage = checkNonEmptyInput();
     if (errorMessage) {
       setErrorMessage(errorMessage);
       return;
     }
-
-    errorMessage = checkInputValue(inputValue);
-    if (errorMessage) {
-      setErrorMessage(errorMessage);
-      return;
-    }
-
 
     setIsLoading(true);
 
@@ -93,10 +133,10 @@ export default function NewProposalModal({ visible, setVisible, onFinalized }) {
       const injector = await web3FromSource(account.extension);
 
       const bnValue = new BigNumber(inputValue).times(Math.pow(10, precision));
-      const tx = api.tx.treasury.proposeSpend(bnValue.toString(), beneficiary);
+      const tx = api.tx.bounties.proposeBounty(bnValue.toString(), bountyTitle);
 
       await sendTx({
-        txName: "New Proposal",
+        txName: "New Bounty",
         tx,
         signer: injector.signer,
         dispatch,
@@ -112,17 +152,17 @@ export default function NewProposalModal({ visible, setVisible, onFinalized }) {
   };
 
   return (
-    <ActionModal title="New Proposal" visible={visible} setVisible={setVisible}>
+    <ActionModal title="New Bounty" visible={visible} setVisible={setVisible}>
       <Signer />
       <Body>
         {errorMessage && (
           <ErrorMessage className="error">{errorMessage}</ErrorMessage>
         )}
         <Field>
-          <FieldTitle>Beneficiary</FieldTitle>
+          <FieldTitle>Bounty title</FieldTitle>
           <CustomInput
-            placeholder="Please fill beneficiary address..."
-            onChange={e => setBeneficiary(e.target.value)}
+            placeholder="Please fill bounty title..."
+            onChange={e => setBountyTitle(e.target.value)}
           />
         </Field>
         <Field>
@@ -134,8 +174,8 @@ export default function NewProposalModal({ visible, setVisible, onFinalized }) {
           />
         </Field>
         <Field>
-          <FieldTitle>Proposal bond</FieldTitle>
-          <TextBox>{toPrecision(bond.toString(), precision, false)}</TextBox>
+          <FieldTitle>Bounty bond</FieldTitle>
+          <TextBox>{toPrecision(bond || 0, precision, false)}</TextBox>
         </Field>
       </Body>
       <Footer>

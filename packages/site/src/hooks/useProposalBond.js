@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import BigNumber from "bignumber.js";
 
-export default function useBond({ api, proposalValue }) {
+export default function useProposalBond({ api, proposalValue }) {
   const [bondPercentage, setBondPercentage] = useState();
   const [bondMaximum, setBondMaximum] = useState();
   const [bondMinimum, setBondMinimum] = useState();
