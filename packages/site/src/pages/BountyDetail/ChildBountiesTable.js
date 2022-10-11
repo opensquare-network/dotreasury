@@ -4,7 +4,7 @@ import ChildBountiesTable from "../ChildBounties/ChildBountiesTable";
 import { PRIMARY_THEME_COLOR, SECONDARY_THEME_COLOR } from "../../constants";
 import Pagination from "../Bounties/Pagination";
 import { useLocalStorage } from "../../utils/hooks";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   fetchChildBountiesByParentIndex,
@@ -14,18 +14,24 @@ import {
 import { chainSelector } from "../../store/reducers/chainSlice";
 import { compatChildBountyData } from "../ChildBounties/utils";
 import { DEFAULT_PAGE_SIZE } from "../../constants";
+import { Flex } from "../../components/styled";
+import NewChildBountyButton from "./NewChildBountyButton";
+import { newSuccessToast } from "../../store/reducers/toastSlice";
+import useWaitSyncBlock from "../../utils/useWaitSyncBlock";
 
 const Wrapper = styled.div`
   margin-top: 24px;
 `;
 
 const Header = styled.div`
-  max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
   font-weight: bold;
   font-size: 16px;
   line-height: 24px;
   color: rgba(0, 0, 0, 0.9);
-  display: flex;
 
   div.ui.label {
     background: ${SECONDARY_THEME_COLOR} !important;
@@ -68,10 +74,29 @@ function ChildTable({ index }) {
     return childBounties.map(compatChildBountyData);
   }, [childBounties]);
 
+  const refreshChildBounties = useCallback(
+    (reachingFinalizedBlock) => {
+      dispatch(
+        fetchChildBountiesByParentIndex(chain, index, tablePage - 1, pageSize)
+      );
+      if (reachingFinalizedBlock) {
+        dispatch(newSuccessToast("Sync finished. Please provide context info for your child bounty on subsquare or polkassembly."));
+      }
+    },
+    [dispatch, chain, index, tablePage, pageSize]
+  );
+
+  const onFinalized = useWaitSyncBlock("Child bounty created", refreshChildBounties);
+
   const header = (
     <Header>
-      <span>Child Bounties</span>
-      <Label>{total}</Label>
+      <Flex>
+        <span>Child Bounties</span>
+        <Label>{total}</Label>
+      </Flex>
+      <div style={{ display: "flex", gap: "16px" }}>
+        <NewChildBountyButton parentBountyId={index} onFinalized={onFinalized} />
+      </div>
     </Header>
   );
 
