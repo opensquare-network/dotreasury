@@ -141,7 +141,10 @@ export default function NewProposalModal({ visible, setVisible, onFinalized }) {
         </Field>
         <Field>
           <FieldTitle>Proposal bond</FieldTitle>
-          <TextBox>{toPrecision(bond.toString(), precision, false)}</TextBox>
+          <TextBox>
+            <span>{toPrecision(bond.toString(), precision, false)}</span>
+            <span>{symbol}</span>
+          </TextBox>
         </Field>
       </Body>
       <Footer>

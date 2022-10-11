@@ -1,6 +1,6 @@
 import { web3Enable, web3FromSource } from "@polkadot/extension-dapp";
 import BigNumber from "bignumber.js";
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import ActionModal from "../../../components/ActionModal";
@@ -151,7 +151,10 @@ export default function NewBountyModal({ visible, setVisible, onFinalized }) {
         </Field>
         <Field>
           <FieldTitle>Bounty bond</FieldTitle>
-          <TextBox>{toPrecision(bond || 0, precision, false)}</TextBox>
+          <TextBox>
+            <span>{toPrecision(bond, precision, false)}</span>
+            <span>{symbol}</span>
+          </TextBox>
         </Field>
       </Body>
       <Footer>

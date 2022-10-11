@@ -7,7 +7,7 @@ export default function useBountyBond(api, title) {
     bountyDepositBase,
     dataDepositPerByte,
   } = useBountyConsts(api);
-  const [bond, setBond] = useState(bountyDepositBase);
+  const [bond, setBond] = useState(bountyDepositBase || 0);
 
   useEffect(() => {
     if (!bountyDepositBase || !dataDepositPerByte) {
