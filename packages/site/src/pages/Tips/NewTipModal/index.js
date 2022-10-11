@@ -124,6 +124,13 @@ export default function NewTipModal({ visible, setVisible, onFinalized }) {
         validationFail = true;
         continue;
       }
+
+      const maxReasonLength = api.consts.tips?.maximumReasonLength?.toJSON() || 256;
+      if (newTip.reason.length > maxReasonLength) {
+        newTip.errorMessage = "Reason is too long";
+        validationFail = true;
+        continue;
+      }
     }
 
     if (validationFail) {

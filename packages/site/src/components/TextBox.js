@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 const TextBox = styled.div`
   display: flex;
+  justify-content: space-between;
   padding: 8px 16px;
   gap: 16px;
 

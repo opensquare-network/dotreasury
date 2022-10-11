@@ -10,15 +10,17 @@ import useApi from "../../../hooks/useApi";
 import { accountSelector } from "../../../store/reducers/accountSlice";
 import { chainSymbolSelector } from "../../../store/reducers/chainSlice";
 import { newErrorToast } from "../../../store/reducers/toastSlice";
-import { checkInputAddress, checkInputValue, getPrecision, toPrecision } from "../../../utils";
+import { checkInputValue, getPrecision, toPrecision } from "../../../utils";
 import { useIsMounted } from "../../../utils/hooks";
 import { sendTx } from "../../../utils/sendTx";
 import { ErrorMessage } from "../../../components/styled";
 import { Field, FieldTitle } from "../../../components/ActionModal/styled";
 import CustomInput from "../../../components/Input";
 import AssetInput from "../../../components/AssetInput";
-import useProposalBond from "../../../hooks/useProposalBond";
 import TextBox from "../../../components/TextBox";
+import useBountyBond from "../../../hooks/useBountyBond";
+import useBountyConsts from "../../../hooks/useBountyConsts";
+import { countUtf8Bytes } from "../../../utils/bountyHelper";
 import useBalance from "../../../utils/useBalance";
 
 const Footer = styled.div`
@@ -41,10 +43,10 @@ const Body = styled.div`
   }
 `;
 
-export default function NewProposalModal({ visible, setVisible, onFinalized }) {
+export default function NewBountyModal({ visible, setVisible, onFinalized }) {
   const dispatch = useDispatch();
   const [errorMessage, setErrorMessage] = useState();
-  const [beneficiary, setBeneficiary] = useState();
+  const [bountyTitle, setBountyTitle] = useState();
   const [inputValue, setInputValue] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const account = useSelector(accountSelector);
@@ -53,21 +55,19 @@ export default function NewProposalModal({ visible, setVisible, onFinalized }) {
   const symbol = useSelector(chainSymbolSelector);
   const precision = getPrecision(symbol);
 
-  const showErrorToast = (message) => dispatch(newErrorToast(message));
-
-  useEffect(() => {
+  useEffect(() =>{
     setErrorMessage();
-    setBeneficiary("");
+    setBountyTitle("");
     setInputValue("");
   }, [visible]);
 
-  const proposalValue = new BigNumber(inputValue).times(
-    Math.pow(10, precision)
-  );
-  const bond = useProposalBond({
-    api,
-    proposalValue,
-  });
+  const showErrorToast = (message) => dispatch(newErrorToast(message));
+
+  const bond = useBountyBond(api, bountyTitle);
+  const {
+    bountyValueMinimum,
+    maximumReasonLength,
+  } = useBountyConsts(api);
   const { balance } = useBalance(api, account?.address);
 
   const submit = async () => {
@@ -81,19 +81,29 @@ export default function NewProposalModal({ visible, setVisible, onFinalized }) {
 
     setErrorMessage();
 
-    let errorMessage = checkInputAddress(beneficiary, "Beneficiary");
-    if (errorMessage) {
-      setErrorMessage(errorMessage);
+    if (!bountyTitle) {
+      setErrorMessage("Bounty title is required");
       return;
     }
 
-    errorMessage = checkInputValue(inputValue);
-    if (errorMessage) {
-      setErrorMessage(errorMessage);
+    if (countUtf8Bytes(bountyTitle) > maximumReasonLength) {
+      setErrorMessage(`Bounty title is too long`);
       return;
     }
 
-    if (bond.gt(balance)) {
+    let errorMsg = checkInputValue(inputValue);
+    if (errorMsg) {
+      setErrorMessage(errorMsg);
+      return;
+    }
+
+    const minInputValue = toPrecision(bountyValueMinimum, precision, false);
+    if (new BigNumber(inputValue).lt(minInputValue)) {
+      setErrorMessage(`The minimum of bounty value is ${minInputValue} ${symbol}`);
+      return;
+    }
+
+    if (new BigNumber(bond).gt(balance)) {
       setErrorMessage(`Account does not have enough funds`);
       return;
     }
@@ -105,10 +115,10 @@ export default function NewProposalModal({ visible, setVisible, onFinalized }) {
       const injector = await web3FromSource(account.extension);
 
       const bnValue = new BigNumber(inputValue).times(Math.pow(10, precision));
-      const tx = api.tx.treasury.proposeSpend(bnValue.toString(), beneficiary);
+      const tx = api.tx.bounties.proposeBounty(bnValue.toString(), bountyTitle);
 
       await sendTx({
-        txName: "New Proposal",
+        txName: "New Bounty",
         tx,
         signer: injector.signer,
         dispatch,
@@ -124,17 +134,17 @@ export default function NewProposalModal({ visible, setVisible, onFinalized }) {
   };
 
   return (
-    <ActionModal title="New Proposal" visible={visible} setVisible={setVisible}>
+    <ActionModal title="New Bounty" visible={visible} setVisible={setVisible}>
       <Signer />
       <Body>
         {errorMessage && (
           <ErrorMessage className="error">{errorMessage}</ErrorMessage>
         )}
         <Field>
-          <FieldTitle>Beneficiary</FieldTitle>
+          <FieldTitle>Bounty title</FieldTitle>
           <CustomInput
-            placeholder="Please fill beneficiary address..."
-            onChange={e => setBeneficiary(e.target.value)}
+            placeholder="Please fill bounty title..."
+            onChange={e => setBountyTitle(e.target.value)}
           />
         </Field>
         <Field>
@@ -146,9 +156,9 @@ export default function NewProposalModal({ visible, setVisible, onFinalized }) {
           />
         </Field>
         <Field>
-          <FieldTitle>Proposal bond</FieldTitle>
+          <FieldTitle>Bounty bond</FieldTitle>
           <TextBox>
-            <span>{toPrecision(bond.toString(), precision, false)}</span>
+            <span>{toPrecision(bond, precision, false)}</span>
             <span>{symbol}</span>
           </TextBox>
         </Field>

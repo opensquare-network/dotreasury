@@ -1,5 +1,5 @@
 // @ts-check
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import Nav from "./Nav";
 import Pagination from "./Pagination";
@@ -15,13 +15,16 @@ import {
 } from "../../store/reducers/bountySlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../constants";
+import NewBountyButton from "./NewBountyButton";
+import { newSuccessToast } from "../../store/reducers/toastSlice";
+import useWaitSyncBlock from "../../utils/useWaitSyncBlock";
 
 const QUERY_PAGE_KEY = "page";
 
 const Bounties = () => {
   useChainRoute();
 
-  const searchPage = parseInt(useQuery().get(QUERY_PAGE_KEY));
+  const searchPage = parseInt(useQuery().get(QUERY_PAGE_KEY) || "1");
   const queryPage =
     searchPage && !isNaN(searchPage) && searchPage > 0
       ? searchPage
@@ -53,7 +56,26 @@ const Bounties = () => {
 
   const tableData = useMemo(() => bounties, [bounties]);
 
-  const header = <Nav active="Bounties" />;
+  const refreshBounties = useCallback(
+    (reachingFinalizedBlock) => {
+      dispatch(fetchBounties(chain, tablePage - 1, pageSize));
+      if (reachingFinalizedBlock) {
+        dispatch(newSuccessToast("Sync finished. Please provide context info for your bounty on subsquare or polkassembly."));
+      }
+    },
+    [dispatch, chain, tablePage, pageSize]
+  );
+
+  const onFinalized = useWaitSyncBlock("Bounty created", refreshBounties);
+
+  const header = (
+    <>
+      <Nav active="Bounties" />;
+      <div style={{ display: "flex", gap: "16px" }}>
+        <NewBountyButton onFinalized={onFinalized} />
+      </div>
+    </>
+  );
 
   const footer = (
     <Pagination
