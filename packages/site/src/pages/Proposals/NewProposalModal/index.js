@@ -1,6 +1,6 @@
 import { web3Enable, web3FromSource } from "@polkadot/extension-dapp";
 import BigNumber from "bignumber.js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import ActionModal from "../../../components/ActionModal";
@@ -54,6 +54,12 @@ export default function NewProposalModal({ visible, setVisible, onFinalized }) {
   const precision = getPrecision(symbol);
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
+
+  useEffect(() => {
+    setErrorMessage();
+    setBeneficiary("");
+    setInputValue("");
+  }, [visible]);
 
   const proposalValue = new BigNumber(inputValue).times(
     Math.pow(10, precision)
