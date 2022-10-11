@@ -382,6 +382,7 @@ const TabExampleSecondaryPointing = () => {
       ? [
           {
             menuItem: {
+              as: NavLink,
               id: "UsersTab",
               to: `/${symbol}/users`,
               key: "users",
