@@ -47,16 +47,12 @@ export default function EndorseTipsModal({ visible, setVisible, onFinalized }) {
     tipValues,
   } = useTipsTable({ tips, isLoading });
 
-  const disabled = !isLoggedIn || isEmpty(tipValues) || !isCouncilor;
+  const disabled = !isLoggedIn || isEmpty(tipValues) || !isCouncilor || isLoading;
 
   useEffect(() => {
     setIsLoading(true);
 
-    serverApi.fetch(
-      `/${chain}/tipping`,
-      {
-        tipper: account?.address
-      })
+    serverApi.fetch(`/${chain}/tipping`, { tipper: account?.address })
       .then(({ result }) => {
         if (result) {
           setTips(result || [])
