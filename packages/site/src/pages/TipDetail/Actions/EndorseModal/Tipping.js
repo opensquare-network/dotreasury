@@ -40,7 +40,7 @@ export default function Tipping({ tipDetail }) {
   const account = useSelector(accountSelector);
   const symbol = useSelector(chainSymbolSelector);
   const [tipValue, setTipValue] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const api = useApi();
   const tipHash = tipDetail?.hash;
   const precision = toPrecision(tipValue, getPrecision(symbol), false);
@@ -60,15 +60,17 @@ export default function Tipping({ tipDetail }) {
     }
 
     setTipValue(null);
+
     setIsLoading(true);
     api.query.tips.tips(tipHash).then((data) => {
       const { tips } = data.toJSON();
-      setIsLoading(false);
       for (const [address, value] of tips) {
         if (isSameAddress(address, account?.address)) {
           setTipValue(value);
         }
       }
+    }).finally(() => {
+      setIsLoading(false);
     });
   }, [api, tipHash, account]);
 

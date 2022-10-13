@@ -7,19 +7,20 @@ import { useState } from "react";
 import { useEffect } from "react";
 import serverApi from "../../../services/scanApi";
 import { useDispatch, useSelector } from "react-redux";
-import { chainSelector } from "../../../store/reducers/chainSlice";
+import { chainSelector, chainSymbolSelector } from "../../../store/reducers/chainSlice";
 import useTipsTable from "./useTipsTable";
 import { sendTx } from "../../../utils/sendTx";
 import { web3Enable, web3FromSource } from "@polkadot/extension-dapp";
 import { accountSelector } from "../../../store/reducers/accountSlice";
 import { useIsMounted } from "../../../utils/hooks";
-import { checkInputValue } from "../../../utils";
+import { checkInputValue, getPrecision } from "../../../utils";
 import { newErrorToast } from "../../../store/reducers/toastSlice";
 import { ErrorMessage, HintMessage } from "../../../components/styled";
 import useApi from "../../../hooks/useApi";
 import useCouncilMembers from "../../../utils/useCouncilMembers";
 import Tooltip from "../../../components/Tooltip";
 import { TooltipInfoText } from "../../../components/Tooltip/styled";
+import BigNumber from "bignumber.js";
 
 const Body = styled.div`
   display: flex;
@@ -44,6 +45,8 @@ export default function EndorseTipsModal({ visible, setVisible, onFinalized }) {
   const [errorMessage, setErrorMessage] = useState();
   const api = useApi();
   const councilMembers = useCouncilMembers();
+  const symbol = useSelector(chainSymbolSelector);
+  const precision = getPrecision(symbol);
 
   const isCouncilor = councilMembers?.includes(account?.address);
 
@@ -89,14 +92,15 @@ export default function EndorseTipsModal({ visible, setVisible, onFinalized }) {
 
     const txs = [];
     for (const hash in tipValues) {
-      const tipValue = tipValues[hash];
-      const errMsg = checkInputValue(tipValue, "Tip value", true)
+      const inputTipValue = tipValues[hash];
+      const errMsg = checkInputValue(inputTipValue, "Tip value", true)
       if (errMsg) {
         setErrorMessage(errMsg);
         return;
       }
 
-      txs.push(api.tx.tips.tip(hash, tipValue));
+      const bnTipValue = new BigNumber(inputTipValue).times(Math.pow(10, precision));
+      txs.push(api.tx.tips.tip(hash, bnTipValue.toString()));
     };
 
     let tx = txs[0];
