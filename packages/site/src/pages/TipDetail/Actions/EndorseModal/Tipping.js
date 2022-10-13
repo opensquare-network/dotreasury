@@ -6,6 +6,7 @@ import { accountSelector } from "../../../../store/reducers/accountSlice";
 import { chainSymbolSelector } from "../../../../store/reducers/chainSlice";
 import { getPrecision, isSameAddress, toPrecision } from "../../../../utils";
 import Loading from "../../../../components/LoadingCircle";
+import { HintMessage } from "../../../../components/styled";
 
 const Wrapper = styled.div`
   display: flex;
@@ -33,21 +34,6 @@ const TippingContainer = styled.div`
 const TippingValue = styled(Wrapper)`
   justify-content: space-between;
   color: rgba(0, 0, 0, 0.9);
-`;
-
-const Message = styled.div`
-  display: flex;
-  padding: 8px 16px;
-
-  background: #FFF0F3;
-  border-radius: 4px;
-
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
-
-  justify-content: center;
-  color: #F23252;
 `;
 
 export default function Tipping({ tipDetail }) {
@@ -100,7 +86,7 @@ export default function Tipping({ tipDetail }) {
             <span>Tipping</span>
             <span>{localePrecision} {symbol}</span>
           </TippingValue>
-          <Message>Resubmiting the tip will overwrite the current tipping record</Message>
+          <HintMessage>Resubmiting the tip will overwrite the current tipping record</HintMessage>
         </TippingContainer>
       )
     )

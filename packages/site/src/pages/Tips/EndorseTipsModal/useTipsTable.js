@@ -18,7 +18,7 @@ export default function useTipsTable({ tips, isLoading }) {
     const tipValues = tips.reduce((result, tip) => (
       {
         ...result,
-        [tip.hash]: toPrecision(tip.medianValue || 0, precision, false)
+        [tip.hash]: `${toPrecision(tip.medianValue || 0, precision, false)}`
       }), {})
     setTipValues(tipValues);
   }, [tips, precision]);

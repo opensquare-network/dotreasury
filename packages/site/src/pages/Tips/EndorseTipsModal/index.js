@@ -15,9 +15,11 @@ import { accountSelector } from "../../../store/reducers/accountSlice";
 import { useIsMounted } from "../../../utils/hooks";
 import { checkInputValue } from "../../../utils";
 import { newErrorToast } from "../../../store/reducers/toastSlice";
-import { ErrorMessage } from "../../../components/styled";
+import { ErrorMessage, HintMessage } from "../../../components/styled";
 import useApi from "../../../hooks/useApi";
 import useCouncilMembers from "../../../utils/useCouncilMembers";
+import Tooltip from "../../../components/Tooltip";
+import { TooltipInfoText } from "../../../components/Tooltip/styled";
 
 const Body = styled.div`
   display: flex;
@@ -33,6 +35,7 @@ const Footer = styled.div`
 
 export default function EndorseTipsModal({ visible, setVisible, onFinalized }) {
   const [tips, setTips] = useState([]);
+  const [isLoadingTips, setIsLoadingTips] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const chain = useSelector(chainSelector);
   const dispatch = useDispatch();
@@ -51,7 +54,7 @@ export default function EndorseTipsModal({ visible, setVisible, onFinalized }) {
   const {
     Component: TipsTable,
     tipValues,
-  } = useTipsTable({ tips, isLoading });
+  } = useTipsTable({ tips, isLoading: isLoadingTips });
 
   const disabled = !isLoggedIn || isEmpty(tipValues) || !isCouncilor || isLoading;
 
@@ -60,7 +63,7 @@ export default function EndorseTipsModal({ visible, setVisible, onFinalized }) {
       return;
     }
 
-    setIsLoading(true);
+    setIsLoadingTips(true);
 
     serverApi.fetch(`/${chain}/tipping`, { tipper: account?.address })
       .then(({ result }) => {
@@ -69,7 +72,7 @@ export default function EndorseTipsModal({ visible, setVisible, onFinalized }) {
         }
       })
       .finally(() => {
-        setIsLoading(false);
+        setIsLoadingTips(false);
       });
   }, [chain, account]);
 
@@ -122,6 +125,15 @@ export default function EndorseTipsModal({ visible, setVisible, onFinalized }) {
     }
   }
 
+  let tooltipContent = "";
+  if (!isLoggedIn) {
+    tooltipContent = "Please connect wallet first";
+  } else if (!isCouncilor) {
+    tooltipContent = "Only councilors can endorse tips";
+  } else if (isEmpty(tipValues)) {
+    tooltipContent = "No tips to endorse";
+  }
+
   return (
     <ActionModal
       title="Endorse Tips"
@@ -132,16 +144,19 @@ export default function EndorseTipsModal({ visible, setVisible, onFinalized }) {
     >
       <Body>
         <Signer />
-        <ErrorMessage>
-          {"Only show tips that you’ve not endorsed."}
-        </ErrorMessage>
+        <HintMessage>Only show tips that you’ve not endorsed.</HintMessage>
         {errorMessage && (
           <ErrorMessage>{errorMessage}</ErrorMessage>
         )}
         {TipsTable}
       </Body>
       <Footer>
-        <ButtonPrimary disabled={disabled} onClick={submit}>Submit</ButtonPrimary>
+        <Tooltip
+          showTooltip={!!tooltipContent}
+          tooltipContent={<TooltipInfoText>{tooltipContent}</TooltipInfoText>}
+        >
+          <ButtonPrimary disabled={disabled} onClick={submit}>Submit</ButtonPrimary>
+        </Tooltip>
       </Footer>
     </ActionModal>
   );
