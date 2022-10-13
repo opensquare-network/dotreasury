@@ -1,6 +1,6 @@
 import { web3Enable, web3FromSource } from "@polkadot/extension-dapp";
 import BigNumber from "bignumber.js";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import ActionModal from "../../../components/ActionModal";

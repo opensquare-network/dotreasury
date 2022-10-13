@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { ReactComponent as MinusSVG } from "./minus.svg";
 import { ReactComponent as AddSVG } from "./add.svg";
 import TipInputs from "./TipInputs";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import ButtonPrimary from "../../../components/ButtonPrimary";
 import useApi from "../../../hooks/useApi";
 import { web3Enable, web3FromSource } from "@polkadot/extension-dapp";
