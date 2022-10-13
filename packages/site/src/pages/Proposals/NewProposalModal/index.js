@@ -124,7 +124,7 @@ export default function NewProposalModal({ visible, setVisible, onFinalized }) {
       </div>
       <Body>
         {errorMessage && (
-          <ErrorMessage className="error">{errorMessage}</ErrorMessage>
+          <ErrorMessage>{errorMessage}</ErrorMessage>
         )}
         <Field>
           <FieldTitle>Beneficiary</FieldTitle>

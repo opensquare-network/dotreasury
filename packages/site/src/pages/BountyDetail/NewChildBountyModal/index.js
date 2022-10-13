@@ -125,7 +125,7 @@ export default function NewChildBountyModal({ visible, setVisible, parentBountyI
       </div>
       <Body>
         {errorMessage && (
-          <ErrorMessage className="error">{errorMessage}</ErrorMessage>
+          <ErrorMessage>{errorMessage}</ErrorMessage>
         )}
         <Field>
           <FieldTitle>Bounty Id</FieldTitle>

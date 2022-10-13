@@ -132,13 +132,11 @@ export default function EndorseTipsModal({ visible, setVisible, onFinalized }) {
     >
       <Body>
         <Signer />
-        <ErrorMessage className="error">
+        <ErrorMessage>
           {"Only show tips that you’ve not endorsed."}
         </ErrorMessage>
         {errorMessage && (
-          <ErrorMessage className="error">
-            {errorMessage}
-          </ErrorMessage>
+          <ErrorMessage>{errorMessage}</ErrorMessage>
         )}
         {TipsTable}
       </Body>

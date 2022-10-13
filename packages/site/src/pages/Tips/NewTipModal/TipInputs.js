@@ -50,7 +50,7 @@ export default function TipInputs({ index, isCouncilor, canDelete, onDelete, tip
       </Header>
       <Body>
         {tipData?.errorMessage && (
-          <ErrorMessage className="error">{tipData?.errorMessage}</ErrorMessage>
+          <ErrorMessage>{tipData?.errorMessage}</ErrorMessage>
         )}
         <Fields>
           <Field>

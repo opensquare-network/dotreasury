@@ -134,7 +134,7 @@ export default function NewBountyModal({ visible, setVisible, onFinalized }) {
       </div>
       <Body>
         {errorMessage && (
-          <ErrorMessage className="error">{errorMessage}</ErrorMessage>
+          <ErrorMessage>{errorMessage}</ErrorMessage>
         )}
         <Field>
           <FieldTitle>Bounty title</FieldTitle>
