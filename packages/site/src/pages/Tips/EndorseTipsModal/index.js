@@ -78,6 +78,10 @@ export default function EndorseTipsModal({ visible, setVisible, onFinalized }) {
       return showErrorToast("Chain network is not connected yet");
     }
 
+    if (!account) {
+      return showErrorToast("Please connect wallet first");
+    }
+
     setErrorMessage();
 
     const txs = [];

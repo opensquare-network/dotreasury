@@ -59,11 +59,11 @@ export default function EndorseModal({ tipDetail, visible, setVisible, onFinaliz
 
   const submit = async () => {
     if (!api) {
-      return;
+      return showErrorToast("Chain network is not connected yet");
     }
 
     if (!account) {
-      return;
+      return showErrorToast("Please connect wallet first");
     }
 
     if (!tipHash) {

@@ -98,6 +98,14 @@ export default function NewTipModal({ visible, setVisible, onFinalized }) {
   }, [newTips]);
 
   const submit = async () => {
+    if (!api) {
+      return showErrorToast("Chain network is not connected yet");
+    }
+
+    if (!account) {
+      return showErrorToast("Please connect wallet first");
+    }
+
     // Check data
     let validationFail = false;
     for (const newTip of newTips) {
@@ -136,10 +144,6 @@ export default function NewTipModal({ visible, setVisible, onFinalized }) {
     if (validationFail) {
       setNewTips([...newTips]);
       return;
-    }
-
-    if (!api) {
-      return showErrorToast("Chain network is not connected yet");
     }
 
     setIsLoading(true);

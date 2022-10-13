@@ -37,6 +37,10 @@ export default function ClaimButtonBase({ bounty, onFinalized, newClaimTx }) {
       return showErrorToast("Chain network is not connected yet");
     }
 
+    if (!account) {
+      return showErrorToast("Please connect wallet first");
+    }
+
     if (!bounty) {
       return;
     }
