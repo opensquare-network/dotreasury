@@ -18,7 +18,7 @@ import { Field, FieldTitle } from "../../../components/ActionModal/styled";
 import CustomInput from "../../../components/Input";
 import AssetInput from "../../../components/AssetInput";
 import useProposalBond from "../../../hooks/useProposalBond";
-import TextBox from "../../../components/TextBox";
+import TextBox, { TextBoxLoading } from "../../../components/TextBox";
 import useBalance from "../../../utils/useBalance";
 
 const Footer = styled.div`
@@ -58,7 +58,7 @@ export default function NewProposalModal({ visible, setVisible, onFinalized }) {
   const proposalValue = new BigNumber(inputValue).times(
     Math.pow(10, precision)
   );
-  const bond = useProposalBond({
+  const { bond, isLoading: isLoadingBond } = useProposalBond({
     api,
     proposalValue,
   });
@@ -143,10 +143,14 @@ export default function NewProposalModal({ visible, setVisible, onFinalized }) {
         </Field>
         <Field>
           <FieldTitle>Proposal bond</FieldTitle>
-          <TextBox>
-            <span>{toPrecision(bond.toString(), precision, false)}</span>
-            <span>{symbol}</span>
-          </TextBox>
+          { isLoadingBond ? (
+            <TextBoxLoading />
+          ) : (
+            <TextBox>
+              <span>{toPrecision(bond.toString(), precision, false)}</span>
+              <span>{symbol}</span>
+            </TextBox>
+          )}
         </Field>
       </Body>
       <Footer>

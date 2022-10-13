@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Loading from "./LoadingCircle";
 
 const TextBox = styled.div`
   display: flex;
@@ -15,4 +16,24 @@ const TextBox = styled.div`
   color: rgba(0, 0, 0, 0.9);
 `;
 
+const LoadingWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 0;
+
+  background: #FAFAFA;
+  border-radius: 4px;
+`;
+
+function TextBoxLoading() {
+  return (
+    <LoadingWrapper>
+      <Loading size={20} />
+    </LoadingWrapper>
+  )
+}
+
 export default TextBox;
+
+export { TextBoxLoading };

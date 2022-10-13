@@ -17,7 +17,7 @@ import { ErrorMessage } from "../../../components/styled";
 import { Field, FieldTitle } from "../../../components/ActionModal/styled";
 import CustomInput from "../../../components/Input";
 import AssetInput from "../../../components/AssetInput";
-import TextBox from "../../../components/TextBox";
+import TextBox, { TextBoxLoading } from "../../../components/TextBox";
 import useBountyBond from "../../../hooks/useBountyBond";
 import useBountyConsts from "../../../hooks/useBountyConsts";
 import { countUtf8Bytes } from "../../../utils/bountyHelper";
@@ -57,7 +57,7 @@ export default function NewBountyModal({ visible, setVisible, onFinalized }) {
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
-  const bond = useBountyBond(api, bountyTitle);
+  const { bond, isLoading: isLoadingBond } = useBountyBond(api, bountyTitle);
   const {
     bountyValueMinimum,
     maximumReasonLength,
@@ -153,10 +153,14 @@ export default function NewBountyModal({ visible, setVisible, onFinalized }) {
         </Field>
         <Field>
           <FieldTitle>Bounty bond</FieldTitle>
-          <TextBox>
-            <span>{toPrecision(bond, precision, false)}</span>
-            <span>{symbol}</span>
-          </TextBox>
+          {isLoadingBond ? (
+            <TextBoxLoading />
+          ) : (
+            <TextBox>
+              <span>{toPrecision(bond, precision, false)}</span>
+              <span>{symbol}</span>
+            </TextBox>
+          )}
         </Field>
       </Body>
       <Footer>
