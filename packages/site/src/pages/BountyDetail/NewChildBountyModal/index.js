@@ -126,7 +126,9 @@ export default function NewChildBountyModal({ visible, setVisible, parentBountyI
 
   return (
     <ActionModal title="New Child Bounty" visible={visible} setVisible={setVisible}>
-      <Signer />
+      <div style={{ marginBottom: "24px" }}>
+        <Signer />
+      </div>
       <Body>
         {errorMessage && (
           <ErrorMessage className="error">{errorMessage}</ErrorMessage>

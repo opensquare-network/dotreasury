@@ -125,7 +125,9 @@ export default function NewProposalModal({ visible, setVisible, onFinalized }) {
 
   return (
     <ActionModal title="New Proposal" visible={visible} setVisible={setVisible}>
-      <Signer />
+      <div style={{ marginBottom: "24px" }}>
+        <Signer />
+      </div>
       <Body>
         {errorMessage && (
           <ErrorMessage className="error">{errorMessage}</ErrorMessage>

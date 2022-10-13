@@ -101,7 +101,9 @@ export default function EndorseModal({ tipDetail, visible, setVisible, onFinaliz
 
   return (
     <ActionModal title="Endorse" visible={visible} setVisible={setVisible}>
-      <Signer />
+      <div style={{ marginBottom: "24px" }}>
+        <Signer />
+      </div>
       <InputsPanel>
         <Field>
           <FieldTitle>Value</FieldTitle>

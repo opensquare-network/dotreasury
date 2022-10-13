@@ -5,19 +5,11 @@ import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../../store/reducers/chainSlice";
 import { ErrorMessage } from "../../../components/styled";
 import { Field, Fields, FieldTitle } from "../../../components/ActionModal/styled";
+import MinusButton from "../../../components/MinusButton";
 
 const Wrapper = styled.div`
   border: 1px solid #F4F4F4;
   border-radius: 4px;
-`;
-
-const TextButton = styled.div`
-  cursor: pointer;
-  color: #E90B0B;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 16px;
-  color: #E90B0B;
 `;
 
 const Header = styled.div`
@@ -53,7 +45,7 @@ export default function TipInputs({ index, isCouncilor, canDelete, onDelete, tip
       <Header>
         <span>#{index + 1}</span>
         {canDelete && (
-          <TextButton onClick={onDelete}>Delete</TextButton>
+          <MinusButton onClick={onDelete} />
         )}
       </Header>
       <Body>

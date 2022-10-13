@@ -185,7 +185,9 @@ export default function NewTipModal({ visible, setVisible, onFinalized }) {
 
   return (
     <ActionModal title="New Tip" visible={visible} setVisible={setVisible}>
-      <Signer />
+      <div style={{ marginBottom: "24px" }}>
+        <Signer />
+      </div>
       <Batch ref={refBatchInputs}>
         {newTips.map((tipData, index) => (
           <TipInputs

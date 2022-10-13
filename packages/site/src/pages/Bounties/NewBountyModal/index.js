@@ -135,7 +135,9 @@ export default function NewBountyModal({ visible, setVisible, onFinalized }) {
 
   return (
     <ActionModal title="New Bounty" visible={visible} setVisible={setVisible}>
-      <Signer />
+      <div style={{ marginBottom: "24px" }}>
+        <Signer />
+      </div>
       <Body>
         {errorMessage && (
           <ErrorMessage className="error">{errorMessage}</ErrorMessage>
