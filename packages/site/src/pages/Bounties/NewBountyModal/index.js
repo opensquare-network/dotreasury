@@ -1,6 +1,6 @@
 import { web3Enable, web3FromSource } from "@polkadot/extension-dapp";
 import BigNumber from "bignumber.js";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import ActionModal from "../../../components/ActionModal";
@@ -17,7 +17,7 @@ import { ErrorMessage } from "../../../components/styled";
 import { Field, FieldTitle } from "../../../components/ActionModal/styled";
 import CustomInput from "../../../components/Input";
 import AssetInput from "../../../components/AssetInput";
-import TextBox from "../../../components/TextBox";
+import TextBox, { TextBoxLoading } from "../../../components/TextBox";
 import useBountyBond from "../../../hooks/useBountyBond";
 import useBountyConsts from "../../../hooks/useBountyConsts";
 import { countUtf8Bytes } from "../../../utils/bountyHelper";
@@ -46,8 +46,8 @@ const Body = styled.div`
 export default function NewBountyModal({ visible, setVisible, onFinalized }) {
   const dispatch = useDispatch();
   const [errorMessage, setErrorMessage] = useState();
-  const [bountyTitle, setBountyTitle] = useState();
-  const [inputValue, setInputValue] = useState();
+  const [bountyTitle, setBountyTitle] = useState("");
+  const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const account = useSelector(accountSelector);
   const api = useApi();
@@ -55,15 +55,9 @@ export default function NewBountyModal({ visible, setVisible, onFinalized }) {
   const symbol = useSelector(chainSymbolSelector);
   const precision = getPrecision(symbol);
 
-  useEffect(() =>{
-    setErrorMessage();
-    setBountyTitle("");
-    setInputValue("");
-  }, [visible]);
-
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
-  const bond = useBountyBond(api, bountyTitle);
+  const { bond, isLoading: isLoadingBond } = useBountyBond(api, bountyTitle);
   const {
     bountyValueMinimum,
     maximumReasonLength,
@@ -135,10 +129,12 @@ export default function NewBountyModal({ visible, setVisible, onFinalized }) {
 
   return (
     <ActionModal title="New Bounty" visible={visible} setVisible={setVisible}>
-      <Signer />
+      <div style={{ marginBottom: "24px" }}>
+        <Signer />
+      </div>
       <Body>
         {errorMessage && (
-          <ErrorMessage className="error">{errorMessage}</ErrorMessage>
+          <ErrorMessage>{errorMessage}</ErrorMessage>
         )}
         <Field>
           <FieldTitle>Bounty title</FieldTitle>
@@ -157,10 +153,14 @@ export default function NewBountyModal({ visible, setVisible, onFinalized }) {
         </Field>
         <Field>
           <FieldTitle>Bounty bond</FieldTitle>
-          <TextBox>
-            <span>{toPrecision(bond, precision, false)}</span>
-            <span>{symbol}</span>
-          </TextBox>
+          {isLoadingBond ? (
+            <TextBoxLoading />
+          ) : (
+            <TextBox>
+              <span>{toPrecision(bond, precision, false)}</span>
+              <span>{symbol}</span>
+            </TextBox>
+          )}
         </Field>
       </Body>
       <Footer>

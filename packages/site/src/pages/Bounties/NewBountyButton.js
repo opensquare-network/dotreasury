@@ -28,11 +28,13 @@ export default function NewBountyButton({ onFinalized }) {
       >
         New Bounty
       </OnChainActionButton>
-      <NewBountyModal
-        visible={showNewBountyModel}
-        setVisible={setShowNewBountyModel}
-        onFinalized={onFinalized}
-      />
+      {showNewBountyModel && (
+        <NewBountyModal
+          visible={showNewBountyModel}
+          setVisible={setShowNewBountyModel}
+          onFinalized={onFinalized}
+        />
+      )}
     </Tooltip>
   );
 }

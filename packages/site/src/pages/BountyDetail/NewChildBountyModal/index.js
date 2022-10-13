@@ -1,6 +1,6 @@
 import { web3Enable, web3FromSource } from "@polkadot/extension-dapp";
 import BigNumber from "bignumber.js";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import ActionModal from "../../../components/ActionModal";
@@ -44,20 +44,14 @@ const Body = styled.div`
 export default function NewChildBountyModal({ visible, setVisible, parentBountyId, onFinalized }) {
   const dispatch = useDispatch();
   const [errorMessage, setErrorMessage] = useState();
-  const [childBountyTitle, setChildBountyTitle] = useState();
-  const [inputValue, setInputValue] = useState();
+  const [childBountyTitle, setChildBountyTitle] = useState("");
+  const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const account = useSelector(accountSelector);
   const api = useApi();
   const isMounted = useIsMounted();
   const symbol = useSelector(chainSymbolSelector);
   const precision = getPrecision(symbol);
-
-  useEffect(() =>{
-    setErrorMessage();
-    setChildBountyTitle("");
-    setInputValue("");
-  }, [visible]);
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
@@ -126,13 +120,15 @@ export default function NewChildBountyModal({ visible, setVisible, parentBountyI
 
   return (
     <ActionModal title="New Child Bounty" visible={visible} setVisible={setVisible}>
-      <Signer />
+      <div style={{ marginBottom: "24px" }}>
+        <Signer />
+      </div>
       <Body>
         {errorMessage && (
-          <ErrorMessage className="error">{errorMessage}</ErrorMessage>
+          <ErrorMessage>{errorMessage}</ErrorMessage>
         )}
         <Field>
-          <FieldTitle>Bounty Id</FieldTitle>
+          <FieldTitle>Parent bounty id</FieldTitle>
           <TextBox>{parentBountyId}</TextBox>
         </Field>
         <Field>

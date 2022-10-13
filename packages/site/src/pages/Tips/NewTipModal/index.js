@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { ReactComponent as MinusSVG } from "./minus.svg";
 import { ReactComponent as AddSVG } from "./add.svg";
 import TipInputs from "./TipInputs";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import ButtonPrimary from "../../../components/ButtonPrimary";
 import useApi from "../../../hooks/useApi";
 import { web3Enable, web3FromSource } from "@polkadot/extension-dapp";
@@ -70,8 +70,6 @@ export default function NewTipModal({ visible, setVisible, onFinalized }) {
   const precision = getPrecision(symbol);
   const refBatchInputs = useRef();
 
-  useEffect(() => { setNewTips([{ id: 0 }]) }, [visible]);
-
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
   const onAdd = useCallback(() => {
@@ -98,6 +96,14 @@ export default function NewTipModal({ visible, setVisible, onFinalized }) {
   }, [newTips]);
 
   const submit = async () => {
+    if (!api) {
+      return showErrorToast("Chain network is not connected yet");
+    }
+
+    if (!account) {
+      return showErrorToast("Please connect wallet first");
+    }
+
     // Check data
     let validationFail = false;
     for (const newTip of newTips) {
@@ -136,10 +142,6 @@ export default function NewTipModal({ visible, setVisible, onFinalized }) {
     if (validationFail) {
       setNewTips([...newTips]);
       return;
-    }
-
-    if (!api) {
-      return showErrorToast("Chain network is not connected yet");
     }
 
     setIsLoading(true);
@@ -185,7 +187,9 @@ export default function NewTipModal({ visible, setVisible, onFinalized }) {
 
   return (
     <ActionModal title="New Tip" visible={visible} setVisible={setVisible}>
-      <Signer />
+      <div style={{ marginBottom: "24px" }}>
+        <Signer />
+      </div>
       <Batch ref={refBatchInputs}>
         {newTips.map((tipData, index) => (
           <TipInputs

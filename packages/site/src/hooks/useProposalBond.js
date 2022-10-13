@@ -5,12 +5,14 @@ export default function useProposalBond({ api, proposalValue }) {
   const [bondPercentage, setBondPercentage] = useState();
   const [bondMaximum, setBondMaximum] = useState();
   const [bondMinimum, setBondMinimum] = useState();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (api) {
       setBondPercentage(api.consts.treasury?.proposalBond?.toJSON());
       setBondMaximum(api.consts.treasury?.proposalBondMaximum?.toJSON());
       setBondMinimum(api.consts.treasury?.proposalBondMinimum?.toJSON());
+      setIsLoading(false)
     }
   }, [api]);
 
@@ -27,5 +29,7 @@ export default function useProposalBond({ api, proposalValue }) {
       : BigNumber.max(bond, bondMinimum);
   }
 
-  return bond.isNaN() ? new BigNumber(0) : bond;
+  const result = bond.isNaN() ? new BigNumber(0) : bond;
+
+  return { bond: result, isLoading };
 }

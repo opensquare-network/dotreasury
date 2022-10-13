@@ -32,5 +32,6 @@ router.post(
   requireAuth,
   tipsController.postTipComment
 );
+router.get("/tipping", tipsController.getTippings);
 
 module.exports = router;

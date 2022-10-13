@@ -32,6 +32,10 @@ export default function RetractedButton({ tipDetail, onFinalized }) {
       return showErrorToast("Chain network is not connected yet");
     }
 
+    if (!account) {
+      return showErrorToast("Please connect wallet first");
+    }
+
     if (!tipDetail) {
       return;
     }

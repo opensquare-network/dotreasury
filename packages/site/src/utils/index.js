@@ -250,7 +250,7 @@ export function isAddress(address) {
   }
 }
 
-export function checkInputValue(value, valueName = "Value") {
+export function checkInputValue(value, valueName = "Value", allowZero = false) {
   if (!value) {
     return `${valueName} cannot be empty`;
   }
@@ -261,8 +261,14 @@ export function checkInputValue(value, valueName = "Value") {
     return `${valueName} must be number`;
   }
 
-  if (!bnValue.gt(0)) {
-    return `${valueName} must larger then 0`;
+  if (allowZero) {
+    if (!bnValue.gte(0)) {
+      return `${valueName} must not be less then 0`;
+    }
+  } else {
+    if (!bnValue.gt(0)) {
+      return `${valueName} must larger then 0`;
+    }
   }
 
   return null;

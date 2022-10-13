@@ -28,11 +28,13 @@ export default function NewProposalButton({ onFinalized }) {
       >
         New Proposal
       </OnChainActionButton>
-      <NewProposalModal
-        visible={showNewProposalModel}
-        setVisible={setShowNewProposalModel}
-        onFinalized={onFinalized}
-      />
+      {showNewProposalModel && (
+        <NewProposalModal
+          visible={showNewProposalModel}
+          setVisible={setShowNewProposalModel}
+          onFinalized={onFinalized}
+        />
+      )}
     </Tooltip>
   );
 }

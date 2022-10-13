@@ -66,6 +66,30 @@ class TipsController {
     };
   }
 
+  async getTippings(ctx) {
+    const { chain } = ctx.params;
+    const { tipper } = ctx.request.query;
+    const tipCol = await getTipCollection(chain);
+    const items = await tipCol
+      .find({
+        "state.state": { $in: ["NewTip", "tip"] },
+        timeline: {
+          $not: {
+            $elemMatch: {
+              $or: [
+                { method: "tip", "args.tipper": tipper },
+                { method: "tipNew", "args.finder": tipper }
+              ]
+            }
+          }
+        }
+      })
+      .sort({ "indexer.blockHeight": -1 })
+      .toArray();
+
+    ctx.body = items.map(normalizeTip);
+  }
+
   async getTipFinders(ctx) {
     const { chain } = ctx.params;
     const { page, pageSize } = extractPage(ctx);
