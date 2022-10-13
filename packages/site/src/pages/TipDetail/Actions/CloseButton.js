@@ -1,7 +1,6 @@
 import { web3Enable, web3FromSource } from "@polkadot/extension-dapp";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import isEmpty from "lodash.isempty";
 
 import useApi from "../../../hooks/useApi";
 import { accountSelector } from "../../../store/reducers/accountSlice";
@@ -27,8 +26,6 @@ export default function CloseButton({ tipDetail, onFinalized }) {
   const closing = !!tipDetail.closeFromBlockHeight;
   const canClose = closing && scanHeight > tipDetail.closeFromBlockHeight;
   const disabled = !isLoggedIn || isClosed || isRetracted || !canClose || isLoading;
-
-  const visible = !isEmpty(tipDetail) && !isClosed && !isRetracted;
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
@@ -78,10 +75,6 @@ export default function CloseButton({ tipDetail, onFinalized }) {
     tooltipContent = "Not ready to close, please wait until the countdown is end";
   } else if (!isLoggedIn) {
     tooltipContent = "Please connect wallet first";
-  }
-
-  if (!visible) {
-    return null;
   }
 
   return (
