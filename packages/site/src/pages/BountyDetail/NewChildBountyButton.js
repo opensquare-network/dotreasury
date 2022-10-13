@@ -28,12 +28,14 @@ export default function NewChildBountyButton({ parentBountyId, onFinalized }) {
       >
         New Child Bounty
       </OnChainActionButton>
-      <NewChildBountyModal
-        visible={showNewBountyModel}
-        setVisible={setShowNewBountyModel}
-        parentBountyId={parentBountyId}
-        onFinalized={onFinalized}
-      />
+      {showNewBountyModel && (
+        <NewChildBountyModal
+          visible={showNewBountyModel}
+          setVisible={setShowNewBountyModel}
+          parentBountyId={parentBountyId}
+          onFinalized={onFinalized}
+        />
+      )}
     </Tooltip>
   );
 }

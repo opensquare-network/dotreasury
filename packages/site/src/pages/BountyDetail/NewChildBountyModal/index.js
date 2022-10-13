@@ -53,12 +53,6 @@ export default function NewChildBountyModal({ visible, setVisible, parentBountyI
   const symbol = useSelector(chainSymbolSelector);
   const precision = getPrecision(symbol);
 
-  useEffect(() =>{
-    setErrorMessage();
-    setChildBountyTitle("");
-    setInputValue("");
-  }, [visible]);
-
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
   const {

@@ -55,12 +55,6 @@ export default function NewBountyModal({ visible, setVisible, onFinalized }) {
   const symbol = useSelector(chainSymbolSelector);
   const precision = getPrecision(symbol);
 
-  useEffect(() =>{
-    setErrorMessage();
-    setBountyTitle("");
-    setInputValue("");
-  }, [visible]);
-
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
   const bond = useBountyBond(api, bountyTitle);

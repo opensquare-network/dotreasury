@@ -70,8 +70,6 @@ export default function NewTipModal({ visible, setVisible, onFinalized }) {
   const precision = getPrecision(symbol);
   const refBatchInputs = useRef();
 
-  useEffect(() => { setNewTips([{ id: 0 }]) }, [visible]);
-
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
   const onAdd = useCallback(() => {

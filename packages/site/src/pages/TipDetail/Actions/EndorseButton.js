@@ -50,12 +50,14 @@ export default function EndorseButton({ tipDetail, onFinalized }) {
           Endorse
         </OnChainActionButton>
       </Tooltip>
-      <EndorseModal
-        tipDetail={tipDetail}
-        visible={showEndorse}
-        setVisible={setShowEndorse}
-        onFinalized={onFinalized}
-      />
+      {showEndorse && (
+        <EndorseModal
+          tipDetail={tipDetail}
+          visible={showEndorse}
+          setVisible={setShowEndorse}
+          onFinalized={onFinalized}
+        />
+      )}
     </>
   );
 }

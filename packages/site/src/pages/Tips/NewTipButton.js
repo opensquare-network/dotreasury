@@ -28,11 +28,13 @@ export default function NewTipButton({ onFinalized }) {
       >
         New Tip
       </OnChainActionButton>
-      <NewTipModal
-        visible={showNewTipModal}
-        setVisible={setShowNewTipModal}
-        onFinalized={onFinalized}
-      />
+      {showNewTipModal && (
+        <NewTipModal
+          visible={showNewTipModal}
+          setVisible={setShowNewTipModal}
+          onFinalized={onFinalized}
+        />
+      )}
     </Tooltip>
   );
 }

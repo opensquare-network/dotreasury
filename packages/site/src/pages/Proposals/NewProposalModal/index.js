@@ -55,12 +55,6 @@ export default function NewProposalModal({ visible, setVisible, onFinalized }) {
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
-  useEffect(() => {
-    setErrorMessage();
-    setBeneficiary("");
-    setInputValue("");
-  }, [visible]);
-
   const proposalValue = new BigNumber(inputValue).times(
     Math.pow(10, precision)
   );
