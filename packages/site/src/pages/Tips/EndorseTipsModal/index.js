@@ -19,6 +19,12 @@ import { ErrorMessage } from "../../../components/styled";
 import useApi from "../../../hooks/useApi";
 import useCouncilMembers from "../../../utils/useCouncilMembers";
 
+const Body = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
 const Footer = styled.div`
   display: flex;
   justify-content: right;
@@ -120,22 +126,18 @@ export default function EndorseTipsModal({ visible, setVisible, onFinalized }) {
       setVisible={setVisible}
       maxWidth={800}
     >
-      <div style={{ marginBottom: "16px" }}>
+      <Body>
         <Signer />
-      </div>
-      <div style={{ marginBottom: "16px" }}>
         <ErrorMessage className="error">
           {"Only show tips that you’ve not endorsed."}
         </ErrorMessage>
-      </div>
-      {errorMessage && (
-        <div style={{ marginBottom: "16px" }}>
+        {errorMessage && (
           <ErrorMessage className="error">
             {errorMessage}
           </ErrorMessage>
-        </div>
-      )}
-      {TipsTable}
+        )}
+        {TipsTable}
+      </Body>
       <Footer>
         <ButtonPrimary disabled={disabled} onClick={submit}>Submit</ButtonPrimary>
       </Footer>

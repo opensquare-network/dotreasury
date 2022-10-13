@@ -9,7 +9,7 @@ import useCouncilMembers from "../../utils/useCouncilMembers";
 
 export default function EndorseTipsButton({ onFinalized }) {
   const account = useSelector(accountSelector);
-  const [showEndorseModal, setShowEndorseModal] = useState(true);
+  const [showEndorseModal, setShowEndorseModal] = useState(false);
   const councilMembers = useCouncilMembers();
 
   const isCouncilor = councilMembers?.includes(account?.address);
