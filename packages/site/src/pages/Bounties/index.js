@@ -70,7 +70,7 @@ const Bounties = () => {
 
   const header = (
     <>
-      <Nav active="Bounties" />;
+      <Nav active="Bounties" />
       <div style={{ display: "flex", gap: "16px" }}>
         <NewBountyButton onFinalized={onFinalized} />
       </div>
