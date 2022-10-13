@@ -44,8 +44,8 @@ const Body = styled.div`
 export default function NewChildBountyModal({ visible, setVisible, parentBountyId, onFinalized }) {
   const dispatch = useDispatch();
   const [errorMessage, setErrorMessage] = useState();
-  const [childBountyTitle, setChildBountyTitle] = useState();
-  const [inputValue, setInputValue] = useState();
+  const [childBountyTitle, setChildBountyTitle] = useState("");
+  const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const account = useSelector(accountSelector);
   const api = useApi();
