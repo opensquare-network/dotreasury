@@ -50,6 +50,10 @@ export default function EndorseTipsModal({ visible, setVisible, onFinalized }) {
   const disabled = !isLoggedIn || isEmpty(tipValues) || !isCouncilor || isLoading;
 
   useEffect(() => {
+    if (!account) {
+      return;
+    }
+
     setIsLoading(true);
 
     serverApi.fetch(`/${chain}/tipping`, { tipper: account?.address })
