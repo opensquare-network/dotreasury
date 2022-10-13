@@ -3,6 +3,7 @@ import {
   newErrorToast,
   newPendingToast,
   newToastId,
+  newWarningToast,
   removeToast,
   updatePendingToast,
 } from "../store/reducers/toastSlice";
@@ -98,7 +99,13 @@ export async function sendTx({
     onClose();
   } catch (e) {
     dispatch(removeToast(toastId));
-    dispatch(newErrorToast(e.message));
+
+    if (e.message === "Cancelled") {
+      dispatch(newWarningToast(e.message));
+    } else {
+      dispatch(newErrorToast(e.message));
+    }
+
   } finally {
     if (isMounted.current) {
       setLoading(false);
