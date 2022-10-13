@@ -128,7 +128,7 @@ export default function NewChildBountyModal({ visible, setVisible, parentBountyI
           <ErrorMessage>{errorMessage}</ErrorMessage>
         )}
         <Field>
-          <FieldTitle>Bounty Id</FieldTitle>
+          <FieldTitle>Parent bounty id</FieldTitle>
           <TextBox>{parentBountyId}</TextBox>
         </Field>
         <Field>
