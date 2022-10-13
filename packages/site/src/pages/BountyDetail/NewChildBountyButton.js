@@ -6,9 +6,11 @@ import { accountSelector } from "../../store/reducers/accountSlice";
 import Tooltip from "../../components/Tooltip";
 import { TooltipInfoText } from "../../components/Tooltip/styled";
 import { isSameAddress } from "../../utils";
+import { bountyDetailSelector } from "../../store/reducers/bountySlice";
 
-export default function NewChildBountyButton({ bounty, parentBountyId, onFinalized }) {
+export default function NewChildBountyButton({ parentBountyId, onFinalized }) {
   const account = useSelector(accountSelector);
+  const bounty = useSelector(bountyDetailSelector)
   const [showNewBountyModel, setShowNewBountyModel] = useState(false);
 
   const isLoggedIn = !!account;
