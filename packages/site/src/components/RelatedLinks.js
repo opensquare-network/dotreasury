@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Image, Popup } from "semantic-ui-react";
 
 import ExternalLink from "./ExternalLink";
-import { getLinkNameAndSrc } from "../utils";
+import getLinkNameAndSrc from "../utils/link";
 import { useDisablePopup } from "../utils/hooks";
 
 const Wrapper = styled.div`

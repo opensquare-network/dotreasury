@@ -5,7 +5,7 @@ import ExternalLink from "./ExternalLink";
 
 import Table from "../components/Table";
 import TextMinor from "./TextMinor";
-import { getLinkNameAndSrc } from "../utils";
+import getLinkNameAndSrc from "../utils/link";
 
 const FlexWrapper = styled.div`
   display: flex;
