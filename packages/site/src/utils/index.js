@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js";
-import { stringUpperFirst, stringCamelCase, isHex, hexToU8a } from "@polkadot/util";
-import { encodeAddress, decodeAddress } from "@polkadot/util-crypto";
+import { hexToU8a, isHex, stringCamelCase, stringUpperFirst } from "@polkadot/util";
+import { decodeAddress, encodeAddress } from "@polkadot/util-crypto";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import md5 from "md5";
@@ -44,80 +44,6 @@ export function stringToWords(str) {
 }
 
 export const nil = (val) => val === undefined || val === null;
-
-export const getLinkNameAndSrc = (link) => {
-  try {
-    const url = new URL(link);
-
-    let src = "";
-    let name = "";
-
-    if (url.protocol === "mailto:") {
-      src = "/imgs/email-logo.svg";
-      name = "Email";
-    } else if (url.host.endsWith("youtube.com") || url.host.endsWith("youtu.be")) {
-      src = "/imgs/youtube-logo.svg";
-      name = "YouTube";
-    } else if (
-      url.host.endsWith("github.com") ||
-      url.host.endsWith("github.io")
-    ) {
-      src = "/imgs/github-logo.svg";
-      name = "GitHub";
-    } else if (url.host.endsWith("medium.com")) {
-      src = "/imgs/medium-logo.svg";
-      name = "Medium";
-    } else if (url.host.endsWith("polkassembly.io")) {
-      src = "/imgs/polkassembly-logo.svg";
-      name = "Polkassembly";
-    } else if (url.host.endsWith("twitter.com")) {
-      src = "/imgs/twitter-logo.svg";
-      name = "Twitter";
-    } else if (url.host === "t.me") {
-      src = "/imgs/telegram-logo.svg";
-      name = "Telegram";
-    } else if (url.host.endsWith("docs.google.com")) {
-      src = "/imgs/googledoc-logo.svg";
-      name = "Google Docs";
-    } else if (url.host.endsWith("drive.google.com")) {
-      src = "/imgs/googledrive-logo.svg";
-      name = "Google Drive";
-    } else if (url.host.endsWith("opensquare.network")) {
-      src = "/imgs/opensquare-icon-logo.svg";
-      name = "OpenSquare";
-    } else if (url.host.endsWith("dotreasury.com")) {
-      src = "/imgs/dotreasury-logo.svg";
-      name = "doTreasury";
-    } else if (url.host.endsWith("subsquare.io")) {
-      src = "/imgs/subsquare-logo.svg";
-      name = "Subsquare";
-    } else if (url.host.endsWith("matrix.to")) {
-      src = "/imgs/element-logo.svg";
-      name = "Element";
-    } else if (url.host.endsWith("subscan.io")) {
-      src = "/imgs/subscan-logo.svg";
-      name = "Subscan";
-    } else {
-      src = "/imgs/link-icon.svg";
-    }
-
-    if (!name) {
-      [, name] = url.host.match(/([^.]*)(?:\.[a-z]+)?$/);
-      if (["co", "com"].includes(name)) {
-        const m = url.host.match(/([^.]*)(?:\.[a-z]+){2}$/);
-        if (m) {
-          [, name] = m;
-        }
-      }
-      name = stringUpperFirst(name);
-    }
-
-    return [name, src];
-  } catch (e) {
-    // Broken link or other errors
-    return [];
-  }
-};
 
 export function normalizeTimeDuration(time, maxSection = 2) {
   const duration = dayjs.duration(time);

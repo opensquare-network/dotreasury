@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { getLinkNameAndSrc } from "../../utils";
+import getLinkNameAndSrc from "../../utils/link";
 import { Image } from "semantic-ui-react";
 import ExternalLink from "../../components/ExternalLink";
 import { p_14_medium } from "../../styles/text";
