@@ -67,4 +67,11 @@ export const newErrorToast = (message, timeout) =>
     timeout,
   });
 
+  export const newWarningToast = (message, timeout) =>
+  addToast({
+    type: "warning",
+    message,
+    timeout,
+  });
+
 export default toastSlice.reducer;

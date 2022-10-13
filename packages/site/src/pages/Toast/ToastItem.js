@@ -61,7 +61,7 @@ const Content = styled(TextMinor)`
   padding-left: 32px;
 `
 
-const TOAST_TYPES = ["success", "error", "pending"];
+const TOAST_TYPES = ["success", "error", "pending", "warning"];
 
 const ToastItem = ({ type, title, message, id, sticky, timeout = 5000 }) => {
   const [tranClass, setTranClass] = useState("");
