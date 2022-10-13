@@ -23,8 +23,10 @@ const HeaderWrapper = styled.div`
   padding: 20px 24px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
   gap: 16px;
+  @media screen and (max-width: 640px) {
+    flex-direction: column;
+  }
 `;
 
 const Title = styled(Text)`
