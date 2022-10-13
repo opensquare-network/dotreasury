@@ -23,7 +23,7 @@ export default function NewChildBountyButton({ bounty, parentBountyId, onFinaliz
   } else if (!isActive) {
     tooltipContent = "The bounty is not active yet";
   } else if (!canPropose) {
-    tooltipContent = "Only the curator can create child bountes";
+    tooltipContent = "Only the curator can create child bounties";
   }
 
   return (
