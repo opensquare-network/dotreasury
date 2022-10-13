@@ -48,10 +48,12 @@ export default function EndorseModal({ tipDetail, visible, setVisible, onFinaliz
 
   const isCouncilor = councilMembers?.includes(account?.address);
 
+  const disabled = isLoading || !isCouncilor;
+
   useEffect(() => {
     if (tipDetail) {
       const initialMedianValue = toPrecision(tipDetail?.medianValue || 0, precision, false);
-      setInputTipValue(initialMedianValue)
+      setInputTipValue(`${initialMedianValue}`)
     }
   }, [tipDetail, precision]);
 
@@ -70,18 +72,17 @@ export default function EndorseModal({ tipDetail, visible, setVisible, onFinaliz
       return;
     }
 
-    const errorMsg = checkInputValue(inputTipValue, "Tip value");
+    const errorMsg = checkInputValue(inputTipValue, "Tip value", true);
     if (errorMsg) {
       return showErrorToast(errorMsg);
     }
-
-    const tipValue = new BigNumber(inputTipValue).times(Math.pow(10, precision)).toString();
 
     setIsLoading(true);
     try {
       web3Enable("doTreasury");
       const injector = await web3FromSource(account.extension);
 
+      const tipValue = new BigNumber(inputTipValue).times(Math.pow(10, precision)).toString();
       const tx = api.tx.tips.tip(tipDetail.hash, tipValue);
 
       await sendTx({
@@ -120,7 +121,7 @@ export default function EndorseModal({ tipDetail, visible, setVisible, onFinaliz
         </Field>
       </InputsPanel>
       <Footer>
-        <ButtonPrimary disabled={isLoading || !isCouncilor} onClick={submit}>Submit</ButtonPrimary>
+        <ButtonPrimary disabled={disabled} onClick={submit}>Submit</ButtonPrimary>
       </Footer>
     </ActionModal>
   );
