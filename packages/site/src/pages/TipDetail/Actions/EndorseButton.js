@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import isEmpty from "lodash.isempty";
 
 import { accountSelector } from "../../../store/reducers/accountSlice";
 import OnChainActionButton from "../../../components/OnChainActionButton";
@@ -19,6 +20,8 @@ export default function EndorseButton({ tipDetail, onFinalized }) {
   const isRetracted = tipDetail.latestState?.state === "TipRetracted";
   const disabled = !isLoggedIn || !isCouncilor || isClosed || isRetracted;
 
+  const visible = !isEmpty(tipDetail) && isCouncilor && !isClosed && !isRetracted;
+
   let tooltipContent = "";
   if (isClosed) {
     tooltipContent = "The tip is already closed";
@@ -28,6 +31,10 @@ export default function EndorseButton({ tipDetail, onFinalized }) {
     tooltipContent = "Only councilors can endorse tips";
   } else if (!isLoggedIn) {
     tooltipContent = "Please connect wallet first";
+  }
+
+  if (!visible) {
+    return null;
   }
 
   return (

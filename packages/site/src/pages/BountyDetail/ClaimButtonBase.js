@@ -12,6 +12,7 @@ import OnChainActionButton from "../../components/OnChainActionButton";
 import { scanHeightSelector } from "../../store/reducers/chainSlice";
 import Tooltip from "../../components/Tooltip";
 import { TooltipInfoText } from "../../components/Tooltip/styled";
+import { isEmpty } from "lodash";
 
 export default function ClaimButtonBase({ bounty, onFinalized, newClaimTx }) {
   const api = useApi();
@@ -26,6 +27,8 @@ export default function ClaimButtonBase({ bounty, onFinalized, newClaimTx }) {
   const isPendingPayout = bounty?.state?.state === "PendingPayout";
   const isUnlocked = bounty?.unlockAt <= scanHeight;
   const disabled = !isLoggedIn || !isBeneficiary || !isPendingPayout || !isUnlocked || isLoading;
+
+  const visible = !isEmpty(bounty) && isPendingPayout && isBeneficiary;
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
@@ -69,6 +72,10 @@ export default function ClaimButtonBase({ bounty, onFinalized, newClaimTx }) {
     tooltipContent = "Only the beneficiary can claim this bounty";
   } else if (!isUnlocked) {
     tooltipContent = "Can only be claimed when chain height reach unlock height";
+  }
+
+  if (!visible) {
+    return null;
   }
 
   return (

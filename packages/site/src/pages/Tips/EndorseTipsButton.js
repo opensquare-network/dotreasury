@@ -16,12 +16,17 @@ export default function EndorseTipsButton({ onFinalized }) {
 
   const isLoggedIn = !!account;
   const disabled = !isLoggedIn || !isCouncilor;
+  const visible = isCouncilor;
 
   let tooltipContent = "";
   if (!isLoggedIn) {
     tooltipContent = "Please connect wallet first";
   } else if (!isCouncilor) {
     tooltipContent = "Only councilors can endorse tips";
+  }
+
+  if (!visible) {
+    return null;
   }
 
   return (
