@@ -1,4 +1,3 @@
-const { handleBusinessWhenMotionApproved } = require("./hooks/approved");
 const { updateMotionByHash } = require("../../../mongo/service/motion");
 const {
   consts: {
@@ -28,7 +27,6 @@ async function handleApproved(event, extrinsic, indexer) {
 
   const updates = { state };
   await updateMotionByHash(hash, updates, timelineItem);
-  await handleBusinessWhenMotionApproved(hash, indexer);
 }
 
 module.exports = {
