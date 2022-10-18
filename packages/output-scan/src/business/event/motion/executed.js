@@ -27,7 +27,14 @@ async function handleExecuted(event, extrinsic, indexer) {
     indexer,
   };
 
-  await handleBusinessWhenMotionExecuted(hash, indexer);
+  let isOk;
+  if (typeof dispatchResult === 'boolean') {
+    isOk = dispatchResult;
+  } else {
+    isOk = Object.keys(dispatchResult).includes("ok");
+  }
+
+  await handleBusinessWhenMotionExecuted(hash, indexer, isOk);
   const updates = { state, isFinal: true };
   await updateMotionByHash(hash, updates, timelineItem);
 }

@@ -6,30 +6,44 @@ const {
     BountyStatus,
     TreasuryProposalMethods,
     TreasuryProposalEvents,
+    CouncilEvents,
   }
 } = require("@osn/scan-common");
 const { updateBounty } = require("../../../../mongo/service/bounty");
 const { getBountyMeta } = require("../../../common/bounty/meta");
 const { getMotionCollection } = require("../../../../mongo");
 
-async function handleRejectTreasuryProposal(proposalInfo, indexer) {
+async function handleApproveTreasuryProposal(proposalInfo, indexer, isOk) {
+  const { index: proposalIndex, method } = proposalInfo;
+  if (method !== TreasuryProposalMethods.approveProposal) {
+    return
+  }
+
+  const state = {
+    indexer,
+    state: isOk ? CouncilEvents.Approved : TreasuryProposalEvents.Proposed,
+  };
+
+  await updateProposal(proposalIndex, { state });
+}
+
+async function handleRejectTreasuryProposal(proposalInfo, indexer, isOk) {
   if (currentChain() !== 'kusama') {
     return
   }
 
   const { index: proposalIndex, method } = proposalInfo;
-
   if (method !== TreasuryProposalMethods.rejectProposal) {
     return
   }
 
   // There is no Rejected event before kusama treasury proposal 11
-  if (proposalIndex > 10) {
+  if (proposalIndex > 10 && isOk) {
     return
   }
 
   const state = {
-    state: TreasuryProposalEvents.Rejected,
+    state: isOk ? TreasuryProposalEvents.Rejected : TreasuryProposalEvents.Proposed,
     indexer,
   };
 
@@ -58,7 +72,7 @@ async function handleBounty(bountyInfo, indexer) {
   }
 }
 
-async function handleBusinessWhenMotionExecuted(motionHash, indexer) {
+async function handleBusinessWhenMotionExecuted(motionHash, indexer, isOk = true) {
   const col = await getMotionCollection();
   const motion = await col.findOne({ hash: motionHash, isFinal: false });
   if (!motion) {
@@ -66,9 +80,13 @@ async function handleBusinessWhenMotionExecuted(motionHash, indexer) {
   }
 
   for (const proposalInfo of motion.treasuryProposals || []) {
-    await handleRejectTreasuryProposal(proposalInfo, indexer);
+    await handleRejectTreasuryProposal(proposalInfo, indexer, isOk);
+    await handleApproveTreasuryProposal(proposalInfo, indexer, isOk);
   }
 
+  if (!isOk) {
+    return
+  }
   for (const bountyInfo of motion.treasuryBounties || []) {
     await handleBounty(bountyInfo, indexer);
   }
