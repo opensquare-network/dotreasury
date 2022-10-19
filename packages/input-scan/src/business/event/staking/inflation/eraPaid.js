@@ -3,12 +3,11 @@ const {
   consts: {
     Modules,
     StakingEvents,
-    BalancesEvents,
   }
 } = require("@osn/scan-common");
 
 function isBalancesDeposit(section, method) {
-  return Modules.Balances === section && BalancesEvents.Deposit === method
+  return Modules.Balances === section && "Deposit" === method
 }
 
 function isEraPaid(section, method) {
