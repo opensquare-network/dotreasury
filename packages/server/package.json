@@ -40,13 +40,13 @@
     "multiformats": "^9.7.1",
     "nodemailer": "^6.4.17",
     "pluralize": "^8.0.0",
-    "socket.io": "^3.0.4",
+    "socket.io": "^4.5.3",
     "uuid": "^8.3.2",
     "validator": "^13.5.2"
   },
   "devDependencies": {
     "@types/koa-router": "^7.4.1",
-    "@types/socket.io": "^2.1.12",
+    "@types/socket.io": "^3.0.2",
     "pm2": "^5.2.0"
   }
 }
