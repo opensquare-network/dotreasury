@@ -102,13 +102,13 @@ class RateService {
 
     let pinHash = undefined;
     try {
-      const pinResult = await ipfsService.pinJsonToIpfsWithTimeout({
+      const added = await ipfsService.pinJsonToIpfsWithTimeout({
         msg,
         address: encodedAddress,
         signature,
         version: "1",
       }, 3000);
-      pinHash = pinResult.PinHash;
+      pinHash = added?.cid?.toV1().toString();
     } catch (e) {
       console.error(e);
     }
