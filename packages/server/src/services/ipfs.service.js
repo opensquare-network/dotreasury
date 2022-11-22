@@ -34,8 +34,17 @@ async function cidOf(obj) {
   return cid.toV1().toString();
 }
 
+async function pinJsonToIpfsWithTimeout(data, timeout) {
+  const errorMsg = "Pin json to ipfs timeout";
+  return await Promise.race([
+    new Promise((_, reject) => setTimeout(() => reject(new Error(errorMsg)), timeout)),
+    ipfsAdd(data),
+  ]);
+}
+
 module.exports = {
   cidOf,
   ipfsAdd,
   ipfsAddBuffer,
+  pinJsonToIpfsWithTimeout,
 };
