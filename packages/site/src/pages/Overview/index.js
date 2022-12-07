@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { defaults } from "react-chartjs-2";
+import { Chart } from "chart.js";
 
 import Summary from "./Summary";
 import ProposerTable from "./ProposerTable";
@@ -91,7 +91,7 @@ const Overview = () => {
   );
   const others = toPrecision(overview.income.others || 0, precision, false);
 
-  defaults.global.defaultFontFamily = "Inter";
+  Chart.defaults.font.family = "Inter";
 
   return (
     <>
