@@ -79,7 +79,11 @@ const TimeText = styled(TextMinor)`
 `;
 
 function ResetPassword({ history, location }) {
-  const { register, handleSubmit, errors } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const isMounted = useIsMounted();
   const [reset, setReset] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -171,9 +175,8 @@ function ResetPassword({ history, location }) {
               toggleClick={() => setShowPassword(!showPassword)}
             >
               <FormInput
-                name="password"
                 type={showPassword ? "text" : "password"}
-                ref={register({ required: true })}
+                {...register("password", { required: true })}
                 autocomplete="off"
                 error={errors.password}
               />
