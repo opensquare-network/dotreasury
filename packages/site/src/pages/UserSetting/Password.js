@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useDispatch } from "react-redux"
+import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { Form } from "semantic-ui-react";
 import api from "../../services/scanApi";
@@ -10,30 +10,53 @@ import {
   EditWrapper,
   EditButton,
   StyledFormInput,
-  StyledFormInputWrapper
+  StyledFormInputWrapper,
 } from "./components";
 import FormError from "../../components/FormError";
 import { useIsMounted } from "../../utils/hooks";
 import { addToast } from "../../store/reducers/toastSlice";
 
 const Password = () => {
-  const { register, handleSubmit, errors } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const isMounted = useIsMounted();
-  const oldPasswordRef = useRef(null);
-  const newPasswordRef = useRef(null);
   const dispatch = useDispatch();
   const [serverErrors, setServerErrors] = useState(null);
   const [showErrors, setShowErrors] = useState(null);
 
+  const { ref: oldPasswordRef, ...oldPasswordRegisterOptions } = register(
+    "oldPassword",
+    {
+      required: {
+        value: true,
+        message: "This field is required",
+      },
+    }
+  );
+  const { ref: newPasswordRef, ...newPasswordRegisterOptions } = register(
+    "newPassword",
+    {
+      required: {
+        value: true,
+        message: "This field is required",
+      },
+    }
+  );
+
   useEffect(() => {
     setShowErrors({
-      oldPassword: errors?.oldPassword?.message
-        || serverErrors?.data?.oldPassword?.[0]
-        || null,
-        newPassword: errors?.newPassword?.message
-        || serverErrors?.data?.newPassword?.[0]
-        || null,
-      message: serverErrors?.message || null
+      oldPassword:
+        errors?.oldPassword?.message ||
+        serverErrors?.data?.oldPassword?.[0] ||
+        null,
+      newPassword:
+        errors?.newPassword?.message ||
+        serverErrors?.data?.newPassword?.[0] ||
+        null,
+      message: serverErrors?.message || null,
     });
   }, [errors, serverErrors]);
 
@@ -61,10 +84,12 @@ const Password = () => {
         if (newPasswordRef && newPasswordRef.current) {
           newPasswordRef.current.value = "";
         }
-        dispatch(addToast({
-          type: "success",
-          message: "Change password sucess"
-        }))
+        dispatch(
+          addToast({
+            type: "success",
+            message: "Change password sucess",
+          })
+        );
       }
     }
 
@@ -86,21 +111,16 @@ const Password = () => {
                 name="oldPassword"
                 type="password"
                 placeholder="Please fill current password"
-                ref={e => {
-                  oldPasswordRef.current = e
-                  register(e, {
-                    required: {
-                      value: true,
-                      message: "This field is required"
-                    }
-                  })
-                }}
+                {...oldPasswordRegisterOptions}
+                ref={oldPasswordRef}
                 error={showErrors?.oldPassword}
                 onChange={() => {
-                  setShowErrors(null)
+                  setShowErrors(null);
                 }}
               />
-              {showErrors?.oldPassword && <FormError>{showErrors.oldPassword}</FormError>}
+              {showErrors?.oldPassword && (
+                <FormError>{showErrors.oldPassword}</FormError>
+              )}
             </StyledFormInputWrapper>
           </EditWrapper>
           <StyledTitle>New password</StyledTitle>
@@ -110,23 +130,20 @@ const Password = () => {
                 name="newPassword"
                 type="password"
                 placeholder="Please fill new password"
-                ref={e => {
-                  newPasswordRef.current = e
-                  register(e, {
-                    required: {
-                      value: true,
-                      message: "This field is required"
-                    }
-                  })
-                }}
+                {...newPasswordRegisterOptions}
+                ref={newPasswordRef}
                 error={showErrors?.newPassword}
                 onChange={() => {
-                  setShowErrors(null)
+                  setShowErrors(null);
                 }}
               />
-              {showErrors?.newPassword && <FormError>{showErrors.newPassword}</FormError>}
+              {showErrors?.newPassword && (
+                <FormError>{showErrors.newPassword}</FormError>
+              )}
             </StyledFormInputWrapper>
-            <EditButton type="submit" onClick={() => setServerErrors(null)}>Change</EditButton>
+            <EditButton type="submit" onClick={() => setServerErrors(null)}>
+              Change
+            </EditButton>
           </EditWrapper>
         </Form.Field>
       </Form>
