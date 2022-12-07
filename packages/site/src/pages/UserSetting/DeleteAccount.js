@@ -63,7 +63,11 @@ const DeleteAccount = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const [open, setOpen] = useState(false);
-  const { register, handleSubmit, errors } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [serverError, setServerError] = useState("");
   const isMounted = useIsMounted();
 
@@ -127,10 +131,9 @@ const DeleteAccount = () => {
             <Form.Field>
               <StyledTitle>Password</StyledTitle>
               <FormInput
-                name="password"
                 type="password"
                 placeholder="Please fill password"
-                ref={register({
+                {...register("password", {
                   required: {
                     value: true,
                     message: "This field is required",
