@@ -7,6 +7,24 @@ import Text from "../../../components/Text";
 import { useSelector } from "react-redux";
 import { chainSelector } from "../../../store/reducers/chainSlice";
 import { abbreviateBigNumber } from "../../../utils";
+import {
+  CategoryScale,
+  Chart as ChartJS,
+  LinearScale,
+  LineElement,
+  PointElement,
+  Title as ChartTitle,
+  Tooltip as ChartTooltip,
+} from "chart.js";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  ChartTitle,
+  ChartTooltip
+);
 
 const LegendWrapper = styled.div`
   display: flex;
@@ -53,58 +71,64 @@ const LegendTitle = styled(Text)`
 const LineChart = ({ data, onHover }) => {
   const chain = useSelector(chainSelector);
   const { dates, values } = data;
+
+  /** @type {import("react-chartjs-2").ChartProps} */
   const options = {
     type: "line",
     hover: {
       mode: "nearest",
       intersect: true,
     },
-    scales: {
-      yAxes: [
-        {
-          position: "right",
-          ticks: {
-            stepSize: chain === "kusama" ? 200000 : 8000000,
-            callback:(y) => abbreviateBigNumber(y),
-          },
-        },
-      ],
-      xAxes: [
-        {
-          type: "time",
-          time: {
-            displayFormats: {
-              month: "YYYY-MM",
+    plugins: {
+      legend: {
+        display: false,
+      },
+      scales: {
+        yAxes: [
+          {
+            position: "right",
+            ticks: {
+              stepSize: chain === "kusama" ? 200000 : 8000000,
+              callback: (y) => abbreviateBigNumber(y),
             },
-            unit: "month",
-            unitStepSize: 3,
           },
-          gridLines: {
-            zeroLineWidth: 0,
-            color: "rgba(0, 0, 0, 0)",
+        ],
+        xAxes: [
+          {
+            type: "time",
+            time: {
+              displayFormats: {
+                month: "YYYY-MM",
+              },
+              unit: "month",
+              unitStepSize: 3,
+            },
+            gridLines: {
+              zeroLineWidth: 0,
+              color: "rgba(0, 0, 0, 0)",
+            },
+          },
+        ],
+      },
+      tooltip: {
+        mode: "index",
+        bodySpacing: 8,
+        callbacks: {
+          title(tooltipItems) {
+            return dayjs(Number(tooltipItems[0].label)).format(
+              "YYYY-MM-DD hh:mm"
+            );
+          },
+          label(tooltipItem) {
+            return `${tooltipItem.dataset.label} ${
+              Math.round(tooltipItem.raw) === tooltipItem.raw ? "" : "≈"
+            } ${parseInt(tooltipItem.raw)}`;
           },
         },
-      ],
-    },
-    tooltips: {
-      mode: "index",
-      bodySpacing: 8,
-      callbacks: {
-        title: function (tooltipItems) {
-          return dayjs(tooltipItems[0].xLabel).format("YYYY-MM-DD hh:mm");
-        },
-        label: function (tooltipItem, data) {
-          return `${data.datasets[tooltipItem.datasetIndex].label} ${
-            Math.round(tooltipItem.value) === tooltipItem.value ? "" : "≈"
-          } ${parseInt(tooltipItem.value)}`;
+        itemSort: function (a, b) {
+          return a.datasetIndex - b.datasetIndex;
         },
       },
-      itemSort: function (a, b) {
-        return a.datasetIndex - b.datasetIndex;
-      },
-    },
-    legend: {
-      display: false,
     },
     maintainAspectRatio: false,
     onHover: function (_, array) {
