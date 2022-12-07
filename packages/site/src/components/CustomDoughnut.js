@@ -1,5 +1,13 @@
+import {
+  ArcElement,
+  Chart as ChartJS,
+  Tooltip as ChartTooltip,
+} from "chart.js";
 import React from "react";
 import { Doughnut } from "react-chartjs-2";
+import { sum } from "../utils/math";
+
+ChartJS.register(ArcElement, ChartTooltip);
 
 const DoughnutChart = ({ data, status }) => {
   const findDisabled = (name) => {
@@ -40,23 +48,24 @@ const DoughnutChart = ({ data, status }) => {
     maintainAspectRatio: false,
     cutoutPercentage: 80,
     animation: { animateRotate: false },
-    legend: {
-      display: false,
-    },
-    tooltips: {
-      callbacks: {
-        label: function (tooltipItem, data) {
-          const dataset = data.datasets[tooltipItem.datasetIndex];
-          const meta = dataset._meta[Object.keys(dataset._meta)[0]];
-          const total = meta.total;
-          const currentValue = dataset.data[tooltipItem.index];
-          const percentage = parseFloat(
-            ((currentValue / total) * 100).toFixed(2)
-          );
-          return percentage + "%";
-        },
-        title: function (tooltipItem, data) {
-          return data.labels[tooltipItem[0].index];
+    plugins: {
+      legend: {
+        display: false,
+      },
+      tooltip: {
+        callbacks: {
+          label(tooltipItem) {
+            const dataset = tooltipItem.dataset;
+            const currentValue = tooltipItem.parsed;
+            const total = sum(dataset.data);
+            const percentage = parseFloat(
+              ((currentValue / total) * 100).toFixed(2)
+            );
+            return percentage + "%";
+          },
+          title(tooltipItems) {
+            return tooltipItems[0].label;
+          },
         },
       },
     },
