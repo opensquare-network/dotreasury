@@ -11,6 +11,7 @@ import "../../../components/Charts/adapterDayjs";
 import {
   CategoryScale,
   Chart as ChartJS,
+  Filler,
   LinearScale,
   LineElement,
   PointElement,
@@ -26,7 +27,8 @@ ChartJS.register(
   LineElement,
   ChartTitle,
   ChartTooltip,
-  TimeScale
+  TimeScale,
+  Filler
 );
 
 const LegendWrapper = styled.div`
