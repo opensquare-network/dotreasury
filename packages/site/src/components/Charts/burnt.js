@@ -1,28 +1,8 @@
 import { Bar } from "react-chartjs-2";
+import "./globalConfig";
 import styled, { css } from "styled-components";
 import Text from "../Text";
 import { getPrecision, toPrecision } from "../../utils";
-import {
-  BarElement,
-  CategoryScale,
-  Chart as ChartJS,
-  Legend,
-  Tooltip as ChartTooltip,
-  LinearScale,
-  Title as ChartTitle,
-  ArcElement,
-} from "chart.js";
-
-ChartJS.register(
-  ArcElement,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  ChartTitle,
-  ChartTooltip,
-  Legend,
-  CategoryScale
-);
 
 const Wrapper = styled.div`
   padding-left: 17px;

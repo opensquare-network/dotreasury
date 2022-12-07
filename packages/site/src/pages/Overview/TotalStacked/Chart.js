@@ -1,35 +1,13 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { Line } from "react-chartjs-2";
+import "../../../components/Charts/globalConfig";
 import dayjs from "dayjs";
 
 import Text from "../../../components/Text";
 import { useSelector } from "react-redux";
 import { chainSelector } from "../../../store/reducers/chainSlice";
 import { abbreviateBigNumber } from "../../../utils";
-import "../../../components/Charts/adapterDayjs";
-import {
-  CategoryScale,
-  Chart as ChartJS,
-  Filler,
-  LinearScale,
-  LineElement,
-  PointElement,
-  TimeScale,
-  Title as ChartTitle,
-  Tooltip as ChartTooltip,
-} from "chart.js";
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  ChartTitle,
-  ChartTooltip,
-  TimeScale,
-  Filler
-);
 
 const LegendWrapper = styled.div`
   display: flex;

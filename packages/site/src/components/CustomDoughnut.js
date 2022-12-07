@@ -1,13 +1,7 @@
-import {
-  ArcElement,
-  Chart as ChartJS,
-  Tooltip as ChartTooltip,
-} from "chart.js";
 import React from "react";
 import { Doughnut } from "react-chartjs-2";
+import "./Charts/globalConfig";
 import { sum } from "../utils/math";
-
-ChartJS.register(ArcElement, ChartTooltip);
 
 const DoughnutChart = ({ data, status }) => {
   const findDisabled = (name) => {

@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { Chart } from "chart.js";
+import "../../components/Charts/globalConfig";
 
 import Summary from "./Summary";
 import ProposerTable from "./ProposerTable";
@@ -90,8 +90,6 @@ const Overview = () => {
     false
   );
   const others = toPrecision(overview.income.others || 0, precision, false);
-
-  Chart.defaults.font.family = "Inter";
 
   return (
     <>
