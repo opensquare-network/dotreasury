@@ -46,7 +46,7 @@ const DoughnutChart = ({ data, status }) => {
   data.labels.reduce(dataReduce, doughnutData);
   const options = {
     maintainAspectRatio: false,
-    cutoutPercentage: 80,
+    cutout: "80%",
     animation: { animateRotate: false },
     plugins: {
       legend: {
