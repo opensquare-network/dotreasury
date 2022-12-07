@@ -151,7 +151,11 @@ function Register({ history }) {
   const [showPassword, setShowPassword] = useState(false);
   const [isAgree, setIsAgree] = useState(false);
   const [agreeError, setAgreeError] = useState(false);
-  const { register, handleSubmit, errors } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const dispatch = useDispatch();
   const [serverErrors, setServerErrors] = useState(null);
   const [showErrors, setShowErrors] = useState(null);
@@ -243,9 +247,8 @@ function Register({ history }) {
               Username
             </label>
             <FormInput
-              name="username"
               type="text"
-              ref={register({
+              {...register("username", {
                 required: {
                   value: true,
                   message: "This field is required"
@@ -263,9 +266,8 @@ function Register({ history }) {
               Email
             </label>
             <FormInput
-              name="email"
               type="text"
-              ref={register({
+              {...register("email", {
                 required: {
                   value: true,
                   message: "This field is required"
@@ -287,9 +289,8 @@ function Register({ history }) {
               toggleClick={() => setShowPassword(!showPassword)}
             >
               <FormInput
-                name="password"
                 type={showPassword ? "text" : "password"}
-                ref={register({
+                {...register("password", {
                   required: {
                     value: true,
                     message: "This field is required"
