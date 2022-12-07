@@ -7,12 +7,14 @@ import Text from "../../../components/Text";
 import { useSelector } from "react-redux";
 import { chainSelector } from "../../../store/reducers/chainSlice";
 import { abbreviateBigNumber } from "../../../utils";
+import "../../../components/Charts/adapterDayjs";
 import {
   CategoryScale,
   Chart as ChartJS,
   LinearScale,
   LineElement,
   PointElement,
+  TimeScale,
   Title as ChartTitle,
   Tooltip as ChartTooltip,
 } from "chart.js";
@@ -23,7 +25,8 @@ ChartJS.register(
   PointElement,
   LineElement,
   ChartTitle,
-  ChartTooltip
+  ChartTooltip,
+  TimeScale
 );
 
 const LegendWrapper = styled.div`
@@ -83,39 +86,12 @@ const LineChart = ({ data, onHover }) => {
       legend: {
         display: false,
       },
-      scales: {
-        yAxes: [
-          {
-            position: "right",
-            ticks: {
-              stepSize: chain === "kusama" ? 200000 : 8000000,
-              callback: (y) => abbreviateBigNumber(y),
-            },
-          },
-        ],
-        xAxes: [
-          {
-            type: "time",
-            time: {
-              displayFormats: {
-                month: "YYYY-MM",
-              },
-              unit: "month",
-              unitStepSize: 3,
-            },
-            gridLines: {
-              zeroLineWidth: 0,
-              color: "rgba(0, 0, 0, 0)",
-            },
-          },
-        ],
-      },
       tooltip: {
         mode: "index",
         bodySpacing: 8,
         callbacks: {
           title(tooltipItems) {
-            return dayjs(Number(tooltipItems[0].label)).format(
+            return dayjs(Number(tooltipItems[0].parsed.x)).format(
               "YYYY-MM-DD hh:mm"
             );
           },
@@ -127,6 +103,31 @@ const LineChart = ({ data, onHover }) => {
         },
         itemSort: function (a, b) {
           return a.datasetIndex - b.datasetIndex;
+        },
+      },
+    },
+    scales: {
+      y: {
+        position: "right",
+        ticks: {
+          stepSize: chain === "kusama" ? 200000 : 8000000,
+          callback: (y) => abbreviateBigNumber(y),
+        },
+      },
+      x: {
+        type: "time",
+        time: {
+          displayFormats: {
+            month: "YYYY-MM",
+          },
+          unit: "month",
+        },
+        grid: {
+          zeroLineWidth: 0,
+          color: "rgba(0, 0, 0, 0)",
+        },
+        ticks: {
+          stepSize: 3,
         },
       },
     },
