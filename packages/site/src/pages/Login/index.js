@@ -37,10 +37,7 @@ import {
   encodePolkadotAddress,
 } from "../../services/chainApi";
 import { useIsMounted } from "../../utils/hooks";
-import {
-  isWeb3Injected,
-  web3Enable,
-} from "@polkadot/extension-dapp";
+import { isWeb3Injected, web3Enable } from "@polkadot/extension-dapp";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import { substrateWeb3Accounts } from "../../utils/extension";
 
@@ -150,7 +147,11 @@ function Login({ location }) {
   const [showPassword, setShowPassword] = useState(false);
   const [isRememberMe, setIsRememberMe] = useState(false);
   const loggedInUser = useSelector(loggedInUserSelector);
-  const { register, handleSubmit, errors } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const dispatch = useDispatch();
   const [selectedAccount, setSelectedAccount] = useState(null);
   const isMounted = useIsMounted();
@@ -284,9 +285,8 @@ function Login({ location }) {
           <Form.Field>
             <label htmlFor="usernameOrEmail">Username / Email</label>
             <FormInput
-              name="usernameOrEmail"
               type="text"
-              ref={register({
+              {...register("usernameOrEmail", {
                 required: {
                   value: true,
                   message: "This field is required",
@@ -308,9 +308,8 @@ function Login({ location }) {
               toggleClick={() => setShowPassword(!showPassword)}
             >
               <FormInput
-                name="password"
                 type={showPassword ? "text" : "password"}
-                ref={register({
+                {...register("password", {
                   required: {
                     value: true,
                     message: "This field is required",
