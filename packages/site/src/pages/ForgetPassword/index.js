@@ -74,7 +74,11 @@ const TimeText = styled(TextMinor)`
 `;
 
 function ForgetPassword({ history }) {
-  const { register, handleSubmit, errors } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const isMounted = useIsMounted();
   const [requested, setRequested] = useState(false);
   const [countdown, setCountdown] = useState(10);
@@ -144,17 +148,14 @@ function ForgetPassword({ history }) {
       ) : (
         <Form onSubmit={handleSubmit(onSubmit)}>
           <Form.Field>
-            <label htmlFor="email">
-              Email
-            </label>
+            <label htmlFor="email">Email</label>
             <FormInput
-              name="email"
               type="text"
               placeholder="Email"
-              ref={register({
+              {...register("email", {
                 required: {
                   value: true,
-                  message: "This field is required"
+                  message: "This field is required",
                 },
                 pattern: {
                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
