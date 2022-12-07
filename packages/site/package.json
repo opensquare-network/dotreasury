@@ -30,7 +30,7 @@
     "react": "^18.2.0",
     "react-chartjs-2": "^5.0.1",
     "react-dom": "^18.2.0",
-    "react-hook-form": "^6.14.2",
+    "react-hook-form": "^7.40.0",
     "react-markdown": "^5.0.3",
     "react-mde": "^11.0.6",
     "react-redux": "^7.2.2",
