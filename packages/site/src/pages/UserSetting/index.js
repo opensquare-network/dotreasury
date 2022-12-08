@@ -8,9 +8,7 @@ import { loggedInUserSelector } from "../../store/reducers/userSlice";
 import Card from "../../components/Card";
 import Username from "./Username";
 import Email from "./Email";
-import Password from "./Password";
 import Notification from "./Notifications";
-import DeleteAccount from "./DeleteAccount";
 import Menu from "./Menu";
 import LinkedAddresses from "./LinkedAddresses";
 import Logout from "./Logout";
@@ -104,9 +102,7 @@ const UserSetting = ({ location }) => {
           <div>
             <Username username={username} />
             <Email email={email} emailVerified={emailVerified} />
-            <Password />
             <Logout />
-            <DeleteAccount />
           </div>
         )}
         {tab === NOTIFICATION && (

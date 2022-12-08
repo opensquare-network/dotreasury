@@ -1,7 +1,7 @@
 import { Bar } from "react-chartjs-2";
+import "./globalConfig";
 import styled, { css } from "styled-components";
 import Text from "../Text";
-import dayjs from "dayjs";
 import { getPrecision, toPrecision } from "../../utils";
 
 const Wrapper = styled.div`
@@ -66,64 +66,53 @@ function Burnt({ chartData, symbol }) {
   chartData.forEach(() => chartData[0].brunt === 0 && chartData.shift());
 
   const options = {
-    legend: {
-      display: false,
-    },
     maintainAspectRatio: false,
     scales: {
-      xAxes: [
-        {
-          stacked: true,
-          id: "bar-x-axis1",
-          display: false,
-        },
-        {
-          display: false,
-          stacked: true,
-          id: "bar-x-axis2",
-          // these are needed because the bar controller defaults set only the first x axis properties
-          type: "category",
-          gridLines: {
-            offsetGridLines: true,
-          },
-          offset: true,
-        },
-      ],
-      yAxes: [
-        {
-          display: false,
-          stacked: false,
-          ticks: {
-            beginAtZero: true,
-          },
-        },
-      ],
-    },
-    tooltips: {
-      mode: "index",
-      yAlign: "bottom",
-      caretPadding: -40,
-      bodySpacing: 8,
-      callbacks: {
-        title: function (tooltipItems) {
-          return dayjs(tooltipItems[0].xLabel).format("YYYY-MM-DD");
-        },
-        label: function (tooltipItem, data) {
-          const label = data.datasets[tooltipItem.datasetIndex].label;
-          const precision = toPrecision(
-            tooltipItem.value,
-            getPrecision(symbol),
-            false
-          );
-          const localePrecision = Number(precision).toLocaleString();
-          if (label === "Latest") {
-            return "";
-          }
-          return `${label} ≈ ${localePrecision} ${symbol}`;
+      x: {
+        // these are needed because the bar controller defaults set only the first xaxis properties
+        type: "category",
+        display: false,
+        stacked: true,
+        offset: true,
+      },
+      y: {
+        display: false,
+        stacked: false,
+        ticks: {
+          beginAtZero: true,
         },
       },
-      itemSort: function (a, b) {
-        return a.datasetIndex - b.datasetIndex;
+    },
+    plugins: {
+      legend: {
+        display: false,
+      },
+      tooltip: {
+        mode: "index",
+        yAlign: "bottom",
+        caretPadding: -40,
+        bodySpacing: 8,
+        callbacks: {
+          title(tooltipItems) {
+            return tooltipItems[0].label;
+          },
+          label(tooltipItem) {
+            const { label } = tooltipItem.dataset;
+
+            if (label === "Latest") {
+              return "";
+            }
+
+            const value = tooltipItem.parsed.y;
+
+            const precision = toPrecision(value, getPrecision(symbol), false);
+            const localePrecision = Number(precision).toLocaleString();
+            return `${label} ≈ ${localePrecision} ${symbol}`;
+          },
+        },
+        itemSort: function (a, b) {
+          return a.datasetIndex - b.datasetIndex;
+        },
       },
     },
   };
@@ -135,11 +124,11 @@ function Burnt({ chartData, symbol }) {
         label: "Burnt",
         backgroundColor: "#FC7C91",
         hoverBackgroundColor: "#F23252",
-        borderWidth: 0,
-        borderColor: "#ffffff",
+        borderWidth: 1,
+        borderColor: "#FC7C91",
+        hoverBorderColor: "#f23252",
         barThickness: 6,
         data: chartData.map((bar) => bar.brunt),
-        xAxisID: "bar-x-axis1",
       },
       {
         label: "Latest",
@@ -147,10 +136,7 @@ function Burnt({ chartData, symbol }) {
         borderWidth: 4,
         borderColor: "#ffffff",
         barThickness: 14,
-        data: chartData.map(
-          (bar) => chartData[chartData.length - 1].brunt * 1.2
-        ),
-        xAxisID: "bar-x-axis2",
+        data: chartData.map(() => chartData[chartData.length - 1].brunt * 1.2),
       },
     ],
   };
@@ -172,7 +158,7 @@ function Burnt({ chartData, symbol }) {
           />
         </svg>
       </HeaderWrapper>
-      <div style={{ overflow: "scroll", direction:"rtl" }}>
+      <div style={{ overflow: "scroll", direction: "rtl" }}>
         <ChartWrapper
           w={chartData.length > 18 ? `${chartData.length * 14}px` : "100%"}
           style={{
