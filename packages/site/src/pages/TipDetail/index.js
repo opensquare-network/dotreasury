@@ -88,7 +88,7 @@ function processTimeline(tipDetail, links) {
       const { value: tipValue, tipper: funder } = timelineItem.args;
       fields = [
         {
-          value: <Funder address={funder} value={tipValue} />,
+          value: <Funder address={funder.id ?? funder} value={tipValue} />,
         },
       ];
     } else if (timelineItem.method === "closeTip") {

@@ -27,6 +27,10 @@ function getNormalizedPreimageStorage(raw) {
 
 async function queryPreimageCall(hash, indexer) {
   const blockApi = await findBlockApi(indexer.blockHash);
+  if (!blockApi.query.democracy.preimages) {
+    return null;
+  }
+
   const raw = await blockApi.query.democracy.preimages(hash);
   const availableImage = getNormalizedPreimageStorage(raw)
   if (!availableImage) {

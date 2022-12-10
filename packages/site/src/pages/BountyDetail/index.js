@@ -214,7 +214,7 @@ export function processTimeline(bountyDetail, scanHeight, symbol) {
                 value: (
                   <User
                     role={USER_ROLES.Proposer}
-                    address={caller ?? curator}
+                    address={caller ?? curator.id ?? curator}
                   />
                 ),
               },

@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import ExternalLink from "./ExternalLink";
-import { getLinkNameAndSrc } from "../utils";
+import getLinkNameAndSrc from "../utils/link";
 
 const CustomImage = styled.img`
   position: relative;

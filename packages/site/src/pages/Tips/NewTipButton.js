@@ -8,7 +8,7 @@ import { TooltipInfoText } from "../../components/Tooltip/styled";
 
 export default function NewTipButton({ onFinalized }) {
   const account = useSelector(accountSelector);
-  const [showNewTipModel, setShowNewTipModel] = useState(false);
+  const [showNewTipModal, setShowNewTipModal] = useState(false);
 
   const isLoggedIn = !!account;
 
@@ -24,15 +24,17 @@ export default function NewTipButton({ onFinalized }) {
     >
       <OnChainActionButton
         disabled={!account}
-        onClick={() => setShowNewTipModel(true)}
+        onClick={() => setShowNewTipModal(true)}
       >
         New Tip
       </OnChainActionButton>
-      <NewTipModal
-        visible={showNewTipModel}
-        setVisible={setShowNewTipModel}
-        onFinalized={onFinalized}
-      />
+      {showNewTipModal && (
+        <NewTipModal
+          visible={showNewTipModal}
+          setVisible={setShowNewTipModal}
+          onFinalized={onFinalized}
+        />
+      )}
     </Tooltip>
   );
 }

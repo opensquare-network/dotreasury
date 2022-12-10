@@ -26,11 +26,7 @@ import ChildBountyDetail from "../pages/BountyDetail/ChildBountyDetail/index";
 import Overview from "../pages/Overview";
 import Projects from "../pages/Projects";
 import ProjectDetail from "../pages/ProjectDetail";
-import Login from "../pages/Login";
-import Register from "../pages/Register";
 import UserSetting from "../pages/UserSetting";
-import ForgetPassword from "../pages/ForgetPassword";
-import ResetPassword from "../pages/ResetPassword";
 import VerifyEmail from "../pages/VerifyEmail";
 import Toast from "../pages/Toast";
 import TreasurySlash from "../pages/TreasurySlash";
@@ -187,11 +183,7 @@ export default function App() {
                 path="/:symbol(ksm|dot)/users/:address/:role/:tableTab?"
                 component={UsersDetail}
               />
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/register" component={Register} />
               <Route exact path="/settings/:tabname?" component={UserSetting} />
-              <Route exact path="/forget" component={ForgetPassword} />
-              <Route exact path="/resetpassword" component={ResetPassword} />
               <Route exact path="/verifyemail" component={VerifyEmail} />
               <Route exact path="/useragreement" component={UserAgreement} />
               <Route exact path="/privacy" component={Privacy} />

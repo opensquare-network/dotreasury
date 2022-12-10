@@ -1,6 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { Line } from "react-chartjs-2";
+import "../../../components/Charts/globalConfig";
 import dayjs from "dayjs";
 
 import Text from "../../../components/Text";
@@ -53,58 +54,62 @@ const LegendTitle = styled(Text)`
 const LineChart = ({ data, onHover }) => {
   const chain = useSelector(chainSelector);
   const { dates, values } = data;
+
+  /** @type {import("react-chartjs-2").ChartProps} */
   const options = {
     type: "line",
     hover: {
       mode: "nearest",
       intersect: true,
     },
+    plugins: {
+      legend: {
+        display: false,
+      },
+      tooltip: {
+        mode: "index",
+        bodySpacing: 8,
+        callbacks: {
+          title(tooltipItems) {
+            return dayjs(Number(tooltipItems[0].parsed.x)).format(
+              "YYYY-MM-DD hh:mm"
+            );
+          },
+          label(tooltipItem) {
+            return `${tooltipItem.dataset.label} ${
+              Math.round(tooltipItem.raw) === tooltipItem.raw ? "" : "≈"
+            } ${parseInt(tooltipItem.raw)}`;
+          },
+        },
+        itemSort: function (a, b) {
+          return a.datasetIndex - b.datasetIndex;
+        },
+      },
+    },
     scales: {
-      yAxes: [
-        {
-          position: "right",
-          ticks: {
-            stepSize: chain === "kusama" ? 200000 : 8000000,
-            callback:(y) => abbreviateBigNumber(y),
-          },
-        },
-      ],
-      xAxes: [
-        {
-          type: "time",
-          time: {
-            displayFormats: {
-              month: "YYYY-MM",
-            },
-            unit: "month",
-            unitStepSize: 3,
-          },
-          gridLines: {
-            zeroLineWidth: 0,
-            color: "rgba(0, 0, 0, 0)",
-          },
-        },
-      ],
-    },
-    tooltips: {
-      mode: "index",
-      bodySpacing: 8,
-      callbacks: {
-        title: function (tooltipItems) {
-          return dayjs(tooltipItems[0].xLabel).format("YYYY-MM-DD hh:mm");
-        },
-        label: function (tooltipItem, data) {
-          return `${data.datasets[tooltipItem.datasetIndex].label} ${
-            Math.round(tooltipItem.value) === tooltipItem.value ? "" : "≈"
-          } ${parseInt(tooltipItem.value)}`;
+      y: {
+        position: "right",
+        ticks: {
+          stepSize: chain === "kusama" ? 200000 : 8000000,
+          callback: (y) => abbreviateBigNumber(y),
         },
       },
-      itemSort: function (a, b) {
-        return a.datasetIndex - b.datasetIndex;
+      x: {
+        type: "time",
+        time: {
+          displayFormats: {
+            month: "YYYY-MM",
+          },
+          unit: "month",
+        },
+        grid: {
+          zeroLineWidth: 0,
+          color: "rgba(0, 0, 0, 0)",
+        },
+        ticks: {
+          stepSize: 3,
+        },
       },
-    },
-    legend: {
-      display: false,
     },
     maintainAspectRatio: false,
     onHover: function (_, array) {

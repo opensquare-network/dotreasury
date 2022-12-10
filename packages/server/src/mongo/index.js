@@ -108,6 +108,10 @@ function getTermCouncilorCollection(chain) {
   return db(chain).getTermCouncilorCollection();
 }
 
+function getCouncilStatusCol(chain) {
+  return db(chain).getCouncilStatusCol();
+}
+
 function getMotionVoterCollection(chain) {
   return db(chain).getMotionVoterCollection();
 }
@@ -145,4 +149,5 @@ module.exports = {
   getTermCouncilorCollection,
   getMotionVoterCollection,
   getTipperCollection,
+  getCouncilStatusCol,
 };

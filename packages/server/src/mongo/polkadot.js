@@ -74,6 +74,7 @@ let inputWeeklyStatsCol = null;
 
 let termsCol = null;
 let termCouncilorCol = null;
+let councilStatusCol = null;
 
 async function initDb() {
   client = await MongoClient.connect(mongoUrl, {
@@ -112,6 +113,7 @@ async function initDb() {
   councilDb = client.db(councilDbName);
   termsCol = councilDb.collection(termsCollectionName);
   termCouncilorCol = councilDb.collection(termCouncilorCollectionName);
+  councilStatusCol = councilDb.collection(statusCollectionName);
 
   await _createIndexes();
 }
@@ -267,6 +269,11 @@ async function getTermCouncilorCollection() {
   return termCouncilorCol;
 }
 
+async function getCouncilStatusCol() {
+  await tryInit(councilStatusCol);
+  return councilStatusCol;
+}
+
 async function getMotionVoterCollection() {
   await tryInit(motionVoterCol);
   return motionVoterCol;
@@ -306,4 +313,5 @@ module.exports = {
   getTermCouncilorCollection,
   getMotionVoterCollection,
   getTipperCollection,
+  getCouncilStatusCol,
 };

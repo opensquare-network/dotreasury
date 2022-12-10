@@ -17,13 +17,16 @@ import Text from "../../components/Text";
 import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../constants";
 import NewTipButton from "./NewTipButton";
 import useWaitSyncBlock from "../../utils/useWaitSyncBlock";
+import EndorseTipsButton from "./EndorseTipsButton";
 
 const HeaderWrapper = styled.div`
   padding: 20px 24px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
   gap: 16px;
+  @media screen and (max-width: 640px) {
+    flex-direction: column;
+  }
 `;
 
 const Title = styled(Text)`
@@ -100,6 +103,7 @@ const Tips = () => {
             <Title>Tips</Title>
             <div style={{ display: "flex", gap: "16px" }}>
               <NewTipButton onFinalized={onFinalized} />
+              <EndorseTipsButton onFinalized={onFinalized} />
               <Filter value={filterData.status ?? "-1"} query={filterQuery} />
             </div>
           </HeaderWrapper>
