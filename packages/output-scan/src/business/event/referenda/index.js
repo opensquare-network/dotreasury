@@ -1,3 +1,4 @@
+const { handleDecisionDepositPlaced } = require("./decisionDepositPlaced");
 const { handleSubmitted } = require("./submitted");
 const {
   consts: {
@@ -14,7 +15,8 @@ async function handleReferendaEvent(event, indexer, extrinsic, blockEvents) {
 
   if (ReferendaEvents.Submitted === method) {
     await handleSubmitted(event, indexer);
-    // todo: handle submitted
+  } else if (ReferendaEvents.DecisionDepositPlaced === method) {
+    await handleDecisionDepositPlaced(event, indexer);
   } else if (ReferendaEvents.DecisionStarted === method) {
     // todo: handle decision started
   } else if (ReferendaEvents.ConfirmStarted === method) {
