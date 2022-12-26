@@ -1,3 +1,4 @@
+const { handleSubmitted } = require("./submitted");
 const {
   consts: {
     Modules,
@@ -12,6 +13,7 @@ async function handleReferendaEvent(event, indexer, extrinsic, blockEvents) {
   }
 
   if (ReferendaEvents.Submitted === method) {
+    await handleSubmitted(event, indexer);
     // todo: handle submitted
   } else if (ReferendaEvents.DecisionStarted === method) {
     // todo: handle decision started
