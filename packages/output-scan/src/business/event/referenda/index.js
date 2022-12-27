@@ -1,3 +1,7 @@
+const { handleRejected } = require("./rejected");
+const { handleTimedOut } = require("./timedout");
+const { handleKilled } = require("./killed");
+const { handleCancelled } = require("./cancelled");
 const { handleConfirmed } = require("./confirmed");
 const { handleConfirmAborted } = require("./confirmAborted");
 const { handleConfirmStarted } = require("./confirmStarted");
@@ -30,11 +34,14 @@ async function handleReferendaEvent(event, indexer, extrinsic, blockEvents) {
   } else if (ReferendaEvents.Confirmed === method) {
     await handleConfirmed(event, indexer, extrinsic, blockEvents);
   } else if (ReferendaEvents.Cancelled === method) {
+    await handleCancelled(...arguments);
   } else if (ReferendaEvents.Killed === method) {
+    await handleKilled(...arguments);
   } else if (ReferendaEvents.TimedOut === method) {
+    await handleTimedOut(...arguments);
   } else if (ReferendaEvents.Rejected === method) {
+    await handleRejected(...arguments);
   }
-  // todo: handle various methods
 }
 
 module.exports = {
