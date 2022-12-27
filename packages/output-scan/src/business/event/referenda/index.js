@@ -1,3 +1,5 @@
+const { handleConfirmAborted } = require("./confirmAborted");
+const { handleConfirmStarted } = require("./confirmStarted");
 const { handleDecisionStarted } = require("./decisionStarted");
 const { handleDecisionDepositPlaced } = require("./decisionDepositPlaced");
 const { handleSubmitted } = require("./submitted");
@@ -21,8 +23,9 @@ async function handleReferendaEvent(event, indexer, extrinsic, blockEvents) {
   } else if (ReferendaEvents.DecisionStarted === method) {
     await handleDecisionStarted(event, indexer);
   } else if (ReferendaEvents.ConfirmStarted === method) {
-    // todo: handle confirm started
+    await handleConfirmStarted(event, indexer);
   } else if (ReferendaEvents.ConfirmAborted === method) {
+    await handleConfirmAborted(event, indexer);
   } else if (ReferendaEvents.Confirmed === method) {
   } else if (ReferendaEvents.Cancelled === method) {
   } else if (ReferendaEvents.Killed === method) {
