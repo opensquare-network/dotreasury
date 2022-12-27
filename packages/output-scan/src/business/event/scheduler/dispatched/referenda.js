@@ -18,7 +18,7 @@ async function handleSpendAndApproved(referendum, indexer, blockEvents) {
     return
   }
 
-  const { referendumIndex, proposer } = referendum;
+  const { referendumIndex, proposer, trackInfo } = referendum;
   const proposalIndexer = {
     ...indexer,
     eventIndex: indexer.eventIndex - 1,
@@ -51,7 +51,12 @@ async function handleSpendAndApproved(referendum, indexer, blockEvents) {
     meta,
     state,
     timeline: [timelineItem],
+    isByGov2: true,
     gov2Referendum: referendumIndex,
+    track: {
+      id: trackInfo.id,
+      name: trackInfo.name,
+    }
   };
 
   await insertProposal(obj);
