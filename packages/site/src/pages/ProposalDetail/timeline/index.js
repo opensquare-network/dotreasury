@@ -50,47 +50,37 @@ function constructProposalProcessItem(item, proposalDetail) {
         value: <User role={USER_ROLES.Beneficiary} address={beneficiary} />,
       },
     ];
-
-    return {
-      name: method,
-      extrinsicIndexer: item.type === "extrinsic" ? item.indexer : undefined,
-      eventIndexer: item.type === "event" ? item.indexer : undefined,
-      fields,
-    };
   }
 
   if (method === "Rejected") {
     const { value } = item.args;
-    return {
-      name: method,
-      extrinsicIndexer: item.type === "extrinsic" ? item.indexer : undefined,
-      eventIndexer: item.type === "event" ? item.indexer : undefined,
-      fields: [
-        {
-          title: "Slashed",
-          value: <Balance value={value} />,
-        },
-      ],
-    };
+    fields = [
+      {
+        title: "Slashed",
+        value: <Balance value={value} />,
+      },
+    ];
   }
 
   if (method === "Awarded") {
-    return {
-      name: method,
-      extrinsicIndexer: item.type === "extrinsic" ? item.indexer : undefined,
-      eventIndexer: item.type === "event" ? item.indexer : undefined,
-      fields: [
-        {
-          title: "Beneficiary",
-          value: <User role={USER_ROLES.Beneficiary} address={beneficiary} />,
-        },
-        {
-          title: "Value",
-          value: <Balance value={value} />,
-        },
-      ],
-    };
+    fields = [
+      {
+        title: "Beneficiary",
+        value: <User role={USER_ROLES.Beneficiary} address={beneficiary} />,
+      },
+      {
+        title: "Value",
+        value: <Balance value={value} />,
+      },
+    ];
   }
+
+  return {
+    name: method,
+    extrinsicIndexer: item.type === "extrinsic" ? item.indexer : undefined,
+    eventIndexer: item.type === "event" ? item.indexer : undefined,
+    fields,
+  };
 }
 
 export function processTimeline(proposalDetail, scanHeight) {
