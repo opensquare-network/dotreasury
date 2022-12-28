@@ -104,7 +104,6 @@ class ProjectController {
       },
       page,
       pageSize,
-      ctx.request.user
     );
   }
 

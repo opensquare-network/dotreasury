@@ -305,7 +305,6 @@ class ProposalsController {
       },
       page,
       pageSize,
-      ctx.request.user
     );
   }
 

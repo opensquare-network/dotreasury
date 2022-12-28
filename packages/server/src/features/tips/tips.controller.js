@@ -261,7 +261,6 @@ class TipsController {
       },
       page,
       pageSize,
-      ctx.request.user
     );
   }
 
