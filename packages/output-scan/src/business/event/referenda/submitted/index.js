@@ -19,6 +19,10 @@ async function handleSubmitted(event, indexer) {
   const proposal = event.data[2].toJSON();
   const proposalHash = extractProposalHash(proposal);
   const call = await queryPreimage(proposalHash, indexer.blockHash);
+  if (!call) {
+    return
+  }
+
   await handleTreasurySpend(referendumIndex, track, proposalHash, call, indexer);
 
   // todo: we will also handle other calls by referenda
