@@ -252,7 +252,6 @@ class BountiesController {
       },
       page,
       pageSize,
-      ctx.request.user
     );
   }
 
