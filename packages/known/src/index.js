@@ -1,4 +1,6 @@
 require("dotenv").config();
+
+const { saveGov2Heights } = require("./heights/gov");
 const { getBountyHeights } = require("./heights/bounty");
 const { getMotionHeights } = require("./heights/motion");
 const { closeDataDbClient } = require("./mongo/data");
@@ -42,6 +44,8 @@ async function main() {
 
   const tipperHeights = await getHeightsFromTipper();
   await saveKnownHeights(tipperHeights);
+
+  await saveGov2Heights();
 }
 
 main()

@@ -31,6 +31,9 @@ let burntCol = null;
 let outTransferCol = null;
 let democracyReferendumCol = null;
 
+let referendaReferendumCol = null;
+let referendaReferendumTimelineCol = null;
+
 async function initDb() {
   client = await MongoClient.connect(mongoUrl, {
     useUnifiedTopology: true,
@@ -49,6 +52,9 @@ async function initDb() {
   outTransferCol = db.collection(outTransferColName);
   childBountyCol = db.collection("childBounty");
   democracyReferendumCol = db.collection("democracyReferendum");
+
+  referendaReferendumCol = db.collection("referendaReferendum");
+  referendaReferendumTimelineCol = db.collection("referendaReferendumTimeline");
 
   await _createIndexes();
 }
@@ -118,6 +124,16 @@ async function getDemocracyReferendumCollection() {
   return democracyReferendumCol;
 }
 
+async function getReferendaReferendumCol() {
+  await tryInit(referendaReferendumCol);
+  return referendaReferendumCol;
+}
+
+async function getReferendaReferendumTimelineCol() {
+  await tryInit(referendaReferendumTimelineCol);
+  return referendaReferendumTimelineCol;
+}
+
 async function closeDataDbClient() {
   await client.close()
 }
@@ -134,4 +150,6 @@ module.exports = {
   closeDataDbClient,
   getChildBountyCollection,
   getDemocracyReferendumCollection,
+  getReferendaReferendumCol,
+  getReferendaReferendumTimelineCol,
 };

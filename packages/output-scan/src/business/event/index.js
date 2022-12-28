@@ -1,3 +1,5 @@
+const { handleSchedulerEvents } = require("./scheduler");
+const { handleReferendaEvent } = require("./referenda");
 const { handleReferendumEvent } = require("./democracy/referendum");
 const { handleChildBountiesEvents } = require("./child-bounties");
 const { handleBurntEvent } = require("./burnt");
@@ -51,11 +53,14 @@ async function handleEventWithoutExtrinsic(
 async function handleCommon(
   event,
   indexer,
-  extrinsic
+  extrinsic,
+  blockEvents,
 ) {
   await handleBurntEvent(event, indexer, extrinsic);
   await handleChildBountiesEvents(event, indexer, extrinsic);
   await handleReferendumEvent(...arguments);
+  await handleReferendaEvent(event, indexer, extrinsic, blockEvents);
+  await handleSchedulerEvents(event, indexer, extrinsic, blockEvents);
 }
 
 async function handleEvents(events, extrinsics, blockIndexer) {
@@ -74,7 +79,7 @@ async function handleEvents(events, extrinsics, blockIndexer) {
       extrinsic = extrinsics[extrinsicIndex];
     }
 
-    await handleCommon(event, indexer, extrinsic);
+    await handleCommon(event, indexer, extrinsic, events);
 
     if (phase.isNone) {
       await handleEventWithoutExtrinsic(blockIndexer, event, sort, events);
