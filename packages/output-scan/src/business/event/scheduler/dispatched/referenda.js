@@ -8,11 +8,11 @@ const {
 } = require("@osn/scan-common");
 
 async function handleSpendAndApproved(referendum, indexer, blockEvents) {
-  const maybeSpendEvent = blockEvents[indexer.eventIndex - 1].event;
-  if (!maybeSpendEvent) {
+  if (!blockEvents[indexer.eventIndex - 1]) {
     return null;
   }
 
+  const maybeSpendEvent = blockEvents[indexer.eventIndex - 1].event;
   const { section, method } = maybeSpendEvent;
   if ("treasury" !== section || "SpendApproved" !== method) {
     return
@@ -60,6 +60,11 @@ async function handleSpendAndApproved(referendum, indexer, blockEvents) {
   };
 
   await insertProposal(obj);
+  const referendumCol = await getReferendaReferendumCol();
+  await referendumCol.updateOne(
+    { referendumIndex },
+    { $set: { treasuryProposalIndex: proposalIndex } },
+  );
   logger.info(`Treasury proposal ${ proposalIndex } saved by gov2 referendum ${ referendumIndex }`);
 }
 
