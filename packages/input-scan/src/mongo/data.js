@@ -37,6 +37,8 @@ let treasurySlashCol = null;
 let electionsPhragmenSlashCol = null;
 let democracySlashCol = null;
 let identitySlashCol = null;
+let referendaSlashCol = null;
+let fellowshipReferendaSlashCol = null;
 let othersIncomeCol = null;
 let incomeTransferCol = null;
 
@@ -56,6 +58,8 @@ async function initDb() {
   electionsPhragmenSlashCol = db.collection(electionSlashCollectionName);
   democracySlashCol = db.collection(democracySlashCollectionName);
   identitySlashCol = db.collection(identitySlashCollectionName);
+  referendaSlashCol = db.collection("slashReferenda");
+  fellowshipReferendaSlashCol = db.collection("slashFellowshipReferenda");
   othersIncomeCol = db.collection(othersIncomeCollectionName);
   incomeTransferCol = db.collection(incomeTransferCollectionName);
   weeklyStatsCol = db.collection(weeklyStatsCollectionName);
@@ -113,6 +117,16 @@ async function getIdentitySlashCollection() {
   return identitySlashCol;
 }
 
+async function getReferendaSlashCol() {
+  await tryInit(referendaSlashCol);
+  return referendaSlashCol;
+}
+
+async function getFellowshipReferendaSlashCol() {
+  await tryInit(fellowshipReferendaSlashCol);
+  return fellowshipReferendaSlashCol;
+}
+
 async function getOthersIncomeCollection() {
   await tryInit(othersIncomeCol);
   return othersIncomeCol;
@@ -142,6 +156,8 @@ module.exports = {
   getElectionSlashCollection,
   getDemocracySlashCollection,
   getIdentitySlashCollection,
+  getReferendaSlashCol,
+  getFellowshipReferendaSlashCol,
   getOthersIncomeCollection,
   getIncomeTransferCollection,
   getWeeklyStatsCollection,

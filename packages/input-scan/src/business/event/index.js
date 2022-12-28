@@ -13,6 +13,8 @@ const { handleIdentityKilledSlash } = require("./identity/killedSlash");
 const { handleTransfer } = require("./transfer");
 const { handleTreasurySlash } = require("./treasury");
 const { handleInflation } = require("./staking/inflation");
+const { handleReferendaSlash } = require("./referenda/referenda");
+const { handleFellowshipReferendaSlash } = require("./referenda/fellowship");
 
 async function handleDeposit(
   indexer,
@@ -28,6 +30,10 @@ async function handleDeposit(
   const stakingSlash = await handleStakingSlash(event, indexer, blockEvents);
   const maybeDemocracy = await handleCancelProposalSlash(event, indexer, blockEvents);
   const democracySlash = maybeDemocracy ? maybeDemocracy.balance : '0';
+  const maybeReferendaSlash = await handleReferendaSlash(event, indexer, blockEvents);
+  const referendaSlash = maybeReferendaSlash ? maybeReferendaSlash.balance : '0';
+  const maybeFellowshipReferenda = await handleFellowshipReferendaSlash(event, indexer, blockEvents);
+  const fellowshipReferendaSlash = maybeFellowshipReferenda ? maybeFellowshipReferenda.balance : '0';
 
   const items = {
     inflation,
@@ -36,6 +42,8 @@ async function handleDeposit(
     electionSlash,
     stakingSlash,
     democracySlash,
+    referendaSlash,
+    fellowshipReferendaSlash,
   }
   const sum = bigAdds(Object.values(items));
 
@@ -72,6 +80,8 @@ async function handleEvents(events, extrinsics, blockIndexer) {
   let democracySlash = 0;
   let stakingSlash = 0;
   let electionSlash = 0;
+  let referendaSlash = 0;
+  let fellowshipReferendaSlash = 0;
   let others = 0;
 
   for (let sort = 0; sort < events.length; sort++) {
@@ -98,6 +108,8 @@ async function handleEvents(events, extrinsics, blockIndexer) {
     electionSlash = bigAdd(electionSlash, depositObj.electionSlash);
     democracySlash = bigAdd(democracySlash, depositObj.democracySlash);
     stakingSlash = bigAdd(stakingSlash, depositObj.stakingSlash);
+    referendaSlash = bigAdd(referendaSlash, depositObj.referendaSlash);
+    fellowshipReferendaSlash = bigAdd(fellowshipReferendaSlash, depositObj.fellowshipReferendaSlash);
     others = bigAdd(others, depositObj.others);
   }
 
@@ -110,6 +122,8 @@ async function handleEvents(events, extrinsics, blockIndexer) {
     democracySlash,
     stakingSlash,
     electionSlash,
+    referendaSlash,
+    fellowshipReferendaSlash,
   }
 }
 
