@@ -4,20 +4,20 @@ const {
 const { extractPage } = require("../../utils");
 
 const ReferendaStateSort = {
-  Deciding: 10,
-  Confirming: 9,
+  Confirming: 10,
+  Deciding: 9,
   Queueing: 8,
   Submitted: 7,
   Approved: 6,
-  Cancelled: 6,
-  Killed: 6,
-  TimedOut: 6,
-  Rejected: 6,
-  Executed: 6,
+  Executed: 5,
+  Cancelled: 5,
+  Killed: 5,
+  TimedOut: 5,
+  Rejected: 5,
 };
 
 function getCondition(ctx) {
-  const { status, beneficiary, proposer, track } = ctx.request.query;
+  const { status, track } = ctx.request.query;
 
   const condition = {}
   if (status) {
@@ -59,7 +59,7 @@ class ReferendaController {
               branches: Object.keys(ReferendaStateSort).map(state => (
                 {
                   case: {
-                    $eq: ["$state.state", state]
+                    $eq: ["$state.name", state]
                   },
                   then: ReferendaStateSort[state],
                 }
