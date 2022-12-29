@@ -16,6 +16,10 @@ function getOutputStatusCollection(chain) {
   return db(chain).getOutputStatusCollection();
 }
 
+function getReferendaReferendumCollection(chain) {
+  return db(chain).getReferendaReferendumCollection();
+}
+
 function getTipCollection(chain) {
   return db(chain).getTipCollection();
 }
@@ -123,6 +127,7 @@ function getTipperCollection(chain) {
 module.exports = {
   initDb,
   getStatusCollection,
+  getReferendaReferendumCollection,
   getTipCollection,
   getProposalCollection,
   getBountyCollection,

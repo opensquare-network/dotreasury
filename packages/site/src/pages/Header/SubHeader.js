@@ -35,6 +35,7 @@ import {
   TEXT_DARK_MAJOR,
   TEXT_DARK_MINOR,
 } from "../../constants";
+import ReferendaMenu from "./ReferendaMenu";
 
 const Wrapper = styled.div`
   position: relative;
@@ -154,6 +155,8 @@ const TabExampleSecondaryPointing = () => {
     dispatch(fetchIncomeCount(chain));
   }, [dispatch, chain]);
 
+  const isKusama = chain === "kusama";
+
   const panes =
     showMenuTabs === "Home"
       ? [
@@ -168,6 +171,17 @@ const TabExampleSecondaryPointing = () => {
               active: `/${symbol}` === pathname,
             },
           },
+          ...(isKusama ? [{
+            menuItem: {
+              as: NavLink,
+              id: "referendaTab",
+              content: <ReferendaMenu />,
+              to: `/${symbol}/referenda`,
+              exact: true,
+              key: "referenda",
+              active: `/${symbol}/referenda` === pathname,
+            }
+          }] : []),
           {
             menuItem: {
               as: NavLink,

@@ -7,6 +7,7 @@ const {
   getOutputTransferCollection,
   getTipFinderCollection,
   getProposalBeneficiaryCollection,
+  getReferendaReferendumCollection,
 } = require("../mongo");
 const { bigAdd } = require("../utils");
 const { setOverview, getOverview } = require("./store");
@@ -55,12 +56,18 @@ async function calcOverview(chain) {
     .find({}, { balance: 1 })
     .toArray();
 
+  const referendaCol = await getReferendaReferendumCollection(chain);
+  const referendaList = await referendaCol
+    .find({})
+    .toArray();
+
   const count = await calcCount(
     proposals,
     tips,
     bounties,
     burntList,
-    outputTransferList
+    outputTransferList,
+    referendaList,
   );
   const output = await calcOutput(
     proposals,
@@ -105,7 +112,8 @@ async function calcCount(
   tips = [],
   bounties = [],
   burntList = [],
-  outputTransferList = []
+  outputTransferList = [],
+  referendaList = [],
 ) {
   const unFinishedProposals = proposals.filter(
     ({ state: { name, state } }) => (name || state) !== "Awarded" && (name || state) !== "Rejected"
@@ -144,7 +152,11 @@ async function calcCount(
     all: outputTransferList.length,
   };
 
-  return { proposal, tip, bounty, burnt, transfer };
+  const referenda = {
+    all: referendaList.length,
+  }
+
+  return { proposal, tip, bounty, burnt, transfer, referenda };
 }
 
 const bountyStatuses = [

@@ -298,6 +298,19 @@ const proposalStatus = {
     />
   ),
 };
+const referendaStatus = {
+  key: "referenda-status",
+  title: "Status",
+  headerCellProps: { textAlign: "right" },
+  cellProps: { textAlign: "right" },
+  cellClassName: "referenda-status-cell",
+  cellRender: (_, item) => (
+    <PairTextVertical
+      value={item?.state?.name}
+      detail={dayjs(parseInt(item?.state?.indexer?.blockTime)).format("YYYY-MM-DD HH:mm")}
+    />
+  ),
+};
 const tipsBeneficiary = {
   key: "beneficiary",
   title: "Beneficiary",
@@ -399,5 +412,6 @@ export function useTableColumns(options) {
     tipsStatus,
     tipsValue: tipsValue(symbol),
     burntValue: burntValue(symbol),
+    referendaStatus,
   };
 }

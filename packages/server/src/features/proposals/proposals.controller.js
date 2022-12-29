@@ -99,8 +99,8 @@ class ProposalsController {
 
     const condition = getCondition(ctx);
     const proposalCol = await getProposalCollection(chain);
-    const total = proposalCol.countDocuments(condition);
-    const list = proposalCol.aggregate([
+    const totalQuery = proposalCol.countDocuments(condition);
+    const proposalsQuery = proposalCol.aggregate([
       { $match: condition },
       {
         $addFields: {
@@ -133,10 +133,10 @@ class ProposalsController {
       }
     ]).toArray();
 
-    const result = await Promise.all([total, list]);
+    const [total, proposals] = await Promise.all([totalQuery, proposalsQuery]);
 
     ctx.body = {
-      items: result[1].map((item) => ({
+      items: proposals.map((item) => ({
         indexer: item.indexer,
         proposalIndex: item.proposalIndex,
         proposeTime: item.indexer.blockTime,
@@ -160,7 +160,7 @@ class ProposalsController {
       })),
       page,
       pageSize,
-      total: result[0],
+      total,
     };
   }
 

@@ -11,6 +11,7 @@ const statusCollectionName = "status";
 const tipCollectionName = "tip";
 const proposalCollectionName = "proposal";
 const bountyCollectionName = "bounty";
+const childBountyCollectionName = "childBounty";
 const motionCollectionName = "motion";
 const referendumCollectionName = "democracyReferendum";
 const tipFinderCollectionName = "tipFinder";
@@ -20,6 +21,7 @@ const outputTransferCollectionName = "outputTransfer";
 const participantCollectionName = "participant";
 const motionVoterCollectionName = "motionVoter";
 const tipperCollectionName = "tipper";
+const referendaReferendumCollectionName = "referendaReferendum";
 
 // income collections
 const incomeInflationCollectionName = "inflation";
@@ -46,6 +48,7 @@ let councilDb = null;
 const mongoUrl = config.mongo.ksmUrl || "mongodb://127.0.0.1:27017";
 let statusCol = null;
 
+let referendaReferendumCol = null;
 let tipCol = null;
 let proposalCol = null;
 let bountyCol = null;
@@ -94,10 +97,11 @@ async function initDb() {
   inputWeeklyStatsCol = inputDb.collection(weeklyStatsCollectionName);
 
   outputDb = client.db(outputDbName);
+  referendaReferendumCol = outputDb.collection(referendaReferendumCollectionName);
   tipCol = outputDb.collection(tipCollectionName);
   proposalCol = outputDb.collection(proposalCollectionName);
   bountyCol = outputDb.collection(bountyCollectionName);
-  childBountyCol = outputDb.collection("childBounty");
+  childBountyCol = outputDb.collection(childBountyCollectionName);
   motionCol = outputDb.collection(motionCollectionName);
   referendumCol = outputDb.collection(referendumCollectionName);
   tipFinderCol = outputDb.collection(tipFinderCollectionName);
@@ -153,6 +157,11 @@ async function getOutputStatusCollection() {
   await tryInit(outputStatusCol);
   return outputStatusCol;
 }
+
+async function getReferendaReferendumCollection() {
+  await tryInit(referendaReferendumCol);
+  return referendaReferendumCol;
+};
 
 async function getTipCollection() {
   await tryInit(tipCol);
@@ -287,6 +296,7 @@ async function getTipperCollection() {
 module.exports = {
   initDb,
   getStatusCollection,
+  getReferendaReferendumCollection,
   getTipCollection,
   getProposalCollection,
   getBountyCollection,
