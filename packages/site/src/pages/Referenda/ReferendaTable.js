@@ -13,6 +13,8 @@ import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../constants";
 import ResponsivePagination from "../../components/ResponsivePagination";
 import { useHistory } from "react-router";
 import api from "../../services/scanApi";
+import TextMinor from "../../components/TextMinor";
+import JumpToLink from "./Link";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -79,6 +81,14 @@ export default function ReferendaTable() {
     referendaStatus,
   } = useTableColumns({});
 
+  const index = {
+    key: "index",
+    title: "Index",
+    dataIndex: "referendumIndex",
+    cellClassName: "index-cell",
+    cellRender: (value) => <TextMinor>#{value}</TextMinor>,
+  };
+
   const description = {
     key: "description",
     title: "Description",
@@ -86,16 +96,27 @@ export default function ReferendaTable() {
     cellRender: (_, item) => item.description,
   };
 
+  const linkToSubSquare = {
+    key: "link-to-subsquare",
+    title: "",
+    headerCellClassName: "hidden",
+    cellClassName: "link-cell hidden",
+    cellRender: (_, item) => <JumpToLink href={`https://${chain}.subsquare.io/referenda/referendum/${item.referendumIndex}`} />,
+  }
+
   const columns = [
+    index,
     proposeTime,
     beneficiary,
     description,
     value,
     referendaStatus,
+    linkToSubSquare,
   ];
 
   const tableData = (dataList || []).map(item => (
     {
+      referendumIndex: item.referendumIndex,
       proposeAtBlockHeight: item.indexer.blockHeight,
       proposeTime: item.indexer.blockTime,
       beneficiary: item.beneficiary,
