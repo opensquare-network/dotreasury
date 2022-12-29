@@ -12,6 +12,7 @@ import { chainSelector } from "../../store/reducers/chainSlice";
 import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../constants";
 import ResponsivePagination from "../../components/ResponsivePagination";
 import { useHistory } from "react-router";
+import api from "../../services/scanApi";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -33,11 +34,18 @@ const TableWrapper = styled.div`
   overflow: scroll;
 `;
 
+const fetchGov2ReferendaTitle = async (chain, referendumIndex) => {
+  const apiUrl = `https://${chain}.subsquare.io/api/gov2/referendums/${referendumIndex}`;
+  const { result } = await api.fetch(apiUrl);
+  return result?.title || "";
+}
+
 export default function ReferendaTable() {
   const dispatch = useDispatch();
   const history = useHistory();
   const chain = useSelector(chainSelector);
   const applicationList = useSelector(applicationListSelector);
+  const [dataList, setDataList] = useState(applicationList?.items || []);
   const [filterStatus, setFilterStatus] = useState("-1");
   const [filterTrack, setFilterTrack] = useState("-1");
   const [page, setPage] = useState(DEFAULT_QUERY_PAGE);
@@ -50,23 +58,42 @@ export default function ReferendaTable() {
     dispatch(fetchApplicationList(chain, page - 1, pageSize, status, track));
   }, [dispatch, chain, page, pageSize, filterStatus, filterTrack]);
 
+  useEffect(() => {
+    const dataListPromises = (applicationList?.items || [])
+      .map(async (item) => {
+        if (item.description) {
+          return item;
+        }
+
+        const description = await fetchGov2ReferendaTitle(chain, item.referendumIndex);
+        return { ...item, description };
+      });
+
+    Promise.all(dataListPromises).then(dataList => setDataList(dataList));
+  }, [chain, applicationList]);
+
   const {
     proposeTime,
     beneficiary,
-    proposer,
     value,
     referendaStatus,
   } = useTableColumns({});
 
+  const description = {
+    key: "description",
+    title: "Description",
+    cellRender: (_, item) => item.description,
+  };
+
   const columns = [
     proposeTime,
     beneficiary,
-    proposer,
+    description,
     value,
     referendaStatus,
   ];
 
-  const listData = (applicationList?.items || []).map(item => (
+  const tableData = (dataList || []).map(item => (
     {
       proposeAtBlockHeight: item.indexer.blockHeight,
       proposeTime: item.indexer.blockTime,
@@ -74,6 +101,7 @@ export default function ReferendaTable() {
       proposer: item.proposer,
       value: item.amount,
       state: item.state,
+      description: item.description,
     }
   ));
 
@@ -83,7 +111,7 @@ export default function ReferendaTable() {
       <Wrapper>
         <TableWrapper>
           <TableLoading loading={false}>
-            <Table columns={columns} data={listData} />
+            <Table columns={columns} data={tableData} />
           </TableLoading>
         </TableWrapper>
       </Wrapper>
