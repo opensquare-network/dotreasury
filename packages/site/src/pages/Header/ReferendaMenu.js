@@ -1,14 +1,14 @@
 import React from "react";
 import { Label, Menu } from "semantic-ui-react";
 import { useSelector } from "react-redux";
-import { totalReferendaCountSelector } from "../../store/reducers/overviewSlice";
+import { totalOpenGovApplicationCountSelector } from "../../store/reducers/overviewSlice";
 
 function ReferendaMenu() {
-  const referendaCount = useSelector(totalReferendaCountSelector);
+  const applicationCount = useSelector(totalOpenGovApplicationCountSelector);
 
   return (
     <Menu.Item key="Referenda">
-      OpenGov Applications<Label>{referendaCount}</Label>
+      OpenGov Applications<Label>{applicationCount}</Label>
     </Menu.Item>
   );
 }

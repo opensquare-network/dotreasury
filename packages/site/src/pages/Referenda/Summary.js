@@ -94,7 +94,7 @@ export default function Summary() {
 
   useEffect(() => {
     dispatch(fetchApplicationSummary(chain));
-  }, [chain]);
+  }, [dispatch, chain]);
 
   return (
     <Wrapper>
