@@ -82,6 +82,7 @@ export default function ReferendaTable() {
   const description = {
     key: "description",
     title: "Description",
+    cellClassName: "proposal-description-cell",
     cellRender: (_, item) => item.description,
   };
 
