@@ -7,7 +7,7 @@ const Icon = styled(LinkSVG)`
 
 export default function JumpToLink({ href }) {
   return (
-    <a href={href} target="_blank">
+    <a href={href} target="_blank" rel="noreferrer">
       <Icon />
     </a>
   );
