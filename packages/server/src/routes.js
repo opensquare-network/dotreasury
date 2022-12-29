@@ -4,6 +4,7 @@ const router = new Router();
 
 const chainFeatureRouters = [
   require("./features/status/routes"),
+  require("./features/referenda/routes"),
   require("./features/tips/routes"),
   require("./features/proposals/routes"),
   require("./features/bounties/routes"),

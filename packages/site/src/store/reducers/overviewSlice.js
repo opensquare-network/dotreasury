@@ -26,6 +26,9 @@ const overviewSlice = createSlice({
         transfer: {
           all: 0,
         },
+        referenda: {
+          all: 0,
+        }
       },
       output: {
         bounty: 0,
@@ -76,6 +79,8 @@ export const totalBurntCountSelector = (state) =>
   state.overview.overview.count.burnt.all;
 export const totalTransferCountSelector = (state) =>
   state.overview.overview.count.transfer.all;
+export const totalReferendaCountSelector = (state) =>
+  state.overview.overview.count.referenda?.all || 0;
 export const overviewSelector = (state) => state.overview.overview;
 export const statsHistorySelector = (state) => state.overview.statsHistory;
 

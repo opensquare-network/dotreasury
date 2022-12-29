@@ -22,6 +22,7 @@ import tipFindersReducer from "./tipFindersSlice";
 import proposalBeneficiariesReducer from "./proposalBeneficiariesSlice";
 import usersReducer from "./usersSlice";
 import usersDetailReducer from "./usersDetailSlice";
+import openGovApplicationsReducer from "./openGovApplicationsSlice";
 
 export default combineReducers({
   test: testReducer,
@@ -47,4 +48,5 @@ export default combineReducers({
   proposalBeneficiaries: proposalBeneficiariesReducer,
   users: usersReducer,
   usersDetail: usersDetailReducer,
+  openGovApplications: openGovApplicationsReducer,
 });
