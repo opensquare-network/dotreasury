@@ -6,11 +6,6 @@ import TipsMenu from "./TipsMenu";
 import ProposalsMenu from "./ProposalsMenu";
 import BountiesMenu from "./BountiesMenu";
 import BurntMenu from "./BurntMenu";
-import TreasurySlashMenu from "./TreasurySlashMenu";
-import DemocracySlashMenu from "./DemocracySlashMenu";
-import StakingSlashMenu from "./StakingSlashMenu";
-import IdentitySlashMenu from "./IdentitySlashMenu";
-import ElectionPhragmenSlashMenu from "./ElectionPhragmenSlashMenu";
 import InflationMenu from "./InflationMenu";
 import OthersIncomeMenu from "./OthersIncomeMenu";
 import ProjectsMenu from "./ProjectsMenu";
@@ -19,6 +14,7 @@ import TansfersSlashMenu from "./TansfersSlashMenu";
 import TipFindersMenu from "./TipFindersMenu";
 import ProposalBeneficiariesMenu from "./ProposalBeneficiariesMenu";
 import UsersMenu from "./UsersMenu";
+import ReferendaMenu from "./ReferendaMenu";
 import { fetchIncomeCount } from "../../store/reducers/incomeSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { showMenuTabsSelector } from "../../store/reducers/menuSlice";
@@ -35,7 +31,7 @@ import {
   TEXT_DARK_MAJOR,
   TEXT_DARK_MINOR,
 } from "../../constants";
-import ReferendaMenu from "./ReferendaMenu";
+import SlashMenu from "./SlashMenu";
 
 const Wrapper = styled.div`
   position: relative;
@@ -52,13 +48,13 @@ const WrapperBackground = styled.div`
 `;
 
 const TabWrapper = styled(Tab)`
-  overflow-x: scroll;
+  /* overflow-x: scroll; */
   &::-webkit-scrollbar {
     display: none;
   }
-  -ms-overflow-style: none;
+  /* -ms-overflow-style: none; */
   /* scrollbar-width: none; */
-  overflow-y: auto;
+  /* overflow-y: auto; */
 
   background: transparent;
 
@@ -74,14 +70,14 @@ const TabWrapper = styled(Tab)`
     color: ${TEXT_DARK_MINOR} !important;
     margin-right: 32px !important;
     margin-bottom: 0px !important;
-    & > div.item {
+    & div.item {
       margin-bottom: -4px !important;
       padding-left: 0 !important;
       padding-right: 0 !important;
       color: ${TEXT_DARK_MINOR} !important;
     }
-    & > div.ui.label,
-    & > div > div.ui.label {
+    & div.ui.label,
+    & div > div.ui.label {
       background: ${SECONDARY_THEME_COLOR} !important;
       height: 20px !important;
       padding: 0 8px !important;
@@ -92,7 +88,8 @@ const TabWrapper = styled(Tab)`
       font-weight: 400;
     }
     &.active,
-    &.active > div {
+    &.active > div,
+    &.active > div > div {
       font-weight: normal !important;
       color: ${TEXT_DARK_MAJOR} !important;
       border-color: ${PRIMARY_THEME_COLOR} !important;
@@ -261,68 +258,11 @@ const TabExampleSecondaryPointing = () => {
           },
           {
             menuItem: {
-              as: NavLink,
-              id: "stakingSlashTab",
-              content: <StakingSlashMenu />,
-              to: `/${symbol}/income/slash/staking`,
+              id: "slashDropdownTab",
+              content: <SlashMenu />,
               exact: true,
-              key: "stakingSlash",
-              active:
-                `${symbol}/income/slash/staking` === pathname ||
-                pathname.indexOf(`${symbol}/income/slash/staking`) === 0,
-            },
-          },
-          {
-            menuItem: {
-              as: NavLink,
-              id: "treasurySlashTab",
-              content: <TreasurySlashMenu />,
-              to: `/${symbol}/income/slash/treasury`,
-              exact: true,
-              key: "treasurySlash",
-              active:
-                `/${symbol}/income/slash/treasury` === pathname ||
-                pathname.indexOf(`/${symbol}/income/slash/treasury`) === 0,
-            },
-          },
-          {
-            menuItem: {
-              as: NavLink,
-              id: "electionPhragmenSlashTab",
-              content: <ElectionPhragmenSlashMenu />,
-              to: `/${symbol}/income/slash/electionphragmen`,
-              exact: true,
-              key: "electionPhragmenSlash",
-              active:
-                `/${symbol}/income/slash/electionphragmen` === pathname ||
-                pathname.indexOf(`/${symbol}/income/slash/electionphragmen`) ===
-                  0,
-            },
-          },
-          {
-            menuItem: {
-              as: NavLink,
-              id: "democracySlashTab",
-              content: <DemocracySlashMenu />,
-              to: `/${symbol}/income/slash/democracy`,
-              exact: true,
-              key: "democracySlash",
-              active:
-                `/${symbol}/income/slash/democracy` === pathname ||
-                pathname.indexOf(`/${symbol}/income/slash/democracy`) === 0,
-            },
-          },
-          {
-            menuItem: {
-              as: NavLink,
-              id: "identitySlashTab",
-              content: <IdentitySlashMenu />,
-              to: `/${symbol}/income/slash/identity`,
-              exact: true,
-              key: "identitySlash",
-              active:
-                `/${symbol}/income/slash/identity` === pathname ||
-                pathname.indexOf(`/${symbol}/income/slash/identity`) === 0,
+              key: "slashDropdown",
+              active: pathname.includes(`${symbol}/income/slash/`),
             },
           },
           {

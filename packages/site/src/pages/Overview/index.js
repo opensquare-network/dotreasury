@@ -89,6 +89,16 @@ const Overview = () => {
     precision,
     false
   );
+  const slashReferenda = toPrecision(
+    overview.income.slashSeats.referenda || 0,
+    precision,
+    false
+  );
+  const slashFellowshipReferenda = toPrecision(
+    overview.income.slashSeats.fellowshipReferenda || 0,
+    precision,
+    false
+  );
   const others = toPrecision(overview.income.others || 0, precision, false);
 
   return (
@@ -102,6 +112,8 @@ const Overview = () => {
           slashStaking={slashStaking}
           slashElection={slashElection}
           slashIdentity={slashIdentity}
+          slashReferenda={slashReferenda}
+          slashFellowshipReferenda={slashFellowshipReferenda}
           others={others}
         />
         <Output

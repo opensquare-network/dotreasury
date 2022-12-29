@@ -84,6 +84,14 @@ function getIdentitySlashCollection(chain) {
   return db(chain).getIdentitySlashCollection();
 }
 
+function getReferendaSlashCollection(chain) {
+  return db(chain).getReferendaSlashCollection();
+}
+
+function getFellowshipReferendaSlashCollection(chain) {
+  return db(chain).getFellowshipReferendaSlashCollection();
+}
+
 function getIncomeTransferCollection(chain) {
   return db(chain).getIncomeTransferCollection();
 }
@@ -144,6 +152,8 @@ module.exports = {
   getElectionSlashCollection,
   getDemocracySlashCollection,
   getIdentitySlashCollection,
+  getReferendaSlashCollection,
+  getFellowshipReferendaSlashCollection,
   getIncomeTransferCollection,
   getOthersIncomeCollection,
   getInputWeeklyStatsCollection,
