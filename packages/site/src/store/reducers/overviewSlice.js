@@ -26,7 +26,7 @@ const overviewSlice = createSlice({
         transfer: {
           all: 0,
         },
-        openGovApplications: {
+        referenda: {
           all: 0,
         }
       },
@@ -80,7 +80,7 @@ export const totalBurntCountSelector = (state) =>
 export const totalTransferCountSelector = (state) =>
   state.overview.overview.count.transfer.all;
 export const totalOpenGovApplicationCountSelector = (state) =>
-  state.overview.overview.count.referenda?.all || 0;
+  state.overview.overview.count.referenda.all || 0;
 export const overviewSelector = (state) => state.overview.overview;
 export const statsHistorySelector = (state) => state.overview.statsHistory;
 
