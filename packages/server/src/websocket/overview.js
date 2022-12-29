@@ -102,6 +102,8 @@ async function calcOverview(chain) {
         democracy: 0,
         electionsPhragmen: 0,
         identity: 0,
+        referenda: 0,
+        fellowshipReferenda: 0,
       },
     },
   };

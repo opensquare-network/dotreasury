@@ -48,6 +48,8 @@ import Referenda from "../pages/Referenda";
 import { usePreload } from "../utils/hooks";
 import { useSelector } from "react-redux";
 import { chainSelector } from "../store/reducers/chainSlice";
+import ReferendaSlash from "../pages/ReferendaSlash";
+import FellowshipReferendaSlash from "../pages/FellowshipReferendaSlash";
 
 export default function App() {
   const chain = useSelector(chainSelector);
@@ -167,7 +169,16 @@ export default function App() {
                 path="/:symbol(ksm|dot)/income/slash/electionphragmen"
                 component={ElectionPhragmenSlash}
               />
-              TransfersSlash
+              <Route
+                exact
+                path="/:symbol(ksm|dot)/income/slash/referenda"
+                component={ReferendaSlash}
+              />
+              <Route
+                exact
+                path="/:symbol(ksm|dot)/income/slash/fellowship-referenda"
+                component={FellowshipReferendaSlash}
+              />
               <Route
                 exact
                 path="/:symbol(ksm|dot)/income/transfers"

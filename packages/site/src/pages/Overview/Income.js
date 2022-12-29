@@ -40,6 +40,8 @@ const Income = ({
   slashStaking,
   slashElection,
   slashIdentity,
+  slashReferenda,
+  slashFellowshipReferenda,
   others,
 }) => {
   const symbol = useSelector(chainSymbolSelector)?.toLowerCase();
@@ -69,6 +71,12 @@ const Income = ({
           },
           {
             name: "Identity",
+          },
+          {
+            name: "Referenda",
+          },
+          {
+            name: "Fellowship Referenda",
           },
         ],
       },
@@ -115,6 +123,16 @@ const Income = ({
               value: slashIdentity,
               color: OVERVIEW_IDENTITY_COLOR,
             },
+            {
+              name: "Referenda",
+              value: slashReferenda,
+              color: OVERVIEW_DEMOCRACY_COLOR,
+            },
+            {
+              name: "Fellowship Referenda",
+              value: slashFellowshipReferenda,
+              color: OVERVIEW_IDENTITY_COLOR,
+            },
           ],
         },
         {
@@ -131,6 +149,8 @@ const Income = ({
     slashStaking,
     slashElection,
     slashIdentity,
+    slashReferenda,
+    slashFellowshipReferenda,
     others,
   ]);
 

@@ -11,6 +11,8 @@ router.get(
 );
 router.get("/income/slash/staking", incomeController.getStakingSlash);
 router.get("/income/slash/identity", incomeController.getIdentitySlash);
+router.get("/income/slash/referenda", incomeController.getReferendaSlash);
+router.get("/income/slash/fellowship-referenda", incomeController.getFellowshipReferendaSlash);
 router.get("/income/inflation", incomeController.getInflation);
 router.get("/income/transfer", incomeController.getIncomeTransfer);
 router.get("/income/others", incomeController.getOthers);

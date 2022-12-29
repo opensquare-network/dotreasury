@@ -30,6 +30,8 @@ const treasurySlashCollectionName = "slashTreasury";
 const electionSlashCollectionName = "slashElections";
 const democracySlashCollectionName = "slashDemocracy";
 const identitySlashCollectionName = "slashIdentity";
+const referendaSlashCollectionName = "slashReferenda";
+const fellowshipReferendaSlashCollectionName = "slashFellowshipReferenda";
 const othersIncomeCollectionName = "othersBig";
 const incomeTransferCollectionName = "transfer";
 
@@ -70,6 +72,9 @@ let stakingSlashCol = null;
 let treasurySlashCol = null;
 let electionsPhragmenSlashCol = null;
 let democracySlashCol = null;
+let referendaSlashCol = null;
+let fellowshipReferendaSlashCol = null;
+
 let identitySlashCol = null;
 let incomeTransferCol = null;
 let othersIncomeCol = null;
@@ -91,6 +96,8 @@ async function initDb() {
   treasurySlashCol = inputDb.collection(treasurySlashCollectionName);
   electionsPhragmenSlashCol = inputDb.collection(electionSlashCollectionName);
   democracySlashCol = inputDb.collection(democracySlashCollectionName);
+  referendaSlashCol = inputDb.collection(referendaSlashCollectionName);
+  fellowshipReferendaSlashCol = inputDb.collection(fellowshipReferendaSlashCollectionName);
   identitySlashCol = inputDb.collection(identitySlashCollectionName);
   incomeTransferCol = inputDb.collection(incomeTransferCollectionName);
   othersIncomeCol = inputDb.collection(othersIncomeCollectionName);
@@ -243,6 +250,16 @@ async function getIdentitySlashCollection() {
   return identitySlashCol;
 }
 
+async function getReferendaSlashCollection() {
+  await tryInit(referendaSlashCol);
+  return referendaSlashCol;
+}
+
+async function getFellowshipReferendaSlashCollection() {
+  await tryInit(fellowshipReferendaSlashCol);
+  return fellowshipReferendaSlashCol;
+}
+
 async function getIncomeTransferCollection() {
   await tryInit(incomeTransferCol);
   return incomeTransferCol;
@@ -313,6 +330,8 @@ module.exports = {
   getElectionSlashCollection,
   getDemocracySlashCollection,
   getIdentitySlashCollection,
+  getReferendaSlashCollection,
+  getFellowshipReferendaSlashCollection,
   getIncomeTransferCollection,
   getOthersIncomeCollection,
   getInputWeeklyStatsCollection,
