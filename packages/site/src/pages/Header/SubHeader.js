@@ -179,7 +179,7 @@ const TabExampleSecondaryPointing = () => {
               to: `/${symbol}/referenda`,
               exact: true,
               key: "referenda",
-              active: `/${symbol}` === pathname,
+              active: `/${symbol}/referenda` === pathname,
             }
           }] : []),
           {
