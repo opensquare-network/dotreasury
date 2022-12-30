@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import User from "../../../components/User";
 import Balance from "../../../components/Balance";
 import { normalizeMotionTimelineItem } from "./motion";
