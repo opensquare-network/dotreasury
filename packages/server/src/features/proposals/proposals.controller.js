@@ -211,6 +211,8 @@ class ProposalsController {
       motions,
       referendums,
       timeline: proposal.timeline,
+      isByGov2: proposal.isByGov2,
+      gov2Referendum: proposal.gov2Referendum,
     };
   }
 

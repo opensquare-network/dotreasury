@@ -101,6 +101,7 @@ export const DEFAULT_QUERY_PAGE = 1;
 export const TimelineItemType = {
   CouncilMotion: "council-motion",
   DemocracyReferendum: "democracy-referendum",
+  Gov2Referendum: "gov2-referendum",
 };
 
 /**

@@ -1,9 +1,9 @@
-import React from "react";
+import React, { Fragment } from "react";
 import User from "../../../components/User";
 import Balance from "../../../components/Balance";
 import { normalizeMotionTimelineItem } from "./motion";
 import { normalizeReferendumTimelineItem } from "./referendum";
-import { USER_ROLES } from "../../../constants";
+import { TimelineItemType, USER_ROLES } from "../../../constants";
 
 function isMotion(timelineItem) {
   return !!timelineItem.motionInfo;
@@ -73,6 +73,18 @@ function constructProposalProcessItem(item, proposalDetail) {
         value: <Balance value={value} />,
       },
     ];
+  }
+
+  if (method === "SpendApproved") {
+    return {
+      index: proposalDetail.gov2Referendum,
+      gov2Referendum: proposalDetail.gov2Referendum,
+      type: TimelineItemType.Gov2Referendum,
+      name: `SpendApproved`,
+      extrinsicIndexer: item.type === "extrinsic" ? item.indexer : undefined,
+      eventIndexer: item.type === "event" ? item.indexer : undefined,
+      fields: [],
+    };
   }
 
   return {
