@@ -127,17 +127,17 @@ function SlashMenu() {
         </Menu.Item>
         {showSlashPopupMenu && (
           <PopupMenu ref={slashPopupMenu}>
+            <StakingSlashMenu onClick={() => navigate(`/${symbol}/income/slash/staking`)} />
+            <TreasurySlashMenu onClick={() => navigate(`/${symbol}/income/slash/treasury`)} />
+            <ElectionPhragmenSlashMenu onClick={() => navigate(`/${symbol}/income/slash/electionphragmen`)} />
+            <DemocracySlashMenu onClick={() => navigate(`/${symbol}/income/slash/democracy`)} />
+            <IdentitySlashMenu onClick={() => navigate(`/${symbol}/income/slash/identity`)} />
             {isKusama && (
               <>
                 <ReferendaSlashMenu onClick={() => navigate(`/${symbol}/income/slash/referenda`)} />
                 <FellowshipReferendaSlashMenu onClick={() => navigate(`/${symbol}/income/slash/fellowship-referenda`)} />
               </>
             )}
-            <StakingSlashMenu onClick={() => navigate(`/${symbol}/income/slash/staking`)} />
-            <TreasurySlashMenu onClick={() => navigate(`/${symbol}/income/slash/treasury`)} />
-            <ElectionPhragmenSlashMenu onClick={() => navigate(`/${symbol}/income/slash/electionphragmen`)} />
-            <DemocracySlashMenu onClick={() => navigate(`/${symbol}/income/slash/democracy`)} />
-            <IdentitySlashMenu onClick={() => navigate(`/${symbol}/income/slash/identity`)} />
           </PopupMenu>
         )}
       </Wrapper>

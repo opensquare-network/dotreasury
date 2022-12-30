@@ -15,7 +15,7 @@ const StatusSelect = styled(Select)`
 `;
 
 const TrackSelect = styled(Select)`
-  width: 190px;
+  width: 160px;
 `;
 
 const statusOptions = [
@@ -41,16 +41,7 @@ const statusOptions = [
 const tracksOptions = [
   { key: "all", value: "-1", text: "All tracks" },
   ...[
-    "Root",
-    "Whitelisted Caller",
-    "Staking Admin",
     "Treasurer",
-    "Lease Admin",
-    "Fellowship Admin",
-    "General Admin",
-    "Auction Admin",
-    "Referendum Canceller",
-    "Referendum Killer",
     "Small Tipper",
     "Big Tipper",
     "Small Spender",
