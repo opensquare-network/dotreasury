@@ -7,7 +7,7 @@ import Card from "../../components/Card";
 import TableHeader from "./TableHeader";
 import { useTableColumns } from "../../components/shared/useTableColumns";
 import { useDispatch, useSelector } from "react-redux";
-import { applicationListSelector, fetchApplicationList } from "../../store/reducers/openGovApplicationsSlice";
+import { applicationListSelector, fetchApplicationList, loadingApplicationListSelector } from "../../store/reducers/openGovApplicationsSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../constants";
 import ResponsivePagination from "../../components/ResponsivePagination";
@@ -47,6 +47,7 @@ export default function ReferendaTable() {
   const history = useHistory();
   const chain = useSelector(chainSelector);
   const applicationList = useSelector(applicationListSelector);
+  const applicationListLoading = useSelector(loadingApplicationListSelector);
   const [dataList, setDataList] = useState(applicationList?.items || []);
   const [filterStatus, setFilterStatus] = useState("-1");
   const [filterTrack, setFilterTrack] = useState("-1");
@@ -61,6 +62,8 @@ export default function ReferendaTable() {
   }, [dispatch, chain, page, pageSize, filterStatus, filterTrack]);
 
   useEffect(() => {
+    setDataList(applicationList?.items || []);
+
     const dataListPromises = (applicationList?.items || [])
       .map(async (item) => {
         if (item.description) {
@@ -132,7 +135,7 @@ export default function ReferendaTable() {
       <TableHeader setFilterTrack={setFilterTrack} setFilterStatus={setFilterStatus} />
       <Wrapper>
         <TableWrapper>
-          <TableLoading loading={false}>
+          <TableLoading loading={applicationListLoading}>
             <Table columns={columns} data={tableData} />
           </TableLoading>
         </TableWrapper>

@@ -16,7 +16,7 @@ import {
   TEXT_DARK_MAJOR,
 } from "../../constants";
 import { useSelector } from "react-redux";
-import { chainSymbolSelector } from "../../store/reducers/chainSlice";
+import { chainSelector, chainSymbolSelector } from "../../store/reducers/chainSlice";
 
 const LinkButton = styled(TextMinor)`
   display: flex;
@@ -44,6 +44,8 @@ const Income = ({
   slashFellowshipReferenda,
   others,
 }) => {
+  const chain = useSelector(chainSelector);
+  const isKusama = chain === "kusama";
   const symbol = useSelector(chainSymbolSelector)?.toLowerCase();
   const [incomeData, setIncomeData] = useState({
     icon: "circle",
@@ -72,12 +74,14 @@ const Income = ({
           {
             name: "Identity",
           },
-          {
-            name: "Referenda",
-          },
-          {
-            name: "Fellowship Referenda",
-          },
+          ...(isKusama ? [
+            {
+              name: "Referenda",
+            },
+            {
+              name: "Fellowship",
+            },
+          ] : []),
         ],
       },
       {
@@ -123,16 +127,18 @@ const Income = ({
               value: slashIdentity,
               color: OVERVIEW_IDENTITY_COLOR,
             },
-            {
-              name: "Referenda",
-              value: slashReferenda,
-              color: OVERVIEW_DEMOCRACY_COLOR,
-            },
-            {
-              name: "Fellowship Referenda",
-              value: slashFellowshipReferenda,
-              color: OVERVIEW_IDENTITY_COLOR,
-            },
+            ...(isKusama ? [
+              {
+                name: "Referenda",
+                value: slashReferenda,
+                color: OVERVIEW_DEMOCRACY_COLOR,
+              },
+              {
+                name: "Fellowship",
+                value: slashFellowshipReferenda,
+                color: OVERVIEW_IDENTITY_COLOR,
+              },
+            ] : []),
           ],
         },
         {

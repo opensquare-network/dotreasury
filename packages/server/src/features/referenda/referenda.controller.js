@@ -86,7 +86,6 @@ class ReferendaController {
     ]).toArray();
 
     const [total, referenda] = await Promise.all([totalQuery, referendaQuery]);
-    console.log(referenda.length);
 
     ctx.body = {
       items: referenda,
