@@ -158,6 +158,7 @@ const Income = ({
     slashReferenda,
     slashFellowshipReferenda,
     others,
+    isKusama,
   ]);
 
   const clickEvent = (name) => {
