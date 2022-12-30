@@ -260,7 +260,6 @@ const TabExampleSecondaryPointing = () => {
             menuItem: {
               id: "slashDropdownTab",
               content: <SlashMenu />,
-              exact: true,
               key: "slashDropdown",
               active: pathname.includes(`${symbol}/income/slash/`),
             },

@@ -82,6 +82,8 @@ const SecondListWrapper = styled.div`
 `;
 
 const TotalStacked = () => {
+  const chain = useSelector(chainSelector);
+  const isKusama = chain === "kusama";
   const dispatch = useDispatch();
   const [dateLabels, setDateLabels] = useState([]);
   const [incomeHistory, setIncomeHistory] = useState([]);
@@ -119,6 +121,16 @@ const TotalStacked = () => {
             name: "Identity",
             value: 0,
           },
+          ...(isKusama ? [
+            {
+              name: "Referenda",
+              value: 0,
+            },
+            {
+              name: "Fellowship",
+              value: 0,
+            },
+          ] : []),
         ],
       },
       {
@@ -160,7 +172,6 @@ const TotalStacked = () => {
     ],
   });
 
-  const chain = useSelector(chainSelector);
   const symbol = useSelector(chainSymbolSelector);
   const precision = getPrecision(symbol);
 
@@ -257,6 +268,24 @@ const TotalStacked = () => {
                   false
                 ),
               },
+              ...(isKusama ? [
+                {
+                  name: "Referenda",
+                  value: toPrecision(
+                    statsData.income.slashSeats.referenda || 0,
+                    precision,
+                    false
+                  ),
+                },
+                {
+                  name: "Fellowship",
+                  value: toPrecision(
+                    statsData.income.slashSeats.fellowshipReferenda || 0,
+                    precision,
+                    false
+                  ),
+                },
+              ] : []),
             ],
           },
           {
