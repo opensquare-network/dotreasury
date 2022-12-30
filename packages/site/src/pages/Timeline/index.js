@@ -48,7 +48,7 @@ const Timeline = ({ data, loading }) => {
                   end={item.end}
                 />
               ) : (
-                <Item key={index} data={item} />
+                <Item key={index} data={item} polkassembly={item.index} />
               )
             )}
           </>

@@ -48,13 +48,13 @@ const WrapperBackground = styled.div`
 `;
 
 const TabWrapper = styled(Tab)`
-  /* overflow-x: scroll; */
+  overflow-x: scroll;
   &::-webkit-scrollbar {
     display: none;
   }
   /* -ms-overflow-style: none; */
-  /* scrollbar-width: none; */
-  /* overflow-y: auto; */
+  scrollbar-width: none;
+  overflow-y: auto;
 
   background: transparent;
 

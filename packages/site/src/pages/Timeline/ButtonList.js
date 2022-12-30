@@ -44,6 +44,14 @@ const ButtonList = ({ extrinsicIndexer, eventIndexer, polkassembly, type }) => {
           setPolkassemblyUrl(url);
         }
       }
+
+      if (type === TimelineItemType.Gov2Referendum) {
+        setSubsquareUrl(`https://${chain}.subsquare.io/referenda/referendum/${polkassembly}`);
+        const url = await polkassemblyApi.getGov2ReferendumUrl(polkassembly);
+        if (isMounted.current) {
+          setPolkassemblyUrl(url);
+        }
+      }
     })();
   }, [polkassembly, type, chain, isMounted]);
 
