@@ -30,54 +30,60 @@ function timelineItemHeight(timelineItem) {
   return timelineItem.indexer?.blockHeight;
 }
 
-function constructProposalProcessItem(item, proposalDetail) {
+function createGov2ReferendumTimleine(item, proposalDetail) {
   const { proposer, value, beneficiary, symbolPrice } = proposalDetail;
-  let fields = [];
 
+  return [
+    {
+      index: proposalDetail.gov2Referendum,
+      gov2Referendum: proposalDetail.gov2Referendum,
+      type: TimelineItemType.Gov2Referendum,
+      name: `Referendum #${proposalDetail.gov2Referendum}`,
+      extrinsicIndexer: item.type === "extrinsic" ? item.indexer : undefined,
+      eventIndexer: item.type === "event" ? item.indexer : undefined,
+      fields: [
+        {
+          title: "Proposer",
+          value: <User role={USER_ROLES.Proposer} address={proposer} />,
+        },
+        {
+          title: "Beneficiary",
+          value: <User role={USER_ROLES.Beneficiary} address={beneficiary} />,
+        },
+        {
+          title: "Value",
+          value: <Balance value={value} usdt={symbolPrice} horizontal />,
+        },
+      ],
+    },
+    {
+      name: "Approved",
+      extrinsicIndexer: item.type === "extrinsic" ? item.indexer : undefined,
+      eventIndexer: item.type === "event" ? item.indexer : undefined,
+      fields: [
+        {
+          title: "Beneficiary",
+          value: <User role={USER_ROLES.Beneficiary} address={beneficiary} />,
+        },
+        {
+          title: "Value",
+          value: <Balance value={value} />,
+        },
+      ],
+    },
+  ];
+}
+
+function constructProposalProcessItem(item, proposalDetail) {
   const method = item.name || item.method;
 
   // Handle gov2 referendum treasury proposal
-  if (method === "SpendApproved") {
-    return [
-      {
-        index: proposalDetail.gov2Referendum,
-        gov2Referendum: proposalDetail.gov2Referendum,
-        type: TimelineItemType.Gov2Referendum,
-        name: `Referendum #${proposalDetail.gov2Referendum}`,
-        extrinsicIndexer: item.type === "extrinsic" ? item.indexer : undefined,
-        eventIndexer: item.type === "event" ? item.indexer : undefined,
-        fields: [
-          {
-            title: "Proposer",
-            value: <User role={USER_ROLES.Proposer} address={proposer} />,
-          },
-          {
-            title: "Beneficiary",
-            value: <User role={USER_ROLES.Beneficiary} address={beneficiary} />,
-          },
-          {
-            title: "Value",
-            value: <Balance value={value} usdt={symbolPrice} horizontal />,
-          },
-        ],
-      },
-      {
-        name: "Approved",
-        extrinsicIndexer: item.type === "extrinsic" ? item.indexer : undefined,
-        eventIndexer: item.type === "event" ? item.indexer : undefined,
-        fields: [
-          {
-            title: "Beneficiary",
-            value: <User role={USER_ROLES.Beneficiary} address={beneficiary} />,
-          },
-          {
-            title: "Value",
-            value: <Balance value={value} />,
-          },
-        ],
-      },
-    ];
+  if (proposalDetail.isByGov2 && method === "SpendApproved") {
+    return createGov2ReferendumTimleine(item, proposalDetail)
   }
+
+  const { proposer, value, beneficiary, symbolPrice } = proposalDetail;
+  let fields = [];
 
   if (method === "Proposed") {
     fields = [
