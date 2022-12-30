@@ -331,7 +331,7 @@ const TotalStacked = () => {
         ],
       });
     }
-  }, [showIndex, statsHistory, dateLabels, precision]);
+  }, [showIndex, statsHistory, dateLabels, precision, isKusama]);
 
   const chartData = {
     dates: dateLabels,

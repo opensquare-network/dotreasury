@@ -1,4 +1,5 @@
 import React from "react";
+import flatten from "lodash.flatten";
 import User from "../../../components/User";
 import Balance from "../../../components/Balance";
 import { normalizeMotionTimelineItem } from "./motion";
@@ -29,11 +30,60 @@ function timelineItemHeight(timelineItem) {
   return timelineItem.indexer?.blockHeight;
 }
 
+function createGov2ReferendumTimeline(item, proposalDetail) {
+  const { proposer, value, beneficiary, symbolPrice } = proposalDetail;
+
+  return [
+    {
+      index: proposalDetail.gov2Referendum,
+      gov2Referendum: proposalDetail.gov2Referendum,
+      type: TimelineItemType.Gov2Referendum,
+      name: `Referendum #${proposalDetail.gov2Referendum}`,
+      extrinsicIndexer: item.type === "extrinsic" ? item.indexer : undefined,
+      eventIndexer: item.type === "event" ? item.indexer : undefined,
+      fields: [
+        {
+          title: "Proposer",
+          value: <User role={USER_ROLES.Proposer} address={proposer} />,
+        },
+        {
+          title: "Beneficiary",
+          value: <User role={USER_ROLES.Beneficiary} address={beneficiary} />,
+        },
+        {
+          title: "Value",
+          value: <Balance value={value} usdt={symbolPrice} horizontal />,
+        },
+      ],
+    },
+    {
+      name: "Approved",
+      extrinsicIndexer: item.type === "extrinsic" ? item.indexer : undefined,
+      eventIndexer: item.type === "event" ? item.indexer : undefined,
+      fields: [
+        {
+          title: "Beneficiary",
+          value: <User role={USER_ROLES.Beneficiary} address={beneficiary} />,
+        },
+        {
+          title: "Value",
+          value: <Balance value={value} />,
+        },
+      ],
+    },
+  ];
+}
+
 function constructProposalProcessItem(item, proposalDetail) {
+  const method = item.name || item.method;
+
+  // Handle gov2 referendum treasury proposal
+  if (proposalDetail.isByGov2 && method === "SpendApproved") {
+    return createGov2ReferendumTimeline(item, proposalDetail)
+  }
+
   const { proposer, value, beneficiary, symbolPrice } = proposalDetail;
   let fields = [];
-
-  const method = item.name || item.method;
 
   if (method === "Proposed") {
     fields = [
@@ -75,18 +125,6 @@ function constructProposalProcessItem(item, proposalDetail) {
     ];
   }
 
-  if (method === "SpendApproved") {
-    return {
-      index: proposalDetail.gov2Referendum,
-      gov2Referendum: proposalDetail.gov2Referendum,
-      type: TimelineItemType.Gov2Referendum,
-      name: `SpendApproved`,
-      extrinsicIndexer: item.type === "extrinsic" ? item.indexer : undefined,
-      eventIndexer: item.type === "event" ? item.indexer : undefined,
-      fields: [],
-    };
-  }
-
   return {
     name: method,
     extrinsicIndexer: item.type === "extrinsic" ? item.indexer : undefined,
@@ -108,7 +146,7 @@ export function processTimeline(proposalDetail, scanHeight) {
   ];
   allItems.sort((a, b) => timelineItemHeight(a) - timelineItemHeight(b));
 
-  return allItems.map((item) => {
+  return flatten(allItems.map((item) => {
     if (isMotion(item)) {
       return normalizeMotionTimelineItem(item, scanHeight);
     }
@@ -118,5 +156,5 @@ export function processTimeline(proposalDetail, scanHeight) {
     }
 
     return constructProposalProcessItem(item, proposalDetail);
-  });
+  }));
 }
