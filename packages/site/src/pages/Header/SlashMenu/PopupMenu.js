@@ -33,17 +33,17 @@ export default function PopupMenu({ trigger }) {
 
   const popupContent = (
     <div>
+      <StakingSlashMenu onClick={() => navigate(`/${symbol}/income/slash/staking`)} />
+      <TreasurySlashMenu onClick={() => navigate(`/${symbol}/income/slash/treasury`)} />
+      <ElectionPhragmenSlashMenu onClick={() => navigate(`/${symbol}/income/slash/electionphragmen`)} />
+      <DemocracySlashMenu onClick={() => navigate(`/${symbol}/income/slash/democracy`)} />
+      <IdentitySlashMenu onClick={() => navigate(`/${symbol}/income/slash/identity`)} />
       {isKusama && (
         <>
           <ReferendaSlashMenu onClick={() => navigate(`/${symbol}/income/slash/referenda`)} />
           <FellowshipReferendaSlashMenu onClick={() => navigate(`/${symbol}/income/slash/fellowship-referenda`)} />
         </>
       )}
-      <StakingSlashMenu onClick={() => navigate(`/${symbol}/income/slash/staking`)} />
-      <TreasurySlashMenu onClick={() => navigate(`/${symbol}/income/slash/treasury`)} />
-      <ElectionPhragmenSlashMenu onClick={() => navigate(`/${symbol}/income/slash/electionphragmen`)} />
-      <DemocracySlashMenu onClick={() => navigate(`/${symbol}/income/slash/democracy`)} />
-      <IdentitySlashMenu onClick={() => navigate(`/${symbol}/income/slash/identity`)} />
     </div>
   );
 
