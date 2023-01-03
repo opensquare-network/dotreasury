@@ -49,6 +49,7 @@ export default function PopupMenu({ trigger }) {
 
   return (
     <Popup
+      basic={true}
       open={isOpen}
       onOpen={() => setIsOpen(true)}
       onClose={() => setIsOpen(false)}

@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { PRIMARY_THEME_COLOR, SECONDARY_THEME_COLOR } from "../../../constants";
 
 const DropdownMenuItem = styled.div`
+  cursor: pointer;
   display: flex;
   align-items: center;
   padding: 8px 16px;
