@@ -8,7 +8,6 @@
     "@osn/polkadot-react-identicon": "^1.0.6",
     "@polkadot/api": "9.10.3",
     "@polkadot/extension-dapp": "0.44.6",
-    "@popperjs/core": "^2.11.6",
     "@reduxjs/toolkit": "^1.7.2",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
