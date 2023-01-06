@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "license": "Apache-2.0",
   "dependencies": {
+    "@floating-ui/react": "^0.15.1",
     "@open-wc/webpack-import-meta-loader": "^0.4.7",
     "@osn/polkadot-react-identicon": "^1.0.6",
     "@polkadot/api": "9.10.3",
