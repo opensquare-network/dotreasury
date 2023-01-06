@@ -4,20 +4,10 @@ import { p_14_medium } from "../../styles/text";
 const triangleWidth = 6;
 
 export const TooltipArrow = styled.div`
-  visibility: hidden;
-
-  &,
-  &::before {
-    position: absolute;
-    border: ${triangleWidth}px solid transparent;
-    left: -${triangleWidth}px;
-    border-top-color: rgba(0, 0, 0, 0.72);
-  }
-
-  &::before {
-    visibility: visible;
-    content: "";
-  }
+  position: absolute;
+  border: ${triangleWidth}px solid transparent;
+  border-top-color: rgba(0, 0, 0, 0.72);
+  left: ${(p) => p.x ?? 0}px;
 `;
 
 export const TooltipContainer = styled.div`
@@ -32,15 +22,13 @@ export const TooltipContainer = styled.div`
     display: block;
   }
 
-  &[data-popper-placement^="top"] > ${TooltipArrow} {
-    bottom: -${triangleWidth}px;
+  &[data-placement^="top"] > ${TooltipArrow} {
+    bottom: -${triangleWidth * 2}px;
   }
 
-  &[data-popper-placement^="bottom"] > ${TooltipArrow} {
-    top: -${triangleWidth * 3}px;
-    &::before {
-      transform: rotate(180deg);
-    }
+  &[data-placement^="bottom"] > ${TooltipArrow} {
+    top: -${triangleWidth * 2}px;
+    transform: rotate(180deg);
   }
 `;
 
