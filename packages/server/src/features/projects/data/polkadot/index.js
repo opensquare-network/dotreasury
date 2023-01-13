@@ -16,6 +16,7 @@ const polkaworld = require("./polkaworld");
 const dwellir = require("../common/dwellir");
 const decoded2022 = require("../common/decoded-2022");
 const brightTreasury = require("../common/brightTreasury");
+const talisman = require("./talisman");
 
 const projects = [
   polkaworld,
@@ -36,6 +37,7 @@ const projects = [
   dwellir,
   decoded2022,
   brightTreasury,
+  talisman,
 ];
 
 module.exports = [...projects].sort((p1, p2) => p2.startTime - p1.startTime);
