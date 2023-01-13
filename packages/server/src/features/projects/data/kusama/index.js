@@ -23,6 +23,7 @@ const polkashotsIo = require("../common/polkashotsIo");
 const decoded2022 = require("../common/decoded-2022");
 const brightTreasury = require("../common/brightTreasury");
 const subsquid = require("../common/subsquid");
+const opensquare = require("../common/opensquare");
 
 const projects = [
   polkassembly,
@@ -50,6 +51,7 @@ const projects = [
   decoded2022,
   brightTreasury,
   subsquid,
+  opensquare,
 ];
 
 module.exports = [...projects].sort((p1, p2) => p2.startTime - p1.startTime);
