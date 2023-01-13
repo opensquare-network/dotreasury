@@ -21,7 +21,7 @@ const proposals = [
   {
     type: "proposal",
     token: "dot",
-    id: 188,
+    proposalId: 188,
   },
   {
     type: "child-bounty",
