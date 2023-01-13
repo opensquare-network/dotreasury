@@ -16,6 +16,7 @@ const polkaworld = require("./polkaworld");
 const dwellir = require("../common/dwellir");
 const decoded2022 = require("../common/decoded-2022");
 const brightTreasury = require("../common/brightTreasury");
+const subsquid = require("../common/subsquid");
 const talisman = require("./talisman");
 const subwallet = require("./subwallet");
 
@@ -40,6 +41,7 @@ const projects = [
   brightTreasury,
   talisman,
   subwallet,
+  subsquid,
 ];
 
 module.exports = [...projects].sort((p1, p2) => p2.startTime - p1.startTime);
