@@ -15,6 +15,11 @@ const relatedLinks = [
 
 const proposals = [
   {
+    type: "proposal",
+    token: "dot",
+    proposalId: 191,
+  },
+  {
     token: "dot",
     proposalId: 160,
   },
