@@ -123,20 +123,6 @@ export function useChainRoute() {
   }, [dispatch, history, location, symbol, urlSymbol]);
 }
 
-export function useOutsideClick(ref, cb) {
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (ref.current && !ref.current.contains(event.target)) {
-        cb();
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [ref, cb]);
-}
-
 export function useLocalStorage(key, initialValue) {
   const [storedValue, setStoredValue] = useState(() => {
     try {
