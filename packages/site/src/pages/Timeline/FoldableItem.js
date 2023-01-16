@@ -6,7 +6,7 @@ import Bar from "./Bar";
 import Item from "./Item";
 import { PRIMARY_THEME_COLOR } from "../../constants";
 import { getBlockTime } from "../../services/chainApi";
-import { useIsMounted } from "../../utils/hooks";
+import { useIsMounted } from "@osn/common";
 import { useSelector } from "react-redux";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import FoldContext from "./FoldContext";
@@ -101,15 +101,15 @@ const FoldableItem = ({ data, polkassembly, defaultUnfold, expired, end }) => {
           </FlexWrapper>
         </VerticalWrapper>
         <ItemWrapper isUnfold={isUnfold}>
-          {React.isValidElement(data) ? data : (
-            (data || []).map((item, index) => (
-              <Item
-                key={index}
-                data={item}
-                polkassembly={index === 0 ? polkassembly : undefined}
-              />
-            ))
-          )}
+          {React.isValidElement(data)
+            ? data
+            : (data || []).map((item, index) => (
+                <Item
+                  key={index}
+                  data={item}
+                  polkassembly={index === 0 ? polkassembly : undefined}
+                />
+              ))}
           {expired && (
             <Item
               data={{

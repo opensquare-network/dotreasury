@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import React, { useEffect, useState } from "react";
 import { web3Enable, web3FromAddress } from "@polkadot/extension-dapp";
-import { useIsMounted } from "../../utils/hooks";
+import { useIsMounted } from "@osn/common";
 import { substrateWeb3Accounts } from "../../utils/extension";
 import Wallets from "./Wallets";
 import { ReactComponent as CaretSVG } from "./caret-right.svg";

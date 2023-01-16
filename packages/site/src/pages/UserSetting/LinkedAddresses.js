@@ -8,7 +8,7 @@ import {
 
 import api from "../../services/scanApi";
 import { signMessage } from "../../services/chainApi";
-import { useIsMounted } from "../../utils/hooks";
+import { useIsMounted } from "@osn/common";
 import {
   fetchUserProfile,
   userProfileSelector,

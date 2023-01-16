@@ -10,7 +10,7 @@ import PolygonLabel from "../../components/PolygonLabel";
 import ExplorerLink from "../../components/ExplorerLink";
 import RelatedLinks from "../../components/RelatedLinks";
 
-import { useIsMounted } from "../../utils/hooks";
+import { useIsMounted } from "@osn/common";
 import polkaassemblyApi from "../../services/polkassembly";
 import { proposalDetailSelector } from "../../store/reducers/proposalSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";

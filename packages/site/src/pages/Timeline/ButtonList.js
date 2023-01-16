@@ -4,7 +4,7 @@ import styled, { css } from "styled-components";
 import ImageButton from "./ImageButton";
 import ExplorerLink from "../../components/ExplorerLink";
 import ExternalLink from "../../components/ExternalLink";
-import { useIsMounted } from "../../utils/hooks";
+import { useIsMounted } from "@osn/common";
 import { mrgap } from "../../styles";
 import polkassemblyApi from "../../services/polkassembly";
 import { useSelector } from "react-redux";

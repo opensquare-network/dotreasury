@@ -14,7 +14,7 @@ import { accountSelector } from "../../../../store/reducers/accountSlice";
 import { newErrorToast } from "../../../../store/reducers/toastSlice";
 import { web3Enable, web3FromSource } from "@polkadot/extension-dapp";
 import { sendTx } from "../../../../utils/sendTx";
-import { useIsMounted } from "../../../../utils/hooks";
+import { useIsMounted } from "@osn/common";
 import BigNumber from "bignumber.js";
 import { useEffect } from "react";
 import useCouncilMembers from "../../../../utils/useCouncilMembers";
@@ -28,13 +28,18 @@ const Footer = styled.div`
 const InputsPanel = styled.div`
   display: flex;
   flex-direction: column;
-  border: 1px solid #F4F4F4;
+  border: 1px solid #f4f4f4;
   border-radius: 4px;
   padding: 16px;
   gap: 16px;
 `;
 
-export default function EndorseModal({ tipDetail, visible, setVisible, onFinalized }) {
+export default function EndorseModal({
+  tipDetail,
+  visible,
+  setVisible,
+  onFinalized,
+}) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const account = useSelector(accountSelector);
@@ -52,8 +57,12 @@ export default function EndorseModal({ tipDetail, visible, setVisible, onFinaliz
 
   useEffect(() => {
     if (tipDetail) {
-      const initialMedianValue = toPrecision(tipDetail?.medianValue || 0, precision, false);
-      setInputTipValue(`${initialMedianValue}`)
+      const initialMedianValue = toPrecision(
+        tipDetail?.medianValue || 0,
+        precision,
+        false
+      );
+      setInputTipValue(`${initialMedianValue}`);
     }
   }, [tipDetail, precision]);
 
@@ -82,7 +91,9 @@ export default function EndorseModal({ tipDetail, visible, setVisible, onFinaliz
       web3Enable("doTreasury");
       const injector = await web3FromSource(account.extension);
 
-      const tipValue = new BigNumber(inputTipValue).times(Math.pow(10, precision)).toString();
+      const tipValue = new BigNumber(inputTipValue)
+        .times(Math.pow(10, precision))
+        .toString();
       const tx = api.tx.tips.tip(tipDetail.hash, tipValue);
 
       await sendTx({
@@ -112,7 +123,7 @@ export default function EndorseModal({ tipDetail, visible, setVisible, onFinaliz
             symbol={symbol}
             placeholder="0"
             defaultValue={inputTipValue}
-            onChange={e => setInputTipValue(e.target.value)}
+            onChange={(e) => setInputTipValue(e.target.value)}
           />
         </Field>
         <Field>
@@ -121,7 +132,9 @@ export default function EndorseModal({ tipDetail, visible, setVisible, onFinaliz
         </Field>
       </InputsPanel>
       <Footer>
-        <ButtonPrimary disabled={disabled} onClick={submit}>Submit</ButtonPrimary>
+        <ButtonPrimary disabled={disabled} onClick={submit}>
+          Submit
+        </ButtonPrimary>
       </Footer>
     </ActionModal>
   );

@@ -10,7 +10,7 @@ import {
   PRIMARY_THEME_COLOR,
   SECONDARY_THEME_COLOR,
 } from "../../constants";
-import { useIsMounted } from "../../utils/hooks";
+import { useIsMounted } from "@osn/common";
 import {
   setLastNewPost,
   lastNewPostSelector,

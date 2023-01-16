@@ -13,7 +13,7 @@ import ExplorerLink from "../../components/ExplorerLink";
 import EstimateBlockTimeCountDown from "../../components/EstimateBlockTimeCountdown";
 
 import polkaassemblyApi from "../../services/polkassembly";
-import { useIsMounted } from "../../utils/hooks";
+import { useIsMounted } from "@osn/common";
 
 import { normalizedTipDetailSelector, tipCountdownSelector } from "../../store/reducers/tipSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";

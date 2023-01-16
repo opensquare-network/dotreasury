@@ -12,7 +12,7 @@ import useTipsTable from "./useTipsTable";
 import { sendTx } from "../../../utils/sendTx";
 import { web3Enable, web3FromSource } from "@polkadot/extension-dapp";
 import { accountSelector } from "../../../store/reducers/accountSlice";
-import { useIsMounted } from "../../../utils/hooks";
+import { useIsMounted } from "@osn/common";
 import { checkInputValue, getPrecision } from "../../../utils";
 import { newErrorToast } from "../../../store/reducers/toastSlice";
 import { ErrorMessage, HintMessage } from "../../../components/styled";
