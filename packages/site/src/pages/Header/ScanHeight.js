@@ -14,10 +14,10 @@ import {
   setCurrentNode,
   nodesSelector,
 } from "../../store/reducers/nodeSlice";
-import { useOutsideClick } from "../../utils/hooks";
 import useUpdateNodesDelay from "../../utils/useUpdateNodesDelay";
 import { addToast } from "../../store/reducers/toastSlice";
 import ExternalLink from "../../components/ExternalLink";
+import { useOnClickOutside } from "@osn/common";
 
 const Wrapper = styled.div`
   position: relative;
@@ -260,10 +260,10 @@ const ScanHeight = () => {
     }
   }
 
-  useOutsideClick(symbolRef, () => {
+  useOnClickOutside(symbolRef, () => {
     setSymbolOpen(false);
   });
-  useOutsideClick(netWorkRef, () => {
+  useOnClickOutside(netWorkRef, () => {
     setNetorkOpen(false);
   });
 

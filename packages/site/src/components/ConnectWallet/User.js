@@ -2,9 +2,9 @@ import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { useRef } from "react";
-import { useOutsideClick } from "../../utils/hooks";
 import { logout } from "../../store/reducers/accountSlice";
 import UserIdentity from "../User";
+import { useOnClickOutside } from "@osn/common";
 
 const Wrapper = styled.div`
   cursor: pointer;
@@ -78,7 +78,7 @@ export default function User({
   const [showMenu, setShowMenu] = useState(false);
 
   const ref = useRef();
-  useOutsideClick(ref, (event) => {
+  useOnClickOutside(ref, (event) => {
     setShowMenu(false);
   });
 
