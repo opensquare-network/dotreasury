@@ -101,15 +101,15 @@ const FoldableItem = ({ data, polkassembly, defaultUnfold, expired, end }) => {
           </FlexWrapper>
         </VerticalWrapper>
         <ItemWrapper isUnfold={isUnfold}>
-          {React.isValidElement(data)
-            ? data
-            : (data || []).map((item, index) => (
-                <Item
-                  key={index}
-                  data={item}
-                  polkassembly={index === 0 ? polkassembly : undefined}
-                />
-              ))}
+          {React.isValidElement(data) ? data : (
+            (data || []).map((item, index) => (
+              <Item
+                key={index}
+                data={item}
+                polkassembly={index === 0 ? polkassembly : undefined}
+              />
+            ))
+          )}
           {expired && (
             <Item
               data={{
