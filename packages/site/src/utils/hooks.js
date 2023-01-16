@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import queryString from "query-string";
@@ -10,6 +10,7 @@ import {
   chainSymbolSelector,
   setChain,
 } from "../store/reducers/chainSlice";
+import { useWindowSize } from "@osn/common";
 
 const displayCache = new Map();
 
@@ -74,7 +75,7 @@ export function useIsMounted() {
 
 export const useDisablePopup = () => {
   const [disabledPopup, setDisabledPopup] = useState(true);
-  const [width] = useWindowSize();
+  const { width } = useWindowSize();
   useEffect(() => {
     setDisabledPopup(width < 1128);
   }, [width]);
