@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { accountSelector } from "../../../store/reducers/accountSlice";
 import { newErrorToast } from "../../../store/reducers/toastSlice";
 import { sendTx } from "../../../utils/sendTx";
-import { useIsMounted } from "../../../utils/hooks";
+import { useIsMounted } from "@osn/common";
 import { checkInputAddress, checkInputValue } from "../../../utils";
 import BigNumber from "bignumber.js";
 import useCouncilMembers from "../../../utils/useCouncilMembers";

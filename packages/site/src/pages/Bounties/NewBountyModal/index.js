@@ -11,7 +11,7 @@ import { accountSelector } from "../../../store/reducers/accountSlice";
 import { chainSymbolSelector } from "../../../store/reducers/chainSlice";
 import { newErrorToast } from "../../../store/reducers/toastSlice";
 import { checkInputValue, getPrecision, toPrecision } from "../../../utils";
-import { useIsMounted } from "../../../utils/hooks";
+import { useIsMounted } from "@osn/common";
 import { sendTx } from "../../../utils/sendTx";
 import { ErrorMessage } from "../../../components/styled";
 import { Field, FieldTitle } from "../../../components/ActionModal/styled";

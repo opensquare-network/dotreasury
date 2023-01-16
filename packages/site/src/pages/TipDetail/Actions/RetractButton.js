@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import useApi from "../../../hooks/useApi";
 import { accountSelector } from "../../../store/reducers/accountSlice";
 import { newErrorToast } from "../../../store/reducers/toastSlice";
-import { useIsMounted } from "../../../utils/hooks";
+import { useIsMounted } from "@osn/common";
 import { sendTx } from "../../../utils/sendTx";
 import Tooltip from "../../../components/Tooltip";
 import { TooltipInfoText } from "../../../components/Tooltip/styled";

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import TimePeriod from "./TimePeriod";
 import { estimateBlocksTime } from "../services/chainApi";
-import { useIsMounted } from "../utils/hooks";
+import { useIsMounted } from "@osn/common";
 import { useSelector } from "react-redux";
 import { chainSelector } from "../store/reducers/chainSlice";
 

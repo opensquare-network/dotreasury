@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import queryString from "query-string";
@@ -10,19 +10,7 @@ import {
   chainSymbolSelector,
   setChain,
 } from "../store/reducers/chainSlice";
-
-export const useWindowSize = () => {
-  const [size, setSize] = useState([0, 0]);
-  useLayoutEffect(() => {
-    function updateSize() {
-      setSize([window.innerWidth, window.innerHeight]);
-    }
-    window.addEventListener("resize", updateSize);
-    updateSize();
-    return () => window.removeEventListener("resize", updateSize);
-  }, []);
-  return size;
-};
+import { useWindowSize } from "@osn/common";
 
 const displayCache = new Map();
 
@@ -73,21 +61,9 @@ export const useLinks = (text) => {
   return null;
 };
 
-export function useIsMounted() {
-  const isMounted = useRef(true);
-
-  useEffect(() => {
-    return () => {
-      isMounted.current = false;
-    };
-  }, []);
-
-  return isMounted; // returning "isMounted.current" wouldn't work because we would return unmutable primitive
-}
-
 export const useDisablePopup = () => {
   const [disabledPopup, setDisabledPopup] = useState(true);
-  const [width] = useWindowSize();
+  const { width } = useWindowSize();
   useEffect(() => {
     setDisabledPopup(width < 1128);
   }, [width]);
@@ -145,20 +121,6 @@ export function useChainRoute() {
       window.location.reload();
     }
   }, [dispatch, history, location, symbol, urlSymbol]);
-}
-
-export function useOutsideClick(ref, cb) {
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (ref.current && !ref.current.contains(event.target)) {
-        cb();
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [ref, cb]);
 }
 
 export function useLocalStorage(key, initialValue) {

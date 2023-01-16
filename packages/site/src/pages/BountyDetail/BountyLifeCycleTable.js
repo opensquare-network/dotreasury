@@ -15,7 +15,7 @@ import Label from "../../components/Label";
 import DateShow from "../../components/DateShow";
 import PolygonLabel from "../../components/PolygonLabel";
 import ExplorerLink from "../../components/ExplorerLink";
-import { useIsMounted } from "../../utils/hooks";
+import { useIsMounted } from "@osn/common";
 import { estimateBlocksTime } from "../../services/chainApi";
 import polkaassemblyApi from "../../services/polkassembly";
 import { bountyDetailSelector } from "../../store/reducers/bountySlice";

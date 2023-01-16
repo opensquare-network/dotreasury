@@ -6,7 +6,7 @@ import Bar from "./Bar";
 import Item from "./Item";
 import { PRIMARY_THEME_COLOR } from "../../constants";
 import { getBlockTime } from "../../services/chainApi";
-import { useIsMounted } from "../../utils/hooks";
+import { useIsMounted } from "@osn/common";
 import { useSelector } from "react-redux";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import FoldContext from "./FoldContext";

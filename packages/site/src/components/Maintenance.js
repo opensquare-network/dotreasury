@@ -1,7 +1,6 @@
+import { useWindowSize } from "@osn/common";
 import React from "react";
 import styled from "styled-components";
-
-import { useWindowSize } from "../utils/hooks";
 
 const Wrapper = styled.div`
   padding: 12px;
@@ -14,7 +13,7 @@ const Wrapper = styled.div`
 `;
 
 const Maintenance = () => {
-  const [width] = useWindowSize();
+  const { width } = useWindowSize();
 
   return (
     <Wrapper>
