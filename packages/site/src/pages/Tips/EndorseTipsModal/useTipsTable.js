@@ -2,9 +2,9 @@ import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../../store/reducers/chainSlice";
 import { getPrecision, toPrecision } from "../../../utils";
-import { useWindowSize } from "../../../utils/hooks";
 import TipsTableForPC from "./TipsTableForPC";
 import TipsTableForMobile from "./TipsTableForMobile";
+import { useWindowSize } from "@osn/common";
 
 export default function useTipsTable({ tips, isLoading }) {
   const [tipList, setTipList] = useState();
@@ -37,7 +37,7 @@ export default function useTipsTable({ tips, isLoading }) {
   }, [tipList, tipValues]);
 
 
-  const [width] = useWindowSize();
+  const { width } = useWindowSize();
 
   const Component = width > 800 ? (
     <TipsTableForPC
