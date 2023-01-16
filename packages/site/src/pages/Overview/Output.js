@@ -7,6 +7,7 @@ import {
   OVERVIEW_BOUNTIES_COLOR,
   OVERVIEW_BURNT_COLOR,
 } from "../../constants";
+import DoughnutCardLinkTitle from "./DoughnutCardLinkTitle";
 
 const Output = ({ proposals, tips, bounties, burnt }) => {
   const [outputData, setOutputData] = useState({
@@ -72,7 +73,11 @@ const Output = ({ proposals, tips, bounties, burnt }) => {
 
   return (
     <DoughnutCard
-      title="Output"
+      title={
+        <DoughnutCardLinkTitle href="https://wiki.polkadot.network/docs/learn-treasury#creating-a-treasury-proposal">
+          Output
+        </DoughnutCardLinkTitle>
+      }
       data={outputData}
       status={outputStatus}
       clickEvent={clickEvent}

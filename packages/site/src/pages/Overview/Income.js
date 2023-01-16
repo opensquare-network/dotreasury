@@ -16,7 +16,11 @@ import {
   TEXT_DARK_MAJOR,
 } from "../../constants";
 import { useSelector } from "react-redux";
-import { chainSelector, chainSymbolSelector } from "../../store/reducers/chainSlice";
+import {
+  chainSelector,
+  chainSymbolSelector,
+} from "../../store/reducers/chainSlice";
+import DoughnutCardLinkTitle from "./DoughnutCardLinkTitle";
 
 const LinkButton = styled(TextMinor)`
   display: flex;
@@ -74,14 +78,16 @@ const Income = ({
           {
             name: "Identity",
           },
-          ...(isKusama ? [
-            {
-              name: "Referenda",
-            },
-            {
-              name: "Fellowship",
-            },
-          ] : []),
+          ...(isKusama
+            ? [
+                {
+                  name: "Referenda",
+                },
+                {
+                  name: "Fellowship",
+                },
+              ]
+            : []),
         ],
       },
       {
@@ -127,18 +133,20 @@ const Income = ({
               value: slashIdentity,
               color: OVERVIEW_IDENTITY_COLOR,
             },
-            ...(isKusama ? [
-              {
-                name: "Referenda",
-                value: slashReferenda,
-                color: OVERVIEW_DEMOCRACY_COLOR,
-              },
-              {
-                name: "Fellowship",
-                value: slashFellowshipReferenda,
-                color: OVERVIEW_IDENTITY_COLOR,
-              },
-            ] : []),
+            ...(isKusama
+              ? [
+                  {
+                    name: "Referenda",
+                    value: slashReferenda,
+                    color: OVERVIEW_DEMOCRACY_COLOR,
+                  },
+                  {
+                    name: "Fellowship",
+                    value: slashFellowshipReferenda,
+                    color: OVERVIEW_IDENTITY_COLOR,
+                  },
+                ]
+              : []),
           ],
         },
         {
@@ -191,7 +199,11 @@ const Income = ({
 
   return (
     <DoughnutCard
-      title="Income"
+      title={
+        <DoughnutCardLinkTitle href="https://wiki.polkadot.network/docs/learn-treasury#funding-the-treasury">
+          Income
+        </DoughnutCardLinkTitle>
+      }
       data={incomeData}
       status={incomeStatus}
       clickEvent={clickEvent}
