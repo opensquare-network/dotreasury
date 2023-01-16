@@ -16,7 +16,7 @@ export default function DoughnutCardLinkTitle({ children, href = "" }) {
   return (
     <LinkTitle href={href}>
       {children}
-      <img src="/imgs/caret-up-right.svg" />
+      <img src="/imgs/caret-up-right.svg" alt="" />
     </LinkTitle>
   );
 }
