@@ -2656,10 +2656,10 @@
     "@opencensus/core" "^0.0.8"
     uuid "^3.2.1"
 
-"@osn/common@^1.3.1":
-  version "1.3.1"
-  resolved "https://registry.npmjs.org/@osn/common/-/common-1.3.1.tgz#dccd4cb257e81cc6e27dbc58496518c798d9bf94"
-  integrity sha512-F4E28e9mVmc16W6kLr79ce54+OjqpmFBzehRJ7gPbRdVxNqNK0LBnM6FBMaNfRRSgnSWe/XnQAItIycNqS6UPw==
+"@osn/common@^1.3.2":
+  version "1.3.2"
+  resolved "https://registry.npmjs.org/@osn/common/-/common-1.3.2.tgz#34b1fa13245117be41771082f966bef489483c89"
+  integrity sha512-VyOUImhtQ3F3BscabWoyP7P+50lEjMKcv9K/zYrZQeCy05XMyvlQfpRhtB+dyrlFST1cAI46OJ/7C7e1OsfkWw==
   dependencies:
     "@osn/provider-options" "^1.0.2"
     bignumber.js "^9.1.0"
