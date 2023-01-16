@@ -28,18 +28,13 @@ const Footer = styled.div`
 const InputsPanel = styled.div`
   display: flex;
   flex-direction: column;
-  border: 1px solid #f4f4f4;
+  border: 1px solid #F4F4F4;
   border-radius: 4px;
   padding: 16px;
   gap: 16px;
 `;
 
-export default function EndorseModal({
-  tipDetail,
-  visible,
-  setVisible,
-  onFinalized,
-}) {
+export default function EndorseModal({ tipDetail, visible, setVisible, onFinalized }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const account = useSelector(accountSelector);
@@ -57,12 +52,8 @@ export default function EndorseModal({
 
   useEffect(() => {
     if (tipDetail) {
-      const initialMedianValue = toPrecision(
-        tipDetail?.medianValue || 0,
-        precision,
-        false
-      );
-      setInputTipValue(`${initialMedianValue}`);
+      const initialMedianValue = toPrecision(tipDetail?.medianValue || 0, precision, false);
+      setInputTipValue(`${initialMedianValue}`)
     }
   }, [tipDetail, precision]);
 
@@ -91,9 +82,7 @@ export default function EndorseModal({
       web3Enable("doTreasury");
       const injector = await web3FromSource(account.extension);
 
-      const tipValue = new BigNumber(inputTipValue)
-        .times(Math.pow(10, precision))
-        .toString();
+      const tipValue = new BigNumber(inputTipValue).times(Math.pow(10, precision)).toString();
       const tx = api.tx.tips.tip(tipDetail.hash, tipValue);
 
       await sendTx({
@@ -123,7 +112,7 @@ export default function EndorseModal({
             symbol={symbol}
             placeholder="0"
             defaultValue={inputTipValue}
-            onChange={(e) => setInputTipValue(e.target.value)}
+            onChange={e => setInputTipValue(e.target.value)}
           />
         </Field>
         <Field>
@@ -132,9 +121,7 @@ export default function EndorseModal({
         </Field>
       </InputsPanel>
       <Footer>
-        <ButtonPrimary disabled={disabled} onClick={submit}>
-          Submit
-        </ButtonPrimary>
+        <ButtonPrimary disabled={disabled} onClick={submit}>Submit</ButtonPrimary>
       </Footer>
     </ActionModal>
   );
