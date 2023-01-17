@@ -45,7 +45,7 @@ export default function Tooltip({ children, tooltipContent }) {
       onBlur={hide}
     >
       {children}
-      {open && (
+      {open && tooltipContent && (
         <TooltipContainer
           ref={floating}
           data-show={open}
