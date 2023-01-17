@@ -20,7 +20,9 @@ export default function NewProposalButton({ onFinalized }) {
   return (
     <Tooltip
       showTooltip={!!tooltipContent}
-      tooltipContent={<TooltipInfoText>{tooltipContent}</TooltipInfoText>}
+      tooltipContent={
+        tooltipContent && <TooltipInfoText>{tooltipContent}</TooltipInfoText>
+      }
     >
       <OnChainActionButton
         disabled={!account}
