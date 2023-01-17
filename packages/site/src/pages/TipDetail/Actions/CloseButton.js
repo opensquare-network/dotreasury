@@ -80,7 +80,9 @@ export default function CloseButton({ tipDetail, onFinalized }) {
   return (
     <Tooltip
       showTooltip={!!tooltipContent}
-      tooltipContent={<TooltipInfoText>{tooltipContent}</TooltipInfoText>}
+      tooltipContent={
+        tooltipContent && <TooltipInfoText>{tooltipContent}</TooltipInfoText>
+      }
     >
       <OnChainActionButton
         onClick={doCloseTip}

@@ -34,7 +34,9 @@ export default function EndorseButton({ tipDetail, onFinalized }) {
     <>
       <Tooltip
         showTooltip={!!tooltipContent}
-        tooltipContent={<TooltipInfoText>{tooltipContent}</TooltipInfoText>}
+        tooltipContent={
+          tooltipContent && <TooltipInfoText>{tooltipContent}</TooltipInfoText>
+        }
       >
         <OnChainActionButton
           onClick={() => setShowEndorse(true)}
