@@ -157,7 +157,11 @@ export default function EndorseTipsModal({ visible, setVisible, onFinalized }) {
       <Footer>
         <Tooltip
           showTooltip={!!tooltipContent}
-          tooltipContent={<TooltipInfoText>{tooltipContent}</TooltipInfoText>}
+          tooltipContent={
+            tooltipContent && (
+              <TooltipInfoText>{tooltipContent}</TooltipInfoText>
+            )
+          }
         >
           <ButtonPrimary disabled={disabled} onClick={submit}>Submit</ButtonPrimary>
         </Tooltip>

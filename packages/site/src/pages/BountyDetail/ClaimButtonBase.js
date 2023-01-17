@@ -78,7 +78,9 @@ export default function ClaimButtonBase({ bounty, onFinalized, newClaimTx }) {
   return (
     <Tooltip
       showTooltip={!!tooltipContent}
-      tooltipContent={<TooltipInfoText>{tooltipContent}</TooltipInfoText>}
+      tooltipContent={
+        tooltipContent && <TooltipInfoText>{tooltipContent}</TooltipInfoText>
+      }
     >
       <OnChainActionButton
         onClick={doClaim}

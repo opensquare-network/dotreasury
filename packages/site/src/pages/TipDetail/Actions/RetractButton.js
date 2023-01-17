@@ -76,7 +76,9 @@ export default function RetractedButton({ tipDetail, onFinalized }) {
   return (
     <Tooltip
       showTooltip={!!tooltipContent}
-      tooltipContent={<TooltipInfoText>{tooltipContent}</TooltipInfoText>}
+      tooltipContent={
+        tooltipContent && <TooltipInfoText>{tooltipContent}</TooltipInfoText>
+      }
     >
       <OnChainActionButtonSecondary
         onClick={doRetractTip}

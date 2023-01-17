@@ -27,7 +27,9 @@ export default function EndorseTipsButton({ onFinalized }) {
   return (
     <Tooltip
       showTooltip={!!tooltipContent}
-      tooltipContent={<TooltipInfoText>{tooltipContent}</TooltipInfoText>}
+      tooltipContent={
+        tooltipContent && <TooltipInfoText>{tooltipContent}</TooltipInfoText>
+      }
     >
       <OnChainActionButtonSecondary
         disabled={disabled}
