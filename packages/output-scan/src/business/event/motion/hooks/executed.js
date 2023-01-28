@@ -47,7 +47,7 @@ async function handleRejectTreasuryProposal(proposalInfo, indexer, isOk) {
     indexer,
   };
 
-  await updateProposal(proposalIndex, { state });
+  await updateProposal(proposalIndex, { state, isFinal: true });
 }
 
 async function handleBounty(bountyInfo, indexer) {
