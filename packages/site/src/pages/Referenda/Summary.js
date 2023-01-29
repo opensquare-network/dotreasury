@@ -87,6 +87,13 @@ const Value = styled(Text)`
   }
 `;
 
+const Divider = styled.div`
+  width: 1px;
+  height: 44px;
+  background-color: #f4f4f4;
+  margin-left: 16px;
+`;
+
 export default function Summary() {
   const dispatch = useDispatch();
   const chain = useSelector(chainSelector);
@@ -125,6 +132,9 @@ export default function Summary() {
         <Title>All Referenda</Title>
         <Value>{activeCount || 0}</Value>
       </Item>
+
+      <Divider />
+
       <Item>
         <Title>Treasurer</Title>
         <Value>{applicationSummary?.treasurer?.active || 0}<span className="light"> / {applicationSummary?.treasurer?.total || 0}</span></Value>
