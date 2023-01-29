@@ -129,7 +129,7 @@ export default function Summary() {
   return (
     <Wrapper>
       <Item>
-        <Title>All Referenda</Title>
+        <Title>Ongoing</Title>
         <Value>{activeCount || 0}</Value>
       </Item>
 
