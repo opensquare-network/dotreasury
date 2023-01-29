@@ -122,7 +122,7 @@ export default function Summary() {
         medium_spender,
         big_spender,
       ],
-      "active"
+      (item) => item?.active || 0
     );
   }, [applicationSummary]);
 
