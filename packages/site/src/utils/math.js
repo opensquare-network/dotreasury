@@ -13,7 +13,9 @@ export function sum(arr = []) {
  */
 export function sumBy(arr = [], iteratee) {
   return arr.reduce((val, item) => {
-    val += item[iteratee];
+    const n = typeof iteratee === "function" ? iteratee(item) : item[iteratee];
+    val += n;
+
     return val;
   }, 0);
 }
