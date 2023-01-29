@@ -1,5 +1,4 @@
-
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import styled from "styled-components";
 
 import Text from "../../components/Text";
@@ -8,6 +7,7 @@ import Card from "../../components/Card";
 import { fetchApplicationSummary, applicationSummarySelector } from "../../store/reducers/openGovApplicationsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { chainSelector } from "../../store/reducers/chainSlice";
+import { sumBy } from "../../utils/math";
 
 const Wrapper = styled(Card)`
   padding: 16px 20px 8px;
@@ -87,6 +87,13 @@ const Value = styled(Text)`
   }
 `;
 
+const Divider = styled.div`
+  width: 1px;
+  height: 44px;
+  background-color: #f4f4f4;
+  margin-left: 16px;
+`;
+
 export default function Summary() {
   const dispatch = useDispatch();
   const chain = useSelector(chainSelector);
@@ -96,8 +103,38 @@ export default function Summary() {
     dispatch(fetchApplicationSummary(chain));
   }, [dispatch, chain]);
 
+  const activeCount = useMemo(() => {
+    const {
+      treasurer,
+      small_tipper,
+      big_tipper,
+      small_spender,
+      medium_spender,
+      big_spender,
+    } = applicationSummary ?? {};
+
+    return sumBy(
+      [
+        treasurer,
+        small_tipper,
+        big_tipper,
+        small_spender,
+        medium_spender,
+        big_spender,
+      ],
+      "active"
+    );
+  }, [applicationSummary]);
+
   return (
     <Wrapper>
+      <Item>
+        <Title>All Referenda</Title>
+        <Value>{activeCount || 0}</Value>
+      </Item>
+
+      <Divider />
+
       <Item>
         <Title>Treasurer</Title>
         <Value>{applicationSummary?.treasurer?.active || 0}<span className="light"> / {applicationSummary?.treasurer?.total || 0}</span></Value>
