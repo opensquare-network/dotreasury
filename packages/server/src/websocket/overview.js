@@ -141,6 +141,11 @@ async function calcCount(
     }
   );
 
+  const activeReferendas = referendaList.filter(
+    ({ state: { state: stateName } }) =>
+      ["Submitted", "Queueing", "Deciding", "Confirming"].includes(stateName)
+  );
+
   const bounty = {
     unFinished: unFinishedBounties.length,
     all: bounties.length,
@@ -155,6 +160,7 @@ async function calcCount(
   };
 
   const referenda = {
+    active: activeReferendas.length,
     all: referendaList.length,
   }
 
