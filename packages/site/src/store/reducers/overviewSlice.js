@@ -27,6 +27,7 @@ const overviewSlice = createSlice({
           all: 0,
         },
         referenda: {
+          active: 0,
           all: 0,
         }
       },

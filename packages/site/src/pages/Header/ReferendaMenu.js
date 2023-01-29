@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Label, Menu } from "semantic-ui-react";
 import { useSelector } from "react-redux";
-import { totalOpenGovApplicationCountSelector } from "../../store/reducers/overviewSlice";
+import { overviewSelector } from "../../store/reducers/overviewSlice";
 import { ReactComponent as ApplicationSVG } from "./applications.svg";
 
 const Divider = styled.div`
@@ -17,13 +17,13 @@ const Icon = styled(ApplicationSVG)`
   margin-right: 8px;
 `;
 
-
 function ReferendaMenu() {
-  const applicationCount = useSelector(totalOpenGovApplicationCountSelector);
+  const { count } = useSelector(overviewSelector);
+  const { referenda } = count;
 
   return (
     <Menu.Item key="Referenda">
-      <Icon /> Applications<Label>{applicationCount}</Label>
+      <Icon /> Applications<Label>{referenda.active || 0}</Label>
       <Divider />
     </Menu.Item>
   );
