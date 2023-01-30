@@ -4,7 +4,7 @@ dotenv.config();
 const chunk = require("lodash.chunk");
 const negate = require("lodash.negate");
 const isNil = require("lodash.isnil");
-const { getReferendaReferendumCollection, getProposalCollection } = require("../mongo");
+const { getReferendaReferendumCollection } = require("../mongo");
 const fetch = (...args) => import("node-fetch").then(({default: fetch}) => fetch(...args));
 
 async function fetchTitle(apiUrl) {
@@ -43,7 +43,6 @@ async function syncTitle({ col, titleFetcher, titleUpdater }) {
         continue;
       }
 
-      console.log(titles[i]);
       titleUpdater(bulk, items[i], titles[i]);
     }
     await bulk.execute();
@@ -52,9 +51,6 @@ async function syncTitle({ col, titleFetcher, titleUpdater }) {
 
 const fetchGov2ReferendaTitle = (chain, referendumIndex) =>
   fetchTitle(`https://${chain}.subsquare.io/api/gov2/referendums/${referendumIndex}`);
-
-const fetchTreasuryProposalTitle = (chain, proposalIndex) =>
-  fetchTitle(`https://${chain}.subsquare.io/api/treasury/proposals/${proposalIndex}`);
 
 async function syncGov2ReferendaTitle(chain) {
   await syncTitle({
@@ -69,28 +65,9 @@ async function syncGov2ReferendaTitle(chain) {
   });
 }
 
-async function syncTreasuryProposalTitle(chain) {
-  await syncTitle({
-    col: await getProposalCollection(chain),
-    titleFetcher: (item) => fetchTreasuryProposalTitle(chain, item.proposalIndex),
-    titleUpdater: (bulk, item, title) =>
-      bulk
-        .find({ proposalIndex: item.proposalIndex })
-        .updateOne({
-          $set: { description: title }
-        })
-  });
-}
-
 async function main() {
-  try {
-    await syncGov2ReferendaTitle("kusama");
-    await syncTreasuryProposalTitle("kusama");
-    await syncTreasuryProposalTitle("polkadot");
-    console.log(`Last title sync at:`, new Date());
-  } catch (e) {
-    console.error(e);
-  }
+  console.log(`Sync OpenGov referenda title`);
+  await syncGov2ReferendaTitle("kusama");
 }
 
-main().finally(() => process.exit(0));
+module.exports = main;
