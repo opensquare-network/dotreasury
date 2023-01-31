@@ -125,6 +125,7 @@ export default function ReferendaTable() {
       beneficiary: item.beneficiary,
       proposer: item.proposer,
       value: item.amount,
+      symbolPrice: item.symbolPrice,
       state: item.state,
       description: item.description,
     }
