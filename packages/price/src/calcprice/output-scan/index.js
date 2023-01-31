@@ -5,6 +5,7 @@ function DB(dbUrl, dbName) {
   const bountyCollectionName = "bounty";
   const proposalCollectionName = "proposal";
   const childBountyCollectionName = "childBounty";
+  const referendaReferendumCollectionName = "referendaReferendum";
 
   let client = null;
   let db = null;
@@ -12,6 +13,7 @@ function DB(dbUrl, dbName) {
   let tipCol = null;
   let bountyCol = null;
   let proposalCol = null;
+  let referendaReferendumCol = null;
 
   async function initDb() {
     client = await MongoClient.connect(dbUrl, {
@@ -24,6 +26,7 @@ function DB(dbUrl, dbName) {
     bountyCol = db.collection(bountyCollectionName);
     childBountyCol = db.collection(childBountyCollectionName);
     proposalCol = db.collection(proposalCollectionName);
+    referendaReferendumCol = db.collection(referendaReferendumCollectionName);
 
     await _createIndexes();
   }
@@ -63,11 +66,17 @@ function DB(dbUrl, dbName) {
     return proposalCol;
   }
 
+  async function getReferendaReferendumCollection() {
+    await tryInit(referendaReferendumCol);
+    return referendaReferendumCol;
+  };
+
   return {
     getTipCollection,
     getBountyCollection,
     getChildBountyCollection,
     getProposalCollection,
+    getReferendaReferendumCollection,
   };
 }
 
