@@ -18,6 +18,10 @@ const proposals = [
   },
   {
     token: "ksm",
+    proposalId: 206,
+  },
+  {
+    token: "ksm",
     proposalId: 183,
   },
   {
