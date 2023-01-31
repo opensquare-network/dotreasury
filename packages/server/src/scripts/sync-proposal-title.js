@@ -21,14 +21,14 @@ async function fetchTitle(apiUrl) {
   }
 }
 
-async function syncTitle({ col, titleFetcher, titleUpdater }) {
+async function syncTitle({ col, fetchTitle, updateTitle }) {
   const allItems = await col.find({}).toArray();
 
   // Process in batches that 10 items for each
   for (const items of chunk(allItems, 10)) {
     // Fetch titles from subsquare.io
     const titles = await Promise.all(
-      items.map(item => titleFetcher(item))
+      items.map(item => fetchTitle(item))
     );
 
     // Make sure has titles
@@ -43,7 +43,7 @@ async function syncTitle({ col, titleFetcher, titleUpdater }) {
         continue;
       }
 
-      titleUpdater(bulk, items[i], titles[i]);
+      updateTitle(bulk, items[i], titles[i]);
     }
     await bulk.execute();
   }
@@ -55,8 +55,8 @@ const fetchGov2ReferendaTitle = (chain, referendumIndex) =>
 async function syncGov2ReferendaTitle(chain) {
   await syncTitle({
     col: await getReferendaReferendumCollection(chain),
-    titleFetcher: (item) => fetchGov2ReferendaTitle(chain, item.referendumIndex),
-    titleUpdater: (bulk, item, title) =>
+    fetchTitle: (item) => fetchGov2ReferendaTitle(chain, item.referendumIndex),
+    updateTitle: (bulk, item, title) =>
       bulk
         .find({ referendumIndex: item.referendumIndex })
         .updateOne({
