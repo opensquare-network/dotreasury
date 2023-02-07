@@ -10,7 +10,11 @@ import TextMinor from "../../components/TextMinor";
 import CountDown from "../../components/CountDown";
 import BlocksTime from "../../components/BlocksTime";
 
-import { TEXT_DARK_MAJOR, TEXT_DARK_MINOR } from "../../constants";
+import {
+  TEXT_DARK_ACCESSORY,
+  TEXT_DARK_MAJOR,
+  TEXT_DARK_MINOR,
+} from "../../constants";
 import { overviewSelector } from "../../store/reducers/overviewSlice";
 import {
   fetchSpendPeriod,
@@ -26,6 +30,8 @@ import {
 } from "../../store/reducers/chainSlice";
 import { mrgap } from "../../styles";
 import { abbreviateBigNumber } from "../../utils";
+import { h3_18_semibold, p_12_normal } from "../../styles/text";
+import { space_x } from "../../styles/tailwindcss";
 
 const Wrapper = styled(Card)`
   @media screen and (max-width: 1320px) {
@@ -52,27 +58,33 @@ const CustomCard = styled.div`
 const ItemWrapper = styled.div`
   display: flex;
   align-items: center;
-  & > *:first-child {
-    margin-right: 20px;
-  }
+  ${space_x(12)};
 `;
 
 const Title = styled(TextMinor)`
   line-height: 24px;
+  ${p_12_normal};
 `;
 
 const TextBold = styled(Text)`
-  font-size: 18px;
-  line-height: 32px;
-  font-weight: 700;
+  ${h3_18_semibold};
 `;
 
-const TextMinorBold = styled(TextMinor)`
-  font-size: 18px;
-  line-height: 32px;
-  font-weight: 700;
+const TextAccessoryBold = styled(TextMinor)`
+  ${h3_18_semibold};
+  color: ${TEXT_DARK_ACCESSORY};
 `;
 
+const ValueSymbol = styled.span`
+  color: ${TEXT_DARK_ACCESSORY};
+`;
+const Value = styled(Text)`
+  ${h3_18_semibold};
+`;
+const ValueInfo = styled(Text)`
+  ${p_12_normal};
+  color: ${TEXT_DARK_ACCESSORY};
+`;
 const ValueWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -84,6 +96,9 @@ const ValueWrapper = styled.div`
 const StyledLink = styled(Link)`
   color: ${TEXT_DARK_MINOR} !important;
   &:hover {
+    ${TextAccessoryBold} {
+      color: inherit;
+    }
     text-decoration: underline;
   }
 `;
@@ -117,24 +132,23 @@ const Summary = () => {
           <Image src="/imgs/data-available.svg" />
           <div>
             <Title>Available</Title>
-            <ValueWrapper>
-              <TextBold>{abbreviateBigNumber(treasury.free)}</TextBold>
-              <TextMinorBold>{symbol}</TextMinorBold>
-            </ValueWrapper>
+            <Value>
+              {abbreviateBigNumber(treasury.free)}{" "}
+              <ValueSymbol>{symbol}</ValueSymbol>
+            </Value>
+            <ValueInfo>usdt</ValueInfo>
           </div>
         </ItemWrapper>
       </CustomCard>
       <CustomCard>
-        <ItemWrapper>
+        <ItemWrapper style={{ alignItems: "flex-start" }}>
           <Image src="/imgs/data-next-burn.svg" />
           <div>
             <Title>Next burn</Title>
-            <ValueWrapper>
-              <TextBold>
-                {abbreviateBigNumber(treasury.burnPercent * treasury.free)}
-              </TextBold>
-              <TextMinorBold>{symbol}</TextMinorBold>
-            </ValueWrapper>
+            <Value>
+              {abbreviateBigNumber(treasury.burnPercent * treasury.free)}{" "}
+              <ValueSymbol>{symbol}</ValueSymbol>
+            </Value>
           </div>
         </ItemWrapper>
       </CustomCard>
@@ -146,12 +160,13 @@ const Summary = () => {
             <BlocksTime
               blocks={spendPeriod.restBlocks}
               ValueWrapper={TextBold}
-              UnitWrapper={TextMinorBold}
+              UnitWrapper={TextAccessoryBold}
               SectionWrapper={Fragment}
               TimeWrapper={ValueWrapper}
               unitMapper={{ d: "Day" }}
               pluralUnitMapper={{ d: "Days" }}
             />
+            <ValueInfo>{spendPeriod.periodTime} days</ValueInfo>
           </div>
         </ItemWrapper>
       </CustomCard>
@@ -162,9 +177,11 @@ const Summary = () => {
             <Title>Proposals</Title>
             <ValueWrapper>
               <TextBold>{overview.count.proposal.unFinished}</TextBold>
-              <TextMinorBold>/</TextMinorBold>
+              <TextAccessoryBold>/</TextAccessoryBold>
               <StyledLink to={`/${symbolLowerCase}/proposals`}>
-                <TextMinorBold>{overview.count.proposal.all}</TextMinorBold>
+                <TextAccessoryBold>
+                  {overview.count.proposal.all}
+                </TextAccessoryBold>
               </StyledLink>
             </ValueWrapper>
           </div>
@@ -184,9 +201,9 @@ const Summary = () => {
               >
                 <TextBold>{overview.count.tip.unFinished}</TextBold>
               </StyledLinkMajor>
-              <TextMinorBold>/</TextMinorBold>
+              <TextAccessoryBold>/</TextAccessoryBold>
               <StyledLink to={`/${symbolLowerCase}/tips`}>
-                <TextMinorBold>{overview.count.tip.all}</TextMinorBold>
+                <TextAccessoryBold>{overview.count.tip.all}</TextAccessoryBold>
               </StyledLink>
             </ValueWrapper>
           </div>
@@ -199,9 +216,11 @@ const Summary = () => {
             <Title>Bounties</Title>
             <ValueWrapper>
               <TextBold>{overview.count.bounty.unFinished}</TextBold>
-              <TextMinorBold>/</TextMinorBold>
+              <TextAccessoryBold>/</TextAccessoryBold>
               <StyledLink to={`/${symbolLowerCase}/bounties`}>
-                <TextMinorBold>{overview.count.bounty.all}</TextMinorBold>
+                <TextAccessoryBold>
+                  {overview.count.bounty.all}
+                </TextAccessoryBold>
               </StyledLink>
             </ValueWrapper>
           </div>
