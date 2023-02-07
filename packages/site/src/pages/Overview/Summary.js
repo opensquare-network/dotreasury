@@ -43,6 +43,7 @@ import {
 } from "../../styles/tailwindcss";
 import { smcss } from "@osn/common";
 import { lessthan600 } from "../../styles/responsive";
+import { useIsKusamaChain } from "../../utils/hooks/chain";
 
 const Wrapper = styled(Card)`
   margin-bottom: 24px;
@@ -129,6 +130,7 @@ const Summary = () => {
   const treasury = useSelector(treasurySelector);
   const symbol = useSelector(chainSymbolSelector);
   const symbolLowerCase = symbol?.toLowerCase();
+  const isKusama = useIsKusamaChain();
 
   return (
     <Wrapper>
@@ -139,6 +141,21 @@ const Summary = () => {
           </ItemIconWrapper>
           <div>
             <Title>Available</Title>
+            <ValueWrapper>
+              <TextBold>{abbreviateBigNumber(treasury.free)}</TextBold>
+              <TextAccessoryBold>{symbol}</TextAccessoryBold>
+            </ValueWrapper>
+            <ValueInfo>usdt</ValueInfo>
+          </div>
+        </ItemWrapper>
+      </CustomCard>
+      <CustomCard>
+        <ItemWrapper>
+          <ItemIconWrapper>
+            <Image src="/imgs/data-approved.svg" />
+          </ItemIconWrapper>
+          <div>
+            <Title>To be awarded</Title>
             <ValueWrapper>
               <TextBold>{abbreviateBigNumber(treasury.free)}</TextBold>
               <TextAccessoryBold>{symbol}</TextAccessoryBold>
@@ -183,6 +200,29 @@ const Summary = () => {
           </div>
         </ItemWrapper>
       </CustomCard>
+
+      {isKusama && (
+        <CustomCard>
+          <ItemWrapper>
+            <ItemIconWrapper>
+              <Image src="/imgs/data-opengov.svg" />
+            </ItemIconWrapper>
+            <div>
+              <Title>OpenGov</Title>
+              <ValueWrapper>
+                <TextBold>{overview.count.proposal.unFinished}</TextBold>
+                <TextAccessoryBold>/</TextAccessoryBold>
+                <StyledLink to={`/${symbolLowerCase}/referenda`}>
+                  <TextAccessoryBold>
+                    {overview.count.proposal.all}
+                  </TextAccessoryBold>
+                </StyledLink>
+              </ValueWrapper>
+            </div>
+          </ItemWrapper>
+        </CustomCard>
+      )}
+
       <CustomCard>
         <ItemWrapper>
           <ItemIconWrapper>
