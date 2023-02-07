@@ -31,34 +31,45 @@ import {
 import { mrgap } from "../../styles";
 import { abbreviateBigNumber } from "../../utils";
 import { h3_18_semibold, p_12_normal } from "../../styles/text";
-import { space_x } from "../../styles/tailwindcss";
+import {
+  gap_x,
+  grid,
+  grid_cols,
+  hidden,
+  p,
+  p_y,
+  rounded_none,
+  space_x,
+} from "../../styles/tailwindcss";
+import { smcss } from "@osn/common";
+import { lessthan600 } from "../../styles/responsive";
 
 const Wrapper = styled(Card)`
-  @media screen and (max-width: 1320px) {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 8px;
-  }
-  @media screen and (min-width: 1320px) {
-    display: flex;
-    justify-content: space-between;
-  }
-  padding: 31px;
   margin-bottom: 24px;
-  @media screen and (max-width: 600px) {
-    border-radius: 0;
-  }
+
+  ${p(24)};
+  ${grid};
+  ${gap_x(64)};
+  ${grid_cols("auto-fit", 258)};
+
+  ${smcss(grid_cols(2))};
+  ${lessthan600(rounded_none)};
 `;
 
 const CustomCard = styled.div`
-  padding: 0;
+  ${p_y(8)};
   border-color: #eee;
 `;
 
+const ItemIconWrapper = styled.div``;
 const ItemWrapper = styled.div`
   display: flex;
   align-items: center;
   ${space_x(12)};
+
+  ${ItemIconWrapper} {
+    ${smcss(hidden)};
+  }
 `;
 
 const Title = styled(TextMinor)`
@@ -123,7 +134,9 @@ const Summary = () => {
     <Wrapper>
       <CustomCard>
         <ItemWrapper>
-          <Image src="/imgs/data-available.svg" />
+          <ItemIconWrapper>
+            <Image src="/imgs/data-available.svg" />
+          </ItemIconWrapper>
           <div>
             <Title>Available</Title>
             <ValueWrapper>
@@ -136,7 +149,9 @@ const Summary = () => {
       </CustomCard>
       <CustomCard>
         <ItemWrapper style={{ alignItems: "flex-start" }}>
-          <Image src="/imgs/data-next-burn.svg" />
+          <ItemIconWrapper>
+            <Image src="/imgs/data-next-burn.svg" />
+          </ItemIconWrapper>
           <div>
             <Title>Next burn</Title>
             <ValueWrapper>
@@ -150,7 +165,9 @@ const Summary = () => {
       </CustomCard>
       <CustomCard>
         <ItemWrapper>
-          <CountDown percent={spendPeriod.progress} />
+          <ItemIconWrapper>
+            <CountDown percent={spendPeriod.progress} />
+          </ItemIconWrapper>
           <div>
             <Title>Spend period</Title>
             <BlocksTime
@@ -168,7 +185,9 @@ const Summary = () => {
       </CustomCard>
       <CustomCard>
         <ItemWrapper>
-          <Image src="/imgs/data-proposals.svg" />
+          <ItemIconWrapper>
+            <Image src="/imgs/data-proposals.svg" />
+          </ItemIconWrapper>
           <div>
             <Title>Proposals</Title>
             <ValueWrapper>
@@ -185,7 +204,9 @@ const Summary = () => {
       </CustomCard>
       <CustomCard>
         <ItemWrapper>
-          <Image src="/imgs/data-tips.svg" />
+          <ItemIconWrapper>
+            <Image src="/imgs/data-tips.svg" />
+          </ItemIconWrapper>
           <div>
             <Title>Tips</Title>
             <ValueWrapper>
@@ -207,7 +228,9 @@ const Summary = () => {
       </CustomCard>
       <CustomCard>
         <ItemWrapper>
-          <Image src="/imgs/data-bounties.svg" />
+          <ItemIconWrapper>
+            <Image src="/imgs/data-bounties.svg" />
+          </ItemIconWrapper>
           <div>
             <Title>Bounties</Title>
             <ValueWrapper>
