@@ -114,6 +114,49 @@ const Summary = () => {
     <Wrapper>
       <CustomCard>
         <ItemWrapper>
+          <Image src="/imgs/data-available.svg" />
+          <div>
+            <Title>Available</Title>
+            <ValueWrapper>
+              <TextBold>{abbreviateBigNumber(treasury.free)}</TextBold>
+              <TextMinorBold>{symbol}</TextMinorBold>
+            </ValueWrapper>
+          </div>
+        </ItemWrapper>
+      </CustomCard>
+      <CustomCard>
+        <ItemWrapper>
+          <Image src="/imgs/data-next-burn.svg" />
+          <div>
+            <Title>Next burn</Title>
+            <ValueWrapper>
+              <TextBold>
+                {abbreviateBigNumber(treasury.burnPercent * treasury.free)}
+              </TextBold>
+              <TextMinorBold>{symbol}</TextMinorBold>
+            </ValueWrapper>
+          </div>
+        </ItemWrapper>
+      </CustomCard>
+      <CustomCard>
+        <ItemWrapper>
+          <CountDown percent={spendPeriod.progress} />
+          <div>
+            <Title>Spend period</Title>
+            <BlocksTime
+              blocks={spendPeriod.restBlocks}
+              ValueWrapper={TextBold}
+              UnitWrapper={TextMinorBold}
+              SectionWrapper={Fragment}
+              TimeWrapper={ValueWrapper}
+              unitMapper={{ d: "Day" }}
+              pluralUnitMapper={{ d: "Days" }}
+            />
+          </div>
+        </ItemWrapper>
+      </CustomCard>
+      <CustomCard>
+        <ItemWrapper>
           <Image src="/imgs/data-proposals.svg" />
           <div>
             <Title>Proposals</Title>
@@ -161,49 +204,6 @@ const Summary = () => {
                 <TextMinorBold>{overview.count.bounty.all}</TextMinorBold>
               </StyledLink>
             </ValueWrapper>
-          </div>
-        </ItemWrapper>
-      </CustomCard>
-      <CustomCard>
-        <ItemWrapper>
-          <Image src="/imgs/data-available.svg" />
-          <div>
-            <Title>Available</Title>
-            <ValueWrapper>
-              <TextBold>{abbreviateBigNumber(treasury.free)}</TextBold>
-              <TextMinorBold>{symbol}</TextMinorBold>
-            </ValueWrapper>
-          </div>
-        </ItemWrapper>
-      </CustomCard>
-      <CustomCard>
-        <ItemWrapper>
-          <Image src="/imgs/data-next-burn.svg" />
-          <div>
-            <Title>Next burn</Title>
-            <ValueWrapper>
-              <TextBold>
-                {abbreviateBigNumber(treasury.burnPercent * treasury.free)}
-              </TextBold>
-              <TextMinorBold>{symbol}</TextMinorBold>
-            </ValueWrapper>
-          </div>
-        </ItemWrapper>
-      </CustomCard>
-      <CustomCard>
-        <ItemWrapper>
-          <CountDown percent={spendPeriod.progress} />
-          <div>
-            <Title>Spend period</Title>
-            <BlocksTime
-              blocks={spendPeriod.restBlocks}
-              ValueWrapper={TextBold}
-              UnitWrapper={TextMinorBold}
-              SectionWrapper={Fragment}
-              TimeWrapper={ValueWrapper}
-              unitMapper={{ d: "Day" }}
-              pluralUnitMapper={{ d: "Days" }}
-            />
           </div>
         </ItemWrapper>
       </CustomCard>
