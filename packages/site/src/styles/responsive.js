@@ -32,7 +32,7 @@ export const mdcss = (css) => makeResponsive(css, MD_SIZE);
 export const lgcss = (css) => makeResponsive(css, LG_SIZE);
 
 /**
- * @description legacy, a lot of pages/components usage
+ * @description legacy, bulk of pages/components
  */
 export const lessthan600 = (css) => makeResponsive(css, 600);
 
