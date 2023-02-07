@@ -75,12 +75,6 @@ const TextAccessoryBold = styled(TextMinor)`
   color: ${TEXT_DARK_ACCESSORY};
 `;
 
-const ValueSymbol = styled.span`
-  color: ${TEXT_DARK_ACCESSORY};
-`;
-const Value = styled(Text)`
-  ${h3_18_semibold};
-`;
 const ValueInfo = styled(Text)`
   ${p_12_normal};
   color: ${TEXT_DARK_ACCESSORY};
@@ -132,10 +126,10 @@ const Summary = () => {
           <Image src="/imgs/data-available.svg" />
           <div>
             <Title>Available</Title>
-            <Value>
-              {abbreviateBigNumber(treasury.free)}{" "}
-              <ValueSymbol>{symbol}</ValueSymbol>
-            </Value>
+            <ValueWrapper>
+              <TextBold>{abbreviateBigNumber(treasury.free)}</TextBold>
+              <TextAccessoryBold>{symbol}</TextAccessoryBold>
+            </ValueWrapper>
             <ValueInfo>usdt</ValueInfo>
           </div>
         </ItemWrapper>
@@ -145,10 +139,12 @@ const Summary = () => {
           <Image src="/imgs/data-next-burn.svg" />
           <div>
             <Title>Next burn</Title>
-            <Value>
-              {abbreviateBigNumber(treasury.burnPercent * treasury.free)}{" "}
-              <ValueSymbol>{symbol}</ValueSymbol>
-            </Value>
+            <ValueWrapper>
+              <TextBold>
+                {abbreviateBigNumber(treasury.burnPercent * treasury.free)}
+              </TextBold>
+              <TextAccessoryBold>{symbol}</TextAccessoryBold>
+            </ValueWrapper>
           </div>
         </ItemWrapper>
       </CustomCard>
