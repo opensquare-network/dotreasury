@@ -44,6 +44,8 @@ import {
 import { smcss } from "@osn/common";
 import { lessthan600 } from "../../styles/responsive";
 import { useIsKusamaChain } from "../../utils/hooks/chain";
+import { extractTime } from "@polkadot/util";
+import { parseEstimateTime } from "../../utils/parseEstimateTime";
 
 const Wrapper = styled(Card)`
   margin-bottom: 24px;
@@ -196,7 +198,9 @@ const Summary = () => {
               unitMapper={{ d: "Day" }}
               pluralUnitMapper={{ d: "Days" }}
             />
-            <ValueInfo>{spendPeriod.periodTime} days</ValueInfo>
+            <ValueInfo>
+              {parseEstimateTime(extractTime(spendPeriod.periodTime))}
+            </ValueInfo>
           </div>
         </ItemWrapper>
       </CustomCard>
