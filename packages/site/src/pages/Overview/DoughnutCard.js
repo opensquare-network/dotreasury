@@ -7,6 +7,7 @@ import List from "./CustomList";
 import Total from "./Total";
 import Text from "../../components/Text";
 import { abbreviateBigNumber } from "../../utils";
+import { flex_col } from "../../styles/tailwindcss";
 
 const Title = styled(Text)`
   font-size: 16px;
@@ -17,7 +18,7 @@ const Title = styled(Text)`
 
 const CardWrapper = styled(Card)`
   position: relative;
-  padding: 20px 24px;
+  padding: 24px;
   @media screen and (max-width: 600px) {
     border-radius: 0;
   }
@@ -26,9 +27,9 @@ const CardWrapper = styled(Card)`
 const ContentWrapper = styled.div`
   /* position: relative; */
   display: flex;
+  ${flex_col};
   /* padding: 32px; */
   @media screen and (max-width: 556px) {
-    flex-direction: column;
     & > :first-child {
       margin-bottom: 24px;
     }
@@ -36,8 +37,7 @@ const ContentWrapper = styled.div`
 `;
 
 const CanvasWrapper = styled.div`
-  height: 252px;
-  flex-grow: 1;
+  height: 264px;
   position: relative;
 `;
 
@@ -71,7 +71,6 @@ const DoughnutCard = ({ title, data, status, clickEvent, children }) => {
     <CardWrapper>
       <Title>{title}</Title>
       <ContentWrapper>
-        <List data={data} status={status} clickEvent={clickEvent}></List>
         <CanvasWrapper>
           <Total total={total}>
             <DoughnutWrapper>
@@ -79,6 +78,7 @@ const DoughnutCard = ({ title, data, status, clickEvent, children }) => {
             </DoughnutWrapper>
           </Total>
         </CanvasWrapper>
+        <List data={data} status={status} clickEvent={clickEvent}></List>
         {children}
       </ContentWrapper>
     </CardWrapper>
