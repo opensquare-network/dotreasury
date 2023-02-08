@@ -42,7 +42,7 @@ import {
   space_x,
 } from "../../styles/tailwindcss";
 import { smcss } from "@osn/common";
-import { lessthan600 } from "../../styles/responsive";
+import { breakpoint } from "../../styles/responsive";
 import { useIsKusamaChain } from "../../utils/hooks/chain";
 import { extractTime } from "@polkadot/util";
 import { parseEstimateTime } from "../../utils/parseEstimateTime";
@@ -56,7 +56,7 @@ const Wrapper = styled(Card)`
   ${grid_cols("auto-fit", 258)};
 
   ${smcss(grid_cols(2))};
-  ${lessthan600(rounded_none)};
+  ${breakpoint(600, rounded_none)};
 `;
 
 const CustomCard = styled.div`
