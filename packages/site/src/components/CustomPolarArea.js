@@ -2,8 +2,6 @@ import React from "react";
 import { PolarArea } from "react-chartjs-2";
 
 export default function PolarAreaChart({ data, status }) {
-  console.log(status);
-
   const filteredData = status.labels
     .filter((i) => !i.disabled)
     .map((i) => data.labels.find((d) => d.name === i.name));
