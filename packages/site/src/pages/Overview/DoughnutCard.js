@@ -5,12 +5,17 @@ import Doughnut from "../../components/CustomDoughnut";
 import Total from "./Total";
 import { abbreviateBigNumber } from "../../utils";
 import OverviewBaseChartCard from "./ChartCard";
+import { h_full, w_full } from "../../styles/tailwindcss";
 
 const CanvasWrapper = styled.div`
+  ${w_full};
+  ${h_full};
   position: relative;
 `;
 
 const DoughnutWrapper = styled.div`
+  ${w_full};
+  ${h_full};
   margin: 0 auto;
   position: absolute;
 `;
