@@ -24,9 +24,6 @@ import DoughnutCardLinkTitle from "./DoughnutCardLinkTitle";
 
 const LinkButton = styled(TextMinor)`
   display: flex;
-  position: absolute;
-  right: 24px;
-  top: 20px;
   :hover {
     color: ${TEXT_DARK_MAJOR};
     & > :last-child {
@@ -204,17 +201,18 @@ const Income = ({
           Income
         </DoughnutCardLinkTitle>
       }
+      titleExtra={
+        <NavLink to={`/${symbol}/income`}>
+          <LinkButton>
+            Detail
+            <GrayImage src="/imgs/caret-right.svg" width={24} />
+          </LinkButton>
+        </NavLink>
+      }
       data={incomeData}
       status={incomeStatus}
       clickEvent={clickEvent}
-    >
-      <NavLink to={`/${symbol}/income`}>
-        <LinkButton>
-          Detail
-          <GrayImage src="/imgs/caret-right.svg" width={24} />
-        </LinkButton>
-      </NavLink>
-    </DoughnutCard>
+    />
   );
 };
 
