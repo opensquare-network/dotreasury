@@ -13,17 +13,18 @@ import Income from "./Income";
 import Output from "./Output";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import { useChainRoute } from "../../utils/hooks";
+import { gap_x, gap_y, grid_cols } from "../../styles/tailwindcss";
+import { breakpoint } from "../../styles/responsive";
+import OpenGovSpend from "./OpenGovSpend";
 
 const DoughnutWrapper = styled.div`
   display: grid;
-  gap: 24px;
   margin-bottom: 24px;
-  @media screen and (min-width: 556px) {
-    grid-template-columns: repeat(auto-fit, minmax(556px, 1fr));
-  }
-  @media screen and (max-width: 556px) {
-    grid-template-columns: repeat(1fr, minmax(100px, 200px));
-  }
+  ${gap_x(16)};
+  ${gap_y(24)};
+  ${grid_cols(3)};
+
+  ${breakpoint(950, grid_cols(1))};
 `;
 
 const TableWrapper = styled.div`
@@ -122,6 +123,7 @@ const Overview = () => {
           bounties={bountySpent}
           burnt={burntTotal}
         />
+        <OpenGovSpend data={overview?.openGovSpend} />
       </DoughnutWrapper>
       <TotalStacked />
       <TableWrapper>
