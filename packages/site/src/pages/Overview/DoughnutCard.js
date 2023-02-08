@@ -7,13 +7,22 @@ import List from "./CustomList";
 import Total from "./Total";
 import Text from "../../components/Text";
 import { abbreviateBigNumber } from "../../utils";
-import { flex_col } from "../../styles/tailwindcss";
+import {
+  flex,
+  flex_col,
+  items_center,
+  justify_between,
+} from "../../styles/tailwindcss";
 
 const Title = styled(Text)`
   font-size: 16px;
   line-height: 24px;
   font-weight: 700;
-  margin-bottom: 16px;
+`;
+const TitleGroup = styled.div`
+  ${flex};
+  ${items_center};
+  ${justify_between};
 `;
 
 const CardWrapper = styled(Card)`
@@ -48,7 +57,14 @@ const DoughnutWrapper = styled.div`
   position: absolute;
 `;
 
-const DoughnutCard = ({ title, data, status, clickEvent, children }) => {
+const DoughnutCard = ({
+  title,
+  titleExtra,
+  data,
+  status,
+  clickEvent,
+  children,
+}) => {
   const findDisabled = (name) => {
     const findFunc = (item) => {
       if (item.name === name) return item.disabled;
@@ -69,7 +85,10 @@ const DoughnutCard = ({ title, data, status, clickEvent, children }) => {
   const total = abbreviateBigNumber(data.labels?.reduce(totalReduce, 0));
   return (
     <CardWrapper>
-      <Title>{title}</Title>
+      <TitleGroup>
+        <Title>{title}</Title>
+        {titleExtra}
+      </TitleGroup>
       <ContentWrapper>
         <CanvasWrapper>
           <Total total={total}>
