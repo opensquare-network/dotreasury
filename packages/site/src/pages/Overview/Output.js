@@ -51,6 +51,7 @@ const Output = ({ proposals, tips, bounties, burnt }) => {
         {
           name: "Proposals",
           value: proposals,
+          fiatValue: proposals,
           color: OVERVIEW_PROPOSALS_COLOR,
           ...(isKusama
             ? {
@@ -61,6 +62,7 @@ const Output = ({ proposals, tips, bounties, burnt }) => {
                     iconColor: "transparent",
                     iconDisabledColor: "transparent",
                     value: proposals,
+                    fiatValue: proposals,
                   },
                 ],
               }
@@ -69,16 +71,19 @@ const Output = ({ proposals, tips, bounties, burnt }) => {
         {
           name: "Tips",
           value: tips,
+          fiatValue: tips,
           color: OVERVIEW_TIPS_COLOR,
         },
         {
           name: "Bounties",
           value: bounties,
+          fiatValue: bounties,
           color: OVERVIEW_BOUNTIES_COLOR,
         },
         {
           name: "Burnt",
           value: burnt,
+          fiatValue: burnt,
           color: OVERVIEW_BURNT_COLOR,
         },
       ],
