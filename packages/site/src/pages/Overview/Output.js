@@ -22,15 +22,15 @@ const Output = ({ proposals, tips, bounties, burnt }) => {
     labels: [
       {
         name: "Proposals",
-        children: [
-          ...(isKusama
-            ? [
+        ...(isKusama
+          ? {
+              children: [
                 {
                   name: "OpenGov",
                 },
-              ]
-            : []),
-        ],
+              ],
+            }
+          : null),
       },
       {
         name: "Tips",
