@@ -8,8 +8,11 @@ import {
   OVERVIEW_BURNT_COLOR,
 } from "../../constants";
 import DoughnutCardLinkTitle from "./DoughnutCardLinkTitle";
+import { useIsKusamaChain } from "../../utils/hooks/chain";
 
 const Output = ({ proposals, tips, bounties, burnt }) => {
+  const isKusama = useIsKusamaChain();
+
   const [outputData, setOutputData] = useState({
     icon: "circle",
     labels: [],
@@ -19,6 +22,15 @@ const Output = ({ proposals, tips, bounties, burnt }) => {
     labels: [
       {
         name: "Proposals",
+        children: [
+          ...(isKusama
+            ? [
+                {
+                  name: "OpenGov",
+                },
+              ]
+            : []),
+        ],
       },
       {
         name: "Tips",
@@ -40,6 +52,19 @@ const Output = ({ proposals, tips, bounties, burnt }) => {
           name: "Proposals",
           value: proposals,
           color: OVERVIEW_PROPOSALS_COLOR,
+          ...(isKusama
+            ? {
+                children: [
+                  {
+                    name: "OpenGov",
+                    color: OVERVIEW_PROPOSALS_COLOR,
+                    iconColor: "transparent",
+                    iconDisabledColor: "transparent",
+                    value: proposals,
+                  },
+                ],
+              }
+            : null),
         },
         {
           name: "Tips",
@@ -58,14 +83,31 @@ const Output = ({ proposals, tips, bounties, burnt }) => {
         },
       ],
     });
-  }, [proposals, tips, bounties, burnt]);
+  }, [proposals, tips, bounties, burnt, isKusama]);
 
   const clickEvent = (name) => {
     const obj = Object.assign({}, outputStatus);
     obj.labels.forEach((item) => {
+      if (item.children) {
+        item.children.forEach((child) => {
+          if (child.name === name) {
+            child.disabled = !child.disabled;
+          }
+        });
+        if (item.children.every((item) => item.disabled)) {
+          item.disabled = true;
+        } else {
+          item.disabled = false;
+        }
+      }
       if (item.name === name) {
         const disabled = !item.disabled;
         item.disabled = disabled;
+        if (item.children) {
+          item.children.forEach((child) => {
+            child.disabled = disabled;
+          });
+        }
       }
     });
     setOutputStatus(obj);
