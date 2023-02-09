@@ -46,8 +46,11 @@ const Icon = styled.div`
     css`
       width: 10px;
       height: 10px;
-      border: 3px solid
-        ${(p) => (p.disabled ? "rgba(29, 37, 60, 0.24)" : p.color ?? "#EEEEEE")};
+      border: 2px solid
+        ${(p) =>
+          p.disabled
+            ? p.disabledColor ?? "rgba(29, 37, 60, 0.24)"
+            : p.color ?? "#EEEEEE"};
       border-radius: 50%;
     `}
 `;
@@ -90,7 +93,7 @@ const ValueWrapper = styled.div`
 
 const Label = ({ data, icon, status, clickEvent }) => {
   const symbol = useSelector(chainSymbolSelector);
-  const { name, color, children } = data;
+  const { name, color, iconColor, iconDisabledColor, children } = data;
   const disabled = status?.disabled;
   let { value } = data;
   if (children) {
@@ -107,7 +110,14 @@ const Label = ({ data, icon, status, clickEvent }) => {
         }}
       >
         <IconWrapper>
-          {!children && <Icon icon={icon} color={color} disabled={disabled} />}
+          {icon && color && (
+            <Icon
+              icon={icon}
+              color={iconColor ?? color}
+              disabled={disabled}
+              disabledColor={iconDisabledColor}
+            />
+          )}
         </IconWrapper>
         <Title disabled={disabled}>{name}</Title>
         <Popup
@@ -132,18 +142,19 @@ const Label = ({ data, icon, status, clickEvent }) => {
           <IconWrapper>
             <Icon
               icon={icon}
-              color={item.color}
-              disabled={status?.children[index].disabled}
+              color={item.iconColor ?? item.color}
+              disabled={status?.children?.[index]?.disabled}
+              disabledColor={item.iconDisabledColor}
             />
           </IconWrapper>
-          <ChildTitle disabled={status?.children[index].disabled}>
+          <ChildTitle disabled={status?.children?.[index]?.disabled}>
             {item.name}
           </ChildTitle>
           <Popup
             content={`${item.value} ${symbol}`}
             size="mini"
             trigger={
-              <ValueWrapper disabled={status?.children[index].disabled}>
+              <ValueWrapper disabled={status?.children?.[index]?.disabled}>
                 <TextMinor>{`${
                   Math.round(item.value) === item.value ? "" : "≈ "
                 }${Math.round(
