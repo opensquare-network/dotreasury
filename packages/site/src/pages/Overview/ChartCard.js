@@ -15,6 +15,7 @@ import {
   p_24,
   relative,
   rounded_none,
+  w_full,
 } from "../../styles/tailwindcss";
 import { h4_16_semibold } from "../../styles/text";
 
@@ -31,6 +32,7 @@ const CardWrapper = styled(Card)`
 const ChartWrapper = styled.div`
   ${flex};
   ${justify_center};
+  ${w_full};
   ${h(216)};
 `;
 
@@ -43,6 +45,12 @@ const TitleGroup = styled.div`
   ${justify_between};
 `;
 
+const ContentGroup = styled.div`
+  ${flex};
+  ${flex_col};
+  ${gap(24)};
+`;
+
 export default function OverviewBaseChartCard({
   title,
   titleExtra,
@@ -53,16 +61,18 @@ export default function OverviewBaseChartCard({
   children,
 }) {
   return (
-    <CardWrapper>
+    <CardWrapper className="overview-base-chart-card">
       <TitleGroup>
         <Title>{title}</Title>
         {titleExtra}
       </TitleGroup>
 
-      <ChartWrapper>{chart}</ChartWrapper>
-
-      <List data={data} status={status} clickEvent={clickEvent} />
-
+      <ContentGroup className="overview-base-chart-card-content-group">
+        <ChartWrapper className="overview-base-chart-card-content-group-chart">
+          {chart}
+        </ChartWrapper>
+        <List data={data} status={status} clickEvent={clickEvent} />
+      </ContentGroup>
       {children}
     </CardWrapper>
   );
