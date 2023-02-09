@@ -6,21 +6,28 @@ import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
 import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
+import { p_12_normal } from "../../styles/text";
+import { TEXT_DARK_ACCESSORY } from "../../constants";
+import {
+  flex,
+  flex_col,
+  gap_x,
+  items_baseline,
+  items_end,
+  space_y,
+} from "../../styles/tailwindcss";
 
 const Wrapper = styled.div`
   min-width: 224px;
   background: #fbfbfb;
-  padding: 4px 16px;
+  padding: 8px 12px;
   border-radius: 4px;
+  ${space_y(8)};
 `;
 
 const ItemWrapper = styled.div`
   cursor: pointer;
   display: flex;
-  align-items: center;
-  :not(:last-child) {
-    margin-bottom: 4px;
-  }
 `;
 
 const IconWrapper = styled.div`
@@ -65,6 +72,12 @@ const Title = styled(Text)`
     `}
 `;
 
+const TitleWrapper = styled.div`
+  ${flex};
+  ${gap_x(8)};
+  ${items_baseline};
+`;
+
 const ChildTitle = styled(TextMinor)`
   font-weight: 500;
   line-height: 24px;
@@ -75,8 +88,14 @@ const ChildTitle = styled(TextMinor)`
     `}
 `;
 
+const TextFiatValue = styled(TextMinor)`
+  ${p_12_normal};
+  color: ${TEXT_DARK_ACCESSORY};
+`;
 const ValueWrapper = styled.div`
   display: flex;
+  ${flex_col};
+  ${items_end};
   justify-content: flex-end;
   margin-left: auto;
   & > :last-child {
@@ -95,7 +114,7 @@ const Label = ({ data, icon, status, clickEvent }) => {
   const symbol = useSelector(chainSymbolSelector);
   const { name, color, iconColor, iconDisabledColor, children } = data;
   const disabled = status?.disabled;
-  let { value } = data;
+  let { value, fiatValue } = data;
   if (children) {
     value = (children || []).reduce((acc, current) => {
       return acc + current.value ?? 0;
@@ -109,8 +128,8 @@ const Label = ({ data, icon, status, clickEvent }) => {
           clickEvent && clickEvent(name);
         }}
       >
-        <IconWrapper>
-          {icon && color && (
+        <TitleWrapper>
+          {icon && (
             <Icon
               icon={icon}
               color={iconColor ?? color}
@@ -118,8 +137,8 @@ const Label = ({ data, icon, status, clickEvent }) => {
               disabledColor={iconDisabledColor}
             />
           )}
-        </IconWrapper>
-        <Title disabled={disabled}>{name}</Title>
+          <Title disabled={disabled}>{name}</Title>
+        </TitleWrapper>
         <Popup
           content={`${value} ${symbol}`}
           size="mini"
@@ -128,6 +147,12 @@ const Label = ({ data, icon, status, clickEvent }) => {
               <TextMinor>{`${
                 Math.round(value) === value ? "" : "≈ "
               }${Math.round(value).toLocaleString()} ${symbol}`}</TextMinor>
+
+              {fiatValue && (
+                <TextFiatValue>
+                  ${Math.round(fiatValue).toLocaleString()}
+                </TextFiatValue>
+              )}
             </ValueWrapper>
           }
         />
@@ -139,17 +164,19 @@ const Label = ({ data, icon, status, clickEvent }) => {
             clickEvent && clickEvent(item.name);
           }}
         >
-          <IconWrapper>
-            <Icon
-              icon={icon}
-              color={item.iconColor ?? item.color}
-              disabled={status?.children?.[index]?.disabled}
-              disabledColor={item.iconDisabledColor}
-            />
-          </IconWrapper>
-          <ChildTitle disabled={status?.children?.[index]?.disabled}>
-            {item.name}
-          </ChildTitle>
+          <TitleWrapper>
+            {icon && (
+              <Icon
+                icon={icon}
+                color={item.iconColor ?? item.color}
+                disabled={status?.children?.[index]?.disabled}
+                disabledColor={item.iconDisabledColor}
+              />
+            )}
+            <ChildTitle disabled={status?.children?.[index]?.disabled}>
+              {item.name}
+            </ChildTitle>
+          </TitleWrapper>
           <Popup
             content={`${item.value} ${symbol}`}
             size="mini"
@@ -160,6 +187,12 @@ const Label = ({ data, icon, status, clickEvent }) => {
                 }${Math.round(
                   item.value
                 ).toLocaleString()} ${symbol}`}</TextMinor>
+
+                {item.fiatValue && (
+                  <TextFiatValue>
+                    ${Math.round(item.fiatValue).toLocaleString()}
+                  </TextFiatValue>
+                )}
               </ValueWrapper>
             }
           />
