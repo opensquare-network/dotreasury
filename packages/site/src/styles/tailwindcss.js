@@ -196,6 +196,9 @@ export const justify_start = `
 export const justify_end = `
   justify-content: flex-end;
 `;
+export const items_baseline = `
+  align-items: baseline;
+`;
 export const items_center = `
   align-items: center;
 `;
