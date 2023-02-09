@@ -181,6 +181,15 @@ export const hidden = `
 export const flex_col = `
   flex-direction: column;
 `;
+export const flex_col_reverse = `
+  flex-direction: column-reverse;
+`;
+export const flex_row = `
+  flex-direction: row;
+`;
+export const flex_row_reverse = `
+  flex-direction: row-reverse;
+`;
 export const flex_1 = `
   flex: 1 1 0%;
 `;
