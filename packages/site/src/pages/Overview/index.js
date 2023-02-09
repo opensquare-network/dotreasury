@@ -16,6 +16,7 @@ import { useChainRoute } from "../../utils/hooks";
 import { gap_x, gap_y, grid_cols } from "../../styles/tailwindcss";
 import { breakpoint } from "../../styles/responsive";
 import OpenGovSpend from "./OpenGovSpend";
+import { useIsKusamaChain } from "../../utils/hooks/chain";
 
 const DoughnutWrapper = styled.div`
   display: grid;
@@ -42,6 +43,7 @@ const TableWrapper = styled.div`
 const Overview = () => {
   const overview = useSelector(overviewSelector);
   const symbol = useSelector(chainSymbolSelector);
+  const isKusama = useIsKusamaChain();
 
   useChainRoute();
 
@@ -123,7 +125,8 @@ const Overview = () => {
           bounties={bountySpent}
           burnt={burntTotal}
         />
-        <OpenGovSpend data={overview?.openGovSpend} />
+
+        {isKusama && <OpenGovSpend data={overview?.openGovSpend} />}
       </DoughnutWrapper>
       <TotalStacked />
       <TableWrapper>
