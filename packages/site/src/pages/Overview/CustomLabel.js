@@ -30,15 +30,6 @@ const ItemWrapper = styled.div`
   display: flex;
 `;
 
-const IconWrapper = styled.div`
-  height: 16px;
-  width: 16px;
-  margin-right: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
 const Icon = styled.div`
   ${(p) =>
     p.icon === "square" &&
