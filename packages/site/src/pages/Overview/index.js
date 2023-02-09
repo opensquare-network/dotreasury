@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import "../../components/Charts/globalConfig";
 
 import Summary from "./Summary";
@@ -13,19 +13,54 @@ import Income from "./Income";
 import Output from "./Output";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import { useChainRoute } from "../../utils/hooks";
-import { gap_x, gap_y, grid_cols } from "../../styles/tailwindcss";
-import { breakpoint } from "../../styles/responsive";
+import {
+  flex_col,
+  flex_row_reverse,
+  gap_x,
+  gap_y,
+  grid_cols,
+  m_t,
+} from "../../styles/tailwindcss";
 import OpenGovSpend from "./OpenGovSpend";
 import { useIsKusamaChain } from "../../utils/hooks/chain";
+import { mdcss, smcss } from "@osn/common";
 
 const DoughnutWrapper = styled.div`
   display: grid;
   margin-bottom: 24px;
   ${gap_x(16)};
   ${gap_y(24)};
-  ${grid_cols(3)};
 
-  ${breakpoint(950, grid_cols(1))};
+  ${(p) => grid_cols(p.count)};
+  ${(p) => {
+    if (p.count < 3) {
+      return css`
+        .overview-base-chart-card-content-group {
+          ${flex_row_reverse};
+        }
+      `;
+    } else if (p.count >= 3) {
+      return css`
+        ${mdcss(`
+          .overview-base-chart-card-content-group {
+            ${flex_row_reverse};
+          }
+        `)}
+      `;
+    }
+  }}
+
+  ${mdcss(grid_cols(1))};
+  ${mdcss(`
+    .overview-base-chart-card-content-group-chart {
+      ${m_t(8)};
+    }
+  `)}
+  ${smcss(`
+    .overview-base-chart-card-content-group {
+      ${flex_col};
+    }
+  `)}
 `;
 
 const TableWrapper = styled.div`
@@ -104,30 +139,36 @@ const Overview = () => {
   );
   const others = toPrecision(overview.income.others || 0, precision, false);
 
+  const cards = [
+    <Income
+      key="income"
+      inflation={inflation}
+      slashTreasury={slashTreasury}
+      slashDemocracy={slashDemocracy}
+      slashStaking={slashStaking}
+      slashElection={slashElection}
+      slashIdentity={slashIdentity}
+      slashReferenda={slashReferenda}
+      slashFellowshipReferenda={slashFellowshipReferenda}
+      others={others}
+    />,
+    <Output
+      key="output"
+      proposals={proposalSpent}
+      tips={tipSpent}
+      bounties={bountySpent}
+      burnt={burntTotal}
+    />,
+
+    isKusama && (
+      <OpenGovSpend key="openGovSpend" data={overview?.openGovSpend} />
+    ),
+  ].filter(Boolean);
+
   return (
     <>
       <Summary />
-      <DoughnutWrapper>
-        <Income
-          inflation={inflation}
-          slashTreasury={slashTreasury}
-          slashDemocracy={slashDemocracy}
-          slashStaking={slashStaking}
-          slashElection={slashElection}
-          slashIdentity={slashIdentity}
-          slashReferenda={slashReferenda}
-          slashFellowshipReferenda={slashFellowshipReferenda}
-          others={others}
-        />
-        <Output
-          proposals={proposalSpent}
-          tips={tipSpent}
-          bounties={bountySpent}
-          burnt={burntTotal}
-        />
-
-        {isKusama && <OpenGovSpend data={overview?.openGovSpend} />}
-      </DoughnutWrapper>
+      <DoughnutWrapper count={cards.length}>{cards}</DoughnutWrapper>
       <TotalStacked />
       <TableWrapper>
         <BeneficiaryTable />
