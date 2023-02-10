@@ -29,7 +29,7 @@ import {
   chainSymbolSelector,
 } from "../../store/reducers/chainSlice";
 import { mrgap } from "../../styles";
-import { abbreviateBigNumber, toPrecision } from "../../utils";
+import { abbreviateBigNumber, getPrecision, toPrecision } from "../../utils";
 import { h3_18_semibold, p_12_normal } from "../../styles/text";
 import {
   gap_x,
@@ -41,7 +41,6 @@ import {
   rounded_none,
   space_x,
 } from "../../styles/tailwindcss";
-import { getDecimalByChain } from "@osn/common";
 import { breakpoint, smcss } from "../../styles/responsive";
 import { useIsKusamaChain } from "../../utils/hooks/chain";
 import { extractTime } from "@polkadot/util";
@@ -121,7 +120,6 @@ const StyledLinkMajor = styled(Link)`
 const Summary = () => {
   const dispatch = useDispatch();
   const chain = useSelector(chainSelector);
-  const decimal = getDecimalByChain(chain);
 
   useEffect(() => {
     dispatch(fetchSpendPeriod(chain));
@@ -134,6 +132,8 @@ const Summary = () => {
   const symbol = useSelector(chainSymbolSelector);
   const symbolLowerCase = symbol?.toLowerCase();
   const isKusama = useIsKusamaChain();
+
+  const precision = getPrecision(symbol);
 
   const price = overview?.latestSymbolPrice ?? 0;
   const toBeAwarded = overview?.toBeAwarded ?? 0;
@@ -167,7 +167,8 @@ const Summary = () => {
               <TextAccessoryBold>{symbol}</TextAccessoryBold>
             </ValueWrapper>
             <ValueInfo>
-              ${abbreviateBigNumber(toPrecision(toBeAwarded, decimal) * price)}
+              $
+              {abbreviateBigNumber(toPrecision(toBeAwarded, precision) * price)}
             </ValueInfo>
           </div>
         </ItemWrapper>
