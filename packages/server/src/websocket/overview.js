@@ -15,7 +15,6 @@ const { overviewRoom, OVERVIEW_FEED_INTERVAL } = require("./constants");
 const util = require("util");
 const BigNumber = require("bignumber.js");
 const { stringUpperFirst } = require("@polkadot/util");
-const { getKsmUsdtCollection, getDotUsdtCollection } = require("../mongo-price");
 
 async function feedOverview(chain, io) {
   try {
@@ -75,13 +74,7 @@ async function calcOverview(chain) {
     tips,
     bounties,
     burntList,
-    outputTransferList,
-    referendaList,
-    chain,
-  );
-  const toBeAwarded = await calcToBeAwarded(
-    proposals,
-    bounties,
+    outputTransferList
   );
   const bestProposalBeneficiaries = calcBestProposalBeneficiary(
     chain,
@@ -92,14 +85,10 @@ async function calcOverview(chain) {
   const statusCol = await getStatusCollection(chain);
   const incomeScan = await statusCol.findOne({ name: "income-scan" });
 
-  const latestSymbolPrice = await getLatestSymbolPrice(chain);
-
   return {
     count,
     spent: output,
     output,
-    toBeAwarded,
-    latestSymbolPrice,
     bestProposalBeneficiaries,
     bestTipFinders,
     income: incomeScan?.seats || {
@@ -118,30 +107,6 @@ async function calcOverview(chain) {
       },
     },
   };
-}
-
-async function getLatestSymbolPrice(chain) {
-  let col;
-  if (chain === "kusama") {
-    col = await getKsmUsdtCollection();
-  } else if (chain === "polkadot") {
-    col = await getDotUsdtCollection();
-  }
-
-  if (!col) {
-    return 0;
-  }
-
-  const [latestItem] = await col
-    .find({ volume: { $ne: "0.00000000" } })
-    .sort({ openTime: -1 })
-    .limit(1)
-    .toArray();
-  if (!latestItem) {
-    return 0;
-  }
-
-  return latestItem.quoteAssetVolume / latestItem.volume;
 }
 
 async function calcCount(
@@ -189,21 +154,7 @@ async function calcCount(
     all: outputTransferList.length,
   };
 
-  const unFinishedReferenda = referendaList.filter(
-    ({ state: { name: stateName } }) => {
-      return [
-        "Confirming",
-        "Deciding",
-        "Queueing",
-        "Submitted",
-      ].includes(
-        stateName
-      );
-    }
-  );
-
   const referenda = {
-    unFinished: unFinishedReferenda.length,
     all: referendaList.length,
   }
 
@@ -217,7 +168,6 @@ const bountyStatuses = [
   "CuratorProposed",
   "Active",
   "PendingPayout",
-  "Claimed",
 ];
 
 async function calcOutput(
@@ -225,62 +175,32 @@ async function calcOutput(
   tips = [],
   bounties = [],
   burntList = [],
-  outputTransferList = [],
-  referendaList = [],
-  chain,
-  ) {
+  outputTransferList = []
+) {
   const spentProposals = proposals.filter(
     ({ state: { name, state } }) => (name || state) === "Awarded"
   );
   const proposalSpent = spentProposals.reduce(
-    (result, { value, symbolPrice }) => ({
-      value: bigAdd(result.value, value),
-      fiatValue: addUsdtValue(
-        result.fiatValue,
-        value,
-        symbolPrice,
-        chain
-      ).toNumber(),
-    }),
-    { value: 0, fiatValue: 0 }
+    (result, { value }) => bigAdd(result, value),
+    0
   );
 
-  const tipSpent = tips.reduce((result, { state, medianValue, symbolPrice }) => {
+  const tipSpent = tips.reduce((result, { state, medianValue }) => {
     if (state.state !== "TipClosed") {
       return result;
     }
 
     const eventValue = state.data[2];
     const value = eventValue || medianValue || 0;
-    return {
-      value: bigAdd(result.value, value),
-      fiatValue: addUsdtValue(
-        result.fiatValue,
-        value,
-        symbolPrice,
-        chain
-      ).toNumber(),
-    };
-  }, { value: 0, fiatValue: 0 });
+    return bigAdd(result, value);
+  }, 0);
 
-  const bountySpent = bounties.reduce((result, { meta: { status, value }, symbolPrice }) => {
+  const bountySpent = bounties.reduce((result, { meta: { status, value } }) => {
     const statusKey = stringUpperFirst(Object.keys(status)[0]);
 
     const index = bountyStatuses.findIndex((item) => item === statusKey);
-    if (index < 2) {
-      return result;
-    }
-
-    return {
-      value: bigAdd(result.value, value),
-      fiatValue: addUsdtValue(
-        result.fiatValue,
-        value,
-        symbolPrice,
-        chain
-      ).toNumber(),
-    };
-  }, { value: 0, fiatValue: 0 });
+    return index >= 2 ? bigAdd(result, value) : result;
+  }, 0);
 
   const burntTotal = burntList.reduce((result, { balance }) => {
     return bigAdd(result, balance);
@@ -290,53 +210,13 @@ async function calcOutput(
     return bigAdd(result, balance);
   }, 0);
 
-  const referendaSpent = {};
-  for (const item of referendaList) {
-    if (item.state.name !== "Executed") {
-      continue;
-    }
-    const trackSpent = referendaSpent[item.trackInfo.name] || { count: 0, value: 0, fiatValue: 0 };
-    referendaSpent[item.trackInfo.name] = {
-      value: bigAdd(trackSpent.value, item.amount),
-      fiatValue: addUsdtValue(
-          trackSpent.fiatValue,
-          item.amount,
-          item.symbolPrice,
-          chain
-        ).toNumber(),
-      count: trackSpent.count + 1,
-    };
-  }
-
   return {
     proposal: proposalSpent,
     tip: tipSpent,
     bounty: bountySpent,
     burnt: burntTotal,
     transfer: transferTotal,
-    referendaSpent,
   };
-}
-
-function calcToBeAwarded(
-  proposals = [],
-  bounties = [],
-) {
-  const proposalToBeAwarded = proposals.filter(
-    ({ state: { name, state } }) => (name || state) === "Approved"
-  ).reduce(
-    (result, { value }) => bigAdd(result, value),
-    0
-  );
-
-  const bountyToBeAwarded = bounties.reduce((result, { meta: { status, value } }) => {
-    const statusKey = stringUpperFirst(Object.keys(status)[0]);
-
-    const index = bountyStatuses.findIndex((item) => item === statusKey);
-    return index >= 1 && index < 6 ? bigAdd(result, value) : result;
-  }, 0);
-
-  return bigAdd(proposalToBeAwarded, bountyToBeAwarded);
 }
 
 function sortByValue(arr) {

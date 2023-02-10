@@ -9,7 +9,6 @@ module.exports = {
     dotOutputDbName: "dotreasury-output-dot",
     dotCouncilDbName: "dotreasury-council-dot",
     adminDbName: "dot-treasury-admin",
-    priceDbName: "price",
   },
   server: {
     port: 3213,
