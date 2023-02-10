@@ -1,7 +1,7 @@
-const { chainStatusRoom, overviewRoom } = require("./constants");
-const { getScanHeight, getOverview } = require("./store");
+const { chainStatusRoom, overviewRoom, overviewRoomV2 } = require("./constants");
+const { getScanHeight, getOverview, getOverviewV2 } = require("./store");
 const { feedScanStatus } = require("./status");
-const { feedOverview } = require("./overview");
+const { feedOverview, feedOverviewV2 } = require("./overview");
 
 async function listenAndEmitInfo(io) {
   io.on("connection", (socket) => {
@@ -14,6 +14,9 @@ async function listenAndEmitInfo(io) {
         io.to(roomId).emit("scanStatus", { height: scanHeight });
       } else if (room?.data === overviewRoom) {
         const overview = getOverview(room?.chain);
+        io.to(roomId).emit("overview", overview);
+      } else if (room?.data === overviewRoomV2) {
+        const overview = getOverviewV2(room?.chain);
         io.to(roomId).emit("overview", overview);
       }
     });
@@ -28,6 +31,8 @@ async function listenAndEmitInfo(io) {
   await feedScanStatus("polkadot", io);
   await feedOverview("kusama", io);
   await feedOverview("polkadot", io);
+  await feedOverviewV2("kusama", io);
+  await feedOverviewV2("polkadot", io);
 }
 
 module.exports = {
