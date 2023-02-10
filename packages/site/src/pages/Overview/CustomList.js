@@ -4,6 +4,8 @@ import styled from "styled-components";
 import Text from "../../components/Text";
 import Label from "./CustomLabel";
 import { TEXT_DARK_DISABLE } from "../../constants";
+import { p_12_normal, p_14_medium } from "../../styles/text";
+import { items_center } from "../../styles/tailwindcss";
 
 const Wrapper = styled.div`
   min-width: 240px;
@@ -13,23 +15,24 @@ const Wrapper = styled.div`
 `;
 
 const Title = styled(Text)`
-  font-weight: 500;
-  line-height: 24px;
+  ${p_14_medium};
 `;
 
 const Date = styled(Text)`
   color: ${TEXT_DARK_DISABLE};
   margin-left: auto;
+  ${p_12_normal};
 `;
 
 const TitleWrapper = styled.div`
   display: flex;
+  ${items_center};
 `;
 
-const List = ({ data, status, clickEvent }) => {
+const List = ({ data, status, clickEvent, className }) => {
   const { title, date, icon, labels } = data;
   return (
-    <Wrapper>
+    <Wrapper className={className}>
       {(title || date) && (
         <TitleWrapper>
           <Title>{title}</Title>
