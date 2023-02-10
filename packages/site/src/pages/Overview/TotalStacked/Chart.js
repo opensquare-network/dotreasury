@@ -93,6 +93,9 @@ const LineChart = ({ data, onHover }) => {
           stepSize: chain === "kusama" ? 200000 : 8000000,
           callback: (y) => abbreviateBigNumber(y),
         },
+        grid: {
+          drawTicks: false,
+        },
       },
       x: {
         type: "time",
