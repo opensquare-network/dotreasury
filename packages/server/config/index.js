@@ -1,3 +1,3 @@
-module.exports = "production" === process.env.NODE_ENV
-  ? require("./config.prod.js")
-  : require("./config.dev.js");
+module.exports = require("production" === process.env.NODE_ENV
+  ? "./config.prod.js"
+  : "./config.dev.js");
