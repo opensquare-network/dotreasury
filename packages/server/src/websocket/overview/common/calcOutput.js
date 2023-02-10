@@ -102,6 +102,5 @@ async function calcOutput(
 }
 
 module.exports = {
-  bountyStatuses,
   calcOutput,
 };
