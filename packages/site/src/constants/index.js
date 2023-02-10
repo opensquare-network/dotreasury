@@ -29,6 +29,13 @@ export const OVERVIEW_ELECTION_COLOR = "#FED077";
 export const OVERVIEW_IDENTITY_COLOR = "#FFEDC9";
 export const OVERVIEW_OTHERS_COLOR = "#CCCCCC";
 
+export const OVERVIEW_TREASURER_COLOR = "#F23252";
+export const OVERVIEW_SMALL_TIPPER_COLOR = "#f2b12f";
+export const OVERVIEW_BIG_TIPPER_COLOR = "#f27532";
+export const OVERVIEW_SMALL_SPENDER_COLOR = "#635fec";
+export const OVERVIEW_MEDIUM_SPENDER_COLOR = "#086de3";
+export const OVERVIEW_BIG_SPENDER_COLOR = "#4caf91";
+
 export const TipStatus = {
   Tipping: "Tipping",
   Closing: "Closing",
