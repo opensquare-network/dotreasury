@@ -38,16 +38,18 @@ async function handleRejectTreasuryProposal(proposalInfo, indexer, isOk) {
   }
 
   // There is no Rejected event before kusama treasury proposal 11
-  if (proposalIndex > 10 && isOk) {
+  if (proposalIndex > 10) {
     return
   }
 
-  const state = {
-    state: isOk ? TreasuryProposalEvents.Rejected : TreasuryProposalEvents.Proposed,
-    indexer,
-  };
+  if (isOk) {
+    const state = {
+      state: isOk ? TreasuryProposalEvents.Rejected : TreasuryProposalEvents.Proposed,
+      indexer,
+    };
 
-  await updateProposal(proposalIndex, { state, isFinal: true });
+    await updateProposal(proposalIndex, { state, isFinal: true });
+  }
 }
 
 async function handleBounty(bountyInfo, indexer) {
