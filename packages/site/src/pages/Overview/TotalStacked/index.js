@@ -21,7 +21,6 @@ import {
 import { h4_16_semibold } from "../../../styles/text";
 import {
   gap,
-  h,
   h_full,
   justify_between,
   p_b,
