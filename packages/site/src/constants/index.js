@@ -13,6 +13,7 @@ export const Primary_Theme_Pink_200 = "#ffc5ce";
 export const Primary_Theme_Pink_300 = "#FC7C91";
 export const Primary_Theme_Pink_400 = "#F8526E";
 export const Primary_Theme_Pink_500 = "#F23252";
+export const Primary_Theme_Yellow_500 = "#f2b12f";
 export const PRIMARY_THEME_COLOR = "#DF405D";
 export const SECONDARY_THEME_COLOR = "#FFEEF1";
 export const WARNING_COLOR = "#EC4730";
