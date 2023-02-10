@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 
 import Text from "../../../components/Text";
 import Card from "../../../components/Card";
-import List from "../CustomList";
+import ListOrigin from "../CustomList";
 import Chart from "./Chart";
 import { getPrecision, toPrecision } from "../../../utils";
 
@@ -18,43 +18,56 @@ import {
   chainSelector,
   chainSymbolSelector,
 } from "../../../store/reducers/chainSlice";
+import { h4_16_semibold } from "../../../styles/text";
+import {
+  gap,
+  h,
+  h_full,
+  justify_between,
+  p_b,
+  w,
+  w_full,
+} from "../../../styles/tailwindcss";
+import { breakpoint } from "../../../styles/responsive";
+import {
+  Primary_Theme_Orange_500,
+  Primary_Theme_Pink_500,
+  Primary_Theme_Yellow_500,
+} from "../../../constants";
 
 const CardWrapper = styled(Card)`
-  padding: 20px 24px;
+  padding: 24px;
   @media screen and (max-width: 600px) {
     border-radius: 0;
   }
 `;
 
 const Title = styled(Text)`
-  font-size: 18px;
-  line-height: 32px;
-  font-weight: 700;
   margin-bottom: 16px;
+  ${h4_16_semibold};
 `;
 
 const ContentWrapper = styled.div`
   display: flex;
-  @media screen and (min-width: 1140px) {
-    & > :first-child {
-      margin-right: 24px;
-    }
-  }
+  ${justify_between};
+  ${gap(72)};
   @media screen and (max-width: 1140px) {
     flex-direction: column;
-    & > :first-child {
-      margin-bottom: 24px;
-    }
+    ${gap(24)};
   }
 `;
 
 const ChartWrapper = styled.div`
-  height: 252px;
+  ${h_full};
   min-width: 252px;
+  max-height: 356px;
   flex-grow: 1;
-  margin-bottom: 24px;
 `;
 
+const List = styled(ListOrigin)`
+  ${w(276)};
+  ${breakpoint(600, w_full)};
+`;
 const ListWrapper = styled.div`
   display: flex;
   @media screen and (min-width: 600px) {
@@ -121,16 +134,18 @@ const TotalStacked = () => {
             name: "Identity",
             value: 0,
           },
-          ...(isKusama ? [
-            {
-              name: "Referenda",
-              value: 0,
-            },
-            {
-              name: "Fellowship",
-              value: 0,
-            },
-          ] : []),
+          ...(isKusama
+            ? [
+                {
+                  name: "Referenda",
+                  value: 0,
+                },
+                {
+                  name: "Fellowship",
+                  value: 0,
+                },
+              ]
+            : []),
         ],
       },
       {
@@ -223,13 +238,16 @@ const TotalStacked = () => {
         labels: [
           {
             name: "Inflation",
+            color: Primary_Theme_Pink_500,
             value: toPrecision(statsData.income.inflation, precision, false),
           },
           {
             name: "Slashes",
+            color: Primary_Theme_Pink_500,
             children: [
               {
                 name: "Staking",
+                color: "transparent",
                 value: toPrecision(
                   statsData.income.slashSeats.staking,
                   precision,
@@ -238,6 +256,7 @@ const TotalStacked = () => {
               },
               {
                 name: "Treasury",
+                color: "transparent",
                 value: toPrecision(
                   statsData.income.slashSeats.treasury,
                   precision,
@@ -246,6 +265,7 @@ const TotalStacked = () => {
               },
               {
                 name: "Election",
+                color: "transparent",
                 value: toPrecision(
                   statsData.income.slashSeats.election,
                   precision,
@@ -254,6 +274,7 @@ const TotalStacked = () => {
               },
               {
                 name: "Democracy",
+                color: "transparent",
                 value: toPrecision(
                   statsData.income.slashSeats.democracy,
                   precision,
@@ -262,34 +283,40 @@ const TotalStacked = () => {
               },
               {
                 name: "Identity",
+                color: "transparent",
                 value: toPrecision(
                   statsData.income.slashSeats.identity,
                   precision,
                   false
                 ),
               },
-              ...(isKusama ? [
-                {
-                  name: "Referenda",
-                  value: toPrecision(
-                    statsData.income.slashSeats.referenda || 0,
-                    precision,
-                    false
-                  ),
-                },
-                {
-                  name: "Fellowship",
-                  value: toPrecision(
-                    statsData.income.slashSeats.fellowshipReferenda || 0,
-                    precision,
-                    false
-                  ),
-                },
-              ] : []),
+              ...(isKusama
+                ? [
+                    {
+                      name: "Referenda",
+                      color: "transparent",
+                      value: toPrecision(
+                        statsData.income.slashSeats.referenda || 0,
+                        precision,
+                        false
+                      ),
+                    },
+                    {
+                      name: "Fellowship",
+                      color: "transparent",
+                      value: toPrecision(
+                        statsData.income.slashSeats.fellowshipReferenda || 0,
+                        precision,
+                        false
+                      ),
+                    },
+                  ]
+                : []),
             ],
           },
           {
             name: "Others",
+            color: Primary_Theme_Pink_500,
             value: toPrecision(statsData.income.others, precision, false),
           },
         ],
@@ -302,18 +329,22 @@ const TotalStacked = () => {
         labels: [
           {
             name: "Proposal",
+            color: Primary_Theme_Yellow_500,
             value: toPrecision(statsData.output.proposal, precision, false),
           },
           {
             name: "Tips",
+            color: Primary_Theme_Yellow_500,
             value: toPrecision(statsData.output.tip, precision, false),
           },
           {
             name: "Bounties",
+            color: Primary_Theme_Yellow_500,
             value: toPrecision(statsData.output.bounty, precision, false),
           },
           {
             name: "Burnt",
+            color: Primary_Theme_Yellow_500,
             value: toPrecision(statsData.output.burnt, precision, false),
           },
         ],
@@ -322,10 +353,11 @@ const TotalStacked = () => {
       setTreasuryData({
         title: "Treasury",
         date: dayjs(dateLabels?.[index]).format("YYYY-MM-DD hh:mm"),
-        icon: "square",
+        icon: "solid",
         labels: [
           {
             name: "Balance",
+            color: Primary_Theme_Orange_500,
             value: toPrecision(statsData.treasuryBalance, precision, false),
           },
         ],
@@ -338,7 +370,7 @@ const TotalStacked = () => {
     values: [
       {
         label: "Income",
-        primaryColor: "#DF405D",
+        primaryColor: Primary_Theme_Pink_500,
         secondaryColor: "#FFEEF1",
         data: incomeHistory,
         fill: true,
@@ -347,7 +379,7 @@ const TotalStacked = () => {
       },
       {
         label: "Output",
-        primaryColor: "#FED077",
+        primaryColor: Primary_Theme_Yellow_500,
         secondaryColor: "#FFEDC9",
         data: outputHistory,
         fill: true,
