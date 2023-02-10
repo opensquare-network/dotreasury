@@ -29,7 +29,7 @@ import {
   chainSymbolSelector,
 } from "../../store/reducers/chainSlice";
 import { mrgap } from "../../styles";
-import { abbreviateBigNumber } from "../../utils";
+import { abbreviateBigNumber, toPrecision } from "../../utils";
 import { h3_18_semibold, p_12_normal } from "../../styles/text";
 import {
   gap_x,
@@ -41,8 +41,8 @@ import {
   rounded_none,
   space_x,
 } from "../../styles/tailwindcss";
-import { smcss } from "@osn/common";
-import { breakpoint } from "../../styles/responsive";
+import { getDecimalByChain } from "@osn/common";
+import { breakpoint, smcss } from "../../styles/responsive";
 import { useIsKusamaChain } from "../../utils/hooks/chain";
 import { extractTime } from "@polkadot/util";
 import { parseEstimateTime } from "../../utils/parseEstimateTime";
@@ -121,6 +121,7 @@ const StyledLinkMajor = styled(Link)`
 const Summary = () => {
   const dispatch = useDispatch();
   const chain = useSelector(chainSelector);
+  const decimal = getDecimalByChain(chain);
 
   useEffect(() => {
     dispatch(fetchSpendPeriod(chain));
@@ -133,6 +134,9 @@ const Summary = () => {
   const symbol = useSelector(chainSymbolSelector);
   const symbolLowerCase = symbol?.toLowerCase();
   const isKusama = useIsKusamaChain();
+
+  const price = overview?.latestSymbolPrice ?? 0;
+  const toBeAwarded = overview?.toBeAwarded ?? 0;
 
   return (
     <Wrapper>
@@ -147,7 +151,7 @@ const Summary = () => {
               <TextBold>{abbreviateBigNumber(treasury.free)}</TextBold>
               <TextAccessoryBold>{symbol}</TextAccessoryBold>
             </ValueWrapper>
-            <ValueInfo>usdt</ValueInfo>
+            <ValueInfo>${abbreviateBigNumber(treasury.free * price)}</ValueInfo>
           </div>
         </ItemWrapper>
       </CustomCard>
@@ -159,10 +163,12 @@ const Summary = () => {
           <div>
             <Title>To be awarded</Title>
             <ValueWrapper>
-              <TextBold>{abbreviateBigNumber(treasury.free)}</TextBold>
+              <TextBold>{abbreviateBigNumber(toBeAwarded)}</TextBold>
               <TextAccessoryBold>{symbol}</TextAccessoryBold>
             </ValueWrapper>
-            <ValueInfo>usdt</ValueInfo>
+            <ValueInfo>
+              ${abbreviateBigNumber(toPrecision(toBeAwarded, decimal) * price)}
+            </ValueInfo>
           </div>
         </ItemWrapper>
       </CustomCard>
@@ -214,11 +220,11 @@ const Summary = () => {
             <div>
               <Title>OpenGov</Title>
               <ValueWrapper>
-                <TextBold>{overview.count.proposal.unFinished}</TextBold>
+                <TextBold>{overview.count.referenda.unFinished ?? 0}</TextBold>
                 <TextAccessoryBold>/</TextAccessoryBold>
                 <StyledLink to={`/${symbolLowerCase}/referenda`}>
                   <TextAccessoryBold>
-                    {overview.count.proposal.all}
+                    {overview.count.referenda.all}
                   </TextAccessoryBold>
                 </StyledLink>
               </ValueWrapper>
