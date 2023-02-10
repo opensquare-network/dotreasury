@@ -154,7 +154,7 @@ const Label = ({ data, icon, status, clickEvent }) => {
           />
         </TitleWrapper>
 
-        {fiatValue && (
+        {!!fiatValue && (
           <ValueWrapper disabled={disabled}>
             <TextFiatValue>
               ${Math.round(fiatValue).toLocaleString()}
@@ -197,7 +197,7 @@ const Label = ({ data, icon, status, clickEvent }) => {
               />
             </TitleWrapper>
 
-            {item.fiatValue && (
+            {!!item.fiatValue && (
               <ValueWrapper disabled={disabled}>
                 <TextFiatValue>
                   ${Math.round(item.fiatValue).toLocaleString()}
