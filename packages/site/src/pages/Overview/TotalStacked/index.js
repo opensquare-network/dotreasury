@@ -60,8 +60,9 @@ const ContentWrapper = styled.div`
 const ChartWrapper = styled.div`
   ${h_full};
   min-width: 252px;
-  max-height: 356px;
+  max-height: 324px;
   flex-grow: 1;
+  ${p_b(24)};
 `;
 
 const List = styled(ListOrigin)`
