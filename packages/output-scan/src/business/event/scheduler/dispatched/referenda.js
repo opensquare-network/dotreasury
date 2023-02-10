@@ -52,6 +52,7 @@ async function handleSpendAndApproved(referendum, indexer, blockEvents) {
     state,
     timeline: [timelineItem],
     isByGov2: true,
+    isFinal: false,
     gov2Referendum: referendumIndex,
     track: {
       id: trackInfo.id,
