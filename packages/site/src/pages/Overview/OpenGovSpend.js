@@ -11,7 +11,7 @@ import {
 } from "../../constants";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import { overviewSelector } from "../../store/reducers/overviewSlice";
-import { abbreviateBigNumber, getPrecision, toPrecision } from "../../utils";
+import { getPrecision, toPrecision } from "../../utils";
 import { sum } from "../../utils/math";
 import OverviewBaseChartCard from "./ChartCard";
 
