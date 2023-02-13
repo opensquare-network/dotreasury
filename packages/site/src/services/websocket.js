@@ -4,7 +4,7 @@ import { setScanHeight } from "../store/reducers/chainSlice";
 import { setOverview } from "../store/reducers/overviewSlice";
 
 const chainStatusRoom = "CHAIN_STATUS_ROOM";
-const overviewRoom = "OVERVIEW_ROOM";
+const overviewRoom = "OVERVIEW_ROOM_V2";
 
 let socket = null;
 
