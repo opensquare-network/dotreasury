@@ -135,8 +135,9 @@ const Summary = () => {
 
   const precision = getPrecision(symbol);
 
-  const price = overview?.latestSymbolPrice ?? 0;
-  const toBeAwarded = overview?.toBeAwarded ?? 0;
+  const symbolPrice = overview?.latestSymbolPrice ?? 0;
+  const toBeAwarded = overview?.toBeAwarded?.total ?? 0;
+  const toBeAwardedValue = toPrecision(toBeAwarded, precision);
 
   return (
     <Wrapper>
@@ -151,7 +152,9 @@ const Summary = () => {
               <TextBold>{abbreviateBigNumber(treasury.free)}</TextBold>
               <TextAccessoryBold>{symbol}</TextAccessoryBold>
             </ValueWrapper>
-            <ValueInfo>${abbreviateBigNumber(treasury.free * price)}</ValueInfo>
+            <ValueInfo>
+              ${abbreviateBigNumber(treasury.free * symbolPrice)}
+            </ValueInfo>
           </div>
         </ItemWrapper>
       </CustomCard>
@@ -163,12 +166,11 @@ const Summary = () => {
           <div>
             <Title>To be awarded</Title>
             <ValueWrapper>
-              <TextBold>{abbreviateBigNumber(toBeAwarded)}</TextBold>
+              <TextBold>{abbreviateBigNumber(toBeAwardedValue)}</TextBold>
               <TextAccessoryBold>{symbol}</TextAccessoryBold>
             </ValueWrapper>
             <ValueInfo>
-              $
-              {abbreviateBigNumber(toPrecision(toBeAwarded, precision) * price)}
+              ${abbreviateBigNumber(toBeAwardedValue * symbolPrice)}
             </ValueInfo>
           </div>
         </ItemWrapper>
