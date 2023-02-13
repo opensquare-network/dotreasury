@@ -84,19 +84,6 @@ const Overview = () => {
 
   const precision = getPrecision(symbol);
 
-  const bountySpent = toPrecision(
-    overview.output.bounty || 0,
-    precision,
-    false
-  );
-  const proposalSpent = toPrecision(
-    overview.output.proposal || 0,
-    precision,
-    false
-  );
-  const tipSpent = toPrecision(overview.output.tip || 0, precision, false);
-  const burntTotal = toPrecision(overview.output.burnt || 0, precision, false);
-
   const inflation = toPrecision(
     overview.income.inflation || 0,
     precision,
@@ -152,13 +139,7 @@ const Overview = () => {
       slashFellowshipReferenda={slashFellowshipReferenda}
       others={others}
     />,
-    <Output
-      key="output"
-      proposals={proposalSpent}
-      tips={tipSpent}
-      bounties={bountySpent}
-      burnt={burntTotal}
-    />,
+    <Output key="output" />,
 
     isKusama && (
       <OpenGovSpend key="openGovSpend" data={overview?.openGovSpend} />

@@ -41,6 +41,7 @@ const DoughnutCard = ({
   };
   const totalReduce = (acc, current) => {
     if (current.children) {
+      if (current.value) return acc + current.value;
       return acc + current.children.reduce(totalReduce, 0);
     }
     return acc + (findDisabled(current.name) ? 0 : current.value ?? 0);

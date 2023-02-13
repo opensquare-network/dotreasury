@@ -16,6 +16,7 @@ import {
   items_end,
   p_y,
 } from "../../styles/tailwindcss";
+import { sumBy } from "../../utils/math";
 
 const Wrapper = styled.div`
   min-width: 224px;
@@ -118,10 +119,14 @@ const Label = ({ data, icon, status, clickEvent }) => {
   const { name, color, iconColor, iconDisabledColor, children } = data;
   const disabled = status?.disabled;
   let { value, fiatValue } = data;
-  if (children) {
-    value = (children || []).reduce((acc, current) => {
-      return acc + current.value ?? 0;
-    }, 0);
+
+  if (children?.length) {
+    if (!value) {
+      value = sumBy(children, "value");
+    }
+    if (!fiatValue) {
+      fiatValue = sumBy(children, "fiatValue");
+    }
   }
 
   return (
