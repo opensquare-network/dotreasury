@@ -1,7 +1,7 @@
 import React from "react";
 import { PolarArea } from "react-chartjs-2";
 
-export default function PolarAreaChart({ data, status }) {
+export default function PolarAreaChart({ data, status, tooltipLabelCallback }) {
   const filteredData = status.labels
     .filter((i) => !i.disabled)
     .map((i) => data.labels.find((d) => d.name === i.name));
@@ -31,6 +31,13 @@ export default function PolarAreaChart({ data, status }) {
         plugins: {
           legend: {
             display: false,
+          },
+          tooltip: {
+            callbacks: {
+              label(tooltipItem) {
+                return tooltipLabelCallback?.(tooltipItem);
+              },
+            },
           },
         },
       }}
