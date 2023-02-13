@@ -73,7 +73,18 @@ async function calcOutput(
     return bigAdd(result, balance);
   }, 0);
 
-  const referendaSpent = {};
+  const referendaSpent = [
+    "treasurer",
+    "small_tipper",
+    "big_tipper",
+    "small_spender",
+    "medium_spender",
+    "big_spender"
+  ].reduce((result, curr) => {
+    result[curr] = { count: 0, value: 0, fiatValue: 0 };
+    return result;
+  }, {});
+
   for (const item of referendaList) {
     if (item.state.name !== "Executed") {
       continue;
