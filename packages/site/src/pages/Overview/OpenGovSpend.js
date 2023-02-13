@@ -11,7 +11,8 @@ import {
 } from "../../constants";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import { overviewSelector } from "../../store/reducers/overviewSlice";
-import { getPrecision, toPrecision } from "../../utils";
+import { abbreviateBigNumber, getPrecision, toPrecision } from "../../utils";
+import { sum } from "../../utils/math";
 import OverviewBaseChartCard from "./ChartCard";
 
 export default function OpenGovSpend() {
@@ -109,7 +110,25 @@ export default function OpenGovSpend() {
       data={chartData}
       status={chartStatus}
       clickEvent={clickEvent}
-      chart={<PolarAreaChart data={chartData} status={chartStatus} />}
+      chart={
+        <PolarAreaChart
+          data={chartData}
+          status={chartStatus}
+          tooltipLabelCallback={(tooltipItem) => {
+            const { dataset, raw: currentValue } = tooltipItem;
+            const total = sum(dataset.data);
+            const percentage = parseFloat(
+              ((currentValue / total) * 100).toFixed(2)
+            );
+
+            return ` ${
+              Math.round(currentValue) === currentValue ? "" : "≈"
+            }${Math.round(
+              currentValue
+            ).toLocaleString()} ${symbol} ${percentage}%`;
+          }}
+        />
+      }
     />
   );
 }
