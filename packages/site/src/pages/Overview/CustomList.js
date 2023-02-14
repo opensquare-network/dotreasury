@@ -8,7 +8,7 @@ import { p_12_normal, p_14_medium } from "../../styles/text";
 import { items_center } from "../../styles/tailwindcss";
 
 const Wrapper = styled.div`
-  min-width: 240px;
+  min-width: 280px;
   & > :not(:last-child) {
     margin-bottom: 8px;
   }
