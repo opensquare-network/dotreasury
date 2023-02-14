@@ -6,7 +6,7 @@ import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
 import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
-import { p_12_normal, p_14_medium } from "../../styles/text";
+import { p_12_normal, p_14_medium, p_14_normal } from "../../styles/text";
 import { TEXT_DARK_ACCESSORY } from "../../constants";
 import {
   flex,
@@ -68,7 +68,15 @@ const Title = styled(Text)`
       color: rgba(29, 37, 60, 0.24);
     `}
 `;
-
+const TitleCount = styled(Text)`
+  ${p_14_normal};
+  color: ${TEXT_DARK_ACCESSORY};
+  ${(p) =>
+    p.disabled &&
+    css`
+      color: rgba(29, 37, 60, 0.24);
+    `}
+`;
 const TitleWrapper = styled.div`
   ${flex};
   ${gap_x(8)};
@@ -116,7 +124,7 @@ const ChildrenWrapper = styled.div`
 
 const Label = ({ data, icon, status, clickEvent }) => {
   const symbol = useSelector(chainSymbolSelector);
-  const { name, color, iconColor, iconDisabledColor, children } = data;
+  const { name, count, color, iconColor, iconDisabledColor, children } = data;
   const disabled = status?.disabled;
   let { value, fiatValue } = data;
 
@@ -146,6 +154,7 @@ const Label = ({ data, icon, status, clickEvent }) => {
             />
           )}
           <Title disabled={disabled}>{name}</Title>
+          {count && <TitleCount disabled={disabled}>{count}</TitleCount>}
           <Popup
             content={`${value} ${symbol}`}
             size="mini"

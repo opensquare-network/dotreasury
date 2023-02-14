@@ -141,9 +141,7 @@ const Overview = () => {
     />,
     <Output key="output" />,
 
-    isKusama && (
-      <OpenGovSpend key="openGovSpend" data={overview?.openGovSpend} />
-    ),
+    isKusama && <OpenGovSpend key="openGovSpend" />,
   ].filter(Boolean);
 
   return (
