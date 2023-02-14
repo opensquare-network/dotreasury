@@ -53,25 +53,22 @@ export default function OpenGovSpend() {
   const bigSpendValue = toPrecision(big_spender?.value ?? 0, precision, false);
   const bigSpendFiatValue = big_spender?.fiatValue ?? 0;
 
-  const valueArray = [
+  const totalValue = sum([
     treasurerValue,
     smallTipperValue,
     bigTipperValue,
     smallSpendValue,
     mediumSpendValue,
     bigSpendValue,
-  ];
-  const fiatValueArray = [
+  ]);
+  const totalFiatValue = sum([
     treasurerFiatValue,
     smallTipperFiatValue,
     bigTipperFiatValue,
     smallSpendFiatValue,
     mediumSpendFiatValue,
     bigSpendFiatValue,
-  ];
-
-  const totalValue = sum(valueArray);
-  const totalFiatValue = sum(fiatValueArray);
+  ]);
 
   const chartData = useMemo(() => {
     return {
