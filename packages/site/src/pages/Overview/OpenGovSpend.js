@@ -12,7 +12,7 @@ import {
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import { overviewSelector } from "../../store/reducers/overviewSlice";
 import { getPrecision, toPrecision } from "../../utils";
-import { sum, sumBy } from "../../utils/math";
+import { sumBy } from "../../utils/math";
 import OverviewBaseChartCard from "./ChartCard";
 
 export default function OpenGovSpend() {
