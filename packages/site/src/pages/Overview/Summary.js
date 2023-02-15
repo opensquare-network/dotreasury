@@ -45,6 +45,7 @@ import { breakpoint, smcss } from "../../styles/responsive";
 import { useIsKusamaChain } from "../../utils/hooks/chain";
 import { extractTime } from "@polkadot/util";
 import { parseEstimateTime } from "../../utils/parseEstimateTime";
+import BigNumber from "bignumber.js";
 
 const Wrapper = styled(Card)`
   margin-bottom: 24px;
@@ -136,8 +137,10 @@ const Summary = () => {
   const precision = getPrecision(symbol);
 
   const symbolPrice = overview?.latestSymbolPrice ?? 0;
-  const toBeAwarded = overview?.toBeAwarded?.total ?? 0;
-  const toBeAwardedValue = toPrecision(toBeAwarded, precision);
+  const toBeAwarded = BigNumber(overview?.toBeAwarded?.total ?? 0).toNumber();
+  const toBeAwardedValue = BigNumber(
+    toPrecision(toBeAwarded, precision)
+  ).toNumber();
 
   return (
     <Wrapper>
@@ -153,7 +156,8 @@ const Summary = () => {
               <TextAccessoryBold>{symbol}</TextAccessoryBold>
             </ValueWrapper>
             <ValueInfo>
-              ${abbreviateBigNumber(treasury.free * symbolPrice)}
+              {!!treasury.free && "≈ "}$
+              {abbreviateBigNumber(treasury.free * symbolPrice)}
             </ValueInfo>
           </div>
         </ItemWrapper>
@@ -170,7 +174,8 @@ const Summary = () => {
               <TextAccessoryBold>{symbol}</TextAccessoryBold>
             </ValueWrapper>
             <ValueInfo>
-              ${abbreviateBigNumber(toBeAwardedValue * symbolPrice)}
+              {!!toBeAwardedValue && "≈ "}$
+              {abbreviateBigNumber(toBeAwardedValue * symbolPrice)}
             </ValueInfo>
           </div>
         </ItemWrapper>
