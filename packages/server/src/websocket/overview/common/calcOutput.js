@@ -9,7 +9,6 @@ async function calcOutput(
   bounties = [],
   burntList = [],
   outputTransferList = [],
-  referendaList = [],
   chain,
   ) {
   const spentProposals = proposals.filter(
@@ -73,6 +72,7 @@ async function calcOutput(
     return bigAdd(result, balance);
   }, 0);
 
+  const emptyTrackSpent = { count: 0, value: 0, fiatValue: 0 };
   const referendaSpent = [
     "treasurer",
     "small_tipper",
@@ -81,25 +81,23 @@ async function calcOutput(
     "medium_spender",
     "big_spender"
   ].reduce((result, curr) => {
-    result[curr] = { count: 0, value: 0, fiatValue: 0 };
+    result[curr] = { ...emptyTrackSpent };
     return result;
   }, {});
 
-  for (const item of referendaList) {
-    if (item.state.name !== "Executed") {
+  const gov2Proposals = proposals.filter(p => p.isByGov2);
+  for (const proposal of gov2Proposals) {
+    const { track: { name: trackName } = {}, value, symbolPrice = 0, } = proposal;
+    if (!trackName) {
       continue;
     }
-    const trackSpent = referendaSpent[item.trackInfo.name] || { count: 0, value: 0, fiatValue: 0 };
-    referendaSpent[item.trackInfo.name] = {
-      value: bigAdd(trackSpent.value, item.amount),
-      fiatValue: addUsdtValue(
-          trackSpent.fiatValue,
-          item.amount,
-          item.symbolPrice,
-          chain
-        ).toNumber(),
-      count: trackSpent.count + 1,
-    };
+
+    const trackSpent = referendaSpent[trackName] || { ...emptyTrackSpent };
+    referendaSpent[trackName] = {
+      value: bigAdd(trackSpent.value, value),
+      fiatValue: addUsdtValue(trackSpent.fiatValue, value, symbolPrice, chain).toNumber(),
+      count: (trackSpent.count || 0) + 1,
+    }
   }
 
   return {

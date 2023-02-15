@@ -38,7 +38,7 @@ async function feedOverviewV2(chain, io) {
 async function calcOverview(chain) {
   const proposalCol = await getProposalCollection(chain);
   const proposals = await proposalCol
-    .find({}, { value: 1, beneficiary: 1, meta: 1, state: 1 })
+    .find({}, { projection: { value: 1, beneficiary: 1, meta: 1, state: 1, isByGov2: 1, track: 1, _id: 0 } })
     .toArray();
 
   const tipCol = await getTipCollection(chain);
@@ -76,7 +76,6 @@ async function calcOverview(chain) {
     bounties,
     burntList,
     outputTransferList,
-    referendaList,
     chain,
   );
   const toBeAwarded = await calcToBeAwarded(
