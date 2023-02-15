@@ -4,7 +4,7 @@ import { setScanHeight } from "../store/reducers/chainSlice";
 import { setOverview } from "../store/reducers/overviewSlice";
 
 const chainStatusRoom = "CHAIN_STATUS_ROOM";
-const overviewRoom = "OVERVIEW_ROOM_V2";
+const overviewRoom = "OVERVIEW_V2_ROOM";
 
 let socket = null;
 
@@ -26,7 +26,7 @@ export function connect(chain) {
       store.dispatch(setScanHeight(height));
     });
 
-    socket.on("overview", (overview) => {
+    socket.on("overview_v2", (overview) => {
       store.dispatch(setOverview(overview));
     });
   });

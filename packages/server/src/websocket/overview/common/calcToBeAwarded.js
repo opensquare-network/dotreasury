@@ -1,6 +1,4 @@
 const { bigAdd } = require("../../../utils");
-const { stringUpperFirst } = require("@polkadot/util");
-const { bountyStatuses } = require("./constants");
 
 function calcToBeAwarded(
   proposals = [],
@@ -13,11 +11,8 @@ function calcToBeAwarded(
     0
   );
 
-  const bountyToBeAwarded = bounties.reduce((result, { meta: { status, value } }) => {
-    const statusKey = stringUpperFirst(Object.keys(status)[0]);
-
-    const index = bountyStatuses.findIndex((item) => item === statusKey);
-    return index >= 1 && index < 6 ? bigAdd(result, value) : result;
+  const bountyToBeAwarded = bounties.reduce((result, { meta: { value } = {}, state: { state } = {} }) => {
+    return "Approved" === state ? bigAdd(result, value) : result;
   }, 0);
 
   return {

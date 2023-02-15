@@ -1,4 +1,4 @@
-const { chainStatusRoom, overviewRoom, overviewRoomV2 } = require("./constants");
+const { chainStatusRoom, overviewRoom, overviewV2Room } = require("./constants");
 const { getScanHeight, getOverview, getOverviewV2 } = require("./store");
 const { feedScanStatus } = require("./status");
 const { feedOverview, feedOverviewV2 } = require("./overview");
@@ -15,9 +15,9 @@ async function listenAndEmitInfo(io) {
       } else if (room?.data === overviewRoom) {
         const overview = getOverview(room?.chain);
         io.to(roomId).emit("overview", overview);
-      } else if (room?.data === overviewRoomV2) {
+      } else if (room?.data === overviewV2Room) {
         const overview = getOverviewV2(room?.chain);
-        io.to(roomId).emit("overview", overview);
+        io.to(roomId).emit("overview_v2", overview);
       }
     });
 
