@@ -46,7 +46,7 @@ export default function PolarAreaChart({ data, status, tooltipLabelCallback }) {
             grid: {
               color: "#f4f4f4",
             },
-            max,
+            max: max + 1,
           },
         },
         plugins: {
