@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import "../../components/Charts/globalConfig";
 
 import Summary from "./Summary";
@@ -13,17 +13,54 @@ import Income from "./Income";
 import Output from "./Output";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import { useChainRoute } from "../../utils/hooks";
+import {
+  flex_col,
+  flex_row_reverse,
+  gap_x,
+  gap_y,
+  grid_cols,
+  m_t,
+} from "../../styles/tailwindcss";
+import OpenGovSpend from "./OpenGovSpend";
+import { useIsKusamaChain } from "../../utils/hooks/chain";
+import { mdcss, smcss } from "@osn/common";
 
 const DoughnutWrapper = styled.div`
   display: grid;
-  gap: 24px;
   margin-bottom: 24px;
-  @media screen and (min-width: 556px) {
-    grid-template-columns: repeat(auto-fit, minmax(556px, 1fr));
-  }
-  @media screen and (max-width: 556px) {
-    grid-template-columns: repeat(1fr, minmax(100px, 200px));
-  }
+  ${gap_x(16)};
+  ${gap_y(24)};
+
+  ${(p) => grid_cols(p.count)};
+  ${(p) => {
+    if (p.count < 3) {
+      return css`
+        .overview-base-chart-card-content-group {
+          ${flex_row_reverse};
+        }
+      `;
+    } else if (p.count >= 3) {
+      return css`
+        ${mdcss(`
+          .overview-base-chart-card-content-group {
+            ${flex_row_reverse};
+          }
+        `)}
+      `;
+    }
+  }}
+
+  ${mdcss(grid_cols(1))};
+  ${mdcss(`
+    .overview-base-chart-card-content-group-chart {
+      ${m_t(8)};
+    }
+  `)}
+  ${smcss(`
+    .overview-base-chart-card-content-group {
+      ${flex_col};
+    }
+  `)}
 `;
 
 const TableWrapper = styled.div`
@@ -41,23 +78,11 @@ const TableWrapper = styled.div`
 const Overview = () => {
   const overview = useSelector(overviewSelector);
   const symbol = useSelector(chainSymbolSelector);
+  const isKusama = useIsKusamaChain();
 
   useChainRoute();
 
   const precision = getPrecision(symbol);
-
-  const bountySpent = toPrecision(
-    overview.output.bounty || 0,
-    precision,
-    false
-  );
-  const proposalSpent = toPrecision(
-    overview.output.proposal || 0,
-    precision,
-    false
-  );
-  const tipSpent = toPrecision(overview.output.tip || 0, precision, false);
-  const burntTotal = toPrecision(overview.output.burnt || 0, precision, false);
 
   const inflation = toPrecision(
     overview.income.inflation || 0,
@@ -101,28 +126,28 @@ const Overview = () => {
   );
   const others = toPrecision(overview.income.others || 0, precision, false);
 
+  const cards = [
+    <Income
+      key="income"
+      inflation={inflation}
+      slashTreasury={slashTreasury}
+      slashDemocracy={slashDemocracy}
+      slashStaking={slashStaking}
+      slashElection={slashElection}
+      slashIdentity={slashIdentity}
+      slashReferenda={slashReferenda}
+      slashFellowshipReferenda={slashFellowshipReferenda}
+      others={others}
+    />,
+    <Output key="output" />,
+
+    isKusama && <OpenGovSpend key="openGovSpend" />,
+  ].filter(Boolean);
+
   return (
     <>
       <Summary />
-      <DoughnutWrapper>
-        <Income
-          inflation={inflation}
-          slashTreasury={slashTreasury}
-          slashDemocracy={slashDemocracy}
-          slashStaking={slashStaking}
-          slashElection={slashElection}
-          slashIdentity={slashIdentity}
-          slashReferenda={slashReferenda}
-          slashFellowshipReferenda={slashFellowshipReferenda}
-          others={others}
-        />
-        <Output
-          proposals={proposalSpent}
-          tips={tipSpent}
-          bounties={bountySpent}
-          burnt={burntTotal}
-        />
-      </DoughnutWrapper>
+      <DoughnutWrapper count={cards.length}>{cards}</DoughnutWrapper>
       <TotalStacked />
       <TableWrapper>
         <BeneficiaryTable />

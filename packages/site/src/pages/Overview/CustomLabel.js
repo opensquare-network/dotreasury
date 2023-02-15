@@ -6,38 +6,35 @@ import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
 import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
+import { p_12_normal, p_14_medium, p_14_normal } from "../../styles/text";
+import { TEXT_DARK_ACCESSORY } from "../../constants";
+import {
+  flex,
+  flex_col,
+  gap_x,
+  items_center,
+  items_end,
+  p_y,
+} from "../../styles/tailwindcss";
+import { sumBy } from "../../utils/math";
 
 const Wrapper = styled.div`
   min-width: 224px;
   background: #fbfbfb;
-  padding: 4px 16px;
+  padding: 8px 12px;
   border-radius: 4px;
 `;
 
 const ItemWrapper = styled.div`
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  :not(:last-child) {
-    margin-bottom: 4px;
-  }
-`;
-
-const IconWrapper = styled.div`
-  height: 16px;
-  width: 16px;
-  margin-right: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 const Icon = styled.div`
   ${(p) =>
     p.icon === "square" &&
     css`
-      width: 8px;
-      height: 8px;
+      width: 10px;
+      height: 10px;
       background: ${p.color ?? "#EEEEEE"};
       border-radius: 1px;
     `}
@@ -46,20 +43,44 @@ const Icon = styled.div`
     css`
       width: 10px;
       height: 10px;
-      border: 3px solid
-        ${(p) => (p.disabled ? "rgba(29, 37, 60, 0.24)" : p.color ?? "#EEEEEE")};
+      border: 2px solid
+        ${(p) =>
+          p.disabled
+            ? p.disabledColor ?? "rgba(29, 37, 60, 0.24)"
+            : p.color ?? "#EEEEEE"};
       border-radius: 50%;
+    `}
+  ${(p) =>
+    p.icon === "solid" &&
+    css`
+      width: 10px;
+      height: 3px;
+      background: ${p.color ?? "#EEEEEE"};
+      border-radius: 1px;
     `}
 `;
 
 const Title = styled(Text)`
-  font-weight: 500;
-  line-height: 24px;
+  ${p_14_medium};
   ${(p) =>
     p.disabled &&
     css`
       color: rgba(29, 37, 60, 0.24);
     `}
+`;
+const TitleCount = styled(Text)`
+  ${p_14_normal};
+  color: ${TEXT_DARK_ACCESSORY};
+  ${(p) =>
+    p.disabled &&
+    css`
+      color: rgba(29, 37, 60, 0.24);
+    `}
+`;
+const TitleWrapper = styled.div`
+  ${flex};
+  ${gap_x(8)};
+  ${items_center};
 `;
 
 const ChildTitle = styled(TextMinor)`
@@ -72,8 +93,15 @@ const ChildTitle = styled(TextMinor)`
     `}
 `;
 
+const TextFiatValue = styled(TextMinor)`
+  ${p_12_normal};
+  color: ${TEXT_DARK_ACCESSORY};
+`;
+
 const ValueWrapper = styled.div`
   display: flex;
+  ${flex_col};
+  ${items_end};
   justify-content: flex-end;
   margin-left: auto;
   & > :last-child {
@@ -88,15 +116,25 @@ const ValueWrapper = styled.div`
     `}
 `;
 
+const ChildrenWrapper = styled.div`
+  ${ItemWrapper} {
+    ${p_y(4)};
+  }
+`;
+
 const Label = ({ data, icon, status, clickEvent }) => {
   const symbol = useSelector(chainSymbolSelector);
-  const { name, color, children } = data;
+  const { name, count, color, iconColor, iconDisabledColor, children } = data;
   const disabled = status?.disabled;
-  let { value } = data;
-  if (children) {
-    value = (children || []).reduce((acc, current) => {
-      return acc + current.value ?? 0;
-    }, 0);
+  let { value, fiatValue } = data;
+
+  if (children?.length) {
+    if (!value) {
+      value = sumBy(children, "value");
+    }
+    if (!fiatValue) {
+      fiatValue = sumBy(children, "fiatValue");
+    }
   }
 
   return (
@@ -106,54 +144,83 @@ const Label = ({ data, icon, status, clickEvent }) => {
           clickEvent && clickEvent(name);
         }}
       >
-        <IconWrapper>
-          {!children && <Icon icon={icon} color={color} disabled={disabled} />}
-        </IconWrapper>
-        <Title disabled={disabled}>{name}</Title>
-        <Popup
-          content={`${value} ${symbol}`}
-          size="mini"
-          trigger={
-            <ValueWrapper disabled={disabled}>
-              <TextMinor>{`${
-                Math.round(value) === value ? "" : "≈ "
-              }${Math.round(value).toLocaleString()} ${symbol}`}</TextMinor>
-            </ValueWrapper>
-          }
-        />
-      </ItemWrapper>
-      {(children || []).map((item, index) => (
-        <ItemWrapper
-          key={index}
-          onClick={() => {
-            clickEvent && clickEvent(item.name);
-          }}
-        >
-          <IconWrapper>
+        <TitleWrapper>
+          {icon && (
             <Icon
               icon={icon}
-              color={item.color}
-              disabled={status?.children[index].disabled}
+              color={iconColor ?? color}
+              disabled={disabled}
+              disabledColor={iconDisabledColor}
             />
-          </IconWrapper>
-          <ChildTitle disabled={status?.children[index].disabled}>
-            {item.name}
-          </ChildTitle>
+          )}
+          <Title disabled={disabled}>{name}</Title>
+          {count && <TitleCount disabled={disabled}>{count}</TitleCount>}
           <Popup
-            content={`${item.value} ${symbol}`}
+            content={`${value} ${symbol}`}
             size="mini"
             trigger={
-              <ValueWrapper disabled={status?.children[index].disabled}>
+              <ValueWrapper disabled={disabled}>
                 <TextMinor>{`${
-                  Math.round(item.value) === item.value ? "" : "≈ "
-                }${Math.round(
-                  item.value
-                ).toLocaleString()} ${symbol}`}</TextMinor>
+                  Math.round(value) === value ? "" : "≈ "
+                }${Math.round(value).toLocaleString()} ${symbol}`}</TextMinor>
               </ValueWrapper>
             }
           />
-        </ItemWrapper>
-      ))}
+        </TitleWrapper>
+
+        {!!fiatValue && (
+          <ValueWrapper disabled={disabled}>
+            <TextFiatValue>
+              ≈ ${Math.round(fiatValue).toLocaleString()}
+            </TextFiatValue>
+          </ValueWrapper>
+        )}
+      </ItemWrapper>
+      <ChildrenWrapper>
+        {(children || []).map((item, index) => (
+          <ItemWrapper
+            key={index}
+            onClick={() => {
+              clickEvent && clickEvent(item.name);
+            }}
+          >
+            <TitleWrapper>
+              {icon && (
+                <Icon
+                  icon={icon}
+                  color={item.iconColor ?? item.color}
+                  disabled={status?.children?.[index]?.disabled}
+                  disabledColor={item.iconDisabledColor}
+                />
+              )}
+              <ChildTitle disabled={status?.children?.[index]?.disabled}>
+                {item.name}
+              </ChildTitle>
+              <Popup
+                content={`${item.value} ${symbol}`}
+                size="mini"
+                trigger={
+                  <ValueWrapper disabled={status?.children?.[index]?.disabled}>
+                    <TextMinor>{`${
+                      Math.round(item.value) === item.value ? "" : "≈ "
+                    }${Math.round(
+                      item.value
+                    ).toLocaleString()} ${symbol}`}</TextMinor>
+                  </ValueWrapper>
+                }
+              />
+            </TitleWrapper>
+
+            {!!item.fiatValue && (
+              <ValueWrapper disabled={disabled}>
+                <TextFiatValue>
+                  ≈ ${Math.round(item.fiatValue).toLocaleString()}
+                </TextFiatValue>
+              </ValueWrapper>
+            )}
+          </ItemWrapper>
+        ))}
+      </ChildrenWrapper>
     </Wrapper>
   );
 };

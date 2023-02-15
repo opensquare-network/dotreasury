@@ -19,3 +19,15 @@ export function sumBy(arr = [], iteratee) {
     return val;
   }, 0);
 }
+
+/**
+ * @description lodash.maxBy
+ */
+export function maxBy(arr = [], iteratee) {
+  const numbers = arr.map((item) => {
+    const n = typeof iteratee === "function" ? iteratee(item) : item[iteratee];
+    return n ?? 0;
+  });
+
+  return Math.max(...numbers);
+}

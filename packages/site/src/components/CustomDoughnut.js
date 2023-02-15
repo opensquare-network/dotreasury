@@ -27,7 +27,7 @@ const DoughnutChart = ({ data, status }) => {
     ],
   };
   const dataReduce = (acc, current) => {
-    if (current.children) {
+    if (current.children && !current.value) {
       return current.children.reduce(dataReduce, acc);
     } else {
       acc.labels.push(current.name);

@@ -3,13 +3,13 @@ import { useHistory, useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import queryString from "query-string";
 
-import { fetchIdentity as getIdentity } from "../services/identity";
-import { setShowMenuTabs } from "../store/reducers/menuSlice";
+import { fetchIdentity as getIdentity } from "../../services/identity";
+import { setShowMenuTabs } from "../../store/reducers/menuSlice";
 import {
   chainSelector,
   chainSymbolSelector,
   setChain,
-} from "../store/reducers/chainSlice";
+} from "../../store/reducers/chainSlice";
 import { useWindowSize } from "@osn/common";
 
 const displayCache = new Map();
