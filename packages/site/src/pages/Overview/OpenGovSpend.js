@@ -180,17 +180,17 @@ export default function OpenGovSpend() {
             );
 
             const token = `${
-              Math.round(currentValue) === currentValue ? "" : "≈"
+              Math.round(currentValue) === currentValue ? "" : "≈ "
             }${Math.round(
               currentValue
             ).toLocaleString()} ${symbol} ${valuePercentage}%`;
             const fiat = `${
-              Math.round(currentFiatValue) === currentFiatValue ? "" : "≈"
+              Math.round(currentFiatValue) === currentFiatValue ? "" : "≈ "
             }$${Math.round(
               currentFiatValue
             ).toLocaleString()} ${fiatValuePercentage}%`;
 
-            return `${token}  ${fiat}`;
+            return [" " + token, " " + fiat];
           }}
         />
       }
