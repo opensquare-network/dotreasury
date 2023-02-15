@@ -176,7 +176,7 @@ export default function OpenGovSpend() {
               ((currentValue / totalValue) * 100).toFixed(2)
             );
             const fiatValuePercentage = parseFloat(
-              ((currentFiatValue / totalFiatValue) * 100).toFixed(2)
+              ((currentFiatValue / totalFiatValue || 0) * 100).toFixed(2)
             );
 
             const token = `${
