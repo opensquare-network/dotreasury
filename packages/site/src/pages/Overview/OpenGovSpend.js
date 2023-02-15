@@ -105,7 +105,7 @@ export default function OpenGovSpend() {
           color: OVERVIEW_BIG_SPENDER_COLOR,
           disabled: false,
         },
-      ],
+      ].sort((a, b) => b.value - a.value),
     }),
     [
       treasurer,
