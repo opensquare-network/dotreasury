@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
 import PolarAreaChart from "../../components/CustomPolarArea";
 import {
@@ -53,59 +53,84 @@ export default function OpenGovSpend() {
   const bigSpendValue = toPrecision(big_spender?.value ?? 0, precision, false);
   const bigSpendFiatValue = big_spender?.fiatValue ?? 0;
 
-  const [chartData, setChartData] = useState({
-    icon: "circle",
-    labels: [
-      {
-        name: "Treasurer",
-        value: treasurerValue,
-        fiatValue: treasurerFiatValue,
-        count: treasurer?.count,
-        color: OVERVIEW_TREASURER_COLOR,
-        disabled: false,
-      },
-      {
-        name: "Small Tipper",
-        value: smallTipperValue,
-        fiatValue: smallTipperFiatValue,
-        count: small_tipper?.count,
-        color: OVERVIEW_SMALL_TIPPER_COLOR,
-        disabled: false,
-      },
-      {
-        name: "Big Tipper",
-        value: bigTipperValue,
-        fiatValue: bigTipperFiatValue,
-        count: big_tipper?.count,
-        color: OVERVIEW_BIG_TIPPER_COLOR,
-        disabled: false,
-      },
-      {
-        name: "Small Spender",
-        value: smallSpendValue,
-        fiatValue: smallSpendFiatValue,
-        count: small_spender?.count,
-        color: OVERVIEW_SMALL_SPENDER_COLOR,
-        disabled: false,
-      },
-      {
-        name: "Medium Spender",
-        value: mediumSpendValue,
-        fiatValue: mediumSpendFiatValue,
-        count: medium_spender?.count,
-        color: OVERVIEW_MEDIUM_SPENDER_COLOR,
-        disabled: false,
-      },
-      {
-        name: "Big Spender",
-        value: bigSpendValue,
-        fiatValue: bigSpendFiatValue,
-        count: big_spender?.count,
-        color: OVERVIEW_BIG_SPENDER_COLOR,
-        disabled: false,
-      },
-    ],
-  });
+  const data = useMemo(
+    () => ({
+      icon: "circle",
+      labels: [
+        {
+          name: "Treasurer",
+          value: treasurerValue,
+          fiatValue: treasurerFiatValue,
+          count: treasurer?.count,
+          color: OVERVIEW_TREASURER_COLOR,
+          disabled: false,
+        },
+        {
+          name: "Small Tipper",
+          value: smallTipperValue,
+          fiatValue: smallTipperFiatValue,
+          count: small_tipper?.count,
+          color: OVERVIEW_SMALL_TIPPER_COLOR,
+          disabled: false,
+        },
+        {
+          name: "Big Tipper",
+          value: bigTipperValue,
+          fiatValue: bigTipperFiatValue,
+          count: big_tipper?.count,
+          color: OVERVIEW_BIG_TIPPER_COLOR,
+          disabled: false,
+        },
+        {
+          name: "Small Spender",
+          value: smallSpendValue,
+          fiatValue: smallSpendFiatValue,
+          count: small_spender?.count,
+          color: OVERVIEW_SMALL_SPENDER_COLOR,
+          disabled: false,
+        },
+        {
+          name: "Medium Spender",
+          value: mediumSpendValue,
+          fiatValue: mediumSpendFiatValue,
+          count: medium_spender?.count,
+          color: OVERVIEW_MEDIUM_SPENDER_COLOR,
+          disabled: false,
+        },
+        {
+          name: "Big Spender",
+          value: bigSpendValue,
+          fiatValue: bigSpendFiatValue,
+          count: big_spender?.count,
+          color: OVERVIEW_BIG_SPENDER_COLOR,
+          disabled: false,
+        },
+      ],
+    }),
+    [
+      treasurer,
+      small_tipper,
+      big_tipper,
+      small_spender,
+      medium_spender,
+      big_spender,
+      treasurerValue,
+      smallTipperValue,
+      bigTipperValue,
+      smallSpendValue,
+      mediumSpendValue,
+      bigSpendValue,
+      treasurerFiatValue,
+      smallTipperFiatValue,
+      bigTipperFiatValue,
+      smallSpendFiatValue,
+      mediumSpendFiatValue,
+      bigSpendFiatValue,
+    ]
+  );
+
+  const [chartData, setChartData] = useState(data);
+  useEffect(() => setChartData(data), [data]);
 
   const totalEnabledValue = sumBy(
     chartData.labels.filter((i) => !i.disabled),
@@ -149,18 +174,16 @@ export default function OpenGovSpend() {
               ((currentFiatValue / totalEnabledFiatValue || 0) * 100).toFixed(2)
             );
 
-            const token = `${
+            const token = ` ${
               Math.round(currentValue) === currentValue ? "" : "≈ "
             }${Math.round(
               currentValue
             ).toLocaleString()} ${symbol} ${valuePercentage}%`;
-            const fiat = `${
-              Math.round(currentFiatValue) === currentFiatValue ? "" : "≈ "
-            }$${Math.round(
+            const fiat = ` ≈ $${Math.round(
               currentFiatValue
             ).toLocaleString()} ${fiatValuePercentage}%`;
 
-            return [" " + token, " " + fiat];
+            return [token, fiat];
           }}
         />
       }
