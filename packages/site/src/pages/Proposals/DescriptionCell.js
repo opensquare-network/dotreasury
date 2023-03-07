@@ -21,13 +21,13 @@ const Wrapper = styled.div`
   }
 `;
 
-const DescriptionCell = ({ description, tags, trackInfo }) => {
+const DescriptionCell = ({ description, tags = {}, trackInfo }) => {
   return (
     <Wrapper>
       <div>{description}</div>
       {tags.proposalType && <Tag text={tags.proposalType} />}
       {tags.status && <Tag text={tags.status} />}
-      {trackInfo && <Tag text={startCase(trackInfo.trackName)} />}
+      {trackInfo && <Tag text={startCase(trackInfo.name)} />}
     </Wrapper>
   );
 };
