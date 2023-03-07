@@ -25,6 +25,7 @@ const DescriptionCell = ({description, tags}) => {
       </div>
       {tags.proposalType && <Tag text={tags.proposalType}/>}
       {tags.status && <Tag text={tags.status}/>}
+      {tags.trackName && <Tag text={tags.trackName}/>}
     </Wrapper>
   );
 };

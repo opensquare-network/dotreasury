@@ -9,14 +9,14 @@ import { useTableColumns } from "../../components/shared/useTableColumns";
 import { useDispatch, useSelector } from "react-redux";
 import { applicationListSelector, fetchApplicationList, loadingApplicationListSelector } from "../../store/reducers/openGovApplicationsSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
-import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE, TEXT_DARK_ACCESSORY } from "../../constants";
+import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../constants";
 import ResponsivePagination from "../../components/ResponsivePagination";
 import { useHistory } from "react-router";
 import api from "../../services/scanApi";
 import TextMinor from "../../components/TextMinor";
 import JumpToLink from "./Link";
-import { p_12_normal, p_14_normal } from "../../styles/text";
 import startCase from "lodash.startcase";
+import DescriptionCell from "../Proposals/DescriptionCell";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -36,16 +36,6 @@ const Wrapper = styled.div`
 
 const TableWrapper = styled.div`
   overflow: scroll;
-`;
-
-const Description = styled.div`
-  display: flex;
-  flex-direction: column;
-  ${p_14_normal};
-`;
-const DescriptionTrack = styled.div`
-  color: ${TEXT_DARK_ACCESSORY};
-  ${p_12_normal};
 `;
 
 const fetchGov2ReferendaTitle = async (chain, referendumIndex) => {
@@ -109,10 +99,10 @@ export default function ReferendaTable() {
     title: "Description",
     cellClassName: "proposal-description-cell",
     cellRender: (_, item) => (
-      <Description>
-        <div>{item.description}</div>
-        <DescriptionTrack>{startCase(item.trackInfo.name)}</DescriptionTrack>
-      </Description>
+      <DescriptionCell
+        description={item.description}
+        tags={{trackName: startCase(item.trackInfo.name)}}
+      />
     ),
   };
 
