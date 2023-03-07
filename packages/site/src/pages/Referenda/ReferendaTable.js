@@ -15,7 +15,6 @@ import { useHistory } from "react-router";
 import api from "../../services/scanApi";
 import TextMinor from "../../components/TextMinor";
 import JumpToLink from "./Link";
-import startCase from "lodash.startcase";
 import DescriptionCell from "../Proposals/DescriptionCell";
 
 const CardWrapper = styled(Card)`
@@ -101,7 +100,7 @@ export default function ReferendaTable() {
     cellRender: (_, item) => (
       <DescriptionCell
         description={item.description}
-        tags={{trackName: startCase(item.trackInfo.name)}}
+        trackInfo={item.trackInfo}
       />
     ),
   };

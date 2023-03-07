@@ -1,3 +1,4 @@
+import startCase from "lodash.startcase";
 import React from "react";
 import styled from "styled-components";
 import Tag from "../../components/Tag";
@@ -10,22 +11,23 @@ const Wrapper = styled.div`
   > div {
     overflow-wrap: break-word;
   }
-  span:nth-child(3):before {
-    margin-left: 4px;
-    margin-right: 4px;
-    content:'·';
+
+  span + span {
+    &:before {
+      margin-left: 4px;
+      margin-right: 4px;
+      content: "·";
+    }
   }
 `;
 
-const DescriptionCell = ({description, tags}) => {
+const DescriptionCell = ({ description, tags, trackInfo }) => {
   return (
     <Wrapper>
-      <div>
-        {description}
-      </div>
-      {tags.proposalType && <Tag text={tags.proposalType}/>}
-      {tags.status && <Tag text={tags.status}/>}
-      {tags.trackName && <Tag text={tags.trackName}/>}
+      <div>{description}</div>
+      {tags.proposalType && <Tag text={tags.proposalType} />}
+      {tags.status && <Tag text={tags.status} />}
+      {trackInfo && <Tag text={startCase(trackInfo.trackName)} />}
     </Wrapper>
   );
 };
