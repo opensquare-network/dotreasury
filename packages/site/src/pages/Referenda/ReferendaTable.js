@@ -15,6 +15,7 @@ import { useHistory } from "react-router";
 import api from "../../services/scanApi";
 import TextMinor from "../../components/TextMinor";
 import JumpToLink from "./Link";
+import DescriptionCell from "../Proposals/DescriptionCell";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -96,7 +97,12 @@ export default function ReferendaTable() {
     key: "description",
     title: "Description",
     cellClassName: "proposal-description-cell",
-    cellRender: (_, item) => item.description,
+    cellRender: (_, item) => (
+      <DescriptionCell
+        description={item.description}
+        trackInfo={item.trackInfo}
+      />
+    ),
   };
 
   const linkToSubSquare = {
@@ -128,6 +134,7 @@ export default function ReferendaTable() {
       symbolPrice: item.symbolPrice,
       state: item.state,
       description: item.description,
+      trackInfo: item.trackInfo,
     }
   ));
 

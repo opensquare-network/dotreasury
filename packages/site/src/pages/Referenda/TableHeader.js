@@ -19,7 +19,7 @@ const Title = styled(Text)`
 export default function TableHeader({ setFilterTrack, setFilterStatus }) {
   return (
     <HeaderWrapper>
-      <Title>Gov2 Applications</Title>
+      <Title>OpenGov Applications</Title>
       <div style={{ display: "flex", gap: "16px" }}>
         <Filter setTrack={setFilterTrack} setStatus={setFilterStatus} />
       </div>
