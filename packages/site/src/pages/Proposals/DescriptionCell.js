@@ -1,7 +1,7 @@
 import startCase from "lodash.startcase";
 import React from "react";
 import styled from "styled-components";
-import Tag from "../../components/Tag";
+import TagOrigin from "../../components/Tag";
 
 const Wrapper = styled.div`
   font-size: 14px;
@@ -21,13 +21,17 @@ const Wrapper = styled.div`
   }
 `;
 
+const Tag = styled(TagOrigin)`
+  display: inline-flex;
+`;
+
 const DescriptionCell = ({ description, tags = {}, trackInfo }) => {
   return (
     <Wrapper>
       <div>{description}</div>
+      {trackInfo && <Tag text={startCase(trackInfo.name)} />}
       {tags.proposalType && <Tag text={tags.proposalType} />}
       {tags.status && <Tag text={tags.status} />}
-      {trackInfo && <Tag text={startCase(trackInfo.name)} />}
     </Wrapper>
   );
 };
