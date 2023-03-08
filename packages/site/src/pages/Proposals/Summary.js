@@ -24,23 +24,32 @@ import {
   treasurySelector,
 } from "../../store/reducers/burntSlice";
 import { abbreviateBigNumber } from "../../utils";
+import {
+  gap_x,
+  gap_y,
+  grid,
+  grid_cols,
+  hidden,
+  p,
+} from "../../styles/tailwindcss";
+import { breakpoint, lgcss } from "../../styles/responsive";
+import { h3_18_semibold } from "../../styles/text";
 
 const Wrapper = styled(Card)`
-  padding: 16px 20px 8px;
+  ${p(24)};
   border-radius: 8px;
   margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  & > div:not(:last-child) {
-    margin-right: 16px;
-  }
-  & > div {
-    margin-bottom: 8px;
-  }
-  justify-content: space-between;
-  flex-wrap: wrap;
-  @media screen and (max-width: 1140px) {
-    justify-content: flex-start;
+
+  ${grid};
+  ${grid_cols(8)};
+  ${gap_x(16)};
+  ${gap_y(8)};
+
+  ${lgcss(grid_cols(7))};
+  ${breakpoint(1140, grid_cols("auto-fit", 161.14))};
+
+  .countdown {
+    ${lgcss(hidden)};
   }
 `;
 
@@ -52,61 +61,25 @@ const Item = styled.div`
   &.countdown {
     min-width: 0;
   }
-  &.right {
-    text-align: right;
-  }
-  &.available,
-  &.next-burn {
-    min-width: 160px;
-  }
-  &.spend-period {
-    min-width: 180px;
-  }
-  & > div:last-child {
-    justify-content: flex-end;
-  }
-
-  @media screen and (max-width: 1140px) {
-    &.grow {
-      flex-grow: 0;
-    }
-    &.countdown {
-      display: none;
-    }
-    &.right {
-      text-align: left;
-    }
-    &.available,
-    &.next-burn {
-      min-width: 120px;
-    }
-    &.spend-period {
-      min-width: 120px;
-    }
-    & > div:last-child {
-      justify-content: flex-start;
-    }
-  }
 `;
 
 const Title = styled(TextMinor)`
   line-height: 24px;
+  color: rgba(0, 0, 0, 0.3);
 `;
 
 const Value = styled(Text)`
-  line-height: 32px;
-  font-weight: bold;
-  font-size: 18px;
+  ${h3_18_semibold};
 `;
 
 const Unit = styled(TextMinor)`
-  line-height: 32px;
-  font-weight: bold;
-  font-size: 18px;
+  ${h3_18_semibold};
+  color: rgba(0, 0, 0, 0.3);
 `;
 
 const ValueWrapper = styled.div`
   display: flex;
+  ${h3_18_semibold};
   ${css`
     ${mrgap("4px")}
   `}
@@ -145,14 +118,14 @@ const Summary = () => {
         <Title>Total</Title>
         <Value>{summary.total}</Value>
       </Item>
-      <Item className="right available">
+      <Item>
         <Title>Available</Title>
         <ValueWrapper>
           <Value>{abbreviateBigNumber(treasury.free)}</Value>
           <Unit>{symbol}</Unit>
         </ValueWrapper>
       </Item>
-      <Item className="right next-burn">
+      <Item className="next-burn">
         <Title>Next burn</Title>
         <ValueWrapper>
           <Value>
@@ -161,7 +134,7 @@ const Summary = () => {
           <Unit>{symbol}</Unit>
         </ValueWrapper>
       </Item>
-      <Item className="right spend-period">
+      <Item className="spend-period">
         <Title>Spend period</Title>
         <BlocksTime
           blocks={spendPeriod.restBlocks}
