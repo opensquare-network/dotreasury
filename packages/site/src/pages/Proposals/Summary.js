@@ -4,7 +4,6 @@ import styled, { css } from "styled-components";
 
 import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
-import CountDown from "../../components/CountDown";
 import BlocksTime from "../../components/BlocksTime";
 import { mrgap } from "../../styles";
 import Card from "../../components/Card";
@@ -24,16 +23,12 @@ import {
   treasurySelector,
 } from "../../store/reducers/burntSlice";
 import { abbreviateBigNumber } from "../../utils";
-import {
-  gap_x,
-  gap_y,
-  grid,
-  grid_cols,
-  hidden,
-  p,
-} from "../../styles/tailwindcss";
-import { breakpoint, lgcss } from "../../styles/responsive";
-import { h3_18_semibold } from "../../styles/text";
+import { gap_x, gap_y, grid, grid_cols, p } from "../../styles/tailwindcss";
+import { h3_18_semibold, p_12_normal } from "../../styles/text";
+import { TEXT_DARK_ACCESSORY } from "../../constants";
+import { overviewSelector } from "../../store/reducers/overviewSlice";
+import { parseEstimateTime } from "../../utils/parseEstimateTime";
+import { extractTime } from "@polkadot/util";
 
 const Wrapper = styled(Card)`
   ${p(24)};
@@ -41,16 +36,9 @@ const Wrapper = styled(Card)`
   margin-bottom: 16px;
 
   ${grid};
-  ${grid_cols(8)};
+  ${grid_cols("auto-fit", 161.14)};
   ${gap_x(16)};
   ${gap_y(8)};
-
-  ${lgcss(grid_cols(7))};
-  ${breakpoint(1140, grid_cols("auto-fit", 161.14))};
-
-  .countdown {
-    ${lgcss(hidden)};
-  }
 `;
 
 const Item = styled.div`
@@ -65,7 +53,7 @@ const Item = styled.div`
 
 const Title = styled(TextMinor)`
   line-height: 24px;
-  color: rgba(0, 0, 0, 0.3);
+  ${p_12_normal};
 `;
 
 const Value = styled(Text)`
@@ -77,6 +65,10 @@ const Unit = styled(TextMinor)`
   color: rgba(0, 0, 0, 0.3);
 `;
 
+const ValueInfo = styled(Text)`
+  ${p_12_normal};
+  color: ${TEXT_DARK_ACCESSORY};
+`;
 const ValueWrapper = styled.div`
   display: flex;
   ${h3_18_semibold};
@@ -95,10 +87,13 @@ const Summary = () => {
     dispatch(fetchTreasury(chain));
   }, [dispatch, chain]);
 
+  const overview = useSelector(overviewSelector);
   const summary = useSelector(proposalSummarySelector);
   const spendPeriod = useSelector(spendPeriodSelector);
   const treasury = useSelector(treasurySelector);
   const symbol = useSelector(chainSymbolSelector);
+
+  const symbolPrice = overview?.latestSymbolPrice ?? 0;
 
   return (
     <Wrapper>
@@ -124,6 +119,10 @@ const Summary = () => {
           <Value>{abbreviateBigNumber(treasury.free)}</Value>
           <Unit>{symbol}</Unit>
         </ValueWrapper>
+        <ValueInfo>
+          {!!treasury.free && "≈ "}$
+          {abbreviateBigNumber(treasury.free * symbolPrice)}
+        </ValueInfo>
       </Item>
       <Item className="next-burn">
         <Title>Next burn</Title>
@@ -145,9 +144,9 @@ const Summary = () => {
           unitMapper={{ d: "Day" }}
           pluralUnitMapper={{ d: "Days" }}
         />
-      </Item>
-      <Item className="countdown">
-        <CountDown percent={spendPeriod.progress} />
+        <ValueInfo>
+          {parseEstimateTime(extractTime(spendPeriod.periodTime))}
+        </ValueInfo>
       </Item>
     </Wrapper>
   );
