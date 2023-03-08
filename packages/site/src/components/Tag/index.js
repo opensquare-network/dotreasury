@@ -24,7 +24,7 @@ const Text = styled.span`
   margin: 0;
 `;
 
-export default function Tag({ text }) {
+export default function Tag({ text, className }) {
   let color = TEXT_DARK_ACCESSORY;
   if (text === "Working") {
     color = Tertiary_Green_500;
@@ -32,5 +32,9 @@ export default function Tag({ text }) {
   if (text === "Review") {
     color = Tertiary_Blue_500;
   }
-  return <Text color={color}>{text}</Text>;
+  return (
+    <Text color={color} className={className}>
+      {text}
+    </Text>
+  );
 }
