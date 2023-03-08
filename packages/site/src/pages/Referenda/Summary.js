@@ -8,24 +8,20 @@ import { fetchApplicationSummary, applicationSummarySelector } from "../../store
 import { useDispatch, useSelector } from "react-redux";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import { sumBy } from "../../utils/math";
+import { p_12_normal } from "../../styles/text";
+import { gap_x, gap_y, grid, grid_cols } from "../../styles/tailwindcss";
 
 const Wrapper = styled(Card)`
-  padding: 16px 20px 8px;
+  padding: 24px;
   border-radius: 8px;
   margin-bottom: 16px;
-  display: flex;
-  align-items: center;
   & > div:not(:last-child) {
     margin-right: 16px;
   }
-  & > div {
-    margin-bottom: 8px;
-  }
-  justify-content: space-between;
-  flex-wrap: wrap;
-  @media screen and (max-width: 1140px) {
-    justify-content: flex-start;
-  }
+  ${grid};
+  ${grid_cols("auto-fit", 161.14)};
+  ${gap_x(16)};
+  ${gap_y(8)};
 `;
 
 const Item = styled.div`
@@ -75,7 +71,7 @@ const Item = styled.div`
 
 const Title = styled(TextMinor)`
   line-height: 24px;
-  color: rgba(0, 0, 0, 0.3);
+  ${p_12_normal};
 `;
 
 const Value = styled(Text)`
@@ -85,13 +81,6 @@ const Value = styled(Text)`
   span.light {
     color: rgba(0, 0, 0, 0.3);
   }
-`;
-
-const Divider = styled.div`
-  width: 1px;
-  height: 44px;
-  background-color: #f4f4f4;
-  margin-left: 16px;
 `;
 
 export default function Summary() {
@@ -132,9 +121,6 @@ export default function Summary() {
         <Title>Ongoing</Title>
         <Value>{activeCount || 0}</Value>
       </Item>
-
-      <Divider />
-
       <Item>
         <Title>Treasurer</Title>
         <Value>{applicationSummary?.treasurer?.active || 0}<span className="light"> / {applicationSummary?.treasurer?.total || 0}</span></Value>
