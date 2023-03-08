@@ -8,6 +8,10 @@ const FormWrapper = styled(Form)`
   display: flex;
   justify-content: flex-end;
   gap: 16px;
+
+  & .field {
+    margin: 0 !important;
+  }
 `;
 
 const StatusSelect = styled(Select)`
