@@ -157,6 +157,8 @@ class ProposalsController {
           ).blockTime,
           motionVoting: item.state?.data?.motionVoting,
         },
+        isByGov2: item.isByGov2,
+        track: item.track,
       })),
       page,
       pageSize,
