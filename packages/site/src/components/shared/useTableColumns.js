@@ -274,7 +274,11 @@ const description = {
   title: "Description",
   cellClassName: "proposal-description-cell",
   cellRender: (_, item) => (
-    <DescriptionCell description={item.description} tags={item.tags} />
+    <DescriptionCell
+      description={item.description}
+      tags={item.tags}
+      trackInfo={item.trackInfo}
+    />
   ),
 };
 const relatedLinks = (options) => ({
