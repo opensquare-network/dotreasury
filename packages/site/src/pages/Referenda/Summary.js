@@ -8,7 +8,7 @@ import { fetchApplicationSummary, applicationSummarySelector } from "../../store
 import { useDispatch, useSelector } from "react-redux";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import { sumBy } from "../../utils/math";
-import { p_12_normal } from "../../styles/text";
+import { h3_18_semibold, p_12_normal } from "../../styles/text";
 import { gap_x, gap_y, grid, grid_cols } from "../../styles/tailwindcss";
 
 const Wrapper = styled(Card)`
@@ -75,9 +75,7 @@ const Title = styled(TextMinor)`
 `;
 
 const Value = styled(Text)`
-  line-height: 32px;
-  font-weight: bold;
-  font-size: 18px;
+  ${h3_18_semibold};
   span.light {
     color: rgba(0, 0, 0, 0.3);
   }
