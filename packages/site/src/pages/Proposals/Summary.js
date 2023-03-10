@@ -1,12 +1,11 @@
 import React, { useEffect, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled, { css } from "styled-components";
-
 import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
+import CountDown from "../../components/CountDown";
 import BlocksTime from "../../components/BlocksTime";
 import { mrgap } from "../../styles";
-import Card from "../../components/Card";
 
 import {
   fetchProposalsSummary,
@@ -23,37 +22,32 @@ import {
   treasurySelector,
 } from "../../store/reducers/burntSlice";
 import { abbreviateBigNumber } from "../../utils";
-import { gap_x, gap_y, grid, grid_cols, p } from "../../styles/tailwindcss";
+import {
+  flex_1,
+  gap_x,
+  gap_y,
+  grid,
+  grid_cols,
+} from "../../styles/tailwindcss";
 import { h3_18_semibold, p_12_normal } from "../../styles/text";
 import { TEXT_DARK_ACCESSORY } from "../../constants";
 import { overviewSelector } from "../../store/reducers/overviewSlice";
 import { parseEstimateTime } from "../../utils/parseEstimateTime";
 import { extractTime } from "@polkadot/util";
+import SummaryItem from "../../components/Summary/Item";
+import { lgcss, smcss } from "../../styles/responsive";
+import SummaryCardWrapper from "../../components/Summary";
+import SummaryOngoingItemWrapper from "../../components/Summary/OngoingWrapper";
 
-const Wrapper = styled(Card)`
-  ${p(24)};
-  border-radius: 8px;
-  margin-bottom: 16px;
-
+const ItemsWrapper = styled.div`
+  ${flex_1};
   ${grid};
-  ${grid_cols("auto-fit", 161.14)};
-  ${gap_x(16)};
-  ${gap_y(8)};
-`;
+  ${grid_cols("auto-fit", 210)};
+  ${gap_x(128)};
+  ${gap_y(16)};
 
-const Item = styled.div`
-  min-width: 120px;
-  &.grow {
-    flex-grow: 1;
-  }
-  &.countdown {
-    min-width: 0;
-  }
-`;
-
-const Title = styled(TextMinor)`
-  line-height: 24px;
-  ${p_12_normal};
+  ${lgcss(gap_x(64))};
+  ${smcss(grid_cols(2))}
 `;
 
 const Value = styled(Text)`
@@ -96,59 +90,73 @@ const Summary = () => {
   const symbolPrice = overview?.latestSymbolPrice ?? 0;
 
   return (
-    <Wrapper>
-      <Item>
-        <Title>Ongoing</Title>
-        <Value>{summary.numOfOngoing}</Value>
-      </Item>
-      <Item>
-        <Title>Approved</Title>
-        <Value>{summary.numOfApproved}</Value>
-      </Item>
-      <Item>
-        <Title>Awarded</Title>
-        <Value>{summary.numOfAwarded}</Value>
-      </Item>
-      <Item className="grow">
-        <Title>Total</Title>
-        <Value>{summary.total}</Value>
-      </Item>
-      <Item>
-        <Title>Available</Title>
-        <ValueWrapper>
-          <Value>{abbreviateBigNumber(treasury.free)}</Value>
-          <Unit>{symbol}</Unit>
-        </ValueWrapper>
-        <ValueInfo>
-          {!!treasury.free && "≈ "}$
-          {abbreviateBigNumber(treasury.free * symbolPrice)}
-        </ValueInfo>
-      </Item>
-      <Item className="next-burn">
-        <Title>Next burn</Title>
-        <ValueWrapper>
-          <Value>
-            {abbreviateBigNumber(treasury.burnPercent * treasury.free)}
-          </Value>
-          <Unit>{symbol}</Unit>
-        </ValueWrapper>
-      </Item>
-      <Item className="spend-period">
-        <Title>Spend period</Title>
-        <BlocksTime
-          blocks={spendPeriod.restBlocks}
-          ValueWrapper={Value}
-          UnitWrapper={Unit}
-          SectionWrapper={Fragment}
-          TimeWrapper={ValueWrapper}
-          unitMapper={{ d: "Day" }}
-          pluralUnitMapper={{ d: "Days" }}
+    <SummaryCardWrapper>
+      <SummaryOngoingItemWrapper>
+        <SummaryItem
+          title="Ongoing"
+          content={<Value>{summary.numOfOngoing}</Value>}
         />
-        <ValueInfo>
-          {parseEstimateTime(extractTime(spendPeriod.periodTime))}
-        </ValueInfo>
-      </Item>
-    </Wrapper>
+      </SummaryOngoingItemWrapper>
+
+      <ItemsWrapper>
+        <SummaryItem
+          title="Approved"
+          content={<Value>{summary.numOfApproved}</Value>}
+        />
+        <SummaryItem
+          title="Awarded"
+          content={<Value>{summary.numOfAwarded}</Value>}
+        />
+        <SummaryItem title="Total" content={<Value>{summary.total}</Value>} />
+
+        <SummaryItem
+          title="Available"
+          content={
+            <div>
+              <ValueWrapper>
+                <Value>{abbreviateBigNumber(treasury.free)}</Value>
+                <Unit>{symbol}</Unit>
+              </ValueWrapper>
+              <ValueInfo>
+                {!!treasury.free && "≈ "}$
+                {abbreviateBigNumber(treasury.free * symbolPrice)}
+              </ValueInfo>
+            </div>
+          }
+        />
+        <SummaryItem
+          title="Next burn"
+          content={
+            <ValueWrapper>
+              <Value>
+                {abbreviateBigNumber(treasury.burnPercent * treasury.free)}
+              </Value>
+              <Unit>{symbol}</Unit>
+            </ValueWrapper>
+          }
+        />
+        <SummaryItem
+          title="Spend period"
+          icon={<CountDown percent={spendPeriod.progress} />}
+          content={
+            <div>
+              <BlocksTime
+                blocks={spendPeriod.restBlocks}
+                ValueWrapper={Value}
+                UnitWrapper={Unit}
+                SectionWrapper={Fragment}
+                TimeWrapper={ValueWrapper}
+                unitMapper={{ d: "Day" }}
+                pluralUnitMapper={{ d: "Days" }}
+              />
+              <ValueInfo>
+                {parseEstimateTime(extractTime(spendPeriod.periodTime))}
+              </ValueInfo>
+            </div>
+          }
+        />
+      </ItemsWrapper>
+    </SummaryCardWrapper>
   );
 };
 
