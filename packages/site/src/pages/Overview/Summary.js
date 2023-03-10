@@ -33,51 +33,30 @@ import { abbreviateBigNumber, getPrecision, toPrecision } from "../../utils";
 import { h3_18_semibold, p_12_normal } from "../../styles/text";
 import {
   gap_x,
+  gap_y,
   grid,
   grid_cols,
-  hidden,
   p,
-  p_y,
   rounded_none,
-  space_x,
 } from "../../styles/tailwindcss";
 import { breakpoint, smcss } from "../../styles/responsive";
 import { useIsKusamaChain } from "../../utils/hooks/chain";
 import { extractTime } from "@polkadot/util";
 import { parseEstimateTime } from "../../utils/parseEstimateTime";
 import BigNumber from "bignumber.js";
+import SummaryItem from "../../components/Summary/Item";
 
 const Wrapper = styled(Card)`
   margin-bottom: 24px;
 
   ${p(24)};
   ${grid};
-  ${gap_x(64)};
-  ${grid_cols("auto-fit", 258)};
+  ${gap_x(128)};
+  ${gap_y(16)};
+  ${grid_cols("auto-fit", 210)};
 
   ${smcss(grid_cols(2))};
   ${breakpoint(600, rounded_none)};
-`;
-
-const CustomCard = styled.div`
-  ${p_y(8)};
-  border-color: #eee;
-`;
-
-const ItemIconWrapper = styled.div``;
-const ItemWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  ${space_x(12)};
-
-  ${ItemIconWrapper} {
-    ${smcss(hidden)};
-  }
-`;
-
-const Title = styled(TextMinor)`
-  line-height: 24px;
-  ${p_12_normal};
 `;
 
 const TextBold = styled(Text)`
@@ -144,13 +123,11 @@ const Summary = () => {
 
   return (
     <Wrapper>
-      <CustomCard>
-        <ItemWrapper>
-          <ItemIconWrapper>
-            <Image src="/imgs/data-available.svg" />
-          </ItemIconWrapper>
+      <SummaryItem
+        icon={<Image src="/imgs/data-available.svg" />}
+        title="Available"
+        content={
           <div>
-            <Title>Available</Title>
             <ValueWrapper>
               <TextBold>{abbreviateBigNumber(treasury.free)}</TextBold>
               <TextAccessoryBold>{symbol}</TextAccessoryBold>
@@ -160,15 +137,13 @@ const Summary = () => {
               {abbreviateBigNumber(treasury.free * symbolPrice)}
             </ValueInfo>
           </div>
-        </ItemWrapper>
-      </CustomCard>
-      <CustomCard>
-        <ItemWrapper>
-          <ItemIconWrapper>
-            <Image src="/imgs/data-approved.svg" />
-          </ItemIconWrapper>
+        }
+      />
+      <SummaryItem
+        icon={<Image src="/imgs/data-approved.svg" />}
+        title="To be awarded"
+        content={
           <div>
-            <Title>To be awarded</Title>
             <ValueWrapper>
               <TextBold>{abbreviateBigNumber(toBeAwardedValue)}</TextBold>
               <TextAccessoryBold>{symbol}</TextAccessoryBold>
@@ -178,15 +153,13 @@ const Summary = () => {
               {abbreviateBigNumber(toBeAwardedValue * symbolPrice)}
             </ValueInfo>
           </div>
-        </ItemWrapper>
-      </CustomCard>
-      <CustomCard>
-        <ItemWrapper style={{ alignItems: "flex-start" }}>
-          <ItemIconWrapper>
-            <Image src="/imgs/data-next-burn.svg" />
-          </ItemIconWrapper>
+        }
+      />
+      <SummaryItem
+        icon={<Image src="/imgs/data-next-burn.svg" />}
+        title="Next burn"
+        content={
           <div>
-            <Title>Next burn</Title>
             <ValueWrapper>
               <TextBold>
                 {abbreviateBigNumber(treasury.burnPercent * treasury.free)}
@@ -194,15 +167,13 @@ const Summary = () => {
               <TextAccessoryBold>{symbol}</TextAccessoryBold>
             </ValueWrapper>
           </div>
-        </ItemWrapper>
-      </CustomCard>
-      <CustomCard>
-        <ItemWrapper>
-          <ItemIconWrapper>
-            <CountDown percent={spendPeriod.progress} />
-          </ItemIconWrapper>
+        }
+      />
+      <SummaryItem
+        icon={<CountDown percent={spendPeriod.progress} />}
+        title="Spend period"
+        content={
           <div>
-            <Title>Spend period</Title>
             <BlocksTime
               blocks={spendPeriod.restBlocks}
               ValueWrapper={TextBold}
@@ -216,17 +187,15 @@ const Summary = () => {
               {parseEstimateTime(extractTime(spendPeriod.periodTime))}
             </ValueInfo>
           </div>
-        </ItemWrapper>
-      </CustomCard>
+        }
+      />
 
       {isKusama && (
-        <CustomCard>
-          <ItemWrapper>
-            <ItemIconWrapper>
-              <Image src="/imgs/data-opengov.svg" />
-            </ItemIconWrapper>
+        <SummaryItem
+          icon={<Image src="/imgs/data-opengov.svg" />}
+          title="OpenGov"
+          content={
             <div>
-              <Title>OpenGov</Title>
               <ValueWrapper>
                 <TextBold>{overview.count.referenda.unFinished ?? 0}</TextBold>
                 <TextAccessoryBold>/</TextAccessoryBold>
@@ -237,17 +206,15 @@ const Summary = () => {
                 </StyledLink>
               </ValueWrapper>
             </div>
-          </ItemWrapper>
-        </CustomCard>
+          }
+        />
       )}
 
-      <CustomCard>
-        <ItemWrapper>
-          <ItemIconWrapper>
-            <Image src="/imgs/data-proposals.svg" />
-          </ItemIconWrapper>
+      <SummaryItem
+        icon={<Image src="/imgs/data-proposals.svg" />}
+        title="Proposals"
+        content={
           <div>
-            <Title>Proposals</Title>
             <ValueWrapper>
               <TextBold>{overview.count.proposal.unFinished}</TextBold>
               <TextAccessoryBold>/</TextAccessoryBold>
@@ -258,15 +225,13 @@ const Summary = () => {
               </StyledLink>
             </ValueWrapper>
           </div>
-        </ItemWrapper>
-      </CustomCard>
-      <CustomCard>
-        <ItemWrapper>
-          <ItemIconWrapper>
-            <Image src="/imgs/data-tips.svg" />
-          </ItemIconWrapper>
+        }
+      />
+      <SummaryItem
+        icon={<Image src="/imgs/data-tips.svg" />}
+        title="Tips"
+        content={
           <div>
-            <Title>Tips</Title>
             <ValueWrapper>
               <StyledLinkMajor
                 to={{
@@ -282,15 +247,13 @@ const Summary = () => {
               </StyledLink>
             </ValueWrapper>
           </div>
-        </ItemWrapper>
-      </CustomCard>
-      <CustomCard>
-        <ItemWrapper>
-          <ItemIconWrapper>
-            <Image src="/imgs/data-bounties.svg" />
-          </ItemIconWrapper>
+        }
+      />
+      <SummaryItem
+        icon={<Image src="/imgs/data-bounties.svg" />}
+        title="Bounties"
+        content={
           <div>
-            <Title>Bounties</Title>
             <ValueWrapper>
               <TextBold>{overview.count.bounty.unFinished}</TextBold>
               <TextAccessoryBold>/</TextAccessoryBold>
@@ -301,8 +264,8 @@ const Summary = () => {
               </StyledLink>
             </ValueWrapper>
           </div>
-        </ItemWrapper>
-      </CustomCard>
+        }
+      />
     </Wrapper>
   );
 };
