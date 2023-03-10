@@ -19,8 +19,8 @@ import {
 } from "../../styles/tailwindcss";
 import SummaryItem from "../../components/Summary/Item";
 import { lgcss, smcss } from "../../styles/responsive";
-import SummaryCardWrapper from "../../components/Summary";
 import SummaryOngoingItemWrapper from "../../components/Summary/OngoingWrapper";
+import SummaryReferendaWrapper from "../../components/Summary/ReferendaWrapper";
 
 const ItemsWrapper = styled.div`
   ${flex_1};
@@ -73,7 +73,7 @@ export default function Summary() {
   }, [applicationSummary]);
 
   return (
-    <SummaryCardWrapper>
+    <SummaryReferendaWrapper>
       <SummaryOngoingItemWrapper>
         <SummaryItem
           title="Ongoing"
@@ -155,6 +155,6 @@ export default function Summary() {
           }
         />
       </ItemsWrapper>
-    </SummaryCardWrapper>
+    </SummaryReferendaWrapper>
   );
 }

@@ -12,7 +12,7 @@ import {
 } from "../../styles/tailwindcss";
 import { breakpoint } from "../../styles/responsive";
 
-const SummaryCardWrapper = styled(Card)`
+const SummaryProposalsWrapper = styled(Card)`
   ${flex};
   ${p(24)};
   ${rounded_8};
@@ -24,4 +24,4 @@ const SummaryCardWrapper = styled(Card)`
   ${breakpoint(600, rounded_none)};
 `;
 
-export default SummaryCardWrapper;
+export default SummaryProposalsWrapper;

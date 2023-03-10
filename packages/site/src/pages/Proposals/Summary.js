@@ -36,8 +36,8 @@ import { parseEstimateTime } from "../../utils/parseEstimateTime";
 import { extractTime } from "@polkadot/util";
 import SummaryItem from "../../components/Summary/Item";
 import { lgcss, smcss } from "../../styles/responsive";
-import SummaryCardWrapper from "../../components/Summary";
 import SummaryOngoingItemWrapper from "../../components/Summary/OngoingWrapper";
+import SummaryProposalsWrapper from "../../components/Summary/ProposalsWrapper";
 
 const ItemsWrapper = styled.div`
   ${flex_1};
@@ -90,7 +90,7 @@ const Summary = () => {
   const symbolPrice = overview?.latestSymbolPrice ?? 0;
 
   return (
-    <SummaryCardWrapper>
+    <SummaryProposalsWrapper>
       <SummaryOngoingItemWrapper>
         <SummaryItem
           title="Ongoing"
@@ -156,7 +156,7 @@ const Summary = () => {
           }
         />
       </ItemsWrapper>
-    </SummaryCardWrapper>
+    </SummaryProposalsWrapper>
   );
 };
 
