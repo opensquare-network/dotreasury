@@ -19,7 +19,7 @@ import {
 } from "../../styles/tailwindcss";
 import SummaryItem from "../../components/Summary/Item";
 import { lgcss, smcss } from "../../styles/responsive";
-import SummaryOngoingItemWrapper from "../../components/Summary/OngoingWrapper";
+import SummaryOngoingItemWrapper from "../../components/Summary/OngoingItemWrapper";
 import SummaryReferendaWrapper from "../../components/Summary/ReferendaWrapper";
 
 const ItemsWrapper = styled.div`

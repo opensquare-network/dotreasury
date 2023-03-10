@@ -36,7 +36,7 @@ import { parseEstimateTime } from "../../utils/parseEstimateTime";
 import { extractTime } from "@polkadot/util";
 import SummaryItem from "../../components/Summary/Item";
 import { lgcss, smcss } from "../../styles/responsive";
-import SummaryOngoingItemWrapper from "../../components/Summary/OngoingWrapper";
+import SummaryOngoingItemWrapper from "../../components/Summary/OngoingItemWrapper";
 import SummaryProposalsWrapper from "../../components/Summary/ProposalsWrapper";
 
 const ItemsWrapper = styled.div`
