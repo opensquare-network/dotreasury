@@ -155,7 +155,6 @@ class ChildBountiesController {
       },
       page,
       pageSize,
-      ctx.request.user
     );
   }
 

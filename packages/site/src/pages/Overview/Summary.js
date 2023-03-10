@@ -10,7 +10,11 @@ import TextMinor from "../../components/TextMinor";
 import CountDown from "../../components/CountDown";
 import BlocksTime from "../../components/BlocksTime";
 
-import { TEXT_DARK_MAJOR, TEXT_DARK_MINOR } from "../../constants";
+import {
+  TEXT_DARK_ACCESSORY,
+  TEXT_DARK_MAJOR,
+  TEXT_DARK_MINOR,
+} from "../../constants";
 import { overviewSelector } from "../../store/reducers/overviewSlice";
 import {
   fetchSpendPeriod,
@@ -25,54 +29,49 @@ import {
   chainSymbolSelector,
 } from "../../store/reducers/chainSlice";
 import { mrgap } from "../../styles";
-import { abbreviateBigNumber } from "../../utils";
+import { abbreviateBigNumber, getPrecision, toPrecision } from "../../utils";
+import { h3_18_semibold, p_12_normal } from "../../styles/text";
+import {
+  gap_x,
+  gap_y,
+  grid,
+  grid_cols,
+  p,
+  rounded_none,
+} from "../../styles/tailwindcss";
+import { breakpoint, smcss } from "../../styles/responsive";
+import { useIsKusamaChain } from "../../utils/hooks/chain";
+import { extractTime } from "@polkadot/util";
+import { parseEstimateTime } from "../../utils/parseEstimateTime";
+import BigNumber from "bignumber.js";
+import SummaryItem from "../../components/Summary/Item";
 
 const Wrapper = styled(Card)`
-  @media screen and (max-width: 1320px) {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 8px;
-  }
-  @media screen and (min-width: 1320px) {
-    display: flex;
-    justify-content: space-between;
-  }
-  padding: 31px;
   margin-bottom: 24px;
-  @media screen and (max-width: 600px) {
-    border-radius: 0;
-  }
-`;
 
-const CustomCard = styled.div`
-  padding: 0;
-  border-color: #eee;
-`;
+  ${p(24)};
+  ${grid};
+  ${gap_x(128)};
+  ${gap_y(16)};
+  ${grid_cols("auto-fit", 210)};
 
-const ItemWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  & > *:first-child {
-    margin-right: 20px;
-  }
-`;
-
-const Title = styled(TextMinor)`
-  line-height: 24px;
+  ${smcss(grid_cols(2))};
+  ${breakpoint(600, rounded_none)};
 `;
 
 const TextBold = styled(Text)`
-  font-size: 18px;
-  line-height: 32px;
-  font-weight: 700;
+  ${h3_18_semibold};
 `;
 
-const TextMinorBold = styled(TextMinor)`
-  font-size: 18px;
-  line-height: 32px;
-  font-weight: 700;
+const TextAccessoryBold = styled(TextMinor)`
+  ${h3_18_semibold};
+  color: ${TEXT_DARK_ACCESSORY};
 `;
 
+const ValueInfo = styled(Text)`
+  ${p_12_normal};
+  color: ${TEXT_DARK_ACCESSORY};
+`;
 const ValueWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -84,6 +83,9 @@ const ValueWrapper = styled.div`
 const StyledLink = styled(Link)`
   color: ${TEXT_DARK_MINOR} !important;
   &:hover {
+    ${TextAccessoryBold} {
+      color: inherit;
+    }
     text-decoration: underline;
   }
 `;
@@ -109,29 +111,127 @@ const Summary = () => {
   const treasury = useSelector(treasurySelector);
   const symbol = useSelector(chainSymbolSelector);
   const symbolLowerCase = symbol?.toLowerCase();
+  const isKusama = useIsKusamaChain();
+
+  const precision = getPrecision(symbol);
+
+  const symbolPrice = overview?.latestSymbolPrice ?? 0;
+  const toBeAwarded = BigNumber(overview?.toBeAwarded?.total ?? 0).toNumber();
+  const toBeAwardedValue = BigNumber(
+    toPrecision(toBeAwarded, precision)
+  ).toNumber();
 
   return (
     <Wrapper>
-      <CustomCard>
-        <ItemWrapper>
-          <Image src="/imgs/data-proposals.svg" />
+      <SummaryItem
+        icon={<Image src="/imgs/data-available.svg" />}
+        title="Available"
+        content={
           <div>
-            <Title>Proposals</Title>
+            <ValueWrapper>
+              <TextBold>{abbreviateBigNumber(treasury.free)}</TextBold>
+              <TextAccessoryBold>{symbol}</TextAccessoryBold>
+            </ValueWrapper>
+            <ValueInfo>
+              {!!treasury.free && "≈ "}$
+              {abbreviateBigNumber(treasury.free * symbolPrice)}
+            </ValueInfo>
+          </div>
+        }
+      />
+      <SummaryItem
+        icon={<Image src="/imgs/data-approved.svg" />}
+        title="To be awarded"
+        content={
+          <div>
+            <ValueWrapper>
+              <TextBold>{abbreviateBigNumber(toBeAwardedValue)}</TextBold>
+              <TextAccessoryBold>{symbol}</TextAccessoryBold>
+            </ValueWrapper>
+            <ValueInfo>
+              {!!toBeAwardedValue && "≈ "}$
+              {abbreviateBigNumber(toBeAwardedValue * symbolPrice)}
+            </ValueInfo>
+          </div>
+        }
+      />
+      <SummaryItem
+        icon={<Image src="/imgs/data-next-burn.svg" />}
+        title="Next burn"
+        content={
+          <div>
+            <ValueWrapper>
+              <TextBold>
+                {abbreviateBigNumber(treasury.burnPercent * treasury.free)}
+              </TextBold>
+              <TextAccessoryBold>{symbol}</TextAccessoryBold>
+            </ValueWrapper>
+          </div>
+        }
+      />
+      <SummaryItem
+        icon={<CountDown percent={spendPeriod.progress} />}
+        title="Spend period"
+        content={
+          <div>
+            <BlocksTime
+              blocks={spendPeriod.restBlocks}
+              ValueWrapper={TextBold}
+              UnitWrapper={TextAccessoryBold}
+              SectionWrapper={Fragment}
+              TimeWrapper={ValueWrapper}
+              unitMapper={{ d: "Day" }}
+              pluralUnitMapper={{ d: "Days" }}
+            />
+            <ValueInfo>
+              {parseEstimateTime(extractTime(spendPeriod.periodTime))}
+            </ValueInfo>
+          </div>
+        }
+      />
+
+      {isKusama && (
+        <SummaryItem
+          icon={<Image src="/imgs/data-opengov.svg" />}
+          title="OpenGov"
+          content={
+            <div>
+              <ValueWrapper>
+                <TextBold>{overview.count.referenda.unFinished ?? 0}</TextBold>
+                <TextAccessoryBold>/</TextAccessoryBold>
+                <StyledLink to={`/${symbolLowerCase}/referenda`}>
+                  <TextAccessoryBold>
+                    {overview.count.referenda.all}
+                  </TextAccessoryBold>
+                </StyledLink>
+              </ValueWrapper>
+            </div>
+          }
+        />
+      )}
+
+      <SummaryItem
+        icon={<Image src="/imgs/data-proposals.svg" />}
+        title="Proposals"
+        content={
+          <div>
             <ValueWrapper>
               <TextBold>{overview.count.proposal.unFinished}</TextBold>
-              <TextMinorBold>/</TextMinorBold>
+              <TextAccessoryBold>/</TextAccessoryBold>
               <StyledLink to={`/${symbolLowerCase}/proposals`}>
-                <TextMinorBold>{overview.count.proposal.all}</TextMinorBold>
+                <TextAccessoryBold>
+                  {overview.count.proposal.all}
+                </TextAccessoryBold>
               </StyledLink>
             </ValueWrapper>
           </div>
-        </ItemWrapper>
-      </CustomCard>
-      <CustomCard>
-        <ItemWrapper>
-          <Image src="/imgs/data-tips.svg" />
+        }
+      />
+      <SummaryItem
+        icon={<Image src="/imgs/data-tips.svg" />}
+        title="Tips"
+        content={
           <div>
-            <Title>Tips</Title>
             <ValueWrapper>
               <StyledLinkMajor
                 to={{
@@ -141,72 +241,31 @@ const Summary = () => {
               >
                 <TextBold>{overview.count.tip.unFinished}</TextBold>
               </StyledLinkMajor>
-              <TextMinorBold>/</TextMinorBold>
+              <TextAccessoryBold>/</TextAccessoryBold>
               <StyledLink to={`/${symbolLowerCase}/tips`}>
-                <TextMinorBold>{overview.count.tip.all}</TextMinorBold>
+                <TextAccessoryBold>{overview.count.tip.all}</TextAccessoryBold>
               </StyledLink>
             </ValueWrapper>
           </div>
-        </ItemWrapper>
-      </CustomCard>
-      <CustomCard>
-        <ItemWrapper>
-          <Image src="/imgs/data-bounties.svg" />
+        }
+      />
+      <SummaryItem
+        icon={<Image src="/imgs/data-bounties.svg" />}
+        title="Bounties"
+        content={
           <div>
-            <Title>Bounties</Title>
             <ValueWrapper>
               <TextBold>{overview.count.bounty.unFinished}</TextBold>
-              <TextMinorBold>/</TextMinorBold>
+              <TextAccessoryBold>/</TextAccessoryBold>
               <StyledLink to={`/${symbolLowerCase}/bounties`}>
-                <TextMinorBold>{overview.count.bounty.all}</TextMinorBold>
+                <TextAccessoryBold>
+                  {overview.count.bounty.all}
+                </TextAccessoryBold>
               </StyledLink>
             </ValueWrapper>
           </div>
-        </ItemWrapper>
-      </CustomCard>
-      <CustomCard>
-        <ItemWrapper>
-          <Image src="/imgs/data-available.svg" />
-          <div>
-            <Title>Available</Title>
-            <ValueWrapper>
-              <TextBold>{abbreviateBigNumber(treasury.free)}</TextBold>
-              <TextMinorBold>{symbol}</TextMinorBold>
-            </ValueWrapper>
-          </div>
-        </ItemWrapper>
-      </CustomCard>
-      <CustomCard>
-        <ItemWrapper>
-          <Image src="/imgs/data-next-burn.svg" />
-          <div>
-            <Title>Next burn</Title>
-            <ValueWrapper>
-              <TextBold>
-                {abbreviateBigNumber(treasury.burnPercent * treasury.free)}
-              </TextBold>
-              <TextMinorBold>{symbol}</TextMinorBold>
-            </ValueWrapper>
-          </div>
-        </ItemWrapper>
-      </CustomCard>
-      <CustomCard>
-        <ItemWrapper>
-          <CountDown percent={spendPeriod.progress} />
-          <div>
-            <Title>Spend period</Title>
-            <BlocksTime
-              blocks={spendPeriod.restBlocks}
-              ValueWrapper={TextBold}
-              UnitWrapper={TextMinorBold}
-              SectionWrapper={Fragment}
-              TimeWrapper={ValueWrapper}
-              unitMapper={{ d: "Day" }}
-              pluralUnitMapper={{ d: "Days" }}
-            />
-          </div>
-        </ItemWrapper>
-      </CustomCard>
+        }
+      />
     </Wrapper>
   );
 };

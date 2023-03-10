@@ -2,6 +2,7 @@ const migrateLinks = require("./migrate-links");
 const pinRateToIpfs = require("./pin-rate-to-ipfs");
 const updateSort = require("./update-sort");
 const updateParticipants = require("./update-participants");
+const syncProposalTitle = require("./sync-proposal-title");
 
 async function main() {
   try {
@@ -24,6 +25,12 @@ async function main() {
 
   try {
     await pinRateToIpfs();
+  } catch (e) {
+    console.error(e.message);
+  }
+
+  try {
+    await syncProposalTitle();
   } catch (e) {
     console.error(e.message);
   }

@@ -22,6 +22,11 @@ const proposals = [
   {
     type: "proposal",
     token: "ksm",
+    proposalId: 221,
+  },
+  {
+    type: "proposal",
+    token: "ksm",
     proposalId: 179,
   },
   {

@@ -4,7 +4,7 @@ import styled, { css } from "styled-components";
 import ImageButton from "./ImageButton";
 import ExplorerLink from "../../components/ExplorerLink";
 import ExternalLink from "../../components/ExternalLink";
-import { useIsMounted } from "../../utils/hooks";
+import { useIsMounted } from "@osn/common";
 import { mrgap } from "../../styles";
 import polkassemblyApi from "../../services/polkassembly";
 import { useSelector } from "react-redux";
@@ -40,6 +40,14 @@ const ButtonList = ({ extrinsicIndexer, eventIndexer, polkassembly, type }) => {
       if (type === TimelineItemType.DemocracyReferendum) {
         setSubsquareUrl(`https://${chain}.subsquare.io/democracy/referendum/${polkassembly}`);
         const url = await polkassemblyApi.getReferendumUrl(polkassembly);
+        if (isMounted.current) {
+          setPolkassemblyUrl(url);
+        }
+      }
+
+      if (type === TimelineItemType.Gov2Referendum) {
+        setSubsquareUrl(`https://${chain}.subsquare.io/referenda/referendum/${polkassembly}`);
+        const url = await polkassemblyApi.getGov2ReferendumUrl(polkassembly);
         if (isMounted.current) {
           setPolkassemblyUrl(url);
         }

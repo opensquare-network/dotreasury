@@ -11,6 +11,7 @@ const statusCollectionName = "status";
 const tipCollectionName = "tip";
 const proposalCollectionName = "proposal";
 const bountyCollectionName = "bounty";
+const childBountyCollectionName = "childBounty";
 const motionCollectionName = "motion";
 const referendumCollectionName = "democracyReferendum";
 const tipFinderCollectionName = "tipFinder";
@@ -20,6 +21,7 @@ const outputTransferCollectionName = "outputTransfer";
 const participantCollectionName = "participant";
 const motionVoterCollectionName = "motionVoter";
 const tipperCollectionName = "tipper";
+const referendaReferendumCollectionName = "referendaReferendum";
 
 // income collections
 const incomeInflationCollectionName = "inflation";
@@ -28,6 +30,8 @@ const treasurySlashCollectionName = "slashTreasury";
 const electionSlashCollectionName = "slashElections";
 const democracySlashCollectionName = "slashDemocracy";
 const identitySlashCollectionName = "slashIdentity";
+const referendaSlashCollectionName = "slashReferenda";
+const fellowshipReferendaSlashCollectionName = "slashFellowshipReferenda";
 const othersIncomeCollectionName = "othersBig";
 const incomeTransferCollectionName = "transfer";
 
@@ -46,6 +50,7 @@ let councilDb = null;
 const mongoUrl = config.mongo.ksmUrl || "mongodb://127.0.0.1:27017";
 let statusCol = null;
 
+let referendaReferendumCol = null;
 let tipCol = null;
 let proposalCol = null;
 let bountyCol = null;
@@ -67,6 +72,9 @@ let stakingSlashCol = null;
 let treasurySlashCol = null;
 let electionsPhragmenSlashCol = null;
 let democracySlashCol = null;
+let referendaSlashCol = null;
+let fellowshipReferendaSlashCol = null;
+
 let identitySlashCol = null;
 let incomeTransferCol = null;
 let othersIncomeCol = null;
@@ -88,16 +96,19 @@ async function initDb() {
   treasurySlashCol = inputDb.collection(treasurySlashCollectionName);
   electionsPhragmenSlashCol = inputDb.collection(electionSlashCollectionName);
   democracySlashCol = inputDb.collection(democracySlashCollectionName);
+  referendaSlashCol = inputDb.collection(referendaSlashCollectionName);
+  fellowshipReferendaSlashCol = inputDb.collection(fellowshipReferendaSlashCollectionName);
   identitySlashCol = inputDb.collection(identitySlashCollectionName);
   incomeTransferCol = inputDb.collection(incomeTransferCollectionName);
   othersIncomeCol = inputDb.collection(othersIncomeCollectionName);
   inputWeeklyStatsCol = inputDb.collection(weeklyStatsCollectionName);
 
   outputDb = client.db(outputDbName);
+  referendaReferendumCol = outputDb.collection(referendaReferendumCollectionName);
   tipCol = outputDb.collection(tipCollectionName);
   proposalCol = outputDb.collection(proposalCollectionName);
   bountyCol = outputDb.collection(bountyCollectionName);
-  childBountyCol = outputDb.collection("childBounty");
+  childBountyCol = outputDb.collection(childBountyCollectionName);
   motionCol = outputDb.collection(motionCollectionName);
   referendumCol = outputDb.collection(referendumCollectionName);
   tipFinderCol = outputDb.collection(tipFinderCollectionName);
@@ -153,6 +164,11 @@ async function getOutputStatusCollection() {
   await tryInit(outputStatusCol);
   return outputStatusCol;
 }
+
+async function getReferendaReferendumCollection() {
+  await tryInit(referendaReferendumCol);
+  return referendaReferendumCol;
+};
 
 async function getTipCollection() {
   await tryInit(tipCol);
@@ -234,6 +250,16 @@ async function getIdentitySlashCollection() {
   return identitySlashCol;
 }
 
+async function getReferendaSlashCollection() {
+  await tryInit(referendaSlashCol);
+  return referendaSlashCol;
+}
+
+async function getFellowshipReferendaSlashCollection() {
+  await tryInit(fellowshipReferendaSlashCol);
+  return fellowshipReferendaSlashCol;
+}
+
 async function getIncomeTransferCollection() {
   await tryInit(incomeTransferCol);
   return incomeTransferCol;
@@ -287,6 +313,7 @@ async function getTipperCollection() {
 module.exports = {
   initDb,
   getStatusCollection,
+  getReferendaReferendumCollection,
   getTipCollection,
   getProposalCollection,
   getBountyCollection,
@@ -303,6 +330,8 @@ module.exports = {
   getElectionSlashCollection,
   getDemocracySlashCollection,
   getIdentitySlashCollection,
+  getReferendaSlashCollection,
+  getFellowshipReferendaSlashCollection,
   getIncomeTransferCollection,
   getOthersIncomeCollection,
   getInputWeeklyStatsCollection,

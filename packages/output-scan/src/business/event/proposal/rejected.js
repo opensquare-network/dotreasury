@@ -28,7 +28,7 @@ async function handleRejected(event, eventIndexer) {
     indexer: eventIndexer,
   };
 
-  await updateProposal(proposalId, { state }, timelineItem);
+  await updateProposal(proposalId, { state, isFinal: true }, timelineItem);
   logger.info(`Treasury proposal ${ proposalId } rejected at`, eventIndexer);
 }
 

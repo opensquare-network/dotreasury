@@ -6,7 +6,7 @@ import { Image } from "semantic-ui-react";
 import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
 import { removeToast } from "../../store/reducers/toastSlice";
-import { useIsMounted } from "../../utils/hooks";
+import { useIsMounted } from "@osn/common";
 
 const Wrapper = styled.div`
   width: 320px;

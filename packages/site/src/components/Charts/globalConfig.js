@@ -11,6 +11,7 @@ import {
   TimeScale,
   Title,
   Tooltip,
+  RadialLinearScale,
 } from "chart.js";
 import "./adapterDayjs";
 
@@ -27,5 +28,6 @@ Chart.register(
   Filler,
   ArcElement,
   BarElement,
-  Legend
+  Legend,
+  RadialLinearScale
 );

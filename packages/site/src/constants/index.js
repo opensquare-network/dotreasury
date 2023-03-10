@@ -13,6 +13,8 @@ export const Primary_Theme_Pink_200 = "#ffc5ce";
 export const Primary_Theme_Pink_300 = "#FC7C91";
 export const Primary_Theme_Pink_400 = "#F8526E";
 export const Primary_Theme_Pink_500 = "#F23252";
+export const Primary_Theme_Yellow_500 = "#f2b12f";
+export const Primary_Theme_Orange_500 = "#f27532";
 export const PRIMARY_THEME_COLOR = "#DF405D";
 export const SECONDARY_THEME_COLOR = "#FFEEF1";
 export const WARNING_COLOR = "#EC4730";
@@ -20,7 +22,7 @@ export const WARNING_COLOR = "#EC4730";
 export const OVERVIEW_PROPOSALS_COLOR = "#DF405D";
 export const OVERVIEW_TIPS_COLOR = "#F1AC26";
 export const OVERVIEW_BOUNTIES_COLOR = "#635FEC";
-export const OVERVIEW_BURNT_COLOR = "#EE7735";
+export const OVERVIEW_BURNT_COLOR = "#F27532";
 export const OVERVIEW_INFLATION_COLOR = "#DF405D";
 export const OVERVIEW_TREASURY_COLOR = "#FCC04D";
 export const OVERVIEW_STAKING_COLOR = "#F1AC26";
@@ -28,6 +30,13 @@ export const OVERVIEW_DEMOCRACY_COLOR = "#FFDFA0";
 export const OVERVIEW_ELECTION_COLOR = "#FED077";
 export const OVERVIEW_IDENTITY_COLOR = "#FFEDC9";
 export const OVERVIEW_OTHERS_COLOR = "#CCCCCC";
+
+export const OVERVIEW_TREASURER_COLOR = "#F23252";
+export const OVERVIEW_SMALL_TIPPER_COLOR = "#f2b12f";
+export const OVERVIEW_BIG_TIPPER_COLOR = "#f27532";
+export const OVERVIEW_SMALL_SPENDER_COLOR = "#635fec";
+export const OVERVIEW_MEDIUM_SPENDER_COLOR = "#086de3";
+export const OVERVIEW_BIG_SPENDER_COLOR = "#4caf91";
 
 export const TipStatus = {
   Tipping: "Tipping",
@@ -101,6 +110,7 @@ export const DEFAULT_QUERY_PAGE = 1;
 export const TimelineItemType = {
   CouncilMotion: "council-motion",
   DemocracyReferendum: "democracy-referendum",
+  Gov2Referendum: "gov2-referendum",
 };
 
 /**

@@ -274,7 +274,11 @@ const description = {
   title: "Description",
   cellClassName: "proposal-description-cell",
   cellRender: (_, item) => (
-    <DescriptionCell description={item.description} tags={item.tags} />
+    <DescriptionCell
+      description={item.description}
+      tags={item.tags}
+      trackInfo={item.trackInfo}
+    />
   ),
 };
 const relatedLinks = (options) => ({
@@ -295,6 +299,19 @@ const proposalStatus = {
     <PairTextVertical
       value={getProposalStateWithVotingAyes(item)}
       detail={dayjs(parseInt(item.latestState.time)).format("YYYY-MM-DD HH:mm")}
+    />
+  ),
+};
+const referendaStatus = {
+  key: "referenda-status",
+  title: "Status",
+  headerCellProps: { textAlign: "right" },
+  cellProps: { textAlign: "right" },
+  cellClassName: "referenda-status-cell",
+  cellRender: (_, item) => (
+    <PairTextVertical
+      value={item?.state?.name}
+      detail={dayjs(parseInt(item?.state?.indexer?.blockTime)).format("YYYY-MM-DD HH:mm")}
     />
   ),
 };
@@ -399,5 +416,6 @@ export function useTableColumns(options) {
     tipsStatus,
     tipsValue: tipsValue(symbol),
     burntValue: burntValue(symbol),
+    referendaStatus,
   };
 }

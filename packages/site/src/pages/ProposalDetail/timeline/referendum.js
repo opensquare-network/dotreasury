@@ -3,7 +3,7 @@ import ReferendumVote from "../../../components/ReferendumVote";
 import { TimelineItemType } from "../../../constants";
 import useApi from "../../../hooks/useApi";
 import { getElectorate, getReferendumInfo } from "../../../services/chainApi";
-import { useIsMounted } from "../../../utils/hooks";
+import { useIsMounted } from "@osn/common";
 import LoadingItem from "../../Timeline/LoadingItem";
 import Item from "../../Timeline/Item";
 

@@ -7,6 +7,20 @@ const description = `Various side events funded by polkadot/kusama treasury`;
 
 const proposals = [
   {
+    token: "dot",
+    type: "tip",
+    tipId: "0xa37bdd850f422fbf3abd596adf5e693b886a13cd11ef154a0ff7753d4132f1e9",
+  },
+  {
+    token: "ksm",
+    type: "tip",
+    tipId: "0xe8d5ae7e5ab774af2d611f42125e6957c368b892cf5e462d273be8d921fe4d5c",
+  },
+  {
+    token: "ksm",
+    proposalId: 206,
+  },
+  {
     token: "ksm",
     proposalId: 183,
   },

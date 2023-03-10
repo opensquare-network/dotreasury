@@ -1,13 +1,16 @@
-import React from "react"
+import React from "react";
 
-export default function ExternalLink({ href, children }) {
+export default function ExternalLink({ href, children, className }) {
   return (
     <a
       href={href}
       title={href}
       target="_blank"
       rel="noopener noreferrer"
-      onClick={(e) => { e.stopPropagation(); }}
+      className={className}
+      onClick={(e) => {
+        e.stopPropagation();
+      }}
     >
       {children}
     </a>

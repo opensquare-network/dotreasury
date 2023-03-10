@@ -39,6 +39,20 @@ const incomeSlice = createSlice({
       total: 0,
     },
     stakingSlashListLoading: false,
+    referendaSlashList: {
+      items: [],
+      page: 0,
+      pageSize: 10,
+      total: 0,
+    },
+    referendaSlashListLoading: false,
+    fellowshipReferendaSlashList: {
+      items: [],
+      page: 0,
+      pageSize: 10,
+      total: 0,
+    },
+    fellowshipReferendaSlashListLoading: false,
     inflationList: {
       items: [],
       page: 0,
@@ -66,6 +80,8 @@ const incomeSlice = createSlice({
       identitySlash: 0,
       electionPhragmenSlash: 0,
       stakingSlash: 0,
+      referendaSlash: 0,
+      fellowshipReferendaSlash: 0,
       inflation: 0,
       others: 0,
       transfer: 0,
@@ -105,6 +121,18 @@ const incomeSlice = createSlice({
     setStakingSlashListLoading(state, { payload }) {
       state.stakingSlashListLoading = payload;
     },
+    setReferendaSlashList(state, { payload }) {
+      state.referendaSlashList = payload;
+    },
+    setReferendaSlashListLoading(state, { payload }) {
+      state.referendaSlashListLoading = payload;
+    },
+    setFellowshipReferendaSlashList(state, { payload }) {
+      state.fellowshipReferendaSlashList = payload;
+    },
+    setFellowshipReferendaSlashListLoading(state, { payload }) {
+      state.fellowshipReferendaSlashListLoading = payload;
+    },
     setInflationList(state, { payload }) {
       state.inflationList = payload;
     },
@@ -138,6 +166,10 @@ export const {
   setElectionPhragmenSlashListLoading,
   setStakingSlashList,
   setStakingSlashListLoading,
+  setReferendaSlashList,
+  setReferendaSlashListLoading,
+  setFellowshipReferendaSlashList,
+  setFellowshipReferendaSlashListLoading,
   setInflationList,
   setInflationListLoading,
   setOthersIncomeList,
@@ -156,6 +188,8 @@ export const fetchIncomeCount = (chain) => async (dispatch) => {
         identitySlash: 0,
         electionPhragmenSlash: 0,
         stakingSlash: 0,
+        referendaSlash: 0,
+        fellowshipReferendaSlash: 0,
         inflation: 0,
         others: 0,
         transfer: 0,
@@ -300,6 +334,66 @@ export const fetchElectionPhragmenSlashList = (
   }
 };
 
+export const fetchReferendaSlashList = (
+  chain,
+  page = 0,
+  pageSize = 30
+) => async (dispatch) => {
+  dispatch(setReferendaSlashListLoading(true));
+
+  try {
+    const { result } = await api.fetch(
+      `/${chain}/income/slash/referenda`,
+      {
+        page,
+        pageSize,
+      }
+    );
+    dispatch(
+      setReferendaSlashList(
+        result || {
+          items: [],
+          page: 0,
+          pageSize: 10,
+          total: 0,
+        }
+      )
+    );
+  } finally {
+    dispatch(setReferendaSlashListLoading(false));
+  }
+};
+
+export const fetchFellowshipReferendaSlashList = (
+  chain,
+  page = 0,
+  pageSize = 30
+) => async (dispatch) => {
+  dispatch(setFellowshipReferendaSlashListLoading(true));
+
+  try {
+    const { result } = await api.fetch(
+      `/${chain}/income/slash/fellowship-referenda`,
+      {
+        page,
+        pageSize,
+      }
+    );
+    dispatch(
+      setFellowshipReferendaSlashList(
+        result || {
+          items: [],
+          page: 0,
+          pageSize: 10,
+          total: 0,
+        }
+      )
+    );
+  } finally {
+    dispatch(setFellowshipReferendaSlashListLoading(false));
+  }
+};
+
 export const fetchInflationList = (chain, page = 0, pageSize = 30) => async (
   dispatch
 ) => {
@@ -396,6 +490,14 @@ export const stakingSlashListSelector = (state) =>
   state.income.stakingSlashList;
 export const stakingSlashListLoadingSelector = (state) =>
   state.income.stakingSlashListLoading;
+export const referendaSlashListSelector = (state) =>
+  state.income.referendaSlashList;
+export const referendaSlashListLoadingSelector = (state) =>
+  state.income.referendaSlashListLoading;
+export const fellowshipReferendaSlashListSelector = (state) =>
+  state.income.fellowshipReferendaSlashList;
+export const fellowshipReferendaSlashListLoadingSelector = (state) =>
+  state.income.fellowshipReferendaSlashListLoading;
 export const inflationListSelector = (state) => state.income.inflationList;
 export const inflationListLoadingSelector = (state) =>
   state.income.inflationListLoading;

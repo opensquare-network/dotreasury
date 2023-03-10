@@ -10,7 +10,7 @@
     "scan": "node src/index.js"
   },
   "dependencies": {
-    "@polkadot/api": "9.9.4",
+    "@polkadot/api": "9.14.2",
     "bignumber.js": "^9.0.1",
     "dotenv": "^8.2.0",
     "lodash.findlast": "^4.6.0",
@@ -19,7 +19,7 @@
     "lodash.omit": "^4.5.0",
     "log4js": "^6.4.0",
     "mongodb": "^4.1.3",
-    "@osn/scan-common": "0.2.7"
+    "@osn/scan-common": "0.4.4"
   },
   "devDependencies": {
     "@shelf/jest-mongodb": "^2.1.0",

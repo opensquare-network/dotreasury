@@ -55,7 +55,10 @@ export default function CountDown(props) {
   }, [percent, size, svgElement]);
 
   return (
-    <Tooltip showTooltip={showTooltip} tooltipContent={tooltipContent}>
+    <Tooltip
+      showTooltip={showTooltip}
+      tooltipContent={tooltipContent && tooltipContent}
+    >
       <SVG
         ref={svgElement}
         width={size}

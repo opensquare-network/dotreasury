@@ -16,6 +16,10 @@ function getOutputStatusCollection(chain) {
   return db(chain).getOutputStatusCollection();
 }
 
+function getReferendaReferendumCollection(chain) {
+  return db(chain).getReferendaReferendumCollection();
+}
+
 function getTipCollection(chain) {
   return db(chain).getTipCollection();
 }
@@ -80,6 +84,14 @@ function getIdentitySlashCollection(chain) {
   return db(chain).getIdentitySlashCollection();
 }
 
+function getReferendaSlashCollection(chain) {
+  return db(chain).getReferendaSlashCollection();
+}
+
+function getFellowshipReferendaSlashCollection(chain) {
+  return db(chain).getFellowshipReferendaSlashCollection();
+}
+
 function getIncomeTransferCollection(chain) {
   return db(chain).getIncomeTransferCollection();
 }
@@ -123,6 +135,7 @@ function getTipperCollection(chain) {
 module.exports = {
   initDb,
   getStatusCollection,
+  getReferendaReferendumCollection,
   getTipCollection,
   getProposalCollection,
   getBountyCollection,
@@ -139,6 +152,8 @@ module.exports = {
   getElectionSlashCollection,
   getDemocracySlashCollection,
   getIdentitySlashCollection,
+  getReferendaSlashCollection,
+  getFellowshipReferendaSlashCollection,
   getIncomeTransferCollection,
   getOthersIncomeCollection,
   getInputWeeklyStatsCollection,

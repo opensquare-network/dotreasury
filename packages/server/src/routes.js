@@ -4,6 +4,7 @@ const router = new Router();
 
 const chainFeatureRouters = [
   require("./features/status/routes"),
+  require("./features/referenda/routes"),
   require("./features/tips/routes"),
   require("./features/proposals/routes"),
   require("./features/bounties/routes"),
@@ -15,12 +16,10 @@ const chainFeatureRouters = [
   require("./features/child-bounties/routes"),
   require("./features/profile/routes"),
   require("./features/participant/routes"),
+  require("./features/overview/routes"),
 ];
 
 const commonFeatureRouters = [
-  require("./features/auth/routes"),
-  require("./features/users/routes"),
-  require("./features/comments/routes"),
   require("./features/rate/routes"),
   require("./features/scan/routes"),
 ];

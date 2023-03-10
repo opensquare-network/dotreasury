@@ -86,7 +86,7 @@ const ProposalsTable = ({ data, loading, header, footer }) => {
     return `/${symbol.toLowerCase()}/proposals/${row.proposalIndex}`;
   };
 
-  const {
+  let {
     proposalIndex,
     proposeTime,
     beneficiary,
@@ -103,14 +103,26 @@ const ProposalsTable = ({ data, loading, header, footer }) => {
 
   const handleSwitchBebeficiaryProposer = () =>
     setIsBeneficiary(!isBeneficiary);
-  beneficiary.headerCellProps = {
-    onClick: handleSwitchBebeficiaryProposer,
+  beneficiary = {
+    ...beneficiary,
+    headerCellProps: {
+      onClick: handleSwitchBebeficiaryProposer,
+    }
   };
-  proposer.headerCellProps = {
-    onClick: handleSwitchBebeficiaryProposer,
+  proposer = {
+    ...proposer,
+    headerCellProps: {
+      onClick: handleSwitchBebeficiaryProposer,
+    },
   };
-  beneficiary.show = isBeneficiary;
-  proposer.show = !isBeneficiary;
+  beneficiary = {
+    ...beneficiary,
+    show: isBeneficiary,
+  };
+  proposer = {
+    ...proposer,
+    show: !isBeneficiary,
+  };
 
   const columns = [
     proposalIndex,

@@ -8,7 +8,7 @@ import { StyledItem, StyledTitle, EditWrapper, EditButton } from "./components";
 import FormError from "../../components/FormError";
 import TextMinor from "../../components/TextMinor";
 import TextDisable from "../../components/TextDisable";
-import { useIsMounted } from "../../utils/hooks";
+import { useIsMounted } from "@osn/common";
 import {
   userProfileSelector,
   fetchUserProfile,

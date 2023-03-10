@@ -1,41 +1,64 @@
 import styled from "styled-components";
-import { useRef } from "react";
-import { useTooltip } from "./useTooltip";
+import { useRef, useState } from "react";
 import { TooltipArrow, TooltipContainer } from "./styled";
+import {
+  useFloating,
+  flip,
+  shift,
+  arrow,
+  offset,
+  autoUpdate,
+} from "@floating-ui/react";
 
 const Wrapper = styled.div`
   display: inline-flex;
 `;
 
-export default function Tooltip({
-  children,
-  showTooltip = true,
-  tooltipContent,
-  tooltipOffset,
-}) {
-  const refElement = useRef(null);
-  const tooltipElement = useRef(null);
+export default function Tooltip({ children, tooltipContent }) {
+  const [open, setOpen] = useState(false);
 
-  const { visible, show, hide } = useTooltip({
-    triggerRef: refElement,
-    popperRef: tooltipElement,
-    showTooltip,
-    offset: tooltipOffset,
-  });
+  const arrowRef = useRef(null);
+
+  const { middlewareData, placement, x, y, reference, floating, strategy } =
+    useFloating({
+      open,
+      onOpenChange: setOpen,
+      placement: "top",
+      middleware: [offset(8), flip(), shift(), arrow({ element: arrowRef })],
+      whileElementsMounted: autoUpdate,
+    });
+
+  function show() {
+    setOpen(true);
+  }
+
+  function hide() {
+    setOpen(false);
+  }
 
   return (
     <Wrapper
-      ref={refElement}
+      ref={reference}
       onMouseEnter={show}
       onFocus={show}
       onMouseLeave={hide}
       onBlur={hide}
     >
       {children}
-      {showTooltip && (
-        <TooltipContainer ref={tooltipElement} data-show={visible}>
+      {open && tooltipContent && (
+        <TooltipContainer
+          ref={floating}
+          data-show={open}
+          data-placement={placement}
+          style={{
+            position: strategy,
+            top: y ?? 0,
+            left: x ?? 0,
+            width: "max-content",
+          }}
+        >
           {tooltipContent}
-          <TooltipArrow data-popper-arrow />
+          <TooltipArrow x={middlewareData?.arrow?.x} ref={arrowRef} />
         </TooltipContainer>
       )}
     </Wrapper>

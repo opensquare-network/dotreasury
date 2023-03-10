@@ -37,6 +37,7 @@ async function saveNewTreasuryProposal(event, extrinsic, eventIndexer) {
     beneficiary,
     meta,
     state,
+    isFinal: false,
     timeline: [timelineItem],
     motions: [],
     referendums: [],

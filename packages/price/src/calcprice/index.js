@@ -59,6 +59,7 @@ async function main() {
       getProposalCollection,
       getBountyCollection,
       getChildBountyCollection,
+      getReferendaReferendumCollection,
     } = DB(dbUrl, dbName);
 
     const tipCol = await getTipCollection();
@@ -72,6 +73,11 @@ async function main() {
 
     const childBountyCol = await getChildBountyCollection();
     await savePrice(chain, childBountyCol);
+
+    if (chain === "kusama") {
+      const referendaCol = await getReferendaReferendumCollection();
+      await savePrice(chain, referendaCol);
+    }
 
     console.log("Update price successful:", dbName);
   }

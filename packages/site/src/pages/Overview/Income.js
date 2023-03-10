@@ -16,13 +16,14 @@ import {
   TEXT_DARK_MAJOR,
 } from "../../constants";
 import { useSelector } from "react-redux";
-import { chainSymbolSelector } from "../../store/reducers/chainSlice";
+import {
+  chainSelector,
+  chainSymbolSelector,
+} from "../../store/reducers/chainSlice";
+import DoughnutCardLinkTitle from "./DoughnutCardLinkTitle";
 
 const LinkButton = styled(TextMinor)`
   display: flex;
-  position: absolute;
-  right: 24px;
-  top: 20px;
   :hover {
     color: ${TEXT_DARK_MAJOR};
     & > :last-child {
@@ -40,8 +41,12 @@ const Income = ({
   slashStaking,
   slashElection,
   slashIdentity,
+  slashReferenda,
+  slashFellowshipReferenda,
   others,
 }) => {
+  const chain = useSelector(chainSelector);
+  const isKusama = chain === "kusama";
   const symbol = useSelector(chainSymbolSelector)?.toLowerCase();
   const [incomeData, setIncomeData] = useState({
     icon: "circle",
@@ -70,6 +75,16 @@ const Income = ({
           {
             name: "Identity",
           },
+          ...(isKusama
+            ? [
+                {
+                  name: "Referenda",
+                },
+                {
+                  name: "Fellowship",
+                },
+              ]
+            : []),
         ],
       },
       {
@@ -115,6 +130,20 @@ const Income = ({
               value: slashIdentity,
               color: OVERVIEW_IDENTITY_COLOR,
             },
+            ...(isKusama
+              ? [
+                  {
+                    name: "Referenda",
+                    value: slashReferenda,
+                    color: OVERVIEW_DEMOCRACY_COLOR,
+                  },
+                  {
+                    name: "Fellowship",
+                    value: slashFellowshipReferenda,
+                    color: OVERVIEW_IDENTITY_COLOR,
+                  },
+                ]
+              : []),
           ],
         },
         {
@@ -131,7 +160,10 @@ const Income = ({
     slashStaking,
     slashElection,
     slashIdentity,
+    slashReferenda,
+    slashFellowshipReferenda,
     others,
+    isKusama,
   ]);
 
   const clickEvent = (name) => {
@@ -164,18 +196,23 @@ const Income = ({
 
   return (
     <DoughnutCard
-      title="Income"
+      title={
+        <DoughnutCardLinkTitle href="https://wiki.polkadot.network/docs/learn-treasury#funding-the-treasury">
+          Income
+        </DoughnutCardLinkTitle>
+      }
+      titleExtra={
+        <NavLink to={`/${symbol}/income`}>
+          <LinkButton>
+            Detail
+            <GrayImage src="/imgs/caret-right.svg" width={24} />
+          </LinkButton>
+        </NavLink>
+      }
       data={incomeData}
       status={incomeStatus}
       clickEvent={clickEvent}
-    >
-      <NavLink to={`/${symbol}/income`}>
-        <LinkButton>
-          Detail
-          <GrayImage src="/imgs/caret-right.svg" width={24} />
-        </LinkButton>
-      </NavLink>
-    </DoughnutCard>
+    />
   );
 };
 

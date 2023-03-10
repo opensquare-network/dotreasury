@@ -14,7 +14,7 @@ export function useColumns(options) {
     return `/${symbol.toLowerCase()}/${type}/${row.bountyIndex}`;
   };
 
-  const {
+  let {
     bountyIndex,
     proposeTime,
     curator,
@@ -29,14 +29,26 @@ export function useColumns(options) {
     setIsCurator(!isCurator);
   };
 
-  curator.headerCellProps = {
-    onClick: toggleCuratorBeneficiary,
+  curator = {
+    ...curator,
+    headerCellProps: {
+      onClick: toggleCuratorBeneficiary,
+    }
   };
-  beneficiary.headerCellProps = {
-    onClick: toggleCuratorBeneficiary,
+  beneficiary = {
+    ...beneficiary,
+    headerCellProps: {
+      onClick: toggleCuratorBeneficiary,
+    }
   };
-  curator.show = isCurator;
-  beneficiary.show = !isCurator;
+  curator = {
+    ...curator,
+    show: isCurator,
+  };
+  beneficiary = {
+    ...beneficiary,
+    show: !isCurator,
+  };
 
   const columns = [
     bountyIndex,

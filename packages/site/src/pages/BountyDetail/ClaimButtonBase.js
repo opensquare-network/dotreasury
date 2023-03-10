@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import useApi from "../../hooks/useApi";
 import { accountSelector } from "../../store/reducers/accountSlice";
 import { newErrorToast } from "../../store/reducers/toastSlice";
-import { useIsMounted } from "../../utils/hooks";
+import { useIsMounted } from "@osn/common";
 import { sendTx } from "../../utils/sendTx";
 import { isSameAddress } from "../../utils";
 import OnChainActionButton from "../../components/OnChainActionButton";
@@ -78,7 +78,9 @@ export default function ClaimButtonBase({ bounty, onFinalized, newClaimTx }) {
   return (
     <Tooltip
       showTooltip={!!tooltipContent}
-      tooltipContent={<TooltipInfoText>{tooltipContent}</TooltipInfoText>}
+      tooltipContent={
+        tooltipContent && <TooltipInfoText>{tooltipContent}</TooltipInfoText>
+      }
     >
       <OnChainActionButton
         onClick={doClaim}

@@ -9,13 +9,13 @@ const GlobalStyle = createGlobalStyle`
       box-sizing: border-box !important;
     }
   }
-  
+
   #root {
     display: flex;
     flex-direction: column;
     font-family: 'Inter', 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
   }
-  
+
   ol:not(.mde-preview-content *),
   ul:not(.mde-preview-content *),
   li:not(.mde-preview-content *) {
@@ -23,30 +23,23 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
   }
-  
-  /* .ui.input input:hover,
-  .ui.form input:hover,
-  .ui.input input:focus,
-  .ui.form input:focus {
-    border-color: #CCCCCC !important;
-  } */
-  
+
   .ant-table.ant-table-small {
     font-size: 13px;
   }
-  
+
   a {
     color: #4183c4;
     &:hover {
       color: #40a9ff;
     }
   }
-  
+
   .ui.table td {
     padding-top: 8px;
     padding-bottom: 8px;
   }
-  
+
   pre {
     background-color: whitesmoke;
     color: #4a4a4a;
@@ -67,7 +60,7 @@ const GlobalStyle = createGlobalStyle`
   }
   -ms-overflow-style: none;
   scrollbar-width: none;
-  
+
   div.modals.dimmer {
     background-color: rgba(0, 0, 0, .48) !important;
   }

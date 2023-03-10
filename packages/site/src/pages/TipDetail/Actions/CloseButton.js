@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import useApi from "../../../hooks/useApi";
 import { accountSelector } from "../../../store/reducers/accountSlice";
 import { newErrorToast } from "../../../store/reducers/toastSlice";
-import { useIsMounted } from "../../../utils/hooks";
+import { useIsMounted } from "@osn/common";
 import { sendTx } from "../../../utils/sendTx";
 import OnChainActionButton from "../../../components/OnChainActionButton";
 import { scanHeightSelector } from "../../../store/reducers/chainSlice";
@@ -80,7 +80,9 @@ export default function CloseButton({ tipDetail, onFinalized }) {
   return (
     <Tooltip
       showTooltip={!!tooltipContent}
-      tooltipContent={<TooltipInfoText>{tooltipContent}</TooltipInfoText>}
+      tooltipContent={
+        tooltipContent && <TooltipInfoText>{tooltipContent}</TooltipInfoText>
+      }
     >
       <OnChainActionButton
         onClick={doCloseTip}

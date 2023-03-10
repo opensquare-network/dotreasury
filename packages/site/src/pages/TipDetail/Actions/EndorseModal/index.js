@@ -14,7 +14,7 @@ import { accountSelector } from "../../../../store/reducers/accountSlice";
 import { newErrorToast } from "../../../../store/reducers/toastSlice";
 import { web3Enable, web3FromSource } from "@polkadot/extension-dapp";
 import { sendTx } from "../../../../utils/sendTx";
-import { useIsMounted } from "../../../../utils/hooks";
+import { useIsMounted } from "@osn/common";
 import BigNumber from "bignumber.js";
 import { useEffect } from "react";
 import useCouncilMembers from "../../../../utils/useCouncilMembers";

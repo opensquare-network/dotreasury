@@ -8,6 +8,8 @@ const {
   getIncomeInflationCollection,
   getOthersIncomeCollection,
   getIncomeTransferCollection,
+  getReferendaSlashCollection,
+  getFellowshipReferendaSlashCollection,
 } = require("../../mongo");
 
 class IncomeController {
@@ -128,6 +130,60 @@ class IncomeController {
     }
 
     const col = await getIdentitySlashCollection(chain);
+    const items = await col
+      .find({})
+      .sort({
+        "indexer.blockHeight": -1,
+      })
+      .skip(page * pageSize)
+      .limit(pageSize)
+      .toArray();
+    const total = await col.estimatedDocumentCount();
+
+    ctx.body = {
+      items,
+      page,
+      pageSize,
+      total,
+    };
+  }
+
+  async getReferendaSlash(ctx) {
+    const { chain } = ctx.params;
+    const { page, pageSize } = extractPage(ctx);
+    if (pageSize === 0 || page < 0) {
+      ctx.status = 400;
+      return;
+    }
+
+    const col = await getReferendaSlashCollection(chain);
+    const items = await col
+      .find({})
+      .sort({
+        "indexer.blockHeight": -1,
+      })
+      .skip(page * pageSize)
+      .limit(pageSize)
+      .toArray();
+    const total = await col.estimatedDocumentCount();
+
+    ctx.body = {
+      items,
+      page,
+      pageSize,
+      total,
+    };
+  }
+
+  async getFellowshipReferendaSlash(ctx) {
+    const { chain } = ctx.params;
+    const { page, pageSize } = extractPage(ctx);
+    if (pageSize === 0 || page < 0) {
+      ctx.status = 400;
+      return;
+    }
+
+    const col = await getFellowshipReferendaSlashCollection(chain);
     const items = await col
       .find({})
       .sort({

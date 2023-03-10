@@ -52,7 +52,7 @@ async function updateProposal(proposalIndex, updates, timelineItem, motionInfo) 
     }
   }
 
-  await col.updateOne({ proposalIndex }, update);
+  await col.updateOne({ proposalIndex, isFinal: false }, update);
 }
 
 module.exports = {

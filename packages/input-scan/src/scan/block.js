@@ -16,6 +16,8 @@ async function scanNormalizedBlock(block, blockEvents) {
     details.democracySlash,
     details.stakingSlash,
     details.electionSlash,
+    details.referendaSlash,
+    details.fellowshipReferendaSlash,
   ])
 
   const nowSeats = await getNowIncomeSeats();
@@ -31,6 +33,8 @@ async function scanNormalizedBlock(block, blockEvents) {
       democracy: bigAdd(nowSeats.slashSeats.democracy, details.democracySlash),
       election: bigAdd(nowSeats.slashSeats.election, details.electionSlash),
       identity: bigAdd(nowSeats.slashSeats.identity, details.idSlash),
+      referenda: bigAdd(nowSeats.slashSeats.referenda || 0, details.referendaSlash),
+      fellowshipReferenda: bigAdd(nowSeats.slashSeats.fellowshipReferenda || 0, details.fellowshipReferendaSlash),
     }
   }
 }
