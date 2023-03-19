@@ -31,14 +31,30 @@ async function handleTipEvent(event, extrinsic, indexer) {
     const [hash] = data;
     await updateTipWithClosing(hash.toString(), indexer);
   } else if (TipEvents.TipClosed === method) {
-    await updateTipWithTipClosed(event, extrinsic, indexer);
+    await updateTipWithTipClosed(event, indexer);
   } else if (TipEvents.TipRetracted === method) {
-    await updateTipWithTipRetracted(event, extrinsic, indexer);
+    await updateTipWithTipRetracted(event, indexer);
   } else if (TipEvents.TipSlashed === method) {
-    await updateTipWithTipSlashed(event, extrinsic, indexer);
+    await updateTipWithTipSlashed(event, indexer);
+  }
+}
+
+async function handleTipEventWithoutExtrinsic(event, indexer) {
+  const { section, method } = event;
+  if (!isTipEvent(section, method)) {
+    return;
+  }
+
+  if (TipEvents.TipClosed === method) {
+    await updateTipWithTipClosed(event, indexer);
+  } else if (TipEvents.TipRetracted === method) {
+    await updateTipWithTipRetracted(event, indexer);
+  } else if (TipEvents.TipSlashed === method) {
+    await updateTipWithTipSlashed(event, indexer);
   }
 }
 
 module.exports = {
   handleTipEvent,
+  handleTipEventWithoutExtrinsic,
 };

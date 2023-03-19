@@ -91,7 +91,7 @@ async function updateTipWithClosing(tipHash, indexer) {
   await updateTipByHash(tipHash, updates);
 }
 
-async function updateTipWithTipClosed(event, extrinsic, indexer) {
+async function updateTipWithTipClosed(event, indexer) {
   const eventData = event.data.toJSON();
   const [hash, beneficiary, payout] = eventData;
 
@@ -123,7 +123,7 @@ async function updateTipWithTipClosed(event, extrinsic, indexer) {
   await updateTipByHash(hash, updates, timelineItem);
 }
 
-async function updateTipWithTipRetracted(event, extrinsic, indexer) {
+async function updateTipWithTipRetracted(event, indexer) {
   const eventData = event.data.toJSON();
   const [hash] = eventData;
 
@@ -152,7 +152,7 @@ async function updateTipWithTipRetracted(event, extrinsic, indexer) {
   await updateTipByHash(hash, updates, timelineItem);
 }
 
-async function updateTipWithTipSlashed(event, extrinsic, indexer) {
+async function updateTipWithTipSlashed(event, indexer) {
   const eventData = event.data.toJSON();
   const [hash, finder, slashed] = eventData;
 
