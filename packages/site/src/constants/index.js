@@ -50,6 +50,7 @@ export const tipStatusMap = {
   tip: "Tipping",
   TipRetracted: "Retracted",
   TipClosed: "Closed",
+  TipSlashed: "Slashed",
 };
 
 export const ProposalStatus = {
