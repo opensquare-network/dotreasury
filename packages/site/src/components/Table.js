@@ -97,6 +97,10 @@ const CustomTable = styled(SemanticTable)`
     width: 136px !important;
     max-width: 136px !important;
   }
+  .opengov-description-cell {
+    width: 420px !important;
+    max-width: 420px !important;
+  }
   td:first-child {
     font-weight: 400 !important;
   }
