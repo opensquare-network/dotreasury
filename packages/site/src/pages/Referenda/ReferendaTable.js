@@ -83,7 +83,6 @@ export default function ReferendaTable() {
     beneficiary,
     value,
     referendaStatus,
-    description: descriptionOrigin
   } = useTableColumns({});
 
   const index = {
@@ -95,8 +94,15 @@ export default function ReferendaTable() {
   };
 
   const description = {
-    ...descriptionOrigin,
+    key: "description",
+    title: "Description",
     cellClassName: "opengov-description-cell",
+    cellRender: (_, item) => (
+      <DescriptionCell
+        description={item.description}
+        trackInfo={item.trackInfo}
+      />
+    ),
   };
 
   const linkToSubSquare = {
