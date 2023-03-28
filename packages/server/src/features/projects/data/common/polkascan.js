@@ -19,6 +19,26 @@ const relatedLinks = [
 
 const proposals = [
   {
+    type: "proposal",
+    token: "dot",
+    proposalId: 266,
+  },
+  {
+    type: "proposal",
+    token: "dot",
+    proposalId: 214,
+  },
+  {
+    type: "proposal",
+    token: "dot",
+    proposalId: 205,
+  },
+  {
+    type: "proposal",
+    token: "dot",
+    proposalId: 169,
+  },
+  {
     token: "ksm",
     amount: 361.11,
     proposalId: 36,
