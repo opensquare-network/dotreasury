@@ -96,7 +96,7 @@ export default function ReferendaTable() {
   const description = {
     key: "description",
     title: "Description",
-    cellClassName: "proposal-description-cell",
+    cellClassName: "opengov-description-cell",
     cellRender: (_, item) => (
       <DescriptionCell
         description={item.description}

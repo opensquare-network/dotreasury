@@ -140,9 +140,9 @@ const value = (symbol) => ({
   title: "Value",
   headerCellProps: { textAlign: "right" },
   cellProps: { textAlign: "right" },
-  cellClassName: "balance-cell",
+  cellClassName: "proposal-value-cell",
   cellRender: (_, item) => (
-    <Balance value={item.value} currency={symbol} usdt={item.symbolPrice} />
+    <Balance value={item.value} currency={symbol} usdt={item.symbolPrice} abbreviate />
   ),
 });
 const per = {

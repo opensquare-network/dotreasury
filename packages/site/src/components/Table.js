@@ -52,7 +52,8 @@ const CustomTable = styled(SemanticTable)`
     min-width: 180px !important;
   }
   .index-cell {
-    width: 60px !important;
+    width: 80px !important;
+    max-width: 80px !important;
   }
   .title-cell {
     min-width: 208px !important;
@@ -66,13 +67,14 @@ const CustomTable = styled(SemanticTable)`
   }
   .propose-time-cell {
     width: 200px !important;
+    max-width: 200px !important;
   }
   .related-links-cell {
     min-width: 120px !important;
   }
   .proposal-related-links-cell {
-    width: 160px !important;
-    max-width: 160px !important;
+    width: 136px !important;
+    max-width: 136px !important;
   }
   .description-cell {
     min-width: 432px !important;
@@ -81,17 +83,23 @@ const CustomTable = styled(SemanticTable)`
     min-width: 140px !important;
   }
   .proposal-description-cell {
-    width: 368px !important;
-    max-width: 368px !important;
+    width: 340px !important;
+    max-width: 340px !important;
   }
   .proposal-user-cell {
     /* max-width: 164px !important; */
   }
   .proposal-value-cell {
+    width: 136px !important;
     max-width: 136px !important;
   }
   .proposal-status-cell {
-    max-width: 128px !important;
+    width: 136px !important;
+    max-width: 136px !important;
+  }
+  .opengov-description-cell {
+    width: 420px !important;
+    max-width: 420px !important;
   }
   td:first-child {
     font-weight: 400 !important;
