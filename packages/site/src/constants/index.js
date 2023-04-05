@@ -79,6 +79,22 @@ export const DEFAULT_KUSAMA_NODES = [
     url: "wss://kusama-rpc.dwellir.com",
   },
   {
+    name: "Dwellir Tunisia",
+    url: "wss://kusama-rpc-tn.dwellir.com",
+  },
+  {
+    name: "Automata 1RPC",
+    url: "wss://1rpc.io/ksm",
+  },
+  {
+    name: "IBP-GeoDNS1",
+    url: "wss://rpc.ibp.network/kusama",
+  },
+  {
+    name: "IBP-GeoDNS2",
+    url: "wss://rpc.dotters.network/kusama",
+  },
+  {
     name: "RadiumBlock",
     url: "wss://kusama.public.curie.radiumblock.co/ws",
   },
@@ -88,7 +104,7 @@ export const DEFAULT_POLKADOT_NODE_URL = "wss://rpc.polkadot.io/";
 export const DEFAULT_POLKADOT_NODES = [
   {
     name: "Parity",
-    url: "wss://rpc.polkadot.io/",
+    url: "wss://rpc.polkadot.io",
   },
   {
     name: "OnFinality",
@@ -97,6 +113,26 @@ export const DEFAULT_POLKADOT_NODES = [
   {
     name: "Dwellir",
     url: "wss://polkadot-rpc.dwellir.com",
+  },
+  {
+    name: "Dwellir Tunisia",
+    url: "wss://polkadot-rpc-tn.dwellir.com",
+  },
+  {
+    name: "Automata 1RPC",
+    url: "wss://1rpc.io/dot",
+  },
+  {
+    name: "IBP-GeoDNS1",
+    url: "wss://rpc.ibp.network/polkadot",
+  },
+  {
+    name: "IBP-GeoDNS2",
+    url: "wss://rpc.dotters.network/polkadot",
+  },
+  {
+    name: "RadiumBlock",
+    url: "wss://polkadot.public.curie.radiumblock.co/ws",
   },
 ];
 
