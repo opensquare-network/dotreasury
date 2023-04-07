@@ -23,9 +23,10 @@ export default function CloseButton({ tipDetail, onFinalized }) {
   const isLoggedIn = !!account;
   const isClosed = tipDetail.latestState?.state === "TipClosed";
   const isRetracted = tipDetail.latestState?.state === "TipRetracted";
+  const isSlashed = tipDetail.latestState?.state === "TipSlashed";
   const closing = !!tipDetail.closeFromBlockHeight;
   const canClose = closing && scanHeight > tipDetail.closeFromBlockHeight;
-  const disabled = !isLoggedIn || isClosed || isRetracted || !canClose || isLoading;
+  const disabled = !isLoggedIn || isClosed || isRetracted || isSlashed || !canClose || isLoading;
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
@@ -69,6 +70,8 @@ export default function CloseButton({ tipDetail, onFinalized }) {
     tooltipContent = "The tip is already closed";
   } else if (isRetracted) {
     tooltipContent = "The tip is already retracted";
+  } else if (isSlashed) {
+    tooltipContent = "The tip is already slashed";
   } else if (!closing) {
     tooltipContent = "This tip has not gotten enough endorsements";
   } else if (!canClose) {
