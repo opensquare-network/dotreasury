@@ -51,7 +51,7 @@ const Email = () => {
 
   const sendVerifyEmail = async () => {
     const { result, error } = await api.authFetch(
-      `/user/resendverifyemail`,
+      "/user/resendverifyemail",
       {},
       {
         method: "POST",

@@ -79,7 +79,7 @@ function constructProposalProcessItem(item, proposalDetail) {
 
   // Handle gov2 referendum treasury proposal
   if (proposalDetail.isByGov2 && method === "SpendApproved") {
-    return createGov2ReferendumTimeline(item, proposalDetail)
+    return createGov2ReferendumTimeline(item, proposalDetail);
   }
 
   const { proposer, value, beneficiary, symbolPrice } = proposalDetail;

@@ -88,7 +88,7 @@ export default function NewProposalModal({ visible, setVisible, onFinalized }) {
     }
 
     if (bond.gt(balance)) {
-      setErrorMessage(`Account does not have enough funds`);
+      setErrorMessage("Account does not have enough funds");
       return;
     }
 

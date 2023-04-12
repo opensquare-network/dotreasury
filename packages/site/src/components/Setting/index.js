@@ -118,7 +118,7 @@ const Setting = () => {
       <StyledCard>
         <CloseButton src="/imgs/close.svg" onClick={() => closeModal()} />
         <StyledTitle>Setting</StyledTitle>
-        <StyledText>{`Network`}</StyledText>
+        <StyledText>{"Network"}</StyledText>
         <SettingList>
           <NetworkItem
             icon={"/imgs/logo-polkadot.svg"}
@@ -133,7 +133,7 @@ const Setting = () => {
             setSelectedNetwork={_setSelectedNetwork}
           />
         </SettingList>
-        <StyledText>{`Nodes`}</StyledText>
+        <StyledText>{"Nodes"}</StyledText>
         <SettingList>
           {(nodesSetting?.[selectedNetwork] || []).map((item, index) => (
             <SettingItem

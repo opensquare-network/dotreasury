@@ -81,7 +81,7 @@ const InformationTable = ({ loading, chain, proposalIndex, proposer }) => {
     if (e.key === "Enter") {
       addDes();
     }
-  }
+  };
 
   return (
     <>
@@ -188,10 +188,10 @@ const InformationTable = ({ loading, chain, proposalIndex, proposer }) => {
             />
             <Form.Select
               options={[
-                {text:"————", value:""},
-                {text:"Development", value:"Development"},
-                {text:"Event", value:"Event"},
-                {text:"Maintenance", value:"Maintenance"},
+                { text:"————", value:"" },
+                { text:"Development", value:"Development" },
+                { text:"Event", value:"Event" },
+                { text:"Maintenance", value:"Maintenance" },
               ]}
               value={proposalType}
               fluid
@@ -201,10 +201,10 @@ const InformationTable = ({ loading, chain, proposalIndex, proposer }) => {
             />
             <Form.Select
               options={[
-                {text:"————", value:""},
-                {text:"Working", value:"Working"},
-                {text:"Review", value:"Review"},
-                {text:"Delivered", value:"Delivered"},
+                { text:"————", value:"" },
+                { text:"Working", value:"Working" },
+                { text:"Review", value:"Review" },
+                { text:"Delivered", value:"Delivered" },
               ]}
               value={status}
               fluid

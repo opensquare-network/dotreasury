@@ -26,7 +26,7 @@ const openGovApplicationsSlice = createSlice({
     },
     setSummary(state, { payload }) {
       state.summary = payload;
-    }
+    },
   },
 });
 

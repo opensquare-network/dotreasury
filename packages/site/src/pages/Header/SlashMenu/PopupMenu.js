@@ -29,7 +29,7 @@ export default function PopupMenu({ trigger }) {
   const navigate = (path) => {
     history.push(path);
     setIsOpen(false);
-  }
+  };
 
   const popupContent = (
     <div>

@@ -18,6 +18,6 @@ const FormInput = styled.input`
       border-color: #EC4730 !important;
     }
   `}
-`
+`;
 
 export default FormInput;

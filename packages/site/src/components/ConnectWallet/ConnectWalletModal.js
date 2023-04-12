@@ -71,7 +71,7 @@ export default function ConnectWalletModal({
     const account = {
       extension: selectedWallet,
       chain,
-      address: selectedAccount.address
+      address: selectedAccount.address,
     };
     dispatch(setAccount(account));
     setVisible(false);

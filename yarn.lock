@@ -2777,6 +2777,7 @@ __metadata:
     "@open-wc/webpack-import-meta-loader": ^0.4.7
     "@osn/common": ^1.3.2
     "@osn/constants": ^1.1.2
+    "@osn/eslint-config": ^1.0.1
     "@osn/polkadot-react-identicon": ^1.0.6
     "@polkadot/api": 10.2.1
     "@polkadot/extension-dapp": 0.45.4
@@ -3741,6 +3742,15 @@ __metadata:
   version: 1.1.2
   resolution: "@osn/constants@npm:1.1.2"
   checksum: fd72b954aba57d3adcf57f8051be1fb070a0faec2ab5fdad4423c7dd3caf4d95497eb619b5f09eb7e98c58a9923c024eb053bee8729460cdec94a0568a2cb66d
+  languageName: node
+  linkType: hard
+
+"@osn/eslint-config@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "@osn/eslint-config@npm:1.0.1"
+  peerDependencies:
+    eslint: ">=7.4.0"
+  checksum: a4ab344c1782ab7c5cad73a2b73126e8f0aae926967ec1f47204d870a03f529952ec4b05b0a251490be9b70be07b10aeee677a755183927dc15235d8ce2cc9d0
   languageName: node
   linkType: hard
 

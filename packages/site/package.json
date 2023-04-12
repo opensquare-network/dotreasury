@@ -55,12 +55,13 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "postinstall": "patch-package",
-    "lint": "echo todo"
+    "lint": "eslint ."
   },
   "eslintConfig": {
     "extends": [
       "react-app",
-      "react-app/jest"
+      "react-app/jest",
+      "@osn"
     ]
   },
   "browserslist": {
@@ -78,6 +79,7 @@
     ]
   },
   "devDependencies": {
+    "@osn/eslint-config": "^1.0.1",
     "@types/socket.io-client": "^3.0.0",
     "patch-package": "^6.4.7",
     "postinstall-postinstall": "^2.1.0"

@@ -7,6 +7,6 @@ const FormError = styled(Text)`
   font-size: 12px;
   line-height: 20px;
   margin-top: 8px;
-`
+`;
 
 export default FormError;

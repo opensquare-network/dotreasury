@@ -33,13 +33,13 @@ export function useColumns(options) {
     ...curator,
     headerCellProps: {
       onClick: toggleCuratorBeneficiary,
-    }
+    },
   };
   beneficiary = {
     ...beneficiary,
     headerCellProps: {
       onClick: toggleCuratorBeneficiary,
-    }
+    },
   };
   curator = {
     ...curator,

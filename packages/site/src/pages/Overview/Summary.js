@@ -236,7 +236,7 @@ const Summary = () => {
               <StyledLinkMajor
                 to={{
                   pathname: `/${symbolLowerCase}/tips`,
-                  search: `?status=NewTip||tip`,
+                  search: "?status=NewTip||tip",
                 }}
               >
                 <TextBold>{overview.count.tip.unFinished}</TextBold>

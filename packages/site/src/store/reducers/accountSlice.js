@@ -1,15 +1,15 @@
-import { web3Enable } from '@polkadot/extension-dapp';
-import { createSelector, createSlice } from '@reduxjs/toolkit'
-import Wallets from '../../components/ConnectWallet/Wallets';
-import { encodeChainAddress, encodeSubstrateAddress } from '../../services/chainApi';
-import { sleep } from '../../utils';
-import { substrateWeb3Accounts } from '../../utils/extension';
+import { web3Enable } from "@polkadot/extension-dapp";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
+import Wallets from "../../components/ConnectWallet/Wallets";
+import { encodeChainAddress, encodeSubstrateAddress } from "../../services/chainApi";
+import { sleep } from "../../utils";
+import { substrateWeb3Accounts } from "../../utils/extension";
 
 const storeAccount = localStorage.getItem("account");
 const account = storeAccount && JSON.parse(storeAccount);
 
 const accountSlice = createSlice({
-  name: 'account',
+  name: "account",
   initialState: {
     account,
   },
@@ -23,14 +23,14 @@ const accountSlice = createSlice({
     },
     removeAccount(state) {
       state.account = null;
-    }
-  }
+    },
+  },
 });
 
 export const {
   setAccount,
   removeAccount,
-} = accountSlice.actions
+} = accountSlice.actions;
 
 export const accountSelector = state => state.account.account;
 export const isLoginSelector = createSelector(accountSelector, account => !!account);
@@ -78,12 +78,12 @@ export const checkAccount = () => async (dispatch) => {
 
   if (
     !extensionAccounts.some(item => {
-      return item.address === encodeChainAddress(account.address)
+      return item.address === encodeChainAddress(account.address);
     })
   ) {
     dispatch(setAccount(null));
     return;
   }
-}
+};
 
 export default accountSlice.reducer;

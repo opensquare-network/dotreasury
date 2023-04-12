@@ -41,7 +41,7 @@ const fetchGov2ReferendaTitle = async (chain, referendumIndex) => {
   const apiUrl = `https://${chain}.subsquare.io/api/gov2/referendums/${referendumIndex}`;
   const { result } = await api.fetch(apiUrl);
   return result?.title || "";
-}
+};
 
 export default function ReferendaTable() {
   const dispatch = useDispatch();
@@ -111,7 +111,7 @@ export default function ReferendaTable() {
     headerCellClassName: "hidden",
     cellClassName: "link-cell hidden",
     cellRender: (_, item) => <JumpToLink href={`https://${chain}.subsquare.io/referenda/referendum/${item.referendumIndex}`} />,
-  }
+  };
 
   const columns = [
     index,

@@ -8,7 +8,7 @@ const menuSlice = createSlice({
   reducers: {
     setShowMenuTabs(state, { payload }) {
       state.showMenuTabs = payload;
-    }
+    },
   },
 });
 

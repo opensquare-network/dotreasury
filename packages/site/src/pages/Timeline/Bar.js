@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import {PRIMARY_THEME_COLOR} from "../../constants"
+import { PRIMARY_THEME_COLOR } from "../../constants";
 
 const Bar = styled.div`
   width: 2px;

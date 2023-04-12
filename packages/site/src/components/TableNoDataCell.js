@@ -8,7 +8,7 @@ const TableNoDataCell = () => {
         No data
       </Table.Cell>
     </Table.Row>
-  )
-}
+  );
+};
 
 export default TableNoDataCell;

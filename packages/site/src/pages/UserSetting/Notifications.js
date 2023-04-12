@@ -24,7 +24,7 @@ const Notifications = () => {
 
   const toggleMentionNotification = async () => {
     const { result, error } = await api.authFetch(
-      `/user/notification`,
+      "/user/notification",
       {},
       {
         method: "PATCH",

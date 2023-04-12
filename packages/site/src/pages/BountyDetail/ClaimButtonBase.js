@@ -90,5 +90,5 @@ export default function ClaimButtonBase({ bounty, onFinalized, newClaimTx }) {
       </OnChainActionButton>
     </Tooltip>
 
-  )
+  );
 }

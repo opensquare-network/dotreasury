@@ -1,6 +1,6 @@
 import React from "react";
 import TimePeriod from "./TimePeriod";
-import dayjs from 'dayjs'
+import dayjs from "dayjs";
 
 export default function TimeElapsed({ from }) {
   if (from) {

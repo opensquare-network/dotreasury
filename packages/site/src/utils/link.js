@@ -9,72 +9,72 @@ const settings = [
   {
     host: "github.com",
     img: "github-logo.svg",
-    name: "GitHub"
+    name: "GitHub",
   },
   {
     host: "github.io",
     img: "github-logo.svg",
-    name: "GitHub"
+    name: "GitHub",
   },
   {
     host: "medium.com",
     img: "medium-logo.svg",
-    name: "Medium"
+    name: "Medium",
   },
   {
     host: "polkassembly.io",
     img: "polkassembly-logo.svg",
-    name: "Polkassembly"
+    name: "Polkassembly",
   },
   {
     host: "twitter.com",
     img: "twitter-logo.svg",
-    name: "Twitter"
+    name: "Twitter",
   },
   {
     host: "t.me",
     img: "telegram-logo.svg",
-    name: "Telegram"
+    name: "Telegram",
   },
   {
     host: "docs.google.com",
     img: "googledoc-logo.svg",
-    name: "Google Docs"
+    name: "Google Docs",
   },
   {
     host: "drive.google.com",
     img: "googledrive-logo.svg",
-    name: "Google Drive"
+    name: "Google Drive",
   },
   {
     host: "opensquare.network",
     img: "opensquare-icon-logo.svg",
-    name: "OpenSquare"
+    name: "OpenSquare",
   },
   {
     host: "opensquare.io",
     img: "opensquare-icon-logo.svg",
-    name: "OpenSquare"
+    name: "OpenSquare",
   },
   {
     host: "dotreasury.com",
     img: "dotreasury-logo.svg",
-    name: "doTreasury"
+    name: "doTreasury",
   },
   {
     host: "subsquare.io",
     img: "subsquare-logo.svg",
-    name: "Subsquare"
+    name: "Subsquare",
   },
   {
     host: "matrix.to",
     img: "element-logo.svg",
-    name: "Element"
+    name: "Element",
   },
   {
     host: "subscan.io",
     img: "subscan-logo.svg",
-    name: "Subscan"
+    name: "Subscan",
   },
 ];
 
@@ -103,9 +103,9 @@ export default function getLinkNameAndSrc(link) {
     return ["Email", "/imgs/email-logo.svg"];
   }
 
-  const setting = settings.find(setting => url.host.endsWith(setting.host))
+  const setting = settings.find(setting => url.host.endsWith(setting.host));
   if (setting) {
-    return [setting.name, `/imgs/${setting.img}`]
+    return [setting.name, `/imgs/${setting.img}`];
   }
 
   return [getNameFromHost(url.host), "/imgs/link-icon.svg"];

@@ -1,9 +1,9 @@
 import React from "react";
 
 import ClickableLink from "../ClickableLink";
-import {useLinks} from "../../utils/hooks";
+import { useLinks } from "../../utils/hooks";
 
-const TextLinks = ({text}) => {
+const TextLinks = ({ text }) => {
   const links = useLinks(text);
 
   return (
@@ -12,7 +12,7 @@ const TextLinks = ({text}) => {
         {text}
       </ClickableLink>
     </>
-  )
-}
+  );
+};
 
-export default TextLinks
+export default TextLinks;

@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 import ToastItem from "./ToastItem";
 import {
-  toastsSelector
+  toastsSelector,
 } from "../../store/reducers/toastSlice";
 import Container from "../../components/Container";
 
@@ -15,7 +15,7 @@ const Wrapper = styled.div`
   left: 0;
   top: 0;
   z-index: 9999999;
-`
+`;
 
 const ToastList = styled.div`
   margin-top: 88px;
@@ -23,7 +23,7 @@ const ToastList = styled.div`
   width: fit-content;
   display: flex;
   flex-direction: column;
-`
+`;
 
 const Toast = () => {
   const toasts = useSelector(toastsSelector);
@@ -46,7 +46,7 @@ const Toast = () => {
         </ToastList>
       </Container>
     </Wrapper>
-  )
-}
+  );
+};
 
 export default Toast;

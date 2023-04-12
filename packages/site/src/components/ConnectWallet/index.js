@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import styled from "styled-components"
+import styled from "styled-components";
 import { encodeChainAddress } from "../../services/chainApi";
 import { accountSelector, checkAccount } from "../../store/reducers/accountSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";

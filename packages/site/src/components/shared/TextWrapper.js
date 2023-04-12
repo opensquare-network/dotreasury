@@ -10,11 +10,11 @@ const TextWrapper = styled.div`
       return css`
         word-break: break-all;
         max-width: ${p.maxWidth}px;
-      `
+      `;
     }else{
       return css`
         min-width: 420px;
-      `
+      `;
     }
   }}
   font-family: "Inter",serif;

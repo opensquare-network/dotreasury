@@ -10,7 +10,7 @@ const StyledButton = styled(Button)`
   padding-left: 0 !important;
   padding-right: 0 !important;
   background-color: transparent !important;
-`
+`;
 
 const Wrapper = styled.div`
   cursor: pointer;
@@ -30,9 +30,9 @@ const Wrapper = styled.div`
     text-decoration: underline;
     color: ${TEXT_DARK_MAJOR};
   }
-`
+`;
 
-const ButtonImage = ({src, onClick, children}) => {
+const ButtonImage = ({ src, onClick, children }) => {
   return (
     <StyledButton onClick={onClick}>
       <Wrapper>
@@ -40,7 +40,7 @@ const ButtonImage = ({src, onClick, children}) => {
         {children}
       </Wrapper>
     </StyledButton>
-  )
-}
+  );
+};
 
 export default ButtonImage;
