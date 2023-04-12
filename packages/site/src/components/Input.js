@@ -9,6 +9,6 @@ const CustomInput = styled(Input)`
       border-color: #CCCCCC !important;
     }
   }
-`
+`;
 
 export default CustomInput;

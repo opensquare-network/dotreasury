@@ -46,25 +46,25 @@ function SlashMenu() {
     (incomeCount?.referendaSlash || 0) +
     (incomeCount?.fellowshipReferendaSlash || 0);
 
-  if (pathname.includes(`/income/slash/treasury`)) {
+  if (pathname.includes("/income/slash/treasury")) {
     tabName = "Treasury slash";
     count = incomeCount?.treasurySlash || 0;
-  } else if (pathname.includes(`/income/slash/identity`)) {
+  } else if (pathname.includes("/income/slash/identity")) {
     tabName = "Identity slash";
     count = incomeCount?.identitySlash || 0;
-  } else if (pathname.includes(`/income/slash/democracy`)) {
+  } else if (pathname.includes("/income/slash/democracy")) {
     tabName = "Democracy slash";
     count = incomeCount?.democracySlash || 0;
-  } else if (pathname.includes(`/income/slash/staking`)) {
+  } else if (pathname.includes("/income/slash/staking")) {
     tabName = "Staking slash";
     count = incomeCount?.stakingSlash || 0;
-  } else if (pathname.includes(`/income/slash/electionphragmen`)) {
+  } else if (pathname.includes("/income/slash/electionphragmen")) {
     tabName = "Election slash";
     count = incomeCount?.electionPhragmenSlash || 0;
-  } else if (pathname.includes(`/income/slash/referenda`)) {
+  } else if (pathname.includes("/income/slash/referenda")) {
     tabName = "Referenda slash";
     count = incomeCount?.referendaSlash || 0;
-  } else if (pathname.includes(`/income/slash/fellowship-referenda`)) {
+  } else if (pathname.includes("/income/slash/fellowship-referenda")) {
     tabName = "Fellowship slash";
     count = incomeCount?.fellowshipReferendaSlash || 0;
   }

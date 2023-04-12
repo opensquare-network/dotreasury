@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import styled from "styled-components";
-import { emptyFunction } from "../utils"
+import { emptyFunction } from "../utils";
 
 const Wrapper = styled.div`
   cursor: text;
@@ -54,5 +54,5 @@ export default function AssetInput({ symbol, placeholder = 0, defaultValue, onCh
       />
       <Suffix>{symbol}</Suffix>
     </Wrapper>
-  )
+  );
 }

@@ -12,21 +12,21 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-`
+`;
 
 const PassWrapper = styled.div`
   display: flex;
   align-items: center;
   word-break: normal;
   ${css`${mrgap("8px")}`}
-`
+`;
 
 const ImageWrapper = styled.div`
   width: 16px;
   height: 16px;
-`
+`;
 
-const Voter = ({address, agree, value}) => {
+const Voter = ({ address, agree, value }) => {
   return (
     <Wrapper>
       <User role={USER_ROLES.Councilor} address={address} />
@@ -41,7 +41,7 @@ const Voter = ({address, agree, value}) => {
         }
       </PassWrapper>
     </Wrapper>
-  )
-}
+  );
+};
 
 export default Voter;

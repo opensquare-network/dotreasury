@@ -11,4 +11,4 @@ export const mrgap = (gap) => (
       margin-left: calc(${gap} / 2);
     }
   `
-)
+);

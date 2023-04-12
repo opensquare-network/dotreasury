@@ -14,6 +14,6 @@ const ButtonLabel = styled(Button)`
   &.ui.button:disabled {
     color: ${TEXT_DARK_DISABLE} !important;
   }
-`
+`;
 
 export default ButtonLabel;

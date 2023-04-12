@@ -58,7 +58,7 @@ export const fetchTips = (chain, page = 0, pageSize = 30, filterData = {}) => as
 };
 export const resetTips = () => (dispatch) => {
   dispatch(setTips(EMPTY_TABLE_DATA));
-}
+};
 
 export const fetchTipDetail = (chain, tipId) => async (dispatch) => {
   dispatch(setLoadingTipDetail(true));

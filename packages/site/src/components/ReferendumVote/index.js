@@ -146,7 +146,7 @@ const ReferendumVote = ({ threshold, tally, electorate }) => {
     {
       title: "Electorate",
       value: nElectorate,
-    }
+    },
   ];
 
   if (!tally || !electorate) {

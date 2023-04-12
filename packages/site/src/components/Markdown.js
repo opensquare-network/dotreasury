@@ -79,7 +79,7 @@ const Wrapper = styled.div`
         border: none;
     }
   }
-`
+`;
 
 const Markdown = ({ md, replyEvent, minor }) => {
   const mdRef = useRef(null);
@@ -90,25 +90,25 @@ const Markdown = ({ md, replyEvent, minor }) => {
       links.forEach(item => {
         const reMetion = /https:\/\/dotreasury.com\/user\/(\w+)/g;
         let match;
-        match = reMetion.exec(item.href)
+        match = reMetion.exec(item.href);
         if (match) {
           const [, username] = match;
           item.onclick = (e) => {
             e.preventDefault();
             if (replyEvent) {
-              replyEvent(username)
+              replyEvent(username);
             }
-          }
+          };
         }
-      })
+      });
     }
-  }, [replyEvent])
+  }, [replyEvent]);
 
 	return (
     <Wrapper ref={mdRef} minor>
       <ReactMarkdown className="mde-preview-content" source={md} linkTarget='_blank' />
     </Wrapper>
-  )
+  );
 };
 
 export default Markdown;

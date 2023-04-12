@@ -24,5 +24,5 @@ const FieldTitle = styled.div`
 `;
 
 export {
-  Fields, Field, FieldTitle
+  Fields, Field, FieldTitle,
 };

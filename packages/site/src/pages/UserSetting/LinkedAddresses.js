@@ -216,7 +216,7 @@ const LinkedAddress = () => {
   return (
     <StyledItem>
       <StyledTitle>Link address</StyledTitle>
-      <StyledTextMinor>{`Associate your account with an on-chain address using the Polkadot{.js} extension.`}</StyledTextMinor>
+      <StyledTextMinor>{"Associate your account with an on-chain address using the Polkadot{.js} extension."}</StyledTextMinor>
       <StyledButtonPrimary onClick={loadExtensionAddresses}>
         Show avaliable addresses
       </StyledButtonPrimary>

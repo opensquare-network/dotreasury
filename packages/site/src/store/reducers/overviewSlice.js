@@ -28,7 +28,7 @@ const overviewSlice = createSlice({
         },
         referenda: {
           all: 0,
-        }
+        },
       },
       output: {
         bounty: 0,

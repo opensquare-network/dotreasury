@@ -177,7 +177,7 @@ const TabExampleSecondaryPointing = () => {
               exact: true,
               key: "referenda",
               active: `/${symbol}/referenda` === pathname,
-            }
+            },
           }] : []),
           {
             menuItem: {

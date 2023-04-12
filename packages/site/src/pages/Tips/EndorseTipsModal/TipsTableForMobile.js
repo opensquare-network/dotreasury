@@ -58,7 +58,7 @@ function TipListItem({ children }) {
         </StyledTipListItem>
       </td>
     </tr>
-  )
+  );
 }
 
 export default function TipsTableForMobile({
@@ -67,7 +67,7 @@ export default function TipsTableForMobile({
   tipList,
   tipValues,
   removeTip,
-  updateTipValue
+  updateTipValue,
 }) {
   const loadingTippings = (
     <Loading>

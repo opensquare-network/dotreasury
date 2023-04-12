@@ -1,7 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
 
-import { PRIMARY_THEME_COLOR } from "../constants"
+import { PRIMARY_THEME_COLOR } from "../constants";
 
 const Wrapper = styled.div`
   width: 56px;
@@ -16,21 +16,21 @@ const Wrapper = styled.div`
       margin-left: auto;
     }
   `}
-`
+`;
 
 const Circle = styled.div`
   width: 26px;
   height: 26px;
   background-color: white;
   border-radius: 13px;
-`
+`;
 
 const Toggle = ({ checked, onClick }) => {
   return (
     <Wrapper onClick={onClick} checked={checked}>
       <Circle />
     </Wrapper>
-  )
-}
+  );
+};
 
 export default Toggle;

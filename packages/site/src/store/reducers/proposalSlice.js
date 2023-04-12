@@ -65,7 +65,7 @@ export const fetchProposals = (
 };
 export const resetProposals = () => (dispatch) => {
   dispatch(setProposals(EMPTY_TABLE_DATA));
-}
+};
 
 export const fetchProposalDetail = (chain, proposalIndex) => async (dispatch) => {
   dispatch(setLoadingProposalDetail(true));

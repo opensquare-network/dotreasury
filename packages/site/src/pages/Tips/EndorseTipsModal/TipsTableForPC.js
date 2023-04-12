@@ -56,7 +56,7 @@ export default function TipsTableForPC({
   tipList,
   tipValues,
   removeTip,
-  updateTipValue
+  updateTipValue,
 }) {
   const loadingTippings = (
     <tr>

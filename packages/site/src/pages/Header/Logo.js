@@ -26,7 +26,7 @@ const Logo = ({ symbol }) => (
   <Wrapper>
     <ImgFullWrapper>
       <Image
-        src={symbol === "ksm" ? `/imgs/logo-white.svg` : `/imgs/logo-black.svg`}
+        src={symbol === "ksm" ? "/imgs/logo-white.svg" : "/imgs/logo-black.svg"}
       />
     </ImgFullWrapper>
     <ImgShortWrapper>

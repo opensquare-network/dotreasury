@@ -77,7 +77,7 @@ export const signMessage = async (text, address) => {
 
 export const signMessageWithExtension = async (text, address, extensionName) => {
   if (!extensionName) {
-    throw new Error(`Signing extension is not specified.`);
+    throw new Error("Signing extension is not specified.");
   }
 
   let injector = null;
@@ -91,7 +91,7 @@ export const signMessageWithExtension = async (text, address, extensionName) => 
   }
 
   if (!injector) {
-    throw new Error(`Injector is not found`);
+    throw new Error("Injector is not found");
   }
 
   const data = stringToHex(text);
@@ -162,11 +162,11 @@ export const encodeChainAddress = (address, chain) => {
   }
 
   return encodedAddress;
-}
+};
 
 export async function getElectorate(api) {
   const issuance = await api.query.balances.totalIssuance();
-  return issuance.toBigInt().toString()
+  return issuance.toBigInt().toString();
 }
 
 export async function getReferendumInfo(api, referendumIndex) {

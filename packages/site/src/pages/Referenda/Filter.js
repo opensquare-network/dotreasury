@@ -54,7 +54,7 @@ const tracksOptions = [
   ].map((item) => ({
     key: item,
     value: item.toLowerCase().replace(" ", "_"),
-    text: <span style={{whiteSpace: "nowrap"}}>{item}</span>,
+    text: <span style={{ whiteSpace: "nowrap" }}>{item}</span>,
   })),
 ];
 

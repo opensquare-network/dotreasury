@@ -1,4 +1,4 @@
-import React, {memo} from "react";
+import React, { memo } from "react";
 import styled from "styled-components";
 
 import CommentItem from "./CommentItem";

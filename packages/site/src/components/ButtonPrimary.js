@@ -21,6 +21,6 @@ const ButtonPrimary = styled(Button)`
     background: #F292A4!important;
     opacity: 1 !important;
   }
-`
+`;
 
 export default ButtonPrimary;

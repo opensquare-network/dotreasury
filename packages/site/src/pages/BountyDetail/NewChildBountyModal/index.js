@@ -77,7 +77,7 @@ export default function NewChildBountyModal({ visible, setVisible, parentBountyI
     }
 
     if (countUtf8Bytes(childBountyTitle) > maximumReasonLength) {
-      setErrorMessage(`Child bounty title is too long`);
+      setErrorMessage("Child bounty title is too long");
       return;
     }
 

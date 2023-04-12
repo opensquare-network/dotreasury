@@ -16,9 +16,9 @@ const ButtonContent = styled.div`
   gap: 2px;
 `;
 
-export default function SubSquare({ type, index}) {
+export default function SubSquare({ type, index }) {
   const chain = useSelector(chainSelector);
-  if (type === 'project') {
+  if (type === "project") {
     return null;
   }
 

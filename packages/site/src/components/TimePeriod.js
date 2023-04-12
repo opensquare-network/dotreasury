@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment } from "react";
 import styled, { css } from "styled-components";
 import { normalizeTimeDuration } from "../utils";
 import { mrgap } from "../styles";
@@ -8,11 +8,11 @@ const DefaultValueWrapper = Fragment;
 const DefaultUnitWrapper = Fragment;
 
 const DefaultSectionWrapper = styled.span`
-`
+`;
 const DefaultTimeWrapper = styled.div`
   display: flex;
   ${css`${mrgap("4px")}`}
-`
+`;
 const defaultUnitMapper = { y: "y", mon: "mon", d: "d", h: "h", min: "min", s: "s" };
 
 export default function TimePeriod({
@@ -23,9 +23,9 @@ export default function TimePeriod({
   SectionWrapper = DefaultSectionWrapper,
   TimeWrapper = DefaultTimeWrapper,
   unitMapper = {},
-  pluralUnitMapper = {}
+  pluralUnitMapper = {},
 }) {
-  unitMapper = Object.assign({}, defaultUnitMapper, unitMapper)
+  unitMapper = Object.assign({}, defaultUnitMapper, unitMapper);
   const nornalizedTime = normalizeTimeDuration(time, maxSection);
   return (
     <TimeWrapper>
@@ -36,5 +36,5 @@ export default function TimePeriod({
         </SectionWrapper>
       )}
     </TimeWrapper>
-  )
+  );
 }

@@ -81,7 +81,7 @@ export default function NewBountyModal({ visible, setVisible, onFinalized }) {
     }
 
     if (countUtf8Bytes(bountyTitle) > maximumReasonLength) {
-      setErrorMessage(`Bounty title is too long`);
+      setErrorMessage("Bounty title is too long");
       return;
     }
 
@@ -98,7 +98,7 @@ export default function NewBountyModal({ visible, setVisible, onFinalized }) {
     }
 
     if (new BigNumber(bond).gt(balance)) {
-      setErrorMessage(`Account does not have enough funds`);
+      setErrorMessage("Account does not have enough funds");
       return;
     }
 
