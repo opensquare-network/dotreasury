@@ -28,5 +28,6 @@
   },
   "dependencies": {
     "prettier": "^2.2.1"
-  }
+  },
+  "packageManager": "yarn@3.5.0"
 }
