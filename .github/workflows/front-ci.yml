@@ -5,10 +5,14 @@ on:
     branches:
       - main
       - release-*
+    paths:
+      - 'packages/site/**'
   pull-request:
     branches:
       - main
       - release-*
+    paths:
+      - 'packages/site/**'
 
 jobs:
   lint:
