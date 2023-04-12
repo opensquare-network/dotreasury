@@ -1,9 +1,9 @@
 export const light = {
   dark: false,
 
-  accessory: "rgba(0, 0, 0, 0.3)",
   major: "rgba(0, 0, 0, 0.9)",
   minor: "rgba(0, 0, 0, 0.65)",
+  accessory: "rgba(0, 0, 0, 0.3)",
   grey100: "#fafafa",
   grey200: "#f4f4f4",
   pink100: "#fff0f3",
