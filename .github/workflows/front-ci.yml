@@ -34,7 +34,7 @@ jobs:
       - name: lint
         uses: borales/actions-yarn@v4
         with:
-          cmd: lint
+          cmd: workspace @dotreasury/site lint
 
   build:
     runs-on: ubuntu-latest
@@ -56,4 +56,4 @@ jobs:
       - name: build
         uses: borales/actions-yarn@v4
         with:
-          cmd: build
+          cmd: build @dotreasury/site build
