@@ -3,7 +3,7 @@
 // `inline-block` => `inline_block`
 
 // eslint-disable-next-line no-unused-vars
-import { light } from "./theme/light";
+import { light } from "./theme";
 
 // utility functions
 // ---

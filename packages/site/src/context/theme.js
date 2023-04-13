@@ -3,8 +3,7 @@ import {
   ThemeProvider as StyledThemeProvider,
   createGlobalStyle,
 } from "styled-components";
-import { light } from "../styles/theme/light";
-import { dark } from "../styles/theme/dark";
+import { light, dark } from "../styles/theme";
 
 // TODO: read from cookie
 const defaultThemeMode = "light";
