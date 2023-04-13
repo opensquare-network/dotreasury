@@ -1,3 +1,4 @@
+import React from "react";
 import styled, { css } from "styled-components";
 import { p_12_medium } from "../../../styles/text";
 import {
@@ -48,7 +49,7 @@ const TagWrapper = styled.span`
 `;
 
 /**
- * @param {import('./types').TagProps} props
+ * @param {React.HTMLAttributes<HTMLSpanElement> & {rounded?: boolean, hoverable?: boolean, color?: 'pink', size?: 'small'}} props
  * @description Tag for categorizing or markup.
  */
 export default function Tag(props) {
