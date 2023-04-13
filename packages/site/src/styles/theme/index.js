@@ -1,0 +1,45 @@
+export const light = {
+  textPrimary: "rgba(0, 0, 0, 0.9)",
+  textSecondary: "rgba(0, 0, 0, 0.65)",
+  textTertiary: "rgba(0, 0, 0, 0.3)",
+  textDisable: "rgba(0, 0, 0, 0.15)",
+  textPrimaryContrast: "#FFFFFF",
+  pink100: "#FFF0F3",
+  pink200: "#FFC5CE",
+  pink300: "#FC7C91",
+  pink400: "#F8526E",
+  pink500: "#F23252",
+  yellow100: "#FFF2D9",
+  yellow200: "#FEE0A5",
+  yellow300: "#FCCF75",
+  yellow400: "#F8BF4D",
+  yellow500: "#F2B12F",
+  orange100: "#FFEEE6",
+  orange300: "#FCA97C",
+  orange500: "#F27532",
+  purple500: "#635FEC",
+  green100: "#E6FFEE",
+  green500: "#0EAB0E",
+  red100: "#FFE6E6",
+  red500: "#E90B0B",
+  blue500: "#086DE3",
+  neutral100: "#FFFFFF",
+  neutral200: "#FAFAFA",
+  neutral300: "#F4F4F4",
+  neutral400: "#DDDDDD",
+  neutral500: "#CCCCCC",
+
+  shadow100: "0px 2px 8px rgba(0, 0, 0, 0.02), 0px 1px 4px rgba(0, 0, 0, 0.02)",
+};
+
+export const dark = {
+  ...light,
+
+  textPrimary: "rgba(255, 255, 255, 0.9)",
+  textSecondary: "rgba(255, 255, 255, 0.8)",
+  textTertiary: "rgba(255, 255, 255, 0.3)",
+  textDisable: "rgba(255, 255, 255, 0.15)",
+  textPrimaryContrast: "var(--textPrimary)",
+
+  shadow100: "0px 2px 8px rgba(0, 0, 0, 0.02), 0px 1px 4px rgba(0, 0, 0, 0.02)",
+};
