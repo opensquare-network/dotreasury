@@ -81,6 +81,7 @@
   "devDependencies": {
     "@osn/eslint-config": "^1.0.1",
     "@types/socket.io-client": "^3.0.0",
+    "eslint": "^8.38.0",
     "patch-package": "^6.4.7",
     "postinstall-postinstall": "^2.1.0"
   }
