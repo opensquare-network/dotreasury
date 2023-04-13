@@ -2,24 +2,28 @@
 // https://tailwindcss.com
 // `inline-block` => `inline_block`
 
+// eslint-disable-next-line no-unused-vars
+import { light } from "./theme/light";
+
 // utility functions
 // ---
 
-export function theme(key) {
-  return (p) => p.theme[key];
-}
 export function px(n) {
   return `${n}px`;
 }
-export function bg_theme(key) {
-  return `
-    background-color: ${theme(key)};
-  `;
+/**
+ * @param {keyof light} scheme
+ * @alias tailwind bg-xxx
+ */
+export function bg(scheme) {
+  return `background-color: var(--${scheme});`;
 }
-export function text_theme(key) {
-  return `
-    color: ${theme(key)};
-  `;
+/**
+ * @param {keyof light} scheme
+ * @alias tailwind text-xxx
+ */
+export function text(scheme) {
+  return `color: var(--${scheme});`;
 }
 export function m(n) {
   return `
@@ -124,10 +128,6 @@ export function space_y(n) {
     }
   `;
 }
-/**
- * @example hover(border_theme500)
- * @example hover(text_theme("theme100"))
- */
 export function hover(atom) {
   return `
     &:hover {
@@ -279,6 +279,10 @@ export const m_x_auto = `
 
 // border width
 export const border = make_border(1);
+export const border_0 = make_border(0);
+export const border_2 = make_border(2);
+export const border_3 = make_border(3);
+export const border_4 = make_border(4);
 
 // border radius
 export const rounded = make_rounded(2);
@@ -288,12 +292,13 @@ export const rounded_full = make_rounded(9999);
 export const rounded_none = make_rounded(0);
 
 // border color
-export const border_theme500 = `
-  border-color: ${theme("theme500")};
-`;
-export const border_theme100 = `
-  border-color: ${theme("theme100")};
-`;
+/**
+ * @param {keyof light} scheme
+ * @alias tailwind border-xxx
+ */
+export function border_color(scheme) {
+  return `border-color: var(--${scheme})`;
+}
 
 // border style
 export const border_hidden = `
@@ -367,11 +372,11 @@ export const truncate = `
 `;
 
 // text color
-export const text_primary = text_theme("fontPrimary");
-export const text_primary_inverse = text_theme("fontPrimaryInverse");
-export const text_secondary = text_theme("fontSecondary");
-export const text_tertiary = text_theme("fontTertiary");
-export const text_quaternary = text_theme("fontQuaternary");
+export const text_primary = text("textPrimary");
+export const text_secondary = text("textSecondary");
+export const text_tertiary = text("fontTertiary");
+export const text_disable = text("textDisable");
+export const text_primary_contrast = text("textPrimaryContrast");
 
 // interactivity
 // ---
@@ -383,10 +388,6 @@ export const cursor_pointer = `
 
 // backgrounds
 // ---
-
-// background color
-export const bg_fill_panel = bg_theme("fillPanel");
-export const bg_theme500 = bg_theme("theme500");
 
 // private
 // ---
