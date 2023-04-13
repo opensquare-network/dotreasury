@@ -8,30 +8,38 @@ import { dark } from "../styles/theme/dark";
 
 // TODO: read from cookie
 const defaultThemeMode = "light";
-const ThemeModeContext = createContext(null);
+const ThemeContext = createContext({});
 
 const GlobalThemeVars = createGlobalStyle`
   :root {${(p) => p.vars}}
 `;
 
 export function ThemeProvider({ children }) {
-  const [themeMode, setThemeMode] = useState(defaultThemeMode);
-  const theme = themeMode === "light" ? light : dark;
+  const [mode, setMode] = useState(defaultThemeMode);
+  const theme = mode === "light" ? light : dark;
   const themeVars = Object.keys(theme)
     .map((k) => `--${k}: ${theme[k]}`)
     .join(";");
 
   return (
-    <ThemeModeContext.Provider value={{ themeMode, setThemeMode }}>
+    <ThemeContext.Provider value={{ mode, setMode, theme }}>
       <GlobalThemeVars vars={themeVars} />
       {/* NOTE: useless, cuz we use css vars, keep it for safe DX */}
       <StyledThemeProvider theme={theme}>{children}</StyledThemeProvider>;
-    </ThemeModeContext.Provider>
+    </ThemeContext.Provider>
   );
+}
+
+/**
+ * @returns {typeof light}
+ * @description type friendly alternative to styled `useTheme`
+ */
+export function useTheme() {
+  return useContext(ThemeContext).theme;
 }
 
 // TODO: read preferred color scheme
 export function useDark() {
-  const { themeMode } = useContext(ThemeModeContext);
-  return themeMode === "dark";
+  const { mode } = useContext(ThemeContext);
+  return mode === "dark";
 }
