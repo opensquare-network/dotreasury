@@ -62,7 +62,23 @@
       "react-app",
       "react-app/jest",
       "@osn"
-    ]
+    ],
+    "plugins": [
+      "unused-imports"
+    ],
+    "rules": {
+      "no-unused-vars": "off",
+      "unused-imports/no-unused-imports": "error",
+      "unused-imports/no-unused-vars": [
+        "error",
+        {
+          "vars": "all",
+          "varsIgnorePattern": "^_",
+          "args": "after-used",
+          "argsIgnorePattern": "^_"
+        }
+      ]
+    }
   },
   "browserslist": {
     "production": [
@@ -82,6 +98,7 @@
     "@osn/eslint-config": "^1.0.1",
     "@types/socket.io-client": "^3.0.0",
     "eslint": "^8.38.0",
+    "eslint-plugin-unused-imports": "^2.0.0",
     "patch-package": "^6.4.7",
     "postinstall-postinstall": "^2.1.0"
   }
