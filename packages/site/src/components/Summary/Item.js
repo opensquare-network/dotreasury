@@ -7,7 +7,6 @@ import {
   m,
   w,
 } from "../../styles/tailwindcss";
-import { TEXT_DARK_MINOR } from "../../constants";
 import { p_12_normal } from "../../styles/text";
 import { smcss } from "../../styles/responsive";
 

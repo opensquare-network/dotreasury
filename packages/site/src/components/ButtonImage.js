@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 import Button from "./Button";
-import { TEXT_DARK_MAJOR, TEXT_DARK_MINOR } from "../constants";
 import GrayImage from "./GrayImage";
 
 const StyledButton = styled(Button)`

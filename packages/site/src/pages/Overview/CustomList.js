@@ -3,7 +3,6 @@ import styled from "styled-components";
 
 import Text from "../../components/Text";
 import Label from "./CustomLabel";
-import { TEXT_DARK_DISABLE } from "../../constants";
 import { p_12_normal, p_14_medium } from "../../styles/text";
 import { items_center } from "../../styles/tailwindcss";
 

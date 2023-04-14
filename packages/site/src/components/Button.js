@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { Button } from "semantic-ui-react";
 
-import { TEXT_DARK_MAJOR } from "../constants";
 
 const CustomButton = styled(Button)`
   margin: 0 !important;

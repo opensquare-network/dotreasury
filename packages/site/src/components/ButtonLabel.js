@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import Button from "./Button";
-import { PRIMARY_THEME_COLOR, TEXT_DARK_DISABLE } from "../constants";
+import { PRIMARY_THEME_COLOR } from "../constants";
 
 const ButtonLabel = styled(Button)`
   border: 0 !important;

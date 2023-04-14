@@ -1,11 +1,7 @@
 import styled, { css } from "styled-components";
 import CardOrigin from "../../../components/Card";
-import {
-  TEXT_LIGHT_MAJOR,
-  TEXT_LIGHT_MINOR,
-  TEXT_DARK_MAJOR,
-  TEXT_DARK_ACCESSORY,
-} from "../../../constants";
+
+
 import { h4_16_semibold, p_12_normal } from "../../../styles/text";
 
 export const Card = styled(CardOrigin)`

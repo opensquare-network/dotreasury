@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { Image } from "semantic-ui-react";
 import Card from "../../components/Card";
 
-import { TEXT_DARK_MAJOR, TEXT_DARK_MINOR } from "../../constants";
 import {
   chainSelector,
   scanHeightSelector,

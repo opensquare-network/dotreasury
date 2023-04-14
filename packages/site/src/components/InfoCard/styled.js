@@ -3,8 +3,6 @@ import { Image } from "semantic-ui-react";
 import { h3_18_semibold, p_14_normal, p_12_normal } from "../../styles/text";
 import {
   Greyscale_Grey_200,
-  TEXT_DARK_MAJOR,
-  TEXT_DARK_MINOR,
 } from "../../constants";
 import Card from "../../components/Card";
 

@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 import TextMinor from "./TextMinor";
-import { TEXT_DARK_MAJOR } from "../constants";
 import { useSelector } from "react-redux";
 import { chainSelector } from "../store/reducers/chainSlice";
 import Setting from "./Setting";

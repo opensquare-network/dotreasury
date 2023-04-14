@@ -13,7 +13,6 @@ import {
   OVERVIEW_ELECTION_COLOR,
   OVERVIEW_IDENTITY_COLOR,
   OVERVIEW_OTHERS_COLOR,
-  TEXT_DARK_MAJOR,
 } from "../../constants";
 import { useSelector } from "react-redux";
 import {

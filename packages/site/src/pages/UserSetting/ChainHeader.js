@@ -5,8 +5,6 @@ import { Tab } from "semantic-ui-react";
 import {
   PRIMARY_THEME_COLOR,
   SECONDARY_THEME_COLOR,
-  TEXT_DARK_MAJOR,
-  TEXT_DARK_MINOR,
 } from "../../constants";
 
 const TabWrapper = styled(Tab)`

@@ -12,7 +12,7 @@ import { overviewSelector } from "../../store/reducers/overviewSlice";
 import { NavLink } from "react-router-dom";
 import TextMinor from "../../components/TextMinor";
 import GrayImage from "../../components/GrayImage";
-import { TEXT_DARK_MAJOR, USER_ROLES } from "../../constants";
+import { USER_ROLES } from "../../constants";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 
 const CardWrapper = styled(Card)`

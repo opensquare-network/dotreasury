@@ -10,11 +10,8 @@ import TextMinor from "../../components/TextMinor";
 import CountDown from "../../components/CountDown";
 import BlocksTime from "../../components/BlocksTime";
 
-import {
-  TEXT_DARK_ACCESSORY,
-  TEXT_DARK_MAJOR,
-  TEXT_DARK_MINOR,
-} from "../../constants";
+
+
 import { overviewSelector } from "../../store/reducers/overviewSlice";
 import {
   fetchSpendPeriod,

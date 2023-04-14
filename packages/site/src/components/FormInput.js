@@ -1,6 +1,5 @@
 import styled, { css } from "styled-components";
 
-import { TEXT_DARK_MAJOR } from "../constants";
 
 const FormInput = styled.input`
   height: 40px !important;

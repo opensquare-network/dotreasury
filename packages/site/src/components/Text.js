@@ -1,6 +1,5 @@
 import styled from "styled-components";
 
-import { TEXT_DARK_MAJOR } from "../constants";
 
 const Text = styled.p`
   font-family: "Inter";

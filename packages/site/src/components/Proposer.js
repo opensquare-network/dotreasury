@@ -5,7 +5,6 @@ import { Image } from "semantic-ui-react";
 import Voter from "./Voter";
 import BarProgress from "./BarProgress";
 import TextMinor from "./TextMinor";
-import { TEXT_DARK_MAJOR, TEXT_DARK_MINOR } from "../constants";
 
 const Wrapper = styled.div`
   display: flex;

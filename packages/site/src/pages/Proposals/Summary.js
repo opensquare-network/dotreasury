@@ -30,7 +30,6 @@ import {
   grid_cols,
 } from "../../styles/tailwindcss";
 import { h3_18_semibold, p_12_normal } from "../../styles/text";
-import { TEXT_DARK_ACCESSORY } from "../../constants";
 import { overviewSelector } from "../../store/reducers/overviewSlice";
 import { parseEstimateTime } from "../../utils/parseEstimateTime";
 import { extractTime } from "@polkadot/util";

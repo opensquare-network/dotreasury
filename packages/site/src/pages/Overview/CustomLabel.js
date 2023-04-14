@@ -7,7 +7,6 @@ import TextMinor from "../../components/TextMinor";
 import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import { p_12_normal, p_14_medium, p_14_normal } from "../../styles/text";
-import { TEXT_DARK_ACCESSORY } from "../../constants";
 import {
   flex,
   flex_col,

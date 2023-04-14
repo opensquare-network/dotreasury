@@ -1,6 +1,5 @@
 import styled from "styled-components";
 
-import { TEXT_DARK_MAJOR } from "../constants";
 
 const SubTitle = styled.header`
   font-family: "Inter";

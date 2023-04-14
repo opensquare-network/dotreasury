@@ -1,6 +1,5 @@
 import styled, { css } from "styled-components";
 
-import { TEXT_DARK_MAJOR } from "../../constants";
 
 const TextWrapper = styled.div`
   word-wrap: break-word;

@@ -28,8 +28,6 @@ import Container from "../../components/Container";
 import {
   PRIMARY_THEME_COLOR,
   SECONDARY_THEME_COLOR,
-  TEXT_DARK_MAJOR,
-  TEXT_DARK_MINOR,
 } from "../../constants";
 import SlashMenu from "./SlashMenu";
 

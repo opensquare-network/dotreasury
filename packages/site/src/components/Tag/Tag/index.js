@@ -2,7 +2,6 @@ import React from "react";
 import styled, { css } from "styled-components";
 import { p_12_medium } from "../../../styles/text";
 import {
-  TEXT_DARK_MAJOR,
   Greyscale_Grey_100,
   Primary_Theme_Pink_500,
   Primary_Theme_Pink_100,

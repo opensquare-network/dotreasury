@@ -1,7 +1,6 @@
 import { Fragment } from "react";
 import { Image } from "semantic-ui-react";
 import styled from "styled-components";
-import { TEXT_DARK_ACCESSORY, TEXT_DARK_MAJOR } from "../constants";
 import { p_14_normal } from "../styles/text";
 
 const Wrapper = styled.div`

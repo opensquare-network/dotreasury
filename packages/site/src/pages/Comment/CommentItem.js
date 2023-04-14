@@ -16,7 +16,6 @@ import {
   lastNewPostSelector,
 } from "../../store/reducers/commentSlice";
 import TimeElapsed from "../../components/TimeElapsed";
-import { TEXT_DARK_DISABLE } from "../../constants";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import User from "../../components/User";
 

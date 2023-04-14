@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import styled, { css } from "styled-components";
 import ReactMarkdown from "react-markdown";
 
-import { PRIMARY_THEME_COLOR, TEXT_DARK_MAJOR, TEXT_DARK_MINOR } from "../constants";
+import { PRIMARY_THEME_COLOR } from "../constants";
 
 const Wrapper = styled.div`
 

@@ -2,7 +2,6 @@ import React from "react";
 import styled, { css } from "styled-components";
 
 import TextMinor from "../../components/TextMinor";
-import { TEXT_DARK_MAJOR } from "../../constants";
 import { ACCOUNT_SETTING, NOTIFICATION, LINKED_ADDRESSES } from "./index";
 import GrayImage from "../../components/GrayImage";
 

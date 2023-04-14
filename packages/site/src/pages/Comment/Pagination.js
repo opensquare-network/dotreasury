@@ -4,7 +4,6 @@ import styled from "styled-components";
 
 import { PRIMARY_THEME_COLOR } from "../../constants";
 import { SECONDARY_THEME_COLOR } from "../../constants";
-import { TEXT_DARK_MINOR } from "../../constants";
 
 const Wrapper = styled.div`
   margin: 10px 0;

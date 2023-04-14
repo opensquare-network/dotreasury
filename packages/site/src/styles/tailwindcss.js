@@ -2,7 +2,7 @@
 // https://tailwindcss.com
 // `inline-block` => `inline_block`
 
-// eslint-disable-next-line no-unused-vars
+// eslint-disable-next-line no-unused-vars, unused-imports/no-unused-imports
 import { light } from "./theme";
 
 // utility functions
