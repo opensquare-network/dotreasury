@@ -12,7 +12,7 @@ const Wrapper = styled.div`
 
 const PlusWrapper = styled.span`
   margin: 0 4px;
-  color: ${TEXT_DARK_ACCESSORY};
+  color: var(--textTertiary);
   &:first-child {
     display: none;
   }

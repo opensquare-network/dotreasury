@@ -65,12 +65,12 @@ const TextBold = styled(Text)`
 
 const TextAccessoryBold = styled(TextMinor)`
   ${h3_18_semibold};
-  color: ${TEXT_DARK_ACCESSORY};
+  color: var(--textTertiary);
 `;
 
 const ValueInfo = styled(Text)`
   ${p_12_normal};
-  color: ${TEXT_DARK_ACCESSORY};
+  color: var(--textTertiary);
 `;
 const ValueWrapper = styled.div`
   display: flex;

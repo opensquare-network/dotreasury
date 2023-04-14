@@ -20,7 +20,7 @@ export const CardTitle = styled.h4`
 `;
 export const CardTitleDescription = styled.small`
   margin-left: 8px;
-  color: ${TEXT_DARK_ACCESSORY};
+  color: var(--textTertiary);
   ${p_12_normal}
 
   @media screen and (max-width: 900px) {

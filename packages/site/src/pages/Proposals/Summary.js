@@ -61,7 +61,7 @@ const Unit = styled(TextMinor)`
 
 const ValueInfo = styled(Text)`
   ${p_12_normal};
-  color: ${TEXT_DARK_ACCESSORY};
+  color: var(--textTertiary);
 `;
 const ValueWrapper = styled.div`
   display: flex;

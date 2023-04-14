@@ -70,7 +70,7 @@ const Title = styled(Text)`
 `;
 const TitleCount = styled(Text)`
   ${p_14_normal};
-  color: ${TEXT_DARK_ACCESSORY};
+  color: var(--textTertiary);
   ${(p) =>
     p.disabled &&
     css`
@@ -95,7 +95,7 @@ const ChildTitle = styled(TextMinor)`
 
 const TextFiatValue = styled(TextMinor)`
   ${p_12_normal};
-  color: ${TEXT_DARK_ACCESSORY};
+  color: var(--textTertiary);
 `;
 
 const ValueWrapper = styled.div`
