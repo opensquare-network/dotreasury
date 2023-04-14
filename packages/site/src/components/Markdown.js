@@ -16,7 +16,7 @@ const Wrapper = styled.div`
 
     p, blockquote, ul, ol, dl, table {
       line-height: 24px;
-      color: ${TEXT_DARK_MAJOR};
+      color: var(--textPrimary);
       ${p => p.minor && css`
         color: ${TEXT_DARK_MINOR};
       `}
@@ -26,20 +26,20 @@ const Wrapper = styled.div`
       font-size: 3rem;
       font-family: "Montserrat";
       margin-bottom: 3rem;
-      color: ${TEXT_DARK_MAJOR};
+      color: var(--textPrimary);
     }
 
     h2 {
       font-size: 2.4rem;
       font-family: "Montserrat";
       margin-bottom: 1rem;
-      color: ${TEXT_DARK_MAJOR};
+      color: var(--textPrimary);
     }
 
     h3, h4 {
       margin-bottom: 0.5rem;
       font-family: "Inter";
-      color: ${TEXT_DARK_MAJOR};
+      color: var(--textPrimary);
     }
 
     ul, ol {

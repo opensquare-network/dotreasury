@@ -22,7 +22,7 @@ const PlusWrapper = styled.span`
 `;
 
 const SymbolWrapper = styled.span`
-  color: ${TEXT_DARK_MAJOR};
+  color: var(--textPrimary);
   margin-right: 4px;
 `;
 

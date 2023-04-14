@@ -14,7 +14,7 @@ export const Card = styled(CardOrigin)`
 `;
 
 export const CardTitle = styled.h4`
-  color: ${TEXT_DARK_MAJOR};
+  color: var(--textPrimary);
   margin-bottom: 24px;
   ${h4_16_semibold};
 `;

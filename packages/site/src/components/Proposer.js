@@ -67,7 +67,7 @@ const ProposalArgsItemWrapper = styled.div`
   flex-wrap: wrap;
   & > .title {
     width: 120px;
-    color: ${TEXT_DARK_MAJOR};
+    color: var(--textPrimary);
     font-weight: 500;
     line-height: 24px;
     flex-shrink: 0;

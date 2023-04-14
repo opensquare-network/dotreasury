@@ -52,7 +52,7 @@ export const TableTitle = styled.h4`
     color: ${TEXT_DARK_ACCESSORY};
 
     &:hover {
-      color: ${TEXT_DARK_MAJOR};
+      color: var(--textPrimary);
     }
   }
 
@@ -60,7 +60,7 @@ export const TableTitle = styled.h4`
     p.active &&
     css`
       a {
-        color: ${TEXT_DARK_MAJOR};
+        color: var(--textPrimary);
       }
     `}
 `;

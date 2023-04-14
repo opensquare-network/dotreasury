@@ -28,7 +28,7 @@ const Wrapper = styled.div`
       opacity: 1;
     }
     text-decoration: underline;
-    color: ${TEXT_DARK_MAJOR};
+    color: var(--textPrimary);
   }
 `;
 

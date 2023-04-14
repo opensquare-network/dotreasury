@@ -46,7 +46,7 @@ const TabWrapper = styled(Tab)`
     &.active,
     &.active > div {
       font-weight: normal !important;
-      color: ${TEXT_DARK_MAJOR} !important;
+      color: var(--textPrimary) !important;
       border-color: ${PRIMARY_THEME_COLOR} !important;
     }
   }

@@ -70,7 +70,7 @@ export const InfoCardDetail = styled.div`
 `;
 
 export const InfoCardTitle = styled.h3`
-  color: ${TEXT_DARK_MAJOR};
+  color: var(--textPrimary);
   margin-bottom: 8px;
   ${h3_18_semibold};
 `;

@@ -23,7 +23,7 @@ const Label = styled.span`
     !p.noHover &&
     css`
       &:hover {
-        color: ${TEXT_DARK_MAJOR};
+        color: var(--textPrimary);
         text-decoration-line: underline;
       }
     `}

@@ -91,7 +91,7 @@ const StyledLink = styled(Link)`
 `;
 
 const StyledLinkMajor = styled(Link)`
-  color: ${TEXT_DARK_MAJOR} !important;
+  color: var(--textPrimary) !important;
   &:hover {
     text-decoration: underline;
   }

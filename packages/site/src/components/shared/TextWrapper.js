@@ -22,7 +22,7 @@ const TextWrapper = styled.div`
   font-weight: normal;
   font-size: 14px;
   line-height: 24px;
-  color: ${TEXT_DARK_MAJOR};
+  color: var(--textPrimary);
   margin: 0;
 `;
 

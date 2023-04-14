@@ -72,7 +72,7 @@ const DarkMinorLabel = styled(Label)`
 
 const DarkMajorLabel = styled(Label)`
   margin-right: 4px;
-  color: ${TEXT_DARK_MAJOR};
+  color: var(--textPrimary);
   @media screen and (max-width: 600px) {
     display: none;
   }
@@ -122,7 +122,7 @@ const SymbolItem = styled.div`
   align-items: center;
   font-size: 13px;
   line-height: 18px;
-  color: ${TEXT_DARK_MAJOR};
+  color: var(--textPrimary);
   cursor: pointer;
   > img {
     margin-right: 8px;
@@ -193,7 +193,7 @@ const NetworkItem = styled.div`
   justify-content: space-between;
   font-size: 13px;
   line-height: 18px;
-  color: ${TEXT_DARK_MAJOR};
+  color: var(--textPrimary);
   :hover {
     background: #fafafa;
   }

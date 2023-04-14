@@ -47,7 +47,7 @@ const TitleContainer = styled.div`
 const LinkButton = styled(TextMinor)`
   display: flex;
   :hover {
-    color: ${TEXT_DARK_MAJOR};
+    color: var(--textPrimary);
     & > :last-child {
       -webkit-filter: grayscale(0);
       filter: grayscale(0);

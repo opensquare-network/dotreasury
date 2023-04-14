@@ -21,7 +21,7 @@ const Item = styled.div`
     p.selected &&
     css`
       p {
-        color: ${TEXT_DARK_MAJOR};
+        color: var(--textPrimary);
       }
       img {
         -webkit-filter: grayscale(0);

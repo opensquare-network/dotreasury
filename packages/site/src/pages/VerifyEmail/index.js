@@ -20,7 +20,7 @@ const CardWrapper = styled(Card)`
     border-color: ${PRIMARY_THEME_COLOR} !important;
   }
   label {
-    color: ${TEXT_DARK_MAJOR} !important;
+    color: var(--textPrimary) !important;
     font-weight: 500 !important;
     line-height: 24px !important;
     margin-bottom: 8px !important;

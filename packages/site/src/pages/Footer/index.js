@@ -22,7 +22,7 @@ const FooterWrapper = styled.div`
   .link {
     cursor: pointer;
     :hover {
-      color: ${TEXT_DARK_MAJOR};
+      color: var(--textPrimary);
       text-decoration: underline;
     }
   }

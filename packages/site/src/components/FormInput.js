@@ -8,7 +8,7 @@ const FormInput = styled.input`
   line-height: 24px !important;
   font-family: "Inter" !important;
   font-size: 14px !important;
-  color: ${TEXT_DARK_MAJOR} !important;
+  color: var(--textPrimary) !important;
   :hover, :focus {
     border-color: #CCCCCC !important;
   }

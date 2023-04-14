@@ -22,7 +22,7 @@ const Wrapper = styled.div`
 `;
 
 const Dark = styled.span`
-  color: ${TEXT_DARK_MAJOR};
+  color: var(--textPrimary);
 `;
 
 const Cap = styled.span`

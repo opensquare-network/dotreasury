@@ -10,7 +10,7 @@ import {
 
 const TagWrapper = styled.span`
   ${p_12_medium};
-  color: ${TEXT_DARK_MAJOR};
+  color: var(--textPrimary);
   background-color: ${Greyscale_Grey_100};
   padding: 2px 12px;
   border-radius: 4px;
