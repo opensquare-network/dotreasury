@@ -1,3 +1,7 @@
+// usage css3 variables
+// `color: var(--textPrimary);`
+// `background-color: var(--neutral100);`
+
 export const light = {
   textPrimary: "rgba(0, 0, 0, 0.9)",
   textSecondary: "rgba(0, 0, 0, 0.65)",
