@@ -76,7 +76,7 @@ export const InfoCardTitle = styled.h3`
 `;
 
 export const InfoCardDescription = styled.p`
-  color: ${TEXT_DARK_MINOR};
+  color: var(--textSecondary);
   ${p_14_normal};
 `;
 
@@ -110,6 +110,6 @@ export const InfoCardExtraItemWrapper = styled.div`
 `;
 export const InfoCardExtraItemLabel = styled.p`
   margin-bottom: 4px;
-  color: ${TEXT_DARK_MINOR};
+  color: var(--textSecondary);
   ${p_12_normal};
 `;

@@ -28,7 +28,7 @@ const Wrapper = styled.div`
     border: 0px;
     font-family: Inter !important;
     outline: none !important;
-    color: ${TEXT_DARK_MINOR} !important;
+    color: var(--textSecondary) !important;
     display: flex;
     align-items: center;
     justify-content: center;

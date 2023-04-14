@@ -62,7 +62,7 @@ const Label = styled.div`
 `;
 
 const DarkMinorLabel = styled(Label)`
-  color: ${TEXT_DARK_MINOR};
+  color: var(--textSecondary);
   margin-left: 8px;
   margin-right: 8px;
   @media screen and (max-width: 600px) {

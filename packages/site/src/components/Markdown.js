@@ -18,7 +18,7 @@ const Wrapper = styled.div`
       line-height: 24px;
       color: var(--textPrimary);
       ${p => p.minor && css`
-        color: ${TEXT_DARK_MINOR};
+        color: var(--textSecondary);
       `}
     }
 

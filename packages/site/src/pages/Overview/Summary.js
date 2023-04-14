@@ -81,7 +81,7 @@ const ValueWrapper = styled.div`
 `;
 
 const StyledLink = styled(Link)`
-  color: ${TEXT_DARK_MINOR} !important;
+  color: var(--textSecondary) !important;
   &:hover {
     ${TextAccessoryBold} {
       color: inherit;

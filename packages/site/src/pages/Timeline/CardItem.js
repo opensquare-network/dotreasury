@@ -21,7 +21,7 @@ const Wrapper = styled.div`
   }
   & > .value {
     flex: 1 1 auto;
-    color: ${TEXT_DARK_MINOR};
+    color: var(--textSecondary);
     word-break: break-word;
     :not(:first-child) > * {
       align-items: flex-start;

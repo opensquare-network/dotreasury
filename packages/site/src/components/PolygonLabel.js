@@ -15,7 +15,7 @@ const Label = styled.span`
   font-style: normal;
   font-weight: normal;
   line-height: 24px;
-  color: ${TEXT_DARK_MINOR};
+  color: var(--textSecondary);
   ${(p) => css`
     font-size: ${p.fontSize}px;
   `}

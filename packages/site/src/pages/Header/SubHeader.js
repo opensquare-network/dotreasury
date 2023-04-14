@@ -67,14 +67,14 @@ const TabWrapper = styled(Tab)`
     padding-right: 0 !important;
     border-width: 4px !important;
     font-family: "Inter" !important;
-    color: ${TEXT_DARK_MINOR} !important;
+    color: var(--textSecondary) !important;
     margin-right: 32px !important;
     margin-bottom: 0px !important;
     & div.item {
       margin-bottom: -4px !important;
       padding-left: 0 !important;
       padding-right: 0 !important;
-      color: ${TEXT_DARK_MINOR} !important;
+      color: var(--textSecondary) !important;
     }
     & div.ui.label,
     & div > div.ui.label {
@@ -115,7 +115,7 @@ const TopWrapper = styled.div`
     line-height: 18px;
     color: rgba(0, 0, 0, 0.3);
     :hover {
-      color: ${TEXT_DARK_MINOR};
+      color: var(--textSecondary);
     }
   }
 `;

@@ -20,7 +20,7 @@ const Wrapper = styled.div`
 
 const Title = styled.h4`
   ${m(0)};
-  color: ${TEXT_DARK_MINOR};
+  color: var(--textSecondary);
   ${p_12_normal};
 `;
 const InfoWrapper = styled.div`

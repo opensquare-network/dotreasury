@@ -20,7 +20,7 @@ const Wrapper = styled.div`
     margin-right: 8px;
     
   }
-  color: ${TEXT_DARK_MINOR};
+  color: var(--textSecondary);
   :hover {
     & > img {
       -webkit-filter: grayscale(0);
