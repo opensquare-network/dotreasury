@@ -43,11 +43,11 @@ export const TooltipContentDetail = styled.div`
 `;
 
 export const TooltipContentDetailItemLabel = styled.div`
-  color: ${TEXT_LIGHT_MINOR};
+  color: var(--textSecondaryContrast);
   ${p_12_normal};
 `;
 export const TooltipContentDetailItemValue = styled.div`
-  color: ${TEXT_LIGHT_MAJOR};
+  color: var(--textPrimaryContrast);
   ${p_12_normal};
 
   a {
