@@ -12,7 +12,7 @@ const ButtonLabel = styled(Button)`
     color: ${PRIMARY_THEME_COLOR} !important;
   }
   &.ui.button:disabled {
-    color: ${TEXT_DARK_DISABLE} !important;
+    color: var(--textDisable) !important;
   }
 `;
 

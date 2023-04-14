@@ -74,7 +74,7 @@ const FlexWrapper = styled.div`
 `;
 
 const TimeWrapper = styled.div`
-  color: ${TEXT_DARK_DISABLE};
+  color: var(--textDisable);
 `;
 
 const CircleImage = styled(Image)`

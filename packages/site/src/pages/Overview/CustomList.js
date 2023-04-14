@@ -19,7 +19,7 @@ const Title = styled(Text)`
 `;
 
 const Date = styled(Text)`
-  color: ${TEXT_DARK_DISABLE};
+  color: var(--textDisable);
   margin-left: auto;
   ${p_12_normal};
 `;
