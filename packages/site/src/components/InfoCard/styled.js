@@ -3,8 +3,6 @@ import { Image } from "semantic-ui-react";
 import { h3_18_semibold, p_14_normal, p_12_normal } from "../../styles/text";
 import {
   Greyscale_Grey_200,
-  TEXT_DARK_MAJOR,
-  TEXT_DARK_MINOR,
 } from "../../constants";
 import Card from "../../components/Card";
 
@@ -70,13 +68,13 @@ export const InfoCardDetail = styled.div`
 `;
 
 export const InfoCardTitle = styled.h3`
-  color: ${TEXT_DARK_MAJOR};
+  color: var(--textPrimary);
   margin-bottom: 8px;
   ${h3_18_semibold};
 `;
 
 export const InfoCardDescription = styled.p`
-  color: ${TEXT_DARK_MINOR};
+  color: var(--textSecondary);
   ${p_14_normal};
 `;
 
@@ -110,6 +108,6 @@ export const InfoCardExtraItemWrapper = styled.div`
 `;
 export const InfoCardExtraItemLabel = styled.p`
   margin-bottom: 4px;
-  color: ${TEXT_DARK_MINOR};
+  color: var(--textSecondary);
   ${p_12_normal};
 `;

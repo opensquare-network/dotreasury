@@ -2,7 +2,6 @@ import React from "react";
 import styled, { css } from "styled-components";
 
 import TextMinor from "../../components/TextMinor";
-import { TEXT_DARK_MAJOR } from "../../constants";
 import { ACCOUNT_SETTING, NOTIFICATION, LINKED_ADDRESSES } from "./index";
 import GrayImage from "../../components/GrayImage";
 
@@ -21,7 +20,7 @@ const Item = styled.div`
     p.selected &&
     css`
       p {
-        color: ${TEXT_DARK_MAJOR};
+        color: var(--textPrimary);
       }
       img {
         -webkit-filter: grayscale(0);

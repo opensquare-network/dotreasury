@@ -1,9 +1,14 @@
+// usage css3 variables
+// `color: var(--textPrimary);`
+// `background-color: var(--neutral100);`
+
 export const light = {
   textPrimary: "rgba(0, 0, 0, 0.9)",
   textSecondary: "rgba(0, 0, 0, 0.65)",
   textTertiary: "rgba(0, 0, 0, 0.3)",
   textDisable: "rgba(0, 0, 0, 0.15)",
   textPrimaryContrast: "rgba(255, 255, 255, 1)",
+  textSecondaryContrast: "rgba(255, 255, 255, 0.8)",
 
   pink100: "rgba(255, 240, 243, 1)",
   pink200: "rgba(255, 197, 206, 1)",
@@ -43,6 +48,7 @@ export const dark = {
   textTertiary: "rgba(255, 255, 255, 0.45)",
   textDisable: "rgba(255, 255, 255, 0.30)",
   textPrimaryContrast: "rgba(255, 255, 255, 0.90)",
+  textSecondaryContrast: "rgba(255, 255, 255, 0.80)",
 
   pink100: "rgba(49, 8, 15, 1)",
   pink200: "rgba(113, 1, 21, 1)",

@@ -4,7 +4,6 @@ import { Icon, Image } from "semantic-ui-react";
 
 import Container from "../../components/Container";
 import TextMinor from "../../components/TextMinor";
-import { TEXT_DARK_MAJOR, TEXT_DARK_MINOR } from "../../constants";
 
 const Wrapper = styled.footer`
   padding-bottom: 20px;
@@ -22,7 +21,7 @@ const FooterWrapper = styled.div`
   .link {
     cursor: pointer;
     :hover {
-      color: ${TEXT_DARK_MAJOR};
+      color: var(--textPrimary);
       text-decoration: underline;
     }
   }
@@ -62,7 +61,7 @@ const IconList = styled.div`
     color: rgba(29, 37, 60, 0.24);
 
     &:hover {
-      color: ${TEXT_DARK_MINOR};
+      color: var(--textSecondary);
     }
   }
 `;

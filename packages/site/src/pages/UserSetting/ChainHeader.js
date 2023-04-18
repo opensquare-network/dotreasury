@@ -5,8 +5,6 @@ import { Tab } from "semantic-ui-react";
 import {
   PRIMARY_THEME_COLOR,
   SECONDARY_THEME_COLOR,
-  TEXT_DARK_MAJOR,
-  TEXT_DARK_MINOR,
 } from "../../constants";
 
 const TabWrapper = styled(Tab)`
@@ -24,13 +22,13 @@ const TabWrapper = styled(Tab)`
     padding-right: 0 !important;
     border-width: 4px !important;
     font-family: "Inter" !important;
-    color: ${TEXT_DARK_MINOR} !important;
+    color: var(--textSecondary) !important;
     margin-right: 32px !important;
     & > div.item {
       margin-bottom: -4px !important;
       padding-left: 0 !important;
       padding-right: 0 !important;
-      color: ${TEXT_DARK_MINOR} !important;
+      color: var(--textSecondary) !important;
     }
     & > div.ui.label,
     & > div > div.ui.label {
@@ -46,7 +44,7 @@ const TabWrapper = styled(Tab)`
     &.active,
     &.active > div {
       font-weight: normal !important;
-      color: ${TEXT_DARK_MAJOR} !important;
+      color: var(--textPrimary) !important;
       border-color: ${PRIMARY_THEME_COLOR} !important;
     }
   }

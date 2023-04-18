@@ -1,6 +1,5 @@
 import styled from "styled-components";
 
-import { TEXT_DARK_MAJOR } from "../constants";
 
 const SubTitle = styled.header`
   font-family: "Inter";
@@ -8,7 +7,7 @@ const SubTitle = styled.header`
   font-weight: bold;
   font-size: 18px;
   line-height: 32px;
-  color: ${TEXT_DARK_MAJOR};
+  color: var(--textPrimary);
 `;
 
 export default SubTitle;

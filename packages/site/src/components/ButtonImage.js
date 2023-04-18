@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 import Button from "./Button";
-import { TEXT_DARK_MAJOR, TEXT_DARK_MINOR } from "../constants";
 import GrayImage from "./GrayImage";
 
 const StyledButton = styled(Button)`
@@ -20,7 +19,7 @@ const Wrapper = styled.div`
     margin-right: 8px;
     
   }
-  color: ${TEXT_DARK_MINOR};
+  color: var(--textSecondary);
   :hover {
     & > img {
       -webkit-filter: grayscale(0);
@@ -28,7 +27,7 @@ const Wrapper = styled.div`
       opacity: 1;
     }
     text-decoration: underline;
-    color: ${TEXT_DARK_MAJOR};
+    color: var(--textPrimary);
   }
 `;
 

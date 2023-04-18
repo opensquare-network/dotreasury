@@ -38,7 +38,7 @@ const Wrapper = styled.a`
     p {
       color: ${(p) => (p.symbol === "ksm" ? "#fff" : TEXT_DARK_MAJOR)};
       @media screen and (max-width: 850px) {
-        color: ${TEXT_DARK_MAJOR};
+        color: var(--textPrimary);
       }
       text-decoration: underline;
     }

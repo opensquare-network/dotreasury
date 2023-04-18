@@ -10,11 +10,8 @@ import TextMinor from "../../components/TextMinor";
 import CountDown from "../../components/CountDown";
 import BlocksTime from "../../components/BlocksTime";
 
-import {
-  TEXT_DARK_ACCESSORY,
-  TEXT_DARK_MAJOR,
-  TEXT_DARK_MINOR,
-} from "../../constants";
+
+
 import { overviewSelector } from "../../store/reducers/overviewSlice";
 import {
   fetchSpendPeriod,
@@ -65,12 +62,12 @@ const TextBold = styled(Text)`
 
 const TextAccessoryBold = styled(TextMinor)`
   ${h3_18_semibold};
-  color: ${TEXT_DARK_ACCESSORY};
+  color: var(--textTertiary);
 `;
 
 const ValueInfo = styled(Text)`
   ${p_12_normal};
-  color: ${TEXT_DARK_ACCESSORY};
+  color: var(--textTertiary);
 `;
 const ValueWrapper = styled.div`
   display: flex;
@@ -81,7 +78,7 @@ const ValueWrapper = styled.div`
 `;
 
 const StyledLink = styled(Link)`
-  color: ${TEXT_DARK_MINOR} !important;
+  color: var(--textSecondary) !important;
   &:hover {
     ${TextAccessoryBold} {
       color: inherit;
@@ -91,7 +88,7 @@ const StyledLink = styled(Link)`
 `;
 
 const StyledLinkMajor = styled(Link)`
-  color: ${TEXT_DARK_MAJOR} !important;
+  color: var(--textPrimary) !important;
   &:hover {
     text-decoration: underline;
   }

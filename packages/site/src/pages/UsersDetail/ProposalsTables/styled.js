@@ -1,7 +1,6 @@
 import styled, { css } from "styled-components";
 import { h4_16_semibold } from "../../../styles/text";
 import Card from "../../../components/Card";
-import { TEXT_DARK_MAJOR, TEXT_DARK_ACCESSORY } from "../../../constants";
 
 export const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -49,10 +48,10 @@ export const TableTitle = styled.h4`
 
   a {
     display: block;
-    color: ${TEXT_DARK_ACCESSORY};
+    color: var(--textTertiary);
 
     &:hover {
-      color: ${TEXT_DARK_MAJOR};
+      color: var(--textPrimary);
     }
   }
 
@@ -60,7 +59,7 @@ export const TableTitle = styled.h4`
     p.active &&
     css`
       a {
-        color: ${TEXT_DARK_MAJOR};
+        color: var(--textPrimary);
       }
     `}
 `;

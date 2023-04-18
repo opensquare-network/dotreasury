@@ -1,14 +1,13 @@
 import styled from "styled-components";
 import { Button } from "semantic-ui-react";
 
-import { TEXT_DARK_MAJOR } from "../constants";
 
 const CustomButton = styled(Button)`
   margin: 0 !important;
   height: 40px !important;
   font-size: 14px !important;
   font-family: "Inter" !important;
-  color: ${TEXT_DARK_MAJOR} !important;
+  color: var(--textPrimary) !important;
   background: white !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;

@@ -1,6 +1,5 @@
 import styled, { css } from "styled-components";
 
-import { TEXT_DARK_MAJOR } from "../../constants";
 
 const TextWrapper = styled.div`
   word-wrap: break-word;
@@ -22,7 +21,7 @@ const TextWrapper = styled.div`
   font-weight: normal;
   font-size: 14px;
   line-height: 24px;
-  color: ${TEXT_DARK_MAJOR};
+  color: var(--textPrimary);
   margin: 0;
 `;
 

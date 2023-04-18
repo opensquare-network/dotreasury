@@ -4,7 +4,6 @@ import styled from "styled-components";
 
 import { PRIMARY_THEME_COLOR } from "../../constants";
 import { SECONDARY_THEME_COLOR } from "../../constants";
-import { TEXT_DARK_MINOR } from "../../constants";
 
 const Wrapper = styled.div`
   margin: 10px 0;
@@ -28,7 +27,7 @@ const Wrapper = styled.div`
     border: 0px;
     font-family: Inter !important;
     outline: none !important;
-    color: ${TEXT_DARK_MINOR} !important;
+    color: var(--textSecondary) !important;
     display: flex;
     align-items: center;
     justify-content: center;

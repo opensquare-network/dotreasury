@@ -1,7 +1,6 @@
 import { Fragment } from "react";
 import { Image } from "semantic-ui-react";
 import styled from "styled-components";
-import { TEXT_DARK_ACCESSORY, TEXT_DARK_MAJOR } from "../constants";
 import { p_14_normal } from "../styles/text";
 
 const Wrapper = styled.div`
@@ -12,7 +11,7 @@ const Wrapper = styled.div`
 
 const PlusWrapper = styled.span`
   margin: 0 4px;
-  color: ${TEXT_DARK_ACCESSORY};
+  color: var(--textTertiary);
   &:first-child {
     display: none;
   }
@@ -22,7 +21,7 @@ const PlusWrapper = styled.span`
 `;
 
 const SymbolWrapper = styled.span`
-  color: ${TEXT_DARK_MAJOR};
+  color: var(--textPrimary);
   margin-right: 4px;
 `;
 

@@ -2,7 +2,6 @@ import React from "react";
 import styled, { css } from "styled-components";
 import { Image } from "semantic-ui-react";
 
-import { TEXT_DARK_MAJOR, TEXT_DARK_MINOR } from "../constants";
 
 const Wrapper = styled.div`
   display: flex;
@@ -15,7 +14,7 @@ const Label = styled.span`
   font-style: normal;
   font-weight: normal;
   line-height: 24px;
-  color: ${TEXT_DARK_MINOR};
+  color: var(--textSecondary);
   ${(p) => css`
     font-size: ${p.fontSize}px;
   `}
@@ -23,7 +22,7 @@ const Label = styled.span`
     !p.noHover &&
     css`
       &:hover {
-        color: ${TEXT_DARK_MAJOR};
+        color: var(--textPrimary);
         text-decoration-line: underline;
       }
     `}
