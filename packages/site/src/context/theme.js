@@ -1,8 +1,5 @@
 import React, { createContext, useState, useContext } from "react";
-import {
-  ThemeProvider as StyledThemeProvider,
-  createGlobalStyle,
-} from "styled-components";
+import { createGlobalStyle } from "styled-components";
 import { light, dark } from "../styles/theme";
 
 /**
@@ -31,8 +28,7 @@ export function ThemeProvider({ children }) {
   return (
     <ThemeContext.Provider value={{ mode, setMode, theme }}>
       <GlobalThemeVars vars={themeVars} />
-      {/* NOTE: useless, cuz we use css vars, keep it for safe DX */}
-      <StyledThemeProvider theme={theme}>{children}</StyledThemeProvider>;
+      {children}
     </ThemeContext.Provider>
   );
 }
