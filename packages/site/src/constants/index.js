@@ -1,7 +1,6 @@
 export const Greyscale_Grey_100 = "#fafafa";
 export const Greyscale_Grey_200 = "#f4f4f4";
 export const Primary_Theme_Pink_100 = "#FFF0F3";
-export const Primary_Theme_Pink_200 = "#ffc5ce";
 export const Primary_Theme_Pink_500 = "#F23252";
 export const Primary_Theme_Yellow_500 = "#f2b12f";
 export const Primary_Theme_Orange_500 = "#f27532";
