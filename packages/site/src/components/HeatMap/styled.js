@@ -1,6 +1,5 @@
 import styled, { css } from "styled-components";
 import { p_14_medium } from "../../styles/text";
-import { Greyscale_Grey_200 } from "../../constants";
 
 export const HeatMapWrapper = styled.div``;
 
@@ -12,7 +11,7 @@ export const HeatMapDot = styled.span`
   outline-offset: -2px;
   outline-color: rgba(0, 0, 0, 0.02);
 
-  background-color: ${Greyscale_Grey_200};
+  background-color: var(--neutral300);
 
   border-radius: 2px;
 
