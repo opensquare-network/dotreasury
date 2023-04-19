@@ -4,6 +4,7 @@ import { Icon, Image } from "semantic-ui-react";
 
 import Container from "../../components/Container";
 import TextMinor from "../../components/TextMinor";
+import { useToggleThemeMode } from "../../context/theme";
 
 const Wrapper = styled.footer`
   padding-bottom: 20px;
@@ -90,6 +91,9 @@ const FlexWrapper = styled.div`
 `;
 
 const Footer = () => {
+  const toggle = useToggleThemeMode();
+  window.toggleTheme = toggle;
+
   return (
     <Wrapper>
       <Container>
@@ -147,6 +151,7 @@ const Footer = () => {
             >
               <Icon name="telegram plane" />
             </a>
+            <span onClick={toggle}>Toggle</span>
           </IconList>
         </FooterWrapper>
       </Container>
