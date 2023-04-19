@@ -29,7 +29,6 @@ import {
   w_full,
 } from "../../../styles/tailwindcss";
 import { breakpoint } from "../../../styles/responsive";
-import { Primary_Theme_Orange_500 } from "../../../constants";
 
 const CardWrapper = styled(Card)`
   padding: 24px;
@@ -355,7 +354,7 @@ const TotalStacked = () => {
         labels: [
           {
             name: "Balance",
-            color: Primary_Theme_Orange_500,
+            color: theme.orange500,
             value: toPrecision(statsData.treasuryBalance, precision, false),
           },
         ],
@@ -368,8 +367,8 @@ const TotalStacked = () => {
     values: [
       {
         label: "Income",
-        primaryColor: theme.pink500,
-        secondaryColor: "#FFEEF1",
+        primaryColor: theme.pink300,
+        secondaryColor: theme.pink200,
         data: incomeHistory,
         fill: true,
         icon: "square",
@@ -377,8 +376,8 @@ const TotalStacked = () => {
       },
       {
         label: "Output",
-        primaryColor: theme.yellow500,
-        secondaryColor: "#FFEDC9",
+        primaryColor: theme.yellow300,
+        secondaryColor: theme.yellow200,
         data: outputHistory,
         fill: true,
         icon: "square",
@@ -386,8 +385,8 @@ const TotalStacked = () => {
       },
       {
         label: "Treasury",
-        primaryColor: "#FBA06E",
-        secondaryColor: "#FBA06E",
+        primaryColor: theme.orange300,
+        secondaryColor: theme.orange300,
         data: treasuryHistory,
         fill: false,
         icon: "bar",
