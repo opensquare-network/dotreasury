@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { PRIMARY_THEME_COLOR, SECONDARY_THEME_COLOR } from "../../../constants";
 
 const DropdownMenuItem = styled.div`
   cursor: pointer;
@@ -11,23 +10,20 @@ const DropdownMenuItem = styled.div`
   height: 36px;
 
   :hover {
-    background: #FAFAFA;
+    background: #fafafa;
   }
 `;
 
 const DropdownMenuLabel = styled.div`
-  background: ${SECONDARY_THEME_COLOR};
+  background: var(--secondary);
   height: 20px;
   padding: 0 8px;
   line-height: 20px;
   border-radius: 10px;
   margin-left: 8px;
-  color: ${PRIMARY_THEME_COLOR} !important;
+  color: var(--primary) !important;
   font-weight: 400;
-  font-size: .85714286rem;
+  font-size: 0.85714286rem;
 `;
 
-export {
-  DropdownMenuItem,
-  DropdownMenuLabel,
-};
+export { DropdownMenuItem, DropdownMenuLabel };

@@ -1,5 +1,4 @@
 import styled, { css } from "styled-components";
-import { PRIMARY_THEME_COLOR } from "../constants";
 
 const OnChainActionButton = styled.div`
   cursor: pointer;
@@ -8,7 +7,7 @@ const OnChainActionButton = styled.div`
   align-items: center;
   padding: 4px 8px;
 
-  background: ${PRIMARY_THEME_COLOR};
+  background: var(--primary);
   border-radius: 4px;
 
   font-style: normal;

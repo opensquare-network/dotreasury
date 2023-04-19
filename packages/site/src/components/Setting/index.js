@@ -17,7 +17,6 @@ import {
 } from "../../store/reducers/nodeSlice";
 import useUpdateNodesDelay from "../../utils/useUpdateNodesDelay";
 import GrayImage from "../GrayImage";
-import { PRIMARY_THEME_COLOR } from "../../constants";
 import { chainSelector } from "../../store/reducers/chainSlice";
 
 const Wrapper = styled.div``;
@@ -53,7 +52,7 @@ const StyledButton = styled(Button)`
   border: 0 !important;
   background: #fbfbfb !important;
   &:hover {
-    color: ${PRIMARY_THEME_COLOR} !important;
+    color: var(--primary) !important;
     & > :first-child {
       -webkit-filter: grayscale(0);
       filter: grayscale(0);

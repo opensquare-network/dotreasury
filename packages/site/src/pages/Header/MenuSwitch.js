@@ -6,7 +6,6 @@ import {
   setShowMenuTabs,
   showMenuTabsSelector,
 } from "../../store/reducers/menuSlice";
-import { PRIMARY_THEME_COLOR } from "../../constants";
 
 const Wrapper = styled.div`
   margin-right: 32px;
@@ -22,10 +21,10 @@ const StyledButton = styled(Button)`
   ${(p) =>
     p.active &&
     css`
-      color: ${PRIMARY_THEME_COLOR} !important;
+      color: var(--primary) !important;
     `}
   &:hover {
-    color: ${PRIMARY_THEME_COLOR} !important;
+    color: var(--primary) !important;
   }
 `;
 

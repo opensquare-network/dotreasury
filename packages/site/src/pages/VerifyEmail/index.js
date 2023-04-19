@@ -6,7 +6,6 @@ import queryString from "query-string";
 import scanApi from "../../services/scanApi";
 import Card from "../../components/Card";
 import Text from "../../components/Text";
-import { PRIMARY_THEME_COLOR } from "../../constants";
 import ButtonPrimary from "../../components/ButtonPrimary";
 import { useIsMounted } from "@osn/common";
 import TextMinor from "../../components/TextMinor";
@@ -17,7 +16,7 @@ const CardWrapper = styled(Card)`
   margin: 28px auto auto;
   padding: 32px;
   .ui.form input:focus {
-    border-color: ${PRIMARY_THEME_COLOR} !important;
+    border-color: var(--primary) !important;
   }
   label {
     color: var(--textPrimary) !important;
@@ -90,7 +89,7 @@ function VerifyEmail({ history, location }) {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({ email, token }),
-          }
+          },
         );
 
         if (result) {

@@ -4,7 +4,6 @@ import styled, { css } from "styled-components";
 import { ReactComponent as Circle } from "./circle.svg";
 import Bar from "./Bar";
 import Item from "./Item";
-import { PRIMARY_THEME_COLOR } from "../../constants";
 import { getBlockTime } from "../../services/chainApi";
 import { useIsMounted } from "@osn/common";
 import { useSelector } from "react-redux";
@@ -46,7 +45,8 @@ const HorizontalBar = styled(Bar)`
 
 const VerticalBar = styled(Bar)`
   height: 100%;
-  background-color: ${(p) => (p.isUnfold ? "#FFE1E7" : PRIMARY_THEME_COLOR)};
+  background-color: ${(p) =>
+    p.isUnfold ? "var(--secondary)" : "var(--primary)"};
   opacity: ${(p) => (p.isUnfold ? "1" : "0.5")};
 `;
 
@@ -101,15 +101,15 @@ const FoldableItem = ({ data, polkassembly, defaultUnfold, expired, end }) => {
           </FlexWrapper>
         </VerticalWrapper>
         <ItemWrapper isUnfold={isUnfold}>
-          {React.isValidElement(data) ? data : (
-            (data || []).map((item, index) => (
-              <Item
-                key={index}
-                data={item}
-                polkassembly={index === 0 ? polkassembly : undefined}
-              />
-            ))
-          )}
+          {React.isValidElement(data)
+            ? data
+            : (data || []).map((item, index) => (
+                <Item
+                  key={index}
+                  data={item}
+                  polkassembly={index === 0 ? polkassembly : undefined}
+                />
+              ))}
           {expired && (
             <Item
               data={{

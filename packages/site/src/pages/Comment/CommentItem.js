@@ -6,10 +6,7 @@ import dayjs from "dayjs";
 import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
 import Markdown from "../../components/Markdown";
-import {
-  PRIMARY_THEME_COLOR,
-  SECONDARY_THEME_COLOR,
-} from "../../constants";
+
 import { useIsMounted } from "@osn/common";
 import {
   setLastNewPost,
@@ -51,8 +48,8 @@ const Index = styled(TextMinor)`
 `;
 
 const TopLabel = styled(Text)`
-  background: ${SECONDARY_THEME_COLOR};
-  color: ${PRIMARY_THEME_COLOR};
+  background: var(--secondary);
+  color: var(--primary);
   line-height: 20px;
   font-size: 12px;
   padding: 0 8px;
@@ -96,7 +93,7 @@ const CommentItem = ({ index, comment }) => {
   const chain = useSelector(chainSelector);
 
   const address = comment.author?.addresses?.filter(
-    (i) => i.chain === chain
+    (i) => i.chain === chain,
   )[0];
 
   const commentId = comment._id;
