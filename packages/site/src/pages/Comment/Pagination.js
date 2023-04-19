@@ -2,9 +2,6 @@ import React from "react";
 import { Icon, Pagination } from "semantic-ui-react";
 import styled from "styled-components";
 
-import { PRIMARY_THEME_COLOR } from "../../constants";
-import { SECONDARY_THEME_COLOR } from "../../constants";
-
 const Wrapper = styled.div`
   margin: 10px 0;
   display: flex;
@@ -36,8 +33,8 @@ const Wrapper = styled.div`
       margin-left: 8px;
     }
     &.active {
-      color: ${PRIMARY_THEME_COLOR} !important;
-      background: ${SECONDARY_THEME_COLOR} !important;
+      color: var(--primary) !important;
+      background: var(--secondary) !important;
     }
   }
 `;

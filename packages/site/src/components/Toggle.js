@@ -1,7 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
 
-import { PRIMARY_THEME_COLOR } from "../constants";
 
 const Wrapper = styled.div`
   width: 56px;
@@ -11,7 +10,7 @@ const Wrapper = styled.div`
   background-color: #E1E1E1;
   padding: 3px;
   ${p => p.checked && css`
-    background-color: ${PRIMARY_THEME_COLOR};
+    background-color: var(--primary);
     & > div {
       margin-left: auto;
     }

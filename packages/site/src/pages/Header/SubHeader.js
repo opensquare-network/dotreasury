@@ -25,10 +25,6 @@ import {
 import Card from "../../components/Card";
 import Container from "../../components/Container";
 
-import {
-  PRIMARY_THEME_COLOR,
-  SECONDARY_THEME_COLOR,
-} from "../../constants";
 import SlashMenu from "./SlashMenu";
 
 const Wrapper = styled.div`
@@ -76,13 +72,13 @@ const TabWrapper = styled(Tab)`
     }
     & div.ui.label,
     & div > div.ui.label {
-      background: ${SECONDARY_THEME_COLOR} !important;
+      background: var(--secondary) !important;
       height: 20px !important;
       padding: 0 8px !important;
       line-height: 20px !important;
       border-radius: 10px !important;
       margin-left: 8px !important;
-      color: ${PRIMARY_THEME_COLOR} !important;
+      color: var(--primary) !important;
       font-weight: 400;
     }
     &.active,
@@ -90,7 +86,7 @@ const TabWrapper = styled(Tab)`
     &.active > div > div {
       font-weight: normal !important;
       color: var(--textPrimary) !important;
-      border-color: ${PRIMARY_THEME_COLOR} !important;
+      border-color: var(--primary) !important;
     }
     &.item {
       padding: 2px 0 !important;
@@ -166,17 +162,21 @@ const TabExampleSecondaryPointing = () => {
               active: `/${symbol}` === pathname,
             },
           },
-          ...(isKusama ? [{
-            menuItem: {
-              as: NavLink,
-              id: "referendaTab",
-              content: <ReferendaMenu />,
-              to: `/${symbol}/referenda`,
-              exact: true,
-              key: "referenda",
-              active: `/${symbol}/referenda` === pathname,
-            },
-          }] : []),
+          ...(isKusama
+            ? [
+                {
+                  menuItem: {
+                    as: NavLink,
+                    id: "referendaTab",
+                    content: <ReferendaMenu />,
+                    to: `/${symbol}/referenda`,
+                    exact: true,
+                    key: "referenda",
+                    active: `/${symbol}/referenda` === pathname,
+                  },
+                },
+              ]
+            : []),
           {
             menuItem: {
               as: NavLink,

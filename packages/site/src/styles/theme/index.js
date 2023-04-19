@@ -3,6 +3,9 @@
 // `background-color: var(--neutral100);`
 
 export const light = {
+  primary: "var(--pink500)",
+  secondary: "var(--pink100)",
+
   textPrimary: "rgba(0, 0, 0, 0.9)",
   textSecondary: "rgba(0, 0, 0, 0.65)",
   textTertiary: "rgba(0, 0, 0, 0.3)",

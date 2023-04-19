@@ -1,7 +1,6 @@
 import { Label } from "semantic-ui-react";
 import styled from "styled-components";
 import ChildBountiesTable from "../ChildBounties/ChildBountiesTable";
-import { PRIMARY_THEME_COLOR, SECONDARY_THEME_COLOR } from "../../constants";
 import Pagination from "../Bounties/Pagination";
 import { useLocalStorage } from "../../utils/hooks";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -34,13 +33,13 @@ const Header = styled.div`
   color: rgba(0, 0, 0, 0.9);
 
   div.ui.label {
-    background: ${SECONDARY_THEME_COLOR} !important;
+    background: var(--secondary) !important;
     height: 20px !important;
     padding: 0 8px !important;
     line-height: 20px !important;
     border-radius: 10px !important;
     margin-left: 8px !important;
-    color: ${PRIMARY_THEME_COLOR} !important;
+    color: var(--primary) !important;
     font-weight: 400;
   }
 `;
@@ -51,18 +50,18 @@ function ChildTable({ index }) {
   const [tablePage, setTablePage] = useState(1);
   const [pageSize, setPageSize] = useLocalStorage(
     "bountiesDetailChildBountiesPageSize",
-    DEFAULT_PAGE_SIZE
+    DEFAULT_PAGE_SIZE,
   );
 
   const { items: childBounties, total } = useSelector(
-    childBountyByParentIndexListSelector
+    childBountyByParentIndexListSelector,
   );
   const loading = useSelector(loadingSelector);
   const chain = useSelector(chainSelector);
 
   useEffect(() => {
     dispatch(
-      fetchChildBountiesByParentIndex(chain, index, tablePage - 1, pageSize)
+      fetchChildBountiesByParentIndex(chain, index, tablePage - 1, pageSize),
     );
   }, [dispatch, chain, index, tablePage, pageSize]);
 
@@ -77,16 +76,23 @@ function ChildTable({ index }) {
   const refreshChildBounties = useCallback(
     (reachingFinalizedBlock) => {
       dispatch(
-        fetchChildBountiesByParentIndex(chain, index, tablePage - 1, pageSize)
+        fetchChildBountiesByParentIndex(chain, index, tablePage - 1, pageSize),
       );
       if (reachingFinalizedBlock) {
-        dispatch(newSuccessToast("Sync finished. Please provide context info for your child bounty on subsquare or polkassembly."));
+        dispatch(
+          newSuccessToast(
+            "Sync finished. Please provide context info for your child bounty on subsquare or polkassembly.",
+          ),
+        );
       }
     },
-    [dispatch, chain, index, tablePage, pageSize]
+    [dispatch, chain, index, tablePage, pageSize],
   );
 
-  const onFinalized = useWaitSyncBlock("Child bounty created", refreshChildBounties);
+  const onFinalized = useWaitSyncBlock(
+    "Child bounty created",
+    refreshChildBounties,
+  );
 
   const header = (
     <Header>
@@ -95,7 +101,10 @@ function ChildTable({ index }) {
         <Label>{total}</Label>
       </Flex>
       <div style={{ display: "flex", gap: "16px" }}>
-        <NewChildBountyButton parentBountyId={index} onFinalized={onFinalized} />
+        <NewChildBountyButton
+          parentBountyId={index}
+          onFinalized={onFinalized}
+        />
       </div>
     </Header>
   );
