@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { bnToBn } from "@polkadot/util";
 import dayjs from "dayjs";
+import { useTheme } from "../../../context/theme";
 
 import Text from "../../../components/Text";
 import Card from "../../../components/Card";
@@ -94,6 +95,7 @@ const SecondListWrapper = styled.div`
 `;
 
 const TotalStacked = () => {
+  const theme = useTheme();
   const chain = useSelector(chainSelector);
   const isKusama = chain === "kusama";
   const dispatch = useDispatch();
@@ -237,12 +239,12 @@ const TotalStacked = () => {
         labels: [
           {
             name: "Inflation",
-            color: "var(--pink500)",
+            color: theme.pink500,
             value: toPrecision(statsData.income.inflation, precision, false),
           },
           {
             name: "Slashes",
-            color: "var(--pink500)",
+            color: theme.pink500,
             children: [
               {
                 name: "Staking",
@@ -315,7 +317,7 @@ const TotalStacked = () => {
           },
           {
             name: "Others",
-            color: "var(--pink500)",
+            color: theme.pink500,
             value: toPrecision(statsData.income.others, precision, false),
           },
         ],
@@ -362,14 +364,14 @@ const TotalStacked = () => {
         ],
       });
     }
-  }, [showIndex, statsHistory, dateLabels, precision, isKusama]);
+  }, [showIndex, statsHistory, dateLabels, precision, isKusama, theme]);
 
   const chartData = {
     dates: dateLabels,
     values: [
       {
         label: "Income",
-        primaryColor: "var(--pink500)",
+        primaryColor: theme.pink500,
         secondaryColor: "#FFEEF1",
         data: incomeHistory,
         fill: true,
