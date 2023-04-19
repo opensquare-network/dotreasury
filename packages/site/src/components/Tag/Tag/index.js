@@ -1,12 +1,11 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { p_12_medium } from "../../../styles/text";
-import { Greyscale_Grey_100 } from "../../../constants";
 
 const TagWrapper = styled.span`
   ${p_12_medium};
   color: var(--textPrimary);
-  background-color: ${Greyscale_Grey_100};
+  background-color: var(--neutral200);
   padding: 2px 12px;
   border-radius: 4px;
 
