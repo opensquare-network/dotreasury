@@ -1,6 +1,5 @@
 export const Greyscale_Grey_100 = "#fafafa";
 export const Greyscale_Grey_200 = "#f4f4f4";
-export const Primary_Theme_Orange_500 = "#f27532";
 export const PRIMARY_THEME_COLOR = "#DF405D";
 export const SECONDARY_THEME_COLOR = "#FFEEF1";
 export const WARNING_COLOR = "#EC4730";
