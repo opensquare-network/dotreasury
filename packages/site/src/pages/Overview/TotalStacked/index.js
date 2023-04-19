@@ -29,10 +29,7 @@ import {
   w_full,
 } from "../../../styles/tailwindcss";
 import { breakpoint } from "../../../styles/responsive";
-import {
-  Primary_Theme_Orange_500,
-  Primary_Theme_Yellow_500,
-} from "../../../constants";
+import { Primary_Theme_Orange_500 } from "../../../constants";
 
 const CardWrapper = styled(Card)`
   padding: 24px;
@@ -330,22 +327,22 @@ const TotalStacked = () => {
         labels: [
           {
             name: "Proposal",
-            color: Primary_Theme_Yellow_500,
+            color: theme.yellow500,
             value: toPrecision(statsData.output.proposal, precision, false),
           },
           {
             name: "Tips",
-            color: Primary_Theme_Yellow_500,
+            color: theme.yellow500,
             value: toPrecision(statsData.output.tip, precision, false),
           },
           {
             name: "Bounties",
-            color: Primary_Theme_Yellow_500,
+            color: theme.yellow500,
             value: toPrecision(statsData.output.bounty, precision, false),
           },
           {
             name: "Burnt",
-            color: Primary_Theme_Yellow_500,
+            color: theme.yellow500,
             value: toPrecision(statsData.output.burnt, precision, false),
           },
         ],
@@ -380,7 +377,7 @@ const TotalStacked = () => {
       },
       {
         label: "Output",
-        primaryColor: Primary_Theme_Yellow_500,
+        primaryColor: theme.yellow500,
         secondaryColor: "#FFEDC9",
         data: outputHistory,
         fill: true,

@@ -1,4 +1,3 @@
-import { primary_yellow_100, primary_yellow_500 } from "./styles";
 import { select } from "d3-selection";
 import { arc } from "d3-shape";
 import { useEffect, useMemo, useRef } from "react";
@@ -10,8 +9,8 @@ export default function CountDown(props) {
     numerator = 0,
     denominator = 0,
     size = 12,
-    foregroundColor = primary_yellow_500,
-    backgroundColor = primary_yellow_100,
+    foregroundColor = "var(--yellow500)",
+    backgroundColor = "var(--yellow100)",
     showTooltip = true,
     tooltipContent,
   } = props ?? {};
