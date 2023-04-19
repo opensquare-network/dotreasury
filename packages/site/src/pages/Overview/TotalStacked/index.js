@@ -197,7 +197,7 @@ const TotalStacked = () => {
 
   useEffect(() => {
     const dateLabels = statsHistory.map(
-      (statsItem) => statsItem.indexer.blockTime
+      (statsItem) => statsItem.indexer.blockTime,
     );
     setDateLabels(dateLabels);
 
@@ -205,7 +205,7 @@ const TotalStacked = () => {
       .map((statsItem) =>
         bnToBn(statsItem.income.inflation)
           .add(bnToBn(statsItem.income.slash))
-          .add(bnToBn(statsItem.income.others))
+          .add(bnToBn(statsItem.income.others)),
       )
       .map((bn) => toPrecision(bn, precision, false));
     setIncomeHistory(incomeHistory);
@@ -215,13 +215,13 @@ const TotalStacked = () => {
         bnToBn(statsItem.output.tip)
           .add(bnToBn(statsItem.output.proposal))
           .add(bnToBn(statsItem.output.bounty))
-          .add(bnToBn(statsItem.output.burnt))
+          .add(bnToBn(statsItem.output.burnt)),
       )
       .map((bn) => toPrecision(bn, precision, false));
     setOutputHistory(outputHistory);
 
     const treasuryHistory = statsHistory.map((statsItem) =>
-      toPrecision(statsItem.treasuryBalance, precision, false)
+      toPrecision(statsItem.treasuryBalance, precision, false),
     );
     setTreasuryHistory(treasuryHistory);
   }, [statsHistory, precision]);
@@ -250,7 +250,7 @@ const TotalStacked = () => {
                 value: toPrecision(
                   statsData.income.slashSeats.staking,
                   precision,
-                  false
+                  false,
                 ),
               },
               {
@@ -259,7 +259,7 @@ const TotalStacked = () => {
                 value: toPrecision(
                   statsData.income.slashSeats.treasury,
                   precision,
-                  false
+                  false,
                 ),
               },
               {
@@ -268,7 +268,7 @@ const TotalStacked = () => {
                 value: toPrecision(
                   statsData.income.slashSeats.election,
                   precision,
-                  false
+                  false,
                 ),
               },
               {
@@ -277,7 +277,7 @@ const TotalStacked = () => {
                 value: toPrecision(
                   statsData.income.slashSeats.democracy,
                   precision,
-                  false
+                  false,
                 ),
               },
               {
@@ -286,7 +286,7 @@ const TotalStacked = () => {
                 value: toPrecision(
                   statsData.income.slashSeats.identity,
                   precision,
-                  false
+                  false,
                 ),
               },
               ...(isKusama
@@ -297,7 +297,7 @@ const TotalStacked = () => {
                       value: toPrecision(
                         statsData.income.slashSeats.referenda || 0,
                         precision,
-                        false
+                        false,
                       ),
                     },
                     {
@@ -306,7 +306,7 @@ const TotalStacked = () => {
                       value: toPrecision(
                         statsData.income.slashSeats.fellowshipReferenda || 0,
                         precision,
-                        false
+                        false,
                       ),
                     },
                   ]
