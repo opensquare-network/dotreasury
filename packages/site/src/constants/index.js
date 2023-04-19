@@ -1,6 +1,5 @@
 export const Greyscale_Grey_100 = "#fafafa";
 export const Greyscale_Grey_200 = "#f4f4f4";
-export const WARNING_COLOR = "#EC4730";
 
 export const OVERVIEW_PROPOSALS_COLOR = "#DF405D";
 export const OVERVIEW_TIPS_COLOR = "#F1AC26";

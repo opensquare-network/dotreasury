@@ -368,7 +368,7 @@ const TotalStacked = () => {
       {
         label: "Income",
         primaryColor: theme.pink300,
-        secondaryColor: theme.pink200,
+        secondaryColor: theme.pink100,
         data: incomeHistory,
         fill: true,
         icon: "square",
@@ -377,7 +377,7 @@ const TotalStacked = () => {
       {
         label: "Output",
         primaryColor: theme.yellow300,
-        secondaryColor: theme.yellow200,
+        secondaryColor: theme.yellow100,
         data: outputHistory,
         fill: true,
         icon: "square",
