@@ -26,7 +26,7 @@ const Output = () => {
   const proposalSpent = toPrecision(
     overview.output.proposal.value || 0,
     precision,
-    false
+    false,
   );
   const openGovSpent = sumBy(Object.values(referendaSpent), (item) => {
     return toPrecision(item.value, precision, false);
@@ -34,17 +34,17 @@ const Output = () => {
   const tipSpent = toPrecision(
     overview.output.tip.value || 0,
     precision,
-    false
+    false,
   );
   const bountySpent = toPrecision(
     overview.output.bounty.value || 0,
     precision,
-    false
+    false,
   );
   const burntTotal = toPrecision(
     overview.output.burnt.value || 0,
     precision,
-    false
+    false,
   );
 
   const proposalFiatValue = overview.output.proposal.fiatValue;
