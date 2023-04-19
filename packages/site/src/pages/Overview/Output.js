@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from "react";
 
 import DoughnutCard from "./DoughnutCard";
-import {
-  OVERVIEW_PROPOSALS_COLOR,
-  OVERVIEW_TIPS_COLOR,
-  OVERVIEW_BOUNTIES_COLOR,
-  OVERVIEW_BURNT_COLOR,
-} from "../../constants";
 import DoughnutCardLinkTitle from "./DoughnutCardLinkTitle";
 import { useIsKusamaChain } from "../../utils/hooks/chain";
 import { useSelector } from "react-redux";
@@ -14,11 +8,13 @@ import { overviewSelector } from "../../store/reducers/overviewSlice";
 import { getPrecision, toPrecision } from "../../utils";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import { sumBy } from "../../utils/math";
+import { useTheme } from "../../context/theme";
 
 const Output = () => {
   const overview = useSelector(overviewSelector);
   const isKusama = useIsKusamaChain();
   const symbol = useSelector(chainSymbolSelector);
+  const theme = useTheme();
 
   const referendaSpent = overview.output?.referendaSpent ?? {};
   const precision = getPrecision(symbol);
@@ -93,13 +89,13 @@ const Output = () => {
           name: "Proposals",
           value: proposalSpent,
           fiatValue: proposalFiatValue,
-          color: OVERVIEW_PROPOSALS_COLOR,
+          color: theme.pink500,
           ...(isKusama
             ? {
                 children: [
                   {
                     name: "OpenGov",
-                    color: OVERVIEW_PROPOSALS_COLOR,
+                    color: theme.pink500,
                     iconColor: "transparent",
                     iconDisabledColor: "transparent",
                     value: openGovSpent,
@@ -113,18 +109,18 @@ const Output = () => {
           name: "Tips",
           value: tipSpent,
           fiatValue: tipSpentFiatValue,
-          color: OVERVIEW_TIPS_COLOR,
+          color: theme.yellow500,
         },
         {
           name: "Bounties",
           value: bountySpent,
           fiatValue: bountySpentFiatValue,
-          color: OVERVIEW_BOUNTIES_COLOR,
+          color: theme.purple500,
         },
         {
           name: "Burnt",
           value: burntTotal,
-          color: OVERVIEW_BURNT_COLOR,
+          color: theme.orange500,
         },
       ],
     });
@@ -139,6 +135,7 @@ const Output = () => {
     bountySpentFiatValue,
     burntTotal,
     isKusama,
+    theme,
   ]);
 
   const clickEvent = (name) => {
