@@ -29,7 +29,6 @@ import {
   w_full,
 } from "../../../styles/tailwindcss";
 import { breakpoint } from "../../../styles/responsive";
-import { Primary_Theme_Orange_500 } from "../../../constants";
 
 const CardWrapper = styled(Card)`
   padding: 24px;
@@ -355,7 +354,7 @@ const TotalStacked = () => {
         labels: [
           {
             name: "Balance",
-            color: Primary_Theme_Orange_500,
+            color: theme.orange500,
             value: toPrecision(statsData.treasuryBalance, precision, false),
           },
         ],
