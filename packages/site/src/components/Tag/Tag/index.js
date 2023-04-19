@@ -1,7 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { p_12_medium } from "../../../styles/text";
-import { Greyscale_Grey_100, Primary_Theme_Pink_500 } from "../../../constants";
+import { Greyscale_Grey_100 } from "../../../constants";
 
 const TagWrapper = styled.span`
   ${p_12_medium};
@@ -28,7 +28,7 @@ const TagWrapper = styled.span`
   ${(p) =>
     p.color === "pink" &&
     css`
-      color: ${Primary_Theme_Pink_500};
+      color: var(--pink500);
       background-color: var(--pink100);
     `}
   

@@ -30,7 +30,6 @@ import {
 import { breakpoint } from "../../../styles/responsive";
 import {
   Primary_Theme_Orange_500,
-  Primary_Theme_Pink_500,
   Primary_Theme_Yellow_500,
 } from "../../../constants";
 
@@ -238,12 +237,12 @@ const TotalStacked = () => {
         labels: [
           {
             name: "Inflation",
-            color: Primary_Theme_Pink_500,
+            color: "var(--pink500)",
             value: toPrecision(statsData.income.inflation, precision, false),
           },
           {
             name: "Slashes",
-            color: Primary_Theme_Pink_500,
+            color: "var(--pink500)",
             children: [
               {
                 name: "Staking",
@@ -316,7 +315,7 @@ const TotalStacked = () => {
           },
           {
             name: "Others",
-            color: Primary_Theme_Pink_500,
+            color: "var(--pink500)",
             value: toPrecision(statsData.income.others, precision, false),
           },
         ],
@@ -370,7 +369,7 @@ const TotalStacked = () => {
     values: [
       {
         label: "Income",
-        primaryColor: Primary_Theme_Pink_500,
+        primaryColor: "var(--pink500)",
         secondaryColor: "#FFEEF1",
         data: incomeHistory,
         fill: true,
