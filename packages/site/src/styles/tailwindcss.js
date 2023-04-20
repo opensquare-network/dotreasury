@@ -150,6 +150,13 @@ export function grid_cols(repeat, min = 0) {
     grid-template-columns: repeat(${repeat}, minmax(${min}px, 1fr));
   `;
 }
+/**
+ * @param {100|200} n shadow level
+ * @description shortcut for `box-shadow: var(--shadow100)`
+ */
+export function shadow(n) {
+  return `box-shadow: var(--shadow${n})`;
+}
 
 // atoms
 // ---
@@ -304,6 +311,11 @@ export function border_color(scheme) {
 export const border_hidden = `
   border-style: hidden;
 `;
+
+// effects
+// ---
+export const shadow_100 = shadow(100);
+export const shadow_200 = shadow(200);
 
 // layout
 // ---
