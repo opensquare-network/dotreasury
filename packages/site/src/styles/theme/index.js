@@ -26,6 +26,7 @@ export const light = {
   orange100: "rgba(255, 238, 230, 1)",
   orange300: "rgba(252, 169, 124, 1)",
   orange500: "rgba(242, 117, 50, 1)",
+  purple300: "#A19FF4",
   purple500: "rgba(99, 95, 236, 1)",
   green100: "rgba(230, 255, 238, 1)",
   green500: "rgba(14, 171, 14, 1)",
@@ -37,6 +38,8 @@ export const light = {
   neutral300: "rgba(244, 244, 244, 1)",
   neutral400: "rgba(221, 221, 221, 1)",
   neutral500: "rgba(204, 204, 204, 1)",
+
+  tooltipBg: "rgba(0, 0, 0, 0.7)",
 
   shadow100: "0px 1px 4px rgba(0, 0, 0, 0.02), 0px 2px 8px rgba(0, 0, 0, 0.02)",
   shadow200:
@@ -66,6 +69,7 @@ export const dark = {
   orange100: "rgba(52, 25, 10, 1)",
   orange300: "rgba(145, 70, 30, 1)",
   orange500: "rgba(207, 98, 40, 1)",
+  purple300: "#3A389A",
   purple500: "rgba(83, 80, 220, 1)",
   green100: "rgba(6, 44, 6, 1)",
   green500: "rgba(23, 144, 23, 1)",
@@ -77,4 +81,6 @@ export const dark = {
   neutral300: "rgba(31, 31, 31, 1)",
   neutral400: "rgba(51, 51, 51, 1)",
   neutral500: "rgba(82, 82, 82, 1)",
+
+  tooltipBg: "#1F1F1F",
 };
