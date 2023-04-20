@@ -71,7 +71,6 @@ export default function FooterSwitchThemeButton() {
     placement: "top-end",
     middleware: [offset(4), flip(), shift()],
   });
-  console.log(x, y);
 
   const themeList = [
     {
