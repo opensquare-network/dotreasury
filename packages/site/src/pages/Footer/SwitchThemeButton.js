@@ -20,13 +20,7 @@ import {
 import IconMask from "../../components/Icon/Mask";
 import { useDark, useThemeMode } from "../../context/theme";
 import { useState } from "react";
-import {
-  autoUpdate,
-  flip,
-  offset,
-  shift,
-  useFloating,
-} from "@floating-ui/react";
+import { flip, offset, shift, useFloating } from "@floating-ui/react";
 import { p_14_medium } from "../../styles/text";
 import { useOnClickOutside } from "usehooks-ts";
 
@@ -71,13 +65,13 @@ export default function FooterSwitchThemeButton() {
   const [, setThemeMode] = useThemeMode();
 
   const [visible, setVisible] = useState(false);
-  const { refs, floating, strategy, x, y } = useFloating({
+  const { refs, floating, reference, strategy, x, y } = useFloating({
     open: visible,
     onOpenChange: setVisible,
     placement: "top-end",
-    whileElementsMounted: autoUpdate,
     middleware: [offset(4), flip(), shift()],
   });
+  console.log(x, y);
 
   const themeList = [
     {
@@ -99,7 +93,7 @@ export default function FooterSwitchThemeButton() {
   useOnClickOutside(refs.reference, hide);
 
   return (
-    <Button ref={refs.reference} onClick={show}>
+    <Button ref={reference} onClick={show}>
       {visible && (
         <FloatingList
           ref={floating}
