@@ -18,7 +18,7 @@ import {
   w,
 } from "../../styles/tailwindcss";
 import IconMask from "../../components/Icon/Mask";
-import { useDark, useThemeMode } from "../../context/theme";
+import { useThemeMode } from "../../context/theme";
 import { useState } from "react";
 import { flip, offset, shift, useFloating } from "@floating-ui/react";
 import { p_14_medium } from "../../styles/text";
@@ -32,9 +32,12 @@ const FloatingItem = styled.div`
   ${p_x(16)};
   ${p_14_medium};
   ${text_primary};
-  width: inherit;
 
   ${hover(bg("neutral200"))};
+
+  span {
+    text-transform: capitalize;
+  }
 `;
 const FloatingList = styled.div`
   ${bg("neutral100")};
@@ -44,6 +47,7 @@ const FloatingList = styled.div`
   ${p_y(4)};
 `;
 
+const ButtonIcon = styled(IconMask)``;
 const Button = styled.button`
   ${inline_flex};
   ${cursor_pointer};
@@ -54,15 +58,14 @@ const Button = styled.button`
   ${bg("neutral100")};
 
   &:hover {
-    i.button-icon {
+    ${ButtonIcon} {
       ${bg("textSecondary")};
     }
   }
 `;
 
 export default function FooterSwitchThemeButton() {
-  const dark = useDark();
-  const [, setThemeMode] = useThemeMode();
+  const [themeMode, setThemeMode] = useThemeMode();
 
   const [visible, setVisible] = useState(false);
   const { refs, floating, reference, strategy, x, y } = useFloating({
@@ -81,7 +84,13 @@ export default function FooterSwitchThemeButton() {
       icon: "/imgs/system-moon.svg",
       value: "dark",
     },
+    {
+      icon: "/imgs/system-computer.svg",
+      value: "system",
+    },
   ];
+
+  const modeIcon = themeList.find((i) => i.value === themeMode).icon;
 
   function show() {
     setVisible(true);
@@ -92,7 +101,7 @@ export default function FooterSwitchThemeButton() {
   useOnClickOutside(refs.reference, hide);
 
   return (
-    <Button ref={reference} onClick={show}>
+    <Button ref={reference} onClick={show} style={{ marginLeft: 24 }}>
       {visible && (
         <FloatingList
           ref={floating}
@@ -106,7 +115,11 @@ export default function FooterSwitchThemeButton() {
             <FloatingItem
               key={item.value}
               role="button"
-              onClick={() => setThemeMode(item.value)}
+              onClick={(event) => {
+                event.stopPropagation();
+                setThemeMode(item.value);
+                hide();
+              }}
             >
               <IconMask src={item.icon} size={20} color="textDisable" />
               <span>{item.value}</span>
@@ -115,9 +128,8 @@ export default function FooterSwitchThemeButton() {
         </FloatingList>
       )}
 
-      <IconMask
-        className="button-icon"
-        src={dark ? "/imgs/system-sun.svg" : "/imgs/system-moon.svg"}
+      <ButtonIcon
+        src={modeIcon}
         size={20}
         color={visible ? "textSecondary" : "textDisable"}
       />
