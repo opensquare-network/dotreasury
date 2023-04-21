@@ -11,17 +11,18 @@ const TextUsername = styled(TextMinor)`
   flex-grow: 1;
   font-size: 14px;
   line-height: 22px;
-  ${p => p.noLink
-    ? css`
-      color: rgba(0, 0, 0, 0.9) !important;
-    `
-    : css`
-      color: rgba(0, 0, 0, 0.65) !important;
-      &:hover {
-        color: rgba(0, 0, 0, 0.9) !important;
-        text-decoration-line: underline;
-      }
-  `}
+  ${(p) =>
+    p.noLink
+      ? css`
+          color: var(--textPrimary) !important;
+        `
+      : css`
+          color: var(--textSecondary) !important;
+          &:hover {
+            color: var(--textPrimary) !important;
+            text-decoration-line: underline;
+          }
+        `}
 `;
 
 const Username = ({ address, name, ellipsis, popup, popupContent, noLink }) => {
@@ -31,7 +32,7 @@ const Username = ({ address, name, ellipsis, popup, popupContent, noLink }) => {
     if (ellipsis) {
       displayAddress = `${address.substring(0, 4)}...${address.substring(
         address.length - 4,
-        address.length
+        address.length,
       )}`;
     } else {
       displayAddress = address;
@@ -40,7 +41,7 @@ const Username = ({ address, name, ellipsis, popup, popupContent, noLink }) => {
     if (ellipsis) {
       displayAddress = `${address.id.substring(0, 4)}...${address.id.substring(
         address.id.length - 4,
-        address.id.length
+        address.id.length,
       )}`;
     } else {
       displayAddress = address.id;
