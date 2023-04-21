@@ -19,7 +19,7 @@ import { sumBy } from "../../utils/math";
 
 const Wrapper = styled.div`
   min-width: 224px;
-  background: #fbfbfb;
+  background-color: var(--neutral200);
   padding: 8px 12px;
   border-radius: 4px;
 `;
@@ -45,7 +45,7 @@ const Icon = styled.div`
       border: 2px solid
         ${(p) =>
           p.disabled
-            ? p.disabledColor ?? "rgba(29, 37, 60, 0.24)"
+            ? p.disabledColor ?? "var(--textDisable)"
             : p.color ?? "#EEEEEE"};
       border-radius: 50%;
     `}
@@ -64,7 +64,7 @@ const Title = styled(Text)`
   ${(p) =>
     p.disabled &&
     css`
-      color: rgba(29, 37, 60, 0.24);
+      color: var(--textDisable);
     `}
 `;
 const TitleCount = styled(Text)`
@@ -73,7 +73,7 @@ const TitleCount = styled(Text)`
   ${(p) =>
     p.disabled &&
     css`
-      color: rgba(29, 37, 60, 0.24);
+      color: var(--textDisable);
     `}
 `;
 const TitleWrapper = styled.div`
@@ -88,7 +88,7 @@ const ChildTitle = styled(TextMinor)`
   ${(p) =>
     p.disabled &&
     css`
-      color: rgba(29, 37, 60, 0.24);
+      color: var(--textDisable);
     `}
 `;
 
@@ -110,7 +110,7 @@ const ValueWrapper = styled.div`
     p.disabled &&
     css`
       & > * {
-        color: rgba(29, 37, 60, 0.24);
+        color: var(--textDisable);
       }
     `}
 `;
@@ -203,7 +203,7 @@ const Label = ({ data, icon, status, clickEvent }) => {
                     <TextMinor>{`${
                       Math.round(item.value) === item.value ? "" : "≈ "
                     }${Math.round(
-                      item.value
+                      item.value,
                     ).toLocaleString()} ${symbol}`}</TextMinor>
                   </ValueWrapper>
                 }
