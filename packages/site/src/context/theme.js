@@ -1,16 +1,18 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useContext, useMemo } from "react";
 import { createGlobalStyle } from "styled-components";
 import { light, dark } from "../styles/theme";
+import { useLocalStorage } from "../utils/hooks";
+import { usePreferredColorScheme } from "../hooks/usePreferredColorScheme";
+
+const themes = { light, dark };
 
 /**
- * @typedef {'light'|'dark'} Mode
- * @typedef {(mode: Mode) => void} SetMode
+ * @typedef {'system'|'light'|'dark'} ThemeMode
+ * @typedef {(mode: ThemeMode) => void} SetThemeMode
  * @typedef {typeof light} Theme
- * @typedef {{mode: Mode, setMode: SetMode, theme: Theme} ThemeContext
+ * @typedef {{mode: ThemeMode, setMode: SetThemeMode, theme: Theme} ThemeContext
  */
 
-// TODO: read from cookie
-const defaultThemeMode = "light";
 /** @type {React.Context<ThemeContext>} */
 const ThemeContext = createContext({});
 
@@ -19,8 +21,13 @@ const GlobalThemeVars = createGlobalStyle`
 `;
 
 export function ThemeProvider({ children }) {
-  const [mode, setMode] = useState(defaultThemeMode);
-  const theme = mode === "light" ? light : dark;
+  const [mode, setMode] = useLocalStorage("theme-mode", "system");
+  const preferredColorScheme = usePreferredColorScheme();
+
+  const theme = useMemo(
+    () => (mode === "system" ? themes[preferredColorScheme] : themes[mode]),
+    [mode, preferredColorScheme],
+  );
   const themeVars = Object.keys(theme)
     .map((k) => `--${k}: ${theme[k]}`)
     .join(";");
@@ -41,31 +48,19 @@ export function useTheme() {
   return useContext(ThemeContext).theme;
 }
 
-// TODO: read preferred color scheme
 /**
  * @description shortcut for `useThemeMode().mode === 'dark'`
  */
 export function useDark() {
   const { mode } = useContext(ThemeContext);
-  return mode === "dark";
+  const preferredColorScheme = usePreferredColorScheme();
+  return mode === "dark" || preferredColorScheme === "dark";
 }
 
 /**
- * @returns {[mode, setMode]}
+ * @returns {[ThemeMode, SetThemeMode]}
  */
 export function useThemeMode() {
   const { mode, setMode } = useContext(ThemeContext);
   return [mode, setMode];
-}
-
-// TODO: 1. preferred color scheme, 2. light, 3. dark
-export function useToggleThemeMode() {
-  const [, setMode] = useThemeMode();
-  const dark = useDark();
-
-  function toggleThemeMode() {
-    setMode(dark ? "light" : "dark");
-  }
-
-  return toggleThemeMode;
 }
