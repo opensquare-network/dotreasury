@@ -18,7 +18,7 @@ import {
   w,
 } from "../../styles/tailwindcss";
 import IconMask from "../../components/Icon/Mask";
-import { useDark, useThemeMode } from "../../context/theme";
+import { useThemeMode } from "../../context/theme";
 import { useState } from "react";
 import { flip, offset, shift, useFloating } from "@floating-ui/react";
 import { p_14_medium } from "../../styles/text";
@@ -32,7 +32,6 @@ const FloatingItem = styled.div`
   ${p_x(16)};
   ${p_14_medium};
   ${text_primary};
-  width: inherit;
 
   ${hover(bg("neutral200"))};
 
@@ -66,8 +65,7 @@ const Button = styled.button`
 `;
 
 export default function FooterSwitchThemeButton() {
-  const dark = useDark();
-  const [, setThemeMode] = useThemeMode();
+  const [themeMode, setThemeMode] = useThemeMode();
 
   const [visible, setVisible] = useState(false);
   const { refs, floating, reference, strategy, x, y } = useFloating({
@@ -92,6 +90,8 @@ export default function FooterSwitchThemeButton() {
     },
   ];
 
+  const modeIcon = themeList.find((i) => i.value === themeMode).icon;
+
   function show() {
     setVisible(true);
   }
@@ -101,7 +101,7 @@ export default function FooterSwitchThemeButton() {
   useOnClickOutside(refs.reference, hide);
 
   return (
-    <Button ref={reference} onClick={show}>
+    <Button ref={reference} onClick={show} style={{ marginLeft: 24 }}>
       {visible && (
         <FloatingList
           ref={floating}
@@ -115,7 +115,11 @@ export default function FooterSwitchThemeButton() {
             <FloatingItem
               key={item.value}
               role="button"
-              onClick={() => setThemeMode(item.value)}
+              onClick={(event) => {
+                event.stopPropagation();
+                setThemeMode(item.value);
+                hide();
+              }}
             >
               <IconMask src={item.icon} size={20} color="textDisable" />
               <span>{item.value}</span>
@@ -125,7 +129,7 @@ export default function FooterSwitchThemeButton() {
       )}
 
       <ButtonIcon
-        src={dark ? "/imgs/system-sun.svg" : "/imgs/system-moon.svg"}
+        src={modeIcon}
         size={20}
         color={visible ? "textSecondary" : "textDisable"}
       />
