@@ -1,8 +1,10 @@
 import React from "react";
 import { PolarArea } from "react-chartjs-2";
 import { maxBy, sumBy } from "../utils/math";
+import { useTheme } from "../context/theme";
 
 export default function PolarAreaChart({ data, status, tooltipLabelCallback }) {
+  const theme = useTheme();
   const filteredData = status.labels
     .filter((i) => !i.disabled)
     .map((i) => data.labels.find((d) => d.name === i.name));
@@ -44,7 +46,7 @@ export default function PolarAreaChart({ data, status, tooltipLabelCallback }) {
               display: false,
             },
             grid: {
-              color: "#f4f4f4",
+              color: theme.neutral300,
             },
             max: max + 1,
           },
