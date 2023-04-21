@@ -44,6 +44,7 @@ const FloatingList = styled.div`
   ${p_y(4)};
 `;
 
+const ButtonIcon = styled(IconMask)``;
 const Button = styled.button`
   ${inline_flex};
   ${cursor_pointer};
@@ -54,7 +55,7 @@ const Button = styled.button`
   ${bg("neutral100")};
 
   &:hover {
-    i.button-icon {
+    ${ButtonIcon} {
       ${bg("textSecondary")};
     }
   }
@@ -115,8 +116,7 @@ export default function FooterSwitchThemeButton() {
         </FloatingList>
       )}
 
-      <IconMask
-        className="button-icon"
+      <ButtonIcon
         src={dark ? "/imgs/system-sun.svg" : "/imgs/system-moon.svg"}
         size={20}
         color={visible ? "textSecondary" : "textDisable"}
