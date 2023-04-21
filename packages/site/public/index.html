@@ -74,13 +74,14 @@
         --neutral100: #000000;
       }
       body {
-        background-color: var(--neutral100);
+        /* add `important`, avoid semantic ui css flash */
+        background-color: var(--neutral100) !important;
       }
     </style>
     <script>
       (function () {
-        var color_scheme = localStorage.getItem("color-scheme");
-        if (!color_scheme || color_scheme === "system") {
+        var theme_mode = localStorage.getItem("theme-mode");
+        if (!theme_mode || theme_mode === "system") {
           if ("matchMedia" in window) {
             var preferredDark = window.matchMedia(
               "(prefers-color-scheme: dark)",
@@ -89,7 +90,7 @@
               toggle_dark();
             }
           }
-        } else if (color_scheme === "dark") {
+        } else if (theme_mode === "dark") {
           toggle_dark();
         }
 
