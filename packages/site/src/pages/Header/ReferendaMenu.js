@@ -9,14 +9,13 @@ const Divider = styled.div`
   position: relative;
   width: 1px;
   height: 20px;
-  background: #eeeeee;
+  background-color: var(--neutral300);
   left: 16px;
 `;
 
 const Icon = styled(ApplicationSVG)`
   margin-right: 8px;
 `;
-
 
 function ReferendaMenu() {
   const applicationCount = useSelector(totalOpenGovApplicationCountSelector);
