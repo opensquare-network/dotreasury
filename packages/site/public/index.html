@@ -58,12 +58,48 @@
           window.history.replaceState(
             null,
             null,
-            l.pathname.slice(0, -1) + decoded + l.hash
+            l.pathname.slice(0, -1) + decoded + l.hash,
           );
         }
       })(window.location);
     </script>
     <!-- End Single Page Apps for GitHub Pages -->
+
+    <!-- noflash -->
+    <style>
+      :root {
+        --neutral100: #ffffff;
+      }
+      .dark:root {
+        --neutral100: #000000;
+      }
+      body {
+        background-color: var(--neutral100);
+      }
+    </style>
+    <script>
+      (function () {
+        var color_scheme = localStorage.getItem("color-scheme");
+        if (!color_scheme || color_scheme === "system") {
+          if ("matchMedia" in window) {
+            var preferredDark = window.matchMedia(
+              "(prefers-color-scheme: dark)",
+            ).matches;
+            if (preferredDark) {
+              toggle_dark();
+            }
+          }
+        } else if (color_scheme === "dark") {
+          toggle_dark();
+        }
+
+        function toggle_dark() {
+          var root = document.documentElement;
+          root.classList.toggle("dark");
+        }
+      })();
+    </script>
+    <!-- noflash end -->
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
