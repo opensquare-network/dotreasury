@@ -17,25 +17,35 @@ import useUpdateNodesDelay from "../../utils/useUpdateNodesDelay";
 import { addToast } from "../../store/reducers/toastSlice";
 import ExternalLink from "../../components/ExternalLink";
 import { useOnClickOutside } from "@osn/common";
+import IconMask from "../../components/Icon/Mask";
+import { inline_flex, items_center } from "../../styles/tailwindcss";
 
 const Wrapper = styled.div`
   position: relative;
   display: flex;
   align-items: center;
-  border: 1px solid #f4f4f4;
+  background-color: var(--neutral100);
+  border: 1px solid var(--neutral400);
   border-radius: 4px;
   min-width: 200px;
   @media screen and (max-width: 600px) {
     min-width: 65px;
     position: static;
   }
+  :hover {
+    background-color: var(--neutral300);
+  }
+  ${(p) =>
+    p.isActive &&
+    css`
+      background-color: var(--neutral300);
+    `}
 `;
 
 const ScanHeightWrapper = styled.div`
   display: flex;
   align-items: center;
   flex: 1 1 auto;
-  background: #fbfbfb;
   height: 32px;
   padding: 4px 8px;
   padding-right: 0;
@@ -44,11 +54,6 @@ const ScanHeightWrapper = styled.div`
     padding-right: 8px;
     display: flex;
     flex-grow: 1;
-  }
-  :hover {
-    button {
-      background: #fafafa;
-    }
   }
 `;
 
@@ -85,18 +90,12 @@ const Kusama = styled(Image)`
 const Button = styled.button`
   padding: 4px;
   border: none;
-  border-left: 1px solid #f4f4f4;
+  border-left: 1px solid var(--neutral300);
   cursor: pointer;
-  background: #fff;
+  background-color: transparent;
   flex: 0 0 auto;
-  :hover {
-    background: #fafafa;
-  }
-  ${(p) =>
-    p.isActive &&
-    css`
-      background: #fafafa;
-    `}
+  ${inline_flex};
+  ${items_center};
 `;
 
 const SymbolWrapper = styled(Card)`
@@ -131,15 +130,15 @@ const SymbolItem = styled.div`
     margin-left: auto;
   }
   :hover {
-    background: #fafafa;
+    background-color: var(--neutral300);
   }
   @media screen and (max-width: 600px) {
     padding: 11px 24px;
   }
   ${(p) =>
-          p.isActive &&
-          css`
-      background: #fafafa;
+    p.isActive &&
+    css`
+      background-color: var(--neutral300);
     `}
 `;
 
@@ -153,19 +152,19 @@ const NetworkWrapper = styled.div`
 
 const NetworkButton = styled.button`
   flex: 0 0 auto;
-  border: 1px solid #f4f4f4;
+  border: 1px solid var(--neutral400);
   border-radius: 4px;
-  background-color: #fff;
+  background-color: var(--neutral100);
   margin-left: 8px;
   padding: 4px;
   cursor: pointer;
   :hover {
-    background: #fafafa;
+    background-color: var(--neutral300);
   }
   ${(p) =>
     p.isActive &&
     css`
-      background: #fafafa;
+      background-color: var(--neutral300);
     `}
 `;
 
@@ -194,12 +193,12 @@ const NetworkItem = styled.div`
   line-height: 18px;
   color: var(--textPrimary);
   :hover {
-    background: #fafafa;
+    background: var(--neutral300);
   }
   ${(p) =>
     p.isActive &&
     css`
-      background: #fafafa;
+      background: var(--neutral300);
     `}
   ${(p) =>
     p.delay &&
@@ -207,7 +206,7 @@ const NetworkItem = styled.div`
     p.delay >= 0 &&
     css`
       > .delay {
-        color: #3abc3f;
+        color: var(--green500);
       }
     `}
   ${(p) =>
@@ -216,7 +215,7 @@ const NetworkItem = styled.div`
     p.delay >= 100 &&
     css`
       > .delay {
-        color: #ee7735;
+        color: var(--yellow500);
       }
     `}
   ${(p) =>
@@ -225,7 +224,7 @@ const NetworkItem = styled.div`
     p.delay >= 300 &&
     css`
       > .delay {
-        color: #ec4730;
+        color: var(--red500);
       }
     `}
   @media screen and (max-width: 600px) {
@@ -246,7 +245,7 @@ const ScanHeight = () => {
   const netWorkRef = useRef(null);
 
   const currentNetwork = nodesSetting?.[chain]?.find(
-    (item) => item.url === currentNodeSetting?.[chain]
+    (item) => item.url === currentNodeSetting?.[chain],
   );
   let currentNetworkImg = "/imgs/node-signal-disabled.svg";
   if (currentNetwork && currentNetwork.delay) {
@@ -273,7 +272,7 @@ const ScanHeight = () => {
         chain: node,
         url: currentNodeSetting.polkadot,
         refresh: true,
-      })
+      }),
     );
   };
   const switchNetwork = (url) => {
@@ -282,76 +281,77 @@ const ScanHeight = () => {
       setCurrentNode({
         chain,
         url,
-      })
+      }),
     );
     const nodeName = nodesSetting[chain].find((item) => item.url === url)?.name;
     dispatch(
       addToast({
         type: "success",
         message: `Node switched to ${nodeName}!`,
-      })
+      }),
     );
   };
 
   return (
     <NetworkWrapper>
-      <Wrapper>
-        <ScanHeightWrapper  onClick={() => {
-          setSymbolOpen(!symbolOpen);
-        }}
-        ref={symbolRef}
+      <Wrapper isActive={symbolOpen}>
+        <ScanHeightWrapper
+          onClick={() => {
+            setSymbolOpen(!symbolOpen);
+          }}
+          ref={symbolRef}
         >
           <div className="blockHeight">
             <Kusama
-                src={
-                  chain === "polkadot"
-                      ? "/imgs/logo-polkadot.svg"
-                      : "/imgs/logo-kusama.svg"
-                }
+              src={
+                chain === "polkadot"
+                  ? "/imgs/logo-polkadot.svg"
+                  : "/imgs/logo-kusama.svg"
+              }
             />
             <DarkMinorLabel>Height</DarkMinorLabel>
             <DarkMajorLabel>{`#${scanHeight.toLocaleString()}`}</DarkMajorLabel>
           </div>
-          <Button
-              isActive={symbolOpen}
-          >
-            <Image
-                src={`${
-                    symbolOpen
-                        ? "/imgs/icon-triangle-up.svg"
-                        : "/imgs/icon-triangle-down.svg"
-                }`}
+          <Button isActive={symbolOpen}>
+            <IconMask
+              src={`${
+                symbolOpen
+                  ? "/imgs/icon-triangle-up.svg"
+                  : "/imgs/icon-triangle-down.svg"
+              }`}
+              size={24}
+              color="textSecondary"
             />
             {symbolOpen && (
-                <SymbolWrapper>
-                  <SymbolItem
-                      isActive={chain === "polkadot"}
-                      onClick={() => {
-                        switchNode("polkadot");
-                      }}
-                  >
-                    <Image src="/imgs/logo-polkadot.svg" />
-                    <div>Polkadot</div>
-                    <div className="unit">DOT</div>
+              <SymbolWrapper>
+                <SymbolItem
+                  isActive={chain === "polkadot"}
+                  onClick={() => {
+                    switchNode("polkadot");
+                  }}
+                >
+                  <Image src="/imgs/logo-polkadot.svg" />
+                  <div>Polkadot</div>
+                  <div className="unit">DOT</div>
+                </SymbolItem>
+                <SymbolItem
+                  isActive={chain === "kusama"}
+                  onClick={() => {
+                    switchNode("kusama");
+                  }}
+                >
+                  <Image src="/imgs/logo-kusama.svg" />
+                  <div>Kusama</div>
+                  <div className="unit">KSM</div>
+                </SymbolItem>
+                <ExternalLink href="https://edg.dotreasury.com/">
+                  <SymbolItem onClick={() => setNetorkOpen(false)}>
+                    <Image src="/imgs/logo-edgeware.svg" />
+                    <div>Edgeware</div>
+                    <div className="unit">EDG</div>
                   </SymbolItem>
-                  <SymbolItem
-                      isActive={chain === "kusama"}
-                      onClick={() => {
-                        switchNode("kusama");
-                      }}
-                  >
-                    <Image src="/imgs/logo-kusama.svg" />
-                    <div>Kusama</div>
-                    <div className="unit">KSM</div>
-                  </SymbolItem>
-                  <ExternalLink href="https://edg.dotreasury.com/">
-                    <SymbolItem onClick={() => setNetorkOpen(false)}>
-                      <Image src="/imgs/logo-edgeware.svg" />
-                      <div>Edgeware</div>
-                      <div className="unit">EDG</div>
-                    </SymbolItem>
-                  </ExternalLink>
-                </SymbolWrapper>
+                </ExternalLink>
+              </SymbolWrapper>
             )}
           </Button>
         </ScanHeightWrapper>

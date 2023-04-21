@@ -41,9 +41,9 @@ export const light = {
 
   tooltipBg: "rgba(0, 0, 0, 0.7)",
 
-  shadow100: "0px 1px 4px rgba(0, 0, 0, 0.02), 0px 2px 8px rgba(0, 0, 0, 0.02)",
+  shadow100: "0px 2px 8px rgba(0, 0, 0, 0.02), 0px 1px 4px rgba(0, 0, 0, 0.02)",
   shadow200:
-    " 0px 1px 8px rgba(0, 0, 0, 0.04), 0px 4px 16px rgba(0, 0, 0, 0.08)",
+    "0px 4px 16px rgba(0, 0, 0, 0.08), 0px 1px 8px rgba(0, 0, 0, 0.04)",
 };
 
 export const dark = {

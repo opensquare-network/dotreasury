@@ -38,7 +38,8 @@ const WrapperBackground = styled.div`
   height: 42px;
   width: 100%;
   z-index: -1;
-  background: ${(p) => (p.symbol === "ksm" ? "#000" : "#fff")};
+  background-color: ${(p) =>
+    p.symbol === "ksm" ? "#000" : "var(--neutral100)"};
 `;
 
 const TabWrapper = styled(Tab)`
@@ -103,11 +104,11 @@ const CustomCard = styled(Card)`
 
 const TopWrapper = styled.div`
   padding: 11px 0;
-  border-bottom: 1px solid #f4f4f4;
+  border-bottom: 1px solid var(--neutral300);
   > a {
     font-size: 13px;
     line-height: 18px;
-    color: rgba(0, 0, 0, 0.3);
+    color: var(--textTertiary);
     :hover {
       color: var(--textSecondary);
     }
@@ -122,7 +123,7 @@ const Divider = styled.div`
   position: relative;
   width: 1px;
   height: 20px;
-  background: #eeeeee;
+  background: var(--neutral300);
   left: 16px;
 `;
 
