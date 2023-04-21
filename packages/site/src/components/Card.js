@@ -1,11 +1,12 @@
 import styled from "styled-components";
+import { shadow_100 } from "../styles/tailwindcss";
 
 const Card = styled.div`
-  background-color: #fff;
-  border: 1px solid #f4f4f4;
+  background-color: var(--neutral100);
   border-radius: 8px;
+  border: 1px solid var(--neutral300);
   padding: 8px 0;
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.02), 0px 1px 4px rgba(0, 0, 0, 0.02);
+  ${shadow_100};
 `;
 
 export default Card;
