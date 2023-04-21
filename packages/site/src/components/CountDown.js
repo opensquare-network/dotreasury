@@ -15,7 +15,6 @@ const BackCircle = styled.div`
   height: 56px;
   border-radius: 50%;
   border: 8px solid var(--secondary);
-  background: white;
 `;
 
 const InnerCircleWrapper = styled.div`
@@ -30,7 +29,6 @@ const InnerCircle = styled.div`
   height: 54px;
   left: 1px;
   top: 1px;
-  background: white;
   border-radius: 50%;
   border: 7px solid var(--primary);
 `;
