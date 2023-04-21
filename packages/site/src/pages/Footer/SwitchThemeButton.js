@@ -35,6 +35,10 @@ const FloatingItem = styled.div`
   width: inherit;
 
   ${hover(bg("neutral200"))};
+
+  span {
+    text-transform: capitalize;
+  }
 `;
 const FloatingList = styled.div`
   ${bg("neutral100")};
@@ -81,6 +85,10 @@ export default function FooterSwitchThemeButton() {
     {
       icon: "/imgs/system-moon.svg",
       value: "dark",
+    },
+    {
+      icon: "/imgs/system-computer.svg",
+      value: "system",
     },
   ];
 
