@@ -10,18 +10,19 @@ const CustomTable = styled(SemanticTable)`
   overflow: hidden !important;
   border-radius: 8px !important;
   margin-top: 0 !important;
-  border-color: #eee !important;
+  border-color: var(--neutral300) !important;
+  background-color: var(--neutral100) !important;
   tr {
     &.tree {
       background-color: rgba(250, 250, 250, 1);
     }
     :hover {
-      background-color: #fdfdfd !important;
+      background-color: var(--neutral200) !important;
     }
   }
   td {
     border-top: 0 !important;
-    border-bottom: 1px solid #f4f4f4;
+    border-bottom: 1px solid var(--neutral300);
     padding: 12px 24px !important;
   }
   th {
@@ -31,9 +32,9 @@ const CustomTable = styled(SemanticTable)`
     font-family: "Inter" !important;
     border-bottom: 0 !important;
     padding: 12px 24px !important;
-    background: #fafafa !important;
+    background: var(--neutral200) !important;
     line-height: 18px !important;
-    color: rgba(0, 0, 0, 0.3) !important;
+    color: var(--textTertiary) !important;
   }
   .user-cell {
     width: 176px !important;

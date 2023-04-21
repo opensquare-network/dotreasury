@@ -18,12 +18,12 @@ const Wrapper = styled.div`
       > :first-child * {
         font-size: 12px;
         line-height: 18px;
-        color: rgba(0, 0, 0, 0.3);
+        color: var(--textTertiary);
       }
       > :last-child {
         font-size: 14px;
         line-height: 22px;
-        color: rgba(0, 0, 0, 0.65);
+        color: var(--textSecondary);
       }
     `}
   ${(p) =>
@@ -40,7 +40,7 @@ const Wrapper = styled.div`
 const UsdtWrapper = styled.div`
   font-size: 12px;
   line-height: 18px;
-  color: rgba(0, 0, 0, 0.3);
+  color: var(--textTertiary);
   white-space: nowrap;
   ${(p) =>
     p.horizontal &&
