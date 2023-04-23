@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import GrayImage from "../../components/GrayImage";
 import { NavLink } from "react-router-dom";
 
 import DoughnutCard from "./DoughnutCard";
@@ -13,9 +12,12 @@ import {
 } from "../../store/reducers/chainSlice";
 import DoughnutCardLinkTitle from "./DoughnutCardLinkTitle";
 import { useTheme } from "../../context/theme";
+import IconMask from "../../components/Icon/Mask";
+import { items_center } from "../../styles/tailwindcss";
 
 const LinkButton = styled(TextMinor)`
   display: flex;
+  ${items_center};
   :hover {
     color: var(--textPrimary);
     & > :last-child {
@@ -199,7 +201,11 @@ const Income = ({
         <NavLink to={`/${symbol}/income`}>
           <LinkButton>
             Detail
-            <GrayImage src="/imgs/caret-right.svg" width={24} />
+            <IconMask
+              src="/imgs/caret-right.svg"
+              size={20}
+              color="textSecondary"
+            />
           </LinkButton>
         </NavLink>
       }
