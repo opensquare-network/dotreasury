@@ -1,7 +1,7 @@
 import React, { useEffect, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled, { css } from "styled-components";
-import { Image } from "semantic-ui-react";
+import Image from "../../components/Image";
 import { Link } from "react-router-dom";
 
 import Card from "../../components/Card";
@@ -9,8 +9,6 @@ import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
 import CountDown from "../../components/CountDown";
 import BlocksTime from "../../components/BlocksTime";
-
-
 
 import { overviewSelector } from "../../store/reducers/overviewSlice";
 import {
@@ -115,13 +113,13 @@ const Summary = () => {
   const symbolPrice = overview?.latestSymbolPrice ?? 0;
   const toBeAwarded = BigNumber(overview?.toBeAwarded?.total ?? 0).toNumber();
   const toBeAwardedValue = BigNumber(
-    toPrecision(toBeAwarded, precision)
+    toPrecision(toBeAwarded, precision),
   ).toNumber();
 
   return (
     <Wrapper>
       <SummaryItem
-        icon={<Image src="/imgs/data-available.svg" />}
+        icon={<Image src="/imgs/data-available.svg" dark />}
         title="Available"
         content={
           <div>
@@ -137,7 +135,7 @@ const Summary = () => {
         }
       />
       <SummaryItem
-        icon={<Image src="/imgs/data-approved.svg" />}
+        icon={<Image src="/imgs/data-approved.svg" dark />}
         title="To be awarded"
         content={
           <div>
@@ -153,7 +151,7 @@ const Summary = () => {
         }
       />
       <SummaryItem
-        icon={<Image src="/imgs/data-next-burn.svg" />}
+        icon={<Image src="/imgs/data-next-burn.svg" dark />}
         title="Next burn"
         content={
           <div>
@@ -189,7 +187,7 @@ const Summary = () => {
 
       {isKusama && (
         <SummaryItem
-          icon={<Image src="/imgs/data-opengov.svg" />}
+          icon={<Image src="/imgs/data-opengov.svg" dark />}
           title="OpenGov"
           content={
             <div>
@@ -208,7 +206,7 @@ const Summary = () => {
       )}
 
       <SummaryItem
-        icon={<Image src="/imgs/data-proposals.svg" />}
+        icon={<Image src="/imgs/data-proposals.svg" dark />}
         title="Proposals"
         content={
           <div>
@@ -225,7 +223,7 @@ const Summary = () => {
         }
       />
       <SummaryItem
-        icon={<Image src="/imgs/data-tips.svg" />}
+        icon={<Image src="/imgs/data-tips.svg" dark />}
         title="Tips"
         content={
           <div>
@@ -247,7 +245,7 @@ const Summary = () => {
         }
       />
       <SummaryItem
-        icon={<Image src="/imgs/data-bounties.svg" />}
+        icon={<Image src="/imgs/data-bounties.svg" dark />}
         title="Bounties"
         content={
           <div>
