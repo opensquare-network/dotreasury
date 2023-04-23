@@ -1,11 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import { Icon, Image } from "semantic-ui-react";
+import { Icon } from "semantic-ui-react";
 
 import Container from "../../components/Container";
 import TextMinor from "../../components/TextMinor";
 import { items_center } from "../../styles/tailwindcss";
 import FooterSwitchThemeButton from "./SwitchThemeButton";
+import { Image } from "../../components/Image";
 
 const Wrapper = styled.footer`
   padding-bottom: 20px;
@@ -106,7 +107,7 @@ const Footer = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Image src="/imgs/opensquare-logo.svg" />
+              <Image src="/imgs/opensquare-logo.svg" dark />
             </a>
           </ImageLogoWrapper>
           <ImageLogoWrapper>
@@ -117,14 +118,14 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Image src="/imgs/kusama-treasury-logo.svg" />
+                <Image src="/imgs/kusama-treasury-logo.svg" dark />
               </a>
               <a
                 href="https://polkadot.network/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Image src="/imgs/polkadot-treasury-logo.svg" />
+                <Image src="/imgs/polkadot-treasury-logo.svg" dark />
               </a>
             </FlexWrapper>
           </ImageLogoWrapper>
