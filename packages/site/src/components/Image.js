@@ -7,7 +7,7 @@ import { getUrlExtension } from "../utils/url";
  * @param {typeof SemanticImage & {src: string, srcDarkSuffix?: string, dark?: boolean}} props
  * @description Wrapped `Image` with auto dark compatible
  */
-export function Image({
+export default function Image({
   src,
   dark: supportDark,
   srcDarkSuffix = "-dark",

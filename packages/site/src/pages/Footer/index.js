@@ -6,7 +6,7 @@ import Container from "../../components/Container";
 import TextMinor from "../../components/TextMinor";
 import { items_center } from "../../styles/tailwindcss";
 import FooterSwitchThemeButton from "./SwitchThemeButton";
-import { Image } from "../../components/Image";
+import Image from "../../components/Image";
 
 const Wrapper = styled.footer`
   padding-bottom: 20px;
