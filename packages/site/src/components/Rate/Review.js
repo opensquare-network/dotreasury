@@ -23,7 +23,7 @@ const TitleWrapper = styled.div`
   > :last-child {
     font-size: 13px;
     line-height: 18px;
-    color: rgba(0, 0, 0, 0.65);
+    color: var(--textSecondary);
   }
 `;
 
