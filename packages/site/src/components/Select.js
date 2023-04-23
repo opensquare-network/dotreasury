@@ -14,7 +14,7 @@ const CustomSelect = styled(Form.Select)`
     }
   }
   .text {
-    color: var(--textPrimaryContrast) !important;
+    color: var(--textPrimary) !important;
   }
   .dropdown.icon {
     padding: 4px 12px !important;
