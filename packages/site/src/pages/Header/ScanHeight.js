@@ -126,7 +126,7 @@ const SymbolItem = styled.div`
     margin-right: 8px;
   }
   > div:last-child {
-    color: rgba(0, 0, 0, 0.15) !important;
+    color: var(--textDisable) !important;
     margin-left: auto;
   }
   :hover {

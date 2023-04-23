@@ -47,7 +47,7 @@ const StyledTextarea = styled.textarea`
     border-color: #cccccc !important;
   }
   ::placeholder {
-    color: rgba(0, 0, 0, 0.15);
+    color: var(--textDisable);
   }
 `;
 
