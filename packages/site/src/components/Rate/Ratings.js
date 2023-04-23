@@ -52,7 +52,7 @@ const Total = styled.div`
   margin-top: 22px;
   font-size: 13px;
   line-height: 18px;
-  color: rgba(0, 0, 0, 0.65);
+  color: var(--textSecondary);
 `;
 
 export default function Ratings({ type, index }) {

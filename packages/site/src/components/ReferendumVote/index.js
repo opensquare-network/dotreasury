@@ -35,7 +35,7 @@ const ProposalArgsItemWrapper = styled.div`
   font-size: 14px;
   line-height: 20px;
   & > .title {
-    color: rgba(0, 0, 0, 0.65);
+    color: var(--textSecondary);
   }
   & > .value {
     color: var(--textPrimary);

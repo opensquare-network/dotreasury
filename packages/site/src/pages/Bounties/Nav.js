@@ -19,7 +19,7 @@ const NavItem = styled(Text)`
     color: rgba(0, 0, 0, 0.3);
 
     :hover {
-      color: rgba(0, 0, 0, 0.65);
+      color: var(--textSecondary);
     }
 
     ${(p) =>

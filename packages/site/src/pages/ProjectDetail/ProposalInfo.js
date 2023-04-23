@@ -49,7 +49,7 @@ const ProposalDetail = styled.div`
 const ProposalDetailLabel = styled.div`
   min-width: 160px;
   /* text-dark/minor */
-  color: rgba(0, 0, 0, 0.65);
+  color: var(--textSecondary);
   ${p_14_normal};
 `;
 

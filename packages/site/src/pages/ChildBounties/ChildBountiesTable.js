@@ -30,7 +30,7 @@ const TableWrapper = styled.div`
   .proposal-beneficiary-header,
   .curator-header {
     cursor: pointer !important;
-    color: rgba(0, 0, 0, 0.65) !important;
+    color: var(--textSecondary) !important;
   }
 `;
 
