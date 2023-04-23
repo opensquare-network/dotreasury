@@ -56,7 +56,7 @@ const MenuItem = styled.div`
   font-weight: 500;
   font-size: 14px;
   line-height: 20px;
-  color: rgba(0, 0, 0, 0.9);
+  color: var(--textPrimary);
   :hover {
     background-color: #fafafa;
   }

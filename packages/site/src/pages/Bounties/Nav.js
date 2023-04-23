@@ -25,7 +25,7 @@ const NavItem = styled(Text)`
     ${(p) =>
       p.active &&
       css`
-        color: rgba(0, 0, 0, 0.9) !important;
+        color: var(--textPrimary) !important;
       `}
   }
 `;

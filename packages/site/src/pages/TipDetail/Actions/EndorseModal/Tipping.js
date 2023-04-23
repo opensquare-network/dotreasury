@@ -33,7 +33,7 @@ const TippingContainer = styled.div`
 
 const TippingValue = styled(Wrapper)`
   justify-content: space-between;
-  color: rgba(0, 0, 0, 0.9);
+  color: var(--textPrimary);
 `;
 
 export default function Tipping({ tipDetail }) {

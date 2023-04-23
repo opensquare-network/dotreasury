@@ -18,7 +18,7 @@ const TitleWrapper = styled.div`
     font-weight: bold;
     font-size: 16px;
     line-height: 24px;
-    color: rgba(0, 0, 0, 0.9);
+    color: var(--textPrimary);
   }
   > :last-child {
     font-size: 13px;

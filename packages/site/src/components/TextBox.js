@@ -13,7 +13,7 @@ const TextBox = styled.div`
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  color: rgba(0, 0, 0, 0.9);
+  color: var(--textPrimary);
 `;
 
 const LoadingWrapper = styled.div`

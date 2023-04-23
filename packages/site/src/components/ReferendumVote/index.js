@@ -38,7 +38,7 @@ const ProposalArgsItemWrapper = styled.div`
     color: rgba(0, 0, 0, 0.65);
   }
   & > .value {
-    color: rgba(0, 0, 0, 0.9);
+    color: var(--textPrimary);
     word-break: break-word;
     :not(:first-child) > * {
       align-items: flex-start;
@@ -96,7 +96,7 @@ const Contents = styled(Headers)`
   font-weight: 500;
   font-size: 12px;
   line-height: 16px;
-  color: rgba(0, 0, 0, 0.9);
+  color: var(--textPrimary);
 `;
 
 const NoData = styled.div`
