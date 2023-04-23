@@ -12,7 +12,7 @@ import { capitalizeFirstLetter } from "../../../utils";
 import { NavLink } from "react-router-dom";
 
 const ReturnedText = styled.div`
-  color: rgba(0, 0, 0, 0.3);
+  color: var(--textTertiary);
   font-size: 14px;
   line-height: 22px;
   margin-left: 16px;

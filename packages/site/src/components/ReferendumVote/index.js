@@ -104,7 +104,7 @@ const NoData = styled.div`
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  color: rgba(0, 0, 0, 0.3);
+  color: var(--textTertiary);
 `;
 
 const ReferendumVote = ({ threshold, tally, electorate }) => {

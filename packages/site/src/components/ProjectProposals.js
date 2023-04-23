@@ -10,7 +10,7 @@ const Wrapper = styled.div`
 const PlusWrapper = styled.div`
   font-size: 14px !important;
   line-height: 20px !important;
-  color: rgba(0, 0, 0, 0.3) !important;
+  color: var(--textTertiary) !important;
   margin: 0 4px !important;
   font-weight: 400 !important;
   :first-child {

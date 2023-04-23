@@ -40,7 +40,7 @@ const TimeWrapper = styled.div`
   }
 
   line-height: 22px;
-  color: rgba(0, 0, 0, 0.3);
+  color: var(--textTertiary);
   white-space: nowrap;
 `;
 

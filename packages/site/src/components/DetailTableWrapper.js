@@ -37,7 +37,7 @@ const Desc = styled.div`
   font-weight: 600;
   font-size: 16px;
   line-height: 24px;
-  color: rgba(0, 0, 0, 0.3);
+  color: var(--textTertiary);
   margin-left: 8px;
 `;
 

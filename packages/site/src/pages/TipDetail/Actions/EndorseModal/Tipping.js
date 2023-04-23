@@ -22,7 +22,7 @@ const Wrapper = styled.div`
 
 const NoTipping = styled(Wrapper)`
   justify-content: center;
-  color: rgba(0, 0, 0, 0.3);
+  color: var(--textTertiary);
 `;
 
 const TippingContainer = styled.div`
