@@ -53,6 +53,21 @@ export function makeUrlPathname(...paths) {
   return "/" + paths.filter(Boolean).join("/");
 }
 
+/**
+ * @description get url file extension, otherwise returns `''`
+ * @example returns `.svg` or `svg`
+ */
+export function getUrlExtension(url = "", { dot = false } = {}) {
+  const [u] = url.split("?");
+  const [extWithDot, ext] = u.match(/\.([^.]+)$/) ?? [];
+
+  if (dot) {
+    return extWithDot;
+  }
+
+  return ext;
+}
+
 function isExternalLink(link = "") {
   return /^https?:\/\//.test(link);
 }
