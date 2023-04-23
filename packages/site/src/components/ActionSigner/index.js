@@ -46,7 +46,7 @@ const Address = styled.div`
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  color: rgba(0, 0, 0, 0.3);
+  color: var(--textTertiary);
 `;
 
 export default function Signer() {

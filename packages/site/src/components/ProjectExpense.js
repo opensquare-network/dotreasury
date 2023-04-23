@@ -15,7 +15,7 @@ const ExpenseWrapper = styled.div`
 const PlusWrapper = styled.div`
   font-size: 14px !important;
   line-height: 22px !important;
-  color: rgba(0, 0, 0, 0.3);
+  color: var(--textTertiary);
   margin: 0 4px;
   font-weight: 400 !important;
   :first-child {
@@ -29,7 +29,7 @@ const PlusWrapper = styled.div`
 const DollarWrapper = styled.div`
   font-size: 12px;
   line-height: 18px;
-  color: rgba(0, 0, 0, 0.3);
+  color: var(--textTertiary);
   white-space: nowrap;
 `;
 

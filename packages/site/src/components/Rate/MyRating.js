@@ -55,7 +55,7 @@ const TextCount = styled.div`
   position: absolute;
   font-size: 12px;
   line-height: 18px;
-  color: rgba(0, 0, 0, 0.3);
+  color: var(--textTertiary);
   bottom: 8px;
   right: 8px;
 `;

@@ -21,7 +21,7 @@ const Header = styled.div`
   font-weight: 500;
   font-size: 14px;
   line-height: 20px;
-  color: rgba(0, 0, 0, 0.3);
+  color: var(--textTertiary);
   background: #FAFAFA;
   border-bottom: 1px solid #F4F4F4;
 `;

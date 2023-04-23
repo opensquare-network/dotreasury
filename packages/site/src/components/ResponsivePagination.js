@@ -45,7 +45,7 @@ const DropdownWrapper = styled.div`
 const DropdownText = styled.div`
   font-size: 13px;
   line-height: 24px;
-  color: rgba(0, 0, 0, 0.3);
+  color: var(--textTertiary);
   text-align: right;
   padding-right: 16px;
 `;

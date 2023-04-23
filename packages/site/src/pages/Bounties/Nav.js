@@ -16,7 +16,7 @@ const NavItem = styled(Text)`
   font-weight: 600;
 
   a {
-    color: rgba(0, 0, 0, 0.3);
+    color: var(--textTertiary);
 
     :hover {
       color: var(--textSecondary);

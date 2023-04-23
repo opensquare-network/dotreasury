@@ -41,7 +41,7 @@ const CountWrapper = styled.div`
     display: block;
     font-size: 14px;
     line-height: 24px !important;
-    color: rgba(0, 0, 0, 0.3);
+    color: var(--textTertiary);
     :not(:first-child) {
       margin-top: 2px;
     }
