@@ -400,6 +400,7 @@ export const cursor_pointer = `
 
 // backgrounds
 // ---
+export const bg_transparent = "background-color: transparent;";
 
 // private
 // ---
