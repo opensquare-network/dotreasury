@@ -30,7 +30,7 @@ const Header = styled.div`
   font-weight: bold;
   font-size: 16px;
   line-height: 24px;
-  color: rgba(0, 0, 0, 0.9);
+  color: var(--textPrimary);
 
   div.ui.label {
     background: var(--secondary) !important;

@@ -6,7 +6,7 @@ const OnChainActionButtonSecondary = styled(OnChainActionButton)`
   background: white;
   border: 1px solid #dddddd;
 
-  color: rgba(0, 0, 0, 0.9);
+  color: var(--textPrimary);
 
   ${(p) =>
     p.disabled &&

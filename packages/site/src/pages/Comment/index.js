@@ -28,7 +28,7 @@ const Header = styled.div`
   padding: 20px 24px;
   font-size: 16px;
   line-height: 24px;
-  color: rgba(0, 0, 0, 0.9);
+  color: var(--textPrimary);
   font-weight: bold;
 `;
 

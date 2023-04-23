@@ -27,7 +27,7 @@ const LinkWrapper = styled.span`
 `;
 
 const LinkText = styled.span`
-  color: rgba(0, 0, 0, 0.9);
+  color: var(--textPrimary);
   ${p_14_medium};
 `;
 

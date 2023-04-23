@@ -24,7 +24,7 @@ const PlusWrapper = styled.div`
 const Item = styled.div`
   font-size: 14px;
   line-height: 20px;
-  color: rgba(0, 0, 0, 0.9);
+  color: var(--textPrimary);
   display: flex;
   align-items: center;
   > img {

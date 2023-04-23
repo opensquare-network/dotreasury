@@ -24,7 +24,7 @@ const AuthorWrapper = styled.div`
   align-items: center;
   font-size: 14px;
   line-height: 22px;
-  color: rgba(0, 0, 0, 0.9);
+  color: var(--textPrimary);
 `;
 
 const TimeWrapper = styled.div`
@@ -56,7 +56,7 @@ const ContentWrapper = styled.div`
   margin: 8px 0 0 32px;
   font-size: 14px;
   line-height: 22px;
-  color: rgba(0, 0, 0, 0.9);
+  color: var(--textPrimary);
   word-wrap: break-word;
 `;
 

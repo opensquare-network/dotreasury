@@ -8,7 +8,7 @@ const ExpenseWrapper = styled.div`
   align-items: center;
   font-size: 14px;
   line-height: 20px;
-  color: rgba(0, 0, 0, 0.9);
+  color: var(--textPrimary);
   white-space: nowrap;
 `;
 

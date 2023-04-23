@@ -33,7 +33,7 @@ const Title = styled.div`
   font-weight: 600;
   font-size: 18px;
   line-height: 28px;
-  color: rgba(0, 0, 0, 0.9);
+  color: var(--textPrimary);
 `;
 
 const Close = styled(CloseSVG)`

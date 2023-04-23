@@ -17,7 +17,7 @@ const ProposalType = styled.p`
   margin: 0;
   margin-left: 4px;
   /* text-dark/major */
-  color: rgba(0, 0, 0, 0.9);
+  color: var(--textPrimary);
   ${p_14_medium};
 `;
 
@@ -56,7 +56,7 @@ const ProposalDetailLabel = styled.div`
 const ProposalDetailValue = styled.div`
   flex: 1 1 auto;
   /* text-dark/major */
-  color: rgba(0, 0, 0, 0.9);
+  color: var(--textPrimary);
   ${p_14_normal};
 
   @media screen and (max-width: 900px) {
