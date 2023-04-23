@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import styled, { css } from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { Image } from "semantic-ui-react";
+import Image from "../../components/Image";
 import Card from "../../components/Card";
 
 import {
@@ -308,6 +308,7 @@ const ScanHeight = () => {
                   ? "/imgs/logo-polkadot.svg"
                   : "/imgs/logo-kusama.svg"
               }
+              dark
             />
             <DarkMinorLabel>Height</DarkMinorLabel>
             <DarkMajorLabel>{`#${scanHeight.toLocaleString()}`}</DarkMajorLabel>
@@ -330,7 +331,7 @@ const ScanHeight = () => {
                     switchNode("polkadot");
                   }}
                 >
-                  <Image src="/imgs/logo-polkadot.svg" />
+                  <Image src="/imgs/logo-polkadot.svg" dark />
                   <div>Polkadot</div>
                   <div className="unit">DOT</div>
                 </SymbolItem>
@@ -340,13 +341,13 @@ const ScanHeight = () => {
                     switchNode("kusama");
                   }}
                 >
-                  <Image src="/imgs/logo-kusama.svg" />
+                  <Image src="/imgs/logo-kusama.svg" dark />
                   <div>Kusama</div>
                   <div className="unit">KSM</div>
                 </SymbolItem>
                 <ExternalLink href="https://edg.dotreasury.com/">
                   <SymbolItem onClick={() => setNetorkOpen(false)}>
-                    <Image src="/imgs/logo-edgeware.svg" />
+                    <Image src="/imgs/logo-edgeware.svg" dark />
                     <div>Edgeware</div>
                     <div className="unit">EDG</div>
                   </SymbolItem>
