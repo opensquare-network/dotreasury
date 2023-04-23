@@ -25,7 +25,7 @@ const Input = styled.input`
   width: 60px;
 
   ::placeholder {
-    color: rgba(0, 0, 0, 0.15);
+    color: var(--textDisable);
   }
 
   &:focus::placeholder {

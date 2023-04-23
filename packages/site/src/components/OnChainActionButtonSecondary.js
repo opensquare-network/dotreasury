@@ -11,7 +11,7 @@ const OnChainActionButtonSecondary = styled(OnChainActionButton)`
   ${(p) =>
     p.disabled &&
     css`
-      color: rgba(0, 0, 0, 0.15);
+      color: var(--textDisable);
       pointer-events: none;
     `}
 `;
