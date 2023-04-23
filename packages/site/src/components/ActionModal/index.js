@@ -1,16 +1,23 @@
 import styled, { css } from "styled-components";
 import { Modal } from "semantic-ui-react";
 import { ReactComponent as CloseSVG } from "./close.svg";
+import { border_color, shadow } from "../../styles/tailwindcss";
 
 const StyledModal = styled(Modal)`
+  background-color: var(--neutral100) !important;
+  border: 1px solid !important;
+  ${border_color("neutral300")} !important;
+  ${shadow("200")} !important;
   padding: 32px;
   > :nth-child(1) {
     margin-bottom: 16px;
   }
 
-  ${p => p.maxwidth && css`
-    max-width: ${p.maxwidth}px;
-  `}
+  ${(p) =>
+    p.maxwidth &&
+    css`
+      max-width: ${p.maxwidth}px;
+    `}
 
   @media screen and (max-width: 600px) {
     .address {
@@ -38,9 +45,22 @@ const Title = styled.div`
 
 const Close = styled(CloseSVG)`
   cursor: pointer;
+  g {
+    path {
+      stroke: var(--textTertiary);
+      stroke-opacity: 1;
+    }
+  }
 `;
 
-export default function ActionModal({ title, visible, setVisible, children, size = "small", maxWidth }) {
+export default function ActionModal({
+  title,
+  visible,
+  setVisible,
+  children,
+  size = "small",
+  maxWidth,
+}) {
   return (
     <StyledModal
       size={size}
@@ -54,4 +74,5 @@ export default function ActionModal({ title, visible, setVisible, children, size
       </Header>
       {children}
     </StyledModal>
-  );}
+  );
+}

@@ -14,15 +14,16 @@ const OnChainActionButton = styled.div`
   font-weight: 500;
   font-size: 12px;
   line-height: 16px;
-  color: white;
+  color: var(--textPrimaryContrast);
 
   white-space: nowrap;
-  ${p => p.disabled && css`
-    color: white;
-    background: #CCCCCC;
-    opacity: 1;
-    pointer-events: none;
-  `}
+  ${(p) =>
+    p.disabled &&
+    css`
+      background: var(--neutral500);
+      opacity: 1;
+      pointer-events: none;
+    `}
 `;
 
 export default OnChainActionButton;

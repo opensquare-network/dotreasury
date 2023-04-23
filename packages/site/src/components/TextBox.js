@@ -7,7 +7,7 @@ const TextBox = styled.div`
   padding: 8px 16px;
   gap: 16px;
 
-  background: #FAFAFA;
+  background: var(--neutral200);
   border-radius: 4px;
 
   font-weight: 400;
@@ -22,7 +22,7 @@ const LoadingWrapper = styled.div`
   justify-content: center;
   padding: 8px 0;
 
-  background: #FAFAFA;
+  background: var(--neutral200);
   border-radius: 4px;
 `;
 

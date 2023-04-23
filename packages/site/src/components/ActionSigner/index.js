@@ -16,8 +16,8 @@ const Wrapper = styled.div`
   padding: 12px 16px;
   justify-content: space-between;
 
-  background: #FAFAFA;
-  border: 1px solid #F4F4F4;
+  background: var(--neutral200);
+  border: 1px solid var(--neutral300);
   border-radius: 4px;
 
   @media screen and (max-width: 600px) {
@@ -57,7 +57,7 @@ export default function Signer() {
   let walletLogo = null;
   let walletName = "";
 
-  switch(account?.extension) {
+  switch (account?.extension) {
     case "polkadot-js": {
       walletLogo = <PolkadotLogo />;
       walletName = "Polkadot.js";
@@ -73,7 +73,8 @@ export default function Signer() {
       walletName = "Talisman";
       break;
     }
-    default: break;
+    default:
+      break;
   }
 
   return (
@@ -84,7 +85,9 @@ export default function Signer() {
         <Address className="address">
           <Tooltip
             showTooltip={true}
-            tooltipContent={<TooltipInfoText>{account?.address}</TooltipInfoText>}
+            tooltipContent={
+              <TooltipInfoText>{account?.address}</TooltipInfoText>
+            }
           >
             {ellipsis(account?.address)}
           </Tooltip>
