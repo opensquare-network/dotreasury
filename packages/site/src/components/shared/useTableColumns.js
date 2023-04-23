@@ -28,13 +28,12 @@ const ProposeTimeWrapper = styled.div`
   }
   > :first-child {
     line-height: 22px;
-    color: rgba(0, 0, 0, 0.9) !important;
+    color: var(--textPrimary);
   }
   > :last-child {
     * {
       font-size: 12px;
       line-height: 18px;
-      color: rgba(0, 0, 0, 0.3);
     }
     img {
       width: 14px !important;
@@ -142,7 +141,12 @@ const value = (symbol) => ({
   cellProps: { textAlign: "right" },
   cellClassName: "proposal-value-cell",
   cellRender: (_, item) => (
-    <Balance value={item.value} currency={symbol} usdt={item.symbolPrice} abbreviate />
+    <Balance
+      value={item.value}
+      currency={symbol}
+      usdt={item.symbolPrice}
+      abbreviate
+    />
   ),
 });
 const per = {
@@ -311,7 +315,9 @@ const referendaStatus = {
   cellRender: (_, item) => (
     <PairTextVertical
       value={item?.state?.name}
-      detail={dayjs(parseInt(item?.state?.indexer?.blockTime)).format("YYYY-MM-DD HH:mm")}
+      detail={dayjs(parseInt(item?.state?.indexer?.blockTime)).format(
+        "YYYY-MM-DD HH:mm",
+      )}
     />
   ),
 };
@@ -368,7 +374,7 @@ const tipsStatus = {
       <PairTextVertical
         value={item.showStatus}
         detail={dayjs(parseInt(item.latestState.time)).format(
-          "YYYY-MM-DD HH:mm"
+          "YYYY-MM-DD HH:mm",
         )}
       />
     ) : item.showStatus === TipStatus.Tipping ? (

@@ -1,7 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import { Image } from "semantic-ui-react";
-
+import IconMask from "./Icon/Mask";
 
 const Wrapper = styled.div`
   display: flex;
@@ -14,7 +13,7 @@ const Label = styled.span`
   font-style: normal;
   font-weight: normal;
   line-height: 24px;
-  color: var(--textSecondary);
+  color: var(--textTertiary);
   ${(p) => css`
     font-size: ${p.fontSize}px;
   `}
@@ -22,7 +21,6 @@ const Label = styled.span`
     !p.noHover &&
     css`
       &:hover {
-        color: var(--textPrimary);
         text-decoration-line: underline;
       }
     `}
@@ -31,7 +29,7 @@ const Label = styled.span`
 const PolygonLabel = ({ value, noHover, fontSize = 14 }) => {
   return (
     <Wrapper>
-      <Image src={"/imgs/polygon.svg"} />
+      <IconMask src={"/imgs/polygon.svg"} size={16} color="textDisable" />
       <Label noHover={noHover} fontSize={fontSize}>
         {value}
       </Label>
