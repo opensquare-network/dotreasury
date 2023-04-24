@@ -10,7 +10,7 @@ const Wrapper = styled.div`
 const Background = styled.div`
   width: 100%;
   height: 6px;
-  background: #ffe6ea;
+  background: var(--pink100);
   border-radius: 6px;
   overflow: hidden;
   position: relative;
@@ -20,7 +20,7 @@ const Bar = styled.div`
   height: 6px;
   left: 0;
   top: 0;
-  background: #f23252;
+  background: var(--pink500);
   width: ${(p) => p.percent};
 `;
 
