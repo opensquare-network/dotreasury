@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { p_14_medium } from "../../styles/text";
 
 const triangleWidth = 6;
 
@@ -30,12 +29,6 @@ export const TooltipContainer = styled.div`
     top: -${triangleWidth * 2}px;
     transform: rotate(180deg);
   }
-`;
-
-export const TooltipTitleText = styled.p`
-  color: #fff;
-  margin: 0;
-  ${p_14_medium};
 `;
 
 export const TooltipInfoText = styled.p`
