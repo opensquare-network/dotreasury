@@ -12,7 +12,8 @@ const LinksWrapper = styled.ul`
 `;
 
 const LinkWrapper = styled.span`
-  background-color: #fafafa;
+  background-color: var(--neutral200);
+  color: var(--textPrimary);
   display: inline-flex;
   align-items: center;
   padding: 4px 8px;
