@@ -19,12 +19,12 @@ import User from "../../components/User";
 const Wrapper = styled.div`
   padding: 32px 32px 16px;
   :hover {
-    background: #fbfbfb;
+    background: var(--neutral200);
   }
   ${(p) =>
     p.highLight &&
     css`
-      background: #fff9fa;
+      background: var(--neutral100);
     `}
 `;
 
@@ -38,7 +38,7 @@ const HeaderWrapper = styled.div`
 `;
 
 const Index = styled(TextMinor)`
-  background: #f4f4f4;
+  background: var(--neutral300);
   border-radius: 10px;
   height: 20px;
   padding: 0 8px;
