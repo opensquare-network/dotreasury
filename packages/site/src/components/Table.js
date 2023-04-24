@@ -15,7 +15,7 @@ const CustomTable = styled(SemanticTable)`
   background-color: var(--neutral100) !important;
   tr {
     &.tree {
-      background-color: rgba(250, 250, 250, 1);
+      background-color: var(--neutral200);
     }
     :hover {
       background-color: var(--neutral200) !important;
