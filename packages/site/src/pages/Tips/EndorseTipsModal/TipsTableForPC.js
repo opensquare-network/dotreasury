@@ -6,14 +6,14 @@ import { Image } from "semantic-ui-react";
 import { Wrapper, Loading, NoData } from "./styled";
 
 const StyledTable = styled.table`
-  background: #F4F4F4;
+  background: var(--neutral300);
   width: 100%;
   border-spacing: 0px;
 
   th {
-    background: #FAFAFA;
+    background: var(--neutral200);
     padding: 12px 16px;
-    border-bottom: 1px solid #F4F4F4;
+    border-bottom: 1px solid var(--neutral300);
 
     font-weight: 400;
     font-size: 12px;
@@ -24,13 +24,13 @@ const StyledTable = styled.table`
   tbody {
     tr {
       td {
-        background: #FFFFFF;
+        background: var(--neutral100);
         padding: 12px 16px;
       }
 
       &:not(:last-child) {
         td {
-          border-bottom: 1px solid #F4F4F4;
+          border-bottom: 1px solid var(--neutral300);
         }
       }
     }
@@ -74,29 +74,26 @@ export default function TipsTableForPC({
         <NoData>No data</NoData>
       </td>
     </tr>
-
   );
 
-  const tippingRows = (
-    tipList?.map((tip) => (
-      <tr key={tip.hash}>
-        <td>
-          <MinusButton onClick={() => removeTip(tip.hash)} />
-        </td>
-        <Beneficiary>
-          <User address={tip.beneficiary} />
-        </Beneficiary>
-        <Reason>{tip.reason}</Reason>
-        <Tip>
-          <AssetInput
-            defaultValue={tipValues[tip.hash]}
-            symbol={symbol}
-            onChange={(e) => updateTipValue(tip.hash, e.target.value)}
-          />
-        </Tip>
-      </tr>
-    ))
-  );
+  const tippingRows = tipList?.map((tip) => (
+    <tr key={tip.hash}>
+      <td>
+        <MinusButton onClick={() => removeTip(tip.hash)} />
+      </td>
+      <Beneficiary>
+        <User address={tip.beneficiary} />
+      </Beneficiary>
+      <Reason>{tip.reason}</Reason>
+      <Tip>
+        <AssetInput
+          defaultValue={tipValues[tip.hash]}
+          symbol={symbol}
+          onChange={(e) => updateTipValue(tip.hash, e.target.value)}
+        />
+      </Tip>
+    </tr>
+  ));
 
   return (
     <Wrapper>
@@ -110,11 +107,11 @@ export default function TipsTableForPC({
           </tr>
         </thead>
         <tbody>
-          {isLoading ? (
-            loadingTippings
-          ) : (
-            tipList?.length > 0 ? tippingRows : noData
-          )}
+          {isLoading
+            ? loadingTippings
+            : tipList?.length > 0
+            ? tippingRows
+            : noData}
         </tbody>
       </StyledTable>
     </Wrapper>
