@@ -14,6 +14,7 @@ import { overviewSelector } from "../../store/reducers/overviewSlice";
 import { getPrecision, toPrecision } from "../../utils";
 import { sumBy } from "../../utils/math";
 import OverviewBaseChartCard from "./ChartCard";
+import OpengovSpendTitle from "./OpengovSpendTitle";
 
 export default function OpenGovSpend() {
   const overview = useSelector(overviewSelector);
@@ -154,7 +155,7 @@ export default function OpenGovSpend() {
 
   return (
     <OverviewBaseChartCard
-      title="OpenGov Spent"
+      title={<OpengovSpendTitle>OpenGov Spent</OpengovSpendTitle>}
       data={chartData}
       status={chartData}
       clickEvent={clickEvent}
