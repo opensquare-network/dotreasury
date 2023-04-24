@@ -154,7 +154,7 @@ export default function OpenGovSpend() {
 
   return (
     <OverviewBaseChartCard
-      title="OpenGov Spent"
+      title={<OpengovSpendTitle>OpenGov Spent</OpengovSpendTitle>}
       data={chartData}
       status={chartData}
       clickEvent={clickEvent}
