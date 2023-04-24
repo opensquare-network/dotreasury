@@ -5,13 +5,13 @@ const triangleWidth = 6;
 export const TooltipArrow = styled.div`
   position: absolute;
   border: ${triangleWidth}px solid transparent;
-  border-top-color: rgba(0, 0, 0, 0.72);
+  border-top-color: var(--tooltipBg);
   left: ${(p) => p.x ?? 0}px;
 `;
 
 export const TooltipContainer = styled.div`
-  background-color: rgba(0, 0, 0, 0.72);
-  color: white;
+  background-color: var(--tooltipBg);
+  color: var(--textPrimaryContrast);
   font-weight: bold;
   padding: 8px;
   border-radius: 4px;
