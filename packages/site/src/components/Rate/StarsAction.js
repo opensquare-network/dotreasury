@@ -1,5 +1,4 @@
 import styled, { css } from "styled-components";
-import { useDark } from "../../context/theme";
 
 const Wrapper = styled.div`
   display: flex;
@@ -12,7 +11,10 @@ const Wrapper = styled.div`
     background-image: url("/imgs/star.svg");
   }
   > div:hover ~ div {
-    background-image: url(${(p) => p.unfilled});
+    background-image: url(${(p) =>
+      p.theme.dark
+        ? "/imgs/star-unfilled-dark.svg"
+        : "/imgs/star-unfilled.svg"});
   }
 `;
 
@@ -20,7 +22,9 @@ const Star = styled.div`
   width: 16px;
   height: 16px;
   background-repeat: no-repeat;
-  background-image: url(${(p) => p.unfilled});
+  background-image: url(${(p) =>
+    p.theme.dark ? "/imgs/star-unfilled-dark.svg" : "/imgs/star-unfilled.svg"});
+  }
   ${(p) =>
     p.filled &&
     css`
@@ -29,17 +33,11 @@ const Star = styled.div`
 `;
 
 export default function StarsAction({ rate, setRate }) {
-  const dark = useDark();
-  const unfilled = dark
-    ? "/imgs/star-unfilled-dark.svg"
-    : "/imgs/star-unfilled.svg";
-
   return (
-    <Wrapper unfilled={unfilled}>
+    <Wrapper>
       {[...Array(5).keys()].map((item) => (
         <Star
           key={item}
-          unfilled={unfilled}
           filled={item <= rate - 1}
           onClick={() => setRate(item + 1)}
         />

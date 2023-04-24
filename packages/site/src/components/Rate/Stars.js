@@ -1,5 +1,4 @@
 import styled, { css } from "styled-components";
-import { useDark } from "../../context/theme";
 
 const Wrapper = styled.div`
   display: flex;
@@ -13,7 +12,8 @@ const Wrapper = styled.div`
 const Star = styled.div`
   width: 16px;
   height: 16px;
-  background: url(${(p) => p.unfilled});
+  background: url(${(p) =>
+    p.theme.dark ? "/imgs/star-unfilled-dark.svg" : "/imgs/star-unfilled.svg"});
   ${(p) =>
     p.filled &&
     css`
@@ -22,15 +22,10 @@ const Star = styled.div`
 `;
 
 export default function Stars({ rate = 0 }) {
-  const dark = useDark();
-  const unfilled = dark
-    ? "/imgs/star-unfilled-dark.svg"
-    : "/imgs/star-unfilled.svg";
-
   return (
     <Wrapper>
       {[...Array(5).keys()].map((item) => (
-        <Star key={item} filled={item <= rate - 1} unfilled={unfilled} />
+        <Star key={item} filled={item <= rate - 1} />
       ))}
     </Wrapper>
   );
