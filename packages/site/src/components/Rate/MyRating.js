@@ -20,6 +20,7 @@ const TitleWrapper = styled.div`
   font-weight: 600;
   font-size: 14px;
   line-height: 24px;
+  color: var(--textPrimary);
   > :last-child {
     margin-left: 16px;
   }
@@ -39,12 +40,13 @@ const StyledTextarea = styled.textarea`
   line-height: 22px;
   border-radius: 4px;
   outline: none;
-  color: rgba(0, 0, 0, 0.87);
-  border-color: rgba(34, 36, 38, 0.15);
+  color: var(--textPrimary);
+  border-color: var(--neutral400);
+  background-color: transparent;
   margin: 0;
   :hover,
   :focus {
-    border-color: #cccccc !important;
+    border-color: var(--neutral500) !important;
   }
   ::placeholder {
     color: var(--textDisable);
@@ -89,7 +91,7 @@ export default function MyRating({ type, index }) {
         addToast({
           type: "error",
           message: "Please select 1 to 5 stars",
-        })
+        }),
       );
       return;
     }
@@ -99,7 +101,7 @@ export default function MyRating({ type, index }) {
         addToast({
           type: "error",
           message: "Please connect wallet",
-        })
+        }),
       );
       return;
     }
@@ -118,7 +120,7 @@ export default function MyRating({ type, index }) {
         parseInt(Date.now() / 1000),
         address,
         extensionName,
-      )
+      ),
     );
 
     setContent("");
