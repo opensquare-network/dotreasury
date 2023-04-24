@@ -53,7 +53,7 @@ export default function EndorseModal({ tipDetail, visible, setVisible, onFinaliz
   useEffect(() => {
     if (tipDetail) {
       const initialMedianValue = toPrecision(tipDetail?.medianValue || 0, precision, false);
-      setInputTipValue(`${initialMedianValue}`)
+      setInputTipValue(`${initialMedianValue}`);
     }
   }, [tipDetail, precision]);
 

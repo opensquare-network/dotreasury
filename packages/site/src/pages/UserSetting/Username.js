@@ -13,7 +13,7 @@ const Username = ({ username }) => {
         <StyledText>{username}</StyledText>
       </EditWrapper>
     </StyledItem>
-  )
-}
+  );
+};
 
 export default Username;

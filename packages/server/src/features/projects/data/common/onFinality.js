@@ -18,7 +18,27 @@ const proposals = [
   {
     type: "child-bounty",
     token: "ksm",
+    id: 135,
+  },
+  {
+    type: "child-bounty",
+    token: "ksm",
     id: 13,
+  },
+  {
+    type: "proposal",
+    token: "dot",
+    proposalId: 216,
+  },
+  {
+    type: "proposal",
+    token: "dot",
+    proposalId: 180,
+  },
+  {
+    type: "proposal",
+    token: "ksm",
+    proposalId: 218,
   },
   {
     token: "dot",

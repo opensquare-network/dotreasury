@@ -1,15 +1,11 @@
+import React from "react";
 import styled, { css } from "styled-components";
 import { p_12_medium } from "../../../styles/text";
-import {
-  TEXT_DARK_MAJOR,
-  Greyscale_Grey_100,
-  Primary_Theme_Pink_500,
-  Primary_Theme_Pink_100,
-} from "../../../constants";
+import { Greyscale_Grey_100 } from "../../../constants";
 
 const TagWrapper = styled.span`
   ${p_12_medium};
-  color: ${TEXT_DARK_MAJOR};
+  color: var(--textPrimary);
   background-color: ${Greyscale_Grey_100};
   padding: 2px 12px;
   border-radius: 4px;
@@ -32,8 +28,8 @@ const TagWrapper = styled.span`
   ${(p) =>
     p.color === "pink" &&
     css`
-      color: ${Primary_Theme_Pink_500};
-      background-color: ${Primary_Theme_Pink_100};
+      color: var(--pink500);
+      background-color: var(--pink100);
     `}
   
   ${(p) =>
@@ -48,7 +44,7 @@ const TagWrapper = styled.span`
 `;
 
 /**
- * @param {import('./types').TagProps} props
+ * @param {React.HTMLAttributes<HTMLSpanElement> & {rounded?: boolean, hoverable?: boolean, color?: 'pink', size?: 'small'}} props
  * @description Tag for categorizing or markup.
  */
 export default function Tag(props) {

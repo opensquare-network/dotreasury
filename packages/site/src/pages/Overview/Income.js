@@ -13,7 +13,6 @@ import {
   OVERVIEW_ELECTION_COLOR,
   OVERVIEW_IDENTITY_COLOR,
   OVERVIEW_OTHERS_COLOR,
-  TEXT_DARK_MAJOR,
 } from "../../constants";
 import { useSelector } from "react-redux";
 import {
@@ -25,7 +24,7 @@ import DoughnutCardLinkTitle from "./DoughnutCardLinkTitle";
 const LinkButton = styled(TextMinor)`
   display: flex;
   :hover {
-    color: ${TEXT_DARK_MAJOR};
+    color: var(--textPrimary);
     & > :last-child {
       -webkit-filter: grayscale(0);
       filter: grayscale(0);

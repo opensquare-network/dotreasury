@@ -71,7 +71,7 @@ export default function EndorseTipsModal({ visible, setVisible, onFinalized }) {
     serverApi.fetch(`/${chain}/tipping`, { tipper: account?.address })
       .then(({ result }) => {
         if (result) {
-          setTips(result || [])
+          setTips(result || []);
         }
       })
       .finally(() => {
@@ -93,7 +93,7 @@ export default function EndorseTipsModal({ visible, setVisible, onFinalized }) {
     const txs = [];
     for (const hash in tipValues) {
       const inputTipValue = tipValues[hash];
-      const errMsg = checkInputValue(inputTipValue, "Tip value", true)
+      const errMsg = checkInputValue(inputTipValue, "Tip value", true);
       if (errMsg) {
         setErrorMessage(errMsg);
         return;
@@ -127,7 +127,7 @@ export default function EndorseTipsModal({ visible, setVisible, onFinalized }) {
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   let tooltipContent = "";
   if (!isLoggedIn) {

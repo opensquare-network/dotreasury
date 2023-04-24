@@ -1,3 +1,4 @@
+const { handleTipEventWithoutExtrinsic } = require("./tip");
 const { handleSchedulerEvents } = require("./scheduler");
 const { handleReferendaEvent } = require("./referenda");
 const { handleReferendumEvent } = require("./democracy/referendum");
@@ -48,6 +49,7 @@ async function handleEventWithoutExtrinsic(
 
   await handleTreasuryProposalEventWithoutExtrinsic(event, indexer);
   await handleBountyEventWithoutExtrinsic(event, indexer);
+  await handleTipEventWithoutExtrinsic(event, indexer);
 }
 
 async function handleCommon(
@@ -83,17 +85,16 @@ async function handleEvents(events, extrinsics, blockIndexer) {
 
     if (phase.isNone) {
       await handleEventWithoutExtrinsic(blockIndexer, event, sort, events);
-      continue;
+    } else {
+      await handleEventWithExtrinsic(
+        blockIndexer,
+        event,
+        sort,
+        extrinsic,
+        extrinsicIndex,
+        events
+      );
     }
-
-    await handleEventWithExtrinsic(
-      blockIndexer,
-      event,
-      sort,
-      extrinsic,
-      extrinsicIndex,
-      events
-    );
   }
 }
 

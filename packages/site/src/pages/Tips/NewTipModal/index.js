@@ -80,13 +80,13 @@ export default function NewTipModal({ visible, setVisible, onFinalized }) {
         refBatchInputs.current.scrollTop = refBatchInputs.current.scrollHeight;
       }
     }, 200);
-  }, [newTips, count, refBatchInputs])
+  }, [newTips, count, refBatchInputs]);
 
   const onMinus = useCallback(() => {
     if (newTips.length > 1) {
       setNewTips(newTips.slice(0, newTips.length - 1));
     }
-  }, [newTips])
+  }, [newTips]);
 
   const onDelete = useCallback((index) => {
     setNewTips([
@@ -117,7 +117,7 @@ export default function NewTipModal({ visible, setVisible, onFinalized }) {
       }
 
       if (isCouncilor) {
-        errorMessage = checkInputValue(newTip.value)
+        errorMessage = checkInputValue(newTip.value);
         if (errorMessage) {
           newTip.errorMessage = errorMessage;
           validationFail = true;

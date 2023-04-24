@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { bnToBn } from "@polkadot/util";
 import dayjs from "dayjs";
+import { useTheme } from "../../../context/theme";
 
 import Text from "../../../components/Text";
 import Card from "../../../components/Card";
@@ -28,11 +29,7 @@ import {
   w_full,
 } from "../../../styles/tailwindcss";
 import { breakpoint } from "../../../styles/responsive";
-import {
-  Primary_Theme_Orange_500,
-  Primary_Theme_Pink_500,
-  Primary_Theme_Yellow_500,
-} from "../../../constants";
+import { Primary_Theme_Orange_500 } from "../../../constants";
 
 const CardWrapper = styled(Card)`
   padding: 24px;
@@ -95,6 +92,7 @@ const SecondListWrapper = styled.div`
 `;
 
 const TotalStacked = () => {
+  const theme = useTheme();
   const chain = useSelector(chainSelector);
   const isKusama = chain === "kusama";
   const dispatch = useDispatch();
@@ -198,7 +196,7 @@ const TotalStacked = () => {
 
   useEffect(() => {
     const dateLabels = statsHistory.map(
-      (statsItem) => statsItem.indexer.blockTime
+      (statsItem) => statsItem.indexer.blockTime,
     );
     setDateLabels(dateLabels);
 
@@ -206,7 +204,7 @@ const TotalStacked = () => {
       .map((statsItem) =>
         bnToBn(statsItem.income.inflation)
           .add(bnToBn(statsItem.income.slash))
-          .add(bnToBn(statsItem.income.others))
+          .add(bnToBn(statsItem.income.others)),
       )
       .map((bn) => toPrecision(bn, precision, false));
     setIncomeHistory(incomeHistory);
@@ -216,13 +214,13 @@ const TotalStacked = () => {
         bnToBn(statsItem.output.tip)
           .add(bnToBn(statsItem.output.proposal))
           .add(bnToBn(statsItem.output.bounty))
-          .add(bnToBn(statsItem.output.burnt))
+          .add(bnToBn(statsItem.output.burnt)),
       )
       .map((bn) => toPrecision(bn, precision, false));
     setOutputHistory(outputHistory);
 
     const treasuryHistory = statsHistory.map((statsItem) =>
-      toPrecision(statsItem.treasuryBalance, precision, false)
+      toPrecision(statsItem.treasuryBalance, precision, false),
     );
     setTreasuryHistory(treasuryHistory);
   }, [statsHistory, precision]);
@@ -238,12 +236,12 @@ const TotalStacked = () => {
         labels: [
           {
             name: "Inflation",
-            color: Primary_Theme_Pink_500,
+            color: theme.pink500,
             value: toPrecision(statsData.income.inflation, precision, false),
           },
           {
             name: "Slashes",
-            color: Primary_Theme_Pink_500,
+            color: theme.pink500,
             children: [
               {
                 name: "Staking",
@@ -251,7 +249,7 @@ const TotalStacked = () => {
                 value: toPrecision(
                   statsData.income.slashSeats.staking,
                   precision,
-                  false
+                  false,
                 ),
               },
               {
@@ -260,7 +258,7 @@ const TotalStacked = () => {
                 value: toPrecision(
                   statsData.income.slashSeats.treasury,
                   precision,
-                  false
+                  false,
                 ),
               },
               {
@@ -269,7 +267,7 @@ const TotalStacked = () => {
                 value: toPrecision(
                   statsData.income.slashSeats.election,
                   precision,
-                  false
+                  false,
                 ),
               },
               {
@@ -278,7 +276,7 @@ const TotalStacked = () => {
                 value: toPrecision(
                   statsData.income.slashSeats.democracy,
                   precision,
-                  false
+                  false,
                 ),
               },
               {
@@ -287,7 +285,7 @@ const TotalStacked = () => {
                 value: toPrecision(
                   statsData.income.slashSeats.identity,
                   precision,
-                  false
+                  false,
                 ),
               },
               ...(isKusama
@@ -298,7 +296,7 @@ const TotalStacked = () => {
                       value: toPrecision(
                         statsData.income.slashSeats.referenda || 0,
                         precision,
-                        false
+                        false,
                       ),
                     },
                     {
@@ -307,7 +305,7 @@ const TotalStacked = () => {
                       value: toPrecision(
                         statsData.income.slashSeats.fellowshipReferenda || 0,
                         precision,
-                        false
+                        false,
                       ),
                     },
                   ]
@@ -316,7 +314,7 @@ const TotalStacked = () => {
           },
           {
             name: "Others",
-            color: Primary_Theme_Pink_500,
+            color: theme.pink500,
             value: toPrecision(statsData.income.others, precision, false),
           },
         ],
@@ -329,22 +327,22 @@ const TotalStacked = () => {
         labels: [
           {
             name: "Proposal",
-            color: Primary_Theme_Yellow_500,
+            color: theme.yellow500,
             value: toPrecision(statsData.output.proposal, precision, false),
           },
           {
             name: "Tips",
-            color: Primary_Theme_Yellow_500,
+            color: theme.yellow500,
             value: toPrecision(statsData.output.tip, precision, false),
           },
           {
             name: "Bounties",
-            color: Primary_Theme_Yellow_500,
+            color: theme.yellow500,
             value: toPrecision(statsData.output.bounty, precision, false),
           },
           {
             name: "Burnt",
-            color: Primary_Theme_Yellow_500,
+            color: theme.yellow500,
             value: toPrecision(statsData.output.burnt, precision, false),
           },
         ],
@@ -363,14 +361,14 @@ const TotalStacked = () => {
         ],
       });
     }
-  }, [showIndex, statsHistory, dateLabels, precision, isKusama]);
+  }, [showIndex, statsHistory, dateLabels, precision, isKusama, theme]);
 
   const chartData = {
     dates: dateLabels,
     values: [
       {
         label: "Income",
-        primaryColor: Primary_Theme_Pink_500,
+        primaryColor: theme.pink500,
         secondaryColor: "#FFEEF1",
         data: incomeHistory,
         fill: true,
@@ -379,7 +377,7 @@ const TotalStacked = () => {
       },
       {
         label: "Output",
-        primaryColor: Primary_Theme_Yellow_500,
+        primaryColor: theme.yellow500,
         secondaryColor: "#FFEDC9",
         data: outputHistory,
         fill: true,

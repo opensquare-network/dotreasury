@@ -1,3 +1,4 @@
+import React from "react";
 import {
   HeatMapLegendWrapper,
   HeatMapWrapper,
@@ -11,7 +12,27 @@ import Tooltip from "../../components/Tooltip";
 import { noop } from "rxjs";
 
 /**
- * @param {import("./types").HeatMapProps} props
+ * @typedef {{ type: "active" | "negative" | "inActive" } & Record<string, any>} Data
+ * @typedef {"rect" | "circle"} DotStyle
+ * @param {{
+    data: Data[];
+
+    negative?: boolean;
+
+    activeColor?: string;
+    negativeColor?: string;
+    inActiveColor?: string;
+
+    legend?: boolean;
+    legendActiveText?: string;
+    legendNegativeText?: string;
+    legendInactiveText?: string;
+
+    showTooltip?: boolean | ((data: Data) => boolean);
+    tooltipContentRender?(data: Data): ReactNode;
+
+    dotStyle: DotStyle;
+  }} props
  */
 export default function AttendanceHeatMap(props) {
   const {

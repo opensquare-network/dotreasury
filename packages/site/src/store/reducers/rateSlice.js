@@ -8,7 +8,7 @@ import {
   userDetailCouncilorRates,
   userDetailCouncilorRateStats,
   userDetailRates,
-  userDetailRateStats
+  userDetailRateStats,
 } from "../../services/urls";
 
 const rateSlice = createSlice({
@@ -70,7 +70,7 @@ export const addRate = (
     const signature = await signMessageWithExtension(JSON.stringify(data), address, extensionName);
 
     const { error } = await api.fetch(
-      `/rates`,
+      "/rates",
       {},
       {
         method: "POST",
@@ -99,9 +99,9 @@ export const addRate = (
 
 export const fetchRateStats = (chain, type, index) => async (dispatch) => {
   let url = `/${chain}/${pluralize(type)}/${index}/ratestats`;
-  if (type === 'councilor') {
-    url = userDetailCouncilorRateStats(chain, index)
-  } else if (type === 'user') {
+  if (type === "councilor") {
+    url = userDetailCouncilorRateStats(chain, index);
+  } else if (type === "user") {
     url = userDetailRateStats(chain, index);
   }
 

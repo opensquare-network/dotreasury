@@ -107,7 +107,7 @@ const ProposalsTable = ({ data, loading, header, footer }) => {
     ...beneficiary,
     headerCellProps: {
       onClick: handleSwitchBebeficiaryProposer,
-    }
+    },
   };
   proposer = {
     ...proposer,

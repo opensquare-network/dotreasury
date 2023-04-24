@@ -1,7 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
 
-import { TEXT_DARK_MAJOR, TEXT_DARK_MINOR } from "../../constants";
 import { mrgap } from "../../styles";
 
 const Wrapper = styled.div`
@@ -14,14 +13,14 @@ const Wrapper = styled.div`
   flex-wrap: wrap;
   & > .title {
     width: 120px;
-    color: ${TEXT_DARK_MAJOR};
+    color: var(--textPrimary);
     font-weight: 500;
     line-height: 24px;
     flex-shrink: 0;
   }
   & > .value {
     flex: 1 1 auto;
-    color: ${TEXT_DARK_MINOR};
+    color: var(--textSecondary);
     word-break: break-word;
     :not(:first-child) > * {
       align-items: flex-start;

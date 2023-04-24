@@ -1,0 +1,59 @@
+name: front ci
+
+on:
+  push:
+    branches:
+      - main
+      - 'release-*'
+    paths:
+      - 'packages/site/**'
+  pull_request:
+    branches:
+      - main
+      - 'release-*'
+    paths:
+      - 'packages/site/**'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      
+      - name: setup node LTS 
+        uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+
+      - name: install
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install
+
+      - name: lint
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: workspace @dotreasury/site lint
+
+  build:
+    runs-on: ubuntu-latest
+    needs: [lint]
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      
+      - name: setup node LTS 
+        uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+
+      - name: install
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install
+
+      - name: build
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: build @dotreasury/site build

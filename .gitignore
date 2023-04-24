@@ -6,3 +6,12 @@ log
 packages/input-scan/globalConfig.json
 packages/output-scan/globalConfig.json
 *.deploy.sh
+
+# yarn
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

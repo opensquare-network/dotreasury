@@ -18,22 +18,22 @@ export default function useTipsTable({ tips, isLoading }) {
     const tipValues = tips.reduce((result, tip) => (
       {
         ...result,
-        [tip.hash]: `${toPrecision(tip.medianValue || 0, precision, false)}`
-      }), {})
+        [tip.hash]: `${toPrecision(tip.medianValue || 0, precision, false)}`,
+      }), {});
     setTipValues(tipValues);
   }, [tips, precision]);
 
   const updateTipValue = useCallback((hash, tipValue) => {
     setTipValues({
       ...tipValues,
-      [hash]: tipValue
+      [hash]: tipValue,
     });
   }, [tipValues]);
 
   const removeTip = useCallback((hash) => {
     setTipList(tipList.filter(tip => tip.hash !== hash));
     const { [hash]: _, ...newTipValues } = tipValues;
-    setTipValues(newTipValues)
+    setTipValues(newTipValues);
   }, [tipList, tipValues]);
 
 
@@ -63,5 +63,5 @@ export default function useTipsTable({ tips, isLoading }) {
     Component,
     tipValues,
     setTipValues,
-  }
+  };
 }

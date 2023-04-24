@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import styled, { css } from "styled-components";
 import ReactMarkdown from "react-markdown";
 
-import { PRIMARY_THEME_COLOR, TEXT_DARK_MAJOR, TEXT_DARK_MINOR } from "../constants";
+import { PRIMARY_THEME_COLOR } from "../constants";
 
 const Wrapper = styled.div`
 
@@ -16,9 +16,9 @@ const Wrapper = styled.div`
 
     p, blockquote, ul, ol, dl, table {
       line-height: 24px;
-      color: ${TEXT_DARK_MAJOR};
+      color: var(--textPrimary);
       ${p => p.minor && css`
-        color: ${TEXT_DARK_MINOR};
+        color: var(--textSecondary);
       `}
     }
 
@@ -26,20 +26,20 @@ const Wrapper = styled.div`
       font-size: 3rem;
       font-family: "Montserrat";
       margin-bottom: 3rem;
-      color: ${TEXT_DARK_MAJOR};
+      color: var(--textPrimary);
     }
 
     h2 {
       font-size: 2.4rem;
       font-family: "Montserrat";
       margin-bottom: 1rem;
-      color: ${TEXT_DARK_MAJOR};
+      color: var(--textPrimary);
     }
 
     h3, h4 {
       margin-bottom: 0.5rem;
       font-family: "Inter";
-      color: ${TEXT_DARK_MAJOR};
+      color: var(--textPrimary);
     }
 
     ul, ol {
@@ -79,7 +79,7 @@ const Wrapper = styled.div`
         border: none;
     }
   }
-`
+`;
 
 const Markdown = ({ md, replyEvent, minor }) => {
   const mdRef = useRef(null);
@@ -90,25 +90,25 @@ const Markdown = ({ md, replyEvent, minor }) => {
       links.forEach(item => {
         const reMetion = /https:\/\/dotreasury.com\/user\/(\w+)/g;
         let match;
-        match = reMetion.exec(item.href)
+        match = reMetion.exec(item.href);
         if (match) {
           const [, username] = match;
           item.onclick = (e) => {
             e.preventDefault();
             if (replyEvent) {
-              replyEvent(username)
+              replyEvent(username);
             }
-          }
+          };
         }
-      })
+      });
     }
-  }, [replyEvent])
+  }, [replyEvent]);
 
 	return (
     <Wrapper ref={mdRef} minor>
       <ReactMarkdown className="mde-preview-content" source={md} linkTarget='_blank' />
     </Wrapper>
-  )
+  );
 };
 
 export default Markdown;

@@ -9,13 +9,13 @@
     "test": "jest src"
   },
   "dependencies": {
-    "@polkadot/api": "9.14.2",
+    "@osn/scan-common": "0.4.9",
+    "@polkadot/api": "10.3.4",
     "bignumber.js": "^9.0.1",
     "dotenv": "^8.2.0",
     "lodash.omit": "^4.5.0",
     "log4js": "^6.4.0",
-    "mongodb": "^4.1.3",
-    "@osn/scan-common": "0.4.4"
+    "mongodb": "4.6.0"
   },
   "devDependencies": {
     "@shelf/jest-mongodb": "^2.1.0",

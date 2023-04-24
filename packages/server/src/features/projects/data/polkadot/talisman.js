@@ -18,6 +18,11 @@ const proposals = [
     token: "dot",
     proposalId: 148,
   },
+  {
+    type: "proposal",
+    token: "dot",
+    proposalId: 223,
+  },
 ];
 
 module.exports = {

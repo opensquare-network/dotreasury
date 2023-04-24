@@ -10,7 +10,7 @@ import { bountyDetailSelector } from "../../store/reducers/bountySlice";
 
 export default function NewChildBountyButton({ parentBountyId, onFinalized }) {
   const account = useSelector(accountSelector);
-  const bounty = useSelector(bountyDetailSelector)
+  const bounty = useSelector(bountyDetailSelector);
   const [showNewBountyModel, setShowNewBountyModel] = useState(false);
 
   const isLoggedIn = !!account;

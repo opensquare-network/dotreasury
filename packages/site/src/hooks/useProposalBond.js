@@ -12,7 +12,7 @@ export default function useProposalBond({ api, proposalValue }) {
       setBondPercentage(api.consts.treasury?.proposalBond?.toJSON());
       setBondMaximum(api.consts.treasury?.proposalBondMaximum?.toJSON());
       setBondMinimum(api.consts.treasury?.proposalBondMinimum?.toJSON());
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }, [api]);
 

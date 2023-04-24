@@ -47,7 +47,7 @@ const getSS58Prefix = (chain) => {
   } else {
     return 42;
   }
-}
+};
 
 const AccountSelector = ({ chain, accounts, onSelect = () => {} }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -58,7 +58,7 @@ const AccountSelector = ({ chain, accounts, onSelect = () => {} }) => {
       .filter((item) => item.type !== "ethereum")
       .map(item => ({
         ...item,
-        address: encodeAddress(item.address, getSS58Prefix(chain))
+        address: encodeAddress(item.address, getSS58Prefix(chain)),
       }));
     setFilteredAccounts(filteredAccounts);
   }, [chain, accounts]);

@@ -6,6 +6,7 @@ import "semantic-ui-css/semantic.min.css";
 import App from "./App";
 import store from "./store";
 import GlobalStyle from "./GlobalStyle";
+import { GlobalProvider } from "./context";
 
 const container = document.getElementById("root");
 const root = createRoot(container);
@@ -14,9 +15,11 @@ root.render(
     <GlobalStyle />
     <Provider store={store}>
       {/*<Maintenance />*/}
-      <App />
+      <GlobalProvider>
+        <App />
+      </GlobalProvider>
     </Provider>
-  </React.Fragment>
+  </React.Fragment>,
 );
 
 // deploy trigger 25

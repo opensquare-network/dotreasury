@@ -5,7 +5,6 @@ import { Image } from "semantic-ui-react";
 import Voter from "./Voter";
 import BarProgress from "./BarProgress";
 import TextMinor from "./TextMinor";
-import { TEXT_DARK_MAJOR, TEXT_DARK_MINOR } from "../constants";
 
 const Wrapper = styled.div`
   display: flex;
@@ -67,14 +66,14 @@ const ProposalArgsItemWrapper = styled.div`
   flex-wrap: wrap;
   & > .title {
     width: 120px;
-    color: ${TEXT_DARK_MAJOR};
+    color: var(--textPrimary);
     font-weight: 500;
     line-height: 24px;
     flex-shrink: 0;
   }
   & > .value {
     flex: 1 1 auto;
-    color: ${TEXT_DARK_MINOR};
+    color: var(--textSecondary);
     word-break: break-word;
     :not(:first-child) > * {
       align-items: flex-start;

@@ -11,11 +11,11 @@ const Wrapper = styled.div`
     border: 0 !important;
     box-shadow: none !important;
   }
-`
+`;
 
 const StyledSegment = styled(Segment)`
   border-radius: 8px !important;
-`
+`;
 
 const LoadingTable = ({ children, loading, ...restProps }) => {
   return (
@@ -27,7 +27,7 @@ const LoadingTable = ({ children, loading, ...restProps }) => {
         {children}
       </StyledSegment>
     </Wrapper>
-  )
-}
+  );
+};
 
 export default LoadingTable;

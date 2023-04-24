@@ -12,7 +12,7 @@ import { overviewSelector } from "../../store/reducers/overviewSlice";
 import { NavLink } from "react-router-dom";
 import TextMinor from "../../components/TextMinor";
 import GrayImage from "../../components/GrayImage";
-import { TEXT_DARK_MAJOR, USER_ROLES } from "../../constants";
+import { USER_ROLES } from "../../constants";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 
 const CardWrapper = styled(Card)`
@@ -47,7 +47,7 @@ const TitleContainer = styled.div`
 const LinkButton = styled(TextMinor)`
   display: flex;
   :hover {
-    color: ${TEXT_DARK_MAJOR};
+    color: var(--textPrimary);
     & > :last-child {
       -webkit-filter: grayscale(0);
       filter: grayscale(0);

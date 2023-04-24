@@ -31,7 +31,7 @@ function TextBoxLoading() {
     <LoadingWrapper>
       <Loading size={20} />
     </LoadingWrapper>
-  )
+  );
 }
 
 export default TextBox;

@@ -1,11 +1,5 @@
 import styled, { css } from "styled-components";
 
-import {
-  Tertiary_Blue_500,
-  Tertiary_Green_500,
-  TEXT_DARK_ACCESSORY,
-} from "../../constants";
-
 const Text = styled.span`
   font-family: "Inter", serif;
   font-style: normal;
@@ -25,12 +19,12 @@ const Text = styled.span`
 `;
 
 export default function Tag({ text, className }) {
-  let color = TEXT_DARK_ACCESSORY;
+  let color = "var(--textTertiary)";
   if (text === "Working") {
-    color = Tertiary_Green_500;
+    color = "var(--green500)";
   }
   if (text === "Review") {
-    color = Tertiary_Blue_500;
+    color = "var(--blue500)";
   }
   return (
     <Text color={color} className={className}>

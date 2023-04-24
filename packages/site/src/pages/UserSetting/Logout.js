@@ -5,9 +5,9 @@ import { useHistory } from "react-router";
 
 import { StyledItem, StyledTitle } from "./components";
 import Button from "../../components/Button";
-import { WARNING_COLOR } from "../../constants"
+import { WARNING_COLOR } from "../../constants";
 import {
-  setLoggedInUser
+  setLoggedInUser,
 } from "../../store/reducers/userSlice";
 
 const StyledButton = styled(Button)`
@@ -17,7 +17,7 @@ const StyledButton = styled(Button)`
   &.ui.button:hover, &.ui.button:active, &.ui.button:focus {
     border-color: ${WARNING_COLOR} !important;
   }
-`
+`;
 
 const DeleteAccount = () => {
   const dispatch = useDispatch();
@@ -34,7 +34,7 @@ const DeleteAccount = () => {
         history.push("/");
       }}>Logout my account</StyledButton>
     </StyledItem>
-  )
-}
+  );
+};
 
 export default DeleteAccount;

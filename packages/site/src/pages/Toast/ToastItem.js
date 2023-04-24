@@ -35,7 +35,7 @@ const ImageWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`
+`;
 
 const CloseButton = styled.div`
   cursor: pointer;
@@ -44,22 +44,22 @@ const CloseButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`
+`;
 
 const Title = styled(Text)`
   font-weight: 500;
   flex-grow: 1;
   text-transform: capitalize;
-`
+`;
 
 const HeaderWrapper = styled.div`
   display: flex;
   align-items: center;
-`
+`;
 
 const Content = styled(TextMinor)`
   padding-left: 32px;
-`
+`;
 
 const TOAST_TYPES = ["success", "error", "pending", "warning"];
 
@@ -83,7 +83,7 @@ const ToastItem = ({ type, title, message, id, sticky, timeout = 5000 }) => {
         setTranClass("tran");
       }
     }, 100);
-  })
+  });
 
   if (!message) return null;
   return (

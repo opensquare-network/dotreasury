@@ -58,7 +58,7 @@ export const fetchTips = (chain, page = 0, pageSize = 30, filterData = {}) => as
 };
 export const resetTips = () => (dispatch) => {
   dispatch(setTips(EMPTY_TABLE_DATA));
-}
+};
 
 export const fetchTipDetail = (chain, tipId) => async (dispatch) => {
   dispatch(setLoadingTipDetail(true));
@@ -75,7 +75,7 @@ export const fetchTipCountdown = (chain) => async (dispatch) => {
   dispatch(setTipCountdown(tipCountdown || 14400));
 };
 
-const tipFinalStates = ["TipRetracted", "TipClosed"];
+const tipFinalStates = ["TipRetracted", "TipClosed", "TipSlashed"];
 const showStatusMap = tipStatusMap;
 
 export function normalizeTip(tip) {

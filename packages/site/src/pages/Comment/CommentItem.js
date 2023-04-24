@@ -16,7 +16,6 @@ import {
   lastNewPostSelector,
 } from "../../store/reducers/commentSlice";
 import TimeElapsed from "../../components/TimeElapsed";
-import { TEXT_DARK_DISABLE } from "../../constants";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import User from "../../components/User";
 
@@ -74,7 +73,7 @@ const FlexWrapper = styled.div`
 `;
 
 const TimeWrapper = styled.div`
-  color: ${TEXT_DARK_DISABLE};
+  color: var(--textDisable);
 `;
 
 const CircleImage = styled(Image)`

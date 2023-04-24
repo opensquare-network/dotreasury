@@ -2,7 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 
 import PairText from "./PairText";
-import { toPrecision, getPrecision } from "../utils";
+import { toPrecision, getPrecision, abbreviateBigNumber } from "../utils";
 import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../store/reducers/chainSlice";
 import { toLocaleStringWithFixed } from "../utils";
@@ -56,6 +56,7 @@ const Balance = ({
   reverse = false,
   isUnitPrice = true,
   horizontal = false,
+  abbreviate = false,
 }) => {
   const symbol = useSelector(chainSymbolSelector);
   let usdtNumber = Number(usdt);
@@ -64,13 +65,21 @@ const Balance = ({
   const localePrecision = Number(precision).toLocaleString();
   if (isUnitPrice) usdtNumber = usdtNumber * precision;
 
+  let displayValue = localePrecision;
+  let displayPrice = usdtNumber;
+
+  if (abbreviate && Number(precision) > 1000000) {
+    displayValue = abbreviateBigNumber(precision, 2);
+    displayPrice = abbreviateBigNumber(usdtNumber, 2);
+  }
+
   return (
     <Wrapper reverse={reverse} horizontal={horizontal}>
-      <PairText value={localePrecision} unit={currency || symbol} />
+      <PairText value={displayValue} unit={currency || symbol} />
       {usdt && !isNaN(usdtNumber) && (
         <UsdtWrapper horizontal={horizontal}>{`${
           usdtNumber === 0 ? "" : "≈ "
-        }$${toLocaleStringWithFixed(usdtNumber, 2)}`}</UsdtWrapper>
+        }$${toLocaleStringWithFixed(displayPrice, 2)}`}</UsdtWrapper>
       )}
     </Wrapper>
   );

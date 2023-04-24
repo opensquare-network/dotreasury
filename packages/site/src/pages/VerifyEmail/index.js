@@ -6,7 +6,7 @@ import queryString from "query-string";
 import scanApi from "../../services/scanApi";
 import Card from "../../components/Card";
 import Text from "../../components/Text";
-import { PRIMARY_THEME_COLOR, TEXT_DARK_MAJOR } from "../../constants";
+import { PRIMARY_THEME_COLOR } from "../../constants";
 import ButtonPrimary from "../../components/ButtonPrimary";
 import { useIsMounted } from "@osn/common";
 import TextMinor from "../../components/TextMinor";
@@ -20,7 +20,7 @@ const CardWrapper = styled(Card)`
     border-color: ${PRIMARY_THEME_COLOR} !important;
   }
   label {
-    color: ${TEXT_DARK_MAJOR} !important;
+    color: var(--textPrimary) !important;
     font-weight: 500 !important;
     line-height: 24px !important;
     margin-bottom: 8px !important;

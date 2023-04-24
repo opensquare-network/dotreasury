@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 import Button from "./Button";
-import { TEXT_DARK_MAJOR, TEXT_DARK_MINOR } from "../constants";
 import GrayImage from "./GrayImage";
 
 const StyledButton = styled(Button)`
@@ -10,7 +9,7 @@ const StyledButton = styled(Button)`
   padding-left: 0 !important;
   padding-right: 0 !important;
   background-color: transparent !important;
-`
+`;
 
 const Wrapper = styled.div`
   cursor: pointer;
@@ -20,7 +19,7 @@ const Wrapper = styled.div`
     margin-right: 8px;
     
   }
-  color: ${TEXT_DARK_MINOR};
+  color: var(--textSecondary);
   :hover {
     & > img {
       -webkit-filter: grayscale(0);
@@ -28,11 +27,11 @@ const Wrapper = styled.div`
       opacity: 1;
     }
     text-decoration: underline;
-    color: ${TEXT_DARK_MAJOR};
+    color: var(--textPrimary);
   }
-`
+`;
 
-const ButtonImage = ({src, onClick, children}) => {
+const ButtonImage = ({ src, onClick, children }) => {
   return (
     <StyledButton onClick={onClick}>
       <Wrapper>
@@ -40,7 +39,7 @@ const ButtonImage = ({src, onClick, children}) => {
         {children}
       </Wrapper>
     </StyledButton>
-  )
-}
+  );
+};
 
 export default ButtonImage;

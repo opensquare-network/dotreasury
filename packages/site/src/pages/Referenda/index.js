@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled from "styled-components";
 import ReferendaTable from "./ReferendaTable";
 import Summary from "./Summary";
 
@@ -11,5 +11,5 @@ export default function Referenda() {
       <Summary />
       <ReferendaTable />
     </Wrapper>
-  )
+  );
 }

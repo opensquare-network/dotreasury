@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { Image } from "semantic-ui-react";
 import Card from "../../components/Card";
 
-import { TEXT_DARK_MAJOR, TEXT_DARK_MINOR } from "../../constants";
 import {
   chainSelector,
   scanHeightSelector,
@@ -62,7 +61,7 @@ const Label = styled.div`
 `;
 
 const DarkMinorLabel = styled(Label)`
-  color: ${TEXT_DARK_MINOR};
+  color: var(--textSecondary);
   margin-left: 8px;
   margin-right: 8px;
   @media screen and (max-width: 600px) {
@@ -72,7 +71,7 @@ const DarkMinorLabel = styled(Label)`
 
 const DarkMajorLabel = styled(Label)`
   margin-right: 4px;
-  color: ${TEXT_DARK_MAJOR};
+  color: var(--textPrimary);
   @media screen and (max-width: 600px) {
     display: none;
   }
@@ -122,7 +121,7 @@ const SymbolItem = styled.div`
   align-items: center;
   font-size: 13px;
   line-height: 18px;
-  color: ${TEXT_DARK_MAJOR};
+  color: var(--textPrimary);
   cursor: pointer;
   > img {
     margin-right: 8px;
@@ -193,7 +192,7 @@ const NetworkItem = styled.div`
   justify-content: space-between;
   font-size: 13px;
   line-height: 18px;
-  color: ${TEXT_DARK_MAJOR};
+  color: var(--textPrimary);
   :hover {
     background: #fafafa;
   }

@@ -21,7 +21,6 @@ import { useParams } from "react-router";
 import { CouncilorShipLoading } from "./styled";
 import { sortBy } from "lodash";
 import HeatMap from "../../../../components/HeatMap";
-import { Primary_Theme_Pink_200 } from "../../../../constants";
 import ExternalLink from "../../../../components/ExternalLink";
 import { makeSubscanLink } from "../../../../utils/url";
 
@@ -51,7 +50,7 @@ export default function CouncilorShip() {
 
         <HeatMap
           data={compatActivityCalendarData(councilorShip)}
-          activeColor={Primary_Theme_Pink_200}
+          activeColor="var(--pink200)"
           tooltipContentRender={(data) => {
             return <CouncilorInfo chain={chain} data={data} />;
           }}
@@ -84,7 +83,7 @@ function CouncilorInfo({ chain, data }) {
             href={makeSubscanLink(
               chain,
               "block",
-              data.meta?.indexer?.blockHeight
+              data.meta?.indexer?.blockHeight,
             )}
           >
             {data.meta?.indexer?.blockHeight?.toLocaleString?.() || "-"}

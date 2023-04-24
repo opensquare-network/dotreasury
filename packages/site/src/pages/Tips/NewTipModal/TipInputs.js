@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled from "styled-components";
 import AssetInput from "../../../components/AssetInput";
 import CustomInput from "../../../components/Input";
 import { useSelector } from "react-redux";
@@ -80,5 +80,5 @@ export default function TipInputs({ index, isCouncilor, canDelete, onDelete, tip
         </Field>
       </Body>
     </Wrapper>
-  )
+  );
 }

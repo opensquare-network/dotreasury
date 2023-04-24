@@ -7,7 +7,6 @@ import TextMinor from "../../components/TextMinor";
 import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import { p_12_normal, p_14_medium, p_14_normal } from "../../styles/text";
-import { TEXT_DARK_ACCESSORY } from "../../constants";
 import {
   flex,
   flex_col,
@@ -70,7 +69,7 @@ const Title = styled(Text)`
 `;
 const TitleCount = styled(Text)`
   ${p_14_normal};
-  color: ${TEXT_DARK_ACCESSORY};
+  color: var(--textTertiary);
   ${(p) =>
     p.disabled &&
     css`
@@ -95,7 +94,7 @@ const ChildTitle = styled(TextMinor)`
 
 const TextFiatValue = styled(TextMinor)`
   ${p_12_normal};
-  color: ${TEXT_DARK_ACCESSORY};
+  color: var(--textTertiary);
 `;
 
 const ValueWrapper = styled.div`
