@@ -13,7 +13,7 @@ const I = styled.i`
 `;
 
 /**
- * @param {{src: string, color: keyof ReturnType<useTheme>} & React.HtmlHTMLAttributes<HTMLElement>} props
+ * @param {{src: string, size: number, color: keyof ReturnType<useTheme>} & React.HtmlHTMLAttributes<HTMLElement>} props
  * @description use for pure color icon, e.g. system-sun.svg
  */
 export default function IconMask({ src, color, size, ...restProps }) {

@@ -5,6 +5,7 @@ import _set from "lodash.set";
 import Text from "./Text";
 import { useEffect, useState } from "react";
 import TableNoDataCell from "./TableNoDataCell";
+import IconMask from "./Icon/Mask";
 
 const CustomTable = styled(SemanticTable)`
   overflow: hidden !important;
@@ -14,7 +15,7 @@ const CustomTable = styled(SemanticTable)`
   background-color: var(--neutral100) !important;
   tr {
     &.tree {
-      background-color: rgba(250, 250, 250, 1);
+      background-color: var(--neutral200);
     }
     :hover {
       background-color: var(--neutral200) !important;
@@ -24,6 +25,7 @@ const CustomTable = styled(SemanticTable)`
     border-top: 0 !important;
     border-bottom: 1px solid var(--neutral300);
     padding: 12px 24px !important;
+    color: var(--textTertiary) !important;
   }
   th {
     font-style: normal !important;
@@ -122,7 +124,7 @@ const CustomTable = styled(SemanticTable)`
 export default CustomTable;
 
 const TreeToggleButton = styled.button`
-  border: 1px solid rgba(204, 204, 204, 1);
+  border: 1px solid var(--neutral400);
   background-color: transparent;
   border-radius: 4px;
   cursor: pointer;
@@ -202,8 +204,10 @@ function TableBodyRow({
                   setExpanded(!expanded);
                 }}
               >
-                <img
+                <IconMask
                   src={`/imgs/${expanded ? "subtract" : "add"}.svg`}
+                  color="textSecondary"
+                  size={16}
                   alt="toggle"
                 />
               </TreeToggleButton>
