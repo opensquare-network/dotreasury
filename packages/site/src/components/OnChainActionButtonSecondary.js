@@ -3,8 +3,8 @@ import OnChainActionButton from "./OnChainActionButton";
 
 const OnChainActionButtonSecondary = styled(OnChainActionButton)`
   padding: 3px 7px;
-  background: white;
-  border: 1px solid #dddddd;
+  background: transparent;
+  border: 1px solid var(--neutral400);
 
   color: var(--textPrimary);
 
