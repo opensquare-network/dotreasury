@@ -1,14 +1,12 @@
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { ReactComponent as PolkadotLogo } from "../ConnectWallet/Wallets/polkadot.svg";
-import { ReactComponent as SubWalletLogo } from "../ConnectWallet/Wallets/subWallet.svg";
-import { ReactComponent as TalismanLogo } from "../ConnectWallet/Wallets/talisman.svg";
 import Tooltip from "../Tooltip";
 import { TooltipInfoText } from "../Tooltip/styled";
 import { accountSelector } from "../../store/reducers/accountSlice";
 import { ellipsis } from "../../utils/ellipsis";
 import CouncilorTag from "./CouncilorTag";
 import useCouncilMembers from "../../utils/useCouncilMembers";
+import Image from "../Image";
 
 const Wrapper = styled.div`
   display: flex;
@@ -59,17 +57,17 @@ export default function Signer() {
 
   switch (account?.extension) {
     case "polkadot-js": {
-      walletLogo = <PolkadotLogo />;
+      walletLogo = <Image src="/imgs/wallets/polkadot-js.svg" dark />;
       walletName = "Polkadot.js";
       break;
     }
     case "subwallet-js": {
-      walletLogo = <SubWalletLogo />;
+      walletLogo = <Image src="/imgs/wallets/subwallet.svg" dark />;
       walletName = "SubWallet";
       break;
     }
     case "talisman": {
-      walletLogo = <TalismanLogo />;
+      walletLogo = <Image src="/imgs/wallets/talisman.svg" dark />;
       walletName = "Talisman";
       break;
     }

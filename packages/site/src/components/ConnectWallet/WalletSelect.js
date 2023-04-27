@@ -6,6 +6,7 @@ import { substrateWeb3Accounts } from "../../utils/extension";
 import Wallets from "./Wallets";
 import { ReactComponent as CaretSVG } from "./caret-right.svg";
 import Loading from "../LoadingCircle";
+import Image from "../Image";
 
 const WalletOptions = styled.ul`
   all: unset;
@@ -24,7 +25,7 @@ const WalletOption = styled.li`
   padding: 12px 16px !important;
 
   box-sizing: border-box;
-  border: 1px solid #dddddd;
+  border: 1px solid var(--neutral400);
   border-radius: 4px;
 
   svg.caret-right {
@@ -37,15 +38,15 @@ const WalletOption = styled.li`
       cursor: not-allowed;
       pointer-events: none;
       user-select: none;
-      background: #FAFAFA;
-      border: 1px solid #F4F4F4;
+      background: var(--neutral200);
+      border: 1px solid var(--neutral300);
     `}
 
   ${(props) =>
     props.installed === true &&
     css`
       &:hover {
-        border-color: #cccccc;
+        border-color: var(--neutral500);
         svg.caret-right {
           display: block;
         }
@@ -106,7 +107,6 @@ const Wallet = ({ wallet, onClick, selected = false, loading = false }) => {
   const [installed, setInstalled] = useState(null);
   const { loading: loadingInjectedWeb3, injectedWeb3 } = useInjectedWeb3();
   const isMounted = useIsMounted();
-  const Logo = wallet.logo;
 
   useEffect(() => {
     // update if installed changes
@@ -122,7 +122,7 @@ const Wallet = ({ wallet, onClick, selected = false, loading = false }) => {
   return (
     <WalletOption selected={selected} onClick={onClick} installed={installed}>
       <WalletTitle>
-        <Logo className={wallet.title} alt={wallet.title} />
+        <Image src={wallet.logo} srcDark={wallet.logoDark} alt={wallet.title} />
         <span className="wallet-title">{wallet.title}</span>
       </WalletTitle>
       {!loading && installed !== null ? (
@@ -138,10 +138,7 @@ const Wallet = ({ wallet, onClick, selected = false, loading = false }) => {
   );
 };
 
-export default function WalletSelect({
-  setAccounts,
-  onSelect = () => {},
-}) {
+export default function WalletSelect({ setAccounts, onSelect = () => {} }) {
   const isMounted = useIsMounted();
   const [waitingPermissionWallet, setWaitingPermissionWallet] = useState(null);
   const { injectedWeb3 } = useInjectedWeb3();

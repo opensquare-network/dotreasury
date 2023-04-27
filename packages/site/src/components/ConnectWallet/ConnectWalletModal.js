@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { Modal } from "semantic-ui-react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { ReactComponent as CloseSVG } from "./close.svg";
 import WalletSelect from "./WalletSelect";
 import AccountSelect from "./AccountSelect";
@@ -8,11 +8,24 @@ import { chainSelector } from "../../store/reducers/chainSlice";
 import { useDispatch, useSelector } from "react-redux";
 import ButtonPrimary from "../../components/ButtonPrimary";
 import { setAccount } from "../../store/reducers/accountSlice";
+import { rounded_8, shadow_200 } from "../../styles/tailwindcss";
+import { smcss } from "../../styles/responsive";
 
 const StyledModal = styled(Modal)`
-  width: 424px;
-  max-width: 424px;
+  width: 400px !important;
+  max-width: 400px !important;
   padding: 32px;
+  background-color: var(--neutral100) !important;
+  border: 1px solid var(--neutral300) !important;
+  ${shadow_200} !important;
+  ${rounded_8} !important;
+  ${smcss(
+    css`
+      width: 100vw !important;
+      max-width: 100vw !important;
+      left: 0;
+    `,
+  )};
   > :nth-child(1) {
     margin-bottom: 16px;
   }
@@ -37,6 +50,18 @@ const Title = styled.div`
 
 const Close = styled(CloseSVG)`
   cursor: pointer;
+  g {
+    path {
+      stroke: var(--textTertiary);
+    }
+  }
+  &:hover {
+    g {
+      path {
+        stroke: var(--textSecondary);
+      }
+    }
+  }
 `;
 
 const Description = styled.div`
@@ -57,10 +82,7 @@ const ConnectButton = styled(ButtonPrimary)`
   width: 100%;
 `;
 
-export default function ConnectWalletModal({
-  visible,
-  setVisible,
-}) {
+export default function ConnectWalletModal({ visible, setVisible }) {
   const dispatch = useDispatch();
   const [accounts, setAccounts] = useState([]);
   const [selectedWallet, setSelectedWallet] = useState(null);
@@ -78,36 +100,27 @@ export default function ConnectWalletModal({
   }, [dispatch, selectedWallet, selectedAccount, chain, setVisible]);
 
   return (
-    <StyledModal
-      dimmer
-      size="tiny"
-      open={visible}
-      onClose={() => setVisible(false)}
-    >
+    <StyledModal open={visible} onClose={() => setVisible(false)}>
       <Header>
         <Title>Connect Wallet</Title>
         <Close onClick={() => setVisible(false)} />
       </Header>
       <Description>
-        By connecting wallet, I have read and agree to doTreasury’s the terms of the User Agreement and Privacy Notice.
+        By connecting wallet, I have read and agree to doTreasury’s the terms of
+        the User Agreement and Privacy Notice.
       </Description>
-      {
-        (selectedWallet && accounts?.length > 0) ? (
-          <Connect>
-            <AccountSelect
-              chain={chain}
-              accounts={accounts}
-              onSelect={setSelectedAccount}
-            />
-            <ConnectButton onClick={onConnect}>Connect</ConnectButton>
-          </Connect>
-        ) : (
-          <WalletSelect
-            setAccounts={setAccounts}
-            onSelect={setSelectedWallet}
+      {selectedWallet && accounts?.length > 0 ? (
+        <Connect>
+          <AccountSelect
+            chain={chain}
+            accounts={accounts}
+            onSelect={setSelectedAccount}
           />
-        )
-      }
+          <ConnectButton onClick={onConnect}>Connect</ConnectButton>
+        </Connect>
+      ) : (
+        <WalletSelect setAccounts={setAccounts} onSelect={setSelectedWallet} />
+      )}
     </StyledModal>
   );
 }
