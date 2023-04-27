@@ -3,6 +3,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
     <style>
 @keyframes a0_t { 0% { transform: translate(12px,12px) rotate(0deg) translate(-12px,-12px); } 100% { transform: translate(12px,12px) rotate(360deg) translate(-12px,-12px); } }
+path {
+  fill: var(--neutral300);
+}
+g path {
+  fill: var(--neutral500);
+}
     </style>
     <path d="M19.5,12C19.5,16.1421,16.1421,19.5,12,19.5C7.85786,19.5,4.5,16.1421,4.5,12C4.5,7.85786,7.85786,4.5,12,4.5C16.1421,4.5,19.5,7.85786,19.5,12ZM7.125,12C7.125,14.6924,9.30761,16.875,12,16.875C14.6924,16.875,16.875,14.6924,16.875,12C16.875,9.30761,14.6924,7.125,12,7.125C9.30761,7.125,7.125,9.30761,7.125,12Z" fill="#f4f4f4" transform="translate(12,12) translate(-12,-12)"/>
     <g transform="translate(12,12) translate(-12,-12)" style="animation: 1s linear infinite both a0_t;">

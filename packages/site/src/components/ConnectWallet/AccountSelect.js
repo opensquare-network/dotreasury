@@ -5,6 +5,7 @@ import { encodeAddress } from "@polkadot/util-crypto";
 
 import Text from "../Text";
 import AccountItem from "./AccountItem";
+import { bg, hover } from "../../styles/tailwindcss";
 
 const Wrapper = styled.div``;
 
@@ -20,22 +21,27 @@ const DropdownWrapper = styled.div`
 const StyledDropdown = styled(Dropdown)`
   width: 100%;
   height: 64px !important;
+  background-color: var(--neutral100) !important;
+  border-color: var(--neutral400) !important;
   :active,
   :hover,
   :focus {
-    border-color: #cccccc !important;
+    border-color: var(--neutral500) !important;
   }
   &.active,
   & .menu {
-    border-color: #cccccc !important;
+    border-color: var(--neutral500) !important;
+    background-color: var(--neutral100) !important;
   }
   &.ui.dropdown .menu > .item {
     padding: 0 !important;
+    border-color: var(--neutral400) !important;
+    ${hover(bg("neutral200"))};
   }
   .icon {
     top: 50% !important;
     transform: translate(0, -9px) !important;
-    opacity: 0.24 !important;
+    color: var(--textTertiary);
   }
 `;
 
@@ -56,7 +62,7 @@ const AccountSelector = ({ chain, accounts, onSelect = () => {} }) => {
   useEffect(() => {
     const filteredAccounts = accounts
       .filter((item) => item.type !== "ethereum")
-      .map(item => ({
+      .map((item) => ({
         ...item,
         address: encodeAddress(item.address, getSS58Prefix(chain)),
       }));
@@ -71,10 +77,7 @@ const AccountSelector = ({ chain, accounts, onSelect = () => {} }) => {
     key: index,
     value: index,
     content: (
-      <AccountItem
-        accountName={item.name}
-        accountAddress={item.address}
-      />
+      <AccountItem accountName={item.name} accountAddress={item.address} />
     ),
   }));
 
@@ -91,9 +94,7 @@ const AccountSelector = ({ chain, accounts, onSelect = () => {} }) => {
         />
         <AccountItem
           accountName={filteredAccounts?.[selectedIndex]?.name}
-          accountAddress={
-            filteredAccounts?.[selectedIndex]?.address
-          }
+          accountAddress={filteredAccounts?.[selectedIndex]?.address}
           header
         />
       </DropdownWrapper>

@@ -16,7 +16,7 @@ export function px(n) {
  * @alias tailwind bg-xxx
  */
 export function bg(scheme) {
-  return `background-color: var(--${scheme});`;
+  return `background-color: var(--${scheme})`;
 }
 /**
  * @param {keyof light} scheme
@@ -413,7 +413,7 @@ function make_border(n) {
 }
 function make_rounded(n) {
   return `
-    border-radius: ${px(n)};
+    border-radius: ${px(n)}
   `;
 }
 function make_z(n) {

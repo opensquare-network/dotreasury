@@ -4,11 +4,12 @@ import { useMemo } from "react";
 import { getUrlExtension } from "../utils/url";
 
 /**
- * @param {typeof SemanticImage & {src: string, srcDarkSuffix?: string, dark?: boolean}} props
+ * @param {typeof SemanticImage & {src: string, srcDark?: string, srcDarkSuffix?: string, dark?: boolean}} props
  * @description Wrapped `Image` with auto dark compatible
  */
 export default function Image({
   src,
+  srcDark,
   dark: supportDark,
   srcDarkSuffix = "-dark",
   ...props
@@ -17,12 +18,16 @@ export default function Image({
   const url = useMemo(() => {
     const ext = getUrlExtension(src, { dot: true });
 
-    if (dark && supportDark && ext) {
-      return src.replace(ext, `${srcDarkSuffix}${ext}`);
+    if (dark) {
+      if (srcDark) {
+        return srcDark;
+      } else if (supportDark && ext) {
+        return src.replace(ext, `${srcDarkSuffix}${ext}`);
+      }
     }
 
     return src;
-  }, [dark, srcDarkSuffix, src, supportDark]);
+  }, [dark, srcDarkSuffix, src, supportDark, srcDark]);
 
   return <SemanticImage {...props} src={url} />;
 }
