@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Image } from "semantic-ui-react";
 
 import Logo from "./Logo";
@@ -39,6 +39,16 @@ const Right = styled.div`
   align-items: center;
   button.ui {
     background-color: transparent !important;
+    color: var(--textPrimary) !important;
+    ${(p) =>
+      p.symbol === "ksm" &&
+      css`
+        color: var(--textPrimaryContrast) !important;
+      `}
+
+    &:hover {
+      color: var(--primary) !important;
+    }
   }
   @media screen and (max-width: 850px) {
     box-shadow: 0px 4px 12px rgba(29, 37, 60, 0.08);
@@ -74,6 +84,9 @@ const Right = styled.div`
     }
     > div {
       margin-right: 0 !important;
+    }
+    button.ui {
+      color: var(--textPrimary) !important;
     }
   }
   @media screen and (max-width: 600px) {

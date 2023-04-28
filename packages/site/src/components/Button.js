@@ -18,7 +18,7 @@ const CustomButton = styled(Button)`
     border-color: var(--neutral500) !important;
   }
   &.ui.button:disabled {
-    color: rgba(29, 37, 60, 0.24) !important;
+    color: var(--textDisable) !important;
     opacity: 1 !important;
   }
 `;
