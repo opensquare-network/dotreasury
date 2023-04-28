@@ -22,7 +22,6 @@ import Loading from "../../../components/TableLoading";
 import { makeSubsquareLink } from "../../../utils/url";
 import ExternalLink from "../../../components/ExternalLink";
 import { sortBy } from "lodash";
-import { useTheme } from "../../../context/theme";
 
 const MOTION_HEAT_MAP_TEXT = {
   active: "Aye",
@@ -34,7 +33,6 @@ export default function MotionAttendance() {
   const chain = useSelector(chainSelector);
   const dispatch = useDispatch();
   const { address } = useParams();
-  const theme = useTheme();
 
   const motions = useSelector(motionAttendanceSelector) || [];
   const loading = useSelector(motionAttendanceLoadingSelector);
