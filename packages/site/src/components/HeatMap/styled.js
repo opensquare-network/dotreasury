@@ -46,6 +46,7 @@ export const HeatMapLegend = styled.span`
   display: inline-flex;
   align-items: center;
   ${p_14_medium};
+  color: var(--textPrimary);
 
   ${HeatMapDot} {
     width: 10px;

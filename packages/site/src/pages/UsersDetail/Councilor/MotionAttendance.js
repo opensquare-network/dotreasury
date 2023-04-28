@@ -69,7 +69,7 @@ export default function MotionAttendance() {
                       chain,
                       "council",
                       "motion",
-                      data.meta.motionIndex
+                      data.meta.motionIndex,
                     )}
                   >
                     #{data.meta.motionIndex}
@@ -92,6 +92,8 @@ export default function MotionAttendance() {
           legendActiveText={MOTION_HEAT_MAP_TEXT.active}
           legendNegativeText={MOTION_HEAT_MAP_TEXT.negative}
           legendInactiveText={MOTION_HEAT_MAP_TEXT.inActive}
+          negativeColor="var(--pink200)"
+          activeColor="var(--green200)"
         />
       </Card>
     </Loading>
