@@ -4,27 +4,33 @@ import ExternalLink from "../ExternalLink";
 const DataIcon = styled.div`
   width: 16px;
   height: 16px;
-  background: url("/imgs/ipfs-data.svg");
+  background-size: 16px;
+  background-image: url(${(p) =>
+    p.theme.dark
+      ? "/imgs/ipfs-logo-inactive-dark.svg"
+      : "/imgs/ipfs-logo-inactive.svg"});
   :hover {
-    background: url("/imgs/ipfs-data-hover.svg");
+    background-image: url(${(p) =>
+      p.theme.dark ? "/imgs/ipfs-logo-dark.svg" : "/imgs/ipfs-logo.svg"});
   }
 `;
 
 const DataIconDisabled = styled.div`
   width: 16px;
   height: 16px;
-  background: url("/imgs/ipfs-data.svg");
+  background-image: url(${(p) =>
+    p.theme.dark
+      ? "/imgs/ipfs-logo-inactive-dark.svg"
+      : "/imgs/ipfs-logo-inactive.svg"});
+  background-size: 16px;
 `;
 
-
 export default function IpfsData({ url }) {
-  return (
-    !url
-    ? <DataIconDisabled />
-    : (
-      <ExternalLink href={url}>
-        <DataIcon />
-      </ExternalLink>
-    )
+  return !url ? (
+    <DataIconDisabled />
+  ) : (
+    <ExternalLink href={url}>
+      <DataIcon />
+    </ExternalLink>
   );
 }
