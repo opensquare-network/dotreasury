@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import getLinkNameAndSrc from "../../utils/link";
-import { Image } from "semantic-ui-react";
+import Image from "../Image";
 import ExternalLink from "../../components/ExternalLink";
 import { p_14_medium } from "../../styles/text";
 
@@ -50,7 +50,7 @@ function Link({ link }) {
   return (
     <ExternalLink href={link.link}>
       <LinkWrapper>
-        <Image src={src} />
+        <Image src={src} dark />
         <LinkText>{link.description ?? name}</LinkText>
       </LinkWrapper>
     </ExternalLink>
