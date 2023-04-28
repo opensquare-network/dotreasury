@@ -49,6 +49,12 @@ const WalletOption = styled.li`
         border-color: var(--neutral500);
         svg.caret-right {
           display: block;
+          g {
+            path {
+              stroke: var(--textSecondary);
+              stroke-opacity: 1;
+            }
+          }
         }
       }
     `}
