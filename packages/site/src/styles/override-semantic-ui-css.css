@@ -1,15 +1,15 @@
 /* popup */
 .ui.popup {
-  background-color: var(--tooltipBg) !important;
-  border-color: transparent !important;
-  color: var(--textPrimaryContrast) !important;
+  background-color: var(--tooltipBg);
+  border-color: transparent;
+  color: var(--textPrimaryContrast);
 
   &::before {
-    background-color: transparent !important;
-    transform: rotate(0deg) !important;
+    background-color: transparent;
+    transform: rotate(0deg);
     border: 6px solid transparent;
-    bottom: -13px !important;
+    bottom: -13px;
     border-top-color: var(--tooltipBg);
-    box-shadow: none !important;
+    box-shadow: none;
   }
 }
