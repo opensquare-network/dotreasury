@@ -14,6 +14,19 @@ import { useSelector } from "react-redux";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import FoldContext from "./FoldContext";
 import { makeLinkUrl } from "./util";
+import {
+  bg_transparent,
+  border,
+  border_color,
+  h,
+  inline_flex,
+  items_center,
+  rounded_4,
+  w,
+  cursor_pointer,
+  hidden,
+} from "../../styles/tailwindcss";
+import IconMask from "../../components/Icon/Mask";
 
 const Wrapper = styled.div`
   &:last-child .bar {
@@ -53,13 +66,27 @@ const CardWrapper = styled.div`
   margin: 8px 0 32px;
 `;
 
-const UnfoldButton = styled.img`
-  cursor: pointer;
-  display: none;
+const UnfoldButton = styled.button`
+  ${hidden};
+  ${w(20)};
+  ${h(20)};
+  ${bg_transparent};
+  ${border};
+  ${border_color("neutral400")};
+  ${rounded_4};
+  padding: 0;
+  ${cursor_pointer};
+
+  i {
+    ${inline_flex};
+    ${items_center};
+  }
   ${(p) =>
     p.isUnfold &&
     css`
-      transform: rotate(0.5turn);
+      i {
+        transform: rotate(180deg);
+      }
     `}
 `;
 
@@ -67,11 +94,7 @@ const TextMinorWrapper = styled(TextMinor)`
   white-space: nowrap;
 `;
 
-const Item = ({
-  data,
-  polkassembly,
-  hideButtonList = false,
-}) => {
+const Item = ({ data, polkassembly, hideButtonList = false }) => {
   const { isUnfold, setIsUnfold } = useContext(FoldContext);
 
   const chain = useSelector(chainSelector);
@@ -94,11 +117,16 @@ const Item = ({
               <Label text={data.name} link={link} />
             </TimeLableWrapper>
             <UnfoldButton
-              src="/imgs/btn-unfold.svg"
               className="unfold-btn"
               onClick={() => setIsUnfold(!isUnfold)}
               isUnfold={isUnfold}
-            />
+            >
+              <IconMask
+                src="/imgs/icon-triangle-down.svg"
+                color="textPrimary"
+                size="100%"
+              />
+            </UnfoldButton>
           </FlexWrapper>
           <CardWrapper>
             {data.fields.map(({ title, value }, index) => (
