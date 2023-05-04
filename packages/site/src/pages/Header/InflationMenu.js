@@ -8,7 +8,7 @@ const Divider = styled.div`
   position: relative;
   width: 1px;
   height: 20px;
-  background: #eeeeee;
+  background: var(--neutral300);
   left: 16px;
 `;
 

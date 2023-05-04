@@ -11,7 +11,7 @@ const Divider = styled.div`
   position: relative;
   width: 1px;
   height: 20px;
-  background: #eeeeee;
+  background: var(--neutral300);
   left: 16px;
 `;
 
@@ -38,7 +38,8 @@ function SlashMenu() {
   const incomeCount = useSelector(incomeCountSelector);
 
   let tabName = "Slashes";
-  let count = (incomeCount?.treasurySlash || 0) +
+  let count =
+    (incomeCount?.treasurySlash || 0) +
     (incomeCount?.democracySlash || 0) +
     (incomeCount?.identitySlash || 0) +
     (incomeCount?.electionPhragmenSlash || 0) +
@@ -70,14 +71,16 @@ function SlashMenu() {
   }
 
   return (
-    <PopupMenu trigger={
-      <Wrapper>
-        <Menu.Item key="SlashDropdown">
-          {tabName} <DropdownSVG /> <Label>{count}</Label>
-          <Divider />
-        </Menu.Item>
-      </Wrapper>
-    } />
+    <PopupMenu
+      trigger={
+        <Wrapper>
+          <Menu.Item key="SlashDropdown">
+            {tabName} <DropdownSVG /> <Label>{count}</Label>
+            <Divider />
+          </Menu.Item>
+        </Wrapper>
+      }
+    />
   );
 }
 
