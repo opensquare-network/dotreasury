@@ -3,13 +3,15 @@ import { inline_flex } from "../../styles/tailwindcss";
 import React from "react";
 import { useTheme } from "../../context/theme";
 
+const assertsize = (size) => (typeof size === "number" ? `${size}px` : size);
+
 const I = styled.i`
   ${inline_flex};
   background-color: ${(p) => p.color};
   mask: url(${(p) => p.src}) no-repeat;
   mask-size: cover;
-  width: ${(p) => p.size}px;
-  height: ${(p) => p.size}px;
+  width: ${(p) => assertsize(p.size)};
+  height: ${(p) => assertsize(p.size)};
 `;
 
 /**
