@@ -1,11 +1,10 @@
-import { Image } from "semantic-ui-react";
 import { useDark } from "../context/theme";
 import { useMemo } from "react";
 import { getUrlExtension } from "../utils/url";
 
 /**
  * @param {typeof Image & import("react").ImgHTMLAttributes & {src: string, srcDark?: string, srcDarkSuffix?: string, dark?: boolean}} props
- * @description Wrapped `Image` with auto dark compatible
+ * @description Wrapped `Img` with auto dark compatible
  */
 export default function ImageWithDark({
   src,
@@ -29,5 +28,5 @@ export default function ImageWithDark({
     return src;
   }, [dark, srcDarkSuffix, src, srcDark]);
 
-  return <Image {...props} src={url} />;
+  return <img {...props} src={url} alt={props.alt} />;
 }
