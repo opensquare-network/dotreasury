@@ -1,5 +1,8 @@
 import React, { createContext, useContext, useMemo } from "react";
-import { createGlobalStyle } from "styled-components";
+import {
+  createGlobalStyle,
+  ThemeProvider as Provider,
+} from "styled-components";
 import { light, dark } from "../styles/theme";
 import { useLocalStorage } from "../utils/hooks";
 import { usePreferredColorScheme } from "../hooks/usePreferredColorScheme";
@@ -35,7 +38,7 @@ export function ThemeProvider({ children }) {
   return (
     <ThemeContext.Provider value={{ mode, setMode, theme }}>
       <GlobalThemeVars vars={themeVars} />
-      {children}
+      <Provider theme={theme}>{children}</Provider>
     </ThemeContext.Provider>
   );
 }
