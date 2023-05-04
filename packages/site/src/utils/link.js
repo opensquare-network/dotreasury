@@ -38,12 +38,12 @@ const settings = [
   },
   {
     host: "docs.google.com",
-    img: "googledoc-logo.svg",
+    img: "google-doc-logo.svg",
     name: "Google Docs",
   },
   {
     host: "drive.google.com",
-    img: "googledrive-logo.svg",
+    img: "google-drive-logo.svg",
     name: "Google Drive",
   },
   {
