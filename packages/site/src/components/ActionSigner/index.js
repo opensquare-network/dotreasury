@@ -6,7 +6,7 @@ import { accountSelector } from "../../store/reducers/accountSlice";
 import { ellipsis } from "../../utils/ellipsis";
 import CouncilorTag from "./CouncilorTag";
 import useCouncilMembers from "../../utils/useCouncilMembers";
-import Image from "../Image";
+import ImageWithDark from "../ImageWithDark";
 
 const Wrapper = styled.div`
   display: flex;
@@ -57,17 +57,17 @@ export default function Signer() {
 
   switch (account?.extension) {
     case "polkadot-js": {
-      walletLogo = <Image src="/imgs/wallets/polkadot-js.svg" dark />;
+      walletLogo = <ImageWithDark src="/imgs/wallets/polkadot-js.svg" />;
       walletName = "Polkadot.js";
       break;
     }
     case "subwallet-js": {
-      walletLogo = <Image src="/imgs/wallets/subwallet.svg" dark />;
+      walletLogo = <ImageWithDark src="/imgs/wallets/subwallet.svg" />;
       walletName = "SubWallet";
       break;
     }
     case "talisman": {
-      walletLogo = <Image src="/imgs/wallets/talisman.svg" dark />;
+      walletLogo = <ImageWithDark src="/imgs/wallets/talisman.svg" />;
       walletName = "Talisman";
       break;
     }

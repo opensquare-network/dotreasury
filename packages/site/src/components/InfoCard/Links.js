@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import getLinkNameAndSrc from "../../utils/link";
-import Image from "../Image";
+import ImageWithDark from "../ImageWithDark";
 import ExternalLink from "../../components/ExternalLink";
 import { p_14_medium } from "../../styles/text";
 
@@ -50,7 +50,7 @@ function Link({ link }) {
   return (
     <ExternalLink href={link.link}>
       <LinkWrapper>
-        <Image src={src} dark />
+        <ImageWithDark src={src} />
         <LinkText>{link.description ?? name}</LinkText>
       </LinkWrapper>
     </ExternalLink>

@@ -6,7 +6,7 @@ import Container from "../../components/Container";
 import TextMinor from "../../components/TextMinor";
 import { items_center } from "../../styles/tailwindcss";
 import FooterSwitchThemeButton from "./SwitchThemeButton";
-import Image from "../../components/Image";
+import ImageWithDark from "../../components/ImageWithDark";
 
 const Wrapper = styled.footer`
   padding-bottom: 20px;
@@ -107,7 +107,7 @@ const Footer = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Image src="/imgs/opensquare-logo.svg" dark />
+              <ImageWithDark src="/imgs/opensquare-logo.svg" />
             </a>
           </ImageLogoWrapper>
           <ImageLogoWrapper>
@@ -118,14 +118,14 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Image src="/imgs/kusama-treasury-logo.svg" dark />
+                <ImageWithDark src="/imgs/kusama-treasury-logo.svg" />
               </a>
               <a
                 href="https://polkadot.network/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Image src="/imgs/polkadot-treasury-logo.svg" dark />
+                <ImageWithDark src="/imgs/polkadot-treasury-logo.svg" />
               </a>
             </FlexWrapper>
           </ImageLogoWrapper>

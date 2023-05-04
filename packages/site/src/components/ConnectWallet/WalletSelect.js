@@ -6,7 +6,7 @@ import { substrateWeb3Accounts } from "../../utils/extension";
 import Wallets from "./Wallets";
 import { ReactComponent as CaretSVG } from "./caret-right.svg";
 import Loading from "../LoadingCircle";
-import Image from "../Image";
+import { Image } from "semantic-ui-react";
 
 const WalletOptions = styled.ul`
   all: unset;

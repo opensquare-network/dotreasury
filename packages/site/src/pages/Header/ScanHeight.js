@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import styled, { css } from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import Image from "../../components/Image";
+import { Image } from "semantic-ui-react";
 import Card from "../../components/Card";
 
 import {
@@ -19,6 +19,7 @@ import ExternalLink from "../../components/ExternalLink";
 import { useOnClickOutside } from "@osn/common";
 import IconMask from "../../components/Icon/Mask";
 import { inline_flex, items_center } from "../../styles/tailwindcss";
+import ImageWithDark from "../../components/ImageWithDark";
 
 const Wrapper = styled.div`
   position: relative;
@@ -80,11 +81,6 @@ const DarkMajorLabel = styled(Label)`
   @media screen and (max-width: 600px) {
     display: none;
   }
-`;
-
-const Kusama = styled(Image)`
-  position: relative;
-  top: -1px;
 `;
 
 const Button = styled.button`
@@ -302,13 +298,13 @@ const ScanHeight = () => {
           ref={symbolRef}
         >
           <div className="blockHeight">
-            <Kusama
+            <ImageWithDark
               src={
                 chain === "polkadot"
                   ? "/imgs/logo-polkadot.svg"
                   : "/imgs/logo-kusama.svg"
               }
-              dark
+              style={{ position: "relative", top: -1 }}
             />
             <DarkMinorLabel>Height</DarkMinorLabel>
             <DarkMajorLabel>{`#${scanHeight.toLocaleString()}`}</DarkMajorLabel>
@@ -331,7 +327,7 @@ const ScanHeight = () => {
                     switchNode("polkadot");
                   }}
                 >
-                  <Image src="/imgs/logo-polkadot.svg" dark />
+                  <ImageWithDark src="/imgs/logo-polkadot.svg" />
                   <div>Polkadot</div>
                   <div className="unit">DOT</div>
                 </SymbolItem>
@@ -341,13 +337,13 @@ const ScanHeight = () => {
                     switchNode("kusama");
                   }}
                 >
-                  <Image src="/imgs/logo-kusama.svg" dark />
+                  <ImageWithDark src="/imgs/logo-kusama.svg" />
                   <div>Kusama</div>
                   <div className="unit">KSM</div>
                 </SymbolItem>
                 <ExternalLink href="https://edg.dotreasury.com/">
                   <SymbolItem onClick={() => setNetorkOpen(false)}>
-                    <Image src="/imgs/logo-edgeware.svg" dark />
+                    <ImageWithDark src="/imgs/logo-edgeware.svg" />
                     <div>Edgeware</div>
                     <div className="unit">EDG</div>
                   </SymbolItem>
