@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Image } from "semantic-ui-react";
+import ImageWithDark from "./ImageWithDark";
 
 const Wrapper = styled.div`
   display: flex;
@@ -41,7 +42,7 @@ export default function ProjectProposals({
       {dotProposalsCount > 0 && (
         <Item>
           {dotProposalsCount}
-          <Image src="/imgs/logo-polkadot.svg" />
+          <ImageWithDark src="/imgs/logo-polkadot.svg" />
         </Item>
       )}
       <PlusWrapper>+</PlusWrapper>

@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import Text from "../Text";
-import { Image } from "semantic-ui-react";
+import ImageWithDark from "../ImageWithDark";
 
 const CapText = styled(Text)`
   text-transform: capitalize;
@@ -41,7 +41,7 @@ const CheckedItem = styled.div`
   flex: 0 0 auto;
 `;
 
-const Icon = styled(Image)`
+const Icon = styled(ImageWithDark)`
   position: relative;
   top: -1px;
   margin-right: 8px;
