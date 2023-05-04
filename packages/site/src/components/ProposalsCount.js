@@ -1,7 +1,7 @@
 import { Fragment } from "react";
-import { Image } from "semantic-ui-react";
 import styled from "styled-components";
 import { p_14_normal } from "../styles/text";
+import ImageWithDark from "./ImageWithDark";
 
 const Wrapper = styled.div`
   display: flex;
@@ -62,10 +62,10 @@ export default function ProposalsCount({
           (i.count || showZero) && (
             <Fragment key={k}>
               <SymbolWrapper>{i.count}</SymbolWrapper>
-              <Image src={i.icon} />
+              <ImageWithDark src={i.icon} />
               <PlusWrapper>+</PlusWrapper>
             </Fragment>
-          )
+          ),
       )}
     </Wrapper>
   );
