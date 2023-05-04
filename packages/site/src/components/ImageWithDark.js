@@ -1,6 +1,12 @@
 import { useDark } from "../context/theme";
 import { useMemo } from "react";
 import { getUrlExtension } from "../utils/url";
+import styled from "styled-components";
+import { block } from "../styles/tailwindcss";
+
+const Img = styled.img`
+  ${block};
+`;
 
 /**
  * @param {typeof Image & import("react").ImgHTMLAttributes & {src: string, srcDark?: string, srcDarkSuffix?: string, dark?: boolean}} props
@@ -28,5 +34,5 @@ export default function ImageWithDark({
     return src;
   }, [dark, srcDarkSuffix, src, srcDark]);
 
-  return <img {...props} src={url} alt={props.alt} />;
+  return <Img {...props} src={url} alt={props.alt} />;
 }
