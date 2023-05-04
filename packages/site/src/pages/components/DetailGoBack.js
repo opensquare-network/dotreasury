@@ -1,8 +1,9 @@
 import styled, { css } from "styled-components";
 import { mrgap } from "../../styles";
-import { Image } from "semantic-ui-react";
 import Title from "../../components/Title";
 import { useHistory } from "react-router-dom";
+import IconMask from "../../components/Icon/Mask";
+import { inline_flex } from "../../styles/tailwindcss";
 
 const HeaderWrapper = styled.div`
   display: flex;
@@ -13,6 +14,7 @@ const HeaderWrapper = styled.div`
   margin-bottom: 20px;
   div:first-child {
     cursor: pointer;
+    ${inline_flex};
   }
 `;
 
@@ -22,7 +24,7 @@ export default function DetailGoBack() {
   return (
     <HeaderWrapper>
       <div onClick={() => history.goBack()}>
-        <Image src="/imgs/back.svg" width={"32px"} height={"32px"} />
+        <IconMask src="/imgs/back.svg" size={32} color="textPrimary" />
       </div>
       <Title>Detail</Title>
     </HeaderWrapper>

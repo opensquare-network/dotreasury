@@ -1,8 +1,8 @@
 import styled, { css } from "styled-components";
-import { Image } from "semantic-ui-react";
 import { h3_18_semibold, p_14_normal, p_12_normal } from "../../styles/text";
 
 import Card from "../../components/Card";
+import ImageWithDark from "../ImageWithDark";
 
 export const InfoCardWrapper = styled(Card)`
   padding: 24px;
@@ -52,7 +52,7 @@ export const InfoCardIconWrapper = styled.div`
   }
 `;
 
-export const InfoCardIcon = styled(Image)`
+export const InfoCardIcon = styled(ImageWithDark)`
   min-width: inherit;
   min-height: inherit;
   max-width: inherit;

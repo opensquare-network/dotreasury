@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { Image } from "semantic-ui-react";
 import ImageWithDark from "./ImageWithDark";
 
 const Wrapper = styled.div`
@@ -49,7 +48,7 @@ export default function ProjectProposals({
       {ksmProposalsCount > 0 && (
         <Item>
           {ksmProposalsCount}
-          <Image src="/imgs/logo-kusama.svg" />
+          <ImageWithDark src="/imgs/logo-kusama.svg" />
         </Item>
       )}
     </Wrapper>

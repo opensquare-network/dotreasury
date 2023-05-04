@@ -62,7 +62,8 @@ const CircleWrapper = styled.div`
 const Bar = styled.div`
   width: 2px;
   margin: 0 11px;
-  background: #f292a4;
+  background: var(--primary);
+  opacity: 0.5;
   flex: 0 0 auto;
 `;
 

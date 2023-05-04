@@ -20,7 +20,7 @@ const Detail = ({ projectData }) => {
 
   return (
     <InfoCard
-      icon={logo ? `/imgs/projects/${logo}` : "/imgs/default-logo.svg"}
+      icon={logo ? `/imgs/projects/${logo}` : "/imgs/projects/default-logo.svg"}
       title={name}
       description={description}
       links={relatedLinks}

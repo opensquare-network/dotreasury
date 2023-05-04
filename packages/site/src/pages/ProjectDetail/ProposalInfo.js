@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Image } from "semantic-ui-react";
 import { NavLink } from "react-router-dom";
 import { p_14_medium, p_14_normal } from "../../styles/text";
 import ProjectExpense from "../../components/ProjectExpense";
@@ -7,6 +6,7 @@ import { ellipsis } from "../../utils/ellipsis";
 import { networkFromSymbol } from "../../utils";
 import dayjs from "dayjs";
 import ProposalInfoLinkList from "./ProposalInfoLinkList";
+import ImageWithDark from "../../components/ImageWithDark";
 
 const ProposalLink = styled(NavLink)`
   display: inline-flex;
@@ -124,7 +124,7 @@ export default function ProposalInfo({ item }) {
   return (
     <div>
       <ProposalLink to={`/${item.token}/${link}`}>
-        <Image
+        <ImageWithDark
           width={24}
           src={isKSM ? "/imgs/logo-kusama.svg" : "/imgs/logo-polkadot.svg"}
         />
