@@ -9,8 +9,10 @@ const DropdownMenuItem = styled.div`
   justify-content: space-between;
   height: 36px;
 
+  color: var(--textPrimary);
+
   :hover {
-    background: #fafafa;
+    background-color: var(--neutral300);
   }
 `;
 

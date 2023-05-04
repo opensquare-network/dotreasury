@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { useLocation } from "react-router";
 import PopupMenu from "./PopupMenu";
 import { incomeCountSelector } from "../../../store/reducers/incomeSlice";
-import { ReactComponent as DropdownSVG } from "./dropdown.svg";
+import IconMask from "../../../components/Icon/Mask";
 
 const Divider = styled.div`
   position: relative;
@@ -75,7 +75,13 @@ function SlashMenu() {
       trigger={
         <Wrapper>
           <Menu.Item key="SlashDropdown">
-            {tabName} <DropdownSVG /> <Label>{count}</Label>
+            {tabName}{" "}
+            <IconMask
+              src="/imgs/icon-triangle-down.svg"
+              size={20}
+              color="textPrimary"
+            />{" "}
+            <Label>{count}</Label>
             <Divider />
           </Menu.Item>
         </Wrapper>
