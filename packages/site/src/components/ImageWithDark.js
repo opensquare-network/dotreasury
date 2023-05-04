@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { getUrlExtension } from "../utils/url";
 
 /**
- * @param {typeof Image & {src: string, srcDark?: string, srcDarkSuffix?: string, dark?: boolean}} props
+ * @param {typeof Image & import("react").ImgHTMLAttributes & {src: string, srcDark?: string, srcDarkSuffix?: string, dark?: boolean}} props
  * @description Wrapped `Image` with auto dark compatible
  */
 export default function ImageWithDark({
