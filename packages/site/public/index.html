@@ -81,22 +81,26 @@
     <script>
       (function () {
         var theme_mode = localStorage.getItem("theme-mode");
+        try {
+          theme_mode = JSON.parse(theme_mode);
+        } catch (e) {}
+
         if (!theme_mode || theme_mode === "system") {
           if ("matchMedia" in window) {
             var preferredDark = window.matchMedia(
               "(prefers-color-scheme: dark)",
             ).matches;
             if (preferredDark) {
-              toggle_dark();
+              add_dark();
             }
           }
         } else if (theme_mode === "dark") {
-          toggle_dark();
+          add_dark();
         }
 
-        function toggle_dark() {
+        function add_dark() {
           var root = document.documentElement;
-          root.classList.toggle("dark");
+          root.classList.add("dark");
         }
       })();
     </script>

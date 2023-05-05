@@ -1,4 +1,9 @@
-import React, { createContext, useContext, useMemo } from "react";
+import React, {
+  createContext,
+  useContext,
+  useLayoutEffect,
+  useMemo,
+} from "react";
 import {
   createGlobalStyle,
   ThemeProvider as Provider,
@@ -23,6 +28,23 @@ const GlobalThemeVars = createGlobalStyle`
   :root {${(p) => p.vars}}
 `;
 
+/**
+ * @description a part of noflash
+ */
+function RootClassListEffect() {
+  const dark = useDark();
+  useLayoutEffect(() => {
+    const root = document.documentElement;
+    if (dark) {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
+  }, [dark]);
+
+  return null;
+}
+
 export function ThemeProvider({ children }) {
   const [mode, setMode] = useLocalStorage("theme-mode", "system");
   const preferredColorScheme = usePreferredColorScheme();
@@ -38,6 +60,7 @@ export function ThemeProvider({ children }) {
   return (
     <ThemeContext.Provider value={{ mode, setMode, theme }}>
       <GlobalThemeVars vars={themeVars} />
+      <RootClassListEffect />
       <Provider theme={theme}>{children}</Provider>
     </ThemeContext.Provider>
   );
