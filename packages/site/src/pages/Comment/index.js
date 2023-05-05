@@ -23,6 +23,7 @@ import { useHistory } from "react-router";
 import NoComment from "./NoComment";
 import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../constants";
 import SubSquare from "./SubSquare";
+import { useDark } from "../../context/theme";
 
 const Header = styled.div`
   padding: 20px 24px;
@@ -42,6 +43,7 @@ const Comment = ({ type, index }) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { hash } = useLocation();
+  const dark = useDark();
 
   // from email notification when mentioned on comments
   const hashCommentId = hash && hash.slice(1);
@@ -82,8 +84,8 @@ const Comment = ({ type, index }) => {
             type,
             index,
             tablePage === "last" ? tablePage : tablePage - 1,
-            DEFAULT_PAGE_SIZE
-          )
+            DEFAULT_PAGE_SIZE,
+          ),
         );
       } finally {
         setLoadingList(false);
@@ -103,14 +105,13 @@ const Comment = ({ type, index }) => {
     }
   }, [searchPage, actualPage, hashCommentId]);
 
-
   const pageChange = useCallback(
     (_, { activePage }) => {
       history.push({
         search: `?page=${activePage}`,
       });
     },
-    [history]
+    [history],
   );
 
   if (type === "project" && (comments?.items?.length || []) <= 0) {
@@ -121,7 +122,7 @@ const Comment = ({ type, index }) => {
     <div>
       <Wrapper>
         <Header ref={commentRef}>Comment</Header>
-        <Dimmer active={loadingList} inverted>
+        <Dimmer active={loadingList} inverted={dark ? false : true}>
           <Image src="/imgs/loading.svg" />
         </Dimmer>
         {(!comments || comments.items?.length === 0) && (
@@ -129,9 +130,7 @@ const Comment = ({ type, index }) => {
         )}
         {comments && comments.items?.length > 0 && (
           <div>
-            <CommentList
-              comments={comments}
-            />
+            <CommentList comments={comments} />
             <ResponsivePagination
               activePage={comments.page + 1}
               totalPages={totalPages}
