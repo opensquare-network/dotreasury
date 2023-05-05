@@ -5,11 +5,14 @@
   color: var(--textPrimaryContrast);
 
   &::before {
-    background-color: transparent;
+    background-color: transparent !important;
     transform: rotate(0deg);
     border: 6px solid transparent;
-    bottom: -13px;
     border-top-color: var(--tooltipBg);
     box-shadow: none;
+  }
+
+  &.top::before {
+    bottom: -13px !important;
   }
 }
