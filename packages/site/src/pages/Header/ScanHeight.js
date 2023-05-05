@@ -1,7 +1,6 @@
 import React, { useState, useRef } from "react";
 import styled, { css } from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { Image } from "semantic-ui-react";
 import Card from "../../components/Card";
 
 import {
@@ -243,7 +242,7 @@ const ScanHeight = () => {
   const currentNetwork = nodesSetting?.[chain]?.find(
     (item) => item.url === currentNodeSetting?.[chain],
   );
-  let currentNetworkImg = "/imgs/node-signal-disabled.svg";
+  let currentNetworkImg = "/imgs/node-signal-unavailable.svg";
   if (currentNetwork && currentNetwork.delay) {
     if (currentNetwork.delay >= 300) {
       currentNetworkImg = "/imgs/node-signal-slow.svg";
@@ -360,7 +359,7 @@ const ScanHeight = () => {
           setNetorkOpen(!networkOpen);
         }}
       >
-        <Image src={currentNetworkImg} />
+        <ImageWithDark src={currentNetworkImg} />
         {networkOpen && (
           <NetworkItemWrapper>
             {(nodesSetting?.[chain] || []).map((item, index) => (
