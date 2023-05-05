@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Image } from "semantic-ui-react";
+import ImageWithDark from "../ImageWithDark";
 
 const Wrapper = styled.div`
   > img {
@@ -11,12 +11,12 @@ const Wrapper = styled.div`
 `;
 
 const statusIconMap = new Map([
-  ["NOT_VERIFIED", "error-grey"],
-  ["VERIFIED", "auth"],
+  ["NOT_VERIFIED", "unauthorized"],
+  ["VERIFIED", "authorized"],
   ["ERRONEOUS", "error"],
   ["VERIFIED_LINKED", "authorized-sub"],
-  ["LINKED", "sub-grey"],
-  ["ERRONEOUS_LINKED", "sub-red"],
+  ["LINKED", "unauthorized-sub"],
+  ["ERRONEOUS_LINKED", "unauthorized-error"],
 ]);
 
 const Badge = ({ status }) => {
@@ -30,7 +30,7 @@ const Badge = ({ status }) => {
   }
 
   const imgSrc = `/imgs/badge-icons/${icon}.svg`;
-  return <Wrapper>{icon && <Image src={imgSrc} />}</Wrapper>;
+  return <Wrapper>{icon && <ImageWithDark src={imgSrc} />}</Wrapper>;
 };
 
 export default Badge;
