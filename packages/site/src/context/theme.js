@@ -80,7 +80,10 @@ export function useTheme() {
 export function useDark() {
   const { mode } = useContext(ThemeContext);
   const preferredColorScheme = usePreferredColorScheme();
-  return mode === "dark" || preferredColorScheme === "dark";
+  if (mode !== "system") {
+    return mode === "dark";
+  }
+  return preferredColorScheme === "dark";
 }
 
 /**
