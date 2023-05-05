@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import dayjs from "dayjs";
-import { Image } from "semantic-ui-react";
 
 import Table from "../../components/Table";
 import TableLoading from "../../components/TableLoading";
@@ -14,6 +13,7 @@ import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import Card from "../../components/Card";
 import User from "../../components/User";
+import IconMask from "../../components/Icon/Mask";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -67,6 +67,7 @@ const EventID = styled(Text)`
 const EventWrapper = styled.div`
   display: flex;
   align-items: center;
+  & > i,
   & > img {
     margin-right: 4px;
   }
@@ -101,7 +102,7 @@ const TransfersTable = ({ data, loading, header, footer }) => {
                         <TimeWrapper>
                           <Text>
                             {dayjs(parseInt(item.indexer.blockTime)).format(
-                              "YYYY-MM-DD HH:mm:ss"
+                              "YYYY-MM-DD HH:mm:ss",
                             )}
                           </Text>
                           <ExplorerLink
@@ -116,16 +117,17 @@ const TransfersTable = ({ data, loading, header, footer }) => {
                           href={`/extrinsic/${item.indexer.blockHeight}-0?event=${item.indexer.blockHeight}-${item.indexer.eventIndex}`}
                         >
                           <EventWrapper>
-                            <Image src={"/imgs/event.svg"} />
+                            <IconMask
+                              src="/imgs/event.svg"
+                              size={16}
+                              color="textDisable"
+                            />
                             <EventID>{`${item.indexer.blockHeight}-${item.indexer.eventIndex}`}</EventID>
                           </EventWrapper>
                         </ExplorerLink>
                       </Table.Cell>
                       <Table.Cell>
-                        <User
-                          address={item.from}
-                          ellipsis={false}
-                        />
+                        <User address={item.from} ellipsis={false} />
                       </Table.Cell>
                       <Table.Cell textAlign={"right"} className="balance-cell">
                         <Balance value={item.balance} currency={symbol} />

@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import dayjs from "dayjs";
-import { Image } from "semantic-ui-react";
 import { NavLink } from "react-router-dom";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import ExplorerLink from "../ExplorerLink";
@@ -18,6 +17,7 @@ import PairTextVertical from "../PairTextVertical";
 import TextWrapper from "./TextWrapper";
 import TextLinks from "./TextLinks";
 import { TipStatus, USER_ROLES } from "../../constants";
+import IconMask from "../Icon/Mask";
 
 const ProposeTimeWrapper = styled.div`
   display: flex;
@@ -45,6 +45,7 @@ const ProposeTimeWrapper = styled.div`
 const EventWrapper = styled.div`
   display: flex;
   align-items: center;
+  & > i,
   & > img {
     margin-right: 4px;
   }
@@ -128,7 +129,7 @@ const eventId = {
       href={`/extrinsic/${item.indexer.blockHeight}-0?event=${item.indexer.blockHeight}-${item.indexer.eventIndex}`}
     >
       <EventWrapper>
-        <Image src={"/imgs/event.svg"} />
+        <IconMask src="/imgs/event.svg" size={16} color="textDisable" />
         <EventID>{`${item.indexer.blockHeight}-${item.indexer.eventIndex}`}</EventID>
       </EventWrapper>
     </ExplorerLink>
