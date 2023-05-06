@@ -6,7 +6,7 @@ const Label = styled.span`
   font-weight: normal;
   font-size: 14px;
   line-height: 24px;
-  color: rgba(29, 37, 60, 0.64);
+  color: var(--textTertiary);
 `;
 
 export default Label;
