@@ -36,8 +36,8 @@ const CustomTable = styled(SemanticTable)`
     color: rgba(0, 0, 0, 0.3) !important;
   }
   .user-cell {
-    width: 176px !important;
-    max-width: 176px !important;
+    width: 200px !important;
+    max-width: 200px !important;
   }
   .balance-cell {
     width: 139px !important;
