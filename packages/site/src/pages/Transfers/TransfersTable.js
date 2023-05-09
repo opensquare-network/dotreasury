@@ -48,14 +48,6 @@ const TableRow = styled(Table.Row)`
   height: 50px;
 `;
 
-const TimeWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  p:first-child {
-    min-width: 154px;
-  }
-`;
-
 const EventID = styled(Text)`
   white-space: nowrap;
   &:hover {
