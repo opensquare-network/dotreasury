@@ -6,7 +6,7 @@ import Avatar from "./Avatar";
 import Badge from "./Badge";
 import { useIdentity } from "../../utils/hooks";
 import DeletedAccount from "./DeletedAccount";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import { makeInSiteUserDetailLink } from "../../utils/url";
@@ -26,6 +26,11 @@ const Wrapper = styled.div`
 const BadgeWrapper = styled.div`
   display: flex;
   align-items: center;
+  ${truncate};
+`;
+
+const Link = styled(RouterLink)`
+  max-width: 100%;
   ${truncate};
 `;
 
@@ -54,10 +59,7 @@ const User = ({
 
   if (!noLink) {
     username = (
-      <Link
-        style={{ maxWidth: "100%" }}
-        to={makeInSiteUserDetailLink(symbol, address, role)}
-      >
+      <Link to={makeInSiteUserDetailLink(symbol, address, role)}>
         {username}
       </Link>
     );
