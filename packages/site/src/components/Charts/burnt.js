@@ -1,8 +1,9 @@
 import { Bar } from "react-chartjs-2";
 import "./globalConfig";
-import styled, { css, useTheme } from "styled-components";
+import styled, { css } from "styled-components";
 import Text from "../Text";
 import { getPrecision, toPrecision } from "../../utils";
+import { useTheme } from "../../context/theme";
 
 const Wrapper = styled.div`
   padding-left: 17px;

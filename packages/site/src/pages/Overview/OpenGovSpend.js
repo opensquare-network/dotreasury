@@ -7,8 +7,8 @@ import { overviewSelector } from "../../store/reducers/overviewSlice";
 import { getPrecision, toPrecision } from "../../utils";
 import { sumBy } from "../../utils/math";
 import OverviewBaseChartCard from "./ChartCard";
+import { useTheme } from "../../context/theme";
 import OpengovSpendTitle from "./OpengovSpendTitle";
-import { useTheme } from "styled-components";
 
 export default function OpenGovSpend() {
   const theme = useTheme();

@@ -8,7 +8,7 @@ import { overviewSelector } from "../../store/reducers/overviewSlice";
 import { getPrecision, toPrecision } from "../../utils";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import { sumBy } from "../../utils/math";
-import { useTheme } from "styled-components";
+import { useTheme } from "../../context/theme";
 
 const Output = () => {
   const overview = useSelector(overviewSelector);

@@ -67,6 +67,14 @@ export function ThemeProvider({ children }) {
 }
 
 /**
+ * @returns {Theme}
+ * @description type friendly alternative to styled `useTheme`
+ */
+export function useTheme() {
+  return useContext(ThemeContext).theme;
+}
+
+/**
  * @description shortcut for `useThemeMode().mode === 'dark'`
  */
 export function useDark() {

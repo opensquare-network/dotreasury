@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import styled, { useTheme } from "styled-components";
+import styled from "styled-components";
 import { bnToBn } from "@polkadot/util";
 import dayjs from "dayjs";
+import { useTheme } from "../../../context/theme";
 
 import Text from "../../../components/Text";
 import Card from "../../../components/Card";

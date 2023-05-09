@@ -1,7 +1,7 @@
 import React from "react";
 import { PolarArea } from "react-chartjs-2";
 import { maxBy, sumBy } from "../utils/math";
-import { useTheme } from "styled-components";
+import { useTheme } from "../context/theme";
 
 export default function PolarAreaChart({ data, status, tooltipLabelCallback }) {
   const theme = useTheme();
