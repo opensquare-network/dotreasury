@@ -10,11 +10,14 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import { makeInSiteUserDetailLink } from "../../utils/url";
+import { truncate } from "../../styles/tailwindcss";
 
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
   overflow: hidden;
+  max-width: inherit;
+  ${truncate};
   > :first-child {
     margin-right: 8px;
   }
@@ -23,6 +26,7 @@ const Wrapper = styled.div`
 const BadgeWrapper = styled.div`
   display: flex;
   align-items: center;
+  ${truncate};
 `;
 
 const User = ({
@@ -50,7 +54,10 @@ const User = ({
 
   if (!noLink) {
     username = (
-      <Link to={makeInSiteUserDetailLink(symbol, address, role)}>
+      <Link
+        style={{ maxWidth: "100%" }}
+        to={makeInSiteUserDetailLink(symbol, address, role)}
+      >
         {username}
       </Link>
     );
