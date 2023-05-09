@@ -37,6 +37,7 @@ const ChartWrapper = styled.div`
 
 const Title = styled.h3`
   ${h4_16_semibold};
+  margin: 0;
   color: var(--textPrimary);
 `;
 const TitleGroup = styled.div`
