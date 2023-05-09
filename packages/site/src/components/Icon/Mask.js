@@ -1,7 +1,6 @@
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import { inline_flex } from "../../styles/tailwindcss";
 import React from "react";
-import { useTheme } from "../../context/theme";
 
 const assertsize = (size) => (typeof size === "number" ? `${size}px` : size);
 

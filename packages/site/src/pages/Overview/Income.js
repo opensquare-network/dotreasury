@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import { NavLink } from "react-router-dom";
 
 import DoughnutCard from "./DoughnutCard";
@@ -11,7 +11,6 @@ import {
   chainSymbolSelector,
 } from "../../store/reducers/chainSlice";
 import DoughnutCardLinkTitle from "./DoughnutCardLinkTitle";
-import { useTheme } from "../../context/theme";
 import IconMask from "../../components/Icon/Mask";
 import { items_center } from "../../styles/tailwindcss";
 
