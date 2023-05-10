@@ -2,6 +2,7 @@
   "name": "@dotreasury/site",
   "version": "0.1.0",
   "license": "Apache-2.0",
+  "type": "module",
   "dependencies": {
     "@floating-ui/react": "^0.15.1",
     "@open-wc/webpack-import-meta-loader": "^0.4.7",
@@ -51,10 +52,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "GENERATE_SOURCEMAP=false react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "postinstall": "patch-package",
     "lint": "eslint ."
   },
@@ -88,9 +88,12 @@
   "devDependencies": {
     "@osn/eslint-config": "^1.0.1",
     "@types/socket.io-client": "^3.0.0",
+    "@vitejs/plugin-react": "^4.0.0",
     "eslint": "^8.38.0",
     "eslint-plugin-unused-imports": "^2.0.0",
     "patch-package": "^6.4.7",
-    "postinstall-postinstall": "^2.1.0"
+    "postinstall-postinstall": "^2.1.0",
+    "vite": "^4.3.5",
+    "vite-plugin-svgr": "^3.2.0"
   }
 }
