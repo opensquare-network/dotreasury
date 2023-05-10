@@ -58,19 +58,6 @@
     "postinstall": "patch-package",
     "lint": "eslint ."
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest",
-      "@osn"
-    ],
-    "plugins": [
-      "unused-imports"
-    ],
-    "rules": {
-      "unused-imports/no-unused-imports": "error"
-    }
-  },
   "browserslist": {
     "production": [
       "chrome >= 67",
@@ -90,6 +77,7 @@
     "@types/socket.io-client": "^3.0.0",
     "@vitejs/plugin-react": "^4.0.0",
     "eslint": "^8.38.0",
+    "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-unused-imports": "^2.0.0",
     "patch-package": "^6.4.7",
     "postinstall-postinstall": "^2.1.0",
