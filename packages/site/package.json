@@ -39,7 +39,6 @@
     "react-redux": "^7.2.2",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "5.0.1",
     "react-test-renderer": "^18.2.0",
     "redux": "^4.0.5",
     "rxjs": "^6.6.3",
