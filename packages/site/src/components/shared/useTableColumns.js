@@ -312,7 +312,7 @@ const referendaStatus = {
   title: "Status",
   headerCellProps: { textAlign: "right" },
   cellProps: { textAlign: "right" },
-  cellClassName: "referenda-status-cell",
+  cellClassName: "referenda-status-cell proposal-status-cell",
   cellRender: (_, item) => (
     <PairTextVertical
       value={item?.state?.name}
