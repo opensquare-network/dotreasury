@@ -4,9 +4,11 @@ import { Popup } from "semantic-ui-react";
 
 import TextMinor from "../TextMinor";
 import { useDisablePopup } from "../../utils/hooks";
+import { truncate } from "../../styles/tailwindcss";
 
 const TextUsername = styled(TextMinor)`
   white-space: nowrap;
+  ${truncate};
   cursor: pointer;
   flex-grow: 1;
   font-size: 14px;

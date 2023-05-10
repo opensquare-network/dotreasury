@@ -42,7 +42,7 @@ import SummaryItem from "../../components/Summary/Item";
 import ImageWithDark from "../../components/ImageWithDark";
 
 const Wrapper = styled(Card)`
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 
   ${p(24)};
   ${grid};
