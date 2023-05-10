@@ -1,7 +1,7 @@
 import { PluginOption } from "vite";
 
 const transformDeps = ["@osn_polkadot-react-identicon"];
-const viteDepsFileRegex = /\.[jt]sx?\?v\=[\w\d]+$/;
+const viteDepsFileRegex = /\.[jt]sx?\?v=[\w\d]+$/;
 
 export function transformDepsProcessEnvToImportMetaEnv(): PluginOption {
   return {
