@@ -2,7 +2,6 @@ import React from "react";
 import styled, { css } from "styled-components";
 
 import { mrgap } from "../styles";
-import { PRIMARY_THEME_COLOR, SECONDARY_THEME_COLOR } from "../constants";
 
 const getCurrent = (current) => {
   let str = "";
@@ -10,9 +9,9 @@ const getCurrent = (current) => {
     (item) =>
       (str += `
     div:nth-child(${item + 1}) {
-      background: ${PRIMARY_THEME_COLOR};
+      background: var(--primary);
     }
-  `)
+  `),
   );
   return str;
 };
@@ -38,7 +37,7 @@ const Wrapper = styled.div`
 `;
 
 const ProgressItem = styled.div`
-  background: ${SECONDARY_THEME_COLOR};
+  background: var(--secondary);
   flex: 1 1;
   height: 6px;
 `;

@@ -16,7 +16,7 @@ export function px(n) {
  * @alias tailwind bg-xxx
  */
 export function bg(scheme) {
-  return `background-color: var(--${scheme});`;
+  return `background-color: var(--${scheme})`;
 }
 /**
  * @param {keyof light} scheme
@@ -149,6 +149,13 @@ export function grid_cols(repeat, min = 0) {
   return `
     grid-template-columns: repeat(${repeat}, minmax(${min}px, 1fr));
   `;
+}
+/**
+ * @param {100|200} n shadow level
+ * @description shortcut for `box-shadow: var(--shadow100)`
+ */
+export function shadow(n) {
+  return `box-shadow: var(--shadow${n})`;
 }
 
 // atoms
@@ -305,6 +312,11 @@ export const border_hidden = `
   border-style: hidden;
 `;
 
+// effects
+// ---
+export const shadow_100 = shadow(100);
+export const shadow_200 = shadow(200);
+
 // layout
 // ---
 
@@ -388,6 +400,7 @@ export const cursor_pointer = `
 
 // backgrounds
 // ---
+export const bg_transparent = "background-color: transparent;";
 
 // private
 // ---
@@ -400,7 +413,7 @@ function make_border(n) {
 }
 function make_rounded(n) {
   return `
-    border-radius: ${px(n)};
+    border-radius: ${px(n)}
   `;
 }
 function make_z(n) {

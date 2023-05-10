@@ -5,13 +5,13 @@ import styled from "styled-components";
 import { useLocation } from "react-router";
 import PopupMenu from "./PopupMenu";
 import { incomeCountSelector } from "../../../store/reducers/incomeSlice";
-import { ReactComponent as DropdownSVG } from "./dropdown.svg";
+import IconMask from "../../../components/Icon/Mask";
 
 const Divider = styled.div`
   position: relative;
   width: 1px;
   height: 20px;
-  background: #eeeeee;
+  background: var(--neutral300);
   left: 16px;
 `;
 
@@ -38,7 +38,8 @@ function SlashMenu() {
   const incomeCount = useSelector(incomeCountSelector);
 
   let tabName = "Slashes";
-  let count = (incomeCount?.treasurySlash || 0) +
+  let count =
+    (incomeCount?.treasurySlash || 0) +
     (incomeCount?.democracySlash || 0) +
     (incomeCount?.identitySlash || 0) +
     (incomeCount?.electionPhragmenSlash || 0) +
@@ -70,14 +71,22 @@ function SlashMenu() {
   }
 
   return (
-    <PopupMenu trigger={
-      <Wrapper>
-        <Menu.Item key="SlashDropdown">
-          {tabName} <DropdownSVG /> <Label>{count}</Label>
-          <Divider />
-        </Menu.Item>
-      </Wrapper>
-    } />
+    <PopupMenu
+      trigger={
+        <Wrapper>
+          <Menu.Item key="SlashDropdown">
+            {tabName}{" "}
+            <IconMask
+              src="/imgs/icon-triangle-down.svg"
+              size={20}
+              color="textPrimary"
+            />{" "}
+            <Label>{count}</Label>
+            <Divider />
+          </Menu.Item>
+        </Wrapper>
+      }
+    />
   );
 }
 

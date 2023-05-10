@@ -1,11 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import { Image } from "semantic-ui-react";
 import Label from "./Label";
+import IconMask from "./Icon/Mask";
 
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
+  i,
   img {
     margin-right: 4px;
   }
@@ -14,7 +15,7 @@ const Wrapper = styled.div`
 const TimeLabel = ({ value }) => {
   return (
     <Wrapper>
-      <Image src={"/imgs/time.svg"} />
+      <IconMask src={"/imgs/time.svg"} size={16} color="textDisable" />
       <Label>{value}</Label>
     </Wrapper>
   );

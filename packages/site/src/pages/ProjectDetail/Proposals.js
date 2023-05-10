@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 
-import { PRIMARY_THEME_COLOR } from "../../constants";
 import Card from "../../components/Card";
 import ProposalInfo from "./ProposalInfo";
 
@@ -15,7 +14,7 @@ const Header = styled.div`
   font-weight: 700;
   font-size: 16px;
   line-height: 24px;
-  color: rgba(0, 0, 0, 0.9);
+  color: var(--textPrimary);
   margin-bottom: 20px;
 `;
 
@@ -53,7 +52,7 @@ const CircleWrapper = styled.div`
     box-sizing: border-box;
     width: 100%;
     height: 100%;
-    border: 3px solid ${PRIMARY_THEME_COLOR};
+    border: 3px solid var(--primary);
     border-radius: 50%;
   }
 
@@ -63,7 +62,8 @@ const CircleWrapper = styled.div`
 const Bar = styled.div`
   width: 2px;
   margin: 0 11px;
-  background: #f292a4;
+  background: var(--primary);
+  opacity: 0.5;
   flex: 0 0 auto;
 `;
 

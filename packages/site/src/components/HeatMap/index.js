@@ -7,7 +7,6 @@ import {
   HeatMapDot,
   HeatMapContent,
 } from "./styled";
-import { Greyscale_Grey_200 } from "../../constants";
 import Tooltip from "../../components/Tooltip";
 import { noop } from "rxjs";
 
@@ -40,7 +39,7 @@ export default function AttendanceHeatMap(props) {
     negative = false,
     activeColor = "#b3ecc5",
     negativeColor = "#f2c3c3",
-    inActiveColor = Greyscale_Grey_200,
+    inActiveColor = "var(--neutral300)",
     legend = true,
     legendActiveText = "Active",
     legendNegativeText = "Negative",

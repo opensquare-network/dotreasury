@@ -6,7 +6,7 @@ import {
   setShowMenuTabs,
   showMenuTabsSelector,
 } from "../../store/reducers/menuSlice";
-import { PRIMARY_THEME_COLOR } from "../../constants";
+import { useChain } from "../../utils/hooks/chain";
 
 const Wrapper = styled.div`
   margin-right: 32px;
@@ -22,14 +22,20 @@ const StyledButton = styled(Button)`
   ${(p) =>
     p.active &&
     css`
-      color: ${PRIMARY_THEME_COLOR} !important;
+      color: var(--primary) !important;
+    `}
+  ${(p) =>
+    p.chain === "kusama" &&
+    css`
+      color: var(--textPrimaryContrast) !important;
     `}
   &:hover {
-    color: ${PRIMARY_THEME_COLOR} !important;
+    color: var(--primary) !important;
   }
 `;
 
 const MenuSwitch = ({ menuTabsName = "Home" }) => {
+  const chain = useChain();
   const dispatch = useDispatch();
   const showMenuTabs = useSelector(showMenuTabsSelector);
 
@@ -39,7 +45,11 @@ const MenuSwitch = ({ menuTabsName = "Home" }) => {
 
   return (
     <Wrapper>
-      <StyledButton active={showMenuTabs === menuTabsName} onClick={switcher}>
+      <StyledButton
+        chain={chain}
+        active={showMenuTabs === menuTabsName}
+        onClick={switcher}
+      >
         {menuTabsName}
       </StyledButton>
     </Wrapper>

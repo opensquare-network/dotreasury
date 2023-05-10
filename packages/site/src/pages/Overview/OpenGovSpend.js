@@ -1,22 +1,17 @@
 import { useState, useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
 import PolarAreaChart from "../../components/CustomPolarArea";
-import {
-  OVERVIEW_BIG_SPENDER_COLOR,
-  OVERVIEW_BIG_TIPPER_COLOR,
-  OVERVIEW_MEDIUM_SPENDER_COLOR,
-  OVERVIEW_SMALL_SPENDER_COLOR,
-  OVERVIEW_SMALL_TIPPER_COLOR,
-  OVERVIEW_TREASURER_COLOR,
-} from "../../constants";
+
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import { overviewSelector } from "../../store/reducers/overviewSlice";
 import { getPrecision, toPrecision } from "../../utils";
 import { sumBy } from "../../utils/math";
 import OverviewBaseChartCard from "./ChartCard";
+import { useTheme } from "../../context/theme";
 import OpengovSpendTitle from "./OpengovSpendTitle";
 
 export default function OpenGovSpend() {
+  const theme = useTheme();
   const overview = useSelector(overviewSelector);
   const symbol = useSelector(chainSymbolSelector);
   const precision = getPrecision(symbol);
@@ -34,7 +29,7 @@ export default function OpenGovSpend() {
   const smallTipperValue = toPrecision(
     small_tipper?.value ?? 0,
     precision,
-    false
+    false,
   );
   const smallTipperFiatValue = small_tipper?.fiatValue ?? 0;
   const bigTipperValue = toPrecision(big_tipper?.value ?? 0, precision, false);
@@ -42,13 +37,13 @@ export default function OpenGovSpend() {
   const smallSpendValue = toPrecision(
     small_spender?.value ?? 0,
     precision,
-    false
+    false,
   );
   const smallSpendFiatValue = small_spender?.fiatValue ?? 0;
   const mediumSpendValue = toPrecision(
     medium_spender?.value ?? 0,
     precision,
-    false
+    false,
   );
   const mediumSpendFiatValue = medium_spender?.fiatValue ?? 0;
   const bigSpendValue = toPrecision(big_spender?.value ?? 0, precision, false);
@@ -63,7 +58,7 @@ export default function OpenGovSpend() {
           value: treasurerValue,
           fiatValue: treasurerFiatValue,
           count: treasurer?.count,
-          color: OVERVIEW_TREASURER_COLOR,
+          color: theme.pink500,
           disabled: false,
         },
         {
@@ -71,7 +66,7 @@ export default function OpenGovSpend() {
           value: smallTipperValue,
           fiatValue: smallTipperFiatValue,
           count: small_tipper?.count,
-          color: OVERVIEW_SMALL_TIPPER_COLOR,
+          color: theme.yellow300,
           disabled: false,
         },
         {
@@ -79,7 +74,7 @@ export default function OpenGovSpend() {
           value: bigTipperValue,
           fiatValue: bigTipperFiatValue,
           count: big_tipper?.count,
-          color: OVERVIEW_BIG_TIPPER_COLOR,
+          color: theme.yellow500,
           disabled: false,
         },
         {
@@ -87,7 +82,7 @@ export default function OpenGovSpend() {
           value: smallSpendValue,
           fiatValue: smallSpendFiatValue,
           count: small_spender?.count,
-          color: OVERVIEW_SMALL_SPENDER_COLOR,
+          color: theme.orange100,
           disabled: false,
         },
         {
@@ -95,7 +90,7 @@ export default function OpenGovSpend() {
           value: mediumSpendValue,
           fiatValue: mediumSpendFiatValue,
           count: medium_spender?.count,
-          color: OVERVIEW_MEDIUM_SPENDER_COLOR,
+          color: theme.orange300,
           disabled: false,
         },
         {
@@ -103,7 +98,7 @@ export default function OpenGovSpend() {
           value: bigSpendValue,
           fiatValue: bigSpendFiatValue,
           count: big_spender?.count,
-          color: OVERVIEW_BIG_SPENDER_COLOR,
+          color: theme.orange500,
           disabled: false,
         },
       ].sort((a, b) => b.value - a.value),
@@ -127,7 +122,8 @@ export default function OpenGovSpend() {
       smallSpendFiatValue,
       mediumSpendFiatValue,
       bigSpendFiatValue,
-    ]
+      theme,
+    ],
   );
 
   const [chartData, setChartData] = useState(data);
@@ -135,11 +131,11 @@ export default function OpenGovSpend() {
 
   const totalEnabledValue = sumBy(
     chartData.labels.filter((i) => !i.disabled),
-    "value"
+    "value",
   );
   const totalEnabledFiatValue = sumBy(
     chartData.labels.filter((i) => !i.disabled),
-    "fiatValue"
+    "fiatValue",
   );
 
   function clickEvent(name) {
@@ -166,22 +162,24 @@ export default function OpenGovSpend() {
           tooltipLabelCallback={(tooltipItem) => {
             const { raw: currentValue, label } = tooltipItem;
             const currentFiatValue = chartData.labels.find(
-              (i) => i.name === label
+              (i) => i.name === label,
             )?.fiatValue;
             const valuePercentage = parseFloat(
-              ((currentValue / totalEnabledValue) * 100).toFixed(2)
+              ((currentValue / totalEnabledValue) * 100).toFixed(2),
             );
             const fiatValuePercentage = parseFloat(
-              ((currentFiatValue / totalEnabledFiatValue || 0) * 100).toFixed(2)
+              ((currentFiatValue / totalEnabledFiatValue || 0) * 100).toFixed(
+                2,
+              ),
             );
 
             const token = ` ${
               Math.round(currentValue) === currentValue ? "" : "≈ "
             }${Math.round(
-              currentValue
+              currentValue,
             ).toLocaleString()} ${symbol} ${valuePercentage}%`;
             const fiat = ` ≈ $${Math.round(
-              currentFiatValue
+              currentFiatValue,
             ).toLocaleString()} ${fiatValuePercentage}%`;
 
             return [token, fiat];

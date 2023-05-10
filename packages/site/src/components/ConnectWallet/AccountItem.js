@@ -27,7 +27,7 @@ const Name = styled.div`
   font-weight: 500;
   font-size: 14px;
   line-height: 20px;
-  color: rgba(0, 0, 0, 0.9);
+  color: var(--textPrimary);
 `;
 
 const Addr = styled.div`
@@ -35,7 +35,7 @@ const Addr = styled.div`
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  color: rgba(0, 0, 0, 0.3);
+  color: var(--textTertiary);
 `;
 
 const AccountItem = ({ header, accountName, accountAddress }) => {

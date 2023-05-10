@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { Image } from "semantic-ui-react";
 
 import Text from "../../components/Text";
+import ImageWithDark from "../../components/ImageWithDark";
 
 const Wrapper = styled.div`
   display: flex;
@@ -19,8 +19,10 @@ const TextWrapper = styled(Text)`
 const NameCell = ({ logo, name }) => {
   return (
     <Wrapper>
-      <Image
-        src={logo ? `/imgs/projects/${logo}` : "/imgs/default-logo.svg"}
+      <ImageWithDark
+        src={
+          logo ? `/imgs/projects/${logo}` : "/imgs/projects/default-logo.svg"
+        }
         width={24}
         height={24}
       />

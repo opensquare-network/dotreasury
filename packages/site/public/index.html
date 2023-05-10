@@ -58,12 +58,53 @@
           window.history.replaceState(
             null,
             null,
-            l.pathname.slice(0, -1) + decoded + l.hash
+            l.pathname.slice(0, -1) + decoded + l.hash,
           );
         }
       })(window.location);
     </script>
     <!-- End Single Page Apps for GitHub Pages -->
+
+    <!-- noflash -->
+    <style>
+      :root {
+        --neutral200: rgba(250, 250, 250, 1);
+      }
+      .dark:root {
+        --neutral200: rgba(15, 15, 15, 1);
+      }
+      body {
+        /* add `important`, avoid semantic ui css flash */
+        background-color: var(--neutral200) !important;
+      }
+    </style>
+    <script>
+      (function () {
+        var theme_mode = localStorage.getItem("theme-mode");
+        try {
+          theme_mode = JSON.parse(theme_mode);
+        } catch (e) {}
+
+        if (!theme_mode || theme_mode === "system") {
+          if ("matchMedia" in window) {
+            var preferredDark = window.matchMedia(
+              "(prefers-color-scheme: dark)",
+            ).matches;
+            if (preferredDark) {
+              add_dark();
+            }
+          }
+        } else if (theme_mode === "dark") {
+          add_dark();
+        }
+
+        function add_dark() {
+          var root = document.documentElement;
+          root.classList.add("dark");
+        }
+      })();
+    </script>
+    <!-- noflash end -->
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

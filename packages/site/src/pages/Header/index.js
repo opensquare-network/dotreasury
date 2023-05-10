@@ -9,7 +9,8 @@ import SubHeader from "./SubHeader";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 
 const Wrapper = styled.header`
-  background: ${(p) => (p.symbol === "ksm" ? "#000" : "#fff")};
+  background-color: ${(p) =>
+    p.symbol === "ksm" ? "#000" : "var(--neutral100)"};
   max-height: 136px;
 `;
 
@@ -25,8 +26,7 @@ const Header = () => {
       "/verifyemail",
       "/useragreement",
       "/privacy",
-    ].includes(location.pathname) ||
-    location.pathname.includes("/settings");
+    ].includes(location.pathname) || location.pathname.includes("/settings");
 
   const symbol = useSelector(chainSymbolSelector)?.toLowerCase();
 

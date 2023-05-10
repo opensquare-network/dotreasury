@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { Image } from "semantic-ui-react";
 
 import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
 import { removeToast } from "../../store/reducers/toastSlice";
 import { useIsMounted } from "@osn/common";
+import IconMask from "../../components/Icon/Mask";
+import ImageWithDark from "../../components/ImageWithDark";
+import { shadow_200 } from "../../styles/tailwindcss";
 
 const Wrapper = styled.div`
   width: 320px;
   padding: 16px;
-  box-shadow: 0px 4px 24px rgba(29, 37, 60, 0.08);
+  ${shadow_200};
   border-radius: 8px;
   p {
     word-break: break-word;
@@ -19,8 +21,8 @@ const Wrapper = styled.div`
   :not(:last-child) {
     margin-bottom: 16px;
   }
-  background: #FFF;
-  border: 1px solid #EEE;
+  background: var(--neutral100);
+  border: 1px solid var(--neutral300);
   transform: translateX(200%);
   transition: all 0.25s ease-out;
   &.tran {
@@ -91,15 +93,16 @@ const ToastItem = ({ type, title, message, id, sticky, timeout = 5000 }) => {
       <HeaderWrapper>
         <ImageWrapper>
           {type && TOAST_TYPES.includes(type) && (
-            <Image src={`/imgs/toast-${type}.svg`} />
+            <ImageWithDark src={`/imgs/toast-${type}.svg`} />
           )}
         </ImageWrapper>
         <Title>{title}</Title>
-        <CloseButton>
-          <Image src="/imgs/toast-close.svg"
-            onClick={() => {
-              dispatch(removeToast(id));
-            }} />
+        <CloseButton
+          onClick={() => {
+            dispatch(removeToast(id));
+          }}
+        >
+          <IconMask src="/imgs/toast-close.svg" size={24} color="textPrimary" />
         </CloseButton>
       </HeaderWrapper>
       <Content>{message}</Content>

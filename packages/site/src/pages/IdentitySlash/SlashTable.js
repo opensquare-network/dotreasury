@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import dayjs from "dayjs";
-import { Image } from "semantic-ui-react";
 
 import Table from "../../components/Table";
 import TableLoading from "../../components/TableLoading";
@@ -12,6 +11,7 @@ import TableNoDataCell from "../../components/TableNoDataCell";
 import PolygonLabel from "../../components/PolygonLabel";
 import User from "../../components/User";
 import Card from "../../components/Card";
+import IconMask from "../../components/Icon/Mask";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -65,6 +65,7 @@ const EventID = styled(Text)`
 const EventWrapper = styled.div`
   display: flex;
   align-items: center;
+  & > i,
   & > img {
     margin-right: 4px;
   }
@@ -98,7 +99,7 @@ const SlashTable = ({ data, loading, header, footer }) => {
                         <TimeWrapper>
                           <Text>
                             {dayjs(parseInt(item.indexer.blockTime)).format(
-                              "YYYY-MM-DD HH:mm:ss"
+                              "YYYY-MM-DD HH:mm:ss",
                             )}
                           </Text>
                           <ExplorerLink
@@ -113,7 +114,11 @@ const SlashTable = ({ data, loading, header, footer }) => {
                           href={`/block/${item.indexer.blockHeight}?tab=event`}
                         >
                           <EventWrapper>
-                            <Image src={"/imgs/event.svg"} />
+                            <IconMask
+                              src="/imgs/event.svg"
+                              size={16}
+                              color="textDisable"
+                            />
                             <EventID>{`${item.indexer.blockHeight}-${item.indexer.eventIndex}`}</EventID>
                           </EventWrapper>
                         </ExplorerLink>

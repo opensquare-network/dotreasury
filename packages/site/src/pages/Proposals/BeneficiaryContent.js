@@ -7,7 +7,7 @@ import Badge from "../../components/User/Badge";
 const Wrapper = styled.div`
   font-size: 12px;
   line-height: 18px;
-  color: rgba(0, 0, 0, 0.9);
+  color: var(--textPrimary);
 `;
 
 const Title = styled.div`

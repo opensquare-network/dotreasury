@@ -13,7 +13,7 @@ import { capitalizeFirstLetter } from "../../utils";
 import { USER_ROLES } from "../../constants";
 
 const ReturnedText = styled.div`
-  color: rgba(0, 0, 0, 0.3);
+  color: var(--textTertiary);
   font-size: 14px;
   line-height: 22px;
   margin-left: 16px;

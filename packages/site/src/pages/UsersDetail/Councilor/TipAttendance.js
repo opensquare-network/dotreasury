@@ -61,7 +61,7 @@ export default function TipAttendance() {
         <HeatMap
           dotStyle="circle"
           data={compatAttendanceHeatMapData(tips)}
-          activeColor="#B0D1F9"
+          activeColor="var(--blue200)"
           tooltipContentRender={(data) => (
             <TooltipContentDetail gap={35}>
               <TooltipContentDetailItem>
@@ -74,7 +74,7 @@ export default function TipAttendance() {
                       chainSymbol.toLowerCase(),
                       "tips",
                       data.meta.tipHeight,
-                      data.meta.tipHash
+                      data.meta.tipHash,
                     )}
                   >
                     {ellipsis(data.meta.tipHash)}

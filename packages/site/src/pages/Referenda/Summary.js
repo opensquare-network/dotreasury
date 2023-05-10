@@ -36,7 +36,7 @@ const ItemsWrapper = styled.div`
 const Value = styled(Text)`
   ${h3_18_semibold};
   span.light {
-    color: rgba(0, 0, 0, 0.3);
+    color: var(--textTertiary);
   }
 `;
 

@@ -15,7 +15,10 @@ import EstimateBlockTimeCountDown from "../../components/EstimateBlockTimeCountd
 import polkaassemblyApi from "../../services/polkassembly";
 import { useIsMounted } from "@osn/common";
 
-import { normalizedTipDetailSelector, tipCountdownSelector } from "../../store/reducers/tipSlice";
+import {
+  normalizedTipDetailSelector,
+  tipCountdownSelector,
+} from "../../store/reducers/tipSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import RelatedLinks from "../../components/RelatedLinks";
 
@@ -34,7 +37,7 @@ const BarWrapper = styled.div`
 
 const TippersLabel = styled.div`
   text-align: right;
-  color: rgba(29, 37, 60, 0.64);
+  color: var(--textTertiary);
 `;
 
 const TipLifeCycleTable = ({ loading }) => {
@@ -137,7 +140,9 @@ const TipLifeCycleTable = ({ loading }) => {
                       <PolygonLabel value={tipDetail.closeFromBlockHeight} />
                     </ExplorerLink>
                     <EstimateBlockTimeCountDown
-                      startBlockHeight={tipDetail.closeFromBlockHeight - tipCountdown}
+                      startBlockHeight={
+                        tipDetail.closeFromBlockHeight - tipCountdown
+                      }
                       endBlockHeight={tipDetail.closeFromBlockHeight}
                     />
                   </FlexWrapper>

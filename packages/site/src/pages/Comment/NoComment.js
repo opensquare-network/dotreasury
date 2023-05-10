@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   p {
     font-size: 14px;
     line-height: 20px;
-    color: rgba(0, 0, 0, 0.65);
+    color: var(--textSecondary);
     margin: 8px 0 0;
     text-align: center;
   }

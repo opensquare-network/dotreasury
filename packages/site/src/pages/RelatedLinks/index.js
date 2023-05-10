@@ -37,9 +37,7 @@ const IconButton = styled(Icon)`
   cursor: pointer;
 `;
 
-const DividerWrapper = styled(Divider)`
-  border-top: 1px solid #eeeeee !important;
-`;
+const DividerWrapper = styled(Divider)``;
 
 const RelatedLinks = ({ type, index, owner }) => {
   const dispatch = useDispatch();

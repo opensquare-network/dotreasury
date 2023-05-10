@@ -4,7 +4,7 @@ const Wrapper = styled.div`
   display: block;
   max-height: 300px;
 
-  border: 1px solid #F4F4F4;
+  border: 1px solid var(--neutral300);
   border-radius: 4px;
   overflow-y: auto;
 
@@ -13,10 +13,10 @@ const Wrapper = styled.div`
     width: 6px;
   }
   ::-webkit-scrollbar-track {
-    background-color: rgba(0,0,0,0);
+    background-color: rgba(0, 0, 0, 0);
   }
   ::-webkit-scrollbar-thumb {
-    background-color: #CCCCCC;
+    background-color: var(--neutral500);
     border-radius: 3px;
   }
 `;
@@ -33,10 +33,7 @@ const NoData = styled.div`
   width: 100%;
   padding: 20px 0;
   justify-content: center;
+  color: var(--textPrimary);
 `;
 
-export {
-  Wrapper,
-  NoData,
-  Loading,
-};
+export { Wrapper, NoData, Loading };

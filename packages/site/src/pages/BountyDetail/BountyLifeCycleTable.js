@@ -39,7 +39,7 @@ const CapText = styled(Text)`
 const CountDownWrapper = styled.div`
   display: inline-flex;
   span {
-    color: rgba(0, 0, 0, 0.3);
+    color: var(--textTertiary);
   }
 `;
 

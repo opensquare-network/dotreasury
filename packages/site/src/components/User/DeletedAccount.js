@@ -19,7 +19,7 @@ const Deleted = styled.div`
   font-weight: normal;
   font-size: 14px;
   line-height: 22px;
-  color: rgba(0, 0, 0, 0.3);
+  color: var(--textTertiary);
 `;
 
 const DeletedAccount = () => {

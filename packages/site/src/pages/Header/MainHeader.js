@@ -10,6 +10,7 @@ import { useMenuTab } from "../../utils/hooks";
 import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import ConnectWallet from "../../components/ConnectWallet";
+import { useDark } from "../../context/theme";
 
 const Wrapper = styled.header`
   height: 76px;
@@ -38,21 +39,17 @@ const Right = styled.div`
   align-items: center;
   button.ui {
     background-color: transparent !important;
+    color: var(--textPrimary) !important;
+    ${(p) =>
+      p.symbol === "ksm" &&
+      css`
+        color: var(--textPrimaryContrast) !important;
+      `}
+
+    &:hover {
+      color: var(--primary) !important;
+    }
   }
-  ${(p) =>
-    p.symbol === "ksm" &&
-    css`
-      a > div > button {
-        @media screen and (min-width: 850px) {
-          color: #fff !important;
-        }
-      }
-      a > button {
-        @media screen and (min-width: 850px) {
-          color: #fff !important;
-        }
-      }
-    `}
   @media screen and (max-width: 850px) {
     box-shadow: 0px 4px 12px rgba(29, 37, 60, 0.08);
     display: none;
@@ -62,9 +59,9 @@ const Right = styled.div`
     left: -16px;
     top: 69px;
     z-index: 9999;
-    background-color: white;
+    background-color: var(--neutral100);
     padding: 22px 0;
-    border-bottom: 1px solid #eeeeee;
+    border-bottom: 1px solid var(--neutral400);
     > * {
       margin-top: 8px;
       &:first-child {
@@ -79,7 +76,7 @@ const Right = styled.div`
       width: 83vw;
     }
     > .signUp {
-      border: 1px solid #df405d;
+      border: 1px solid var(--pink500);
       border-radius: 4px;
     }
     > .login {
@@ -87,6 +84,9 @@ const Right = styled.div`
     }
     > div {
       margin-right: 0 !important;
+    }
+    button.ui {
+      color: var(--textPrimary) !important;
     }
   }
   @media screen and (max-width: 600px) {
@@ -112,6 +112,7 @@ const ScanHeightWrapper = styled.div`
 `;
 
 const HeaderExamplePage = () => {
+  const dark = useDark();
   const symbol = useSelector(chainSymbolSelector)?.toLowerCase();
   const [menuShow, setMenuShow] = useState(false);
   useMenuTab();
@@ -129,6 +130,12 @@ const HeaderExamplePage = () => {
       symbol === "ksm"
         ? "/imgs/menu-icon-close-white.svg"
         : "/imgs/menu-icon-close.svg";
+  }
+  if (dark) {
+    menuIconSrc = "/imgs/icon-ham-white.svg";
+    if (menuShow) {
+      menuIconSrc = "/imgs/menu-icon-close-white.svg";
+    }
   }
   return (
     <Wrapper symbol={symbol}>

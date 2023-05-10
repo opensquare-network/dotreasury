@@ -1,28 +1,23 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import GrayImage from "../../components/GrayImage";
 import { NavLink } from "react-router-dom";
 
 import DoughnutCard from "./DoughnutCard";
 import TextMinor from "../../components/TextMinor";
-import {
-  OVERVIEW_INFLATION_COLOR,
-  OVERVIEW_TREASURY_COLOR,
-  OVERVIEW_STAKING_COLOR,
-  OVERVIEW_DEMOCRACY_COLOR,
-  OVERVIEW_ELECTION_COLOR,
-  OVERVIEW_IDENTITY_COLOR,
-  OVERVIEW_OTHERS_COLOR,
-} from "../../constants";
+
 import { useSelector } from "react-redux";
 import {
   chainSelector,
   chainSymbolSelector,
 } from "../../store/reducers/chainSlice";
 import DoughnutCardLinkTitle from "./DoughnutCardLinkTitle";
+import { useTheme } from "../../context/theme";
+import IconMask from "../../components/Icon/Mask";
+import { items_center } from "../../styles/tailwindcss";
 
 const LinkButton = styled(TextMinor)`
   display: flex;
+  ${items_center};
   :hover {
     color: var(--textPrimary);
     & > :last-child {
@@ -44,6 +39,7 @@ const Income = ({
   slashFellowshipReferenda,
   others,
 }) => {
+  const theme = useTheme();
   const chain = useSelector(chainSelector);
   const isKusama = chain === "kusama";
   const symbol = useSelector(chainSymbolSelector)?.toLowerCase();
@@ -99,7 +95,7 @@ const Income = ({
         {
           name: "Inflation",
           value: inflation,
-          color: OVERVIEW_INFLATION_COLOR,
+          color: theme.pink500,
         },
         {
           name: "Slashes",
@@ -107,39 +103,39 @@ const Income = ({
             {
               name: "Staking",
               value: slashStaking,
-              color: OVERVIEW_STAKING_COLOR,
+              color: theme.yellow400,
             },
             {
               name: "Treasury",
               value: slashTreasury,
-              color: OVERVIEW_TREASURY_COLOR,
+              color: theme.yellow500,
             },
             {
               name: "Election",
               value: slashElection,
-              color: OVERVIEW_ELECTION_COLOR,
+              color: theme.yellow200,
             },
             {
               name: "Democracy",
               value: slashDemocracy,
-              color: OVERVIEW_DEMOCRACY_COLOR,
+              color: theme.yellow300,
             },
             {
               name: "Identity",
               value: slashIdentity,
-              color: OVERVIEW_IDENTITY_COLOR,
+              color: theme.yellow100,
             },
             ...(isKusama
               ? [
                   {
                     name: "Referenda",
                     value: slashReferenda,
-                    color: OVERVIEW_DEMOCRACY_COLOR,
+                    color: theme.yellow100,
                   },
                   {
                     name: "Fellowship",
                     value: slashFellowshipReferenda,
-                    color: OVERVIEW_IDENTITY_COLOR,
+                    color: theme.yellow100,
                   },
                 ]
               : []),
@@ -148,7 +144,7 @@ const Income = ({
         {
           name: "Others",
           value: others,
-          color: OVERVIEW_OTHERS_COLOR,
+          color: theme.neutral500,
         },
       ],
     });
@@ -163,6 +159,7 @@ const Income = ({
     slashFellowshipReferenda,
     others,
     isKusama,
+    theme,
   ]);
 
   const clickEvent = (name) => {
@@ -204,7 +201,11 @@ const Income = ({
         <NavLink to={`/${symbol}/income`}>
           <LinkButton>
             Detail
-            <GrayImage src="/imgs/caret-right.svg" width={24} />
+            <IconMask
+              src="/imgs/caret-right.svg"
+              size={20}
+              color="textSecondary"
+            />
           </LinkButton>
         </NavLink>
       }

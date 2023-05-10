@@ -6,7 +6,7 @@ import TagOrigin from "../../components/Tag";
 const Wrapper = styled.div`
   font-size: 14px;
   line-height: 22px;
-  color: rgba(0, 0, 0, 0.9);
+  color: var(--textPrimary);
 
   > div {
     overflow-wrap: break-word;

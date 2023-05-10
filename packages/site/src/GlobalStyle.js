@@ -3,7 +3,6 @@ import { createGlobalStyle } from "styled-components";
 const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
-    background: #FBFBFB;
     -webkit-font-smoothing: antialiased;
     * {
       box-sizing: border-box !important;
