@@ -17,7 +17,7 @@ class ScanApi extends Api {
           usernameOrEmail,
           password,
         }),
-      }
+      },
     );
 
     return { result, error };
@@ -33,7 +33,7 @@ class ScanApi extends Api {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ username, email, password }),
-      }
+      },
     );
 
     return { result, error };
@@ -97,7 +97,7 @@ class ScanApi extends Api {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({ refreshToken: token.refreshToken }),
-          }
+          },
         );
 
         if (refreshResult) {
@@ -107,7 +107,7 @@ class ScanApi extends Api {
             JSON.stringify({
               accessToken: refreshResult.accessToken,
               refreshToken: token.refreshToken,
-            })
+            }),
           );
 
           options.headers[
@@ -134,5 +134,5 @@ class ScanApi extends Api {
 }
 
 export default new ScanApi(
-  process.env.REACT_APP_SCAN_SERVER || "https://api.dotreasury.com/"
+  import.meta.env.VITE_APP_SCAN_SERVER || "https://api.dotreasury.com/",
 );

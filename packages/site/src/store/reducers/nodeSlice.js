@@ -33,7 +33,7 @@ const nodeSlice = createSlice({
 
       if (refresh) {
         window.location.href =
-          process.env.REACT_APP_ROUTER_TYPE === "HashRouter"
+          import.meta.env.VITE_APP_ROUTER_TYPE === "HashRouter"
             ? `/#/${symbolFromNetwork(chain).toLowerCase()}`
             : `/${symbolFromNetwork(chain).toLowerCase()}`;
       }
@@ -41,7 +41,7 @@ const nodeSlice = createSlice({
     setNodesDelay(state, { payload }) {
       (payload || []).forEach((item) => {
         const node = state.nodes[item.chain]?.find(
-          (node) => item.url === node.url
+          (node) => item.url === node.url,
         );
         if (node) node.delay = item.delay;
       });

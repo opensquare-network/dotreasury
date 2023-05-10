@@ -25,7 +25,7 @@ const delayQuery = debounce(() => {
 
     window
       .fetch(
-        `${process.env.REACT_APP_IDENTITY_SERVER_HOST}/${chain}/short-ids`,
+        `${import.meta.env.VITE_APP_IDENTITY_SERVER_HOST}/${chain}/short-ids`,
         {
           method: "POST",
           headers: {
@@ -33,7 +33,7 @@ const delayQuery = debounce(() => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ addresses }),
-        }
+        },
       )
       .then((resp) => resp.json())
       .then((data) => {
@@ -71,7 +71,7 @@ export function fetchIdentity(chain, address) {
           const promise = pending.get(idName);
           promise.push(resolve, reject);
           delayQuery();
-        }, 0)
+        }, 0),
       ),
     ]);
   }
