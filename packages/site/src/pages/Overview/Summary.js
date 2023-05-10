@@ -10,8 +10,6 @@ import TextMinor from "../../components/TextMinor";
 import CountDown from "../../components/CountDown";
 import BlocksTime from "../../components/BlocksTime";
 
-
-
 import { overviewSelector } from "../../store/reducers/overviewSlice";
 import {
   fetchSpendPeriod,
@@ -44,7 +42,7 @@ import BigNumber from "bignumber.js";
 import SummaryItem from "../../components/Summary/Item";
 
 const Wrapper = styled(Card)`
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 
   ${p(24)};
   ${grid};
@@ -115,7 +113,7 @@ const Summary = () => {
   const symbolPrice = overview?.latestSymbolPrice ?? 0;
   const toBeAwarded = BigNumber(overview?.toBeAwarded?.total ?? 0).toNumber();
   const toBeAwardedValue = BigNumber(
-    toPrecision(toBeAwarded, precision)
+    toPrecision(toBeAwarded, precision),
   ).toNumber();
 
   return (
