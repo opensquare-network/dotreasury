@@ -59,8 +59,8 @@ The site package is a SPA front-end that consumes data from Server APIs.
 In packages/site/.env file, point to your server API URL
 
 ```
-REACT_APP_SCAN_SERVER=http://localhost:3213/
-REACT_APP_SOCKET_IO_URL=http://localhost:3213/
+VITE_APP_SCAN_SERVER=http://localhost:3213/
+VITE_APP_SOCKET_IO_URL=http://localhost:3213/
 ```
 
 Then, run it.
