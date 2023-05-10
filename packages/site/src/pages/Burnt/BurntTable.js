@@ -40,19 +40,7 @@ const BurntTable = ({ data, chartData, loading, footer }) => {
       <Wrapper>
         <TableWrapper>
           <TableLoading loading={loading}>
-            <Table
-              columns={columns}
-              data={data}
-              colgroup={
-                <colgroup>
-                  <col span="1" style={{ width: "25%" }} />
-                  <col span="1" style={{ width: "15%" }} />
-                  <col span="1" />
-                  <col span="1" style={{ width: "10%" }} />
-                  <col span="1" style={{ width: "20%" }} />
-                </colgroup>
-              }
-            />
+            <Table columns={columns} data={data} />
           </TableLoading>
         </TableWrapper>
       </Wrapper>
