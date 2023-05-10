@@ -41,7 +41,7 @@ const CountWrapper = styled.div`
     display: block;
     font-size: 14px;
     line-height: 24px !important;
-    color: rgba(0, 0, 0, 0.3);
+    color: var(--textTertiary);
     :not(:first-child) {
       margin-top: 2px;
     }
@@ -52,7 +52,7 @@ const Total = styled.div`
   margin-top: 22px;
   font-size: 13px;
   line-height: 18px;
-  color: rgba(0, 0, 0, 0.65);
+  color: var(--textSecondary);
 `;
 
 export default function Ratings({ type, index }) {

@@ -1,18 +1,17 @@
 import styled from "styled-components";
-import { p_14_medium } from "../../styles/text";
 
 const triangleWidth = 6;
 
 export const TooltipArrow = styled.div`
   position: absolute;
   border: ${triangleWidth}px solid transparent;
-  border-top-color: rgba(0, 0, 0, 0.72);
+  border-top-color: var(--tooltipBg);
   left: ${(p) => p.x ?? 0}px;
 `;
 
 export const TooltipContainer = styled.div`
-  background-color: rgba(0, 0, 0, 0.72);
-  color: white;
+  background-color: var(--tooltipBg);
+  color: var(--textPrimaryContrast);
   font-weight: bold;
   padding: 8px;
   border-radius: 4px;
@@ -30,12 +29,6 @@ export const TooltipContainer = styled.div`
     top: -${triangleWidth * 2}px;
     transform: rotate(180deg);
   }
-`;
-
-export const TooltipTitleText = styled.p`
-  color: #fff;
-  margin: 0;
-  ${p_14_medium};
 `;
 
 export const TooltipInfoText = styled.p`

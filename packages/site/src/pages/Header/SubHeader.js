@@ -25,10 +25,6 @@ import {
 import Card from "../../components/Card";
 import Container from "../../components/Container";
 
-import {
-  PRIMARY_THEME_COLOR,
-  SECONDARY_THEME_COLOR,
-} from "../../constants";
 import SlashMenu from "./SlashMenu";
 
 const Wrapper = styled.div`
@@ -42,7 +38,8 @@ const WrapperBackground = styled.div`
   height: 42px;
   width: 100%;
   z-index: -1;
-  background: ${(p) => (p.symbol === "ksm" ? "#000" : "#fff")};
+  background-color: ${(p) =>
+    p.symbol === "ksm" ? "#000" : "var(--neutral100)"};
 `;
 
 const TabWrapper = styled(Tab)`
@@ -76,13 +73,13 @@ const TabWrapper = styled(Tab)`
     }
     & div.ui.label,
     & div > div.ui.label {
-      background: ${SECONDARY_THEME_COLOR} !important;
+      background: var(--secondary) !important;
       height: 20px !important;
       padding: 0 8px !important;
       line-height: 20px !important;
       border-radius: 10px !important;
       margin-left: 8px !important;
-      color: ${PRIMARY_THEME_COLOR} !important;
+      color: var(--primary) !important;
       font-weight: 400;
     }
     &.active,
@@ -90,7 +87,7 @@ const TabWrapper = styled(Tab)`
     &.active > div > div {
       font-weight: normal !important;
       color: var(--textPrimary) !important;
-      border-color: ${PRIMARY_THEME_COLOR} !important;
+      border-color: var(--primary) !important;
     }
     &.item {
       padding: 2px 0 !important;
@@ -107,11 +104,11 @@ const CustomCard = styled(Card)`
 
 const TopWrapper = styled.div`
   padding: 11px 0;
-  border-bottom: 1px solid #f4f4f4;
+  border-bottom: 1px solid var(--neutral300);
   > a {
     font-size: 13px;
     line-height: 18px;
-    color: rgba(0, 0, 0, 0.3);
+    color: var(--textTertiary);
     :hover {
       color: var(--textSecondary);
     }
@@ -126,7 +123,7 @@ const Divider = styled.div`
   position: relative;
   width: 1px;
   height: 20px;
-  background: #eeeeee;
+  background: var(--neutral300);
   left: 16px;
 `;
 
@@ -166,17 +163,21 @@ const TabExampleSecondaryPointing = () => {
               active: `/${symbol}` === pathname,
             },
           },
-          ...(isKusama ? [{
-            menuItem: {
-              as: NavLink,
-              id: "referendaTab",
-              content: <ReferendaMenu />,
-              to: `/${symbol}/referenda`,
-              exact: true,
-              key: "referenda",
-              active: `/${symbol}/referenda` === pathname,
-            },
-          }] : []),
+          ...(isKusama
+            ? [
+                {
+                  menuItem: {
+                    as: NavLink,
+                    id: "referendaTab",
+                    content: <ReferendaMenu />,
+                    to: `/${symbol}/referenda`,
+                    exact: true,
+                    key: "referenda",
+                    active: `/${symbol}/referenda` === pathname,
+                  },
+                },
+              ]
+            : []),
           {
             menuItem: {
               as: NavLink,

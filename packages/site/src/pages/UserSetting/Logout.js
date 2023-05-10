@@ -5,17 +5,18 @@ import { useHistory } from "react-router";
 
 import { StyledItem, StyledTitle } from "./components";
 import Button from "../../components/Button";
-import { WARNING_COLOR } from "../../constants";
 import {
   setLoggedInUser,
 } from "../../store/reducers/userSlice";
 
 const StyledButton = styled(Button)`
   width: 100%;
-  color: ${WARNING_COLOR} !important;
-  border-color: ${WARNING_COLOR} !important;
-  &.ui.button:hover, &.ui.button:active, &.ui.button:focus {
-    border-color: ${WARNING_COLOR} !important;
+  color: var(--red500) !important;
+  border-color: var(--red500) !important;
+  &.ui.button:hover,
+  &.ui.button:active,
+  &.ui.button:focus {
+    border-color: var(--red500) !important;
   }
 `;
 

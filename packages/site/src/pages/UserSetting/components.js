@@ -5,7 +5,6 @@ import TextMinor from "../../components/TextMinor";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import FormInput from "../../components/FormInput";
-import { WARNING_COLOR } from "../../constants";
 
 export const StyledItem = styled.div`
   :not(:first-child) {
@@ -61,11 +60,11 @@ export const StyledFormInput = styled(FormInput)`
 export const StyledButtonPrimary = styled.button`
   width: 100%;
   color: white !important;
-  background: ${WARNING_COLOR} !important;
+  background: var(--red500) !important;
   &.ui.button:hover,
   &.ui.button:active,
   &.ui.button:focus {
-    background: ${WARNING_COLOR} !important;
+    background: var(--red500) !important;
   }
   height: 40px;
   border: 0;

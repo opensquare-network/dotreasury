@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Image } from "semantic-ui-react";
+import ImageWithDark from "./ImageWithDark";
 
 const Wrapper = styled.div`
   display: flex;
@@ -10,7 +10,7 @@ const Wrapper = styled.div`
 const PlusWrapper = styled.div`
   font-size: 14px !important;
   line-height: 20px !important;
-  color: rgba(0, 0, 0, 0.3) !important;
+  color: var(--textTertiary) !important;
   margin: 0 4px !important;
   font-weight: 400 !important;
   :first-child {
@@ -24,7 +24,7 @@ const PlusWrapper = styled.div`
 const Item = styled.div`
   font-size: 14px;
   line-height: 20px;
-  color: rgba(0, 0, 0, 0.9);
+  color: var(--textPrimary);
   display: flex;
   align-items: center;
   > img {
@@ -41,14 +41,14 @@ export default function ProjectProposals({
       {dotProposalsCount > 0 && (
         <Item>
           {dotProposalsCount}
-          <Image src="/imgs/logo-polkadot.svg" />
+          <ImageWithDark src="/imgs/logo-polkadot.svg" />
         </Item>
       )}
       <PlusWrapper>+</PlusWrapper>
       {ksmProposalsCount > 0 && (
         <Item>
           {ksmProposalsCount}
-          <Image src="/imgs/logo-kusama.svg" />
+          <ImageWithDark src="/imgs/logo-kusama.svg" />
         </Item>
       )}
     </Wrapper>

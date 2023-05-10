@@ -13,7 +13,6 @@ import {
 } from "../../store/reducers/userSlice";
 import ButtonLabel from "../../components/ButtonLabel";
 import TextMinor from "../../components/TextMinor";
-import { TEXT_DARK_MAJOR } from "../../constants";
 import { useIdentity } from "../../utils/hooks";
 import UserAvatar from "../../components/User/Avatar";
 import { getGravatarSrc } from "../../utils";
@@ -36,7 +35,7 @@ const Wrapper = styled.a`
   :hover {
     cursor: pointer;
     p {
-      color: ${(p) => (p.symbol === "ksm" ? "#fff" : TEXT_DARK_MAJOR)};
+      color: ${(p) => (p.symbol === "ksm" ? "#fff" : "var(--textPrimary)")};
       @media screen and (max-width: 850px) {
         color: var(--textPrimary);
       }
@@ -82,7 +81,7 @@ const UserLogin = ({ symbol }) => {
         ? addressName
         : `${address.address.substring(0, 6)}...${address.address.substring(
             address.address.length - 6,
-            address.address.length
+            address.address.length,
           )}`;
       setAddressDisplayName(addressDisplayName);
     }

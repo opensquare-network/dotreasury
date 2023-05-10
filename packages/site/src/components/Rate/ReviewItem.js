@@ -5,6 +5,7 @@ import Stars from "./Stars";
 import IpfsData from "./IpfsData";
 import TimeElapsed from "../TimeElapsed";
 import User from "../User";
+import { flex } from "../../styles/tailwindcss";
 
 const Wrapper = styled.div`
   padding: 16px 24px;
@@ -24,7 +25,7 @@ const AuthorWrapper = styled.div`
   align-items: center;
   font-size: 14px;
   line-height: 22px;
-  color: rgba(0, 0, 0, 0.9);
+  color: var(--textPrimary);
 `;
 
 const TimeWrapper = styled.div`
@@ -40,7 +41,7 @@ const TimeWrapper = styled.div`
   }
 
   line-height: 22px;
-  color: rgba(0, 0, 0, 0.3);
+  color: var(--textTertiary);
   white-space: nowrap;
 `;
 
@@ -49,6 +50,7 @@ const RateWrapper = styled.div`
 `;
 
 const IpfsWrapper = styled.div`
+  ${flex};
   margin-left: 12px;
 `;
 
@@ -56,7 +58,7 @@ const ContentWrapper = styled.div`
   margin: 8px 0 0 32px;
   font-size: 14px;
   line-height: 22px;
-  color: rgba(0, 0, 0, 0.9);
+  color: var(--textPrimary);
   word-wrap: break-word;
 `;
 
@@ -77,11 +79,11 @@ export default function ReviewItem({ rate }) {
         <AuthorWrapper>
           <User address={rate.address} />
           <TimeWrapper>
-            {dayjs().diff(dayjs(data.timestamp*1000), "day") >= 1 ? (
-              dayjs(data.timestamp*1000).format("YYYY-MM-DD")
+            {dayjs().diff(dayjs(data.timestamp * 1000), "day") >= 1 ? (
+              dayjs(data.timestamp * 1000).format("YYYY-MM-DD")
             ) : (
               <FlexWrapper>
-                <TimeElapsed from={dayjs(data.timestamp*1000).valueOf()} />
+                <TimeElapsed from={dayjs(data.timestamp * 1000).valueOf()} />
                 <span>ago</span>
               </FlexWrapper>
             )}
@@ -91,7 +93,9 @@ export default function ReviewItem({ rate }) {
           <Stars rate={data.grade} />
         </RateWrapper>
         <IpfsWrapper>
-          <IpfsData url={rate.pinHash && `${rate.ipfsEndpoint}/${rate.pinHash}`} />
+          <IpfsData
+            url={rate.pinHash && `${rate.ipfsEndpoint}/${rate.pinHash}`}
+          />
         </IpfsWrapper>
       </InfoWrapper>
       <ContentWrapper>{data.comment}</ContentWrapper>

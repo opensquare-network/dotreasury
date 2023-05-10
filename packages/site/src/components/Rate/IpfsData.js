@@ -1,30 +1,53 @@
 import styled from "styled-components";
 import ExternalLink from "../ExternalLink";
+import ImageWithDark from "../ImageWithDark";
+import {
+  block,
+  hidden,
+  inline_flex,
+  items_center,
+  relative,
+  w,
+} from "../../styles/tailwindcss";
 
-const DataIcon = styled.div`
-  width: 16px;
-  height: 16px;
-  background: url("/imgs/ipfs-data.svg");
-  :hover {
-    background: url("/imgs/ipfs-data-hover.svg");
+const Wrapper = styled.span`
+  ${inline_flex};
+  ${items_center};
+  ${relative};
+  top: 1px;
+  img {
+    ${w(16)};
+  }
+  .inactive {
+    ${block};
+  }
+  .active {
+    ${hidden};
+  }
+  &:hover {
+    .inactive {
+      ${hidden};
+    }
+    .active {
+      ${block};
+    }
   }
 `;
 
-const DataIconDisabled = styled.div`
-  width: 16px;
-  height: 16px;
-  background: url("/imgs/ipfs-data.svg");
-`;
-
-
 export default function IpfsData({ url }) {
   return (
-    !url
-    ? <DataIconDisabled />
-    : (
-      <ExternalLink href={url}>
-        <DataIcon />
-      </ExternalLink>
-    )
+    <Wrapper>
+      {!url ? (
+        <ImageWithDark src="/imgs/ipfs-logo-inactive.svg" />
+      ) : (
+        <ExternalLink href={url}>
+          <ImageWithDark className="active" src="/imgs/ipfs-logo.svg" />
+          <ImageWithDark
+            className="inactive"
+            src="/imgs/ipfs-logo-inactive.svg"
+          />
+        </ExternalLink>
+      )}
+    </Wrapper>
   );
 }

@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from "react";
 import styled, { css } from "styled-components";
 import ReactMarkdown from "react-markdown";
 
-import { PRIMARY_THEME_COLOR } from "../constants";
 
 const Wrapper = styled.div`
 
@@ -56,9 +55,9 @@ const Wrapper = styled.div`
     }
 
     a {
-      color: ${PRIMARY_THEME_COLOR};
+      color: var(--primary);
       :hover {
-        color: ${PRIMARY_THEME_COLOR};
+        color: var(--primary);
       }
     }
 

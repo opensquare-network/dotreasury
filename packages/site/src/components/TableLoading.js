@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Segment, Dimmer, Image } from "semantic-ui-react";
+import { useDark } from "../context/theme";
 
 const Wrapper = styled.div`
   .ui.segment {
@@ -18,10 +19,12 @@ const StyledSegment = styled(Segment)`
 `;
 
 const LoadingTable = ({ children, loading, ...restProps }) => {
+  const dark = useDark();
+
   return (
     <Wrapper {...restProps}>
       <StyledSegment>
-        <Dimmer active={loading} inverted>
+        <Dimmer active={loading} inverted={dark ? false : true}>
           <Image src="/imgs/loading.svg" />
         </Dimmer>
         {children}

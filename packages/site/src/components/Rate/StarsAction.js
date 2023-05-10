@@ -11,7 +11,10 @@ const Wrapper = styled.div`
     background-image: url("/imgs/star.svg");
   }
   > div:hover ~ div {
-    background-image: url("/imgs/star-unfilled.svg");
+    background-image: url(${(p) =>
+      p.theme.dark
+        ? "/imgs/star-unfilled-dark.svg"
+        : "/imgs/star-unfilled.svg"});
   }
 `;
 
@@ -19,7 +22,9 @@ const Star = styled.div`
   width: 16px;
   height: 16px;
   background-repeat: no-repeat;
-  background-image: url("/imgs/star-unfilled.svg");
+  background-image: url(${(p) =>
+    p.theme.dark ? "/imgs/star-unfilled-dark.svg" : "/imgs/star-unfilled.svg"});
+  }
   ${(p) =>
     p.filled &&
     css`

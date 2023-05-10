@@ -1,10 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { Image, Popup } from "semantic-ui-react";
+import { Popup } from "semantic-ui-react";
 
 import ExternalLink from "./ExternalLink";
 import getLinkNameAndSrc from "../utils/link";
 import { useDisablePopup } from "../utils/hooks";
+import ImageWithDark from "./ImageWithDark";
 
 const Wrapper = styled.div`
   display: flex;
@@ -18,7 +19,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const CustomImage = styled(Image)`
+const CustomImage = styled(ImageWithDark)`
   width: 20px;
 `;
 

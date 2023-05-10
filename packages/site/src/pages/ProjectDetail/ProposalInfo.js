@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Image } from "semantic-ui-react";
 import { NavLink } from "react-router-dom";
 import { p_14_medium, p_14_normal } from "../../styles/text";
 import ProjectExpense from "../../components/ProjectExpense";
@@ -7,6 +6,7 @@ import { ellipsis } from "../../utils/ellipsis";
 import { networkFromSymbol } from "../../utils";
 import dayjs from "dayjs";
 import ProposalInfoLinkList from "./ProposalInfoLinkList";
+import ImageWithDark from "../../components/ImageWithDark";
 
 const ProposalLink = styled(NavLink)`
   display: inline-flex;
@@ -17,7 +17,7 @@ const ProposalType = styled.p`
   margin: 0;
   margin-left: 4px;
   /* text-dark/major */
-  color: rgba(0, 0, 0, 0.9);
+  color: var(--textPrimary);
   ${p_14_medium};
 `;
 
@@ -49,14 +49,14 @@ const ProposalDetail = styled.div`
 const ProposalDetailLabel = styled.div`
   min-width: 160px;
   /* text-dark/minor */
-  color: rgba(0, 0, 0, 0.65);
+  color: var(--textSecondary);
   ${p_14_normal};
 `;
 
 const ProposalDetailValue = styled.div`
   flex: 1 1 auto;
   /* text-dark/major */
-  color: rgba(0, 0, 0, 0.9);
+  color: var(--textPrimary);
   ${p_14_normal};
 
   @media screen and (max-width: 900px) {
@@ -124,7 +124,7 @@ export default function ProposalInfo({ item }) {
   return (
     <div>
       <ProposalLink to={`/${item.token}/${link}`}>
-        <Image
+        <ImageWithDark
           width={24}
           src={isKSM ? "/imgs/logo-kusama.svg" : "/imgs/logo-polkadot.svg"}
         />

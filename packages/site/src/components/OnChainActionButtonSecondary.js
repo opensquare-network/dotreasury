@@ -3,15 +3,15 @@ import OnChainActionButton from "./OnChainActionButton";
 
 const OnChainActionButtonSecondary = styled(OnChainActionButton)`
   padding: 3px 7px;
-  background: white;
-  border: 1px solid #dddddd;
+  background: transparent;
+  border: 1px solid var(--neutral400);
 
-  color: rgba(0, 0, 0, 0.9);
+  color: var(--textPrimary);
 
   ${(p) =>
     p.disabled &&
     css`
-      color: rgba(0, 0, 0, 0.15);
+      color: var(--textDisable);
       pointer-events: none;
     `}
 `;

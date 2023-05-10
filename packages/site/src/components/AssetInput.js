@@ -7,12 +7,13 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   padding: 8px 16px;
-  background: #FFFFFF;
-  border: 1px solid rgba(34,36,38,.15);
+  background: var(--neutral100);
+  border: 1px solid var(--neutral300);
   border-radius: 4px;
 
-  :focus-within, :hover {
-    border-color: #CCCCCC
+  :focus-within,
+  :hover {
+    border-color: var(--neutral400);
   }
 `;
 
@@ -23,13 +24,14 @@ const Input = styled.input`
   outline: none;
   height: 22px;
   width: 60px;
+  color: var(--textPrimary);
 
   ::placeholder {
-    color: rgba(0, 0, 0, 0.15);
+    color: var(--textSecondary);
   }
 
   &:focus::placeholder {
-    color: #cccccc !important;
+    color: var(--textTertiary);
   }
 `;
 
@@ -39,10 +41,15 @@ const Suffix = styled.div`
   font-weight: 500;
   font-size: 14px;
   line-height: 20px;
-  color: rgba(0, 0, 0, 0.9);
+  color: var(--textPrimary);
 `;
 
-export default function AssetInput({ symbol, placeholder = 0, defaultValue, onChange = emptyFunction }) {
+export default function AssetInput({
+  symbol,
+  placeholder = 0,
+  defaultValue,
+  onChange = emptyFunction,
+}) {
   const inputRef = useRef();
   return (
     <Wrapper onClick={() => inputRef.current?.focus()}>

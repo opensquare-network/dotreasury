@@ -10,7 +10,12 @@ import useApi from "../../../hooks/useApi";
 import { accountSelector } from "../../../store/reducers/accountSlice";
 import { chainSymbolSelector } from "../../../store/reducers/chainSlice";
 import { newErrorToast } from "../../../store/reducers/toastSlice";
-import { checkInputAddress, checkInputValue, getPrecision, toPrecision } from "../../../utils";
+import {
+  checkInputAddress,
+  checkInputValue,
+  getPrecision,
+  toPrecision,
+} from "../../../utils";
 import { useIsMounted } from "@osn/common";
 import { sendTx } from "../../../utils/sendTx";
 import { ErrorMessage } from "../../../components/styled";
@@ -33,7 +38,7 @@ const Body = styled.div`
   gap: 16px;
   padding: 16px;
 
-  border: 1px solid #F4F4F4;
+  border: 1px solid var(--neutral300);
   border-radius: 4px;
 
   .error {
@@ -56,7 +61,7 @@ export default function NewProposalModal({ visible, setVisible, onFinalized }) {
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
   const proposalValue = new BigNumber(inputValue).times(
-    Math.pow(10, precision)
+    Math.pow(10, precision),
   );
   const { bond, isLoading: isLoadingBond } = useProposalBond({
     api,
@@ -114,7 +119,6 @@ export default function NewProposalModal({ visible, setVisible, onFinalized }) {
     } finally {
       setIsLoading(false);
     }
-
   };
 
   return (
@@ -123,14 +127,12 @@ export default function NewProposalModal({ visible, setVisible, onFinalized }) {
         <Signer />
       </div>
       <Body>
-        {errorMessage && (
-          <ErrorMessage>{errorMessage}</ErrorMessage>
-        )}
+        {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
         <Field>
           <FieldTitle>Beneficiary</FieldTitle>
           <CustomInput
             placeholder="Please fill beneficiary address..."
-            onChange={e => setBeneficiary(e.target.value)}
+            onChange={(e) => setBeneficiary(e.target.value)}
           />
         </Field>
         <Field>
@@ -138,12 +140,12 @@ export default function NewProposalModal({ visible, setVisible, onFinalized }) {
           <AssetInput
             symbol={symbol}
             placeholder="0"
-            onChange={e => setInputValue(e.target.value)}
+            onChange={(e) => setInputValue(e.target.value)}
           />
         </Field>
         <Field>
           <FieldTitle>Proposal bond</FieldTitle>
-          { isLoadingBond ? (
+          {isLoadingBond ? (
             <TextBoxLoading />
           ) : (
             <TextBox>
@@ -154,7 +156,9 @@ export default function NewProposalModal({ visible, setVisible, onFinalized }) {
         </Field>
       </Body>
       <Footer>
-        <ButtonPrimary disabled={isLoading} onClick={submit}>Submit</ButtonPrimary>
+        <ButtonPrimary disabled={isLoading} onClick={submit}>
+          Submit
+        </ButtonPrimary>
       </Footer>
     </ActionModal>
   );

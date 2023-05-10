@@ -14,7 +14,7 @@ const StyledTipList = styled.table`
     tr {
       &:not(:last-child) {
         td {
-          border-bottom: 1px solid #F4F4F4;
+          border-bottom: 1px solid var(--neutral300);
         }
       }
     }
@@ -36,15 +36,12 @@ const Reason = styled.div`
   word-break: break-all;
 `;
 
-const Tip = styled.div`
-`;
+const Tip = styled.div``;
 
 function TipList({ children }) {
   return (
     <StyledTipList>
-      <tbody>
-        {children}
-      </tbody>
+      <tbody>{children}</tbody>
     </StyledTipList>
   );
 }
@@ -53,9 +50,7 @@ function TipListItem({ children }) {
   return (
     <tr>
       <td>
-        <StyledTipListItem>
-          {children}
-        </StyledTipListItem>
+        <StyledTipListItem>{children}</StyledTipListItem>
       </td>
     </tr>
   );
@@ -75,13 +70,11 @@ export default function TipsTableForMobile({
     </Loading>
   );
 
-  const noData = (
-    <NoData>No data</NoData>
-  );
+  const noData = <NoData>No data</NoData>;
 
   const tippingRows = (
-    <TipList>{
-      tipList?.map((tip) => (
+    <TipList>
+      {tipList?.map((tip) => (
         <TipListItem key={tip.hash}>
           <TipHead>
             <User address={tip.beneficiary} />
@@ -96,17 +89,13 @@ export default function TipsTableForMobile({
             />
           </Tip>
         </TipListItem>
-      ))
-    }</TipList>
+      ))}
+    </TipList>
   );
 
   return (
     <Wrapper>
-      {isLoading ? (
-        loadingTippings
-      ) : (
-        tipList?.length > 0 ? tippingRows : noData
-      )}
+      {isLoading ? loadingTippings : tipList?.length > 0 ? tippingRows : noData}
     </Wrapper>
   );
 }

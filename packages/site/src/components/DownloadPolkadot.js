@@ -3,7 +3,6 @@ import styled from "styled-components";
 
 import TextMinor from "./TextMinor";
 import ExternalLink from "./ExternalLink";
-import { PRIMARY_THEME_COLOR } from "../constants";
 
 const Wrapper = styled.div`
   padding: 12px 20px;
@@ -16,7 +15,7 @@ const Wrapper = styled.div`
 `;
 
 const StyledLink = styled(TextMinor)`
-  color: ${PRIMARY_THEME_COLOR};
+  color: var(--primary);
   cursor: pointer;
   text-decoration: underline;
 `;

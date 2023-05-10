@@ -14,6 +14,7 @@ const TitleWrapper = styled.div`
   font-weight: bold;
   font-size: 16px;
   line-height: 24px;
+  color: var(--textPrimary);
 `;
 
 const UpWrapper = styled.div`
@@ -26,7 +27,7 @@ const UpWrapper = styled.div`
 
 const UpDivider = styled.div`
   width: 1px;
-  background: #f4f4f4;
+  background: var(--neutral300);
   @media screen and (max-width: 800px) {
     width: auto;
     height: 1px;
@@ -36,7 +37,7 @@ const UpDivider = styled.div`
 
 const Divider = styled.div`
   height: 1px;
-  background: #f4f4f4;
+  background: var(--neutral300);
 `;
 
 export default function Rate({ type, index }) {

@@ -1,9 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import { Icon, Image } from "semantic-ui-react";
+import { Icon } from "semantic-ui-react";
 
 import Container from "../../components/Container";
 import TextMinor from "../../components/TextMinor";
+import { items_center } from "../../styles/tailwindcss";
+import FooterSwitchThemeButton from "./SwitchThemeButton";
+import ImageWithDark from "../../components/ImageWithDark";
 
 const Wrapper = styled.footer`
   padding-bottom: 20px;
@@ -52,13 +55,14 @@ const FooterWrapper = styled.div`
 
 const IconList = styled.div`
   margin-left: auto !important;
-  display: inline-flex;
+  display: flex;
+  ${items_center};
   > :not(:first-child) {
     margin-left: 16px;
   }
   i {
     font-size: 20px;
-    color: rgba(29, 37, 60, 0.24);
+    color: var(--textDisable);
 
     &:hover {
       color: var(--textSecondary);
@@ -103,7 +107,7 @@ const Footer = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Image src="/imgs/opensquare-logo.svg" />
+              <ImageWithDark src="/imgs/opensquare-logo.svg" />
             </a>
           </ImageLogoWrapper>
           <ImageLogoWrapper>
@@ -114,14 +118,14 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Image src="/imgs/kusama-treasury-logo.svg" />
+                <ImageWithDark src="/imgs/kusama-treasury-logo.svg" />
               </a>
               <a
                 href="https://polkadot.network/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Image src="/imgs/polkadot-treasury-logo.svg" />
+                <ImageWithDark src="/imgs/polkadot-treasury-logo.svg" />
               </a>
             </FlexWrapper>
           </ImageLogoWrapper>
@@ -147,6 +151,8 @@ const Footer = () => {
             >
               <Icon name="telegram plane" />
             </a>
+
+            <FooterSwitchThemeButton />
           </IconList>
         </FooterWrapper>
       </Container>

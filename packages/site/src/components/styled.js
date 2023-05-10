@@ -17,11 +17,11 @@ const GenericMessage = styled.div`
 `;
 
 export const ErrorMessage = styled(GenericMessage)`
-  background: #FFE6E6;
-  color: #E90B0B;
+  background: var(--red100);
+  color: var(--red500);
 `;
 
 export const HintMessage = styled(GenericMessage)`
-  background: #FFF2D9;
-  color: #F2B12F;
+  background: var(--yellow100);
+  color: var(--yellow500);
 `;

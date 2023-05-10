@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Keyshape -->
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <style>
+@keyframes a0_t { 0% { transform: translate(12px,12px) rotate(0deg) translate(-12px,-12px); } 100% { transform: translate(12px,12px) rotate(360deg) translate(-12px,-12px); } }
+    </style>
+    <path d="M19.5,12C19.5,16.1421,16.1421,19.5,12,19.5C7.85786,19.5,4.5,16.1421,4.5,12C4.5,7.85786,7.85786,4.5,12,4.5C16.1421,4.5,19.5,7.85786,19.5,12ZM7.125,12C7.125,14.6924,9.30761,16.875,12,16.875C14.6924,16.875,16.875,14.6924,16.875,12C16.875,9.30761,14.6924,7.125,12,7.125C9.30761,7.125,7.125,9.30761,7.125,12Z" fill="#31080F" transform="translate(12,12) translate(-12,-12)"/>
+    <g transform="translate(12,12) translate(-12,-12)" style="animation: 1s linear infinite both a0_t;">
+        <path d="M12,19.5C11.0151,19.5,10.0398,19.306,9.12987,18.9291C8.21993,18.5522,7.39314,17.9997,6.6967,17.3033C6.00026,16.6069,5.44781,15.7801,5.0709,14.8701C4.69399,13.9602,4.5,12.9849,4.5,12L7.125,12C7.125,12.6402,7.2511,13.2741,7.49609,13.8656C7.74108,14.457,8.10017,14.9945,8.55285,15.4471C9.00554,15.8998,9.54296,16.2589,10.1344,16.5039C10.7259,16.7489,11.3598,16.875,12,16.875L12,19.5Z" fill="#DA1F3E" transform="translate(8.25,15.75) translate(-8.25,-15.75)"/>
+        <rect width="24" height="24" fill="none" stroke="none" transform="translate(2.625,2.5625) translate(-2.625,-2.5625)"/>
+    </g>
+</svg>

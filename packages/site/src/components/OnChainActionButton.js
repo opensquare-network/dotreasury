@@ -1,5 +1,4 @@
 import styled, { css } from "styled-components";
-import { PRIMARY_THEME_COLOR } from "../constants";
 
 const OnChainActionButton = styled.div`
   cursor: pointer;
@@ -8,22 +7,23 @@ const OnChainActionButton = styled.div`
   align-items: center;
   padding: 4px 8px;
 
-  background: ${PRIMARY_THEME_COLOR};
+  background: var(--primary);
   border-radius: 4px;
 
   font-style: normal;
   font-weight: 500;
   font-size: 12px;
   line-height: 16px;
-  color: white;
+  color: var(--textPrimaryContrast);
 
   white-space: nowrap;
-  ${p => p.disabled && css`
-    color: white;
-    background: #CCCCCC;
-    opacity: 1;
-    pointer-events: none;
-  `}
+  ${(p) =>
+    p.disabled &&
+    css`
+      background: var(--neutral500);
+      opacity: 1;
+      pointer-events: none;
+    `}
 `;
 
 export default OnChainActionButton;

@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 import Button from "./Button";
-import { PRIMARY_THEME_COLOR } from "../constants";
 
 const ButtonLabel = styled(Button)`
   border: 0 !important;
@@ -9,7 +8,7 @@ const ButtonLabel = styled(Button)`
   padding-right: 0 !important;
   background-color: transparent !important;
   &.ui.button:hover {
-    color: ${PRIMARY_THEME_COLOR} !important;
+    color: var(--primary) !important;
   }
   &.ui.button:disabled {
     color: var(--textDisable) !important;

@@ -27,9 +27,9 @@ import { mdcss, smcss } from "@osn/common";
 
 const DoughnutWrapper = styled.div`
   display: grid;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
   ${gap_x(16)};
-  ${gap_y(24)};
+  ${gap_y(16)};
 
   ${(p) => grid_cols(p.count)};
   ${(p) => {
@@ -64,9 +64,9 @@ const DoughnutWrapper = styled.div`
 `;
 
 const TableWrapper = styled.div`
-  margin-top: 24px;
+  margin-top: 16px;
   display: grid;
-  gap: 24px;
+  gap: 16px;
   @media screen and (min-width: 556px) {
     grid-template-columns: repeat(auto-fit, minmax(556px, 1fr));
   }
@@ -87,42 +87,42 @@ const Overview = () => {
   const inflation = toPrecision(
     overview.income.inflation || 0,
     precision,
-    false
+    false,
   );
   const slashTreasury = toPrecision(
     overview.income.slashSeats.treasury || 0,
     precision,
-    false
+    false,
   );
   const slashDemocracy = toPrecision(
     overview.income.slashSeats.democracy || 0,
     precision,
-    false
+    false,
   );
   const slashStaking = toPrecision(
     overview.income.slashSeats.staking || 0,
     precision,
-    false
+    false,
   );
   const slashElection = toPrecision(
     overview.income.slashSeats.electionsPhragmen || 0,
     precision,
-    false
+    false,
   );
   const slashIdentity = toPrecision(
     overview.income.slashSeats.identity || 0,
     precision,
-    false
+    false,
   );
   const slashReferenda = toPrecision(
     overview.income.slashSeats.referenda || 0,
     precision,
-    false
+    false,
   );
   const slashFellowshipReferenda = toPrecision(
     overview.income.slashSeats.fellowshipReferenda || 0,
     precision,
-    false
+    false,
   );
   const others = toPrecision(overview.income.others || 0, precision, false);
 

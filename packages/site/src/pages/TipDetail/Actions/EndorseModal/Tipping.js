@@ -22,7 +22,7 @@ const Wrapper = styled.div`
 
 const NoTipping = styled(Wrapper)`
   justify-content: center;
-  color: rgba(0, 0, 0, 0.3);
+  color: var(--textTertiary);
 `;
 
 const TippingContainer = styled.div`
@@ -33,7 +33,7 @@ const TippingContainer = styled.div`
 
 const TippingValue = styled(Wrapper)`
   justify-content: space-between;
-  color: rgba(0, 0, 0, 0.9);
+  color: var(--textPrimary);
 `;
 
 export default function Tipping({ tipDetail }) {

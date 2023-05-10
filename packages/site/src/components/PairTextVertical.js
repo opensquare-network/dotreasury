@@ -16,11 +16,15 @@ const Wrapper = styled.div`
   }
 `;
 
+const DetailText = styled(TextMinor)`
+  color: var(--textTertiary);
+`;
+
 const Status = ({ value, detail }) => {
   return (
     <Wrapper>
       <Text>{value}</Text>
-      <TextMinor>{detail}</TextMinor>
+      <DetailText>{detail}</DetailText>
     </Wrapper>
   );
 };

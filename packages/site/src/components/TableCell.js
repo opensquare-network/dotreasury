@@ -10,7 +10,7 @@ const Wrapper = styled.div`
     font-weight: 400;
     font-size: 14px;
     line-height: 24px;
-    color: rgba(0, 0, 0, 0.65);
+    color: var(--textSecondary);
     width: 440px;
     flex: 0 1 auto;
   }

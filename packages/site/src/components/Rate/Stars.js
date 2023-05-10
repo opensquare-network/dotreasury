@@ -12,7 +12,8 @@ const Wrapper = styled.div`
 const Star = styled.div`
   width: 16px;
   height: 16px;
-  background: url("/imgs/star-unfilled.svg");
+  background: url(${(p) =>
+    p.theme.dark ? "/imgs/star-unfilled-dark.svg" : "/imgs/star-unfilled.svg"});
   ${(p) =>
     p.filled &&
     css`

@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 import Text from "./Text";
-import { PRIMARY_THEME_COLOR, SECONDARY_THEME_COLOR } from "../constants";
 
 const CircleWrapper = styled.div`
   position: relative;
@@ -15,8 +14,7 @@ const BackCircle = styled.div`
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  border: 8px solid ${SECONDARY_THEME_COLOR};
-  background: white;
+  border: 8px solid var(--secondary);
 `;
 
 const InnerCircleWrapper = styled.div`
@@ -31,9 +29,8 @@ const InnerCircle = styled.div`
   height: 54px;
   left: 1px;
   top: 1px;
-  background: white;
   border-radius: 50%;
-  border: 7px solid ${PRIMARY_THEME_COLOR};
+  border: 7px solid var(--primary);
 `;
 
 const InnerCircleLeft = styled(InnerCircle)`

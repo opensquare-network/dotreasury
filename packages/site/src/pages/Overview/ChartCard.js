@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import Card from "../../components/Card";
-import Text from "../../components/Text";
 import List from "./CustomList";
 import { breakpoint } from "../../styles/responsive";
 import {
@@ -36,8 +35,10 @@ const ChartWrapper = styled.div`
   ${h(216)};
 `;
 
-const Title = styled(Text)`
+const Title = styled.h3`
   ${h4_16_semibold};
+  margin: 0;
+  color: var(--textPrimary);
 `;
 const TitleGroup = styled.div`
   ${flex};

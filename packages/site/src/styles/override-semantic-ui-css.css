@@ -1,0 +1,18 @@
+/* popup */
+.ui.popup {
+  background-color: var(--tooltipBg);
+  border-color: transparent;
+  color: var(--textPrimaryContrast);
+
+  &::before {
+    background-color: transparent !important;
+    transform: rotate(0deg);
+    border: 6px solid transparent;
+    border-top-color: var(--tooltipBg);
+    box-shadow: none;
+  }
+
+  &.top::before {
+    bottom: -13px !important;
+  }
+}

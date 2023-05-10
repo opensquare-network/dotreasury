@@ -55,7 +55,7 @@ const Value = styled(Text)`
 
 const Unit = styled(TextMinor)`
   ${h3_18_semibold};
-  color: rgba(0, 0, 0, 0.3);
+  color: var(--textTertiary);
 `;
 
 const ValueInfo = styled(Text)`

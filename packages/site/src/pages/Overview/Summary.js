@@ -1,7 +1,6 @@
 import React, { useEffect, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled, { css } from "styled-components";
-import { Image } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
 import Card from "../../components/Card";
@@ -9,8 +8,6 @@ import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
 import CountDown from "../../components/CountDown";
 import BlocksTime from "../../components/BlocksTime";
-
-
 
 import { overviewSelector } from "../../store/reducers/overviewSlice";
 import {
@@ -42,9 +39,10 @@ import { extractTime } from "@polkadot/util";
 import { parseEstimateTime } from "../../utils/parseEstimateTime";
 import BigNumber from "bignumber.js";
 import SummaryItem from "../../components/Summary/Item";
+import ImageWithDark from "../../components/ImageWithDark";
 
 const Wrapper = styled(Card)`
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 
   ${p(24)};
   ${grid};
@@ -115,13 +113,13 @@ const Summary = () => {
   const symbolPrice = overview?.latestSymbolPrice ?? 0;
   const toBeAwarded = BigNumber(overview?.toBeAwarded?.total ?? 0).toNumber();
   const toBeAwardedValue = BigNumber(
-    toPrecision(toBeAwarded, precision)
+    toPrecision(toBeAwarded, precision),
   ).toNumber();
 
   return (
     <Wrapper>
       <SummaryItem
-        icon={<Image src="/imgs/data-available.svg" />}
+        icon={<ImageWithDark src="/imgs/data-available.svg" />}
         title="Available"
         content={
           <div>
@@ -137,7 +135,7 @@ const Summary = () => {
         }
       />
       <SummaryItem
-        icon={<Image src="/imgs/data-approved.svg" />}
+        icon={<ImageWithDark src="/imgs/data-approved.svg" />}
         title="To be awarded"
         content={
           <div>
@@ -153,7 +151,7 @@ const Summary = () => {
         }
       />
       <SummaryItem
-        icon={<Image src="/imgs/data-next-burn.svg" />}
+        icon={<ImageWithDark src="/imgs/data-next-burn.svg" />}
         title="Next burn"
         content={
           <div>
@@ -189,7 +187,7 @@ const Summary = () => {
 
       {isKusama && (
         <SummaryItem
-          icon={<Image src="/imgs/data-opengov.svg" />}
+          icon={<ImageWithDark src="/imgs/data-opengov.svg" />}
           title="OpenGov"
           content={
             <div>
@@ -208,7 +206,7 @@ const Summary = () => {
       )}
 
       <SummaryItem
-        icon={<Image src="/imgs/data-proposals.svg" />}
+        icon={<ImageWithDark src="/imgs/data-proposals.svg" />}
         title="Proposals"
         content={
           <div>
@@ -225,7 +223,7 @@ const Summary = () => {
         }
       />
       <SummaryItem
-        icon={<Image src="/imgs/data-tips.svg" />}
+        icon={<ImageWithDark src="/imgs/data-tips.svg" />}
         title="Tips"
         content={
           <div>
@@ -247,7 +245,7 @@ const Summary = () => {
         }
       />
       <SummaryItem
-        icon={<Image src="/imgs/data-bounties.svg" />}
+        icon={<ImageWithDark src="/imgs/data-bounties.svg" />}
         title="Bounties"
         content={
           <div>

@@ -16,16 +16,16 @@ const NavItem = styled(Text)`
   font-weight: 600;
 
   a {
-    color: rgba(0, 0, 0, 0.3);
+    color: var(--textTertiary);
 
     :hover {
-      color: rgba(0, 0, 0, 0.65);
+      color: var(--textSecondary);
     }
 
     ${(p) =>
       p.active &&
       css`
-        color: rgba(0, 0, 0, 0.9) !important;
+        color: var(--textPrimary) !important;
       `}
   }
 `;

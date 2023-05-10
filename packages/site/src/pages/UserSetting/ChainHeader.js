@@ -2,11 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { Tab } from "semantic-ui-react";
 
-import {
-  PRIMARY_THEME_COLOR,
-  SECONDARY_THEME_COLOR,
-} from "../../constants";
-
 const TabWrapper = styled(Tab)`
   display: flex;
   height: 48px;
@@ -32,20 +27,20 @@ const TabWrapper = styled(Tab)`
     }
     & > div.ui.label,
     & > div > div.ui.label {
-      background: ${SECONDARY_THEME_COLOR} !important;
+      background: var(--secondary) !important;
       height: 20px !important;
       padding: 0 8px !important;
       line-height: 20px !important;
       border-radius: 10px !important;
       margin-left: 8px !important;
-      color: ${PRIMARY_THEME_COLOR} !important;
+      color: var(--primary) !important;
       font-weight: 400;
     }
     &.active,
     &.active > div {
       font-weight: normal !important;
       color: var(--textPrimary) !important;
-      border-color: ${PRIMARY_THEME_COLOR} !important;
+      border-color: var(--primary) !important;
     }
   }
 `;

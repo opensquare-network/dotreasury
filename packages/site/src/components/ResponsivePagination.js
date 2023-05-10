@@ -45,7 +45,7 @@ const DropdownWrapper = styled.div`
 const DropdownText = styled.div`
   font-size: 13px;
   line-height: 24px;
-  color: rgba(0, 0, 0, 0.3);
+  color: var(--textTertiary);
   text-align: right;
   padding-right: 16px;
 `;
@@ -56,29 +56,34 @@ const CustomDropdown = styled(Dropdown)`
   min-height: 24px !important;
   min-width: 72px !important;
   border-left: 0 !important;
-  border: 1px solid #dddddd !important;
+  border: 1px solid var(--neutral400) !important;
   padding: 3px 8px !important;
+  background-color: transparent !important;
+
+  .text {
+    color: var(--textPrimary) !important;
+  }
 
   &:hover {
-    border-color: rgba(34, 36, 38, 0.15) !important;
-    background-color: #fbfbfb !important;
+    border-color: var(--neutral400) !important;
     & > i.dropdown.icon:before {
-      color: rgba(29, 37, 60, 0.64) !important;
+      color: var(--textSecondary) !important;
     }
   }
   &:active {
-    border-color: rgba(34, 36, 38, 0.15) !important;
+    border-color: var(--neutral400) !important;
   }
   &:focus {
-    border-color: rgba(34, 36, 38, 0.15) !important;
+    border-color: var(--neutral400) !important;
   }
   &.ui.upward.selection.dropdown.visible {
     border-top-left-radius: 0 !important;
     border-bottom-left-radius: 0 !important;
   }
   & > .visible.menu {
-    border-color: rgba(34, 36, 38, 0.15) !important;
+    border-color: var(--neutral400) !important;
     max-height: none !important;
+    background-color: var(--neutral100) !important;
   }
   & > div.text {
     line-height: 18px !important;
@@ -89,12 +94,20 @@ const CustomDropdown = styled(Dropdown)`
     padding: 4px 12px !important;
     margin-top: -8px !important;
     ::before {
-      color: rgba(29, 37, 60, 0.24) !important;
+      color: var(--textTertiary) !important;
     }
   }
   & .item {
     height: 24px !important;
     padding: 0px 8px !important;
+    border-color: var(--neutral300) !important;
+    &:hover {
+      background-color: var(--neutral300) !important;
+    }
+    &.selected {
+      background-color: var(--neutral300) !important;
+    }
+
     & > .text {
       line-height: 24px !important;
       font-size: 13px !important;
