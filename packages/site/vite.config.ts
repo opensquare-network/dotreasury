@@ -13,8 +13,16 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          react: ["react", "react-dom", "react-router", "react-router-dom"],
-          "styled-components": ["styled-components"],
+          react: [
+            "react",
+            "react-dom",
+            "react-router",
+            "react-router-dom",
+            "redux",
+            "react-redux",
+          ],
+          ui: ["styled-components", "semantic-ui-react"],
+          chartjs: ["chart.js", "react-chartjs-2"],
         },
       },
     },
