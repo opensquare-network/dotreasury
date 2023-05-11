@@ -8,7 +8,7 @@
     "@open-wc/webpack-import-meta-loader": "^0.4.7",
     "@osn/common": "^1.3.7",
     "@osn/constants": "^1.1.2",
-    "@osn/polkadot-react-identicon": "1.0.9",
+    "@osn/polkadot-react-identicon": "1.0.10",
     "@polkadot/api": "10.3.4",
     "@polkadot/extension-dapp": "0.45.5",
     "@reduxjs/toolkit": "^1.7.2",
