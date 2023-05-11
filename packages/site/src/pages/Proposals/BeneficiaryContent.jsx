@@ -7,7 +7,7 @@ import Badge from "../../components/User/Badge";
 const Wrapper = styled.div`
   font-size: 12px;
   line-height: 18px;
-  color: var(--textPrimary);
+  color: var(--textPrimaryContrast);
 `;
 
 const Title = styled.div`
@@ -16,7 +16,7 @@ const Title = styled.div`
 
 const NameWrapper = styled.div`
   display: flex;
-  align-items: center; ;
+  align-items: center;
 `;
 
 const BeneficiaryContent = ({ proposerAddress, beneficiaryAddress }) => {
