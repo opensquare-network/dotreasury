@@ -1,13 +1,19 @@
 import { defineConfig } from "vite";
+import type { PluginOption } from "vite";
 import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
-import { transformDepsProcessEnvToImportMetaEnv } from "./builds/vite-plugin-transform-deps-process-env-to-import-meta-env";
+import nodePolyfills from "rollup-plugin-node-polyfills";
 
 export default defineConfig({
-  plugins: [react(), svgr(), transformDepsProcessEnvToImportMetaEnv()],
+  plugins: [react(), svgr(), nodePolyfills() as PluginOption],
   assetsInclude: ["**/*.md"],
   server: {
     port: 3000,
+  },
+  resolve: {
+    alias: {
+      buffer: "rollup-plugin-node-polyfills/polyfills/buffer-es6",
+    },
   },
   build: {
     rollupOptions: {
