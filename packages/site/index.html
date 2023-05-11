@@ -111,5 +111,12 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
     <script type="module" src="/src/index.jsx"></script>
+
+    <!-- shims -->
+    <script>
+      if (!window.global) {
+        window.global = globalThis;
+      }
+    </script>
   </body>
 </html>
