@@ -2772,7 +2772,7 @@ __metadata:
     "@osn/common": ^1.3.7
     "@osn/constants": ^1.1.2
     "@osn/eslint-config": ^1.0.1
-    "@osn/polkadot-react-identicon": "file:.yalc/@osn/polkadot-react-identicon"
+    "@osn/polkadot-react-identicon": 1.0.9
     "@polkadot/api": 10.3.4
     "@polkadot/extension-dapp": 0.45.5
     "@reduxjs/toolkit": ^1.7.2
@@ -3689,9 +3689,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/polkadot-react-identicon@file:.yalc/@osn/polkadot-react-identicon::locator=%40dotreasury%2Fsite%40workspace%3Apackages%2Fsite":
-  version: 1.0.7
-  resolution: "@osn/polkadot-react-identicon@file:.yalc/@osn/polkadot-react-identicon#.yalc/@osn/polkadot-react-identicon::hash=ad872f&locator=%40dotreasury%2Fsite%40workspace%3Apackages%2Fsite"
+"@osn/polkadot-react-identicon@npm:1.0.9":
+  version: 1.0.9
+  resolution: "@osn/polkadot-react-identicon@npm:1.0.9"
   dependencies:
     "@noble/hashes": ^1.0.0
     "@polkadot/x-textencoder": ^12.1.2
@@ -3701,7 +3701,7 @@ __metadata:
   peerDependencies:
     react: ^17.0.2
     react-dom: ^17.0.2
-  checksum: 8bbee3fc78655f14bbef553ba2a9952afdc4d2001dc18f601e7400adb5e6da83d41a327656693b54fbf4ade781d2c1f6133b96cfddaa11c90aa30b529d06275e
+  checksum: 82e182e8efb57efdee804ae1edf8edd772d9b0082b0e2b9d10f283cfb543d39770c0d62fed7bf18a2afa4d13ce7e5df5c083813b15572acf991069341cce57a3
   languageName: node
   linkType: hard
 
