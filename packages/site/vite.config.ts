@@ -22,4 +22,22 @@ export default defineConfig({
       process: "rollup-plugin-node-polyfills/polyfills/process-es6",
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          react: [
+            "react",
+            "react-dom",
+            "react-router",
+            "react-router-dom",
+            "redux",
+            "react-redux",
+          ],
+          ui: ["styled-components", "semantic-ui-react"],
+          chartjs: ["chart.js", "react-chartjs-2"],
+        },
+      },
+    },
+  },
 });
