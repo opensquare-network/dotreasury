@@ -73,7 +73,6 @@
   },
   "devDependencies": {
     "@osn/eslint-config": "^1.0.1",
-    "@types/socket.io-client": "^3.0.0",
     "@vitejs/plugin-react": "^4.0.0",
     "eslint": "^8.38.0",
     "eslint-config-react-app": "^7.0.1",
