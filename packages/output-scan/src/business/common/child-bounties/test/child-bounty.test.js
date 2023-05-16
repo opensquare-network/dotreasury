@@ -5,6 +5,7 @@ const {
   },
   test: { setPolkadot, disconnect }
 } = require("@osn/scan-common");
+jest.setTimeout(3000000);
 
 describe("Child bounty", () => {
   beforeAll(async () => {
