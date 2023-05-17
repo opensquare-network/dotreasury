@@ -56,4 +56,4 @@ jobs:
       - name: build
         uses: borales/actions-yarn@v4
         with:
-          cmd: build @dotreasury/site build
+          cmd: workspace @dotreasury/site build

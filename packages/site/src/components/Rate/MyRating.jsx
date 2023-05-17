@@ -41,7 +41,7 @@ const StyledTextarea = styled.textarea`
   border-radius: 4px;
   outline: none;
   color: var(--textPrimary);
-  border-color: var(--neutral400);
+  border: 1px solid var(--neutral400);
   background-color: transparent;
   margin: 0;
   :hover,

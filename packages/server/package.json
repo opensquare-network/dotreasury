@@ -18,8 +18,8 @@
   "dependencies": {
     "@koa/cors": "^3.1.0",
     "@osn/ipfs": "^0.0.4",
-    "@polkadot/util": "11.1.3",
-    "@polkadot/util-crypto": "11.1.3",
+    "@polkadot/util": "12.2.1",
+    "@polkadot/util-crypto": "12.2.1",
     "bignumber.js": "^9.0.1",
     "dotenv": "^8.2.0",
     "ipfs-only-hash": "^4.0.0",
@@ -37,11 +37,10 @@
     "multiformats": "^9.7.1",
     "node-fetch": "^3.3.0",
     "pluralize": "^8.0.0",
-    "socket.io": "^4.5.3"
+    "socket.io": "^4.6.1"
   },
   "devDependencies": {
     "@types/koa-router": "^7.4.1",
-    "@types/socket.io": "^3.0.2",
     "pm2": "^5.2.0"
   }
 }

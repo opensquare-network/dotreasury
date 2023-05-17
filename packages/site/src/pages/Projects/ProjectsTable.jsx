@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import { useHistory } from "react-router";
 
 import Table from "../../components/Table";
-import TableLoading from "../../components/TableLoading.js";
+import TableLoading from "../../components/TableLoading";
 import RightButton from "../../components/RightButton";
 import TableNoDataCell from "../../components/TableNoDataCell";
 import Text from "../../components/Text";

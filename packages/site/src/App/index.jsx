@@ -58,7 +58,7 @@ export default function App() {
   connect(chain);
 
   const Router =
-    process.env.REACT_APP_ROUTER_TYPE === "HashRouter"
+    import.meta.env.VITE_APP_ROUTER_TYPE === "HashRouter"
       ? HashRouter
       : BrowserRouter;
 

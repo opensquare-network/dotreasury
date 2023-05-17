@@ -59,14 +59,16 @@ function useFetchIdentity(chain, address) {
 
   useEffect(() => {
     fetch(
-      `${process.env.REACT_APP_IDENTITY_SERVER_HOST}/${chain}/identity/${address}`,
+      `${
+        import.meta.env.VITE_APP_IDENTITY_SERVER_HOST
+      }/${chain}/identity/${address}`,
       {
         method: "GET",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-      }
+      },
     )
       .then((resp) => resp.json())
       .then((data) => {
