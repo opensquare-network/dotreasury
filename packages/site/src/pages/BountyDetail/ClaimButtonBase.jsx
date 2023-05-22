@@ -7,7 +7,6 @@ import { accountSelector } from "../../store/reducers/accountSlice";
 import { newErrorToast } from "../../store/reducers/toastSlice";
 import { useIsMounted } from "@osn/common";
 import { sendTx } from "../../utils/sendTx";
-import { isSameAddress } from "../../utils";
 import OnChainActionButton from "../../components/OnChainActionButton";
 import { scanHeightSelector } from "../../store/reducers/chainSlice";
 import Tooltip from "../../components/Tooltip";
@@ -22,10 +21,9 @@ export default function ClaimButtonBase({ bounty, onFinalized, newClaimTx }) {
   const isMounted = useIsMounted();
 
   const isLoggedIn = !!account;
-  const isBeneficiary = isSameAddress(account?.address, bounty?.beneficiary);
   const isPendingPayout = bounty?.state?.state === "PendingPayout";
   const isUnlocked = bounty?.unlockAt <= scanHeight;
-  const disabled = !isLoggedIn || !isBeneficiary || !isPendingPayout || !isUnlocked || isLoading;
+  const disabled = !isLoggedIn || !isPendingPayout || !isUnlocked || isLoading;
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
@@ -69,8 +67,6 @@ export default function ClaimButtonBase({ bounty, onFinalized, newClaimTx }) {
     tooltipContent = "Only pending payout bounty is claimable";
   } else if (!isLoggedIn) {
     tooltipContent = "Please connect wallet first";
-  } else if (!isBeneficiary) {
-    tooltipContent = "Only the beneficiary can claim this bounty";
   } else if (!isUnlocked) {
     tooltipContent = "Can only be claimed when chain height reach unlock height";
   }
