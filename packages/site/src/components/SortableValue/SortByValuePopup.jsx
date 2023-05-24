@@ -50,32 +50,29 @@ const DirectionWrapper = styled.div`
   opacity: ${(props) => (props.visible ? 1 : 0)};
 `;
 
+export const SortByFields = {
+  dValue: "Token amount",
+  fiatValue: "Fiat value",
+};
+
 export default function SortByValuePopup({ trigger, sortField, setSortField, sortDirection, setSortDirection }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const popupContent = (
     <Wrapper>
       <Title>Ranked by</Title>
-      <MenuItem onClick={() => {
-        setSortField("tokenValue");
-        setSortDirection(sortField === "tokenValue" && sortDirection === "desc" ? "asc" : "desc");
-        setIsOpen(false);
-      }}>
-        <DirectionWrapper direction={sortDirection} visible={sortField === "tokenValue"}>
-          <DirectionSVG />
-        </DirectionWrapper>
-        <span>Token amount</span>
-      </MenuItem>
-      <MenuItem onClick={() => {
-        setSortField("fiatValue");
-        setSortDirection(sortField === "fiatValue" && sortDirection === "desc" ? "asc" : "desc");
-        setIsOpen(false);
-      }}>
-        <DirectionWrapper direction={sortDirection} visible={sortField === "fiatValue"}>
-          <DirectionSVG />
-        </DirectionWrapper>
-        <span>Fiat value</span>
-      </MenuItem>
+      {Object.keys(SortByFields).map(fieldName =>
+        <MenuItem onClick={() => {
+          setSortField(fieldName);
+          setSortDirection(sortField === fieldName && sortDirection === "desc" ? "asc" : "desc");
+          setIsOpen(false);
+        }}>
+          <DirectionWrapper direction={sortDirection} visible={sortField === fieldName}>
+            <DirectionSVG />
+          </DirectionWrapper>
+          <span>{SortByFields[fieldName]}</span>
+        </MenuItem>
+      )}
     </Wrapper>
   );
 

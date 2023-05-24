@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import SortByValuePopup from "./SortByValuePopup";
+import SortByValuePopup, { SortByFields } from "./SortByValuePopup";
 import { ReactComponent as DirectionSVG } from "../Icon/direction.svg";
 
 const Wrapper = styled.div`
@@ -19,7 +19,7 @@ const Wrapper = styled.div`
 `;
 
 export default function SortableValue({ sortField, setSortField, sortDirection, setSortDirection }) {
-  const isSorting = ["tokenValue", "fiatValue"].includes(sortField);
+  const isSorting = sortField in SortByFields;
 
   return (
     <SortByValuePopup

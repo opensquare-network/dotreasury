@@ -3,29 +3,6 @@ const { extractPage } = require("../../utils");
 const linkService = require("../../services/link.service");
 const commentService = require("../../services/comment.service");
 const { HttpError } = require("../../exc");
-const BigNumber = require("bignumber.js");
-const { Decimal128 } = require("mongodb");
-const { updateFiatValues } = require("../common");
-
-async function updateValues(chain) {
-  const col = await getBountyCollection(chain);
-  const items = await col.find({ tokenValue: null, "meta.value": { $ne: null } }).toArray();
-  if (!items.length) {
-    return;
-  }
-  const bulk = col.initializeUnorderedBulkOp();
-  for (const item of items) {
-    const tokenValue = new BigNumber(item.meta.value).toString();
-    bulk.find({ _id: item._id }).updateOne({
-      $set: {
-        tokenValue: Decimal128.fromString(tokenValue),
-      }
-    });
-  }
-  await bulk.execute();
-
-  await updateFiatValues(col);
-}
 
 const bountyStatus = (bounty) =>
   bounty?.status?.CuratorProposed ||
@@ -118,9 +95,6 @@ class BountiesController {
             }
           }
         ];
-
-        // Update tokenValue and fiatValue for sorting
-        await updateValues(chain);
       } catch (e) {
         console.error(e);
       }

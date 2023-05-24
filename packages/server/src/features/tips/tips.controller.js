@@ -4,27 +4,6 @@ const commentService = require("../../services/comment.service");
 const { extractPage, ADMINS } = require("../../utils");
 const { normalizeTip } = require("./utils");
 const { HttpError } = require("../../exc");
-const { updateFiatValues } = require("../common");
-
-async function updateValues(chain) {
-  const col = await getTipCollection(chain);
-  const items = await col.find({ tokenValue: null }).toArray();
-  if (!items.length) {
-    return;
-  }
-  const bulk = col.initializeUnorderedBulkOp();
-  for (const item of items) {
-    const tipValue = item.state?.state === "TipClosed" ? (item.state?.data?.[2] || item.medianValue) : item.state?.state === "TipRetracted" ? null: item.medianValue;
-    bulk.find({ _id: item._id }).updateOne({
-      $set: {
-        tokenValue: tipValue,
-      }
-    });
-  }
-  await bulk.execute();
-
-  await updateFiatValues(col);
-}
 
 function getCondition(ctx) {
   const { status, beneficiary, finder, proposer } = ctx.request.query;
@@ -79,9 +58,6 @@ class TipsController {
           [fieldName]: sortDirection === "desc" ? -1 : 1,
           "indexer.blockHeight": -1,
         };
-
-        // Update tokenValue and fiatValue for sorting
-        await updateValues(chain);
       } catch (e) {
         console.error(e);
       }
