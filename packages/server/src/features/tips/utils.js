@@ -16,6 +16,8 @@ function normalizeTip(tipInDb) {
     tipsCount: tipInDb.meta?.tips.length,
     medianValue: tipValue ?? tipInDb.medianValue,
     symbolPrice: tipInDb.symbolPrice,
+    dValue: tipInDb.dValue?.toString(),
+    fiatValue: tipInDb.fiatValue,
   };
 }
 

@@ -182,7 +182,7 @@ class ProposalsController {
         },
         isByGov2: item.isByGov2,
         trackInfo: item.track,
-        tokenValue: item.tokenValue,
+        dValue: item.dValue?.toString(),
         fiatValue: item.fiatValue,
       })),
       page,

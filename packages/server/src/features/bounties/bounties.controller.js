@@ -40,6 +40,8 @@ const normalizeBountyListItem = (item) => ({
     state: bountyStatusName(item),
     indexer: item.state?.indexer || item.state?.eventIndexer,
   },
+  dValue: item.dValue?.toString(),
+  fiatValue: item.fiatValue,
 });
 
 async function getAdmins(chain, bountyIndex) {
