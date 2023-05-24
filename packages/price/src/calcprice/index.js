@@ -2,6 +2,8 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const DB = require("./output-scan");
+const { normalizeTokenValue } = require("../utils");
+const BigNumber = require("bignumber.js");
 
 const dotDbName = process.env.MONGO_DB_OUTPUT_DOT_NAME;
 if (!dotDbName) {
@@ -24,6 +26,10 @@ const dbUrls = {
   polkadot: process.env.DOT_MONGO_URL,
 }
 
+function calcPriceByToken(tokenValue, symbolPrice) {
+  return new BigNumber(tokenValue).multipliedBy(symbolPrice || 0).toFixed(2);
+}
+
 const { getPrice } = require("./price");
 
 async function savePrice(chain, col) {
@@ -37,11 +43,15 @@ async function savePrice(chain, col) {
     if (blockTime) {
       const price = await getPrice(chain, blockTime);
       if (price) {
+        const tokenValue = normalizeTokenValue(item.value, chain)
+        const allPrice = calcPriceByToken(tokenValue, price);
+
         await col.updateOne(
           { _id: item._id },
           {
             $set: {
               symbolPrice: price,
+              fiatValue: parseFloat(allPrice),
             },
           }
         );

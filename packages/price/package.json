@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "abort-controller": "^3.0.0",
+    "bignumber.js": "^9.0.1",
     "dayjs": "^1.10.4",
     "dotenv": "^8.2.0",
     "minimist": "^1.2.6",
