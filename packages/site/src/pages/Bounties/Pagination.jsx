@@ -23,19 +23,20 @@ function Pagination({
         setPage(defaultQueryPage);
         setPageSize(pageSize);
         if (persist) {
-          history.push({
-            search: null,
-          });
+          const searchParams = new URLSearchParams(history.location.search);
+          searchParams.delete(pageKey);
+          history.push({ search: searchParams.toString() });
         }
       }}
       onPageChange={(_, { activePage }) => {
         if (persist) {
-          history.push({
-            search:
-              activePage === defaultQueryPage
-                ? null
-                : `?${pageKey}=${activePage}`,
-          });
+          const searchParams = new URLSearchParams(history.location.search);
+          if (activePage === defaultQueryPage) {
+            searchParams.delete(pageKey);
+          } else {
+            searchParams.set(pageKey, activePage);
+          }
+          history.push({ search: searchParams.toString() });
         }
         setPage(activePage);
       }}

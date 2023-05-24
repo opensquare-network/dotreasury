@@ -37,8 +37,9 @@ const Title = styled(Text)`
 
 const Proposals = () => {
   useChainRoute();
+  const query = useQuery();
 
-  const searchPage = parseInt(useQuery().get("page"));
+  const searchPage = parseInt(query.get("page"));
   const queryPage =
     searchPage && !isNaN(searchPage) && searchPage > 0
       ? searchPage
@@ -49,8 +50,7 @@ const Proposals = () => {
     DEFAULT_PAGE_SIZE
   );
   const [filterData, setFilterData] = useState({});
-  const [sortField, setSortField] = useState();
-  const [sortDirection, setSortDirection] = useState();
+  const sort = query.get("sort");
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -59,13 +59,12 @@ const Proposals = () => {
   const chain = useSelector(chainSelector);
 
   useEffect(() => {
-    const sort = sortField && sortDirection && { sort: JSON.stringify([sortField, sortDirection]) };
-    dispatch(fetchProposals(chain, tablePage - 1, pageSize, filterData, sort));
+    dispatch(fetchProposals(chain, tablePage - 1, pageSize, filterData, sort && { sort } ));
 
     return () => {
       dispatch(resetProposals());
     };
-  }, [dispatch, chain, tablePage, pageSize, filterData, sortField, sortDirection]);
+  }, [dispatch, chain, tablePage, pageSize, filterData, sort]);
 
   const totalPages = Math.ceil(total / pageSize);
 
@@ -76,13 +75,12 @@ const Proposals = () => {
 
   const refreshProposals = useCallback(
     (reachingFinalizedBlock) => {
-      const sort = sortField && sortDirection && { sort: JSON.stringify([sortField, sortDirection]) };
-      dispatch(fetchProposals(chain, tablePage - 1, pageSize, filterData, sort));
+      dispatch(fetchProposals(chain, tablePage - 1, pageSize, filterData, sort && { sort }));
       if (reachingFinalizedBlock) {
         dispatch(newSuccessToast("Sync finished. Please provide context info for your proposal on subsquare or polkassembly."));
       }
     },
-    [dispatch, chain, tablePage, pageSize, filterData, sortField, sortDirection]
+    [dispatch, chain, tablePage, pageSize, filterData, sort]
   );
 
   const onFinalized = useWaitSyncBlock("Proposal created", refreshProposals);
@@ -91,10 +89,6 @@ const Proposals = () => {
     <>
       <Summary />
       <ProposalsTable
-        sortField={sortField}
-        setSortField={setSortField}
-        sortDirection={sortDirection}
-        setSortDirection={setSortDirection}
         header={
           <HeaderWrapper>
             <Title>Proposals</Title>
@@ -115,17 +109,15 @@ const Proposals = () => {
             setPageSize={(pageSize) => {
               setTablePage(DEFAULT_QUERY_PAGE);
               setPageSize(pageSize);
-              history.push({
-                search: null,
-              });
+              const searchParams = new URLSearchParams(history.location.search);
+              searchParams.delete("page");
+              history.push({ search: searchParams.toString() });
             }}
             onPageChange={(_, { activePage }) => {
-              history.push({
-                search:
-                  activePage === DEFAULT_QUERY_PAGE
-                    ? null
-                    : `?page=${activePage}`,
-              });
+              const searchParams = new URLSearchParams(history.location.search);
+              searchParams.set("page", activePage);
+              history.push({ search: searchParams.toString() });
+
               setTablePage(activePage);
             }}
           />
