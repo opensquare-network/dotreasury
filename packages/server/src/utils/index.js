@@ -110,6 +110,10 @@ async function verifyAdminSignature(addressAndSignature, message, admins) {
   return true;
 }
 
+function fromUint(value, chain) {
+  return new BigNumber(value).div(Math.pow(10, chain === "kusama" ? 12 : 10));
+}
+
 module.exports = {
   extractPage,
   isValidSignature,
@@ -120,4 +124,5 @@ module.exports = {
   ADMINS,
   checkAdmin,
   verifyAdminSignature,
+  fromUint,
 };

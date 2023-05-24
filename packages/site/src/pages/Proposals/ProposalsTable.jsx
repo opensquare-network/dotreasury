@@ -12,6 +12,8 @@ import {
 import Card from "../../components/Card";
 import { useTableColumns } from "../../components/shared/useTableColumns";
 import api from "../../services/scanApi";
+import SortableIndex from "../../components/SortableIndex";
+import SortableValue from "../../components/SortableValue";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -51,7 +53,7 @@ const completeProposalsWithTitle = (data = [], chain) => {
   });
 };
 
-const ProposalsTable = ({ data, loading, header, footer }) => {
+const ProposalsTable = ({ data, loading, header, footer, sortField, setSortField, sortDirection, setSortDirection }) => {
   const history = useHistory();
   const symbol = useSelector(chainSymbolSelector);
   const chain = useSelector(chainSelector);
@@ -124,14 +126,39 @@ const ProposalsTable = ({ data, loading, header, footer }) => {
     show: !isBeneficiary,
   };
 
+  const sortByValue = {
+    ...value,
+    title: (
+      <SortableValue
+        sortField={sortField}
+        setSortField={setSortField}
+        sortDirection={sortDirection}
+        setSortDirection={setSortDirection}
+      />
+    ),
+  };
+
+  const sortableProposalIndex = {
+    ...proposalIndex,
+    title: (
+      <SortableIndex
+        direction={sortField === "proposalIndex" ? sortDirection : ""}
+        onClick={() => {
+          setSortField("proposalIndex");
+          setSortDirection(sortField === "proposalIndex" && sortDirection === "asc" ? "desc" : "asc");
+        }}
+      />
+    ),
+  };
+
   const columns = [
-    proposalIndex,
+    sortableProposalIndex,
     proposeTime,
     beneficiary,
     proposer,
     description,
     relatedLinks,
-    value,
+    sortByValue,
     proposalStatus,
     detailRoute,
   ];

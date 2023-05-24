@@ -1,9 +1,7 @@
-const BigNumber = require("bignumber.js");
+const { fromUint } = require("../../../utils");
 
 function addUsdtValue(currUsdtValue, nextSymbolValue, symbolPrice, chain) {
-  const nextUsdtValue = new BigNumber(nextSymbolValue)
-    .div(Math.pow(10, chain === "kusama" ? 12 : 10))
-    .multipliedBy(symbolPrice);
+  const nextUsdtValue = fromUint(nextSymbolValue, chain).multipliedBy(symbolPrice);
   return currUsdtValue ? nextUsdtValue.plus(currUsdtValue) : nextUsdtValue;
 }
 

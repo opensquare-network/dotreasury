@@ -49,6 +49,8 @@ const Proposals = () => {
     DEFAULT_PAGE_SIZE
   );
   const [filterData, setFilterData] = useState({});
+  const [sortField, setSortField] = useState();
+  const [sortDirection, setSortDirection] = useState();
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -57,12 +59,13 @@ const Proposals = () => {
   const chain = useSelector(chainSelector);
 
   useEffect(() => {
-    dispatch(fetchProposals(chain, tablePage - 1, pageSize, filterData));
+    const sort = sortField && sortDirection && { sort: JSON.stringify([sortField, sortDirection]) };
+    dispatch(fetchProposals(chain, tablePage - 1, pageSize, filterData, sort));
 
     return () => {
       dispatch(resetProposals());
     };
-  }, [dispatch, chain, tablePage, pageSize, filterData]);
+  }, [dispatch, chain, tablePage, pageSize, filterData, sortField, sortDirection]);
 
   const totalPages = Math.ceil(total / pageSize);
 
@@ -73,12 +76,13 @@ const Proposals = () => {
 
   const refreshProposals = useCallback(
     (reachingFinalizedBlock) => {
-      dispatch(fetchProposals(chain, tablePage - 1, pageSize, filterData));
+      const sort = sortField && sortDirection && { sort: JSON.stringify([sortField, sortDirection]) };
+      dispatch(fetchProposals(chain, tablePage - 1, pageSize, filterData, sort));
       if (reachingFinalizedBlock) {
         dispatch(newSuccessToast("Sync finished. Please provide context info for your proposal on subsquare or polkassembly."));
       }
     },
-    [dispatch, chain, tablePage, pageSize, filterData]
+    [dispatch, chain, tablePage, pageSize, filterData, sortField, sortDirection]
   );
 
   const onFinalized = useWaitSyncBlock("Proposal created", refreshProposals);
@@ -87,6 +91,10 @@ const Proposals = () => {
     <>
       <Summary />
       <ProposalsTable
+        sortField={sortField}
+        setSortField={setSortField}
+        sortDirection={sortDirection}
+        setSortDirection={setSortDirection}
         header={
           <HeaderWrapper>
             <Title>Proposals</Title>
