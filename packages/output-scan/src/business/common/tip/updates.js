@@ -23,7 +23,14 @@ async function getTipCommonUpdates(hash, { blockHeight, blockHash }) {
   const tippersCount = await getTippersCountFromApi(blockHash);
   const tipFindersFee = await getTipFindersFeeFromApi(blockHash);
 
-  return { medianValue, dValue: toDecimal128(medianValue), meta, tippersCount, tipFindersFee };
+  return {
+    medianValue,
+    value: medianValue,
+    dValue: toDecimal128(medianValue),
+    meta,
+    tippersCount,
+    tipFindersFee,
+  };
 }
 
 module.exports = {

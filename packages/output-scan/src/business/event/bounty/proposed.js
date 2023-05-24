@@ -44,6 +44,7 @@ async function handleProposed(event, extrinsic, indexer) {
     bountyIndex,
     description,
     meta,
+    value: meta.value,
     dValue: toDecimal128(meta.value),
     state,
     timeline,

@@ -72,6 +72,7 @@ async function saveNewTip(event, extrinsic, indexer) {
     reason,
     finder,
     medianValue,
+    value: medianValue,
     dValue: toDecimal128(medianValue),
     tippersCount,
     tipFindersFee,
@@ -141,6 +142,7 @@ async function updateTipWithTipRetracted(event, indexer) {
   };
   updates = {
     ...updates,
+    value: 0,
     dValue: toDecimal128(0),
     isFinal: true,
     state,
@@ -171,6 +173,7 @@ async function updateTipWithTipSlashed(event, indexer) {
   };
   updates = {
     ...updates,
+    value: 0,
     dValue: toDecimal128(0),
     isFinal: true,
     state,
