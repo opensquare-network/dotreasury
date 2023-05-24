@@ -1,3 +1,4 @@
+const { toDecimal128 } = require("../../../utils");
 const { computeTipValue } = require("./median");
 const { getTipFindersFeeFromApi } = require("./utils");
 const { getTippersCountFromApi } = require("./utils");
@@ -22,7 +23,14 @@ async function getTipCommonUpdates(hash, { blockHeight, blockHash }) {
   const tippersCount = await getTippersCountFromApi(blockHash);
   const tipFindersFee = await getTipFindersFeeFromApi(blockHash);
 
-  return { medianValue, meta, tippersCount, tipFindersFee };
+  return {
+    medianValue,
+    value: medianValue,
+    dValue: toDecimal128(medianValue),
+    meta,
+    tippersCount,
+    tipFindersFee,
+  };
 }
 
 module.exports = {

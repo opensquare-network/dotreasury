@@ -1,3 +1,4 @@
+const { toDecimal128 } = require("../../../utils");
 const { insertTipper } = require("../../../mongo/service/tipper");
 const { computeTipValue } = require("../../common/tip/median");
 const { getTipFindersFeeFromApi } = require("../../common/tip/utils");
@@ -71,6 +72,8 @@ async function saveNewTip(event, extrinsic, indexer) {
     reason,
     finder,
     medianValue,
+    value: medianValue,
+    dValue: toDecimal128(medianValue),
     tippersCount,
     tipFindersFee,
     meta,
@@ -139,6 +142,8 @@ async function updateTipWithTipRetracted(event, indexer) {
   };
   updates = {
     ...updates,
+    value: 0,
+    dValue: toDecimal128(0),
     isFinal: true,
     state,
   };
@@ -168,6 +173,8 @@ async function updateTipWithTipSlashed(event, indexer) {
   };
   updates = {
     ...updates,
+    value: 0,
+    dValue: toDecimal128(0),
     isFinal: true,
     state,
   };

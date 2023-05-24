@@ -1,3 +1,4 @@
+const { toDecimal128 } = require("../../utils");
 const { getOutTransferCollection } = require("../../mongo");
 const {
   consts: {
@@ -29,6 +30,8 @@ async function handleTreasuryTransferOut(event, indexer, extrinsic) {
     indexer,
     dest: to,
     balance,
+    value: balance,
+    dValue: toDecimal128(balance),
     eventData,
   })
 }
