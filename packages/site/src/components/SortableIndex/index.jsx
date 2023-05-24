@@ -8,6 +8,12 @@ const Wrapper = styled.div`
   gap: 4px;
   svg {
     transform: ${(props) => (props.direction === "asc" ? "rotate(180deg)" : "")};
+    path {
+      fill: var(--textTertiary);
+    }
+  }
+  > span {
+    color: var(--textSecondary);
   }
 `;
 

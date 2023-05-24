@@ -23,7 +23,7 @@ const Wrapper = styled.div`
 
 const Title = styled.span`
   ${p_12_normal}
-  color: rgba(0, 0, 0, 0.3);
+  color: var(--textTertiary);
   padding: 4px 0 4px 28px;
 `;
 
@@ -32,7 +32,10 @@ const MenuItem = styled.div`
   align-items: center;
   cursor: pointer;
   ${p_12_normal}
-  color: rgba(0, 0, 0, 0.9);
+  color: var(--textPrimary);
+  :hover {
+    background-color: var(--neutral200);
+  }
 `;
 
 const DirectionWrapper = styled.div`
@@ -40,6 +43,9 @@ const DirectionWrapper = styled.div`
   margin: 4px 4px 4px 8px;
   svg {
     transform: ${(props) => (props.direction === "asc" ? "rotate(180deg)" : "")};
+    path {
+      fill: var(--textTertiary);
+    }
   }
   opacity: ${(props) => (props.visible ? 1 : 0)};
 `;

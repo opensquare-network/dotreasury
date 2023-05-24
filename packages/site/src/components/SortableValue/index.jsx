@@ -9,6 +9,12 @@ const Wrapper = styled.div`
   justify-content: right;
   svg {
     transform: ${(props) => (props.direction === "asc" ? "rotate(180deg)" : "")};
+    path {
+      fill: var(--textTertiary);
+    }
+  }
+  > span {
+    color: var(--textSecondary);
   }
 `;
 
