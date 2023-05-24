@@ -1,3 +1,4 @@
+const { toDecimal128 } = require("../../../utils");
 const { insertProposal } = require("../../../mongo/service/treasuryProposal");
 const {
   consts: {
@@ -34,6 +35,7 @@ async function saveNewTreasuryProposal(event, extrinsic, eventIndexer) {
     proposalIndex,
     proposer,
     value,
+    dValue: toDecimal128(value),
     beneficiary,
     meta,
     state,
