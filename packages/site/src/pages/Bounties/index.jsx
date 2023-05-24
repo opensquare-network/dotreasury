@@ -34,6 +34,8 @@ const Bounties = () => {
     "bountiesPageSize",
     DEFAULT_PAGE_SIZE
   );
+  const [sortField, setSortField] = useState();
+  const [sortDirection, setSortDirection] = useState();
 
   const dispatch = useDispatch();
   const { items: bounties, total: bountiesTotal } =
@@ -42,12 +44,13 @@ const Bounties = () => {
   const chain = useSelector(chainSelector);
 
   useEffect(() => {
-    dispatch(fetchBounties(chain, tablePage - 1, pageSize));
+    const sort = sortField && sortDirection && { sort: JSON.stringify([sortField, sortDirection]) };
+    dispatch(fetchBounties(chain, tablePage - 1, pageSize, {}, sort));
 
     return () => {
       dispatch(resetBounties());
     };
-  }, [dispatch, chain, tablePage, pageSize]);
+  }, [dispatch, chain, tablePage, pageSize, sortField, sortDirection]);
 
   const totalPages = useMemo(
     () => Math.ceil(bountiesTotal / pageSize),
@@ -58,12 +61,13 @@ const Bounties = () => {
 
   const refreshBounties = useCallback(
     (reachingFinalizedBlock) => {
-      dispatch(fetchBounties(chain, tablePage - 1, pageSize));
+      const sort = sortField && sortDirection && { sort: JSON.stringify([sortField, sortDirection]) };
+      dispatch(fetchBounties(chain, tablePage - 1, pageSize, {}, sort));
       if (reachingFinalizedBlock) {
         dispatch(newSuccessToast("Sync finished. Please provide context info for your bounty on subsquare or polkassembly."));
       }
     },
-    [dispatch, chain, tablePage, pageSize]
+    [dispatch, chain, tablePage, pageSize, sortField, sortDirection]
   );
 
   const onFinalized = useWaitSyncBlock("Bounty created", refreshBounties);
@@ -91,6 +95,10 @@ const Bounties = () => {
 
   return (
     <BountiesTable
+      sortField={sortField}
+      setSortField={setSortField}
+      sortDirection={sortDirection}
+      setSortDirection={setSortDirection}
       data={tableData}
       loading={loading}
       header={header}

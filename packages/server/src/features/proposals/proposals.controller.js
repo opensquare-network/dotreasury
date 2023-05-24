@@ -1,3 +1,4 @@
+const { Decimal128 } = require("mongodb");
 const {
   getProposalCollection,
   getMotionCollection,
@@ -10,6 +11,8 @@ const commentService = require("../../services/comment.service");
 const rateService = require("../../services/rate.service");
 const descriptionService = require("../../services/description.service");
 const { HttpError } = require("../../exc");
+const BigNumber = require("bignumber.js");
+const { updateFiatValues } = require("../common");
 
 async function getProposalMotions(proposal, chain) {
   const motionHashes = (proposal.motions || []).map(motionInfo => motionInfo.hash);
@@ -88,6 +91,26 @@ function getCondition(ctx) {
   return condition;
 }
 
+async function updateValues(chain) {
+  const proposalCol = await getProposalCollection(chain);
+  const items = await proposalCol.find({ tokenValue: null, value: { $ne: null } }).toArray();
+  if (!items.length) {
+    return;
+  }
+  const bulk = proposalCol.initializeUnorderedBulkOp();
+  for (const item of items) {
+    const tokenValue = new BigNumber(item.value).toString();
+    bulk.find({ _id: item._id }).updateOne({
+      $set: {
+        tokenValue: Decimal128.fromString(tokenValue),
+      }
+    });
+  }
+  await bulk.execute();
+
+  await updateFiatValues(col);
+}
+
 class ProposalsController {
   async getProposals(ctx) {
     const { chain } = ctx.params;
@@ -100,8 +123,8 @@ class ProposalsController {
     const condition = getCondition(ctx);
     const proposalCol = await getProposalCollection(chain);
     const totalQuery = proposalCol.countDocuments(condition);
-    const proposalsQuery = proposalCol.aggregate([
-      { $match: condition },
+
+    let sortPipeline = [
       {
         $addFields: {
           sort: {
@@ -123,6 +146,31 @@ class ProposalsController {
           "indexer.blockHeight": -1,
         }
       },
+    ];
+
+    const { sort } = ctx.request.query;
+    if (sort) {
+      try {
+        const [fieldName, sortDirection] = JSON.parse(sort);
+        sortPipeline = [
+          {
+            $sort: {
+              [fieldName]: sortDirection === "desc" ? -1 : 1,
+              "indexer.blockHeight": -1,
+            }
+          }
+        ];
+
+        // Update tokenValue and fiatValue for sorting
+        await updateValues(chain);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    const proposalsQuery = proposalCol.aggregate([
+      { $match: condition },
+      ...sortPipeline,
       { $skip: page * pageSize },
       { $limit: pageSize },
       {
@@ -159,6 +207,8 @@ class ProposalsController {
         },
         isByGov2: item.isByGov2,
         trackInfo: item.track,
+        tokenValue: item.tokenValue,
+        fiatValue: item.fiatValue,
       })),
       page,
       pageSize,

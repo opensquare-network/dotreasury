@@ -11,6 +11,7 @@ import {
 } from "../../store/reducers/chainSlice";
 import Card from "../../components/Card";
 import { useTableColumns } from "../../components/shared/useTableColumns";
+import SortableValue from "../../components/SortableValue";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -32,7 +33,7 @@ const TableWrapper = styled.div`
   overflow: scroll;
 `;
 
-const TipsTable = ({ data, loading, header, footer }) => {
+const TipsTable = ({ data, loading, header, footer, sortField, setSortField, sortDirection, setSortDirection }) => {
   const history = useHistory();
   const chain = useSelector(chainSelector);
   const symbol = useSelector(chainSymbolSelector);
@@ -72,12 +73,25 @@ const TipsTable = ({ data, loading, header, footer }) => {
     detailRoute,
     relatedLinks,
   } = useTableColumns({ getRelatedLinks, getDetailRoute, compact: true });
+
+  const sortByValue = {
+    ...tipsValue,
+    title: (
+      <SortableValue
+        sortField={sortField}
+        setSortField={setSortField}
+        sortDirection={sortDirection}
+        setSortDirection={setSortDirection}
+      />
+    ),
+  };
+
   const columns = [
     tipsBeneficiary,
     finder,
     reason,
     relatedLinks,
-    tipsValue,
+    sortByValue,
     tipsStatus,
     detailRoute,
   ];

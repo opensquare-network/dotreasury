@@ -64,14 +64,17 @@ const Tips = () => {
   const loading = useSelector(loadingSelector);
   const totalPages = Math.ceil(total / pageSize);
   const chain = useSelector(chainSelector);
+  const [sortField, setSortField] = useState();
+  const [sortDirection, setSortDirection] = useState();
 
   useEffect(() => {
-    dispatch(fetchTips(chain, tablePage - 1, pageSize, filterData));
+    const sort = sortField && sortDirection && { sort: JSON.stringify([sortField, sortDirection]) };
+    dispatch(fetchTips(chain, tablePage - 1, pageSize, filterData, sort));
 
     return () => {
       dispatch(resetTips());
     };
-  }, [dispatch, chain, tablePage, pageSize, filterData]);
+  }, [dispatch, chain, tablePage, pageSize, filterData, sortField, sortDirection]);
 
   const filterQuery = useCallback(
     (data) => {
@@ -86,9 +89,10 @@ const Tips = () => {
 
   const refreshTips = useCallback(
     () => {
-      dispatch(fetchTips(chain, tablePage - 1, pageSize, filterData));
+      const sort = sortField && sortDirection && { sort: JSON.stringify([sortField, sortDirection]) };
+      dispatch(fetchTips(chain, tablePage - 1, pageSize, filterData, sort));
     },
-    [dispatch, chain, tablePage, pageSize, filterData]
+    [dispatch, chain, tablePage, pageSize, filterData, sortField, sortDirection]
   );
 
   const onFinalized = useWaitSyncBlock("Tips created", refreshTips);
@@ -96,6 +100,10 @@ const Tips = () => {
   return (
     <>
       <TipsTable
+        sortField={sortField}
+        setSortField={setSortField}
+        sortDirection={sortDirection}
+        setSortDirection={setSortDirection}
         data={tips}
         loading={loading}
         header={

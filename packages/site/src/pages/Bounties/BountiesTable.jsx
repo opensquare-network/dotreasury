@@ -41,10 +41,10 @@ const HeaderWrapper = styled.div`
   align-items: center;
 `;
 
-const BountiesTable = ({ data, loading, header, footer }) => {
+const BountiesTable = ({ data, loading, header, footer, sortField, setSortField, sortDirection, setSortDirection }) => {
   const history = useHistory();
 
-  const { columns, getDetailRoute } = useColumns();
+  const { columns, getDetailRoute } = useColumns({ sortField, setSortField, sortDirection, setSortDirection });
 
   const onRowClick = (row) => {
     if (window.innerWidth < 1140) {

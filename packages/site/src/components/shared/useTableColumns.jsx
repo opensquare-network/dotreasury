@@ -288,7 +288,7 @@ const description = {
 };
 const relatedLinks = (options) => ({
   key: "related-links",
-  title: options?.compact ? "Links" : "Related Links",
+  title: <span style={{ whiteSpace: "nowrap" }}>{options?.compact ? "Links" : "Related Links"}</span>,
   cellClassName: "proposal-related-links-cell",
   cellRender: (_, item) => (
     <RelatedLinks links={options?.getRelatedLinks?.(item)} />
