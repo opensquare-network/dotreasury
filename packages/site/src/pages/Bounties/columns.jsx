@@ -2,9 +2,11 @@ import { useTableColumns } from "../../components/shared/useTableColumns";
 import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import { useState } from "react";
+import SortableIndex from "../../components/SortableIndex";
+import SortableValue from "../../components/SortableValue";
 
 export function useColumns(options) {
-  const { defaultCurator = true } = options ?? {};
+  const { defaultCurator = true, sortField, setSortField, sortDirection, setSortDirection } = options ?? {};
 
   const symbol = useSelector(chainSymbolSelector);
   const [isCurator, setIsCurator] = useState(defaultCurator);
@@ -50,13 +52,38 @@ export function useColumns(options) {
     show: !isCurator,
   };
 
+  const sortableBountyIndex = {
+    ...bountyIndex,
+    title: (
+      <SortableIndex
+        direction={sortField === "bountyIndex" ? sortDirection : ""}
+        onClick={() => {
+          setSortField("bountyIndex");
+          setSortDirection(sortField === "bountyIndex" && sortDirection === "asc" ? "desc" : "asc");
+        }}
+      />
+    ),
+  };
+
+  const sortByValue = {
+    ...value,
+    title: (
+      <SortableValue
+        sortField={sortField}
+        setSortField={setSortField}
+        sortDirection={sortDirection}
+        setSortDirection={setSortDirection}
+      />
+    ),
+  };
+
   const columns = [
-    bountyIndex,
+    sortableBountyIndex,
     proposeTime,
     curator,
     beneficiary,
     title,
-    value,
+    sortByValue,
     bountiesStatus,
     detailRoute,
   ];

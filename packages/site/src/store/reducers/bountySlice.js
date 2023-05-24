@@ -64,7 +64,7 @@ export const {
 } = bountySlice.actions;
 
 export const fetchBounties =
-  (chain, page = 0, pageSize = 30, filterData) =>
+  (chain, page = 0, pageSize = 30, filterData, sort) =>
   async (dispatch) => {
     dispatch(setLoading(true));
 
@@ -73,6 +73,7 @@ export const fetchBounties =
         page,
         pageSize,
         ...filterData,
+        ...sort,
       });
       dispatch(setBounties(result || {}));
     } finally {

@@ -44,13 +44,13 @@ export const {
   setTipCountdown,
 } = tipSlice.actions;
 
-export const fetchTips = (chain, page = 0, pageSize = 30, filterData = {}) => async (
+export const fetchTips = (chain, page = 0, pageSize = 30, filterData = {}, sort) => async (
   dispatch
 ) => {
   dispatch(setLoading(true));
 
   try {
-    const { result } = await api.fetch(`/${chain}/tips`, { page, pageSize, ...filterData });
+    const { result } = await api.fetch(`/${chain}/tips`, { page, pageSize, ...filterData, ...sort });
     dispatch(setTips(result || {}));
   } finally {
     dispatch(setLoading(false));

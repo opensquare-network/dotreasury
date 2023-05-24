@@ -1,3 +1,4 @@
+const { Decimal128 } = require("mongodb");
 const {
   getProposalCollection,
   getMotionCollection,
@@ -100,8 +101,8 @@ class ProposalsController {
     const condition = getCondition(ctx);
     const proposalCol = await getProposalCollection(chain);
     const totalQuery = proposalCol.countDocuments(condition);
-    const proposalsQuery = proposalCol.aggregate([
-      { $match: condition },
+
+    let sortPipeline = [
       {
         $addFields: {
           sort: {
@@ -123,6 +124,28 @@ class ProposalsController {
           "indexer.blockHeight": -1,
         }
       },
+    ];
+
+    const { sort } = ctx.request.query;
+    if (sort) {
+      try {
+        const [fieldName, sortDirection] = JSON.parse(sort);
+        sortPipeline = [
+          {
+            $sort: {
+              [fieldName]: sortDirection === "desc" ? -1 : 1,
+              "indexer.blockHeight": -1,
+            }
+          }
+        ];
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    const proposalsQuery = proposalCol.aggregate([
+      { $match: condition },
+      ...sortPipeline,
       { $skip: page * pageSize },
       { $limit: pageSize },
       {
@@ -159,6 +182,8 @@ class ProposalsController {
         },
         isByGov2: item.isByGov2,
         trackInfo: item.track,
+        dValue: item.dValue?.toString(),
+        fiatValue: item.fiatValue,
       })),
       page,
       pageSize,

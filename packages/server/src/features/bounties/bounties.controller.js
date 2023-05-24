@@ -40,6 +40,8 @@ const normalizeBountyListItem = (item) => ({
     state: bountyStatusName(item),
     indexer: item.state?.indexer || item.state?.eventIndexer,
   },
+  dValue: item.dValue?.toString(),
+  fiatValue: item.fiatValue,
 });
 
 async function getAdmins(chain, bountyIndex) {
@@ -74,17 +76,38 @@ class BountiesController {
       return;
     }
 
+    let sortPipeline = [
+      {
+        $sort: {
+          stateSort: 1,
+          "indexer.blockHeight": -1,
+        }
+      }
+    ];
+
+    const { sort } = ctx.request.query;
+    if (sort) {
+      try {
+        const [fieldName, sortDirection] = JSON.parse(sort);
+        sortPipeline = [
+          {
+            $sort: {
+              [fieldName]: sortDirection === "desc" ? -1 : 1,
+              "indexer.blockHeight": -1,
+            }
+          }
+        ];
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
     const condition = getCondition(ctx);
     const bountyCol = await getBountyCollection(chain);
     const bounties = await bountyCol
       .aggregate([
         { $match: condition },
-        {
-          $sort: {
-            stateSort: 1,
-            "indexer.blockHeight": -1,
-          }
-        },
+        ...sortPipeline,
         { $skip: pageSize * page },
         { $limit: pageSize },
         {
@@ -99,16 +122,16 @@ class BountiesController {
                   }
                 }
               },
+              {
+                $project: { timeline: 0 }
+              },
               { $sort: { index: -1 } }
             ],
             as: "childBounties",
           }
         },
         {
-          $project: {
-            timeline: 0,
-            "childBounties.timeline": 0,
-          }
+          $project: { timeline: 0 }
         }
       ]).toArray();
     const total = await bountyCol.estimatedDocumentCount();
