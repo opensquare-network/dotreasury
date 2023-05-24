@@ -12,6 +12,10 @@ const FormWrapper = styled(Form)`
   & .field {
     margin: 0 !important;
   }
+
+  .ui.dropdown .text {
+    font-size: 12px !important;
+  }
 `;
 
 const StatusSelect = styled(Select)`
@@ -19,6 +23,10 @@ const StatusSelect = styled(Select)`
 `;
 
 const TrackSelect = styled(Select)`
+  width: 160px;
+`;
+
+const RangeSelect = styled(Select)`
   width: 160px;
 `;
 
@@ -58,6 +66,11 @@ const tracksOptions = [
   })),
 ];
 
+const rangeOptions = [
+  { key: "range-by-asset", value: "range-by-asset", text: "Range by asset" },
+  { key: "range-by-currency", value: "range-by-currency", text: "Range by currency" },
+];
+
 const Filter = ({ setTrack, setStatus }) => {
   return (
     <FormWrapper>
@@ -74,6 +87,13 @@ const Filter = ({ setTrack, setStatus }) => {
         options={statusOptions}
         defaultValue="-1"
         onChange={(e, { name, value }) => setStatus(value)}
+      />
+      <RangeSelect
+        name="range"
+        fluid
+        options={rangeOptions}
+        defaultValue="range-by-asset"
+
       />
     </FormWrapper>
   );

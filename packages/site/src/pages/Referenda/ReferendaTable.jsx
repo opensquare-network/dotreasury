@@ -16,6 +16,8 @@ import api from "../../services/scanApi";
 import TextMinor from "../../components/TextMinor";
 import JumpToLink from "./Link";
 import DescriptionCell from "../Proposals/DescriptionCell";
+import Filter from "./Filter";
+import Divider from "../../components/Divider";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -140,8 +142,12 @@ export default function ReferendaTable() {
 
   return (
     <CardWrapper>
-      <TableHeader setFilterTrack={setFilterTrack} setFilterStatus={setFilterStatus} />
+      <TableHeader />
+      <Divider />
       <Wrapper>
+        <div style={{ display: "flex", padding: "24px", gap: "16px" }}>
+          <Filter setTrack={setFilterTrack} setStatus={setFilterStatus} />
+        </div>
         <TableWrapper>
           <TableLoading loading={applicationListLoading}>
             <Table columns={columns} data={tableData} />
