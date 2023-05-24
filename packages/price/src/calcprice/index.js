@@ -27,7 +27,7 @@ const dbUrls = {
 }
 
 function calcPriceByToken(tokenValue, symbolPrice) {
-  return new BigNumber(tokenValue).multipliedBy(symbolPrice || 0).toFixed(2);
+  return new BigNumber(tokenValue).multipliedBy(symbolPrice || 0).toFixed(5);
 }
 
 const { getPrice } = require("./price");
