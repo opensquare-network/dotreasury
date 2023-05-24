@@ -64,8 +64,12 @@ export default function ReferendaTable() {
   useEffect(() => {
     const status = filterStatus === "-1" ? "" : filterStatus;
     const track = filterTrack === "-1" ? "" : filterTrack;
-    dispatch(fetchApplicationList(chain, page - 1, pageSize, status, track));
-  }, [dispatch, chain, page, pageSize, filterStatus, filterTrack]);
+    let minMax = [];
+    if (min || max) {
+      minMax = [min && parseFloat(min), max && parseFloat(max)];
+    }
+    dispatch(fetchApplicationList(chain, page - 1, pageSize, status, track, JSON.stringify(minMax)));
+  }, [dispatch, chain, page, pageSize, filterStatus, filterTrack, min, max]);
 
   useEffect(() => {
     setDataList(applicationList?.items || []);

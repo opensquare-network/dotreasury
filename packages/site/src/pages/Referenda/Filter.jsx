@@ -86,6 +86,45 @@ const rangeOptions = [
   { key: "range-by-currency", value: "range-by-currency", text: "Range by currency" },
 ];
 
+const FilterButton = styled.div`
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+
+  height: 24px;
+
+  background: #F23252;
+  border-radius: 4px;
+
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+
+  color: #FFFFFF;
+`;
+
+const ResetButton = styled.div`
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+
+  height: 24px;
+
+  background: none;
+  border-radius: 4px;
+
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+
+  color: #F23252;
+`;
+
 const RangeInput = ({ prefix, suffix, setMin, setMax }) => {
   return (
     <RangeWrapper>
@@ -119,6 +158,7 @@ const Filter = ({
   const chainSymbol = chain === "kusama" ? "KSM" : "DOT";
   const suffix = rangeType === "range-by-asset" ? chainSymbol : "";
   const prefix = rangeType === "range-by-asset" ? "" : "$";
+  const hasMinMax = min || max;
 
   return (
     <FormWrapper>
@@ -145,6 +185,11 @@ const Filter = ({
         onChange={(e, { name, value }) => setRangeType(value)}
       />
       <RangeInput prefix={prefix} suffix={suffix} setMin={setMin} setMax={setMax} />
+      {hasMinMax ? (
+        <ResetButton>Reset</ResetButton>
+      ) : (
+        <FilterButton>Filter</FilterButton>
+      )}
     </FormWrapper>
   );
 };
