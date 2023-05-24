@@ -1,3 +1,4 @@
+const { toDecimal128 } = require("../../utils");
 const { getBurnPercent } = require("../common/burnt/burnPercent");
 const { getBurntCollection } = require("../../mongo");
 const { getTreasuryBalance } = require("../common/balance/freeBalance");
@@ -21,6 +22,8 @@ async function handleBurntEvent(event, indexer) {
   await col.insertOne({
     indexer,
     balance,
+    value: balance,
+    dValue: toDecimal128(balance),
     treasuryBalance,
     burnPercent,
   });
