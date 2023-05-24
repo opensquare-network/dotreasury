@@ -54,6 +54,9 @@ export default function ReferendaTable() {
   const [dataList, setDataList] = useState(applicationList?.items || []);
   const [filterStatus, setFilterStatus] = useState("-1");
   const [filterTrack, setFilterTrack] = useState("-1");
+  const [rangeType, setRangeType] = useState("range-by-asset");
+  const [min, setMin] = useState();
+  const [max, setMax] = useState();
   const [page, setPage] = useState(DEFAULT_QUERY_PAGE);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const totalPages = Math.ceil((applicationList?.total || 0) / pageSize);
@@ -146,7 +149,17 @@ export default function ReferendaTable() {
       <Divider />
       <Wrapper>
         <div style={{ display: "flex", padding: "24px", gap: "16px" }}>
-          <Filter setTrack={setFilterTrack} setStatus={setFilterStatus} />
+          <Filter
+            chain={chain}
+            setTrack={setFilterTrack}
+            setStatus={setFilterStatus}
+            rangeType={rangeType}
+            setRangeType={setRangeType}
+            min={min}
+            setMin={setMin}
+            max={max}
+            setMax={setMax}
+          />
         </div>
         <TableWrapper>
           <TableLoading loading={applicationListLoading}>

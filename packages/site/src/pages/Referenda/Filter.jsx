@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Form } from "semantic-ui-react";
 
 import Select from "../../components/Select";
+import CompactInput from "../../components/CompactInput";
 
 const FormWrapper = styled(Form)`
   display: flex;
@@ -28,6 +29,20 @@ const TrackSelect = styled(Select)`
 
 const RangeSelect = styled(Select)`
   width: 160px;
+`;
+
+const Divider = styled.div`
+  width: 1px;
+  height: 20px;
+  background: var(--neutral300);
+`;
+
+const RangeWrapper = styled.div`
+  display: flex;
+  gap: 4px;
+  > div {
+    width: 98px;
+  }
 `;
 
 const statusOptions = [
@@ -71,7 +86,40 @@ const rangeOptions = [
   { key: "range-by-currency", value: "range-by-currency", text: "Range by currency" },
 ];
 
-const Filter = ({ setTrack, setStatus }) => {
+const RangeInput = ({ prefix, suffix, setMin, setMax }) => {
+  return (
+    <RangeWrapper>
+      <CompactInput
+        prefix={prefix}
+        suffix={suffix}
+        placeholder="Min"
+        onChange={e => setMin(e.target.value)}
+      />
+      <CompactInput
+        prefix={prefix}
+        suffix={suffix}
+        placeholder="Max"
+        onChange={e => setMax(e.target.value)}
+      />
+    </RangeWrapper>
+  );
+};
+
+const Filter = ({
+  chain,
+  setTrack,
+  setStatus,
+  rangeType,
+  setRangeType,
+  min,
+  setMin,
+  max,
+  setMax,
+}) => {
+  const chainSymbol = chain === "kusama" ? "KSM" : "DOT";
+  const suffix = rangeType === "range-by-asset" ? chainSymbol : "";
+  const prefix = rangeType === "range-by-asset" ? "" : "$";
+
   return (
     <FormWrapper>
       <TrackSelect
@@ -88,13 +136,15 @@ const Filter = ({ setTrack, setStatus }) => {
         defaultValue="-1"
         onChange={(e, { name, value }) => setStatus(value)}
       />
+      <Divider />
       <RangeSelect
         name="range"
         fluid
         options={rangeOptions}
         defaultValue="range-by-asset"
-
+        onChange={(e, { name, value }) => setRangeType(value)}
       />
+      <RangeInput prefix={prefix} suffix={suffix} setMin={setMin} setMax={setMax} />
     </FormWrapper>
   );
 };
