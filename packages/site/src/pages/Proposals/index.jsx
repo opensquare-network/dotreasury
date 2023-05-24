@@ -115,7 +115,11 @@ const Proposals = () => {
             }}
             onPageChange={(_, { activePage }) => {
               const searchParams = new URLSearchParams(history.location.search);
-              searchParams.set("page", activePage);
+              if (activePage === DEFAULT_QUERY_PAGE) {
+                searchParams.delete("page");
+              } else{
+                searchParams.set("page", activePage);
+              }
               history.push({ search: searchParams.toString() });
 
               setTablePage(activePage);
