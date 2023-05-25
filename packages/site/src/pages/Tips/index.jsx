@@ -37,13 +37,15 @@ const Title = styled(Text)`
 
 const Tips = () => {
   useChainRoute();
+  const query = useQuery();
 
-  const searchPage = parseInt(useQuery().get("page"));
+  const searchPage = parseInt(query.get("page"));
   const queryPage =
     searchPage && !isNaN(searchPage) && searchPage > 0
       ? searchPage
       : DEFAULT_QUERY_PAGE;
-  const searchStatus = useQuery().get("status");
+  const searchStatus = query.get("status");
+  const sort = query.get("sort");
 
   const [tablePage, setTablePage] = useState(queryPage);
   const [pageSize, setPageSize] = useLocalStorage(
@@ -64,17 +66,14 @@ const Tips = () => {
   const loading = useSelector(loadingSelector);
   const totalPages = Math.ceil(total / pageSize);
   const chain = useSelector(chainSelector);
-  const [sortField, setSortField] = useState();
-  const [sortDirection, setSortDirection] = useState();
 
   useEffect(() => {
-    const sort = sortField && sortDirection && { sort: JSON.stringify([sortField, sortDirection]) };
-    dispatch(fetchTips(chain, tablePage - 1, pageSize, filterData, sort));
+    dispatch(fetchTips(chain, tablePage - 1, pageSize, filterData, sort && { sort }));
 
     return () => {
       dispatch(resetTips());
     };
-  }, [dispatch, chain, tablePage, pageSize, filterData, sortField, sortDirection]);
+  }, [dispatch, chain, tablePage, pageSize, filterData, sort]);
 
   const filterQuery = useCallback(
     (data) => {
@@ -89,10 +88,9 @@ const Tips = () => {
 
   const refreshTips = useCallback(
     () => {
-      const sort = sortField && sortDirection && { sort: JSON.stringify([sortField, sortDirection]) };
-      dispatch(fetchTips(chain, tablePage - 1, pageSize, filterData, sort));
+      dispatch(fetchTips(chain, tablePage - 1, pageSize, filterData, sort && { sort }));
     },
-    [dispatch, chain, tablePage, pageSize, filterData, sortField, sortDirection]
+    [dispatch, chain, tablePage, pageSize, filterData, sort]
   );
 
   const onFinalized = useWaitSyncBlock("Tips created", refreshTips);
@@ -100,10 +98,6 @@ const Tips = () => {
   return (
     <>
       <TipsTable
-        sortField={sortField}
-        setSortField={setSortField}
-        sortDirection={sortDirection}
-        setSortDirection={setSortDirection}
         data={tips}
         loading={loading}
         header={
