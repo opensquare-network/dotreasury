@@ -37,7 +37,7 @@ export const {
   setSummary,
 } = openGovApplicationsSlice.actions;
 
-export const fetchApplicationList = (chain, page = 0, pageSize = 30, status = "", track = "", minMax = {}) => async (
+export const fetchApplicationList = (chain, page = 0, pageSize = 30, status = "", track = "", minMax = {}, sort = {}) => async (
   dispatch
 ) => {
   dispatch(setLoadingApplicationList(true));
@@ -49,6 +49,7 @@ export const fetchApplicationList = (chain, page = 0, pageSize = 30, status = ""
       status,
       track,
       ...minMax,
+      ...sort,
     });
     dispatch(
       setApplicationList(

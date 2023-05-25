@@ -16,9 +16,14 @@ import api from "../../services/scanApi";
 import TextMinor from "../../components/TextMinor";
 import JumpToLink from "./Link";
 import DescriptionCell from "../Proposals/DescriptionCell";
-import Filter, { RangeTypes } from "./Filter";
+import Filter from "./Filter";
 import Divider from "../../components/Divider";
 import isEmpty from "lodash.isempty";
+import useListFilter from "./useListFilter";
+import SortableValue from "../../components/SortableValue";
+import useSort from "../../hooks/useSort";
+import SortableIndex from "../../components/SortableIndex";
+import { useQuery } from "../../utils/hooks";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -53,14 +58,31 @@ export default function ReferendaTable() {
   const applicationList = useSelector(applicationListSelector);
   const applicationListLoading = useSelector(loadingApplicationListSelector);
   const [dataList, setDataList] = useState(applicationList?.items || []);
-  const [filterStatus, setFilterStatus] = useState("-1");
-  const [filterTrack, setFilterTrack] = useState("-1");
-  const [rangeType, setRangeType] = useState(RangeTypes.Token);
-  const [min, setMin] = useState();
-  const [max, setMax] = useState();
   const [page, setPage] = useState(DEFAULT_QUERY_PAGE);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const totalPages = Math.ceil((applicationList?.total || 0) / pageSize);
+  const query = useQuery();
+  const sort = query.get("sort");
+
+  const {
+    sortField,
+    setSortField,
+    sortDirection,
+    setSortDirection,
+  } = useSort();
+
+  const {
+    filterStatus,
+    setFilterStatus,
+    filterTrack,
+    setFilterTrack,
+    rangeType,
+    setRangeType,
+    min,
+    setMin,
+    max,
+    setMax,
+  } = useListFilter();
 
   useEffect(() => {
     const status = filterStatus === "-1" ? "" : filterStatus;
@@ -69,8 +91,8 @@ export default function ReferendaTable() {
     if (min) minMax.min = min;
     if (max) minMax.max = max;
     if (!isEmpty(minMax)) minMax.rangeType = rangeType;
-    dispatch(fetchApplicationList(chain, page - 1, pageSize, status, track, minMax));
-  }, [dispatch, chain, page, pageSize, filterStatus, filterTrack, rangeType, min, max]);
+    dispatch(fetchApplicationList(chain, page - 1, pageSize, status, track, minMax, sort && { sort }));
+  }, [dispatch, chain, page, pageSize, filterStatus, filterTrack, rangeType, min, max, sort]);
 
   useEffect(() => {
     setDataList(applicationList?.items || []);
@@ -123,12 +145,37 @@ export default function ReferendaTable() {
     cellRender: (_, item) => <JumpToLink href={`https://${chain}.subsquare.io/referenda/referendum/${item.referendumIndex}`} />,
   };
 
+  const sortByValue = {
+    ...value,
+    title: (
+      <SortableValue
+        sortField={sortField}
+        setSortField={setSortField}
+        sortDirection={sortDirection}
+        setSortDirection={setSortDirection}
+      />
+    ),
+  };
+
+  const sortableProposalIndex = {
+    ...index,
+    title: (
+      <SortableIndex
+        direction={sortField === "index" ? sortDirection : ""}
+        onClick={() => {
+          setSortField("index");
+          setSortDirection(sortField === "index" && sortDirection === "asc" ? "desc" : "asc");
+        }}
+      />
+    ),
+  };
+
   const columns = [
-    index,
+    sortableProposalIndex,
     proposeTime,
     beneficiary,
     description,
-    value,
+    sortByValue,
     referendaStatus,
     linkToSubSquare,
   ];
@@ -156,7 +203,9 @@ export default function ReferendaTable() {
         <div style={{ display: "flex", padding: "24px", gap: "16px" }}>
           <Filter
             chain={chain}
+            track={filterTrack}
             setTrack={setFilterTrack}
+            status={filterStatus}
             setStatus={setFilterStatus}
             rangeType={rangeType}
             setRangeType={setRangeType}
@@ -177,19 +226,22 @@ export default function ReferendaTable() {
         totalPages={totalPages}
         pageSize={pageSize}
         setPageSize={(pageSize) => {
+          const searchParams = new URLSearchParams(history.location.search);
+          searchParams.delete("page");
+          history.push({ search: searchParams.toString() });
+
           setPage(DEFAULT_QUERY_PAGE);
           setPageSize(pageSize);
-          history.push({
-            search: null,
-          });
         }}
         onPageChange={(_, { activePage }) => {
-          history.push({
-            search:
-              activePage === DEFAULT_QUERY_PAGE
-                ? null
-                : `?page=${activePage}`,
-          });
+          const searchParams = new URLSearchParams(history.location.search);
+          if (activePage === DEFAULT_QUERY_PAGE) {
+            searchParams.delete("page");
+          } else{
+            searchParams.set("page", activePage);
+          }
+          history.push({ search: searchParams.toString() });
+
           setPage(activePage);
         }}
       />

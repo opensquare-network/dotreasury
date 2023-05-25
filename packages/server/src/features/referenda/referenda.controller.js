@@ -3,7 +3,7 @@ const {
   getReferendaReferendumCollection,
 } = require("../../mongo");
 const { extractPage } = require("../../utils");
-const { QueryFieldsMap } = require("../common/query");
+const { QueryFieldsMap, ReferendaQueryFieldsMap } = require("../common/query");
 
 const ReferendaStateSort = {
   Confirming: 10,
@@ -66,8 +66,8 @@ class ReferendaController {
     const condition = getCondition(ctx);
     const referendumCol = await getReferendaReferendumCollection(chain);
     const totalQuery = referendumCol.countDocuments(condition);
-    const referendaQuery = referendumCol.aggregate([
-      { $match: condition },
+
+    let sortPipeline = [
       {
         $addFields: {
           sort: {
@@ -91,6 +91,28 @@ class ReferendaController {
           "indexer.blockHeight": -1,
         }
       },
+    ];
+
+    const { sort } = ctx.request.query;
+    if (sort) {
+      let [fieldName, sortDirection] = sort.split("_");
+      fieldName = ReferendaQueryFieldsMap[fieldName];
+      if (!fieldName) {
+        throw new HttpError(400, "Invalid sort field");
+      }
+      sortPipeline = [
+        {
+          $sort: {
+            [fieldName]: sortDirection === "desc" ? -1 : 1,
+            "indexer.blockHeight": -1,
+          }
+        }
+      ];
+    }
+
+    const referendaQuery = referendumCol.aggregate([
+      { $match: condition },
+      ...sortPipeline,
       { $skip: page * pageSize },
       { $limit: pageSize },
       {

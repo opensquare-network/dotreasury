@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { Form } from "semantic-ui-react";
 
 import Select from "../../components/Select";
-import CompactInput from "../../components/CompactInput";
+import Range from "../../components/Filter/Range";
 
 const FormWrapper = styled(Form)`
   display: flex;
@@ -38,13 +38,6 @@ const TrackSelect = styled(Select)`
   }
 `;
 
-const RangeSelect = styled(Select)`
-  width: 160px;
-  @media screen and (max-width: 800px) {
-    width: 100%;
-  }
-`;
-
 const Divider = styled.div`
   width: 1px;
   height: 20px;
@@ -52,18 +45,6 @@ const Divider = styled.div`
   @media screen and (max-width: 800px) {
     width: 100%;
     height: 1px;
-  }
-`;
-
-const RangeWrapper = styled.div`
-  @media screen and (max-width: 800px) {
-    width: 100%;
-  }
-  display: flex;
-  gap: 4px;
-  > div {
-    width: 98px;
-    flex-grow: 1;
   }
 `;
 
@@ -103,79 +84,16 @@ const tracksOptions = [
   })),
 ];
 
-const rangeOptions = [
-  { key: "token", value: "token", text: "Range by token" },
-  { key: "fiat", value: "fiat", text: "Range by fiat" },
-];
-
-const FilterButton = styled.div`
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  padding: 4px 8px;
-
-  height: 24px;
-
-  background: #F23252;
-  border-radius: 4px;
-
-  font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 16px;
-  text-align: center;
-
-  color: #FFFFFF;
-`;
-
-const ResetButton = styled.div`
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-
-  height: 24px;
-
-  background: none;
-  border-radius: 4px;
-
-  font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 16px;
-  text-align: center;
-
-  color: #F23252;
-`;
-
 export const RangeTypes = {
   Token: "token",
   Fiat: "fiat",
 };
 
-const RangeInput = ({ prefix, suffix, min, setMin, max, setMax }) => {
-  return (
-    <RangeWrapper>
-      <CompactInput
-        prefix={prefix}
-        suffix={suffix}
-        placeholder="Min"
-        value={min}
-        onChange={e => setMin(e.target.value)}
-      />
-      <CompactInput
-        prefix={prefix}
-        suffix={suffix}
-        placeholder="Max"
-        value={max}
-        onChange={e => setMax(e.target.value)}
-      />
-    </RangeWrapper>
-  );
-};
-
 const Filter = ({
   chain,
+  track,
   setTrack,
+  status,
   setStatus,
   rangeType,
   setRangeType,
@@ -184,60 +102,32 @@ const Filter = ({
   max,
   setMax,
 }) => {
-  const chainSymbol = chain === "kusama" ? "KSM" : "DOT";
-  const suffix = rangeType === RangeTypes.Token ? chainSymbol : "";
-  const prefix = rangeType === RangeTypes.Fiat ? "$": "";
-
-  const [minValue, setMinValue] = useState(min);
-  const [maxValue, setMaxValue] = useState(max);
-  const hasMinMax = minValue || maxValue;
-
   return (
     <FormWrapper>
       <TrackSelect
         name="tracks"
         fluid
         options={tracksOptions}
-        defaultValue="-1"
+        defaultValue={track}
         onChange={(e, { name, value }) => setTrack(value)}
       />
       <StatusSelect
         name="status"
         fluid
         options={statusOptions}
-        defaultValue="-1"
+        defaultValue={status}
         onChange={(e, { name, value }) => setStatus(value)}
       />
       <Divider />
-      <RangeSelect
-        name="range"
-        fluid
-        options={rangeOptions}
-        defaultValue={rangeType}
-        onChange={(e, { name, value }) => setRangeType(value)}
+      <Range
+        chain={chain}
+        rangeType={rangeType}
+        setRangeType={setRangeType}
+        min={min}
+        setMin={setMin}
+        max={max}
+        setMax={setMax}
       />
-      <RangeInput
-        prefix={prefix}
-        suffix={suffix}
-        min={minValue}
-        setMin={setMinValue}
-        max={maxValue}
-        setMax={setMaxValue}
-      />
-      {hasMinMax && (
-        <>
-          <FilterButton onClick={() => {
-            setMin(minValue);
-            setMax(maxValue);
-          }}>Filter</FilterButton>
-          <ResetButton onClick={() => {
-            setMin("");
-            setMax("");
-            setMinValue("");
-            setMaxValue("");
-          }}>Reset</ResetButton>
-        </>
-      )}
     </FormWrapper>
   );
 };
