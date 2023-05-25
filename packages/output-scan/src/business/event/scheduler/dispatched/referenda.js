@@ -8,26 +8,36 @@ const {
   logger,
 } = require("@osn/scan-common");
 
-async function handleSpendAndApproved(referendum, indexer, blockEvents) {
-  if (!blockEvents[indexer.eventIndex - 1]) {
-    return null;
+function findSpendEvents(blockEvents, startIndex, indexer) {
+  let events = [];
+  for (let i = startIndex; i >= 0; i--) {
+    const iterEvent = blockEvents[i].event;
+    const { section, method } = iterEvent;
+    if ("scheduler" === section && "Dispatched" === method) {
+      break;
+    } else if ("treasury" !== section || "SpendApproved" !== method) {
+      continue;
+    }
+
+    events.push({
+      event: iterEvent,
+      indexer: {
+        ...indexer,
+        eventIndex: i,
+      }
+    })
   }
 
-  const maybeSpendEvent = blockEvents[indexer.eventIndex - 1].event;
-  const { section, method } = maybeSpendEvent;
-  if ("treasury" !== section || "SpendApproved" !== method) {
-    return
-  }
+  return events;
+}
 
+async function saveOneProposal({ event, indexer }, referendum) {
   const { referendumIndex, proposer, trackInfo } = referendum;
-  const proposalIndexer = {
-    ...indexer,
-    eventIndex: indexer.eventIndex - 1,
-  };
+  const proposalIndexer = indexer;
 
-  const proposalIndex = maybeSpendEvent.data[0].toNumber();
-  const value = maybeSpendEvent.data[1].toString();
-  const beneficiary = maybeSpendEvent.data[2].toString();
+  const proposalIndex = event.data[0].toNumber();
+  const value = event.data[1].toString();
+  const beneficiary = event.data[2].toString();
   const meta = await getTreasuryProposalMeta(indexer.blockHash, proposalIndex);
 
   const timelineItem = {
@@ -69,6 +79,17 @@ async function handleSpendAndApproved(referendum, indexer, blockEvents) {
     { $set: { treasuryProposalIndex: proposalIndex } },
   );
   logger.info(`Treasury proposal ${ proposalIndex } saved by gov2 referendum ${ referendumIndex }`);
+}
+
+async function handleSpendAndApproved(referendum, indexer, blockEvents) {
+  if (!blockEvents[indexer.eventIndex - 1]) {
+    return null;
+  }
+
+  const spendEvents = findSpendEvents(blockEvents, indexer.eventIndex - 1, indexer);
+  for (const spendEvent of spendEvents) {
+    await saveOneProposal(spendEvent, referendum);
+  }
 }
 
 async function handleReferenda(event, indexer, extrinsic, blockEvents) {
