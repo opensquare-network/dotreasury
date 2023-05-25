@@ -44,7 +44,7 @@ const Bounties = () => {
   const chain = useSelector(chainSelector);
 
   useEffect(() => {
-    dispatch(fetchBounties(chain, tablePage - 1, pageSize, {}, sort && { sort }));
+    dispatch(fetchBounties(chain, tablePage - 1, pageSize, {}, sort && { sort: sort.split("_") }));
 
     return () => {
       dispatch(resetBounties());
@@ -60,7 +60,7 @@ const Bounties = () => {
 
   const refreshBounties = useCallback(
     (reachingFinalizedBlock) => {
-      dispatch(fetchBounties(chain, tablePage - 1, pageSize, {}, sort && { sort }));
+      dispatch(fetchBounties(chain, tablePage - 1, pageSize, {}, sort && { sort: sort.split("_") }));
       if (reachingFinalizedBlock) {
         dispatch(newSuccessToast("Sync finished. Please provide context info for your bounty on subsquare or polkassembly."));
       }
