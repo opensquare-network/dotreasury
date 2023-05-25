@@ -67,10 +67,10 @@ export function useColumns(options) {
     ...bountyIndex,
     title: (
       <SortableIndex
-        direction={sortField === "bountyIndex" ? sortDirection : ""}
+        direction={sortField === "index" ? sortDirection : ""}
         onClick={() => {
-          setSortField("bountyIndex");
-          setSortDirection(sortField === "bountyIndex" && sortDirection === "asc" ? "desc" : "asc");
+          setSortField("index");
+          setSortDirection(sortField === "index" && sortDirection === "asc" ? "desc" : "asc");
         }}
       />
     ),

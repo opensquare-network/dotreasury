@@ -152,10 +152,10 @@ const ProposalsTable = ({ data, loading, header, footer }) => {
     ...proposalIndex,
     title: (
       <SortableIndex
-        direction={sortField === "proposalIndex" ? sortDirection : ""}
+        direction={sortField === "index" ? sortDirection : ""}
         onClick={() => {
-          setSortField("proposalIndex");
-          setSortDirection(sortField === "proposalIndex" && sortDirection === "asc" ? "desc" : "asc");
+          setSortField("index");
+          setSortDirection(sortField === "index" && sortDirection === "asc" ? "desc" : "asc");
         }}
       />
     ),

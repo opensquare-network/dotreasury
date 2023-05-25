@@ -59,7 +59,7 @@ const Proposals = () => {
   const chain = useSelector(chainSelector);
 
   useEffect(() => {
-    dispatch(fetchProposals(chain, tablePage - 1, pageSize, filterData, sort && { sort } ));
+    dispatch(fetchProposals(chain, tablePage - 1, pageSize, filterData, sort && { sort }));
 
     return () => {
       dispatch(resetProposals());

@@ -3,6 +3,7 @@ const { extractPage } = require("../../utils");
 const linkService = require("../../services/link.service");
 const commentService = require("../../services/comment.service");
 const { HttpError } = require("../../exc");
+const { BountySortFieldsMap } = require("../common/sort");
 
 const bountyStatus = (bounty) =>
   bounty?.status?.CuratorProposed ||
@@ -87,19 +88,19 @@ class BountiesController {
 
     const { sort } = ctx.request.query;
     if (sort) {
-      try {
-        const [fieldName, sortDirection] = JSON.parse(sort);
-        sortPipeline = [
-          {
-            $sort: {
-              [fieldName]: sortDirection === "desc" ? -1 : 1,
-              "indexer.blockHeight": -1,
-            }
-          }
-        ];
-      } catch (e) {
-        console.error(e);
+      let [fieldName, sortDirection] = sort.split("_");
+      fieldName = BountySortFieldsMap[fieldName];
+      if (!fieldName) {
+        throw new HttpError(400, "Invalid sort field");
       }
+      sortPipeline = [
+        {
+          $sort: {
+            [fieldName]: sortDirection === "desc" ? -1 : 1,
+            "indexer.blockHeight": -1,
+          }
+        }
+      ];
     }
 
     const condition = getCondition(ctx);
