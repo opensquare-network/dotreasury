@@ -33,7 +33,7 @@ import {
   p,
   rounded_none,
 } from "../../styles/tailwindcss";
-import { breakpoint, smcss } from "../../styles/responsive";
+import { breakpoint, smcss, mdcss } from "../../styles/responsive";
 import { useIsKusamaChain } from "../../utils/hooks/chain";
 import { extractTime } from "@polkadot/util";
 import { parseEstimateTime } from "../../utils/parseEstimateTime";
@@ -46,10 +46,11 @@ const Wrapper = styled(Card)`
 
   ${p(24)};
   ${grid};
-  ${gap_x(128)};
-  ${gap_y(16)};
-  ${grid_cols("auto-fit", 210)};
+  ${gap_x(16)};
+  ${gap_y(8)};
+  ${grid_cols(4)};
 
+  ${mdcss(grid_cols(3))};
   ${smcss(grid_cols(2))};
   ${breakpoint(600, rounded_none)};
 `;
