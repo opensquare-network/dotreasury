@@ -59,7 +59,7 @@ const Proposals = () => {
   const chain = useSelector(chainSelector);
 
   useEffect(() => {
-    dispatch(fetchProposals(chain, tablePage - 1, pageSize, filterData, sort && { sort: sort.split("_") } ));
+    dispatch(fetchProposals(chain, tablePage - 1, pageSize, filterData, sort && { sort }));
 
     return () => {
       dispatch(resetProposals());
@@ -75,7 +75,7 @@ const Proposals = () => {
 
   const refreshProposals = useCallback(
     (reachingFinalizedBlock) => {
-      dispatch(fetchProposals(chain, tablePage - 1, pageSize, filterData, sort && { sort: sort.split("_") }));
+      dispatch(fetchProposals(chain, tablePage - 1, pageSize, filterData, sort && { sort }));
       if (reachingFinalizedBlock) {
         dispatch(newSuccessToast("Sync finished. Please provide context info for your proposal on subsquare or polkassembly."));
       }

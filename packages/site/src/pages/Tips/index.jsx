@@ -68,7 +68,7 @@ const Tips = () => {
   const chain = useSelector(chainSelector);
 
   useEffect(() => {
-    dispatch(fetchTips(chain, tablePage - 1, pageSize, filterData, sort && { sort: sort.split("_") }));
+    dispatch(fetchTips(chain, tablePage - 1, pageSize, filterData, sort && { sort }));
 
     return () => {
       dispatch(resetTips());
@@ -88,7 +88,7 @@ const Tips = () => {
 
   const refreshTips = useCallback(
     () => {
-      dispatch(fetchTips(chain, tablePage - 1, pageSize, filterData, sort && { sort: sort.split("_") }));
+      dispatch(fetchTips(chain, tablePage - 1, pageSize, filterData, sort && { sort }));
     },
     [dispatch, chain, tablePage, pageSize, filterData, sort]
   );
