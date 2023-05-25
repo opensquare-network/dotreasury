@@ -62,7 +62,7 @@ export default function CompactInput({
   prefix,
   suffix,
   placeholder = 0,
-  defaultValue,
+  value,
   onChange = emptyFunction,
 }) {
   const inputRef = useRef();
@@ -73,7 +73,7 @@ export default function CompactInput({
         ref={inputRef}
         type="number"
         placeholder={placeholder}
-        defaultValue={defaultValue}
+        value={value}
         onChange={onChange}
       />
       {suffix && <Suffix>{suffix}</Suffix>}

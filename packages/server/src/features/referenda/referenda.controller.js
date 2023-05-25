@@ -1,7 +1,9 @@
+const { HttpError } = require("../../exc");
 const {
   getReferendaReferendumCollection,
 } = require("../../mongo");
 const { extractPage } = require("../../utils");
+const { QueryFieldsMap } = require("../common/query");
 
 const ReferendaStateSort = {
   Confirming: 10,
@@ -17,7 +19,7 @@ const ReferendaStateSort = {
 };
 
 function getCondition(ctx) {
-  const { status, track } = ctx.request.query;
+  const { status, track, range_type, min, max } = ctx.request.query;
 
   const condition = {}
   if (status) {
@@ -26,6 +28,20 @@ function getCondition(ctx) {
 
   if (track) {
     condition["trackInfo.name"] = track;
+  }
+
+  if (range_type) {
+    const fieldName = QueryFieldsMap[range_type];
+    if (!fieldName) {
+      throw new HttpError(400, `Invalid range_type: ${range_type}`);
+    }
+    condition[fieldName] = {};
+    if (min) {
+      condition[fieldName]["$gte"] = Number(min);
+    }
+    if (max) {
+      condition[fieldName]["$lte"] = Number(max);
+    }
   }
 
   return condition;

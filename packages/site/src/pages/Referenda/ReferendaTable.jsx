@@ -16,8 +16,9 @@ import api from "../../services/scanApi";
 import TextMinor from "../../components/TextMinor";
 import JumpToLink from "./Link";
 import DescriptionCell from "../Proposals/DescriptionCell";
-import Filter from "./Filter";
+import Filter, { RangeTypes } from "./Filter";
 import Divider from "../../components/Divider";
+import isEmpty from "lodash.isempty";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -54,7 +55,7 @@ export default function ReferendaTable() {
   const [dataList, setDataList] = useState(applicationList?.items || []);
   const [filterStatus, setFilterStatus] = useState("-1");
   const [filterTrack, setFilterTrack] = useState("-1");
-  const [rangeType, setRangeType] = useState("range-by-asset");
+  const [rangeType, setRangeType] = useState(RangeTypes.Token);
   const [min, setMin] = useState();
   const [max, setMax] = useState();
   const [page, setPage] = useState(DEFAULT_QUERY_PAGE);
@@ -64,12 +65,12 @@ export default function ReferendaTable() {
   useEffect(() => {
     const status = filterStatus === "-1" ? "" : filterStatus;
     const track = filterTrack === "-1" ? "" : filterTrack;
-    let minMax = [];
-    if (min || max) {
-      minMax = [min && parseFloat(min), max && parseFloat(max)];
-    }
-    dispatch(fetchApplicationList(chain, page - 1, pageSize, status, track, JSON.stringify(minMax)));
-  }, [dispatch, chain, page, pageSize, filterStatus, filterTrack, min, max]);
+    let minMax = {};
+    if (min) minMax.min = min;
+    if (max) minMax.max = max;
+    if (!isEmpty(minMax)) minMax.rangeType = rangeType;
+    dispatch(fetchApplicationList(chain, page - 1, pageSize, status, track, minMax));
+  }, [dispatch, chain, page, pageSize, filterStatus, filterTrack, rangeType, min, max]);
 
   useEffect(() => {
     setDataList(applicationList?.items || []);
