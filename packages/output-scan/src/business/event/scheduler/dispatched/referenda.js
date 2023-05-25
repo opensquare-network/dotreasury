@@ -1,3 +1,4 @@
+const { toDecimal128 } = require("../../../../utils");
 const { insertProposal } = require("../../../../mongo/service/treasuryProposal");
 const { getTreasuryProposalMeta } = require("../../../common/proposal/meta");
 const { gov2ReferendumState } = require("../../referenda/common/state");
@@ -47,6 +48,7 @@ async function handleSpendAndApproved(referendum, indexer, blockEvents) {
     proposalIndex,
     proposer: proposer,
     value,
+    dValue: toDecimal128(value),
     beneficiary,
     meta,
     state,
