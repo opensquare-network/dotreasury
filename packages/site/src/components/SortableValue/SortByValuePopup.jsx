@@ -6,7 +6,7 @@ import { p_12_normal } from "../../styles/text";
 import { ReactComponent as DirectionSVG } from "../Icon/direction.svg";
 
 const Popup = styled(PopupOrigin)`
-  width: 220px;
+  width: 160px;
   padding: 0 !important;
   border-color: var(--neutral300) !important;
   ${rounded_4} !important;
@@ -62,7 +62,7 @@ export default function SortByValuePopup({ trigger, sortField, setSortField, sor
     <Wrapper>
       <Title>Ranked by</Title>
       {Object.keys(SortByFields).map(fieldName =>
-        <MenuItem onClick={() => {
+        <MenuItem key={fieldName} onClick={() => {
           setSortField(fieldName);
           setSortDirection(sortField === fieldName && sortDirection === "desc" ? "asc" : "desc");
           setIsOpen(false);
@@ -86,6 +86,7 @@ export default function SortByValuePopup({ trigger, sortField, setSortField, sor
       on="click"
       trigger={trigger}
       hideOnScroll
+      position="bottom right"
     />
   );
 }

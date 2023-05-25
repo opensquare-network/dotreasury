@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router";
 
@@ -12,6 +12,7 @@ import {
 import Card from "../../components/Card";
 import { useTableColumns } from "../../components/shared/useTableColumns";
 import SortableValue from "../../components/SortableValue";
+import useSort from "../../hooks/useSort";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -33,10 +34,17 @@ const TableWrapper = styled.div`
   overflow: scroll;
 `;
 
-const TipsTable = ({ data, loading, header, footer, sortField, setSortField, sortDirection, setSortDirection }) => {
+const TipsTable = ({ data, loading, header, footer }) => {
   const history = useHistory();
   const chain = useSelector(chainSelector);
   const symbol = useSelector(chainSymbolSelector);
+
+  const {
+    sortField,
+    setSortField,
+    sortDirection,
+    setSortDirection,
+  } = useSort();
 
   const getRelatedLinks = (item) => {
     const links = [];

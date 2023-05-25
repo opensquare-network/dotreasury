@@ -23,8 +23,9 @@ const QUERY_PAGE_KEY = "page";
 
 const Bounties = () => {
   useChainRoute();
+  const query = useQuery();
 
-  const searchPage = parseInt(useQuery().get(QUERY_PAGE_KEY) || "1");
+  const searchPage = parseInt(query.get(QUERY_PAGE_KEY) || "1");
   const queryPage =
     searchPage && !isNaN(searchPage) && searchPage > 0
       ? searchPage
@@ -34,8 +35,7 @@ const Bounties = () => {
     "bountiesPageSize",
     DEFAULT_PAGE_SIZE
   );
-  const [sortField, setSortField] = useState();
-  const [sortDirection, setSortDirection] = useState();
+  const sort = query.get("sort");
 
   const dispatch = useDispatch();
   const { items: bounties, total: bountiesTotal } =
@@ -44,13 +44,12 @@ const Bounties = () => {
   const chain = useSelector(chainSelector);
 
   useEffect(() => {
-    const sort = sortField && sortDirection && { sort: JSON.stringify([sortField, sortDirection]) };
-    dispatch(fetchBounties(chain, tablePage - 1, pageSize, {}, sort));
+    dispatch(fetchBounties(chain, tablePage - 1, pageSize, {}, sort && { sort }));
 
     return () => {
       dispatch(resetBounties());
     };
-  }, [dispatch, chain, tablePage, pageSize, sortField, sortDirection]);
+  }, [dispatch, chain, tablePage, pageSize, sort]);
 
   const totalPages = useMemo(
     () => Math.ceil(bountiesTotal / pageSize),
@@ -61,13 +60,12 @@ const Bounties = () => {
 
   const refreshBounties = useCallback(
     (reachingFinalizedBlock) => {
-      const sort = sortField && sortDirection && { sort: JSON.stringify([sortField, sortDirection]) };
-      dispatch(fetchBounties(chain, tablePage - 1, pageSize, {}, sort));
+      dispatch(fetchBounties(chain, tablePage - 1, pageSize, {}, sort && { sort }));
       if (reachingFinalizedBlock) {
         dispatch(newSuccessToast("Sync finished. Please provide context info for your bounty on subsquare or polkassembly."));
       }
     },
-    [dispatch, chain, tablePage, pageSize, sortField, sortDirection]
+    [dispatch, chain, tablePage, pageSize, sort]
   );
 
   const onFinalized = useWaitSyncBlock("Bounty created", refreshBounties);
@@ -95,10 +93,6 @@ const Bounties = () => {
 
   return (
     <BountiesTable
-      sortField={sortField}
-      setSortField={setSortField}
-      sortDirection={sortDirection}
-      setSortDirection={setSortDirection}
       data={tableData}
       loading={loading}
       header={header}

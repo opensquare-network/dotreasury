@@ -13,7 +13,7 @@ const Wrapper = styled.div`
     }
   }
   > span {
-    color: var(--textSecondary);
+    color: var(--pink500);
   }
 `;
 

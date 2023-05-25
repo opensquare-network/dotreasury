@@ -14,6 +14,7 @@ import { useTableColumns } from "../../components/shared/useTableColumns";
 import api from "../../services/scanApi";
 import SortableIndex from "../../components/SortableIndex";
 import SortableValue from "../../components/SortableValue";
+import useSort from "../../hooks/useSort";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -53,12 +54,19 @@ const completeProposalsWithTitle = (data = [], chain) => {
   });
 };
 
-const ProposalsTable = ({ data, loading, header, footer, sortField, setSortField, sortDirection, setSortDirection }) => {
+const ProposalsTable = ({ data, loading, header, footer }) => {
   const history = useHistory();
   const symbol = useSelector(chainSymbolSelector);
   const chain = useSelector(chainSelector);
   const [isBeneficiary, setIsBeneficiary] = useState(true);
   const [tableData, setTableData] = useState(data);
+
+  const {
+    sortField,
+    setSortField,
+    sortDirection,
+    setSortDirection,
+  } = useSort();
 
   useEffect(() => {
     setTableData(data);
@@ -107,12 +115,14 @@ const ProposalsTable = ({ data, loading, header, footer, sortField, setSortField
     setIsBeneficiary(!isBeneficiary);
   beneficiary = {
     ...beneficiary,
+    title: <span style={{ color: "var(--pink500)" }}>Beneficiary</span>,
     headerCellProps: {
       onClick: handleSwitchBebeficiaryProposer,
     },
   };
   proposer = {
     ...proposer,
+    title: <span style={{ color: "var(--pink500)" }}>Proposer</span>,
     headerCellProps: {
       onClick: handleSwitchBebeficiaryProposer,
     },

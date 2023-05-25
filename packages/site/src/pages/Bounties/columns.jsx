@@ -1,15 +1,24 @@
 import { useTableColumns } from "../../components/shared/useTableColumns";
 import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SortableIndex from "../../components/SortableIndex";
 import SortableValue from "../../components/SortableValue";
+import { useHistory } from "react-router";
+import useSort from "../../hooks/useSort";
 
 export function useColumns(options) {
-  const { defaultCurator = true, sortField, setSortField, sortDirection, setSortDirection } = options ?? {};
+  const { defaultCurator = true } = options ?? {};
 
   const symbol = useSelector(chainSymbolSelector);
   const [isCurator, setIsCurator] = useState(defaultCurator);
+
+  const {
+    sortField,
+    setSortField,
+    sortDirection,
+    setSortDirection,
+  } = useSort();
 
   const getDetailRoute = (row) => {
     const type = row.parentBountyId >= 0 ? "child-bounties" : "bounties";
@@ -45,10 +54,12 @@ export function useColumns(options) {
   };
   curator = {
     ...curator,
+    title: <span style={{ color: "var(--pink500)" }}>Curator</span>,
     show: isCurator,
   };
   beneficiary = {
     ...beneficiary,
+    title: <span style={{ color: "var(--pink500)" }}>Beneficiary</span>,
     show: !isCurator,
   };
 
