@@ -11,6 +11,7 @@ const commentService = require("../../services/comment.service");
 const rateService = require("../../services/rate.service");
 const descriptionService = require("../../services/description.service");
 const { HttpError } = require("../../exc");
+const { ProposalSortFieldsMap } = require("../common/sort");
 
 async function getProposalMotions(proposal, chain) {
   const motionHashes = (proposal.motions || []).map(motionInfo => motionInfo.hash);
@@ -128,19 +129,19 @@ class ProposalsController {
 
     const { sort } = ctx.request.query;
     if (sort) {
-      try {
-        const [fieldName, sortDirection] = JSON.parse(sort);
-        sortPipeline = [
-          {
-            $sort: {
-              [fieldName]: sortDirection === "desc" ? -1 : 1,
-              "indexer.blockHeight": -1,
-            }
-          }
-        ];
-      } catch (e) {
-        console.error(e);
+      let [fieldName, sortDirection] = sort.split("_");
+      fieldName = ProposalSortFieldsMap[fieldName];
+      if (!fieldName) {
+        throw new HttpError(400, "Invalid sort field");
       }
+      sortPipeline = [
+        {
+          $sort: {
+            [fieldName]: sortDirection === "desc" ? -1 : 1,
+            "indexer.blockHeight": -1,
+          }
+        }
+      ];
     }
 
     const proposalsQuery = proposalCol.aggregate([

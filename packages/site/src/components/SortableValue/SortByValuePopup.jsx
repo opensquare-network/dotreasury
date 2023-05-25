@@ -51,8 +51,8 @@ const DirectionWrapper = styled.div`
 `;
 
 export const SortByFields = {
-  dValue: "Token amount",
-  fiatValue: "Fiat value",
+  token: "Token amount",
+  fiat: "Fiat value",
 };
 
 export default function SortByValuePopup({ trigger, sortField, setSortField, sortDirection, setSortDirection }) {
