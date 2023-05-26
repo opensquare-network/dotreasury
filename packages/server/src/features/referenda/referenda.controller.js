@@ -1,7 +1,9 @@
+const { HttpError } = require("../../exc");
 const {
   getReferendaReferendumCollection,
 } = require("../../mongo");
 const { extractPage } = require("../../utils");
+const { QueryFieldsMap, ReferendaQueryFieldsMap } = require("../common/query");
 
 const ReferendaStateSort = {
   Confirming: 10,
@@ -17,7 +19,7 @@ const ReferendaStateSort = {
 };
 
 function getCondition(ctx) {
-  const { status, track } = ctx.request.query;
+  const { status, track, range_type, min, max } = ctx.request.query;
 
   const condition = {}
   if (status) {
@@ -26,6 +28,20 @@ function getCondition(ctx) {
 
   if (track) {
     condition["trackInfo.name"] = track;
+  }
+
+  if (range_type) {
+    const fieldName = QueryFieldsMap[range_type];
+    if (!fieldName) {
+      throw new HttpError(400, `Invalid range_type: ${range_type}`);
+    }
+    condition[fieldName] = {};
+    if (min) {
+      condition[fieldName]["$gte"] = Number(min);
+    }
+    if (max) {
+      condition[fieldName]["$lte"] = Number(max);
+    }
   }
 
   return condition;
@@ -50,8 +66,8 @@ class ReferendaController {
     const condition = getCondition(ctx);
     const referendumCol = await getReferendaReferendumCollection(chain);
     const totalQuery = referendumCol.countDocuments(condition);
-    const referendaQuery = referendumCol.aggregate([
-      { $match: condition },
+
+    let sortPipeline = [
       {
         $addFields: {
           sort: {
@@ -75,6 +91,28 @@ class ReferendaController {
           "indexer.blockHeight": -1,
         }
       },
+    ];
+
+    const { sort } = ctx.request.query;
+    if (sort) {
+      let [fieldName, sortDirection] = sort.split("_");
+      fieldName = ReferendaQueryFieldsMap[fieldName];
+      if (!fieldName) {
+        throw new HttpError(400, "Invalid sort field");
+      }
+      sortPipeline = [
+        {
+          $sort: {
+            [fieldName]: sortDirection === "desc" ? -1 : 1,
+            "indexer.blockHeight": -1,
+          }
+        }
+      ];
+    }
+
+    const referendaQuery = referendumCol.aggregate([
+      { $match: condition },
+      ...sortPipeline,
       { $skip: page * pageSize },
       { $limit: pageSize },
       {

@@ -11,7 +11,7 @@ const commentService = require("../../services/comment.service");
 const rateService = require("../../services/rate.service");
 const descriptionService = require("../../services/description.service");
 const { HttpError } = require("../../exc");
-const { ProposalSortFieldsMap } = require("../common/sort");
+const { ProposalQueryFieldsMap } = require("../common/query");
 
 async function getProposalMotions(proposal, chain) {
   const motionHashes = (proposal.motions || []).map(motionInfo => motionInfo.hash);
@@ -130,7 +130,7 @@ class ProposalsController {
     const { sort } = ctx.request.query;
     if (sort) {
       let [fieldName, sortDirection] = sort.split("_");
-      fieldName = ProposalSortFieldsMap[fieldName];
+      fieldName = ProposalQueryFieldsMap[fieldName];
       if (!fieldName) {
         throw new HttpError(400, "Invalid sort field");
       }

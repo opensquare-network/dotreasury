@@ -107,11 +107,12 @@ const Proposals = () => {
             totalPages={totalPages}
             pageSize={pageSize}
             setPageSize={(pageSize) => {
-              setTablePage(DEFAULT_QUERY_PAGE);
-              setPageSize(pageSize);
               const searchParams = new URLSearchParams(history.location.search);
               searchParams.delete("page");
               history.push({ search: searchParams.toString() });
+
+              setTablePage(DEFAULT_QUERY_PAGE);
+              setPageSize(pageSize);
             }}
             onPageChange={(_, { activePage }) => {
               const searchParams = new URLSearchParams(history.location.search);

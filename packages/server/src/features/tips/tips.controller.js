@@ -4,7 +4,7 @@ const commentService = require("../../services/comment.service");
 const { extractPage, ADMINS } = require("../../utils");
 const { normalizeTip } = require("./utils");
 const { HttpError } = require("../../exc");
-const { TipSortFieldsMap } = require("../common/sort");
+const { TipQueryFieldsMap } = require("../common/query");
 
 function getCondition(ctx) {
   const { status, beneficiary, finder, proposer } = ctx.request.query;
@@ -54,7 +54,7 @@ class TipsController {
     const { sort } = ctx.request.query;
     if (sort) {
       let [fieldName, sortDirection] = sort.split("_");
-      fieldName = TipSortFieldsMap[fieldName];
+      fieldName = TipQueryFieldsMap[fieldName];
       if (!fieldName) {
         throw new HttpError(400, "Invalid sort field");
       }

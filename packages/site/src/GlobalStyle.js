@@ -13,6 +13,7 @@ const GlobalStyle = createGlobalStyle`
     display: flex;
     flex-direction: column;
     font-family: 'Inter', 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    overflow: hidden;
   }
 
   ol:not(.mde-preview-content *),
