@@ -11,7 +11,7 @@ export default function useCouncilMembers() {
       return;
     }
 
-    api.query.council.members().then(members => {
+    api.query.council?.members().then(members => {
       const data = members.toJSON();
       if (data) {
         setMembers(data);
