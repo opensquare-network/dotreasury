@@ -127,7 +127,8 @@ const Range = ({
 
   const [minValue, setMinValue] = useState(min);
   const [maxValue, setMaxValue] = useState(max);
-  const hasMinMax = minValue || maxValue;
+  const hasMinMaxValue = minValue || maxValue;
+  const hasMinMax = min || max;
 
   return (
     <Wrapper>
@@ -146,19 +147,19 @@ const Range = ({
         max={maxValue}
         setMax={setMaxValue}
       />
+      {hasMinMaxValue && (
+        <FilterButton onClick={() => {
+          setMin(minValue);
+          setMax(maxValue);
+        }}>Filter</FilterButton>
+      )}
       {hasMinMax && (
-        <>
-          <FilterButton onClick={() => {
-            setMin(minValue);
-            setMax(maxValue);
-          }}>Filter</FilterButton>
-          <ResetButton onClick={() => {
-            setMin("");
-            setMax("");
-            setMinValue("");
-            setMaxValue("");
-          }}>Reset</ResetButton>
-        </>
+        <ResetButton onClick={() => {
+          setMin("");
+          setMax("");
+          setMinValue("");
+          setMaxValue("");
+        }}>Reset</ResetButton>
       )}
     </Wrapper>
   );

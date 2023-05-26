@@ -8,7 +8,7 @@ import TableHeader from "./TableHeader";
 import { useTableColumns } from "../../components/shared/useTableColumns";
 import { useDispatch, useSelector } from "react-redux";
 import { applicationListSelector, fetchApplicationList, loadingApplicationListSelector } from "../../store/reducers/openGovApplicationsSlice";
-import { chainSelector } from "../../store/reducers/chainSlice";
+import { chainSelector, chainSymbolSelector } from "../../store/reducers/chainSlice";
 import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../constants";
 import ResponsivePagination from "../../components/ResponsivePagination";
 import { useHistory } from "react-router";
@@ -16,7 +16,7 @@ import api from "../../services/scanApi";
 import TextMinor from "../../components/TextMinor";
 import JumpToLink from "./Link";
 import DescriptionCell from "../Proposals/DescriptionCell";
-import Filter from "./Filter";
+import Filter, { RangeTypes } from "./Filter";
 import Divider from "../../components/Divider";
 import isEmpty from "lodash.isempty";
 import useListFilter from "./useListFilter";
@@ -24,6 +24,8 @@ import SortableValue from "../../components/SortableValue";
 import useSort from "../../hooks/useSort";
 import SortableIndex from "../../components/SortableIndex";
 import { useQuery } from "../../utils/hooks";
+import { getPrecision } from "../../utils";
+import BigNumber from "bignumber.js";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -63,6 +65,8 @@ export default function ReferendaTable() {
   const totalPages = Math.ceil((applicationList?.total || 0) / pageSize);
   const query = useQuery();
   const sort = query.get("sort");
+  const symbol = useSelector(chainSymbolSelector);
+  const precision = getPrecision(symbol);
 
   const {
     sortField,
@@ -88,11 +92,16 @@ export default function ReferendaTable() {
     const status = filterStatus === "-1" ? "" : filterStatus;
     const track = filterTrack === "-1" ? "" : filterTrack;
     let minMax = {};
-    if (min) minMax.min = min;
-    if (max) minMax.max = max;
+    if (rangeType === RangeTypes.Token) {
+      if (min) minMax.min = new BigNumber(min).times(Math.pow(10, precision)).toString();
+      if (max) minMax.max = new BigNumber(max).times(Math.pow(10, precision)).toString();
+    } else {
+      if (min) minMax.min = min;
+      if (max) minMax.max = max;
+    }
     if (!isEmpty(minMax)) minMax.rangeType = rangeType;
     dispatch(fetchApplicationList(chain, page - 1, pageSize, status, track, minMax, sort && { sort }));
-  }, [dispatch, chain, page, pageSize, filterStatus, filterTrack, rangeType, min, max, sort]);
+  }, [dispatch, chain, page, pageSize, filterStatus, filterTrack, rangeType, min, max, sort, precision]);
 
   useEffect(() => {
     setDataList(applicationList?.items || []);

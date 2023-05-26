@@ -20,7 +20,7 @@ export default function useListFilter() {
   const [max, setMax] = useState(defaultMax);
 
   useEffect(() => {
-    const query = new URLSearchParams(history.location.href);
+    const query = new URLSearchParams(history.location.search);
 
     if (filterStatus !== "-1") {
       query.set("status", filterStatus);
