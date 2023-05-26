@@ -69,7 +69,7 @@ function DB(dbUrl, dbName) {
   async function getReferendaReferendumCollection() {
     await tryInit(referendaReferendumCol);
     return referendaReferendumCol;
-  };
+  }
 
   return {
     getTipCollection,

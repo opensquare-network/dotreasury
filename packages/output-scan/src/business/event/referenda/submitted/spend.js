@@ -32,6 +32,7 @@ async function handleTreasurySpend(referendumIndex, trackId, proposalHash, call,
     proposalHash,
     proposal: normalizeCall(call),
     amount,
+    value: amount,
     dValue: toDecimal128(amount),
     beneficiary,
   });
