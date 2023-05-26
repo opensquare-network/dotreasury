@@ -7,7 +7,7 @@ import CompactInput from "../../components/CompactInput";
 const Wrapper = styled.div`
   display: flex;
   gap: 16px;
-  flex-grow: 1;
+  width: 100%;
   align-items: center;
 
   @media screen and (max-width: 800px) {

@@ -26,9 +26,9 @@ import SortableIndex from "../../components/SortableIndex";
 import { useQuery } from "../../utils/hooks";
 import { getPrecision } from "../../utils";
 import BigNumber from "bignumber.js";
+import startCase from "lodash.startcase";
 
 const CardWrapper = styled(Card)`
-  overflow-x: hidden;
   padding: 0;
   table {
     border-radius: 0 !important;
@@ -40,7 +40,6 @@ const CardWrapper = styled(Card)`
 `;
 
 const Wrapper = styled.div`
-  overflow: hidden;
 `;
 
 const TableWrapper = styled.div`
@@ -112,7 +111,8 @@ export default function ReferendaTable() {
           return item;
         }
 
-        const description = await fetchGov2ReferendaTitle(chain, item.referendumIndex);
+        let description = await fetchGov2ReferendaTitle(chain, item.referendumIndex);
+        description = description || `[${startCase(item.trackInfo.name)}] Referendum #${item.referendumIndex}`;
         return { ...item, description };
       });
 

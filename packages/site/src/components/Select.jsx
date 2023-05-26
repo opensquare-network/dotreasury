@@ -14,6 +14,7 @@ const CustomSelect = styled(Form.Select)`
     }
   }
   .text {
+    white-space: nowrap;
     color: var(--textPrimary) !important;
   }
   .dropdown.icon {
