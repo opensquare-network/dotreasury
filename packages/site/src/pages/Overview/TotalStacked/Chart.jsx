@@ -116,7 +116,7 @@ const LineChart = ({ data, onHover }) => {
     },
     maintainAspectRatio: false,
     onHover: function (_, array) {
-      const index = array?.[0]?._index;
+      const index = array?.[0]?.index;
       onHover(index);
     },
   };
