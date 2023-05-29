@@ -15,7 +15,22 @@ async function insertPeriod(obj = {}, indexer) {
   await col.insertOne(obj);
 }
 
+async function getPeriodByEndHeight(endHeight) {
+  const col = await getPeriodCol();
+  return col.findOne({ endHeight });
+}
+
+async function updatePeriod(endHeight, updates = {}) {
+  const col = await getPeriodCol();
+  await col.updateOne(
+    { endHeight },
+    { $set: updates },
+  );
+}
+
 module.exports = {
   getLastPeriod,
   insertPeriod,
+  getPeriodByEndHeight,
+  updatePeriod,
 }
