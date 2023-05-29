@@ -28,6 +28,7 @@ async function handleTreasuryTransferOut(event, indexer, extrinsic) {
   const col = await getOutTransferCollection()
   await col.insertOne({
     indexer,
+    awardHeight: indexer.blockHeight,
     dest: to,
     balance,
     value: balance,
