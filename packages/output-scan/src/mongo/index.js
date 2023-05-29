@@ -39,6 +39,7 @@ let democracyReferendumCol = null;
 let referendaReferendumCol = null;
 let referendaReferendumTimelineCol = null;
 
+let periodCol = null; // spend periods
 let weeklyStatsCol = null;
 
 async function initDb() {
@@ -63,6 +64,8 @@ async function initDb() {
   democracyReferendumCol = db.collection("democracyReferendum");
   referendaReferendumCol = db.collection("referendaReferendum");
   referendaReferendumTimelineCol = db.collection("referendaReferendumTimeline");
+
+  periodCol = db.collection("period");
 
   await _createIndexes();
 }
@@ -152,6 +155,11 @@ async function getReferendaReferendumTimelineCol() {
   return referendaReferendumTimelineCol;
 }
 
+async function getPeriodCol() {
+  await tryInit(periodCol);
+  return periodCol;
+}
+
 async function close() {
   if (client) {
     await client.close();
@@ -174,4 +182,5 @@ module.exports = {
   getDemocracyReferendumCollection,
   getReferendaReferendumCol,
   getReferendaReferendumTimelineCol,
+  getPeriodCol,
 };
