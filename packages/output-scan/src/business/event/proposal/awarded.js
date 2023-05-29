@@ -27,7 +27,11 @@ async function handleAwarded(event, eventIndexer) {
     indexer: eventIndexer,
   };
 
-  await updateProposal(proposalIndex, { state, isFinal: true }, timelineItem);
+  await updateProposal(proposalIndex, {
+    awardHeight: eventIndexer.blockHeight,
+    state,
+    isFinal: true,
+  }, timelineItem);
   logger.info(`Treasury proposal ${ proposalIndex } awarded at`, eventIndexer);
 }
 
