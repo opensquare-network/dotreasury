@@ -1,3 +1,4 @@
+const { setPeriodMark } = require("../../../store");
 const { getNextBlockIndexer } = require("./nextBlockIndexer");
 const { getGenesisBlockIndexer } = require("./genesisBlock");
 const { getLastPeriod, insertPeriod } = require("../../../mongo/service");
@@ -28,7 +29,7 @@ async function handleRollover(event, indexer) {
     remaining,
   });
 
-  // todo: mark this height and do statistics
+  setPeriodMark(indexer.block());
 }
 
 module.exports = {
