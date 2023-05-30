@@ -4,6 +4,7 @@ dotenv.config();
 const DB = require("./output-scan");
 const { normalizeTokenValue } = require("../utils");
 const BigNumber = require("bignumber.js");
+const { savePeriodPrice } = require("./period");
 
 const dotDbName = process.env.MONGO_DB_OUTPUT_DOT_NAME;
 if (!dotDbName) {
@@ -70,6 +71,7 @@ async function main() {
       getBountyCollection,
       getChildBountyCollection,
       getReferendaReferendumCollection,
+      getPeriodCol,
     } = DB(dbUrl, dbName);
 
     const tipCol = await getTipCollection();
@@ -83,6 +85,9 @@ async function main() {
 
     const childBountyCol = await getChildBountyCollection();
     await savePrice(chain, childBountyCol);
+
+    const periodCol = await getPeriodCol();
+    await savePeriodPrice(chain, periodCol);
 
     if (chain === "kusama") {
       const referendaCol = await getReferendaReferendumCollection();
