@@ -29,7 +29,7 @@ async function handleRollover(event, indexer) {
     remaining,
   });
 
-  setPeriodMark(indexer.block());
+  setPeriodMark(indexer.blockHeight);
 }
 
 module.exports = {
