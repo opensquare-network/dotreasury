@@ -1,16 +1,45 @@
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
 import styled from "styled-components";
 import { Form } from "semantic-ui-react";
 import { tipStatusMap } from "../../constants";
 
 import Select from "../../components/Select";
+import Range from "../../components/Filter/Range";
 
 const FormWrapper = styled(Form)`
   display: flex;
-  justify-content: flex-end;
+  gap: 16px;
+  flex-grow: 1;
+  align-items: center;
+
+  @media screen and (max-width: 800px) {
+    flex-direction: column;
+  }
+
+  & .field {
+    margin: 0 !important;
+  }
+
+  .ui.dropdown .text {
+    font-size: 12px !important;
+  }
 `;
+
 const StatusSelect = styled(Select)`
   width: 145px;
+  @media screen and (max-width: 800px) {
+    width: 100%;
+  }
+`;
+
+const Divider = styled.div`
+  width: 1px;
+  height: 20px;
+  background: var(--neutral300);
+  @media screen and (max-width: 800px) {
+    width: 100%;
+    height: 1px;
+  }
 `;
 
 const statusOptions = [
@@ -25,35 +54,40 @@ const statusOptions = [
   })),
 ];
 
-const Filter = ({ value, query }) => {
-  const [status, setStatus] = useState("");
+export const RangeTypes = {
+  Token: "token",
+  Fiat: "fiat",
+};
 
-  // only query on filters change
-  const mounting = useRef(true);
-  useEffect(() => {
-    if (mounting.current) {
-      mounting.current = false;
-      return;
-    }
-    const data = {
-      status,
-    };
-    for (let key in data) {
-      if (data[key] === "" || data[key] === "-1") {
-        delete data[key];
-      }
-    }
-    query(data);
-  }, [status, query]);
-
+const Filter = ({
+  chain,
+  status,
+  setStatus,
+  rangeType,
+  setRangeType,
+  min,
+  setMin,
+  max,
+  setMax,
+}) => {
   return (
     <FormWrapper>
       <StatusSelect
         name="status"
         fluid
         options={statusOptions}
-        value={value}
-        onChange={(e, { value }) => setStatus(value)}
+        defaultValue={status}
+        onChange={(e, { name, value }) => setStatus(value)}
+      />
+      <Divider />
+      <Range
+        chain={chain}
+        rangeType={rangeType}
+        setRangeType={setRangeType}
+        min={min}
+        setMin={setMin}
+        max={max}
+        setMax={setMax}
       />
     </FormWrapper>
   );
