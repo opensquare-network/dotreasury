@@ -1,46 +1,36 @@
-import styled, { css } from "styled-components";
-import Text from "../../components/Text";
-import { NavLink } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
-
-const NavWrapper = styled.div`
-  display: flex;
-  gap: 32px;
-`;
-
-const NavItem = styled(Text)`
-  cursor: pointer;
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 600;
-
-  a {
-    color: var(--textTertiary);
-
-    :hover {
-      color: var(--textSecondary);
-    }
-
-    ${(p) =>
-      p.active &&
-      css`
-        color: var(--textPrimary) !important;
-      `}
-  }
-`;
+import { Label } from "semantic-ui-react";
+import { totalBountyCountSelector, totalChildBountyCountSelector } from "../../store/reducers/overviewSlice";
+import { NavItem, NavLabel, NavWrapper } from "../../components/Nav/styled";
 
 function Nav({ active = "" }) {
+  const history = useHistory();
   const symbol = useSelector(chainSymbolSelector);
   const name = symbol.toLowerCase();
+  const totalBountyCount = useSelector(totalBountyCountSelector);
+  const totalChildBountyCount = useSelector(totalChildBountyCountSelector);
 
   const items = [
     {
-      label: "Bounties",
+      name: "Bounties",
+      label: (
+        <NavLabel>
+          <span>Bounties</span>
+          <Label>{totalBountyCount}</Label>
+        </NavLabel>
+      ),
       to: `/${name}/bounties`,
     },
     {
-      label: "Child Bounties",
+      name: "Child Bounties",
+      label: (
+        <NavLabel>
+          <span>Child Bounties</span>
+          <Label>{totalChildBountyCount}</Label>
+        </NavLabel>
+      ),
       to: `/${name}/child-bounties`,
     },
   ];
@@ -48,8 +38,12 @@ function Nav({ active = "" }) {
   return (
     <NavWrapper>
       {items.map((item) => (
-        <NavItem key={item.to} active={item.label === active}>
-          <NavLink to={item.to}>{item.label}</NavLink>
+        <NavItem
+          key={item.to}
+          active={item.name === active}
+          onClick={() => history.push(item.to)}
+        >
+          {item.label}
         </NavItem>
       ))}
     </NavWrapper>

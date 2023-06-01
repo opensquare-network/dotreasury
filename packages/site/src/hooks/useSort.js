@@ -8,6 +8,10 @@ export default function useSort() {
   const [defaultSortField, defaultSortDirection] = sort ? sort.split("_") : [];
   const [sortField, setSortField] = useState(defaultSortField);
   const [sortDirection, setSortDirection] = useState(defaultSortDirection);
+  useEffect(() => {
+    setSortField(defaultSortField);
+    setSortDirection(defaultSortDirection);
+  }, [defaultSortField, defaultSortDirection]);
   const history = useHistory();
 
   useEffect(() => {

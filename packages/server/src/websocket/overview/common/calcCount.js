@@ -2,6 +2,7 @@ async function calcCount(
   proposals = [],
   tips = [],
   bounties = [],
+  childBounties = [],
   burntList = [],
   outputTransferList = [],
   referendaList = [],
@@ -9,9 +10,11 @@ async function calcCount(
   const unFinishedProposals = proposals.filter(
     ({ state: { name, state } }) => (name || state) !== "Awarded" && (name || state) !== "Rejected"
   );
+  const openGovProposals = proposals.filter(({ isByGov2 }) => isByGov2);
   const proposal = {
     unFinished: unFinishedProposals.length,
     all: proposals.length,
+    openGov: openGovProposals.length,
   };
 
   const unFinishedTips = tips.filter(
@@ -33,6 +36,19 @@ async function calcCount(
   const bounty = {
     unFinished: unFinishedBounties.length,
     all: bounties.length,
+  };
+
+  const unFinishedChildBounties = childBounties.filter(
+    ({ state: { state: stateName } }) => {
+      return !["Rejected", "Claimed", "Canceled"].includes(
+        stateName
+      );
+    }
+  );
+
+  const childBounty = {
+    unFinished: unFinishedChildBounties.length,
+    all: childBounties.length,
   };
 
   const burnt = {
@@ -61,7 +77,7 @@ async function calcCount(
     all: referendaList.length,
   }
 
-  return { proposal, tip, bounty, burnt, transfer, referenda };
+  return { proposal, tip, bounty, childBounty, burnt, transfer, referenda };
 }
 
 module.exports = {
