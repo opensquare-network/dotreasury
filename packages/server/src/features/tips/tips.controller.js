@@ -4,10 +4,11 @@ const commentService = require("../../services/comment.service");
 const { extractPage, ADMINS } = require("../../utils");
 const { normalizeTip } = require("./utils");
 const { HttpError } = require("../../exc");
-const { TipQueryFieldsMap, QueryFieldsMap } = require("../common/query");
+const { TipQueryFieldsMap } = require("../common/query");
+const { getRangeCondition } = require("../common/getRangeCondition");
 
 function getCondition(ctx) {
-  const { status, beneficiary, finder, proposer, range_type, min, max } = ctx.request.query;
+  const { status, beneficiary, finder, proposer } = ctx.request.query;
 
   const condition = {};
   if (status) {
@@ -22,21 +23,9 @@ function getCondition(ctx) {
     condition["finder"] = finder || proposer;
   }
 
-  if (range_type) {
-    const fieldName = QueryFieldsMap[range_type];
-    if (!fieldName) {
-      throw new HttpError(400, `Invalid range_type: ${range_type}`);
-    }
-    condition[fieldName] = {};
-    if (min) {
-      condition[fieldName]["$gte"] = Number(min);
-    }
-    if (max) {
-      condition[fieldName]["$lte"] = Number(max);
-    }
-  }
+  const rangeCond = getRangeCondition(ctx);
 
-  return condition;
+  return { ...condition, ...rangeCond };
 }
 
 async function getAdmins(chain, blockHeight, tipHash) {

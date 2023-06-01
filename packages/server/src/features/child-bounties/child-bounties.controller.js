@@ -3,10 +3,11 @@ const { getChildBountyCollection } = require("../../mongo");
 const linkService = require("../../services/link.service");
 const commentService = require("../../services/comment.service");
 const { HttpError } = require("../../exc");
-const { ChildBountyQueryFieldsMap, QueryFieldsMap } = require("../common/query");
+const { ChildBountyQueryFieldsMap } = require("../common/query");
+const { getRangeCondition } = require("../common/getRangeCondition");
 
 function getCondition(ctx) {
-  const { beneficiary, proposer, status, range_type, min, max } = ctx.request.query;
+  const { beneficiary, proposer, status } = ctx.request.query;
 
   const condition = {}
   if (beneficiary) {
@@ -21,21 +22,9 @@ function getCondition(ctx) {
     condition["state.state"] = { $in: status.split("||") };
   }
 
-  if (range_type) {
-    const fieldName = QueryFieldsMap[range_type];
-    if (!fieldName) {
-      throw new HttpError(400, `Invalid range_type: ${range_type}`);
-    }
-    condition[fieldName] = {};
-    if (min) {
-      condition[fieldName]["$gte"] = Number(min);
-    }
-    if (max) {
-      condition[fieldName]["$lte"] = Number(max);
-    }
-  }
+  const rangeCond = getRangeCondition(ctx);
 
-  return condition;
+  return { ...condition, ...rangeCond };
 }
 
 async function queryChildBounties(ctx, chain, q = {}) {
