@@ -22,6 +22,13 @@ export default function useListFilter() {
   const [min, setMin] = useState(defaultMin);
   const [max, setMax] = useState(defaultMax);
 
+  useEffect(() => {
+    setFilterStatus(defaultStatus);
+    setRangeType(defaultRangeType);
+    setMin(defaultMin);
+    setMax(defaultMax);
+  }, [defaultStatus, defaultRangeType, defaultMin, defaultMax]);
+
   const symbol = useSelector(chainSymbolSelector);
   const precision = getPrecision(symbol);
 

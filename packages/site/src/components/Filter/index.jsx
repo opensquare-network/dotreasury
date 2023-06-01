@@ -72,7 +72,7 @@ const Filter = ({
         name="status"
         fluid
         options={statusOptions}
-        defaultValue={status}
+        value={status}
         onChange={(e, { name, value }) => setStatus(value)}
       />
       <Divider />

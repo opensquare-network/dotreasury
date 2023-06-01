@@ -11,7 +11,7 @@ const commentService = require("../../services/comment.service");
 const rateService = require("../../services/rate.service");
 const descriptionService = require("../../services/description.service");
 const { HttpError } = require("../../exc");
-const { ProposalQueryFieldsMap } = require("../common/query");
+const { ProposalQueryFieldsMap, QueryFieldsMap } = require("../common/query");
 
 async function getProposalMotions(proposal, chain) {
   const motionHashes = (proposal.motions || []).map(motionInfo => motionInfo.hash);
@@ -72,7 +72,7 @@ async function getAdmins(chain, proposalIndex) {
 }
 
 function getCondition(ctx) {
-  const { status, beneficiary, proposer } = ctx.request.query;
+  const { status, beneficiary, proposer, range_type, min, max, gov } = ctx.request.query;
 
   const condition = {}
   if (status) {
@@ -85,6 +85,26 @@ function getCondition(ctx) {
 
   if (proposer) {
     condition["proposer"] = proposer;
+  }
+
+  if (range_type) {
+    const fieldName = QueryFieldsMap[range_type];
+    if (!fieldName) {
+      throw new HttpError(400, `Invalid range_type: ${range_type}`);
+    }
+    condition[fieldName] = {};
+    if (min) {
+      condition[fieldName]["$gte"] = Number(min);
+    }
+    if (max) {
+      condition[fieldName]["$lte"] = Number(max);
+    }
+  }
+
+  if (gov === "1") {
+    condition.isByGov2 = { $ne: true };
+  } else if (gov === "2") {
+    condition.isByGov2 = true;
   }
 
   return condition;

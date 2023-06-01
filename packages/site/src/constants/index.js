@@ -35,9 +35,18 @@ export const childBountyStatusMap = {
   Claimed: "Claimed",
 };
 
-export const ProposalStatus = {
+export const proposalStatusMap = {
+  Proposed: "Proposed",
   Approved: "Approved",
   Rejected: "Rejected",
+  ApproveVoting: "ApproveVoting",
+  RejectVoting: "RejectVoting",
+  Awarded: "Awarded",
+};
+
+export const gov2ProposalStatusMap = {
+  Approved: "Approved",
+  Awarded: "Awarded",
 };
 
 export const TreasuryAccount =

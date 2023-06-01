@@ -7,7 +7,6 @@ import ProposalsTable from "./ProposalsTable";
 import { useDispatch, useSelector } from "react-redux";
 import { useChainRoute, useQuery, useLocalStorage } from "../../utils/hooks";
 import Summary from "./Summary";
-import Filter from "./Filter";
 
 import {
   fetchProposals,
@@ -16,11 +15,14 @@ import {
   resetProposals,
 } from "../../store/reducers/proposalSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
-import Text from "../../components/Text";
-import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../constants";
+import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE, gov2ProposalStatusMap, proposalStatusMap } from "../../constants";
 import useWaitSyncBlock from "../../utils/useWaitSyncBlock";
 import NewProposalButton from "./NewProposalButton";
 import { newSuccessToast } from "../../store/reducers/toastSlice";
+import Divider from "../../components/Divider";
+import useListFilter from "../../components/Filter/useListFilter";
+import Filter from "../../components/Filter";
+import Nav from "./Nav";
 
 const HeaderWrapper = styled.div`
   padding: 20px 24px;
@@ -29,10 +31,10 @@ const HeaderWrapper = styled.div`
   align-items: center;
 `;
 
-const Title = styled(Text)`
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 700;
+const FilterWrapper = styled.div`
+  display: flex;
+  align-items: flex-start;
+  padding: 24px;
 `;
 
 const Proposals = () => {
@@ -49,8 +51,20 @@ const Proposals = () => {
     "proposalsPageSize",
     DEFAULT_PAGE_SIZE
   );
-  const [filterData, setFilterData] = useState({});
   const sort = query.get("sort");
+  const gov = query.get("gov");
+
+  const {
+    filterStatus,
+    setFilterStatus,
+    rangeType,
+    setRangeType,
+    min,
+    setMin,
+    max,
+    setMax,
+    getFilterData,
+  } = useListFilter();
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -59,45 +73,66 @@ const Proposals = () => {
   const chain = useSelector(chainSelector);
 
   useEffect(() => {
-    dispatch(fetchProposals(chain, tablePage - 1, pageSize, filterData, sort && { sort }));
+    const filterData = getFilterData();
+    dispatch(fetchProposals(chain, tablePage - 1, pageSize, { ...filterData, gov }, sort && { sort }));
 
     return () => {
       dispatch(resetProposals());
     };
-  }, [dispatch, chain, tablePage, pageSize, filterData, sort]);
+  }, [dispatch, chain, tablePage, pageSize, getFilterData, sort, gov]);
 
   const totalPages = Math.ceil(total / pageSize);
 
-  const filterQuery = useCallback((data) => {
-    setFilterData(data);
-    setTablePage(1);
-  }, []);
-
   const refreshProposals = useCallback(
     (reachingFinalizedBlock) => {
-      dispatch(fetchProposals(chain, tablePage - 1, pageSize, filterData, sort && { sort }));
+      const filterData = getFilterData();
+      dispatch(fetchProposals(chain, tablePage - 1, pageSize, { ...filterData, gov }, sort && { sort }));
       if (reachingFinalizedBlock) {
         dispatch(newSuccessToast("Sync finished. Please provide context info for your proposal on subsquare or polkassembly."));
       }
     },
-    [dispatch, chain, tablePage, pageSize, filterData, sort]
+    [dispatch, chain, tablePage, pageSize, getFilterData, sort, gov]
   );
 
   const onFinalized = useWaitSyncBlock("Proposal created", refreshProposals);
+
+  let statusMap = {};
+  if (gov === "1") {
+    statusMap = proposalStatusMap;
+  } else if (gov === "2") {
+    statusMap = gov2ProposalStatusMap;
+  } else {
+    statusMap = { ...proposalStatusMap, ...gov2ProposalStatusMap };
+  }
 
   return (
     <>
       <Summary />
       <ProposalsTable
         header={
-          <HeaderWrapper>
-            <Title>Proposals</Title>
-            <div style={{ display: "flex", gap: "16px" }}>
-              <NewProposalButton onFinalized={onFinalized} />
-              <Filter query={filterQuery} />
-            </div>
-
-          </HeaderWrapper>
+          <div>
+            <HeaderWrapper>
+              <Nav active="All" />
+              <div style={{ display: "flex", gap: "16px" }}>
+                <NewProposalButton onFinalized={onFinalized} />
+              </div>
+            </HeaderWrapper>
+            <Divider />
+            <FilterWrapper>
+              <Filter
+                chain={chain}
+                status={filterStatus}
+                setStatus={setFilterStatus}
+                rangeType={rangeType}
+                setRangeType={setRangeType}
+                min={min}
+                setMin={setMin}
+                max={max}
+                setMax={setMax}
+                statusMap={statusMap}
+              />
+            </FilterWrapper>
+          </div>
         }
         data={proposals}
         loading={loading}

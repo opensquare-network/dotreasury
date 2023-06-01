@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import Select from "../../components/Select";
 import CompactInput from "../../components/CompactInput";
+import { useEffect } from "react";
 
 const Wrapper = styled.div`
   display: flex;
@@ -127,6 +128,11 @@ const Range = ({
 
   const [minValue, setMinValue] = useState(min);
   const [maxValue, setMaxValue] = useState(max);
+  useEffect(() => {
+    setMinValue(min);
+    setMaxValue(max);
+  }, [min, max]);
+
   const hasMinMaxValue = minValue || maxValue;
   const hasMinMax = min || max;
 
@@ -136,7 +142,7 @@ const Range = ({
         name="range"
         fluid
         options={rangeOptions}
-        defaultValue={rangeType}
+        value={rangeType}
         onChange={(e, { name, value }) => setRangeType(value)}
       />
       <RangeInput
