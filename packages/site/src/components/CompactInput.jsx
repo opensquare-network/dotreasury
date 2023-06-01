@@ -28,9 +28,9 @@ const Input = styled.input`
   padding: 0 !important;
 
   font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 16px;
+  font-weight: 400 !important;
+  font-size: 12px !important;
+  line-height: 16px !important;
 
   color: var(--textPrimary) !important;
 

@@ -5,8 +5,10 @@ import { Label } from "semantic-ui-react";
 import { useSelector } from "react-redux";
 import { openGovProposalCountSelector, totalProposalCountSelector } from "../../store/reducers/overviewSlice";
 import { NavItem, NavLabel, NavWrapper } from "../../components/Nav/styled";
+import { chainSelector } from "../../store/reducers/chainSlice";
 
 function Nav() {
+  const chain = useSelector(chainSelector);
   const history = useHistory();
   const [active, setActive] = useState("All");
   const totalProposalCount = useSelector(totalProposalCountSelector);
@@ -38,7 +40,10 @@ function Nav() {
       ),
 
     },
-    {
+  ];
+
+  if (chain === "kusama") {
+    items.push({
       name: "Gov1",
       label: (
         <NavLabel>
@@ -55,8 +60,8 @@ function Nav() {
           <Label>{openGovProposalCount}</Label>
         </NavLabel>
       ),
-    },
-  ];
+    });
+  }
 
   return (
     <NavWrapper>
