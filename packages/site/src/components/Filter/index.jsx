@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { Form } from "semantic-ui-react";
-import { tipStatusMap } from "../../constants";
 
 import Select from "../../components/Select";
 import Range from "../../components/Filter/Range";
@@ -42,23 +41,6 @@ const Divider = styled.div`
   }
 `;
 
-const statusOptions = [
-  { key: "all", value: "-1", text: "All status" },
-  ...Array.from(new Set(Object.values(tipStatusMap))).map((key) => ({
-    key,
-    value: Object.entries(tipStatusMap)
-      .filter(([, v]) => v === key)
-      .map(([k]) => k)
-      .join("||"),
-    text: key,
-  })),
-];
-
-export const RangeTypes = {
-  Token: "token",
-  Fiat: "fiat",
-};
-
 const Filter = ({
   chain,
   status,
@@ -69,7 +51,21 @@ const Filter = ({
   setMin,
   max,
   setMax,
+  statusMap,
 }) => {
+
+  const statusOptions = [
+    { key: "all", value: "-1", text: "All status" },
+    ...Array.from(new Set(Object.values(statusMap))).map((key) => ({
+      key,
+      value: Object.entries(statusMap)
+        .filter(([, v]) => v === key)
+        .map(([k]) => k)
+        .join("||"),
+      text: key,
+    })),
+  ];
+
   return (
     <FormWrapper>
       <StatusSelect

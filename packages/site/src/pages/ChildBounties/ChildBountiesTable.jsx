@@ -34,14 +34,6 @@ const TableWrapper = styled.div`
   }
 `;
 
-const HeaderWrapper = styled.div`
-  padding: 20px 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-`;
-
 const ChildBountiesTable = ({
   data,
   loading,
@@ -78,7 +70,7 @@ const ChildBountiesTable = ({
 
   return (
     <CardWrapper>
-      {header && <HeaderWrapper>{header}</HeaderWrapper>}
+      {header}
       <Wrapper>
         <TableWrapper>
           <TableLoading loading={loading}>

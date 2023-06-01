@@ -3,9 +3,10 @@ const { getChildBountyCollection } = require("../../mongo");
 const linkService = require("../../services/link.service");
 const commentService = require("../../services/comment.service");
 const { HttpError } = require("../../exc");
+const { ChildBountyQueryFieldsMap, QueryFieldsMap } = require("../common/query");
 
 function getCondition(ctx) {
-  const { beneficiary, proposer } = ctx.request.query;
+  const { beneficiary, proposer, status, range_type, min, max } = ctx.request.query;
 
   const condition = {}
   if (beneficiary) {
@@ -14,6 +15,24 @@ function getCondition(ctx) {
 
   if (proposer) {
     condition["proposer"] = proposer;
+  }
+
+  if (status) {
+    condition["state.state"] = { $in: status.split("||") };
+  }
+
+  if (range_type) {
+    const fieldName = QueryFieldsMap[range_type];
+    if (!fieldName) {
+      throw new HttpError(400, `Invalid range_type: ${range_type}`);
+    }
+    condition[fieldName] = {};
+    if (min) {
+      condition[fieldName]["$gte"] = Number(min);
+    }
+    if (max) {
+      condition[fieldName]["$lte"] = Number(max);
+    }
   }
 
   return condition;
@@ -26,6 +45,25 @@ async function queryChildBounties(ctx, chain, q = {}) {
     return;
   }
 
+  let sortParams = {
+    stateSort: 1,
+    index: -1,
+    "indexer.blockHeight": -1,
+  };
+
+  const { sort } = ctx.request.query;
+  if (sort) {
+    let [fieldName, sortDirection] = sort.split("_");
+    fieldName = ChildBountyQueryFieldsMap[fieldName];
+    if (!fieldName) {
+      throw new HttpError(400, "Invalid sort field");
+    }
+    sortParams = {
+      [fieldName]: sortDirection === "desc" ? -1 : 1,
+      "indexer.blockHeight": -1,
+    };
+  }
+
   const col = await getChildBountyCollection(chain);
   const bounties = await col
     .find(q, {
@@ -34,11 +72,7 @@ async function queryChildBounties(ctx, chain, q = {}) {
         timeline: 0,
       }
     })
-    .sort({
-      stateSort: 1,
-      index: -1,
-      "indexer.blockHeight": -1,
-    })
+    .sort(sortParams)
     .skip(page * pageSize)
     .limit(pageSize)
     .toArray();

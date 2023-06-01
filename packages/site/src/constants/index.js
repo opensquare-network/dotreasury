@@ -13,6 +13,28 @@ export const tipStatusMap = {
   TipSlashed: "Slashed",
 };
 
+export const bountyStatusMap = {
+  Proposed: "Proposed",
+  Approved: "Approved",
+  Funded: "Funded",
+  CuratorProposed: "CuratorProposed",
+  Active: "Active",
+  PendingPayout: "PendingPayout",
+  Rejected: "Rejected",
+  Canceled: "Canceled",
+  Claimed: "Claimed",
+};
+
+export const childBountyStatusMap = {
+  Added: "Added",
+  CuratorProposed: "CuratorProposed",
+  Active: "Active",
+  PendingPayout: "PendingPayout",
+  Rejected: "Rejected",
+  Canceled: "Canceled",
+  Claimed: "Claimed",
+};
+
 export const ProposalStatus = {
   Approved: "Approved",
   Rejected: "Rejected",

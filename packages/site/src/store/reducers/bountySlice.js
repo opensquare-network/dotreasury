@@ -122,7 +122,7 @@ export const fetchChildBountyDetail = (chain, bountyIndex) => async (dispatch) =
   }
 };
 export const fetchChildBounties =
-  (chain, page = 0, pageSize = 30, filterData) =>
+  (chain, page = 0, pageSize = 30, filterData, sort) =>
   async (dispatch) => {
     dispatch(setLoading(true));
 
@@ -131,6 +131,7 @@ export const fetchChildBounties =
         page,
         pageSize,
         ...filterData,
+        ...sort,
       });
       dispatch(setChildBounties(result || {}));
     } finally {

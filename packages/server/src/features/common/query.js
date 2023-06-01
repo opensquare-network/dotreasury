@@ -13,6 +13,11 @@ const BountyQueryFieldsMap = {
   index: "bountyIndex",
 };
 
+const ChildBountyQueryFieldsMap = {
+  ...QueryFieldsMap,
+  index: "index",
+};
+
 const ReferendaQueryFieldsMap = {
   ...QueryFieldsMap,
   index: "referendumIndex",
@@ -25,5 +30,6 @@ module.exports = {
   TipQueryFieldsMap,
   ProposalQueryFieldsMap,
   BountyQueryFieldsMap,
+  ChildBountyQueryFieldsMap,
   ReferendaQueryFieldsMap,
 };
