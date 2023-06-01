@@ -3,6 +3,9 @@ import Text from "../../components/Text";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useHistory } from "react-router";
+import { Label } from "semantic-ui-react";
+import { useSelector } from "react-redux";
+import { openGovProposalCountSelector, totalProposalCountSelector } from "../../store/reducers/overviewSlice";
 
 const NavWrapper = styled.div`
   display: flex;
@@ -28,9 +31,28 @@ const NavItem = styled(Text)`
     `}
 `;
 
+const NavLabel = styled.div`
+  display: flex;
+  align-items: center;
+
+  div.ui.label {
+    background: var(--secondary) !important;
+    height: 20px !important;
+    padding: 0 8px !important;
+    line-height: 20px !important;
+    border-radius: 10px !important;
+    margin-left: 8px !important;
+    color: var(--primary) !important;
+    font-weight: 400;
+  }
+`;
+
 function Nav() {
   const history = useHistory();
   const [active, setActive] = useState("All");
+  const totalProposalCount = useSelector(totalProposalCountSelector);
+  const openGovProposalCount = useSelector(openGovProposalCountSelector);
+  const gov1ProposalCount = totalProposalCount - openGovProposalCount;
 
   useEffect(() => {
     const searchParams = new URLSearchParams();
@@ -48,13 +70,32 @@ function Nav() {
 
   const items = [
     {
-      label: "All",
+      name: "All",
+      label: (
+        <NavLabel>
+          <span>All</span>
+          <Label>{totalProposalCount}</Label>
+        </NavLabel>
+      ),
+
     },
     {
-      label: "Gov1",
+      name: "Gov1",
+      label: (
+        <NavLabel>
+          <span>Gov1</span>
+          <Label>{gov1ProposalCount}</Label>
+        </NavLabel>
+      ),
     },
     {
-      label: "OpenGov",
+      name: "OpenGov",
+      label: (
+        <NavLabel>
+          <span>OpenGov</span>
+          <Label>{openGovProposalCount}</Label>
+        </NavLabel>
+      ),
     },
   ];
 
@@ -63,8 +104,8 @@ function Nav() {
       {items.map((item) => (
         <NavItem
           key={item.to}
-          active={item.label === active}
-          onClick={() => setActive(item.label)}
+          active={item.name === active}
+          onClick={() => setActive(item.name)}
         >
           {item.label}
         </NavItem>

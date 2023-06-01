@@ -71,10 +71,16 @@ export const fetchStatsHistory = (chain) => async (dispatch) => {
 
 export const totalProposalCountSelector = (state) =>
   state.overview.overview.count.proposal.all;
+export const openGovProposalCountSelector = (state) =>
+  state.overview.overview.count.proposal.openGov;
+export const gov1ProposalCountSelector = (state) =>
+  state.overview.overview.count.proposal.all - state.overview.overview.count.proposal.openGov;
 export const totalTipCountSelector = (state) =>
   state.overview.overview.count.tip.all;
 export const totalBountyCountSelector = (state) =>
   state.overview.overview.count.bounty.all;
+export const totalChildBountyCountSelector = (state) =>
+  state.overview.overview.count.childBounty.all;
 export const totalBurntCountSelector = (state) =>
   state.overview.overview.count.burnt.all;
 export const totalTransferCountSelector = (state) =>
