@@ -3,7 +3,7 @@ const { extractPage } = require("../../utils");
 const linkService = require("../../services/link.service");
 const commentService = require("../../services/comment.service");
 const { HttpError } = require("../../exc");
-const { BountyQueryFieldsMap } = require("../common/query");
+const { BountyQueryFieldsMap, QueryFieldsMap } = require("../common/query");
 
 const bountyStatus = (bounty) =>
   bounty?.status?.CuratorProposed ||
@@ -54,7 +54,7 @@ async function getAdmins(chain, bountyIndex) {
 }
 
 function getCondition(ctx) {
-  const { beneficiary, proposer } = ctx.request.query;
+  const { status, beneficiary, proposer, range_type, min, max } = ctx.request.query;
 
   const condition = {}
   if (beneficiary) {
@@ -63,6 +63,24 @@ function getCondition(ctx) {
 
   if (proposer) {
     condition["meta.proposer"] = proposer;
+  }
+
+  if (status) {
+    condition["state.state"] = { $in: status.split("||") };
+  }
+
+  if (range_type) {
+    const fieldName = QueryFieldsMap[range_type];
+    if (!fieldName) {
+      throw new HttpError(400, `Invalid range_type: ${range_type}`);
+    }
+    condition[fieldName] = {};
+    if (min) {
+      condition[fieldName]["$gte"] = Number(min);
+    }
+    if (max) {
+      condition[fieldName]["$lte"] = Number(max);
+    }
   }
 
   return condition;
@@ -135,7 +153,7 @@ class BountiesController {
           $project: { timeline: 0 }
         }
       ]).toArray();
-    const total = await bountyCol.estimatedDocumentCount();
+    const total = await bountyCol.countDocuments(condition);
 
     ctx.body = {
       items: bounties.map(item => ({

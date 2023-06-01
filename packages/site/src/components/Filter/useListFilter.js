@@ -1,7 +1,12 @@
 import { useHistory, useLocation } from "react-router";
 import { RangeTypes } from "../../components/Filter/Range";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useEffect } from "react";
+import BigNumber from "bignumber.js";
+import { useSelector } from "react-redux";
+import { chainSymbolSelector } from "../../store/reducers/chainSlice";
+import { getPrecision } from "../../utils";
+import isEmpty from "lodash.isempty";
 
 export default function useListFilter() {
   const { search } = useLocation();
@@ -16,6 +21,9 @@ export default function useListFilter() {
   const [rangeType, setRangeType] = useState(defaultRangeType);
   const [min, setMin] = useState(defaultMin);
   const [max, setMax] = useState(defaultMax);
+
+  const symbol = useSelector(chainSymbolSelector);
+  const precision = getPrecision(symbol);
 
   useEffect(() => {
     const query = new URLSearchParams(history.location.search);
@@ -49,6 +57,26 @@ export default function useListFilter() {
     });
   }, [history, filterStatus, rangeType, min, max]);
 
+  const getFilterData = useCallback(() => {
+    const status = filterStatus === "-1" ? "" : filterStatus;
+    let minMax = {};
+    if (rangeType === RangeTypes.Token) {
+      if (min) minMax.min = new BigNumber(min).times(Math.pow(10, precision)).toString();
+      if (max) minMax.max = new BigNumber(max).times(Math.pow(10, precision)).toString();
+    } else {
+      if (min) minMax.min = min;
+      if (max) minMax.max = max;
+    }
+    if (!isEmpty(minMax)) minMax.rangeType = rangeType;
+
+    const filterData = {
+      status,
+      ...minMax,
+    };
+
+    return filterData;
+  }, [filterStatus, rangeType, min, max, precision]);
+
   return {
     filterStatus,
     setFilterStatus,
@@ -58,5 +86,6 @@ export default function useListFilter() {
     setMin,
     max,
     setMax,
+    getFilterData,
   };
 }
