@@ -84,19 +84,22 @@ export default function Participants() {
             totalPages={totalPages}
             pageSize={pageSize}
             setPageSize={(size) => {
+              const searchParams = new URLSearchParams(history.location.search);
+              searchParams.delete("page");
+              history.push({ search: searchParams.toString() });
+
               setTablePage(DEFAULT_QUERY_PAGE);
               setPageSize(size);
-              history.push({
-                search: null,
-              });
             }}
             onPageChange={(_, { activePage }) => {
-              history.push({
-                search:
-                  activePage === DEFAULT_QUERY_PAGE
-                    ? null
-                    : `?page=${activePage}`,
-              });
+              const searchParams = new URLSearchParams(history.location.search);
+              if (activePage === DEFAULT_QUERY_PAGE) {
+                searchParams.delete("page");
+              } else{
+                searchParams.set("page", activePage);
+              }
+              history.push({ search: searchParams.toString() });
+
               setTablePage(activePage);
             }}
           />
