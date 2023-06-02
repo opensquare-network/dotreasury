@@ -12,9 +12,14 @@ const overviewSlice = createSlice({
           unFinished: 0,
           all: 0,
         },
+        childBounty: {
+          unFinished: 0,
+          all: 0,
+        },
         proposal: {
           unFinished: 0,
           all: 0,
+          openGov: 0,
         },
         tip: {
           unFinished: 0,
@@ -32,6 +37,7 @@ const overviewSlice = createSlice({
       },
       output: {
         bounty: 0,
+        childBounty: 0,
         proposal: 0,
         tip: 0,
         burnt: 0,
