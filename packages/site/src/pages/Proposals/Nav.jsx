@@ -19,9 +19,9 @@ function Nav() {
     const searchParams = new URLSearchParams();
 
     if (active === "Gov1") {
-      searchParams.set("gov", "1");
+      searchParams.set("tab", "gov1");
     } else if (active === "OpenGov") {
-      searchParams.set("gov", "2");
+      searchParams.set("tab", "opengov");
     } else {
       searchParams.delete("gov");
     }

@@ -64,8 +64,14 @@ export default function CompactInput({
   placeholder = 0,
   value,
   onChange = emptyFunction,
+  onEnter = emptyFunction,
 }) {
   const inputRef = useRef();
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      onEnter();
+    }
+  };
   return (
     <Wrapper onClick={() => inputRef.current?.focus()}>
       {prefix && <Suffix>{prefix}</Suffix>}
@@ -75,6 +81,7 @@ export default function CompactInput({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
+        onKeyDown={handleKeyDown}
       />
       {suffix && <Suffix>{suffix}</Suffix>}
     </Wrapper>

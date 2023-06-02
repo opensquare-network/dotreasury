@@ -52,7 +52,9 @@ const Proposals = () => {
     DEFAULT_PAGE_SIZE
   );
   const sort = query.get("sort");
-  const gov = query.get("gov");
+  const tab = query.get("tab");
+
+  const gov = tab === "gov1" ? "1" : tab === "opengov" ? "2" : "";
 
   const {
     filterStatus,
@@ -97,9 +99,9 @@ const Proposals = () => {
   const onFinalized = useWaitSyncBlock("Proposal created", refreshProposals);
 
   let statusMap = {};
-  if (gov === "1") {
+  if (tab === "gov1") {
     statusMap = proposalStatusMap;
-  } else if (gov === "2") {
+  } else if (tab === "opengov") {
     statusMap = gov2ProposalStatusMap;
   } else {
     statusMap = { ...proposalStatusMap, ...gov2ProposalStatusMap };
