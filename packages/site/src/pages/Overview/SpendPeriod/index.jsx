@@ -24,8 +24,10 @@ const CardWrapper = styled(Card)`
 
 const ContentWrapper = styled.div`
   display: flex;
-  flex-wrap: wrap;
   ${gap(24)};
+  @media screen and (max-width: 800px) {
+    flex-direction: column;
+  }
 `;
 
 const defaultLegends = [
