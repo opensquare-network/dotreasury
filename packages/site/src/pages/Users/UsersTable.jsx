@@ -30,13 +30,6 @@ const TableWrapper = styled.div`
   }
 `;
 
-const HeaderWrapper = styled.div`
-  padding: 20px 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
 export default function ParticipantsTable({ data, loading, header, footer }) {
   const { id, role, proposals } = useTableColumns();
 
@@ -44,7 +37,7 @@ export default function ParticipantsTable({ data, loading, header, footer }) {
 
   return (
     <CardWrapper>
-      {header && <HeaderWrapper>{header}</HeaderWrapper>}
+      {header}
 
       <Wrapper>
         <TableWrapper>
