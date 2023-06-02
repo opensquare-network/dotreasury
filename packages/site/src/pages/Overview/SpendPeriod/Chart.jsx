@@ -85,7 +85,7 @@ export default function Chart({ legends, data = [] }) {
   const categoryPercentage = 0.7;
   const barPercentage = 0.7;
 
-  const minWidth = (data.length || 0) * 20;
+  const minWidth = (data.length || 0) * 15;
 
   const labels = data.map((item) =>
     dayjs(item.endIndexer.blockTime).format("YYYY-MM-DD"),
