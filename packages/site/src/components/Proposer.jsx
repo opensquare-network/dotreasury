@@ -53,7 +53,7 @@ const ProposalArgsWrapper = styled.div`
   padding: 4px 16px;
   display: flex;
   flex-direction: column;
-  background-color: #fbfbfb;
+  background-color: var(--neutral200);
 `;
 
 const ProposalArgsItemWrapper = styled.div`
