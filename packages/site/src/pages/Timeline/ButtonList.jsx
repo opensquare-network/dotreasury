@@ -95,7 +95,7 @@ const ButtonList = ({ extrinsicIndexer, eventIndexer, polkassembly, type }) => {
       )}
       {subsquareUrl && (
         <ExternalLink href={subsquareUrl}>
-          <ImageButton src={"/imgs/timeline-subsquare-link.svg"} />
+          <ImageButton src={"/imgs/subsquare-logo.svg"} />
         </ExternalLink>
       )}
     </Wrapper>

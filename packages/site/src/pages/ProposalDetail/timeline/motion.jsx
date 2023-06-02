@@ -7,12 +7,9 @@ import { TimelineItemType } from "../../../constants";
 
 const ValueWrapper = styled.span`
   margin-right: 4px;
-  color: #1d253c;
 `;
 
-const UnitWrapper = styled.span`
-  color: #1d253c;
-`;
+const UnitWrapper = styled.span``;
 
 function createProposeField(motion, item, scanHeight) {
   const { proposer, threshold } = item.args;
