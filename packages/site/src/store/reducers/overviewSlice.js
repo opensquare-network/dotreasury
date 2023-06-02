@@ -37,7 +37,6 @@ const overviewSlice = createSlice({
       },
       output: {
         bounty: 0,
-        childBounty: 0,
         proposal: 0,
         tip: 0,
         burnt: 0,
