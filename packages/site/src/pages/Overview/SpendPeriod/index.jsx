@@ -33,7 +33,7 @@ const ContentWrapper = styled.div`
 
 const defaultLegends = [
   {
-    label: "Proposal",
+    label: "Proposals",
     color: "#FC7C91",
     enabled: true,
     getValue: (period) => period.totalProposalsValue,
