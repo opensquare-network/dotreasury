@@ -14,7 +14,8 @@ const LegendItem = styled.div`
   padding: 8px 12px;
   gap: 11.5px;
 
-  background: #FAFAFA;
+  color: var(--textPrimary);
+  background: var(--neutral200);
   border-radius: 4px;
 
   ${p => !p.enabled && css`

@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { chainSymbolSelector } from "../../../store/reducers/chainSlice";
 import dayjs from "dayjs";
+import ReactDOMServer from "react-dom/server";
+import MyTooltip from "./MyTooltip";
 
 const ScrollableWrapper = styled.div`
   display: flex;
@@ -24,9 +26,58 @@ const ScrollableWrapper = styled.div`
 
 const Wrapper = styled.div`
   display: flex;
-  min-width: ${p => p.minWidth}px;
+  min-width: ${(p) => p.minWidth}px;
 `;
 
+const getOrCreateTooltip = (chart) => {
+  let tooltipEl = chart.canvas.parentNode.querySelector("div");
+
+  if (!tooltipEl) {
+    tooltipEl = document.createElement("div");
+    tooltipEl.style.background = "var(--tooltipBg)";
+    tooltipEl.style.borderRadius = "3px";
+    tooltipEl.style.color = "white";
+    tooltipEl.style.opacity = 1;
+    tooltipEl.style.pointerEvents = "none";
+    tooltipEl.style.position = "absolute";
+    tooltipEl.style.transform = "translate(-50%, 0)";
+    tooltipEl.style.transition = "all .1s ease";
+
+    chart.canvas.parentNode.appendChild(tooltipEl);
+  }
+
+  return tooltipEl;
+};
+
+const externalTooltipHandler = (symbol) => (context) => {
+  // Tooltip Element
+  const { chart, tooltip } = context;
+  const tooltipEl = getOrCreateTooltip(chart);
+
+  // Hide if no tooltip
+  if (tooltip.opacity === 0) {
+    tooltipEl.style.opacity = 0;
+    return;
+  }
+
+  // Set tooltip content
+  if (tooltip.body) {
+    const htmlString = ReactDOMServer.renderToString(
+      <MyTooltip tooltip={tooltip} symbol={symbol} />,
+    );
+    tooltipEl.innerHTML = htmlString;
+  }
+
+  const { offsetLeft: positionX, offsetTop: positionY } = chart.canvas;
+
+  // Display, position, and set styles for font
+  tooltipEl.style.opacity = 1;
+  tooltipEl.style.left = positionX + tooltip.caretX + "px";
+  tooltipEl.style.top = positionY + tooltip.caretY + "px";
+  tooltipEl.style.font = tooltip.options.bodyFont.string;
+  tooltipEl.style.padding =
+    tooltip.options.padding + "px " + tooltip.options.padding + "px";
+};
 
 export default function Chart({ legends, data = [] }) {
   const symbol = useSelector(chainSymbolSelector);
@@ -36,8 +87,10 @@ export default function Chart({ legends, data = [] }) {
 
   const minWidth = (data.length || 0) * 20;
 
-  const labels = data.map((item) => dayjs(item.endIndexer.blockTime).format("YYYY-MM-DD"));
-  let datasets = legends.map(legend => {
+  const labels = data.map((item) =>
+    dayjs(item.endIndexer.blockTime).format("YYYY-MM-DD"),
+  );
+  let datasets = legends.map((legend) => {
     return {
       categoryPercentage,
       barPercentage,
@@ -98,22 +151,10 @@ export default function Chart({ legends, data = [] }) {
                 display: false,
               },
               tooltip: {
-                position: "average",
-                displayColors: false,
-                callbacks: {
-                  title(item) {
-                    const index = item[0].dataIndex;
-                    return `${labels[index]}`;
-                  },
-                  label(item) {
-                    const raw = item.raw;
-                    if (raw === 0) return "";
-
-                    const count = item.dataset.counts[item.dataIndex];
-                    const fiat = item.dataset.fiats[item.dataIndex];
-                    return `${item.dataset.label}(${count}): ≈$${fiat.toFixed(0).toLocaleString()} (≈${raw.toFixed(3).toLocaleString()} ${symbol})`;
-                  },
-                },
+                enabled: false,
+                position: "nearest",
+                external: externalTooltipHandler(symbol),
+                padding: 8,
               },
             },
           }}
