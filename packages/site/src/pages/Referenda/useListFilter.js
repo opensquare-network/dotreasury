@@ -2,12 +2,15 @@ import { useHistory, useLocation } from "react-router";
 import { RangeTypes } from "../../components/Filter/Range";
 import { useState } from "react";
 import { useEffect } from "react";
+import snakeCase from "lodash.snakecase";
+import upperFirst from "lodash.upperfirst";
+import camelCase from "lodash.camelcase";
 
 export default function useListFilter() {
   const { search } = useLocation();
   const query = new URLSearchParams(search);
   const defaultTrack = query.get("track") || "-1";
-  const defaultStatus = query.get("status") || "-1";
+  const defaultStatus = upperFirst(camelCase(query.get("status"))) || "-1";
   const defaultRangeType = query.get("range_type") || RangeTypes.Token;
   const defaultMin = query.get("min") || "";
   const defaultMax = query.get("max") || "";
@@ -23,7 +26,7 @@ export default function useListFilter() {
     const query = new URLSearchParams(history.location.search);
 
     if (filterStatus !== "-1") {
-      query.set("status", filterStatus);
+      query.set("status", snakeCase(filterStatus));
     } else {
       query.delete("status");
     }

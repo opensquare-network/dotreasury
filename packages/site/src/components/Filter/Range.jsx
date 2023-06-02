@@ -92,7 +92,7 @@ export const RangeTypes = {
   Fiat: "fiat",
 };
 
-const RangeInput = ({ prefix, suffix, min, setMin, max, setMax }) => {
+const RangeInput = ({ prefix, suffix, min, setMin, max, setMax, onEnter }) => {
   return (
     <RangeWrapper>
       <CompactInput
@@ -101,6 +101,7 @@ const RangeInput = ({ prefix, suffix, min, setMin, max, setMax }) => {
         placeholder="Min"
         value={min}
         onChange={e => setMin(e.target.value)}
+        onEnter={onEnter}
       />
       <CompactInput
         prefix={prefix}
@@ -108,6 +109,7 @@ const RangeInput = ({ prefix, suffix, min, setMin, max, setMax }) => {
         placeholder="Max"
         value={max}
         onChange={e => setMax(e.target.value)}
+        onEnter={onEnter}
       />
     </RangeWrapper>
   );
@@ -136,6 +138,18 @@ const Range = ({
   const hasMinMaxValue = minValue || maxValue;
   const hasMinMax = min || max;
 
+  const doFilter = () => {
+    setMin(minValue);
+    setMax(maxValue);
+  };
+
+  const doReset = () => {
+    setMin("");
+    setMax("");
+    setMinValue("");
+    setMaxValue("");
+  };
+
   return (
     <Wrapper>
       <RangeSelect
@@ -152,20 +166,13 @@ const Range = ({
         setMin={setMinValue}
         max={maxValue}
         setMax={setMaxValue}
+        onEnter={doFilter}
       />
       {hasMinMaxValue && (
-        <FilterButton onClick={() => {
-          setMin(minValue);
-          setMax(maxValue);
-        }}>Filter</FilterButton>
+        <FilterButton onClick={doFilter}>Filter</FilterButton>
       )}
       {hasMinMax && (
-        <ResetButton onClick={() => {
-          setMin("");
-          setMax("");
-          setMinValue("");
-          setMaxValue("");
-        }}>Reset</ResetButton>
+        <ResetButton onClick={doReset}>Reset</ResetButton>
       )}
     </Wrapper>
   );
