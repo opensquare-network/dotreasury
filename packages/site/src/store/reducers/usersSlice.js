@@ -25,13 +25,14 @@ const usersSlice = createSlice({
 
 export const { setLoading, setUsers } = usersSlice.actions;
 
-export const fetchUsers = (chain, page, pageSize) => async (dispatch) => {
+export const fetchUsers = (chain, page, pageSize, filterData) => async (dispatch) => {
   dispatch(setLoading(true));
 
   try {
     const { result } = await api.fetch(`/${chain}/participants`, {
       page,
       pageSize,
+      ...filterData,
     });
     dispatch(setUsers(result || {}));
   } finally {
