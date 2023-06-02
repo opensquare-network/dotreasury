@@ -23,6 +23,22 @@ const Title = styled.div`
   line-height: 20px;
 `;
 
+const Marker = styled.span`
+  background: ${(p) => p.backgroundColor};
+  border-color: ${(p) => p.borderColor};
+  border-width: 2px;
+  margin-right: 6px;
+  height: 10px;
+  width: 10px;
+  display: inline-block;
+`;
+
+const Footer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: 18px;
+`;
+
 export default function MyTooltip({ tooltip, symbol }) {
   const titleLines = tooltip.title || [];
 
@@ -30,20 +46,6 @@ export default function MyTooltip({ tooltip, symbol }) {
 
   const items = tooltip.dataPoints.map((item, i) => {
     const colors = tooltip.labelColors[i];
-
-    const marker = (
-      <span
-        style={{
-          background: colors.backgroundColor,
-          borderColor: colors.borderColor,
-          borderWidth: "2px",
-          marginRight: "6px",
-          height: "10px",
-          width: "10px",
-          display: "inline-block",
-        }}
-      />
-    );
 
     const raw = item.raw;
     if (raw === 0) return null;
@@ -54,7 +56,7 @@ export default function MyTooltip({ tooltip, symbol }) {
     return (
       <Item>
         <span>
-          {marker}
+          <Marker {...colors} />
           <span>
             {item.dataset.label} ({count})
           </span>
@@ -68,12 +70,10 @@ export default function MyTooltip({ tooltip, symbol }) {
   });
 
   const footer = (
-    <div
-      style={{ display: "flex", flexDirection: "column", marginLeft: "18px" }}
-    >
+    <Footer>
       <span>---</span>
       <span>Fiat value is calculated by award time</span>
-    </div>
+    </Footer>
   );
 
   return (
