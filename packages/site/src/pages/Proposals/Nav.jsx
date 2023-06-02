@@ -44,20 +44,20 @@ function Nav() {
 
   if (chain === "kusama") {
     items.push({
-      name: "Gov1",
-      label: (
-        <NavLabel>
-          <span>Gov1</span>
-          <Label>{gov1ProposalCount}</Label>
-        </NavLabel>
-      ),
-    },
-    {
       name: "OpenGov",
       label: (
         <NavLabel>
           <span>OpenGov</span>
           <Label>{openGovProposalCount}</Label>
+        </NavLabel>
+      ),
+    },
+    {
+      name: "Gov1",
+      label: (
+        <NavLabel>
+          <span>Gov1</span>
+          <Label>{gov1ProposalCount}</Label>
         </NavLabel>
       ),
     });
