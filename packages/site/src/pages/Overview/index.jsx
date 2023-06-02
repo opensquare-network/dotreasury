@@ -24,6 +24,7 @@ import {
 import OpenGovSpend from "./OpenGovSpend";
 import { useIsKusamaChain } from "../../utils/hooks/chain";
 import { mdcss, smcss } from "@osn/common";
+import SpendPeriod from "./SpendPeriod";
 
 const DoughnutWrapper = styled.div`
   display: grid;
@@ -149,6 +150,7 @@ const Overview = () => {
       <Summary />
       <DoughnutWrapper count={cards.length}>{cards}</DoughnutWrapper>
       <TotalStacked />
+      <SpendPeriod />
       <TableWrapper>
         <BeneficiaryTable />
         <ProposerTable />

@@ -51,6 +51,7 @@ const overviewSlice = createSlice({
       },
     },
     statsHistory: [],
+    spendPeriods: [],
   },
   reducers: {
     setOverview(state, { payload }) {
@@ -59,14 +60,22 @@ const overviewSlice = createSlice({
     setStatsHistory(state, { payload }) {
       state.statsHistory = payload;
     },
+    setSendPeriods(state, { payload }) {
+      state.spendPeriods = payload;
+    },
   },
 });
 
-export const { setOverview, setStatsHistory } = overviewSlice.actions;
+export const { setOverview, setStatsHistory, setSendPeriods } = overviewSlice.actions;
 
 export const fetchStatsHistory = (chain) => async (dispatch) => {
   const { result } = await api.fetch(`/${chain}/stats/weekly`);
   dispatch(setStatsHistory(result || []));
+};
+
+export const fetchSpendPeriods = (chain) => async (dispatch) => {
+  const { result } = await api.fetch(`/${chain}/periods`);
+  dispatch(setSendPeriods(result || []));
 };
 
 export const totalProposalCountSelector = (state) =>
@@ -89,5 +98,6 @@ export const totalOpenGovApplicationCountSelector = (state) =>
   state.overview.overview.count.referenda.all || 0;
 export const overviewSelector = (state) => state.overview.overview;
 export const statsHistorySelector = (state) => state.overview.statsHistory;
+export const spendPeriodsSelector = (state) => state.overview.spendPeriods;
 
 export default overviewSlice.reducer;

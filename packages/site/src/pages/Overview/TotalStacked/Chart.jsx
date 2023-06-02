@@ -1,11 +1,11 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import styled, { css } from "styled-components";
 import { Line } from "react-chartjs-2";
-import "../../../components/Charts/globalConfig";
 import dayjs from "dayjs";
 
+import "../../../components/Charts/globalConfig";
 import Text from "../../../components/Text";
-import { useSelector } from "react-redux";
 import { chainSelector } from "../../../store/reducers/chainSlice";
 import { abbreviateBigNumber } from "../../../utils";
 

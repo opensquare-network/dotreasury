@@ -17,6 +17,7 @@ const chainFeatureRouters = [
   require("./features/profile/routes"),
   require("./features/participant/routes"),
   require("./features/overview/routes"),
+  require("./features/period/routes"),
 ];
 
 const commonFeatureRouters = [
