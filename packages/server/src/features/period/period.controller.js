@@ -5,6 +5,7 @@ async function getPeriods(ctx) {
   const periodCol = await getPeriodCollection(chain);
   ctx.body = await periodCol
     .find({})
+    .sort({ endHeight: 1 })
     .project({ transfers: 0 })
     .toArray();
 }
