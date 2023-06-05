@@ -14,6 +14,13 @@ const ProposalsWrapper = styled.div`
   display: inline-flex;
 `;
 
+const Tags = styled.div`
+  display: inline-flex;
+  > span {
+    background-color: var(--neutral300);
+  }
+`;
+
 const id = (options) => {
   return {
     key: "id",
@@ -36,11 +43,11 @@ const role = {
   title: "Role",
   cellRender(_, data) {
     return (
-      <>
+      <Tags>
         {data?.isCouncilor && <Tag rounded>Councilor</Tag>}
         {data?.isBeneficiary && <Tag rounded>Benecifiary</Tag>}
         {data?.isProposer && <Tag rounded>Proposer</Tag>}
-      </>
+      </Tags>
     );
   },
 };
