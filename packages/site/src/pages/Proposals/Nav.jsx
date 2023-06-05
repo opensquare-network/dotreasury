@@ -6,11 +6,15 @@ import { useSelector } from "react-redux";
 import { openGovProposalCountSelector, totalProposalCountSelector } from "../../store/reducers/overviewSlice";
 import { NavItem, NavLabel, NavWrapper } from "../../components/Nav/styled";
 import { chainSelector } from "../../store/reducers/chainSlice";
+import { useQuery } from "../../utils/hooks";
 
 function Nav() {
   const chain = useSelector(chainSelector);
   const history = useHistory();
-  const [active, setActive] = useState("All");
+  const query = useQuery();
+  const tab = query.get("tab");
+  const defaultActiveTab = tab === "gov1" ? "Gov1" : tab === "opengov" ? "OpenGov" : "All";
+  const [active, setActive] = useState(defaultActiveTab);
   const totalProposalCount = useSelector(totalProposalCountSelector);
   const openGovProposalCount = useSelector(openGovProposalCountSelector);
   const gov1ProposalCount = totalProposalCount - openGovProposalCount;
