@@ -6,6 +6,8 @@ import { chainSymbolSelector } from "../../../store/reducers/chainSlice";
 import dayjs from "dayjs";
 import ReactDOMServer from "react-dom/server";
 import MyTooltip from "./MyTooltip";
+import { useState } from "react";
+import { useCallback } from "react";
 
 const ScrollableWrapper = styled.div`
   display: flex;
@@ -49,7 +51,7 @@ const getOrCreateTooltip = (chart) => {
   return tooltipEl;
 };
 
-const externalTooltipHandler = (symbol) => (context) => {
+const externalTooltipHandler = (symbol, scrollLeft) => (context) => {
   // Tooltip Element
   const { chart, tooltip } = context;
   const tooltipEl = getOrCreateTooltip(chart);
@@ -72,7 +74,7 @@ const externalTooltipHandler = (symbol) => (context) => {
 
   // Display, position, and set styles for font
   tooltipEl.style.opacity = 1;
-  tooltipEl.style.left = positionX + tooltip.caretX + "px";
+  tooltipEl.style.left = positionX - scrollLeft + tooltip.caretX + "px";
   tooltipEl.style.top = positionY + tooltip.caretY + "px";
   tooltipEl.style.font = tooltip.options.bodyFont.string;
   tooltipEl.style.padding =
@@ -81,6 +83,11 @@ const externalTooltipHandler = (symbol) => (context) => {
 
 export default function Chart({ legends, data = [] }) {
   const symbol = useSelector(chainSymbolSelector);
+
+  const [scrollLeft, setScrollLeft] = useState(0);
+  const onScroll = useCallback((e) => {
+    setScrollLeft(e.target.scrollLeft);
+  }, []);
 
   const categoryPercentage = 0.7;
   const barPercentage = 0.7;
@@ -104,7 +111,7 @@ export default function Chart({ legends, data = [] }) {
   });
 
   return (
-    <ScrollableWrapper>
+    <ScrollableWrapper onScroll={onScroll}>
       <Wrapper minWidth={minWidth}>
         <Bar
           data={{
@@ -153,7 +160,7 @@ export default function Chart({ legends, data = [] }) {
               tooltip: {
                 enabled: false,
                 position: "nearest",
-                external: externalTooltipHandler(symbol),
+                external: externalTooltipHandler(symbol, scrollLeft),
                 padding: 8,
               },
             },

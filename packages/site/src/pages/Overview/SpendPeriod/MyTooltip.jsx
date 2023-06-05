@@ -42,7 +42,7 @@ const Footer = styled.div`
 export default function MyTooltip({ tooltip, symbol }) {
   const titleLines = tooltip.title || [];
 
-  const title = titleLines.map((text) => <Title>{text}</Title>);
+  const title = titleLines.map((text, i) => <Title key={i}>{text}</Title>);
 
   const items = tooltip.dataPoints.map((item, i) => {
     const colors = tooltip.labelColors[i];
@@ -54,7 +54,7 @@ export default function MyTooltip({ tooltip, symbol }) {
     const fiat = item.dataset.fiats[item.dataIndex];
 
     return (
-      <Item>
+      <Item key={i}>
         <span>
           <Marker {...colors} />
           <span>
