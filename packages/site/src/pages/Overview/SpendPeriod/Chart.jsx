@@ -106,14 +106,14 @@ export default function Chart({ legends, data = [] }) {
   });
 
   const barHeights = data.map((_, i) => datasets.reduce((prev, curr) => prev + curr.data[i], 0));
-  const maxBarHeight = Math.max(...barHeights) * 1.2;
+  const maxBarHeight = Math.max(...barHeights);
   const bgBarHeight = barHeights.map((h) => maxBarHeight - h);
 
   datasets = [
     ...datasets,
     {
       label: "barBg",
-      backgroundColor: theme.neutral300,
+      backgroundColor: theme.neutral200,
       data: data.map((_, i) => bgBarHeight[i]),
       stack: "period",
     },
