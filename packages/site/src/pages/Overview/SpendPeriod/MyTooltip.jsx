@@ -49,9 +49,6 @@ export default function MyTooltip({ tooltip, symbol }) {
 
     const colors = tooltip.labelColors[i];
 
-    const raw = item.raw;
-    if (raw === 0) return null;
-
     const count = item.dataset.counts[item.dataIndex];
     const fiat = item.dataset.fiats[item.dataIndex];
 
@@ -63,13 +60,17 @@ export default function MyTooltip({ tooltip, symbol }) {
             {item.dataset.label} ({count})
           </span>
         </span>
-        <span style={{ marginLeft: "18px" }}>
-          ≈{raw.toFixed(3).toLocaleString()} {symbol} (≈$
-          {fiat.toFixed(0).toLocaleString()})
-        </span>
+        {count > 0 && (
+          <span style={{ marginLeft: "18px" }}>
+            ≈{item.raw.toFixed(3).toLocaleString()} {symbol} (≈$
+            {fiat.toFixed(0).toLocaleString()})
+          </span>
+        )}
       </Item>
     );
   });
+
+  const hasFooter = tooltip.dataPoints.some((item) => item.dataset.label !== "barBg" && item.raw > 0);
 
   const footer = (
     <Footer>
@@ -82,7 +83,7 @@ export default function MyTooltip({ tooltip, symbol }) {
     <Wrapper>
       {title}
       {items}
-      {footer}
+      {hasFooter && footer}
     </Wrapper>
   );
 }
