@@ -19,6 +19,7 @@ const ScrollableWrapper = styled.div`
 
 const Wrapper = styled.div`
   display: flex;
+  flex-grow: 1;
   min-width: ${(p) => p.minWidth}px;
 `;
 

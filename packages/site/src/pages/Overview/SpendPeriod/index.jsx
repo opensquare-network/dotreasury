@@ -106,7 +106,7 @@ export default function SpendPeriod() {
 
   return (
       <CardWrapper>
-        <Title>Spend Period</Title>
+        <Title>Spend Periods</Title>
         <ContentWrapper>
           <Legend legends={legends} setLegends={setLegends} />
           <Chart legends={legends.filter(item => item.enabled)} data={data} />
