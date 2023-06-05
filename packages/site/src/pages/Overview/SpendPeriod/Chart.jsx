@@ -14,16 +14,6 @@ const ScrollableWrapper = styled.div`
   flex-direction: row-reverse;
   flex-grow: 1;
   overflow-x: auto;
-
-  ::-webkit-scrollbar {
-    display: block;
-    width: 4px;
-    height: 4px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    border-radius: 4px;
-  }
 `;
 
 const Wrapper = styled.div`
@@ -90,12 +80,15 @@ export default function Chart({ legends, data = [] }) {
   }, []);
 
   const categoryPercentage = 0.7;
-  const barPercentage = 0.7;
+  const barPercentage = 0.8;
 
-  const minWidth = (data.length || 0) * 15;
+  const minWidth = (data.length || 0) * 10;
 
-  const labels = data.map((item) =>
-    dayjs(item.endIndexer.blockTime).format("YYYY-MM-DD"),
+  const labels = data.map(
+    (item) =>
+      `${dayjs(item.startIndexer.blockTime).format("YYYY-MM-DD")} ~ ${dayjs(
+        item.endIndexer.blockTime,
+      ).format("YYYY-MM-DD")}`,
   );
   let datasets = legends.map((legend) => {
     return {

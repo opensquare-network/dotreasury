@@ -62,8 +62,8 @@ export default function MyTooltip({ tooltip, symbol }) {
           </span>
         </span>
         <span style={{ marginLeft: "18px" }}>
-          ≈${fiat.toFixed(0).toLocaleString()} (≈
-          {raw.toFixed(3).toLocaleString()} {symbol})
+          ≈{raw.toFixed(3).toLocaleString()} {symbol} (≈$
+          {fiat.toFixed(0).toLocaleString()})
         </span>
       </Item>
     );
