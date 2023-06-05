@@ -8,6 +8,7 @@ import ReactDOMServer from "react-dom/server";
 import MyTooltip from "./MyTooltip";
 import { useState } from "react";
 import { useCallback } from "react";
+import { useTheme } from "../../../context/theme";
 
 const ScrollableWrapper = styled.div`
   display: flex;
@@ -73,6 +74,7 @@ const externalTooltipHandler = (symbol, scrollLeft) => (context) => {
 
 export default function Chart({ legends, data = [] }) {
   const symbol = useSelector(chainSymbolSelector);
+  const theme = useTheme();
 
   const [scrollLeft, setScrollLeft] = useState(0);
   const onScroll = useCallback((e) => {
@@ -102,6 +104,20 @@ export default function Chart({ legends, data = [] }) {
       stack: "period",
     };
   });
+
+  const barHeights = data.map((_, i) => datasets.reduce((prev, curr) => prev + curr.data[i], 0));
+  const maxBarHeight = Math.max(...barHeights) * 1.2;
+  const bgBarHeight = barHeights.map((h) => maxBarHeight - h);
+
+  datasets = [
+    ...datasets,
+    {
+      label: "barBg",
+      backgroundColor: theme.neutral300,
+      data: data.map((_, i) => bgBarHeight[i]),
+      stack: "period",
+    },
+  ];
 
   return (
     <ScrollableWrapper onScroll={onScroll}>

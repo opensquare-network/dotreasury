@@ -45,6 +45,8 @@ export default function MyTooltip({ tooltip, symbol }) {
   const title = titleLines.map((text, i) => <Title key={i}>{text}</Title>);
 
   const items = tooltip.dataPoints.map((item, i) => {
+    if (item.dataset.label === "barBg") return null;
+
     const colors = tooltip.labelColors[i];
 
     const raw = item.raw;
