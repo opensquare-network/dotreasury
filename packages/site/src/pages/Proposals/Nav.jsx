@@ -13,7 +13,7 @@ function Nav() {
   const history = useHistory();
   const query = useQuery();
   const tab = query.get("tab");
-  const defaultActiveTab =  tab === "gov1" ? "Gov1" : tab === "opengov" ? "OpenGov" : "All";
+  const defaultActiveTab = tab === "gov1" ? "Gov1" : tab === "opengov" ? "OpenGov" : "All";
   const [active, setActive] = useState(defaultActiveTab);
   const totalProposalCount = useSelector(totalProposalCountSelector);
   const openGovProposalCount = useSelector(openGovProposalCountSelector);
