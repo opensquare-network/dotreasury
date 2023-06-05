@@ -35,6 +35,7 @@ const CardWrapper = styled(Card)`
   @media screen and (max-width: 600px) {
     border-radius: 0;
   }
+  margin-bottom: 16px;
 `;
 
 const Title = styled(Text)`
