@@ -21,6 +21,7 @@ import useListFilter from "./useListFilters";
 const Title = styled.div`
   ${h4_16_semibold};
   padding: 20px 24px;
+  color: var(--textPrimary);
 `;
 
 const FilterWrapper = styled.div`
