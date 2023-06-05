@@ -13,6 +13,7 @@ const {
   handleBountyEventWithExtrinsic,
   handleBountyEventWithoutExtrinsic,
 } = require("./bounty")
+const { handleRollover } = require("./period")
 
 async function handleEventWithExtrinsic(
   blockIndexer,
@@ -50,6 +51,8 @@ async function handleEventWithoutExtrinsic(
   await handleTreasuryProposalEventWithoutExtrinsic(event, indexer);
   await handleBountyEventWithoutExtrinsic(event, indexer);
   await handleTipEventWithoutExtrinsic(event, indexer);
+
+  await handleRollover(event, indexer);
 }
 
 async function handleCommon(

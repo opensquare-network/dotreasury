@@ -110,6 +110,7 @@ async function updateTipWithTipClosed(event, indexer) {
   };
   updates = {
     ...updates,
+    awardHeight: indexer.blockHeight,
     isFinal: true,
     state,
   };

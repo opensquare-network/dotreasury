@@ -1,3 +1,4 @@
+const { handleBlockJobs } = require("./jobs");
 const { tryCreateStatPoint } = require("../stats");
 const { updateScanHeight } = require("../mongo/scanHeight");
 const { chain: { getBlockIndexer } } = require("@osn/scan-common");
@@ -10,6 +11,7 @@ async function handleBlock({ height, block, events }) {
 
   await handleExtrinsics(block?.extrinsics, events, blockIndexer);
   await handleEvents(events, block?.extrinsics, blockIndexer);
+  await handleBlockJobs(blockIndexer);
 
   await updateScanHeight(height);
 }
