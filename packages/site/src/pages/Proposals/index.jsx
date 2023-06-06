@@ -134,56 +134,57 @@ const Proposals = () => {
 
   const onFinalized = useWaitSyncBlock("Proposal created", refreshProposals);
 
-  let filter = null;
-  if (tab === "gov1") {
-    filter = (
-      <Filter
-        chain={chain}
-        status={filterStatus}
-        setStatus={setFilterStatus}
-        rangeType={rangeType}
-        setRangeType={setRangeType}
-        min={min}
-        setMin={setMin}
-        max={max}
-        setMax={setMax}
-        statusMap={{ ...proposalStatusMap, ...gov2ProposalStatusMap }}
-      />
-    );
-  } else if (tab === "opengov") {
-    filter = (
-      <OpenGovFilter
-        chain={chain}
-        status={filterStatus}
-        setStatus={setFilterStatus}
-        track={filterTrack}
-        setTrack={setFilterTrack}
-        rangeType={rangeType}
-        setRangeType={setRangeType}
-        min={min}
-        setMin={setMin}
-        max={max}
-        setMax={setMax}
-        statusMap={gov2ProposalStatusMap}
-      />
-    );
-  } else {
-    filter = (
-      <OpenGovFilter
-        chain={chain}
-        status={filterStatus}
-        setStatus={setFilterStatus}
-        track={filterTrack}
-        setTrack={setFilterTrack}
-        rangeType={rangeType}
-        setRangeType={setRangeType}
-        min={min}
-        setMin={setMin}
-        max={max}
-        setMax={setMax}
-        statusMap={proposalStatusMap}
-      />
-    );
+  let filter = (
+    <Filter
+      chain={chain}
+      status={filterStatus}
+      setStatus={setFilterStatus}
+      rangeType={rangeType}
+      setRangeType={setRangeType}
+      min={min}
+      setMin={setMin}
+      max={max}
+      setMax={setMax}
+      statusMap={{ ...proposalStatusMap, ...gov2ProposalStatusMap }}
+    />
+  );
+
+  if (chain === "kusama") {
+    if (tab === "opengov") {
+      filter = (
+        <OpenGovFilter
+          chain={chain}
+          status={filterStatus}
+          setStatus={setFilterStatus}
+          track={filterTrack}
+          setTrack={setFilterTrack}
+          rangeType={rangeType}
+          setRangeType={setRangeType}
+          min={min}
+          setMin={setMin}
+          max={max}
+          setMax={setMax}
+          statusMap={gov2ProposalStatusMap}
+        />
+      );
+    } else if (!tab) {
+      filter = (
+        <OpenGovFilter
+          chain={chain}
+          status={filterStatus}
+          setStatus={setFilterStatus}
+          track={filterTrack}
+          setTrack={setFilterTrack}
+          rangeType={rangeType}
+          setRangeType={setRangeType}
+          min={min}
+          setMin={setMin}
+          max={max}
+          setMax={setMax}
+          statusMap={proposalStatusMap}
+        />
+      );
+    }
   }
 
   return (
