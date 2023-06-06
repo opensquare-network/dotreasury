@@ -52,11 +52,11 @@ const tracksOptions = [
   { key: "all", value: "-1", text: "All tracks" },
   ...[
     "Treasurer",
-    "Small Tipper",
-    "Big Tipper",
-    "Small Spender",
-    "Medium Spender",
     "Big Spender",
+    "Medium Spender",
+    "Small Spender",
+    "Big Tipper",
+    "Small Tipper",
   ].map((item) => ({
     key: item,
     value: item.toLowerCase().replace(" ", "_"),
