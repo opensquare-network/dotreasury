@@ -11,10 +11,26 @@ import snakeCase from "lodash.snakecase";
 import upperFirst from "lodash.upperfirst";
 import camelCase from "lodash.camelcase";
 
+export const getQueryStatus = (query) => {
+  const status = query.get("status");
+  if (status) {
+    const items = status.split("||");
+    return items
+      .map((item) => (item === "tip" ? item : upperFirst(camelCase(item))))
+      .join("||");
+  }
+  return "-1";
+};
+
+export const toStatusQuery = (status) => {
+  const items = status.split("||");
+  return items.map((item) => snakeCase(item)).join("||");
+};
+
 export default function useListFilter() {
   const { search } = useLocation();
   const query = new URLSearchParams(search);
-  const defaultStatus = upperFirst(camelCase(query.get("status"))) || "-1";
+  const defaultStatus = getQueryStatus(query);
   const defaultRangeType = query.get("range_type") || RangeTypes.Token;
   const defaultMin = query.get("min") || "";
   const defaultMax = query.get("max") || "";
@@ -39,7 +55,7 @@ export default function useListFilter() {
     const query = new URLSearchParams(history.location.search);
 
     if (filterStatus !== "-1") {
-      query.set("status", snakeCase(filterStatus));
+      query.set("status", toStatusQuery(filterStatus));
     } else {
       query.delete("status");
     }
@@ -68,23 +84,32 @@ export default function useListFilter() {
   }, [history, filterStatus, rangeType, min, max]);
 
   const getFilterData = useCallback(() => {
-    const status = filterStatus === "-1" ? "" : filterStatus;
+    let filterData = {};
+
+    if (filterStatus !== "-1") {
+      filterData.status = filterStatus;
+    }
+
     let minMax = {};
     if (rangeType === RangeTypes.Token) {
-      if (min) minMax.min = new BigNumber(min).times(Math.pow(10, precision)).toString();
-      if (max) minMax.max = new BigNumber(max).times(Math.pow(10, precision)).toString();
+      if (min)
+        minMax.min = new BigNumber(min)
+          .times(Math.pow(10, precision))
+          .toString();
+      if (max)
+        minMax.max = new BigNumber(max)
+          .times(Math.pow(10, precision))
+          .toString();
     } else {
       if (min) minMax.min = min;
       if (max) minMax.max = max;
     }
     if (!isEmpty(minMax)) minMax.rangeType = rangeType;
 
-    const filterData = {
-      status,
+    return {
+      ...filterData,
       ...minMax,
     };
-
-    return filterData;
   }, [filterStatus, rangeType, min, max, precision]);
 
   return {

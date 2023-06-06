@@ -2,8 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { Form } from "semantic-ui-react";
 
-import Select from "../../components/Select";
-import Range from "../../components/Filter/Range";
+import Select from "../Select";
+import Range from "../Filter/Range";
 
 const FormWrapper = styled(Form)`
   display: flex;
@@ -48,26 +48,6 @@ const Divider = styled.div`
   }
 `;
 
-const statusOptions = [
-  { key: "all", value: "-1", text: "All status" },
-  ...[
-    "Confirming",
-    "Deciding",
-    "Queueing",
-    "Submitted",
-    "Approved",
-    "Cancelled",
-    "Killed",
-    "TimedOut",
-    "Rejected",
-    "Executed",
-  ].map((item) => ({
-    key: item,
-    value: item,
-    text: item,
-  })),
-];
-
 const tracksOptions = [
   { key: "all", value: "-1", text: "All tracks" },
   ...[
@@ -84,11 +64,6 @@ const tracksOptions = [
   })),
 ];
 
-export const RangeTypes = {
-  Token: "token",
-  Fiat: "fiat",
-};
-
 const Filter = ({
   chain,
   track,
@@ -101,21 +76,34 @@ const Filter = ({
   setMin,
   max,
   setMax,
+  statusMap,
 }) => {
+  const statusOptions = [
+    { key: "all", value: "-1", text: "All status" },
+    ...Array.from(new Set(Object.values(statusMap))).map((key) => ({
+      key,
+      value: Object.entries(statusMap)
+        .filter(([, v]) => v === key)
+        .map(([k]) => k)
+        .join("||"),
+      text: key,
+    })),
+  ];
+
   return (
     <FormWrapper>
       <TrackSelect
         name="tracks"
         fluid
         options={tracksOptions}
-        defaultValue={track}
+        value={track}
         onChange={(e, { name, value }) => setTrack(value)}
       />
       <StatusSelect
         name="status"
         fluid
         options={statusOptions}
-        defaultValue={status}
+        value={status}
         onChange={(e, { name, value }) => setStatus(value)}
       />
       <Divider />

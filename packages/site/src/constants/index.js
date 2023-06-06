@@ -49,6 +49,19 @@ export const gov2ProposalStatusMap = {
   Awarded: "Awarded",
 };
 
+export const openGovReferendumStatusMap = {
+  Confirming: "Confirming",
+  Deciding: "Deciding",
+  Queueing: "Queueing",
+  Submitted: "Submitted",
+  Approved: "Approved",
+  Cancelled: "Cancelled",
+  Killed: "Killed",
+  TimedOut: "TimedOut",
+  Rejected: "Rejected",
+  Executed: "Executed",
+};
+
 export const TreasuryAccount =
   "F3opxRbN5ZbjJNU511Kj2TLuzFcDq9BGduA9TgiECafpg29";
 

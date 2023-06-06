@@ -147,7 +147,7 @@ const Tips = () => {
               const searchParams = new URLSearchParams(history.location.search);
               if (activePage === DEFAULT_QUERY_PAGE) {
                 searchParams.delete("page");
-              } else{
+              } else {
                 searchParams.set("page", activePage);
               }
               history.push({ search: searchParams.toString() });
