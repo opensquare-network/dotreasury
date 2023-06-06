@@ -67,6 +67,7 @@ async function handleWrappedCall(call, signer, indexer, events, callback) {
   } else if (Modules.Utility === section && [
     UtilityMethods.batch,
     UtilityMethods.batchAll,
+    "forceBatch"
   ].includes(method)) {
     await unwrapBatch(...arguments);
   } else if (Modules.Sudo === section && SudoMethods.sudo) {
