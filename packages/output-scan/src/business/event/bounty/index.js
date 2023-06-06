@@ -28,15 +28,15 @@ async function handleBountyEventWithExtrinsic(event, extrinsic, indexer) {
   if (BountyEvents.BountyProposed === method) {
     await handleProposed(event, extrinsic, indexer);
   } else if (BountyEvents.BountyAwarded === method) {
-    await handleBountyAwarded(...arguments);
+    await handleBountyAwarded(event, indexer);
   } else if (BountyEvents.BountyRejected === method) {
-    await handleBountyRejected(...arguments);
+    await handleBountyRejected(event, indexer, extrinsic);
   } else if (BountyEvents.BountyClaimed === method) {
-    await handleBountyClaimed(...arguments);
+    await handleBountyClaimed(event, indexer);
   } else if (BountyEvents.BountyCanceled === method) {
-    await handleBountyCanceled(...arguments);
+    await handleBountyCanceled(event, indexer, extrinsic);
   } else if (BountyEvents.BountyExtended === method) {
-    await handleBountyExtended(...arguments);
+    await handleBountyExtended(event, indexer, extrinsic);
   }
 }
 
@@ -47,6 +47,16 @@ async function handleBountyEventWithoutExtrinsic(event, indexer) {
     method === BountyEvents.BountyBecameActive
   ) {
     await handleBountyBecameActiveEvent(event, indexer);
+  } else if (BountyEvents.BountyAwarded === method) {
+    await handleBountyAwarded(event, indexer);
+  } else if (BountyEvents.BountyRejected === method) {
+    await handleBountyRejected(event, indexer);
+  } else if (BountyEvents.BountyClaimed === method) {
+    await handleBountyClaimed(event, indexer);
+  } else if (BountyEvents.BountyCanceled === method) {
+    await handleBountyCanceled(event, indexer);
+  } else if (BountyEvents.BountyExtended === method) {
+    await handleBountyExtended(event, indexer);
   }
 }
 
