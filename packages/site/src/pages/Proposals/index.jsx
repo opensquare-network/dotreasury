@@ -15,13 +15,19 @@ import {
   resetProposals,
 } from "../../store/reducers/proposalSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
-import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE, gov2ProposalStatusMap, proposalStatusMap } from "../../constants";
+import {
+  DEFAULT_PAGE_SIZE,
+  DEFAULT_QUERY_PAGE,
+  gov2ProposalStatusMap,
+  proposalStatusMap,
+} from "../../constants";
 import useWaitSyncBlock from "../../utils/useWaitSyncBlock";
 import NewProposalButton from "./NewProposalButton";
 import { newSuccessToast } from "../../store/reducers/toastSlice";
 import Divider from "../../components/Divider";
-import useListFilter from "../../components/Filter/useListFilter";
+import useListFilter from "../../components/OpenGovFilter/useListFilter";
 import Filter from "../../components/Filter";
+import OpenGovFilter from "../../components/OpenGovFilter";
 import Nav from "./Nav";
 
 const HeaderWrapper = styled.div`
@@ -49,7 +55,7 @@ const Proposals = () => {
   const [tablePage, setTablePage] = useState(queryPage);
   const [pageSize, setPageSize] = useLocalStorage(
     "proposalsPageSize",
-    DEFAULT_PAGE_SIZE
+    DEFAULT_PAGE_SIZE,
   );
   const sort = query.get("sort");
   const tab = query.get("tab");
@@ -59,6 +65,8 @@ const Proposals = () => {
   const {
     filterStatus,
     setFilterStatus,
+    filterTrack,
+    setFilterTrack,
     rangeType,
     setRangeType,
     min,
@@ -75,8 +83,20 @@ const Proposals = () => {
   const chain = useSelector(chainSelector);
 
   useEffect(() => {
-    const filterData = getFilterData();
-    dispatch(fetchProposals(chain, tablePage - 1, pageSize, { ...filterData, gov }, sort && { sort }));
+    let filterData = getFilterData();
+    if (gov) {
+      filterData = { ...filterData, gov };
+    }
+
+    dispatch(
+      fetchProposals(
+        chain,
+        tablePage - 1,
+        pageSize,
+        filterData,
+        sort && { sort },
+      ),
+    );
 
     return () => {
       dispatch(resetProposals());
@@ -87,24 +107,83 @@ const Proposals = () => {
 
   const refreshProposals = useCallback(
     (reachingFinalizedBlock) => {
-      const filterData = getFilterData();
-      dispatch(fetchProposals(chain, tablePage - 1, pageSize, { ...filterData, gov }, sort && { sort }));
+      let filterData = getFilterData();
+      if (gov) {
+        filterData = { ...filterData, gov };
+      }
+
+      dispatch(
+        fetchProposals(
+          chain,
+          tablePage - 1,
+          pageSize,
+          filterData,
+          sort && { sort },
+        ),
+      );
       if (reachingFinalizedBlock) {
-        dispatch(newSuccessToast("Sync finished. Please provide context info for your proposal on subsquare or polkassembly."));
+        dispatch(
+          newSuccessToast(
+            "Sync finished. Please provide context info for your proposal on subsquare or polkassembly.",
+          ),
+        );
       }
     },
-    [dispatch, chain, tablePage, pageSize, getFilterData, sort, gov]
+    [dispatch, chain, tablePage, pageSize, getFilterData, sort, gov],
   );
 
   const onFinalized = useWaitSyncBlock("Proposal created", refreshProposals);
 
-  let statusMap = {};
+  let filter = null;
   if (tab === "gov1") {
-    statusMap = proposalStatusMap;
+    filter = (
+      <Filter
+        chain={chain}
+        status={filterStatus}
+        setStatus={setFilterStatus}
+        rangeType={rangeType}
+        setRangeType={setRangeType}
+        min={min}
+        setMin={setMin}
+        max={max}
+        setMax={setMax}
+        statusMap={{ ...proposalStatusMap, ...gov2ProposalStatusMap }}
+      />
+    );
   } else if (tab === "opengov") {
-    statusMap = gov2ProposalStatusMap;
+    filter = (
+      <OpenGovFilter
+        chain={chain}
+        status={filterStatus}
+        setStatus={setFilterStatus}
+        track={filterTrack}
+        setTrack={setFilterTrack}
+        rangeType={rangeType}
+        setRangeType={setRangeType}
+        min={min}
+        setMin={setMin}
+        max={max}
+        setMax={setMax}
+        statusMap={gov2ProposalStatusMap}
+      />
+    );
   } else {
-    statusMap = { ...proposalStatusMap, ...gov2ProposalStatusMap };
+    filter = (
+      <OpenGovFilter
+        chain={chain}
+        status={filterStatus}
+        setStatus={setFilterStatus}
+        track={filterTrack}
+        setTrack={setFilterTrack}
+        rangeType={rangeType}
+        setRangeType={setRangeType}
+        min={min}
+        setMin={setMin}
+        max={max}
+        setMax={setMax}
+        statusMap={proposalStatusMap}
+      />
+    );
   }
 
   return (
@@ -120,20 +199,7 @@ const Proposals = () => {
               </div>
             </HeaderWrapper>
             <Divider />
-            <FilterWrapper>
-              <Filter
-                chain={chain}
-                status={filterStatus}
-                setStatus={setFilterStatus}
-                rangeType={rangeType}
-                setRangeType={setRangeType}
-                min={min}
-                setMin={setMin}
-                max={max}
-                setMax={setMax}
-                statusMap={statusMap}
-              />
-            </FilterWrapper>
+            <FilterWrapper>{filter}</FilterWrapper>
           </div>
         }
         data={proposals}
@@ -155,7 +221,7 @@ const Proposals = () => {
               const searchParams = new URLSearchParams(history.location.search);
               if (activePage === DEFAULT_QUERY_PAGE) {
                 searchParams.delete("page");
-              } else{
+              } else {
                 searchParams.set("page", activePage);
               }
               history.push({ search: searchParams.toString() });

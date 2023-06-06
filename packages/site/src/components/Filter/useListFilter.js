@@ -68,7 +68,12 @@ export default function useListFilter() {
   }, [history, filterStatus, rangeType, min, max]);
 
   const getFilterData = useCallback(() => {
-    const status = filterStatus === "-1" ? "" : filterStatus;
+    let filterData = {};
+
+    if (filterStatus !== "-1") {
+      filterData.status = filterStatus;
+    }
+
     let minMax = {};
     if (rangeType === RangeTypes.Token) {
       if (min) minMax.min = new BigNumber(min).times(Math.pow(10, precision)).toString();
@@ -79,12 +84,10 @@ export default function useListFilter() {
     }
     if (!isEmpty(minMax)) minMax.rangeType = rangeType;
 
-    const filterData = {
-      status,
+    return {
+      ...filterData,
       ...minMax,
     };
-
-    return filterData;
   }, [filterStatus, rangeType, min, max, precision]);
 
   return {
