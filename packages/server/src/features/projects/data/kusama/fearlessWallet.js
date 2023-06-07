@@ -8,6 +8,10 @@ const startTime = 1590044478000;
 const proposals = [
   {
     token: "ksm",
+    proposalId: 212,
+  },
+  {
+    token: "ksm",
     proposalId: 178,
   },
   {
