@@ -7,7 +7,7 @@ async function extractTreasuryCalls(call, indexer) {
   const spendCalls = [];
   await handleWrappedCall(call, null, indexer, [], innerCall => {
     const { section, method } = innerCall;
-    if ("treasury" === section || "spend" === method) {
+    if ("treasury" === section && "spend" === method) {
       spendCalls.push(innerCall);
     }
   });
