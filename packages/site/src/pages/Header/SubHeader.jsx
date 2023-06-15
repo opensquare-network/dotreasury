@@ -26,6 +26,7 @@ import Card from "../../components/Card";
 import Container from "../../components/Container";
 
 import SlashMenu from "./SlashMenu";
+import { useSupportOpenGov } from "../../utils/hooks/chain";
 
 const Wrapper = styled.div`
   position: relative;
@@ -147,7 +148,7 @@ const TabExampleSecondaryPointing = () => {
     dispatch(fetchIncomeCount(chain));
   }, [dispatch, chain]);
 
-  const isKusama = chain === "kusama";
+  const supportOpenGov = useSupportOpenGov();
 
   const panes =
     showMenuTabs === "Home"
@@ -163,7 +164,7 @@ const TabExampleSecondaryPointing = () => {
               active: `/${symbol}` === pathname,
             },
           },
-          ...(isKusama
+          ...(supportOpenGov
             ? [
                 {
                   menuItem: {

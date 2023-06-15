@@ -34,7 +34,7 @@ import {
   rounded_none,
 } from "../../styles/tailwindcss";
 import { breakpoint, smcss, mdcss } from "../../styles/responsive";
-import { useIsKusamaChain } from "../../utils/hooks/chain";
+import { useSupportOpenGov } from "../../utils/hooks/chain";
 import { extractTime } from "@polkadot/util";
 import { parseEstimateTime } from "../../utils/parseEstimateTime";
 import BigNumber from "bignumber.js";
@@ -107,7 +107,7 @@ const Summary = () => {
   const treasury = useSelector(treasurySelector);
   const symbol = useSelector(chainSymbolSelector);
   const symbolLowerCase = symbol?.toLowerCase();
-  const isKusama = useIsKusamaChain();
+  const supportOpenGov = useSupportOpenGov();
 
   const precision = getPrecision(symbol);
 
@@ -186,7 +186,7 @@ const Summary = () => {
         }
       />
 
-      {isKusama && (
+      {supportOpenGov && (
         <SummaryItem
           icon={<ImageWithDark src="/imgs/data-opengov.svg" />}
           title="OpenGov"
