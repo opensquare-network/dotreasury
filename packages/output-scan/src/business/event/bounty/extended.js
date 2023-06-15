@@ -11,33 +11,38 @@ const {
 } = require("@osn/scan-common");
 const { hexToString } = require("@polkadot/util");
 
-async function handleBountyExtended(event, extrinsic, indexer) {
+async function handleBountyExtended(event, indexer, extrinsic) {
   const eventData = event.data.toJSON();
   const bountyIndex = eventData[0];
 
   const meta = await getBountyMeta(indexer.blockHash, bountyIndex);
-  const caller = getRealCaller(extrinsic.method, extrinsic.signer.toString());
+  let args = {};
+  if (extrinsic) {
+    const caller = getRealCaller(extrinsic.method, extrinsic.signer.toString());
+    args = { caller };
 
-  const call = findCallInSections(
-    extrinsic.method,
-    [Modules.Treasury, Modules.Bounties],
-    BountyMethods.extendBountyExpiry
-  );
-
-  if (!call) {
-    throw new Error(
-      `can not find target ${BountyMethods.extendBountyExpiry} call`
+    const call = findCallInSections(
+      extrinsic.method,
+      [Modules.Treasury, Modules.Bounties],
+      BountyMethods.extendBountyExpiry
     );
+
+    if (!call) {
+      throw new Error(
+        `can not find target ${BountyMethods.extendBountyExpiry} call`
+      );
+    }
+    const remarkHex = call.args[1].toHex();
+    args = {
+      caller,
+      remark: hexToString(remarkHex),
+    }
   }
 
-  const remarkHex = call.args[1].toHex();
   const timelineItem = {
     type: TimelineItemTypes.extrinsic,
     name: event.method,
-    args: {
-      caller,
-      remark: hexToString(remarkHex),
-    },
+    args,
     eventData,
     indexer,
   };
