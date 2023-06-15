@@ -4,7 +4,15 @@ function findScheduled(event, indexer, blockEvents) {
     throw new Error(`Can not find scheduled info at ${ indexer.blockHeight } for referendum ${ referendumIndex }`);
   }
 
-  const maybeScheduledEvent = blockEvents[indexer.eventIndex - 1].event;
+  let maybeScheduledEvent = blockEvents[indexer.eventIndex - 1].event;
+  if (
+    "preimage" === maybeScheduledEvent.section &&
+    "Requested" === maybeScheduledEvent.method &&
+    indexer.eventIndex >= 2
+  ) {
+    maybeScheduledEvent = blockEvents[indexer.eventIndex - 2].event
+  }
+
   const { section, method } = maybeScheduledEvent;
   if ("scheduler" !== section || "Scheduled" !== method) {
     throw new Error(`Can not find scheduled info at ${ indexer.blockHeight } for referendum ${ referendumIndex }`);

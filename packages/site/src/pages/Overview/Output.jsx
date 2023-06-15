@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import DoughnutCard from "./DoughnutCard";
 import DoughnutCardLinkTitle from "./DoughnutCardLinkTitle";
-import { useIsKusamaChain } from "../../utils/hooks/chain";
+import { useSupportOpenGov } from "../../utils/hooks/chain";
 import { useSelector } from "react-redux";
 import { overviewSelector } from "../../store/reducers/overviewSlice";
 import { getPrecision, toPrecision } from "../../utils";
@@ -12,7 +12,7 @@ import { useTheme } from "../../context/theme";
 
 const Output = () => {
   const overview = useSelector(overviewSelector);
-  const isKusama = useIsKusamaChain();
+  const supportOpenGov = useSupportOpenGov();
   const symbol = useSelector(chainSymbolSelector);
   const theme = useTheme();
 
@@ -59,7 +59,7 @@ const Output = () => {
     labels: [
       {
         name: "Proposals",
-        ...(isKusama
+        ...(supportOpenGov
           ? {
               children: [
                 {
@@ -90,7 +90,7 @@ const Output = () => {
           value: proposalSpent,
           fiatValue: proposalFiatValue,
           color: theme.pink500,
-          ...(isKusama
+          ...(supportOpenGov
             ? {
                 children: [
                   {
@@ -134,7 +134,7 @@ const Output = () => {
     bountySpent,
     bountySpentFiatValue,
     burntTotal,
-    isKusama,
+    supportOpenGov,
     theme,
   ]);
 

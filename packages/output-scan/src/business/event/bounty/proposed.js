@@ -1,3 +1,4 @@
+const { toDecimal128 } = require("../../../utils");
 const { insertBounty } = require("../../../mongo/service/bounty");
 const { getBountyDescription } = require("../../common/bounty/description");
 const { getBountyMeta } = require("../../common/bounty/meta");
@@ -43,6 +44,8 @@ async function handleProposed(event, extrinsic, indexer) {
     bountyIndex,
     description,
     meta,
+    value: meta.value,
+    dValue: toDecimal128(meta.value),
     state,
     timeline,
     motions: [],

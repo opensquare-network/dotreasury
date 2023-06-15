@@ -1,3 +1,4 @@
+const { handlePreimageEvent } = require("./preimage");
 const { handleTipEventWithoutExtrinsic } = require("./tip");
 const { handleSchedulerEvents } = require("./scheduler");
 const { handleReferendaEvent } = require("./referenda");
@@ -13,6 +14,7 @@ const {
   handleBountyEventWithExtrinsic,
   handleBountyEventWithoutExtrinsic,
 } = require("./bounty")
+const { handleRollover } = require("./period")
 
 async function handleEventWithExtrinsic(
   blockIndexer,
@@ -50,6 +52,8 @@ async function handleEventWithoutExtrinsic(
   await handleTreasuryProposalEventWithoutExtrinsic(event, indexer);
   await handleBountyEventWithoutExtrinsic(event, indexer);
   await handleTipEventWithoutExtrinsic(event, indexer);
+
+  await handleRollover(event, indexer);
 }
 
 async function handleCommon(
@@ -63,6 +67,7 @@ async function handleCommon(
   await handleReferendumEvent(...arguments);
   await handleReferendaEvent(event, indexer, extrinsic, blockEvents);
   await handleSchedulerEvents(event, indexer, extrinsic, blockEvents);
+  await handlePreimageEvent(event, indexer, extrinsic, blockEvents);
 }
 
 async function handleEvents(events, extrinsics, blockIndexer) {

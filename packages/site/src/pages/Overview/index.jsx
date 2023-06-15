@@ -22,8 +22,9 @@ import {
   m_t,
 } from "../../styles/tailwindcss";
 import OpenGovSpend from "./OpenGovSpend";
-import { useIsKusamaChain } from "../../utils/hooks/chain";
+import { useSupportOpenGov } from "../../utils/hooks/chain";
 import { mdcss, smcss } from "@osn/common";
+import SpendPeriod from "./SpendPeriod";
 
 const DoughnutWrapper = styled.div`
   display: grid;
@@ -78,7 +79,7 @@ const TableWrapper = styled.div`
 const Overview = () => {
   const overview = useSelector(overviewSelector);
   const symbol = useSelector(chainSymbolSelector);
-  const isKusama = useIsKusamaChain();
+  const supportOpenGov = useSupportOpenGov();
 
   useChainRoute();
 
@@ -141,7 +142,7 @@ const Overview = () => {
     />,
     <Output key="output" />,
 
-    isKusama && <OpenGovSpend key="openGovSpend" />,
+    supportOpenGov && <OpenGovSpend key="openGovSpend" />,
   ].filter(Boolean);
 
   return (
@@ -149,6 +150,7 @@ const Overview = () => {
       <Summary />
       <DoughnutWrapper count={cards.length}>{cards}</DoughnutWrapper>
       <TotalStacked />
+      <SpendPeriod />
       <TableWrapper>
         <BeneficiaryTable />
         <ProposerTable />

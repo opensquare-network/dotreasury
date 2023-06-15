@@ -14,17 +14,39 @@ import {
   resetBounties,
 } from "../../store/reducers/bountySlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
-import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../constants";
+import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE, bountyStatusMap } from "../../constants";
 import NewBountyButton from "./NewBountyButton";
 import { newSuccessToast } from "../../store/reducers/toastSlice";
 import useWaitSyncBlock from "../../utils/useWaitSyncBlock";
+import Divider from "../../components/Divider";
+import Filter from "../../components/Filter";
+import useListFilter from "../../components/Filter/useListFilter";
+import styled from "styled-components";
 
 const QUERY_PAGE_KEY = "page";
 
+const FilterWrapper = styled.div`
+  display: flex;
+  align-items: flex-start;
+  padding: 24px;
+`;
+
+
+const HeaderWrapper = styled.div`
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  @media screen and (max-width: 640px) {
+    flex-direction: column;
+  }
+`;
+
 const Bounties = () => {
   useChainRoute();
+  const query = useQuery();
 
-  const searchPage = parseInt(useQuery().get(QUERY_PAGE_KEY) || "1");
+  const searchPage = parseInt(query.get(QUERY_PAGE_KEY) || "1");
   const queryPage =
     searchPage && !isNaN(searchPage) && searchPage > 0
       ? searchPage
@@ -34,6 +56,19 @@ const Bounties = () => {
     "bountiesPageSize",
     DEFAULT_PAGE_SIZE
   );
+  const sort = query.get("sort");
+
+  const {
+    filterStatus,
+    setFilterStatus,
+    rangeType,
+    setRangeType,
+    min,
+    setMin,
+    max,
+    setMax,
+    getFilterData,
+  } = useListFilter();
 
   const dispatch = useDispatch();
   const { items: bounties, total: bountiesTotal } =
@@ -42,12 +77,13 @@ const Bounties = () => {
   const chain = useSelector(chainSelector);
 
   useEffect(() => {
-    dispatch(fetchBounties(chain, tablePage - 1, pageSize));
+    const filterData = getFilterData();
+    dispatch(fetchBounties(chain, tablePage - 1, pageSize, filterData, sort && { sort }));
 
     return () => {
       dispatch(resetBounties());
     };
-  }, [dispatch, chain, tablePage, pageSize]);
+  }, [dispatch, chain, tablePage, pageSize, getFilterData, sort]);
 
   const totalPages = useMemo(
     () => Math.ceil(bountiesTotal / pageSize),
@@ -58,23 +94,41 @@ const Bounties = () => {
 
   const refreshBounties = useCallback(
     (reachingFinalizedBlock) => {
-      dispatch(fetchBounties(chain, tablePage - 1, pageSize));
+      const filterData = getFilterData();
+      dispatch(fetchBounties(chain, tablePage - 1, pageSize, filterData, sort && { sort }));
       if (reachingFinalizedBlock) {
         dispatch(newSuccessToast("Sync finished. Please provide context info for your bounty on subsquare or polkassembly."));
       }
     },
-    [dispatch, chain, tablePage, pageSize]
+    [dispatch, chain, tablePage, pageSize, getFilterData, sort]
   );
 
   const onFinalized = useWaitSyncBlock("Bounty created", refreshBounties);
 
   const header = (
-    <>
-      <Nav active="Bounties" />
-      <div style={{ display: "flex", gap: "16px" }}>
-        <NewBountyButton onFinalized={onFinalized} />
-      </div>
-    </>
+    <div>
+      <HeaderWrapper>
+        <Nav active="Bounties" />
+        <div style={{ display: "flex", gap: "16px" }}>
+          <NewBountyButton onFinalized={onFinalized} />
+        </div>
+      </HeaderWrapper>
+      <Divider />
+      <FilterWrapper>
+        <Filter
+          chain={chain}
+          status={filterStatus}
+          setStatus={setFilterStatus}
+          rangeType={rangeType}
+          setRangeType={setRangeType}
+          min={min}
+          setMin={setMin}
+          max={max}
+          setMax={setMax}
+          statusMap={bountyStatusMap}
+        />
+      </FilterWrapper>
+    </div>
   );
 
   const footer = (

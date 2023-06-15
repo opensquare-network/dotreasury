@@ -7,18 +7,35 @@ import Card from "../../components/Card";
 import TableHeader from "./TableHeader";
 import { useTableColumns } from "../../components/shared/useTableColumns";
 import { useDispatch, useSelector } from "react-redux";
-import { applicationListSelector, fetchApplicationList, loadingApplicationListSelector } from "../../store/reducers/openGovApplicationsSlice";
-import { chainSelector } from "../../store/reducers/chainSlice";
-import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../constants";
+import {
+  applicationListSelector,
+  fetchApplicationList,
+  loadingApplicationListSelector,
+} from "../../store/reducers/openGovApplicationsSlice";
+import {
+  chainSelector,
+} from "../../store/reducers/chainSlice";
+import {
+  DEFAULT_PAGE_SIZE,
+  DEFAULT_QUERY_PAGE,
+  openGovReferendumStatusMap,
+} from "../../constants";
 import ResponsivePagination from "../../components/ResponsivePagination";
 import { useHistory } from "react-router";
 import api from "../../services/scanApi";
 import TextMinor from "../../components/TextMinor";
 import JumpToLink from "./Link";
 import DescriptionCell from "../Proposals/DescriptionCell";
+import Divider from "../../components/Divider";
+import Filter from "../../components/OpenGovFilter";
+import useListFilter from "../../components/OpenGovFilter/useListFilter";
+import SortableValue from "../../components/SortableValue";
+import useSort from "../../hooks/useSort";
+import SortableIndex from "../../components/SortableIndex";
+import { useQuery } from "../../utils/hooks";
+import startCase from "lodash.startcase";
 
 const CardWrapper = styled(Card)`
-  overflow-x: hidden;
   padding: 0;
   table {
     border-radius: 0 !important;
@@ -29,9 +46,7 @@ const CardWrapper = styled(Card)`
   }
 `;
 
-const Wrapper = styled.div`
-  overflow: hidden;
-`;
+const Wrapper = styled.div``;
 
 const TableWrapper = styled.div`
   overflow: scroll;
@@ -50,40 +65,77 @@ export default function ReferendaTable() {
   const applicationList = useSelector(applicationListSelector);
   const applicationListLoading = useSelector(loadingApplicationListSelector);
   const [dataList, setDataList] = useState(applicationList?.items || []);
-  const [filterStatus, setFilterStatus] = useState("-1");
-  const [filterTrack, setFilterTrack] = useState("-1");
   const [page, setPage] = useState(DEFAULT_QUERY_PAGE);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const totalPages = Math.ceil((applicationList?.total || 0) / pageSize);
+  const query = useQuery();
+  const sort = query.get("sort");
+
+  const { sortField, setSortField, sortDirection, setSortDirection } =
+    useSort();
+
+  const {
+    filterStatus,
+    setFilterStatus,
+    filterTrack,
+    setFilterTrack,
+    rangeType,
+    setRangeType,
+    min,
+    setMin,
+    max,
+    setMax,
+    getFilterData,
+  } = useListFilter();
 
   useEffect(() => {
-    const status = filterStatus === "-1" ? "" : filterStatus;
-    const track = filterTrack === "-1" ? "" : filterTrack;
-    dispatch(fetchApplicationList(chain, page - 1, pageSize, status, track));
-  }, [dispatch, chain, page, pageSize, filterStatus, filterTrack]);
+    const filterData = getFilterData();
+    dispatch(
+      fetchApplicationList(
+        chain,
+        page - 1,
+        pageSize,
+        filterData,
+        sort && { sort },
+      ),
+    );
+  }, [
+    dispatch,
+    chain,
+    page,
+    pageSize,
+    sort,
+    getFilterData,
+  ]);
 
   useEffect(() => {
     setDataList(applicationList?.items || []);
 
-    const dataListPromises = (applicationList?.items || [])
-      .map(async (item) => {
+    const dataListPromises = (applicationList?.items || []).map(
+      async (item) => {
         if (item.description) {
           return item;
         }
 
-        const description = await fetchGov2ReferendaTitle(chain, item.referendumIndex);
+        let description = await fetchGov2ReferendaTitle(
+          chain,
+          item.referendumIndex,
+        );
+        description =
+          description ||
+          `[${startCase(item.trackInfo.name)}] Referendum #${
+            item.referendumIndex
+          }`;
         return { ...item, description };
-      });
+      },
+    );
 
-    Promise.all(dataListPromises).then(dataList => setDataList(dataList));
+    Promise.all(dataListPromises).then((dataList) => setDataList(dataList));
   }, [chain, applicationList]);
 
-  const {
-    proposeTime,
-    beneficiary,
-    value,
-    referendaStatus,
-  } = useTableColumns({});
+  const { proposeTime, beneficiary, value, referendaStatus } = useTableColumns(
+    {},
+  );
 
   const index = {
     key: "index",
@@ -110,38 +162,84 @@ export default function ReferendaTable() {
     title: "",
     headerCellClassName: "hidden",
     cellClassName: "link-cell hidden",
-    cellRender: (_, item) => <JumpToLink href={`https://${chain}.subsquare.io/referenda/referendum/${item.referendumIndex}`} />,
+    cellRender: (_, item) => (
+      <JumpToLink
+        href={`https://${chain}.subsquare.io/referenda/referendum/${item.referendumIndex}`}
+      />
+    ),
+  };
+
+  const sortByValue = {
+    ...value,
+    title: (
+      <SortableValue
+        sortField={sortField}
+        setSortField={setSortField}
+        sortDirection={sortDirection}
+        setSortDirection={setSortDirection}
+      />
+    ),
+  };
+
+  const sortableProposalIndex = {
+    ...index,
+    title: (
+      <SortableIndex
+        direction={sortField === "index" ? sortDirection : ""}
+        onClick={() => {
+          setSortField("index");
+          setSortDirection(
+            sortField === "index" && sortDirection === "asc" ? "desc" : "asc",
+          );
+        }}
+      />
+    ),
   };
 
   const columns = [
-    index,
+    sortableProposalIndex,
     proposeTime,
     beneficiary,
     description,
-    value,
+    sortByValue,
     referendaStatus,
     linkToSubSquare,
   ];
 
-  const tableData = (dataList || []).map(item => (
-    {
-      referendumIndex: item.referendumIndex,
-      proposeAtBlockHeight: item.indexer.blockHeight,
-      proposeTime: item.indexer.blockTime,
-      beneficiary: item.beneficiary,
-      proposer: item.proposer,
-      value: item.amount,
-      symbolPrice: item.symbolPrice,
-      state: item.state,
-      description: item.description,
-      trackInfo: item.trackInfo,
-    }
-  ));
+  const tableData = (dataList || []).map((item) => ({
+    referendumIndex: item.referendumIndex,
+    proposeAtBlockHeight: item.indexer.blockHeight,
+    proposeTime: item.indexer.blockTime,
+    beneficiary: item.beneficiary,
+    proposer: item.proposer,
+    value: item.amount,
+    symbolPrice: item.symbolPrice,
+    state: item.state,
+    description: item.description,
+    trackInfo: item.trackInfo,
+  }));
 
   return (
     <CardWrapper>
-      <TableHeader setFilterTrack={setFilterTrack} setFilterStatus={setFilterStatus} />
+      <TableHeader />
+      <Divider />
       <Wrapper>
+        <div style={{ display: "flex", padding: "24px", gap: "16px" }}>
+          <Filter
+            chain={chain}
+            track={filterTrack}
+            setTrack={setFilterTrack}
+            status={filterStatus}
+            setStatus={setFilterStatus}
+            rangeType={rangeType}
+            setRangeType={setRangeType}
+            min={min}
+            setMin={setMin}
+            max={max}
+            setMax={setMax}
+            statusMap={openGovReferendumStatusMap}
+          />
+        </div>
         <TableWrapper>
           <TableLoading loading={applicationListLoading}>
             <Table columns={columns} data={tableData} />
@@ -153,19 +251,22 @@ export default function ReferendaTable() {
         totalPages={totalPages}
         pageSize={pageSize}
         setPageSize={(pageSize) => {
+          const searchParams = new URLSearchParams(history.location.search);
+          searchParams.delete("page");
+          history.push({ search: searchParams.toString() });
+
           setPage(DEFAULT_QUERY_PAGE);
           setPageSize(pageSize);
-          history.push({
-            search: null,
-          });
         }}
         onPageChange={(_, { activePage }) => {
-          history.push({
-            search:
-              activePage === DEFAULT_QUERY_PAGE
-                ? null
-                : `?page=${activePage}`,
-          });
+          const searchParams = new URLSearchParams(history.location.search);
+          if (activePage === DEFAULT_QUERY_PAGE) {
+            searchParams.delete("page");
+          } else {
+            searchParams.set("page", activePage);
+          }
+          history.push({ search: searchParams.toString() });
+
           setPage(activePage);
         }}
       />

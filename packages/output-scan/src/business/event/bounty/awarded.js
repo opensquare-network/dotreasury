@@ -7,7 +7,7 @@ const {
   }
 } = require("@osn/scan-common")
 
-async function handleBountyAwarded(event, extrinsic, indexer) {
+async function handleBountyAwarded(event, indexer) {
   const eventData = event.data.toJSON();
   const [bountyIndex, beneficiary] = eventData;
 

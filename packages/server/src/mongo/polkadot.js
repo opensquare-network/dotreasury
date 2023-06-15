@@ -42,6 +42,8 @@ const termCouncilorCollectionName = "termCouncilor";
 // stats collections
 const weeklyStatsCollectionName = "weeklyStats";
 
+const periodCollectionName = "period";
+
 let client = null;
 let inputDb = null;
 let outputDb = null;
@@ -83,6 +85,7 @@ let inputWeeklyStatsCol = null;
 let termsCol = null;
 let termCouncilorCol = null;
 let councilStatusCol = null;
+let periodCol = null;
 
 async function initDb() {
   client = await MongoClient.connect(mongoUrl, {
@@ -120,6 +123,7 @@ async function initDb() {
   participantCol = outputDb.collection(participantCollectionName);
   motionVoterCol = outputDb.collection(motionVoterCollectionName);
   tipperCol = outputDb.collection(tipperCollectionName);
+  periodCol = outputDb.collection(periodCollectionName);
 
   councilDb = client.db(councilDbName);
   termsCol = councilDb.collection(termsCollectionName);
@@ -310,6 +314,11 @@ async function getTipperCollection() {
   return tipperCol;
 }
 
+async function getPeriodCollection() {
+  await tryInit(periodCol);
+  return periodCol;
+}
+
 module.exports = {
   initDb,
   getStatusCollection,
@@ -343,4 +352,5 @@ module.exports = {
   getMotionVoterCollection,
   getTipperCollection,
   getCouncilStatusCol,
+  getPeriodCollection,
 };

@@ -23,6 +23,11 @@ const proposals = [
     token: "ksm",
     proposalId: 171,
   },
+  {
+    type: "proposal",
+    token: "ksm",
+    proposalId: 280,
+  },
 ];
 
 module.exports = {

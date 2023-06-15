@@ -6,6 +6,7 @@ const {
   getStatusCollection,
   getOutputTransferCollection,
   getReferendaReferendumCollection,
+  getChildBountyCollection,
 } = require("../../mongo");
 const { bigAdd } = require("../../utils");
 const { setOverview, getOverview } = require("../store");
@@ -49,6 +50,9 @@ async function calcOverview(chain) {
   const bountyCol = await getBountyCollection(chain);
   const bounties = await bountyCol.find({}, { meta: 1, state: 1 }).toArray();
 
+  const childBountyCol = await getChildBountyCollection(chain);
+  const childBounties = await childBountyCol.find({}, { meta: 1, state: 1 }).toArray();
+
   const burntCol = await getBurntCollection(chain);
   const burntList = await burntCol.find({}, { balance: 1 }).toArray();
 
@@ -66,6 +70,7 @@ async function calcOverview(chain) {
     proposals,
     tips,
     bounties,
+    childBounties,
     burntList,
     outputTransferList,
     referendaList,

@@ -7,7 +7,6 @@ import ProposalsTable from "./ProposalsTable";
 import { useDispatch, useSelector } from "react-redux";
 import { useChainRoute, useQuery, useLocalStorage } from "../../utils/hooks";
 import Summary from "./Summary";
-import Filter from "./Filter";
 
 import {
   fetchProposals,
@@ -16,11 +15,21 @@ import {
   resetProposals,
 } from "../../store/reducers/proposalSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
-import Text from "../../components/Text";
-import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../constants";
+import {
+  DEFAULT_PAGE_SIZE,
+  DEFAULT_QUERY_PAGE,
+  gov2ProposalStatusMap,
+  proposalStatusMap,
+} from "../../constants";
 import useWaitSyncBlock from "../../utils/useWaitSyncBlock";
 import NewProposalButton from "./NewProposalButton";
 import { newSuccessToast } from "../../store/reducers/toastSlice";
+import Divider from "../../components/Divider";
+import useListFilter from "../../components/OpenGovFilter/useListFilter";
+import Filter from "../../components/Filter";
+import OpenGovFilter from "../../components/OpenGovFilter";
+import Nav from "./Nav";
+import { useSupportOpenGov } from "../../utils/hooks/chain";
 
 const HeaderWrapper = styled.div`
   padding: 20px 24px;
@@ -29,16 +38,17 @@ const HeaderWrapper = styled.div`
   align-items: center;
 `;
 
-const Title = styled(Text)`
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 700;
+const FilterWrapper = styled.div`
+  display: flex;
+  align-items: flex-start;
+  padding: 24px;
 `;
 
 const Proposals = () => {
   useChainRoute();
+  const query = useQuery();
 
-  const searchPage = parseInt(useQuery().get("page"));
+  const searchPage = parseInt(query.get("page"));
   const queryPage =
     searchPage && !isNaN(searchPage) && searchPage > 0
       ? searchPage
@@ -46,56 +56,154 @@ const Proposals = () => {
   const [tablePage, setTablePage] = useState(queryPage);
   const [pageSize, setPageSize] = useLocalStorage(
     "proposalsPageSize",
-    DEFAULT_PAGE_SIZE
+    DEFAULT_PAGE_SIZE,
   );
-  const [filterData, setFilterData] = useState({});
+  const sort = query.get("sort");
+  const tab = query.get("tab");
+
+  const gov = tab === "gov1" ? "1" : tab === "opengov" ? "2" : "";
+
+  const {
+    filterStatus,
+    setFilterStatus,
+    filterTrack,
+    setFilterTrack,
+    rangeType,
+    setRangeType,
+    min,
+    setMin,
+    max,
+    setMax,
+    getFilterData,
+  } = useListFilter();
 
   const dispatch = useDispatch();
   const history = useHistory();
   const { items: proposals, total } = useSelector(proposalListSelector);
   const loading = useSelector(loadingSelector);
   const chain = useSelector(chainSelector);
+  const supportOpenGov = useSupportOpenGov();
 
   useEffect(() => {
-    dispatch(fetchProposals(chain, tablePage - 1, pageSize, filterData));
+    let filterData = getFilterData();
+    if (gov) {
+      filterData = { ...filterData, gov };
+    }
+
+    dispatch(
+      fetchProposals(
+        chain,
+        tablePage - 1,
+        pageSize,
+        filterData,
+        sort && { sort },
+      ),
+    );
 
     return () => {
       dispatch(resetProposals());
     };
-  }, [dispatch, chain, tablePage, pageSize, filterData]);
+  }, [dispatch, chain, tablePage, pageSize, getFilterData, sort, gov]);
 
   const totalPages = Math.ceil(total / pageSize);
 
-  const filterQuery = useCallback((data) => {
-    setFilterData(data);
-    setTablePage(1);
-  }, []);
-
   const refreshProposals = useCallback(
     (reachingFinalizedBlock) => {
-      dispatch(fetchProposals(chain, tablePage - 1, pageSize, filterData));
+      let filterData = getFilterData();
+      if (gov) {
+        filterData = { ...filterData, gov };
+      }
+
+      dispatch(
+        fetchProposals(
+          chain,
+          tablePage - 1,
+          pageSize,
+          filterData,
+          sort && { sort },
+        ),
+      );
       if (reachingFinalizedBlock) {
-        dispatch(newSuccessToast("Sync finished. Please provide context info for your proposal on subsquare or polkassembly."));
+        dispatch(
+          newSuccessToast(
+            "Sync finished. Please provide context info for your proposal on subsquare or polkassembly.",
+          ),
+        );
       }
     },
-    [dispatch, chain, tablePage, pageSize, filterData]
+    [dispatch, chain, tablePage, pageSize, getFilterData, sort, gov],
   );
 
   const onFinalized = useWaitSyncBlock("Proposal created", refreshProposals);
+
+  let filter = (
+    <Filter
+      chain={chain}
+      status={filterStatus}
+      setStatus={setFilterStatus}
+      rangeType={rangeType}
+      setRangeType={setRangeType}
+      min={min}
+      setMin={setMin}
+      max={max}
+      setMax={setMax}
+      statusMap={{ ...proposalStatusMap, ...gov2ProposalStatusMap }}
+    />
+  );
+
+  if (supportOpenGov) {
+    if (tab === "opengov") {
+      filter = (
+        <OpenGovFilter
+          chain={chain}
+          status={filterStatus}
+          setStatus={setFilterStatus}
+          track={filterTrack}
+          setTrack={setFilterTrack}
+          rangeType={rangeType}
+          setRangeType={setRangeType}
+          min={min}
+          setMin={setMin}
+          max={max}
+          setMax={setMax}
+          statusMap={gov2ProposalStatusMap}
+        />
+      );
+    } else if (!tab) {
+      filter = (
+        <OpenGovFilter
+          chain={chain}
+          status={filterStatus}
+          setStatus={setFilterStatus}
+          track={filterTrack}
+          setTrack={setFilterTrack}
+          rangeType={rangeType}
+          setRangeType={setRangeType}
+          min={min}
+          setMin={setMin}
+          max={max}
+          setMax={setMax}
+          statusMap={proposalStatusMap}
+        />
+      );
+    }
+  }
 
   return (
     <>
       <Summary />
       <ProposalsTable
         header={
-          <HeaderWrapper>
-            <Title>Proposals</Title>
-            <div style={{ display: "flex", gap: "16px" }}>
-              <NewProposalButton onFinalized={onFinalized} />
-              <Filter query={filterQuery} />
-            </div>
-
-          </HeaderWrapper>
+          <div>
+            <HeaderWrapper>
+              <Nav active="All" />
+              <div style={{ display: "flex", gap: "16px" }}>
+                <NewProposalButton onFinalized={onFinalized} />
+              </div>
+            </HeaderWrapper>
+            <Divider />
+            <FilterWrapper>{filter}</FilterWrapper>
+          </div>
         }
         data={proposals}
         loading={loading}
@@ -105,19 +213,22 @@ const Proposals = () => {
             totalPages={totalPages}
             pageSize={pageSize}
             setPageSize={(pageSize) => {
+              const searchParams = new URLSearchParams(history.location.search);
+              searchParams.delete("page");
+              history.push({ search: searchParams.toString() });
+
               setTablePage(DEFAULT_QUERY_PAGE);
               setPageSize(pageSize);
-              history.push({
-                search: null,
-              });
             }}
             onPageChange={(_, { activePage }) => {
-              history.push({
-                search:
-                  activePage === DEFAULT_QUERY_PAGE
-                    ? null
-                    : `?page=${activePage}`,
-              });
+              const searchParams = new URLSearchParams(history.location.search);
+              if (activePage === DEFAULT_QUERY_PAGE) {
+                searchParams.delete("page");
+              } else {
+                searchParams.set("page", activePage);
+              }
+              history.push({ search: searchParams.toString() });
+
               setTablePage(activePage);
             }}
           />

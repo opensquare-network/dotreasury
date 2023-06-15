@@ -14,6 +14,8 @@ function DB(dbUrl, dbName) {
   let bountyCol = null;
   let proposalCol = null;
   let referendaReferendumCol = null;
+  let childBountyCol = null;
+  let periodCol = null; // spend periods
 
   async function initDb() {
     client = await MongoClient.connect(dbUrl, {
@@ -27,17 +29,7 @@ function DB(dbUrl, dbName) {
     childBountyCol = db.collection(childBountyCollectionName);
     proposalCol = db.collection(proposalCollectionName);
     referendaReferendumCol = db.collection(referendaReferendumCollectionName);
-
-    await _createIndexes();
-  }
-
-  async function _createIndexes() {
-    if (!db) {
-      console.error("Please call initDb first");
-      process.exit(1);
-    }
-
-    // TODO: create indexes for better query performance
+    periodCol = db.collection("period");
   }
 
   async function tryInit(col) {
@@ -69,7 +61,12 @@ function DB(dbUrl, dbName) {
   async function getReferendaReferendumCollection() {
     await tryInit(referendaReferendumCol);
     return referendaReferendumCol;
-  };
+  }
+
+  async function getPeriodCol() {
+    await tryInit(periodCol);
+    return periodCol;
+  }
 
   return {
     getTipCollection,
@@ -77,6 +74,7 @@ function DB(dbUrl, dbName) {
     getChildBountyCollection,
     getProposalCollection,
     getReferendaReferendumCollection,
+    getPeriodCol,
   };
 }
 

@@ -52,17 +52,19 @@ export const fetchProposals = (
   chain,
   page = 0,
   pageSize = 30,
-  filterData = {}
+  filterData = {},
+  sort,
 ) => async (dispatch) => {
   dispatch(setLoading(true));
 
   try {
-    const { result } = await api.fetch(`/${chain}/proposals`, { page, pageSize, ...filterData });
+    const { result } = await api.fetch(`/${chain}/proposals`, { page, pageSize, ...filterData, ...sort });
     dispatch(setProposals(result || {}));
   } finally {
     dispatch(setLoading(false));
   }
 };
+
 export const resetProposals = () => (dispatch) => {
   dispatch(setProposals(EMPTY_TABLE_DATA));
 };

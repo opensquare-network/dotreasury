@@ -2,6 +2,9 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const DB = require("./output-scan");
+const { normalizeTokenValue } = require("../utils");
+const BigNumber = require("bignumber.js");
+const { savePeriodPrice } = require("./period");
 
 const dotDbName = process.env.MONGO_DB_OUTPUT_DOT_NAME;
 if (!dotDbName) {
@@ -24,6 +27,10 @@ const dbUrls = {
   polkadot: process.env.DOT_MONGO_URL,
 }
 
+function calcPriceByToken(tokenValue, symbolPrice) {
+  return new BigNumber(tokenValue).multipliedBy(symbolPrice || 0).toFixed(5);
+}
+
 const { getPrice } = require("./price");
 
 async function savePrice(chain, col) {
@@ -37,11 +44,15 @@ async function savePrice(chain, col) {
     if (blockTime) {
       const price = await getPrice(chain, blockTime);
       if (price) {
+        const tokenValue = normalizeTokenValue(item.value, chain)
+        const allPrice = calcPriceByToken(tokenValue, price);
+
         await col.updateOne(
           { _id: item._id },
           {
             $set: {
               symbolPrice: price,
+              fiatValue: parseFloat(allPrice),
             },
           }
         );
@@ -60,6 +71,7 @@ async function main() {
       getBountyCollection,
       getChildBountyCollection,
       getReferendaReferendumCollection,
+      getPeriodCol,
     } = DB(dbUrl, dbName);
 
     const tipCol = await getTipCollection();
@@ -73,6 +85,9 @@ async function main() {
 
     const childBountyCol = await getChildBountyCollection();
     await savePrice(chain, childBountyCol);
+
+    const periodCol = await getPeriodCol();
+    await savePeriodPrice(chain, periodCol);
 
     if (chain === "kusama") {
       const referendaCol = await getReferendaReferendumCollection();

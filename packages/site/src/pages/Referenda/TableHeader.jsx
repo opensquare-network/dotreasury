@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import Filter from "./Filter";
 import Text from "../../components/Text";
 
 const HeaderWrapper = styled.div`
-  padding: 20px 24px;
+  padding: 24px;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
 `;
 
 const Title = styled(Text)`
@@ -16,13 +16,10 @@ const Title = styled(Text)`
   font-weight: 700;
 `;
 
-export default function TableHeader({ setFilterTrack, setFilterStatus }) {
+export default function TableHeader() {
   return (
     <HeaderWrapper>
       <Title>OpenGov Applications</Title>
-      <div style={{ display: "flex", gap: "16px" }}>
-        <Filter setTrack={setFilterTrack} setStatus={setFilterStatus} />
-      </div>
     </HeaderWrapper>
   );
 }

@@ -34,13 +34,6 @@ const TableWrapper = styled.div`
   }
 `;
 
-const HeaderWrapper = styled.div`
-  padding: 20px 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
 const BountiesTable = ({ data, loading, header, footer }) => {
   const history = useHistory();
 
@@ -55,7 +48,7 @@ const BountiesTable = ({ data, loading, header, footer }) => {
 
   return (
     <CardWrapper>
-      {header && <HeaderWrapper>{header}</HeaderWrapper>}
+      {header}
       <Wrapper>
         <TableWrapper>
           <TableLoading loading={loading}>

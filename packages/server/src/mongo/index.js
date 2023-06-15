@@ -132,6 +132,10 @@ function getTipperCollection(chain) {
   return db(chain).getTipperCollection();
 }
 
+function getPeriodCollection(chain) {
+  return db(chain).getPeriodCollection();
+}
+
 module.exports = {
   initDb,
   getStatusCollection,
@@ -165,4 +169,5 @@ module.exports = {
   getMotionVoterCollection,
   getTipperCollection,
   getCouncilStatusCol,
+  getPeriodCollection,
 };

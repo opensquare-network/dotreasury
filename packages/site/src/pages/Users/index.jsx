@@ -14,9 +14,20 @@ import {
 } from "../../store/reducers/usersSlice";
 import { useEffect } from "react";
 import { useHistory } from "react-router";
+import Divider from "../../components/Divider";
+import Filter from "./Filter";
+import useListFilter from "./useListFilters";
 
-const Title = styled.h4`
+const Title = styled.div`
   ${h4_16_semibold};
+  padding: 20px 24px;
+  color: var(--textPrimary);
+`;
+
+const FilterWrapper = styled.div`
+  display: flex;
+  align-items: flex-start;
+  padding: 24px;
 `;
 
 export default function Participants() {
@@ -41,15 +52,32 @@ export default function Participants() {
 
   const totalPages = Math.ceil(total / pageSize);
 
+  const {
+    role,
+    setRole,
+    getFilterData,
+  } = useListFilter();
+
   useEffect(() => {
-    dispatch(fetchUsers(chain, tablePage - 1, pageSize));
-  }, [dispatch, chain, tablePage, pageSize]);
+    const filterData = getFilterData();
+    dispatch(fetchUsers(chain, tablePage - 1, pageSize, filterData));
+  }, [dispatch, chain, tablePage, pageSize, getFilterData]);
+
+  const header = (
+    <div style={{ width: "100%" }}>
+      <Title>Users</Title>
+      <Divider />
+      <FilterWrapper>
+        <Filter role={role} setRole={setRole} />
+      </FilterWrapper>
+    </div>
+  );
 
   return (
     <UsersTable
       data={tableData}
       loading={loading}
-      header={<Title>Users</Title>}
+      header={header}
       footer={
         !!tableData?.length && (
           <ResponsivePagination
@@ -57,19 +85,22 @@ export default function Participants() {
             totalPages={totalPages}
             pageSize={pageSize}
             setPageSize={(size) => {
+              const searchParams = new URLSearchParams(history.location.search);
+              searchParams.delete("page");
+              history.push({ search: searchParams.toString() });
+
               setTablePage(DEFAULT_QUERY_PAGE);
               setPageSize(size);
-              history.push({
-                search: null,
-              });
             }}
             onPageChange={(_, { activePage }) => {
-              history.push({
-                search:
-                  activePage === DEFAULT_QUERY_PAGE
-                    ? null
-                    : `?page=${activePage}`,
-              });
+              const searchParams = new URLSearchParams(history.location.search);
+              if (activePage === DEFAULT_QUERY_PAGE) {
+                searchParams.delete("page");
+              } else {
+                searchParams.set("page", activePage);
+              }
+              history.push({ search: searchParams.toString() });
+
               setTablePage(activePage);
             }}
           />

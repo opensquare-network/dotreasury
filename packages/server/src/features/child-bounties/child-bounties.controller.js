@@ -3,9 +3,11 @@ const { getChildBountyCollection } = require("../../mongo");
 const linkService = require("../../services/link.service");
 const commentService = require("../../services/comment.service");
 const { HttpError } = require("../../exc");
+const { ChildBountyQueryFieldsMap } = require("../common/query");
+const { getRangeCondition } = require("../common/getRangeCondition");
 
 function getCondition(ctx) {
-  const { beneficiary, proposer } = ctx.request.query;
+  const { beneficiary, proposer, status } = ctx.request.query;
 
   const condition = {}
   if (beneficiary) {
@@ -16,7 +18,13 @@ function getCondition(ctx) {
     condition["proposer"] = proposer;
   }
 
-  return condition;
+  if (status) {
+    condition["state.state"] = { $in: status.split("||") };
+  }
+
+  const rangeCond = getRangeCondition(ctx);
+
+  return { ...condition, ...rangeCond };
 }
 
 async function queryChildBounties(ctx, chain, q = {}) {
@@ -24,6 +32,25 @@ async function queryChildBounties(ctx, chain, q = {}) {
   if (pageSize === 0 || page < 0) {
     ctx.status = 400;
     return;
+  }
+
+  let sortParams = {
+    stateSort: 1,
+    index: -1,
+    "indexer.blockHeight": -1,
+  };
+
+  const { sort } = ctx.request.query;
+  if (sort) {
+    let [fieldName, sortDirection] = sort.split("_");
+    fieldName = ChildBountyQueryFieldsMap[fieldName];
+    if (!fieldName) {
+      throw new HttpError(400, "Invalid sort field");
+    }
+    sortParams = {
+      [fieldName]: sortDirection === "desc" ? -1 : 1,
+      "indexer.blockHeight": -1,
+    };
   }
 
   const col = await getChildBountyCollection(chain);
@@ -34,11 +61,7 @@ async function queryChildBounties(ctx, chain, q = {}) {
         timeline: 0,
       }
     })
-    .sort({
-      stateSort: 1,
-      index: -1,
-      "indexer.blockHeight": -1,
-    })
+    .sort(sortParams)
     .skip(page * pageSize)
     .limit(pageSize)
     .toArray();

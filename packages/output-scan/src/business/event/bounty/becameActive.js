@@ -28,7 +28,11 @@ async function handleBountyBecameActiveEvent(event, indexer) {
     state: BountyStatus.Active,
   }
 
-  await updateBounty(bountyIndex, { meta, state }, timelineItem);
+  await updateBounty(bountyIndex, {
+    awardHeight: indexer.blockHeight,
+    meta,
+    state,
+  }, timelineItem);
 }
 
 module.exports = {

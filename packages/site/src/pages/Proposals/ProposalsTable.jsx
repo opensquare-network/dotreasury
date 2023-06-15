@@ -12,6 +12,9 @@ import {
 import Card from "../../components/Card";
 import { useTableColumns } from "../../components/shared/useTableColumns";
 import api from "../../services/scanApi";
+import SortableIndex from "../../components/SortableIndex";
+import SortableValue from "../../components/SortableValue";
+import useSort from "../../hooks/useSort";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -57,6 +60,13 @@ const ProposalsTable = ({ data, loading, header, footer }) => {
   const chain = useSelector(chainSelector);
   const [isBeneficiary, setIsBeneficiary] = useState(true);
   const [tableData, setTableData] = useState(data);
+
+  const {
+    sortField,
+    setSortField,
+    sortDirection,
+    setSortDirection,
+  } = useSort();
 
   useEffect(() => {
     setTableData(data);
@@ -105,12 +115,14 @@ const ProposalsTable = ({ data, loading, header, footer }) => {
     setIsBeneficiary(!isBeneficiary);
   beneficiary = {
     ...beneficiary,
+    title: <span style={{ color: "var(--pink500)" }}>Beneficiary</span>,
     headerCellProps: {
       onClick: handleSwitchBebeficiaryProposer,
     },
   };
   proposer = {
     ...proposer,
+    title: <span style={{ color: "var(--pink500)" }}>Proposer</span>,
     headerCellProps: {
       onClick: handleSwitchBebeficiaryProposer,
     },
@@ -124,14 +136,39 @@ const ProposalsTable = ({ data, loading, header, footer }) => {
     show: !isBeneficiary,
   };
 
+  const sortByValue = {
+    ...value,
+    title: (
+      <SortableValue
+        sortField={sortField}
+        setSortField={setSortField}
+        sortDirection={sortDirection}
+        setSortDirection={setSortDirection}
+      />
+    ),
+  };
+
+  const sortableProposalIndex = {
+    ...proposalIndex,
+    title: (
+      <SortableIndex
+        direction={sortField === "index" ? sortDirection : ""}
+        onClick={() => {
+          setSortField("index");
+          setSortDirection(sortField === "index" && sortDirection === "asc" ? "desc" : "asc");
+        }}
+      />
+    ),
+  };
+
   const columns = [
-    proposalIndex,
+    sortableProposalIndex,
     proposeTime,
     beneficiary,
     proposer,
     description,
     relatedLinks,
-    value,
+    sortByValue,
     proposalStatus,
     detailRoute,
   ];

@@ -37,7 +37,7 @@ export const {
   setSummary,
 } = openGovApplicationsSlice.actions;
 
-export const fetchApplicationList = (chain, page = 0, pageSize = 30, status = "", track = "") => async (
+export const fetchApplicationList = (chain, page = 0, pageSize = 30, filterData = {}, sort = {}) => async (
   dispatch
 ) => {
   dispatch(setLoadingApplicationList(true));
@@ -46,8 +46,8 @@ export const fetchApplicationList = (chain, page = 0, pageSize = 30, status = ""
     const { result } = await api.fetch(`/${chain}/referenda`, {
       page,
       pageSize,
-      status,
-      track,
+      ...filterData,
+      ...sort,
     });
     dispatch(
       setApplicationList(

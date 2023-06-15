@@ -3,6 +3,8 @@ const { extractPage } = require("../../utils");
 const linkService = require("../../services/link.service");
 const commentService = require("../../services/comment.service");
 const { HttpError } = require("../../exc");
+const { BountyQueryFieldsMap } = require("../common/query");
+const { getRangeCondition } = require("../common/getRangeCondition");
 
 const bountyStatus = (bounty) =>
   bounty?.status?.CuratorProposed ||
@@ -40,6 +42,8 @@ const normalizeBountyListItem = (item) => ({
     state: bountyStatusName(item),
     indexer: item.state?.indexer || item.state?.eventIndexer,
   },
+  dValue: item.dValue?.toString(),
+  fiatValue: item.fiatValue,
 });
 
 async function getAdmins(chain, bountyIndex) {
@@ -51,7 +55,7 @@ async function getAdmins(chain, bountyIndex) {
 }
 
 function getCondition(ctx) {
-  const { beneficiary, proposer } = ctx.request.query;
+  const { status, beneficiary, proposer } = ctx.request.query;
 
   const condition = {}
   if (beneficiary) {
@@ -62,7 +66,13 @@ function getCondition(ctx) {
     condition["meta.proposer"] = proposer;
   }
 
-  return condition;
+  if (status) {
+    condition["state.state"] = { $in: status.split("||") };
+  }
+
+  const rangeCond = getRangeCondition(ctx);
+
+  return { ...condition, ...rangeCond };
 }
 
 class BountiesController {
@@ -74,17 +84,38 @@ class BountiesController {
       return;
     }
 
+    let sortPipeline = [
+      {
+        $sort: {
+          stateSort: 1,
+          "indexer.blockHeight": -1,
+        }
+      }
+    ];
+
+    const { sort } = ctx.request.query;
+    if (sort) {
+      let [fieldName, sortDirection] = sort.split("_");
+      fieldName = BountyQueryFieldsMap[fieldName];
+      if (!fieldName) {
+        throw new HttpError(400, "Invalid sort field");
+      }
+      sortPipeline = [
+        {
+          $sort: {
+            [fieldName]: sortDirection === "desc" ? -1 : 1,
+            "indexer.blockHeight": -1,
+          }
+        }
+      ];
+    }
+
     const condition = getCondition(ctx);
     const bountyCol = await getBountyCollection(chain);
     const bounties = await bountyCol
       .aggregate([
         { $match: condition },
-        {
-          $sort: {
-            stateSort: 1,
-            "indexer.blockHeight": -1,
-          }
-        },
+        ...sortPipeline,
         { $skip: pageSize * page },
         { $limit: pageSize },
         {
@@ -99,19 +130,19 @@ class BountiesController {
                   }
                 }
               },
+              {
+                $project: { timeline: 0 }
+              },
               { $sort: { index: -1 } }
             ],
             as: "childBounties",
           }
         },
         {
-          $project: {
-            timeline: 0,
-            "childBounties.timeline": 0,
-          }
+          $project: { timeline: 0 }
         }
       ]).toArray();
-    const total = await bountyCol.estimatedDocumentCount();
+    const total = await bountyCol.countDocuments(condition);
 
     ctx.body = {
       items: bounties.map(item => ({

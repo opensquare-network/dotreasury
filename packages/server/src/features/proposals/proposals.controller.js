@@ -10,52 +10,60 @@ const commentService = require("../../services/comment.service");
 const rateService = require("../../services/rate.service");
 const descriptionService = require("../../services/description.service");
 const { HttpError } = require("../../exc");
+const { ProposalQueryFieldsMap } = require("../common/query");
+const { getRangeCondition } = require("../common/getRangeCondition");
 
 async function getProposalMotions(proposal, chain) {
-  const motionHashes = (proposal.motions || []).map(motionInfo => motionInfo.hash);
+  const motionHashes = (proposal.motions || []).map(
+    (motionInfo) => motionInfo.hash,
+  );
 
   const motionCol = await getMotionCollection(chain);
   const proposalMotions = await motionCol
     .find({
-      hash: { $in: motionHashes }
+      hash: { $in: motionHashes },
     })
     .sort({ index: 1 })
     .toArray();
 
-  const motions = (proposal.motions || []).map(motionInfo => {
+  const motions = (proposal.motions || []).map((motionInfo) => {
     const targetMotion = (proposalMotions || []).find(
-      m => m.hash === motionInfo.hash && m.indexer.blockHeight === motionInfo.indexer.blockHeight
-    )
+      (m) =>
+        m.hash === motionInfo.hash &&
+        m.indexer.blockHeight === motionInfo.indexer.blockHeight,
+    );
 
     return {
       motionInfo,
       ...targetMotion,
-    }
+    };
   });
 
   return motions;
 }
 
 async function getProposalReferendums(proposal, chain) {
-  const referendumIndexes = (proposal.referendums || []).map(referendumInfo => referendumInfo.referendumIndex);
+  const referendumIndexes = (proposal.referendums || []).map(
+    (referendumInfo) => referendumInfo.referendumIndex,
+  );
 
   const referendumCol = await getReferendumCollection(chain);
   const proposalReferendums = await referendumCol
     .find({
-      referendumIndex: { $in: referendumIndexes }
+      referendumIndex: { $in: referendumIndexes },
     })
     .sort({ referendumIndex: 1 })
     .toArray();
 
-  const referendums = (proposal.referendums || []).map(referendumInfo => {
+  const referendums = (proposal.referendums || []).map((referendumInfo) => {
     const targetReferendum = (proposalReferendums || []).find(
-      r => r.referendumIndex === referendumInfo.referendumIndex
-    )
+      (r) => r.referendumIndex === referendumInfo.referendumIndex,
+    );
 
     return {
       referendumInfo,
       ...targetReferendum,
-    }
+    };
   });
 
   return referendums;
@@ -70,9 +78,9 @@ async function getAdmins(chain, proposalIndex) {
 }
 
 function getCondition(ctx) {
-  const { status, beneficiary, proposer } = ctx.request.query;
+  const { status, beneficiary, proposer, gov, track } = ctx.request.query;
 
-  const condition = {}
+  const condition = {};
   if (status) {
     condition["state.state"] = status;
   }
@@ -85,7 +93,19 @@ function getCondition(ctx) {
     condition["proposer"] = proposer;
   }
 
-  return condition;
+  if (track) {
+    condition["track.name"] = track;
+  }
+
+  if (gov === "1") {
+    condition.isByGov2 = { $ne: true };
+  } else if (gov === "2") {
+    condition.isByGov2 = true;
+  }
+
+  const rangeCond = getRangeCondition(ctx);
+
+  return { ...condition, ...rangeCond };
 }
 
 class ProposalsController {
@@ -100,8 +120,8 @@ class ProposalsController {
     const condition = getCondition(ctx);
     const proposalCol = await getProposalCollection(chain);
     const totalQuery = proposalCol.countDocuments(condition);
-    const proposalsQuery = proposalCol.aggregate([
-      { $match: condition },
+
+    let sortPipeline = [
       {
         $addFields: {
           sort: {
@@ -113,25 +133,49 @@ class ProposalsController {
                 { case: { $eq: ["$state.state", "Approved"] }, then: 7 },
               ],
               default: 0,
-            }
-          }
-        }
+            },
+          },
+        },
       },
       {
         $sort: {
           sort: -1,
           "indexer.blockHeight": -1,
-        }
+        },
       },
-      { $skip: page * pageSize },
-      { $limit: pageSize },
-      {
-        $project: {
-          sort: 0,
-          timeline: 0,
-        }
+    ];
+
+    const { sort } = ctx.request.query;
+    if (sort) {
+      let [fieldName, sortDirection] = sort.split("_");
+      fieldName = ProposalQueryFieldsMap[fieldName];
+      if (!fieldName) {
+        throw new HttpError(400, "Invalid sort field");
       }
-    ]).toArray();
+      sortPipeline = [
+        {
+          $sort: {
+            [fieldName]: sortDirection === "desc" ? -1 : 1,
+            "indexer.blockHeight": -1,
+          },
+        },
+      ];
+    }
+
+    const proposalsQuery = proposalCol
+      .aggregate([
+        { $match: condition },
+        ...sortPipeline,
+        { $skip: page * pageSize },
+        { $limit: pageSize },
+        {
+          $project: {
+            sort: 0,
+            timeline: 0,
+          },
+        },
+      ])
+      .toArray();
 
     const [total, proposals] = await Promise.all([totalQuery, proposalsQuery]);
 
@@ -159,6 +203,8 @@ class ProposalsController {
         },
         isByGov2: item.isByGov2,
         trackInfo: item.track,
+        dValue: item.dValue?.toString(),
+        fiatValue: item.fiatValue,
       })),
       page,
       pageSize,
@@ -169,7 +215,9 @@ class ProposalsController {
   async getProposalBeneficiaries(ctx) {
     const { chain } = ctx.params;
     const { page, pageSize } = extractPage(ctx);
-    const proposalBeneficiaryCol = await getProposalBeneficiaryCollection(chain);
+    const proposalBeneficiaryCol = await getProposalBeneficiaryCollection(
+      chain,
+    );
     const total = await proposalBeneficiaryCol.estimatedDocumentCount();
     const items = await proposalBeneficiaryCol
       .find({})
@@ -334,7 +382,7 @@ class ProposalsController {
         index: proposalIndex,
       },
       content,
-      user
+      user,
     );
   }
 
@@ -355,7 +403,7 @@ class ProposalsController {
         index: proposalIndex,
       },
       page,
-      pageSize
+      pageSize,
     );
   }
 

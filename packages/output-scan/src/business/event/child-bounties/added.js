@@ -1,3 +1,4 @@
+const { toDecimal128 } = require("../../../utils");
 const { findExtrinsicRealAuthor } = require("../../common/extrinsic/author");
 const { insertChildBounty } = require("../../../mongo/service/childBounty");
 const {
@@ -45,6 +46,7 @@ async function handleAdded(event, indexer, extrinsic) {
     proposer,
     index: childBountyId,
     value: meta?.value,
+    dValue: toDecimal128(meta?.value),
     fee: meta?.fee,
     curator: null,
     beneficiary: null,

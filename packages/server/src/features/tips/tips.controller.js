@@ -4,6 +4,8 @@ const commentService = require("../../services/comment.service");
 const { extractPage, ADMINS } = require("../../utils");
 const { normalizeTip } = require("./utils");
 const { HttpError } = require("../../exc");
+const { TipQueryFieldsMap } = require("../common/query");
+const { getRangeCondition } = require("../common/getRangeCondition");
 
 function getCondition(ctx) {
   const { status, beneficiary, finder, proposer } = ctx.request.query;
@@ -21,7 +23,9 @@ function getCondition(ctx) {
     condition["finder"] = finder || proposer;
   }
 
-  return condition;
+  const rangeCond = getRangeCondition(ctx);
+
+  return { ...condition, ...rangeCond };
 }
 
 async function getAdmins(chain, blockHeight, tipHash) {
@@ -45,14 +49,29 @@ class TipsController {
     }
     const condition = getCondition(ctx);
 
+    let sortParams = {
+      isFinal: 1,
+      "indexer.blockHeight": -1,
+    };
+
+    const { sort } = ctx.request.query;
+    if (sort) {
+      let [fieldName, sortDirection] = sort.split("_");
+      fieldName = TipQueryFieldsMap[fieldName];
+      if (!fieldName) {
+        throw new HttpError(400, "Invalid sort field");
+      }
+      sortParams = {
+        [fieldName]: sortDirection === "desc" ? -1 : 1,
+        "indexer.blockHeight": -1,
+      };
+    }
+
     const tipCol = await getTipCollection(chain);
     const total = tipCol.countDocuments(condition);
     const list = tipCol
       .find(condition)
-      .sort({
-        isFinal: 1,
-        "indexer.blockHeight": -1,
-      })
+      .sort(sortParams)
       .skip(page * pageSize)
       .limit(pageSize)
       .toArray();

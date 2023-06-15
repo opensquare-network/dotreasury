@@ -13,9 +13,53 @@ export const tipStatusMap = {
   TipSlashed: "Slashed",
 };
 
-export const ProposalStatus = {
+export const bountyStatusMap = {
+  Proposed: "Proposed",
+  Approved: "Approved",
+  Funded: "Funded",
+  CuratorProposed: "CuratorProposed",
+  Active: "Active",
+  PendingPayout: "PendingPayout",
+  Rejected: "Rejected",
+  Canceled: "Canceled",
+  Claimed: "Claimed",
+};
+
+export const childBountyStatusMap = {
+  Added: "Added",
+  CuratorProposed: "CuratorProposed",
+  Active: "Active",
+  PendingPayout: "PendingPayout",
+  Rejected: "Rejected",
+  Canceled: "Canceled",
+  Claimed: "Claimed",
+};
+
+export const proposalStatusMap = {
+  Proposed: "Proposed",
   Approved: "Approved",
   Rejected: "Rejected",
+  ApproveVoting: "ApproveVoting",
+  RejectVoting: "RejectVoting",
+  Awarded: "Awarded",
+};
+
+export const gov2ProposalStatusMap = {
+  Approved: "Approved",
+  Awarded: "Awarded",
+};
+
+export const openGovReferendumStatusMap = {
+  Confirming: "Confirming",
+  Deciding: "Deciding",
+  Queueing: "Queueing",
+  Submitted: "Submitted",
+  Approved: "Approved",
+  Cancelled: "Cancelled",
+  Killed: "Killed",
+  TimedOut: "TimedOut",
+  Rejected: "Rejected",
+  Executed: "Executed",
 };
 
 export const TreasuryAccount =
