@@ -1,9 +1,8 @@
 const id = "subsquid";
 const name = "Subsquid";
-const title = "A polkadot and Ethereum wallet";
-const description =
-  "An open-source framework for building powerful and tailored GraphQL APIs for substrate blockchain state history.";
-const logo = "subwallet-logo.svg";
+const title = "An open-source framework for building powerful and tailored GraphQL APIs for substrate blockchain state history.";
+const description = title;
+const logo = "subsquid-logo.svg";
 
 const relatedLinks = [
   {
