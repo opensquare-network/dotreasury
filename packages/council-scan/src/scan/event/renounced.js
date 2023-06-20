@@ -21,7 +21,7 @@ async function handleRenounced(event, indexer) {
   const termHeight = indexer.blockHeight - indexer.blockHeight % termDuration;
   const col = await getTermCouncilorCollection();
   for (const addedMember of addedMembers) {
-    await col.update(
+    await col.updateOne(
       {
         blockHeight: termHeight,
         address: addedMember,
@@ -35,7 +35,7 @@ async function handleRenounced(event, indexer) {
   }
 
   for (const removedMember of removedMembers) {
-    await col.update(
+    await col.updateOne(
       {
         blockHeight: termHeight,
         address: removedMember,

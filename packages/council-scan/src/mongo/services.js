@@ -6,7 +6,7 @@ const {
 
 async function upsertTerm(indexer, members) {
   const col = await getTermsCollection();
-  await col.update(
+  await col.updateOne(
     { 'indexer.blockHeight': indexer.blockHeight },
     {
       "$set": {
@@ -20,7 +20,7 @@ async function upsertTerm(indexer, members) {
 
 async function upsertRenouncement(blockHeight, addedMembers, removedMembers) {
   const col = await getRenouncementCollection();
-  await col.update(
+  await col.updateOne(
     { blockHeight },
     {
       "$set": {
