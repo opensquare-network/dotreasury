@@ -1,3 +1,4 @@
+const { deleteFrom } = require("../delete");
 const { handleBlock } = require("./block");
 const { getNextScanHeight } = require("../mongo/scanHeight");
 const {
@@ -9,10 +10,12 @@ const {
 async function beginScan() {
   if (firstScanKnowHeights()) {
     let scanHeight = await getNextScanHeight();
+    await deleteFrom(scanHeight);
     await scanKnownHeights(scanHeight, emptyFn, handleBlock)
   }
 
   let scanHeight = await getNextScanHeight();
+  await deleteFrom(scanHeight);
   while (true) {
     scanHeight = await oneStepScan(scanHeight, handleBlock);
     await sleep(0);
