@@ -3,7 +3,6 @@ import { useHistory } from "react-router";
 import { useSelector } from "react-redux";
 import { Popup as PopupOrigin } from "semantic-ui-react";
 import {
-  chainSelector,
   chainSymbolSelector,
 } from "../../../store/reducers/chainSlice";
 import DemocracySlashMenu from "./DmocracySlashMenu";
@@ -15,6 +14,7 @@ import StakingSlashMenu from "./StakingSlashMenu";
 import TreasurySlashMenu from "./TreasurySlashMenu";
 import styled from "styled-components";
 import { rounded_4, shadow_200 } from "../../../styles/tailwindcss";
+import { useSupportOpenGov } from "../../../utils/hooks/chain";
 
 const Popup = styled(PopupOrigin)`
   width: 220px;
@@ -27,11 +27,10 @@ const Popup = styled(PopupOrigin)`
 `;
 
 export default function PopupMenu({ trigger }) {
-  const chain = useSelector(chainSelector);
-  const isKusama = chain === "kusama";
   const symbol = useSelector(chainSymbolSelector)?.toLowerCase();
   const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
+  const supportOpenGov = useSupportOpenGov();
 
   const navigate = (path) => {
     history.push(path);
@@ -55,7 +54,7 @@ export default function PopupMenu({ trigger }) {
       <IdentitySlashMenu
         onClick={() => navigate(`/${symbol}/income/slash/identity`)}
       />
-      {isKusama && (
+      {supportOpenGov && (
         <>
           <ReferendaSlashMenu
             onClick={() => navigate(`/${symbol}/income/slash/referenda`)}

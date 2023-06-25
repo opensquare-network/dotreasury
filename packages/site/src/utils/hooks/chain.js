@@ -6,7 +6,7 @@ export function useChain() {
   return chain;
 }
 
-export function useIsKusamaChain() {
+export function useSupportOpenGov() {
   const chain = useChain();
-  return chain === "kusama";
+  return ["kusama", "polkadot"].includes(chain);
 }

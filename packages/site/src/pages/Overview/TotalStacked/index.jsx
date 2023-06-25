@@ -29,6 +29,7 @@ import {
   w_full,
 } from "../../../styles/tailwindcss";
 import { breakpoint } from "../../../styles/responsive";
+import { useSupportOpenGov } from "../../../utils/hooks/chain";
 
 const CardWrapper = styled(Card)`
   padding: 24px;
@@ -94,7 +95,7 @@ const SecondListWrapper = styled.div`
 const TotalStacked = () => {
   const theme = useTheme();
   const chain = useSelector(chainSelector);
-  const isKusama = chain === "kusama";
+  const supportOpenGov = useSupportOpenGov();
   const dispatch = useDispatch();
   const [dateLabels, setDateLabels] = useState([]);
   const [incomeHistory, setIncomeHistory] = useState([]);
@@ -132,7 +133,7 @@ const TotalStacked = () => {
             name: "Identity",
             value: 0,
           },
-          ...(isKusama
+          ...(supportOpenGov
             ? [
                 {
                   name: "Referenda",
@@ -288,7 +289,7 @@ const TotalStacked = () => {
                   false,
                 ),
               },
-              ...(isKusama
+              ...(supportOpenGov
                 ? [
                     {
                       name: "Referenda",
@@ -361,7 +362,7 @@ const TotalStacked = () => {
         ],
       });
     }
-  }, [showIndex, statsHistory, dateLabels, precision, isKusama, theme]);
+  }, [showIndex, statsHistory, dateLabels, precision, supportOpenGov, theme]);
 
   const chartData = {
     dates: dateLabels,

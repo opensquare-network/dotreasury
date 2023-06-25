@@ -7,13 +7,13 @@ import TextMinor from "../../components/TextMinor";
 
 import { useSelector } from "react-redux";
 import {
-  chainSelector,
   chainSymbolSelector,
 } from "../../store/reducers/chainSlice";
 import DoughnutCardLinkTitle from "./DoughnutCardLinkTitle";
 import { useTheme } from "../../context/theme";
 import IconMask from "../../components/Icon/Mask";
 import { items_center } from "../../styles/tailwindcss";
+import { useSupportOpenGov } from "../../utils/hooks/chain";
 
 const LinkButton = styled(TextMinor)`
   display: flex;
@@ -40,8 +40,7 @@ const Income = ({
   others,
 }) => {
   const theme = useTheme();
-  const chain = useSelector(chainSelector);
-  const isKusama = chain === "kusama";
+  const supportOpenGov = useSupportOpenGov();
   const symbol = useSelector(chainSymbolSelector)?.toLowerCase();
   const [incomeData, setIncomeData] = useState({
     icon: "circle",
@@ -70,7 +69,7 @@ const Income = ({
           {
             name: "Identity",
           },
-          ...(isKusama
+          ...(supportOpenGov
             ? [
                 {
                   name: "Referenda",
@@ -125,7 +124,7 @@ const Income = ({
               value: slashIdentity,
               color: theme.yellow100,
             },
-            ...(isKusama
+            ...(supportOpenGov
               ? [
                   {
                     name: "Referenda",
@@ -158,7 +157,7 @@ const Income = ({
     slashReferenda,
     slashFellowshipReferenda,
     others,
-    isKusama,
+    supportOpenGov,
     theme,
   ]);
 

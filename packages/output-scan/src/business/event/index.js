@@ -1,3 +1,4 @@
+const { handlePreimageEvent } = require("./preimage");
 const { handleTipEventWithoutExtrinsic } = require("./tip");
 const { handleSchedulerEvents } = require("./scheduler");
 const { handleReferendaEvent } = require("./referenda");
@@ -66,6 +67,7 @@ async function handleCommon(
   await handleReferendumEvent(...arguments);
   await handleReferendaEvent(event, indexer, extrinsic, blockEvents);
   await handleSchedulerEvents(event, indexer, extrinsic, blockEvents);
+  await handlePreimageEvent(event, indexer, extrinsic, blockEvents);
 }
 
 async function handleEvents(events, extrinsics, blockIndexer) {

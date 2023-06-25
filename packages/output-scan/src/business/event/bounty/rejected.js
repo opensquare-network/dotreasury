@@ -8,19 +8,26 @@ const {
   }
 } = require("@osn/scan-common");
 
-async function handleBountyRejected(event, extrinsic, indexer) {
+async function handleBountyRejected(event, indexer, extrinsic) {
   const eventData = event.data.toJSON();
   const [bountyIndex, slashed] = eventData;
 
   const meta = await getBountyMetaByHeight(bountyIndex, indexer.blockHeight - 1);
-  const caller = getRealCaller(extrinsic.method, extrinsic.signer.toString());
+  let caller;
+  if (extrinsic) {
+    caller = getRealCaller(extrinsic.method, extrinsic.signer.toString());
+  }
+  let args = { slashed };
+  if (caller) {
+    args = {
+      caller,
+      ...args,
+    }
+  }
   const timelineItem = {
     type: TimelineItemTypes.extrinsic,
     name: event.method,
-    args: {
-      caller,
-      slashed,
-    },
+    args,
     eventData,
     indexer,
   };
