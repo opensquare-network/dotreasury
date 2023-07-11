@@ -16,6 +16,7 @@ const { handleInflation } = require("./staking/inflation");
 const { handleReferendaSlash } = require("./referenda/referenda");
 const { handleFellowshipReferendaSlash } = require("./referenda/fellowship");
 const { handleBalancesWithdraw } = require("./deposit");
+const { handleBalancesWithdrawWithoutFee } = require("./deposit/withoutFee");
 
 async function handleDeposit(
   indexer,
@@ -70,6 +71,10 @@ async function handleCommon(
   const maybeWithdraw = await handleBalancesWithdraw(event, indexer, blockEvents);
   if (maybeWithdraw) {
     transfer = bigAdd(transfer, maybeWithdraw.balance);
+  }
+  const maybeWithdrawWithoutFee = await handleBalancesWithdrawWithoutFee(event, indexer, blockEvents);
+  if (maybeWithdrawWithoutFee) {
+    transfer = bigAdd(transfer, maybeWithdrawWithoutFee.balance);
   }
 
   return {
