@@ -31,6 +31,7 @@ const Header = styled.div`
   font-size: 16px;
   line-height: 24px;
   color: var(--textPrimary);
+  padding: 20px 24px;
 
   div.ui.label {
     background: var(--secondary) !important;
