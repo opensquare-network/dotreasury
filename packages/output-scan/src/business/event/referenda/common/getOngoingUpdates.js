@@ -1,6 +1,7 @@
 const { getStateFromGov2ReferendumState } = require("./getState");
 const { queryReferendumInfo } = require("../query/referendumInfo");
 const { logger } = require("@osn/scan-common");
+const { queryActiveIssuance } = require("./issuance");
 
 async function getOngoingUpdates(referendumIndex, indexer) {
   const onChainInfo = await queryReferendumInfo(referendumIndex, indexer.blockHash);
@@ -9,8 +10,16 @@ async function getOngoingUpdates(referendumIndex, indexer) {
     return
   }
 
-  const stateName = getStateFromGov2ReferendumState(onChainInfo.ongoing, indexer);
-  const updates = { info: onChainInfo.ongoing };
+  const ongoing = onChainInfo.ongoing;
+  const stateName = getStateFromGov2ReferendumState(ongoing, indexer);
+  const electorate = await queryActiveIssuance(indexer.blockHash);
+  const updates = {
+    info: ongoing,
+    tally: {
+      ...ongoing.tally,
+      electorate,
+    },
+  };
   if (stateName) {
     Object.assign(updates, {
       state: { name: stateName, indexer }

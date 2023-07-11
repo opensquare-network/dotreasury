@@ -1,6 +1,7 @@
 const { gov2ReferendumState } = require("../common/state");
 const { queryTrackInfo } = require("../query/trackInfo");
 const { queryReferendumInfo } = require("../query/referendumInfo");
+const { queryActiveIssuance } = require("../common/issuance");
 
 async function getCommonData(referendumIndex, trackId, indexer) {
   const onChainInfo = await queryReferendumInfo(referendumIndex, indexer.blockHash);
@@ -11,6 +12,7 @@ async function getCommonData(referendumIndex, trackId, indexer) {
   const info = onChainInfo.ongoing;
   const { who: proposer } = info.submissionDeposit || {};
   const trackInfo = await queryTrackInfo(trackId, indexer.blockHash);
+  const electorate = await queryActiveIssuance(indexer.blockHash);
 
   return {
     referendumIndex,
@@ -22,6 +24,10 @@ async function getCommonData(referendumIndex, trackId, indexer) {
     state: {
       name: gov2ReferendumState.Submitted,
       indexer,
+    },
+    tally: {
+      ...info.tally,
+      electorate,
     },
     isFinal: false,
   }
