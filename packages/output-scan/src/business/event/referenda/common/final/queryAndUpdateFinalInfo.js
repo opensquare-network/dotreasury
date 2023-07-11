@@ -5,6 +5,7 @@ const { getReferendaReferendumCol, getReferendaReferendumTimelineCol } = require
 const { queryReferendumInfo } = require("../../query/referendumInfo");
 const { gov2ReferendumState } = require("../state");
 const { stringLowerFirst } = require("@polkadot/util");
+const { queryActiveIssuance } = require("../issuance");
 
 const possibleKeys = [
   gov2ReferendumState.Cancelled,
@@ -47,6 +48,7 @@ async function queryAndUpdateFinalInfo(event, indexer, stateKey) {
 
   // We save the track info when referendum finished, because the track's parameters maybe changed afterward.
   const trackInfo = await getTrackInfo(indexer, referendumIndex);
+  const electorate = await queryActiveIssuance(indexer.blockHash);
   await updateReferendaReferendum(referendumIndex, {
     ...updates,
     [infoKey]: onChainInfo[infoKey],
@@ -54,6 +56,10 @@ async function queryAndUpdateFinalInfo(event, indexer, stateKey) {
       name: stateKey,
       indexer,
       args: { tally }
+    },
+    tally: {
+      ...tally,
+      electorate,
     },
     trackInfo,
     isFinal: true,
