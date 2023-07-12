@@ -1,6 +1,7 @@
 const { handleAcceptCurator } = require("./bounty/acceptCurator");
 const { handleCloseTipCall } = require("./tip/close");
 const { handleTipCall } = require("./tip/tip");
+const { handleConvictionVotingCalls } = require("./convictionVoting");
 const {
   utils: { extractExtrinsicEvents, isExtrinsicSuccess }
 } = require("@osn/scan-common")
@@ -10,6 +11,7 @@ const { handleUnassignChildBountyCurator } = require("./child-bounties/unassign-
 const { handleCallsInExtrinsic } = require("@osn/scan-common")
 
 async function handleCall(call, author, extrinsicIndexer, wrappedEvents) {
+  await handleConvictionVotingCalls(call, author, extrinsicIndexer, wrappedEvents);
   await handleTipCall(...arguments);
   await handleCloseTipCall(...arguments);
   await handleAcceptCurator(...arguments);
