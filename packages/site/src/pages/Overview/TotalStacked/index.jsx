@@ -413,7 +413,11 @@ const TotalStacked = () => {
   };
 
   const onHover = (index) => {
-    setShowIndex(index);
+    if (index === undefined) {
+      setShowIndex();
+      return;
+    }
+    setShowIndex(index + chartRange[0]);
   };
 
   return (
