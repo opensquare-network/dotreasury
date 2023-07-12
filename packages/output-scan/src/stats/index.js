@@ -4,6 +4,9 @@ const {
   getWeeklyStatsCollection,
 } = require("../mongo");
 const { calcOutputStatsAt } = require("./output");
+const {
+  chain: { getLatestHeight },
+} = require("@osn/scan-common");
 
 const lastStatsHeight = "last-outputstats-height";
 
@@ -34,29 +37,39 @@ async function updateStatHeight(height) {
   );
 }
 
-async function tryCreateStatPoint(blockIndexer) {
-  while (true) {
-    const nextStatHeight = await getNextStatHeight();
-    if (nextStatHeight > blockIndexer.blockHeight) {
-      return;
-    }
+async function createStatAt(indexer, isWeekPoint = true) {
+  const output = await calcOutputStatsAt(indexer);
 
-    const statIndexer = await getBlockIndexerByHeight(nextStatHeight);
-    const output = await calcOutputStatsAt(statIndexer);
+  const weeklyStatsCol = await getWeeklyStatsCollection();
+  if (!isWeekPoint) {
+    await weeklyStatsCol.deleteMany({ isWeekPoint: false });
+  }
 
-    // Go on create one stat point
-    const weeklyStatsCol = await getWeeklyStatsCollection();
-    await weeklyStatsCol.updateOne(
-      { indexer: statIndexer },
-      {
-        $set: {
-          output,
-        },
+  await weeklyStatsCol.updateOne(
+    { indexer: indexer },
+    {
+      $set: {
+        isWeekPoint,
+        output,
       },
-      { upsert: true }
-    );
+    },
+    { upsert: true }
+  );
 
-    await updateStatHeight(nextStatHeight)
+  await updateStatHeight(indexer.blockHeight)
+}
+
+async function tryCreateStatPoint(indexer) {
+  let nextStatHeight = await getNextStatHeight();
+  while (indexer.blockHeight > nextStatHeight) {
+    const statIndexer = await getBlockIndexerByHeight(nextStatHeight);
+    await createStatAt(statIndexer);
+    nextStatHeight = await getNextStatHeight();
+  }
+
+  const chainHeight = getLatestHeight();
+  if (indexer.blockHeight > chainHeight - 90 && indexer.blockHeight % 100 === 0) {
+    await createStatAt(indexer, false);
   }
 }
 
