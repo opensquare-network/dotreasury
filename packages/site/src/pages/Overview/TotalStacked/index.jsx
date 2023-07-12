@@ -420,6 +420,24 @@ const TotalStacked = () => {
     setShowIndex(index + chartRange[0]);
   };
 
+  let chartComponent = null;
+
+  if (dateLabels?.length > 0) {
+    chartComponent = (
+      <ChartAndSlider>
+        <Chart data={chartData} onHover={onHover} />
+        <SliderWrapper>
+          <Slider
+            min={0}
+            max={dateLabels.length - 1 || 0}
+            formatValue={(val) => dayjs(dateLabels[val]).format("YYYY-MM")}
+            onChange={setChartRange}
+          />
+        </SliderWrapper>
+      </ChartAndSlider>
+    );
+  }
+
   return (
     <CardWrapper>
       <Title>Total Stacked</Title>
@@ -431,17 +449,7 @@ const TotalStacked = () => {
             <List data={treasuryData}></List>
           </SecondListWrapper>
         </ListWrapper>
-        <ChartAndSlider>
-          <Chart data={chartData} onHover={onHover} />
-          <SliderWrapper>
-            <Slider
-              min={0}
-              max={dateLabels.length - 1 || 0}
-              formatValue={(val) => dayjs(dateLabels?.[val]).format("YYYY-MM")}
-              onChange={setChartRange}
-            />
-          </SliderWrapper>
-        </ChartAndSlider>
+        {chartComponent}
       </ContentWrapper>
     </CardWrapper>
   );

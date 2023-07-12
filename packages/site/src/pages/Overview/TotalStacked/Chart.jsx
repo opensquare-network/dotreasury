@@ -157,25 +157,21 @@ const LineChart = ({ data, onHover }) => {
     })),
   };
 
-  if (dates && dates.length > 0) {
-    return (
-      <>
-        <LegendWrapper>
-          {(values || []).map((item, index) => (
-            <TitleWrapper key={index}>
-              <LegendDiv color={item.primaryColor} icon={item.icon} />
-              <LegendTitle>{item.label}</LegendTitle>
-            </TitleWrapper>
-          ))}
-        </LegendWrapper>
-        <ChartWrapper>
-          <Line data={chartData} options={options} />
-        </ChartWrapper>
-      </>
-    );
-  } else {
-    return null;
-  }
+  return (
+    <>
+      <LegendWrapper>
+        {(values || []).map((item, index) => (
+          <TitleWrapper key={index}>
+            <LegendDiv color={item.primaryColor} icon={item.icon} />
+            <LegendTitle>{item.label}</LegendTitle>
+          </TitleWrapper>
+        ))}
+      </LegendWrapper>
+      <ChartWrapper>
+        <Line data={chartData} options={options} />
+      </ChartWrapper>
+    </>
+  );
 };
 
 export default LineChart;
