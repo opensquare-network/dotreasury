@@ -15,6 +15,7 @@ const {
   handleBountyEventWithoutExtrinsic,
 } = require("./bounty")
 const { handleRollover } = require("./period")
+const { handleReferendaDelegation } = require("./convictionVoting");
 
 async function handleEventWithExtrinsic(
   blockIndexer,
@@ -68,6 +69,7 @@ async function handleCommon(
   await handleReferendaEvent(event, indexer, extrinsic, blockEvents);
   await handleSchedulerEvents(event, indexer, extrinsic, blockEvents);
   await handlePreimageEvent(event, indexer, extrinsic, blockEvents);
+  await handleReferendaDelegation(event, indexer, extrinsic, blockEvents);
 }
 
 async function handleEvents(events, extrinsics, blockIndexer) {
