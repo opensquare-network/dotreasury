@@ -15,6 +15,8 @@ const { handleTreasurySlash } = require("./treasury");
 const { handleInflation } = require("./staking/inflation");
 const { handleReferendaSlash } = require("./referenda/referenda");
 const { handleFellowshipReferendaSlash } = require("./referenda/fellowship");
+const { handleBalancesWithdraw } = require("./deposit");
+const { handleBalancesWithdrawWithoutFee } = require("./deposit/withoutFee");
 
 async function handleDeposit(
   indexer,
@@ -62,10 +64,18 @@ async function handleDeposit(
 async function handleCommon(
   indexer,
   event,
-  eventSort,
+  blockEvents = [],
 ) {
   const maybeTransfer = await handleTransfer(event, indexer);
-  const transfer = maybeTransfer ? maybeTransfer.balance : '0';
+  let transfer = maybeTransfer ? maybeTransfer.balance : '0';
+  const maybeWithdraw = await handleBalancesWithdraw(event, indexer, blockEvents);
+  if (maybeWithdraw) {
+    transfer = bigAdd(transfer, maybeWithdraw.balance);
+  }
+  const maybeWithdrawWithoutFee = await handleBalancesWithdrawWithoutFee(event, indexer, blockEvents);
+  if (maybeWithdrawWithoutFee) {
+    transfer = bigAdd(transfer, maybeWithdrawWithoutFee.balance);
+  }
 
   return {
     transfer,
@@ -93,7 +103,7 @@ async function handleEvents(events, extrinsics, blockIndexer) {
       eventIndex: sort,
     };
 
-    const commonObj = await handleCommon(indexer, event, sort, events);
+    const commonObj = await handleCommon(indexer, event, events);
     transfer = bigAdd(transfer, commonObj.transfer);
 
     const { section, method } = event;
