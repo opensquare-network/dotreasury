@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@koa/cors": "^3.1.0",
-    "@osn/ipfs": "^0.0.4",
+    "@osn/ipfs": "^0.0.5",
     "@polkadot/util": "12.3.2",
     "@polkadot/util-crypto": "12.3.2",
     "bignumber.js": "^9.1.1",
