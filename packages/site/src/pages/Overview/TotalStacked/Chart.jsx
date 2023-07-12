@@ -8,6 +8,7 @@ import "../../../components/Charts/globalConfig";
 import Text from "../../../components/Text";
 import { chainSelector } from "../../../store/reducers/chainSlice";
 import { abbreviateBigNumber } from "../../../utils";
+import { h_full } from "../../../styles/tailwindcss";
 
 const LegendWrapper = styled.div`
   display: flex;
@@ -51,6 +52,12 @@ const LegendTitle = styled(Text)`
   line-height: 24px;
 `;
 
+const ChartWrapper = styled.div`
+  ${h_full};
+  flex-grow: 1;
+  min-width: 252px;
+`;
+
 const LineChart = ({ data, onHover }) => {
   const chain = useSelector(chainSelector);
   const { dates, values } = data;
@@ -58,9 +65,14 @@ const LineChart = ({ data, onHover }) => {
   /** @type {import("react-chartjs-2").ChartProps} */
   const options = {
     type: "line",
+    responsive: true,
+    maintainAspectRatio: false,
     hover: {
       mode: "nearest",
       intersect: true,
+    },
+    animation: {
+      duration: 0,
     },
     plugins: {
       legend: {
@@ -114,7 +126,6 @@ const LineChart = ({ data, onHover }) => {
         },
       },
     },
-    maintainAspectRatio: false,
     onHover: function (_, array) {
       const index = array?.[0]?.index;
       onHover(index);
@@ -157,7 +168,9 @@ const LineChart = ({ data, onHover }) => {
             </TitleWrapper>
           ))}
         </LegendWrapper>
-        <Line data={chartData} options={options} />
+        <ChartWrapper>
+          <Line data={chartData} options={options} />
+        </ChartWrapper>
       </>
     );
   } else {
