@@ -19,10 +19,9 @@ import {
   chainSelector,
   chainSymbolSelector,
 } from "../../../store/reducers/chainSlice";
-import { h4_16_semibold } from "../../../styles/text";
+import { h4_16_semibold, p_12_normal } from "../../../styles/text";
 import {
   gap,
-  h_full,
   justify_between,
   p_b,
   w,
@@ -30,6 +29,7 @@ import {
 } from "../../../styles/tailwindcss";
 import { breakpoint } from "../../../styles/responsive";
 import { useSupportOpenGov } from "../../../utils/hooks/chain";
+import Slider from "../../../components/Slider";
 
 const CardWrapper = styled(Card)`
   padding: 24px;
@@ -54,12 +54,21 @@ const ContentWrapper = styled.div`
   }
 `;
 
-const ChartWrapper = styled.div`
-  ${h_full};
-  min-width: 252px;
-  max-height: 324px;
+const SliderWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 16px 0 32px 0;
+  ${p_12_normal}
+  margin-right: 36px;
+`;
+
+const ChartAndSlider = styled.div`
+  display: flex;
+  flex-direction: column;
+  ${justify_between};
   flex-grow: 1;
   ${p_b(24)};
+  overflow: auto;
 `;
 
 const List = styled(ListOrigin)`
@@ -102,6 +111,7 @@ const TotalStacked = () => {
   const [outputHistory, setOutputHistory] = useState([]);
   const [treasuryHistory, setTreasuryHistory] = useState([]);
   const [showIndex, setShowIndex] = useState();
+  const [chartRange, setChartRange] = useState([0, 0]);
   const [incomeData, setIncomeData] = useState({
     title: "Income",
     icon: "square",
@@ -200,6 +210,7 @@ const TotalStacked = () => {
       (statsItem) => statsItem.indexer.blockTime,
     );
     setDateLabels(dateLabels);
+    setChartRange([0, dateLabels.length - 1]);
 
     const incomeHistory = statsHistory
       .map((statsItem) =>
@@ -364,14 +375,18 @@ const TotalStacked = () => {
     }
   }, [showIndex, statsHistory, dateLabels, precision, supportOpenGov, theme]);
 
+  const sliceRangeData = (data) => {
+    return data.slice(chartRange[0], chartRange[1] + 1);
+  };
+
   const chartData = {
-    dates: dateLabels,
+    dates: sliceRangeData(dateLabels),
     values: [
       {
         label: "Income",
         primaryColor: theme.pink300,
         secondaryColor: theme.pink100,
-        data: incomeHistory,
+        data: sliceRangeData(incomeHistory),
         fill: true,
         icon: "square",
         order: 2,
@@ -380,7 +395,7 @@ const TotalStacked = () => {
         label: "Output",
         primaryColor: theme.yellow300,
         secondaryColor: theme.yellow100,
-        data: outputHistory,
+        data: sliceRangeData(outputHistory),
         fill: true,
         icon: "square",
         order: 1,
@@ -389,7 +404,7 @@ const TotalStacked = () => {
         label: "Treasury",
         primaryColor: theme.orange300,
         secondaryColor: theme.orange300,
-        data: treasuryHistory,
+        data: sliceRangeData(treasuryHistory),
         fill: false,
         icon: "bar",
         order: 0,
@@ -398,8 +413,30 @@ const TotalStacked = () => {
   };
 
   const onHover = (index) => {
-    setShowIndex(index);
+    if (index === undefined) {
+      setShowIndex();
+      return;
+    }
+    setShowIndex(index + chartRange[0]);
   };
+
+  let chartComponent = null;
+
+  if (dateLabels?.length > 0) {
+    chartComponent = (
+      <ChartAndSlider>
+        <Chart data={chartData} onHover={onHover} />
+        <SliderWrapper>
+          <Slider
+            min={0}
+            max={dateLabels.length - 1 || 0}
+            formatValue={(val) => dayjs(dateLabels[val]).format("YYYY-MM")}
+            onChange={setChartRange}
+          />
+        </SliderWrapper>
+      </ChartAndSlider>
+    );
+  }
 
   return (
     <CardWrapper>
@@ -412,9 +449,7 @@ const TotalStacked = () => {
             <List data={treasuryData}></List>
           </SecondListWrapper>
         </ListWrapper>
-        <ChartWrapper>
-          <Chart data={chartData} onHover={onHover} />
-        </ChartWrapper>
+        {chartComponent}
       </ContentWrapper>
     </CardWrapper>
   );

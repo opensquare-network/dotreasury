@@ -1937,6 +1937,7 @@ __metadata:
     lodash.get: ^4.4.2
     lodash.isempty: ^4.4.0
     lodash.isnil: ^4.0.0
+    lodash.noop: ^3.0.1
     lodash.set: ^4.3.2
     lodash.snakecase: ^4.1.1
     lodash.startcase: ^4.4.0
@@ -1953,6 +1954,7 @@ __metadata:
     react-redux: ^7.2.2
     react-router: ^5.2.0
     react-router-dom: ^5.2.0
+    react-slider: ^2.0.6
     react-test-renderer: ^18.2.0
     redux: ^4.0.5
     rollup-plugin-node-polyfills: ^0.2.1
@@ -9866,6 +9868,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash.noop@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "lodash.noop@npm:3.0.1"
+  checksum: 4525f763ee62f746197779ed1937d430145d039f8a5700d86bf509f02f9fc7302454423623bf1c32f1b9cded9d4f74a2f05d6e54686c40e9511a422254749f7f
+  languageName: node
+  linkType: hard
+
 "lodash.omit@npm:^4.5.0":
   version: 4.5.0
   resolution: "lodash.omit@npm:4.5.0"
@@ -11847,6 +11856,17 @@ __metadata:
   peerDependencies:
     react: ^16.0.0 || ^17.0.0 || ^18.0.0
   checksum: 6052c7e3e9627485120ebd8257f128aad8f56386fe8d42374b7743eac1be457c33506d153c7886b4e32923c0c352d402ab805ef9ca02dbcd8393b2bdeb6e5af8
+  languageName: node
+  linkType: hard
+
+"react-slider@npm:^2.0.6":
+  version: 2.0.6
+  resolution: "react-slider@npm:2.0.6"
+  dependencies:
+    prop-types: ^15.8.1
+  peerDependencies:
+    react: ^16 || ^17 || ^18
+  checksum: 452bdb57dc6b7c9f476d43019298f19b7ee89432d690d8b6f6054a01dc05513e6dfc62885b9347635d0494611961bcde5bdb9c2ec4bbf605e4e1d6eaca8c3921
   languageName: node
   linkType: hard
 
