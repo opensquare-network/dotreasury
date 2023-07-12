@@ -20,14 +20,6 @@ async function handleBlock({ height, block, events }) {
   clearReferendaDelegationMark(blockIndexer.blockHeight);
 }
 
-async function scanNormalizedBlock(block, blockEvents) {
-  const blockIndexer = getBlockIndexer(block);
-
-  await handleExtrinsics(block.extrinsics, blockEvents, blockIndexer);
-  await handleEvents(blockEvents, block.extrinsics, blockIndexer);
-}
-
 module.exports = {
-  scanNormalizedBlock,
   handleBlock,
 }

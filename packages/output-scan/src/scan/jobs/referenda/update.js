@@ -1,5 +1,5 @@
-import { getReferendaReferendumCol } from "../../../mongo";
-import { getOngoingUpdates } from "../../../business/event/referenda/common/getOngoingUpdates";
+const { getReferendaReferendumCol } = require("../../../mongo");
+const { getOngoingUpdates } = require("../../../business/event/referenda/common/getOngoingUpdates");
 
 async function updateReferendaReferendumInfo(referendumIndex, indexer) {
   const col = await getReferendaReferendumCol();
