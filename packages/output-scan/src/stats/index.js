@@ -40,6 +40,8 @@ async function updateStatHeight(height) {
 }
 
 async function calcOutputStats() {
+  // fixme: 1. should calculate output by indexer.blockHeight
+  // fixme: 2. should calculate transfers too. https://www.dotreasury.com/ksm/transfers
   const proposalCol = await getProposalCollection();
   const proposals = await proposalCol
     .find({}, { value: 1, beneficiary: 1, meta: 1, state: 1 })
@@ -115,11 +117,14 @@ async function calcOutput(
   };
 }
 
-async function tryCreateStatPoint(nextBlockIndexer) {
+async function createStatAt(indexer, isWeekPoint = true) {
+
+}
+
+async function tryCreateStatPoint(indexer) {
   while (true) {
     const nextStatHeight = await getNextStatHeight();
-
-    if (nextBlockIndexer.blockHeight <= nextStatHeight) {
+    if (nextStatHeight >= indexer.blockHeight) {
       return;
     }
 
