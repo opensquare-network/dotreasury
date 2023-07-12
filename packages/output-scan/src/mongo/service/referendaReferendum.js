@@ -39,8 +39,14 @@ async function insertReferendaReferendumTimeline(item = {}) {
   await timelineCol.insertOne(item);
 }
 
+async function getUnFinalReferenda() {
+  const col = await getReferendaReferendumCol();
+  return await col.find({  isFinal: false }).toArray();
+}
+
 module.exports = {
   insertReferendaReferendum,
   updateReferendaReferendum,
   insertReferendaReferendumTimeline,
+  getUnFinalReferenda,
 }
