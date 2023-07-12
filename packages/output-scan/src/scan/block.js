@@ -4,6 +4,8 @@ const { updateScanHeight } = require("../mongo/scanHeight");
 const { chain: { getBlockIndexer } } = require("@osn/scan-common");
 const { handleEvents } = require("../business/event");
 const { handleExtrinsics } = require("../business/extrinsic");
+const { clearReferendaDelegationMark } = require("../store/referendaDelegationMark");
+const { clearReferendaAlarmAt } = require("../store/referendaAlarm");
 
 async function handleBlock({ height, block, events }) {
   const blockIndexer = getBlockIndexer(block);
@@ -14,6 +16,8 @@ async function handleBlock({ height, block, events }) {
   await handleBlockJobs(blockIndexer);
 
   await updateScanHeight(height);
+  clearReferendaAlarmAt(blockIndexer.blockHeight);
+  clearReferendaDelegationMark(blockIndexer.blockHeight);
 }
 
 async function scanNormalizedBlock(block, blockEvents) {

@@ -4,6 +4,7 @@ const {
 const { getUnFinalReferenda } = require("../../../mongo/service/referendaReferendum");
 const { updateAllActiveReferenda } = require("./update");
 const { getAlarmedReferenda } = require("../../../store/referendaAlarm");
+const { hasReferendaDelegationMark } = require("../../../store/referendaDelegationMark");
 
 async function updateAllActive(indexer) {
   const all = await getUnFinalReferenda();
@@ -17,7 +18,7 @@ async function handleReferenda(indexer) {
     return;
   }
 
-  if (indexer.blockHeight % 100 === 0) {
+  if (indexer.blockHeight % 100 === 0 || hasReferendaDelegationMark(indexer.blockHeight)) {
     await updateAllActive(indexer);
     return;
   }
