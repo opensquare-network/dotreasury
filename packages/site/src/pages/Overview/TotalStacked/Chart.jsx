@@ -121,6 +121,9 @@ const LineChart = ({ data, onHover }) => {
           zeroLineWidth: 0,
           color: "rgba(0, 0, 0, 0)",
         },
+        ticks: {
+          stepSize: 3,
+        },
       },
     },
     onHover: function (_, array) {
