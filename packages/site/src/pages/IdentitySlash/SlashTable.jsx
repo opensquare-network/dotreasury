@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import dayjs from "dayjs";
 
 import Table from "../../components/Table";
 import TableLoading from "../../components/TableLoading";
@@ -8,10 +7,10 @@ import Balance from "../../components/Balance";
 import Text from "../../components/Text";
 import ExplorerLink from "../../components/ExplorerLink";
 import TableNoDataCell from "../../components/TableNoDataCell";
-import PolygonLabel from "../../components/PolygonLabel";
 import User from "../../components/User";
 import Card from "../../components/Card";
 import IconMask from "../../components/Icon/Mask";
+import { useTableColumns } from "../../components/shared/useTableColumns";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -47,14 +46,6 @@ const TableRow = styled(Table.Row)`
   height: 50px;
 `;
 
-const TimeWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  p:first-child {
-    min-width: 154px;
-  }
-`;
-
 const EventID = styled(Text)`
   white-space: nowrap;
   &:hover {
@@ -72,6 +63,8 @@ const EventWrapper = styled.div`
 `;
 
 const SlashTable = ({ data, loading, header, footer }) => {
+  const { time } = useTableColumns();
+
   return (
     <CardWrapper>
       {header}
@@ -96,18 +89,7 @@ const SlashTable = ({ data, loading, header, footer }) => {
                   data.map((item, index) => (
                     <TableRow key={index}>
                       <Table.Cell className="propose-time-cell">
-                        <TimeWrapper>
-                          <Text>
-                            {dayjs(parseInt(item.indexer.blockTime)).format(
-                              "YYYY-MM-DD HH:mm:ss",
-                            )}
-                          </Text>
-                          <ExplorerLink
-                            href={`/block/${item.indexer.blockHeight}`}
-                          >
-                            <PolygonLabel value={item.indexer.blockHeight} />
-                          </ExplorerLink>
-                        </TimeWrapper>
+                        {time.cellRender(null, item)}
                       </Table.Cell>
                       <Table.Cell>
                         <ExplorerLink
