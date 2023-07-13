@@ -1878,7 +1878,7 @@ __metadata:
   resolution: "@dotreasury/server@workspace:packages/server"
   dependencies:
     "@koa/cors": ^3.1.0
-    "@osn/ipfs": ^0.0.5
+    "@osn/ipfs": ^0.1.0
     "@polkadot/util": 12.3.2
     "@polkadot/util-crypto": 12.3.2
     "@types/koa-router": ^7.4.1
@@ -2686,6 +2686,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@libp2p/crypto@npm:^1.0.11":
+  version: 1.0.17
+  resolution: "@libp2p/crypto@npm:1.0.17"
+  dependencies:
+    "@libp2p/interface-keys": ^1.0.2
+    "@libp2p/interfaces": ^3.2.0
+    "@noble/ed25519": ^1.6.0
+    "@noble/secp256k1": ^1.5.4
+    multiformats: ^11.0.0
+    node-forge: ^1.1.0
+    protons-runtime: ^5.0.0
+    uint8arraylist: ^2.4.3
+    uint8arrays: ^4.0.2
+  checksum: 178474409ffe56ba6fb6b0f691e0b5de7fafb61c18a1a1197d75d0f9471e614c67d77fce84e337238d0835ba4b7bbc7f4b72ff9447968706c2ba190ed93cf650
+  languageName: node
+  linkType: hard
+
 "@libp2p/interface-connection@npm:^4.0.0":
   version: 4.0.0
   resolution: "@libp2p/interface-connection@npm:4.0.0"
@@ -2706,6 +2723,13 @@ __metadata:
     "@libp2p/interface-peer-id": ^2.0.0
     multiformats: ^11.0.0
   checksum: 242888f107aa586dfa6d11f3b579403b0b1ec2e60cb477984dec0d7afe4b69ef302230df7f23e351cb53de92b669733e4723ea832b9ec864314af6cbcd318557
+  languageName: node
+  linkType: hard
+
+"@libp2p/interface-keys@npm:^1.0.2":
+  version: 1.0.8
+  resolution: "@libp2p/interface-keys@npm:1.0.8"
+  checksum: 08c2976b3436b6e4e6159d1c817bb9e41af41d159cb94afaa8c63cf0fbf8842b0e5ca758d6c38453a59d8e4e87cec3117e3c574d316b94fed8db842a77f6efb0
   languageName: node
   linkType: hard
 
@@ -2836,6 +2860,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@noble/ed25519@npm:^1.6.0":
+  version: 1.7.3
+  resolution: "@noble/ed25519@npm:1.7.3"
+  checksum: 45169927d51de513e47bbeebff3a603433c4ac7579e1b8c5034c380a0afedbe85e6959be3d69584a7a5ed6828d638f8f28879003b9bb2fb5f22d8aa2d88fd5fe
+  languageName: node
+  linkType: hard
+
 "@noble/hashes@npm:1.3.1":
   version: 1.3.1
   resolution: "@noble/hashes@npm:1.3.1"
@@ -2847,6 +2878,13 @@ __metadata:
   version: 1.1.5
   resolution: "@noble/hashes@npm:1.1.5"
   checksum: de3f095a7ac1cbf5b4b3d09f193288d4f2eec35fbadf2ed9fd7e47d8a3042fef410052ba62dc0296a185f994c11192f5357fdb1bd9178c905efd82e946c53b00
+  languageName: node
+  linkType: hard
+
+"@noble/secp256k1@npm:^1.5.4":
+  version: 1.7.1
+  resolution: "@noble/secp256k1@npm:1.7.1"
+  checksum: d2301f1f7690368d8409a3152450458f27e54df47e3f917292de3de82c298770890c2de7c967d237eff9c95b70af485389a9695f73eb05a43e2bd562d18b18cb
   languageName: node
   linkType: hard
 
@@ -2975,14 +3013,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/ipfs@npm:^0.0.5":
-  version: 0.0.5
-  resolution: "@osn/ipfs@npm:0.0.5"
+"@osn/ipfs@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "@osn/ipfs@npm:0.1.0"
   dependencies:
     dotenv: ^16.3.1
-    ipfs-http-client: ^60.0.1
     it-all: ^3.0.2
-  checksum: 14ca5736d638f3a6632d12d429eadc4717908b8b7605c15ded3fbab4f59025c7222d9ee457e3089ade3b4ddee8c8a577c0062f48a2f9d94430b0a11ece49be79
+    kubo-rpc-client: ^3.0.1
+  checksum: d699200f2b8f82ecfcf7fdf5d0c3c5d409c14f97df4fb460e715be675ea9d2ffb4b199c1607cdfc9db8d123572bcaab818eedb278a560cf7e6aaf30f48e1cd2e
   languageName: node
   linkType: hard
 
@@ -4756,7 +4794,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"any-signal@npm:^3.0.0":
+"any-signal@npm:^3.0.0, any-signal@npm:^3.0.1":
   version: 3.0.1
   resolution: "any-signal@npm:3.0.1"
   checksum: 073eb14c365b7552f9f16fbf36cd76171e4a0fe156a8faa865fe1d5ac4ed2f5c5ab6e3faad0ac0d4c69511b5892971c5573baa8a1cbf85fe250d0c54ff0734ff
@@ -8229,7 +8267,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ipfs-core-utils@npm:^0.18.1":
+"ipfs-core-utils@npm:^0.18.0":
   version: 0.18.1
   resolution: "ipfs-core-utils@npm:0.18.1"
   dependencies:
@@ -8254,33 +8292,6 @@ __metadata:
     timeout-abort-controller: ^3.0.0
     uint8arrays: ^4.0.2
   checksum: 70414e3c4416be46735216feb87f539b7a35727d6390555e81cbe2ea42eec23a7e9d3583ef16e31b980403e8c212c57baa0f882c862380c794005e7ceb7c22bd
-  languageName: node
-  linkType: hard
-
-"ipfs-http-client@npm:^60.0.1":
-  version: 60.0.1
-  resolution: "ipfs-http-client@npm:60.0.1"
-  dependencies:
-    "@ipld/dag-cbor": ^9.0.0
-    "@ipld/dag-json": ^10.0.0
-    "@ipld/dag-pb": ^4.0.0
-    "@libp2p/logger": ^2.0.5
-    "@libp2p/peer-id": ^2.0.0
-    "@multiformats/multiaddr": ^11.1.5
-    any-signal: ^3.0.0
-    dag-jose: ^4.0.0
-    err-code: ^3.0.1
-    ipfs-core-types: ^0.14.1
-    ipfs-core-utils: ^0.18.1
-    ipfs-utils: ^9.0.13
-    it-first: ^2.0.0
-    it-last: ^2.0.0
-    merge-options: ^3.0.4
-    multiformats: ^11.0.0
-    parse-duration: ^1.0.0
-    stream-to-it: ^0.2.2
-    uint8arrays: ^4.0.2
-  checksum: 14c2bf2b7c401a3d5b3d3b935942475549e0a792953d485afc69a746c4be1e367ea4a0bc3f65f7de39d8d280c2777866b4e6b98c8d91e68dbdb2c235b98295b7
   languageName: node
   linkType: hard
 
@@ -8338,7 +8349,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ipfs-utils@npm:^9.0.13":
+"ipfs-utils@npm:^9.0.13, ipfs-utils@npm:^9.0.7":
   version: 9.0.14
   resolution: "ipfs-utils@npm:9.0.14"
   dependencies:
@@ -9693,6 +9704,33 @@ __metadata:
   languageName: node
   linkType: hard
 
+"kubo-rpc-client@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "kubo-rpc-client@npm:3.0.1"
+  dependencies:
+    "@ipld/dag-cbor": ^9.0.0
+    "@ipld/dag-json": ^10.0.0
+    "@ipld/dag-pb": ^4.0.0
+    "@libp2p/crypto": ^1.0.11
+    "@libp2p/logger": ^2.0.5
+    "@libp2p/peer-id": ^2.0.0
+    "@multiformats/multiaddr": ^11.1.5
+    any-signal: ^3.0.1
+    dag-jose: ^4.0.0
+    err-code: ^3.0.1
+    ipfs-core-utils: ^0.18.0
+    ipfs-utils: ^9.0.7
+    it-first: ^2.0.0
+    it-last: ^2.0.0
+    merge-options: ^3.0.4
+    multiformats: ^11.0.0
+    parse-duration: ^1.0.2
+    stream-to-it: ^0.2.4
+    uint8arrays: ^4.0.3
+  checksum: 19de983eccf131c7a53f7c73bc8446ccd49436d32d6bb215f93fe2084fbff196d3d722bee11c22c3c48531a2d71c7521241a299b08fa9302907a3a0478fb51a3
+  languageName: node
+  linkType: hard
+
 "language-subtag-registry@npm:^0.3.20":
   version: 0.3.22
   resolution: "language-subtag-registry@npm:0.3.22"
@@ -10694,6 +10732,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"node-forge@npm:^1.1.0":
+  version: 1.3.1
+  resolution: "node-forge@npm:1.3.1"
+  checksum: 08fb072d3d670599c89a1704b3e9c649ff1b998256737f0e06fbd1a5bf41cae4457ccaee32d95052d80bbafd9ffe01284e078c8071f0267dc9744e51c5ed42a9
+  languageName: node
+  linkType: hard
+
 "node-gyp@npm:latest":
   version: 9.3.1
   resolution: "node-gyp@npm:9.3.1"
@@ -11097,6 +11142,13 @@ __metadata:
   version: 1.0.2
   resolution: "parse-duration@npm:1.0.2"
   checksum: d103ca9c3b630cc6169a89039349b735af796b94d9dc810750b16f79285ce5df20669ef0d02b23eda5832dc51aee88316857f3695584e88ba0ae5d77743134ef
+  languageName: node
+  linkType: hard
+
+"parse-duration@npm:^1.0.2":
+  version: 1.1.0
+  resolution: "parse-duration@npm:1.1.0"
+  checksum: 3cfc10aa61b3a06373a347289e1704de47d5d845c79330bbab20b54c02567f3710ba84544a3a44a986c3381c68670d89542fe9de607fb0814e52f78b34893cd9
   languageName: node
   linkType: hard
 
@@ -11586,6 +11638,18 @@ __metadata:
     "@types/node": ">=13.7.0"
     long: ^5.0.0
   checksum: a952cdf2a5e5250c16ae651b570849b6f5b20a5475c3eef63ffb290ad239aa2916adfc1cc676f7fc93c69f48113df268761c0c246f7f023118c85bdd1a170044
+  languageName: node
+  linkType: hard
+
+"protons-runtime@npm:^5.0.0":
+  version: 5.0.1
+  resolution: "protons-runtime@npm:5.0.1"
+  dependencies:
+    protobufjs: ^7.0.0
+    uint8arraylist: ^2.4.3
+  peerDependencies:
+    uint8arraylist: ^2.3.2
+  checksum: 08d14fb7ea57e6329765873bb7933189925cfd2a488419735fb2547b8075f06a34638bc3b95c24c803a6ac179b7b5cff9b0894b6adfa46c38b5b430424a77605
   languageName: node
   linkType: hard
 
@@ -12790,7 +12854,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"stream-to-it@npm:^0.2.2":
+"stream-to-it@npm:^0.2.2, stream-to-it@npm:^0.2.4":
   version: 0.2.4
   resolution: "stream-to-it@npm:0.2.4"
   dependencies:
@@ -13358,7 +13422,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uint8arraylist@npm:^2.1.2":
+"uint8arraylist@npm:^2.1.2, uint8arraylist@npm:^2.4.3":
   version: 2.4.3
   resolution: "uint8arraylist@npm:2.4.3"
   dependencies:
@@ -13385,7 +13449,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uint8arrays@npm:^4.0.2":
+"uint8arrays@npm:^4.0.2, uint8arrays@npm:^4.0.3":
   version: 4.0.4
   resolution: "uint8arrays@npm:4.0.4"
   dependencies:
