@@ -52,7 +52,7 @@ async function handleRejectTreasuryProposal(proposalInfo, indexer, isOk) {
   }
 }
 
-async function handleBounty(bountyInfo, indexer) {
+async function handleBounty(bountyInfo, indexer, isOk) {
   const { index: bountyIndex, method } = bountyInfo;
 
   let updates = {};
@@ -65,7 +65,7 @@ async function handleBounty(bountyInfo, indexer) {
   if (BountyMethods.approveBounty === method) {
     updates.state = {
       indexer,
-      state: BountyStatus.Approved,
+      state: isOk ? BountyStatus.Approved : BountyStatus.Proposed,
     }
   }
 
@@ -85,12 +85,8 @@ async function handleBusinessWhenMotionExecuted(motionHash, indexer, isOk = true
     await handleRejectTreasuryProposal(proposalInfo, indexer, isOk);
     await handleApproveTreasuryProposal(proposalInfo, indexer, isOk);
   }
-
-  if (!isOk) {
-    return
-  }
   for (const bountyInfo of motion.treasuryBounties || []) {
-    await handleBounty(bountyInfo, indexer);
+    await handleBounty(bountyInfo, indexer, isOk);
   }
 }
 
