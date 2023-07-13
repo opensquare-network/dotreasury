@@ -1,14 +1,12 @@
 const { getBlockIndexerByHeight } = require("./chain");
-const { stringUpperFirst } = require("@polkadot/util");
 const {
   getStatusCollection,
-  getProposalCollection,
-  getBountyCollection,
-  getTipCollection,
-  getBurntCollection,
   getWeeklyStatsCollection,
 } = require("../mongo");
-const { utils: { bigAdd } } = require("@osn/scan-common");
+const { calcOutputStatsAt } = require("./output");
+const {
+  chain: { getLatestHeight },
+} = require("@osn/scan-common");
 
 const lastStatsHeight = "last-outputstats-height";
 
@@ -39,106 +37,39 @@ async function updateStatHeight(height) {
   );
 }
 
-async function calcOutputStats() {
-  const proposalCol = await getProposalCollection();
-  const proposals = await proposalCol
-    .find({}, { value: 1, beneficiary: 1, meta: 1, state: 1 })
-    .toArray();
+async function createStatAt(indexer, isWeekPoint = true) {
+  const output = await calcOutputStatsAt(indexer);
 
-  const tipCol = await getTipCollection();
-  const tips = await tipCol
-    .find({}, { finder: 1, medianValue: 1, state: 1 })
-    .toArray();
+  const weeklyStatsCol = await getWeeklyStatsCollection();
+  if (!isWeekPoint) {
+    await weeklyStatsCol.deleteMany({ isWeekPoint: false });
+  }
 
-  const bountyCol = await getBountyCollection();
-  const bounties = await bountyCol.find({}, { meta: 1, state: 1 }).toArray();
-
-  const burntCol = await getBurntCollection();
-  const burntList = await burntCol.find({}, { balance: 1 }).toArray();
-
-  const output = await calcOutput(proposals, tips, bounties, burntList);
-
-  return output;
-}
-
-const bountyStatuses = [
-  "Proposed",
-  "Approved",
-  "Funded",
-  "CuratorProposed",
-  "Active",
-  "PendingPayout",
-];
-
-async function calcOutput(
-  proposals = [],
-  tips = [],
-  bounties = [],
-  burntList = []
-) {
-  const spentProposals = proposals.filter(
-    ({ state: { name, state } }) => (name || state) === "Awarded"
-  );
-  const proposalSpent = spentProposals.reduce(
-    (result, { value }) => bigAdd(result, value),
-    0
-  );
-
-  const tipSpent = tips.reduce((result, { state: { state }, medianValue }) => {
-    if (state !== "TipClosed") {
-      return result;
-    }
-
-    if (!medianValue) {
-      return result;
-    }
-
-    return bigAdd(result, medianValue);
-  }, 0);
-
-  const bountySpent = bounties.reduce((result, { meta: { status, value } }) => {
-    const statusKey = stringUpperFirst(Object.keys(status)[0]);
-
-    const index = bountyStatuses.findIndex((item) => item === statusKey);
-    return index >= 2 ? bigAdd(result, value) : result;
-  }, 0);
-
-  const burntTotal = burntList.reduce((result, { balance }) => {
-    return bigAdd(result, balance);
-  }, 0);
-
-  return {
-    proposal: proposalSpent,
-    tip: tipSpent,
-    bounty: bountySpent,
-    burnt: burntTotal,
-  };
-}
-
-async function tryCreateStatPoint(nextBlockIndexer) {
-  while (true) {
-    const nextStatHeight = await getNextStatHeight();
-
-    if (nextBlockIndexer.blockHeight <= nextStatHeight) {
-      return;
-    }
-
-    const indexer = await getBlockIndexerByHeight(nextStatHeight);
-    const output = await calcOutputStats();
-
-    // Go on create one stat point
-    const weeklyStatsCol = await getWeeklyStatsCollection();
-    await weeklyStatsCol.updateOne(
-      { indexer },
-      {
-        $set: {
-          output,
-        },
+  await weeklyStatsCol.updateOne(
+    { indexer: indexer },
+    {
+      $set: {
+        isWeekPoint,
+        output,
       },
-      { upsert: true }
-    );
+    },
+    { upsert: true }
+  );
 
-    await updateStatHeight(nextStatHeight)
+  await updateStatHeight(indexer.blockHeight)
+}
+
+async function tryCreateStatPoint(indexer) {
+  let nextStatHeight = await getNextStatHeight();
+  while (indexer.blockHeight > nextStatHeight) {
+    const statIndexer = await getBlockIndexerByHeight(nextStatHeight);
+    await createStatAt(statIndexer);
+    nextStatHeight = await getNextStatHeight();
+  }
+
+  const chainHeight = getLatestHeight();
+  if (indexer.blockHeight > chainHeight - 90 && indexer.blockHeight % 100 === 0) {
+    await createStatAt(indexer, false);
   }
 }
 
