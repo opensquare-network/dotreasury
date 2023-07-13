@@ -205,6 +205,7 @@ const TotalStacked = () => {
       .map((statsItem) =>
         bnToBn(statsItem.income.inflation)
           .add(bnToBn(statsItem.income.slash))
+          .add(bnToBn(statsItem.income.transfer))
           .add(bnToBn(statsItem.income.others)),
       )
       .map((bn) => toPrecision(bn, precision, false));
