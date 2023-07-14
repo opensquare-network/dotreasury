@@ -49,17 +49,19 @@ const StyledThumbValue = styled.div`
 
 function useThumb({ min, max, range, formatValue = (val) => val }) {
   return useCallback(
-    (props, state) => (
-      <StyledThumb {...props}>
-        <ThumbSVG />
-        <StyledThumbValue alignLeft={state.valueNow <= (min + max) / 2}>
-          {parseInt(range[1]) - parseInt(range[0]) > 15 ||
-          state.valueNow === range[0]
-            ? formatValue(state.valueNow)
-            : ""}
-        </StyledThumbValue>
-      </StyledThumb>
-    ),
+    (props, state) => {
+      const isActive = props.className.includes("active");
+      return (
+        <StyledThumb {...props}>
+          <ThumbSVG />
+          <StyledThumbValue alignLeft={state.valueNow <= (min + max) / 2}>
+            {parseInt(range[1]) - parseInt(range[0]) > 15 || !isActive
+              ? formatValue(state.valueNow)
+              : ""}
+          </StyledThumbValue>
+        </StyledThumb>
+      );
+    },
     [formatValue, min, max, range],
   );
 }
