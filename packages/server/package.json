@@ -41,6 +41,6 @@
   },
   "devDependencies": {
     "@types/koa-router": "^7.4.1",
-    "pm2": "^5.2.0"
+    "pm2": "^5.3.0"
   }
 }
