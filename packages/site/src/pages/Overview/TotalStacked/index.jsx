@@ -183,6 +183,10 @@ const TotalStacked = () => {
         name: "Burnt",
         value: 0,
       },
+      {
+        name: "Transfer",
+        value: 0,
+      },
     ],
   });
   const [treasuryData, setTreasuryData] = useState({
@@ -227,7 +231,8 @@ const TotalStacked = () => {
         bnToBn(statsItem.output.tip)
           .add(bnToBn(statsItem.output.proposal))
           .add(bnToBn(statsItem.output.bounty))
-          .add(bnToBn(statsItem.output.burnt)),
+          .add(bnToBn(statsItem.output.burnt))
+          .add(bnToBn(statsItem.output.transfer)),
       )
       .map((bn) => toPrecision(bn, precision, false));
     setOutputHistory(outputHistory);
@@ -357,6 +362,11 @@ const TotalStacked = () => {
             name: "Burnt",
             color: theme.yellow500,
             value: toPrecision(statsData.output.burnt, precision, false),
+          },
+          {
+            name: "Transfer",
+            color: theme.yellow500,
+            value: toPrecision(statsData.output.transfer, precision, false),
           },
         ],
       });

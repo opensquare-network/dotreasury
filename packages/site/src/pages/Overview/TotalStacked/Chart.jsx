@@ -84,13 +84,13 @@ const LineChart = ({ data, onHover }) => {
         callbacks: {
           title(tooltipItems) {
             return dayjs(Number(tooltipItems[0].parsed.x)).format(
-              "YYYY-MM-DD hh:mm"
+              "YYYY-MM-DD hh:mm",
             );
           },
           label(tooltipItem) {
             return `${tooltipItem.dataset.label} ${
               Math.round(tooltipItem.raw) === tooltipItem.raw ? "" : "≈"
-            } ${parseInt(tooltipItem.raw)}`;
+            } ${parseInt(tooltipItem.raw).toLocaleString()}`;
           },
         },
         itemSort: function (a, b) {
