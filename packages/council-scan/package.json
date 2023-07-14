@@ -7,7 +7,7 @@
   },
   "main": "src/index.js",
   "dependencies": {
-    "@osn/scan-common": "0.5.0",
+    "@osn/scan-common": "0.5.8",
     "dotenv": "16.1.4",
     "lodash.difference": "^4.5.0",
     "lodash.isnil": "^4.0.0",
