@@ -47,17 +47,20 @@ const StyledThumbValue = styled.div`
   white-space: nowrap;
 `;
 
-function useThumb({ min, max, formatValue = (val) => val }) {
+function useThumb({ min, max, range, formatValue = (val) => val }) {
   return useCallback(
     (props, state) => (
       <StyledThumb {...props}>
         <ThumbSVG />
         <StyledThumbValue alignLeft={state.valueNow <= (min + max) / 2}>
-          {formatValue(state.valueNow)}
+          {parseInt(range[1]) - parseInt(range[0]) > 15 ||
+          state.valueNow === range[0]
+            ? formatValue(state.valueNow)
+            : ""}
         </StyledThumbValue>
       </StyledThumb>
     ),
-    [formatValue, min, max],
+    [formatValue, min, max, range],
   );
 }
 
@@ -81,9 +84,9 @@ export default function Slider({
   formatValue,
   defaultValue,
 }) {
-  const Thumb = useThumb({ min, max, formatValue });
   const [range, setRange] = useState(defaultValue || [min, max]);
   const [show, setShow] = useState(false);
+  const Thumb = useThumb({ min, max, range, formatValue });
 
   useEffect(() => setShow(true), []);
 
