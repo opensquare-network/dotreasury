@@ -56,7 +56,9 @@ async function createStatAt(indexer, isWeekPoint = true) {
     { upsert: true }
   );
 
-  await updateStatHeight(indexer.blockHeight)
+  if (isWeekPoint) {
+    await updateStatHeight(indexer.blockHeight)
+  }
 }
 
 async function tryCreateStatPoint(indexer) {
