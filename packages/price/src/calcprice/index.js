@@ -25,7 +25,7 @@ const dbNames = {
 const dbUrls = {
   kusama: process.env.KSM_MONGO_URL,
   polkadot: process.env.DOT_MONGO_URL,
-}
+};
 
 function calcPriceByToken(tokenValue, symbolPrice) {
   return new BigNumber(tokenValue).multipliedBy(symbolPrice || 0).toFixed(5);
@@ -44,7 +44,7 @@ async function savePrice(chain, col) {
     if (blockTime) {
       const price = await getPrice(chain, blockTime);
       if (price) {
-        const tokenValue = normalizeTokenValue(item.value, chain)
+        const tokenValue = normalizeTokenValue(item.value, chain);
         const allPrice = calcPriceByToken(tokenValue, price);
 
         await col.updateOne(
@@ -54,7 +54,7 @@ async function savePrice(chain, col) {
               symbolPrice: price,
               fiatValue: parseFloat(allPrice),
             },
-          }
+          },
         );
       }
     }
@@ -89,7 +89,7 @@ async function main() {
     const periodCol = await getPeriodCol();
     await savePeriodPrice(chain, periodCol);
 
-    if (chain === "kusama") {
+    if (["kusama", "polkadot"].includes(chain)) {
       const referendaCol = await getReferendaReferendumCollection();
       await savePrice(chain, referendaCol);
     }
