@@ -13,6 +13,16 @@ const relatedLinks = [
 
 const proposals = [
   {
+    type: "proposal",
+    token: "ksm",
+    id: 328,
+  },
+  {
+    type: "proposal",
+    token: "ksm",
+    id: 93,
+  },
+  {
     type: "child-bounty",
     token: "ksm",
     id: 11,
@@ -30,14 +40,6 @@ const proposals = [
       "Best effort incident and problem management",
       "Redundant implementation setup which allows for continuity, seamless upgrades and basic disaster recovery & contingency management",
     ],
-  },
-  {
-    token: "ksm",
-    amount: 18.356,
-    proposalId: 124,
-    proposeTimePrice: 429.88,
-    title: "Polkashots.io maintenance + improvements(January-June 2021)",
-    achievements: [],
   },
   {
     token: "dot",

@@ -26,6 +26,21 @@ const relatedLinks = [
 
 const proposals = [
   {
+    type: "proposal",
+    token: "dot",
+    proposalId: 336,
+  },
+  {
+    type: "proposal",
+    token: "ksm",
+    proposalId: 305,
+  },
+  {
+    type: "child-bounty",
+    token: "ksm",
+    id: 520,
+  },
+  {
     type: "child-bounty",
     token: "ksm",
     id: 54,
@@ -43,12 +58,12 @@ const proposals = [
   {
     type: "proposal",
     token: "ksm",
-    proposalId: 146,
+    proposalId: 151,
   },
   {
     type: "proposal",
     token: "ksm",
-    proposalId: 151,
+    proposalId: 146,
   },
   {
     type: "tip",
