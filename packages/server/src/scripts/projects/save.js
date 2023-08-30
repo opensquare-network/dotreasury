@@ -1,5 +1,6 @@
 const dotenv = require("dotenv");
 dotenv.config();
+const isNil = require("lodash.isnil");
 
 /**
  * This script save project related data(fund items and project itself) to database.
@@ -44,11 +45,12 @@ function calcFiatValue(value, decimals, symbolPrice) {
 }
 
 async function saveOneProposal(proposal = {}, projectId) {
-  const { proposalId, title, token } = proposal;
+  const { proposalId, id, title, token } = proposal;
   const chain = getChainName(token);
 
+  const finalId = !isNil(proposalId) ? proposalId : id;
   const col = await getProposalCollection(chain);
-  const proposalInDb = await col.findOne({ proposalIndex: proposalId });
+  const proposalInDb = await col.findOne({ proposalIndex: finalId });
   if (!proposalInDb) {
     throw new Error(`Can not find proposal in DB ${ proposalId }`);
   }
