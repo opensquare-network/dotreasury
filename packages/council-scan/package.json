@@ -12,6 +12,6 @@
     "lodash.difference": "^4.5.0",
     "lodash.isnil": "^4.0.0",
     "lodash.last": "^3.0.0",
-    "mongodb": "5.6.0"
+    "mongodb": "5.8.0"
   }
 }

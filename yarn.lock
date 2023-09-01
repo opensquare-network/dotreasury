@@ -1810,7 +1810,7 @@ __metadata:
     lodash.difference: ^4.5.0
     lodash.isnil: ^4.0.0
     lodash.last: ^3.0.0
-    mongodb: 5.6.0
+    mongodb: 5.8.0
   languageName: unknown
   linkType: soft
 
@@ -1825,7 +1825,7 @@ __metadata:
     jest: 29.5.0
     lodash.omit: ^4.5.0
     log4js: ^6.9.1
-    mongodb: 5.6.0
+    mongodb: 5.8.0
   languageName: unknown
   linkType: soft
 
@@ -1835,7 +1835,7 @@ __metadata:
   dependencies:
     "@osn/scan-common": 0.5.8
     dotenv: 16.1.4
-    mongodb: 5.6.0
+    mongodb: 5.8.0
   languageName: unknown
   linkType: soft
 
@@ -1853,7 +1853,7 @@ __metadata:
     lodash.last: ^3.0.0
     lodash.omit: ^4.5.0
     log4js: ^6.9.1
-    mongodb: 5.6.0
+    mongodb: 5.8.0
   languageName: unknown
   linkType: soft
 
@@ -1866,7 +1866,7 @@ __metadata:
     dayjs: ^1.10.4
     dotenv: 16.1.4
     minimist: ^1.2.6
-    mongodb: 5.6.0
+    mongodb: 5.8.0
     node-fetch: ^2.6.7
   languageName: unknown
   linkType: soft
@@ -1893,7 +1893,7 @@ __metadata:
     lodash.negate: ^3.0.2
     lodash.omit: ^4.5.0
     markdown-it: ^12.3.2
-    mongodb: 5.6.0
+    mongodb: 5.8.0
     multiformats: ^9.7.1
     node-fetch: ^3.3.0
     pluralize: ^8.0.0
@@ -2791,6 +2791,15 @@ __metadata:
     multiformats: ^11.0.0
     uint8arrays: ^4.0.2
   checksum: da55aeaa974c170a2ed318845036f79ab0dbf6122f0ba9b76b67db6b3299f624a4a4abe2442b214e8931ee2475e9248da940574ac547a7247e62cdb8e5792d66
+  languageName: node
+  linkType: hard
+
+"@mongodb-js/saslprep@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@mongodb-js/saslprep@npm:1.1.0"
+  dependencies:
+    sparse-bitfield: ^3.0.3
+  checksum: 1479a43e216734672f8eb1a2a55165b6896841bd00fb5bd645390a24374ef6c29f0f6d19a43618a19b8f1912fcbd2b2cc2210a62361103d1f28dce6852cf31d4
   languageName: node
   linkType: hard
 
@@ -5172,6 +5181,13 @@ __metadata:
   version: 5.3.0
   resolution: "bson@npm:5.3.0"
   checksum: c1e57630fea6b82ad8bc0fb83fd8f16a2620a836ab69f6b9433250cd19704c0c8995681a3bfab9f967eae30512f0c8ee921d42ace4c1781726600c4a367593cf
+  languageName: node
+  linkType: hard
+
+"bson@npm:^5.4.0":
+  version: 5.4.0
+  resolution: "bson@npm:5.4.0"
+  checksum: 1c07e3d09f139d414bd226bf7f4e9aaa7a726e0c9718c55b53bb23ffa2805cac8b66e4fa46b424c73a35c6e292ed5f7432df5c76ea5d08052642b2ac9e0399e3
   languageName: node
   linkType: hard
 
@@ -9920,6 +9936,38 @@ __metadata:
     snappy:
       optional: true
   checksum: 5b1594b24795b2a7824095a917ede2fc37aaef31e60320c833ee9b11cc2f3de9dd87d5afacea2e41eb5eb579ac9780f5bc4b0bb11d3b1be78e8bf0014528192a
+  languageName: node
+  linkType: hard
+
+"mongodb@npm:5.8.0":
+  version: 5.8.0
+  resolution: "mongodb@npm:5.8.0"
+  dependencies:
+    "@mongodb-js/saslprep": ^1.1.0
+    bson: ^5.4.0
+    mongodb-connection-string-url: ^2.6.0
+    socks: ^2.7.1
+  peerDependencies:
+    "@aws-sdk/credential-providers": ^3.188.0
+    "@mongodb-js/zstd": ^1.0.0
+    kerberos: ^1.0.0 || ^2.0.0
+    mongodb-client-encryption: ">=2.3.0 <3"
+    snappy: ^7.2.2
+  dependenciesMeta:
+    "@mongodb-js/saslprep":
+      optional: true
+  peerDependenciesMeta:
+    "@aws-sdk/credential-providers":
+      optional: true
+    "@mongodb-js/zstd":
+      optional: true
+    kerberos:
+      optional: true
+    mongodb-client-encryption:
+      optional: true
+    snappy:
+      optional: true
+  checksum: 48e552a210f2666a13766a1029bde36e961573317f5972d48b5b99f0035bcdc36d7a4154be4ae68a1aefe0aac2b682395196d5a20a0da14dbd2ebbce39b4f2f8
   languageName: node
   linkType: hard
 
