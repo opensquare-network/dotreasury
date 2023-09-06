@@ -4,9 +4,6 @@
   "workspaces": {
     "packages": [
       "packages/*"
-    ],
-    "nohoist": [
-      "**/semantic-ui-css"
     ]
   },
   "repository": "git@github.com:opensquare-network/dotreasury.git",
@@ -16,9 +13,6 @@
     "node": ">=15.0.0"
   },
   "scripts": {
-    "start": "yarn workspace @dotreasury/site start",
-    "deploy": "yarn workspace @dotreasury/site deploy",
-    "build": "yarn workspace @dotreasury/site build",
     "server-prod": "yarn workspace @dotreasury/server prod",
     "test": "yarn workspace @dotreasury/output-scan test"
   },

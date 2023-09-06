@@ -1,0 +1,16 @@
+{
+  "name": "backend",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "license": "Apache-2.0",
+  "scripts": {
+    "server-prod": "yarn workspace @dotreasury/server prod",
+    "test": "yarn workspace @dotreasury/output-scan test"
+  },
+  "devDependencies": {
+    "prettier": "^2.2.1"
+  },
+  "packageManager": "yarn@3.5.0"
+}

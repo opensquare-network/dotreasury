@@ -1,5 +1,5 @@
 {
-  "name": "@dotreasury/site",
+  "name": "site",
   "version": "0.1.0",
   "license": "Apache-2.0",
   "type": "module",
@@ -84,9 +84,11 @@
     "eslint-plugin-unused-imports": "^2.0.0",
     "patch-package": "^6.4.7",
     "postinstall-postinstall": "^2.1.0",
+    "prettier": "^2.2.1",
     "rollup-plugin-node-polyfills": "^0.2.1",
     "typescript": "^5.0.4",
     "vite": "^4.3.9",
     "vite-plugin-svgr": "^3.2.0"
-  }
+  },
+  "packageManager": "yarn@3.5.0"
 }
