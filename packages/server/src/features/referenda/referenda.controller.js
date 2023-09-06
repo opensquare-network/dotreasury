@@ -127,6 +127,7 @@ class ReferendaController {
     const result = {};
     for (const referendum of referendums) {
       const { name } = referendum.trackInfo || {};
+      const { name: state } = referendum.state || {};
       if (!name) {
         continue;
       }
@@ -140,16 +141,16 @@ class ReferendaController {
       } = result[name] || {};
 
       total++;
-      if (["Confirming", "Deciding", "Queueing", "Submitted"].includes(name)) {
+      if (["Confirming", "Deciding", "Queueing", "Submitted"].includes(state)) {
         voting++;
       }
-      if ("Confirming" === name) {
+      if ("Confirming" === state) {
         passing++;
       }
-      if ("Approved" === name) {
+      if ("Approved" === state) {
         approved++;
       }
-      if ("Rejected" === name) {
+      if ("Rejected" === state) {
         rejected++;
       }
 
