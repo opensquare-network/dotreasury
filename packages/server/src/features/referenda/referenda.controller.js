@@ -164,6 +164,25 @@ class ReferendaController {
       };
     }
 
+    result.all = Object.values(result).reduce(
+      (acc, cur) => ({
+        total: acc.total + cur.total,
+        active: acc.active + cur.active,
+        voting: acc.voting + cur.voting,
+        passing: acc.passing + cur.passing,
+        approved: acc.approved + cur.approved,
+        rejected: acc.rejected + cur.rejected,
+      }),
+      {
+        total: 0,
+        voting: 0,
+        active: 0,
+        passing: 0,
+        approved: 0,
+        rejected: 0,
+      },
+    );
+
     ctx.body = result;
   }
 }
