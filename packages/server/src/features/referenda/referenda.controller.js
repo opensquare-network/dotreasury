@@ -1,3 +1,4 @@
+const BigNumber = require("bignumber.js");
 const { HttpError } = require("../../exc");
 const { getReferendaReferendumCollection } = require("../../mongo");
 const { extractPage } = require("../../utils");
@@ -128,6 +129,7 @@ class ReferendaController {
     for (const referendum of referendums) {
       const { name } = referendum.trackInfo || {};
       const { name: state } = referendum.state || {};
+      const { tally } = referendum.info || {};
       if (!name) {
         continue;
       }
@@ -143,11 +145,12 @@ class ReferendaController {
       total++;
       if (["Confirming", "Deciding", "Queueing", "Submitted"].includes(state)) {
         voting++;
+
+        if (new BigNumber(tally?.ayes).gt(tally?.nays)) {
+          passing++;
+        }
       }
-      if ("Confirming" === state) {
-        passing++;
-      }
-      if ("Approved" === state) {
+      if (["Approved", "Executed"].includes(state)) {
         approved++;
       }
       if ("Rejected" === state) {
