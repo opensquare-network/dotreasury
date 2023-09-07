@@ -4,15 +4,15 @@ on:
   push:
     branches:
       - main
-      - 'release-*'
+      - "release-*"
     paths:
-      - 'packages/site/**'
+      - "site/**"
   pull_request:
     branches:
       - main
-      - 'release-*'
+      - "release-*"
     paths:
-      - 'packages/site/**'
+      - "site/**"
 
 jobs:
   lint:
@@ -20,8 +20,8 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
-      
-      - name: setup node LTS 
+
+      - name: setup node LTS
         uses: actions/setup-node@v3
         with:
           node-version: lts/*
@@ -30,11 +30,13 @@ jobs:
         uses: borales/actions-yarn@v4
         with:
           cmd: install
+          dir: site
 
       - name: lint
         uses: borales/actions-yarn@v4
         with:
-          cmd: workspace @dotreasury/site lint
+          cmd: lint
+          dir: site
 
   build:
     runs-on: ubuntu-latest
@@ -42,8 +44,8 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
-      
-      - name: setup node LTS 
+
+      - name: setup node LTS
         uses: actions/setup-node@v3
         with:
           node-version: lts/*
@@ -52,8 +54,10 @@ jobs:
         uses: borales/actions-yarn@v4
         with:
           cmd: install
+          dir: site
 
       - name: build
         uses: borales/actions-yarn@v4
         with:
-          cmd: workspace @dotreasury/site build
+          cmd: build
+          dir: site
