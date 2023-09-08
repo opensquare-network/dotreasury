@@ -12,9 +12,7 @@ import {
   fetchApplicationList,
   loadingApplicationListSelector,
 } from "../../store/reducers/openGovApplicationsSlice";
-import {
-  chainSelector,
-} from "../../store/reducers/chainSlice";
+import { chainSelector } from "../../store/reducers/chainSlice";
 import {
   DEFAULT_PAGE_SIZE,
   DEFAULT_QUERY_PAGE,
@@ -99,14 +97,7 @@ export default function ReferendaTable() {
         sort && { sort },
       ),
     );
-  }, [
-    dispatch,
-    chain,
-    page,
-    pageSize,
-    sort,
-    getFilterData,
-  ]);
+  }, [dispatch, chain, page, pageSize, sort, getFilterData]);
 
   useEffect(() => {
     setDataList(applicationList?.items || []);
@@ -153,6 +144,7 @@ export default function ReferendaTable() {
       <DescriptionCell
         description={item.description}
         trackInfo={item.trackInfo}
+        tally={item.tally}
       />
     ),
   };
@@ -217,6 +209,7 @@ export default function ReferendaTable() {
     state: item.state,
     description: item.description,
     trackInfo: item.trackInfo,
+    tally: item.tally,
   }));
 
   return (
