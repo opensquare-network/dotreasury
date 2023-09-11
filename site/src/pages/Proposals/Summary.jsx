@@ -125,6 +125,7 @@ const Summary = () => {
         />
         <SummaryItem
           title="Next burn"
+          style={{ alignItems: "flex-start" }}
           content={
             <ValueWrapper>
               <Value>
