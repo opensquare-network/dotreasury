@@ -133,6 +133,8 @@ class ScanApi extends Api {
   }
 }
 
-export default new ScanApi(
+const scanApi = new ScanApi(
   import.meta.env.VITE_APP_SCAN_SERVER || "https://api.dotreasury.com/",
 );
+
+export default scanApi;
