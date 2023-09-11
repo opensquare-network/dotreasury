@@ -32,7 +32,7 @@ class PolkassemblyApi extends Api {
             }
           }`,
         }),
-      }
+      },
     );
 
     if (result?.data?.posts?.length > 0) {
@@ -67,7 +67,7 @@ class PolkassemblyApi extends Api {
             }
           }`,
         }),
-      }
+      },
     );
 
     if (result?.data?.posts?.length > 0) {
@@ -102,7 +102,7 @@ class PolkassemblyApi extends Api {
             }
           }`,
         }),
-      }
+      },
     );
 
     if (result?.data?.posts?.length > 0) {
@@ -135,7 +135,7 @@ class PolkassemblyApi extends Api {
             }
           }`,
         }),
-      }
+      },
     );
 
     if (result?.data?.posts?.length > 0) {
@@ -168,7 +168,7 @@ class PolkassemblyApi extends Api {
             }
           }`,
         }),
-      }
+      },
     );
 
     if (result?.data?.posts?.length > 0) {
@@ -201,7 +201,7 @@ class PolkassemblyApi extends Api {
             }
           }`,
         }),
-      }
+      },
     );
 
     if (result?.data?.posts?.length > 0) {
@@ -212,4 +212,6 @@ class PolkassemblyApi extends Api {
   }
 }
 
-export default new PolkassemblyApi(`https://${chain}.polkassembly.io`);
+const polkassemblyApi = new PolkassemblyApi(`https://${chain}.polkassembly.io`);
+
+export default polkassemblyApi;
