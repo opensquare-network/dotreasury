@@ -6,12 +6,18 @@ export default function Header() {
     <header className="py-5">
       <Container className="flex justify-between items-center">
         <div>
-          <img src="/imgs/logo-black.svg" alt="logo" className="dark:hidden" />
-          <img
-            src="/imgs/logo-white.svg"
-            alt="logo"
-            className="hidden dark:block"
-          />
+          <a href="/">
+            <img
+              src="/imgs/logo-black.svg"
+              alt="logo"
+              className="dark:hidden"
+            />
+            <img
+              src="/imgs/logo-white.svg"
+              alt="logo"
+              className="hidden dark:block"
+            />
+          </a>
         </div>
 
         <div className="flex items-center gap-x-8">
@@ -21,7 +27,9 @@ export default function Header() {
           >
             Contact Us
           </a>
-          <ButtonPrimary>Explore Treasury</ButtonPrimary>
+          <ButtonPrimary className="!font-medium">
+            Explore Treasury
+          </ButtonPrimary>
         </div>
       </Container>
     </header>
