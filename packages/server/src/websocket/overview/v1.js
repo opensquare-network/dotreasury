@@ -14,57 +14,59 @@ const { overviewRoom, OVERVIEW_FEED_INTERVAL } = require("../constants");
 const util = require("util");
 const { stringUpperFirst } = require("@polkadot/util");
 const { calcBestTipProposers } = require("./common/calcBestTipProposers");
-const { calcBestProposalBeneficiary } = require("./common/calcBestProposalBeneficiary");
+const {
+  calcBestProposalBeneficiary,
+} = require("./common/calcBestProposalBeneficiary");
 const { calcCount } = require("./common/calcCount");
 const { bountyStatuses } = require("./common/constants");
 
-async function feedOverview(chain, io) {
+async function feedOverview(io) {
   try {
-    const oldStoreOverview = getOverview(chain);
-    const overview = await calcOverview(chain);
+    const oldStoreOverview = getOverview();
+    const overview = await calcOverview();
 
     if (util.isDeepStrictEqual(overview, oldStoreOverview)) {
       return;
     }
 
-    setOverview(chain, overview);
-    io.to(`${chain}:${overviewRoom}`).emit("overview", overview);
+    setOverview(overview);
+    io.to(overviewRoom).emit("overview", overview);
   } catch (e) {
     console.error("feed overview error:", e);
   } finally {
-    setTimeout(feedOverview.bind(null, chain, io), OVERVIEW_FEED_INTERVAL);
+    setTimeout(feedOverview.bind(null, io), OVERVIEW_FEED_INTERVAL);
   }
 }
 
-async function calcOverview(chain) {
-  const proposalCol = await getProposalCollection(chain);
+async function calcOverview() {
+  const proposalCol = await getProposalCollection();
   const proposals = await proposalCol
     .find({}, { value: 1, beneficiary: 1, meta: 1, state: 1 })
     .toArray();
 
-  const tipCol = await getTipCollection(chain);
+  const tipCol = await getTipCollection();
   const tips = await tipCol
     .find({}, { finder: 1, medianValue: 1, state: 1 })
     .toArray();
 
-  const bountyCol = await getBountyCollection(chain);
+  const bountyCol = await getBountyCollection();
   const bounties = await bountyCol.find({}, { meta: 1, state: 1 }).toArray();
 
-  const childBountyCol = await getChildBountyCollection(chain);
-  const childBounties = await childBountyCol.find({}, { meta: 1, state: 1 }).toArray();
+  const childBountyCol = await getChildBountyCollection();
+  const childBounties = await childBountyCol
+    .find({}, { meta: 1, state: 1 })
+    .toArray();
 
-  const burntCol = await getBurntCollection(chain);
+  const burntCol = await getBurntCollection();
   const burntList = await burntCol.find({}, { balance: 1 }).toArray();
 
-  const outputTransferCol = await getOutputTransferCollection(chain);
+  const outputTransferCol = await getOutputTransferCollection();
   const outputTransferList = await outputTransferCol
     .find({}, { balance: 1 })
     .toArray();
 
-  const referendaCol = await getReferendaReferendumCollection(chain);
-  const referendaList = await referendaCol
-    .find({})
-    .toArray();
+  const referendaCol = await getReferendaReferendumCollection();
+  const referendaList = await referendaCol.find({}).toArray();
 
   const count = await calcCount(
     proposals,
@@ -80,15 +82,12 @@ async function calcOverview(chain) {
     tips,
     bounties,
     burntList,
-    outputTransferList
+    outputTransferList,
   );
-  const bestProposalBeneficiaries = calcBestProposalBeneficiary(
-    chain,
-    proposals
-  );
-  const bestTipFinders = calcBestTipProposers(chain, tips);
+  const bestProposalBeneficiaries = calcBestProposalBeneficiary(proposals);
+  const bestTipFinders = calcBestTipProposers(tips);
 
-  const statusCol = await getStatusCollection(chain);
+  const statusCol = await getStatusCollection();
   const incomeScan = await statusCol.findOne({ name: "income-scan" });
 
   return {
@@ -120,14 +119,14 @@ async function calcOutput(
   tips = [],
   bounties = [],
   burntList = [],
-  outputTransferList = []
+  outputTransferList = [],
 ) {
   const spentProposals = proposals.filter(
-    ({ state: { name, state } }) => (name || state) === "Awarded"
+    ({ state: { name, state } }) => (name || state) === "Awarded",
   );
   const proposalSpent = spentProposals.reduce(
     (result, { value }) => bigAdd(result, value),
-    0
+    0,
   );
 
   const tipSpent = tips.reduce((result, { state, medianValue }) => {

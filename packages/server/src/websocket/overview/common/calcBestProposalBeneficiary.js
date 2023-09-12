@@ -1,16 +1,14 @@
-const {
-  getProposalBeneficiaryCollection,
-} = require("../../../mongo");
+const { getProposalBeneficiaryCollection } = require("../../../mongo");
 const { bigAdd } = require("../../../utils");
 const { addUsdtValue } = require("./utils");
 
-async function saveBeneficiaries(beneficiaries, chain) {
-  const proposalBeneficiaryCol = await getProposalBeneficiaryCollection(chain);
+async function saveBeneficiaries(beneficiaries) {
+  const proposalBeneficiaryCol = await getProposalBeneficiaryCollection();
   for (const item of beneficiaries) {
     await proposalBeneficiaryCol.updateOne(
       { beneficiary: item.beneficiary },
       { $set: item },
-      { upsert: true }
+      { upsert: true },
     );
   }
 }
@@ -21,9 +19,9 @@ function sortByValue(arr) {
   });
 }
 
-function calcBestProposalBeneficiary(chain, proposals = []) {
+function calcBestProposalBeneficiary(proposals = []) {
   const spentProposals = proposals.filter(
-    ({ state: { name, state } }) => (name || state) === "Awarded"
+    ({ state: { name, state } }) => (name || state) === "Awarded",
   );
   const map = {};
   for (const { beneficiary, value, symbolPrice } of spentProposals) {
@@ -33,7 +31,6 @@ function calcBestProposalBeneficiary(chain, proposals = []) {
       perhaps ? perhaps.fiatValue : 0,
       value,
       symbolPrice || 0,
-      chain
     );
     const count = perhaps ? perhaps.count + 1 : 1;
 
@@ -52,10 +49,10 @@ function calcBestProposalBeneficiary(chain, proposals = []) {
         fiatValue: fiatValue.toNumber(),
         count,
       };
-    }
+    },
   );
 
-  saveBeneficiaries(beneficiaries, chain).catch(console.error);
+  saveBeneficiaries(beneficiaries).catch(console.error);
 
   return sortByValue(beneficiaries).slice(0, 10);
 }

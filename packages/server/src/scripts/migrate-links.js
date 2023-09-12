@@ -1,10 +1,18 @@
-const { getProposalCollection } = require("../mongo");
-const { getLinkCollection, getDescriptionCollection } = require("../mongo-admin");
+const dotenv = require("dotenv");
+dotenv.config();
 
-const migrateLink = async (chain) => {
+const { getProposalCollection } = require("../mongo");
+const {
+  getLinkCollection,
+  getDescriptionCollection,
+} = require("../mongo-admin");
+
+const migrateLink = async () => {
+  const chain = process.env.CHAIN;
+
   try {
     console.log(`${chain} link migration start`);
-    const proposalCol = await getProposalCollection(chain);
+    const proposalCol = await getProposalCollection();
     const linkCol = await getLinkCollection();
     const proposalLinks = await linkCol
       .find({
@@ -20,9 +28,9 @@ const migrateLink = async (chain) => {
           },
           {
             $set: { links: item.links },
-          }
+          },
         );
-      })
+      }),
     );
     console.log(`${chain} link migration success`);
   } catch (err) {
@@ -30,10 +38,12 @@ const migrateLink = async (chain) => {
   }
 };
 
-const migrateDescription = async (chain) => {
+const migrateDescription = async () => {
+  const chain = process.env.CHAIN;
+
   try {
     console.log(`${chain} description migration start`);
-    const proposalCol = await getProposalCollection(chain);
+    const proposalCol = await getProposalCollection();
     const descriptionCol = await getDescriptionCollection();
     const descriptions = await descriptionCol
       .find({
@@ -52,9 +62,9 @@ const migrateDescription = async (chain) => {
               description: item.description,
               tags: item.tags,
             },
-          }
+          },
         );
-      })
+      }),
     );
     console.log(`${chain} description migration success`);
   } catch (err) {
@@ -63,10 +73,8 @@ const migrateDescription = async (chain) => {
 };
 
 async function main() {
-  await migrateLink("kusama");
-  await migrateLink("polkadot");
-  await migrateDescription("kusama");
-  await migrateDescription("polkadot");
+  await migrateLink();
+  await migrateDescription();
 }
 
 module.exports = main;

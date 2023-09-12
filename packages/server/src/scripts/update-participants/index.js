@@ -8,39 +8,35 @@ const { statBounties } = require("./statBounties");
 const { statChildBounties } = require("./statChildBounties");
 const { statCouncilors } = require("./statCouncilors");
 
-async function saveParticipant(chain, address, data) {
-  const participantCol = await getParticipantCollection(chain);
-  await participantCol.updateOne(
-    { address },
-    { $set: data },
-    { upsert: true }
-  );
+async function saveParticipant(address, data) {
+  const participantCol = await getParticipantCollection();
+  await participantCol.updateOne({ address }, { $set: data }, { upsert: true });
 }
 
-async function updateParticipants(chain) {
-  console.log(`Update participants of ${chain}`);
+async function updateParticipants() {
+  console.log(`Update participants of ${process.env.CHAIN}`);
 
   const {
     counts: tips,
     proposers: tipProposers,
-    beneficiaries: tipBeneficiaries
-  } = await statTips(chain);
+    beneficiaries: tipBeneficiaries,
+  } = await statTips();
   const {
     counts: proposals,
     proposers: proposalProposers,
-    beneficiaries: proposalBeneficiaries
-  } = await statProposals(chain);
+    beneficiaries: proposalBeneficiaries,
+  } = await statProposals();
   const {
     counts: bounties,
     proposers: bountyProposers,
-    beneficiaries: bountyBeneficiaries
-  } = await statBounties(chain);
+    beneficiaries: bountyBeneficiaries,
+  } = await statBounties();
   const {
     counts: childBounties,
     proposers: childBountyProposers,
-    beneficiaries: childBountyBeneficiaries
-  } = await statChildBounties(chain);
-  const { councilors } = await statCouncilors(chain);
+    beneficiaries: childBountyBeneficiaries,
+  } = await statChildBounties();
+  const { councilors } = await statCouncilors();
 
   const participants = new Set([
     ...Object.keys(tips),
@@ -55,17 +51,19 @@ async function updateParticipants(chain) {
     const proposalsCount = proposals[address] ?? 0;
     const bountiesCount = bounties[address] ?? 0;
     const childBountiesCount = childBounties[address] ?? 0;
-    const isProposer = tipProposers.has(address) ||
+    const isProposer =
+      tipProposers.has(address) ||
       proposalProposers.has(address) ||
       bountyProposers.has(address) ||
       childBountyProposers.has(address);
-    const isBeneficiary = tipBeneficiaries.has(address) ||
+    const isBeneficiary =
+      tipBeneficiaries.has(address) ||
       proposalBeneficiaries.has(address) ||
       bountyBeneficiaries.has(address) ||
       childBountyBeneficiaries.has(address);
     const isCouncilor = councilors.has(address);
 
-    await saveParticipant(chain, address, {
+    await saveParticipant(address, {
       tips: tipsCount,
       proposals: proposalsCount,
       bounties: bountiesCount,

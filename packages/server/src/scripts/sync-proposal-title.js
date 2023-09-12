@@ -5,7 +5,8 @@ const chunk = require("lodash.chunk");
 const negate = require("lodash.negate");
 const isNil = require("lodash.isnil");
 const { getReferendaReferendumCollection } = require("../mongo");
-const fetch = (...args) => import("node-fetch").then(({default: fetch}) => fetch(...args));
+const fetch = (...args) =>
+  import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
 async function fetchTitle(apiUrl) {
   try {
@@ -27,9 +28,7 @@ async function syncTitle({ col, fetchTitle, updateTitle }) {
   // Process in batches that 10 items for each
   for (const items of chunk(allItems, 10)) {
     // Fetch titles from subsquare.io
-    const titles = await Promise.all(
-      items.map(item => fetchTitle(item))
-    );
+    const titles = await Promise.all(items.map((item) => fetchTitle(item)));
 
     // Make sure has titles
     if (titles.filter(negate(isNil)).length === 0) {
@@ -49,25 +48,26 @@ async function syncTitle({ col, fetchTitle, updateTitle }) {
   }
 }
 
-const fetchGov2ReferendaTitle = (chain, referendumIndex) =>
-  fetchTitle(`https://${chain}.subsquare.io/api/gov2/referendums/${referendumIndex}`);
+function fetchGov2ReferendaTitle(referendumIndex) {
+  return fetchTitle(
+    `https://${process.env.CHAIN}.subsquare.io/api/gov2/referendums/${referendumIndex}`,
+  );
+}
 
-async function syncGov2ReferendaTitle(chain) {
+async function syncGov2ReferendaTitle() {
   await syncTitle({
-    col: await getReferendaReferendumCollection(chain),
-    fetchTitle: (item) => fetchGov2ReferendaTitle(chain, item.referendumIndex),
+    col: await getReferendaReferendumCollection(),
+    fetchTitle: (item) => fetchGov2ReferendaTitle(item.referendumIndex),
     updateTitle: (bulk, item, title) =>
-      bulk
-        .find({ referendumIndex: item.referendumIndex })
-        .updateOne({
-          $set: { description: title }
-        })
+      bulk.find({ referendumIndex: item.referendumIndex }).updateOne({
+        $set: { description: title },
+      }),
   });
 }
 
 async function main() {
   console.log(`Sync OpenGov referenda title`);
-  await syncGov2ReferendaTitle("kusama");
+  await syncGov2ReferendaTitle();
 }
 
 module.exports = main;

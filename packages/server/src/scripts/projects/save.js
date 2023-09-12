@@ -8,8 +8,15 @@ const isNil = require("lodash.isnil");
 
 const kusamaProjects = require("../../features/projects/data/kusama");
 const polkadotProjects = require("../../features/projects/data/polkadot");
-const { getProposalCollection, getTipCollection, getChildBountyCollection } = require("../../mongo/index");
-const { getProjectFundCollection, getProjectCollection } = require("../../mongo-admin");
+const {
+  getProposalCollection,
+  getTipCollection,
+  getChildBountyCollection,
+} = require("../../mongo/index");
+const {
+  getProjectFundCollection,
+  getProjectCollection,
+} = require("../../mongo-admin");
 const BigNumber = require("bignumber.js");
 const omit = require("lodash.omit");
 
@@ -18,16 +25,16 @@ const types = Object.freeze({
   tip: "tip",
   bounty: "bounty",
   childBounty: "child-bounty",
-})
+});
 
 function getChainName(token) {
-  if (token === 'dot') {
+  if (token === "dot") {
     return "polkadot";
   } else if (token === "ksm") {
-    return "kusama"
+    return "kusama";
   }
 
-  throw new Error(`Unknown token ${ token }`);
+  throw new Error(`Unknown token ${token}`);
 }
 
 function getDecimals(chain) {
@@ -37,11 +44,14 @@ function getDecimals(chain) {
     return 10;
   }
 
-  throw new Error(`Unknown chain ${ chain }`);
+  throw new Error(`Unknown chain ${chain}`);
 }
 
 function calcFiatValue(value, decimals, symbolPrice) {
-  return new BigNumber(value).dividedBy(Math.pow(10, decimals)).multipliedBy(symbolPrice).toFixed(1);
+  return new BigNumber(value)
+    .dividedBy(Math.pow(10, decimals))
+    .multipliedBy(symbolPrice)
+    .toFixed(1);
 }
 
 async function saveOneProposal(proposal = {}, projectId) {
@@ -49,10 +59,11 @@ async function saveOneProposal(proposal = {}, projectId) {
   const chain = getChainName(token);
 
   const finalId = !isNil(proposalId) ? proposalId : id;
-  const col = await getProposalCollection(chain);
+  //TODO: proposal could be KSM or DOT, need to check both
+  const col = await getProposalCollection();
   const proposalInDb = await col.findOne({ proposalIndex: finalId });
   if (!proposalInDb) {
-    throw new Error(`Can not find proposal in DB ${ proposalId }`);
+    throw new Error(`Can not find proposal in DB ${proposalId}`);
   }
 
   const { symbolPrice = 0, value, indexer } = proposalInDb;
@@ -67,8 +78,12 @@ async function saveOneProposal(proposal = {}, projectId) {
     symbolPrice,
     fiatValue,
     title: title || proposalInDb.description,
-  }
-  await fundCol.findOneAndUpdate({ type: types.proposal, token, id: proposalId }, { $set: obj }, { upsert: true });
+  };
+  await fundCol.findOneAndUpdate(
+    { type: types.proposal, token, id: proposalId },
+    { $set: obj },
+    { upsert: true },
+  );
 }
 
 async function saveOneTip(tip = {}, projectId) {
@@ -78,7 +93,7 @@ async function saveOneTip(tip = {}, projectId) {
   const tipCol = await getTipCollection(chain);
   const tipInDb = await tipCol.findOne({ hash: tipId });
   if (!tipInDb) {
-    throw new Error(`Can not find tip in DB ${ tipId }`);
+    throw new Error(`Can not find tip in DB ${tipId}`);
   }
 
   const { symbolPrice = 0, medianValue, indexer } = tipInDb;
@@ -93,9 +108,13 @@ async function saveOneTip(tip = {}, projectId) {
     symbolPrice,
     fiatValue,
     title: tip.reason || tipInDb.reason,
-  }
+  };
 
-  await fundCol.findOneAndUpdate({ type: types.tip, token, id: tipId }, { $set: obj }, { upsert: true });
+  await fundCol.findOneAndUpdate(
+    { type: types.tip, token, id: tipId },
+    { $set: obj },
+    { upsert: true },
+  );
 }
 
 async function saveOneChildBounty(childBounty = {}, projectId) {
@@ -104,7 +123,7 @@ async function saveOneChildBounty(childBounty = {}, projectId) {
   const childBountyCol = await getChildBountyCollection(chain);
   const childBountyInDb = await childBountyCol.findOne({ index: id });
   if (!childBountyInDb) {
-    throw new Error(`Can not find child bounty #${ id } from ${ chain }`);
+    throw new Error(`Can not find child bounty #${id} from ${chain}`);
   }
 
   const { symbolPrice = 0, value, indexer } = childBountyInDb;
@@ -117,10 +136,14 @@ async function saveOneChildBounty(childBounty = {}, projectId) {
     symbolPrice,
     fiatValue,
     title: childBountyInDb.description,
-  }
+  };
 
   const fundCol = await getProjectFundCollection();
-  await fundCol.findOneAndUpdate({ type: types.childBounty, token, id }, { $set: obj }, { upsert: true });
+  await fundCol.findOneAndUpdate(
+    { type: types.childBounty, token, id },
+    { $set: obj },
+    { upsert: true },
+  );
 }
 
 async function saveOneFund(fund = {}, projectId) {
@@ -141,21 +164,24 @@ async function saveOneProjectFunds(funds = [], projectId) {
 
 async function saveOneProject(project) {
   const fundCol = await getProjectFundCollection();
-  const allFunds = await fundCol.find({ projectId: project.id }).sort({ 'indexer.blockHeight': 1 }).toArray();
+  const allFunds = await fundCol
+    .find({ projectId: project.id })
+    .sort({ "indexer.blockHeight": 1 })
+    .toArray();
   if (allFunds.length <= 0) {
-    throw new Error(`No funds found for project ${ project.id }`);
+    throw new Error(`No funds found for project ${project.id}`);
   }
 
   const fiatValue = allFunds.reduce((result, { fiatValue = 0 }) => {
     return new BigNumber(result).plus(fiatValue).toNumber();
-  }, 0)
+  }, 0);
 
   const latestTime = allFunds.reduce((result, fund) => {
     return Math.max(fund.indexer.blockTime, result);
   }, allFunds[0].indexer.blockTime);
 
-  const ksmFunds = allFunds.filter(item => item.token === 'ksm');
-  const dotFunds = allFunds.filter(item => item.token === 'dot');
+  const ksmFunds = allFunds.filter((item) => item.token === "ksm");
+  const dotFunds = allFunds.filter((item) => item.token === "dot");
   const kusamaCount = ksmFunds.length;
   const polkadotCount = dotFunds.length;
   const kusamaValue = ksmFunds.reduce((result, fund) => {
@@ -168,11 +194,11 @@ async function saveOneProject(project) {
   const fundsCount = {
     kusama: kusamaCount,
     polkadot: polkadotCount,
-  }
+  };
 
   const startTime = allFunds[0].indexer.blockTime;
   const obj = {
-    ...omit(project, ['proposals', 'startTime']),
+    ...omit(project, ["proposals", "startTime"]),
     fiatValue,
     fundsCount,
     fundsValue: {
@@ -181,10 +207,14 @@ async function saveOneProject(project) {
     },
     startTime,
     latestTime,
-  }
+  };
 
   const projectCol = await getProjectCollection();
-  await projectCol.findOneAndUpdate({ id: project.id }, { $set: obj }, { upsert: true });
+  await projectCol.findOneAndUpdate(
+    { id: project.id },
+    { $set: obj },
+    { upsert: true },
+  );
 }
 
 async function clearData() {
@@ -195,24 +225,17 @@ async function clearData() {
   await fundCol.deleteMany({});
 }
 
-;(async () => {
+(async () => {
   await clearData();
 
-  const projectSet = new Set();
-  for (const project of [
-    ...kusamaProjects,
-    ...polkadotProjects,
-  ]) {
-    if (projectSet.has(project.id)) {
-      // it means this project has been handled.
-      continue
-    }
+  const projects =
+    process.env.CHAIN === "kusama" ? kusamaProjects : polkadotProjects;
 
+  for (const project of projects) {
     await saveOneProjectFunds(project.proposals, project.id);
     await saveOneProject(project);
-    projectSet.add(project.id);
-    console.log(`project ${ project.name } saved!`)
+    console.log(`project ${project.name} saved!`);
   }
 
   process.exit(0);
-})()
+})();

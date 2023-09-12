@@ -1,12 +1,11 @@
-
 const { getProposalCollection } = require("../../mongo");
 
-async function statProposals(chain) {
+async function statProposals() {
   const counts = {};
   const proposers = new Set();
   const beneficiaries = new Set();
 
-  const proposalCol = await getProposalCollection(chain);
+  const proposalCol = await getProposalCollection();
   const proposals = await proposalCol.find().toArray();
 
   for (const proposal of proposals) {

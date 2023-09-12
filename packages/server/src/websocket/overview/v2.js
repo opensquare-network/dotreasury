@@ -12,59 +12,91 @@ const { setOverviewV2, getOverviewV2 } = require("./../store");
 const { overviewRoomV2, OVERVIEW_FEED_INTERVAL } = require("../constants");
 const util = require("util");
 const { calcBestTipProposers } = require("./common/calcBestTipProposers");
-const { calcBestProposalBeneficiary } = require("./common/calcBestProposalBeneficiary");
+const {
+  calcBestProposalBeneficiary,
+} = require("./common/calcBestProposalBeneficiary");
 const { getLatestSymbolPrice } = require("./common/getLatestSymbolPrice");
 const { calcToBeAwarded } = require("./common/calcToBeAwarded");
 const { calcOutput } = require("./common/calcOutput");
 const { calcCount } = require("./common/calcCount");
 
-async function feedOverviewV2(chain, io) {
+async function feedOverviewV2(io) {
   try {
-    const oldStoreOverview = getOverviewV2(chain);
-    const overview = await calcOverview(chain);
+    const oldStoreOverview = getOverviewV2();
+    const overview = await calcOverview();
 
     if (util.isDeepStrictEqual(overview, oldStoreOverview)) {
       return;
     }
 
-    setOverviewV2(chain, overview);
-    io.to(`${chain}:${overviewRoomV2}`).emit("overview", overview);
+    setOverviewV2(overview);
+
+    io.to(overviewRoomV2).emit("overview", overview);
   } catch (e) {
     console.error("feed overview error:", e);
   } finally {
-    setTimeout(feedOverviewV2.bind(null, chain, io), OVERVIEW_FEED_INTERVAL);
+    setTimeout(feedOverviewV2.bind(null, io), OVERVIEW_FEED_INTERVAL);
   }
 }
 
-async function calcOverview(chain) {
-  const proposalCol = await getProposalCollection(chain);
+async function calcOverview() {
+  const proposalCol = await getProposalCollection();
   const proposals = await proposalCol
-    .find({}, { projection: { value: 1, beneficiary: 1, meta: 1, symbolPrice :1, state: 1, isByGov2: 1, track: 1, _id: 0 } })
+    .find(
+      {},
+      {
+        projection: {
+          value: 1,
+          beneficiary: 1,
+          meta: 1,
+          symbolPrice: 1,
+          state: 1,
+          isByGov2: 1,
+          track: 1,
+          _id: 0,
+        },
+      },
+    )
     .toArray();
 
-  const tipCol = await getTipCollection(chain);
+  const tipCol = await getTipCollection();
   const tips = await tipCol
-    .find({}, { projection: { finder: 1, medianValue: 1, state: 1, symbolPrice: 1, _id: 0 } })
+    .find(
+      {},
+      {
+        projection: {
+          finder: 1,
+          medianValue: 1,
+          state: 1,
+          symbolPrice: 1,
+          _id: 0,
+        },
+      },
+    )
     .toArray();
 
-  const bountyCol = await getBountyCollection(chain);
-  const bounties = await bountyCol.find({}, { projection: { meta: 1, state: 1, symbolPrice: 1, _id: 0 } }).toArray();
+  const bountyCol = await getBountyCollection();
+  const bounties = await bountyCol
+    .find({}, { projection: { meta: 1, state: 1, symbolPrice: 1, _id: 0 } })
+    .toArray();
 
-  const childBountyCol = await getChildBountyCollection(chain);
-  const childBounties = await childBountyCol.find({}, { meta: 1, state: 1 }).toArray();
+  const childBountyCol = await getChildBountyCollection();
+  const childBounties = await childBountyCol
+    .find({}, { meta: 1, state: 1 })
+    .toArray();
 
-  const burntCol = await getBurntCollection(chain);
-  const burntList = await burntCol.find({}, { projection: { balance: 1 }, _id: 0 }).toArray();
+  const burntCol = await getBurntCollection();
+  const burntList = await burntCol
+    .find({}, { projection: { balance: 1 }, _id: 0 })
+    .toArray();
 
-  const outputTransferCol = await getOutputTransferCollection(chain);
+  const outputTransferCol = await getOutputTransferCollection();
   const outputTransferList = await outputTransferCol
     .find({}, { projection: { balance: 1 }, _id: 0 })
     .toArray();
 
-  const referendaCol = await getReferendaReferendumCollection(chain);
-  const referendaList = await referendaCol
-    .find({})
-    .toArray();
+  const referendaCol = await getReferendaReferendumCollection();
+  const referendaList = await referendaCol.find({}).toArray();
 
   const count = await calcCount(
     proposals,
@@ -81,22 +113,15 @@ async function calcOverview(chain) {
     bounties,
     burntList,
     outputTransferList,
-    chain,
   );
-  const toBeAwarded = await calcToBeAwarded(
-    proposals,
-    bounties,
-  );
-  const bestProposalBeneficiaries = calcBestProposalBeneficiary(
-    chain,
-    proposals
-  );
-  const bestTipFinders = calcBestTipProposers(chain, tips);
+  const toBeAwarded = await calcToBeAwarded(proposals, bounties);
+  const bestProposalBeneficiaries = calcBestProposalBeneficiary(proposals);
+  const bestTipFinders = calcBestTipProposers(tips);
 
-  const statusCol = await getStatusCollection(chain);
+  const statusCol = await getStatusCollection();
   const incomeScan = await statusCol.findOne({ name: "income-scan" });
 
-  const latestSymbolPrice = await getLatestSymbolPrice(chain);
+  const latestSymbolPrice = await getLatestSymbolPrice();
 
   return {
     count,

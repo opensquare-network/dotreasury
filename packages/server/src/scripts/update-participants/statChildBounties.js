@@ -1,12 +1,11 @@
-
 const { getChildBountyCollection } = require("../../mongo");
 
-async function statChildBounties(chain) {
+async function statChildBounties() {
   const counts = {};
   const proposers = new Set();
   const beneficiaries = new Set();
 
-  const childBountyCol = await getChildBountyCollection(chain);
+  const childBountyCol = await getChildBountyCollection();
   const childBounties = await childBountyCol.find().toArray();
 
   for (const childBounty of childBounties) {
