@@ -347,7 +347,7 @@ __metadata:
 
 "@dotreasury/site@file:../site::locator=%40dotreasury%2Flanding%40workspace%3A.":
   version: 0.1.0
-  resolution: "@dotreasury/site@file:../site#../site::hash=320980&locator=%40dotreasury%2Flanding%40workspace%3A."
+  resolution: "@dotreasury/site@file:../site#../site::hash=fce740&locator=%40dotreasury%2Flanding%40workspace%3A."
   dependencies:
     "@floating-ui/react": ^0.15.1
     "@open-wc/webpack-import-meta-loader": ^0.4.7
@@ -399,7 +399,7 @@ __metadata:
     use-deep-compare-effect: ^1.6.1
     usehooks-ts: ^2.9.1
     web-vitals: ^2.1.4
-  checksum: e619817ec2bb67d39c510246cd8da950bf8490999d3b44cd4d07f12bd0f7f70bfe9be2c9502ebc9f6b50f484d78fb27e6de99a7853289bdb3aa943d3d4cb88ba
+  checksum: 9766d2ba1de4b625aecd2f07cb4158aedfbedde9d43c0e4512f3bb82159081752391856838a206a3e22636ec0ec273ed74b797121e2f943b0cfc95708373b64e
   languageName: node
   linkType: hard
 
