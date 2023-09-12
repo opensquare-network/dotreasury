@@ -2,24 +2,30 @@ const {
   getTipCollection,
   getProposalCollection,
   getBountyCollection,
-  getChildBountyCollection
+  getChildBountyCollection,
 } = require("../../mongo");
 const { extractPage } = require("../../utils");
 
 async function getBeneficiaryCounts(ctx) {
-  const { chain, address } = ctx.params;
+  const { address } = ctx.params;
 
-  const tipCol = await getTipCollection(chain);
+  const tipCol = await getTipCollection();
   const tipsCount = await tipCol.countDocuments({ "meta.who": address });
 
-  const proposalCol = await getProposalCollection(chain);
-  const proposalsCount = await proposalCol.countDocuments({ beneficiary: address });
+  const proposalCol = await getProposalCollection();
+  const proposalsCount = await proposalCol.countDocuments({
+    beneficiary: address,
+  });
 
-  const bountyCol = await getBountyCollection(chain);
-  const bountiesCount = await bountyCol.countDocuments({ "meta.status.pendingPayout.beneficiary": address });
+  const bountyCol = await getBountyCollection();
+  const bountiesCount = await bountyCol.countDocuments({
+    "meta.status.pendingPayout.beneficiary": address,
+  });
 
-  const childBountyCol = await getChildBountyCollection(chain);
-  const childBountiesCount = await childBountyCol.countDocuments({ beneficiary: address });
+  const childBountyCol = await getChildBountyCollection();
+  const childBountiesCount = await childBountyCol.countDocuments({
+    beneficiary: address,
+  });
 
   ctx.body = {
     tipsCount,
@@ -30,11 +36,11 @@ async function getBeneficiaryCounts(ctx) {
 }
 
 async function getBeneficiaryTips(ctx) {
-  const { chain, address } = ctx.params;
+  const { address } = ctx.params;
   const { page, pageSize } = extractPage(ctx);
 
   const q = { "meta.who": address };
-  const tipCol = await getTipCollection(chain);
+  const tipCol = await getTipCollection();
   const total = await tipCol.countDocuments(q);
   const items = await tipCol
     .find(q, { projection: { timeline: 0 } })
@@ -52,11 +58,11 @@ async function getBeneficiaryTips(ctx) {
 }
 
 async function getBeneficiaryProposals(ctx) {
-  const { chain, address } = ctx.params;
+  const { address } = ctx.params;
   const { page, pageSize } = extractPage(ctx);
 
   const q = { beneficiary: address };
-  const proposalCol = await getProposalCollection(chain);
+  const proposalCol = await getProposalCollection();
   const total = await proposalCol.countDocuments(q);
   const items = await proposalCol
     .find(q, { projection: { timeline: 0, motions: 0 } })
@@ -74,11 +80,11 @@ async function getBeneficiaryProposals(ctx) {
 }
 
 async function getBeneficiaryBounties(ctx) {
-  const { chain, address } = ctx.params;
+  const { address } = ctx.params;
   const { page, pageSize } = extractPage(ctx);
 
   const q = { "meta.status.pendingPayout.beneficiary": address };
-  const bountyCol = await getBountyCollection(chain);
+  const bountyCol = await getBountyCollection();
   const total = await bountyCol.countDocuments(q);
   const items = await bountyCol
     .find(q, { projection: { timeline: 0, motions: 0 } })
@@ -96,11 +102,11 @@ async function getBeneficiaryBounties(ctx) {
 }
 
 async function getBeneficiaryChildBounties(ctx) {
-  const { chain, address } = ctx.params;
+  const { address } = ctx.params;
   const { page, pageSize } = extractPage(ctx);
 
   const q = { beneficiary: address };
-  const childBountyCol = await getChildBountyCollection(chain);
+  const childBountyCol = await getChildBountyCollection();
   const total = await childBountyCol.countDocuments(q);
   const items = await childBountyCol
     .find(q)

@@ -2,7 +2,7 @@ const rateService = require("../../services/rate.service");
 const { extractPage } = require("../../utils");
 
 async function getUserRates(ctx) {
-  const { chain, address } = ctx.params;
+  const { address } = ctx.params;
 
   const { page, pageSize } = extractPage(ctx);
   if (pageSize === 0 || page < 0) {
@@ -12,20 +12,20 @@ async function getUserRates(ctx) {
 
   ctx.body = await rateService.getRates(
     {
-      chain,
+      chain: process.env.CHAIN,
       type: "user",
       index: address,
     },
     page,
-    pageSize
+    pageSize,
   );
 }
 
 async function getUserRateStats(ctx) {
-  const { chain, address } = ctx.params;
+  const { address } = ctx.params;
 
   ctx.body = await rateService.getRateStats({
-    chain,
+    chain: process.env.CHAIN,
     type: "user",
     index: address,
   });
@@ -34,4 +34,4 @@ async function getUserRateStats(ctx) {
 module.exports = {
   getUserRates,
   getUserRateStats,
-}
+};

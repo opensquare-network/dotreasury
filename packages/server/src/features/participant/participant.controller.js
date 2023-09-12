@@ -2,7 +2,7 @@ const { getParticipantCollection } = require("../../mongo");
 const { extractPage } = require("../../utils");
 
 async function getParticipants(ctx) {
-  const { chain, address } = ctx.params;
+  const { address } = ctx.params;
   const { page, pageSize } = extractPage(ctx);
   const { role } = ctx.request.query;
 
@@ -15,7 +15,7 @@ async function getParticipants(ctx) {
     q.isCouncilor = true;
   }
 
-  const participantCol = await getParticipantCollection(chain);
+  const participantCol = await getParticipantCollection();
   const total = await participantCol.countDocuments(q);
   const items = await participantCol
     .find(q)

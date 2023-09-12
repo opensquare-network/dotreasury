@@ -1,139 +1,327 @@
-const polkadot = require("./polkadot");
-const kusama = require("./kusama");
+const { MongoClient } = require("mongodb");
 
-const db = (chain) =>
-  chain === "kusama" ? kusama : chain === "polkadot" ? polkadot : null;
+const inputDbName = process.env.MONGO_DB_INPUT_NAME || "dotreasury-input";
+const outputDbName = process.env.MONGO_DB_OUTPUT_NAME || "dotreasury-output";
+const councilDbName = process.env.MONGO_DB_COUNCIL_NAME || "dotreasury-council";
 
-function initDb() {
-  return Promise.all([polkadot.initDb(), kusama.initDb()]);
+const statusCollectionName = "status";
+
+// output collections
+const tipCollectionName = "tip";
+const proposalCollectionName = "proposal";
+const bountyCollectionName = "bounty";
+const childBountyCollectionName = "childBounty";
+const motionCollectionName = "motion";
+const referendumCollectionName = "democracyReferendum";
+const tipFinderCollectionName = "tipFinder";
+const proposalBeneficiaryCollectionName = "proposalBeneficiary";
+const burntCollectionName = "burnt";
+const outputTransferCollectionName = "outputTransfer";
+const participantCollectionName = "participant";
+const motionVoterCollectionName = "motionVoter";
+const tipperCollectionName = "tipper";
+const referendaReferendumCollectionName = "referendaReferendum";
+
+// income collections
+const incomeInflationCollectionName = "inflation";
+const stakingSlashCollectionName = "slashStaking";
+const treasurySlashCollectionName = "slashTreasury";
+const electionSlashCollectionName = "slashElections";
+const democracySlashCollectionName = "slashDemocracy";
+const identitySlashCollectionName = "slashIdentity";
+const referendaSlashCollectionName = "slashReferenda";
+const fellowshipReferendaSlashCollectionName = "slashFellowshipReferenda";
+const othersIncomeCollectionName = "othersBig";
+const incomeTransferCollectionName = "transfer";
+
+// council collections
+const termsCollectionName = "terms";
+const termCouncilorCollectionName = "termCouncilor";
+
+// stats collections
+const weeklyStatsCollectionName = "weeklyStats";
+
+const periodCollectionName = "period";
+
+let client = null;
+let inputDb = null;
+let outputDb = null;
+let councilDb = null;
+
+const mongoUrl = process.env.MONGO_URL || "mongodb://127.0.0.1:27017";
+let statusCol = null;
+
+let referendaReferendumCol = null;
+let tipCol = null;
+let proposalCol = null;
+let bountyCol = null;
+let childBountyCol = null;
+let motionCol = null;
+let referendumCol = null;
+let tipFinderCol = null;
+let proposalBeneficiaryCol = null;
+let burntCol = null;
+let outputTransferCol = null;
+let outputWeeklyStatsCol = null;
+let outputStatusCol = null;
+let participantCol = null;
+let motionVoterCol = null;
+let tipperCol = null;
+
+let incomeInflationCol = null;
+let stakingSlashCol = null;
+let treasurySlashCol = null;
+let electionsPhragmenSlashCol = null;
+let democracySlashCol = null;
+let referendaSlashCol = null;
+let fellowshipReferendaSlashCol = null;
+
+let identitySlashCol = null;
+let incomeTransferCol = null;
+let othersIncomeCol = null;
+let inputWeeklyStatsCol = null;
+
+let termsCol = null;
+let termCouncilorCol = null;
+let councilStatusCol = null;
+let periodCol = null;
+
+async function initDb() {
+  client = await MongoClient.connect(mongoUrl, {
+    useUnifiedTopology: true,
+  });
+
+  inputDb = client.db(inputDbName);
+  statusCol = inputDb.collection(statusCollectionName);
+  incomeInflationCol = inputDb.collection(incomeInflationCollectionName);
+  stakingSlashCol = inputDb.collection(stakingSlashCollectionName);
+  treasurySlashCol = inputDb.collection(treasurySlashCollectionName);
+  electionsPhragmenSlashCol = inputDb.collection(electionSlashCollectionName);
+  democracySlashCol = inputDb.collection(democracySlashCollectionName);
+  referendaSlashCol = inputDb.collection(referendaSlashCollectionName);
+  fellowshipReferendaSlashCol = inputDb.collection(
+    fellowshipReferendaSlashCollectionName,
+  );
+  identitySlashCol = inputDb.collection(identitySlashCollectionName);
+  incomeTransferCol = inputDb.collection(incomeTransferCollectionName);
+  othersIncomeCol = inputDb.collection(othersIncomeCollectionName);
+  inputWeeklyStatsCol = inputDb.collection(weeklyStatsCollectionName);
+
+  outputDb = client.db(outputDbName);
+  referendaReferendumCol = outputDb.collection(
+    referendaReferendumCollectionName,
+  );
+  tipCol = outputDb.collection(tipCollectionName);
+  proposalCol = outputDb.collection(proposalCollectionName);
+  bountyCol = outputDb.collection(bountyCollectionName);
+  childBountyCol = outputDb.collection(childBountyCollectionName);
+  motionCol = outputDb.collection(motionCollectionName);
+  referendumCol = outputDb.collection(referendumCollectionName);
+  tipFinderCol = outputDb.collection(tipFinderCollectionName);
+  proposalBeneficiaryCol = outputDb.collection(
+    proposalBeneficiaryCollectionName,
+  );
+  burntCol = outputDb.collection(burntCollectionName);
+  outputTransferCol = outputDb.collection(outputTransferCollectionName);
+  outputWeeklyStatsCol = outputDb.collection(weeklyStatsCollectionName);
+  outputStatusCol = outputDb.collection(statusCollectionName);
+  participantCol = outputDb.collection(participantCollectionName);
+  motionVoterCol = outputDb.collection(motionVoterCollectionName);
+  tipperCol = outputDb.collection(tipperCollectionName);
+  periodCol = outputDb.collection(periodCollectionName);
+
+  councilDb = client.db(councilDbName);
+  termsCol = councilDb.collection(termsCollectionName);
+  termCouncilorCol = councilDb.collection(termCouncilorCollectionName);
+  councilStatusCol = councilDb.collection(statusCollectionName);
+
+  await _createIndexes();
 }
 
-function getStatusCollection(chain) {
-  return db(chain).getStatusCollection();
+async function _createIndexes() {
+  if (!inputDb || !outputDb) {
+    console.error("Please call initDb first");
+    process.exit(1);
+  }
+
+  // TODO: create indexes for better query performance
+  motionVoterCol.createIndex({
+    motionHash: 1,
+    motionHeight: 1,
+    voter: 1,
+  });
+
+  tipperCol.createIndex({
+    tipHash: 1,
+    tipHeight: 1,
+    tipper: 1,
+  });
 }
 
-function getOutputStatusCollection(chain) {
-  return db(chain).getOutputStatusCollection();
+async function tryInit(col) {
+  if (!col) {
+    await initDb();
+  }
 }
 
-function getReferendaReferendumCollection(chain) {
-  return db(chain).getReferendaReferendumCollection();
+async function getStatusCollection() {
+  await tryInit(statusCol);
+  return statusCol;
 }
 
-function getTipCollection(chain) {
-  return db(chain).getTipCollection();
+async function getOutputStatusCollection() {
+  await tryInit(outputStatusCol);
+  return outputStatusCol;
 }
 
-function getProposalCollection(chain) {
-  return db(chain).getProposalCollection();
+async function getReferendaReferendumCollection() {
+  await tryInit(referendaReferendumCol);
+  return referendaReferendumCol;
 }
 
-function getBountyCollection(chain) {
-  return db(chain).getBountyCollection();
+async function getTipCollection() {
+  await tryInit(tipCol);
+  return tipCol;
 }
 
-function getChildBountyCollection(chain) {
-  return db(chain).getChildBountyCollection();
+async function getProposalCollection() {
+  await tryInit(proposalCol);
+  return proposalCol;
 }
 
-function getMotionCollection(chain) {
-  return db(chain).getMotionCollection();
+async function getBountyCollection() {
+  await tryInit(bountyCol);
+  return bountyCol;
 }
 
-function getReferendumCollection(chain) {
-  return db(chain).getReferendumCollection();
+async function getChildBountyCollection() {
+  await tryInit(childBountyCol);
+  return childBountyCol;
 }
 
-function getTipFinderCollection(chain) {
-  return db(chain).getTipFinderCollection();
+async function getMotionCollection() {
+  await tryInit(motionCol);
+  return motionCol;
 }
 
-function getProposalBeneficiaryCollection(chain) {
-  return db(chain).getProposalBeneficiaryCollection();
+async function getReferendumCollection() {
+  await tryInit(referendumCol);
+  return referendumCol;
 }
 
-function getBurntCollection(chain) {
-  return db(chain).getBurntCollection();
+async function getTipFinderCollection() {
+  await tryInit(tipFinderCol);
+  return tipFinderCol;
 }
 
-function getOutputTransferCollection(chain) {
-  return db(chain).getOutputTransferCollection();
+async function getProposalBeneficiaryCollection() {
+  await tryInit(proposalBeneficiaryCol);
+  return proposalBeneficiaryCol;
 }
 
-function getIncomeInflationCollection(chain) {
-  return db(chain).getIncomeInflationCollection();
+async function getBurntCollection() {
+  await tryInit(burntCol);
+  return burntCol;
 }
 
-function getStakingSlashCollection(chain) {
-  return db(chain).getStakingSlashCollection();
+async function getOutputTransferCollection() {
+  await tryInit(outputTransferCol);
+  return outputTransferCol;
 }
 
-function getTreasurySlashCollection(chain) {
-  return db(chain).getTreasurySlashCollection();
+async function getIncomeInflationCollection() {
+  await tryInit(incomeInflationCol);
+  return incomeInflationCol;
 }
 
-function getElectionSlashCollection(chain) {
-  return db(chain).getElectionSlashCollection();
+async function getStakingSlashCollection() {
+  await tryInit(stakingSlashCol);
+  return stakingSlashCol;
 }
 
-function getDemocracySlashCollection(chain) {
-  return db(chain).getDemocracySlashCollection();
+async function getTreasurySlashCollection() {
+  await tryInit(treasurySlashCol);
+  return treasurySlashCol;
 }
 
-function getIdentitySlashCollection(chain) {
-  return db(chain).getIdentitySlashCollection();
+async function getElectionSlashCollection() {
+  await tryInit(electionsPhragmenSlashCol);
+  return electionsPhragmenSlashCol;
 }
 
-function getReferendaSlashCollection(chain) {
-  return db(chain).getReferendaSlashCollection();
+async function getDemocracySlashCollection() {
+  await tryInit(democracySlashCol);
+  return democracySlashCol;
 }
 
-function getFellowshipReferendaSlashCollection(chain) {
-  return db(chain).getFellowshipReferendaSlashCollection();
+async function getIdentitySlashCollection() {
+  await tryInit(identitySlashCol);
+  return identitySlashCol;
 }
 
-function getIncomeTransferCollection(chain) {
-  return db(chain).getIncomeTransferCollection();
+async function getReferendaSlashCollection() {
+  await tryInit(referendaSlashCol);
+  return referendaSlashCol;
 }
 
-function getOthersIncomeCollection(chain) {
-  return db(chain).getOthersIncomeCollection();
+async function getFellowshipReferendaSlashCollection() {
+  await tryInit(fellowshipReferendaSlashCol);
+  return fellowshipReferendaSlashCol;
 }
 
-function getInputWeeklyStatsCollection(chain) {
-  return db(chain).getInputWeeklyStatsCollection();
+async function getIncomeTransferCollection() {
+  await tryInit(incomeTransferCol);
+  return incomeTransferCol;
 }
 
-function getOutputWeeklyStatsCollection(chain) {
-  return db(chain).getOutputWeeklyStatsCollection();
+async function getOthersIncomeCollection() {
+  await tryInit(othersIncomeCol);
+  return othersIncomeCol;
 }
 
-function getParticipantCollection(chain) {
-  return db(chain).getParticipantCollection();
+async function getInputWeeklyStatsCollection() {
+  await tryInit(inputWeeklyStatsCol);
+  return inputWeeklyStatsCol;
 }
 
-function getTermsCollection(chain) {
-  return db(chain).getTermsCollection();
+async function getOutputWeeklyStatsCollection() {
+  await tryInit(outputWeeklyStatsCol);
+  return outputWeeklyStatsCol;
 }
 
-function getTermCouncilorCollection(chain) {
-  return db(chain).getTermCouncilorCollection();
+async function getParticipantCollection() {
+  await tryInit(participantCol);
+  return participantCol;
 }
 
-function getCouncilStatusCol(chain) {
-  return db(chain).getCouncilStatusCol();
+async function getTermsCollection() {
+  await tryInit(termsCol);
+  return termsCol;
 }
 
-function getMotionVoterCollection(chain) {
-  return db(chain).getMotionVoterCollection();
+async function getTermCouncilorCollection() {
+  await tryInit(termCouncilorCol);
+  return termCouncilorCol;
 }
 
-function getTipperCollection(chain) {
-  return db(chain).getTipperCollection();
+async function getCouncilStatusCol() {
+  await tryInit(councilStatusCol);
+  return councilStatusCol;
 }
 
-function getPeriodCollection(chain) {
-  return db(chain).getPeriodCollection();
+async function getMotionVoterCollection() {
+  await tryInit(motionVoterCol);
+  return motionVoterCol;
+}
+
+async function getTipperCollection() {
+  await tryInit(tipperCol);
+  return tipperCol;
+}
+
+async function getPeriodCollection() {
+  await tryInit(periodCol);
+  return periodCol;
 }
 
 module.exports = {

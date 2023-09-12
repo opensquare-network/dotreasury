@@ -1,7 +1,6 @@
 const { MongoClient } = require("mongodb");
-const config = require("../../config");
 
-const dbName = config.mongo.adminDbName || "dotreasury-admin";
+const dbName = process.env.MONGO_DB_ADMIN_NAME || "dotreasury-admin";
 
 const linkCollectionName = "link";
 const userCollectionName = "user";
