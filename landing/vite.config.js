@@ -3,14 +3,18 @@ import path from "node:path";
 import url from "url";
 import { defineConfig } from "vite";
 import { viteStaticCopy } from "vite-plugin-static-copy";
-import siteConfig from "../site/vite.config";
+import { NodeModulesPolyfillPlugin } from "@esbuild-plugins/node-modules-polyfill";
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  optimizeDeps: siteConfig.optimizeDeps,
+  optimizeDeps: {
+    esbuildOptions: {
+      plugins: [NodeModulesPolyfillPlugin()],
+    },
+  },
   plugins: [
     react(),
     viteStaticCopy({
