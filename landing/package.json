@@ -15,7 +15,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@dotreasury/site": "../site",
+    "@dotreasury/site": "file:../site",
     "@osn/eslint-config": "^1.0.1",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
