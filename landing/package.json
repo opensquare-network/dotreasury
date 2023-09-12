@@ -17,6 +17,7 @@
     "styled-components": "^6.0.7"
   },
   "devDependencies": {
+    "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
     "@osn/eslint-config": "^1.0.1",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
@@ -29,7 +30,8 @@
     "postcss": "^8.4.29",
     "tailwindcss": "^3.3.3",
     "vite": "^4.4.5",
-    "vite-plugin-static-copy": "^0.17.0"
+    "vite-plugin-static-copy": "^0.17.0",
+    "vite-plugin-svgr": "^3.2.0"
   },
   "packageManager": "yarn@3.6.3"
 }
