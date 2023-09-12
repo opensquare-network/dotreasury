@@ -30,8 +30,5 @@
     "vite": "^4.4.5",
     "vite-plugin-static-copy": "^0.17.0"
   },
-  "packageManager": "yarn@3.6.3",
-  "resolutions": {
-    "@dotreasury/site": "portal:/Users/2nthony/ghq/github.com/opensquare-network/dotreasury/site"
-  }
+  "packageManager": "yarn@3.6.3"
 }
