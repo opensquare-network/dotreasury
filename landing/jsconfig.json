@@ -3,7 +3,8 @@
     "baseUrl": "."
   },
   "include": [
-    "../site/src/**/*"
+    "../site/src/**/*.js",
+    "../site/src/**/*.jsx"
   ],
   "exclude": [
     "node_modules",
