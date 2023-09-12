@@ -1,4 +1,4 @@
-const { light } = require("../site/src/styles/theme");
+import { light } from "../site/src/styles/theme";
 
 /**
  * `light.neutral100` -> `{ neutral100: 'var(--neutral100)' }`
