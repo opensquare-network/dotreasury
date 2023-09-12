@@ -5,8 +5,6 @@ const dbName = process.env.MONGO_DB_ADMIN_NAME || "dotreasury-admin";
 const linkCollectionName = "link";
 const userCollectionName = "user";
 const commentCollectionName = "comment";
-const reactionCollectionName = "reaction";
-const attemptCollectionName = "attempt";
 const rateCollectionName = "rate";
 const descriptionCollectionName = "description";
 
@@ -17,8 +15,6 @@ const mongoUrl = process.env.MONGO_URL || "mongodb://127.0.0.1:27017";
 let linkCol = null;
 let userCol = null;
 let commentCol = null;
-let reactionCol = null;
-let attemptCol = null;
 let rateCol = null;
 let descriptionCol = null;
 
@@ -35,8 +31,6 @@ async function initDb() {
   linkCol = db.collection(linkCollectionName);
   userCol = db.collection(userCollectionName);
   commentCol = db.collection(commentCollectionName);
-  reactionCol = db.collection(reactionCollectionName);
-  attemptCol = db.collection(attemptCollectionName);
   rateCol = db.collection(rateCollectionName);
   descriptionCol = db.collection(descriptionCollectionName);
 
@@ -56,11 +50,6 @@ async function _createIndexes() {
   userCol.createIndex({ email: 1 }, { unique: true });
   userCol.createIndex({ kusamaAddress: 1 }, { unique: true, sparse: true });
   userCol.createIndex({ polkadotAddress: 1 }, { unique: true, sparse: true });
-
-  reactionCol.createIndex({ commentId: 1, userId: 1 }, { unique: true });
-  reactionCol.createIndex({ commentId: 1, reaction: 1 });
-
-  attemptCol.createIndex({ createdAt: 1 }, { expireAfterSeconds: 3600 });
 
   commentCol.createIndex({ indexer: 1, createdAt: 1 });
 
@@ -96,16 +85,6 @@ async function getCommentCollection() {
   return commentCol;
 }
 
-async function getReactionCollection() {
-  await tryInit(reactionCol);
-  return reactionCol;
-}
-
-async function getAttemptCollection() {
-  await tryInit(attemptCol);
-  return attemptCol;
-}
-
 async function getRateCollection() {
   await tryInit(rateCol);
   return rateCol;
@@ -121,21 +100,12 @@ async function getProjectFundCollection() {
   return projectFundCol;
 }
 
-function withTransaction(fn, options) {
-  return client.withSession((session) => {
-    return session.withTransaction(fn, options);
-  });
-}
-
 module.exports = {
   initDb,
-  withTransaction,
   getLinkCollection,
   getDescriptionCollection,
   getUserCollection,
   getCommentCollection,
-  getReactionCollection,
-  getAttemptCollection,
   getRateCollection,
   getProjectCollection,
   getProjectFundCollection,

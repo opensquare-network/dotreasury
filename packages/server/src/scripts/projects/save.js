@@ -37,7 +37,9 @@ function getChainName(token) {
   throw new Error(`Unknown token ${token}`);
 }
 
-function getDecimals(chain) {
+function getDecimals() {
+  const chain = process.env.CHAIN;
+
   if (chain === "kusama") {
     return 12;
   } else if (chain === "polkadot") {
@@ -56,18 +58,15 @@ function calcFiatValue(value, decimals, symbolPrice) {
 
 async function saveOneProposal(proposal = {}, projectId) {
   const { proposalId, id, title, token } = proposal;
-  const chain = getChainName(token);
-
   const finalId = !isNil(proposalId) ? proposalId : id;
-  //TODO: proposal could be KSM or DOT, need to check both
   const col = await getProposalCollection();
   const proposalInDb = await col.findOne({ proposalIndex: finalId });
   if (!proposalInDb) {
-    throw new Error(`Can not find proposal in DB ${proposalId}`);
+    throw new Error(`Can not find proposal in DB #${finalId}`);
   }
 
   const { symbolPrice = 0, value, indexer } = proposalInDb;
-  const fiatValue = calcFiatValue(value, getDecimals(chain), symbolPrice);
+  const fiatValue = calcFiatValue(value, getDecimals(), symbolPrice);
 
   const fundCol = await getProjectFundCollection();
   const obj = {
@@ -88,16 +87,14 @@ async function saveOneProposal(proposal = {}, projectId) {
 
 async function saveOneTip(tip = {}, projectId) {
   const { tipId, token } = tip;
-  const chain = getChainName(token);
-
-  const tipCol = await getTipCollection(chain);
+  const tipCol = await getTipCollection();
   const tipInDb = await tipCol.findOne({ hash: tipId });
   if (!tipInDb) {
-    throw new Error(`Can not find tip in DB ${tipId}`);
+    throw new Error(`Can not find tip in DB #${tipId}`);
   }
 
   const { symbolPrice = 0, medianValue, indexer } = tipInDb;
-  const fiatValue = calcFiatValue(medianValue, getDecimals(chain), symbolPrice);
+  const fiatValue = calcFiatValue(medianValue, getDecimals(), symbolPrice);
   const fundCol = await getProjectFundCollection();
 
   const obj = {
@@ -119,15 +116,15 @@ async function saveOneTip(tip = {}, projectId) {
 
 async function saveOneChildBounty(childBounty = {}, projectId) {
   const { id, token } = childBounty;
-  const chain = getChainName(token);
-  const childBountyCol = await getChildBountyCollection(chain);
+
+  const childBountyCol = await getChildBountyCollection();
   const childBountyInDb = await childBountyCol.findOne({ index: id });
   if (!childBountyInDb) {
-    throw new Error(`Can not find child bounty #${id} from ${chain}`);
+    throw new Error(`Can not find child bounty in DB #${id}`);
   }
 
   const { symbolPrice = 0, value, indexer } = childBountyInDb;
-  const fiatValue = calcFiatValue(value, getDecimals(chain), symbolPrice);
+  const fiatValue = calcFiatValue(value, getDecimals(), symbolPrice);
   const obj = {
     projectId,
     ...childBounty,
@@ -184,11 +181,11 @@ async function saveOneProject(project) {
   const dotFunds = allFunds.filter((item) => item.token === "dot");
   const kusamaCount = ksmFunds.length;
   const polkadotCount = dotFunds.length;
-  const kusamaValue = ksmFunds.reduce((result, fund) => {
-    return new BigNumber(result).plus(fund.value).toNumber();
+  const kusamaValue = ksmFunds.reduce((result, { value = 0 }) => {
+    return new BigNumber(result).plus(value).toNumber();
   }, 0);
-  const polkadotValue = dotFunds.reduce((result, fund) => {
-    return new BigNumber(result).plus(fund.value).toNumber();
+  const polkadotValue = dotFunds.reduce((result, { value = 0 }) => {
+    return new BigNumber(result).plus(value).toNumber();
   }, 0);
 
   const fundsCount = {
@@ -232,7 +229,10 @@ async function clearData() {
     process.env.CHAIN === "kusama" ? kusamaProjects : polkadotProjects;
 
   for (const project of projects) {
-    await saveOneProjectFunds(project.proposals, project.id);
+    const funds = (project.proposals || []).filter(
+      ({ token }) => getChainName(token) === process.env.CHAIN,
+    );
+    await saveOneProjectFunds(funds, project.id);
     await saveOneProject(project);
     console.log(`project ${project.name} saved!`);
   }
