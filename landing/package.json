@@ -16,6 +16,7 @@
     "semantic-ui-css": "^2.5.0"
   },
   "devDependencies": {
+    "@dotreasury/site": "../site",
     "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
     "@osn/eslint-config": "^1.0.1",
     "@types/react": "^18.2.15",
