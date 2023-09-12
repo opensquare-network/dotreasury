@@ -12,10 +12,11 @@
   },
   "dependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "semantic-ui-css": "^2.5.0",
+    "styled-components": "^6.0.7"
   },
   "devDependencies": {
-    "@dotreasury/site": "file:../site",
     "@osn/eslint-config": "^1.0.1",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
@@ -30,13 +31,5 @@
     "vite": "^4.4.5",
     "vite-plugin-static-copy": "^0.17.0"
   },
-  "packageManager": "yarn@3.6.3",
-  "dependenciesMeta": {
-    "@dotreasury/site": {
-      "built": false
-    }
-  },
-  "resolutions": {
-    "@dotreasury/site": "file:../site"
-  }
+  "packageManager": "yarn@3.6.3"
 }
