@@ -26,7 +26,15 @@ jobs:
         with:
           node-version: lts/*
           cache: yarn
-          cache-dependency-path: landing/yarn.lock
+          cache-dependency-path: |
+            site/yarn.lock
+            landing/yarn.lock
+
+      - name: site install
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install
+          dir: site
 
       - name: install
         uses: borales/actions-yarn@v4
