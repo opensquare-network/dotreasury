@@ -35,5 +35,8 @@
     "@dotreasury/site": {
       "built": false
     }
+  },
+  "resolutions": {
+    "@dotreasury/site": "file:../site"
   }
 }
