@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
-import Card from "../../../site/src/components/Card";
-import { cn } from "../utils";
+import Card from "../../../../site/src/components/Card";
+import { cn } from "../../utils";
 
 function HeaderExplorer(props, ref) {
   const links = [

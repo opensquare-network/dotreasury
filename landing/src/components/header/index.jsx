@@ -1,9 +1,9 @@
 import { useState } from "react";
-import Container from "../../../site/src/components/Container";
-import Button from "./button";
+import Container from "../../../../site/src/components/Container";
+import Button from "../button";
 import { flip, offset, shift, useFloating } from "@floating-ui/react";
 import { useOnClickOutside } from "usehooks-ts";
-import HeaderExplorer from "./header-explorer";
+import HeaderExplorer from "./explorer";
 
 const CONTACT_LINK = "mailto:yongfeng@opensquare.network";
 
