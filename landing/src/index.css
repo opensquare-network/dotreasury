@@ -7,6 +7,22 @@ body {
 }
 
 @layer components {
+  .h3-18-semibold {
+    font-family: Inter;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 28px;
+  }
+
+  .h4-16-semibold {
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px;
+  }
+
   .p-14-medium {
     font-family: Inter;
     font-size: 14px;
