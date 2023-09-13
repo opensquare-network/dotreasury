@@ -3,12 +3,18 @@ import "../../site/src/styles/override-semantic-ui-css.css";
 import Footer from "../../site/src/pages/Footer";
 import { ThemeProvider } from "../../site/src/context/theme";
 import Header from "./components/header";
+import Hero from "./components/hero";
 
 function App() {
   return (
     <ThemeProvider>
       <Header />
+      <Hero />
       <Footer />
+
+      <div className="absolute top-0 max-h-screen overflow-hidden">
+        <img src="/bg-gradient.svg" />
+      </div>
     </ThemeProvider>
   );
 }
