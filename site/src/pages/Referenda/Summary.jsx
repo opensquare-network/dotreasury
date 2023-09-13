@@ -7,7 +7,6 @@ import {
   applicationSummarySelector,
 } from "../../store/reducers/openGovApplicationsSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { chainSelector } from "../../store/reducers/chainSlice";
 import { sumBy } from "../../utils/math";
 import { h3_18_semibold } from "../../styles/text";
 import {
@@ -42,12 +41,11 @@ const Value = styled(Text)`
 
 export default function Summary() {
   const dispatch = useDispatch();
-  const chain = useSelector(chainSelector);
   const applicationSummary = useSelector(applicationSummarySelector);
 
   useEffect(() => {
-    dispatch(fetchApplicationSummary(chain));
-  }, [dispatch, chain]);
+    dispatch(fetchApplicationSummary());
+  }, [dispatch]);
 
   const activeCount = useMemo(() => {
     const {
@@ -68,7 +66,7 @@ export default function Summary() {
         medium_spender,
         big_spender,
       ],
-      (item) => item?.active || 0
+      (item) => item?.active || 0,
     );
   }, [applicationSummary]);
 

@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import serverApi from "../../../services/scanApi";
 import { useDispatch, useSelector } from "react-redux";
-import { chainSelector, chainSymbolSelector } from "../../../store/reducers/chainSlice";
+import { chainSymbolSelector } from "../../../store/reducers/chainSlice";
 import useTipsTable from "./useTipsTable";
 import { sendTx } from "../../../utils/sendTx";
 import { web3Enable, web3FromSource } from "@polkadot/extension-dapp";
@@ -38,7 +38,6 @@ export default function EndorseTipsModal({ visible, setVisible, onFinalized }) {
   const [tips, setTips] = useState([]);
   const [isLoadingTips, setIsLoadingTips] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const chain = useSelector(chainSelector);
   const dispatch = useDispatch();
   const account = useSelector(accountSelector);
   const isMounted = useIsMounted();
@@ -54,12 +53,13 @@ export default function EndorseTipsModal({ visible, setVisible, onFinalized }) {
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
-  const {
-    Component: TipsTable,
-    tipValues,
-  } = useTipsTable({ tips, isLoading: isLoadingTips });
+  const { Component: TipsTable, tipValues } = useTipsTable({
+    tips,
+    isLoading: isLoadingTips,
+  });
 
-  const disabled = !isLoggedIn || isEmpty(tipValues) || !isCouncilor || isLoading;
+  const disabled =
+    !isLoggedIn || isEmpty(tipValues) || !isCouncilor || isLoading;
 
   useEffect(() => {
     if (!account) {
@@ -68,7 +68,8 @@ export default function EndorseTipsModal({ visible, setVisible, onFinalized }) {
 
     setIsLoadingTips(true);
 
-    serverApi.fetch(`/${chain}/tipping`, { tipper: account?.address })
+    serverApi
+      .fetch("/tipping", { tipper: account?.address })
       .then(({ result }) => {
         if (result) {
           setTips(result || []);
@@ -77,7 +78,7 @@ export default function EndorseTipsModal({ visible, setVisible, onFinalized }) {
       .finally(() => {
         setIsLoadingTips(false);
       });
-  }, [chain, account]);
+  }, [account]);
 
   const submit = async () => {
     if (!api) {
@@ -99,9 +100,11 @@ export default function EndorseTipsModal({ visible, setVisible, onFinalized }) {
         return;
       }
 
-      const bnTipValue = new BigNumber(inputTipValue).times(Math.pow(10, precision));
+      const bnTipValue = new BigNumber(inputTipValue).times(
+        Math.pow(10, precision),
+      );
       txs.push(api.tx.tips.tip(hash, bnTipValue.toString()));
-    };
+    }
 
     let tx = txs[0];
     if (txs.length > 1) {
@@ -149,9 +152,7 @@ export default function EndorseTipsModal({ visible, setVisible, onFinalized }) {
       <Body>
         <Signer />
         <HintMessage>Only show tips that you’ve not endorsed.</HintMessage>
-        {errorMessage && (
-          <ErrorMessage>{errorMessage}</ErrorMessage>
-        )}
+        {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
         {TipsTable}
       </Body>
       <Footer>
@@ -163,7 +164,9 @@ export default function EndorseTipsModal({ visible, setVisible, onFinalized }) {
             )
           }
         >
-          <ButtonPrimary disabled={disabled} onClick={submit}>Submit</ButtonPrimary>
+          <ButtonPrimary disabled={disabled} onClick={submit}>
+            Submit
+          </ButtonPrimary>
         </Tooltip>
       </Footer>
     </ActionModal>

@@ -30,56 +30,54 @@ const burntSlice = createSlice({
     setLoadingBurntList(state, { payload }) {
       state.loadingBurntList = payload;
     },
-    setBurntListCount(state, { payload }) {
-      state.burntListCount = payload;
-    },
     setTreasury(state, { payload }) {
       state.treasury = payload;
     },
   },
 });
 
-export const {
-  setBurntChart,
-  setBurntList,
-  setLoadingBurntList,
-  setBurntListCount,
-  setTreasury,
-} = burntSlice.actions;
+export const { setBurntChart, setBurntList, setLoadingBurntList, setTreasury } =
+  burntSlice.actions;
 
-export const fetchBurntChart = (chain) => async (dispatch) => {
-  const { result } = await api.fetch(`/${chain}/burnt/chart`);
+export const fetchBurntChart = () => async (dispatch) => {
+  const { result } = await api.fetch("/burnt/chart");
   dispatch(setBurntChart(result || []));
 };
 
-export const fetchBurntList = (chain, page = 0, pageSize = 30) => async (dispatch) => {
-  dispatch(setLoadingBurntList(true));
+export const fetchBurntList =
+  (page = 0, pageSize = 30) =>
+  async (dispatch) => {
+    dispatch(setLoadingBurntList(true));
 
-  try {
-    const { result } = await api.fetch(`/${chain}/burnt`, { page, pageSize });
-    dispatch(setBurntList(result || {
-      items: [],
-      page: 0,
-      pageSize: 10,
-      total: 0,
-    }));
-  } finally {
-    dispatch(setLoadingBurntList(false));
-  }
-};
+    try {
+      const { result } = await api.fetch("/burnt", { page, pageSize });
+      dispatch(
+        setBurntList(
+          result || {
+            items: [],
+            page: 0,
+            pageSize: 10,
+            total: 0,
+          },
+        ),
+      );
+    } finally {
+      dispatch(setLoadingBurntList(false));
+    }
+  };
 
-export const fetchBurntListCount = (chain) => async (dispatch) => {
-  const { result } = await api.fetch(`/${chain}/burnt/count`);
-  dispatch(setBurntListCount(result || 0));
-};
-
-export const fetchTreasury = (chain) => async (dispatch) => {
-  const api = await getApi(chain);
-  const account = (
-    await api.query.system.account(TreasuryAccount)
-  ).toJSON();
+export const fetchTreasury = () => async (dispatch, getState) => {
+  const { chain } = getState();
+  const api = await getApi(chain.chain);
+  const account = (await api.query.system.account(TreasuryAccount)).toJSON();
   const result = {
-    free: account ? toPrecision(account.data.free, getPrecision(symbolFromNetwork(chain)), false) : 0,
+    free: account
+      ? toPrecision(
+          account.data.free,
+          getPrecision(symbolFromNetwork(chain)),
+          false,
+        )
+      : 0,
     burnPercent: toPrecision(api.consts.treasury.burn, 6, false),
   };
   dispatch(setTreasury(result));

@@ -12,8 +12,6 @@ import {
   setProjectDetail,
   loadingSelector,
 } from "../../store/reducers/projectSlice";
-import { chainSelector } from "../../store/reducers/chainSlice";
-import { useChainRoute } from "../../utils/hooks";
 import Rate from "../../components/Rate";
 import styled from "styled-components";
 import TableLoading from "../../components/TableLoading";
@@ -26,24 +24,21 @@ const CommentWrapper = styled.div`
 `;
 
 const ProjectDetail = () => {
-  useChainRoute();
-
   const { projectId } = useParams();
 
   const dispatch = useDispatch();
-  const chain = useSelector(chainSelector);
   const loading = useSelector(loadingSelector);
 
   useEffect(() => {
-    dispatch(fetchProjectDetail(chain, projectId));
+    dispatch(fetchProjectDetail(projectId));
     return () => {
       dispatch(setProjectDetail({}));
     };
-  }, [dispatch, chain, projectId]);
+  }, [dispatch, projectId]);
 
   useEffect(() => {
-    dispatch(fetchProjects(chain, 0, 10));
-  }, [dispatch, chain]);
+    dispatch(fetchProjects(0, 10));
+  }, [dispatch]);
 
   const projectDetail = useSelector(projectDetailSelector);
 

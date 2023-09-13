@@ -151,13 +151,13 @@ const HeaderExamplePage = () => {
           onClick={menuClick}
           ref={menuWrap}
         >
-          <NavLink to={`/${symbol}/income`}>
+          <NavLink to={"/income"}>
             <MenuSwitch menuTabsName="Income" />
           </NavLink>
-          <NavLink to={`/${symbol}/projects`}>
+          <NavLink to={"/projects"}>
             <MenuSwitch menuTabsName="Projects" />
           </NavLink>
-          <NavLink to={`/${symbol}/users`}>
+          <NavLink to={"/users"}>
             <MenuSwitch menuTabsName="Users" />
           </NavLink>
           <ConnectWallet />

@@ -8,10 +8,10 @@ const overviewRoom = "OVERVIEW_V2_ROOM";
 
 let socket = null;
 
-export function connect(chain) {
+export function connect() {
   if (socket) {
-    socket.emit("unsubscribe", { chain, data: chainStatusRoom });
-    socket.emit("unsubscribe", { chain, data: overviewRoom });
+    socket.emit("unsubscribe", chainStatusRoom);
+    socket.emit("unsubscribe", overviewRoom);
     socket.disconnect();
   }
 
@@ -19,8 +19,8 @@ export function connect(chain) {
   socket.connect();
 
   socket.on("connect", () => {
-    socket.emit("subscribe", { chain, data: chainStatusRoom });
-    socket.emit("subscribe", { chain, data: overviewRoom });
+    socket.emit("subscribe", chainStatusRoom);
+    socket.emit("subscribe", overviewRoom);
 
     socket.on("scanStatus", ({ height }) => {
       store.dispatch(setScanHeight(height));

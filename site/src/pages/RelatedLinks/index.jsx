@@ -45,12 +45,12 @@ const RelatedLinks = ({ type, index, owner }) => {
 
   useDeepCompareEffect(() => {
     if (index) {
-      dispatch(fetchLinks(chain, type, index));
+      dispatch(fetchLinks(type, index));
     }
     return () => {
       dispatch(setLinks([]));
     };
-  }, [dispatch, chain, type, index]);
+  }, [dispatch, type, index]);
 
   const links = useSelector(linksSelector);
   const account = useSelector(accountSelector);
@@ -67,12 +67,21 @@ const RelatedLinks = ({ type, index, owner }) => {
         addToast({
           type: "error",
           message: "Please connect wallet",
-        })
+        }),
       );
       return;
     }
     setOpenAddLinkModal(false);
-    dispatch(addLink(chain, type, index, link, description, account.address, account.extension));
+    dispatch(
+      addLink(
+        type,
+        index,
+        link,
+        description,
+        account.address,
+        account.extension,
+      ),
+    );
   };
 
   const removeRelatedLink = async (linkIndex) => {
@@ -81,17 +90,24 @@ const RelatedLinks = ({ type, index, owner }) => {
         addToast({
           type: "error",
           message: "Please connect wallet",
-        })
+        }),
       );
       return;
     }
     setOpenRemoveLinkModal(false);
-    dispatch(removeLink(chain, type, index, linkIndex, account.address, account.extension));
+    dispatch(
+      removeLink(type, index, linkIndex, account.address, account.extension),
+    );
   };
 
   const isAdminQuery = useIsAdminQuery();
-  const isAdmin = account?.address === owner || isAdminQuery ||
-    isSameAddress(account?.address, "5GnNHt39B9te5yvhv5qF494u6FF24Ld6MxEGFP4UanGJyag8");
+  const isAdmin =
+    account?.address === owner ||
+    isAdminQuery ||
+    isSameAddress(
+      account?.address,
+      "5GnNHt39B9te5yvhv5qF494u6FF24Ld6MxEGFP4UanGJyag8",
+    );
 
   if (isAdmin || (links && links.length > 0)) {
     return (

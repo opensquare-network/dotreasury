@@ -71,15 +71,16 @@ const overviewSlice = createSlice({
   },
 });
 
-export const { setOverview, setStatsHistory, setSendPeriods } = overviewSlice.actions;
+export const { setOverview, setStatsHistory, setSendPeriods } =
+  overviewSlice.actions;
 
-export const fetchStatsHistory = (chain) => async (dispatch) => {
-  const { result } = await api.fetch(`/${chain}/stats/weekly`);
+export const fetchStatsHistory = () => async (dispatch) => {
+  const { result } = await api.fetch("/stats/weekly");
   dispatch(setStatsHistory(result || []));
 };
 
-export const fetchSpendPeriods = (chain) => async (dispatch) => {
-  const { result } = await api.fetch(`/${chain}/periods`);
+export const fetchSpendPeriods = () => async (dispatch) => {
+  const { result } = await api.fetch("/periods");
   dispatch(setSendPeriods(result || []));
 };
 
@@ -88,7 +89,8 @@ export const totalProposalCountSelector = (state) =>
 export const openGovProposalCountSelector = (state) =>
   state.overview.overview.count.proposal.openGov;
 export const gov1ProposalCountSelector = (state) =>
-  state.overview.overview.count.proposal.all - state.overview.overview.count.proposal.openGov;
+  state.overview.overview.count.proposal.all -
+  state.overview.overview.count.proposal.openGov;
 export const totalTipCountSelector = (state) =>
   state.overview.overview.count.tip.all;
 export const totalBountyCountSelector = (state) =>

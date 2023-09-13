@@ -3,9 +3,11 @@ import styled from "styled-components";
 import Stars from "./Stars";
 import Progress from "./Progress";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchRateStats, rateStatsSelector } from "../../store/reducers/rateSlice";
+import {
+  fetchRateStats,
+  rateStatsSelector,
+} from "../../store/reducers/rateSlice";
 import { useEffect } from "react";
-import { chainSelector } from "../../store/reducers/chainSlice";
 
 const Wrapper = styled.div`
   padding: 0 24px;
@@ -57,17 +59,16 @@ const Total = styled.div`
 
 export default function Ratings({ type, index }) {
   const dispatch = useDispatch();
-  const chain = useSelector(chainSelector);
   const rateStats = useSelector(rateStatsSelector);
   useEffect(() => {
-    dispatch(fetchRateStats(chain, type, index));
-  }, [dispatch, chain, type, index]);
+    dispatch(fetchRateStats(type, index));
+  }, [dispatch, type, index]);
 
   const [max, total] = (Object.values(rateStats) || []).reduce(
     (pre, cur) => {
       return [pre[0] < cur ? cur : pre[0], pre[1] + cur];
     },
-    [1, 0]
+    [1, 0],
   );
 
   return (

@@ -3,10 +3,9 @@ import UsersTable from "./UsersTable";
 import { h4_16_semibold } from "../../styles/text";
 import ResponsivePagination from "../../components/ResponsivePagination";
 import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../constants";
-import { useChainRoute, useQuery, useLocalStorage } from "../../utils/hooks";
+import { useQuery, useLocalStorage } from "../../utils/hooks";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { chainSelector } from "../../store/reducers/chainSlice";
 import {
   fetchUsers,
   loadingSelector,
@@ -31,8 +30,6 @@ const FilterWrapper = styled.div`
 `;
 
 export default function Participants() {
-  useChainRoute();
-
   const searchPage = parseInt(useQuery().get("page"));
   const queryPage =
     searchPage && !isNaN(searchPage) && searchPage > 0
@@ -41,27 +38,22 @@ export default function Participants() {
   const [tablePage, setTablePage] = useState(queryPage);
   const [pageSize, setPageSize] = useLocalStorage(
     "projectsPageSize",
-    DEFAULT_PAGE_SIZE
+    DEFAULT_PAGE_SIZE,
   );
 
   const dispatch = useDispatch();
   const history = useHistory();
   const { items: tableData, total } = useSelector(usersSelector);
   const loading = useSelector(loadingSelector);
-  const chain = useSelector(chainSelector);
 
   const totalPages = Math.ceil(total / pageSize);
 
-  const {
-    role,
-    setRole,
-    getFilterData,
-  } = useListFilter();
+  const { role, setRole, getFilterData } = useListFilter();
 
   useEffect(() => {
     const filterData = getFilterData();
-    dispatch(fetchUsers(chain, tablePage - 1, pageSize, filterData));
-  }, [dispatch, chain, tablePage, pageSize, getFilterData]);
+    dispatch(fetchUsers(tablePage - 1, pageSize, filterData));
+  }, [dispatch, tablePage, pageSize, getFilterData]);
 
   const header = (
     <div style={{ width: "100%" }}>

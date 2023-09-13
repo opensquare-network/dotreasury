@@ -10,8 +10,6 @@ import Councilor from "./Councilor";
 import { useHistory, useParams } from "react-router";
 import { isProposalsRole } from "./utils";
 import { makeInSiteUserDetailLink } from "../../utils/url";
-import { useSelector } from "react-redux";
-import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import Grade from "./Councilor/Grade";
 
 export default function UsersDetail() {
@@ -20,7 +18,6 @@ export default function UsersDetail() {
 
   const history = useHistory();
   const { address, role: roleParam, tableTab } = useParams();
-  const symbol = useSelector(chainSymbolSelector).toLowerCase();
 
   const [role, setRole] = useState(roleParam || USER_ROLES.Beneficiary);
 
@@ -29,15 +26,15 @@ export default function UsersDetail() {
   useEffect(() => {
     if (!tableTab && isProposalsRole(roleParam)) {
       history.replace(
-        makeInSiteUserDetailLink(symbol, address, roleParam, "proposals")
+        makeInSiteUserDetailLink(address, roleParam, "proposals"),
       );
     }
-  }, [roleParam, tableTab, address, history, symbol]);
+  }, [roleParam, tableTab, address, history]);
 
   const councilorRole = useMemo(() => role === USER_ROLES.Councilor, [role]);
   const proposalsRole = useMemo(
     () => [USER_ROLES.Beneficiary, USER_ROLES.Proposer].includes(role),
-    [role]
+    [role],
   );
 
   return (

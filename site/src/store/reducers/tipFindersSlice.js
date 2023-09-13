@@ -24,12 +24,12 @@ const tipFinders = createSlice({
 export const { setTipFinders, setLoading } = tipFinders.actions;
 
 export const fetchTipFinders =
-  (chain, page = 0, pageSize = 30) =>
+  (page = 0, pageSize = 30) =>
   async (dispatch) => {
     dispatch(setLoading(true));
 
     try {
-      const { result } = await api.fetch(`/${chain}/tips/finders`, {
+      const { result } = await api.fetch("/tips/finders", {
         page,
         pageSize,
       });

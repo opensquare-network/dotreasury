@@ -38,12 +38,12 @@ export default function MotionAttendance() {
   const loading = useSelector(motionAttendanceLoadingSelector);
 
   useEffect(() => {
-    dispatch(fetchMotionAttendance(chain, address));
+    dispatch(fetchMotionAttendance(address));
 
     return () => {
       dispatch(resetMotionAttendance());
     };
-  }, [dispatch, chain, address]);
+  }, [dispatch, address]);
 
   return (
     <Loading loading={loading}>

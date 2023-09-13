@@ -64,12 +64,12 @@ export const {
 } = bountySlice.actions;
 
 export const fetchBounties =
-  (chain, page = 0, pageSize = 30, filterData, sort) =>
+  (page = 0, pageSize = 30, filterData, sort) =>
   async (dispatch) => {
     dispatch(setLoading(true));
 
     try {
-      const { result } = await api.fetch(`/${chain}/bounties`, {
+      const { result } = await api.fetch("/bounties", {
         page,
         pageSize,
         ...filterData,
@@ -85,16 +85,16 @@ export const resetBounties = () => (dispatch) => {
 };
 
 export const fetchChildBountiesByParentIndex =
-  (chain, bountyIndex, page = 1, pageSize = 30) =>
+  (bountyIndex, page = 1, pageSize = 30) =>
   async (dispatch) => {
     dispatch(setLoading(true));
     try {
       const { result } = await api.fetch(
-        `/${chain}/bounties/${bountyIndex}/child-bounties`,
+        `/bounties/${bountyIndex}/child-bounties`,
         {
           page,
           pageSize,
-        }
+        },
       );
       dispatch(setChildBountiesByParentIndex(result || {}));
     } finally {
@@ -102,32 +102,32 @@ export const fetchChildBountiesByParentIndex =
     }
   };
 
-export const fetchBountyDetail = (chain, bountyIndex) => async (dispatch) => {
+export const fetchBountyDetail = (bountyIndex) => async (dispatch) => {
   dispatch(setLoadingBountyDetail(true));
   try {
-    const { result } = await api.fetch(`/${chain}/bounties/${bountyIndex}`);
+    const { result } = await api.fetch(`/bounties/${bountyIndex}`);
     dispatch(setBountyDetail(result || {}));
   } finally {
     dispatch(setLoadingBountyDetail(false));
   }
 };
 
-export const fetchChildBountyDetail = (chain, bountyIndex) => async (dispatch) => {
+export const fetchChildBountyDetail = (bountyIndex) => async (dispatch) => {
   dispatch(setLoadingBountyDetail(true));
   try {
-    const { result } = await api.fetch(`/${chain}/child-bounties/${bountyIndex}`);
+    const { result } = await api.fetch(`/child-bounties/${bountyIndex}`);
     dispatch(setChildBountyDetail(result || {}));
   } finally {
     dispatch(setLoadingBountyDetail(false));
   }
 };
 export const fetchChildBounties =
-  (chain, page = 0, pageSize = 30, filterData, sort) =>
+  (page = 0, pageSize = 30, filterData, sort) =>
   async (dispatch) => {
     dispatch(setLoading(true));
 
     try {
-      const { result } = await api.fetch(`/${chain}/child-bounties`, {
+      const { result } = await api.fetch("/child-bounties", {
         page,
         pageSize,
         ...filterData,
@@ -148,7 +148,8 @@ export const childBountyByParentIndexListSelector = (state) =>
   state.bounties.childBountiesByParentIndex;
 export const loadingSelector = (state) => state.bounties.loading;
 export const bountyDetailSelector = (state) => state.bounties.bountyDetail;
-export const childBountyDetailSelector = (state) => state.bounties.childBountyDetail;
+export const childBountyDetailSelector = (state) =>
+  state.bounties.childBountyDetail;
 export const loadingBountyDetailSelector = (state) =>
   state.bounties.loadingBountyDetail;
 

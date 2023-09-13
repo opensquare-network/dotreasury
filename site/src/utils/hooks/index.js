@@ -1,15 +1,11 @@
 import { useState, useEffect, useRef } from "react";
-import { useHistory, useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import queryString from "query-string";
 
 import { fetchIdentity as getIdentity } from "../../services/identity";
 import { setShowMenuTabs } from "../../store/reducers/menuSlice";
-import {
-  chainSelector,
-  chainSymbolSelector,
-  setChain,
-} from "../../store/reducers/chainSlice";
+import { chainSelector } from "../../store/reducers/chainSlice";
 import { useWindowSize } from "@osn/common";
 
 const displayCache = new Map();
@@ -53,7 +49,7 @@ export const useLinks = (text) => {
   if (text && typeof text === "string") {
     const links = [
       ...text.matchAll(
-        /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,8}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/g
+        /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,8}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/g,
       ),
     ];
     return links.map((item) => ({ inReasons: true, link: item[0] }));
@@ -88,40 +84,22 @@ export const usePreload = () => {
 
 export const useMenuTab = () => {
   const dispatch = useDispatch();
-  const symbol = useSelector(chainSymbolSelector)?.toLowerCase();
   const { pathname } = useLocation();
   useEffect(() => {
-    const menuTabsName = pathname.startsWith(`/${symbol}/income`)
+    const menuTabsName = pathname.startsWith("/income")
       ? "Income"
-      : pathname.startsWith(`/${symbol}/projects`)
+      : pathname.startsWith("/projects")
       ? "Projects"
-      : pathname === `/${symbol}/tip-finders`
+      : pathname === "/tip-finders"
       ? "TipFinders"
-      : pathname === `/${symbol}/proposal-beneficiaries`
+      : pathname === "/proposal-beneficiaries"
       ? "ProposalBeneficiaries"
-      : pathname.startsWith(`/${symbol}/users`)
+      : pathname.startsWith("/users")
       ? "Users"
       : "Home";
     dispatch(setShowMenuTabs(menuTabsName));
-  }, [pathname, dispatch, symbol]);
+  }, [pathname, dispatch]);
 };
-
-export function useChainRoute() {
-  const dispatch = useDispatch();
-  const history = useHistory();
-  const location = useLocation();
-  const symbol = useSelector(chainSymbolSelector).toLowerCase();
-  const { symbol: paramSymbol } = useParams();
-  const urlSymbol = paramSymbol?.toLowerCase();
-  useEffect(() => {
-    if (!urlSymbol) {
-      return history.push(`/${symbol}${location.pathname}`);
-    } else if (urlSymbol !== symbol) {
-      dispatch(setChain(urlSymbol));
-      window.location.reload();
-    }
-  }, [dispatch, history, location, symbol, urlSymbol]);
-}
 
 export function useLocalStorage(key, initialValue) {
   const [storedValue, setStoredValue] = useState(() => {

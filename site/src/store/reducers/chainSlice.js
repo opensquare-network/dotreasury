@@ -1,13 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {
-  getApi,
-  estimateBlocksTime,
-} from "../../services/chainApi";
+import { getApi, estimateBlocksTime } from "../../services/chainApi";
 import { CHAINS } from "../../constants";
-import { networkFromSymbol } from "../../utils";
+import { networkFromSymbol, symbolFromNetwork } from "../../utils";
 
 const chainStorageKey = "dotreasury-current-chain";
-const chain = localStorage.getItem(chainStorageKey) || CHAINS.POLKADOT;
+const chain = symbolFromNetwork(import.meta.env.VITE_APP_CHAIN);
 
 const chainSlice = createSlice({
   name: "chain",
@@ -51,8 +48,9 @@ export const {
   setSpendPeriod,
 } = chainSlice.actions;
 
-export const fetchSpendPeriod = (chain) => async (dispatch) => {
-  const api = await getApi(chain);
+export const fetchSpendPeriod = () => async (dispatch, getState) => {
+  const { chain } = getState();
+  const api = await getApi(chain.chain);
   const bestNumber = await api.derive.chain.bestNumber();
   const spendPeriod = api.consts.treasury.spendPeriod;
   const goneBlocks = bestNumber.mod(spendPeriod);
@@ -63,7 +61,7 @@ export const fetchSpendPeriod = (chain) => async (dispatch) => {
       restBlocks: spendPeriod.sub(goneBlocks).toNumber(),
       restTime: await estimateBlocksTime(chain, spendPeriod.sub(goneBlocks)),
       progress: goneBlocks.muln(100).div(spendPeriod).toNumber(),
-    })
+    }),
   );
 };
 

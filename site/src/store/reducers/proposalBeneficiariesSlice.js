@@ -26,12 +26,12 @@ export const { setProposalBeneficiaries, setLoading } =
   proposalBeneficiaries.actions;
 
 export const fetchProposalBeneficiaries =
-  (chain, page = 0, pageSize = 30) =>
+  (page = 0, pageSize = 30) =>
   async (dispatch) => {
     dispatch(setLoading(true));
 
     try {
-      const { result } = await api.fetch(`/${chain}/proposals/beneficiaries`, {
+      const { result } = await api.fetch("/proposals/beneficiaries", {
         page,
         pageSize,
       });

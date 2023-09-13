@@ -5,10 +5,7 @@ import { useHistory } from "react-router";
 import { Table } from "../../components/Table";
 import TableLoading from "../../components/TableLoading";
 import { useSelector } from "react-redux";
-import {
-  chainSelector,
-  chainSymbolSelector,
-} from "../../store/reducers/chainSlice";
+import { chainSelector } from "../../store/reducers/chainSlice";
 import Card from "../../components/Card";
 import { useTableColumns } from "../../components/shared/useTableColumns";
 import api from "../../services/scanApi";
@@ -56,17 +53,12 @@ const completeProposalsWithTitle = (data = [], chain) => {
 
 const ProposalsTable = ({ data, loading, header, footer }) => {
   const history = useHistory();
-  const symbol = useSelector(chainSymbolSelector);
   const chain = useSelector(chainSelector);
   const [isBeneficiary, setIsBeneficiary] = useState(true);
   const [tableData, setTableData] = useState(data);
 
-  const {
-    sortField,
-    setSortField,
-    sortDirection,
-    setSortDirection,
-  } = useSort();
+  const { sortField, setSortField, sortDirection, setSortDirection } =
+    useSort();
 
   useEffect(() => {
     setTableData(data);
@@ -93,7 +85,7 @@ const ProposalsTable = ({ data, loading, header, footer }) => {
     return links;
   };
   const getDetailRoute = (row) => {
-    return `/${symbol.toLowerCase()}/proposals/${row.proposalIndex}`;
+    return `/proposals/${row.proposalIndex}`;
   };
 
   let {
@@ -155,7 +147,9 @@ const ProposalsTable = ({ data, loading, header, footer }) => {
         direction={sortField === "index" ? sortDirection : ""}
         onClick={() => {
           setSortField("index");
-          setSortDirection(sortField === "index" && sortDirection === "asc" ? "desc" : "asc");
+          setSortDirection(
+            sortField === "index" && sortDirection === "asc" ? "desc" : "asc",
+          );
         }}
       />
     ),

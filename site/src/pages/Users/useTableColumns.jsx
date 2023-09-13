@@ -29,7 +29,7 @@ const id = (options) => {
     cellRender(_, data) {
       return (
         <IDWrapper>
-          <NavLink to={`/${options?.chainSymbol}/users/${data?.address}`}>
+          <NavLink to={`/users/${data?.address}`}>
             <User noLink address={data?.address} />
           </NavLink>
         </IDWrapper>

@@ -46,16 +46,13 @@ import UsersDetail from "../pages/UsersDetail";
 import Referenda from "../pages/Referenda";
 
 import { usePreload } from "../utils/hooks";
-import { useSelector } from "react-redux";
-import { chainSelector } from "../store/reducers/chainSlice";
 import ReferendaSlash from "../pages/ReferendaSlash";
 import FellowshipReferendaSlash from "../pages/FellowshipReferendaSlash";
 
 export default function App() {
-  const chain = useSelector(chainSelector);
   usePreload();
 
-  connect(chain);
+  connect();
 
   const Router =
     import.meta.env.VITE_APP_ROUTER_TYPE === "HashRouter"
@@ -71,133 +68,88 @@ export default function App() {
             <ScrollToTop />
             <Switch>
               <Route exact path="/" component={Overview} />
-              <Route exact path="/:symbol(ksm|dot)" component={Overview} />
-              <Route exact path="/:symbol(ksm|dot)/tips" component={Tips} />
+              <Route exact path="/tips" component={Tips} />
+              <Route exact path="/referenda" component={Referenda} />
+              <Route exact path="/proposals" component={Proposals} />
+              <Route exact path="/bounties" component={Bounties} />
+              <Route exact path="/child-bounties" component={ChildBounties} />
+              <Route exact path="/transfers" component={Transfers} />
+              <Route exact path="/tip-finders" component={TipFinders} />
+              <Route exact path="/tips/:tipId" component={TipDetail} />
               <Route
                 exact
-                path="/:symbol(ksm|dot)/referenda"
-                component={Referenda}
-              />
-              <Route
-                exact
-                path="/:symbol(ksm|dot)/proposals"
-                component={Proposals}
-              />
-              <Route
-                exact
-                path="/:symbol(ksm|dot)/bounties"
-                component={Bounties}
-              />
-              <Route
-                exact
-                path="/:symbol(ksm|dot)/child-bounties"
-                component={ChildBounties}
-              />
-              <Route
-                exact
-                path="/:symbol(ksm|dot)/transfers"
-                component={Transfers}
-              />
-              <Route
-                exact
-                path="/:symbol(ksm|dot)/tip-finders"
-                component={TipFinders}
-              />
-              <Route
-                exact
-                path="/:symbol(ksm|dot)/tips/:tipId"
-                component={TipDetail}
-              />
-              <Route
-                exact
-                path="/:symbol(ksm|dot)/proposal-beneficiaries"
+                path="/proposal-beneficiaries"
                 component={ProposalBeneficiaries}
               />
               <Route
                 exact
-                path="/:symbol(ksm|dot)/proposals/:proposalIndex"
+                path="/proposals/:proposalIndex"
                 component={ProposalDetail}
               />
               <Route
                 exact
-                path="/:symbol(ksm|dot)/bounties/:bountyIndex"
+                path="/bounties/:bountyIndex"
                 component={BountyDetail}
               />
               <Route
                 exact
-                path="/:symbol(ksm|dot)/child-bounties/:bountyIndex"
+                path="/child-bounties/:bountyIndex"
                 component={ChildBountyDetail}
               />
-              <Route exact path="/:symbol(ksm|dot)/burnt" component={Burnt} />
+              <Route exact path="/burnt" component={Burnt} />
+              <Route exact path="/projects" component={Projects} />
               <Route
                 exact
-                path="/:symbol(ksm|dot)/projects"
-                component={Projects}
-              />
-              <Route
-                exact
-                path="/:symbol(ksm|dot)/projects/:projectId"
+                path="/projects/:projectId"
                 component={ProjectDetail}
               />
+              <Route exact path="/income" component={Inflation} />
               <Route
                 exact
-                path="/:symbol(ksm|dot)/income"
-                component={Inflation}
-              />
-              <Route
-                exact
-                path="/:symbol(ksm|dot)/income/slash/treasury"
+                path="/income/slash/treasury"
                 component={TreasurySlash}
               />
               <Route
                 exact
-                path="/:symbol(ksm|dot)/income/slash/democracy"
+                path="/income/slash/democracy"
                 component={DemocracySlash}
               />
               <Route
                 exact
-                path="/:symbol(ksm|dot)/income/slash/identity"
+                path="/income/slash/identity"
                 component={IdentitySlash}
               />
               <Route
                 exact
-                path="/:symbol(ksm|dot)/income/slash/staking"
+                path="/income/slash/staking"
                 component={StakingSlash}
               />
               <Route
                 exact
-                path="/:symbol(ksm|dot)/income/slash/electionphragmen"
+                path="/income/slash/electionphragmen"
                 component={ElectionPhragmenSlash}
               />
               <Route
                 exact
-                path="/:symbol(ksm|dot)/income/slash/referenda"
+                path="/income/slash/referenda"
                 component={ReferendaSlash}
               />
               <Route
                 exact
-                path="/:symbol(ksm|dot)/income/slash/fellowship-referenda"
+                path="/income/slash/fellowship-referenda"
                 component={FellowshipReferendaSlash}
               />
               <Route
                 exact
-                path="/:symbol(ksm|dot)/income/transfers"
+                path="/income/transfers"
                 component={TransfersSlash}
               />
+              <Route exact path="/income/others" component={OthersIncome} />
+              <Route exact path="/users" component={Users} />
+              <Route exact path="/users/:address" component={UsersDetail} />
               <Route
                 exact
-                path="/:symbol(ksm|dot)/income/others"
-                component={OthersIncome}
-              />
-              <Route exact path="/:symbol(ksm|dot)/users" component={Users} />
-              <Route
-                exact
-                path="/:symbol(ksm|dot)/users/:address"
-                component={UsersDetail}
-              />
-              <Route
-                exact
-                path="/:symbol(ksm|dot)/users/:address/:role/:tableTab?"
+                path="/users/:address/:role/:tableTab?"
                 component={UsersDetail}
               />
               <Route exact path="/settings/:tabname?" component={UserSetting} />

@@ -1,7 +1,4 @@
-import {
-  chainSelector,
-  chainSymbolSelector,
-} from "../../../store/reducers/chainSlice";
+import { chainSymbolSelector } from "../../../store/reducers/chainSlice";
 import { useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../../components/TableLoading";
@@ -29,7 +26,6 @@ import { toPrecision, getPrecision } from "../../../utils";
 import { sortBy } from "lodash";
 
 export default function TipAttendance() {
-  const chain = useSelector(chainSelector);
   const chainSymbol = useSelector(chainSymbolSelector);
   const dispatch = useDispatch();
   const { address } = useParams();
@@ -38,12 +34,12 @@ export default function TipAttendance() {
   const loading = useSelector(tipAttendanceLoadingSelector);
 
   useEffect(() => {
-    dispatch(fetchTipAttendance(chain, address));
+    dispatch(fetchTipAttendance(address));
 
     return () => {
       dispatch(resetTipAttendance());
     };
-  }, [dispatch, chain, address]);
+  }, [dispatch, address]);
 
   function parseValue(value) {
     const precision = toPrecision(value, getPrecision(chainSymbol), false);
@@ -71,7 +67,6 @@ export default function TipAttendance() {
                 <TooltipContentDetailItemValue>
                   <Link
                     to={makeInSiteTipLink(
-                      chainSymbol.toLowerCase(),
                       "tips",
                       data.meta.tipHeight,
                       data.meta.tipHash,

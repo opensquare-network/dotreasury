@@ -3,22 +3,20 @@ import React, { useEffect, useState } from "react";
 import ResponsivePagination from "../../components/ResponsivePagination";
 import BurntTable from "./BurntTable";
 import { useDispatch, useSelector } from "react-redux";
-import { useChainRoute, useQuery, useLocalStorage } from "../../utils/hooks";
+import { useQuery, useLocalStorage } from "../../utils/hooks";
 import { useHistory } from "react-router";
 
 import {
   fetchBurntList,
   burntListSelector,
-  loadingBurntListSelector, burntChartSelector, fetchBurntChart,
+  loadingBurntListSelector,
+  burntChartSelector,
+  fetchBurntChart,
 } from "../../store/reducers/burntSlice";
-import { chainSelector } from "../../store/reducers/chainSlice";
-
 
 import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../constants";
 
 const Burnt = () => {
-  useChainRoute();
-
   const searchPage = parseInt(useQuery().get("page"));
   const queryPage =
     searchPage && !isNaN(searchPage) && searchPage > 0
@@ -27,7 +25,7 @@ const Burnt = () => {
   const [tablePage, setTablePage] = useState(queryPage);
   const [pageSize, setPageSize] = useLocalStorage(
     "burntStorage",
-    DEFAULT_PAGE_SIZE
+    DEFAULT_PAGE_SIZE,
   );
 
   const dispatch = useDispatch();
@@ -35,12 +33,11 @@ const Burnt = () => {
   const { items: burntList, total } = useSelector(burntListSelector);
   const chartData = useSelector(burntChartSelector);
   const loading = useSelector(loadingBurntListSelector);
-  const chain = useSelector(chainSelector);
 
   useEffect(() => {
-    dispatch(fetchBurntList(chain, tablePage - 1, pageSize));
-    dispatch(fetchBurntChart(chain));
-  }, [dispatch, chain, tablePage, pageSize]);
+    dispatch(fetchBurntList(tablePage - 1, pageSize));
+    dispatch(fetchBurntChart());
+  }, [dispatch, tablePage, pageSize]);
 
   const totalPages = Math.ceil(total / pageSize);
 

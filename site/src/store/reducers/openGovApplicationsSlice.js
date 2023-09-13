@@ -37,48 +37,45 @@ export const {
   setSummary,
 } = openGovApplicationsSlice.actions;
 
-export const fetchApplicationList = (chain, page = 0, pageSize = 30, filterData = {}, sort = {}) => async (
-  dispatch
-) => {
-  dispatch(setLoadingApplicationList(true));
+export const fetchApplicationList =
+  (page = 0, pageSize = 30, filterData = {}, sort = {}) =>
+  async (dispatch) => {
+    dispatch(setLoadingApplicationList(true));
 
-  try {
-    const { result } = await api.fetch(`/${chain}/referenda`, {
-      page,
-      pageSize,
-      ...filterData,
-      ...sort,
-    });
-    dispatch(
-      setApplicationList(
-        result || {
-          items: [],
-          page: 0,
-          pageSize: 10,
-          total: 0,
-        }
-      )
-    );
-  } finally {
-    dispatch(setLoadingApplicationList(false));
-  }
-};
+    try {
+      const { result } = await api.fetch("/referenda", {
+        page,
+        pageSize,
+        ...filterData,
+        ...sort,
+      });
+      dispatch(
+        setApplicationList(
+          result || {
+            items: [],
+            page: 0,
+            pageSize: 10,
+            total: 0,
+          },
+        ),
+      );
+    } finally {
+      dispatch(setLoadingApplicationList(false));
+    }
+  };
 
-export const fetchApplicationListCount = (chain) => async (dispatch) => {
-  const { result } = await api.fetch(`/${chain}/referenda/count`);
-  dispatch(setApplicationListCount(result || 0));
-};
-
-export const fetchApplicationSummary = (chain) => async (dispatch) => {
-  const { result } = await api.fetch(`/${chain}/referenda/summary`);
+export const fetchApplicationSummary = () => async (dispatch) => {
+  const { result } = await api.fetch("/referenda/summary");
   dispatch(setSummary(result || {}));
 };
 
-export const applicationListSelector = (state) => state.openGovApplications.applicationList;
+export const applicationListSelector = (state) =>
+  state.openGovApplications.applicationList;
 export const loadingApplicationListSelector = (state) =>
   state.openGovApplications.loadingApplicationList;
 export const applicationListCountSelector = (state) =>
   state.openGovApplications.applicationListCount;
-export const applicationSummarySelector = (state) => state.openGovApplications.summary;
+export const applicationSummarySelector = (state) =>
+  state.openGovApplications.summary;
 
 export default openGovApplicationsSlice.reducer;

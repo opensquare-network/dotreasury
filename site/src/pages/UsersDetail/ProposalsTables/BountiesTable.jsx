@@ -1,6 +1,5 @@
 import { noop } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
-import { chainSelector } from "../../../store/reducers/chainSlice";
 import BountiesTableOrigin from "../../Bounties/BountiesTable";
 import {
   fetchBounties,
@@ -19,7 +18,6 @@ export default function BountiesTable({
   role,
   address,
 }) {
-  const chain = useSelector(chainSelector);
   const dispatch = useDispatch();
 
   const { items, total } = useSelector(bountyListSelector);
@@ -30,13 +28,12 @@ export default function BountiesTable({
   useEffect(() => {
     dispatch(
       fetchBounties(
-        chain,
         tablePage - 1,
         pageSize,
-        resolveFilterData(filterData, { role, address })
-      )
+        resolveFilterData(filterData, { role, address }),
+      ),
     );
-  }, [dispatch, chain, tablePage, pageSize, filterData, role, address]);
+  }, [dispatch, tablePage, pageSize, filterData, role, address]);
 
   return (
     <BountiesTableOrigin

@@ -1,5 +1,9 @@
 import { ApiPromise, WsProvider } from "@polkadot/api";
-import { isWeb3Injected, web3Enable, web3FromAddress } from "@polkadot/extension-dapp";
+import {
+  isWeb3Injected,
+  web3Enable,
+  web3FromAddress,
+} from "@polkadot/extension-dapp";
 import { stringToHex } from "@polkadot/util";
 import { encodeAddress } from "@polkadot/keyring";
 
@@ -41,16 +45,10 @@ export const getApi = async (chain, queryUrl) => {
   if (!apiInstanceMap.has(url)) {
     apiInstanceMap.set(
       url,
-      ApiPromise.create({ provider: new WsProvider(url) })
+      ApiPromise.create({ provider: new WsProvider(url) }),
     );
   }
   return apiInstanceMap.get(url);
-};
-
-export const getIndentity = async (chain, address) => {
-  const api = await getApi(chain);
-  const { identity } = await api.derive.accounts.info(address);
-  return identity;
 };
 
 export const getTipCountdown = async (chain) => {
@@ -75,7 +73,11 @@ export const signMessage = async (text, address) => {
   return result.signature;
 };
 
-export const signMessageWithExtension = async (text, address, extensionName) => {
+export const signMessageWithExtension = async (
+  text,
+  address,
+  extensionName,
+) => {
   if (!extensionName) {
     throw new Error("Signing extension is not specified.");
   }
@@ -106,7 +108,7 @@ export const signMessageWithExtension = async (text, address, extensionName) => 
 
 const extractBlockTime = (extrinsics) => {
   const setTimeExtrinsic = extrinsics.find(
-    (ex) => ex.method.section === "timestamp" && ex.method.method === "set"
+    (ex) => ex.method.section === "timestamp" && ex.method.method === "set",
   );
   if (setTimeExtrinsic) {
     const { args } = setTimeExtrinsic.method.toJSON();
@@ -170,7 +172,9 @@ export async function getElectorate(api) {
 }
 
 export async function getReferendumInfo(api, referendumIndex) {
-  const referendumInfo = await api.query.democracy.referendumInfoOf(referendumIndex);
+  const referendumInfo = await api.query.democracy.referendumInfoOf(
+    referendumIndex,
+  );
   return referendumInfo.toJSON();
 }
 

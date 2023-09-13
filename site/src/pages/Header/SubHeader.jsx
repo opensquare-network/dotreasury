@@ -18,10 +18,7 @@ import ReferendaMenu from "./ReferendaMenu";
 import { fetchIncomeCount } from "../../store/reducers/incomeSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { showMenuTabsSelector } from "../../store/reducers/menuSlice";
-import {
-  chainSelector,
-  chainSymbolSelector,
-} from "../../store/reducers/chainSlice";
+import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import Card from "../../components/Card";
 import Container from "../../components/Container";
 
@@ -141,12 +138,11 @@ const TabExampleSecondaryPointing = () => {
   const { pathname } = useLocation();
   const dispatch = useDispatch();
   const showMenuTabs = useSelector(showMenuTabsSelector);
-  const chain = useSelector(chainSelector);
   const symbol = useSelector(chainSymbolSelector)?.toLowerCase();
 
   useEffect(() => {
-    dispatch(fetchIncomeCount(chain));
-  }, [dispatch, chain]);
+    dispatch(fetchIncomeCount());
+  }, [dispatch]);
 
   const supportOpenGov = useSupportOpenGov();
 
@@ -158,10 +154,10 @@ const TabExampleSecondaryPointing = () => {
               as: NavLink,
               id: "homeTab",
               content: <Overview />,
-              to: `/${symbol}`,
+              to: "/",
               exact: true,
               key: "home",
-              active: `/${symbol}` === pathname,
+              active: "/" === pathname,
             },
           },
           ...(supportOpenGov
@@ -171,10 +167,10 @@ const TabExampleSecondaryPointing = () => {
                     as: NavLink,
                     id: "referendaTab",
                     content: <ReferendaMenu />,
-                    to: `/${symbol}/referenda`,
+                    to: "/referenda",
                     exact: true,
                     key: "referenda",
-                    active: `/${symbol}/referenda` === pathname,
+                    active: "/referenda" === pathname,
                   },
                 },
               ]
@@ -184,12 +180,12 @@ const TabExampleSecondaryPointing = () => {
               as: NavLink,
               id: "proposalsTab",
               content: <ProposalsMenu />,
-              to: `/${symbol}/proposals`,
+              to: "/proposals",
               exact: true,
               key: "proposals",
               active:
-                `/${symbol}/proposals` === pathname ||
-                pathname.indexOf(`/${symbol}/proposals`) === 0,
+                "/proposals" === pathname ||
+                pathname.indexOf("/proposals") === 0,
             },
           },
           {
@@ -197,12 +193,10 @@ const TabExampleSecondaryPointing = () => {
               as: NavLink,
               id: "tipsTab",
               content: <TipsMenu />,
-              to: `/${symbol}/tips`,
+              to: "/tips",
               exact: true,
               key: "tips",
-              active:
-                `/${symbol}/tips` === pathname ||
-                pathname.indexOf(`/${symbol}/tips`) === 0,
+              active: "/tips" === pathname || pathname.indexOf("/tips") === 0,
             },
           },
           {
@@ -210,12 +204,12 @@ const TabExampleSecondaryPointing = () => {
               as: NavLink,
               id: "bountiesTab",
               content: <BountiesMenu />,
-              to: `/${symbol}/bounties`,
+              to: "/bounties",
               exact: true,
               key: "bounties",
               active:
-                pathname.indexOf(`/${symbol}/bounties`) === 0 ||
-                pathname.indexOf(`/${symbol}/child-bounties`) === 0,
+                pathname.indexOf("/bounties") === 0 ||
+                pathname.indexOf("/child-bounties") === 0,
             },
           },
           {
@@ -223,12 +217,10 @@ const TabExampleSecondaryPointing = () => {
               as: NavLink,
               id: "burntTab",
               content: <BurntMenu />,
-              to: `/${symbol}/burnt`,
+              to: "/burnt",
               exact: true,
               key: "burnt",
-              active:
-                `/${symbol}/burnt` === pathname ||
-                pathname.indexOf(`/${symbol}/burnt`) === 0,
+              active: "/burnt" === pathname || pathname.indexOf("/burnt") === 0,
             },
           },
           {
@@ -236,10 +228,10 @@ const TabExampleSecondaryPointing = () => {
               as: NavLink,
               id: "transfersTab",
               content: <TransfersMenu />,
-              to: `/${symbol}/transfers`,
+              to: "/transfers",
               exact: true,
               key: "transfers",
-              active: `/${symbol}/transfers` === pathname,
+              active: "/transfers" === pathname,
             },
           },
         ]
@@ -250,10 +242,10 @@ const TabExampleSecondaryPointing = () => {
               as: NavLink,
               id: "inflationTab",
               content: <InflationMenu />,
-              to: `/${symbol}/income`,
+              to: "/income",
               exact: true,
               key: "inflation",
-              active: `/${symbol}/income` === pathname,
+              active: "/income" === pathname,
             },
           },
           {
@@ -261,7 +253,7 @@ const TabExampleSecondaryPointing = () => {
               id: "slashDropdownTab",
               content: <SlashMenu />,
               key: "slashDropdown",
-              active: pathname.includes(`${symbol}/income/slash/`),
+              active: pathname.includes("/income/slash/"),
             },
           },
           {
@@ -269,12 +261,12 @@ const TabExampleSecondaryPointing = () => {
               as: NavLink,
               id: "transfersSlashTab",
               content: <TansfersSlashMenu />,
-              to: `/${symbol}/income/transfers`,
+              to: "/income/transfers",
               exact: true,
               key: "transfersSlash",
               active:
-                `/${symbol}/income/transfers` === pathname ||
-                pathname.indexOf(`/${symbol}/income/transfers`) === 0,
+                "/income/transfers" === pathname ||
+                pathname.indexOf("/income/transfers") === 0,
             },
           },
           {
@@ -282,12 +274,12 @@ const TabExampleSecondaryPointing = () => {
               as: NavLink,
               id: "othersIncomeTab",
               content: <OthersIncomeMenu />,
-              to: `/${symbol}/income/others`,
+              to: "/income/others",
               exact: true,
               key: "othersIncome",
               active:
-                `/${symbol}/income/others` === pathname ||
-                pathname.indexOf(`/${symbol}/income/others`) === 0,
+                "/income/others" === pathname ||
+                pathname.indexOf("/income/others") === 0,
             },
           },
         ]
@@ -298,12 +290,11 @@ const TabExampleSecondaryPointing = () => {
               as: NavLink,
               id: "projectsTab",
               content: <ProjectsMenu />,
-              to: `/${symbol}/projects`,
+              to: "/projects",
               exact: true,
               key: "projects",
               active:
-                `/${symbol}/projects` === pathname ||
-                pathname.indexOf(`/${symbol}/projects`) === 0,
+                "/projects" === pathname || pathname.indexOf("/projects") === 0,
             },
           },
         ]
@@ -312,7 +303,7 @@ const TabExampleSecondaryPointing = () => {
           {
             menuItem: {
               id: "tipFindersTab",
-              to: `/${symbol}/tip-finders`,
+              to: "/tip-finders",
               key: "tipFinders",
               content: <TipFindersMenu />,
               active: true,
@@ -324,7 +315,7 @@ const TabExampleSecondaryPointing = () => {
           {
             menuItem: {
               id: "ProposalBeneficiariesTab",
-              to: `/${symbol}/proposal-beneficiaries`,
+              to: "/proposal-beneficiaries",
               key: "proposalBeneficiaries",
               content: <ProposalBeneficiariesMenu />,
               active: true,
@@ -337,7 +328,7 @@ const TabExampleSecondaryPointing = () => {
             menuItem: {
               as: NavLink,
               id: "UsersTab",
-              to: `/${symbol}/users`,
+              to: "/users",
               key: "users",
               content: <UsersMenu />,
               active: true,
@@ -352,7 +343,7 @@ const TabExampleSecondaryPointing = () => {
       <Container>
         <CustomCard>
           <TopWrapper>
-            <NavLink to={`/${symbol}`}>Home</NavLink>
+            <NavLink to={"/"}>Home</NavLink>
           </TopWrapper>
           <TabWrapper
             menu={{ secondary: true, pointing: true }}

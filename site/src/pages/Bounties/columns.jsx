@@ -1,28 +1,20 @@
 import { useTableColumns } from "../../components/shared/useTableColumns";
-import { useSelector } from "react-redux";
-import { chainSymbolSelector } from "../../store/reducers/chainSlice";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import SortableIndex from "../../components/SortableIndex";
 import SortableValue from "../../components/SortableValue";
-import { useHistory } from "react-router";
 import useSort from "../../hooks/useSort";
 
 export function useColumns(options) {
   const { defaultCurator = true } = options ?? {};
 
-  const symbol = useSelector(chainSymbolSelector);
   const [isCurator, setIsCurator] = useState(defaultCurator);
 
-  const {
-    sortField,
-    setSortField,
-    sortDirection,
-    setSortDirection,
-  } = useSort();
+  const { sortField, setSortField, sortDirection, setSortDirection } =
+    useSort();
 
   const getDetailRoute = (row) => {
     const type = row.parentBountyId >= 0 ? "child-bounties" : "bounties";
-    return `/${symbol.toLowerCase()}/${type}/${row.bountyIndex}`;
+    return `/${type}/${row.bountyIndex}`;
   };
 
   let {
@@ -70,7 +62,9 @@ export function useColumns(options) {
         direction={sortField === "index" ? sortDirection : ""}
         onClick={() => {
           setSortField("index");
-          setSortDirection(sortField === "index" && sortDirection === "asc" ? "desc" : "asc");
+          setSortDirection(
+            sortField === "index" && sortDirection === "asc" ? "desc" : "asc",
+          );
         }}
       />
     ),

@@ -4,7 +4,7 @@ import styled from "styled-components";
 import ResponsivePagination from "../../components/ResponsivePagination";
 import SlashTable from "./InflationTable";
 import { useDispatch, useSelector } from "react-redux";
-import { useChainRoute, useQuery, useLocalStorage } from "../../utils/hooks";
+import { useQuery, useLocalStorage } from "../../utils/hooks";
 import { useHistory } from "react-router";
 
 import {
@@ -12,7 +12,6 @@ import {
   inflationListSelector,
   inflationListLoadingSelector,
 } from "../../store/reducers/incomeSlice";
-import { chainSelector } from "../../store/reducers/chainSlice";
 import Text from "../../components/Text";
 import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../constants";
 
@@ -37,8 +36,6 @@ const SubTitle = styled.span`
 `;
 
 const Inflation = () => {
-  useChainRoute();
-
   const searchPage = parseInt(useQuery().get("page"));
   const queryPage =
     searchPage && !isNaN(searchPage) && searchPage > 0
@@ -47,18 +44,17 @@ const Inflation = () => {
   const [tablePage, setTablePage] = useState(queryPage);
   const [pageSize, setPageSize] = useLocalStorage(
     "inflationPageSize",
-    DEFAULT_PAGE_SIZE
+    DEFAULT_PAGE_SIZE,
   );
 
   const dispatch = useDispatch();
   const history = useHistory();
   const { items: itemList, total } = useSelector(inflationListSelector);
   const loading = useSelector(inflationListLoadingSelector);
-  const chain = useSelector(chainSelector);
 
   useEffect(() => {
-    dispatch(fetchInflationList(chain, tablePage - 1, pageSize));
-  }, [dispatch, chain, tablePage, pageSize]);
+    dispatch(fetchInflationList(tablePage - 1, pageSize));
+  }, [dispatch, tablePage, pageSize]);
 
   const totalPages = Math.ceil(total / pageSize);
 

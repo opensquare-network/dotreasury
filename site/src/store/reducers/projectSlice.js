@@ -34,26 +34,26 @@ export const {
   setLoadingProjectDetail,
 } = projectSlice.actions;
 
-export const fetchProjects = (chain, page = 0, pageSize = 30) => async (
-  dispatch
-) => {
-  dispatch(setLoading(true));
+export const fetchProjects =
+  (page = 0, pageSize = 30) =>
+  async (dispatch) => {
+    dispatch(setLoading(true));
 
-  try {
-    const { result } = await api.fetch(`/${chain}/projects_v2`, {
-      page,
-      pageSize,
-    });
-    dispatch(setProjects(result || {}));
-  } finally {
-    dispatch(setLoading(false));
-  }
-};
+    try {
+      const { result } = await api.fetch("/projects_v2", {
+        page,
+        pageSize,
+      });
+      dispatch(setProjects(result || {}));
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
 
-export const fetchProjectDetail = (chain, projectId) => async (dispatch) => {
+export const fetchProjectDetail = (projectId) => async (dispatch) => {
   dispatch(setLoadingProjectDetail(true));
   try {
-    const { result } = await api.fetch(`/${chain}/projects_v2/${projectId}`);
+    const { result } = await api.fetch(`/projects_v2/${projectId}`);
     dispatch(setProjectDetail(result || {}));
   } finally {
     dispatch(setLoadingProjectDetail(false));

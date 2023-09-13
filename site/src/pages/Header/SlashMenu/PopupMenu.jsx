@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
-import { useSelector } from "react-redux";
 import { Popup as PopupOrigin } from "semantic-ui-react";
-import {
-  chainSymbolSelector,
-} from "../../../store/reducers/chainSlice";
 import DemocracySlashMenu from "./DmocracySlashMenu";
 import ElectionPhragmenSlashMenu from "./ElectionPhragmenSlashMenu";
 import ReferendaSlashMenu from "./ReferendaSlashMenu";
@@ -27,7 +23,6 @@ const Popup = styled(PopupOrigin)`
 `;
 
 export default function PopupMenu({ trigger }) {
-  const symbol = useSelector(chainSymbolSelector)?.toLowerCase();
   const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
   const supportOpenGov = useSupportOpenGov();
@@ -39,30 +34,20 @@ export default function PopupMenu({ trigger }) {
 
   const popupContent = (
     <div>
-      <StakingSlashMenu
-        onClick={() => navigate(`/${symbol}/income/slash/staking`)}
-      />
-      <TreasurySlashMenu
-        onClick={() => navigate(`/${symbol}/income/slash/treasury`)}
-      />
+      <StakingSlashMenu onClick={() => navigate("/income/slash/staking")} />
+      <TreasurySlashMenu onClick={() => navigate("/income/slash/treasury")} />
       <ElectionPhragmenSlashMenu
-        onClick={() => navigate(`/${symbol}/income/slash/electionphragmen`)}
+        onClick={() => navigate("/income/slash/electionphragmen")}
       />
-      <DemocracySlashMenu
-        onClick={() => navigate(`/${symbol}/income/slash/democracy`)}
-      />
-      <IdentitySlashMenu
-        onClick={() => navigate(`/${symbol}/income/slash/identity`)}
-      />
+      <DemocracySlashMenu onClick={() => navigate("/income/slash/democracy")} />
+      <IdentitySlashMenu onClick={() => navigate("/income/slash/identity")} />
       {supportOpenGov && (
         <>
           <ReferendaSlashMenu
-            onClick={() => navigate(`/${symbol}/income/slash/referenda`)}
+            onClick={() => navigate("/income/slash/referenda")}
           />
           <FellowshipReferendaSlashMenu
-            onClick={() =>
-              navigate(`/${symbol}/income/slash/fellowship-referenda`)
-            }
+            onClick={() => navigate("/income/slash/fellowship-referenda")}
           />
         </>
       )}

@@ -21,32 +21,29 @@ import RelatedLinks from "../RelatedLinks";
 import ProposalLifeCycleTable from "./ProposalLifeCycleTable";
 import TimelineCommentWrapper from "../../components/TimelineCommentWrapper";
 import DetailGoBack from "../components/DetailGoBack";
-import { useChainRoute } from "../../utils/hooks";
 import DetailTableWrapper from "../../components/DetailTableWrapper";
 import Rate from "../../components/Rate";
 import { processTimeline } from "./timeline";
 
 const ProposalDetail = () => {
-  useChainRoute();
-
   const { proposalIndex } = useParams();
   const dispatch = useDispatch();
   const [timelineData, setTimelineData] = useState([]);
   const chain = useSelector(chainSelector);
 
   useEffect(() => {
-    dispatch(fetchProposalDetail(chain, proposalIndex));
+    dispatch(fetchProposalDetail(proposalIndex));
     return () => {
       dispatch(setProposalDetail({}));
     };
-  }, [dispatch, chain, proposalIndex]);
+  }, [dispatch, proposalIndex]);
 
   useEffect(() => {
-    dispatch(fetchDescription(chain, "proposal", proposalIndex));
+    dispatch(fetchDescription("proposal", proposalIndex));
     return () => {
       dispatch(setDescription());
     };
-  }, [dispatch, chain, proposalIndex]);
+  }, [dispatch, proposalIndex]);
 
   const loadingProposalDetail = useSelector(loadingProposalDetailSelector);
   const proposalDetail = useSelector(proposalDetailSelector);
@@ -62,7 +59,6 @@ const ProposalDetail = () => {
       <DetailTableWrapper title="Proposal" desc={`#${proposalIndex}`}>
         <InformationTable
           loading={loadingProposalDetail}
-          chain={chain}
           proposalIndex={proposalIndex}
           proposer={proposalDetail?.proposer}
         />

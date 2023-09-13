@@ -5,7 +5,6 @@ import {
   tipFindersSelector,
   loadingSelector,
 } from "../../store/reducers/tipFindersSlice";
-import { chainSelector } from "../../store/reducers/chainSlice";
 import TipFindersTable from "./TipFindersTable";
 import Text from "../../components/Text";
 import { useLocalStorage, useQuery } from "../../utils/hooks";
@@ -38,7 +37,7 @@ export default function TipFinders() {
   const [tablePage, setTablePage] = useState(queryPage);
   const [pageSize, setPageSize] = useLocalStorage(
     "tipFindersPageSize",
-    DEFAULT_PAGE_SIZE
+    DEFAULT_PAGE_SIZE,
   );
 
   const dispatch = useDispatch();
@@ -46,11 +45,10 @@ export default function TipFinders() {
   const { items: tipFinders, total } = useSelector(tipFindersSelector);
   const loading = useSelector(loadingSelector);
   const totalPages = Math.ceil(total / pageSize);
-  const chain = useSelector(chainSelector);
 
   useEffect(() => {
-    dispatch(fetchTipFinders(chain, tablePage - 1, pageSize));
-  }, [dispatch, chain, tablePage, pageSize]);
+    dispatch(fetchTipFinders(tablePage - 1, pageSize));
+  }, [dispatch, tablePage, pageSize]);
 
   return (
     <TipFindersTable

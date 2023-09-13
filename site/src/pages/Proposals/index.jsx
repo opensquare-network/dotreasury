@@ -5,7 +5,7 @@ import { useHistory } from "react-router";
 import ResponsivePagination from "../../components/ResponsivePagination";
 import ProposalsTable from "./ProposalsTable";
 import { useDispatch, useSelector } from "react-redux";
-import { useChainRoute, useQuery, useLocalStorage } from "../../utils/hooks";
+import { useQuery, useLocalStorage } from "../../utils/hooks";
 import Summary from "./Summary";
 
 import {
@@ -45,7 +45,6 @@ const FilterWrapper = styled.div`
 `;
 
 const Proposals = () => {
-  useChainRoute();
   const query = useQuery();
 
   const searchPage = parseInt(query.get("page"));
@@ -91,19 +90,13 @@ const Proposals = () => {
     }
 
     dispatch(
-      fetchProposals(
-        chain,
-        tablePage - 1,
-        pageSize,
-        filterData,
-        sort && { sort },
-      ),
+      fetchProposals(tablePage - 1, pageSize, filterData, sort && { sort }),
     );
 
     return () => {
       dispatch(resetProposals());
     };
-  }, [dispatch, chain, tablePage, pageSize, getFilterData, sort, gov]);
+  }, [dispatch, tablePage, pageSize, getFilterData, sort, gov]);
 
   const totalPages = Math.ceil(total / pageSize);
 
@@ -115,13 +108,7 @@ const Proposals = () => {
       }
 
       dispatch(
-        fetchProposals(
-          chain,
-          tablePage - 1,
-          pageSize,
-          filterData,
-          sort && { sort },
-        ),
+        fetchProposals(tablePage - 1, pageSize, filterData, sort && { sort }),
       );
       if (reachingFinalizedBlock) {
         dispatch(
@@ -131,7 +118,7 @@ const Proposals = () => {
         );
       }
     },
-    [dispatch, chain, tablePage, pageSize, getFilterData, sort, gov],
+    [dispatch, tablePage, pageSize, getFilterData, sort, gov],
   );
 
   const onFinalized = useWaitSyncBlock("Proposal created", refreshProposals);
