@@ -8,11 +8,10 @@ const isNil = require("lodash.isnil");
 
 const kusamaProjects = require("../../features/projects/data/kusama");
 const polkadotProjects = require("../../features/projects/data/polkadot");
-const {
-  getProposalCollection,
-  getTipCollection,
-  getChildBountyCollection,
-} = require("../../mongo/index");
+const chainDB = {
+  polkadot: require("../../mongo/polkadot"),
+  kusama: require("../../mongo/kusama"),
+};
 const {
   getProjectFundCollection,
   getProjectCollection,
@@ -37,9 +36,7 @@ function getChainName(token) {
   throw new Error(`Unknown token ${token}`);
 }
 
-function getDecimals() {
-  const chain = process.env.CHAIN;
-
+function getDecimals(chain) {
   if (chain === "kusama") {
     return 12;
   } else if (chain === "polkadot") {
@@ -58,15 +55,17 @@ function calcFiatValue(value, decimals, symbolPrice) {
 
 async function saveOneProposal(proposal = {}, projectId) {
   const { proposalId, id, title, token } = proposal;
+  const chain = getChainName(token);
+
   const finalId = !isNil(proposalId) ? proposalId : id;
-  const col = await getProposalCollection();
+  const col = await chainDB[chain].getProposalCollection();
   const proposalInDb = await col.findOne({ proposalIndex: finalId });
   if (!proposalInDb) {
-    throw new Error(`Can not find proposal in DB #${finalId}`);
+    throw new Error(`Can not find proposal in DB ${finalId}`);
   }
 
   const { symbolPrice = 0, value, indexer } = proposalInDb;
-  const fiatValue = calcFiatValue(value, getDecimals(), symbolPrice);
+  const fiatValue = calcFiatValue(value, getDecimals(chain), symbolPrice);
 
   const fundCol = await getProjectFundCollection();
   const obj = {
@@ -87,14 +86,16 @@ async function saveOneProposal(proposal = {}, projectId) {
 
 async function saveOneTip(tip = {}, projectId) {
   const { tipId, token } = tip;
-  const tipCol = await getTipCollection();
+  const chain = getChainName(token);
+
+  const tipCol = await chainDB[chain].getTipCollection();
   const tipInDb = await tipCol.findOne({ hash: tipId });
   if (!tipInDb) {
-    throw new Error(`Can not find tip in DB #${tipId}`);
+    throw new Error(`Can not find tip in DB ${tipId}`);
   }
 
   const { symbolPrice = 0, medianValue, indexer } = tipInDb;
-  const fiatValue = calcFiatValue(medianValue, getDecimals(), symbolPrice);
+  const fiatValue = calcFiatValue(medianValue, getDecimals(chain), symbolPrice);
   const fundCol = await getProjectFundCollection();
 
   const obj = {
@@ -116,15 +117,15 @@ async function saveOneTip(tip = {}, projectId) {
 
 async function saveOneChildBounty(childBounty = {}, projectId) {
   const { id, token } = childBounty;
-
-  const childBountyCol = await getChildBountyCollection();
+  const chain = getChainName(token);
+  const childBountyCol = await chainDB[chain].getChildBountyCollection();
   const childBountyInDb = await childBountyCol.findOne({ index: id });
   if (!childBountyInDb) {
-    throw new Error(`Can not find child bounty in DB #${id}`);
+    throw new Error(`Can not find child bounty #${id} from ${chain}`);
   }
 
   const { symbolPrice = 0, value, indexer } = childBountyInDb;
-  const fiatValue = calcFiatValue(value, getDecimals(), symbolPrice);
+  const fiatValue = calcFiatValue(value, getDecimals(chain), symbolPrice);
   const obj = {
     projectId,
     ...childBounty,
@@ -214,16 +215,27 @@ async function saveOneProject(project) {
   );
 }
 
-(async () => {
-  const projects =
-    process.env.CHAIN === "kusama" ? kusamaProjects : polkadotProjects;
+async function clearData() {
+  const projectCol = await getProjectCollection();
+  await projectCol.deleteMany({});
 
-  for (const project of projects) {
-    const funds = (project.proposals || []).filter(
-      ({ token }) => getChainName(token) === process.env.CHAIN,
-    );
-    await saveOneProjectFunds(funds, project.id);
+  const fundCol = await getProjectFundCollection();
+  await fundCol.deleteMany({});
+}
+
+(async () => {
+  await clearData();
+
+  const projectSet = new Set();
+  for (const project of [...kusamaProjects, ...polkadotProjects]) {
+    if (projectSet.has(project.id)) {
+      // it means this project has been handled.
+      continue;
+    }
+
+    await saveOneProjectFunds(project.proposals, project.id);
     await saveOneProject(project);
+    projectSet.add(project.id);
     console.log(`project ${project.name} saved!`);
   }
 
