@@ -22,7 +22,7 @@ import { bountyDetailSelector } from "../../store/reducers/bountySlice";
 import RelatedLinks from "../../components/RelatedLinks";
 import EstimateBlockTimeCountDown from "../../components/EstimateBlockTimeCountdown";
 import BountyPendingPayoutCountDown from "../../components/BountyPendingPayoutCountDown";
-import { USER_ROLES } from "../../constants";
+import { CHAINS, USER_ROLES } from "../../constants";
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -61,7 +61,7 @@ const BountyLifeCycleTable = ({ loading }) => {
     (async () => {
       if (bountyDetail) {
         const url = await polkaassemblyApi.getBountyUrl(
-          bountyDetail.bountyIndex
+          bountyDetail.bountyIndex,
         );
         if (isMounted.current) {
           setBountyUrl(url);
@@ -92,13 +92,13 @@ const BountyLifeCycleTable = ({ loading }) => {
           if (isMounted.current) {
             setUpdateDueTimeLeft(timeLeft);
           }
-        }
+        },
       );
     }
   }, [chain, bountyDetail, scanHeight, isMounted]);
 
   const links = [];
-  if (["kusama", "polkadot"].includes(chain) && bountyDetail) {
+  if ([CHAINS.KUSAMA, CHAINS.POLKADOT].includes(chain) && bountyDetail) {
     links.push({
       link: `https://${chain}.subsquare.io/treasury/bounty/${bountyDetail.bountyIndex}`,
       description: "Bounty discusssion",

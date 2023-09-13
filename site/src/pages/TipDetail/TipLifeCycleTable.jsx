@@ -21,6 +21,7 @@ import {
 } from "../../store/reducers/tipSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import RelatedLinks from "../../components/RelatedLinks";
+import { CHAINS } from "../../constants";
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -64,7 +65,7 @@ const TipLifeCycleTable = ({ loading }) => {
   }, [tipDetail, isMounted]);
 
   const links = [];
-  if (["kusama", "polkadot"].includes(chain) && tipDetail) {
+  if ([CHAINS.KUSAMA, CHAINS.POLKADOT].includes(chain) && tipDetail) {
     links.push({
       link: `https://${chain}.subsquare.io/treasury/tip/${tipDetail.proposeAtBlockHeight}_${tipDetail.hash}`,
       description: "Tip proposal discusssion",

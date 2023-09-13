@@ -1,9 +1,9 @@
 import { networkFromSymbol } from "../utils";
 import Api from "./api";
-import { CHAINS } from "../constants";
+import { SYMBOLS } from "../constants";
 
 const chainStorageKey = "dotreasury-current-chain";
-const INITIAL_CHAIN = localStorage.getItem(chainStorageKey) || CHAINS.POLKADOT;
+const INITIAL_CHAIN = localStorage.getItem(chainStorageKey) || SYMBOLS.DOT;
 const chain = networkFromSymbol(INITIAL_CHAIN);
 
 class PolkassemblyApi extends Api {

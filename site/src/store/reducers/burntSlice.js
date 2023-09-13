@@ -67,8 +67,10 @@ export const fetchBurntList =
   };
 
 export const fetchTreasury = () => async (dispatch, getState) => {
-  const { chain } = getState();
-  const api = await getApi(chain.chain);
+  const {
+    chain: { chain },
+  } = getState();
+  const api = await getApi(chain);
   const account = (await api.query.system.account(TreasuryAccount)).toJSON();
   const result = {
     free: account

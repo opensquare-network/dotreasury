@@ -6,7 +6,11 @@ import {
 } from "@polkadot/extension-dapp";
 import { stringToHex } from "@polkadot/util";
 import { encodeAddress } from "@polkadot/keyring";
-import { DEFAULT_KUSAMA_NODES, DEFAULT_POLKADOT_NODES } from "../constants";
+import {
+  CHAINS,
+  DEFAULT_KUSAMA_NODES,
+  DEFAULT_POLKADOT_NODES,
+} from "../constants";
 
 const apiInstanceMap = new Map();
 
@@ -17,7 +21,8 @@ export const nodesDefinition = {
 
 export const getApi = async (chain, queryUrl) => {
   const chainNodes = nodesDefinition[chain];
-  const url = queryUrl || chainNodes?.[chain]?.[0];
+  const url = queryUrl || chainNodes?.[0].url;
+  console.log({ chain, queryUrl, url });
   if (!apiInstanceMap.has(url)) {
     apiInstanceMap.set(
       url,
@@ -133,9 +138,9 @@ export const encodeSubstrateAddress = (address) => {
 export const encodeChainAddress = (address, chain) => {
   let encodedAddress = encodeSubstrateAddress(address);
 
-  if (chain === "kusama") {
+  if (chain === CHAINS.KUSAMA) {
     encodedAddress = encodeKusamaAddress(address);
-  } else if (chain === "polkadot") {
+  } else if (chain === CHAINS.POLKADOT) {
     encodedAddress = encodePolkadotAddress(address);
   }
 

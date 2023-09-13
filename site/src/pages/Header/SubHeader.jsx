@@ -24,6 +24,7 @@ import Container from "../../components/Container";
 
 import SlashMenu from "./SlashMenu";
 import { useSupportOpenGov } from "../../utils/hooks/chain";
+import { SYMBOLS } from "../../constants";
 
 const Wrapper = styled.div`
   position: relative;
@@ -37,7 +38,7 @@ const WrapperBackground = styled.div`
   width: 100%;
   z-index: -1;
   background-color: ${(p) =>
-    p.symbol === "ksm" ? "#000" : "var(--neutral100)"};
+    p.symbol === SYMBOLS.KSM ? "#000" : "var(--neutral100)"};
 `;
 
 const TabWrapper = styled(Tab)`

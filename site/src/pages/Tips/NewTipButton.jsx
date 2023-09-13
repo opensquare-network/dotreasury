@@ -7,7 +7,7 @@ import Tooltip from "../../components/Tooltip";
 import { TooltipInfoText } from "../../components/Tooltip/styled";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import { networkFromSymbol } from "../../utils";
-import { CHAINS } from "../../constants";
+import { SYMBOLS } from "../../constants";
 
 export default function NewTipButton({ onFinalized }) {
   const account = useSelector(accountSelector);
@@ -21,7 +21,7 @@ export default function NewTipButton({ onFinalized }) {
   if (!isLoggedIn) {
     tooltipContent = "Please connect wallet first";
     disabled = true;
-  } else if (networkFromSymbol(CHAINS.KUSAMA) === chain) {
+  } else if (networkFromSymbol(SYMBOLS.KSM) === chain) {
     tooltipContent = "Treasury tip should be submitted through OpenGov";
     disabled = true;
   }

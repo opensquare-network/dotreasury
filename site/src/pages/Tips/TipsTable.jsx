@@ -10,6 +10,7 @@ import Card from "../../components/Card";
 import { useTableColumns } from "../../components/shared/useTableColumns";
 import SortableValue from "../../components/SortableValue";
 import useSort from "../../hooks/useSort";
+import { CHAINS } from "../../constants";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -40,7 +41,7 @@ const TipsTable = ({ data, loading, header, footer }) => {
 
   const getRelatedLinks = (item) => {
     const links = [];
-    if (["kusama", "polkadot"].includes(chain)) {
+    if ([CHAINS.KUSAMA, CHAINS.POLKADOT].includes(chain)) {
       links.unshift({
         link: `https://${chain}.polkassembly.io/tip/${item.hash}`,
         description: "Treasury tip page",

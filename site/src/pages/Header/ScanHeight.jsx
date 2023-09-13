@@ -19,6 +19,7 @@ import { useOnClickOutside } from "@osn/common";
 import IconMask from "../../components/Icon/Mask";
 import { inline_flex, items_center } from "../../styles/tailwindcss";
 import ImageWithDark from "../../components/ImageWithDark";
+import { CHAINS } from "../../constants";
 
 const Wrapper = styled.div`
   position: relative;
@@ -298,7 +299,7 @@ const ScanHeight = () => {
           <div className="blockHeight">
             <ImageWithDark
               src={
-                chain === "polkadot"
+                chain === CHAINS.POLKADOT
                   ? "/imgs/logo-polkadot.svg"
                   : "/imgs/logo-kusama.svg"
               }
@@ -320,9 +321,9 @@ const ScanHeight = () => {
             {symbolOpen && (
               <SymbolWrapper>
                 <SymbolItem
-                  isActive={chain === "polkadot"}
+                  isActive={chain === CHAINS.POLKADOT}
                   onClick={() => {
-                    switchNetwork("polkadot");
+                    switchNetwork(CHAINS.POLKADOT);
                   }}
                 >
                   <ImageWithDark src="/imgs/logo-polkadot.svg" />
@@ -330,9 +331,9 @@ const ScanHeight = () => {
                   <div className="unit">DOT</div>
                 </SymbolItem>
                 <SymbolItem
-                  isActive={chain === "kusama"}
+                  isActive={chain === CHAINS.KUSAMA}
                   onClick={() => {
-                    switchNetwork("kusama");
+                    switchNetwork(CHAINS.KUSAMA);
                   }}
                 >
                   <ImageWithDark src="/imgs/logo-kusama.svg" />

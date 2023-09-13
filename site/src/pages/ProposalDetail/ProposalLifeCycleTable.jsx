@@ -14,6 +14,7 @@ import { useIsMounted } from "@osn/common";
 import polkaassemblyApi from "../../services/polkassembly";
 import { proposalDetailSelector } from "../../store/reducers/proposalSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
+import { CHAINS } from "../../constants";
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -33,7 +34,7 @@ const ProposalLifeCycleTable = ({ loading }) => {
     (async () => {
       if (proposalDetail) {
         const url = await polkaassemblyApi.getProposalUrl(
-          proposalDetail.proposalIndex
+          proposalDetail.proposalIndex,
         );
         if (isMounted.current) {
           setProposalUrl(url);
@@ -45,7 +46,7 @@ const ProposalLifeCycleTable = ({ loading }) => {
   }, [proposalDetail, isMounted]);
 
   const links = [];
-  if (["kusama", "polkadot"].includes(chain) && proposalDetail) {
+  if ([CHAINS.KUSAMA, CHAINS.POLKADOT].includes(chain) && proposalDetail) {
     links.push({
       link: `https://${chain}.subsquare.io/treasury/proposal/${proposalDetail.proposalIndex}`,
       description: "Treasury proposal discusssion",
