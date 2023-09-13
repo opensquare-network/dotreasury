@@ -531,58 +531,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@floating-ui/core@npm:^1.4.1":
-  version: 1.4.1
-  resolution: "@floating-ui/core@npm:1.4.1"
-  dependencies:
-    "@floating-ui/utils": ^0.1.1
-  checksum: be4ab864fe17eeba5e205bd554c264b9a4895a57c573661bbf638357fa3108677fed7ba3269ec15b4da90e29274c9b626d5a15414e8d1fe691e210d02a03695c
-  languageName: node
-  linkType: hard
-
-"@floating-ui/dom@npm:^1.5.1":
-  version: 1.5.2
-  resolution: "@floating-ui/dom@npm:1.5.2"
-  dependencies:
-    "@floating-ui/core": ^1.4.1
-    "@floating-ui/utils": ^0.1.1
-  checksum: 3c71eed50bb22cec8f1f31750ad3d42b3b7b4b29dc6e4351100ff05a62445a5404abb71c733320f8376a8c5e78852e1cfba1b81e22bfc4ca0728f50ca8998dc5
-  languageName: node
-  linkType: hard
-
-"@floating-ui/react-dom@npm:^2.0.2":
-  version: 2.0.2
-  resolution: "@floating-ui/react-dom@npm:2.0.2"
-  dependencies:
-    "@floating-ui/dom": ^1.5.1
-  peerDependencies:
-    react: ">=16.8.0"
-    react-dom: ">=16.8.0"
-  checksum: 4797e1f7a19c1e531ed0d578ccdcbe58970743e5a480ba30424857fc953063f36d481f8c5d69248a8f1d521b739e94bf5e1ffb35506400dea3d914f166ed2f7f
-  languageName: node
-  linkType: hard
-
-"@floating-ui/react@npm:^0.25.4":
-  version: 0.25.4
-  resolution: "@floating-ui/react@npm:0.25.4"
-  dependencies:
-    "@floating-ui/react-dom": ^2.0.2
-    "@floating-ui/utils": ^0.1.1
-    tabbable: ^6.0.1
-  peerDependencies:
-    react: ">=16.8.0"
-    react-dom: ">=16.8.0"
-  checksum: 816a0aa5bfc122c147e073563c0888333bdf58e79972757e37095c788323c8e87ace18d9196d95be8b8f4fe11d90cdeec36b23e5373a791a71a7873bf805590f
-  languageName: node
-  linkType: hard
-
-"@floating-ui/utils@npm:^0.1.1":
-  version: 0.1.2
-  resolution: "@floating-ui/utils@npm:0.1.2"
-  checksum: 3e29fd3c69be2d27bb95ebe54129a6a29ea2d8112b2cbb568168cf2f1e787e6ed6305d743598469476bec28122b7ea3ea4b54a1a2d59d30dc4b4307391472299
-  languageName: node
-  linkType: hard
-
 "@ipld/dag-cbor@npm:^9.0.0":
   version: 9.0.4
   resolution: "@ipld/dag-cbor@npm:9.0.4"
@@ -2792,13 +2740,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clsx@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "clsx@npm:2.0.0"
-  checksum: a2cfb2351b254611acf92faa0daf15220f4cd648bdf96ce369d729813b85336993871a4bf6978ddea2b81b5a130478339c20d9d0b5c6fc287e5147f0c059276e
-  languageName: node
-  linkType: hard
-
 "co-body@npm:^6.0.0":
   version: 6.1.0
   resolution: "co-body@npm:6.1.0"
@@ -3113,13 +3054,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "dotreasury@workspace:."
   dependencies:
-    "@floating-ui/react": ^0.25.4
-    clsx: ^2.0.0
     husky: ^7.0.2
     pinst: ^2.1.6
     prettier: ^2.2.1
-    tailwind-merge: ^1.14.0
-    usehooks-ts: ^2.9.1
   languageName: unknown
   linkType: soft
 
@@ -6879,20 +6816,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tabbable@npm:^6.0.1":
-  version: 6.2.0
-  resolution: "tabbable@npm:6.2.0"
-  checksum: f8440277d223949272c74bb627a3371be21735ca9ad34c2570f7e1752bd646ccfc23a9d8b1ee65d6561243f4134f5fbbf1ad6b39ac3c4b586554accaff4a1300
-  languageName: node
-  linkType: hard
-
-"tailwind-merge@npm:^1.14.0":
-  version: 1.14.0
-  resolution: "tailwind-merge@npm:1.14.0"
-  checksum: 8cf5d37f51b3b32e4bdd5544feaed34357bfba2f64f14834cc4a21ac29b0ae22d7255386467a0f1dadb3e38499389efbbabeddcd0b16571af5a0d346a4921877
-  languageName: node
-  linkType: hard
-
 "tar@npm:^6.1.11, tar@npm:^6.1.2":
   version: 6.2.0
   resolution: "tar@npm:6.2.0"
@@ -7144,16 +7067,6 @@ __metadata:
   bin:
     update-browserslist-db: cli.js
   checksum: b98327518f9a345c7cad5437afae4d2ae7d865f9779554baf2a200fdf4bac4969076b679b1115434bd6557376bdd37ca7583d0f9b8f8e302d7d4cc1e91b5f231
-  languageName: node
-  linkType: hard
-
-"usehooks-ts@npm:^2.9.1":
-  version: 2.9.1
-  resolution: "usehooks-ts@npm:2.9.1"
-  peerDependencies:
-    react: ^16.8.0  || ^17.0.0 || ^18.0.0
-    react-dom: ^16.8.0  || ^17.0.0 || ^18.0.0
-  checksum: 36f1e4142ce23bc019b81d2e93aefd7f2c350abcf255598c21627114a69a2f2f116b35dc3a353375f09c6e4c9b704a04f104e3d10e98280545c097feca66c30a
   languageName: node
   linkType: hard
 
