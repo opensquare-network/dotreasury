@@ -22,7 +22,6 @@ export const nodesDefinition = {
 export const getApi = async (chain, queryUrl) => {
   const chainNodes = nodesDefinition[chain];
   const url = queryUrl || chainNodes?.[0].url;
-  console.log({ chain, queryUrl, url });
   if (!apiInstanceMap.has(url)) {
     apiInstanceMap.set(
       url,

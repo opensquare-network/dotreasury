@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { NavLink } from "react-router-dom";
 import { p_14_medium, p_14_normal } from "../../styles/text";
 import ProjectExpense from "../../components/ProjectExpense";
 import { ellipsis } from "../../utils/ellipsis";
@@ -8,7 +7,7 @@ import dayjs from "dayjs";
 import ProposalInfoLinkList from "./ProposalInfoLinkList";
 import ImageWithDark from "../../components/ImageWithDark";
 
-const ProposalLink = styled(NavLink)`
+const ProposalLink = styled.a`
   display: inline-flex;
   align-items: center;
 `;
@@ -119,11 +118,14 @@ export default function ProposalInfo({ item }) {
   const id = getFundId(item);
 
   const isKSM = item.token === "ksm";
+  const siteLink = isKSM
+    ? "https://kusama.dotreasury.com"
+    : "https://polkadot.dotreasury.com";
   const isProposal = item.type === types.proposal;
 
   return (
     <div>
-      <ProposalLink to={`/${item.token}/${link}`}>
+      <ProposalLink href={`${siteLink}/${link}`} target="_blank">
         <ImageWithDark
           width={24}
           src={isKSM ? "/imgs/logo-kusama.svg" : "/imgs/logo-polkadot.svg"}

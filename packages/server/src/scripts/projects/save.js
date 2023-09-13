@@ -214,17 +214,7 @@ async function saveOneProject(project) {
   );
 }
 
-async function clearData() {
-  const projectCol = await getProjectCollection();
-  await projectCol.deleteMany({});
-
-  const fundCol = await getProjectFundCollection();
-  await fundCol.deleteMany({});
-}
-
 (async () => {
-  await clearData();
-
   const projects =
     process.env.CHAIN === "kusama" ? kusamaProjects : polkadotProjects;
 
