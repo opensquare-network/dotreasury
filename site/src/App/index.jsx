@@ -26,8 +26,6 @@ import ChildBountyDetail from "../pages/BountyDetail/ChildBountyDetail/index";
 import Overview from "../pages/Overview";
 import Projects from "../pages/Projects";
 import ProjectDetail from "../pages/ProjectDetail";
-import UserSetting from "../pages/UserSetting";
-import VerifyEmail from "../pages/VerifyEmail";
 import Toast from "../pages/Toast";
 import TreasurySlash from "../pages/TreasurySlash";
 import DemocracySlash from "../pages/DemocracySlash";
@@ -36,8 +34,6 @@ import StakingSlash from "../pages/StakingSlash";
 import ElectionPhragmenSlash from "../pages/ElectionPhragmenSlash";
 import Inflation from "../pages/Inflation";
 import OthersIncome from "../pages/OthersIncome";
-import UserAgreement from "../pages/UserAgreement";
-import Privacy from "../pages/Privacy";
 import Transfers from "../pages/Transfers";
 import TransfersSlash from "../pages/TransfersSlash";
 import ProposalBeneficiaries from "../pages/ProposalBeneficiaries";
@@ -152,10 +148,6 @@ export default function App() {
                 path="/users/:address/:role/:tableTab?"
                 component={UsersDetail}
               />
-              <Route exact path="/settings/:tabname?" component={UserSetting} />
-              <Route exact path="/verifyemail" component={VerifyEmail} />
-              <Route exact path="/useragreement" component={UserAgreement} />
-              <Route exact path="/privacy" component={Privacy} />
               <Redirect to="/" />
             </Switch>
           </Container>
