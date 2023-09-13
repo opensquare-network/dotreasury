@@ -11,9 +11,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@floating-ui/react": "^0.25.4",
+    "clsx": "^2.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "semantic-ui-css": "^2.5.0"
+    "semantic-ui-css": "^2.5.0",
+    "tailwind-merge": "^1.14.0"
   },
   "devDependencies": {
     "@osn/eslint-config": "^1.0.1",
