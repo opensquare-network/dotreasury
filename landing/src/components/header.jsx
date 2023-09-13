@@ -1,7 +1,31 @@
+import { useState } from "react";
 import Container from "../../../site/src/components/Container";
-import ButtonPrimary from "../../../site/src/components/ButtonPrimary";
+import Button from "./button";
+import { flip, offset, shift, useFloating } from "@floating-ui/react";
+import { useOnClickOutside } from "usehooks-ts";
+import HeaderExplorer from "./header-explorer";
+
+const CONTACT_LINK = "mailto:yongfeng@opensquare.network";
 
 export default function Header() {
+  const [visible, setVisible] = useState(false);
+  const { refs, floatingStyles } = useFloating({
+    open: visible,
+    onOpenChange: setVisible,
+    placement: "bottom-end",
+    middleware: [offset(4), flip(), shift()],
+  });
+
+  useOnClickOutside(refs.reference, hide);
+
+  function show() {
+    setVisible(true);
+  }
+
+  function hide() {
+    setVisible(false);
+  }
+
   return (
     <header className="py-5">
       <Container className="flex justify-between items-center">
@@ -21,15 +45,23 @@ export default function Header() {
         </div>
 
         <div className="flex items-center gap-x-8">
-          <a
-            href="mailto:yongfeng@opensquare.network"
-            className="text-textPrimary"
-          >
+          <a href={CONTACT_LINK} className="text-textPrimary">
             Contact Us
           </a>
-          <ButtonPrimary className="!font-medium">
+          <Button
+            ref={refs.setReference}
+            className="font-medium"
+            onClick={show}
+          >
             Explore Treasury
-          </ButtonPrimary>
+            {visible && (
+              <HeaderExplorer
+                ref={refs.setFloating}
+                style={floatingStyles}
+                className="z-10"
+              />
+            )}
+          </Button>
         </div>
       </Container>
     </header>
