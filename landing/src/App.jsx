@@ -12,7 +12,7 @@ function App() {
       <Hero />
       <Footer />
 
-      <div className="absolute top-0 max-h-screen overflow-hidden">
+      <div className="absolute top-0 max-h-screen overflow-hidden -z-10 pointer-events-none">
         <img src="/bg-gradient.svg" />
       </div>
     </ThemeProvider>
