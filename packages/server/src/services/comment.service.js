@@ -90,8 +90,6 @@ class CommentService {
         };
       });
 
-      console.log(userMap);
-
       comments.forEach((comment) => {
         comment.author = userMap[comment.authorId.toString()];
         delete comment.authorId;

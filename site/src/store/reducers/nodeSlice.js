@@ -1,50 +1,53 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getNodeUrl, getNodes } from "../../services/chainApi";
-import { symbolFromNetwork } from "../../utils";
+import { nodesDefinition } from "../../services/chainApi";
+
+const chain = import.meta.env.VITE_APP_PUBLIC_CHAIN || "polkadot";
+const chainNodes = nodesDefinition[chain];
+
+function getInitNodeUrl() {
+  const localNodeUrl = localStorage.getItem("nodeUrlV2");
+  const node = (chainNodes || []).find(({ url }) => url === localNodeUrl);
+  if (node) {
+    return node.url;
+  } else if (chainNodes) {
+    return chainNodes[0].url;
+  }
+
+  throw new Error(`Can not find nodes for ${chain}`);
+}
 
 const nodeSlice = createSlice({
   name: "node",
   initialState: {
-    currentNode: getNodeUrl(),
-    nodes: getNodes(),
+    currentNode: getInitNodeUrl(),
+    nodes: chainNodes,
   },
   reducers: {
     setCurrentNode(state, { payload }) {
-      const { chain, url, refresh } = payload;
-      const beforeUrl = state.currentNode?.[chain];
+      const { url, refresh } = payload;
+      const beforeUrl = state.currentNode;
+      state.currentNode = url;
 
-      let nodeUrl = null;
-      try {
-        nodeUrl = JSON.parse(localStorage.getItem("nodeUrl"));
-      } catch (e) {
-        // ignore parse error
-      }
-      nodeUrl = { ...nodeUrl, [chain]: url };
-      localStorage.setItem("nodeUrl", JSON.stringify(nodeUrl));
+      localStorage.setItem("nodeUrlV2", url);
 
-      state.nodes[chain] = (state.nodes?.[chain] || []).map((item) => {
+      state.nodes = (state.nodes || []).map((item) => {
         if (item.url === beforeUrl) {
           return { ...item, update: true };
         } else {
           return item;
         }
       });
-      state.currentNode = nodeUrl;
 
       if (refresh) {
         window.location.href =
-          import.meta.env.VITE_APP_ROUTER_TYPE === "HashRouter"
-            ? `/#/${symbolFromNetwork(chain).toLowerCase()}`
-            : `/${symbolFromNetwork(chain).toLowerCase()}`;
+          import.meta.env.VITE_APP_ROUTER_TYPE === "HashRouter" ? "/#/" : "/";
       }
     },
     setNodesDelay(state, { payload }) {
-      (payload || []).forEach((item) => {
-        const node = state.nodes[item.chain]?.find(
-          (node) => item.url === node.url,
-        );
-        if (node) node.delay = item.delay;
-      });
+      const node = state.nodes?.find((node) => payload.url === node.url);
+      if (node) {
+        node.delay = payload.delay;
+      }
     },
   },
 });

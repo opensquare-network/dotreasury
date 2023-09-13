@@ -50,13 +50,13 @@ const useUpdateNodesDelay = () => {
       }
     };
     const intervalId = setInterval(async () => {
-      const updateNodes = (nodesSetting[chain] || []).filter(
-        (item) => item.url === currentNode?.[chain] || item.update,
+      const updateNodes = (nodesSetting || []).filter(
+        (item) => item.url === currentNode || item.update,
       );
       if (updateNodes && updateNodes.length > 0) {
         const updateNode = updateNodes[count % updateNodes.length];
         const delay = await updateNodeDelay(updateNode.url);
-        dispatch(setNodesDelay([{ chain, url: updateNode.url, delay }]));
+        dispatch(setNodesDelay({ url: updateNode.url, delay }));
       }
       count++;
     }, 5000);
