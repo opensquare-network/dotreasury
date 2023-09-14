@@ -4,7 +4,7 @@ import { cn } from "../../utils";
 export default function HeroContent() {
   return (
     <div>
-      <div className="h2-32-bold-montserrat max-sm:leading-10">
+      <div className="h2-32-bold-montserrat text-textPrimary max-sm:leading-10">
         <div>
           <span className={cn("text-yellow500", "sm:h2-48-bold-montserrat")}>
             8
