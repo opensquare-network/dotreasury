@@ -9,6 +9,7 @@
     "dotenv": "^16.3.1",
     "graphql": "^16.8.0",
     "graphql-yoga": "^4.0.4",
-    "log4js": "^6.9.1"
+    "log4js": "^6.9.1",
+    "mongodb": "5.8.0"
   }
 }

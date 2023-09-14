@@ -9,14 +9,14 @@ const { createYoga } = require("graphql-yoga");
 const { createServer } = require("http");
 const { schema } = require("./schema");
 const { createChainApis } = require("./apis");
-const { updateTreasuryBalance } = require("./jobs/treasury");
+const { updateChainsTreasuryBalance } = require("./jobs/treasury");
 
 const port = parseInt(process.env.PORT) || 5011;
 
 function main() {
   createChainApis().then(async () => {
     console.log("Chain node apis initialized")
-    await updateTreasuryBalance();
+    await updateChainsTreasuryBalance();
   });
 
   const yoga = createYoga({ schema });

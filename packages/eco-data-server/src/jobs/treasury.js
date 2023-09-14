@@ -1,19 +1,19 @@
 const { endpoints } = require("../apis/endpoints");
-const { queryTreasuryBalance } = require("../apis/treasury");
+const { updateTreasuryBalance } = require("../apis/treasury");
 
-async function updateTreasuryBalance() {
+async function updateChainsTreasuryBalance() {
   const chains = Object.keys(endpoints);
   try {
     const promises = [];
     for (const chain of chains) {
-      promises.push(queryTreasuryBalance(chain));
+      promises.push(updateTreasuryBalance(chain));
     }
     await Promise.all(promises);
   } finally {
-    setTimeout(updateTreasuryBalance, 6 * 1000);
+    setTimeout(updateChainsTreasuryBalance, 6 * 1000);
   }
 }
 
 module.exports = {
-  updateTreasuryBalance,
+  updateChainsTreasuryBalance,
 }
