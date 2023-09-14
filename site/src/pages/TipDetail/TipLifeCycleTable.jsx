@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 
@@ -11,9 +11,6 @@ import DateShow from "../../components/DateShow";
 import PolygonLabel from "../../components/PolygonLabel";
 import ExplorerLink from "../../components/ExplorerLink";
 import EstimateBlockTimeCountDown from "../../components/EstimateBlockTimeCountdown";
-
-import polkaassemblyApi from "../../services/polkassembly";
-import { useIsMounted } from "@osn/common";
 
 import {
   normalizedTipDetailSelector,
@@ -45,35 +42,14 @@ const TipLifeCycleTable = ({ loading }) => {
   const chain = useSelector(chainSelector);
   const tipDetail = useSelector(normalizedTipDetailSelector);
   const tippersCount = tipDetail.tippersCount;
-  const [tipUrl, setTipUrl] = useState(null);
-  const isMounted = useIsMounted();
   const tipCountdown = useSelector(tipCountdownSelector);
 
   const thresholdTotalCount = tippersCount ? (tippersCount + 1) / 2 : 0;
-
-  useEffect(() => {
-    (async () => {
-      if (tipDetail) {
-        const url = await polkaassemblyApi.getTipUrl(tipDetail.hash);
-        if (isMounted.current) {
-          setTipUrl(url);
-        }
-      } else {
-        setTipUrl(null);
-      }
-    })();
-  }, [tipDetail, isMounted]);
 
   const links = [];
   if ([CHAINS.KUSAMA, CHAINS.POLKADOT].includes(chain) && tipDetail) {
     links.push({
       link: `https://${chain}.subsquare.io/treasury/tip/${tipDetail.proposeAtBlockHeight}_${tipDetail.hash}`,
-      description: "Tip proposal discusssion",
-    });
-  }
-  if (tipUrl) {
-    links.push({
-      link: tipUrl,
       description: "Tip proposal discusssion",
     });
   }

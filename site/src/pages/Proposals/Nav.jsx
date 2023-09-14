@@ -74,9 +74,9 @@ function Nav() {
 
   return (
     <NavWrapper>
-      {items.map((item) => (
+      {items.map((item, index) => (
         <NavItem
-          key={item.to}
+          key={index}
           active={item.name === active}
           onClick={() => setActive(item.name)}
         >

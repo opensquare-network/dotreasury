@@ -17,7 +17,6 @@ import PolygonLabel from "../../components/PolygonLabel";
 import ExplorerLink from "../../components/ExplorerLink";
 import { useIsMounted } from "@osn/common";
 import { estimateBlocksTime } from "../../services/chainApi";
-import polkaassemblyApi from "../../services/polkassembly";
 import { bountyDetailSelector } from "../../store/reducers/bountySlice";
 import RelatedLinks from "../../components/RelatedLinks";
 import EstimateBlockTimeCountDown from "../../components/EstimateBlockTimeCountdown";
@@ -49,28 +48,12 @@ const BountyLifeCycleTable = ({ loading }) => {
   const [updateDueTimeLeft, setUpdateDueTimeLeft] = useState("");
   const isMounted = useIsMounted();
   const chain = useSelector(chainSelector);
-  const [bountyUrl, setBountyUrl] = useState(null);
 
   const awardedItem = [...(bountyDetail?.timeline || [])]
     .reverse()
     .find((item) => item.name === "BountyAwarded");
   const showCountDown = awardedItem && bountyDetail.unlockAt;
   const startCountDownHeight = awardedItem?.indexer?.blockHeight;
-
-  useEffect(() => {
-    (async () => {
-      if (bountyDetail) {
-        const url = await polkaassemblyApi.getBountyUrl(
-          bountyDetail.bountyIndex,
-        );
-        if (isMounted.current) {
-          setBountyUrl(url);
-        }
-      } else {
-        setBountyUrl(null);
-      }
-    })();
-  }, [bountyDetail, isMounted]);
 
   useEffect(() => {
     if (bountyDetail.updateDue) {
@@ -101,12 +84,6 @@ const BountyLifeCycleTable = ({ loading }) => {
   if ([CHAINS.KUSAMA, CHAINS.POLKADOT].includes(chain) && bountyDetail) {
     links.push({
       link: `https://${chain}.subsquare.io/treasury/bounty/${bountyDetail.bountyIndex}`,
-      description: "Bounty discusssion",
-    });
-  }
-  if (bountyUrl) {
-    links.push({
-      link: bountyUrl,
       description: "Bounty discusssion",
     });
   }

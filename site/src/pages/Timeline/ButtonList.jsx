@@ -6,7 +6,6 @@ import ExplorerLink from "../../components/ExplorerLink";
 import ExternalLink from "../../components/ExternalLink";
 import { useIsMounted } from "@osn/common";
 import { mrgap } from "../../styles";
-import polkassemblyApi from "../../services/polkassembly";
 import { useSelector } from "react-redux";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import { CHAINS, TimelineItemType } from "../../constants";
@@ -20,7 +19,6 @@ const Wrapper = styled.div`
 `;
 
 const ButtonList = ({ extrinsicIndexer, eventIndexer, polkassembly, type }) => {
-  const [polkassemblyUrl, setPolkassemblyUrl] = useState(null);
   const [subsquareUrl, setSubsquareUrl] = useState(null);
   const isMounted = useIsMounted();
   const chain = useSelector(chainSelector);
@@ -33,30 +31,18 @@ const ButtonList = ({ extrinsicIndexer, eventIndexer, polkassembly, type }) => {
         setSubsquareUrl(
           `https://${chain}.subsquare.io/council/motion/${polkassembly}`,
         );
-        const url = await polkassemblyApi.getMotionUrl(polkassembly);
-        if (isMounted.current) {
-          setPolkassemblyUrl(url);
-        }
       }
 
       if (type === TimelineItemType.DemocracyReferendum) {
         setSubsquareUrl(
           `https://${chain}.subsquare.io/democracy/referendum/${polkassembly}`,
         );
-        const url = await polkassemblyApi.getReferendumUrl(polkassembly);
-        if (isMounted.current) {
-          setPolkassemblyUrl(url);
-        }
       }
 
       if (type === TimelineItemType.Gov2Referendum) {
         setSubsquareUrl(
           `https://${chain}.subsquare.io/referenda/referendum/${polkassembly}`,
         );
-        const url = await polkassemblyApi.getGov2ReferendumUrl(polkassembly);
-        if (isMounted.current) {
-          setPolkassemblyUrl(url);
-        }
       }
     })();
   }, [polkassembly, type, chain, isMounted]);
@@ -95,11 +81,6 @@ const ButtonList = ({ extrinsicIndexer, eventIndexer, polkassembly, type }) => {
       >
         <ImageButton src={"/imgs/subscan-logo.svg"} />
       </ExplorerLink>
-      {polkassemblyUrl && (
-        <ExternalLink href={polkassemblyUrl}>
-          <ImageButton src={"/imgs/polkassembly-logo.svg"} />
-        </ExternalLink>
-      )}
       {subsquareUrl && (
         <ExternalLink href={subsquareUrl}>
           <ImageButton src={"/imgs/subsquare-logo.svg"} />
