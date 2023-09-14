@@ -36,9 +36,9 @@ const fundedBy = [
   },
 ];
 
-export default function FooterFundedBy() {
+export default function FooterFundedBy({ className = "" }) {
   return (
-    <Wrapper>
+    <Wrapper className={className}>
       Funded by
       <FundedByWrapper>
         {fundedBy.map((item) => (
