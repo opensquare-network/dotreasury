@@ -1,3 +1,15 @@
+const CHAINS = Object.freeze({
+  polkadot: "polkadot",
+  kusama: "kusama",
+  centrifuge: "centrifuge",
+  khala: "khala",
+  phala: "phal",
+  basilisk: "basilisk",
+  hydradx: "hydradx",
+  interlay: "interlay",
+  kintsugi: "kintsugi",
+});
+
 const endpoints = Object.freeze({
   polkadot: [
     "wss://rpc.polkadot.io",
@@ -29,8 +41,17 @@ const endpoints = Object.freeze({
     "wss://basilisk-rpc.dwellir.com/",
     "wss://rpc.basilisk.cloud/"
   ],
+  interlay: [
+    "wss://api.interlay.io/parachain",
+    "wss://interlay-rpc.dwellir.com/"
+  ],
+  kintsugi: [
+    "wss://kintsugi-rpc.dwellir.com/",
+    "wss://api-kusama.interlay.io/parachain",
+  ],
 });
 
 module.exports = {
   endpoints,
+  CHAINS,
 }

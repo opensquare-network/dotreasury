@@ -449,6 +449,7 @@ __metadata:
   resolution: "@dotreasury/eco-data-server@workspace:packages/eco-data-server"
   dependencies:
     "@graphql-tools/schema": ^10.0.0
+    "@interlay/monetary-js": ^0.5.4
     "@osn/polkadot-api-container": ^1.1.11
     dotenv: ^16.3.1
     graphql: ^16.8.0
@@ -655,6 +656,17 @@ __metadata:
     "@repeaterjs/repeater": ^3.0.4
     tslib: ^2.5.2
   checksum: 1d6be24b71892714a1e4894da09d64739db2c817997068c09483b6e42b02a7655ffce8938d252711da7b076057c3ea25a021f8d9ad68fd30811f5e0a0941bf1b
+  languageName: node
+  linkType: hard
+
+"@interlay/monetary-js@npm:^0.5.4":
+  version: 0.5.4
+  resolution: "@interlay/monetary-js@npm:0.5.4"
+  dependencies:
+    "@types/big.js": 6.1.2
+    big.js: 6.1.1
+    typescript: ^4.3.2
+  checksum: 3dfca7ef25c44f4c546a0b5c52b30adc90302cdee09da7a7043eeaf5683473e454ce7c944865899d3920ed1de7dc2bc67ff062b4a57f7b1414d3499241ea24e7
   languageName: node
   linkType: hard
 
@@ -2002,6 +2014,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/big.js@npm:6.1.2":
+  version: 6.1.2
+  resolution: "@types/big.js@npm:6.1.2"
+  checksum: fb0daa4b23e1cb9d0d1c847722ae3764978d0290875d91687c6ecc7566860129ce86b190b732294484077d45f9b82ef3e97784ee32c83aef05e8c8433c4fde6a
+  languageName: node
+  linkType: hard
+
 "@types/bn.js@npm:^5.1.1":
   version: 5.1.1
   resolution: "@types/bn.js@npm:5.1.1"
@@ -2619,6 +2638,13 @@ __metadata:
   version: 2.0.0
   resolution: "base64id@npm:2.0.0"
   checksum: 581b1d37e6cf3738b7ccdd4d14fe2bfc5c238e696e2720ee6c44c183b838655842e22034e53ffd783f872a539915c51b0d4728a49c7cc678ac5a758e00d62168
+  languageName: node
+  linkType: hard
+
+"big.js@npm:6.1.1":
+  version: 6.1.1
+  resolution: "big.js@npm:6.1.1"
+  checksum: ba5db278e7d6700d7f92b7421e851bb65b6336d90b882869696c50574623c6be31f81500c3195fb1b391045163ffe62745e1c2bc30b35cb15e1b3e3ed135266b
   languageName: node
   linkType: hard
 
@@ -7221,6 +7247,26 @@ __metadata:
     media-typer: 0.3.0
     mime-types: ~2.1.24
   checksum: 2c8e47675d55f8b4e404bcf529abdf5036c537a04c2b20177bcf78c9e3c1da69da3942b1346e6edb09e823228c0ee656ef0e033765ec39a70d496ef601a0c657
+  languageName: node
+  linkType: hard
+
+"typescript@npm:^4.3.2":
+  version: 4.9.5
+  resolution: "typescript@npm:4.9.5"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: ee000bc26848147ad423b581bd250075662a354d84f0e06eb76d3b892328d8d4440b7487b5a83e851b12b255f55d71835b008a66cbf8f255a11e4400159237db
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^4.3.2#~builtin<compat/typescript>":
+  version: 4.9.5
+  resolution: "typescript@patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=23ec76"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: ab417a2f398380c90a6cf5a5f74badd17866adf57f1165617d6a551f059c3ba0a3e4da0d147b3ac5681db9ac76a303c5876394b13b3de75fdd5b1eaa06181c9d
   languageName: node
   linkType: hard
 

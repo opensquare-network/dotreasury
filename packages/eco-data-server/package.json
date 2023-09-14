@@ -5,6 +5,7 @@
   },
   "dependencies": {
     "@graphql-tools/schema": "^10.0.0",
+    "@interlay/monetary-js": "^0.5.4",
     "@osn/polkadot-api-container": "^1.1.11",
     "dotenv": "^16.3.1",
     "graphql": "^16.8.0",
