@@ -7,6 +7,32 @@ body {
 }
 
 @layer components {
+  .font-montserrat {
+    font-family: "Montserrat";
+  }
+
+  .h2-48-bold {
+    font-family: Inter;
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 64px;
+  }
+  .h2-48-bold-montserrat {
+    @apply h2-48-bold !font-montserrat;
+  }
+
+  .h2-32-bold {
+    font-family: Inter;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 64px;
+  }
+  .h2-32-bold-montserrat {
+    @apply h2-32-bold !font-montserrat;
+  }
+
   .h3-18-semibold {
     font-family: Inter;
     font-size: 18px;
@@ -15,11 +41,23 @@ body {
     line-height: 28px;
   }
 
+  .h3-18-medium {
+    @apply h3-18-semibold font-medium;
+  }
+
   .h4-16-semibold {
     font-family: Inter;
     font-size: 16px;
     font-style: normal;
     font-weight: 600;
+    line-height: 24px;
+  }
+
+  .p-16-medium {
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
     line-height: 24px;
   }
 
