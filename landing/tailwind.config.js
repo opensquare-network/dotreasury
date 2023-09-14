@@ -13,6 +13,12 @@ export default {
   darkMode: "class",
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
+    screens: {
+      sm: "768px",
+      md: "1024px",
+      lg: "1280px",
+      pad: "1080px",
+    },
     extend: {
       colors: {
         ...twThemeVariables,
