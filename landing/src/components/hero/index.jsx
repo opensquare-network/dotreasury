@@ -4,18 +4,25 @@ import { BUBBLE_DATA } from "../../fixtures";
 import ProjectBubble from "./project-bubble";
 import ProjectBubbleGroup from "./project-bubble-group";
 import HeroContent from "./content";
+import { cn } from "../../utils";
 
 export default function Hero() {
   const [bubblesRef, bubblesSize] = useElementSize();
 
   return (
     <div className="py-20">
-      <Container className="grid grid-cols-2 min-h-[480px]">
-        <div className="px-6">
+      <Container className="grid grid-cols-2 h-[480px] max-md:grid-cols-1">
+        <div className="px-6 flex items-center">
           <HeroContent />
         </div>
 
-        <div ref={bubblesRef} className="px-4">
+        <div
+          ref={bubblesRef}
+          className={cn(
+            "sm:px-4 max-md:pt-4",
+            "h-[480px] max-md:h-[315px] max-sm:h-[235px]",
+          )}
+        >
           <ProjectBubbleGroup
             width={bubblesSize.width}
             height={bubblesSize.height}

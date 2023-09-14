@@ -1,6 +1,10 @@
+// https://d3-graph-gallery.com/graph/circularpacking_template.html
+
 import * as d3 from "d3";
 import { renderToString } from "react-dom/server";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
+import { MD_SIZE, SM_SIZE } from "../../../../site/src/styles/responsive";
+import { useWindowSize } from "usehooks-ts";
 
 export default function ProjectBubbleGroup({
   width,
@@ -9,6 +13,21 @@ export default function ProjectBubbleGroup({
   sizeField = "value",
   renderBubbleToHTMLString = () => {},
 }) {
+  const sizeMin = Math.min(width, height);
+  const windowSize = useWindowSize();
+
+  const bubbleSizeRange = useMemo(() => {
+    if (windowSize.width < SM_SIZE) {
+      return [12, sizeMin / 2 - 60];
+    }
+    if (windowSize.width < MD_SIZE) {
+      return [14, sizeMin / 2 - 40];
+    }
+
+    // lg size
+    return [16, 220];
+  }, [windowSize]);
+
   const nodes = data
     .map((d) => ({
       ...d,
@@ -20,11 +39,11 @@ export default function ProjectBubbleGroup({
     d3.select("#project_bubbles").selectAll("*").remove();
     const [, max] = d3.extent(nodes, (d) => d[sizeField]);
 
-    const size = d3.scaleLinear().domain([0, max]).range([16, 220]);
+    const size = d3.scaleLinear().domain([0, max]).range(bubbleSizeRange);
 
-    const svg = d3.select("#project_bubbles");
+    const bubblesContainer = d3.select("#project_bubbles");
 
-    const node = svg
+    const node = bubblesContainer
       .append("div")
       .style("width", width + "px")
       .style("height", height + "px")
@@ -65,7 +84,7 @@ export default function ProjectBubbleGroup({
           return renderToString(bubbleContent);
         });
     });
-  }, [width, height, nodes, sizeField]);
+  }, [width, height, nodes, sizeField, bubbleSizeRange]);
 
   return <div id="project_bubbles"></div>;
 }

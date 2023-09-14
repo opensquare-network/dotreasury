@@ -1,5 +1,3 @@
-// https://d3-graph-gallery.com/graph/circularpacking_template.html
-
 import { cn } from "../../utils";
 
 const SHOW_INFO_SIZE = 80;
