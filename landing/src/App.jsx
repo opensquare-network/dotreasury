@@ -5,12 +5,14 @@ import { ThemeProvider } from "../../site/src/context/theme";
 import Header from "./components/header";
 import Hero from "./components/hero";
 import TreasuryOverview from "./components/treasuryOverview";
+import Ecosystem from "./components/ecosystem";
 
 function App() {
   return (
     <ThemeProvider>
       <Header />
       <Hero />
+      <Ecosystem />
       <TreasuryOverview />
       <Footer />
 
