@@ -3,5 +3,5 @@ if (process.env.CHAIN === "polkadot") {
 } else if (process.env.CHAIN === "kusama") {
   module.exports = require("./kusama");
 } else {
-  throw new Error("Invalid CHAIN env variable");
+  throw new Error(`Unsupported chain set by env.CHAIN: ${ process.env.CHAIN }`);
 }
