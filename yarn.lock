@@ -444,6 +444,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@dotreasury/eco-data-server@workspace:packages/eco-data-server":
+  version: 0.0.0-use.local
+  resolution: "@dotreasury/eco-data-server@workspace:packages/eco-data-server"
+  dependencies:
+    "@graphql-tools/schema": ^10.0.0
+    "@osn/polkadot-api-container": ^1.1.11
+    dotenv: ^16.3.1
+    graphql: ^16.8.0
+    graphql-yoga: ^4.0.4
+    log4js: ^6.9.1
+  languageName: unknown
+  linkType: soft
+
 "@dotreasury/input-scan@workspace:packages/input-scan":
   version: 0.0.0-use.local
   resolution: "@dotreasury/input-scan@workspace:packages/input-scan"
@@ -1218,10 +1231,31 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@osn/polkadot-api-container@npm:^1.1.11":
+  version: 1.1.11
+  resolution: "@osn/polkadot-api-container@npm:1.1.11"
+  dependencies:
+    "@osn/provider-options": 1.1.5
+    "@polkadot/api": 10.9.1
+    lodash.isnil: ^4.0.0
+  peerDependencies:
+    "@polkadot/api": ^9.*.*
+    "@polkadot/util": ^10.*.*
+  checksum: 8b30501055bbe6964d929313a0f907e79388f36436354479798d7671b6802c7bf25af8381096a65f2524581f4449cf982547985eeb3bee7c97bb3661359a5cfc
+  languageName: node
+  linkType: hard
+
 "@osn/provider-options@npm:1.1.4":
   version: 1.1.4
   resolution: "@osn/provider-options@npm:1.1.4"
   checksum: 349b6c83267a39d5bc86f1c9fdccc975859cadf55feb543f1cfa6955ca248655a010707b8a8b1ef5fa4168d9ed65211a4376147d11280f159c87dfdbd88e4561
+  languageName: node
+  linkType: hard
+
+"@osn/provider-options@npm:1.1.5":
+  version: 1.1.5
+  resolution: "@osn/provider-options@npm:1.1.5"
+  checksum: 92da58ab19b2b237bdf8a9bbf0d18cc2d1c83bfba700066029111b9c94bffc88d2a2c45e71523d644ca86b4088300bcf812d5dd693ed96a1a24a471cf94a1836
   languageName: node
   linkType: hard
 
@@ -3233,17 +3267,6 @@ __metadata:
   checksum: 7d00d7cd8e49b9afa762a813faac332dee781932d6f2c848dc348939c4253f1d4564341b7af1d041853bc3f32c2ef141b58e0a4d9862c17a7f08f68df1e0f1ed
   languageName: node
   linkType: hard
-
-"eco-data-server@workspace:packages/eco-data-server":
-  version: 0.0.0-use.local
-  resolution: "eco-data-server@workspace:packages/eco-data-server"
-  dependencies:
-    "@graphql-tools/schema": ^10.0.0
-    dotenv: ^16.3.1
-    graphql: ^16.8.0
-    graphql-yoga: ^4.0.4
-  languageName: unknown
-  linkType: soft
 
 "ee-first@npm:1.1.1":
   version: 1.1.1

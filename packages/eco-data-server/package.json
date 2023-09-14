@@ -5,8 +5,10 @@
   },
   "dependencies": {
     "@graphql-tools/schema": "^10.0.0",
+    "@osn/polkadot-api-container": "^1.1.11",
     "dotenv": "^16.3.1",
     "graphql": "^16.8.0",
-    "graphql-yoga": "^4.0.4"
+    "graphql-yoga": "^4.0.4",
+    "log4js": "^6.9.1"
   }
 }
