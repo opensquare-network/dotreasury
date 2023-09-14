@@ -3,6 +3,7 @@ import Container from "../../../../site/src/components/Container";
 import { BUBBLE_DATA } from "../../fixtures";
 import ProjectBubble from "./project-bubble";
 import ProjectBubbleGroup from "./project-bubble-group";
+import HeroContent from "./content";
 
 export default function Hero() {
   const [bubblesRef, bubblesSize] = useElementSize();
@@ -10,8 +11,11 @@ export default function Hero() {
   return (
     <div className="py-20">
       <Container className="grid grid-cols-2 min-h-[480px]">
-        <div>left</div>
-        <div ref={bubblesRef}>
+        <div className="px-6">
+          <HeroContent />
+        </div>
+
+        <div ref={bubblesRef} className="px-4">
           <ProjectBubbleGroup
             width={bubblesSize.width}
             height={bubblesSize.height}
