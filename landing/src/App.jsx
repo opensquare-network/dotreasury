@@ -4,14 +4,14 @@ import Footer from "../../site/src/pages/Footer";
 import { ThemeProvider } from "../../site/src/context/theme";
 import Header from "./components/header";
 import Hero from "./components/hero";
-import DotsamaTreasuryOverview from "./components/dotsamaTreasuryOverview";
+import TreasuryOverview from "./components/treasuryOverview";
 
 function App() {
   return (
     <ThemeProvider>
       <Header />
       <Hero />
-      <DotsamaTreasuryOverview />
+      <TreasuryOverview />
       <Footer />
 
       <div className="absolute top-0 max-h-screen overflow-hidden -z-10 pointer-events-none">
