@@ -1,10 +1,6 @@
 import { forwardRef } from "react";
 import { cn } from "../utils";
 
-Button.propTypes = {
-  className: String,
-};
-
 const Button = forwardRef(function ButtonComponent(props = {}, ref) {
   return (
     <button

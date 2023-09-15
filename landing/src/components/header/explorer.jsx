@@ -2,10 +2,6 @@ import { forwardRef } from "react";
 import Card from "../../../../site/src/components/Card";
 import { cn } from "../../utils";
 
-HeaderExplorer.propTypes = {
-  className: String,
-};
-
 const HeaderExplorer = forwardRef(function HeaderExplorerComponent(props, ref) {
   const links = [
     {
