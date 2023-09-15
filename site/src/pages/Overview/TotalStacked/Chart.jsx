@@ -56,7 +56,7 @@ const ChartWrapper = styled.div`
   min-width: 252px;
 `;
 
-const LineChart = ({ data, onHover, chain }) => {
+const LineChart = ({ data, onHover, stepSize }) => {
   const { dates, values } = data;
 
   /** @type {import("react-chartjs-2").ChartProps} */
@@ -99,7 +99,7 @@ const LineChart = ({ data, onHover, chain }) => {
       y: {
         position: "right",
         ticks: {
-          stepSize: chain === "kusama" ? 200000 : 8000000,
+          stepSize,
           callback: (y) => abbreviateBigNumber(y),
         },
         grid: {
