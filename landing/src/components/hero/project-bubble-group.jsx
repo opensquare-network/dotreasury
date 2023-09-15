@@ -6,6 +6,14 @@ import { useEffect, useMemo } from "react";
 import { MD_SIZE, SM_SIZE } from "../../../../site/src/styles/responsive";
 import { useWindowSize } from "usehooks-ts";
 
+ProjectBubbleGroup.propTypes = {
+  width: Number,
+  height: Number,
+  data: Array,
+  sizeField: String,
+  renderBubbleToHTMLString: Function,
+};
+
 export default function ProjectBubbleGroup({
   width,
   height,

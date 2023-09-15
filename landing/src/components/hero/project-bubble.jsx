@@ -3,6 +3,11 @@ import { cn } from "../../utils";
 const SHOW_INFO_SIZE = 80;
 const SHOULD_SCALE_INFO_SIZE = 200;
 
+ProjectBubble.propTypes = {
+  size: Number,
+  project: String,
+};
+
 export default function ProjectBubble({ size = null, project = "" }) {
   if (!size) {
     return null;

@@ -14,4 +14,8 @@ function Button(props = {}, ref) {
   );
 }
 
+Button.propTypes = {
+  className: String,
+};
+
 export default forwardRef(Button);

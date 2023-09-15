@@ -1,5 +1,11 @@
 import { cn } from "../utils";
 
+Tabs.propTypes = {
+  tabs: Array,
+  activeTabId: String,
+  onTabClick: Function,
+};
+
 export default function Tabs({
   tabs = [],
   activeTabId = "",
@@ -23,6 +29,11 @@ export default function Tabs({
   );
 }
 
+TabsList.propTypes = {
+  tabs: Array,
+  activeTabId: String,
+  onTabClick: Function,
+};
 function TabsList({ tabs = [], activeTabId, onTabClick = () => {} }) {
   return (
     <ul className="flex p-1.5 rounded-lg bg-neutral300">

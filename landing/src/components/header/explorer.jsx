@@ -49,4 +49,8 @@ function HeaderExplorer(props, ref) {
   );
 }
 
+HeaderExplorer.propTypes = {
+  className: String,
+};
+
 export default forwardRef(HeaderExplorer);
