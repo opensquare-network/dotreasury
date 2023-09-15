@@ -20,19 +20,19 @@ export const BUBBLE_DATA = [
     value: 287770,
   },
   {
-    name: "zeigeist",
+    name: "centrifuge",
     value: 6287770,
   },
   {
-    name: "moonriver",
+    name: "basilisk",
     value: 16287770,
   },
   {
-    name: "rainbow",
+    name: "hydradx",
     value: 71628399,
   },
   {
-    name: "unknown",
+    name: "khala",
     value: 1628399,
   },
 ];

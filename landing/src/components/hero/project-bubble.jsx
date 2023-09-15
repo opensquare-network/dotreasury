@@ -3,7 +3,7 @@ import { cn } from "../../utils";
 const SHOW_INFO_SIZE = 80;
 const SHOULD_SCALE_INFO_SIZE = 200;
 
-export default function ProjectBubble({ size = null, project }) {
+export default function ProjectBubble({ size = null, project = "" }) {
   if (!size) {
     return null;
   }
@@ -29,7 +29,7 @@ export default function ProjectBubble({ size = null, project }) {
             maxWidth: "calc(100% - 16px)",
             maxHeight: "calc(100% - 16px)",
           }}
-          src="/imgs/logo-polkadot.svg"
+          src={`/imgs/logo-${project?.toLowerCase?.()}.svg`}
           alt={project}
         />
         {showInfo && (
