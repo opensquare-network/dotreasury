@@ -436,7 +436,7 @@ const TotalStacked = () => {
   if (dateLabels?.length > 0) {
     chartComponent = (
       <ChartAndSlider>
-        <Chart data={chartData} onHover={onHover} />
+        <Chart data={chartData} onHover={onHover} chain={chain} />
         <SliderWrapper>
           <Slider
             min={0}

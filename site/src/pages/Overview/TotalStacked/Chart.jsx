@@ -1,12 +1,10 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import styled, { css } from "styled-components";
 import { Line } from "react-chartjs-2";
 import dayjs from "dayjs";
 
 import "../../../components/Charts/globalConfig";
 import Text from "../../../components/Text";
-import { chainSelector } from "../../../store/reducers/chainSlice";
 import { abbreviateBigNumber } from "../../../utils";
 import { h_full } from "../../../styles/tailwindcss";
 
@@ -58,8 +56,7 @@ const ChartWrapper = styled.div`
   min-width: 252px;
 `;
 
-const LineChart = ({ data, onHover }) => {
-  const chain = useSelector(chainSelector);
+const LineChart = ({ data, onHover, chain }) => {
   const { dates, values } = data;
 
   /** @type {import("react-chartjs-2").ChartProps} */
