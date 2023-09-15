@@ -74,7 +74,14 @@ export default function ProjectBubbleGroup({
       node
         .style("left", (d) => `${d.x - size(d.value)}px`)
         .style("top", (d) => `${d.y - size(d.value)}px`)
-        .attr("class", "rounded-full")
+        .attr("class", (d) => {
+          const r = size(d.value);
+          const d_size = r * 2;
+
+          return `rounded-full animate-project-bubble ${getBubbleAnimationDirection(
+            d_size,
+          )}`;
+        })
         .html((node) => {
           const r = size(node.value);
           const d = r * 2;
@@ -87,4 +94,16 @@ export default function ProjectBubbleGroup({
   }, [width, height, nodes, sizeField, bubbleSizeRange]);
 
   return <div id="project_bubbles"></div>;
+}
+
+function getBubbleAnimationDirection(size = 0) {
+  const prefix = "animate-project-bubble-";
+
+  if (size > 200) {
+    return `${prefix}lg`;
+  } else if (size < 60) {
+    return `${prefix}sm`;
+  } else {
+    return `${prefix}md`;
+  }
 }
