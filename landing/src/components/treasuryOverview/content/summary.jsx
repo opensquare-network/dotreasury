@@ -5,13 +5,6 @@ import SummaryItem from "../../../../../site/src/components/Summary/Item";
 import { abbreviateBigNumber } from "../../../../../site/src/utils";
 import Button from "../../button";
 
-TreasuryOverviewSummary.propTypes = {
-  treasury: Object,
-  symbol: String,
-  symbolPrice: Number,
-  spendPeriod: Object,
-};
-
 export default function TreasuryOverviewSummary({
   treasury = {},
   symbol = "",
@@ -101,11 +94,6 @@ export default function TreasuryOverviewSummary({
   );
 }
 
-SummaryItemValueContent.propTypes = {
-  amount: Number,
-  symbol: String,
-  symbolPrice: Number,
-};
 function SummaryItemValueContent({ amount = 0, symbol = "", symbolPrice = 0 }) {
   return (
     <div>

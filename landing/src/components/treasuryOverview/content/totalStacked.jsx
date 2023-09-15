@@ -6,11 +6,6 @@ import { getPrecision, toPrecision } from "../../../../../site/src/utils";
 import { getChainSettings } from "../../../utils/chains";
 import Chart from "../../../../../site/src/pages/Overview/TotalStacked/Chart";
 
-TreasuryOverviewTotalStacked.propTypes = {
-  chain: String,
-  statsHistory: Array,
-};
-
 export default function TreasuryOverviewTotalStacked({
   chain = "",
   statsHistory = STATS_HISTORY_DATA,

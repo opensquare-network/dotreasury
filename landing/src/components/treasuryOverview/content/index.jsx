@@ -3,10 +3,6 @@ import TreasuryOverviewSummary from "./summary";
 import TreasuryOverviewTopBeneficiaries from "./topBeneficiaries";
 import TreasuryOverviewTotalStacked from "./totalStacked";
 
-TreasuryOverviewContent.propTypes = {
-  chain: String,
-};
-
 export default function TreasuryOverviewContent({ chain = "" }) {
   return (
     <div className="grid grid-rows-3 grid-cols-3 grid-flow-col gap-4 h-[944px]">
