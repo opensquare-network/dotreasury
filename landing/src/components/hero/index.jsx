@@ -27,7 +27,7 @@ export default function Hero() {
           height={bubblesSize.height}
           data={BUBBLE_DATA}
           renderBubbleToHTMLString={(node) => {
-            return <ProjectBubble project={node.name} size={node.r * 2} />;
+            return <ProjectBubble chain={node.name} size={node.r * 2} />;
           }}
         />
       </div>

@@ -3,7 +3,7 @@ import { cn } from "../../utils";
 const SHOW_INFO_SIZE = 80;
 const SHOULD_SCALE_INFO_SIZE = 200;
 
-export default function ProjectBubble({ size = null, project = "" }) {
+export default function ProjectBubble({ size = null, chain = "" }) {
   if (!size) {
     return null;
   }
@@ -29,8 +29,8 @@ export default function ProjectBubble({ size = null, project = "" }) {
             maxWidth: "calc(100% - 16px)",
             maxHeight: "calc(100% - 16px)",
           }}
-          src={`/imgs/logo-${project?.toLowerCase?.()}.svg`}
-          alt={project}
+          src={`/imgs/logo-${chain?.toLowerCase?.()}.svg`}
+          alt={chain}
         />
         {showInfo && (
           <div className="text-textPrimary text-center">
@@ -41,7 +41,7 @@ export default function ProjectBubble({ size = null, project = "" }) {
                 lineHeight: "155%",
               }}
             >
-              {project}
+              {chain}
             </h3>
             <h4
               className="h4-16-semibold"
