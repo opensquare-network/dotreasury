@@ -3,32 +3,23 @@ import Container from "../../../../site/src/components/Container";
 import ImageWithDark from "../../../../site/src/components/ImageWithDark";
 import Tabs from "../tabs";
 import TreasuryOverviewContent from "./content";
+import { CHAINS } from "../../utils/chains";
 
 export default function TreasuryOverview() {
-  const [activeTabId, setActiveTabId] = useState("polkadot");
+  const [activeTabId, setActiveTabId] = useState(CHAINS.polkadot.value);
 
-  const tabs = [
-    {
-      id: "polkadot",
+  const tabs = [CHAINS.polkadot, CHAINS.kusama].map((chain) => {
+    return {
+      id: chain.value,
       label: (
         <span className="inline-flex gap-x-2">
-          <ImageWithDark src="/imgs/logo-polkadot.svg" />
-          <span className="h4-16-semibold">Polkadot</span>
+          <ImageWithDark src={`/imgs/logo-${chain.value}.svg`} />
+          <span className="h4-16-semibold">{chain.name}</span>
         </span>
       ),
-      content: <TreasuryOverviewContent />,
-    },
-    {
-      id: "kusama",
-      label: (
-        <span className="inline-flex gap-x-2">
-          <ImageWithDark src="/imgs/logo-kusama.svg" />
-          <span className="h4-16-semibold">Kusama</span>
-        </span>
-      ),
-      content: "kusama",
-    },
-  ];
+      content: <TreasuryOverviewContent chain={activeTabId} />,
+    };
+  });
 
   return (
     <Container className="py-10">
