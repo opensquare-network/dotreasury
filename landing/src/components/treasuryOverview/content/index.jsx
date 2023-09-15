@@ -7,7 +7,7 @@ export default function TreasuryOverviewContent({ chain = "" }) {
   return (
     <div className="grid grid-rows-3 grid-cols-3 grid-flow-col gap-4 h-[944px]">
       <div className="row-span-3 col-span-1">
-        <TreasuryOverviewSummary />
+        <TreasuryOverviewSummary chain={chain} />
       </div>
 
       <div className="col-span-2">

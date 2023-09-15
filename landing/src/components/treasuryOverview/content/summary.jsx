@@ -3,24 +3,30 @@ import CountDown from "../../../../../site/src/components/CountDown";
 import ImageWithDark from "../../../../../site/src/components/ImageWithDark";
 import SummaryItem from "../../../../../site/src/components/Summary/Item";
 import { abbreviateBigNumber } from "../../../../../site/src/utils";
+import { getChainSettings } from "../../../utils/chains";
 import Button from "../../button";
 
 export default function TreasuryOverviewSummary({
+  chain = "",
   treasury = {},
-  symbol = "",
   symbolPrice = 0,
   spendPeriod = {},
 }) {
+  const { symbol, name, value } = getChainSettings(chain);
+
   return (
     <Card className="!p-6 h-full flex flex-col gap-y-6">
       <div className="space-y-6 h-full">
         <div>
-          <ImageWithDark className="w-12 h-12" src="/imgs/logo-polkadot.svg" />
-          <h3 className="h2-22-bold mt-3">Polkadot</h3>
+          <ImageWithDark
+            className="w-12 h-12"
+            src={`/imgs/logo-${value}.svg`}
+          />
+          <h3 className="h2-22-bold mt-3">{name}</h3>
         </div>
 
         <div>
-          <Button className="w-full">Polkadot Treasury</Button>
+          <Button className="w-full">{name} Treasury</Button>
         </div>
 
         <div>
@@ -98,7 +104,7 @@ function SummaryItemValueContent({ amount = 0, symbol = "", symbolPrice = 0 }) {
   return (
     <div>
       <div className="flex items-center h3-18-semibold">
-        <div>{abbreviateBigNumber(amount)}</div>{" "}
+        <div className="mr-1">{abbreviateBigNumber(amount)}</div>
         <div className="text-textTertiary">{symbol}</div>
       </div>
       <div className="text-textTertiary p-12-normal">
