@@ -2,6 +2,10 @@ import { forwardRef } from "react";
 import Card from "../../../../site/src/components/Card";
 import { cn } from "../../utils";
 
+HeaderExplorer.propTypes = {
+  className: String,
+};
+
 function HeaderExplorer(props, ref) {
   const links = [
     {
@@ -48,9 +52,5 @@ function HeaderExplorer(props, ref) {
     </Card>
   );
 }
-
-HeaderExplorer.propTypes = {
-  className: String,
-};
 
 export default forwardRef(HeaderExplorer);

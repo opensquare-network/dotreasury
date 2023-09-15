@@ -1,6 +1,10 @@
 import { forwardRef } from "react";
 import { cn } from "../utils";
 
+Button.propTypes = {
+  className: String,
+};
+
 function Button(props = {}, ref) {
   return (
     <button
@@ -13,9 +17,5 @@ function Button(props = {}, ref) {
     />
   );
 }
-
-Button.propTypes = {
-  className: String,
-};
 
 export default forwardRef(Button);
