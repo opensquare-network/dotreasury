@@ -7,6 +7,10 @@ body {
   @apply text-textPrimary;
 }
 
+hr {
+  @apply border-neutral300;
+}
+
 @layer components {
   .font-montserrat {
     font-family: "Montserrat";
@@ -32,6 +36,14 @@ body {
   }
   .h2-32-bold-montserrat {
     @apply h2-32-bold !font-montserrat;
+  }
+
+  .h2-22-bold {
+    font-family: Inter;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 32px;
   }
 
   .h3-18-semibold {
@@ -76,6 +88,10 @@ body {
     font-style: normal;
     font-weight: 500;
     line-height: 16px;
+  }
+
+  .p-12-normal {
+    @apply p-12-medium font-normal;
   }
 }
 
