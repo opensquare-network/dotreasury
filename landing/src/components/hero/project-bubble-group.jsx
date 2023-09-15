@@ -34,7 +34,7 @@ export default function ProjectBubbleGroup({
 
     // lg size
     return [16, 220];
-  }, [windowSize]);
+  }, [windowSize, sizeMin]);
 
   const nodes = data
     .map((d) => ({
@@ -99,7 +99,14 @@ export default function ProjectBubbleGroup({
           return renderToString(bubbleContent);
         });
     });
-  }, [width, height, nodes, sizeField, bubbleSizeRange]);
+  }, [
+    width,
+    height,
+    nodes,
+    sizeField,
+    bubbleSizeRange,
+    renderBubbleToHTMLString,
+  ]);
 
   return <div id="project_bubbles"></div>;
 }
