@@ -5,7 +5,7 @@ Button.propTypes = {
   className: String,
 };
 
-function Button(props = {}, ref) {
+const Button = forwardRef(function ButtonComponent(props = {}, ref) {
   return (
     <button
       ref={ref}
@@ -16,6 +16,6 @@ function Button(props = {}, ref) {
       )}
     />
   );
-}
+});
 
-export default forwardRef(Button);
+export default Button;

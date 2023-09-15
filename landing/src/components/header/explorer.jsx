@@ -6,7 +6,7 @@ HeaderExplorer.propTypes = {
   className: String,
 };
 
-function HeaderExplorer(props, ref) {
+const HeaderExplorer = forwardRef(function HeaderExplorerComponent(props, ref) {
   const links = [
     {
       link: "https://polkadot.dotreasury.com",
@@ -51,6 +51,6 @@ function HeaderExplorer(props, ref) {
       ))}
     </Card>
   );
-}
+});
 
-export default forwardRef(HeaderExplorer);
+export default HeaderExplorer;
