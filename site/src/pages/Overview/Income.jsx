@@ -39,7 +39,7 @@ const Income = ({
 }) => {
   const theme = useTheme();
   const supportOpenGov = useSupportOpenGov();
-  const symbol = useSelector(chainSymbolSelector)?.toLowerCase();
+  const symbol = useSelector(chainSymbolSelector);
   const [incomeData, setIncomeData] = useState({
     icon: "circle",
     labels: [],
@@ -195,7 +195,7 @@ const Income = ({
         </DoughnutCardLinkTitle>
       }
       titleExtra={
-        <NavLink to={`/${symbol}/income`}>
+        <NavLink to={`/${symbol?.toLowerCase?.()}/income`}>
           <LinkButton>
             Detail
             <IconMask

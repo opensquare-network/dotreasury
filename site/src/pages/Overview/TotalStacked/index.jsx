@@ -458,10 +458,10 @@ const TotalStacked = () => {
       <Title>Total Stacked</Title>
       <ContentWrapper>
         <ListWrapper>
-          <List data={incomeData}></List>
+          <List symbol={symbol} data={incomeData}></List>
           <SecondListWrapper>
-            <List data={outputData}></List>
-            <List data={treasuryData}></List>
+            <List symbol={symbol} data={outputData}></List>
+            <List symbol={symbol} data={treasuryData}></List>
           </SecondListWrapper>
         </ListWrapper>
         {chartComponent}
