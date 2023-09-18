@@ -9,3 +9,7 @@ export const CHAINS = {
 export function getChainSettings(value = "") {
   return CHAINS[value] ?? {};
 }
+
+export function isSupportOpenGov(chain = "") {
+  return [kusama.value, polkadot.value].includes(chain);
+}
