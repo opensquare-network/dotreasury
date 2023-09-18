@@ -6540,3 +6540,561 @@ export const STATS_HISTORY_DATA = [
     },
   },
 ];
+
+export const KSM_OVERVIEW_DATA = {
+  count: {
+    proposal: {
+      unFinished: 23,
+      all: 336,
+      openGov: 90,
+    },
+    tip: {
+      unFinished: 3,
+      all: 819,
+    },
+    bounty: {
+      unFinished: 8,
+      all: 24,
+    },
+    childBounty: {
+      unFinished: 8,
+      all: 798,
+    },
+    burnt: {
+      all: 228,
+    },
+    transfer: {
+      all: 85,
+    },
+    referenda: {
+      unFinished: 4,
+      all: 160,
+    },
+  },
+  spent: {
+    proposal: {
+      value: "514822147953388422",
+      fiatValue: 21423023.87976975,
+    },
+    tip: {
+      value: "8472100581000801",
+      fiatValue: 590585.0934265672,
+    },
+    bounty: {
+      value: "83509080000000000",
+      fiatValue: 3089317.9783687214,
+    },
+    burnt: {
+      value: "146308416798639706",
+    },
+    transfer: {
+      value: "12432147126287051",
+    },
+    referendaSpent: {
+      treasurer: {
+        value: "81607660000000000",
+        fiatValue: 2020724.467786161,
+        count: 5,
+      },
+      small_tipper: {
+        value: "78300000000008",
+        fiatValue: 2226.1659028825543,
+        count: 16,
+      },
+      big_tipper: {
+        value: "139670000000000",
+        fiatValue: 3995.825477188792,
+        count: 9,
+      },
+      small_spender: {
+        value: "1933110000000000",
+        fiatValue: 54784.47901427751,
+        count: 10,
+      },
+      medium_spender: {
+        value: "58943664163344414",
+        fiatValue: 1816766.279485163,
+        count: 37,
+      },
+      big_spender: {
+        value: "79618509546920000",
+        fiatValue: 2213579.9891760093,
+        count: 13,
+      },
+    },
+  },
+  output: {
+    proposal: {
+      value: "514822147953388422",
+      fiatValue: 21423023.87976975,
+    },
+    tip: {
+      value: "8472100581000801",
+      fiatValue: 590585.0934265672,
+    },
+    bounty: {
+      value: "83509080000000000",
+      fiatValue: 3089317.9783687214,
+    },
+    burnt: {
+      value: "146308416798639706",
+    },
+    transfer: {
+      value: "12432147126287051",
+    },
+    referendaSpent: {
+      treasurer: {
+        value: "81607660000000000",
+        fiatValue: 2020724.467786161,
+        count: 5,
+      },
+      small_tipper: {
+        value: "78300000000008",
+        fiatValue: 2226.1659028825543,
+        count: 16,
+      },
+      big_tipper: {
+        value: "139670000000000",
+        fiatValue: 3995.825477188792,
+        count: 9,
+      },
+      small_spender: {
+        value: "1933110000000000",
+        fiatValue: 54784.47901427751,
+        count: 10,
+      },
+      medium_spender: {
+        value: "58943664163344414",
+        fiatValue: 1816766.279485163,
+        count: 37,
+      },
+      big_spender: {
+        value: "79618509546920000",
+        fiatValue: 2213579.9891760093,
+        count: 13,
+      },
+    },
+  },
+  toBeAwarded: {
+    total: "0",
+  },
+  latestSymbolPrice: 19.089154585437367,
+  bestProposalBeneficiaries: [
+    {
+      beneficiary: "F7fq1jMmNj5j2jAHcBxgM26JzUn2N4duXu1U4UZNdkfZEPV",
+      value: "100000000000000000",
+      fiatValue: 3797000.0000000005,
+      count: 2,
+    },
+    {
+      beneficiary: "F7fq1jMZkfuCuoMTyiEVAP2DMpMt18WopgBqTJznLihLNbZ",
+      value: "0x0000000000000000004e28e2290f0000",
+      fiatValue: 2371565.801282051,
+      count: 1,
+    },
+    {
+      beneficiary: "EyXct79ZDWdQfcSgJTG5texKM9wJj3quyh1ugPDVSkSt3Xm",
+      value: "36534084000000000",
+      fiatValue: 1152559.4854972993,
+      count: 5,
+    },
+    {
+      beneficiary: "FyLYnuNoMAVkz1VZMMGZFHDPghQQm1916fCon1CqNt2aXbX",
+      value: "29901574500000000",
+      fiatValue: 1092632.8358601418,
+      count: 6,
+    },
+    {
+      beneficiary: "Gbb7iGbd6Q7o1fGcT2Re4L6RXJ3U7A32itSLMjsUJzmq5LD",
+      value: "25132660000000000",
+      fiatValue: 644241.9299768563,
+      count: 1,
+    },
+    {
+      beneficiary: "EytwZpYLbUf9XYdgXWs8SEV2gyfDHM2XXwv8wVNFtH3bBcA",
+      value: "9065410000000000",
+      fiatValue: 543436.6841049987,
+      count: 2,
+    },
+    {
+      beneficiary: "H3cSNjAW86NfTecufGPhxutea8KrEcZdPa4XgVKfhTMugej",
+      value: "5234710000000000",
+      fiatValue: 537066.1795769144,
+      count: 2,
+    },
+    {
+      beneficiary: "GWvCyvLsWt4DRHKZa4SZJ1k2ECP3JejowXNADsJgdZxyoZh",
+      value: "0x0000000000000000001c6e8113356000",
+      fiatValue: 497823.30391897284,
+      count: 1,
+    },
+    {
+      beneficiary: "Dz8UJCdSfSoixAkZFzeRb9ZthKKBniB3m7ZwxhNu4hLVeJv",
+      value: "3259000000000000",
+      fiatValue: 426319.79862788634,
+      count: 5,
+    },
+    {
+      beneficiary: "F3opxRbN5ZbjJNU513biNdUuzGvk6gSBmwggQXh7rttXx6k",
+      value: "0x00000000000000000027147114878000",
+      fiatValue: 409318.7585080815,
+      count: 1,
+    },
+  ],
+  bestTipFinders: [
+    {
+      finder: "GLVeryFRbg5hEKvQZcAnLvXZEXhiYaBjzSDwrXBXrfPF7wj",
+      value: "4157186000000000",
+      fiatValue: 239237.99014300556,
+      count: 157,
+    },
+    {
+      finder: "HqRcfhH8VXMhuCk5JXe28WMgDDuW9MVDVNofe1nnTcefVZn",
+      value: "267500000000000",
+      fiatValue: 66294.30783010398,
+      count: 45,
+    },
+    {
+      finder: "CsKvJ4fdesaRALc5swo5iknFDpop7YUwKPJHdmUvBsUcMGb",
+      value: "91950000000000",
+      fiatValue: 25135.414277497424,
+      count: 33,
+    },
+    {
+      finder: "GqPDeJBexSsvEq6gBzrnMCn7KNYbzn9bX9ePCjEDN3EikoV",
+      value: "105000000000000",
+      fiatValue: 21509.82122286713,
+      count: 23,
+    },
+    {
+      finder: "EkQWFRUHmSt8qCwmgYv8TNSaFu1Xo5DaDAHBZbZZFxXMwDr",
+      value: "28200000000000",
+      fiatValue: 8535.16551975737,
+      count: 20,
+    },
+    {
+      finder: "DtRgaYr63H1JuDz6UUfihiAKEGfERrHuAaWxTD1ryzx5w3Q",
+      value: "81200000000000",
+      fiatValue: 10846.030469994892,
+      count: 19,
+    },
+    {
+      finder: "FF4KRpru9a1r2nfWeLmZRk6N8z165btsWYaWvqaVgR6qVic",
+      value: "120180000000000",
+      fiatValue: 19790.418239278843,
+      count: 14,
+    },
+    {
+      finder: "CaZegDeY2E5CNJHQ2zngs75CXt5RqXeSKshbQ3z7KpHmhFe",
+      value: "54200000000000",
+      fiatValue: 17035.723787963056,
+      count: 12,
+    },
+    {
+      finder: "H9eSvWe34vQDJAWckeTHWSqSChRat8bgKHG39GC1fjvEm7y",
+      value: "307750000000000",
+      fiatValue: 2913.344599820781,
+      count: 10,
+    },
+    {
+      finder: "Hxm9ep2F24TE3ErkgwGsyoTamJQwESqj5zJAR463Q36a6A3",
+      value: "22200000000000",
+      fiatValue: 7310.460053701647,
+      count: 9,
+    },
+  ],
+  income: {
+    inflation: "930887416063551817",
+    transfer: "57276254214762470",
+    slash: "15750430085014698",
+    others: "38417511004929487",
+    slashSeats: {
+      treasury: "498627466462750",
+      staking: "15043722618552586",
+      democracy: "0",
+      election: "208079999999362",
+      identity: "0",
+      referenda: "0",
+      fellowshipReferenda: "0",
+    },
+  },
+};
+
+export const DOT_OVERVIEW_DATA = {
+  count: {
+    proposal: {
+      unFinished: 56,
+      all: 416,
+      openGov: 113,
+    },
+    tip: {
+      unFinished: 6,
+      all: 596,
+    },
+    bounty: {
+      unFinished: 12,
+      all: 26,
+    },
+    childBounty: {
+      unFinished: 14,
+      all: 414,
+    },
+    burnt: {
+      all: 50,
+    },
+    transfer: {
+      all: 0,
+    },
+    referenda: {
+      unFinished: 16,
+      all: 118,
+    },
+  },
+  spent: {
+    proposal: {
+      value: "53538074903008201",
+      fiatValue: 34946535.93452204,
+    },
+    tip: {
+      value: "164010803000000",
+      fiatValue: 241751.69960801996,
+    },
+    bounty: {
+      value: "30052218700000000",
+      fiatValue: 31288667.029397774,
+    },
+    burnt: {
+      value: "129955223436143537",
+    },
+    transfer: {
+      value: 0,
+    },
+    referendaSpent: {
+      treasurer: {
+        value: "887290500000000",
+        fiatValue: 468694.98802485445,
+        count: 34,
+      },
+      small_tipper: {
+        value: "13342695000000",
+        fiatValue: 6544.59097701353,
+        count: 12,
+      },
+      big_tipper: {
+        value: "64253500000000",
+        fiatValue: 31308.506733497143,
+        count: 11,
+      },
+      small_spender: {
+        value: "145971290000000",
+        fiatValue: 71937.5445319309,
+        count: 25,
+      },
+      medium_spender: {
+        value: "10059275599000000",
+        fiatValue: 4908118.703768021,
+        count: 27,
+      },
+      big_spender: {
+        value: "5352839600000000",
+        fiatValue: 2682572.716280719,
+        count: 4,
+      },
+    },
+  },
+  output: {
+    proposal: {
+      value: "53538074903008201",
+      fiatValue: 34946535.93452204,
+    },
+    tip: {
+      value: "164010803000000",
+      fiatValue: 241751.69960801996,
+    },
+    bounty: {
+      value: "30052218700000000",
+      fiatValue: 31288667.029397774,
+    },
+    burnt: {
+      value: "129955223436143537",
+    },
+    transfer: {
+      value: 0,
+    },
+    referendaSpent: {
+      treasurer: {
+        value: "887290500000000",
+        fiatValue: 468694.98802485445,
+        count: 34,
+      },
+      small_tipper: {
+        value: "13342695000000",
+        fiatValue: 6544.59097701353,
+        count: 12,
+      },
+      big_tipper: {
+        value: "64253500000000",
+        fiatValue: 31308.506733497143,
+        count: 11,
+      },
+      small_spender: {
+        value: "145971290000000",
+        fiatValue: 71937.5445319309,
+        count: 25,
+      },
+      medium_spender: {
+        value: "10059275599000000",
+        fiatValue: 4908118.703768021,
+        count: 27,
+      },
+      big_spender: {
+        value: "5352839600000000",
+        fiatValue: 2682572.716280719,
+        count: 4,
+      },
+    },
+  },
+  toBeAwarded: {
+    total: "2504472060000000",
+  },
+  latestSymbolPrice: 4.1279914214634985,
+  bestProposalBeneficiaries: [
+    {
+      beneficiary: "12UDxESUsqUZi5R5MpovTZLpAWZXPVWHJQkEprcT6MVdKh3A",
+      value: 4383954200000000,
+      fiatValue: 2306008.002176577,
+      count: 1,
+    },
+    {
+      beneficiary: "14gaKBxYkbBh2SKGtRDdhuhtyGAs5XLh55bE5x4cDi5CmL75",
+      value: "3593310719002201",
+      fiatValue: 2184347.2958952943,
+      count: 3,
+    },
+    {
+      beneficiary: "14mZzbymFLQputQuxw2ern4BRKQ2igwMjbtrUz6m5BbVRBrc",
+      value: "2530390000000000",
+      fiatValue: 2048711.876495143,
+      count: 4,
+    },
+    {
+      beneficiary: "12bFooBAK4hHUfiri7v2Eiz96v7TDoiLWdNKCFYmhWzGG1Tq",
+      value: "2638205000000000",
+      fiatValue: 1518148.486216909,
+      count: 4,
+    },
+    {
+      beneficiary: "15UHvPeMjYLvMLqh6bWLxAP3MbqjjsMXFWToJKCijzGPM3p9",
+      value: "2344575500000000",
+      fiatValue: 1381032.3485802943,
+      count: 4,
+    },
+    {
+      beneficiary: "1C42oGF3s8ztCsc22MA4LKd8BogMJNdVmCgtTXGfxqwjrSb",
+      value: "1948180000000000",
+      fiatValue: 1286717.6629775302,
+      count: 4,
+    },
+    {
+      beneficiary: "13Ghf2T883ZobjngC1BAgR1BWvK2P7qP37gGxHDVFf3fjbmw",
+      value: "2127377421000000",
+      fiatValue: 1211869.3637065804,
+      count: 7,
+    },
+    {
+      beneficiary: "14uJWF6Er1PCuZRagui7AtERBojtg18WkNXpUDejHmEGZeFu",
+      value: "1845274840000000",
+      fiatValue: 1089905.3894322761,
+      count: 3,
+    },
+    {
+      beneficiary: "1fN87Fgj5BUhezFgbLiGbXTMrBVggnmYBX9anzMBky8KaJ5",
+      value: "1754190000000000",
+      fiatValue: 926923.111821626,
+      count: 1,
+    },
+    {
+      beneficiary: "12BJTP99gUerdvBhPobiTvrWwRaj1i5eFHN9qx51JWgrBtmv",
+      value: "1466458200000000",
+      fiatValue: 924211.6319043952,
+      count: 5,
+    },
+  ],
+  bestTipFinders: [
+    {
+      finder: "14Sbk1RvKa9x7k8CThWoEYKA21LDduRbcivnzkDdm2WnDutM",
+      value: "19300000000000",
+      fiatValue: 21500.57805363325,
+      count: 99,
+    },
+    {
+      finder: "1hCMdtRsaRA4ZTEKpPKPvEjK9rZpGhyFnRHSDhqFMCEayRL",
+      value: "42246030000000",
+      fiatValue: 71915.9196450456,
+      count: 88,
+    },
+    {
+      finder: "14fhQS5myHCh3AQZZoELKpQuy2AfNe5am3PzTDvKi7i172n5",
+      value: "32564000000000",
+      fiatValue: 79545.53623705344,
+      count: 20,
+    },
+    {
+      finder: "15G4hfDNtNhRc82As8Ep2YfvpM5xVdX7De3P9qSdHerGA6wC",
+      value: "1730000000000",
+      fiatValue: 3626.6063215857334,
+      count: 12,
+    },
+    {
+      finder: "12hAtDZJGt4of3m2GqZcUCVAjZPALfvPwvtUTFZPQUbdX1Ud",
+      value: "7450000000000",
+      fiatValue: 15513.379928539054,
+      count: 11,
+    },
+    {
+      finder: "13EeZf3ZWotu5to8o5Rzf5AZDdJfpKwq5puDbz6LVbD5aYLk",
+      value: "6600000000000",
+      fiatValue: 3373.3852386382578,
+      count: 9,
+    },
+    {
+      finder: "13cUhcvLPQo5KSdq8mGKgSSwTmwr7ckq3KUxpkCn88ZnUNMt",
+      value: "1340000000000",
+      fiatValue: 1113.1816099302832,
+      count: 9,
+    },
+    {
+      finder: "13B5zGLfXBhRpiQ1xcnsNeqbHHcRRRpBCL41xCJxdYmYoHdW",
+      value: "860000000000",
+      fiatValue: 2022.0182350201496,
+      count: 8,
+    },
+    {
+      finder: "14uWCEwGQQ5qC24pkq5vbxsXtgS3Md2BAYJBvSstDy3XiU34",
+      value: "445000000000",
+      fiatValue: 967.6073955649887,
+      count: 7,
+    },
+    {
+      finder: "15ym3MDSG4WPABNoEtx2rAzBB1EYWJDWbWYpNg1BwuWRAQcY",
+      value: "1350000000000",
+      fiatValue: 2370.8889422355683,
+      count: 7,
+    },
+  ],
+  income: {
+    inflation: "655907974429697383",
+    transfer: "370095720552148",
+    slash: "5541420813247827",
+    others: "1690531028265619",
+    slashSeats: {
+      treasury: "211447562650000",
+      staking: "5280499320597827",
+      democracy: "0",
+      election: "49473930000000",
+      identity: "0",
+      referenda: "0",
+      fellowshipReferenda: "0",
+    },
+  },
+};
