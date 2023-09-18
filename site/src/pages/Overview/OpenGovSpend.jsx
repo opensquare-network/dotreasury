@@ -155,6 +155,7 @@ export default function OpenGovSpend() {
       data={chartData}
       status={chartData}
       clickEvent={clickEvent}
+      symbol={symbol}
       chart={
         <PolarAreaChart
           data={chartData}

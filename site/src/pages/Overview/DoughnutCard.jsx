@@ -57,6 +57,7 @@ const DoughnutCard = ({
       status={status}
       clickEvent={clickEvent}
       children={children}
+      symbol={symbol}
       chart={
         <CanvasWrapper>
           <Total symbol={symbol} total={total}>

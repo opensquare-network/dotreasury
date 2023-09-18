@@ -60,6 +60,7 @@ export default function OverviewBaseChartCard({
   clickEvent,
   chart,
   children,
+  symbol,
 }) {
   return (
     <CardWrapper className="overview-base-chart-card">
@@ -72,7 +73,12 @@ export default function OverviewBaseChartCard({
         <ChartWrapper className="overview-base-chart-card-content-group-chart">
           {chart}
         </ChartWrapper>
-        <List data={data} status={status} clickEvent={clickEvent} />
+        <List
+          symbol={symbol}
+          data={data}
+          status={status}
+          clickEvent={clickEvent}
+        />
       </ContentGroup>
       {children}
     </CardWrapper>

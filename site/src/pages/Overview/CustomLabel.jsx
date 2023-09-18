@@ -4,8 +4,6 @@ import { Popup } from "semantic-ui-react";
 
 import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
-import { useSelector } from "react-redux";
-import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import { p_12_normal, p_14_medium, p_14_normal } from "../../styles/text";
 import {
   flex,
@@ -121,8 +119,7 @@ const ChildrenWrapper = styled.div`
   }
 `;
 
-const Label = ({ data, icon, status, clickEvent }) => {
-  const symbol = useSelector(chainSymbolSelector);
+const Label = ({ data, icon, status, clickEvent, symbol }) => {
   const { name, count, color, iconColor, iconDisabledColor, children } = data;
   const disabled = status?.disabled;
   let { value, fiatValue } = data;
