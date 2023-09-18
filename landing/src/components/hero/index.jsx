@@ -1,8 +1,8 @@
 import { useElementSize } from "usehooks-ts";
 import Container from "../../../../site/src/components/Container";
 import { BUBBLE_DATA } from "../../fixtures";
-import ProjectBubble from "./project-bubble";
-import ProjectBubbleGroup from "./project-bubble-group";
+import ProjectBubble from "./projectBubble";
+import ProjectBubbleGroup from "./projectBubbleGroup";
 import HeroContent from "./content";
 import { cn } from "../../utils";
 
