@@ -300,6 +300,7 @@ __metadata:
     eslint-plugin-react: ^7.32.2
     eslint-plugin-react-hooks: ^4.6.0
     eslint-plugin-react-refresh: ^0.4.3
+    lodash.sumby: ^4.6.0
     postcss: ^8.4.29
     react: ^18.2.0
     react-dom: ^18.2.0
@@ -3117,6 +3118,13 @@ __metadata:
   version: 4.6.2
   resolution: "lodash.merge@npm:4.6.2"
   checksum: ad580b4bdbb7ca1f7abf7e1bce63a9a0b98e370cf40194b03380a46b4ed799c9573029599caebc1b14e3f24b111aef72b96674a56cfa105e0f5ac70546cdc005
+  languageName: node
+  linkType: hard
+
+"lodash.sumby@npm:^4.6.0":
+  version: 4.6.0
+  resolution: "lodash.sumby@npm:4.6.0"
+  checksum: cb80d9a397a37b81cf923215af837ed8817520a5107e5117d705ed5c1f2a57825ae74954ca346d06666a9bc0eb5ace77893f172e6c2ab4d007b1111d90d8dca1
   languageName: node
   linkType: hard
 
