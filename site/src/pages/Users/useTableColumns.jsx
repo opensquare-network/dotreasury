@@ -45,14 +45,14 @@ const role = {
     return (
       <Tags>
         {data?.isCouncilor && <Tag rounded>Councilor</Tag>}
-        {data?.isBeneficiary && <Tag rounded>Benecifiary</Tag>}
+        {data?.isBeneficiary && <Tag rounded>Beneficiary</Tag>}
         {data?.isProposer && <Tag rounded>Proposer</Tag>}
       </Tags>
     );
   },
 };
 
-const proposals = {
+const allProposals = {
   key: "proposals",
   title: "Proposals",
   width: "468px",
@@ -72,11 +72,58 @@ const proposals = {
   },
 };
 
-export function useTableColumns() {
+const proposeProposals = {
+  key: "proposals",
+  title: "Proposals",
+  width: "468px",
+  headerCellProps: { textAlign: "right" },
+  cellProps: { textAlign: "right" },
+  cellRender(_, data) {
+    return (
+      <ProposalsWrapper>
+        <ProposalsCount
+          proposals={data?.proposeProposals}
+          bounties={data?.proposeBounties}
+          childBounties={data?.proposeChildBounties}
+          tips={data?.proposeTips}
+        />
+      </ProposalsWrapper>
+    );
+  },
+};
+
+const beneficiaryProposals = {
+  key: "proposals",
+  title: "Proposals",
+  width: "468px",
+  headerCellProps: { textAlign: "right" },
+  cellProps: { textAlign: "right" },
+  cellRender(_, data) {
+    return (
+      <ProposalsWrapper>
+        <ProposalsCount
+          proposals={data?.beneficiaryProposals}
+          bounties={data?.beneficiaryBounties}
+          childBounties={data?.beneficiaryChildBounties}
+          tips={data?.beneficiaryTips}
+        />
+      </ProposalsWrapper>
+    );
+  },
+};
+
+export function useTableColumns(userRole) {
   const chainSymbol = useSelector(chainSymbolSelector);
   const options = {
     chainSymbol: chainSymbol?.toLowerCase(),
   };
+
+  let proposals = allProposals;
+  if (userRole === "proposer") {
+    proposals = proposeProposals;
+  } else if (userRole === "beneficiary") {
+    proposals = beneficiaryProposals;
+  }
 
   return {
     id: id(options),

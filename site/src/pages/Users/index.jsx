@@ -41,7 +41,7 @@ export default function Participants() {
   const [tablePage, setTablePage] = useState(queryPage);
   const [pageSize, setPageSize] = useLocalStorage(
     "projectsPageSize",
-    DEFAULT_PAGE_SIZE
+    DEFAULT_PAGE_SIZE,
   );
 
   const dispatch = useDispatch();
@@ -52,11 +52,7 @@ export default function Participants() {
 
   const totalPages = Math.ceil(total / pageSize);
 
-  const {
-    role,
-    setRole,
-    getFilterData,
-  } = useListFilter();
+  const { role, setRole, getFilterData } = useListFilter();
 
   useEffect(() => {
     const filterData = getFilterData();
@@ -75,6 +71,7 @@ export default function Participants() {
 
   return (
     <UsersTable
+      userRole={role}
       data={tableData}
       loading={loading}
       header={header}
