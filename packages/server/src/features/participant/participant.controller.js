@@ -7,10 +7,13 @@ async function getParticipants(ctx) {
   const { role } = ctx.request.query;
 
   const q = { proposer: address };
+  let sort = { total: -1 };
   if (role === "beneficiary") {
     q.isBeneficiary = true;
+    sort = { totalBenefit: -1 };
   } else if (role === "proposer") {
     q.isProposer = true;
+    sort = { totalProposed: -1 };
   } else if (role === "councilor") {
     q.isCouncilor = true;
   }
@@ -19,7 +22,7 @@ async function getParticipants(ctx) {
   const total = await participantCol.countDocuments(q);
   const items = await participantCol
     .find(q)
-    .sort({ total: -1 })
+    .sort(sort)
     .skip(page * pageSize)
     .limit(pageSize)
     .toArray();

@@ -10,11 +10,7 @@ const { statCouncilors } = require("./statCouncilors");
 
 async function saveParticipant(chain, address, data) {
   const participantCol = await getParticipantCollection(chain);
-  await participantCol.updateOne(
-    { address },
-    { $set: data },
-    { upsert: true }
-  );
+  await participantCol.updateOne({ address }, { $set: data }, { upsert: true });
 }
 
 async function updateParticipants(chain) {
@@ -23,23 +19,35 @@ async function updateParticipants(chain) {
   const {
     counts: tips,
     proposers: tipProposers,
-    beneficiaries: tipBeneficiaries
+    proposeCounts: tipProposeCounts,
+    beneficiaries: tipBeneficiaries,
+    beneficiaryCounts: tipBeneficiaryCounts,
   } = await statTips(chain);
+
   const {
     counts: proposals,
     proposers: proposalProposers,
-    beneficiaries: proposalBeneficiaries
+    proposeCounts: proposalProposeCounts,
+    beneficiaries: proposalBeneficiaries,
+    beneficiaryCounts: proposalBeneficiaryCounts,
   } = await statProposals(chain);
+
   const {
     counts: bounties,
     proposers: bountyProposers,
-    beneficiaries: bountyBeneficiaries
+    proposeCounts: bountyProposeCounts,
+    beneficiaries: bountyBeneficiaries,
+    beneficiaryCounts: bountyBeneficiaryCounts,
   } = await statBounties(chain);
+
   const {
     counts: childBounties,
     proposers: childBountyProposers,
-    beneficiaries: childBountyBeneficiaries
+    proposeCounts: childBountyProposeCounts,
+    beneficiaries: childBountyBeneficiaries,
+    beneficiaryCounts: childBountyBeneficiaryCounts,
   } = await statChildBounties(chain);
+
   const { councilors } = await statCouncilors(chain);
 
   const participants = new Set([
@@ -52,25 +60,65 @@ async function updateParticipants(chain) {
 
   for (const address of participants) {
     const tipsCount = tips[address] ?? 0;
+    const tipProposeCount = tipProposeCounts[address] ?? 0;
+    const tipBeneficiaryCount = tipBeneficiaryCounts[address] ?? 0;
+
     const proposalsCount = proposals[address] ?? 0;
+    const proposalProposeCount = proposalProposeCounts[address] ?? 0;
+    const proposalBeneficiaryCount = proposalBeneficiaryCounts[address] ?? 0;
+
     const bountiesCount = bounties[address] ?? 0;
+    const bountyProposeCount = bountyProposeCounts[address] ?? 0;
+    const bountyBeneficiaryCount = bountyBeneficiaryCounts[address] ?? 0;
+
     const childBountiesCount = childBounties[address] ?? 0;
-    const isProposer = tipProposers.has(address) ||
+    const childBountyProposeCount = childBountyProposeCounts[address] ?? 0;
+    const childBountyBeneficiaryCount =
+      childBountyBeneficiaryCounts[address] ?? 0;
+
+    const isProposer =
+      tipProposers.has(address) ||
       proposalProposers.has(address) ||
       bountyProposers.has(address) ||
       childBountyProposers.has(address);
-    const isBeneficiary = tipBeneficiaries.has(address) ||
+
+    const isBeneficiary =
+      tipBeneficiaries.has(address) ||
       proposalBeneficiaries.has(address) ||
       bountyBeneficiaries.has(address) ||
       childBountyBeneficiaries.has(address);
+
     const isCouncilor = councilors.has(address);
 
     await saveParticipant(chain, address, {
+      // tips
       tips: tipsCount,
+      proposeTips: tipProposeCount,
+      beneficiaryTips: tipBeneficiaryCount,
+      // proposals
       proposals: proposalsCount,
+      proposeProposals: proposalProposeCount,
+      beneficiaryProposals: proposalBeneficiaryCount,
+      // bounties
       bounties: bountiesCount,
+      proposeBounties: bountyProposeCount,
+      beneficiaryBounties: bountyBeneficiaryCount,
+      // child bounties
       childBounties: childBountiesCount,
+      proposeChildBounties: childBountyProposeCount,
+      beneficiaryChildBounties: childBountyBeneficiaryCount,
+
       total: tipsCount + proposalsCount + bountiesCount + childBountiesCount,
+      totalProposed:
+        tipProposeCount +
+        proposalProposeCount +
+        bountyProposeCount +
+        childBountyProposeCount,
+      totalBenefit:
+        tipBeneficiaryCount +
+        proposalBeneficiaryCount +
+        bountyBeneficiaryCount +
+        childBountyBeneficiaryCount,
       isProposer,
       isBeneficiary,
       isCouncilor,

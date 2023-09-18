@@ -30,8 +30,14 @@ const TableWrapper = styled.div`
   }
 `;
 
-export default function ParticipantsTable({ data, loading, header, footer }) {
-  const { id, role, proposals } = useTableColumns();
+export default function ParticipantsTable({
+  data,
+  userRole,
+  loading,
+  header,
+  footer,
+}) {
+  const { id, role, proposals } = useTableColumns(userRole);
 
   const columns = [id, role, proposals];
 
