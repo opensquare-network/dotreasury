@@ -37,9 +37,9 @@ export default function ParticipantsTable({
   header,
   footer,
 }) {
-  const { id, role, proposals } = useTableColumns(userRole);
+  const { id, role, proposals, value } = useTableColumns(userRole);
 
-  const columns = [id, role, proposals];
+  const columns = [id, role, proposals, value];
 
   return (
     <CardWrapper>
