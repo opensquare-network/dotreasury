@@ -67,6 +67,7 @@ export default function Participants() {
 
   return (
     <UsersTable
+      userRole={role}
       data={tableData}
       loading={loading}
       header={header}
