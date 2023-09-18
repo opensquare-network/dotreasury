@@ -15,7 +15,7 @@ export default function TreasuryOverviewContent({ chain = "" }) {
       </div>
 
       <div className="row-span-2 col-span-2 grid grid-cols-2 gap-4">
-        <TreasuryOverviewAmount />
+        <TreasuryOverviewAmount chain={chain} />
         <TreasuryOverviewTopBeneficiaries />
       </div>
     </div>
