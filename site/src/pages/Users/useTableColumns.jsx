@@ -109,44 +109,12 @@ const beneficiaryProposals = {
   },
 };
 
-const commonValueFieldProps = {
+const awardedValue = {
   key: "value",
-  title: "Value",
+  title: "Awarded value",
   width: "468px",
   headerCellProps: { textAlign: "right" },
   cellProps: { textAlign: "right" },
-};
-
-const totalValue = {
-  ...commonValueFieldProps,
-  cellRender(_, data) {
-    return (
-      <Balance
-        value={data?.totalValue?.total}
-        usdt={data?.totalFiatValue?.total}
-        isUnitPrice={false}
-        abbreviate={true}
-      />
-    );
-  },
-};
-
-const proposedValue = {
-  ...commonValueFieldProps,
-  cellRender(_, data) {
-    return (
-      <Balance
-        value={data?.totalValue?.totalProposed}
-        usdt={data?.totalFiatValue?.totalProposed}
-        isUnitPrice={false}
-        abbreviate={true}
-      />
-    );
-  },
-};
-
-const benefitValue = {
-  ...commonValueFieldProps,
   cellRender(_, data) {
     return (
       <Balance
@@ -166,19 +134,16 @@ export function useTableColumns(userRole) {
   };
 
   let proposals = allProposals;
-  let value = totalValue;
   if (userRole === "proposer") {
     proposals = proposedProposals;
-    value = proposedValue;
   } else if (userRole === "beneficiary") {
     proposals = beneficiaryProposals;
-    value = benefitValue;
   }
 
   return {
     id: id(options),
     role,
     proposals,
-    value,
+    value: awardedValue,
   };
 }
