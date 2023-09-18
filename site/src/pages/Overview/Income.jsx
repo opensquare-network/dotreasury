@@ -6,9 +6,7 @@ import DoughnutCard from "./DoughnutCard";
 import TextMinor from "../../components/TextMinor";
 
 import { useSelector } from "react-redux";
-import {
-  chainSymbolSelector,
-} from "../../store/reducers/chainSlice";
+import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import DoughnutCardLinkTitle from "./DoughnutCardLinkTitle";
 import { useTheme } from "../../context/theme";
 import IconMask from "../../components/Icon/Mask";
@@ -211,6 +209,7 @@ const Income = ({
       data={incomeData}
       status={incomeStatus}
       clickEvent={clickEvent}
+      symbol={symbol}
     />
   );
 };

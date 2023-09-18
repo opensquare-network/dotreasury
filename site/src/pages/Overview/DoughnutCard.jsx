@@ -27,6 +27,7 @@ const DoughnutCard = ({
   status,
   clickEvent,
   children,
+  symbol = "",
 }) => {
   const findDisabled = (name) => {
     const findFunc = (item) => {
@@ -58,7 +59,7 @@ const DoughnutCard = ({
       children={children}
       chart={
         <CanvasWrapper>
-          <Total total={total}>
+          <Total symbol={symbol} total={total}>
             <DoughnutWrapper>
               <Doughnut data={data} status={status} />
             </DoughnutWrapper>
