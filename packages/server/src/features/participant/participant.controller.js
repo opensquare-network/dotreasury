@@ -7,13 +7,10 @@ async function getParticipants(ctx) {
   const { role } = ctx.request.query;
 
   const q = { proposer: address };
-  let sort = { "totalFiatValue.total": -1 };
   if (role === "beneficiary") {
     q.isBeneficiary = true;
-    sort = { "totalFiatValue.totalBenefit": -1 };
   } else if (role === "proposer") {
     q.isProposer = true;
-    sort = { "totalFiatValue.totalProposed": -1 };
   } else if (role === "councilor") {
     q.isCouncilor = true;
   }
@@ -22,7 +19,7 @@ async function getParticipants(ctx) {
   const total = await participantCol.countDocuments(q);
   const items = await participantCol
     .find(q)
-    .sort(sort)
+    .sort({ "totalFiatValue.totalBenefit": -1 })
     .skip(page * pageSize)
     .limit(pageSize)
     .toArray();
