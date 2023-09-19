@@ -16,4 +16,4 @@ async function updateChainsTreasuryBalance() {
 
 module.exports = {
   updateChainsTreasuryBalance,
-}
+};
