@@ -1,3 +1,4 @@
+const BigNumber = require("bignumber.js");
 const { getChildBountyCollection } = require("../../mongo");
 
 async function statChildBounties() {
@@ -6,6 +7,8 @@ async function statChildBounties() {
   const proposeCounts = {};
   const beneficiaries = new Set();
   const beneficiaryCounts = {};
+  const totalBenefitFiatValues = {};
+  const totalBenefitValues = {};
 
   const childBountyCol = await getChildBountyCollection();
   const childBounties = await childBountyCol.find().toArray();
@@ -22,13 +25,33 @@ async function statChildBounties() {
       beneficiaryCounts[beneficiary] =
         (beneficiaryCounts[beneficiary] ?? 0) + 1;
 
+      if (childBounty.state?.state === "Claimed") {
+        totalBenefitValues[beneficiary] = new BigNumber(
+          totalBenefitValues[beneficiary] ?? 0,
+        )
+          .plus(childBounty.value || 0)
+          .toString();
+
+        totalBenefitFiatValues[beneficiary] =
+          (totalBenefitFiatValues[beneficiary] ?? 0) +
+          (childBounty.fiatValue || 0);
+      }
+
       if (beneficiary !== proposer) {
         counts[beneficiary] = (counts[beneficiary] ?? 0) + 1;
       }
     }
   }
 
-  return { counts, proposers, proposeCounts, beneficiaries, beneficiaryCounts };
+  return {
+    counts,
+    proposers,
+    proposeCounts,
+    beneficiaries,
+    beneficiaryCounts,
+    totalBenefitFiatValues,
+    totalBenefitValues,
+  };
 }
 
 module.exports = {

@@ -9,6 +9,7 @@ import {
 import { useEffect, useMemo } from "react";
 import { compatChildBountyData } from "../../ChildBounties/utils";
 import { resolveFilterData } from "./resolveFilterData";
+import { TableHeaderWrapper } from "./styled";
 
 export default function ChildBountiesTable({
   header,
@@ -40,7 +41,7 @@ export default function ChildBountiesTable({
 
   return (
     <ChildBountiesTableOrigin
-      header={header}
+      header={<TableHeaderWrapper>{header}</TableHeaderWrapper>}
       loading={loading}
       data={items}
       footer={!!items.length && footer(totalPages)}

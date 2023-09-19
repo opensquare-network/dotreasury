@@ -1,3 +1,4 @@
+const BigNumber = require("bignumber.js");
 const { getTipCollection } = require("../../mongo");
 
 async function statTips() {
@@ -6,6 +7,8 @@ async function statTips() {
   const proposers = new Set();
   const beneficiaryCounts = {};
   const beneficiaries = new Set();
+  const totalBenefitFiatValues = {};
+  const totalBenefitValues = {};
 
   const tipCol = await getTipCollection();
   const tips = await tipCol.find().toArray();
@@ -22,13 +25,32 @@ async function statTips() {
       beneficiaryCounts[beneficiary] =
         (beneficiaryCounts[beneficiary] ?? 0) + 1;
 
+      if (tip.state?.state === "TipClosed") {
+        totalBenefitValues[beneficiary] = new BigNumber(
+          totalBenefitValues[beneficiary] ?? 0,
+        )
+          .plus(tip.value || 0)
+          .toString();
+
+        totalBenefitFiatValues[beneficiary] =
+          (totalBenefitFiatValues[beneficiary] ?? 0) + (tip.fiatValue || 0);
+      }
+
       if (beneficiary !== finder) {
         counts[beneficiary] = (counts[beneficiary] ?? 0) + 1;
       }
     }
   }
 
-  return { counts, proposers, proposeCounts, beneficiaries, beneficiaryCounts };
+  return {
+    counts,
+    proposers,
+    proposeCounts,
+    beneficiaries,
+    beneficiaryCounts,
+    totalBenefitFiatValues,
+    totalBenefitValues,
+  };
 }
 
 module.exports = {

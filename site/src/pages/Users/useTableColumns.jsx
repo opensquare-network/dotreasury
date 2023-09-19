@@ -5,6 +5,7 @@ import User from "../../components/User";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
+import Balance from "../../components/Balance";
 
 const IDWrapper = styled.div`
   display: inline-block;
@@ -52,40 +53,40 @@ const role = {
   },
 };
 
-const allProposals = {
+const commonProposalsFieldProps = {
   key: "proposals",
   title: "Proposals",
   width: "468px",
   headerCellProps: { textAlign: "right" },
   cellProps: { textAlign: "right" },
+};
+
+const allProposals = {
+  ...commonProposalsFieldProps,
   cellRender(_, data) {
     return (
       <ProposalsWrapper>
         <ProposalsCount
-          proposals={data?.proposals}
-          bounties={data?.bounties}
-          childBounties={data?.childBounties}
-          tips={data?.tips}
+          proposals={data?.proposals?.count}
+          bounties={data?.bounties?.count}
+          childBounties={data?.childBounties?.count}
+          tips={data?.tips?.count}
         />
       </ProposalsWrapper>
     );
   },
 };
 
-const proposeProposals = {
-  key: "proposals",
-  title: "Proposals",
-  width: "468px",
-  headerCellProps: { textAlign: "right" },
-  cellProps: { textAlign: "right" },
+const proposedProposals = {
+  ...commonProposalsFieldProps,
   cellRender(_, data) {
     return (
       <ProposalsWrapper>
         <ProposalsCount
-          proposals={data?.proposeProposals}
-          bounties={data?.proposeBounties}
-          childBounties={data?.proposeChildBounties}
-          tips={data?.proposeTips}
+          proposals={data?.proposals?.proposedCount}
+          bounties={data?.bounties?.proposedCount}
+          childBounties={data?.childBounties?.proposedCount}
+          tips={data?.tips?.proposedCount}
         />
       </ProposalsWrapper>
     );
@@ -93,21 +94,35 @@ const proposeProposals = {
 };
 
 const beneficiaryProposals = {
-  key: "proposals",
-  title: "Proposals",
+  ...commonProposalsFieldProps,
+  cellRender(_, data) {
+    return (
+      <ProposalsWrapper>
+        <ProposalsCount
+          proposals={data?.proposals?.benefitCount}
+          bounties={data?.bounties?.benefitCount}
+          childBounties={data?.childBounties?.benefitCount}
+          tips={data?.tips?.benefitCount}
+        />
+      </ProposalsWrapper>
+    );
+  },
+};
+
+const awardedValue = {
+  key: "value",
+  title: "Awarded value",
   width: "468px",
   headerCellProps: { textAlign: "right" },
   cellProps: { textAlign: "right" },
   cellRender(_, data) {
     return (
-      <ProposalsWrapper>
-        <ProposalsCount
-          proposals={data?.beneficiaryProposals}
-          bounties={data?.beneficiaryBounties}
-          childBounties={data?.beneficiaryChildBounties}
-          tips={data?.beneficiaryTips}
-        />
-      </ProposalsWrapper>
+      <Balance
+        value={data?.totalValue?.totalBenefit}
+        usdt={data?.totalFiatValue?.totalBenefit}
+        isUnitPrice={false}
+        abbreviate={true}
+      />
     );
   },
 };
@@ -120,7 +135,7 @@ export function useTableColumns(userRole) {
 
   let proposals = allProposals;
   if (userRole === "proposer") {
-    proposals = proposeProposals;
+    proposals = proposedProposals;
   } else if (userRole === "beneficiary") {
     proposals = beneficiaryProposals;
   }
@@ -129,5 +144,6 @@ export function useTableColumns(userRole) {
     id: id(options),
     role,
     proposals,
+    value: awardedValue,
   };
 }

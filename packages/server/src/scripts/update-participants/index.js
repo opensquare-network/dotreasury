@@ -1,6 +1,7 @@
 const dotenv = require("dotenv");
 dotenv.config();
 
+const BigNumber = require("bignumber.js");
 const { getParticipantCollection } = require("../../mongo");
 const { statTips } = require("./statTips");
 const { statProposals } = require("./statProposals");
@@ -17,64 +18,84 @@ async function updateParticipants() {
   console.log(`Update participants of ${process.env.CHAIN}`);
 
   const {
-    counts: tips,
+    counts: tipsCounts,
     proposers: tipProposers,
-    proposeCounts: tipProposeCounts,
+    proposeCounts: tipsProposeCounts,
     beneficiaries: tipBeneficiaries,
-    beneficiaryCounts: tipBeneficiaryCounts,
+    beneficiaryCounts: tipsBeneficiaryCounts,
+    totalBenefitFiatValues: totalTipBenefitFiatValues,
+    totalBenefitValues: totalTipBenefitValues,
   } = await statTips();
 
   const {
-    counts: proposals,
+    counts: proposalsCounts,
     proposers: proposalProposers,
-    proposeCounts: proposalProposeCounts,
+    proposeCounts: proposalsProposeCounts,
     beneficiaries: proposalBeneficiaries,
-    beneficiaryCounts: proposalBeneficiaryCounts,
+    beneficiaryCounts: proposalsBeneficiaryCounts,
+    totalBenefitFiatValues: totalProposalBenefitFiatValues,
+    totalBenefitValues: totalProposalBenefitValues,
   } = await statProposals();
 
   const {
-    counts: bounties,
+    counts: bountiesCounts,
     proposers: bountyProposers,
-    proposeCounts: bountyProposeCounts,
+    proposeCounts: bountiesProposedCounts,
     beneficiaries: bountyBeneficiaries,
-    beneficiaryCounts: bountyBeneficiaryCounts,
+    beneficiaryCounts: bountiesBeneficiaryCounts,
+    totalBenefitFiatValues: totalBountyBenefitFiatValues,
+    totalBenefitValues: totalBountyBenefitValues,
   } = await statBounties();
 
   const {
-    counts: childBounties,
+    counts: childBountiesCounts,
     proposers: childBountyProposers,
     proposeCounts: childBountyProposeCounts,
     beneficiaries: childBountyBeneficiaries,
     beneficiaryCounts: childBountyBeneficiaryCounts,
+    totalBenefitFiatValues: totalChildBountyBenefitFiatValues,
+    totalBenefitValues: totalChildBountyBenefitValues,
   } = await statChildBounties();
 
   const { councilors } = await statCouncilors();
 
   const participants = new Set([
-    ...Object.keys(tips),
-    ...Object.keys(proposals),
-    ...Object.keys(bounties),
-    ...Object.keys(childBounties),
+    ...Object.keys(tipsCounts),
+    ...Object.keys(proposalsCounts),
+    ...Object.keys(bountiesCounts),
+    ...Object.keys(childBountiesCounts),
     ...councilors,
   ]);
 
   for (const address of participants) {
-    const tipsCount = tips[address] ?? 0;
-    const tipProposeCount = tipProposeCounts[address] ?? 0;
-    const tipBeneficiaryCount = tipBeneficiaryCounts[address] ?? 0;
+    const tipsCount = tipsCounts[address] ?? 0;
+    const tipsProposeCount = tipsProposeCounts[address] ?? 0;
+    const tipsBeneficiaryCount = tipsBeneficiaryCounts[address] ?? 0;
+    const totalTipBenefitFiatValue = totalTipBenefitFiatValues[address] ?? 0;
+    const totalTipBenefitValue = totalTipBenefitValues[address] ?? 0;
 
-    const proposalsCount = proposals[address] ?? 0;
-    const proposalProposeCount = proposalProposeCounts[address] ?? 0;
-    const proposalBeneficiaryCount = proposalBeneficiaryCounts[address] ?? 0;
+    const proposalsCount = proposalsCounts[address] ?? 0;
+    const proposalsProposeCount = proposalsProposeCounts[address] ?? 0;
+    const proposalsBeneficiaryCount = proposalsBeneficiaryCounts[address] ?? 0;
+    const totalProposalBenefitFiatValue =
+      totalProposalBenefitFiatValues[address] ?? 0;
+    const totalProposalBenefitValue = totalProposalBenefitValues[address] ?? 0;
 
-    const bountiesCount = bounties[address] ?? 0;
-    const bountyProposeCount = bountyProposeCounts[address] ?? 0;
-    const bountyBeneficiaryCount = bountyBeneficiaryCounts[address] ?? 0;
+    const bountiesCount = bountiesCounts[address] ?? 0;
+    const bountiesProposedCount = bountiesProposedCounts[address] ?? 0;
+    const bountiesBeneficiaryCount = bountiesBeneficiaryCounts[address] ?? 0;
+    const totalBountyBenefitFiatValue =
+      totalBountyBenefitFiatValues[address] ?? 0;
+    const totalBountyBenefitValue = totalBountyBenefitValues[address] ?? 0;
 
-    const childBountiesCount = childBounties[address] ?? 0;
+    const childBountiesCount = childBountiesCounts[address] ?? 0;
     const childBountyProposeCount = childBountyProposeCounts[address] ?? 0;
     const childBountyBeneficiaryCount =
       childBountyBeneficiaryCounts[address] ?? 0;
+    const totalChildBountyBenefitFiatValue =
+      totalChildBountyBenefitFiatValues[address] ?? 0;
+    const totalChildBountyBenefitValue =
+      totalChildBountyBenefitValues[address] ?? 0;
 
     const isProposer =
       tipProposers.has(address) ||
@@ -91,34 +112,63 @@ async function updateParticipants() {
     const isCouncilor = councilors.has(address);
 
     await saveParticipant(address, {
-      // tips
-      tips: tipsCount,
-      proposeTips: tipProposeCount,
-      beneficiaryTips: tipBeneficiaryCount,
-      // proposals
-      proposals: proposalsCount,
-      proposeProposals: proposalProposeCount,
-      beneficiaryProposals: proposalBeneficiaryCount,
-      // bounties
-      bounties: bountiesCount,
-      proposeBounties: bountyProposeCount,
-      beneficiaryBounties: bountyBeneficiaryCount,
-      // child bounties
-      childBounties: childBountiesCount,
-      proposeChildBounties: childBountyProposeCount,
-      beneficiaryChildBounties: childBountyBeneficiaryCount,
+      tips: {
+        count: tipsCount,
+        proposedCount: tipsProposeCount,
+        benefitCount: tipsBeneficiaryCount,
+        benefitValue: totalTipBenefitValue,
+        benefitFiatValue: totalTipBenefitFiatValue,
+      },
+      proposals: {
+        count: proposalsCount,
+        proposedCount: proposalsProposeCount,
+        benefitCount: proposalsBeneficiaryCount,
+        benefitValue: totalProposalBenefitValue,
+        benefitFiatValue: totalProposalBenefitFiatValue,
+      },
+      bounties: {
+        count: bountiesCount,
+        proposedCount: bountiesProposedCount,
+        benefitCount: bountiesBeneficiaryCount,
+        benefitValue: totalBountyBenefitValue,
+        benefitFiatValue: totalBountyBenefitFiatValue,
+      },
+      childBounties: {
+        count: childBountiesCount,
+        proposedCount: childBountyProposeCount,
+        benefitCount: childBountyBeneficiaryCount,
+        benefitValue: totalChildBountyBenefitValue,
+        benefitFiatValue: totalChildBountyBenefitFiatValue,
+      },
+      totalValue: {
+        totalBenefit: new BigNumber(totalTipBenefitValue)
+          .plus(totalProposalBenefitValue)
+          .plus(totalBountyBenefitValue)
+          .plus(totalChildBountyBenefitValue)
+          .toString(),
+      },
+      totalFiatValue: {
+        totalBenefit:
+          totalTipBenefitFiatValue +
+          totalProposalBenefitFiatValue +
+          totalBountyBenefitFiatValue +
+          totalChildBountyBenefitFiatValue,
+      },
+      totalCount: {
+        total: tipsCount + proposalsCount + bountiesCount + childBountiesCount,
 
-      total: tipsCount + proposalsCount + bountiesCount + childBountiesCount,
-      totalProposed:
-        tipProposeCount +
-        proposalProposeCount +
-        bountyProposeCount +
-        childBountyProposeCount,
-      totalBenefit:
-        tipBeneficiaryCount +
-        proposalBeneficiaryCount +
-        bountyBeneficiaryCount +
-        childBountyBeneficiaryCount,
+        totalProposedCount:
+          tipsProposeCount +
+          proposalsProposeCount +
+          bountiesProposedCount +
+          childBountyProposeCount,
+
+        totalBenefitCount:
+          tipsBeneficiaryCount +
+          proposalsBeneficiaryCount +
+          bountiesBeneficiaryCount +
+          childBountyBeneficiaryCount,
+      },
       isProposer,
       isBeneficiary,
       isCouncilor,

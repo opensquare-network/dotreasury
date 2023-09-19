@@ -8,6 +8,7 @@ import {
 } from "../../../store/reducers/bountySlice";
 import { useEffect } from "react";
 import { resolveFilterData } from "./resolveFilterData";
+import { TableHeaderWrapper } from "./styled";
 
 export default function BountiesTable({
   header,
@@ -37,7 +38,7 @@ export default function BountiesTable({
 
   return (
     <BountiesTableOrigin
-      header={header}
+      header={<TableHeaderWrapper>{header}</TableHeaderWrapper>}
       loading={loading}
       data={items}
       footer={!!items.length && footer(totalPages)}

@@ -1,3 +1,4 @@
+const BigNumber = require("bignumber.js");
 const { getProposalCollection } = require("../../mongo");
 
 async function statProposals() {
@@ -6,6 +7,8 @@ async function statProposals() {
   const proposers = new Set();
   const beneficiaryCounts = {};
   const beneficiaries = new Set();
+  const totalBenefitFiatValues = {};
+  const totalBenefitValues = {};
 
   const proposalCol = await getProposalCollection();
   const proposals = await proposalCol.find().toArray();
@@ -22,13 +25,33 @@ async function statProposals() {
       beneficiaryCounts[beneficiary] =
         (beneficiaryCounts[beneficiary] ?? 0) + 1;
 
+      if (proposal.state?.state === "Awarded") {
+        totalBenefitValues[beneficiary] = new BigNumber(
+          totalBenefitValues[beneficiary] ?? 0,
+        )
+          .plus(proposal.value || 0)
+          .toString();
+
+        totalBenefitFiatValues[beneficiary] =
+          (totalBenefitFiatValues[beneficiary] ?? 0) +
+          (proposal.fiatValue || 0);
+      }
+
       if (beneficiary !== proposer) {
         counts[beneficiary] = (counts[beneficiary] ?? 0) + 1;
       }
     }
   }
 
-  return { counts, proposers, proposeCounts, beneficiaries, beneficiaryCounts };
+  return {
+    counts,
+    proposers,
+    proposeCounts,
+    beneficiaries,
+    beneficiaryCounts,
+    totalBenefitFiatValues,
+    totalBenefitValues,
+  };
 }
 
 module.exports = {
