@@ -1,18 +1,18 @@
 export const BUBBLE_DATA = [
   {
-    name: "Polkadot",
+    name: "polkadot",
     value: 192770000,
   },
   {
-    name: "Kusama",
+    name: "kusama",
     value: 5380000,
   },
   {
-    name: "Interlay",
+    name: "interlay",
     value: 2340000,
   },
   {
-    name: "Kintsugi",
+    name: "kintsugi",
     value: 987770,
   },
   {
