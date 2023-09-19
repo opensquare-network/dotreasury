@@ -4,6 +4,7 @@ import ImageWithDark from "../../../../site/src/components/ImageWithDark";
 import Tabs from "../tabs";
 import TreasuryOverviewContent from "./content";
 import { CHAINS } from "../../utils/chains";
+import { cn } from "../../utils";
 
 export default function TreasuryOverview() {
   const [activeTabId, setActiveTabId] = useState(CHAINS.polkadot.value);
@@ -23,11 +24,17 @@ export default function TreasuryOverview() {
 
   return (
     <Container className="py-10">
-      <h2 className="h2-32-bold-montserrat mb-10 px-6">
+      <h2
+        className={cn(
+          "h2-32-bold-montserrat mb-10 px-6",
+          "max-md:h3-24-semibold",
+        )}
+      >
         Dotsama Treasury Overview
       </h2>
       <div>
         <Tabs
+          tabsListClassName="max-md:px-6"
           tabs={tabs}
           activeTabId={activeTabId}
           onTabClick={(tab) => {

@@ -18,7 +18,7 @@ const OVERVIEW_DATA = {
 export default function TreasuryOverviewTopBeneficiaries({ chain = "" }) {
   const overview = OVERVIEW_DATA[chain];
   const { symbol } = getChainSettings(chain);
-  const data = (overview?.bestProposalBeneficiaries || []).slice(0, 7);
+  const data = overview?.bestProposalBeneficiaries || [];
 
   const columns = [
     {
@@ -70,7 +70,7 @@ export default function TreasuryOverviewTopBeneficiaries({ chain = "" }) {
         </div>
       </div>
 
-      <div className="[&_table]:!rounded-none">
+      <div className="[&_table]:!rounded-none overflow-scroll">
         <Table columns={columns} data={data} />
       </div>
     </Card>

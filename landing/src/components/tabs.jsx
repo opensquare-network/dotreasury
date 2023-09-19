@@ -4,10 +4,16 @@ export default function Tabs({
   tabs = [],
   activeTabId = "",
   onTabClick = () => {},
+  tabsListClassName = "",
 }) {
   return (
     <div>
-      <TabsList tabs={tabs} activeTabId={activeTabId} onTabClick={onTabClick} />
+      <TabsList
+        className={tabsListClassName}
+        tabs={tabs}
+        activeTabId={activeTabId}
+        onTabClick={onTabClick}
+      />
 
       <div className="mt-10">
         {tabs.map((tab, idx) => (
@@ -23,26 +29,33 @@ export default function Tabs({
   );
 }
 
-function TabsList({ tabs = [], activeTabId, onTabClick = () => {} }) {
+function TabsList({
+  className,
+  tabs = [],
+  activeTabId,
+  onTabClick = () => {},
+}) {
   return (
-    <ul className="flex p-1.5 rounded-lg bg-neutral300">
-      {tabs.map((tab, idx) => {
-        const active = activeTabId === tab.id;
+    <div className={className}>
+      <ul className="flex p-1.5 rounded-lg bg-neutral300">
+        {tabs.map((tab, idx) => {
+          const active = activeTabId === tab.id;
 
-        return (
-          <li
-            key={idx}
-            role="button"
-            className={cn(
-              "flex-1 flex items-center justify-center py-2 px-8 rounded",
-              active && "bg-neutral100",
-            )}
-            onClick={() => onTabClick(tab)}
-          >
-            {tab.label}
-          </li>
-        );
-      })}
-    </ul>
+          return (
+            <li
+              key={idx}
+              role="button"
+              className={cn(
+                "flex-1 flex items-center justify-center py-2 px-8 rounded",
+                active && "bg-neutral100",
+              )}
+              onClick={() => onTabClick(tab)}
+            >
+              {tab.label}
+            </li>
+          );
+        })}
+      </ul>
+    </div>
   );
 }

@@ -81,7 +81,7 @@ export default function TreasuryOverviewTotalStacked({
   };
 
   return (
-    <Card className="!p-6 h-full space-y-6">
+    <Card className="!p-6 h-full space-y-6 max-md:!pb-12">
       <h4 className="h4-16-semibold">Total Stacked</h4>
       <div className="h-56">
         <Chart
