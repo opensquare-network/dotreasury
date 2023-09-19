@@ -2,9 +2,9 @@ import React from "react";
 import styled, { css } from "styled-components";
 import { Popup } from "semantic-ui-react";
 
-import Text from "../../components/Text";
-import TextMinor from "../../components/TextMinor";
-import { p_12_normal, p_14_medium, p_14_normal } from "../../styles/text";
+import Text from "../../../components/Text";
+import TextMinor from "../../../components/TextMinor";
+import { p_12_normal, p_14_medium, p_14_normal } from "../../../styles/text";
 import {
   flex,
   flex_col,
@@ -12,8 +12,9 @@ import {
   items_center,
   items_end,
   p_y,
-} from "../../styles/tailwindcss";
-import { sumBy } from "../../utils/math";
+} from "../../../styles/tailwindcss";
+import { sumBy } from "../../../utils/math";
+import Icon from "./icon";
 
 const Wrapper = styled.div`
   min-width: 224px;
@@ -24,37 +25,6 @@ const Wrapper = styled.div`
 
 const ItemWrapper = styled.div`
   cursor: pointer;
-`;
-
-const Icon = styled.div`
-  ${(p) =>
-    p.icon === "square" &&
-    css`
-      width: 10px;
-      height: 10px;
-      background: ${p.color ?? "#EEEEEE"};
-      border-radius: 1px;
-    `}
-  ${(p) =>
-    p.icon === "circle" &&
-    css`
-      width: 10px;
-      height: 10px;
-      border: 2px solid
-        ${(p) =>
-          p.disabled
-            ? p.disabledColor ?? "var(--textDisable)"
-            : p.color ?? "#EEEEEE"};
-      border-radius: 50%;
-    `}
-  ${(p) =>
-    p.icon === "solid" &&
-    css`
-      width: 10px;
-      height: 3px;
-      background: ${p.color ?? "#EEEEEE"};
-      border-radius: 1px;
-    `}
 `;
 
 const Title = styled(Text)`
