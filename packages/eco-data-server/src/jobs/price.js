@@ -19,10 +19,6 @@ async function coingeckoGet(api) {
   return await resp.json();
 }
 
-async function fetchCoinList() {
-  return await coingeckoGet("v3/coins/list");
-}
-
 async function fetchPrice(coinId) {
   return await coingeckoGet(`v3/coins/${coinId}/tickers`);
 }
@@ -41,20 +37,20 @@ async function updateTokenPrice(chain, coinId) {
   await upsertChainPrice(chain, price, priceUpdateAt);
 }
 
+function getCoinId(chain) {
+  if (["phala", "khala"].includes(chain)) {
+    return "pha";
+  }
+  return chain;
+}
+
 async function updateTokensPrice() {
   const chains = Object.keys(endpoints);
   try {
-    const coinList = await fetchCoinList();
-
     const promises = [];
     for (const chain of chains) {
-      const coin = coinList.find(
-        (item) => item.id === chain || item.name.toLowerCase() === chain,
-      );
-      if (!coin) {
-        continue;
-      }
-      promises.push(updateTokenPrice(chain, coin.id));
+      const coinId = getCoinId(chain);
+      promises.push(updateTokenPrice(chain, coinId));
     }
     await Promise.all(promises);
   } catch (e) {
