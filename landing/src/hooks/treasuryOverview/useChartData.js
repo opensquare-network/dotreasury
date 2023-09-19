@@ -4,6 +4,7 @@ import { DOT_OVERVIEW_DATA, KSM_OVERVIEW_DATA } from "../../fixtures";
 import { useState, useEffect } from "react";
 import { getChainSettings } from "../../utils/chains";
 import { sumBy } from "../../../../site/src/utils/math";
+import { createChartStatusToggleClickEvent } from "../../utils/chart/statusToggleClickEvent";
 
 // FIXME: landing, overview data from server
 const OVERVIEW_DATA = {
@@ -77,7 +78,10 @@ export function useTreasuryOverviewIncomeChartData(chain = "") {
     });
   }, [inflation, slashes, others, theme]);
 
-  const clickEvent = createChartListClickEvent(incomeStatus, setIncomeStatus);
+  const clickEvent = createChartStatusToggleClickEvent(
+    incomeStatus,
+    setIncomeStatus,
+  );
 
   return {
     incomeData,
@@ -189,43 +193,14 @@ export function useTreasuryOverviewOutputChartData(chain) {
     theme,
   ]);
 
-  const clickEvent = createChartListClickEvent(outputStatus, setOutputStatus);
+  const clickEvent = createChartStatusToggleClickEvent(
+    outputStatus,
+    setOutputStatus,
+  );
 
   return {
     outputData,
     outputStatus,
     clickEvent,
   };
-}
-
-function createChartListClickEvent(status, set) {
-  const clickEvent = (name) => {
-    const obj = Object.assign({}, status);
-    obj.labels.forEach((item) => {
-      if (item.children) {
-        item.children.forEach((child) => {
-          if (child.name === name) {
-            child.disabled = !child.disabled;
-          }
-        });
-        if (item.children.every((item) => item.disabled)) {
-          item.disabled = true;
-        } else {
-          item.disabled = false;
-        }
-      }
-      if (item.name === name) {
-        const disabled = !item.disabled;
-        item.disabled = disabled;
-        if (item.children) {
-          item.children.forEach((child) => {
-            child.disabled = disabled;
-          });
-        }
-      }
-    });
-    set(obj);
-  };
-
-  return clickEvent;
 }
