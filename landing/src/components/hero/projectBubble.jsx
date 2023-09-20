@@ -1,12 +1,18 @@
+import { abbreviateBigNumber } from "../../../../site/src/utils";
 import { cn } from "../../utils";
+import { getChainSettings } from "../../utils/chains";
 
 const SHOW_INFO_SIZE = 80;
 const SHOULD_SCALE_INFO_SIZE = 200;
 
-export default function ProjectBubble({ size = null, chain = "" }) {
+export default function ProjectBubble({ node }) {
+  const size = node.r * 2;
+
   if (!size) {
     return null;
   }
+
+  const chainSettings = getChainSettings(node.chain);
 
   const showInfo = size >= SHOW_INFO_SIZE;
 
@@ -29,8 +35,8 @@ export default function ProjectBubble({ size = null, chain = "" }) {
             maxWidth: "calc(100% - 16px)",
             maxHeight: "calc(100% - 16px)",
           }}
-          src={`/imgs/logo-${chain?.toLowerCase?.()}.svg`}
-          alt={chain}
+          src={`/imgs/logo-${chainSettings.value}.svg`}
+          alt={chainSettings.name}
         />
         {showInfo && (
           <div className="text-textPrimary text-center">
@@ -41,7 +47,7 @@ export default function ProjectBubble({ size = null, chain = "" }) {
                 lineHeight: "155%",
               }}
             >
-              {chain}
+              {chainSettings.name}
             </h3>
             <h4
               className="h4-16-semibold"
@@ -50,7 +56,7 @@ export default function ProjectBubble({ size = null, chain = "" }) {
                 lineHeight: "150%",
               }}
             >
-              ≈ $192.77M
+              ≈ ${abbreviateBigNumber(node.value)}
             </h4>
             <p
               className="p-14-medium text-textTertiary"
@@ -59,7 +65,7 @@ export default function ProjectBubble({ size = null, chain = "" }) {
                 lineHeight: "142%",
               }}
             >
-              45.45M DOT
+              {abbreviateBigNumber(node.amount)} {chainSettings.symbol}
             </p>
           </div>
         )}

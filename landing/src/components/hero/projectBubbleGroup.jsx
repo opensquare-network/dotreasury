@@ -5,6 +5,8 @@ import { renderToString } from "react-dom/server";
 import { useEffect, useMemo } from "react";
 import { MD_SIZE, SM_SIZE } from "../../../../site/src/styles/responsive";
 import { useWindowSize } from "usehooks-ts";
+import { getChainSettings } from "../../utils/chains";
+import { toPrecision } from "../../../../site/src/utils";
 
 export default function ProjectBubbleGroup({
   width,
@@ -29,17 +31,24 @@ export default function ProjectBubbleGroup({
   }, [windowSize, sizeMin]);
 
   const nodes = data
-    .map((d) => ({
-      ...d,
-      [sizeField]: parseInt(d[sizeField]),
-    }))
+    .map((d) => {
+      const { decimals } = getChainSettings(d.chain);
+      const amount = toPrecision(d.balance, decimals, false);
+      const value = amount * d.price;
+
+      return {
+        ...d,
+        [sizeField]: Number(d[sizeField]),
+        amount,
+        value,
+      };
+    })
     .sort((a, b) => b[sizeField] - a[sizeField]);
 
   useEffect(() => {
     d3.select("#project_bubbles").selectAll("*").remove();
-    const [, max] = d3.extent(nodes, (d) => d[sizeField]);
-
-    const size = d3.scaleLinear().domain([0, max]).range(bubbleSizeRange);
+    const [min, max] = d3.extent(nodes, (d) => d[sizeField]);
+    const size = d3.scaleLinear().domain([min, max]).range(bubbleSizeRange);
 
     const bubblesContainer = d3.select("#project_bubbles");
 
@@ -54,8 +63,8 @@ export default function ProjectBubbleGroup({
       .style("position", "absolute")
       .style("left", `${width / 2}px`)
       .style("top", `${height / 2}px`)
-      .style("width", (d) => `${size(d.value) * 2}px`)
-      .style("height", (d) => `${size(d.value) * 2}px`);
+      .style("width", (d) => `${size(d[sizeField]) * 2}px`)
+      .style("height", (d) => `${size(d[sizeField]) * 2}px`);
 
     const simulation = d3
       .forceSimulation()
@@ -66,16 +75,16 @@ export default function ProjectBubbleGroup({
         d3
           .forceCollide()
           .strength(0.2)
-          .radius((d) => size(d.value) + 3)
+          .radius((d) => size(d[sizeField]) + 3)
           .iterations(1),
       );
 
     simulation.nodes(nodes).on("tick", function () {
       node
-        .style("left", (d) => `${d.x - size(d.value)}px`)
-        .style("top", (d) => `${d.y - size(d.value)}px`)
+        .style("left", (d) => `${d.x - size(d[sizeField])}px`)
+        .style("top", (d) => `${d.y - size(d[sizeField])}px`)
         .attr("class", (d) => {
-          const r = size(d.value);
+          const r = size(d[sizeField]);
           const d_size = r * 2;
 
           return `rounded-full animate-project-bubble ${getBubbleAnimationDirection(
