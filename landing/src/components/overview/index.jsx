@@ -5,17 +5,13 @@ import Tabs from "../tabs";
 import OverviewContent from "./content";
 import { CHAINS } from "../../utils/chains";
 import { cn } from "../../utils";
-import { useConnectSocket } from "../../hooks/useConnectSocket";
-import { useEffect } from "react";
+import { useConnectSocket } from "../../hooks/useSocket";
 
 export default function Overview() {
   const [activeTabId, setActiveTabId] = useState(CHAINS.polkadot.value);
-  const connect = useConnectSocket();
 
-  useEffect(() => {
-    connect(CHAINS.kusama.value);
-    connect(CHAINS.polkadot.value);
-  }, []);
+  useConnectSocket(CHAINS.kusama.value);
+  useConnectSocket(CHAINS.polkadot.value);
 
   const tabs = [CHAINS.polkadot, CHAINS.kusama].map((chain) => {
     return {
