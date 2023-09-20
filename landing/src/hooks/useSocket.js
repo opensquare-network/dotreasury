@@ -3,11 +3,11 @@ import { connect } from "../services/websocket";
 import { createGlobalState } from "react-use";
 import { DEFAULT_OVERVIEW_DATA } from "../utils/consts";
 
-export const useGlobalScanHeight = createGlobalState({
+const useGlobalScanHeight = createGlobalState({
   polkadot: 0,
   kusama: 0,
 });
-export const useGlobalOverviewData = createGlobalState({
+const useGlobalOverviewData = createGlobalState({
   polkadot: DEFAULT_OVERVIEW_DATA,
   kusama: DEFAULT_OVERVIEW_DATA,
 });
