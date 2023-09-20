@@ -1,13 +1,13 @@
 import Card from "../../../../../site/src/components/Card";
 import { useTheme } from "../../../../../site/src/context/theme";
 import { bnToBn } from "@polkadot/util";
-import { getPrecision, toPrecision } from "../../../../../site/src/utils";
+import { toPrecision } from "../../../../../site/src/utils";
 import { getChainSettings } from "../../../utils/chains";
 import Chart from "../../../../../site/src/pages/Overview/TotalStacked/Chart";
 import { useStatsHistory } from "../../../hooks/useStatsHistory";
 
 export default function OverviewTotalStacked({ chain = "" }) {
-  const { symbol } = getChainSettings(chain);
+  const { decimals } = getChainSettings(chain);
   const statsHistory = useStatsHistory(chain);
 
   const dateLabels = statsHistory.map(
@@ -17,8 +17,6 @@ export default function OverviewTotalStacked({ chain = "" }) {
   const theme = useTheme();
   const chartRange = [0, dateLabels.length - 1];
 
-  const precision = getPrecision(symbol);
-
   const incomeHistory = statsHistory
     .map((statsItem) =>
       bnToBn(statsItem.income.inflation)
@@ -26,7 +24,7 @@ export default function OverviewTotalStacked({ chain = "" }) {
         .add(bnToBn(statsItem.income.transfer))
         .add(bnToBn(statsItem.income.others)),
     )
-    .map((bn) => toPrecision(bn, precision, false));
+    .map((bn) => toPrecision(bn, decimals, false));
   const outputHistory = statsHistory
     .map((statsItem) =>
       bnToBn(statsItem.output.tip)
@@ -35,9 +33,9 @@ export default function OverviewTotalStacked({ chain = "" }) {
         .add(bnToBn(statsItem.output.burnt))
         .add(bnToBn(statsItem.output.transfer)),
     )
-    .map((bn) => toPrecision(bn, precision, false));
+    .map((bn) => toPrecision(bn, decimals, false));
   const treasuryHistory = statsHistory.map((statsItem) =>
-    toPrecision(statsItem.treasuryBalance, precision, false),
+    toPrecision(statsItem.treasuryBalance, decimals, false),
   );
 
   const sliceRangeData = (data) => {

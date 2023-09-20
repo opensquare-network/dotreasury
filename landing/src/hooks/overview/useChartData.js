@@ -1,5 +1,5 @@
 import { useTheme } from "../../../../site/src/context/theme";
-import { getPrecision, toPrecision } from "../../../../site/src/utils";
+import { toPrecision } from "../../../../site/src/utils";
 import { useState, useEffect } from "react";
 import { getChainSettings } from "../../utils/chains";
 import { sumBy } from "../../../../site/src/utils/math";
@@ -8,14 +8,13 @@ import { useOverviewData } from "../useData";
 
 export function useOverviewIncomeChartData(chain = "") {
   const theme = useTheme();
-  const { symbol } = getChainSettings(chain);
-  const precision = getPrecision(symbol);
+  const { decimals } = getChainSettings(chain);
 
   const overview = useOverviewData(chain);
 
   const inflation = toPrecision(
     overview.income.inflation || 0,
-    precision,
+    decimals,
     false,
   );
   const slashes = toPrecision(
@@ -26,10 +25,10 @@ export function useOverviewIncomeChartData(chain = "") {
       Number(overview.income.slashSeats.identity || 0) +
       Number(overview.income.slashSeats.referenda || 0) +
       Number(overview.income.slashSeats.fellowshipReferenda || 0),
-    precision,
+    decimals,
     false,
   );
-  const others = toPrecision(overview.income.others || 0, precision, false);
+  const others = toPrecision(overview.income.others || 0, decimals, false);
 
   const [incomeData, setIncomeData] = useState({
     icon: "circle",
@@ -86,8 +85,7 @@ export function useOverviewIncomeChartData(chain = "") {
 
 export function useOverviewOutputChartData(chain) {
   const theme = useTheme();
-  const { symbol } = getChainSettings(chain);
-  const precision = getPrecision(symbol);
+  const { decimals } = getChainSettings(chain);
 
   const overview = useOverviewData(chain);
 
@@ -95,25 +93,21 @@ export function useOverviewOutputChartData(chain) {
 
   const proposalSpent = toPrecision(
     overview.output.proposal.value || 0,
-    precision,
+    decimals,
     false,
   );
   const openGovSpent = sumBy(Object.values(referendaSpent), (item) => {
-    return toPrecision(item.value, precision, false);
+    return toPrecision(item.value, decimals, false);
   });
-  const tipSpent = toPrecision(
-    overview.output.tip.value || 0,
-    precision,
-    false,
-  );
+  const tipSpent = toPrecision(overview.output.tip.value || 0, decimals, false);
   const bountySpent = toPrecision(
     overview.output.bounty.value || 0,
-    precision,
+    decimals,
     false,
   );
   const burntTotal = toPrecision(
     overview.output.burnt.value || 0,
-    precision,
+    decimals,
     false,
   );
 

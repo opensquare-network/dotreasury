@@ -10,6 +10,7 @@ import {
   abbreviateBigNumber,
 } from "../../../site/src/utils";
 import { toLocaleStringWithFixed } from "../../../site/src/utils";
+import { getChainSettings } from "../utils/chains";
 
 const Wrapper = styled.div`
   display: flex;
@@ -61,11 +62,16 @@ const Balance = ({
   isUnitPrice = true,
   horizontal = false,
   abbreviate = false,
-  symbol,
+  chain = "",
 }) => {
+  const { decimals } = getChainSettings(chain);
   let usdtNumber = Number(usdt);
   if (value === null || value === undefined) value = 0;
-  const precision = toPrecision(value, getPrecision(currency || symbol), false);
+  const precision = toPrecision(
+    value,
+    currency ? getPrecision(currency) : decimals,
+    false,
+  );
   const localePrecision = Number(precision).toLocaleString();
   if (isUnitPrice) usdtNumber = usdtNumber * precision;
 
@@ -79,7 +85,7 @@ const Balance = ({
 
   return (
     <Wrapper reverse={reverse} horizontal={horizontal}>
-      <PairText value={displayValue} unit={currency || symbol} />
+      <PairText value={displayValue} unit={currency || decimals} />
       {usdt && !isNaN(usdtNumber) && (
         <UsdtWrapper horizontal={horizontal}>{`${
           usdtNumber === 0 ? "" : "≈ "

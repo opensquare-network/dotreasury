@@ -1,6 +1,5 @@
 import { Table } from "../../../../../site/src/components/Table";
 import Card from "../../../../../site/src/components/Card";
-import { getChainSettings } from "../../../utils/chains";
 import Balance from "../../balance";
 import ExternalLink from "../../../../../site/src/components/ExternalLink";
 import { cn } from "../../../utils";
@@ -11,7 +10,6 @@ import { useOverviewData } from "../../../hooks/useData";
 
 export default function OverviewTopBeneficiaries({ chain = "" }) {
   const overview = useOverviewData(chain);
-  const { symbol } = getChainSettings(chain);
   const data = overview?.bestProposalBeneficiaries || [];
 
   const columns = [
@@ -32,11 +30,11 @@ export default function OverviewTopBeneficiaries({ chain = "" }) {
       headerCellClassName: "!text-right",
       cellRender: (_, item) => (
         <Balance
+          chain={chain}
           value={item.value}
           usdt={item.fiatValue}
           reverse
           isUnitPrice={false}
-          symbol={symbol}
         />
       ),
     },

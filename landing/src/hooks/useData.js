@@ -8,7 +8,7 @@ import {
 } from "../../../site/src/services/chainApi";
 import { TreasuryAccount } from "../../../site/src/constants";
 import { getChainSettings } from "../utils/chains";
-import { getPrecision, toPrecision } from "../../../site/src/utils";
+import { toPrecision } from "../../../site/src/utils";
 
 const useGlobalScanHeight = createGlobalState({
   polkadot: 0,
@@ -33,7 +33,7 @@ export function usePrepareSiteData(chain) {
   const [, setGlobalTreasuryData] = useGlobalTreasuryData();
   const [, setGlobalSpendPeriod] = useGlobalSpendPeriodData();
 
-  const { symbol } = getChainSettings(chain);
+  const { decimals } = getChainSettings(chain);
 
   useEffect(() => {
     connect(chain, {
@@ -54,9 +54,7 @@ export function usePrepareSiteData(chain) {
       ).toJSON();
 
       const result = {
-        free: account
-          ? toPrecision(account.data.free, getPrecision(symbol), false)
-          : 0,
+        free: account ? toPrecision(account.data.free, decimals, false) : 0,
         burnPercent: toPrecision(api.consts.treasury.burn, 6, false),
       };
 
