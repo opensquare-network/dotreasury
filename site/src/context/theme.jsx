@@ -25,7 +25,9 @@ const themes = { light, dark };
 const ThemeContext = createContext({});
 
 const GlobalThemeVars = createGlobalStyle`
-  :root {${(p) => p.vars}}
+  :root {
+    ${(p) => p.vars}
+  }
 `;
 
 /**
