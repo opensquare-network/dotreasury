@@ -3,18 +3,23 @@ import CountDown from "../../../../../site/src/components/CountDown";
 import ImageWithDark from "../../../../../site/src/components/ImageWithDark";
 import SummaryItem from "../../../../../site/src/components/Summary/Item";
 import { abbreviateBigNumber } from "../../../../../site/src/utils";
+import { parseEstimateTime } from "../../../../../site/src/utils/parseEstimateTime";
 import { useOverviewTotalAmount } from "../../../hooks/overview/useTotalAmount";
 import { useOverviewData, useScanHeight } from "../../../hooks/useSocket";
+import { useSpendPeriod } from "../../../hooks/useSpendPeriod";
 import { useTreasuryData } from "../../../hooks/useTreasuryData";
 import { getChainSettings } from "../../../utils/chains";
+import BlocksTime from "../../BlocksTime";
 import Button from "../../button";
+import { extractTime } from "@polkadot/util";
 
-export default function OverviewSummary({ chain = "", spendPeriod = {} }) {
+export default function OverviewSummary({ chain = "" }) {
   const { symbol, name, value } = getChainSettings(chain);
   const height = useScanHeight(chain);
   const { totalIncome, totalOutput } = useOverviewTotalAmount(chain);
   const overviewData = useOverviewData(chain);
   const treasuryData = useTreasuryData(chain);
+  const spendPeriod = useSpendPeriod(chain);
   const symbolPrice = overviewData?.latestSymbolPrice ?? 0;
 
   return (
@@ -49,7 +54,29 @@ export default function OverviewSummary({ chain = "", spendPeriod = {} }) {
             className="justify-between py-2"
             title="Spend Period"
             icon={<CountDown percent={spendPeriod.progress} />}
-            content={<div>todo</div>}
+            content={
+              <div>
+                <BlocksTime
+                  chain={chain}
+                  blocks={spendPeriod.restBlocks}
+                  unitMapper={{ d: "Day" }}
+                  pluralUnitMapper={{ d: "Days" }}
+                  ValueWrapper={(props) => (
+                    <span className="h3-18-semibold" {...props} />
+                  )}
+                  UnitWrapper={(props) => (
+                    <span
+                      className="h3-18-semibold text-textTertiary mx-1"
+                      {...props}
+                    />
+                  )}
+                />
+
+                <p className="p-12-normal text-textTertiary">
+                  {parseEstimateTime(extractTime(spendPeriod.periodTime))}
+                </p>
+              </div>
+            }
           />
 
           <hr className="my-4" />
