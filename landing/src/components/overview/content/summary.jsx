@@ -62,7 +62,9 @@ export default function OverviewSummary({ chain = "" }) {
                   unitMapper={{ d: "Day" }}
                   pluralUnitMapper={{ d: "Days" }}
                   ValueWrapper={(props) => (
-                    <span className="h3-18-semibold" {...props} />
+                    <span className="h3-18-semibold" {...props}>
+                      {props.children || 0}
+                    </span>
                   )}
                   UnitWrapper={(props) => (
                     <span
