@@ -1,16 +1,14 @@
 import Card from "../../../../../site/src/components/Card";
-import { STATS_HISTORY_DATA } from "../../../fixtures";
 import { useTheme } from "../../../../../site/src/context/theme";
 import { bnToBn } from "@polkadot/util";
 import { getPrecision, toPrecision } from "../../../../../site/src/utils";
 import { getChainSettings } from "../../../utils/chains";
 import Chart from "../../../../../site/src/pages/Overview/TotalStacked/Chart";
+import { useStatsHistory } from "../../../hooks/useStatsHistory";
 
-export default function OverviewTotalStacked({
-  chain = "",
-  statsHistory = STATS_HISTORY_DATA,
-}) {
+export default function OverviewTotalStacked({ chain = "" }) {
   const { symbol } = getChainSettings(chain);
+  const statsHistory = useStatsHistory(chain);
 
   const dateLabels = statsHistory.map(
     (statsItem) => statsItem.indexer.blockTime,
@@ -18,7 +16,6 @@ export default function OverviewTotalStacked({
 
   const theme = useTheme();
   const chartRange = [0, dateLabels.length - 1];
-  // const [incomeHistory, setIncomeHistory] = useState([]);
 
   const precision = getPrecision(symbol);
 
