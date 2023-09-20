@@ -3,6 +3,7 @@ import CountDown from "../../../../../site/src/components/CountDown";
 import ImageWithDark from "../../../../../site/src/components/ImageWithDark";
 import SummaryItem from "../../../../../site/src/components/Summary/Item";
 import { abbreviateBigNumber } from "../../../../../site/src/utils";
+import { useScanHeight } from "../../../hooks/useSocket";
 import { getChainSettings } from "../../../utils/chains";
 import Button from "../../button";
 
@@ -13,6 +14,7 @@ export default function OverviewSummary({
   spendPeriod = {},
 }) {
   const { symbol, name, value } = getChainSettings(chain);
+  const height = useScanHeight(chain);
 
   return (
     <Card className="!p-6 h-full flex flex-col gap-y-6">
@@ -93,7 +95,7 @@ export default function OverviewSummary({
             <circle cx="6" cy="6" r="6" fill="var(--green100)" />
             <circle cx="6" cy="6" r="2" fill="var(--green500)" />
           </svg>
-          #13,333,333
+          #{height?.toLocaleString?.()}
         </div>
       </div>
     </Card>

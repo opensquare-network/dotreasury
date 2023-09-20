@@ -1,23 +1,17 @@
 import { useTheme } from "../../../../site/src/context/theme";
 import { getPrecision, toPrecision } from "../../../../site/src/utils";
-import { DOT_OVERVIEW_DATA, KSM_OVERVIEW_DATA } from "../../fixtures";
 import { useState, useEffect } from "react";
 import { getChainSettings } from "../../utils/chains";
 import { sumBy } from "../../../../site/src/utils/math";
 import { createChartStatusToggleClickEvent } from "../../utils/chart/statusToggleClickEvent";
-
-// FIXME: landing, overview data from server
-const OVERVIEW_DATA = {
-  polkadot: DOT_OVERVIEW_DATA,
-  kusama: KSM_OVERVIEW_DATA,
-};
+import { useOverviewData } from "../useSocket";
 
 export function useOverviewIncomeChartData(chain = "") {
   const theme = useTheme();
   const { symbol } = getChainSettings(chain);
   const precision = getPrecision(symbol);
 
-  const overview = OVERVIEW_DATA[chain];
+  const overview = useOverviewData(chain);
 
   const inflation = toPrecision(
     overview.income.inflation || 0,
@@ -95,7 +89,7 @@ export function useOverviewOutputChartData(chain) {
   const { symbol } = getChainSettings(chain);
   const precision = getPrecision(symbol);
 
-  const overview = OVERVIEW_DATA[chain];
+  const overview = useOverviewData(chain);
 
   const referendaSpent = overview.output?.referendaSpent ?? {};
 

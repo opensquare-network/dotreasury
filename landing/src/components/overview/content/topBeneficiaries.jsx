@@ -1,6 +1,5 @@
 import { Table } from "../../../../../site/src/components/Table";
 import Card from "../../../../../site/src/components/Card";
-import { DOT_OVERVIEW_DATA, KSM_OVERVIEW_DATA } from "../../../fixtures";
 import { getChainSettings } from "../../../utils/chains";
 import Balance from "../../balance";
 import ExternalLink from "../../../../../site/src/components/ExternalLink";
@@ -8,15 +7,10 @@ import { cn } from "../../../utils";
 import IconMask from "../../../../../site/src/components/Icon/Mask";
 import User from "../../user";
 import { USER_ROLES } from "../../../../../site/src/constants";
-
-// FIXME: landing, overview data from server
-const OVERVIEW_DATA = {
-  polkadot: DOT_OVERVIEW_DATA,
-  kusama: KSM_OVERVIEW_DATA,
-};
+import { useOverviewData } from "../../../hooks/useSocket";
 
 export default function OverviewTopBeneficiaries({ chain = "" }) {
-  const overview = OVERVIEW_DATA[chain];
+  const overview = useOverviewData(chain);
   const { symbol } = getChainSettings(chain);
   const data = overview?.bestProposalBeneficiaries || [];
 
