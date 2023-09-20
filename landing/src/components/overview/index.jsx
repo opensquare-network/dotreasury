@@ -2,7 +2,7 @@ import { useState } from "react";
 import Container from "../../../../site/src/components/Container";
 import ImageWithDark from "../../../../site/src/components/ImageWithDark";
 import Tabs from "../tabs";
-import TreasuryOverviewContent from "./content";
+import OverviewContent from "./content";
 import { CHAINS } from "../../utils/chains";
 import { cn } from "../../utils";
 
@@ -18,7 +18,7 @@ export default function Overview() {
           <span className="h4-16-semibold">{chain.name}</span>
         </span>
       ),
-      content: <TreasuryOverviewContent chain={activeTabId} />,
+      content: <OverviewContent chain={activeTabId} />,
     };
   });
 

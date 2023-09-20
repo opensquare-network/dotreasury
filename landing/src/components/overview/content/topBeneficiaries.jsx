@@ -15,7 +15,7 @@ const OVERVIEW_DATA = {
   kusama: KSM_OVERVIEW_DATA,
 };
 
-export default function TreasuryOverviewTopBeneficiaries({ chain = "" }) {
+export default function OverviewTopBeneficiaries({ chain = "" }) {
   const overview = OVERVIEW_DATA[chain];
   const { symbol } = getChainSettings(chain);
   const data = overview?.bestProposalBeneficiaries || [];

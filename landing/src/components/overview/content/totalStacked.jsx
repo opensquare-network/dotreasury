@@ -6,7 +6,7 @@ import { getPrecision, toPrecision } from "../../../../../site/src/utils";
 import { getChainSettings } from "../../../utils/chains";
 import Chart from "../../../../../site/src/pages/Overview/TotalStacked/Chart";
 
-export default function TreasuryOverviewTotalStacked({
+export default function OverviewTotalStacked({
   chain = "",
   statsHistory = STATS_HISTORY_DATA,
 }) {

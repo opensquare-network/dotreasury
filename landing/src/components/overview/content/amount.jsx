@@ -2,26 +2,26 @@ import ExternalLink from "../../../../../site/src/components/ExternalLink";
 import IconMask from "../../../../../site/src/components/Icon/Mask";
 import DoughnutCard from "../../../../../site/src/pages/Overview/DoughnutCard";
 import {
-  useTreasuryOverviewIncomeChartData,
-  useTreasuryOverviewOutputChartData,
-} from "../../../hooks/treasuryOverview/useChartData";
+  useOverviewIncomeChartData,
+  useOverviewOutputChartData,
+} from "../../../hooks/overview/useChartData";
 import { cn } from "../../../utils";
 import { getChainSettings } from "../../../utils/chains";
 import { useState } from "react";
 
-export default function TreasuryOverviewAmount({ chain = "" }) {
+export default function OverviewAmount({ chain = "" }) {
   const [view, setView] = useState("income");
   const { symbol } = getChainSettings(chain);
   const {
     incomeData,
     incomeStatus,
     clickEvent: incomeClickEvent,
-  } = useTreasuryOverviewIncomeChartData(chain);
+  } = useOverviewIncomeChartData(chain);
   const {
     outputData,
     outputStatus,
     clickEvent: outputClickEvent,
-  } = useTreasuryOverviewOutputChartData(chain);
+  } = useOverviewOutputChartData(chain);
 
   const tabs = [
     {

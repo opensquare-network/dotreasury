@@ -1,10 +1,10 @@
 import { cn } from "../../../utils";
-import TreasuryOverviewAmount from "./amount";
-import TreasuryOverviewSummary from "./summary";
-import TreasuryOverviewTopBeneficiaries from "./topBeneficiaries";
-import TreasuryOverviewTotalStacked from "./totalStacked";
+import OverviewAmount from "./amount";
+import OverviewSummary from "./summary";
+import OverviewTopBeneficiaries from "./topBeneficiaries";
+import OverviewTotalStacked from "./totalStacked";
 
-export default function TreasuryOverviewContent({ chain = "" }) {
+export default function OverviewContent({ chain = "" }) {
   return (
     <div
       className={cn(
@@ -14,11 +14,11 @@ export default function TreasuryOverviewContent({ chain = "" }) {
       )}
     >
       <div className="row-span-3 col-span-1">
-        <TreasuryOverviewSummary chain={chain} />
+        <OverviewSummary chain={chain} />
       </div>
 
       <div className="col-span-2">
-        <TreasuryOverviewTotalStacked chain={chain} />
+        <OverviewTotalStacked chain={chain} />
       </div>
 
       <div
@@ -27,8 +27,8 @@ export default function TreasuryOverviewContent({ chain = "" }) {
           "max-md:block max-md:space-y-4",
         )}
       >
-        <TreasuryOverviewAmount chain={chain} />
-        <TreasuryOverviewTopBeneficiaries chain={chain} />
+        <OverviewAmount chain={chain} />
+        <OverviewTopBeneficiaries chain={chain} />
       </div>
     </div>
   );

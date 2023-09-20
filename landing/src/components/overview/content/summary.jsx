@@ -6,7 +6,7 @@ import { abbreviateBigNumber } from "../../../../../site/src/utils";
 import { getChainSettings } from "../../../utils/chains";
 import Button from "../../button";
 
-export default function TreasuryOverviewSummary({
+export default function OverviewSummary({
   chain = "",
   treasury = {},
   symbolPrice = 0,

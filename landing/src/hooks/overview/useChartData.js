@@ -12,7 +12,7 @@ const OVERVIEW_DATA = {
   kusama: KSM_OVERVIEW_DATA,
 };
 
-export function useTreasuryOverviewIncomeChartData(chain = "") {
+export function useOverviewIncomeChartData(chain = "") {
   const theme = useTheme();
   const { symbol } = getChainSettings(chain);
   const precision = getPrecision(symbol);
@@ -90,7 +90,7 @@ export function useTreasuryOverviewIncomeChartData(chain = "") {
   };
 }
 
-export function useTreasuryOverviewOutputChartData(chain) {
+export function useOverviewOutputChartData(chain) {
   const theme = useTheme();
   const { symbol } = getChainSettings(chain);
   const precision = getPrecision(symbol);
