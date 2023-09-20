@@ -5,18 +5,16 @@ import SummaryItem from "../../../../../site/src/components/Summary/Item";
 import { abbreviateBigNumber } from "../../../../../site/src/utils";
 import { useOverviewTotalAmount } from "../../../hooks/overview/useTotalAmount";
 import { useOverviewData, useScanHeight } from "../../../hooks/useSocket";
+import { useTreasuryData } from "../../../hooks/useTreasuryData";
 import { getChainSettings } from "../../../utils/chains";
 import Button from "../../button";
 
-export default function OverviewSummary({
-  chain = "",
-  treasury = {},
-  spendPeriod = {},
-}) {
+export default function OverviewSummary({ chain = "", spendPeriod = {} }) {
   const { symbol, name, value } = getChainSettings(chain);
   const height = useScanHeight(chain);
   const { totalIncome, totalOutput } = useOverviewTotalAmount(chain);
   const overviewData = useOverviewData(chain);
+  const treasuryData = useTreasuryData(chain);
   const symbolPrice = overviewData?.latestSymbolPrice ?? 0;
 
   return (
@@ -41,7 +39,7 @@ export default function OverviewSummary({
             icon={<ImageWithDark src="/imgs/data-available.svg" />}
             content={
               <SummaryItemValueContent
-                amount={treasury.free}
+                amount={treasuryData.free}
                 symbol={symbol}
                 symbolPrice={symbolPrice}
               />
