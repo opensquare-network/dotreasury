@@ -3,18 +3,21 @@ import CountDown from "../../../../../site/src/components/CountDown";
 import ImageWithDark from "../../../../../site/src/components/ImageWithDark";
 import SummaryItem from "../../../../../site/src/components/Summary/Item";
 import { abbreviateBigNumber } from "../../../../../site/src/utils";
-import { useScanHeight } from "../../../hooks/useSocket";
+import { useOverviewTotalAmount } from "../../../hooks/overview/useTotalAmount";
+import { useOverviewData, useScanHeight } from "../../../hooks/useSocket";
 import { getChainSettings } from "../../../utils/chains";
 import Button from "../../button";
 
 export default function OverviewSummary({
   chain = "",
   treasury = {},
-  symbolPrice = 0,
   spendPeriod = {},
 }) {
   const { symbol, name, value } = getChainSettings(chain);
   const height = useScanHeight(chain);
+  const { totalIncome, totalOutput } = useOverviewTotalAmount(chain);
+  const overviewData = useOverviewData(chain);
+  const symbolPrice = overviewData?.latestSymbolPrice ?? 0;
 
   return (
     <Card className="!p-6 h-full flex flex-col gap-y-6">
@@ -59,7 +62,7 @@ export default function OverviewSummary({
             icon={<ImageWithDark src="/imgs/data-available.svg" />}
             content={
               <SummaryItemValueContent
-                amount={treasury.totalIncome}
+                amount={totalIncome}
                 symbol={symbol}
                 symbolPrice={symbolPrice}
               />
@@ -71,7 +74,7 @@ export default function OverviewSummary({
             icon={<ImageWithDark src="/imgs/data-available.svg" />}
             content={
               <SummaryItemValueContent
-                amount={treasury.totalOutput}
+                amount={totalOutput}
                 symbol={symbol}
                 symbolPrice={symbolPrice}
               />
