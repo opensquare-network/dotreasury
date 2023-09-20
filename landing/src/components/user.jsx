@@ -1,7 +1,7 @@
 import Username from "../../../site/src/components/User/Username";
 import Avatar from "../../../site/src/components/User/Avatar";
 import Badge from "../../../site/src/components/User/Badge";
-import { useIdentity } from "../hooks/use-identity";
+import { useIdentity } from "../hooks/useIdentity";
 import DeletedAccount from "../../../site/src/components/User/DeletedAccount";
 import ExternalLink from "../../../site/src/components/ExternalLink";
 
