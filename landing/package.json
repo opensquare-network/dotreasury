@@ -14,6 +14,7 @@
     "@apollo/client": "^3.8.4",
     "@floating-ui/react": "^0.25.4",
     "@polkadot/util": "^12.5.1",
+    "bignumber.js": "^9.1.2",
     "clsx": "^2.0.0",
     "d3": "^7.8.5",
     "graphql": "^16.8.1",
