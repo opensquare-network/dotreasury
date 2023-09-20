@@ -5,9 +5,12 @@ import SummaryItem from "../../../../../site/src/components/Summary/Item";
 import { abbreviateBigNumber } from "../../../../../site/src/utils";
 import { parseEstimateTime } from "../../../../../site/src/utils/parseEstimateTime";
 import { useOverviewTotalAmount } from "../../../hooks/overview/useTotalAmount";
-import { useOverviewData, useScanHeight } from "../../../hooks/useSocket";
-import { useSpendPeriod } from "../../../hooks/useSpendPeriod";
-import { useTreasuryData } from "../../../hooks/useTreasuryData";
+import {
+  useOverviewData,
+  useScanHeight,
+  useSpendPeriodData,
+  useTreasuryData,
+} from "../../../hooks/useData";
 import { getChainSettings } from "../../../utils/chains";
 import BlocksTime from "../../BlocksTime";
 import Button from "../../button";
@@ -19,7 +22,7 @@ export default function OverviewSummary({ chain = "" }) {
   const { totalIncome, totalOutput } = useOverviewTotalAmount(chain);
   const overviewData = useOverviewData(chain);
   const treasuryData = useTreasuryData(chain);
-  const spendPeriod = useSpendPeriod(chain);
+  const spendPeriodData = useSpendPeriodData(chain);
   const symbolPrice = overviewData?.latestSymbolPrice ?? 0;
 
   return (
@@ -53,12 +56,12 @@ export default function OverviewSummary({ chain = "" }) {
           <SummaryItem
             className="justify-between py-2"
             title="Spend Period"
-            icon={<CountDown percent={spendPeriod.progress} />}
+            icon={<CountDown percent={spendPeriodData.progress} />}
             content={
               <div>
                 <BlocksTime
                   chain={chain}
-                  blocks={spendPeriod.restBlocks}
+                  blocks={spendPeriodData.restBlocks}
                   unitMapper={{ d: "Day" }}
                   pluralUnitMapper={{ d: "Days" }}
                   ValueWrapper={(props) => (
@@ -75,7 +78,7 @@ export default function OverviewSummary({ chain = "" }) {
                 />
 
                 <p className="p-12-normal text-textTertiary">
-                  {parseEstimateTime(extractTime(spendPeriod.periodTime))}
+                  {parseEstimateTime(extractTime(spendPeriodData.periodTime))}
                 </p>
               </div>
             }

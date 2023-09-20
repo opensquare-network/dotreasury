@@ -7,7 +7,7 @@ import { cn } from "../../../utils";
 import IconMask from "../../../../../site/src/components/Icon/Mask";
 import User from "../../user";
 import { USER_ROLES } from "../../../../../site/src/constants";
-import { useOverviewData } from "../../../hooks/useSocket";
+import { useOverviewData } from "../../../hooks/useData";
 
 export default function OverviewTopBeneficiaries({ chain = "" }) {
   const overview = useOverviewData(chain);

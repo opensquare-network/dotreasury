@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { getChainSettings } from "../../utils/chains";
 import { sumBy } from "../../../../site/src/utils/math";
 import { createChartStatusToggleClickEvent } from "../../utils/chart/statusToggleClickEvent";
-import { useOverviewData } from "../useSocket";
+import { useOverviewData } from "../useData";
 
 export function useOverviewIncomeChartData(chain = "") {
   const theme = useTheme();
