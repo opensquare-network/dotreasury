@@ -1,13 +1,18 @@
 import { useEffect } from "react";
 import { getApi } from "../../../site/src/services/chainApi";
-import { useState } from "react";
 import { TreasuryAccount } from "../../../site/src/constants";
 import { getPrecision, toPrecision } from "../../../site/src/utils";
 import { getChainSettings } from "../utils/chains";
+import { createGlobalState } from "react-use";
+
+const useGlobalTreasuryData = createGlobalState({
+  polkadot: {},
+  kusama: {},
+});
 
 export function useTreasuryData(chain) {
   const { symbol } = getChainSettings(chain);
-  const [data, setData] = useState({});
+  const [data, setData] = useGlobalTreasuryData({});
 
   useEffect(() => {
     fetchTreasuryData();
@@ -26,9 +31,12 @@ export function useTreasuryData(chain) {
         burnPercent: toPrecision(api.consts.treasury.burn, 6, false),
       };
 
-      setData(result);
+      setData((value) => ({
+        ...value,
+        [chain]: result,
+      }));
     }
   }, [chain]);
 
-  return data;
+  return data[chain];
 }
