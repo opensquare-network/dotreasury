@@ -64,7 +64,7 @@ const Balance = ({
   abbreviate = false,
   chain = "",
 }) => {
-  const { decimals } = getChainSettings(chain);
+  const { decimals, symbol } = getChainSettings(chain);
   let usdtNumber = Number(usdt);
   if (value === null || value === undefined) value = 0;
   const precision = toPrecision(
@@ -85,7 +85,7 @@ const Balance = ({
 
   return (
     <Wrapper reverse={reverse} horizontal={horizontal}>
-      <PairText value={displayValue} unit={currency || decimals} />
+      <PairText value={displayValue} unit={currency || symbol} />
       {usdt && !isNaN(usdtNumber) && (
         <UsdtWrapper horizontal={horizontal}>{`${
           usdtNumber === 0 ? "" : "≈ "
