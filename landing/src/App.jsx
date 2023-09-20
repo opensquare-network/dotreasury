@@ -4,7 +4,7 @@ import Footer from "../../site/src/pages/Footer";
 import { ThemeProvider } from "../../site/src/context/theme";
 import Header from "./components/header";
 import Hero from "./components/hero";
-import TreasuryOverview from "./components/treasuryOverview";
+import Overview from "./components/overview";
 import Ecosystem from "./components/ecosystem";
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
       <Header />
       <Hero />
       <Ecosystem />
-      <TreasuryOverview />
+      <Overview />
       <Footer />
 
       <div className="absolute top-0 max-h-screen overflow-hidden -z-10 pointer-events-none">

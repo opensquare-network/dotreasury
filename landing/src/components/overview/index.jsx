@@ -6,7 +6,7 @@ import TreasuryOverviewContent from "./content";
 import { CHAINS } from "../../utils/chains";
 import { cn } from "../../utils";
 
-export default function TreasuryOverview() {
+export default function Overview() {
   const [activeTabId, setActiveTabId] = useState(CHAINS.polkadot.value);
 
   const tabs = [CHAINS.polkadot, CHAINS.kusama].map((chain) => {
