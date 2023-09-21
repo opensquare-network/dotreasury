@@ -30,12 +30,21 @@ export default function ProjectBubble({ node }) {
     >
       <div className="w-full h-full flex flex-col justify-center">
         <img
-          className="w-16 h-16 mx-auto"
+          className="w-16 h-16 mx-auto dark:hidden"
           style={{
             maxWidth: "calc(100% - 16px)",
             maxHeight: "calc(100% - 16px)",
           }}
           src={`/imgs/logo-${chainSettings.value}.svg`}
+          alt={chainSettings.name}
+        />
+        <img
+          className="w-16 h-16 mx-auto hidden dark:block"
+          style={{
+            maxWidth: "calc(100% - 16px)",
+            maxHeight: "calc(100% - 16px)",
+          }}
+          src={`/imgs/logo-${chainSettings.value}-dark.svg`}
           alt={chainSettings.name}
         />
         {showInfo && (
