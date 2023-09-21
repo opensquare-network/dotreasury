@@ -14,13 +14,13 @@ async function listenAndEmitInfo(io) {
 
       if (roomId === chainStatusRoom) {
         const scanHeight = getScanHeight();
-        io.to(roomId).emit("scanStatus", { height: scanHeight });
+        socket.emit("scanStatus", { height: scanHeight });
       } else if (roomId === overviewRoom) {
         const overview = getOverview();
-        io.to(roomId).emit("overview", overview);
+        socket.emit("overview", overview);
       } else if (roomId === overviewV2Room) {
         const overview = getOverviewV2();
-        io.to(roomId).emit("overview_v2", overview);
+        socket.emit("overview_v2", overview);
       }
     });
 
