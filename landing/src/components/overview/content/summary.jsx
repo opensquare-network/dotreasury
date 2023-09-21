@@ -1,5 +1,6 @@
 import Card from "../../../../../site/src/components/Card";
 import CountDown from "../../../../../site/src/components/CountDown";
+import ExternalLink from "../../../../../site/src/components/ExternalLink";
 import ImageWithDark from "../../../../../site/src/components/ImageWithDark";
 import SummaryItem from "../../../../../site/src/components/Summary/Item";
 import { abbreviateBigNumber } from "../../../../../site/src/utils";
@@ -37,7 +38,11 @@ export default function OverviewSummary({ chain = "" }) {
         </div>
 
         <div>
-          <Button className="w-full">{name} Treasury</Button>
+          <ExternalLink href={`https://${value}.dotreasury.com`}>
+            <Button className="w-full">
+              {name} Treasury {"->"}
+            </Button>
+          </ExternalLink>
         </div>
 
         <div>
