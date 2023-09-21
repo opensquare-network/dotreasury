@@ -46,7 +46,7 @@ export default function OverviewTopBeneficiaries({ chain = "" }) {
         <h4 className="h4-16-semibold">Top Beneficiaries</h4>
         <div>
           <ExternalLink
-            href={`https://${chain}.dotreasury.com/proposal-beneficiaries`}
+            href={`https://${chain}.dotreasury.com/#/proposal-beneficiaries`}
             className={cn(
               "text-textSecondary p-12-normal inline-flex items-center",
               "hover:text-textPrimary [&_i]:hover:bg-textPrimary",
