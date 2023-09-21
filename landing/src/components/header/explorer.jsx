@@ -1,22 +1,22 @@
 import { forwardRef } from "react";
 import Card from "../../../../site/src/components/Card";
 import { cn } from "../../utils";
+import { CHAINS } from "../../utils/chains";
+import ImageWithDark from "../../../../site/src/components/ImageWithDark";
 
 const HeaderExplorer = forwardRef(function HeaderExplorerComponent(props, ref) {
-  const links = [
-    {
-      link: "https://polkadot.dotreasury.com",
-      icon: "/imgs/logo-polkadot.svg",
-      name: "Polkadot",
-      symbol: "DOT",
-    },
-    {
-      link: "https://kusama.dotreasury.com",
-      icon: "/imgs/logo-kusama.svg",
-      name: "Kusama",
-      symbol: "KSM",
-    },
-  ];
+  const links = Object.keys(CHAINS)
+    .filter((chain) => CHAINS[chain].hasDotreasury)
+    .map((chain) => {
+      const chainSettings = CHAINS[chain];
+
+      return {
+        link: `https://${chainSettings.value}.dotreasury.com`,
+        icon: `/imgs/logo-${chainSettings.value}.svg`,
+        name: chainSettings.name,
+        symbol: chainSettings.symbol,
+      };
+    });
 
   return (
     <Card
@@ -35,7 +35,7 @@ const HeaderExplorer = forwardRef(function HeaderExplorerComponent(props, ref) {
               event.stopPropagation();
             }}
           >
-            <img src={item.icon} alt={item.name} className="mr-2" />
+            <ImageWithDark src={item.icon} alt={item.name} className="mr-2" />
             <span className="w-full inline-flex items-baseline justify-between">
               <span className="text-textPrimary p-14-medium">{item.name}</span>
               <span className="text-textTertiary p-12-medium">
