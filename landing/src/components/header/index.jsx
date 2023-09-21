@@ -4,6 +4,7 @@ import Button from "../button";
 import { flip, offset, shift, useFloating } from "@floating-ui/react";
 import { useOnClickOutside } from "usehooks-ts";
 import HeaderExplorer from "./explorer";
+import { cn } from "../../utils";
 
 const CONTACT_LINK = "mailto:yongfeng@opensquare.network";
 
@@ -27,7 +28,7 @@ export default function Header() {
   }
 
   return (
-    <header className="py-5">
+    <header className="py-5 max-md:px-6">
       <Container className="flex justify-between items-center">
         <div>
           <a href="/">
@@ -44,7 +45,7 @@ export default function Header() {
           </a>
         </div>
 
-        <div className="flex items-center gap-x-8">
+        <div className={cn("flex items-center gap-x-8", "max-sm:hidden")}>
           <a href={CONTACT_LINK} className="text-textPrimary">
             Contact Us
           </a>
