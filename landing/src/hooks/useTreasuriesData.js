@@ -27,20 +27,20 @@ export function useTreasuriesData() {
       const data = treasuries.map((treasury) => {
         const { decimals } = getChainSettings(treasury.chain);
         const amount = toPrecision(treasury.balance, decimals, false);
-        const value = amount * treasury.price;
+        const fiatValue = amount * treasury.price;
 
         return {
           ...treasury,
           amount,
-          value,
+          fiatValue,
         };
       });
 
-      setTreasuriesData(data.sort((a, b) => b.value - a.value));
+      setTreasuriesData(data.sort((a, b) => b.fiatValue - a.fiatValue));
     });
   }, []);
 
-  const treasuriesTotalValue = sumBy(treasuriesData, "value");
+  const treasuriesTotalValue = sumBy(treasuriesData, "fiatValue");
 
   return {
     data: treasuriesData,

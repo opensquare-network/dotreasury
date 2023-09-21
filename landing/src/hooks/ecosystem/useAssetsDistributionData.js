@@ -37,7 +37,7 @@ export function useEcosystemAssetsDistributionData() {
           return chainSettings.name === item.name;
         }),
       ),
-    "value",
+    "fiatValue",
   );
 
   useEffect(() => {
@@ -45,11 +45,10 @@ export function useEcosystemAssetsDistributionData() {
       icon: "circle",
       labels: treasuriesData.map((treasury, idx) => {
         const chainSettings = getChainSettings(treasury.chain);
-        const value = treasury.value;
 
         return {
           name: chainSettings.name,
-          value,
+          value: treasury.fiatValue,
           color: COLORS[idx] || theme.neutral500,
         };
       }),

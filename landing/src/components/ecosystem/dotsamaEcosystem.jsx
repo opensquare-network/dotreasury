@@ -9,7 +9,7 @@ import { getChainSettings } from "../../utils/chains";
 
 export default function EcosystemDotsama(props) {
   const { data } = useTreasuriesData();
-  const max = Math.max(...data.map((treasury) => treasury.value));
+  const max = Math.max(...data.map((treasury) => treasury.fiatValue));
 
   return (
     <Card {...props} className={cn("!p-6", props.className)}>
@@ -28,7 +28,7 @@ export default function EcosystemDotsama(props) {
 
 function TreasuryItem({ max, ...treasury }) {
   const chainSettings = getChainSettings(treasury.chain);
-  const barWidth = Math.max(1, (treasury.value / max) * 100);
+  const barWidth = Math.max(1, (treasury.fiatValue / max) * 100);
 
   return (
     <div className={cn("flex items-center", "max-sm:block")}>
@@ -77,8 +77,8 @@ function TreasuryItem({ max, ...treasury }) {
           className={cn("p-14-medium flex items-center gap-x-2", "max-sm:mt-2")}
         >
           <div className="text-textPrimary whitespace-nowrap">
-            {!!treasury.amount && "≈ "}$
-            {abbreviateBigNumber(treasury.amount * treasury.price)}
+            {!!treasury.fiatValue && "≈ "}$
+            {abbreviateBigNumber(treasury.fiatValue)}
           </div>
           <div className="flex items-center text-textTertiary">
             <div className="mr-1">{abbreviateBigNumber(treasury.amount)}</div>
