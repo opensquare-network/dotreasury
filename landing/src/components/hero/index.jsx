@@ -4,13 +4,11 @@ import ProjectBubble from "./projectBubble";
 import ProjectBubbleGroup from "./projectBubbleGroup";
 import HeroContent from "./content";
 import { cn } from "../../utils";
-import { useQuery } from "@apollo/client";
-import { GET_TREASURIES } from "../../services/gqls";
+import { useTreasuriesData } from "../../hooks/useTreasuriesData";
 
 export default function Hero() {
   const [bubblesRef, bubblesSize] = useElementSize();
-  const { data } = useQuery(GET_TREASURIES);
-  const treasuries = data?.treasuries || [];
+  const { data } = useTreasuriesData();
 
   return (
     <Container className="grid grid-cols-2 h-[480px] py-20 max-md:grid-cols-1">
@@ -28,7 +26,7 @@ export default function Hero() {
         <ProjectBubbleGroup
           width={bubblesSize.width}
           height={bubblesSize.height}
-          data={treasuries}
+          data={data}
           renderBubbleToHTMLString={(node) => <ProjectBubble node={node} />}
         />
       </div>
