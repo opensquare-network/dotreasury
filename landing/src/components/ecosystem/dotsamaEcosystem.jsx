@@ -32,8 +32,13 @@ function TreasuryItem({ max, ...treasury }) {
   const barWidth = Math.max(1, (treasury.value / max) * 100);
 
   return (
-    <div className="flex items-center">
-      <div className="w-[160px] h4-16-semibold flex items-center">
+    <div className={cn("flex items-center", "max-sm:block")}>
+      <div
+        className={cn(
+          "w-[160px] h4-16-semibold flex items-center",
+          "max-sm:w-full",
+        )}
+      >
         <div className="mr-2 p-1 border border-neutral300 rounded flex items-center">
           <ImageWithDark src={`/imgs/logo-${chainSettings.value}.svg`} />
         </div>
@@ -57,14 +62,21 @@ function TreasuryItem({ max, ...treasury }) {
         )}
       </div>
 
-      <div className="flex items-center flex-grow">
+      <div
+        className={cn(
+          "flex items-center flex-grow",
+          "max-sm:mt-1 max-sm:block max-sm:py-1.5",
+        )}
+      >
         <div
           className="bg-pink300 h-5 mr-4"
           style={{
             width: `${barWidth}%`,
           }}
         />
-        <div className="p-14-medium flex items-center gap-x-2">
+        <div
+          className={cn("p-14-medium flex items-center gap-x-2", "max-sm:mt-2")}
+        >
           <div className="text-textPrimary whitespace-nowrap">
             {!!treasury.amount && "≈ "}$
             {abbreviateBigNumber(treasury.amount * treasury.price)}
