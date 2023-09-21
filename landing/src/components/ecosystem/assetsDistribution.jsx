@@ -1,11 +1,13 @@
 import Card from "../../../../site/src/components/Card";
 import DoughnutChart from "../../../../site/src/components/CustomDoughnut";
 import CustomLabelIcon from "../../../../site/src/pages/Overview/CustomLabel/icon";
+import { abbreviateBigNumber } from "../../../../site/src/utils";
 import { useEcosystemAssetsDistributionData } from "../../hooks/ecosystem/useAssetsDistributionData";
 import { cn } from "../../utils";
 
 export default function EcosystemAssetsDistribution(props) {
-  const { data, status, clickEvent } = useEcosystemAssetsDistributionData();
+  const { data, total, status, clickEvent } =
+    useEcosystemAssetsDistributionData();
 
   return (
     <Card {...props} className={cn("!p-6", props.className)}>
@@ -16,7 +18,9 @@ export default function EcosystemAssetsDistribution(props) {
         <div className="p-6">
           <div className="mx-auto w-[216px] h-[216px] relative">
             <div className="w-[125px] text-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-              <div className="h4-16-semibold">≈ $320,12M</div>
+              <div className="h4-16-semibold">
+                ≈ ${abbreviateBigNumber(total)}
+              </div>
               <p className="text-textTertiary p-12-medium">
                 Total Treasury Assets
               </p>

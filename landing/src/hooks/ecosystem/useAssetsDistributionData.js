@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { useTheme } from "../../../../site/src/context/theme";
-import { BUBBLE_DATA } from "../../fixtures";
-import { abbreviateBigNumber, toPrecision } from "../../../../site/src/utils";
+import { toPrecision } from "../../../../site/src/utils";
 import { useEffect } from "react";
 import { CHAINS, getChainSettings } from "../../utils/chains";
 import { createChartStatusToggleClickEvent } from "../../utils/chart/statusToggleClickEvent";
+import { useTreasuriesData } from "../useTreasuriesData";
+import sumBy from "lodash.sumby";
 
 export function useEcosystemAssetsDistributionData() {
   const theme = useTheme();
+  const { data: treasuriesData } = useTreasuriesData();
 
   const COLORS = {
     [CHAINS.polkadot.name]: theme.pink500,
@@ -25,42 +27,30 @@ export function useEcosystemAssetsDistributionData() {
     icon: "circle",
     labels: [],
   });
-  const [status, setStatus] = useState({
-    labels: BUBBLE_DATA.map((item) => {
-      const chainSettings = getChainSettings(item.name);
+  const [status, setStatus] = useState({ labels: [] });
 
-      return {
-        name: chainSettings.name,
-      };
-    }),
-  });
-
-  const findDisabled = (name) => {
-    const findFunc = (item) => {
-      if (item.name === name) return item.disabled;
-      if (item.children) {
-        return item.children.find(findFunc);
-      }
-      return;
-    };
-    const result = status?.labels?.find(findFunc);
-    return result;
-  };
-  const totalReduce = (acc, current) => {
-    if (current.children) {
-      if (current.value) return acc + current.value;
-      return acc + current.children.reduce(totalReduce, 0);
-    }
-    return acc + (findDisabled(current.name) ? 0 : current.value ?? 0);
-  };
-  const total = abbreviateBigNumber(data.labels?.reduce(totalReduce, 0));
+  const total = sumBy(
+    status.labels
+      ?.filter((item) => !item.disabled)
+      ?.map((item) =>
+        treasuriesData.find((predicate) => {
+          const chainSettings = getChainSettings(predicate.chain);
+          return chainSettings.name === item.name;
+        }),
+      ),
+    "value",
+  );
 
   useEffect(() => {
     setData({
       icon: "circle",
-      labels: BUBBLE_DATA.map((item) => {
-        const chainSettings = getChainSettings(item.name);
-        const value = toPrecision(item.value, chainSettings.decimals, false);
+      labels: treasuriesData.map((treasury) => {
+        const chainSettings = getChainSettings(treasury.chain);
+        const value = toPrecision(
+          treasury.value,
+          chainSettings.decimals,
+          false,
+        );
 
         return {
           name: chainSettings.name,
@@ -69,7 +59,17 @@ export function useEcosystemAssetsDistributionData() {
         };
       }),
     });
-  }, [BUBBLE_DATA, theme]);
+
+    setStatus({
+      labels: treasuriesData.map((treasury) => {
+        const chainSettings = getChainSettings(treasury.chain);
+
+        return {
+          name: chainSettings.name,
+        };
+      }),
+    });
+  }, [theme, treasuriesData]);
 
   const clickEvent = createChartStatusToggleClickEvent(status, setStatus);
 
