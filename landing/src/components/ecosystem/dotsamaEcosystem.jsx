@@ -29,6 +29,7 @@ export default function EcosystemDotsama(props) {
 
 function TreasuryItem({ max, ...treasury }) {
   const chainSettings = getChainSettings(treasury.chain);
+  const barWidth = Math.max(1, (treasury.value / max) * 100);
 
   return (
     <div className="flex items-center">
@@ -60,7 +61,7 @@ function TreasuryItem({ max, ...treasury }) {
         <div
           className="bg-pink300 h-5 mr-4"
           style={{
-            width: `${(treasury.value / max) * 100}%`,
+            width: `${barWidth}%`,
           }}
         />
         <div className="p-14-medium flex items-center gap-x-2">
