@@ -36,7 +36,7 @@ export function useTreasuriesData() {
         };
       });
 
-      setTreasuriesData(data);
+      setTreasuriesData(data.sort((a, b) => b.value - a.value));
     });
   }, []);
 
