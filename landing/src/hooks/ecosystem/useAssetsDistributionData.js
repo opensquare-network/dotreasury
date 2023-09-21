@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useTheme } from "../../../../site/src/context/theme";
-import { toPrecision } from "../../../../site/src/utils";
 import { useEffect } from "react";
-import { CHAINS, getChainSettings } from "../../utils/chains";
+import { getChainSettings } from "../../utils/chains";
 import { createChartStatusToggleClickEvent } from "../../utils/chart/statusToggleClickEvent";
 import { useTreasuriesData } from "../useTreasuriesData";
 import sumBy from "lodash.sumby";
@@ -11,17 +10,17 @@ export function useEcosystemAssetsDistributionData() {
   const theme = useTheme();
   const { data: treasuriesData } = useTreasuriesData();
 
-  const COLORS = {
-    [CHAINS.polkadot.name]: theme.pink500,
-    [CHAINS.kusama.name]: theme.pink300,
-    [CHAINS.basilisk.name]: theme.purple300,
-    [CHAINS.centrifuge.name]: theme.orange300,
-    [CHAINS.hydradx.name]: theme.purple500,
-    [CHAINS.interlay.name]: theme.yellow300,
-    [CHAINS.phala.name]: theme.yellow500,
-    [CHAINS.kintsugi.name]: theme.orange500,
-    other: theme.neutral500,
-  };
+  const COLORS = [
+    theme.pink500,
+    theme.pink300,
+    theme.yellow500,
+    theme.yellow300,
+    theme.orange500,
+    theme.orange300,
+    theme.purple500,
+    theme.purple300,
+    theme.blue500,
+  ];
 
   const [data, setData] = useState({
     icon: "circle",
@@ -44,18 +43,14 @@ export function useEcosystemAssetsDistributionData() {
   useEffect(() => {
     setData({
       icon: "circle",
-      labels: treasuriesData.map((treasury) => {
+      labels: treasuriesData.map((treasury, idx) => {
         const chainSettings = getChainSettings(treasury.chain);
-        const value = toPrecision(
-          treasury.value,
-          chainSettings.decimals,
-          false,
-        );
+        const value = treasury.value;
 
         return {
           name: chainSettings.name,
           value,
-          color: COLORS[chainSettings.name] || COLORS.other,
+          color: COLORS[idx] || theme.neutral500,
         };
       }),
     });
