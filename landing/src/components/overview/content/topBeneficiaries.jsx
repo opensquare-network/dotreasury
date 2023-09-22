@@ -62,7 +62,12 @@ export default function OverviewTopBeneficiaries({ chain = "" }) {
         </div>
       </div>
 
-      <div className="[&_table]:!rounded-none overflow-scroll">
+      <div
+        className={cn(
+          "overflow-scroll rounded-[inherit]",
+          "[&_table]:!rounded-t-none [&_table]:!rounded-b-[inherit] [&_table]:!border-none",
+        )}
+      >
         <Table columns={columns} data={data} />
       </div>
     </Card>
