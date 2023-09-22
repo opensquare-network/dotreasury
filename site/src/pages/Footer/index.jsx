@@ -7,7 +7,6 @@ import TextMinor from "../../components/TextMinor";
 import { items_center } from "../../styles/tailwindcss";
 import FooterSwitchThemeButton from "./SwitchThemeButton";
 import ImageWithDark from "../../components/ImageWithDark";
-import FooterFundedBy from "./FundedBy";
 
 const Wrapper = styled.footer`
   padding-bottom: 20px;
@@ -86,6 +85,14 @@ const ImageLogoWrapper = styled.div`
   }
 `;
 
+const FlexWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  > :not(:first-child) {
+    margin-left: 8px;
+  }
+`;
+
 const Footer = () => {
   return (
     <Wrapper>
@@ -103,7 +110,25 @@ const Footer = () => {
               <ImageWithDark src="/imgs/opensquare-logo.svg" />
             </a>
           </ImageLogoWrapper>
-          <FooterFundedBy />
+          <ImageLogoWrapper>
+            <TextMinor>Funded by</TextMinor>
+            <FlexWrapper>
+              <a
+                href="https://kusama.network/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <ImageWithDark src="/imgs/kusama-treasury-logo.svg" />
+              </a>
+              <a
+                href="https://polkadot.network/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <ImageWithDark src="/imgs/polkadot-treasury-logo.svg" />
+              </a>
+            </FlexWrapper>
+          </ImageLogoWrapper>
           <IconList>
             <a
               href="mailto:yongfeng@opensquare.network"
