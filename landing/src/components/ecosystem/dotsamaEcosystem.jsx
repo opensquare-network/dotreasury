@@ -28,7 +28,7 @@ export default function EcosystemDotsama(props) {
 
 function TreasuryItem({ max, ...treasury }) {
   const chainSettings = getChainSettings(treasury.chain);
-  const barWidth = Math.max(1, (treasury.fiatValue / max) * 100);
+  const barWidth = Math.max(0.5, (treasury.fiatValue / max) * 100);
 
   return (
     <div className={cn("flex items-center", "max-sm:block")}>
