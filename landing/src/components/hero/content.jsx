@@ -1,4 +1,3 @@
-import FooterFundedBy from "../../../../site/src/pages/Footer/FundedBy";
 import { abbreviateBigNumber } from "../../../../site/src/utils";
 import { useTreasuriesData } from "../../hooks/useTreasuriesData";
 import { cn } from "../../utils";
@@ -30,8 +29,6 @@ export default function HeroContent() {
         dotTreasury is a platform that aggregates treasury data on the Substrate
         ecological network.
       </div>
-
-      <FooterFundedBy className="mt-10 p-16-medium flex gap-x-4 !text-textTertiary max-sm:!hidden" />
     </div>
   );
 }
