@@ -6,7 +6,7 @@ import { useOnClickOutside } from "usehooks-ts";
 import HeaderExplorer from "./explorer";
 import { cn } from "../../utils";
 
-const CONTACT_LINK = "mailto:yongfeng@opensquare.network";
+const CONTACT_LINK = "https://t.me/dotreasury";
 
 export default function Header() {
   const [visible, setVisible] = useState(false);
