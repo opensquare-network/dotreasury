@@ -56,7 +56,7 @@ const ChartWrapper = styled.div`
   min-width: 252px;
 `;
 
-const LineChart = ({ data, onHover, stepSize }) => {
+const LineChart = ({ data, onHover, yStepSize, xStepSize = 3 }) => {
   const { dates, values } = data;
 
   /** @type {import("react-chartjs-2").ChartProps} */
@@ -99,7 +99,7 @@ const LineChart = ({ data, onHover, stepSize }) => {
       y: {
         position: "right",
         ticks: {
-          stepSize,
+          stepSize: yStepSize,
           callback: (y) => abbreviateBigNumber(y),
         },
         grid: {
@@ -119,7 +119,7 @@ const LineChart = ({ data, onHover, stepSize }) => {
           color: "rgba(0, 0, 0, 0)",
         },
         ticks: {
-          stepSize: 3,
+          stepSize: xStepSize,
         },
       },
     },

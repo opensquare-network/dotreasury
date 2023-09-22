@@ -439,7 +439,7 @@ const TotalStacked = () => {
         <Chart
           data={chartData}
           onHover={onHover}
-          stepSize={chain === "kusama" ? 200000 : 8000000}
+          yStepSize={chain === "kusama" ? 200000 : 8000000}
         />
         <SliderWrapper>
           <Slider
