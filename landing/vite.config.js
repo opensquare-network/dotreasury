@@ -16,6 +16,7 @@ export default defineConfig({
     dedupe: [
       // dedupe all dependencies from `site`
       "@polkadot/keyring",
+      "@polkadot/util",
       "@osn/polkadot-react-identicon",
       ...Object.keys(sitePkgJson.dependencies),
     ],
