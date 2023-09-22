@@ -5,10 +5,13 @@ import { toPrecision } from "../../../../../site/src/utils";
 import { getChainSettings } from "../../../utils/chains";
 import Chart from "../../../../../site/src/pages/Overview/TotalStacked/Chart";
 import { useStatsHistory } from "../../../hooks/useData";
+import { useWindowSize } from "react-use";
+import { SM_SIZE } from "../../../../../site/src/styles/responsive";
 
 export default function OverviewTotalStacked({ chain = "" }) {
   const { decimals } = getChainSettings(chain);
   const statsHistory = useStatsHistory(chain);
+  const { width } = useWindowSize();
 
   const dateLabels = statsHistory.map(
     (statsItem) => statsItem.indexer.blockTime,
@@ -76,13 +79,14 @@ export default function OverviewTotalStacked({ chain = "" }) {
   };
 
   return (
-    <Card className="!p-6 h-full space-y-6 max-md:!pb-12">
+    <Card className="!p-6 h-full space-y-6 max-md:!pb-112">
       <h4 className="h4-16-semibold">Total Stacked</h4>
-      <div className="h-56">
+      <div>
         <Chart
           data={chartData}
           onHover={() => {}}
-          stepSize={chain === "kusama" ? 200000 : 8000000}
+          yStepSize={chain === "kusama" ? 200000 : 8000000}
+          xStepSize={width < SM_SIZE ? 13 : 8}
         />
       </div>
     </Card>
