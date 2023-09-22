@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useTheme } from "../../../../site/src/context/theme";
 import { useEffect } from "react";
 import { getChainSettings } from "../../utils/chains";
@@ -10,17 +10,20 @@ export function useEcosystemAssetsDistributionData() {
   const theme = useTheme();
   const { data: treasuriesData } = useTreasuriesData();
 
-  const COLORS = [
-    theme.pink500,
-    theme.pink300,
-    theme.yellow500,
-    theme.yellow300,
-    theme.orange500,
-    theme.orange300,
-    theme.purple500,
-    theme.purple300,
-    theme.blue500,
-  ];
+  const COLORS = useMemo(
+    () => [
+      theme.pink500,
+      theme.pink300,
+      theme.yellow500,
+      theme.yellow300,
+      theme.orange500,
+      theme.orange300,
+      theme.purple500,
+      theme.purple300,
+      theme.blue500,
+    ],
+    [theme],
+  );
 
   const [data, setData] = useState({
     icon: "circle",
@@ -63,7 +66,7 @@ export function useEcosystemAssetsDistributionData() {
         };
       }),
     });
-  }, [theme, treasuriesData]);
+  }, [theme, treasuriesData, COLORS]);
 
   const clickEvent = createChartStatusToggleClickEvent(status, setStatus);
 

@@ -84,7 +84,14 @@ export function usePrepareSiteData(chain) {
         [chain]: data,
       }));
     }
-  }, []);
+  }, [
+    chain,
+    decimals,
+    setGlobalHeight,
+    setGlobalOverviewData,
+    setGlobalTreasuryData,
+    setGlobalSpendPeriod,
+  ]);
 }
 
 export function useScanHeight(chain) {

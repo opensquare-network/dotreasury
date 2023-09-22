@@ -11,7 +11,7 @@ export function useStatsHistory(chain) {
         setStatsHistory(result);
       }
     });
-  }, []);
+  }, [chain]);
 
   return statsHistory;
 }

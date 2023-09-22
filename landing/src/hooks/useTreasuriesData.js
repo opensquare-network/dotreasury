@@ -38,7 +38,7 @@ export function useTreasuriesData() {
 
       setTreasuriesData(data.sort((a, b) => b.fiatValue - a.fiatValue));
     });
-  }, []);
+  }, [fetch]);
 
   const treasuriesTotalValue = sumBy(treasuriesData, "fiatValue");
 
