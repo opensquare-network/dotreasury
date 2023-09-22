@@ -4,7 +4,7 @@ import { bnToBn } from "@polkadot/util";
 import { toPrecision } from "../../../../../site/src/utils";
 import { getChainSettings } from "../../../utils/chains";
 import Chart from "../../../../../site/src/pages/Overview/TotalStacked/Chart";
-import { useStatsHistory } from "../../../hooks/useStatsHistory";
+import { useStatsHistory } from "../../../hooks/useData";
 
 export default function OverviewTotalStacked({ chain = "" }) {
   const { decimals } = getChainSettings(chain);

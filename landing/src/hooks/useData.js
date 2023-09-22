@@ -9,6 +9,7 @@ import {
 import { TreasuryAccount } from "../../../site/src/constants";
 import { getChainSettings } from "../utils/chains";
 import { toPrecision } from "../../../site/src/utils";
+import scanApi from "../../../site/src/services/scanApi";
 
 const useGlobalScanHeight = createGlobalState({
   polkadot: 0,
@@ -26,12 +27,17 @@ const useGlobalTreasuryData = createGlobalState({
   polkadot: {},
   kusama: {},
 });
+const useGlobalStatsHistory = createGlobalState({
+  polkadot: [],
+  kusama: [],
+});
 
 export function usePrepareSiteData(chain) {
   const [, setGlobalHeight] = useGlobalScanHeight();
   const [, setGlobalOverviewData] = useGlobalOverviewData();
   const [, setGlobalTreasuryData] = useGlobalTreasuryData();
   const [, setGlobalSpendPeriod] = useGlobalSpendPeriodData();
+  const [, setGlobalStatsHistory] = useGlobalStatsHistory();
 
   const { decimals } = getChainSettings(chain);
 
@@ -84,6 +90,12 @@ export function usePrepareSiteData(chain) {
         [chain]: data,
       }));
     }
+
+    scanApi.fetch(`/${chain}/stats/weekly`).then(({ result }) => {
+      if (result) {
+        setGlobalStatsHistory((value) => ({ ...value, [chain]: result }));
+      }
+    });
   }, [
     chain,
     decimals,
@@ -91,6 +103,7 @@ export function usePrepareSiteData(chain) {
     setGlobalOverviewData,
     setGlobalTreasuryData,
     setGlobalSpendPeriod,
+    setGlobalStatsHistory,
   ]);
 }
 
@@ -112,4 +125,9 @@ export function useTreasuryData(chain) {
 export function useSpendPeriodData(chain) {
   const [spendPeriodData] = useGlobalSpendPeriodData();
   return spendPeriodData[chain];
+}
+
+export function useStatsHistory(chain) {
+  const [statsHistory] = useGlobalStatsHistory();
+  return statsHistory[chain];
 }
