@@ -9,8 +9,8 @@ import { kintsugi } from "./kintsugi";
 import { phala } from "./phala";
 
 export const CHAINS = {
-  kusama,
   polkadot,
+  kusama,
   basilisk,
   centrifuge,
   hydradx,
