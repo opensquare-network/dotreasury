@@ -40,6 +40,7 @@ export default function OverviewAmount({ chain = "" }) {
 
   return (
     <DoughnutCard
+      key={chain}
       className="!p-6 h-full"
       title={
         <div className="flex items-center space-x-4">
