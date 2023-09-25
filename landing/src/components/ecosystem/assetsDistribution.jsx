@@ -2,6 +2,7 @@ import Card from "../../../../site/src/components/Card";
 import DoughnutChart from "../../../../site/src/components/CustomDoughnut";
 import CustomLabelIcon from "../../../../site/src/pages/Overview/CustomLabel/icon";
 import { abbreviateBigNumber } from "../../../../site/src/utils";
+import { sum } from "../../../../site/src/utils/math";
 import { useEcosystemAssetsDistributionData } from "../../hooks/ecosystem/useAssetsDistributionData";
 import { cn } from "../../utils";
 
@@ -25,7 +26,21 @@ export default function EcosystemAssetsDistribution(props) {
               </p>
             </div>
 
-            <DoughnutChart data={data} status={status} />
+            <DoughnutChart
+              data={data}
+              status={status}
+              onTooltipLabel={(tooltipItem) => {
+                const dataset = tooltipItem.dataset;
+                const currentValue = tooltipItem.parsed;
+                const total = sum(dataset.data);
+                const percentage = parseFloat(
+                  ((currentValue / total) * 100).toFixed(2),
+                );
+                return ` ≈ $${abbreviateBigNumber(
+                  currentValue,
+                )} (${percentage}%)`;
+              }}
+            />
           </div>
         </div>
       </div>
