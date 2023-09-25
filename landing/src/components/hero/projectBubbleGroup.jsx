@@ -106,8 +106,10 @@ export default function ProjectBubbleGroup({
           });
       })
       .on("end", () => {
-        sleep(500).then(() => {
-          setLoaded(true);
+        sleep(200).then(() => {
+          if (data?.length) {
+            setLoaded(true);
+          }
         });
       });
   }, [
