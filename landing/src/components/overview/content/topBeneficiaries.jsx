@@ -6,11 +6,11 @@ import { cn } from "../../../utils";
 import IconMask from "@site/src/components/Icon/Mask";
 import User from "../../user";
 import { USER_ROLES } from "@site/src/constants";
-import { useOverviewData } from "../../../hooks/useData";
+import { useTopBeneficiaries } from "../../../hooks/useData";
 
 export default function OverviewTopBeneficiaries({ chain = "" }) {
-  const overview = useOverviewData(chain);
-  const data = overview?.bestProposalBeneficiaries || [];
+  const bestProposalBeneficiaries = useTopBeneficiaries(chain);
+  const data = bestProposalBeneficiaries?.items || [];
 
   const columns = [
     {
@@ -20,7 +20,7 @@ export default function OverviewTopBeneficiaries({ chain = "" }) {
         <User
           chain={chain}
           role={USER_ROLES.Beneficiary}
-          address={item.beneficiary}
+          address={item.address}
         />
       ),
     },
@@ -31,8 +31,8 @@ export default function OverviewTopBeneficiaries({ chain = "" }) {
       cellRender: (_, item) => (
         <Balance
           chain={chain}
-          value={item.value}
-          usdt={item.fiatValue}
+          value={item?.totalValue?.totalBenefit}
+          usdt={item?.totalFiatValue?.totalBenefit}
           reverse
           isUnitPrice={false}
         />

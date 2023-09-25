@@ -28,6 +28,10 @@ const useGlobalStatsHistory = createGlobalState({
   polkadot: [],
   kusama: [],
 });
+const useGlobalTopBeneficiaries = createGlobalState({
+  polkadot: [],
+  kusama: [],
+});
 
 export function usePrepareSiteData(chain) {
   const [, setGlobalHeight] = useGlobalScanHeight();
@@ -35,6 +39,7 @@ export function usePrepareSiteData(chain) {
   const [, setGlobalTreasuryData] = useGlobalTreasuryData();
   const [, setGlobalSpendPeriod] = useGlobalSpendPeriodData();
   const [, setGlobalStatsHistory] = useGlobalStatsHistory();
+  const [, setGlobalTopBeneficiaries] = useGlobalTopBeneficiaries();
 
   const { decimals } = getChainSettings(chain);
 
@@ -93,6 +98,18 @@ export function usePrepareSiteData(chain) {
         setGlobalStatsHistory((value) => ({ ...value, [chain]: result }));
       }
     });
+
+    scanApi
+      .fetch(`https://${chain}-api.dotreasury.com/participants`, {
+        page: 0,
+        page_size: 8,
+        role: "beneficiary",
+      })
+      .then(({ result }) => {
+        if (result) {
+          setGlobalTopBeneficiaries((value) => ({ ...value, [chain]: result }));
+        }
+      });
   }, [
     chain,
     decimals,
@@ -127,4 +144,9 @@ export function useSpendPeriodData(chain) {
 export function useStatsHistory(chain) {
   const [statsHistory] = useGlobalStatsHistory();
   return statsHistory[chain];
+}
+
+export function useTopBeneficiaries(chain) {
+  const [topBeneficiaries] = useGlobalTopBeneficiaries();
+  return topBeneficiaries[chain];
 }
