@@ -2,11 +2,12 @@
 
 import * as d3 from "d3";
 import { renderToString } from "react-dom/server";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { MD_SIZE, SM_SIZE } from "../../../../site/src/styles/responsive";
 import { useWindowSize } from "usehooks-ts";
 import { getChainSettings } from "../../utils/chains";
-import { toPrecision } from "../../../../site/src/utils";
+import { sleep, toPrecision } from "../../../../site/src/utils";
+import { cn } from "../../utils";
 
 export default function ProjectBubbleGroup({
   width,
@@ -15,6 +16,7 @@ export default function ProjectBubbleGroup({
   sizeField = "value",
   renderBubbleToHTMLString = () => {},
 }) {
+  const [loaded, setLoaded] = useState(false);
   const sizeMin = Math.min(width, height);
   const windowSize = useWindowSize();
 
@@ -79,27 +81,35 @@ export default function ProjectBubbleGroup({
           .iterations(1),
       );
 
-    simulation.nodes(nodes).on("tick", function () {
-      node
-        .style("left", (d) => `${d.x - size(d[sizeField])}px`)
-        .style("top", (d) => `${d.y - size(d[sizeField])}px`)
-        .attr("class", (d) => {
-          const r = size(d[sizeField]);
-          const d_size = r * 2;
+    simulation
+      .nodes(nodes)
+      .tick(sizeMin) // disable animation https://stackoverflow.com/a/47522074
+      .on("tick", function () {
+        node
+          .style("left", (d) => `${d.x - size(d[sizeField])}px`)
+          .style("top", (d) => `${d.y - size(d[sizeField])}px`)
+          .attr("class", (d) => {
+            const r = size(d[sizeField]);
+            const d_size = r * 2;
 
-          return `rounded-full animate-project-bubble ${getBubbleAnimationDirection(
-            d_size,
-          )}`;
-        })
-        .html((node) => {
-          const r = size(node.value);
-          const d = r * 2;
-          const nodeData = { ...node, r, d };
+            return `rounded-full animate-project-bubble ${getBubbleAnimationDirection(
+              d_size,
+            )}`;
+          })
+          .html((node) => {
+            const r = size(node.value);
+            const d = r * 2;
+            const nodeData = { ...node, r, d };
 
-          const bubbleContent = renderBubbleToHTMLString?.(nodeData);
-          return renderToString(bubbleContent);
+            const bubbleContent = renderBubbleToHTMLString?.(nodeData);
+            return renderToString(bubbleContent);
+          });
+      })
+      .on("end", () => {
+        sleep(500).then(() => {
+          setLoaded(true);
         });
-    });
+      });
   }, [
     width,
     height,
@@ -109,7 +119,15 @@ export default function ProjectBubbleGroup({
     renderBubbleToHTMLString,
   ]);
 
-  return <div id="project_bubbles"></div>;
+  return (
+    <div
+      id="project_bubbles"
+      className={cn(
+        "transform translate-y-10 opacity-0 transition-all duration-700 ease-out",
+        loaded && "translate-y-0 opacity-100",
+      )}
+    />
+  );
 }
 
 function getBubbleAnimationDirection(size = 0) {
