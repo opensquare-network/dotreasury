@@ -14,6 +14,7 @@ export default defineConfig({
   optimizeDeps: siteConfig.optimizeDeps,
   resolve: {
     alias: {
+      src: path.resolve(__dirname, "src"),
       "@site": path.resolve(__dirname, "../site"),
     },
     dedupe: [
