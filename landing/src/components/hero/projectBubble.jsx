@@ -1,4 +1,4 @@
-import { abbreviateBigNumber } from "../../../../site/src/utils";
+import { abbreviateBigNumber } from "@site/src/utils";
 import { cn } from "../../utils";
 import { getChainSettings } from "../../utils/chains";
 

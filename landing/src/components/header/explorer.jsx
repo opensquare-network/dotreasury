@@ -1,8 +1,8 @@
 import { forwardRef } from "react";
-import Card from "../../../../site/src/components/Card";
+import Card from "@site/src/components/Card";
 import { cn } from "../../utils";
 import { CHAINS } from "../../utils/chains";
-import ImageWithDark from "../../../../site/src/components/ImageWithDark";
+import ImageWithDark from "@site/src/components/ImageWithDark";
 
 const HeaderExplorer = forwardRef(function HeaderExplorerComponent(props, ref) {
   const links = Object.keys(CHAINS)

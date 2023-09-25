@@ -1,8 +1,8 @@
-import Card from "../../../../site/src/components/Card";
-import ExternalLink from "../../../../site/src/components/ExternalLink";
-import IconMask from "../../../../site/src/components/Icon/Mask";
-import ImageWithDark from "../../../../site/src/components/ImageWithDark";
-import { abbreviateBigNumber } from "../../../../site/src/utils";
+import Card from "@site/src/components/Card";
+import ExternalLink from "@site/src/components/ExternalLink";
+import IconMask from "@site/src/components/Icon/Mask";
+import ImageWithDark from "@site/src/components/ImageWithDark";
+import { abbreviateBigNumber } from "@site/src/utils";
 import { useTreasuriesData } from "../../hooks/useTreasuriesData";
 import { cn } from "../../utils";
 import { getChainSettings } from "../../utils/chains";

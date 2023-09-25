@@ -1,4 +1,4 @@
-import { abbreviateBigNumber } from "../../../../site/src/utils";
+import { abbreviateBigNumber } from "@site/src/utils";
 import { useTreasuriesData } from "../../hooks/useTreasuriesData";
 import { cn } from "../../utils";
 import CountUp from "react-countup";

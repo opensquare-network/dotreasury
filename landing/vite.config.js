@@ -13,6 +13,9 @@ const __dirname = path.dirname(__filename);
 export default defineConfig({
   optimizeDeps: siteConfig.optimizeDeps,
   resolve: {
+    alias: {
+      "@site": path.resolve(__dirname, "../site"),
+    },
     dedupe: [
       // dedupe all dependencies from `site`
       "@polkadot/keyring",

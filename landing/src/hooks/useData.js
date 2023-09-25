@@ -2,14 +2,11 @@ import { useEffect } from "react";
 import { connect } from "../services/websocket";
 import { createGlobalState } from "react-use";
 import { DEFAULT_OVERVIEW_DATA } from "../utils/consts";
-import {
-  estimateBlocksTime,
-  getApi,
-} from "../../../site/src/services/chainApi";
-import { TreasuryAccount } from "../../../site/src/constants";
+import { estimateBlocksTime, getApi } from "@site/src/services/chainApi";
+import { TreasuryAccount } from "@site/src/constants";
 import { getChainSettings } from "../utils/chains";
-import { toPrecision } from "../../../site/src/utils";
-import scanApi from "../../../site/src/services/scanApi";
+import { toPrecision } from "@site/src/utils";
+import scanApi from "@site/src/services/scanApi";
 
 const useGlobalScanHeight = createGlobalState({
   polkadot: 0,

@@ -2,8 +2,8 @@
 // without redux, chainSymbolSelector
 
 import { useEffect, useState } from "react";
-import TimePeriod from "../../../site/src/components/TimePeriod";
-import { estimateBlocksTime } from "../../../site/src/services/chainApi";
+import TimePeriod from "@site/src/components/TimePeriod";
+import { estimateBlocksTime } from "@site/src/services/chainApi";
 import { useIsMounted } from "usehooks-ts";
 
 export default function BlocksTimeDefaultUnit({ chain, blocks, ...others }) {

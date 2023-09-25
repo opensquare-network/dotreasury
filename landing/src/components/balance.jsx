@@ -3,13 +3,13 @@
 
 import styled, { css } from "styled-components";
 
-import PairText from "../../../site/src/components/PairText";
+import PairText from "@site/src/components/PairText";
 import {
   toPrecision,
   getPrecision,
   abbreviateBigNumber,
-} from "../../../site/src/utils";
-import { toLocaleStringWithFixed } from "../../../site/src/utils";
+} from "@site/src/utils";
+import { toLocaleStringWithFixed } from "@site/src/utils";
 import { getChainSettings } from "../utils/chains";
 
 const Wrapper = styled.div`

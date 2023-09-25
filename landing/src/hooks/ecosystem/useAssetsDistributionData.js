@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { useTheme } from "../../../../site/src/context/theme";
+import { useTheme } from "@site/src/context/theme";
 import { useEffect } from "react";
 import { getChainSettings } from "../../utils/chains";
 import { createChartStatusToggleClickEvent } from "../../utils/chart/statusToggleClickEvent";

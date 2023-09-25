@@ -1,4 +1,4 @@
-import Container from "../../../../site/src/components/Container";
+import Container from "@site/src/components/Container";
 import { cn } from "../../utils";
 import EcosystemAssetsDistribution from "./assetsDistribution";
 import EcosystemDotsama from "./dotsamaEcosystem";

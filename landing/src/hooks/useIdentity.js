@@ -2,7 +2,7 @@
 // without redux
 
 import { useEffect, useState } from "react";
-import { fetchIdentity as getIdentity } from "../../../site/src/services/identity";
+import { fetchIdentity as getIdentity } from "@site/src/services/identity";
 
 const displayCache = new Map();
 

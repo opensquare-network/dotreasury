@@ -1,11 +1,11 @@
-import { Table } from "../../../../../site/src/components/Table";
-import Card from "../../../../../site/src/components/Card";
+import { Table } from "@site/src/components/Table";
+import Card from "@site/src/components/Card";
 import Balance from "../../balance";
-import ExternalLink from "../../../../../site/src/components/ExternalLink";
+import ExternalLink from "@site/src/components/ExternalLink";
 import { cn } from "../../../utils";
-import IconMask from "../../../../../site/src/components/Icon/Mask";
+import IconMask from "@site/src/components/Icon/Mask";
 import User from "../../user";
-import { USER_ROLES } from "../../../../../site/src/constants";
+import { USER_ROLES } from "@site/src/constants";
 import { useOverviewData } from "../../../hooks/useData";
 
 export default function OverviewTopBeneficiaries({ chain = "" }) {

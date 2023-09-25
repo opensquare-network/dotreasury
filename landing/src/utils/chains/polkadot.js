@@ -1,4 +1,4 @@
-import { capitalizeFirstLetter } from "../../../../site/src/utils";
+import { capitalizeFirstLetter } from "@site/src/utils";
 
 const value = "polkadot";
 

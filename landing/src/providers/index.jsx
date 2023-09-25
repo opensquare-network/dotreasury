@@ -1,5 +1,5 @@
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
-import { ThemeProvider } from "../../../site/src/context/theme";
+import { ThemeProvider } from "@site/src/context/theme";
 
 const client = new ApolloClient({
   uri: import.meta.env.VITE_APP_ECOSYSTEM_API_END_POINT,

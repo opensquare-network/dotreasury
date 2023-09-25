@@ -1,5 +1,5 @@
 import { useElementSize } from "usehooks-ts";
-import Container from "../../../../site/src/components/Container";
+import Container from "@site/src/components/Container";
 import ProjectBubble from "./projectBubble";
 import ProjectBubbleGroup from "./projectBubbleGroup";
 import HeroContent from "./content";

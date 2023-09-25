@@ -1,10 +1,10 @@
-import Card from "../../../../../site/src/components/Card";
-import CountDown from "../../../../../site/src/components/CountDown";
-import ExternalLink from "../../../../../site/src/components/ExternalLink";
-import ImageWithDark from "../../../../../site/src/components/ImageWithDark";
-import SummaryItem from "../../../../../site/src/components/Summary/Item";
-import { abbreviateBigNumber } from "../../../../../site/src/utils";
-import { parseEstimateTime } from "../../../../../site/src/utils/parseEstimateTime";
+import Card from "@site/src/components/Card";
+import CountDown from "@site/src/components/CountDown";
+import ExternalLink from "@site/src/components/ExternalLink";
+import ImageWithDark from "@site/src/components/ImageWithDark";
+import SummaryItem from "@site/src/components/Summary/Item";
+import { abbreviateBigNumber } from "@site/src/utils";
+import { parseEstimateTime } from "@site/src/utils/parseEstimateTime";
 import { useOverviewTotalAmount } from "../../../hooks/overview/useTotalAmount";
 import {
   useOverviewData,

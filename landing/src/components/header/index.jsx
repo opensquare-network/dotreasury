@@ -1,12 +1,12 @@
 import { useState } from "react";
-import Container from "../../../../site/src/components/Container";
+import Container from "@site/src/components/Container";
 import Button from "../button";
 import { flip, offset, shift, useFloating } from "@floating-ui/react";
 import { useOnClickOutside } from "usehooks-ts";
 import HeaderExplorer from "./explorer";
 import { cn } from "../../utils";
-import IconMask from "../../../../site/src/components/Icon/Mask";
-import ExternalLink from "../../../../site/src/components/ExternalLink";
+import IconMask from "@site/src/components/Icon/Mask";
+import ExternalLink from "@site/src/components/ExternalLink";
 
 const CONTACT_LINK = "https://t.me/dotreasury";
 

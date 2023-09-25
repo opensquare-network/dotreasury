@@ -1,8 +1,8 @@
-import Card from "../../../../site/src/components/Card";
-import DoughnutChart from "../../../../site/src/components/CustomDoughnut";
-import CustomLabelIcon from "../../../../site/src/pages/Overview/CustomLabel/icon";
-import { abbreviateBigNumber } from "../../../../site/src/utils";
-import { sum } from "../../../../site/src/utils/math";
+import Card from "@site/src/components/Card";
+import DoughnutChart from "@site/src/components/CustomDoughnut";
+import CustomLabelIcon from "@site/src/pages/Overview/CustomLabel/icon";
+import { abbreviateBigNumber } from "@site/src/utils";
+import { sum } from "@site/src/utils/math";
 import { useEcosystemAssetsDistributionData } from "../../hooks/ecosystem/useAssetsDistributionData";
 import { cn } from "../../utils";
 

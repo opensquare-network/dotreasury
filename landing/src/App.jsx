@@ -1,6 +1,6 @@
 import "semantic-ui-css/semantic.min.css";
-import "../../site/src/styles/override-semantic-ui-css.css";
-import Footer from "../../site/src/pages/Footer";
+import "@site/src/styles/override-semantic-ui-css.css";
+import Footer from "@site/src/pages/Footer";
 import Header from "./components/header";
 import Hero from "./components/hero";
 import Overview from "./components/overview";

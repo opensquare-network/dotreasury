@@ -3,10 +3,10 @@
 import * as d3 from "d3";
 import { renderToString } from "react-dom/server";
 import { useEffect, useMemo, useState } from "react";
-import { MD_SIZE, SM_SIZE } from "../../../../site/src/styles/responsive";
+import { MD_SIZE, SM_SIZE } from "@site/src/styles/responsive";
 import { useWindowSize } from "usehooks-ts";
 import { getChainSettings } from "../../utils/chains";
-import { sleep, toPrecision } from "../../../../site/src/utils";
+import { sleep, toPrecision } from "@site/src/utils";
 import { cn } from "../../utils";
 
 export default function ProjectBubbleGroup({

@@ -1,6 +1,6 @@
-import ExternalLink from "../../../../../site/src/components/ExternalLink";
-import IconMask from "../../../../../site/src/components/Icon/Mask";
-import DoughnutCard from "../../../../../site/src/pages/Overview/DoughnutCard";
+import ExternalLink from "@site/src/components/ExternalLink";
+import IconMask from "@site/src/components/Icon/Mask";
+import DoughnutCard from "@site/src/pages/Overview/DoughnutCard";
 import {
   useOverviewIncomeChartData,
   useOverviewOutputChartData,
