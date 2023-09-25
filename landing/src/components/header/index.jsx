@@ -6,12 +6,17 @@ import { useOnClickOutside } from "usehooks-ts";
 import HeaderExplorer from "./explorer";
 import { cn } from "../../utils";
 import IconMask from "@site/src/components/Icon/Mask";
-import ExternalLink from "@site/src/components/ExternalLink";
-
-const CONTACT_LINK = "https://t.me/dotreasury";
+import { HeaderLogo } from "./logo";
+import HeaderExplorerMobile from "./explorerMobile";
+import ContactUsLink from "./contactUsLink";
+import { useWindowSize } from "react-use";
+import { useEffect } from "react";
 
 export default function Header() {
   const [visible, setVisible] = useState(false);
+  const [mobileExplorerVisible, setMobileExplorerVisible] = useState(false);
+  const windowSize = useWindowSize();
+
   const { refs, floatingStyles } = useFloating({
     open: visible,
     onOpenChange: setVisible,
@@ -20,6 +25,10 @@ export default function Header() {
   });
 
   useOnClickOutside(refs.reference, hide);
+
+  useEffect(() => {
+    setMobileExplorerVisible(false);
+  }, [windowSize.width]);
 
   function show() {
     setVisible(true);
@@ -38,29 +47,11 @@ export default function Header() {
           "max-w-[inherit] max-md:!w-full",
         )}
       >
-        <div>
-          <a href="/">
-            <img
-              src="/imgs/logo-black.svg"
-              alt="logo"
-              className="dark:hidden"
-            />
-            <img
-              src="/imgs/logo-white.svg"
-              alt="logo"
-              className="hidden dark:block"
-            />
-          </a>
-        </div>
+        <HeaderLogo />
 
         <div className="flex">
           <div className={cn("flex items-center gap-x-8", "max-sm:hidden")}>
-            <ExternalLink
-              href={CONTACT_LINK}
-              className="text-textPrimary hover:text-textPrimary"
-            >
-              Contact Us
-            </ExternalLink>
+            <ContactUsLink />
             <Button
               ref={refs.setReference}
               className="font-medium"
@@ -77,16 +68,26 @@ export default function Header() {
             </Button>
           </div>
 
-          <div className="hidden max-sm:block">
+          <div className="hidden max-sm:flex">
             <IconMask
+              role="button"
               src="/imgs/icon-ham-black.svg"
               color="textPrimary"
               size={24}
               alt="menu"
+              onClick={() => {
+                setMobileExplorerVisible(true);
+              }}
             />
           </div>
         </div>
       </Container>
+
+      {mobileExplorerVisible && (
+        <HeaderExplorerMobile
+          setMobileExplorerVisible={setMobileExplorerVisible}
+        />
+      )}
     </header>
   );
 }
