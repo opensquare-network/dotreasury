@@ -116,6 +116,7 @@ export default function ProjectBubbleGroup({
     width,
     height,
     nodes,
+    data?.length,
     sizeField,
     bubbleSizeRange,
     renderBubbleToHTMLString,
