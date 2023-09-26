@@ -52,8 +52,7 @@ export default function HeroContent() {
       </div>
 
       <div className="text-textTertiary h3-18-medium sm:mt-2 mt-4">
-        dotTreasury is a platform that aggregates treasury data on the Substrate
-        ecological network.
+        dotTreasury is a platform that aggregates treasury data in the polkadot ecosystem.
       </div>
     </div>
   );
