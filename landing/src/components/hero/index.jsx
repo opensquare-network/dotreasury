@@ -15,7 +15,7 @@ export default function Hero() {
       className={cn(
         "grid grid-cols-2",
         "max-md:grid-cols-1",
-        "h-[480px] py-20 max-md:py-10",
+        "min-h-[480px] py-20 max-md:py-10",
       )}
     >
       <div className="px-6 flex items-center">
