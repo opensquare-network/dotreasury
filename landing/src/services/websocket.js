@@ -6,20 +6,20 @@ const overviewRoom = "OVERVIEW_V2_ROOM";
 const sockets = {};
 
 export function connect(chain, { setHeight, setOverviewData }) {
+  const WS_ENDPOINT = `${chain}-api.dotreasury.com`;
+
   if (sockets[chain]) {
-    sockets[chain].emit("unsubscribe", { chain, data: chainStatusRoom });
-    sockets[chain].emit("unsubscribe", { chain, data: overviewRoom });
+    sockets[chain].emit("unsubscribe", chainStatusRoom);
+    sockets[chain].emit("unsubscribe", overviewRoom);
     sockets[chain].disconnect();
   }
 
-  sockets[chain] = io(
-    import.meta.env.VITE_APP_SOCKET_IO_URL || "api.dotreasury.com",
-  );
+  sockets[chain] = io(WS_ENDPOINT);
   sockets[chain].connect();
 
   sockets[chain].on("connect", () => {
-    sockets[chain].emit("subscribe", { chain, data: chainStatusRoom });
-    sockets[chain].emit("subscribe", { chain, data: overviewRoom });
+    sockets[chain].emit("subscribe", chainStatusRoom);
+    sockets[chain].emit("subscribe", overviewRoom);
 
     sockets[chain].on("scanStatus", ({ height }) => {
       setHeight?.(height);
