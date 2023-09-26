@@ -29,7 +29,8 @@ export default function Hero() {
           "max-md:w-[335px] max-md:h-[335px]",
           "max-sm:w-[305px] max-sm:h-[305px]",
           "sm:px-4 max-md:pt-4",
-          "mx-auto max-md:-translate-x-5",
+          "mx-auto",
+          "-translate-x-10 max-md:-translate-x-5",
         )}
       >
         <ProjectBubbleGroup
