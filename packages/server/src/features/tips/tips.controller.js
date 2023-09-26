@@ -28,8 +28,8 @@ function getCondition(ctx) {
   return { ...condition, ...rangeCond };
 }
 
-async function getAdmins(chain, blockHeight, tipHash) {
-  const col = await getTipCollection(chain);
+async function getAdmins(blockHeight, tipHash) {
+  const col = await getTipCollection();
   const tip = await col.findOne({
     "indexer.blockHeight": blockHeight,
     hash: tipHash,
@@ -41,7 +41,6 @@ async function getAdmins(chain, blockHeight, tipHash) {
 
 class TipsController {
   async getTips(ctx) {
-    const { chain } = ctx.params;
     const { page, pageSize } = extractPage(ctx);
     if (pageSize === 0 || page < 0) {
       ctx.status = 400;
@@ -67,7 +66,7 @@ class TipsController {
       };
     }
 
-    const tipCol = await getTipCollection(chain);
+    const tipCol = await getTipCollection();
     const total = tipCol.countDocuments(condition);
     const list = tipCol
       .find(condition)
@@ -86,9 +85,8 @@ class TipsController {
   }
 
   async getTippings(ctx) {
-    const { chain } = ctx.params;
     const { tipper } = ctx.request.query;
-    const tipCol = await getTipCollection(chain);
+    const tipCol = await getTipCollection();
     const items = await tipCol
       .find({
         "state.state": { $in: ["NewTip", "tip"] },
@@ -97,11 +95,11 @@ class TipsController {
             $elemMatch: {
               $or: [
                 { method: "tip", "args.tipper": tipper },
-                { method: "tipNew", "args.finder": tipper }
-              ]
-            }
-          }
-        }
+                { method: "tipNew", "args.finder": tipper },
+              ],
+            },
+          },
+        },
       })
       .sort({ "indexer.blockHeight": -1 })
       .toArray();
@@ -110,9 +108,8 @@ class TipsController {
   }
 
   async getTipFinders(ctx) {
-    const { chain } = ctx.params;
     const { page, pageSize } = extractPage(ctx);
-    const tipFinderCol = await getTipFinderCollection(chain);
+    const tipFinderCol = await getTipFinderCollection();
     const total = await tipFinderCol.estimatedDocumentCount();
     const items = await tipFinderCol
       .find({})
@@ -130,7 +127,7 @@ class TipsController {
   }
 
   async getTipDetail(ctx) {
-    const { tipId, chain } = ctx.params;
+    const { tipId } = ctx.params;
 
     let blockHeight = null;
     let tipHash = null;
@@ -143,14 +140,14 @@ class TipsController {
       tipHash = tipId;
     }
 
-    const tipCol = await getTipCollection(chain);
+    const tipCol = await getTipCollection();
     let tip = null;
     if (blockHeight === null) {
       tip = await tipCol.findOne(
         { hash: tipHash },
         {
           sort: { "indexer.blockHeight": -1 },
-        }
+        },
       );
     } else {
       tip = await tipCol.findOne({
@@ -190,12 +187,12 @@ class TipsController {
   }
 
   async getTipLinks(ctx) {
-    const { chain, tipHash } = ctx.params;
+    const { tipHash } = ctx.params;
     const blockHeight = parseInt(ctx.params.blockHeight);
 
     ctx.body = await linkService.getLinks({
       indexer: {
-        chain,
+        chain: process.env.CHAIN,
         type: "tip",
         index: {
           blockHeight,
@@ -203,7 +200,7 @@ class TipsController {
         },
       },
       getReason: async () => {
-        const tipCol = await getTipCollection(chain);
+        const tipCol = await getTipCollection();
         const tip = await tipCol.findOne({
           hash: tipHash,
           "indexer.blockHeight": blockHeight,
@@ -214,17 +211,17 @@ class TipsController {
   }
 
   async createTipLink(ctx) {
-    const { chain, tipHash } = ctx.params;
+    const { tipHash } = ctx.params;
     const blockHeight = parseInt(ctx.params.blockHeight);
 
     const { link, description } = ctx.request.body;
 
-    const admins = await getAdmins(chain, blockHeight, tipHash);
+    const admins = await getAdmins(blockHeight, tipHash);
 
     ctx.body = await linkService.createLink(
       {
         indexer: {
-          chain,
+          chain: process.env.CHAIN,
           type: "tip",
           index: {
             blockHeight,
@@ -240,16 +237,16 @@ class TipsController {
   }
 
   async deleteTipLink(ctx) {
-    const { tipHash, chain } = ctx.params;
+    const { tipHash } = ctx.params;
     const blockHeight = parseInt(ctx.params.blockHeight);
     const linkIndex = parseInt(ctx.params.linkIndex);
 
-    const admins = await getAdmins(chain, blockHeight, tipHash);
+    const admins = await getAdmins(blockHeight, tipHash);
 
     ctx.body = await linkService.deleteLink(
       {
         indexer: {
-          chain,
+          chain: process.env.CHAIN,
           type: "tip",
           index: {
             blockHeight,
@@ -265,13 +262,13 @@ class TipsController {
 
   // Comments API
   async getTipComments(ctx) {
-    const { chain, tipHash } = ctx.params;
+    const { tipHash } = ctx.params;
     const { page, pageSize } = extractPage(ctx);
     const blockHeight = parseInt(ctx.params.blockHeight);
 
     ctx.body = await commentService.getComments(
       {
-        chain,
+        chain: process.env.CHAIN,
         type: "tip",
         index: {
           blockHeight,
@@ -280,38 +277,6 @@ class TipsController {
       },
       page,
       pageSize,
-    );
-  }
-
-  async postTipComment(ctx) {
-    const { chain, tipHash } = ctx.params;
-    const blockHeight = parseInt(ctx.params.blockHeight);
-    const { content } = ctx.request.body;
-    const user = ctx.request.user;
-    if (!content) {
-      throw new HttpError(400, "Comment content is missing");
-    }
-
-    const tipCol = await getTipCollection(chain);
-    const tip = await tipCol.findOne({
-      hash: tipHash,
-      "indexer.blockHeight": blockHeight,
-    });
-    if (!tip) {
-      throw new HttpError(404, "Tip not found");
-    }
-
-    ctx.body = await commentService.postComment(
-      {
-        chain,
-        type: "tip",
-        index: {
-          blockHeight,
-          tipHash,
-        },
-      },
-      content,
-      user
     );
   }
 }

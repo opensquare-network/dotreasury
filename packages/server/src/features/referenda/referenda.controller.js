@@ -37,14 +37,12 @@ function getCondition(ctx) {
 
 class ReferendaController {
   async getReferendaCount(ctx) {
-    const { chain } = ctx.params;
-    const referendumCol = await getReferendaReferendumCollection(chain);
+    const referendumCol = await getReferendaReferendumCollection();
     const totalQuery = await referendumCol.countDocuments({});
     ctx.body = totalQuery;
   }
 
   async getReferenda(ctx) {
-    const { chain } = ctx.params;
     const { page, pageSize } = extractPage(ctx);
     if (pageSize === 0 || page < 0) {
       ctx.status = 400;
@@ -52,7 +50,7 @@ class ReferendaController {
     }
 
     const condition = getCondition(ctx);
-    const referendumCol = await getReferendaReferendumCollection(chain);
+    const referendumCol = await getReferendaReferendumCollection();
     const totalQuery = referendumCol.countDocuments(condition);
 
     let sortPipeline = [
@@ -122,8 +120,7 @@ class ReferendaController {
   }
 
   async getSummary(ctx) {
-    const { chain } = ctx.params;
-    const referendumCol = await getReferendaReferendumCollection(chain);
+    const referendumCol = await getReferendaReferendumCollection();
     const referendums = await referendumCol.find().toArray();
     const result = {};
     for (const referendum of referendums) {

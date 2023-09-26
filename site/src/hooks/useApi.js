@@ -8,7 +8,7 @@ export default function useApi() {
   const chain = useSelector(chainSelector);
 
   useEffect(() => {
-    getApi(chain).then(api => {
+    getApi(chain).then((api) => {
       setApi(api);
     });
   }, [chain]);

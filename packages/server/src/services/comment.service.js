@@ -1,8 +1,5 @@
 const { ObjectId } = require("mongodb");
-const {
-  getCommentCollection,
-  getUserCollection,
-} = require("../mongo-admin");
+const { getCommentCollection, getUserCollection } = require("../mongo-admin");
 const { md5 } = require("../utils");
 
 class CommentService {
@@ -63,7 +60,7 @@ class CommentService {
       const users = await userCol
         .find({
           _id: {
-            $in: Array.from(userIds).map(ObjectId),
+            $in: Array.from(userIds).map((userId) => new ObjectId(userId)),
           },
         })
         .toArray();
@@ -72,16 +69,21 @@ class CommentService {
       users.forEach((user) => {
         const emailHash = md5(user.email.trim().toLocaleLowerCase());
 
+        const chain = process.env.CHAIN;
         userMap[user._id.toString()] = {
           username: user.username,
           avatar: `https://www.gravatar.com/avatar/${emailHash}?d=https://www.dotreasury.com/imgs/avatar.png`,
+          address: user[`${chain}Address`],
           addresses: ["kusama", "polkadot"].reduce((addresses, chain) => {
             const address = user[`${chain}Address`];
             if (address) {
-              addresses.push({
-                chain,
-                address,
-              });
+              return [
+                ...addresses,
+                {
+                  chain,
+                  address,
+                },
+              ];
             }
             return addresses;
           }, []),

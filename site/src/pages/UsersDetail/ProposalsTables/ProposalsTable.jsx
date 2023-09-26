@@ -1,6 +1,5 @@
 import { noop } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
-import { chainSelector } from "../../../store/reducers/chainSlice";
 import { resolveFilterData } from "./resolveFilterData";
 import ProposalsTableOrigin from "../../Proposals/ProposalsTable";
 import { useEffect } from "react";
@@ -20,7 +19,6 @@ export default function ProposalsTable({
   role,
   address,
 }) {
-  const chain = useSelector(chainSelector);
   const dispatch = useDispatch();
 
   const { items, total } = useSelector(proposalListSelector);
@@ -31,13 +29,12 @@ export default function ProposalsTable({
   useEffect(() => {
     dispatch(
       fetchProposals(
-        chain,
         tablePage - 1,
         pageSize,
-        resolveFilterData(filterData, { role, address })
-      )
+        resolveFilterData(filterData, { role, address }),
+      ),
     );
-  }, [dispatch, chain, tablePage, pageSize, filterData, role, address]);
+  }, [dispatch, tablePage, pageSize, filterData, role, address]);
 
   return (
     <ProposalsTableOrigin

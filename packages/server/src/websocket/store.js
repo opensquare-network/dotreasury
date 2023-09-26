@@ -1,38 +1,31 @@
 const data = {
-  kusama: {
-    scanHeight: 0,
-    overview: null,
-    overviewV2: null,
-  },
-  polkadot: {
-    scanHeight: 0,
-    overview: null,
-    overviewV2: null,
-  },
+  scanHeight: 0,
+  overview: null,
+  overviewV2: null,
 };
 
-function setScanHeight(chain, height) {
-  data[chain].scanHeight = height;
+function setScanHeight(height) {
+  data.scanHeight = height;
 }
 
-function getScanHeight(chain) {
-  return data[chain]?.scanHeight;
+function getScanHeight() {
+  return data.scanHeight;
 }
 
-function setOverview(chain, arg) {
-  data[chain].overview = arg;
+function setOverview(arg) {
+  data.overview = arg;
 }
 
-function getOverview(chain) {
-  return data[chain]?.overview;
+function getOverview() {
+  return data.overview;
 }
 
-function setOverviewV2(chain, arg) {
-  data[chain].overviewV2 = arg;
+function setOverviewV2(arg) {
+  data.overviewV2 = arg;
 }
 
-function getOverviewV2(chain) {
-  return data[chain]?.overviewV2;
+function getOverviewV2() {
+  return data.overviewV2;
 }
 
 module.exports = {

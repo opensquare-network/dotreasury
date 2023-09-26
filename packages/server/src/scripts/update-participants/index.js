@@ -1,6 +1,7 @@
 const dotenv = require("dotenv");
 dotenv.config();
 
+const BigNumber = require("bignumber.js");
 const { getParticipantCollection } = require("../../mongo");
 const { statTips } = require("./statTips");
 const { statProposals } = require("./statProposals");
@@ -8,69 +9,166 @@ const { statBounties } = require("./statBounties");
 const { statChildBounties } = require("./statChildBounties");
 const { statCouncilors } = require("./statCouncilors");
 
-async function saveParticipant(chain, address, data) {
-  const participantCol = await getParticipantCollection(chain);
-  await participantCol.updateOne(
-    { address },
-    { $set: data },
-    { upsert: true }
-  );
+async function saveParticipant(address, data) {
+  const participantCol = await getParticipantCollection();
+  await participantCol.updateOne({ address }, { $set: data }, { upsert: true });
 }
 
-async function updateParticipants(chain) {
-  console.log(`Update participants of ${chain}`);
+async function updateParticipants() {
+  console.log(`Update participants of ${process.env.CHAIN}`);
 
   const {
-    counts: tips,
+    counts: tipsCounts,
     proposers: tipProposers,
-    beneficiaries: tipBeneficiaries
-  } = await statTips(chain);
+    proposeCounts: tipsProposeCounts,
+    beneficiaries: tipBeneficiaries,
+    beneficiaryCounts: tipsBeneficiaryCounts,
+    totalBenefitFiatValues: totalTipBenefitFiatValues,
+    totalBenefitValues: totalTipBenefitValues,
+  } = await statTips();
+
   const {
-    counts: proposals,
+    counts: proposalsCounts,
     proposers: proposalProposers,
-    beneficiaries: proposalBeneficiaries
-  } = await statProposals(chain);
+    proposeCounts: proposalsProposeCounts,
+    beneficiaries: proposalBeneficiaries,
+    beneficiaryCounts: proposalsBeneficiaryCounts,
+    totalBenefitFiatValues: totalProposalBenefitFiatValues,
+    totalBenefitValues: totalProposalBenefitValues,
+  } = await statProposals();
+
   const {
-    counts: bounties,
+    counts: bountiesCounts,
     proposers: bountyProposers,
-    beneficiaries: bountyBeneficiaries
-  } = await statBounties(chain);
+    proposeCounts: bountiesProposedCounts,
+    beneficiaries: bountyBeneficiaries,
+    beneficiaryCounts: bountiesBeneficiaryCounts,
+    totalBenefitFiatValues: totalBountyBenefitFiatValues,
+    totalBenefitValues: totalBountyBenefitValues,
+  } = await statBounties();
+
   const {
-    counts: childBounties,
+    counts: childBountiesCounts,
     proposers: childBountyProposers,
-    beneficiaries: childBountyBeneficiaries
-  } = await statChildBounties(chain);
-  const { councilors } = await statCouncilors(chain);
+    proposeCounts: childBountyProposeCounts,
+    beneficiaries: childBountyBeneficiaries,
+    beneficiaryCounts: childBountyBeneficiaryCounts,
+    totalBenefitFiatValues: totalChildBountyBenefitFiatValues,
+    totalBenefitValues: totalChildBountyBenefitValues,
+  } = await statChildBounties();
+
+  const { councilors } = await statCouncilors();
 
   const participants = new Set([
-    ...Object.keys(tips),
-    ...Object.keys(proposals),
-    ...Object.keys(bounties),
-    ...Object.keys(childBounties),
+    ...Object.keys(tipsCounts),
+    ...Object.keys(proposalsCounts),
+    ...Object.keys(bountiesCounts),
+    ...Object.keys(childBountiesCounts),
     ...councilors,
   ]);
 
   for (const address of participants) {
-    const tipsCount = tips[address] ?? 0;
-    const proposalsCount = proposals[address] ?? 0;
-    const bountiesCount = bounties[address] ?? 0;
-    const childBountiesCount = childBounties[address] ?? 0;
-    const isProposer = tipProposers.has(address) ||
+    const tipsCount = tipsCounts[address] ?? 0;
+    const tipsProposeCount = tipsProposeCounts[address] ?? 0;
+    const tipsBeneficiaryCount = tipsBeneficiaryCounts[address] ?? 0;
+    const totalTipBenefitFiatValue = totalTipBenefitFiatValues[address] ?? 0;
+    const totalTipBenefitValue = totalTipBenefitValues[address] ?? 0;
+
+    const proposalsCount = proposalsCounts[address] ?? 0;
+    const proposalsProposeCount = proposalsProposeCounts[address] ?? 0;
+    const proposalsBeneficiaryCount = proposalsBeneficiaryCounts[address] ?? 0;
+    const totalProposalBenefitFiatValue =
+      totalProposalBenefitFiatValues[address] ?? 0;
+    const totalProposalBenefitValue = totalProposalBenefitValues[address] ?? 0;
+
+    const bountiesCount = bountiesCounts[address] ?? 0;
+    const bountiesProposedCount = bountiesProposedCounts[address] ?? 0;
+    const bountiesBeneficiaryCount = bountiesBeneficiaryCounts[address] ?? 0;
+    const totalBountyBenefitFiatValue =
+      totalBountyBenefitFiatValues[address] ?? 0;
+    const totalBountyBenefitValue = totalBountyBenefitValues[address] ?? 0;
+
+    const childBountiesCount = childBountiesCounts[address] ?? 0;
+    const childBountyProposeCount = childBountyProposeCounts[address] ?? 0;
+    const childBountyBeneficiaryCount =
+      childBountyBeneficiaryCounts[address] ?? 0;
+    const totalChildBountyBenefitFiatValue =
+      totalChildBountyBenefitFiatValues[address] ?? 0;
+    const totalChildBountyBenefitValue =
+      totalChildBountyBenefitValues[address] ?? 0;
+
+    const isProposer =
+      tipProposers.has(address) ||
       proposalProposers.has(address) ||
       bountyProposers.has(address) ||
       childBountyProposers.has(address);
-    const isBeneficiary = tipBeneficiaries.has(address) ||
+
+    const isBeneficiary =
+      tipBeneficiaries.has(address) ||
       proposalBeneficiaries.has(address) ||
       bountyBeneficiaries.has(address) ||
       childBountyBeneficiaries.has(address);
+
     const isCouncilor = councilors.has(address);
 
-    await saveParticipant(chain, address, {
-      tips: tipsCount,
-      proposals: proposalsCount,
-      bounties: bountiesCount,
-      childBounties: childBountiesCount,
-      total: tipsCount + proposalsCount + bountiesCount + childBountiesCount,
+    await saveParticipant(address, {
+      tips: {
+        count: tipsCount,
+        proposedCount: tipsProposeCount,
+        benefitCount: tipsBeneficiaryCount,
+        benefitValue: totalTipBenefitValue,
+        benefitFiatValue: totalTipBenefitFiatValue,
+      },
+      proposals: {
+        count: proposalsCount,
+        proposedCount: proposalsProposeCount,
+        benefitCount: proposalsBeneficiaryCount,
+        benefitValue: totalProposalBenefitValue,
+        benefitFiatValue: totalProposalBenefitFiatValue,
+      },
+      bounties: {
+        count: bountiesCount,
+        proposedCount: bountiesProposedCount,
+        benefitCount: bountiesBeneficiaryCount,
+        benefitValue: totalBountyBenefitValue,
+        benefitFiatValue: totalBountyBenefitFiatValue,
+      },
+      childBounties: {
+        count: childBountiesCount,
+        proposedCount: childBountyProposeCount,
+        benefitCount: childBountyBeneficiaryCount,
+        benefitValue: totalChildBountyBenefitValue,
+        benefitFiatValue: totalChildBountyBenefitFiatValue,
+      },
+      totalValue: {
+        totalBenefit: new BigNumber(totalTipBenefitValue)
+          .plus(totalProposalBenefitValue)
+          .plus(totalBountyBenefitValue)
+          .plus(totalChildBountyBenefitValue)
+          .toString(),
+      },
+      totalFiatValue: {
+        totalBenefit:
+          totalTipBenefitFiatValue +
+          totalProposalBenefitFiatValue +
+          totalBountyBenefitFiatValue +
+          totalChildBountyBenefitFiatValue,
+      },
+      totalCount: {
+        total: tipsCount + proposalsCount + bountiesCount + childBountiesCount,
+
+        totalProposedCount:
+          tipsProposeCount +
+          proposalsProposeCount +
+          bountiesProposedCount +
+          childBountyProposeCount,
+
+        totalBenefitCount:
+          tipsBeneficiaryCount +
+          proposalsBeneficiaryCount +
+          bountiesBeneficiaryCount +
+          childBountyBeneficiaryCount,
+      },
       isProposer,
       isBeneficiary,
       isCouncilor,
@@ -79,8 +177,7 @@ async function updateParticipants(chain) {
 }
 
 async function main() {
-  await updateParticipants("kusama");
-  await updateParticipants("polkadot");
+  await updateParticipants();
 }
 
 module.exports = main;

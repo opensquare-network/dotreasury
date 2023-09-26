@@ -65,12 +65,10 @@ export const {
 /**
  * @description fetch user counts
  */
-export const fetchUsersCounts = (chain, address, role) => async (dispatch) => {
+export const fetchUsersCounts = (address, role) => async (dispatch) => {
   dispatch(setCountsLoading(true));
   try {
-    const { result } = await api.fetch(
-      userDetailProposalCounts(chain, address, role)
-    );
+    const { result } = await api.fetch(userDetailProposalCounts(address, role));
     dispatch(setCounts(result));
   } finally {
     dispatch(setCountsLoading(false));
@@ -80,12 +78,10 @@ export const resetUsersCounts = () => (dispatch) => {
   dispatch(setCounts(null));
 };
 
-export const fetchCouncilorShipTerms = (chain, address) => async (dispatch) => {
+export const fetchCouncilorShipTerms = (address) => async (dispatch) => {
   dispatch(setCouncilorShipLoading(true));
   try {
-    const { result } = await api.fetch(
-      userDetailCouncilorTerms(chain, address)
-    );
+    const { result } = await api.fetch(userDetailCouncilorTerms(address));
     dispatch(setCouncilorShip(result));
   } finally {
     dispatch(setCouncilorShipLoading(false));
@@ -93,12 +89,10 @@ export const fetchCouncilorShipTerms = (chain, address) => async (dispatch) => {
 };
 export const resetCouncilorShipTerms = makeReset(setCouncilorShip, null);
 
-export const fetchMotionAttendance = (chain, address) => async (dispatch) => {
+export const fetchMotionAttendance = (address) => async (dispatch) => {
   dispatch(setMotionAttendanceLoading(true));
   try {
-    const { result } = await api.fetch(
-      userDetailCouncilorMotions(chain, address)
-    );
+    const { result } = await api.fetch(userDetailCouncilorMotions(address));
     dispatch(setMotionAttendance(result));
   } finally {
     dispatch(setMotionAttendanceLoading(false));
@@ -106,10 +100,10 @@ export const fetchMotionAttendance = (chain, address) => async (dispatch) => {
 };
 export const resetMotionAttendance = makeReset(setMotionAttendance, null);
 
-export const fetchTipAttendance = (chain, address) => async (dispatch) => {
+export const fetchTipAttendance = (address) => async (dispatch) => {
   dispatch(setTipAttendanceLoading(true));
   try {
-    const { result } = await api.fetch(userDetailCouncilorTips(chain, address));
+    const { result } = await api.fetch(userDetailCouncilorTips(address));
     dispatch(setTipAttendance(result));
   } finally {
     dispatch(setTipAttendanceLoading(false));

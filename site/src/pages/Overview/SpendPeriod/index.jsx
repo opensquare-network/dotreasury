@@ -7,8 +7,11 @@ import { h4_16_semibold } from "../../../styles/text";
 import Legend from "./Legend";
 import Chart from "./Chart";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSpendPeriods, spendPeriodsSelector } from "../../../store/reducers/overviewSlice";
-import { chainSelector, chainSymbolSelector } from "../../../store/reducers/chainSlice";
+import {
+  fetchSpendPeriods,
+  spendPeriodsSelector,
+} from "../../../store/reducers/overviewSlice";
+import { chainSymbolSelector } from "../../../store/reducers/chainSlice";
 import { getPrecision, toPrecision } from "../../../utils";
 
 const Title = styled(Text)`
@@ -72,24 +75,35 @@ function sum(values) {
 
 export default function SpendPeriod() {
   const dispatch = useDispatch();
-  const chain = useSelector(chainSelector);
   const symbol = useSelector(chainSymbolSelector);
   const precision = getPrecision(symbol);
   const [legends, setLegends] = useState(defaultLegends);
   const spendPeriods = useSelector(spendPeriodsSelector);
 
   useEffect(() => {
-    dispatch(fetchSpendPeriods(chain));
-  }, [dispatch, chain]);
+    dispatch(fetchSpendPeriods());
+  }, [dispatch]);
 
   const data = useMemo(() => {
     if (!spendPeriods) return [];
 
     return spendPeriods.map((period) => {
-      const totalProposalsValue = sum(period.proposals.map((proposal) => toPrecision(proposal.value, precision, false)));
-      const totalTipsValue = sum(period.tips.map((tip) => toPrecision(tip.value, precision, false)));
-      const totalBountiesValue = sum(period.bounties.map((bounty) => toPrecision(bounty.value, precision, false)));
-      const totalBurntValue = sum(period.burnt.map((burnt) => toPrecision(burnt.value, precision, false)));
+      const totalProposalsValue = sum(
+        period.proposals.map((proposal) =>
+          toPrecision(proposal.value, precision, false),
+        ),
+      );
+      const totalTipsValue = sum(
+        period.tips.map((tip) => toPrecision(tip.value, precision, false)),
+      );
+      const totalBountiesValue = sum(
+        period.bounties.map((bounty) =>
+          toPrecision(bounty.value, precision, false),
+        ),
+      );
+      const totalBurntValue = sum(
+        period.burnt.map((burnt) => toPrecision(burnt.value, precision, false)),
+      );
       return {
         ...period,
         totalProposalsValue,
@@ -105,12 +119,12 @@ export default function SpendPeriod() {
   }, [spendPeriods, precision]);
 
   return (
-      <CardWrapper>
-        <Title>Spend Periods</Title>
-        <ContentWrapper>
-          <Legend legends={legends} setLegends={setLegends} />
-          <Chart legends={legends.filter(item => item.enabled)} data={data} />
-        </ContentWrapper>
-      </CardWrapper>
-    );
+    <CardWrapper>
+      <Title>Spend Periods</Title>
+      <ContentWrapper>
+        <Legend legends={legends} setLegends={setLegends} />
+        <Chart legends={legends.filter((item) => item.enabled)} data={data} />
+      </ContentWrapper>
+    </CardWrapper>
+  );
 }

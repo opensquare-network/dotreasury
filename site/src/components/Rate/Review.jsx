@@ -2,8 +2,11 @@ import styled from "styled-components";
 import ReviewItem from "./ReviewItem";
 import Pagination from "../../pages/Comment/ResponsivePagination";
 import { useDispatch, useSelector } from "react-redux";
-import { chainSelector } from "../../store/reducers/chainSlice";
-import { fetchRates, ratesSelector, rateStatsSelector } from "../../store/reducers/rateSlice";
+import {
+  fetchRates,
+  ratesSelector,
+  rateStatsSelector,
+} from "../../store/reducers/rateSlice";
 import { useEffect, useState } from "react";
 import { loggedInUserSelector } from "../../store/reducers/userSlice";
 
@@ -39,7 +42,6 @@ const DEFAULT_PAGE_SIZE = 10;
 
 export default function Review({ type, index }) {
   const dispatch = useDispatch();
-  const chain = useSelector(chainSelector);
   const rates = useSelector(ratesSelector);
   const rateStats = useSelector(rateStatsSelector);
   const [page, setPage] = useState(0);
@@ -49,8 +51,8 @@ export default function Review({ type, index }) {
   const totalPages = Math.ceil(rates.total / DEFAULT_PAGE_SIZE);
 
   useEffect(() => {
-    dispatch(fetchRates(chain, type, index, page, DEFAULT_PAGE_SIZE));
-  }, [dispatch, chain, type, index, page, rateStats, loggedIn]);
+    dispatch(fetchRates(type, index, page, DEFAULT_PAGE_SIZE));
+  }, [dispatch, type, index, page, rateStats, loggedIn]);
 
   const pageChange = (_, { activePage }) => {
     setPage(activePage - 1);

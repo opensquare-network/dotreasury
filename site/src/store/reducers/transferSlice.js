@@ -26,41 +26,33 @@ const transferSlice = createSlice({
   },
 });
 
-export const {
-  setTransferList,
-  setLoadingTransferList,
-  setTransferListCount,
-} = transferSlice.actions;
+export const { setTransferList, setLoadingTransferList, setTransferListCount } =
+  transferSlice.actions;
 
-export const fetchTransferList = (chain, page = 0, pageSize = 30) => async (
-  dispatch
-) => {
-  dispatch(setLoadingTransferList(true));
+export const fetchTransferList =
+  (page = 0, pageSize = 30) =>
+  async (dispatch) => {
+    dispatch(setLoadingTransferList(true));
 
-  try {
-    const { result } = await api.fetch(`/${chain}/outputtransfers`, {
-      page,
-      pageSize,
-    });
-    dispatch(
-      setTransferList(
-        result || {
-          items: [],
-          page: 0,
-          pageSize: 10,
-          total: 0,
-        }
-      )
-    );
-  } finally {
-    dispatch(setLoadingTransferList(false));
-  }
-};
-
-export const fetchTransferListCount = (chain) => async (dispatch) => {
-  const { result } = await api.fetch(`/${chain}/outputtransfers/count`);
-  dispatch(setTransferListCount(result || 0));
-};
+    try {
+      const { result } = await api.fetch("/outputtransfers", {
+        page,
+        pageSize,
+      });
+      dispatch(
+        setTransferList(
+          result || {
+            items: [],
+            page: 0,
+            pageSize: 10,
+            total: 0,
+          },
+        ),
+      );
+    } finally {
+      dispatch(setLoadingTransferList(false));
+    }
+  };
 
 export const transferListSelector = (state) => state.transfers.transferList;
 export const loadingTransferListSelector = (state) =>

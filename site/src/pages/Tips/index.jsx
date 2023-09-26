@@ -11,10 +11,14 @@ import {
   resetTips,
 } from "../../store/reducers/tipSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
-import { useChainRoute, useQuery, useLocalStorage } from "../../utils/hooks";
+import { useQuery, useLocalStorage } from "../../utils/hooks";
 import { useHistory } from "react-router";
 import Text from "../../components/Text";
-import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE, tipStatusMap } from "../../constants";
+import {
+  DEFAULT_PAGE_SIZE,
+  DEFAULT_QUERY_PAGE,
+  tipStatusMap,
+} from "../../constants";
 import NewTipButton from "./NewTipButton";
 import useWaitSyncBlock from "../../utils/useWaitSyncBlock";
 import EndorseTipsButton from "./EndorseTipsButton";
@@ -44,7 +48,6 @@ const FilterWrapper = styled.div`
 `;
 
 const Tips = () => {
-  useChainRoute();
   const query = useQuery();
 
   const searchPage = parseInt(query.get("page"));
@@ -58,7 +61,7 @@ const Tips = () => {
   const [tablePage, setTablePage] = useState(queryPage);
   const [pageSize, setPageSize] = useLocalStorage(
     "tipsPageSize",
-    DEFAULT_PAGE_SIZE
+    DEFAULT_PAGE_SIZE,
   );
 
   const {
@@ -82,20 +85,17 @@ const Tips = () => {
 
   useEffect(() => {
     const filterData = getFilterData();
-    dispatch(fetchTips(chain, tablePage - 1, pageSize, filterData, sort && { sort }));
+    dispatch(fetchTips(tablePage - 1, pageSize, filterData, sort && { sort }));
 
     return () => {
       dispatch(resetTips());
     };
-  }, [dispatch, chain, tablePage, pageSize, getFilterData, sort]);
+  }, [dispatch, tablePage, pageSize, getFilterData, sort]);
 
-  const refreshTips = useCallback(
-    () => {
-      const filterData = getFilterData();
-      dispatch(fetchTips(chain, tablePage - 1, pageSize, filterData, sort && { sort }));
-    },
-    [dispatch, chain, tablePage, pageSize, getFilterData, sort]
-  );
+  const refreshTips = useCallback(() => {
+    const filterData = getFilterData();
+    dispatch(fetchTips(tablePage - 1, pageSize, filterData, sort && { sort }));
+  }, [dispatch, tablePage, pageSize, getFilterData, sort]);
 
   const onFinalized = useWaitSyncBlock("Tips created", refreshTips);
 

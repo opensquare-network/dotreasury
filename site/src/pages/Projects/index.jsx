@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 
 import ResponsivePagination from "../../components/ResponsivePagination";
-import { useChainRoute, useQuery, useLocalStorage } from "../../utils/hooks";
+import { useQuery, useLocalStorage } from "../../utils/hooks";
 import ProjectsTable from "./ProjectsTable";
 
 import {
@@ -12,7 +12,6 @@ import {
   projectsSelector,
   loadingSelector,
 } from "../../store/reducers/projectSlice";
-import { chainSelector } from "../../store/reducers/chainSlice";
 import Text from "../../components/Text";
 import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../constants";
 
@@ -30,8 +29,6 @@ const Title = styled(Text)`
 `;
 
 const Projects = () => {
-  useChainRoute();
-
   const searchPage = parseInt(useQuery().get("page"));
   const queryPage =
     searchPage && !isNaN(searchPage) && searchPage > 0
@@ -40,20 +37,19 @@ const Projects = () => {
   const [tablePage, setTablePage] = useState(queryPage);
   const [pageSize, setPageSize] = useLocalStorage(
     "projectsPageSize",
-    DEFAULT_PAGE_SIZE
+    DEFAULT_PAGE_SIZE,
   );
 
   const dispatch = useDispatch();
   const history = useHistory();
   const { items: projects, total } = useSelector(projectsSelector);
   const loading = useSelector(loadingSelector);
-  const chain = useSelector(chainSelector);
 
   const totalPages = Math.ceil(total / pageSize);
 
   useEffect(() => {
-    dispatch(fetchProjects(chain, tablePage - 1, pageSize));
-  }, [dispatch, chain, tablePage, pageSize]);
+    dispatch(fetchProjects(tablePage - 1, pageSize));
+  }, [dispatch, tablePage, pageSize]);
 
   return (
     <>

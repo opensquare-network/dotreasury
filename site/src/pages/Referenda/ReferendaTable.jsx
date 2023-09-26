@@ -89,15 +89,9 @@ export default function ReferendaTable() {
   useEffect(() => {
     const filterData = getFilterData();
     dispatch(
-      fetchApplicationList(
-        chain,
-        page - 1,
-        pageSize,
-        filterData,
-        sort && { sort },
-      ),
+      fetchApplicationList(page - 1, pageSize, filterData, sort && { sort }),
     );
-  }, [dispatch, chain, page, pageSize, sort, getFilterData]);
+  }, [dispatch, page, pageSize, sort, getFilterData]);
 
   useEffect(() => {
     setDataList(applicationList?.items || []);

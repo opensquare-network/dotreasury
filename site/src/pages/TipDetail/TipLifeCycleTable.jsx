@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 
@@ -12,15 +12,13 @@ import PolygonLabel from "../../components/PolygonLabel";
 import ExplorerLink from "../../components/ExplorerLink";
 import EstimateBlockTimeCountDown from "../../components/EstimateBlockTimeCountdown";
 
-import polkaassemblyApi from "../../services/polkassembly";
-import { useIsMounted } from "@osn/common";
-
 import {
   normalizedTipDetailSelector,
   tipCountdownSelector,
 } from "../../store/reducers/tipSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import RelatedLinks from "../../components/RelatedLinks";
+import { CHAINS } from "../../constants";
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -44,35 +42,14 @@ const TipLifeCycleTable = ({ loading }) => {
   const chain = useSelector(chainSelector);
   const tipDetail = useSelector(normalizedTipDetailSelector);
   const tippersCount = tipDetail.tippersCount;
-  const [tipUrl, setTipUrl] = useState(null);
-  const isMounted = useIsMounted();
   const tipCountdown = useSelector(tipCountdownSelector);
 
   const thresholdTotalCount = tippersCount ? (tippersCount + 1) / 2 : 0;
 
-  useEffect(() => {
-    (async () => {
-      if (tipDetail) {
-        const url = await polkaassemblyApi.getTipUrl(tipDetail.hash);
-        if (isMounted.current) {
-          setTipUrl(url);
-        }
-      } else {
-        setTipUrl(null);
-      }
-    })();
-  }, [tipDetail, isMounted]);
-
   const links = [];
-  if (["kusama", "polkadot"].includes(chain) && tipDetail) {
+  if ([CHAINS.KUSAMA, CHAINS.POLKADOT].includes(chain) && tipDetail) {
     links.push({
       link: `https://${chain}.subsquare.io/treasury/tip/${tipDetail.proposeAtBlockHeight}_${tipDetail.hash}`,
-      description: "Tip proposal discusssion",
-    });
-  }
-  if (tipUrl) {
-    links.push({
-      link: tipUrl,
       description: "Tip proposal discusssion",
     });
   }

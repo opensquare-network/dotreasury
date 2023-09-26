@@ -5,7 +5,7 @@ import Nav from "./Nav";
 import Pagination from "./Pagination";
 import BountiesTable from "./BountiesTable";
 import { useDispatch, useSelector } from "react-redux";
-import { useChainRoute, useQuery, useLocalStorage } from "../../utils/hooks";
+import { useQuery, useLocalStorage } from "../../utils/hooks";
 
 import {
   fetchBounties,
@@ -14,7 +14,11 @@ import {
   resetBounties,
 } from "../../store/reducers/bountySlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
-import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE, bountyStatusMap } from "../../constants";
+import {
+  DEFAULT_PAGE_SIZE,
+  DEFAULT_QUERY_PAGE,
+  bountyStatusMap,
+} from "../../constants";
 import NewBountyButton from "./NewBountyButton";
 import { newSuccessToast } from "../../store/reducers/toastSlice";
 import useWaitSyncBlock from "../../utils/useWaitSyncBlock";
@@ -31,7 +35,6 @@ const FilterWrapper = styled.div`
   padding: 24px;
 `;
 
-
 const HeaderWrapper = styled.div`
   padding: 20px 24px;
   display: flex;
@@ -43,7 +46,6 @@ const HeaderWrapper = styled.div`
 `;
 
 const Bounties = () => {
-  useChainRoute();
   const query = useQuery();
 
   const searchPage = parseInt(query.get(QUERY_PAGE_KEY) || "1");
@@ -54,7 +56,7 @@ const Bounties = () => {
   const [tablePage, setTablePage] = useState(queryPage);
   const [pageSize, setPageSize] = useLocalStorage(
     "bountiesPageSize",
-    DEFAULT_PAGE_SIZE
+    DEFAULT_PAGE_SIZE,
   );
   const sort = query.get("sort");
 
@@ -78,16 +80,18 @@ const Bounties = () => {
 
   useEffect(() => {
     const filterData = getFilterData();
-    dispatch(fetchBounties(chain, tablePage - 1, pageSize, filterData, sort && { sort }));
+    dispatch(
+      fetchBounties(tablePage - 1, pageSize, filterData, sort && { sort }),
+    );
 
     return () => {
       dispatch(resetBounties());
     };
-  }, [dispatch, chain, tablePage, pageSize, getFilterData, sort]);
+  }, [dispatch, tablePage, pageSize, getFilterData, sort]);
 
   const totalPages = useMemo(
     () => Math.ceil(bountiesTotal / pageSize),
-    [bountiesTotal, pageSize]
+    [bountiesTotal, pageSize],
   );
 
   const tableData = useMemo(() => bounties, [bounties]);
@@ -95,12 +99,18 @@ const Bounties = () => {
   const refreshBounties = useCallback(
     (reachingFinalizedBlock) => {
       const filterData = getFilterData();
-      dispatch(fetchBounties(chain, tablePage - 1, pageSize, filterData, sort && { sort }));
+      dispatch(
+        fetchBounties(tablePage - 1, pageSize, filterData, sort && { sort }),
+      );
       if (reachingFinalizedBlock) {
-        dispatch(newSuccessToast("Sync finished. Please provide context info for your bounty on subsquare or polkassembly."));
+        dispatch(
+          newSuccessToast(
+            "Sync finished. Please provide context info for your bounty on subsquare or polkassembly.",
+          ),
+        );
       }
     },
-    [dispatch, chain, tablePage, pageSize, getFilterData, sort]
+    [dispatch, tablePage, pageSize, getFilterData, sort],
   );
 
   const onFinalized = useWaitSyncBlock("Bounty created", refreshBounties);

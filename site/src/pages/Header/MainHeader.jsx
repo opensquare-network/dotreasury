@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import ConnectWallet from "../../components/ConnectWallet";
 import { useDark } from "../../context/theme";
+import { SYMBOLS } from "../../constants";
 
 const Wrapper = styled.header`
   height: 76px;
@@ -41,7 +42,7 @@ const Right = styled.div`
     background-color: transparent !important;
     color: var(--textPrimary) !important;
     ${(p) =>
-      p.symbol === "ksm" &&
+      p.symbol === SYMBOLS.KSM &&
       css`
         color: var(--textPrimaryContrast) !important;
       `}
@@ -124,10 +125,12 @@ const HeaderExamplePage = () => {
     }
   };
   let menuIconSrc =
-    symbol === "ksm" ? "/imgs/icon-ham-white.svg" : "/imgs/icon-ham-black.svg";
+    symbol === SYMBOLS.KSM
+      ? "/imgs/icon-ham-white.svg"
+      : "/imgs/icon-ham-black.svg";
   if (menuShow) {
     menuIconSrc =
-      symbol === "ksm"
+      symbol === SYMBOLS.KSM
         ? "/imgs/menu-icon-close-white.svg"
         : "/imgs/menu-icon-close.svg";
   }
@@ -151,13 +154,13 @@ const HeaderExamplePage = () => {
           onClick={menuClick}
           ref={menuWrap}
         >
-          <NavLink to={`/${symbol}/income`}>
+          <NavLink to={"/income"}>
             <MenuSwitch menuTabsName="Income" />
           </NavLink>
-          <NavLink to={`/${symbol}/projects`}>
+          <NavLink to={"/projects"}>
             <MenuSwitch menuTabsName="Projects" />
           </NavLink>
-          <NavLink to={`/${symbol}/users`}>
+          <NavLink to={"/users"}>
             <MenuSwitch menuTabsName="Users" />
           </NavLink>
           <ConnectWallet />

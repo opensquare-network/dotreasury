@@ -6,10 +6,9 @@ import ExplorerLink from "../../components/ExplorerLink";
 import ExternalLink from "../../components/ExternalLink";
 import { useIsMounted } from "@osn/common";
 import { mrgap } from "../../styles";
-import polkassemblyApi from "../../services/polkassembly";
 import { useSelector } from "react-redux";
 import { chainSelector } from "../../store/reducers/chainSlice";
-import { TimelineItemType } from "../../constants";
+import { CHAINS, TimelineItemType } from "../../constants";
 
 const Wrapper = styled.div`
   margin-top: 8px;
@@ -20,7 +19,6 @@ const Wrapper = styled.div`
 `;
 
 const ButtonList = ({ extrinsicIndexer, eventIndexer, polkassembly, type }) => {
-  const [polkassemblyUrl, setPolkassemblyUrl] = useState(null);
   const [subsquareUrl, setSubsquareUrl] = useState(null);
   const isMounted = useIsMounted();
   const chain = useSelector(chainSelector);
@@ -30,33 +28,28 @@ const ButtonList = ({ extrinsicIndexer, eventIndexer, polkassembly, type }) => {
       if (polkassembly === undefined || !type) return;
 
       if (type === TimelineItemType.CouncilMotion) {
-        setSubsquareUrl(`https://${chain}.subsquare.io/council/motion/${polkassembly}`);
-        const url = await polkassemblyApi.getMotionUrl(polkassembly);
-        if (isMounted.current) {
-          setPolkassemblyUrl(url);
-        }
+        setSubsquareUrl(
+          `https://${chain}.subsquare.io/council/motion/${polkassembly}`,
+        );
       }
 
       if (type === TimelineItemType.DemocracyReferendum) {
-        setSubsquareUrl(`https://${chain}.subsquare.io/democracy/referendum/${polkassembly}`);
-        const url = await polkassemblyApi.getReferendumUrl(polkassembly);
-        if (isMounted.current) {
-          setPolkassemblyUrl(url);
-        }
+        setSubsquareUrl(
+          `https://${chain}.subsquare.io/democracy/referendum/${polkassembly}`,
+        );
       }
 
       if (type === TimelineItemType.Gov2Referendum) {
-        setSubsquareUrl(`https://${chain}.subsquare.io/referenda/referendum/${polkassembly}`);
-        const url = await polkassemblyApi.getGov2ReferendumUrl(polkassembly);
-        if (isMounted.current) {
-          setPolkassemblyUrl(url);
-        }
+        setSubsquareUrl(
+          `https://${chain}.subsquare.io/referenda/referendum/${polkassembly}`,
+        );
       }
     })();
   }, [polkassembly, type, chain, isMounted]);
 
   const blockHeight = (extrinsicIndexer || eventIndexer)?.blockHeight;
-  const extrinsicIndex = (extrinsicIndexer || eventIndexer)?.extrinsicIndex || 0;
+  const extrinsicIndex =
+    (extrinsicIndexer || eventIndexer)?.extrinsicIndex || 0;
   const eventSort = eventIndexer?.eventIndex;
 
   const isExtrinsic = !!extrinsicIndexer;
@@ -68,7 +61,7 @@ const ButtonList = ({ extrinsicIndexer, eventIndexer, polkassembly, type }) => {
     <Wrapper>
       <ExplorerLink
         base={
-          chain === "kusama"
+          chain === CHAINS.KUSAMA
             ? "https://polkascan.io/kusama/"
             : "https://polkascan.io/polkadot/"
         }
@@ -80,7 +73,7 @@ const ButtonList = ({ extrinsicIndexer, eventIndexer, polkassembly, type }) => {
       </ExplorerLink>
       <ExplorerLink
         base={
-          chain === "kusama"
+          chain === CHAINS.KUSAMA
             ? "https://kusama.subscan.io/"
             : "https://polkadot.subscan.io/"
         }
@@ -88,11 +81,6 @@ const ButtonList = ({ extrinsicIndexer, eventIndexer, polkassembly, type }) => {
       >
         <ImageButton src={"/imgs/subscan-logo.svg"} />
       </ExplorerLink>
-      {polkassemblyUrl && (
-        <ExternalLink href={polkassemblyUrl}>
-          <ImageButton src={"/imgs/polkassembly-logo.svg"} />
-        </ExternalLink>
-      )}
       {subsquareUrl && (
         <ExternalLink href={subsquareUrl}>
           <ImageButton src={"/imgs/subsquare-logo.svg"} />

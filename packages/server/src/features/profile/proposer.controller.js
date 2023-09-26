@@ -7,19 +7,25 @@ const {
 const { extractPage } = require("../../utils");
 
 async function getProposerCounts(ctx) {
-  const { chain, address } = ctx.params;
+  const { address } = ctx.params;
 
-  const tipCol = await getTipCollection(chain);
+  const tipCol = await getTipCollection();
   const tipsCount = await tipCol.countDocuments({ finder: address });
 
-  const proposalCol = await getProposalCollection(chain);
-  const proposalsCount = await proposalCol.countDocuments({ proposer: address });
+  const proposalCol = await getProposalCollection();
+  const proposalsCount = await proposalCol.countDocuments({
+    proposer: address,
+  });
 
-  const bountyCol = await getBountyCollection(chain);
-  const bountiesCount = await bountyCol.countDocuments({ "meta.proposer": address });
+  const bountyCol = await getBountyCollection();
+  const bountiesCount = await bountyCol.countDocuments({
+    "meta.proposer": address,
+  });
 
-  const childBountyCol = await getChildBountyCollection(chain);
-  const childBountiesCount = await childBountyCol.countDocuments({ proposer: address });
+  const childBountyCol = await getChildBountyCollection();
+  const childBountiesCount = await childBountyCol.countDocuments({
+    proposer: address,
+  });
 
   ctx.body = {
     tipsCount,
@@ -30,11 +36,11 @@ async function getProposerCounts(ctx) {
 }
 
 async function getProposerTips(ctx) {
-  const { chain, address } = ctx.params;
+  const { address } = ctx.params;
   const { page, pageSize } = extractPage(ctx);
 
   const q = { finder: address };
-  const tipCol = await getTipCollection(chain);
+  const tipCol = await getTipCollection();
   const total = await tipCol.countDocuments(q);
   const items = await tipCol
     .find(q, { projection: { timeline: 0 } })
@@ -52,11 +58,11 @@ async function getProposerTips(ctx) {
 }
 
 async function getProposerProposals(ctx) {
-  const { chain, address } = ctx.params;
+  const { address } = ctx.params;
   const { page, pageSize } = extractPage(ctx);
 
   const q = { proposer: address };
-  const proposalCol = await getProposalCollection(chain);
+  const proposalCol = await getProposalCollection();
   const total = await proposalCol.countDocuments(q);
   const items = await proposalCol
     .find(q, { projection: { timeline: 0, motions: 0 } })
@@ -74,11 +80,11 @@ async function getProposerProposals(ctx) {
 }
 
 async function getProposerBounties(ctx) {
-  const { chain, address } = ctx.params;
+  const { address } = ctx.params;
   const { page, pageSize } = extractPage(ctx);
 
   const q = { "meta.proposer": address };
-  const bountyCol = await getBountyCollection(chain);
+  const bountyCol = await getBountyCollection();
   const total = await bountyCol.countDocuments(q);
   const items = await bountyCol
     .find(q, { projection: { timeline: 0, motions: 0 } })
@@ -96,11 +102,11 @@ async function getProposerBounties(ctx) {
 }
 
 async function getProposerChildBounties(ctx) {
-  const { chain, address } = ctx.params;
+  const { address } = ctx.params;
   const { page, pageSize } = extractPage(ctx);
 
   const q = { proposer: address };
-  const childBountyCol = await getChildBountyCollection(chain);
+  const childBountyCol = await getChildBountyCollection();
   const total = await childBountyCol.countDocuments(q);
   const items = await childBountyCol
     .find(q)

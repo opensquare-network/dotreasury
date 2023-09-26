@@ -7,15 +7,15 @@ const rateService = require("../../services/rate.service");
 const { extractPage } = require("../../utils");
 
 async function getCouncilorTerms(ctx) {
-  const { chain, address } = ctx.params;
+  const { address } = ctx.params;
 
-  const termsCol = await getTermsCollection(chain);
-  const items = await termsCol.aggregate(
-    [
+  const termsCol = await getTermsCollection();
+  const items = await termsCol
+    .aggregate([
       {
         $sort: {
-          "indexer.blockHeight": -1
-        }
+          "indexer.blockHeight": -1,
+        },
       },
       {
         $addFields: {
@@ -24,14 +24,14 @@ async function getCouncilorTerms(ctx) {
               input: "$members",
               as: "item",
               cond: { $eq: ["$$item.address", address] },
-            }
+            },
           },
-        }
+        },
       },
       {
         $addFields: {
-          isCouncilor: { $ne: [{ $size: "$members" }, 0] }
-        }
+          isCouncilor: { $ne: [{ $size: "$members" }, 0] },
+        },
       },
       {
         $project: {
@@ -39,24 +39,25 @@ async function getCouncilorTerms(ctx) {
           members: 0,
           "indexer.blockHash": 0,
           "indexer.eventIndex": 0,
-        }
-      }
-    ]).toArray();
+        },
+      },
+    ])
+    .toArray();
 
   ctx.body = items;
 }
 
 async function getMotionVoters(ctx) {
-  const { chain, address } = ctx.params;
+  const { address } = ctx.params;
 
-  const motionCol = await getMotionCollection(chain);
-  const items = await motionCol.aggregate(
-    [
+  const motionCol = await getMotionCollection();
+  const items = await motionCol
+    .aggregate([
       {
         $sort: {
           "indexer.blockHeight": -1,
           "indexer.eventIndex": -1,
-        }
+        },
       },
       {
         $project: {
@@ -64,7 +65,7 @@ async function getMotionVoters(ctx) {
           motionHeight: "$indexer.blockHeight",
           motionHash: "$hash",
           motionIndex: "$index",
-        }
+        },
       },
       {
         $lookup: {
@@ -78,38 +79,39 @@ async function getMotionVoters(ctx) {
                     { $eq: ["$motionHeight", "$$motionHeight"] },
                     { $eq: ["$motionHash", "$$motionHash"] },
                     { $eq: ["$voter", address] },
-                  ]
-                }
-              }
+                  ],
+                },
+              },
             },
             {
               $sort: {
                 "indexer.blockHeight": -1,
                 "indexer.eventIndex": -1,
-              }
+              },
             },
             {
               $project: {
                 _id: 0,
                 aye: "$aye",
-              }
-            }
+              },
+            },
           ],
           as: "votes",
-        }
+        },
       },
       {
         $project: {
           motionHash: 0,
-        }
+        },
       },
-    ]).toArray();
+    ])
+    .toArray();
 
   ctx.body = items;
 }
 
 async function getTippers(ctx) {
-  const { chain, address } = ctx.params;
+  const { address } = ctx.params;
   const { from_time, to_time } = ctx.query;
 
   const q = {};
@@ -121,22 +123,22 @@ async function getTippers(ctx) {
     ];
   }
 
-  const tipCol = await getTipCollection(chain);
-  const items = await tipCol.aggregate(
-    [
+  const tipCol = await getTipCollection();
+  const items = await tipCol
+    .aggregate([
       { $match: q },
       {
         $sort: {
           "indexer.blockHeight": -1,
           "indexer.eventIndex": -1,
-        }
+        },
       },
       {
         $project: {
           _id: 0,
           tipHeight: "$indexer.blockHeight",
           tipHash: "$hash",
-        }
+        },
       },
       {
         $lookup: {
@@ -150,33 +152,34 @@ async function getTippers(ctx) {
                     { $eq: ["$tipHeight", "$$tipHeight"] },
                     { $eq: ["$tipHash", "$$tipHash"] },
                     { $eq: ["$tipper", address] },
-                  ]
-                }
-              }
+                  ],
+                },
+              },
             },
             {
               $sort: {
                 "indexer.blockHeight": -1,
                 "indexer.eventIndex": -1,
-              }
+              },
             },
             {
               $project: {
                 _id: 0,
                 value: "$value",
-              }
-            }
+              },
+            },
           ],
           as: "tips",
-        }
+        },
       },
-    ]).toArray();
+    ])
+    .toArray();
 
   ctx.body = items;
 }
 
 async function getRates(ctx) {
-  const { chain, address } = ctx.params;
+  const { address } = ctx.params;
 
   const { page, pageSize } = extractPage(ctx);
   if (pageSize === 0 || page < 0) {
@@ -186,20 +189,20 @@ async function getRates(ctx) {
 
   ctx.body = await rateService.getRates(
     {
-      chain,
+      chain: process.env.CHAIN,
       type: "councilor",
       index: address,
     },
     page,
-    pageSize
+    pageSize,
   );
 }
 
 async function getRateStats(ctx) {
-  const { chain, address } = ctx.params;
+  const { address } = ctx.params;
 
   ctx.body = await rateService.getRateStats({
-    chain,
+    chain: process.env.CHAIN,
     type: "councilor",
     index: address,
   });

@@ -7,18 +7,21 @@ const { getOverview } = require("../../websocket/store");
 
 class StatsController {
   async getWeeklyStatsHistory(ctx) {
-    const { chain } = ctx.params;
-    const inputWeeklyStatsCol = await getInputWeeklyStatsCollection(chain);
-    const outputWeeklyStatsCol = await getOutputWeeklyStatsCollection(chain);
+    const inputWeeklyStatsCol = await getInputWeeklyStatsCollection();
+    const outputWeeklyStatsCol = await getOutputWeeklyStatsCollection();
 
     const inputWeeklyStats = await inputWeeklyStatsCol.find({}).toArray();
     const outputWeeklyStats = await outputWeeklyStatsCol.find({}).toArray();
 
     // Merge result
     const result = [];
-    for (let i = 0, o = 0; i < inputWeeklyStats.length && o < outputWeeklyStats.length;) {
+    for (
+      let i = 0, o = 0;
+      i < inputWeeklyStats.length && o < outputWeeklyStats.length;
+
+    ) {
       const input = inputWeeklyStats[i];
-      const output =  outputWeeklyStats[o];
+      const output = outputWeeklyStats[o];
       if (input.indexer.blockHeight === output.indexer.blockHeight) {
         result.push({
           ...input,
@@ -40,8 +43,7 @@ class StatsController {
   }
 
   async getTreasuryInOut(ctx) {
-    const { chain } = ctx.params;
-    const overview = getOverview(chain);
+    const overview = getOverview();
     if (!overview) {
       ctx.body = {};
       return;
@@ -63,8 +65,8 @@ class StatsController {
       .toString();
 
     ctx.body = {
-      income: {...income, total: incomeTotal},
-      output: {...output, total: outputTotal},
+      income: { ...income, total: incomeTotal },
+      output: { ...output, total: outputTotal },
     };
   }
 }

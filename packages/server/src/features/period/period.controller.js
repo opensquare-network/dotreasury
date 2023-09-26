@@ -1,8 +1,7 @@
 const { getPeriodCollection } = require("../../mongo");
 
 async function getPeriods(ctx) {
-  const { chain } = ctx.params;
-  const periodCol = await getPeriodCollection(chain);
+  const periodCol = await getPeriodCollection();
   ctx.body = await periodCol
     .find({})
     .sort({ endHeight: 1 })

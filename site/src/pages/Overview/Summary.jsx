@@ -18,10 +18,7 @@ import {
   fetchTreasury,
   treasurySelector,
 } from "../../store/reducers/burntSlice";
-import {
-  chainSelector,
-  chainSymbolSelector,
-} from "../../store/reducers/chainSlice";
+import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import { mrgap } from "../../styles";
 import { abbreviateBigNumber, getPrecision, toPrecision } from "../../utils";
 import { h3_18_semibold, p_12_normal } from "../../styles/text";
@@ -95,18 +92,16 @@ const StyledLinkMajor = styled(Link)`
 
 const Summary = () => {
   const dispatch = useDispatch();
-  const chain = useSelector(chainSelector);
 
   useEffect(() => {
-    dispatch(fetchSpendPeriod(chain));
-    dispatch(fetchTreasury(chain));
-  }, [dispatch, chain]);
+    dispatch(fetchSpendPeriod());
+    dispatch(fetchTreasury());
+  }, [dispatch]);
 
   const overview = useSelector(overviewSelector);
   const spendPeriod = useSelector(spendPeriodSelector);
   const treasury = useSelector(treasurySelector);
   const symbol = useSelector(chainSymbolSelector);
-  const symbolLowerCase = symbol?.toLowerCase();
   const supportOpenGov = useSupportOpenGov();
 
   const precision = getPrecision(symbol);
@@ -195,7 +190,7 @@ const Summary = () => {
               <ValueWrapper>
                 <TextBold>{overview.count.referenda.unFinished ?? 0}</TextBold>
                 <TextAccessoryBold>/</TextAccessoryBold>
-                <StyledLink to={`/${symbolLowerCase}/referenda`}>
+                <StyledLink to={"/referenda"}>
                   <TextAccessoryBold>
                     {overview.count.referenda.all}
                   </TextAccessoryBold>
@@ -214,7 +209,7 @@ const Summary = () => {
             <ValueWrapper>
               <TextBold>{overview.count.proposal.unFinished}</TextBold>
               <TextAccessoryBold>/</TextAccessoryBold>
-              <StyledLink to={`/${symbolLowerCase}/proposals`}>
+              <StyledLink to={"/proposals"}>
                 <TextAccessoryBold>
                   {overview.count.proposal.all}
                 </TextAccessoryBold>
@@ -231,14 +226,14 @@ const Summary = () => {
             <ValueWrapper>
               <StyledLinkMajor
                 to={{
-                  pathname: `/${symbolLowerCase}/tips`,
+                  pathname: "/tips",
                   search: "?status=NewTip||tip",
                 }}
               >
                 <TextBold>{overview.count.tip.unFinished}</TextBold>
               </StyledLinkMajor>
               <TextAccessoryBold>/</TextAccessoryBold>
-              <StyledLink to={`/${symbolLowerCase}/tips`}>
+              <StyledLink to={"/tips"}>
                 <TextAccessoryBold>{overview.count.tip.all}</TextAccessoryBold>
               </StyledLink>
             </ValueWrapper>
@@ -253,7 +248,7 @@ const Summary = () => {
             <ValueWrapper>
               <TextBold>{overview.count.bounty.unFinished}</TextBold>
               <TextAccessoryBold>/</TextAccessoryBold>
-              <StyledLink to={`/${symbolLowerCase}/bounties`}>
+              <StyledLink to={"/bounties"}>
                 <TextAccessoryBold>
                   {overview.count.bounty.all}
                 </TextAccessoryBold>

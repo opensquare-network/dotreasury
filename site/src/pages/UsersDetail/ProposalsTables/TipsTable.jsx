@@ -7,7 +7,6 @@ import {
   normalizedTipListSelector,
 } from "../../../store/reducers/tipSlice";
 import { useEffect } from "react";
-import { chainSelector } from "../../../store/reducers/chainSlice";
 import { TableHeaderWrapper } from "./styled";
 import { resolveFilterData } from "./resolveFilterData";
 
@@ -20,7 +19,6 @@ export default function TipsTable({
   role,
   address,
 }) {
-  const chain = useSelector(chainSelector);
   const dispatch = useDispatch();
 
   const { items, total } = useSelector(normalizedTipListSelector);
@@ -31,13 +29,12 @@ export default function TipsTable({
   useEffect(() => {
     dispatch(
       fetchTips(
-        chain,
         tablePage - 1,
         pageSize,
-        resolveFilterData(filterData, { role, address })
-      )
+        resolveFilterData(filterData, { role, address }),
+      ),
     );
-  }, [dispatch, chain, tablePage, pageSize, filterData, role, address]);
+  }, [dispatch, tablePage, pageSize, filterData, role, address]);
 
   return (
     <TipsTableOrigin

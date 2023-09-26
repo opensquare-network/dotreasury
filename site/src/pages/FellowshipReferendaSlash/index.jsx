@@ -4,7 +4,7 @@ import styled from "styled-components";
 import ResponsivePagination from "../../components/ResponsivePagination";
 import SlashTable from "./SlashTable";
 import { useDispatch, useSelector } from "react-redux";
-import { useChainRoute, useQuery, useLocalStorage } from "../../utils/hooks";
+import { useQuery, useLocalStorage } from "../../utils/hooks";
 import { useHistory } from "react-router";
 
 import {
@@ -12,7 +12,6 @@ import {
   fellowshipReferendaSlashListLoadingSelector,
   fetchFellowshipReferendaSlashList,
 } from "../../store/reducers/incomeSlice";
-import { chainSelector } from "../../store/reducers/chainSlice";
 import Text from "../../components/Text";
 import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../constants";
 
@@ -30,8 +29,6 @@ const Title = styled(Text)`
 `;
 
 const FellowshipReferendaSlash = () => {
-  useChainRoute();
-
   const searchPage = parseInt(useQuery().get("page"));
   const queryPage =
     searchPage && !isNaN(searchPage) && searchPage > 0
@@ -40,18 +37,19 @@ const FellowshipReferendaSlash = () => {
   const [tablePage, setTablePage] = useState(queryPage);
   const [pageSize, setPageSize] = useLocalStorage(
     "referendaPageSize",
-    DEFAULT_PAGE_SIZE
+    DEFAULT_PAGE_SIZE,
   );
 
   const dispatch = useDispatch();
   const history = useHistory();
-  const { items: itemList, total } = useSelector(fellowshipReferendaSlashListSelector);
+  const { items: itemList, total } = useSelector(
+    fellowshipReferendaSlashListSelector,
+  );
   const loading = useSelector(fellowshipReferendaSlashListLoadingSelector);
-  const chain = useSelector(chainSelector);
 
   useEffect(() => {
-    dispatch(fetchFellowshipReferendaSlashList(chain, tablePage - 1, pageSize));
-  }, [dispatch, chain, tablePage, pageSize]);
+    dispatch(fetchFellowshipReferendaSlashList(tablePage - 1, pageSize));
+  }, [dispatch, tablePage, pageSize]);
 
   const totalPages = Math.ceil(total / pageSize);
 

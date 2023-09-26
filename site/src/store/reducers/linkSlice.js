@@ -33,75 +33,69 @@ export class TipIndex {
   }
 }
 
-export const fetchLinks = (chain, type, index) => async (dispatch) => {
-  const { result } = await api.fetch(
-    `/${chain}/${pluralize(type)}/${index}/links`
-  );
+export const fetchLinks = (type, index) => async (dispatch) => {
+  const { result } = await api.fetch(`/${pluralize(type)}/${index}/links`);
   dispatch(setLinks(result || []));
 };
 
-export const addLink = (
-  chain,
-  type,
-  index,
-  link,
-  description,
-  address,
-  extensionName
-) => async (dispatch) => {
-  const signature = await signMessageWithExtension(
-    JSON.stringify({
-      chain,
-      type,
-      index,
-      link,
-      description,
-    }),
-    address,
-    extensionName
-  );
+export const addLink =
+  (type, index, link, description, address, extensionName) =>
+  async (dispatch, getState) => {
+    const { chain } = getState();
+    const signature = await signMessageWithExtension(
+      JSON.stringify({
+        chain: chain.chain,
+        type,
+        index,
+        link,
+        description,
+      }),
+      address,
+      extensionName,
+    );
 
-  await api.fetch(
-    `/${chain}/${pluralize(type)}/${index}/links`,
-    {},
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Signature: address ? `${address}/${signature}` : "",
+    await api.fetch(
+      `/${pluralize(type)}/${index}/links`,
+      {},
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Signature: address ? `${address}/${signature}` : "",
+        },
+        body: JSON.stringify({ link, description }),
       },
-      body: JSON.stringify({ link, description }),
-    }
-  );
-  dispatch(fetchLinks(chain, type, index));
-};
+    );
+    dispatch(fetchLinks(type, index));
+  };
 
-export const removeLink = (chain, type, index, linkIndex, address, extensionName) => async (
-  dispatch
-) => {
-  const signature = await signMessageWithExtension(
-    JSON.stringify({
-      chain,
-      type,
-      index,
-      linkIndex,
-    }),
-    address,
-    extensionName
-  );
+export const removeLink =
+  (type, index, linkIndex, address, extensionName) =>
+  async (dispatch, getState) => {
+    const { chain } = getState();
+    const signature = await signMessageWithExtension(
+      JSON.stringify({
+        chain: chain.chain,
+        type,
+        index,
+        linkIndex,
+      }),
+      address,
+      extensionName,
+    );
 
-  await api.fetch(
-    `/${chain}/${pluralize(type)}/${index}/links/${linkIndex}`,
-    {},
-    {
-      method: "DELETE",
-      headers: {
-        Signature: address ? `${address}/${signature}` : "",
+    await api.fetch(
+      `/${pluralize(type)}/${index}/links/${linkIndex}`,
+      {},
+      {
+        method: "DELETE",
+        headers: {
+          Signature: address ? `${address}/${signature}` : "",
+        },
       },
-    }
-  );
-  dispatch(fetchLinks(chain, type, index));
-};
+    );
+    dispatch(fetchLinks(type, index));
+  };
 
 export const linksSelector = (state) => state.links.links;
 

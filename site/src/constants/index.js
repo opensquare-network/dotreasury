@@ -68,7 +68,6 @@ export const TreasuryAccount =
 export const REACTION_THUMBUP = 1;
 export const REACTION_THUMBDOWN = 2;
 
-export const DEFAULT_KUSAMA_NODE_URL = "wss://kusama-rpc.polkadot.io";
 export const DEFAULT_KUSAMA_NODES = [
   {
     name: "Parity",
@@ -104,7 +103,6 @@ export const DEFAULT_KUSAMA_NODES = [
   },
 ];
 
-export const DEFAULT_POLKADOT_NODE_URL = "wss://rpc.polkadot.io/";
 export const DEFAULT_POLKADOT_NODES = [
   {
     name: "Parity",
@@ -141,8 +139,13 @@ export const DEFAULT_POLKADOT_NODES = [
 ];
 
 export const CHAINS = {
-  POLKADOT: "dot",
-  KUSAMA: "ksm",
+  POLKADOT: "polkadot",
+  KUSAMA: "kusama",
+};
+
+export const SYMBOLS = {
+  DOT: "dot",
+  KSM: "ksm",
 };
 
 export const DEFAULT_PAGE_SIZE = 20;

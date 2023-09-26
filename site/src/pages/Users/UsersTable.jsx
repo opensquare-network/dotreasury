@@ -30,10 +30,16 @@ const TableWrapper = styled.div`
   }
 `;
 
-export default function ParticipantsTable({ data, loading, header, footer }) {
-  const { id, role, proposals } = useTableColumns();
+export default function ParticipantsTable({
+  data,
+  userRole,
+  loading,
+  header,
+  footer,
+}) {
+  const { id, role, proposals, value } = useTableColumns(userRole);
 
-  const columns = [id, role, proposals];
+  const columns = [id, role, proposals, value];
 
   return (
     <CardWrapper>

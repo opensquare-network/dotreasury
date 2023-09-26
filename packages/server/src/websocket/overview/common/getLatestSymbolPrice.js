@@ -1,6 +1,11 @@
-const { getKsmUsdtCollection, getDotUsdtCollection } = require("../../../mongo-price");
+const {
+  getKsmUsdtCollection,
+  getDotUsdtCollection,
+} = require("../../../mongo-price");
 
-async function getLatestSymbolPrice(chain) {
+async function getLatestSymbolPrice() {
+  const chain = process.env.CHAIN;
+
   let col;
   if (chain === "kusama") {
     col = await getKsmUsdtCollection();

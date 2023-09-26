@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Select from "../../components/Select";
 import CompactInput from "../../components/CompactInput";
 import { useEffect } from "react";
+import { symbolFromNetwork } from "../../utils";
 
 const Wrapper = styled.div`
   display: flex;
@@ -56,7 +57,7 @@ const FilterButton = styled.div`
 
   height: 24px;
 
-  background: #F23252;
+  background: #f23252;
   border-radius: 4px;
 
   font-style: normal;
@@ -65,7 +66,7 @@ const FilterButton = styled.div`
   line-height: 16px;
   text-align: center;
 
-  color: #FFFFFF;
+  color: #ffffff;
 `;
 
 const ResetButton = styled.div`
@@ -84,7 +85,7 @@ const ResetButton = styled.div`
   line-height: 16px;
   text-align: center;
 
-  color: #F23252;
+  color: #f23252;
 `;
 
 export const RangeTypes = {
@@ -100,7 +101,7 @@ const RangeInput = ({ prefix, suffix, min, setMin, max, setMax, onEnter }) => {
         suffix={suffix}
         placeholder="Min"
         value={min}
-        onChange={e => setMin(e.target.value)}
+        onChange={(e) => setMin(e.target.value)}
         onEnter={onEnter}
       />
       <CompactInput
@@ -108,7 +109,7 @@ const RangeInput = ({ prefix, suffix, min, setMin, max, setMax, onEnter }) => {
         suffix={suffix}
         placeholder="Max"
         value={max}
-        onChange={e => setMax(e.target.value)}
+        onChange={(e) => setMax(e.target.value)}
         onEnter={onEnter}
       />
     </RangeWrapper>
@@ -124,9 +125,9 @@ const Range = ({
   max,
   setMax,
 }) => {
-  const chainSymbol = chain === "kusama" ? "KSM" : "DOT";
+  const chainSymbol = symbolFromNetwork(chain)?.toUpperCase();
   const suffix = rangeType === RangeTypes.Token ? chainSymbol : "";
-  const prefix = rangeType === RangeTypes.Fiat ? "$": "";
+  const prefix = rangeType === RangeTypes.Fiat ? "$" : "";
 
   const [minValue, setMinValue] = useState(min);
   const [maxValue, setMaxValue] = useState(max);
@@ -168,12 +169,8 @@ const Range = ({
         setMax={setMaxValue}
         onEnter={doFilter}
       />
-      {hasMinMaxValue && (
-        <FilterButton onClick={doFilter}>Filter</FilterButton>
-      )}
-      {hasMinMax && (
-        <ResetButton onClick={doReset}>Reset</ResetButton>
-      )}
+      {hasMinMaxValue && <FilterButton onClick={doFilter}>Filter</FilterButton>}
+      {hasMinMax && <ResetButton onClick={doReset}>Reset</ResetButton>}
     </Wrapper>
   );
 };

@@ -7,6 +7,7 @@ import {
   showMenuTabsSelector,
 } from "../../store/reducers/menuSlice";
 import { useChain } from "../../utils/hooks/chain";
+import { CHAINS } from "../../constants";
 
 const Wrapper = styled.div`
   margin-right: 32px;
@@ -25,7 +26,7 @@ const StyledButton = styled(Button)`
       color: var(--primary) !important;
     `}
   ${(p) =>
-    p.chain === "kusama" &&
+    p.chain === CHAINS.KUSAMA &&
     css`
       color: var(--textPrimaryContrast) !important;
     `}

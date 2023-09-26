@@ -1,13 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {
-  getApi,
-  estimateBlocksTime,
-} from "../../services/chainApi";
-import { CHAINS } from "../../constants";
-import { networkFromSymbol } from "../../utils";
+import { getApi, estimateBlocksTime } from "../../services/chainApi";
+import { symbolFromNetwork } from "../../utils";
 
-const chainStorageKey = "dotreasury-current-chain";
-const chain = localStorage.getItem(chainStorageKey) || CHAINS.POLKADOT;
+const chain = import.meta.env.VITE_APP_CHAIN;
 
 const chainSlice = createSlice({
   name: "chain",
@@ -24,14 +19,6 @@ const chainSlice = createSlice({
     },
   },
   reducers: {
-    setChain(state, { payload }) {
-      if (![CHAINS.KUSAMA, CHAINS.POLKADOT].includes(payload)) {
-        return;
-      }
-      state.chain = payload;
-
-      localStorage.setItem(chainStorageKey, payload);
-    },
     setCurrentBlockHeight(state, { payload }) {
       state.currentBlockHeight = payload;
     },
@@ -44,14 +31,13 @@ const chainSlice = createSlice({
   },
 });
 
-export const {
-  setChain,
-  setCurrentBlockHeight,
-  setScanHeight,
-  setSpendPeriod,
-} = chainSlice.actions;
+export const { setCurrentBlockHeight, setScanHeight, setSpendPeriod } =
+  chainSlice.actions;
 
-export const fetchSpendPeriod = (chain) => async (dispatch) => {
+export const fetchSpendPeriod = () => async (dispatch, getState) => {
+  const {
+    chain: { chain },
+  } = getState();
   const api = await getApi(chain);
   const bestNumber = await api.derive.chain.bestNumber();
   const spendPeriod = api.consts.treasury.spendPeriod;
@@ -63,7 +49,7 @@ export const fetchSpendPeriod = (chain) => async (dispatch) => {
       restBlocks: spendPeriod.sub(goneBlocks).toNumber(),
       restTime: await estimateBlocksTime(chain, spendPeriod.sub(goneBlocks)),
       progress: goneBlocks.muln(100).div(spendPeriod).toNumber(),
-    })
+    }),
   );
 };
 
@@ -72,8 +58,8 @@ export const currentBlockHeightSelector = (state) =>
 export const scanHeightSelector = (state) => state.chain.scanHeight;
 export const spendPeriodSelector = (state) => state.chain.spendPeriod;
 
-export const chainSelector = (state) => networkFromSymbol(state.chain.chain);
+export const chainSelector = (state) => state.chain.chain;
 export const chainSymbolSelector = (state) =>
-  (state.chain.chain || "").toUpperCase();
+  (symbolFromNetwork(state.chain.chain) || "").toUpperCase();
 
 export default chainSlice.reducer;

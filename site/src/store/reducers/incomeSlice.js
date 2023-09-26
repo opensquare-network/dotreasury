@@ -178,8 +178,8 @@ export const {
   setTransferListLoading,
 } = incomeSlice.actions;
 
-export const fetchIncomeCount = (chain) => async (dispatch) => {
-  const { result } = await api.fetch(`/${chain}/income/count`);
+export const fetchIncomeCount = () => async (dispatch) => {
+  const { result } = await api.fetch("/income/count");
   dispatch(
     setCount(
       result || {
@@ -193,281 +193,260 @@ export const fetchIncomeCount = (chain) => async (dispatch) => {
         inflation: 0,
         others: 0,
         transfer: 0,
-      }
-    )
+      },
+    ),
   );
 };
 
-export const fetchTreasurySlashList = (
-  chain,
-  page = 0,
-  pageSize = 30
-) => async (dispatch) => {
-  dispatch(setTreasurySlashListLoading(true));
+export const fetchTreasurySlashList =
+  (page = 0, pageSize = 30) =>
+  async (dispatch) => {
+    dispatch(setTreasurySlashListLoading(true));
 
-  try {
-    const { result } = await api.fetch(`/${chain}/income/slash/treasury`, {
-      page,
-      pageSize,
-    });
-    dispatch(
-      setTreasurySlashList(
-        result || {
-          items: [],
-          page: 0,
-          pageSize: 10,
-          total: 0,
-        }
-      )
-    );
-  } finally {
-    dispatch(setTreasurySlashListLoading(false));
-  }
-};
-
-export const fetchDemocracySlashList = (
-  chain,
-  page = 0,
-  pageSize = 30
-) => async (dispatch) => {
-  dispatch(setDemocracySlashListLoading(true));
-
-  try {
-    const { result } = await api.fetch(`/${chain}/income/slash/democracy`, {
-      page,
-      pageSize,
-    });
-    dispatch(
-      setDemocracySlashList(
-        result || {
-          items: [],
-          page: 0,
-          pageSize: 10,
-          total: 0,
-        }
-      )
-    );
-  } finally {
-    dispatch(setDemocracySlashListLoading(false));
-  }
-};
-
-export const fetchIdentitySlashList = (
-  chain,
-  page = 0,
-  pageSize = 30
-) => async (dispatch) => {
-  dispatch(setIdentitySlashListLoading(true));
-
-  try {
-    const { result } = await api.fetch(`/${chain}/income/slash/identity`, {
-      page,
-      pageSize,
-    });
-    dispatch(
-      setIdentitySlashList(
-        result || {
-          items: [],
-          page: 0,
-          pageSize: 10,
-          total: 0,
-        }
-      )
-    );
-  } finally {
-    dispatch(setIdentitySlashListLoading(false));
-  }
-};
-
-export const fetchStakingSlashList = (chain, page = 0, pageSize = 30) => async (
-  dispatch
-) => {
-  dispatch(setStakingSlashListLoading(true));
-
-  try {
-    const { result } = await api.fetch(`/${chain}/income/slash/staking`, {
-      page,
-      pageSize,
-    });
-    dispatch(
-      setStakingSlashList(
-        result || {
-          items: [],
-          page: 0,
-          pageSize: 10,
-          total: 0,
-        }
-      )
-    );
-  } finally {
-    dispatch(setStakingSlashListLoading(false));
-  }
-};
-
-export const fetchElectionPhragmenSlashList = (
-  chain,
-  page = 0,
-  pageSize = 30
-) => async (dispatch) => {
-  dispatch(setElectionPhragmenSlashListLoading(true));
-
-  try {
-    const { result } = await api.fetch(
-      `/${chain}/income/slash/electionphragmen`,
-      {
+    try {
+      const { result } = await api.fetch("/income/slash/treasury", {
         page,
         pageSize,
-      }
-    );
-    dispatch(
-      setElectionPhragmenSlashList(
-        result || {
-          items: [],
-          page: 0,
-          pageSize: 10,
-          total: 0,
-        }
-      )
-    );
-  } finally {
-    dispatch(setElectionPhragmenSlashListLoading(false));
-  }
-};
+      });
+      dispatch(
+        setTreasurySlashList(
+          result || {
+            items: [],
+            page: 0,
+            pageSize: 10,
+            total: 0,
+          },
+        ),
+      );
+    } finally {
+      dispatch(setTreasurySlashListLoading(false));
+    }
+  };
 
-export const fetchReferendaSlashList = (
-  chain,
-  page = 0,
-  pageSize = 30
-) => async (dispatch) => {
-  dispatch(setReferendaSlashListLoading(true));
+export const fetchDemocracySlashList =
+  (page = 0, pageSize = 30) =>
+  async (dispatch) => {
+    dispatch(setDemocracySlashListLoading(true));
 
-  try {
-    const { result } = await api.fetch(
-      `/${chain}/income/slash/referenda`,
-      {
+    try {
+      const { result } = await api.fetch("/income/slash/democracy", {
         page,
         pageSize,
-      }
-    );
-    dispatch(
-      setReferendaSlashList(
-        result || {
-          items: [],
-          page: 0,
-          pageSize: 10,
-          total: 0,
-        }
-      )
-    );
-  } finally {
-    dispatch(setReferendaSlashListLoading(false));
-  }
-};
+      });
+      dispatch(
+        setDemocracySlashList(
+          result || {
+            items: [],
+            page: 0,
+            pageSize: 10,
+            total: 0,
+          },
+        ),
+      );
+    } finally {
+      dispatch(setDemocracySlashListLoading(false));
+    }
+  };
 
-export const fetchFellowshipReferendaSlashList = (
-  chain,
-  page = 0,
-  pageSize = 30
-) => async (dispatch) => {
-  dispatch(setFellowshipReferendaSlashListLoading(true));
+export const fetchIdentitySlashList =
+  (page = 0, pageSize = 30) =>
+  async (dispatch) => {
+    dispatch(setIdentitySlashListLoading(true));
 
-  try {
-    const { result } = await api.fetch(
-      `/${chain}/income/slash/fellowship-referenda`,
-      {
+    try {
+      const { result } = await api.fetch("/income/slash/identity", {
         page,
         pageSize,
-      }
-    );
-    dispatch(
-      setFellowshipReferendaSlashList(
-        result || {
-          items: [],
-          page: 0,
-          pageSize: 10,
-          total: 0,
-        }
-      )
-    );
-  } finally {
-    dispatch(setFellowshipReferendaSlashListLoading(false));
-  }
-};
+      });
+      dispatch(
+        setIdentitySlashList(
+          result || {
+            items: [],
+            page: 0,
+            pageSize: 10,
+            total: 0,
+          },
+        ),
+      );
+    } finally {
+      dispatch(setIdentitySlashListLoading(false));
+    }
+  };
 
-export const fetchInflationList = (chain, page = 0, pageSize = 30) => async (
-  dispatch
-) => {
-  dispatch(setInflationListLoading(true));
+export const fetchStakingSlashList =
+  (page = 0, pageSize = 30) =>
+  async (dispatch) => {
+    dispatch(setStakingSlashListLoading(true));
 
-  try {
-    const { result } = await api.fetch(`/${chain}/income/inflation`, {
-      page,
-      pageSize,
-    });
-    dispatch(
-      setInflationList(
-        result || {
-          items: [],
-          page: 0,
-          pageSize: 10,
-          total: 0,
-        }
-      )
-    );
-  } finally {
-    dispatch(setInflationListLoading(false));
-  }
-};
+    try {
+      const { result } = await api.fetch("/income/slash/staking", {
+        page,
+        pageSize,
+      });
+      dispatch(
+        setStakingSlashList(
+          result || {
+            items: [],
+            page: 0,
+            pageSize: 10,
+            total: 0,
+          },
+        ),
+      );
+    } finally {
+      dispatch(setStakingSlashListLoading(false));
+    }
+  };
 
-export const fetchTransferList = (chain, page = 0, pageSize = 30) => async (
-  dispatch
-) => {
-  dispatch(setTransferListLoading(true));
+export const fetchElectionPhragmenSlashList =
+  (page = 0, pageSize = 30) =>
+  async (dispatch) => {
+    dispatch(setElectionPhragmenSlashListLoading(true));
 
-  try {
-    const { result } = await api.fetch(`/${chain}/income/transfer`, {
-      page,
-      pageSize,
-    });
-    dispatch(
-      setTransferList(
-        result || {
-          items: [],
-          page: 0,
-          pageSize: 10,
-          total: 0,
-        }
-      )
-    );
-  } finally {
-    dispatch(setTransferListLoading(false));
-  }
-};
+    try {
+      const { result } = await api.fetch("/income/slash/electionphragmen", {
+        page,
+        pageSize,
+      });
+      dispatch(
+        setElectionPhragmenSlashList(
+          result || {
+            items: [],
+            page: 0,
+            pageSize: 10,
+            total: 0,
+          },
+        ),
+      );
+    } finally {
+      dispatch(setElectionPhragmenSlashListLoading(false));
+    }
+  };
 
-export const fetchOthersIncomeList = (chain, page = 0, pageSize = 30) => async (
-  dispatch
-) => {
-  dispatch(setOthersIncomeListLoading(true));
+export const fetchReferendaSlashList =
+  (page = 0, pageSize = 30) =>
+  async (dispatch) => {
+    dispatch(setReferendaSlashListLoading(true));
 
-  try {
-    const { result } = await api.fetch(`/${chain}/income/others`, {
-      page,
-      pageSize,
-    });
-    dispatch(
-      setOthersIncomeList(
-        result || {
-          items: [],
-          page: 0,
-          pageSize: 10,
-          total: 0,
-        }
-      )
-    );
-  } finally {
-    dispatch(setOthersIncomeListLoading(false));
-  }
-};
+    try {
+      const { result } = await api.fetch("/income/slash/referenda", {
+        page,
+        pageSize,
+      });
+      dispatch(
+        setReferendaSlashList(
+          result || {
+            items: [],
+            page: 0,
+            pageSize: 10,
+            total: 0,
+          },
+        ),
+      );
+    } finally {
+      dispatch(setReferendaSlashListLoading(false));
+    }
+  };
+
+export const fetchFellowshipReferendaSlashList =
+  (page = 0, pageSize = 30) =>
+  async (dispatch) => {
+    dispatch(setFellowshipReferendaSlashListLoading(true));
+
+    try {
+      const { result } = await api.fetch("/income/slash/fellowship-referenda", {
+        page,
+        pageSize,
+      });
+      dispatch(
+        setFellowshipReferendaSlashList(
+          result || {
+            items: [],
+            page: 0,
+            pageSize: 10,
+            total: 0,
+          },
+        ),
+      );
+    } finally {
+      dispatch(setFellowshipReferendaSlashListLoading(false));
+    }
+  };
+
+export const fetchInflationList =
+  (page = 0, pageSize = 30) =>
+  async (dispatch) => {
+    dispatch(setInflationListLoading(true));
+
+    try {
+      const { result } = await api.fetch("/income/inflation", {
+        page,
+        pageSize,
+      });
+      dispatch(
+        setInflationList(
+          result || {
+            items: [],
+            page: 0,
+            pageSize: 10,
+            total: 0,
+          },
+        ),
+      );
+    } finally {
+      dispatch(setInflationListLoading(false));
+    }
+  };
+
+export const fetchTransferList =
+  (page = 0, pageSize = 30) =>
+  async (dispatch) => {
+    dispatch(setTransferListLoading(true));
+
+    try {
+      const { result } = await api.fetch("/income/transfer", {
+        page,
+        pageSize,
+      });
+      dispatch(
+        setTransferList(
+          result || {
+            items: [],
+            page: 0,
+            pageSize: 10,
+            total: 0,
+          },
+        ),
+      );
+    } finally {
+      dispatch(setTransferListLoading(false));
+    }
+  };
+
+export const fetchOthersIncomeList =
+  (page = 0, pageSize = 30) =>
+  async (dispatch) => {
+    dispatch(setOthersIncomeListLoading(true));
+
+    try {
+      const { result } = await api.fetch("/income/others", {
+        page,
+        pageSize,
+      });
+      dispatch(
+        setOthersIncomeList(
+          result || {
+            items: [],
+            page: 0,
+            pageSize: 10,
+            total: 0,
+          },
+        ),
+      );
+    } finally {
+      dispatch(setOthersIncomeListLoading(false));
+    }
+  };
 
 export const incomeCountSelector = (state) => state.income.count;
 export const democracySlashListSelector = (state) =>

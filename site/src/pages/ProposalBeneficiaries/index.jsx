@@ -5,7 +5,6 @@ import {
   proposalBeneficiariesSelector,
   loadingSelector,
 } from "../../store/reducers/proposalBeneficiariesSlice";
-import { chainSelector } from "../../store/reducers/chainSlice";
 import ProposalBeneficiariesTable from "./ProposalBeneficiariesTable";
 import Text from "../../components/Text";
 import { useLocalStorage, useQuery } from "../../utils/hooks";
@@ -38,21 +37,20 @@ export default function ProposalBeneficiaries() {
   const [tablePage, setTablePage] = useState(queryPage);
   const [pageSize, setPageSize] = useLocalStorage(
     "tipFindersPageSize",
-    DEFAULT_PAGE_SIZE
+    DEFAULT_PAGE_SIZE,
   );
 
   const dispatch = useDispatch();
   const history = useHistory();
   const { items: proposalBeneficiaries, total } = useSelector(
-    proposalBeneficiariesSelector
+    proposalBeneficiariesSelector,
   );
   const loading = useSelector(loadingSelector);
   const totalPages = Math.ceil(total / pageSize);
-  const chain = useSelector(chainSelector);
 
   useEffect(() => {
-    dispatch(fetchProposalBeneficiaries(chain, tablePage - 1, pageSize));
-  }, [dispatch, chain, tablePage, pageSize]);
+    dispatch(fetchProposalBeneficiaries(tablePage - 1, pageSize));
+  }, [dispatch, tablePage, pageSize]);
 
   return (
     <ProposalBeneficiariesTable

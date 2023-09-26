@@ -1,13 +1,10 @@
 const crypto = require("crypto");
 const {
   cryptoWaitReady,
-  encodeAddress,
   signatureVerify,
   decodeAddress,
 } = require("@polkadot/util-crypto");
 const BigNumber = require("bignumber.js");
-const { stringUpperFirst } = require("@polkadot/util");
-const { SS58Format } = require("../contants");
 const { HttpError } = require("../exc");
 
 function extractPage(ctx) {
@@ -46,20 +43,6 @@ async function isValidSignature(signedMessage, signature, address) {
     return result.isValid;
   } catch (e) {
     return false;
-  }
-}
-
-function validateAddress(address, chain) {
-  const ss58Format = SS58Format[stringUpperFirst(chain)];
-  if (ss58Format === undefined) {
-    throw new HttpError(400, { chain: ["Unsupported relay chain."] });
-  }
-
-  const validAddress = encodeAddress(address, ss58Format);
-  if (validAddress !== address) {
-    throw new HttpError(400, {
-      address: [`Not a valid ${chain} ss58format address.`],
-    });
   }
 }
 
@@ -110,14 +93,14 @@ async function verifyAdminSignature(addressAndSignature, message, admins) {
   return true;
 }
 
-function fromUint(value, chain) {
-  return new BigNumber(value).div(Math.pow(10, chain === "kusama" ? 12 : 10));
+function fromUint(value) {
+  const decimals = process.env.CHAIN === "polkadot" ? 10 : 12;
+  return new BigNumber(value).div(Math.pow(10, decimals));
 }
 
 module.exports = {
   extractPage,
   isValidSignature,
-  validateAddress,
   handler,
   bigAdd,
   md5,

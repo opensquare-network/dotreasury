@@ -18,19 +18,21 @@ const descriptionSlice = createSlice({
 export const { setDescription } = descriptionSlice.actions;
 
 export const fetchDescription =
-  (chain, type = "", index) =>
+  (type = "", index) =>
   async (dispatch) => {
     const { result } = await api.fetch(
-      `/${chain}/${pluralize(type)}/${index}/description`
+      `/${pluralize(type)}/${index}/description`,
     );
     dispatch(setDescription(result || {}));
   };
 
 export const putDescription =
-  (chain, type, index, description, proposalType, status, address, extensionName) => async (dispatch) => {
+  (type, index, description, proposalType, status, address, extensionName) =>
+  async (dispatch, getState) => {
+    const { chain } = getState();
     const signature = await signMessageWithExtension(
       JSON.stringify({
-        chain,
+        chain: chain.chain,
         type,
         index,
         description,
@@ -38,11 +40,11 @@ export const putDescription =
         status,
       }),
       address,
-      extensionName
+      extensionName,
     );
 
     await api.fetch(
-      `/${chain}/${pluralize(type)}/${index}/description`,
+      `/${pluralize(type)}/${index}/description`,
       {},
       {
         method: "PUT",
@@ -51,9 +53,9 @@ export const putDescription =
           Signature: address ? `${address}/${signature}` : "",
         },
         body: JSON.stringify({ description, proposalType, status }),
-      }
+      },
     );
-    dispatch(fetchDescription(chain, type, index));
+    dispatch(fetchDescription(type, index));
   };
 
 export const descriptionSelector = (state) => state.description.description;

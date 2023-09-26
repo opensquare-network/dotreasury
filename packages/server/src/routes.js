@@ -30,11 +30,7 @@ module.exports = (app) => {
     router.use(r.routes(), r.allowedMethods({ throw: true }));
   }
   for (const r of chainFeatureRouters) {
-    router.use(
-      "/:chain(kusama|polkadot)",
-      r.routes(),
-      r.allowedMethods({ throw: true })
-    );
+    router.use(r.routes(), r.allowedMethods({ throw: true }));
   }
   app.use(router.routes());
 };
