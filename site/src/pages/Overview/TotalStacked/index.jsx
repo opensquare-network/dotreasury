@@ -15,7 +15,10 @@ import {
   fetchStatsHistory,
   statsHistorySelector,
 } from "../../../store/reducers/overviewSlice";
-import { chainSymbolSelector } from "../../../store/reducers/chainSlice";
+import {
+  chainSelector,
+  chainSymbolSelector,
+} from "../../../store/reducers/chainSlice";
 import { h4_16_semibold, p_12_normal } from "../../../styles/text";
 import {
   gap,
@@ -27,6 +30,7 @@ import {
 import { breakpoint } from "../../../styles/responsive";
 import { useSupportOpenGov } from "../../../utils/hooks/chain";
 import Slider from "../../../components/Slider";
+import { CHAINS } from "../../../constants";
 
 const CardWrapper = styled(Card)`
   padding: 24px;
@@ -100,6 +104,7 @@ const SecondListWrapper = styled.div`
 
 const TotalStacked = () => {
   const theme = useTheme();
+  const chain = useSelector(chainSelector);
   const supportOpenGov = useSupportOpenGov();
   const dispatch = useDispatch();
   const [dateLabels, setDateLabels] = useState([]);
@@ -435,7 +440,7 @@ const TotalStacked = () => {
         <Chart
           data={chartData}
           onHover={onHover}
-          yStepSize={chain === "kusama" ? 200000 : 8000000}
+          yStepSize={chain === CHAINS.KUSAMA ? 200000 : 8000000}
         />
         <SliderWrapper>
           <Slider
