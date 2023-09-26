@@ -114,12 +114,14 @@ export function usePrepareSiteData(chain) {
       });
   }, [
     chain,
+    API_ENDPOINT,
     decimals,
     setGlobalHeight,
     setGlobalOverviewData,
     setGlobalTreasuryData,
     setGlobalSpendPeriod,
     setGlobalStatsHistory,
+    setGlobalTopBeneficiaries,
   ]);
 }
 
