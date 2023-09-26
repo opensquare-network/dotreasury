@@ -6,7 +6,7 @@ export default function ContactUsLink() {
   return (
     <ExternalLink
       href={CONTACT_LINK}
-      className="text-textPrimary hover:text-textPrimary"
+      className="text-textPrimary p-14-medium hover:text-pink500"
     >
       Contact Us
     </ExternalLink>
