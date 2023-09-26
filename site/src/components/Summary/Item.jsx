@@ -21,9 +21,15 @@ const IconWrapper = styled.div`
   ${smcss(hidden)};
 `;
 
-export default function SummaryItem({ title = "", icon, content, style = {} }) {
+export default function SummaryItem({
+  title = "",
+  icon,
+  content,
+  style = {},
+  className = "",
+}) {
   return (
-    <Wrapper style={style}>
+    <Wrapper style={style} className={className}>
       <InfoWrapper>
         <Title>{title}</Title>
         {content}

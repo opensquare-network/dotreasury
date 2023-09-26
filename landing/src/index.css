@@ -1,0 +1,140 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: "Inter";
+  @apply text-textPrimary antialiased;
+}
+
+hr {
+  @apply border-neutral300;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+@layer components {
+  .font-montserrat {
+    font-family: "Montserrat";
+  }
+
+  .h2-48-bold {
+    font-family: Inter;
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 64px;
+  }
+  .h2-48-bold-montserrat {
+    @apply h2-48-bold !font-montserrat;
+  }
+
+  .h2-32-bold {
+    font-family: Inter;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 64px;
+  }
+  .h2-32-bold-montserrat {
+    @apply h2-32-bold !font-montserrat;
+  }
+
+  .h2-22-bold {
+    font-family: Inter;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 32px;
+  }
+
+  .h3-24-semibold {
+    font-family: Inter;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 28px;
+  }
+
+  .h3-18-semibold {
+    font-family: Inter;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 28px;
+  }
+
+  .h3-18-medium {
+    @apply h3-18-semibold font-medium;
+  }
+
+  .h4-16-semibold {
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px;
+  }
+
+  .p-16-medium {
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+  }
+
+  .p-14-medium {
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+  }
+
+  .p-12-medium {
+    font-family: Inter;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px;
+  }
+
+  .p-12-normal {
+    @apply p-12-medium font-normal;
+  }
+}
+
+.animate-project-bubble {
+  animation: project-bubble-bounce var(--duration) infinite;
+
+  @keyframes project-bubble-bounce {
+    0%,
+    100% {
+      transform: translateY(var(--move-y-start));
+      animation-timing-function: ease-in-out;
+    }
+    50% {
+      transform: translateY(var(--move-y-end));
+      animation-timing-function: ease-in-out;
+    }
+  }
+}
+
+.animate-project-bubble-lg {
+  --duration: 10s;
+  --move-y-start: -5%;
+  --move-y-end: 5%;
+}
+.animate-project-bubble-md {
+  --duration: 6s;
+  --move-y-start: -6%;
+  --move-y-end: 6%;
+}
+.animate-project-bubble-sm {
+  --duration: 5s;
+  --move-y-start: 10%;
+  --move-y-end: -10%;
+}

@@ -1,10 +1,8 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import styled from "styled-components";
 
 import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
-import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 
 const Wrapper = styled.div`
   position: absolute;
@@ -39,8 +37,7 @@ const TotalText = styled(TextMinor)`
   text-align: center;
 `;
 
-const Total = ({ total, children }) => {
-  const symbol = useSelector(chainSymbolSelector);
+const Total = ({ total, children, symbol }) => {
   return (
     <Wrapper>
       {children}

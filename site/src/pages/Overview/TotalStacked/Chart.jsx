@@ -1,15 +1,12 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import styled, { css } from "styled-components";
 import { Line } from "react-chartjs-2";
 import dayjs from "dayjs";
 
 import "../../../components/Charts/globalConfig";
 import Text from "../../../components/Text";
-import { chainSelector } from "../../../store/reducers/chainSlice";
 import { abbreviateBigNumber } from "../../../utils";
 import { h_full } from "../../../styles/tailwindcss";
-import { CHAINS } from "../../../constants";
 
 const LegendWrapper = styled.div`
   display: flex;
@@ -59,8 +56,7 @@ const ChartWrapper = styled.div`
   min-width: 252px;
 `;
 
-const LineChart = ({ data, onHover }) => {
-  const chain = useSelector(chainSelector);
+const LineChart = ({ data, onHover, yStepSize, xStepSize = 3 }) => {
   const { dates, values } = data;
 
   /** @type {import("react-chartjs-2").ChartProps} */
@@ -103,7 +99,7 @@ const LineChart = ({ data, onHover }) => {
       y: {
         position: "right",
         ticks: {
-          stepSize: chain === CHAINS.KUSAMA ? 200000 : 8000000,
+          stepSize: yStepSize,
           callback: (y) => abbreviateBigNumber(y),
         },
         grid: {
@@ -123,7 +119,7 @@ const LineChart = ({ data, onHover }) => {
           color: "rgba(0, 0, 0, 0)",
         },
         ticks: {
-          stepSize: 3,
+          stepSize: xStepSize,
         },
       },
     },

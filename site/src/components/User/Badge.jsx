@@ -6,6 +6,8 @@ const Wrapper = styled.div`
   > img {
     width: 14px;
     height: 14px;
+    min-width: 14px;
+    min-height: 14px;
     margin-right: 4px;
   }
 `;

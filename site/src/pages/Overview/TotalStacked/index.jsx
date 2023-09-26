@@ -15,7 +15,10 @@ import {
   fetchStatsHistory,
   statsHistorySelector,
 } from "../../../store/reducers/overviewSlice";
-import { chainSymbolSelector } from "../../../store/reducers/chainSlice";
+import {
+  chainSelector,
+  chainSymbolSelector,
+} from "../../../store/reducers/chainSlice";
 import { h4_16_semibold, p_12_normal } from "../../../styles/text";
 import {
   gap,
@@ -27,6 +30,7 @@ import {
 import { breakpoint } from "../../../styles/responsive";
 import { useSupportOpenGov } from "../../../utils/hooks/chain";
 import Slider from "../../../components/Slider";
+import { CHAINS } from "../../../constants";
 
 const CardWrapper = styled(Card)`
   padding: 24px;
@@ -100,6 +104,7 @@ const SecondListWrapper = styled.div`
 
 const TotalStacked = () => {
   const theme = useTheme();
+  const chain = useSelector(chainSelector);
   const supportOpenGov = useSupportOpenGov();
   const dispatch = useDispatch();
   const [dateLabels, setDateLabels] = useState([]);
@@ -432,7 +437,11 @@ const TotalStacked = () => {
   if (dateLabels?.length > 0) {
     chartComponent = (
       <ChartAndSlider>
-        <Chart data={chartData} onHover={onHover} />
+        <Chart
+          data={chartData}
+          onHover={onHover}
+          yStepSize={chain === CHAINS.KUSAMA ? 200000 : 8000000}
+        />
         <SliderWrapper>
           <Slider
             min={0}
@@ -450,10 +459,10 @@ const TotalStacked = () => {
       <Title>Total Stacked</Title>
       <ContentWrapper>
         <ListWrapper>
-          <List data={incomeData}></List>
+          <List symbol={symbol} data={incomeData}></List>
           <SecondListWrapper>
-            <List data={outputData}></List>
-            <List data={treasuryData}></List>
+            <List symbol={symbol} data={outputData}></List>
+            <List symbol={symbol} data={treasuryData}></List>
           </SecondListWrapper>
         </ListWrapper>
         {chartComponent}

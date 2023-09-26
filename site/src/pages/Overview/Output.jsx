@@ -176,6 +176,7 @@ const Output = () => {
       data={outputData}
       status={outputStatus}
       clickEvent={clickEvent}
+      symbol={symbol}
     />
   );
 };

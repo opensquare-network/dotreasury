@@ -10,6 +10,8 @@ import { useTheme } from "../../context/theme";
 import IconMask from "../../components/Icon/Mask";
 import { items_center } from "../../styles/tailwindcss";
 import { useSupportOpenGov } from "../../utils/hooks/chain";
+import { useSelector } from "react-redux";
+import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 
 const LinkButton = styled(TextMinor)`
   display: flex;
@@ -37,6 +39,7 @@ const Income = ({
 }) => {
   const theme = useTheme();
   const supportOpenGov = useSupportOpenGov();
+  const symbol = useSelector(chainSymbolSelector);
   const [incomeData, setIncomeData] = useState({
     icon: "circle",
     labels: [],
@@ -206,6 +209,7 @@ const Income = ({
       data={incomeData}
       status={incomeStatus}
       clickEvent={clickEvent}
+      symbol={symbol}
     />
   );
 };

@@ -1,0 +1,48 @@
+name: landing ci
+
+on:
+  push:
+    branches:
+      - main
+      - "release-*"
+    paths:
+      - "landing/**"
+  pull_request:
+    branches:
+      - main
+      - "release-*"
+    paths:
+      - "landing/**"
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: setup node LTS
+        uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+          cache: yarn
+          cache-dependency-path: |
+            landing/yarn.lock
+
+      - name: install
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install
+          dir: landing
+
+      - name: lint
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: lint
+          dir: landing
+
+      - name: build
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: build
+          dir: landing

@@ -28,7 +28,7 @@ const TitleWrapper = styled.div`
   ${items_center};
 `;
 
-const List = ({ data, status, clickEvent, className }) => {
+const List = ({ data, status, clickEvent, className, symbol }) => {
   const { title, date, icon, labels } = data;
   return (
     <Wrapper className={className}>
@@ -45,6 +45,7 @@ const List = ({ data, status, clickEvent, className }) => {
           status={status?.labels[index]}
           icon={icon}
           clickEvent={clickEvent}
+          symbol={symbol}
         />
       ))}
     </Wrapper>

@@ -3,7 +3,7 @@ import { Doughnut } from "react-chartjs-2";
 import "./Charts/globalConfig";
 import { sum } from "../utils/math";
 
-const DoughnutChart = ({ data, status }) => {
+const DoughnutChart = ({ data, status, onTooltipLabel }) => {
   const findDisabled = (name) => {
     const findFunc = (item) => {
       if (item.name === name) return item.disabled;
@@ -49,11 +49,15 @@ const DoughnutChart = ({ data, status }) => {
       tooltip: {
         callbacks: {
           label(tooltipItem) {
+            if (onTooltipLabel) {
+              return onTooltipLabel?.(tooltipItem);
+            }
+
             const dataset = tooltipItem.dataset;
             const currentValue = tooltipItem.parsed;
             const total = sum(dataset.data);
             const percentage = parseFloat(
-              ((currentValue / total) * 100).toFixed(2)
+              ((currentValue / total) * 100).toFixed(2),
             );
             return percentage + "%";
           },

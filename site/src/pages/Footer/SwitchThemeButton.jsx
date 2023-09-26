@@ -68,7 +68,7 @@ export default function FooterSwitchThemeButton() {
   const [themeMode, setThemeMode] = useThemeMode();
 
   const [visible, setVisible] = useState(false);
-  const { refs, floating, reference, strategy, x, y } = useFloating({
+  const { refs, floatingStyles } = useFloating({
     open: visible,
     onOpenChange: setVisible,
     placement: "top-end",
@@ -101,16 +101,9 @@ export default function FooterSwitchThemeButton() {
   useOnClickOutside(refs.reference, hide);
 
   return (
-    <Button ref={reference} onClick={show} style={{ marginLeft: 24 }}>
+    <Button ref={refs.setReference} onClick={show} style={{ marginLeft: 24 }}>
       {visible && (
-        <FloatingList
-          ref={floating}
-          style={{
-            position: strategy,
-            top: y ?? 0,
-            left: x ?? 0,
-          }}
-        >
+        <FloatingList ref={refs.setFloating} style={floatingStyles}>
           {themeList.map((item) => (
             <FloatingItem
               key={item.value}
