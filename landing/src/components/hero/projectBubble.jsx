@@ -19,6 +19,7 @@ export default function ProjectBubble({ node }) {
   return (
     <div
       className={cn(
+        "overflow-hidden",
         "rounded-full flex items-center justify-center",
         "bg-[radial-gradient(50%_50%_at_50%_50%,_#FFF_74.48%,_#FFF0F3_100%)]",
         "dark:bg-[radial-gradient(50%_50%_at_50%_50%,_#0F0F0F_74.48%,_#31080F_100%)]",

@@ -91,10 +91,20 @@ export default function ProjectBubbleGroup({
           .attr("class", (d) => {
             const r = size(d[sizeField]);
             const d_size = r * 2;
+            const { hasDotreasury } = getChainSettings(d.chain);
 
-            return `rounded-full animate-project-bubble ${getBubbleAnimationDirection(
-              d_size,
-            )}`;
+            return cn(
+              "rounded-full",
+              "animate-project-bubble",
+              getBubbleAnimationDirection(d_size),
+              hasDotreasury && "cursor-pointer",
+            );
+          })
+          .on("click", (_, d) => {
+            const { hasDotreasury } = getChainSettings(d.chain);
+            if (hasDotreasury) {
+              window.open(`https://${d.chain}.dotreasury.com`, "_blank");
+            }
           })
           .html((node) => {
             const r = size(node.value);
