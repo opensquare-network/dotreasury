@@ -13,7 +13,7 @@ export default function EcosystemDotsama(props) {
 
   return (
     <Card {...props} className={cn("!p-6", props.className)}>
-      <h4 className="h3-18-semibold">Treasury in Dotsama Ecosystem</h4>
+      <h4 className="h3-18-semibold">Treasury in the Polkadot Ecosystem</h4>
 
       <div className="mt-6 space-y-4">
         {data.map((treasury) => (

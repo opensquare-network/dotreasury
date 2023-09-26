@@ -34,7 +34,7 @@ export default function Overview() {
           "max-md:h3-24-semibold",
         )}
       >
-        Dotsama Treasury Overview
+        Treasury Overview
       </h2>
       <div>
         <Tabs

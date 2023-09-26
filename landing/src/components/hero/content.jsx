@@ -47,7 +47,7 @@ export default function HeroContent() {
           </div>
         </div>
         <div className="mt-4 sm:h2-48-bold-montserrat inline-block max-sm:inline">
-          In Dotsama Ecosystem
+          In Polkadot Ecosystem
         </div>
       </div>
 

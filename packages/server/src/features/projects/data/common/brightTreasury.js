@@ -1,6 +1,6 @@
 const id = "bright-treasury";
 const name = "Bright Treasury";
-const title = "Treasury management app for dotsama";
+const title = "Treasury analysis app for the polkadot ecosystem";
 const description =
   "BrightTreasury is a standalone web application along with a PWA representation that allows performing basic actions on the Treasury module of Polkadot and Kusama ";
 
