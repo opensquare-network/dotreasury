@@ -21,6 +21,7 @@ const talisman = require("./talisman");
 const subwallet = require("./subwallet");
 const opensquare = require("../common/opensquare");
 const decoded2023 = require("../common/decoded-2023");
+const subid = require("../common/subid");
 
 const projects = [
   polkaworld,
@@ -46,6 +47,7 @@ const projects = [
   subsquid,
   opensquare,
   decoded2023,
+  subid,
 ];
 
 module.exports = [...projects].sort((p1, p2) => p2.startTime - p1.startTime);
