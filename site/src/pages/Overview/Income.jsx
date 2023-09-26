@@ -206,7 +206,6 @@ const Income = ({
       data={incomeData}
       status={incomeStatus}
       clickEvent={clickEvent}
-      symbol={symbol}
     />
   );
 };
