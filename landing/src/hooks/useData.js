@@ -34,6 +34,8 @@ const useGlobalTopBeneficiaries = createGlobalState({
 });
 
 export function usePrepareSiteData(chain) {
+  const API_ENDPOINT = `https://${chain}-api.dotreasury.com`;
+
   const [, setGlobalHeight] = useGlobalScanHeight();
   const [, setGlobalOverviewData] = useGlobalOverviewData();
   const [, setGlobalTreasuryData] = useGlobalTreasuryData();
@@ -93,14 +95,14 @@ export function usePrepareSiteData(chain) {
       }));
     }
 
-    scanApi.fetch(`/${chain}/stats/weekly`).then(({ result }) => {
+    scanApi.fetch(`${API_ENDPOINT}/stats/weekly`).then(({ result }) => {
       if (result) {
         setGlobalStatsHistory((value) => ({ ...value, [chain]: result }));
       }
     });
 
     scanApi
-      .fetch(`https://${chain}-api.dotreasury.com/participants`, {
+      .fetch(`${API_ENDPOINT}/participants`, {
         page: 0,
         page_size: 8,
         role: "beneficiary",
