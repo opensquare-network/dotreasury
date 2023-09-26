@@ -2,20 +2,22 @@ const { getStatusCollection } = require("../mongo");
 const { chainStatusRoom, FEED_INTERVAL } = require("./constants");
 const { setScanHeight } = require("./store");
 
-async function feedScanStatus(chain, io) {
+async function feedScanStatus(io) {
   try {
-    const col = await getStatusCollection(chain);
+    const col = await getStatusCollection();
     const arr = await col.find({}).toArray();
     const statusRow = arr.find((item) => item.name === "income-scan");
 
     if (statusRow) {
-      io.to(`${ chain }:${ chainStatusRoom }`).emit("scanStatus", { height: statusRow.height });
-      setScanHeight(chain, statusRow.height);
+      io.to(chainStatusRoom).emit("scanStatus", {
+        height: statusRow.height,
+      });
+      setScanHeight(statusRow.height);
     }
   } catch (e) {
     console.error(e);
   } finally {
-    setTimeout(feedScanStatus.bind(null, chain, io), FEED_INTERVAL);
+    setTimeout(feedScanStatus.bind(null, io), FEED_INTERVAL);
   }
 }
 

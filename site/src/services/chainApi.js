@@ -1,56 +1,34 @@
 import { ApiPromise, WsProvider } from "@polkadot/api";
-import { isWeb3Injected, web3Enable, web3FromAddress } from "@polkadot/extension-dapp";
+import {
+  isWeb3Injected,
+  web3Enable,
+  web3FromAddress,
+} from "@polkadot/extension-dapp";
 import { stringToHex } from "@polkadot/util";
 import { encodeAddress } from "@polkadot/keyring";
-
 import {
-  DEFAULT_KUSAMA_NODE_URL,
+  CHAINS,
   DEFAULT_KUSAMA_NODES,
-  DEFAULT_POLKADOT_NODE_URL,
   DEFAULT_POLKADOT_NODES,
 } from "../constants";
 
 const apiInstanceMap = new Map();
 
-let nodeUrl = (() => {
-  let localNodeUrl = null;
-  try {
-    localNodeUrl = JSON.parse(localStorage.getItem("nodeUrl"));
-  } catch (e) {
-    // ignore parse error
-  }
-  return {
-    kusama:
-      DEFAULT_KUSAMA_NODES.find((item) => item.url === localNodeUrl?.kusama)
-        ?.url || DEFAULT_KUSAMA_NODE_URL,
-    polkadot:
-      DEFAULT_POLKADOT_NODES.find((item) => item.url === localNodeUrl?.polkadot)
-        ?.url || DEFAULT_POLKADOT_NODE_URL,
-  };
-})();
-
-export const getNodeUrl = () => nodeUrl;
-
-export const getNodes = () => ({
+export const nodesDefinition = {
   kusama: DEFAULT_KUSAMA_NODES,
   polkadot: DEFAULT_POLKADOT_NODES,
-});
+};
 
 export const getApi = async (chain, queryUrl) => {
-  const url = queryUrl || nodeUrl?.[chain];
+  const chainNodes = nodesDefinition[chain];
+  const url = queryUrl || chainNodes?.[0].url;
   if (!apiInstanceMap.has(url)) {
     apiInstanceMap.set(
       url,
-      ApiPromise.create({ provider: new WsProvider(url) })
+      ApiPromise.create({ provider: new WsProvider(url) }),
     );
   }
   return apiInstanceMap.get(url);
-};
-
-export const getIndentity = async (chain, address) => {
-  const api = await getApi(chain);
-  const { identity } = await api.derive.accounts.info(address);
-  return identity;
 };
 
 export const getTipCountdown = async (chain) => {
@@ -75,7 +53,11 @@ export const signMessage = async (text, address) => {
   return result.signature;
 };
 
-export const signMessageWithExtension = async (text, address, extensionName) => {
+export const signMessageWithExtension = async (
+  text,
+  address,
+  extensionName,
+) => {
   if (!extensionName) {
     throw new Error("Signing extension is not specified.");
   }
@@ -106,7 +88,7 @@ export const signMessageWithExtension = async (text, address, extensionName) => 
 
 const extractBlockTime = (extrinsics) => {
   const setTimeExtrinsic = extrinsics.find(
-    (ex) => ex.method.section === "timestamp" && ex.method.method === "set"
+    (ex) => ex.method.section === "timestamp" && ex.method.method === "set",
   );
   if (setTimeExtrinsic) {
     const { args } = setTimeExtrinsic.method.toJSON();
@@ -155,9 +137,9 @@ export const encodeSubstrateAddress = (address) => {
 export const encodeChainAddress = (address, chain) => {
   let encodedAddress = encodeSubstrateAddress(address);
 
-  if (chain === "kusama") {
+  if (chain === CHAINS.KUSAMA) {
     encodedAddress = encodeKusamaAddress(address);
-  } else if (chain === "polkadot") {
+  } else if (chain === CHAINS.POLKADOT) {
     encodedAddress = encodePolkadotAddress(address);
   }
 
@@ -170,7 +152,9 @@ export async function getElectorate(api) {
 }
 
 export async function getReferendumInfo(api, referendumIndex) {
-  const referendumInfo = await api.query.democracy.referendumInfoOf(referendumIndex);
+  const referendumInfo = await api.query.democracy.referendumInfoOf(
+    referendumIndex,
+  );
   return referendumInfo.toJSON();
 }
 

@@ -44,65 +44,71 @@ const rateSlice = createSlice({
 
 export const { setRateStats, setRates, setLoading } = rateSlice.actions;
 
-export const addRate = (
-  chain,
-  type,
-  index,
-  grade,
-  comment,
-  version,
-  timestamp,
-  address,
-  extensionName
-) => async (dispatch) => {
-  const data = {
+export const addRate =
+  (
     chain,
-    type: type === "proposal" ? "treasury_proposal" : type,
+    type,
     index,
     grade,
     comment,
-    timestamp,
     version,
+    timestamp,
+    address,
+    extensionName,
+  ) =>
+  async (dispatch) => {
+    const data = {
+      chain,
+      type: type === "proposal" ? "treasury_proposal" : type,
+      index,
+      grade,
+      comment,
+      timestamp,
+      version,
+    };
+
+    try {
+      dispatch(setLoading(true));
+      const signature = await signMessageWithExtension(
+        JSON.stringify(data),
+        address,
+        extensionName,
+      );
+
+      const { error } = await api.fetch(
+        "/rates",
+        {},
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ data, address, signature }),
+        },
+      );
+
+      if (error) {
+        dispatch(
+          addToast({
+            type: "error",
+            message: error.message,
+          }),
+        );
+      }
+      dispatch(setLoading(false));
+    } catch (error) {
+      dispatch(setLoading(false));
+    }
+
+    dispatch(fetchRateStats(type, index));
   };
 
-  try {
-    dispatch(setLoading(true));
-    const signature = await signMessageWithExtension(JSON.stringify(data), address, extensionName);
-
-    const { error } = await api.fetch(
-      "/rates",
-      {},
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ data, address, signature }),
-      }
-    );
-
-    if (error) {
-      dispatch(
-        addToast({
-          type: "error",
-          message: error.message,
-        })
-      );
-    }
-    dispatch(setLoading(false));
-  } catch (error) {
-    dispatch(setLoading(false));
-  }
-
-  dispatch(fetchRateStats(chain, type, index));
-};
-
-export const fetchRateStats = (chain, type, index) => async (dispatch) => {
-  let url = `/${chain}/${pluralize(type)}/${index}/ratestats`;
+export const fetchRateStats = (type, index) => async (dispatch) => {
+  let url = `/${pluralize(type)}/${index}/ratestats`;
   if (type === "councilor") {
-    url = userDetailCouncilorRateStats(chain, index);
+    url = userDetailCouncilorRateStats(index);
   } else if (type === "user") {
-    url = userDetailRateStats(chain, index);
+    url = userDetailRateStats(index);
   }
 
   const { result } = await api.fetch(url);
@@ -114,19 +120,17 @@ export const fetchRateStats = (chain, type, index) => async (dispatch) => {
         3: 0,
         2: 0,
         1: 0,
-      }
-    )
+      },
+    ),
   );
 };
 
-export const fetchRates = (chain, type, index, page, pageSize) => async (
-  dispatch
-) => {
-  let url = `/${chain}/${pluralize(type)}/${index}/rates`;
+export const fetchRates = (type, index, page, pageSize) => async (dispatch) => {
+  let url = `/${pluralize(type)}/${index}/rates`;
   if (type === "councilor") {
-    url = userDetailCouncilorRates(chain, index);
+    url = userDetailCouncilorRates(index);
   } else if (type === "user") {
-    url = userDetailRates(chain, index);
+    url = userDetailRates(index);
   }
 
   const { result } = await api.maybeAuthFetch(url, { page, pageSize });
@@ -137,8 +141,8 @@ export const fetchRates = (chain, type, index, page, pageSize) => async (
         page: 0,
         pageSize: 10,
         total: 0,
-      }
-    )
+      },
+    ),
   );
 };
 
@@ -152,7 +156,7 @@ export const setRateThumbUp = (rateId) => async (dispatch) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ reaction: REACTION_THUMBUP }),
-    }
+    },
   );
 };
 
@@ -165,7 +169,7 @@ export const unsetRateReaction = (rateId) => async (dispatch) => {
       headers: {
         "Content-Type": "application/json",
       },
-    }
+    },
   );
 };
 

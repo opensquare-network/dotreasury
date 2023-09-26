@@ -13,7 +13,6 @@ import { NavLink } from "react-router-dom";
 import TextMinor from "../../components/TextMinor";
 import GrayImage from "../../components/GrayImage";
 import { USER_ROLES } from "../../constants";
-import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -69,7 +68,6 @@ const LinkButton = styled(TextMinor)`
 `;
 
 const ProposerTable = () => {
-  const symbol = useSelector(chainSymbolSelector)?.toLowerCase();
   const overview = useSelector(overviewSelector);
   const data = overview.bestTipFinders || [];
 
@@ -77,7 +75,7 @@ const ProposerTable = () => {
     <CardWrapper>
       <TitleContainer>
         <Title>Top Tip Finders</Title>
-        <NavLink to={`/${symbol}/tip-finders`}>
+        <NavLink to={"/tip-finders"}>
           <LinkButton>
             View All
             <GrayImage src="/imgs/caret-right.svg" width={24} />

@@ -1,16 +1,14 @@
-const {
-  getTipFinderCollection,
-} = require("../../../mongo");
+const { getTipFinderCollection } = require("../../../mongo");
 const { bigAdd } = require("../../../utils");
 const { addUsdtValue } = require("./utils");
 
-async function saveFinders(finders, chain) {
-  const tipFinderCol = await getTipFinderCollection(chain);
+async function saveFinders(finders) {
+  const tipFinderCol = await getTipFinderCollection();
   for (const item of finders) {
     await tipFinderCol.updateOne(
       { finder: item.finder },
       { $set: item },
-      { upsert: true }
+      { upsert: true },
     );
   }
 }
@@ -21,20 +19,21 @@ function sortByCount(arr) {
   });
 }
 
-function calcBestTipProposers(chain, tips = []) {
+function calcBestTipProposers(tips = []) {
   const closedTips = tips.filter(
-    ({ state: { state } }) => state === "TipClosed"
+    ({ state: { state } }) => state === "TipClosed",
   );
   const map = {};
   for (const { finder, medianValue, symbolPrice } of closedTips) {
     const tipMedianValue = medianValue || 0;
     const perhaps = map[finder];
-    const tipValue = perhaps ? bigAdd(perhaps.value, tipMedianValue) : tipMedianValue;
+    const tipValue = perhaps
+      ? bigAdd(perhaps.value, tipMedianValue)
+      : tipMedianValue;
     const tipFiatValue = addUsdtValue(
       perhaps ? perhaps.fiatValue : 0,
       tipMedianValue,
       symbolPrice || 0,
-      chain
     );
     const count = perhaps ? perhaps.count + 1 : 1;
 
@@ -49,10 +48,10 @@ function calcBestTipProposers(chain, tips = []) {
         fiatValue: fiatValue.toNumber(),
         count,
       };
-    }
+    },
   );
 
-  saveFinders(finders, chain).catch(console.error);
+  saveFinders(finders).catch(console.error);
 
   return sortByCount(finders).slice(0, 10);
 }

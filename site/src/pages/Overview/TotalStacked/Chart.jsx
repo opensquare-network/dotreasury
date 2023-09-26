@@ -9,6 +9,7 @@ import Text from "../../../components/Text";
 import { chainSelector } from "../../../store/reducers/chainSlice";
 import { abbreviateBigNumber } from "../../../utils";
 import { h_full } from "../../../styles/tailwindcss";
+import { CHAINS } from "../../../constants";
 
 const LegendWrapper = styled.div`
   display: flex;
@@ -102,7 +103,7 @@ const LineChart = ({ data, onHover }) => {
       y: {
         position: "right",
         ticks: {
-          stepSize: chain === "kusama" ? 200000 : 8000000,
+          stepSize: chain === CHAINS.KUSAMA ? 200000 : 8000000,
           callback: (y) => abbreviateBigNumber(y),
         },
         grid: {

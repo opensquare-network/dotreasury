@@ -9,13 +9,13 @@ const { statBounties } = require("./statBounties");
 const { statChildBounties } = require("./statChildBounties");
 const { statCouncilors } = require("./statCouncilors");
 
-async function saveParticipant(chain, address, data) {
-  const participantCol = await getParticipantCollection(chain);
+async function saveParticipant(address, data) {
+  const participantCol = await getParticipantCollection();
   await participantCol.updateOne({ address }, { $set: data }, { upsert: true });
 }
 
-async function updateParticipants(chain) {
-  console.log(`Update participants of ${chain}`);
+async function updateParticipants() {
+  console.log(`Update participants of ${process.env.CHAIN}`);
 
   const {
     counts: tipsCounts,
@@ -25,7 +25,7 @@ async function updateParticipants(chain) {
     beneficiaryCounts: tipsBeneficiaryCounts,
     totalBenefitFiatValues: totalTipBenefitFiatValues,
     totalBenefitValues: totalTipBenefitValues,
-  } = await statTips(chain);
+  } = await statTips();
 
   const {
     counts: proposalsCounts,
@@ -35,7 +35,7 @@ async function updateParticipants(chain) {
     beneficiaryCounts: proposalsBeneficiaryCounts,
     totalBenefitFiatValues: totalProposalBenefitFiatValues,
     totalBenefitValues: totalProposalBenefitValues,
-  } = await statProposals(chain);
+  } = await statProposals();
 
   const {
     counts: bountiesCounts,
@@ -45,7 +45,7 @@ async function updateParticipants(chain) {
     beneficiaryCounts: bountiesBeneficiaryCounts,
     totalBenefitFiatValues: totalBountyBenefitFiatValues,
     totalBenefitValues: totalBountyBenefitValues,
-  } = await statBounties(chain);
+  } = await statBounties();
 
   const {
     counts: childBountiesCounts,
@@ -55,9 +55,9 @@ async function updateParticipants(chain) {
     beneficiaryCounts: childBountyBeneficiaryCounts,
     totalBenefitFiatValues: totalChildBountyBenefitFiatValues,
     totalBenefitValues: totalChildBountyBenefitValues,
-  } = await statChildBounties(chain);
+  } = await statChildBounties();
 
-  const { councilors } = await statCouncilors(chain);
+  const { councilors } = await statCouncilors();
 
   const participants = new Set([
     ...Object.keys(tipsCounts),
@@ -111,7 +111,7 @@ async function updateParticipants(chain) {
 
     const isCouncilor = councilors.has(address);
 
-    await saveParticipant(chain, address, {
+    await saveParticipant(address, {
       tips: {
         count: tipsCount,
         proposedCount: tipsProposeCount,
@@ -177,8 +177,7 @@ async function updateParticipants(chain) {
 }
 
 async function main() {
-  await updateParticipants("kusama");
-  await updateParticipants("polkadot");
+  await updateParticipants();
 }
 
 module.exports = main;

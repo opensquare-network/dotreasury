@@ -14,7 +14,6 @@ import {
   setLastNewPost,
   lastUpdateCommentTimeSelector,
 } from "../../store/reducers/commentSlice";
-import { chainSelector } from "../../store/reducers/chainSlice";
 import ResponsivePagination from "./ResponsivePagination";
 import { useQuery } from "../../utils/hooks";
 
@@ -66,7 +65,6 @@ const Comment = ({ type, index }) => {
       : DEFAULT_QUERY_PAGE;
   const comments = useSelector(commentsSelector);
   const lastUpdateCommentTime = useSelector(lastUpdateCommentTimeSelector);
-  const chain = useSelector(chainSelector);
 
   const totalPages = Math.ceil(comments.total / DEFAULT_PAGE_SIZE);
 
@@ -80,7 +78,6 @@ const Comment = ({ type, index }) => {
       try {
         await dispatch(
           fetchComments(
-            chain,
             type,
             index,
             tablePage === "last" ? tablePage : tablePage - 1,
@@ -94,7 +91,7 @@ const Comment = ({ type, index }) => {
     return () => {
       dispatch(setComments([]));
     };
-  }, [dispatch, chain, type, index, tablePage, lastUpdateCommentTime]);
+  }, [dispatch, type, index, tablePage, lastUpdateCommentTime]);
 
   // If the actual page index is changed, and there is a page query in url
   // then we always scroll the comments to view.

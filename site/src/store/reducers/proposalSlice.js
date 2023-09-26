@@ -48,39 +48,40 @@ export const {
   setProposalSummary,
 } = proposalSlice.actions;
 
-export const fetchProposals = (
-  chain,
-  page = 0,
-  pageSize = 30,
-  filterData = {},
-  sort,
-) => async (dispatch) => {
-  dispatch(setLoading(true));
+export const fetchProposals =
+  (page = 0, pageSize = 30, filterData = {}, sort) =>
+  async (dispatch) => {
+    dispatch(setLoading(true));
 
-  try {
-    const { result } = await api.fetch(`/${chain}/proposals`, { page, pageSize, ...filterData, ...sort });
-    dispatch(setProposals(result || {}));
-  } finally {
-    dispatch(setLoading(false));
-  }
-};
+    try {
+      const { result } = await api.fetch("/proposals", {
+        page,
+        pageSize,
+        ...filterData,
+        ...sort,
+      });
+      dispatch(setProposals(result || {}));
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
 
 export const resetProposals = () => (dispatch) => {
   dispatch(setProposals(EMPTY_TABLE_DATA));
 };
 
-export const fetchProposalDetail = (chain, proposalIndex) => async (dispatch) => {
+export const fetchProposalDetail = (proposalIndex) => async (dispatch) => {
   dispatch(setLoadingProposalDetail(true));
   try {
-    const { result } = await api.fetch(`/${chain}/proposals/${proposalIndex}`);
+    const { result } = await api.fetch(`/proposals/${proposalIndex}`);
     dispatch(setProposalDetail(result || {}));
   } finally {
     dispatch(setLoadingProposalDetail(false));
   }
 };
 
-export const fetchProposalsSummary = (chain) => async (dispatch) => {
-  const { result } = await api.fetch(`/${chain}/proposals/summary`);
+export const fetchProposalsSummary = () => async (dispatch) => {
+  const { result } = await api.fetch("/proposals/summary");
   const summary = {
     total: 0,
     numOfOngoing: 0,

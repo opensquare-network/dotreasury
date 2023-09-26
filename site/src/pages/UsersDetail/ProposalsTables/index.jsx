@@ -5,7 +5,7 @@ import { useHistory, useLocation, useParams } from "react-router";
 import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../../constants";
 import { TableTitleLabel, TableTitle, TableTitleWrapper } from "./styled";
 import { usersCountsSelector } from "../../../store/reducers/usersDetailSlice";
-import { useChainRoute, useLocalStorage, useQuery } from "../../../utils/hooks";
+import { useLocalStorage, useQuery } from "../../../utils/hooks";
 import Tag from "../../../components/Tag/Tag";
 import ProposalsTable from "./ProposalsTable";
 import TipsTable from "./TipsTable";
@@ -13,7 +13,6 @@ import BountiesTable from "./BountiesTable";
 import ChildBountiesTable from "./ChildBountiesTable";
 import ResponsivePagination from "../../../components/ResponsivePagination";
 import { Link } from "react-router-dom";
-import { chainSymbolSelector } from "../../../store/reducers/chainSlice";
 
 const TABLE_TABS = {
   Proposals: "proposals",
@@ -23,12 +22,9 @@ const TABLE_TABS = {
 };
 
 export default function ProposalsTables({ role }) {
-  useChainRoute();
-
   const history = useHistory();
   const location = useLocation();
   const { address, tableTab: tableTabParam } = useParams();
-  const chainSymbol = useSelector(chainSymbolSelector).toLowerCase();
 
   const searchPage = parseInt(useQuery().get("page"));
   const queryPage =
@@ -38,7 +34,7 @@ export default function ProposalsTables({ role }) {
   const [tablePage, setTablePage] = useState(queryPage);
   const [pageSize, setPageSize] = useLocalStorage(
     "usersPageSize",
-    DEFAULT_PAGE_SIZE
+    DEFAULT_PAGE_SIZE,
   );
 
   const [filterData] = useState({});
@@ -63,16 +59,16 @@ export default function ProposalsTables({ role }) {
         count: counts?.childBountiesCount,
       },
     ],
-    [counts]
+    [counts],
   );
   const [tableTab, setTableTab] = useState(
-    tableTabParam || tableTitles[0].label
+    tableTabParam || tableTitles[0].label,
   );
 
   useEffect(() => {
     history.replace({
       search: location.search,
-      pathname: `/${chainSymbol}/users/${address}/${role}/${
+      pathname: `/users/${address}/${role}/${
         tableTab ? tableTab : tableTitles[0].label
       }`,
     });
@@ -150,16 +146,16 @@ function Tables({
 
   const isProposals = useMemo(
     () => tableTab === TABLE_TABS.Proposals,
-    [tableTab]
+    [tableTab],
   );
   const isTips = useMemo(() => tableTab === TABLE_TABS.Tips, [tableTab]);
   const isBounties = useMemo(
     () => tableTab === TABLE_TABS.Bounties,
-    [tableTab]
+    [tableTab],
   );
   const isChildBounties = useMemo(
     () => tableTab === TABLE_TABS.ChildBounties,
-    [tableTab]
+    [tableTab],
   );
 
   return (

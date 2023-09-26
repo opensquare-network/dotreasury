@@ -1,14 +1,14 @@
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import { Label } from "semantic-ui-react";
-import { totalBountyCountSelector, totalChildBountyCountSelector } from "../../store/reducers/overviewSlice";
+import {
+  totalBountyCountSelector,
+  totalChildBountyCountSelector,
+} from "../../store/reducers/overviewSlice";
 import { NavItem, NavLabel, NavWrapper } from "../../components/Nav/styled";
 
 function Nav({ active = "" }) {
   const history = useHistory();
-  const symbol = useSelector(chainSymbolSelector);
-  const name = symbol.toLowerCase();
   const totalBountyCount = useSelector(totalBountyCountSelector);
   const totalChildBountyCount = useSelector(totalChildBountyCountSelector);
 
@@ -21,7 +21,7 @@ function Nav({ active = "" }) {
           <Label>{totalBountyCount}</Label>
         </NavLabel>
       ),
-      to: `/${name}/bounties`,
+      to: "/bounties",
     },
     {
       name: "Child Bounties",
@@ -31,7 +31,7 @@ function Nav({ active = "" }) {
           <Label>{totalChildBountyCount}</Label>
         </NavLabel>
       ),
-      to: `/${name}/child-bounties`,
+      to: "/child-bounties",
     },
   ];
 

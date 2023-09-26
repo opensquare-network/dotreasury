@@ -7,8 +7,6 @@ import Badge from "./Badge";
 import { useIdentity } from "../../utils/hooks";
 import DeletedAccount from "./DeletedAccount";
 import { Link as RouterLink } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import { makeInSiteUserDetailLink } from "../../utils/url";
 import { truncate } from "../../styles/tailwindcss";
 
@@ -44,7 +42,6 @@ const User = ({
   role = "",
 }) => {
   const { name, badgeData } = useIdentity(address);
-  const symbol = useSelector(chainSymbolSelector).toLowerCase();
 
   let username = (
     <Username
@@ -59,9 +56,7 @@ const User = ({
 
   if (!noLink) {
     username = (
-      <Link to={makeInSiteUserDetailLink(symbol, address, role)}>
-        {username}
-      </Link>
+      <Link to={makeInSiteUserDetailLink(address, role)}>{username}</Link>
     );
   }
 

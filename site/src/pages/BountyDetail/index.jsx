@@ -24,12 +24,10 @@ import { stringToWords } from "../../utils";
 import DetailTableWrapper from "../../components/DetailTableWrapper";
 
 import {
-  chainSelector,
   chainSymbolSelector,
   scanHeightSelector,
 } from "../../store/reducers/chainSlice";
 import DetailGoBack from "../components/DetailGoBack";
-import { useChainRoute } from "../../utils/hooks";
 import ChildBountiesTable from "./ChildBountiesTable";
 import BountyPendingPayoutCountDown from "../../components/BountyPendingPayoutCountDown";
 import { Flex } from "../../components/styled";
@@ -74,7 +72,7 @@ function mergeExtrinsicsAndMotions(timelineItems, motions) {
 export function processTimeline(bountyDetail, scanHeight, symbol) {
   return mergeExtrinsicsAndMotions(
     bountyDetail.timeline || [],
-    bountyDetail.motions || []
+    bountyDetail.motions || [],
   ).map((item) =>
     item.timeline
       ? ((motion) => ({
@@ -142,7 +140,7 @@ export function processTimeline(bountyDetail, scanHeight, symbol) {
                         agree={
                           motion.isFinal &&
                           motion.timeline.some(
-                            (item) => item.method === "Approved"
+                            (item) => item.method === "Approved",
                           )
                         }
                         value={motion.motionInfo?.method}
@@ -313,26 +311,23 @@ export function processTimeline(bountyDetail, scanHeight, symbol) {
             name: item.name,
             fields,
           };
-        })(item)
+        })(item),
   );
 }
 
 const BountyDetail = () => {
-  useChainRoute();
-
   const { bountyIndex } = useParams();
   const dispatch = useDispatch();
   const [timelineData, setTimelineData] = useState([]);
 
   const symbol = useSelector(chainSymbolSelector);
-  const chain = useSelector(chainSelector);
 
   useEffect(() => {
-    dispatch(fetchBountyDetail(chain, bountyIndex));
+    dispatch(fetchBountyDetail(bountyIndex));
     return () => {
       dispatch(setBountyDetail({}));
     };
-  }, [dispatch, chain, bountyIndex]);
+  }, [dispatch, bountyIndex]);
 
   const loadingBountyDetail = useSelector(loadingBountyDetailSelector);
   const bountyDetail = useSelector(bountyDetailSelector);
@@ -343,8 +338,8 @@ const BountyDetail = () => {
   }, [bountyDetail, scanHeight, symbol]);
 
   const refreshData = useCallback(() => {
-    dispatch(fetchBountyDetail(chain, bountyIndex));
-  }, [dispatch, chain, bountyIndex]);
+    dispatch(fetchBountyDetail(bountyIndex));
+  }, [dispatch, bountyIndex]);
 
   const waitScanAndUpdate = useWaitSyncBlock("Rewards claimed", refreshData);
 

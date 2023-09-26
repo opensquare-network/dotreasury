@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Image } from "semantic-ui-react";
 import { useDark } from "../../context/theme";
+import { SYMBOLS } from "../../constants";
 
 const Wrapper = styled.div`
   height: 32px;
@@ -31,7 +32,7 @@ const Logo = ({ symbol }) => {
       <ImgFullWrapper>
         <Image
           src={
-            symbol === "ksm" || dark
+            symbol === SYMBOLS.KSM || dark
               ? "/imgs/logo-white.svg"
               : "/imgs/logo-black.svg"
           }

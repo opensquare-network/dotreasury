@@ -5,7 +5,7 @@ import Pagination from "../Bounties/Pagination";
 import Nav from "../Bounties/Nav";
 import ChildBountiesTable from "./ChildBountiesTable";
 import { useDispatch, useSelector } from "react-redux";
-import { useChainRoute, useQuery, useLocalStorage } from "../../utils/hooks";
+import { useQuery, useLocalStorage } from "../../utils/hooks";
 
 import {
   fetchChildBounties,
@@ -15,7 +15,11 @@ import {
 } from "../../store/reducers/bountySlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import { compatChildBountyData } from "./utils";
-import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE, childBountyStatusMap } from "../../constants";
+import {
+  DEFAULT_PAGE_SIZE,
+  DEFAULT_QUERY_PAGE,
+  childBountyStatusMap,
+} from "../../constants";
 import styled from "styled-components";
 import Divider from "../../components/Divider";
 import Filter from "../../components/Filter";
@@ -39,10 +43,8 @@ const FilterWrapper = styled.div`
   padding: 24px;
 `;
 
-
 const ChildBounties = () => {
   const query = useQuery();
-  useChainRoute();
 
   const searchPage = parseInt(query.get(QUERY_PAGE_KEY) || "1");
   const queryPage =
@@ -52,7 +54,7 @@ const ChildBounties = () => {
   const [tablePage, setTablePage] = useState(queryPage);
   const [pageSize, setPageSize] = useLocalStorage(
     "bountiesPageSize",
-    DEFAULT_PAGE_SIZE
+    DEFAULT_PAGE_SIZE,
   );
 
   const dispatch = useDispatch();
@@ -75,21 +77,23 @@ const ChildBounties = () => {
 
   useEffect(() => {
     const filterData = getFilterData();
-    dispatch(fetchChildBounties(chain, tablePage - 1, pageSize, filterData, sort && { sort }));
+    dispatch(
+      fetchChildBounties(tablePage - 1, pageSize, filterData, sort && { sort }),
+    );
 
     return () => {
       dispatch(resetChildBounties());
     };
-  }, [dispatch, chain, tablePage, pageSize, getFilterData, sort]);
+  }, [dispatch, tablePage, pageSize, getFilterData, sort]);
 
   const totalPages = useMemo(
     () => Math.ceil(total / pageSize),
-    [total, pageSize]
+    [total, pageSize],
   );
 
   const tableData = useMemo(
     () => childBounties.map(compatChildBountyData),
-    [childBounties]
+    [childBounties],
   );
 
   const header = (
@@ -114,7 +118,6 @@ const ChildBounties = () => {
       </FilterWrapper>
     </div>
   );
-
 
   const footer = (
     <Pagination

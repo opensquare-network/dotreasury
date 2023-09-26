@@ -19,6 +19,7 @@ import { useOnClickOutside } from "@osn/common";
 import IconMask from "../../components/Icon/Mask";
 import { inline_flex, items_center } from "../../styles/tailwindcss";
 import ImageWithDark from "../../components/ImageWithDark";
+import { CHAINS } from "../../constants";
 
 const Wrapper = styled.div`
   position: relative;
@@ -145,7 +146,7 @@ const NetworkWrapper = styled.div`
   }
 `;
 
-const NetworkButton = styled.button`
+const NodeButton = styled.button`
   flex: 0 0 auto;
   border: 1px solid var(--neutral400);
   border-radius: 4px;
@@ -163,7 +164,7 @@ const NetworkButton = styled.button`
     `}
 `;
 
-const NetworkItemWrapper = styled(Card)`
+const NodeItemWrapper = styled(Card)`
   position: absolute;
   padding: 4px 0;
   left: 0;
@@ -179,7 +180,7 @@ const NetworkItemWrapper = styled(Card)`
   }
 `;
 
-const NetworkItem = styled.div`
+const NodeItem = styled.div`
   padding: 8px 16px;
   display: flex;
   align-items: center;
@@ -232,15 +233,15 @@ const ScanHeight = () => {
   const dispatch = useDispatch();
   const scanHeight = useSelector(scanHeightSelector);
   const chain = useSelector(chainSelector);
-  const currentNodeSetting = useSelector(currentNodeSelector);
+  const currentNode = useSelector(currentNodeSelector);
   const nodesSetting = useSelector(nodesSelector);
   const [symbolOpen, setSymbolOpen] = useState(false);
-  const [networkOpen, setNetorkOpen] = useState(false);
+  const [nodeOpen, setNodeOpen] = useState(false);
   const symbolRef = useRef(null);
   const netWorkRef = useRef(null);
 
-  const currentNetwork = nodesSetting?.[chain]?.find(
-    (item) => item.url === currentNodeSetting?.[chain],
+  const currentNetwork = (nodesSetting || []).find(
+    (item) => item.url === currentNode,
   );
   let currentNetworkImg = "/imgs/node-signal-unavailable.svg";
   if (currentNetwork && currentNetwork.delay) {
@@ -257,20 +258,17 @@ const ScanHeight = () => {
     setSymbolOpen(false);
   });
   useOnClickOutside(netWorkRef, () => {
-    setNetorkOpen(false);
+    setNodeOpen(false);
   });
 
-  const switchNode = (node) => {
-    if (node === chain) return;
-    dispatch(
-      setCurrentNode({
-        chain: node,
-        url: currentNodeSetting.polkadot,
-        refresh: true,
-      }),
-    );
+  const switchNetwork = (node) => {
+    if (node === chain) {
+      return;
+    }
+    window.location.href = `https://${node}.dotreasury.com/`;
   };
-  const switchNetwork = (url) => {
+
+  const switchNode = (url) => {
     if (url && url === currentNetwork?.url) return;
     dispatch(
       setCurrentNode({
@@ -278,7 +276,9 @@ const ScanHeight = () => {
         url,
       }),
     );
-    const nodeName = nodesSetting[chain].find((item) => item.url === url)?.name;
+    const nodeName = (nodesSetting || []).find(
+      (item) => item.url === url,
+    )?.name;
     dispatch(
       addToast({
         type: "success",
@@ -299,7 +299,7 @@ const ScanHeight = () => {
           <div className="blockHeight">
             <ImageWithDark
               src={
-                chain === "polkadot"
+                chain === CHAINS.POLKADOT
                   ? "/imgs/logo-polkadot.svg"
                   : "/imgs/logo-kusama.svg"
               }
@@ -321,9 +321,9 @@ const ScanHeight = () => {
             {symbolOpen && (
               <SymbolWrapper>
                 <SymbolItem
-                  isActive={chain === "polkadot"}
+                  isActive={chain === CHAINS.POLKADOT}
                   onClick={() => {
-                    switchNode("polkadot");
+                    switchNetwork(CHAINS.POLKADOT);
                   }}
                 >
                   <ImageWithDark src="/imgs/logo-polkadot.svg" />
@@ -331,9 +331,9 @@ const ScanHeight = () => {
                   <div className="unit">DOT</div>
                 </SymbolItem>
                 <SymbolItem
-                  isActive={chain === "kusama"}
+                  isActive={chain === CHAINS.KUSAMA}
                   onClick={() => {
-                    switchNode("kusama");
+                    switchNetwork(CHAINS.KUSAMA);
                   }}
                 >
                   <ImageWithDark src="/imgs/logo-kusama.svg" />
@@ -341,7 +341,7 @@ const ScanHeight = () => {
                   <div className="unit">KSM</div>
                 </SymbolItem>
                 <ExternalLink href="https://edg.dotreasury.com/">
-                  <SymbolItem onClick={() => setNetorkOpen(false)}>
+                  <SymbolItem onClick={() => setNodeOpen(false)}>
                     <ImageWithDark src="/imgs/logo-edgeware.svg" />
                     <div>Edgeware</div>
                     <div className="unit">EDG</div>
@@ -352,21 +352,21 @@ const ScanHeight = () => {
           </Button>
         </ScanHeightWrapper>
       </Wrapper>
-      <NetworkButton
-        isActive={networkOpen}
+      <NodeButton
+        isActive={nodeOpen}
         ref={netWorkRef}
         onClick={() => {
-          setNetorkOpen(!networkOpen);
+          setNodeOpen(!nodeOpen);
         }}
       >
         <ImageWithDark src={currentNetworkImg} />
-        {networkOpen && (
-          <NetworkItemWrapper>
-            {(nodesSetting?.[chain] || []).map((item, index) => (
-              <NetworkItem
+        {nodeOpen && (
+          <NodeItemWrapper>
+            {(nodesSetting || []).map((item, index) => (
+              <NodeItem
                 key={index}
                 delay={item.delay}
-                onClick={() => switchNetwork(item.url)}
+                onClick={() => switchNode(item.url)}
                 isActive={item.name === currentNetwork?.name}
               >
                 <div>Hosted by {item.name}</div>
@@ -375,11 +375,11 @@ const ScanHeight = () => {
                   !isNaN(item.delay) && (
                     <div className="delay">{item.delay} ms</div>
                   )}
-              </NetworkItem>
+              </NodeItem>
             ))}
-          </NetworkItemWrapper>
+          </NodeItemWrapper>
         )}
-      </NetworkButton>
+      </NodeButton>
     </NetworkWrapper>
   );
 };

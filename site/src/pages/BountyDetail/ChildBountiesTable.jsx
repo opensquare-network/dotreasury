@@ -10,7 +10,6 @@ import {
   childBountyByParentIndexListSelector,
   loadingSelector,
 } from "../../store/reducers/bountySlice";
-import { chainSelector } from "../../store/reducers/chainSlice";
 import { compatChildBountyData } from "../ChildBounties/utils";
 import { DEFAULT_PAGE_SIZE } from "../../constants";
 import { Flex } from "../../components/styled";
@@ -58,13 +57,10 @@ function ChildTable({ index }) {
     childBountyByParentIndexListSelector,
   );
   const loading = useSelector(loadingSelector);
-  const chain = useSelector(chainSelector);
 
   useEffect(() => {
-    dispatch(
-      fetchChildBountiesByParentIndex(chain, index, tablePage - 1, pageSize),
-    );
-  }, [dispatch, chain, index, tablePage, pageSize]);
+    dispatch(fetchChildBountiesByParentIndex(index, tablePage - 1, pageSize));
+  }, [dispatch, index, tablePage, pageSize]);
 
   const totalPages = useMemo(() => {
     return Math.ceil(total / pageSize);
@@ -76,9 +72,7 @@ function ChildTable({ index }) {
 
   const refreshChildBounties = useCallback(
     (reachingFinalizedBlock) => {
-      dispatch(
-        fetchChildBountiesByParentIndex(chain, index, tablePage - 1, pageSize),
-      );
+      dispatch(fetchChildBountiesByParentIndex(index, tablePage - 1, pageSize));
       if (reachingFinalizedBlock) {
         dispatch(
           newSuccessToast(
@@ -87,7 +81,7 @@ function ChildTable({ index }) {
         );
       }
     },
-    [dispatch, chain, index, tablePage, pageSize],
+    [dispatch, index, tablePage, pageSize],
   );
 
   const onFinalized = useWaitSyncBlock(

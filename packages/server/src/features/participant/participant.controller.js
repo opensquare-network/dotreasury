@@ -2,9 +2,9 @@ const { getParticipantCollection } = require("../../mongo");
 const { extractPage } = require("../../utils");
 
 async function getParticipant(ctx) {
-  const { chain, address } = ctx.params;
+  const { address } = ctx.params;
 
-  const participantCol = await getParticipantCollection(chain);
+  const participantCol = await getParticipantCollection();
   const data = await participantCol.findOne({ address });
   if (!data) {
     ctx.throw(404, "Participant not found");
@@ -15,7 +15,6 @@ async function getParticipant(ctx) {
 }
 
 async function getParticipants(ctx) {
-  const { chain } = ctx.params;
   const { page, pageSize } = extractPage(ctx);
   const { role } = ctx.request.query;
 
@@ -28,7 +27,7 @@ async function getParticipants(ctx) {
     q.isCouncilor = true;
   }
 
-  const participantCol = await getParticipantCollection(chain);
+  const participantCol = await getParticipantCollection();
   const total = await participantCol.countDocuments(q);
   const items = await participantCol
     .find(q)

@@ -1,7 +1,8 @@
 const BigNumber = require("bignumber.js");
 const { getBountyCollection } = require("../../mongo");
 
-function getDecimals(chain) {
+function getDecimals() {
+  const chain = process.env.CHAIN;
   if (chain === "kusama") {
     return 12;
   } else if (chain === "polkadot") {
@@ -11,7 +12,7 @@ function getDecimals(chain) {
   }
 }
 
-async function statBounties(chain) {
+async function statBounties() {
   const counts = {};
   const proposers = new Set();
   const proposeCounts = {};
@@ -20,7 +21,7 @@ async function statBounties(chain) {
   const totalBenefitFiatValues = {};
   const totalBenefitValues = {};
 
-  const bountyCol = await getBountyCollection(chain);
+  const bountyCol = await getBountyCollection();
   const bounties = await bountyCol.find().toArray();
 
   for (const bounty of bounties) {
@@ -46,7 +47,7 @@ async function statBounties(chain) {
           .plus(claimed?.args?.balance || 0)
           .toString();
 
-        const decimals = getDecimals(chain);
+        const decimals = getDecimals();
         const fiatValue = new BigNumber(claimed?.args?.balance || 0)
           .div(Math.pow(10, decimals))
           .times(bounty.symbolPrice || 0)

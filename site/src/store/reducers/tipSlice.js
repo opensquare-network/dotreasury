@@ -44,34 +44,40 @@ export const {
   setTipCountdown,
 } = tipSlice.actions;
 
-export const fetchTips = (chain, page = 0, pageSize = 30, filterData = {}, sort) => async (
-  dispatch
-) => {
-  dispatch(setLoading(true));
+export const fetchTips =
+  (page = 0, pageSize = 30, filterData = {}, sort) =>
+  async (dispatch) => {
+    dispatch(setLoading(true));
 
-  try {
-    const { result } = await api.fetch(`/${chain}/tips`, { page, pageSize, ...filterData, ...sort });
-    dispatch(setTips(result || {}));
-  } finally {
-    dispatch(setLoading(false));
-  }
-};
+    try {
+      const { result } = await api.fetch("/tips", {
+        page,
+        pageSize,
+        ...filterData,
+        ...sort,
+      });
+      dispatch(setTips(result || {}));
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
 export const resetTips = () => (dispatch) => {
   dispatch(setTips(EMPTY_TABLE_DATA));
 };
 
-export const fetchTipDetail = (chain, tipId) => async (dispatch) => {
+export const fetchTipDetail = (tipId) => async (dispatch) => {
   dispatch(setLoadingTipDetail(true));
   try {
-    const { result } = await api.fetch(`/${chain}/tips/${tipId}`);
+    const { result } = await api.fetch(`/tips/${tipId}`);
     dispatch(setTipDetail(result || {}));
   } finally {
     dispatch(setLoadingTipDetail(false));
   }
 };
 
-export const fetchTipCountdown = (chain) => async (dispatch) => {
-  const tipCountdown = await getTipCountdown(chain);
+export const fetchTipCountdown = () => async (dispatch, getState) => {
+  const { chain } = getState();
+  const tipCountdown = await getTipCountdown(chain.chain);
   dispatch(setTipCountdown(tipCountdown || 14400));
 };
 
@@ -98,7 +104,7 @@ export const normalizedTipListSelector = createSelector(
       ...tips,
       items,
     };
-  }
+  },
 );
 export const loadingSelector = (state) => state.tips.loading;
 export const tipDetailSelector = (state) => state.tips.tipDetail;
@@ -107,7 +113,7 @@ export const normalizedTipDetailSelector = createSelector(
   (tip) => ({
     ...tip,
     ...normalizeTip(tip),
-  })
+  }),
 );
 export const loadingTipDetailSelector = (state) => state.tips.loadingTipDetail;
 export const tipCountdownSelector = (state) => state.tips.tipCountdown;

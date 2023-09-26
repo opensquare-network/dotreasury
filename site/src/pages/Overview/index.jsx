@@ -12,7 +12,6 @@ import TotalStacked from "./TotalStacked";
 import Income from "./Income";
 import Output from "./Output";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
-import { useChainRoute } from "../../utils/hooks";
 import {
   flex_col,
   flex_row_reverse,
@@ -80,8 +79,6 @@ const Overview = () => {
   const overview = useSelector(overviewSelector);
   const symbol = useSelector(chainSymbolSelector);
   const supportOpenGov = useSupportOpenGov();
-
-  useChainRoute();
 
   const precision = getPrecision(symbol);
 

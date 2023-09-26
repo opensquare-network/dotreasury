@@ -9,7 +9,6 @@ import {
   tipDetailSelector,
 } from "../../store/reducers/tipSlice";
 import { linksSelector, TipIndex } from "../../store/reducers/linkSlice";
-import { chainSelector } from "../../store/reducers/chainSlice";
 
 import InformationTable from "./InformationTable";
 import Timeline from "../Timeline";
@@ -22,7 +21,6 @@ import Funder from "./Funder";
 import ClickableLink from "../../components/ClickableLink";
 import TimelineCommentWrapper from "../../components/TimelineCommentWrapper";
 import DetailGoBack from "../components/DetailGoBack";
-import { useChainRoute } from "../../utils/hooks";
 import DetailTableWrapper from "../../components/DetailTableWrapper";
 import { Flex } from "../../components/styled";
 import CloseButton from "./Actions/CloseButton";
@@ -50,7 +48,12 @@ function processTimeline(tipDetail, links) {
         },
         {
           title: "Beneficiary",
-          value: <User role={USER_ROLES.Beneficiary} address={beneficiary?.id || beneficiary} />,
+          value: (
+            <User
+              role={USER_ROLES.Beneficiary}
+              address={beneficiary?.id || beneficiary}
+            />
+          ),
         },
         {
           title: "Reason",
@@ -71,7 +74,12 @@ function processTimeline(tipDetail, links) {
         },
         {
           title: "Beneficiary",
-          value: <User role={USER_ROLES.Beneficiary} address={beneficiary?.id || beneficiary} />,
+          value: (
+            <User
+              role={USER_ROLES.Beneficiary}
+              address={beneficiary?.id || beneficiary}
+            />
+          ),
         },
         {
           title: "Tip value",
@@ -137,20 +145,17 @@ function processTimeline(tipDetail, links) {
 }
 
 const TipDetail = () => {
-  useChainRoute();
-
   const { tipId } = useParams();
   const dispatch = useDispatch();
   const [timelineData, setTimelineData] = useState([]);
-  const chain = useSelector(chainSelector);
 
   useEffect(() => {
-    dispatch(fetchTipDetail(chain, tipId));
-    dispatch(fetchTipCountdown(chain));
+    dispatch(fetchTipDetail(tipId));
+    dispatch(fetchTipCountdown());
     return () => {
       dispatch(setTipDetail({}));
     };
-  }, [dispatch, chain, tipId]);
+  }, [dispatch, tipId]);
 
   const tipDetail = useSelector(tipDetailSelector);
   const loadingTipDetail = useSelector(loadingTipDetailSelector);
@@ -161,7 +166,7 @@ const TipDetail = () => {
     if (!tipDetail.hash) return "";
     return `${tipDetail.proposeAtBlockHeight}_${tipDetail.hash.slice(
       0,
-      4
+      4,
     )}...${tipDetail.hash.slice(tipDetail.hash.length - 4)}`;
   };
 
@@ -175,8 +180,8 @@ const TipDetail = () => {
   }, [tipDetail, links]);
 
   const refreshData = useCallback(() => {
-    dispatch(fetchTipDetail(chain, tipId));
-  }, [dispatch, chain, tipId]);
+    dispatch(fetchTipDetail(tipId));
+  }, [dispatch, tipId]);
 
   const onTipClosed = useWaitSyncBlock("Tip closed", refreshData);
   const onTipRetracted = useWaitSyncBlock("Tip retracted", refreshData);
@@ -184,18 +189,9 @@ const TipDetail = () => {
 
   const buttons = (
     <ActionButtons>
-      <EndorseButton
-        tipDetail={tipDetail}
-        onFinalized={onTipEndorsed}
-      />
-      <CloseButton
-        tipDetail={tipDetail}
-        onFinalized={onTipClosed}
-      />
-      <RetractedButton
-        tipDetail={tipDetail}
-        onFinalized={onTipRetracted}
-      />
+      <EndorseButton tipDetail={tipDetail} onFinalized={onTipEndorsed} />
+      <CloseButton tipDetail={tipDetail} onFinalized={onTipClosed} />
+      <RetractedButton tipDetail={tipDetail} onFinalized={onTipRetracted} />
     </ActionButtons>
   );
 
@@ -216,9 +212,7 @@ const TipDetail = () => {
         />
       </DetailTableWrapper>
       <TimelineCommentWrapper>
-        <Timeline
-          data={timelineData}
-          loading={loadingTipDetail} />
+        <Timeline data={timelineData} loading={loadingTipDetail} />
         <Comment type="tip" index={getTipIndex(tipDetail)} />
       </TimelineCommentWrapper>
     </>

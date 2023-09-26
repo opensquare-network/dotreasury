@@ -6,7 +6,6 @@ const logger = require("koa-logger");
 const helmet = require("koa-helmet");
 const http = require("http");
 const cors = require("@koa/cors");
-const config = require("../config");
 const { initDb } = require("./mongo");
 const { initDb: initAdminDb } = require("./mongo-admin");
 const { listenAndEmitInfo } = require("./websocket");
@@ -44,10 +43,10 @@ Promise.all([initDb(), initAdminDb()])
     await listenAndEmitInfo(io);
 
     app.context.db = db;
-    const port = config.server.port || 3213;
+    const port = process.env.PORT || 3213;
 
     server.listen(port, () =>
-      console.log(`✅  The server is running at http://127.0.0.1:${port}/`)
+      console.log(`✅  The server is running at http://127.0.0.1:${port}/`),
     );
   })
   .catch((err) => {

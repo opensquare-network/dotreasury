@@ -33,7 +33,7 @@ const StyledTable = styled(Table)`
   table-layout: fixed;
 `;
 
-const InformationTable = ({ loading, chain, proposalIndex, proposer }) => {
+const InformationTable = ({ loading, proposalIndex, proposer }) => {
   const dispatch = useDispatch();
   const proposalDetail = useSelector(proposalDetailSelector);
   const descriptionDetail = useSelector(descriptionSelector);
@@ -47,9 +47,10 @@ const InformationTable = ({ loading, chain, proposalIndex, proposer }) => {
   const isAdmin =
     proposer === account?.address ||
     isAdminQuery ||
-    isSameAddress(account?.address, "5GnNHt39B9te5yvhv5qF494u6FF24Ld6MxEGFP4UanGJyag8")
-  ;
-
+    isSameAddress(
+      account?.address,
+      "5GnNHt39B9te5yvhv5qF494u6FF24Ld6MxEGFP4UanGJyag8",
+    );
   useEffect(() => {
     setDescription(descriptionDetail?.description ?? "");
     setProposalType(descriptionDetail?.tags?.proposalType ?? "");
@@ -62,14 +63,13 @@ const InformationTable = ({ loading, chain, proposalIndex, proposer }) => {
         addToast({
           type: "error",
           message: "Please connect wallet",
-        })
+        }),
       );
       return;
     }
 
     dispatch(
       putDescription(
-        chain,
         "proposal",
         parseInt(proposalIndex),
         description,
@@ -77,7 +77,7 @@ const InformationTable = ({ loading, chain, proposalIndex, proposer }) => {
         status,
         account.address,
         account.extension,
-      )
+      ),
     );
     setOpenDesModal(false);
   };
@@ -159,7 +159,7 @@ const InformationTable = ({ loading, chain, proposalIndex, proposer }) => {
               <Table.Row>
                 <Table.Cell>
                   <TableCell title={"Proposal Type"}>
-                    <Tag text={descriptionDetail.tags.proposalType}/>
+                    <Tag text={descriptionDetail.tags.proposalType} />
                   </TableCell>
                 </Table.Cell>
               </Table.Row>
@@ -168,7 +168,7 @@ const InformationTable = ({ loading, chain, proposalIndex, proposer }) => {
               <Table.Row>
                 <Table.Cell>
                   <TableCell title={"Work Status"}>
-                    <Tag text={descriptionDetail.tags.status}/>
+                    <Tag text={descriptionDetail.tags.status} />
                   </TableCell>
                 </Table.Cell>
               </Table.Row>
@@ -193,10 +193,10 @@ const InformationTable = ({ loading, chain, proposalIndex, proposer }) => {
             />
             <Form.Select
               options={[
-                { text:"————", value:"" },
-                { text:"Development", value:"Development" },
-                { text:"Event", value:"Event" },
-                { text:"Maintenance", value:"Maintenance" },
+                { text: "————", value: "" },
+                { text: "Development", value: "Development" },
+                { text: "Event", value: "Event" },
+                { text: "Maintenance", value: "Maintenance" },
               ]}
               value={proposalType}
               fluid
@@ -206,10 +206,10 @@ const InformationTable = ({ loading, chain, proposalIndex, proposer }) => {
             />
             <Form.Select
               options={[
-                { text:"————", value:"" },
-                { text:"Working", value:"Working" },
-                { text:"Review", value:"Review" },
-                { text:"Delivered", value:"Delivered" },
+                { text: "————", value: "" },
+                { text: "Working", value: "Working" },
+                { text: "Review", value: "Review" },
+                { text: "Delivered", value: "Delivered" },
               ]}
               value={status}
               fluid

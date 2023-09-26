@@ -10,8 +10,6 @@ import TableNoDataCell from "../../components/TableNoDataCell";
 import Text from "../../components/Text";
 import NameCell from "./NameCell";
 import DateCell from "./DateCell";
-import { useSelector } from "react-redux";
-import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import Card from "../../components/Card";
 import ProjectProposals from "../../components/ProjectProposals";
 import ProjectExpense from "../../components/ProjectExpense";
@@ -54,11 +52,10 @@ const StyledTable = styled(Table)`
 
 const TipsTable = ({ data, loading, header, footer }) => {
   const history = useHistory();
-  const symbol = useSelector(chainSymbolSelector);
 
   const onClickRow = (id) => {
     if (window.innerWidth < 1140) {
-      history.push(`/${symbol.toLowerCase()}/projects/${id}`);
+      history.push(`/projects/${id}`);
     }
   };
 
@@ -112,9 +109,7 @@ const TipsTable = ({ data, loading, header, footer }) => {
                         <DateCell date={item.startTime} />
                       </Table.Cell>
                       <Table.Cell className="link-cell hidden">
-                        <NavLink
-                          to={`/${symbol.toLowerCase()}/projects/${item.id}`}
-                        >
+                        <NavLink to={`/projects/${item.id}`}>
                           <RightButton />
                         </NavLink>
                       </Table.Cell>

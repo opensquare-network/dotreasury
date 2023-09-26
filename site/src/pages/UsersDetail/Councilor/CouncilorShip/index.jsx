@@ -33,12 +33,12 @@ export default function CouncilorShip() {
   const loading = useSelector(councilorShipLoadingSelector);
 
   useEffect(() => {
-    dispatch(fetchCouncilorShipTerms(chain, address));
+    dispatch(fetchCouncilorShipTerms(address));
 
     return () => {
       dispatch(resetCouncilorShipTerms());
     };
-  }, [dispatch, chain, address]);
+  }, [dispatch, address]);
 
   return (
     <CouncilorShipLoading loading={loading}>

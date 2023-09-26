@@ -1,7 +1,7 @@
 const BigNumber = require("bignumber.js");
 const { getProposalCollection } = require("../../mongo");
 
-async function statProposals(chain) {
+async function statProposals() {
   const counts = {};
   const proposeCounts = {};
   const proposers = new Set();
@@ -10,7 +10,7 @@ async function statProposals(chain) {
   const totalBenefitFiatValues = {};
   const totalBenefitValues = {};
 
-  const proposalCol = await getProposalCollection(chain);
+  const proposalCol = await getProposalCollection();
   const proposals = await proposalCol.find().toArray();
 
   for (const proposal of proposals) {

@@ -15,10 +15,7 @@ import {
   fetchStatsHistory,
   statsHistorySelector,
 } from "../../../store/reducers/overviewSlice";
-import {
-  chainSelector,
-  chainSymbolSelector,
-} from "../../../store/reducers/chainSlice";
+import { chainSymbolSelector } from "../../../store/reducers/chainSlice";
 import { h4_16_semibold, p_12_normal } from "../../../styles/text";
 import {
   gap,
@@ -103,7 +100,6 @@ const SecondListWrapper = styled.div`
 
 const TotalStacked = () => {
   const theme = useTheme();
-  const chain = useSelector(chainSelector);
   const supportOpenGov = useSupportOpenGov();
   const dispatch = useDispatch();
   const [dateLabels, setDateLabels] = useState([]);
@@ -204,8 +200,8 @@ const TotalStacked = () => {
   const precision = getPrecision(symbol);
 
   useEffect(() => {
-    dispatch(fetchStatsHistory(chain));
-  }, [dispatch, chain]);
+    dispatch(fetchStatsHistory());
+  }, [dispatch]);
 
   const statsHistory = useSelector(statsHistorySelector);
 

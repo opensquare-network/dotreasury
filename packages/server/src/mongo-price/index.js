@@ -1,7 +1,6 @@
 const { MongoClient } = require("mongodb");
-const config = require("../../config");
 
-const dbName = config.mongo.priceDbName || "price";
+const dbName = process.env.MONGO_DB_PRICE_NAME || "price";
 
 const ksmUsdtCollectionName = "ksmUsdt";
 const dotUsdtCollectionName = "dotUsdt";

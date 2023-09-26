@@ -14,10 +14,6 @@ import {
   countsLoadingSelector,
 } from "../../../store/reducers/usersDetailSlice";
 import { useEffect, useMemo } from "react";
-import {
-  chainSelector,
-  chainSymbolSelector,
-} from "../../../store/reducers/chainSlice";
 import { USER_ROLES } from "../../../constants";
 import styled from "styled-components";
 import { Link as RouterLink } from "react-router-dom";
@@ -51,8 +47,6 @@ export default function UserInfo({ role, setRole = () => {} }) {
   const dispatch = useDispatch();
   const counts = useSelector(usersCountsSelector);
   const countsLoading = useSelector(countsLoadingSelector);
-  const chain = useSelector(chainSelector);
-  const chainSymbol = useSelector(chainSymbolSelector).toLowerCase();
 
   const shouldShowProposals = useMemo(() => isProposalsRole(role), [role]);
 
@@ -72,12 +66,12 @@ export default function UserInfo({ role, setRole = () => {} }) {
       return;
     }
 
-    dispatch(fetchUsersCounts(chain, address, role?.toLowerCase()));
+    dispatch(fetchUsersCounts(address, role?.toLowerCase()));
 
     return () => {
       dispatch(resetUsersCounts());
     };
-  }, [dispatch, chain, role, address, shouldShowProposals]);
+  }, [dispatch, role, address, shouldShowProposals]);
 
   return (
     <InfoCard
@@ -100,10 +94,9 @@ export default function UserInfo({ role, setRole = () => {} }) {
               <Link
                 key={idx}
                 to={makeInSiteUserDetailLink(
-                  chainSymbol,
                   address,
                   r,
-                  isProposalsRole(r) ? "proposals" : ""
+                  isProposalsRole(r) ? "proposals" : "",
                 )}
               >
                 <Tag

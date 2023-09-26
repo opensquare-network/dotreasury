@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 
@@ -10,10 +10,9 @@ import PolygonLabel from "../../components/PolygonLabel";
 import ExplorerLink from "../../components/ExplorerLink";
 import RelatedLinks from "../../components/RelatedLinks";
 
-import { useIsMounted } from "@osn/common";
-import polkaassemblyApi from "../../services/polkassembly";
 import { proposalDetailSelector } from "../../store/reducers/proposalSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
+import { CHAINS } from "../../constants";
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -26,34 +25,11 @@ const FlexWrapper = styled.div`
 const ProposalLifeCycleTable = ({ loading }) => {
   const chain = useSelector(chainSelector);
   const proposalDetail = useSelector(proposalDetailSelector);
-  const [proposalUrl, setProposalUrl] = useState(null);
-  const isMounted = useIsMounted();
-
-  useEffect(() => {
-    (async () => {
-      if (proposalDetail) {
-        const url = await polkaassemblyApi.getProposalUrl(
-          proposalDetail.proposalIndex
-        );
-        if (isMounted.current) {
-          setProposalUrl(url);
-        }
-      } else {
-        setProposalUrl(null);
-      }
-    })();
-  }, [proposalDetail, isMounted]);
 
   const links = [];
-  if (["kusama", "polkadot"].includes(chain) && proposalDetail) {
+  if ([CHAINS.KUSAMA, CHAINS.POLKADOT].includes(chain) && proposalDetail) {
     links.push({
       link: `https://${chain}.subsquare.io/treasury/proposal/${proposalDetail.proposalIndex}`,
-      description: "Treasury proposal discusssion",
-    });
-  }
-  if (proposalUrl) {
-    links.push({
-      link: proposalUrl,
       description: "Treasury proposal discusssion",
     });
   }

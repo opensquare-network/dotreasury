@@ -21,8 +21,8 @@ function calc(projects) {
     project.expenseDot = sum(dotProposals.map((p) => p.amount));
     project.dollar = sum(
       (project.proposals || []).map(
-        (p) => (p.amount ?? 0) * (p.proposeTimePrice ?? 0)
-      )
+        (p) => (p.amount ?? 0) * (p.proposeTimePrice ?? 0),
+      ),
     );
   });
 }
@@ -39,7 +39,7 @@ const projects = (chain) =>
 
 class ProjectController {
   async getProjects(ctx) {
-    const { chain } = ctx.params;
+    const chain = process.env.CHAIN;
     const { page, pageSize } = extractPage(ctx);
     if (pageSize === 0 || page < 0) {
       ctx.status = 400;
@@ -74,11 +74,11 @@ class ProjectController {
   }
 
   async getProject(ctx) {
-    const { chain } = ctx.params;
+    const chain = process.env.CHAIN;
     const projectId = ctx.params.projectId;
     const project = projects(chain).find(
       (p) =>
-        (p.id || "").toLocaleLowerCase() === (projectId || "").toLowerCase()
+        (p.id || "").toLocaleLowerCase() === (projectId || "").toLowerCase(),
     );
     if (!project) {
       ctx.status = 404;
@@ -125,7 +125,7 @@ class ProjectController {
         index: projectId,
       },
       content,
-      user
+      user,
     );
   }
 
@@ -144,7 +144,7 @@ class ProjectController {
         index: projectId,
       },
       page,
-      pageSize
+      pageSize,
     );
   }
 

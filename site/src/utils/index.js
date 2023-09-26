@@ -1,10 +1,15 @@
 import BigNumber from "bignumber.js";
-import { hexToU8a, isHex, stringCamelCase, stringUpperFirst } from "@polkadot/util";
+import {
+  hexToU8a,
+  isHex,
+  stringCamelCase,
+  stringUpperFirst,
+} from "@polkadot/util";
 import { decodeAddress, encodeAddress } from "@polkadot/util-crypto";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import md5 from "md5";
-import { CHAINS } from "../constants";
+import { CHAINS, SYMBOLS } from "../constants";
 
 dayjs.extend(duration);
 
@@ -13,11 +18,11 @@ function strEqualIgnoreCase(str1 = "", str2 = "") {
 }
 
 export function getPrecision(chainSymbol) {
-  if (strEqualIgnoreCase(CHAINS.KUSAMA, chainSymbol)) {
+  if (strEqualIgnoreCase(SYMBOLS.KSM, chainSymbol)) {
     return 12;
   }
 
-  if (strEqualIgnoreCase(CHAINS.POLKADOT, chainSymbol)) {
+  if (strEqualIgnoreCase(SYMBOLS.DOT, chainSymbol)) {
     return 10;
   }
 
@@ -92,27 +97,27 @@ export const getGravatarSrc = (email) => {
   // https%3A%2F%2www.dotreasury.com%2imgs%2avatar.png
   if (email && typeof email === "string") {
     return `https://www.gravatar.com/avatar/${md5(
-      email.trim().toLocaleLowerCase()
+      email.trim().toLocaleLowerCase(),
     )}?d=https://www.dotreasury.com/imgs/avatar.png`;
   }
   return "/imgs/avatar.png";
 };
 
 export function networkFromSymbol(symbol) {
-  if (symbol.toLowerCase() === CHAINS.KUSAMA) {
-    return "kusama";
-  } else if (symbol.toLowerCase() === CHAINS.POLKADOT) {
-    return "polkadot";
+  if (symbol.toLowerCase() === SYMBOLS.KSM) {
+    return CHAINS.KUSAMA;
+  } else if (symbol.toLowerCase() === SYMBOLS.DOT) {
+    return CHAINS.POLKADOT;
   } else {
     return null;
   }
 }
 
 export function symbolFromNetwork(network) {
-  if (network === "kusama") {
-    return CHAINS.KUSAMA;
-  } else if (network === "polkadot") {
-    return CHAINS.POLKADOT;
+  if (network === CHAINS.KUSAMA) {
+    return SYMBOLS.KSM;
+  } else if (network === CHAINS.POLKADOT) {
+    return SYMBOLS.DOT;
   } else {
     return null;
   }

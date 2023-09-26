@@ -5,10 +5,6 @@ import { NavLink } from "react-router-dom";
 import DoughnutCard from "./DoughnutCard";
 import TextMinor from "../../components/TextMinor";
 
-import { useSelector } from "react-redux";
-import {
-  chainSymbolSelector,
-} from "../../store/reducers/chainSlice";
 import DoughnutCardLinkTitle from "./DoughnutCardLinkTitle";
 import { useTheme } from "../../context/theme";
 import IconMask from "../../components/Icon/Mask";
@@ -41,7 +37,6 @@ const Income = ({
 }) => {
   const theme = useTheme();
   const supportOpenGov = useSupportOpenGov();
-  const symbol = useSelector(chainSymbolSelector)?.toLowerCase();
   const [incomeData, setIncomeData] = useState({
     icon: "circle",
     labels: [],
@@ -197,7 +192,7 @@ const Income = ({
         </DoughnutCardLinkTitle>
       }
       titleExtra={
-        <NavLink to={`/${symbol}/income`}>
+        <NavLink to={"/income"}>
           <LinkButton>
             Detail
             <IconMask

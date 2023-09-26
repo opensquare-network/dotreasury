@@ -12,7 +12,6 @@ import {
   proposalSummarySelector,
 } from "../../store/reducers/proposalSlice";
 import {
-  chainSelector,
   chainSymbolSelector,
   fetchSpendPeriod,
   spendPeriodSelector,
@@ -72,13 +71,12 @@ const ValueWrapper = styled.div`
 
 const Summary = () => {
   const dispatch = useDispatch();
-  const chain = useSelector(chainSelector);
 
   useEffect(() => {
-    dispatch(fetchProposalsSummary(chain));
-    dispatch(fetchSpendPeriod(chain));
-    dispatch(fetchTreasury(chain));
-  }, [dispatch, chain]);
+    dispatch(fetchProposalsSummary());
+    dispatch(fetchSpendPeriod());
+    dispatch(fetchTreasury());
+  }, [dispatch]);
 
   const overview = useSelector(overviewSelector);
   const summary = useSelector(proposalSummarySelector);

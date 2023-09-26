@@ -1,7 +1,7 @@
 const BigNumber = require("bignumber.js");
 const { getChildBountyCollection } = require("../../mongo");
 
-async function statChildBounties(chain) {
+async function statChildBounties() {
   const counts = {};
   const proposers = new Set();
   const proposeCounts = {};
@@ -10,7 +10,7 @@ async function statChildBounties(chain) {
   const totalBenefitFiatValues = {};
   const totalBenefitValues = {};
 
-  const childBountyCol = await getChildBountyCollection(chain);
+  const childBountyCol = await getChildBountyCollection();
   const childBounties = await childBountyCol.find().toArray();
 
   for (const childBounty of childBounties) {

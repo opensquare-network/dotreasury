@@ -20,16 +20,16 @@ export function makeSubsquareLink(chain, ...pathnames) {
   });
 }
 
-export function makeInSiteTipLink(symbol, page, tipHeight, tipHash) {
-  return makeUrlPathname(symbol, page, `${tipHeight}_${tipHash}`);
+export function makeInSiteTipLink(page, tipHeight, tipHash) {
+  return makeUrlPathname(page, `${tipHeight}_${tipHash}`);
 }
 
 /**
  * @link `/:symbol/users/:address`
  * @description page user detail
  */
-export function makeInSiteUserDetailLink(symbol, address, role, tableTab) {
-  return makeUrlPathname(symbol, "users", address, role, tableTab);
+export function makeInSiteUserDetailLink(address, role, tableTab) {
+  return makeUrlPathname("users", address, role, tableTab);
 }
 
 /**

@@ -3,14 +3,13 @@ const { extractPage } = require("../../utils");
 
 class BurntController {
   async getBurntList(ctx) {
-    const { chain } = ctx.params;
     const { page, pageSize } = extractPage(ctx);
     if (pageSize === 0 || page < 0) {
       ctx.status = 400;
       return;
     }
 
-    const burntCol = await getBurntCollection(chain);
+    const burntCol = await getBurntCollection();
     const burntList = await burntCol
       .find({})
       .sort({
@@ -30,15 +29,13 @@ class BurntController {
   }
 
   async getBurntCount(ctx) {
-    const { chain } = ctx.params;
-    const burntCol = await getBurntCollection(chain);
+    const burntCol = await getBurntCollection();
     const burntCount = await burntCol.estimatedDocumentCount();
     ctx.body = burntCount;
   }
 
   async getBurntDataForChart(ctx) {
-    const { chain } = ctx.params;
-    const burntCol = await getBurntCollection(chain);
+    const burntCol = await getBurntCollection();
     const burntList = await burntCol
       .aggregate([
         {

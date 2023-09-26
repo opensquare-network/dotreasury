@@ -18,6 +18,7 @@ import UserAvatar from "../../components/User/Avatar";
 import { getGravatarSrc } from "../../utils";
 import scanApi from "../../services/scanApi";
 import { chainSelector } from "../../store/reducers/chainSlice";
+import { SYMBOLS } from "../../constants";
 
 const Wrapper = styled.a`
   display: flex;
@@ -27,7 +28,9 @@ const Wrapper = styled.a`
   }
   p {
     color: ${(p) =>
-      p.symbol === "ksm" ? "rgba(255,255,255,0.8)" : "rgba(29,37,60,0.64)"};
+      p.symbol === SYMBOLS.KSM
+        ? "rgba(255,255,255,0.8)"
+        : "rgba(29,37,60,0.64)"};
     @media screen and (max-width: 850px) {
       color: rgba(29, 37, 60, 0.64);
     }
@@ -35,7 +38,8 @@ const Wrapper = styled.a`
   :hover {
     cursor: pointer;
     p {
-      color: ${(p) => (p.symbol === "ksm" ? "#fff" : "var(--textPrimary)")};
+      color: ${(p) =>
+        p.symbol === SYMBOLS.KSM ? "#fff" : "var(--textPrimary)"};
       @media screen and (max-width: 850px) {
         color: var(--textPrimary);
       }

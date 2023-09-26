@@ -1,7 +1,7 @@
 const BigNumber = require("bignumber.js");
 const { getTipCollection } = require("../../mongo");
 
-async function statTips(chain) {
+async function statTips() {
   const counts = {};
   const proposeCounts = {};
   const proposers = new Set();
@@ -10,7 +10,7 @@ async function statTips(chain) {
   const totalBenefitFiatValues = {};
   const totalBenefitValues = {};
 
-  const tipCol = await getTipCollection(chain);
+  const tipCol = await getTipCollection();
   const tips = await tipCol.find().toArray();
 
   for (const tip of tips) {
