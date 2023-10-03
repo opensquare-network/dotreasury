@@ -15,7 +15,16 @@ async function getLastPeriod(height) {
   return periods.length > 0 ? periods[0] : null;
 }
 
+async function updatePeriod(endHeight, updates = {}) {
+  const col = await getPeriodCol();
+  await col.updateOne(
+    { endHeight },
+    { $set: updates },
+  );
+}
+
 module.exports = {
   getLastPeriod,
   insertPeriod,
+  updatePeriod,
 }

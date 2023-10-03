@@ -15,6 +15,8 @@ const {
   env: { getScanStep, isUseMetaDb },
   utils: { sleep, getHeadUsedInGB },
 } = require("@osn/scan-common");
+const { savePeriodData } = require("./period");
+const { clearPeriodMark } = require("../store/period");
 
 async function beginScan() {
   let scanHeight = await getNextScanHeight();
@@ -67,6 +69,9 @@ async function oneStepScan(startHeight) {
 
       const indexer = getBlockIndexer(block.block);
       await tryCreateStatPoint(indexer);
+
+      await savePeriodData(indexer);
+      clearPeriodMark(indexer.blockHeight);
     } catch (e) {
       await sleep(1000);
       logger.error(`Error with block scan ${ block.height }`, e);
