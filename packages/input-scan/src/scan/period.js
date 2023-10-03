@@ -13,7 +13,7 @@ async function savePeriodData(indexer) {
   }
 
   const lastPeriod = await getLastPeriod(indexer.blockHeight);
-  const lastIncomeSeats = lastPeriod.seats || {};
+  const lastIncomeSeats = lastPeriod?.seats || {};
   const nowIncomeSeats = await getNowIncomeSeats();
 
   let income = {};
