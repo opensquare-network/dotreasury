@@ -435,12 +435,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@dotreasury/council-scan@workspace:packages/council-scan"
   dependencies:
-    "@osn/scan-common": 0.5.8
+    "@osn/scan-common": 0.6.0
     dotenv: 16.1.4
     lodash.difference: ^4.5.0
     lodash.isnil: ^4.0.0
     lodash.last: ^3.0.0
-    mongodb: 5.8.0
+    mongodb: 6.1.0
   languageName: unknown
   linkType: soft
 
@@ -455,7 +455,7 @@ __metadata:
     graphql: ^16.8.1
     graphql-yoga: ^4.0.4
     log4js: ^6.9.1
-    mongodb: 5.8.0
+    mongodb: 6.1.0
   languageName: unknown
   linkType: soft
 
@@ -463,14 +463,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@dotreasury/input-scan@workspace:packages/input-scan"
   dependencies:
-    "@osn/scan-common": 0.5.8
+    "@osn/scan-common": 0.6.0
     "@polkadot/api": 10.9.1
-    bignumber.js: ^9.1.1
+    bignumber.js: ^9.1.2
     dotenv: 16.1.4
     jest: 29.5.0
     lodash.omit: ^4.5.0
     log4js: ^6.9.1
-    mongodb: 5.8.0
+    mongodb: 6.1.0
   languageName: unknown
   linkType: soft
 
@@ -478,9 +478,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@dotreasury/known@workspace:packages/known"
   dependencies:
-    "@osn/scan-common": 0.5.8
+    "@osn/scan-common": 0.6.0
     dotenv: 16.1.4
-    mongodb: 5.8.0
+    mongodb: 6.1.0
   languageName: unknown
   linkType: soft
 
@@ -488,9 +488,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@dotreasury/output-scan@workspace:packages/output-scan"
   dependencies:
-    "@osn/scan-common": 0.5.8
+    "@osn/scan-common": 0.6.0
     "@polkadot/api": 10.9.1
-    bignumber.js: ^9.1.1
+    bignumber.js: ^9.1.2
     dotenv: 16.1.4
     jest: 29.5.0
     lodash.findlast: ^4.6.0
@@ -498,7 +498,7 @@ __metadata:
     lodash.last: ^3.0.0
     lodash.omit: ^4.5.0
     log4js: ^6.9.1
-    mongodb: 5.8.0
+    mongodb: 6.1.0
   languageName: unknown
   linkType: soft
 
@@ -507,11 +507,11 @@ __metadata:
   resolution: "@dotreasury/price@workspace:packages/price"
   dependencies:
     abort-controller: ^3.0.0
-    bignumber.js: ^9.1.1
+    bignumber.js: ^9.1.2
     dayjs: ^1.10.4
     dotenv: 16.1.4
     minimist: ^1.2.6
-    mongodb: 5.8.0
+    mongodb: 6.1.0
     node-fetch: ^2.6.7
   languageName: unknown
   linkType: soft
@@ -525,7 +525,7 @@ __metadata:
     "@polkadot/util": 12.3.2
     "@polkadot/util-crypto": 12.3.2
     "@types/koa-router": ^7.4.1
-    bignumber.js: ^9.1.1
+    bignumber.js: ^9.1.2
     dotenv: 16.1.4
     ipfs-only-hash: ^4.0.0
     koa: ^2.13.0
@@ -538,7 +538,7 @@ __metadata:
     lodash.negate: ^3.0.2
     lodash.omit: ^4.5.0
     markdown-it: ^12.3.2
-    mongodb: 5.8.0
+    mongodb: 6.1.0
     multiformats: ^9.7.1
     node-fetch: ^3.3.0
     pluralize: ^8.0.0
@@ -1272,9 +1272,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/scan-common@npm:0.5.8":
-  version: 0.5.8
-  resolution: "@osn/scan-common@npm:0.5.8"
+"@osn/scan-common@npm:0.6.0":
+  version: 0.6.0
+  resolution: "@osn/scan-common@npm:0.6.0"
   dependencies:
     "@osn/provider-options": 1.1.4
     "@polkadot/api": 10.9.1
@@ -1282,19 +1282,19 @@ __metadata:
     "@polkadot/types": 10.9.1
     "@polkadot/util": 12.3.2
     "@polkadot/util-crypto": 12.3.2
-    bignumber.js: ^9.1.1
+    bignumber.js: ^9.1.2
     lodash.findlast: ^4.6.0
     lodash.last: ^3.0.0
     lodash.omit: ^4.5.0
     log4js: ^6.9.1
-    mongodb: 5.6.0
+    mongodb: 6.1.0
   peerDependencies:
     "@polkadot/api": ^8.0.0
     "@polkadot/types": ^8.0.0
     "@polkadot/util": ^9.0.0
     "@polkadot/util-crypto": ^9.0.0
     mongodb: ^4.0.0
-  checksum: e2045ca7d2517496d2c7d9258af9711f553e029e872e8d5c0d30d3fa5f4141ea3852306a485c97eb536b824635d8e546de5ced04a14ab97cfb39e008ef1f72c5
+  checksum: 66aa2d44b2d257e492c2cc5178f10cf3161bc6aeb58df8324bdc4d40c2d94af1ab077186de43b0fd56ce6285ba3ce6aa22e7d0b54e391d4ad52b645b654c2082
   languageName: node
   linkType: hard
 
@@ -2648,7 +2648,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bignumber.js@npm:^9.1.1":
+"bignumber.js@npm:^9.1.2":
   version: 9.1.2
   resolution: "bignumber.js@npm:9.1.2"
   checksum: 582c03af77ec9cb0ebd682a373ee6c66475db94a4325f92299621d544aa4bd45cb45fd60001610e94aef8ae98a0905fa538241d9638d4422d57abbeeac6fadaf
@@ -2754,10 +2754,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bson@npm:^5.3.0, bson@npm:^5.4.0":
-  version: 5.4.0
-  resolution: "bson@npm:5.4.0"
-  checksum: 1c07e3d09f139d414bd226bf7f4e9aaa7a726e0c9718c55b53bb23ffa2805cac8b66e4fa46b424c73a35c6e292ed5f7432df5c76ea5d08052642b2ac9e0399e3
+"bson@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "bson@npm:6.1.0"
+  checksum: 8250c8158c22d2a0ca0e7677c0cbef9fa6341c176382b835dbf4c7f8aebdfd74d530f7225c6f3b98ca78a68aab4f1ad3d2fad54160a98b3e6ed9823b80db2e48
   languageName: node
   linkType: hard
 
@@ -5723,53 +5723,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mongodb@npm:5.6.0":
-  version: 5.6.0
-  resolution: "mongodb@npm:5.6.0"
-  dependencies:
-    bson: ^5.3.0
-    mongodb-connection-string-url: ^2.6.0
-    saslprep: ^1.0.3
-    socks: ^2.7.1
-  peerDependencies:
-    "@aws-sdk/credential-providers": ^3.201.0
-    mongodb-client-encryption: ">=2.3.0 <3"
-    snappy: ^7.2.2
-  dependenciesMeta:
-    saslprep:
-      optional: true
-  peerDependenciesMeta:
-    "@aws-sdk/credential-providers":
-      optional: true
-    mongodb-client-encryption:
-      optional: true
-    snappy:
-      optional: true
-  checksum: 5b1594b24795b2a7824095a917ede2fc37aaef31e60320c833ee9b11cc2f3de9dd87d5afacea2e41eb5eb579ac9780f5bc4b0bb11d3b1be78e8bf0014528192a
-  languageName: node
-  linkType: hard
-
-"mongodb@npm:5.8.0":
-  version: 5.8.0
-  resolution: "mongodb@npm:5.8.0"
+"mongodb@npm:6.1.0":
+  version: 6.1.0
+  resolution: "mongodb@npm:6.1.0"
   dependencies:
     "@mongodb-js/saslprep": ^1.1.0
-    bson: ^5.4.0
+    bson: ^6.1.0
     mongodb-connection-string-url: ^2.6.0
-    socks: ^2.7.1
   peerDependencies:
     "@aws-sdk/credential-providers": ^3.188.0
-    "@mongodb-js/zstd": ^1.0.0
-    kerberos: ^1.0.0 || ^2.0.0
-    mongodb-client-encryption: ">=2.3.0 <3"
+    "@mongodb-js/zstd": ^1.1.0
+    gcp-metadata: ^5.2.0
+    kerberos: ^2.0.1
+    mongodb-client-encryption: ">=6.0.0 <7"
     snappy: ^7.2.2
-  dependenciesMeta:
-    "@mongodb-js/saslprep":
-      optional: true
+    socks: ^2.7.1
   peerDependenciesMeta:
     "@aws-sdk/credential-providers":
       optional: true
     "@mongodb-js/zstd":
+      optional: true
+    gcp-metadata:
       optional: true
     kerberos:
       optional: true
@@ -5777,7 +5751,9 @@ __metadata:
       optional: true
     snappy:
       optional: true
-  checksum: 48e552a210f2666a13766a1029bde36e961573317f5972d48b5b99f0035bcdc36d7a4154be4ae68a1aefe0aac2b682395196d5a20a0da14dbd2ebbce39b4f2f8
+    socks:
+      optional: true
+  checksum: ed60c14f0a7e2e9088ba58f29b0425bc5c00d81e3f692938e3bb887b2fdbb411935e845a8bab3faa7609e6e52e94b9705cf60fac61684d21b8bc92a5c3938964
   languageName: node
   linkType: hard
 
@@ -6662,15 +6638,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"saslprep@npm:^1.0.3":
-  version: 1.0.3
-  resolution: "saslprep@npm:1.0.3"
-  dependencies:
-    sparse-bitfield: ^3.0.3
-  checksum: 4fdc0b70fb5e523f977de405e12cca111f1f10dd68a0cfae0ca52c1a7919a94d1556598ba2d35f447655c3b32879846c77f9274c90806f6673248ae3cea6ee43
-  languageName: node
-  linkType: hard
-
 "semver@npm:2 || 3 || 4 || 5":
   version: 5.7.2
   resolution: "semver@npm:5.7.2"
@@ -6831,7 +6798,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"socks@npm:^2.6.2, socks@npm:^2.7.1":
+"socks@npm:^2.6.2":
   version: 2.7.1
   resolution: "socks@npm:2.7.1"
   dependencies:

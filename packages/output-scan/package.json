@@ -10,16 +10,16 @@
     "scan": "node src/index.js"
   },
   "dependencies": {
-    "@osn/scan-common": "0.5.8",
+    "@osn/scan-common": "0.6.0",
     "@polkadot/api": "10.9.1",
-    "bignumber.js": "^9.1.1",
+    "bignumber.js": "^9.1.2",
     "dotenv": "16.1.4",
     "lodash.findlast": "^4.6.0",
     "lodash.isempty": "^4.4.0",
     "lodash.last": "^3.0.0",
     "lodash.omit": "^4.5.0",
     "log4js": "^6.9.1",
-    "mongodb": "5.8.0"
+    "mongodb": "6.1.0"
   },
   "devDependencies": {
     "jest": "29.5.0"
