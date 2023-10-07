@@ -2,11 +2,11 @@ const { getBountyDescription } = require("./description");
 const { getBountyMeta } = require("./meta");
 const {
   chain: {
-    setApi, setProvider,
-    setSpecHeights
+    getApi,
+    setSpecHeights,
   },
+  test: { disconnect, setKusama }
 } = require("@osn/scan-common");
-const { ApiPromise, WsProvider } = require("@polkadot/api");
 jest.setTimeout(3000000);
 
 async function testBountyData(api, height, bountyIndex, toTestMeta) {
@@ -26,21 +26,16 @@ async function testBountyDescription(api, height, bountyIndex, target) {
 }
 
 describe("test get treasury bounty", () => {
-  let api;
-  let provider;
-
   beforeAll(async () => {
-    provider = new WsProvider("wss://kusama.api.onfinality.io/public-ws", 1000);
-    api = await ApiPromise.create({ provider });
-    setProvider(provider)
-    setApi(api);
+    await setKusama();
   });
 
   afterAll(async () => {
-    await provider.disconnect();
+    await disconnect();
   });
 
   test("meta works", async () => {
+    const api = await getApi();
     await testBountyData(api, 6006977, 1, {
       "proposer": "GLVeryFRbg5hEKvQZcAnLvXZEXhiYaBjzSDwrXBXrfPF7wj",
       "value": 1530000000000000,
@@ -91,6 +86,7 @@ describe("test get treasury bounty", () => {
   });
 
   test("description works", async () => {
+    const api = await getApi();
     await testBountyDescription(api, 4501546, 0, "Kusama network UI Bounty");
     await testBountyDescription(api, 9369951, 7, "1");
   })

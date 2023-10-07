@@ -1,8 +1,11 @@
 const { getTippersCountFromApi, getTipFindersFeeFromApi } = require("./utils");
-const { chain: { setApi } } = require("@osn/scan-common");
+const {
+  chain: {
+    getApi,
+  },
+  test: { disconnect, setKusama }
+} = require("@osn/scan-common");
 jest.setTimeout(3000000);
-
-const { ApiPromise, WsProvider } = require("@polkadot/api");
 
 async function testTippersCount(api, height, target) {
   const blockHash = await api.rpc.chain.getBlockHash(height);
@@ -19,20 +22,16 @@ async function testGetTipFindersFee(api, height, target) {
 }
 
 describe("test tip utils", () => {
-  let api;
-  let provider;
-
   beforeAll(async () => {
-    provider = new WsProvider("wss://kusama.api.onfinality.io/public-ws", 1000);
-    api = await ApiPromise.create({ provider });
-    setApi(api);
+    await setKusama();
   });
 
   afterAll(async () => {
-    await provider.disconnect();
+    await disconnect();
   });
 
   test("getTippersCount works", async () => {
+    const api = await getApi();
     const data = [
       [12345, 13],
       [9623456, 19]
@@ -44,6 +43,7 @@ describe("test tip utils", () => {
   })
 
   test("getTipFindersFeeFromApi works", async () => {
+    const api = await getApi();
     const data = [
       [323456, null],
       [602672, 20],
