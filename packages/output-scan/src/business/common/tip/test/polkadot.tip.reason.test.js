@@ -1,26 +1,24 @@
-const { chain: { setSpecHeights, setApi, setProvider } } = require("@osn/scan-common");
+const {
+  chain: {
+    getApi,
+    setSpecHeights,
+  },
+  test: { disconnect, setPolkadot }
+} = require("@osn/scan-common");
 const { getTipReason } = require("../utils");
 jest.setTimeout(3000000);
 
-const { ApiPromise, WsProvider } = require("@polkadot/api");
-
 describe("test get tip", () => {
-  let api;
-  let provider;
-
   beforeAll(async () => {
-    provider = new WsProvider("wss://polkadot.api.onfinality.io/public-ws", 1000);
-    api = await ApiPromise.create({ provider, });
-
-    setProvider(provider)
-    setApi(api);
+    await setPolkadot();
   });
 
   afterAll(async () => {
-    await provider.disconnect();
+    await disconnect();
   });
 
   test("reason works", async () => {
+    const api = await getApi();
     const height = 7650213;
     await setSpecHeights([height]);
     const blockHash = await api.rpc.chain.getBlockHash(height);

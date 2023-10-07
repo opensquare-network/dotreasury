@@ -1,13 +1,11 @@
 const { getMotionProposalCall } = require("./proposalStorage");
 const {
   chain: {
-    setApi, setProvider,
-    setSpecHeights
+    getApi,
+    setSpecHeights,
   },
-  consts: { CHAINS },
-  env: { setChain },
+  test: { disconnect, setKusama, setPolkadot }
 } = require("@osn/scan-common");
-const { ApiPromise, WsProvider } = require("@polkadot/api");
 
 jest.setTimeout(3000000);
 
@@ -38,22 +36,16 @@ const dotMotionCallByProxy = {
 };
 
 describe("test get kusama motion proposal", () => {
-  let api;
-  let provider;
-
   beforeAll(async () => {
-    provider = new WsProvider("wss://kusama.api.onfinality.io/public-ws", 1000);
-    api = await ApiPromise.create({ provider });
-    setApi(api);
-    setProvider(provider);
-    setChain(CHAINS.KUSAMA);
+    await setKusama();
   });
 
   afterAll(async () => {
-    await provider.disconnect();
+    await disconnect();
   });
 
   test("works", async () => {
+    const api = await getApi();
     const blockHeight = 126209;
     await setSpecHeights([blockHeight]);
     const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
@@ -68,25 +60,16 @@ describe("test get kusama motion proposal", () => {
 });
 
 describe("test get polkadot motion proposal", () => {
-  let api;
-  let provider;
-
   beforeAll(async () => {
-    provider = new WsProvider(
-      "wss://polkadot.api.onfinality.io/public-ws",
-      1000
-    );
-    api = await ApiPromise.create({ provider });
-    setProvider(provider)
-    setApi(api);
-    setChain(CHAINS.POLKADOT);
+    await setPolkadot();
   });
 
   afterAll(async () => {
-    await provider.disconnect();
+    await disconnect();
   });
 
   test("by proxy works", async () => {
+    const api = await getApi();
     const blockHeight = 3543099;
     await setSpecHeights([blockHeight]);
     const blockHash = await api.rpc.chain.getBlockHash(blockHeight);

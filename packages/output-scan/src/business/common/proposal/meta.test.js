@@ -1,13 +1,13 @@
 const {
   chain: {
-    setApi, setProvider,
-    setSpecHeights
+    getApi,
+    setSpecHeights,
   },
+  test: { disconnect, setKusama }
 } = require("@osn/scan-common");
 jest.setTimeout(3000000);
 
 const { getTreasuryProposalMeta } = require("./meta");
-const { ApiPromise, WsProvider } = require("@polkadot/api");
 
 async function testProposalData(api, height, proposalIndex, toTestMeta) {
   await setSpecHeights([height]);
@@ -18,21 +18,16 @@ async function testProposalData(api, height, proposalIndex, toTestMeta) {
 }
 
 describe("test get treasury proposal", () => {
-  let api;
-  let provider;
-
   beforeAll(async () => {
-    provider = new WsProvider("wss://kusama.api.onfinality.io/public-ws", 1000);
-    api = await ApiPromise.create({ provider });
-    setProvider(provider)
-    setApi(api);
+    await setKusama();
   });
 
   afterAll(async () => {
-    await provider.disconnect();
+    await disconnect();
   });
 
   test("meta works", async () => {
+    const api = await getApi();
     await testProposalData(api, 126165, 0, {
       "proposer": "H9eSvWe34vQDJAWckeTHWSqSChRat8bgKHG39GC1fjvEm7y",
       "value": 50000000000000,

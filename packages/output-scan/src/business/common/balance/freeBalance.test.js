@@ -1,14 +1,11 @@
 const { getTreasuryBalance } = require("./freeBalance");
 const {
-  chain:
-    {
-      setSpecHeights,
-      setApi, setProvider,
-    },
-  consts: { CHAINS },
-  env: { setChain, }
+  chain: {
+    getApi,
+    setSpecHeights,
+  },
+  test: { disconnect, setKusama }
 } = require("@osn/scan-common");
-const { ApiPromise, WsProvider } = require("@polkadot/api");
 
 jest.setTimeout(3000000);
 
@@ -21,22 +18,16 @@ async function testTreasuryBalance(api, height, targetBalance) {
 }
 
 describe("Getting balance of", () => {
-  let api;
-  let provider;
-
   beforeAll(async () => {
-    provider = new WsProvider("wss://kusama.api.onfinality.io/public-ws", 1000);
-    api = await ApiPromise.create({ provider });
-    setProvider(provider);
-    setApi(api);
-    setChain(CHAINS.KUSAMA);
+    await setKusama();
   });
 
   afterAll(async () => {
-    await provider.disconnect();
+    await disconnect();
   });
 
   test("kusama works", async () => {
+    const api = await getApi();
     const testArr = [
       [86400, "20521587906898179"],
       [1468800, "165682945472844815"],

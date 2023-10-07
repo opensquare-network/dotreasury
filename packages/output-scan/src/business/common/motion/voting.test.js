@@ -1,16 +1,14 @@
 const {
   chain: {
+    getApi,
     setSpecHeights,
-    setApi, setProvider,
   },
-  env: { setChain },
-  consts: { CHAINS },
+  test: { disconnect, setKusama }
 } = require("@osn/scan-common");
 const {
   getMotionVoting,
   getVotingFromStorageByHeight,
 } = require("./votingStorage");
-const { ApiPromise, WsProvider } = require("@polkadot/api");
 
 jest.setTimeout(3000000);
 
@@ -24,22 +22,16 @@ const targetKsmMotion = {
 };
 
 describe("test get kusama motion voting", () => {
-  let api;
-  let provider;
-
   beforeAll(async () => {
-    provider = new WsProvider("wss://kusama.api.onfinality.io/public-ws", 1000);
-    api = await ApiPromise.create({ provider });
-    setProvider(provider)
-    setApi(api);
-    setChain(CHAINS.KUSAMA);
+    await setKusama();
   });
 
   afterAll(async () => {
-    await provider.disconnect();
+    await disconnect();
   });
 
   test("works", async () => {
+    const api = await getApi();
     const blockHeight = 126209;
     await setSpecHeights([blockHeight]);
     const blockHash = await api.rpc.chain.getBlockHash(blockHeight);

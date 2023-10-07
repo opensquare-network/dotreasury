@@ -1,11 +1,13 @@
 const {
-  chain: { setApi, setProvider, setSpecHeights },
+  chain: {
+    getApi,
+    setSpecHeights
+  },
+  test: { disconnect, setKusama }
 } = require("@osn/scan-common");
 const { getTipReason } = require("../utils");
 const { getTipMetaFromStorage } = require("../utils");
 jest.setTimeout(3000000);
-
-const { ApiPromise, WsProvider } = require("@polkadot/api");
 
 async function testTipData(api, height, hash, toTestMeta) {
   await setSpecHeights([height]);
@@ -16,22 +18,16 @@ async function testTipData(api, height, hash, toTestMeta) {
 }
 
 describe("test get tip", () => {
-  let api;
-  let provider;
-
   beforeAll(async () => {
-    provider = new WsProvider("wss://kusama.api.onfinality.io/public-ws", 1000);
-    api = await ApiPromise.create({ provider, });
-
-    setProvider(provider)
-    setApi(api);
+    await setKusama();
   });
 
   afterAll(async () => {
-    await provider.disconnect();
+    await disconnect();
   });
 
   test("meta works", async () => {
+    const api = await getApi();
     await testTipData(api, 602672, "0x3a8576a1d7f9110e5d13d512bb8374bc0843da026dead68707462bb7f3e448b1", {
       "reason": "0xed3ce0d332276bfa17c27431bac4d8bf1807cbbe114b0c5b1cbf0e7dc07ace47",
       "who": "HEkh52pShreLjbiGuewsnbXTeXFiq5mxqF3TffeHRjsbuN5",
@@ -93,6 +89,7 @@ describe("test get tip", () => {
   });
 
   test("reason works", async () => {
+    const api = await getApi();
     const height = 602672;
     await setSpecHeights([height]);
     const blockHash = await api.rpc.chain.getBlockHash(height);

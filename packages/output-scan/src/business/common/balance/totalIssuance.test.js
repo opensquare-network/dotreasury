@@ -5,6 +5,7 @@ const {
   },
   test: { setPolkadot, disconnect }
 } = require("@osn/scan-common");
+jest.setTimeout(3000000);
 
 test("Getting total issuance works", async () => {
   await setPolkadot();
