@@ -2,12 +2,18 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
-import { redirect } from "./redirect.js";
+import { redirect, shouldRedirect } from "./redirect.js";
 
-redirect();
+if (shouldRedirect) {
+  redirect();
+} else {
+  renderApp();
+}
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-);
+function renderApp() {
+  ReactDOM.createRoot(document.getElementById("root")).render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>,
+  );
+}
