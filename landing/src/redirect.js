@@ -9,7 +9,7 @@ export function redirect() {
   if (symbol) {
     const chain = networkFromSymbol(symbol);
 
-    // if matched chian, then redirect
+    // if matched chain, then redirect
     if (chain) {
       window.location.replace(
         `https://${chain}.dotreasury.com/#/${routes.join("/")}`,
