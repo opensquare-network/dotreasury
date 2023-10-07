@@ -17,6 +17,7 @@ const { handleReferendaSlash } = require("./referenda/referenda");
 const { handleFellowshipReferendaSlash } = require("./referenda/fellowship");
 const { handleBalancesWithdraw } = require("./deposit");
 const { handleBalancesWithdrawWithoutFee } = require("./deposit/withoutFee");
+const { handleRollover } = require("./treasury/rollover");
 
 async function handleDeposit(
   indexer,
@@ -103,10 +104,14 @@ async function handleEvents(events, extrinsics, blockIndexer) {
       eventIndex: sort,
     };
 
+    const { section, method } = event;
+    if (section === Modules.Treasury && "Rollover" === method) {
+      await handleRollover(event, indexer);
+    }
+
     const commonObj = await handleCommon(indexer, event, events);
     transfer = bigAdd(transfer, commonObj.transfer);
 
-    const { section, method } = event;
     if (Modules.Treasury !== section || TreasuryCommonEvent.Deposit !== method) {
       continue;
     }

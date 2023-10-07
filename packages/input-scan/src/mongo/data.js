@@ -44,6 +44,7 @@ let incomeTransferCol = null;
 
 // stats collections
 let weeklyStatsCol = null;
+let periodCol = null; // spend periods
 
 async function initDb() {
   client = await MongoClient.connect(mongoUrl, {
@@ -63,6 +64,7 @@ async function initDb() {
   othersIncomeCol = db.collection(othersIncomeCollectionName);
   incomeTransferCol = db.collection(incomeTransferCollectionName);
   weeklyStatsCol = db.collection(weeklyStatsCollectionName);
+  periodCol = db.collection("period");
 
   await _createIndexes();
 }
@@ -142,6 +144,11 @@ async function getWeeklyStatsCollection() {
   return weeklyStatsCol;
 }
 
+async function getPeriodCol() {
+  await tryInit(periodCol);
+  return periodCol;
+}
+
 async function closeDb() {
   if (client) {
     await client.close()
@@ -161,5 +168,6 @@ module.exports = {
   getOthersIncomeCollection,
   getIncomeTransferCollection,
   getWeeklyStatsCollection,
+  getPeriodCol,
   closeDb,
 };

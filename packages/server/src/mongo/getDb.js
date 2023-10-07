@@ -77,6 +77,7 @@ function getDb({ inputDbName, outputDbName, councilDbName }) {
   let incomeTransferCol = null;
   let othersIncomeCol = null;
   let inputWeeklyStatsCol = null;
+  let incomePeriodCol = null;
 
   let termsCol = null;
   let termCouncilorCol = null;
@@ -103,6 +104,7 @@ function getDb({ inputDbName, outputDbName, councilDbName }) {
     incomeTransferCol = inputDb.collection(incomeTransferCollectionName);
     othersIncomeCol = inputDb.collection(othersIncomeCollectionName);
     inputWeeklyStatsCol = inputDb.collection(weeklyStatsCollectionName);
+    incomePeriodCol = inputDb.collection("period");
 
     outputDb = client.db(outputDbName);
     referendaReferendumCol = outputDb.collection(
@@ -271,6 +273,11 @@ function getDb({ inputDbName, outputDbName, councilDbName }) {
     return incomeTransferCol;
   }
 
+  async function getIncomePeriodCol() {
+    await tryInit(incomePeriodCol);
+    return incomePeriodCol;
+  }
+
   async function getOthersIncomeCollection() {
     await tryInit(othersIncomeCol);
     return othersIncomeCol;
@@ -346,6 +353,7 @@ function getDb({ inputDbName, outputDbName, councilDbName }) {
     getIncomeTransferCollection,
     getOthersIncomeCollection,
     getInputWeeklyStatsCollection,
+    getIncomePeriodCol,
     getOutputWeeklyStatsCollection,
     getOutputStatusCollection,
     getParticipantCollection,
