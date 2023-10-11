@@ -15,7 +15,7 @@ import GrayImage from "../../components/GrayImage";
 import { USER_ROLES } from "../../constants";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 
-const CardWrapper = styled(Card)`
+export const CardWrapper = styled(Card)`
   overflow-x: hidden;
   padding: 0;
   table {
@@ -27,24 +27,24 @@ const CardWrapper = styled(Card)`
   }
 `;
 
-const TableWrapper = styled.div`
+export const TableWrapper = styled.div`
   overflow: scroll;
 `;
 
-const Title = styled(Text)`
+export const Title = styled(Text)`
   font-size: 16px;
   line-height: 24px;
   font-weight: 700;
 `;
 
-const TitleContainer = styled.div`
+export const TitleContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 20px 24px;
 `;
 
-const LinkButton = styled(TextMinor)`
+export const LinkButton = styled(TextMinor)`
   display: flex;
   :hover {
     color: var(--textPrimary);
@@ -56,11 +56,11 @@ const LinkButton = styled(TextMinor)`
   }
 `;
 
-const TableRow = styled(Table.Row)`
+export const TableRow = styled(Table.Row)`
   height: 50px;
 `;
 
-const TableCell = styled(Table.Cell)`
+export const TableCell = styled(Table.Cell)`
   width: 160px;
 `;
 

@@ -55,6 +55,7 @@ function fetchGov2ReferendaTitle(referendumIndex) {
 }
 
 async function syncGov2ReferendaTitle() {
+  console.log(`Sync OpenGov referenda title`);
   await syncTitle({
     col: await getReferendaReferendumCollection(),
     fetchTitle: (item) => fetchGov2ReferendaTitle(item.referendumIndex),
@@ -65,9 +66,6 @@ async function syncGov2ReferendaTitle() {
   });
 }
 
-async function main() {
-  console.log(`Sync OpenGov referenda title`);
-  await syncGov2ReferendaTitle();
+module.exports = {
+  syncGov2ReferendaTitle,
 }
-
-module.exports = main;
