@@ -24,6 +24,7 @@ import OpenGovSpend from "./OpenGovSpend";
 import { useSupportOpenGov } from "../../utils/hooks/chain";
 import { mdcss, smcss } from "@osn/common";
 import SpendPeriod from "./SpendPeriod";
+import TopBeneficiariesTable from "./TopBeneficiariesTable/index.jsx";
 
 const DoughnutWrapper = styled.div`
   display: grid;
@@ -149,6 +150,7 @@ const Overview = () => {
       <TotalStacked />
       <SpendPeriod />
       <TableWrapper>
+        <TopBeneficiariesTable />
         <BeneficiaryTable />
         <ProposerTable />
       </TableWrapper>

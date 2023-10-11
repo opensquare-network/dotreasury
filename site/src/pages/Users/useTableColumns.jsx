@@ -11,7 +11,7 @@ const IDWrapper = styled.div`
   display: inline-block;
 `;
 
-const ProposalsWrapper = styled.div`
+export const ProposalsWrapper = styled.div`
   display: inline-flex;
 `;
 
