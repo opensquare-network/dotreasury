@@ -71,7 +71,7 @@ const overviewSlice = createSlice({
     },
     setTopBeneficiaries(state, { payload }) {
       state.topBeneficiaries = payload;
-    }
+    },
   },
 });
 
@@ -95,7 +95,7 @@ export const fetchSpendPeriods = () => async (dispatch) => {
 export const fetchTopBeneficiaries = () => async (dispatch) => {
   const { result } = await api.fetch("/participants", { role: "beneficiary" });
   dispatch(setTopBeneficiaries(result?.items));
-}
+};
 
 export const totalProposalCountSelector = (state) =>
   state.overview.overview.count.proposal.all;
