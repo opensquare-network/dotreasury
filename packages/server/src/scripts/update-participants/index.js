@@ -176,8 +176,6 @@ async function updateParticipants() {
   }
 }
 
-async function main() {
-  await updateParticipants();
+module.exports = {
+  updateParticipants,
 }
-
-module.exports = main;
