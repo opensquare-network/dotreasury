@@ -2,6 +2,18 @@
 
 Notable changes to this project will be documented in this file, started from 4.0.0
 
+### 4.0.2
+Date: 2023-10-13
+
+- Support moonbeam/moonriver on landing page.
+
+### 4.0.1
+Date: 2023-10-11
+
+- Add top beneficiaries table on home page.
+- Scan income statistics by spend periods.
+- Fix and refactor test cases.
+
 ### 4.0.0
 
 - [Big] Add a landing page where we aggregate several projects' treasury data in the ecosystem.
