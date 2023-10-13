@@ -1,6 +1,7 @@
 const { handleOthers } = require("./others");
 const {
-  utils: { bigAdds, bigAdd },
+  env: { currentChain },
+  utils: { bigAdds, bigAdd, gt },
   consts: {
     Modules,
     TreasuryCommonEvent,
@@ -18,6 +19,8 @@ const { handleFellowshipReferendaSlash } = require("./referenda/fellowship");
 const { handleBalancesWithdraw } = require("./deposit");
 const { handleBalancesWithdrawWithoutFee } = require("./deposit/withoutFee");
 const { handleRollover } = require("./treasury/rollover");
+const { handleCentrifugeBlockRewards } = require("./centrifuge/blockRewards");
+const BigNumber = require("bignumber.js");
 
 async function handleDeposit(
   indexer,
@@ -48,10 +51,16 @@ async function handleDeposit(
     referendaSlash,
     fellowshipReferendaSlash,
   }
+
+  if ("centrifuge" === currentChain()) {
+    const maybeCentrifugeBlockRewards = await handleCentrifugeBlockRewards(event, indexer, blockEvents);
+    const centrifugeBlockRewards = maybeCentrifugeBlockRewards?.balance || "0";
+    Object.assign(items, { centrifugeBlockRewards });
+  }
   const sum = bigAdds(Object.values(items));
 
   let others = 0;
-  if (parseInt(sum) <= 0) {
+  if (new BigNumber(sum).isLessThanOrEqualTo(0)) {
     const othersObj = await handleOthers(event, indexer);
     others = othersObj.balance;
   }
@@ -93,6 +102,7 @@ async function handleEvents(events, extrinsics, blockIndexer) {
   let electionSlash = 0;
   let referendaSlash = 0;
   let fellowshipReferendaSlash = 0;
+  let centrifugeBlockReward = 0;
   let others = 0;
 
   for (let sort = 0; sort < events.length; sort++) {
@@ -125,10 +135,11 @@ async function handleEvents(events, extrinsics, blockIndexer) {
     stakingSlash = bigAdd(stakingSlash, depositObj.stakingSlash);
     referendaSlash = bigAdd(referendaSlash, depositObj.referendaSlash);
     fellowshipReferendaSlash = bigAdd(fellowshipReferendaSlash, depositObj.fellowshipReferendaSlash);
+    centrifugeBlockReward = bigAdd(centrifugeBlockReward, depositObj.centrifugeBlockRewards || 0);
     others = bigAdd(others, depositObj.others);
   }
 
-  return {
+  const result = {
     inflation,
     transfer,
     others,
@@ -140,6 +151,12 @@ async function handleEvents(events, extrinsics, blockIndexer) {
     referendaSlash,
     fellowshipReferendaSlash,
   }
+
+  if ("centrifuge" === currentChain()) {
+    Object.assign(result, { centrifugeBlockReward });
+  }
+
+  return result;
 }
 
 module.exports = {

@@ -9,7 +9,7 @@ const {
 
 async function test() {
   const blockHeights = [
-    86400,
+    4032000,
   ];
 
   for (const height of blockHeights) {
@@ -23,6 +23,8 @@ async function test() {
     await scanNormalizedBlock(block.block, allEvents);
     console.log('finished')
   }
+
+  process.exit(0);
 }
 
 test();
