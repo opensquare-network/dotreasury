@@ -14,11 +14,9 @@ const endpoints = Object.freeze({
   polkadot: [
     "wss://rpc.polkadot.io",
     "wss://polkadot-rpc.dwellir.com",
-    "wss://polkadot.api.onfinality.io/public-ws",
   ],
   kusama: [
     "wss://kusama-rpc.polkadot.io",
-    "wss://kusama.api.onfinality.io/public-ws",
     "wss://kusama-rpc.dwellir.com"
   ],
   centrifuge: [
@@ -48,6 +46,14 @@ const endpoints = Object.freeze({
   kintsugi: [
     "wss://kintsugi-rpc.dwellir.com/",
     "wss://api-kusama.interlay.io/parachain",
+  ],
+  moonriver: [
+    "wss://wss.api.moonriver.moonbeam.network",
+    "wss://moonriver-rpc.dwellir.com" ,
+  ],
+  moonbeam: [
+    "wss://wss.api.moonbeam.network/",
+    "wss://moonbeam-rpc.dwellir.com/",
   ],
 });
 

@@ -56,7 +56,7 @@ async function updateTokensPrice() {
   } catch (e) {
     console.error(e);
   } finally {
-    setTimeout(updateTokensPrice, 60 * 1000);
+    setTimeout(updateTokensPrice, 180 * 1000);
   }
 }
 
