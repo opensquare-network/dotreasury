@@ -88,7 +88,7 @@ export const fetchStatsHistory = () => async (dispatch) => {
 };
 
 export const fetchSpendPeriods = () => async (dispatch) => {
-  const { result } = await api.fetch("/periods");
+  const { result } = await api.fetch("/output-periods");
   dispatch(setSendPeriods(result || []));
 };
 
@@ -119,6 +119,7 @@ export const totalOpenGovApplicationCountSelector = (state) =>
 export const overviewSelector = (state) => state.overview.overview;
 export const statsHistorySelector = (state) => state.overview.statsHistory;
 export const spendPeriodsSelector = (state) => state.overview.spendPeriods;
-export const topBeneficiariesSelector = (state) => state.overview.topBeneficiaries;
+export const topBeneficiariesSelector = (state) =>
+  state.overview.topBeneficiaries;
 
 export default overviewSlice.reducer;
