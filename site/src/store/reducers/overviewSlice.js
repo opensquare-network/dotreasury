@@ -56,6 +56,7 @@ const overviewSlice = createSlice({
       },
     },
     statsHistory: [],
+    incomePeriods: [],
     spendPeriods: [],
     topBeneficiaries: [], // beneficiaries by all kinds of spends
   },
@@ -65,6 +66,9 @@ const overviewSlice = createSlice({
     },
     setStatsHistory(state, { payload }) {
       state.statsHistory = payload;
+    },
+    setIncomePeriods(state, { payload }) {
+      state.incomePeriods = payload;
     },
     setSendPeriods(state, { payload }) {
       state.spendPeriods = payload;
@@ -85,6 +89,11 @@ export const {
 export const fetchStatsHistory = () => async (dispatch) => {
   const { result } = await api.fetch("/stats/weekly");
   dispatch(setStatsHistory(result || []));
+};
+
+export const fetchIncomePeriods = () => async (dispatch) => {
+  const { result } = await api.fetch("/income-periods");
+  dispatch(setSendPeriods(result || []));
 };
 
 export const fetchSpendPeriods = () => async (dispatch) => {
@@ -118,6 +127,7 @@ export const totalOpenGovApplicationCountSelector = (state) =>
   state.overview.overview.count.referenda.all || 0;
 export const overviewSelector = (state) => state.overview.overview;
 export const statsHistorySelector = (state) => state.overview.statsHistory;
+export const incomePeriodsSelector = (state) => state.overview.incomePeriods;
 export const spendPeriodsSelector = (state) => state.overview.spendPeriods;
 export const topBeneficiariesSelector = (state) =>
   state.overview.topBeneficiaries;
