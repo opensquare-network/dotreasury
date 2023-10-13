@@ -82,6 +82,7 @@ const overviewSlice = createSlice({
 export const {
   setOverview,
   setStatsHistory,
+  setIncomePeriods,
   setSendPeriods,
   setTopBeneficiaries,
 } = overviewSlice.actions;
@@ -93,7 +94,7 @@ export const fetchStatsHistory = () => async (dispatch) => {
 
 export const fetchIncomePeriods = () => async (dispatch) => {
   const { result } = await api.fetch("/income-periods");
-  dispatch(setSendPeriods(result || []));
+  dispatch(setIncomePeriods(result || []));
 };
 
 export const fetchSpendPeriods = () => async (dispatch) => {
