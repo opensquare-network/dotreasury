@@ -21,6 +21,7 @@ const { handleBalancesWithdrawWithoutFee } = require("./deposit/withoutFee");
 const { handleRollover } = require("./treasury/rollover");
 const { handleCentrifugeBlockRewards } = require("./centrifuge/blockRewards");
 const BigNumber = require("bignumber.js");
+const { handleCentrifugeTxFee } = require("./centrifuge/txFee");
 
 async function handleDeposit(
   indexer,
@@ -56,6 +57,10 @@ async function handleDeposit(
     const maybeCentrifugeBlockRewards = await handleCentrifugeBlockRewards(event, indexer, blockEvents);
     const centrifugeBlockRewards = maybeCentrifugeBlockRewards?.balance || "0";
     Object.assign(items, { centrifugeBlockRewards });
+
+    const maybeCentrifugeTxFee = await handleCentrifugeTxFee(event, indexer, blockEvents);
+    const centrifugeTxFee = maybeCentrifugeTxFee?.balance || "0";
+    Object.assign(items, { centrifugeTxFee });
   }
   const sum = bigAdds(Object.values(items));
 
@@ -103,6 +108,7 @@ async function handleEvents(events, extrinsics, blockIndexer) {
   let referendaSlash = 0;
   let fellowshipReferendaSlash = 0;
   let centrifugeBlockReward = 0;
+  let centrifugeTxFee = 0;
   let others = 0;
 
   for (let sort = 0; sort < events.length; sort++) {
@@ -136,6 +142,7 @@ async function handleEvents(events, extrinsics, blockIndexer) {
     referendaSlash = bigAdd(referendaSlash, depositObj.referendaSlash);
     fellowshipReferendaSlash = bigAdd(fellowshipReferendaSlash, depositObj.fellowshipReferendaSlash);
     centrifugeBlockReward = bigAdd(centrifugeBlockReward, depositObj.centrifugeBlockRewards || 0);
+    centrifugeTxFee = bigAdd(centrifugeTxFee, depositObj.centrifugeTxFee || 0);
     others = bigAdd(others, depositObj.others);
   }
 
@@ -153,7 +160,7 @@ async function handleEvents(events, extrinsics, blockIndexer) {
   }
 
   if ("centrifuge" === currentChain()) {
-    Object.assign(result, { centrifugeBlockReward });
+    Object.assign(result, { centrifugeBlockReward, centrifugeTxFee });
   }
 
   return result;
