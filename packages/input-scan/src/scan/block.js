@@ -41,7 +41,8 @@ async function scanNormalizedBlock(block, blockEvents) {
 
   if ("centrifuge" === currentChain()) {
     Object.assign(result, {
-      centrifugeBlockReward: bigAdd(nowSeats.centrifugeBlockReward || 0, details.centrifugeBlockReward || 0)
+      centrifugeBlockReward: bigAdd(nowSeats.centrifugeBlockReward || 0, details.centrifugeBlockReward || 0),
+      centrifugeTxFee: bigAdd(nowSeats.centrifugeTxFee || 0, details.centrifugeTxFee || 0),
     });
   }
 
