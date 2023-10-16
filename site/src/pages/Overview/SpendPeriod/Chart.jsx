@@ -9,6 +9,7 @@ import MyTooltip from "./MyTooltip";
 import { useState } from "react";
 import { useCallback } from "react";
 import { abbreviateBigNumber } from "../../../utils";
+import { useTheme } from "../../../context/theme";
 
 const ScrollableWrapper = styled.div`
   display: flex;
@@ -85,6 +86,7 @@ export default function Chart({
   spendPeriodsLegends = [],
   spendPeriodsData = [],
 }) {
+  const theme = useTheme();
   const symbol = useSelector(chainSymbolSelector);
 
   const [scrollLeft, setScrollLeft] = useState(0);
@@ -126,12 +128,6 @@ export default function Chart({
     };
   });
 
-  // const barHeights = data.map((_, i) =>
-  //   datasets.reduce((prev, curr) => prev + curr.data[i], 0),
-  // );
-  // const maxBarHeight = Math.max(...barHeights);
-  // const bgBarHeight = barHeights.map((h) => maxBarHeight - h);
-
   const datasets = [...incomePeriodsDatasets, ...spendPeriodsDatasets];
 
   return (
@@ -147,6 +143,7 @@ export default function Chart({
             maintainAspectRatio: false,
             interaction: {
               mode: "index",
+              intersect: false,
             },
             animation: {
               duration: 0,
