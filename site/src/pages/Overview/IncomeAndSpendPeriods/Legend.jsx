@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { smcss } from "../../../styles/responsive";
 
 const Wrapper = styled.div`
   display: flex;
@@ -9,6 +10,10 @@ const Group = styled.div`
   display: flex;
   gap: 16px;
   flex: 1;
+
+  ${smcss(css`
+    flex-direction: column;
+  `)}
 `;
 
 const LegendItem = styled.div`
