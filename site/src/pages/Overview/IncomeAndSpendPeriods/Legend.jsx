@@ -2,52 +2,85 @@ import styled, { css } from "styled-components";
 
 const Wrapper = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 9px;
-  min-width: 276px;
+  justify-content: space-between;
+`;
+
+const Group = styled.div`
+  display: flex;
+  gap: 16px;
+  flex: 1;
 `;
 
 const LegendItem = styled.div`
   cursor: pointer;
   display: flex;
   align-items: center;
-  padding: 8px 12px;
-  gap: 11.5px;
+  gap: 8px;
 
   color: var(--textPrimary);
-  background: var(--neutral200);
-  border-radius: 4px;
 
-  ${p => !p.enabled && css`
-    color: var(--textDisable) !important;
-    > div {
-      background: var(--textDisable) !important;
-    }
-  `}
+  ${(p) =>
+    !p.enabled &&
+    css`
+      color: var(--textDisable) !important;
+
+      ${LegendMark} {
+        background: var(--textDisable) !important;
+      }
+    `}
 `;
 
 const LegendMark = styled.div`
-  width: 9px;
-  height: 9px;
-  border-radius: 2px;
-  background: ${p => p.color};
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  background: ${(p) => p.color};
 `;
 
-export default function Legend({ legends, setLegends }) {
-  const onLegendClick = (index) => {
-    const newLegends = [...legends];
-    newLegends[index].enabled = !newLegends[index].enabled;
-    setLegends(newLegends);
+export default function IncomeAndSpendPeriodsLegend({
+  incomeLegends,
+  setIncomeLegends,
+  spendLegends,
+  setSpendLegends,
+}) {
+  const onIncomeLegendClick = (index) => {
+    const newIncomeLegends = [...incomeLegends];
+    newIncomeLegends[index].enabled = !newIncomeLegends[index].enabled;
+    setIncomeLegends(newIncomeLegends);
+  };
+
+  const onSpendLegendClick = (index) => {
+    const newSpendLegends = [...spendLegends];
+    newSpendLegends[index].enabled = !newSpendLegends[index].enabled;
+    setSpendLegends(newSpendLegends);
   };
 
   return (
     <Wrapper>
-      {legends.map((legend, index) => (
-        <LegendItem key={legend.label} enabled={legend.enabled} onClick={() => onLegendClick(index)}>
-          <LegendMark color={legend.color} />
-          <span>{legend.label}</span>
-        </LegendItem>
-      ))}
+      <Group>
+        {incomeLegends.map((legend, index) => (
+          <LegendItem
+            key={legend.label}
+            enabled={legend.enabled}
+            onClick={() => onIncomeLegendClick(index)}
+          >
+            <LegendMark color={legend.color} />
+            <span>{legend.label}</span>
+          </LegendItem>
+        ))}
+      </Group>
+      <Group>
+        {spendLegends.map((legend, index) => (
+          <LegendItem
+            key={legend.label}
+            enabled={legend.enabled}
+            onClick={() => onSpendLegendClick(index)}
+          >
+            <LegendMark color={legend.color} />
+            <span>{legend.label}</span>
+          </LegendItem>
+        ))}
+      </Group>
     </Wrapper>
   );
 }

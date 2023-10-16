@@ -16,6 +16,7 @@ import { chainSymbolSelector } from "../../../store/reducers/chainSlice";
 import { getPrecision, toPrecision } from "../../../utils";
 import { sum } from "../../../utils/math";
 import { useTheme } from "../../../context/theme";
+import IncomeAndSpendPeriodsLegend from "./Legend";
 
 const Title = styled(Text)`
   margin-bottom: 16px;
@@ -35,6 +36,10 @@ const ContentWrapper = styled.div`
   @media screen and (max-width: 800px) {
     flex-direction: column;
   }
+`;
+
+const LegendWrapper = styled.div`
+  margin-top: 16px;
 `;
 
 function useLegends() {
@@ -113,7 +118,8 @@ export default function IncomeAndSpendPeriods() {
   const dispatch = useDispatch();
   const symbol = useSelector(chainSymbolSelector);
   const precision = getPrecision(symbol);
-  const { incomeLegends, spendLegends } = useLegends();
+  const { incomeLegends, setIncomeLegends, spendLegends, setSpendLegends } =
+    useLegends();
   const spendPeriods = useSelector(spendPeriodsSelector);
   const incomePeriods = useSelector(incomePeriodsSelector);
 
@@ -202,6 +208,15 @@ export default function IncomeAndSpendPeriods() {
           spendPeriodsData={spendData}
         />
       </ContentWrapper>
+
+      <LegendWrapper>
+        <IncomeAndSpendPeriodsLegend
+          incomeLegends={incomeLegends}
+          setIncomeLegends={setIncomeLegends}
+          spendLegends={spendLegends}
+          setSpendLegends={setSpendLegends}
+        />
+      </LegendWrapper>
     </CardWrapper>
   );
 }
