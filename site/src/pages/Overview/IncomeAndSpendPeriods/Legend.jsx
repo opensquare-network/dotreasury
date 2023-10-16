@@ -63,11 +63,11 @@ export default function IncomeAndSpendPeriodsLegend({
   return (
     <Wrapper>
       <Group>
-        {incomeLegends.map((legend, index) => (
+        {spendLegends.map((legend, index) => (
           <LegendItem
             key={legend.label}
             enabled={legend.enabled}
-            onClick={() => onIncomeLegendClick(index)}
+            onClick={() => onSpendLegendClick(index)}
           >
             <LegendMark color={legend.color} />
             <span>{legend.label}</span>
@@ -75,11 +75,11 @@ export default function IncomeAndSpendPeriodsLegend({
         ))}
       </Group>
       <Group>
-        {spendLegends.map((legend, index) => (
+        {incomeLegends.map((legend, index) => (
           <LegendItem
             key={legend.label}
             enabled={legend.enabled}
-            onClick={() => onSpendLegendClick(index)}
+            onClick={() => onIncomeLegendClick(index)}
           >
             <LegendMark color={legend.color} />
             <span>{legend.label}</span>

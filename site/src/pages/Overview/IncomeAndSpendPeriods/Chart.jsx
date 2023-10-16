@@ -134,7 +134,7 @@ export default function IncomeAndSpendPeriodsChart({
   const spendValues = flatten(spendPeriodsDatasets.map((i) => i.data));
   const max = Math.max(...[...incomeValues, ...spendValues].map(Math.abs));
 
-  const datasets = [...incomePeriodsDatasets, ...spendPeriodsDatasets];
+  const datasets = [...spendPeriodsDatasets, ...incomePeriodsDatasets];
 
   return (
     <ScrollableWrapper onScroll={onScroll}>
