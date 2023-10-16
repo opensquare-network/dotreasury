@@ -11,7 +11,7 @@ const { sleep } = require("../utils/sleep");
 async function tick() {
   const col = await getCfgUsdtCol();
 
-  const latestItem = await getLatestPrice();
+  const latestItem = await getLatestPrice(col);
   let klines;
   if (latestItem) {
     const nextStartTime = latestItem.openTime + 1;
