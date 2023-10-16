@@ -10,6 +10,7 @@ import { useState } from "react";
 import { useCallback } from "react";
 import { abbreviateBigNumber } from "../../../utils";
 import flatten from "lodash.flatten";
+import { useTheme } from "../../../context/theme";
 
 const ScrollableWrapper = styled.div`
   display: flex;
@@ -86,6 +87,7 @@ export default function IncomeAndSpendPeriodsChart({
   spendPeriodsLegends = [],
   spendPeriodsData = [],
 }) {
+  const theme = useTheme();
   const symbol = useSelector(chainSymbolSelector);
 
   const [scrollLeft, setScrollLeft] = useState(0);
@@ -96,7 +98,8 @@ export default function IncomeAndSpendPeriodsChart({
   const categoryPercentage = 0.7;
   const barPercentage = 0.8;
 
-  const minWidth = (spendPeriodsData.length || 0) * 10;
+  const minWidth =
+    (incomePeriodsData.length || spendPeriodsData.length || 0) * 10;
 
   const labels = spendPeriodsData.map(
     (item) =>
@@ -170,12 +173,19 @@ export default function IncomeAndSpendPeriodsChart({
                 suggestedMin: -max,
                 suggestedMax: max,
                 ticks: {
+                  display: !!minWidth,
                   callback(value) {
                     return abbreviateBigNumber(Math.abs(value));
                   },
                 },
                 border: {
                   display: false,
+                },
+                grid: {
+                  display: !!minWidth,
+                  color() {
+                    return theme.neutral300;
+                  },
                 },
               },
             },
