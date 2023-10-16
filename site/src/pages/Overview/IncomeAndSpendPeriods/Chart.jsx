@@ -187,7 +187,7 @@ export default function IncomeAndSpendPeriodsChart({
                 enabled: false,
                 position: "nearest",
                 external: externalTooltipHandler(symbol, scrollLeft, [
-                  spendPeriodsDatasets[0].label,
+                  spendPeriodsDatasets?.[0]?.label,
                 ]),
                 padding: 8,
               },
