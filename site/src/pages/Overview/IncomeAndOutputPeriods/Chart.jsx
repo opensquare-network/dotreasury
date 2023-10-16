@@ -81,11 +81,11 @@ const externalTooltipHandler =
       tooltip.options.padding + "px " + tooltip.options.padding + "px";
   };
 
-export default function IncomeAndSpendPeriodsChart({
+export default function IncomeAndOutputPeriodsChart({
   incomePeriodsLegends = [],
   incomePeriodsData = [],
-  spendPeriodsLegends = [],
-  spendPeriodsData = [],
+  outputPeriodsLegends = [],
+  outputOutputsData = [],
 }) {
   const theme = useTheme();
   const symbol = useSelector(chainSymbolSelector);
@@ -99,9 +99,9 @@ export default function IncomeAndSpendPeriodsChart({
   const barPercentage = 0.8;
 
   const minWidth =
-    (incomePeriodsData.length || spendPeriodsData.length || 0) * 10;
+    (incomePeriodsData.length || outputOutputsData.length || 0) * 10;
 
-  const labels = spendPeriodsData.map(
+  const labels = outputOutputsData.map(
     (item) =>
       `${dayjs(item.startIndexer.blockTime).format("YYYY-MM-DD")} ~ ${dayjs(
         item.endIndexer.blockTime,
@@ -117,14 +117,14 @@ export default function IncomeAndSpendPeriodsChart({
       stack: "period",
     };
   });
-  const spendPeriodsDatasets = spendPeriodsLegends.map((legend) => {
+  const spendPeriodsDatasets = outputPeriodsLegends.map((legend) => {
     return {
       categoryPercentage,
       barPercentage,
       label: legend.label,
-      data: spendPeriodsData.map(legend.getValue),
-      counts: spendPeriodsData.map(legend.getCount),
-      fiats: spendPeriodsData.map(legend.getFiat),
+      data: outputOutputsData.map(legend.getValue),
+      counts: outputOutputsData.map(legend.getCount),
+      fiats: outputOutputsData.map(legend.getFiat),
       backgroundColor: legend.color,
       stack: "period",
     };

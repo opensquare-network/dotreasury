@@ -45,8 +45,8 @@ const LegendMark = styled.div`
 export default function IncomeAndSpendPeriodsLegend({
   incomeLegends,
   setIncomeLegends,
-  spendLegends,
-  setSpendLegends,
+  outputLegends,
+  setOutputLegends,
 }) {
   const onIncomeLegendClick = (index) => {
     const newIncomeLegends = [...incomeLegends];
@@ -55,15 +55,15 @@ export default function IncomeAndSpendPeriodsLegend({
   };
 
   const onSpendLegendClick = (index) => {
-    const newSpendLegends = [...spendLegends];
+    const newSpendLegends = [...outputLegends];
     newSpendLegends[index].enabled = !newSpendLegends[index].enabled;
-    setSpendLegends(newSpendLegends);
+    setOutputLegends(newSpendLegends);
   };
 
   return (
     <Wrapper>
       <Group>
-        {spendLegends.map((legend, index) => (
+        {outputLegends.map((legend, index) => (
           <LegendItem
             key={legend.label}
             enabled={legend.enabled}

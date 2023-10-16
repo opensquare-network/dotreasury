@@ -4,7 +4,7 @@ import Text from "../../../components/Text";
 import { gap } from "../../../styles/tailwindcss";
 import Card from "../../../components/Card";
 import { h4_16_semibold } from "../../../styles/text";
-import IncomeAndSpendPeriodsChart from "./Chart";
+import IncomeAndOutputPeriodsChart from "./Chart";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchIncomePeriods,
@@ -82,7 +82,7 @@ function useLegends() {
       getValue: (period) => 0 - period.totalBigOthersValue,
     },
   ]);
-  const [spendLegends, setSpendLegends] = useState([
+  const [outputLegends, setOutputLegends] = useState([
     {
       label: "Proposals",
       color: colors["Proposals"],
@@ -124,7 +124,7 @@ function useLegends() {
         color: colors[legend.label],
       })),
     );
-    setSpendLegends((legends) =>
+    setOutputLegends((legends) =>
       legends.map((legend) => ({
         ...legend,
         color: colors[legend.label],
@@ -134,17 +134,17 @@ function useLegends() {
 
   return {
     incomeLegends,
-    spendLegends,
+    outputLegends,
     setIncomeLegends,
-    setSpendLegends,
+    setOutputLegends,
   };
 }
 
-export default function IncomeAndSpendPeriods() {
+export default function IncomeAndOutputPeriods() {
   const dispatch = useDispatch();
   const symbol = useSelector(chainSymbolSelector);
   const precision = getPrecision(symbol);
-  const { incomeLegends, setIncomeLegends, spendLegends, setSpendLegends } =
+  const { incomeLegends, setIncomeLegends, outputLegends, setOutputLegends } =
     useLegends();
   const spendPeriods = useSelector(spendPeriodsSelector);
   const incomePeriods = useSelector(incomePeriodsSelector);
@@ -189,7 +189,7 @@ export default function IncomeAndSpendPeriods() {
     });
   }, [incomePeriods, precision]);
 
-  const spendData = useMemo(() => {
+  const outputData = useMemo(() => {
     if (!spendPeriods) return [];
 
     return spendPeriods.map((period) => {
@@ -225,13 +225,13 @@ export default function IncomeAndSpendPeriods() {
 
   return (
     <CardWrapper>
-      <Title>Income & Spend Periods</Title>
+      <Title>Income & Output Periods</Title>
       <ContentWrapper>
-        <IncomeAndSpendPeriodsChart
+        <IncomeAndOutputPeriodsChart
           incomePeriodsLegends={incomeLegends.filter((item) => item.enabled)}
           incomePeriodsData={incomeData}
-          spendPeriodsLegends={spendLegends.filter((item) => item.enabled)}
-          spendPeriodsData={spendData}
+          outputPeriodsLegends={outputLegends.filter((item) => item.enabled)}
+          outputOutputsData={outputData}
         />
       </ContentWrapper>
 
@@ -239,8 +239,8 @@ export default function IncomeAndSpendPeriods() {
         <IncomeAndSpendPeriodsLegend
           incomeLegends={incomeLegends}
           setIncomeLegends={setIncomeLegends}
-          spendLegends={spendLegends}
-          setSpendLegends={setSpendLegends}
+          outputLegends={outputLegends}
+          setOutputLegends={setOutputLegends}
         />
       </LegendWrapper>
     </CardWrapper>

@@ -23,7 +23,7 @@ import {
 import OpenGovSpend from "./OpenGovSpend";
 import { useSupportOpenGov } from "../../utils/hooks/chain";
 import { mdcss, smcss } from "@osn/common";
-import IncomeAndSpendPeriods from "./IncomeAndSpendPeriods";
+import IncomeAndOutputPeriods from "./IncomeAndOutputPeriods";
 import TopBeneficiariesTable from "./TopBeneficiariesTable/index.jsx";
 
 const DoughnutWrapper = styled.div`
@@ -148,7 +148,7 @@ const Overview = () => {
       <Summary />
       <DoughnutWrapper count={cards.length}>{cards}</DoughnutWrapper>
       <TotalStacked />
-      <IncomeAndSpendPeriods />
+      <IncomeAndOutputPeriods />
       <TableWrapper>
         <TopBeneficiariesTable />
         <BeneficiaryTable />
