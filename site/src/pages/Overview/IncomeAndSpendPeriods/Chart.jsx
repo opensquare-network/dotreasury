@@ -80,7 +80,7 @@ const externalTooltipHandler =
       tooltip.options.padding + "px " + tooltip.options.padding + "px";
   };
 
-export default function Chart({
+export default function IncomeAndSpendPeriodsChart({
   incomePeriodsLegends = [],
   incomePeriodsData = [],
   spendPeriodsLegends = [],

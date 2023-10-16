@@ -4,7 +4,7 @@ import Text from "../../../components/Text";
 import { gap } from "../../../styles/tailwindcss";
 import Card from "../../../components/Card";
 import { h4_16_semibold } from "../../../styles/text";
-import Chart from "./Chart";
+import IncomeAndSpendPeriodsChart from "./Chart";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchIncomePeriods,
@@ -109,7 +109,7 @@ function useLegends() {
   };
 }
 
-export default function SpendPeriod() {
+export default function IncomeAndSpendPeriods() {
   const dispatch = useDispatch();
   const symbol = useSelector(chainSymbolSelector);
   const precision = getPrecision(symbol);
@@ -195,8 +195,7 @@ export default function SpendPeriod() {
     <CardWrapper>
       <Title>Income & Spend Periods</Title>
       <ContentWrapper>
-        {/* <Legend legends={legends} setLegends={setLegends} /> */}
-        <Chart
+        <IncomeAndSpendPeriodsChart
           incomePeriodsLegends={incomeLegends.filter((item) => item.enabled)}
           incomePeriodsData={incomeData}
           spendPeriodsLegends={spendLegends.filter((item) => item.enabled)}
