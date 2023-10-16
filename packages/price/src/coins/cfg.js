@@ -7,6 +7,8 @@ const { getKlinesFromCoinGecko } = require("./coinGecko");
 const { saveCoinGeckoKlines } = require("./save");
 const dayjs = require("dayjs");
 const { sleep } = require("../utils/sleep");
+const { formatTime } = require("../utils/formatTime");
+const BigNumber = require("bignumber.js");
 
 async function tick() {
   const col = await getCfgUsdtCol();
@@ -14,7 +16,7 @@ async function tick() {
   const latestItem = await getLatestPrice(col);
   let klines;
   if (latestItem) {
-    const nextStartTime = latestItem.openTime + 1;
+    const nextStartTime = new BigNumber(latestItem.openTime).div(1000).plus(1).toFixed(0);
     klines = await getKlinesFromCoinGecko(nextStartTime);
   } else {
     klines = await getKlinesFromCoinGecko('1622160000');
@@ -30,7 +32,7 @@ async function main() {
 
     try {
       latestOpenTime = await tick();
-      console.log(`CFG price saved: ${ dayjs(latestOpenTime).format("YYYY-MM-DD HH:mm:ss") }`);
+      console.log(`CFG price saved: ${ formatTime(latestOpenTime) }`);
     } catch (e) {
       console.error(e.message);
     }
