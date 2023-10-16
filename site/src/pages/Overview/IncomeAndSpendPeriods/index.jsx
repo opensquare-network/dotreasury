@@ -32,6 +32,7 @@ const CardWrapper = styled(Card)`
 
 const ContentWrapper = styled.div`
   display: flex;
+  height: 266px;
   ${gap(24)};
   @media screen and (max-width: 800px) {
     flex-direction: column;
@@ -44,29 +45,39 @@ const LegendWrapper = styled.div`
 
 function useLegends() {
   const theme = useTheme();
+  const colors = {
+    Inflation: theme.pink500,
+    Slashes: theme.pink400,
+    Transfers: theme.pink300,
+    "Big Others": theme.pink200,
+    Proposals: theme.yellow500,
+    Tips: theme.yellow400,
+    Bounties: theme.yellow300,
+    Burnt: theme.yellow200,
+  };
 
   const [incomeLegends, setIncomeLegends] = useState([
     {
       label: "Inflation",
-      color: theme.pink500,
+      color: colors["Inflation"],
       enabled: true,
       getValue: (period) => period.totalInflationValue,
     },
     {
       label: "Slashes",
-      color: theme.pink400,
+      color: colors["Slashes"],
       enabled: true,
       getValue: (period) => period.totalSlashesValue,
     },
     {
       label: "Transfers",
-      color: theme.pink300,
+      color: colors["Transfers"],
       enabled: true,
       getValue: (period) => period.totalTransfersValue,
     },
     {
       label: "Big Others",
-      color: theme.pink200,
+      color: colors["Big Others"],
       enabled: true,
       getValue: (period) => period.totalBigOthersValue,
     },
@@ -74,7 +85,7 @@ function useLegends() {
   const [spendLegends, setSpendLegends] = useState([
     {
       label: "Proposals",
-      color: theme.yellow500,
+      color: colors["Proposals"],
       enabled: true,
       getValue: (period) => 0 - period.totalProposalsValue,
       getCount: (period) => period.proposals.length,
@@ -82,7 +93,7 @@ function useLegends() {
     },
     {
       label: "Tips",
-      color: theme.yellow400,
+      color: colors["Tips"],
       enabled: true,
       getValue: (period) => 0 - period.totalTipsValue,
       getCount: (period) => period.tips.length,
@@ -90,7 +101,7 @@ function useLegends() {
     },
     {
       label: "Bounties",
-      color: theme.yellow300,
+      color: colors["Bounties"],
       enabled: true,
       getValue: (period) => 0 - period.totalBountiesValue,
       getCount: (period) => period.bounties.length,
@@ -98,13 +109,28 @@ function useLegends() {
     },
     {
       label: "Burnt",
-      color: theme.yellow200,
+      color: colors["Burnt"],
       enabled: true,
       getValue: (period) => 0 - period.totalBurntValue,
       getCount: (period) => period.burnt.length,
       getFiat: (period) => period.totalBurntFiat,
     },
   ]);
+
+  useEffect(() => {
+    setIncomeLegends((legends) =>
+      legends.map((legend) => ({
+        ...legend,
+        color: colors[legend.label],
+      })),
+    );
+    setSpendLegends((legends) =>
+      legends.map((legend) => ({
+        ...legend,
+        color: colors[legend.label],
+      })),
+    );
+  }, [theme]);
 
   return {
     incomeLegends,
