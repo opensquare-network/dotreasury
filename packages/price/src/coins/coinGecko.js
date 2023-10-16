@@ -1,0 +1,32 @@
+const fetch = require("node-fetch");
+const AbortController = require("abort-controller");
+
+async function getKlinesFromCoinGecko(startTime = '1582329600') {
+  const url = new URL("/api/v3/coins/centrifuge/market_chart/range", "https://api.coingecko.com");
+  url.searchParams.set("vs_currency", `usd`);
+  url.searchParams.set("from", `${ startTime }`);
+  url.searchParams.set("to", `${ parseInt(startTime) + 18000 }`);
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => {
+    controller.abort();
+  }, 3000);
+
+  try {
+    const res = await fetch(url, { signal: controller.signal });
+    const result = await res.json();
+    return result?.prices || [];
+  } catch (error) {
+    if (error.name === "AbortError") {
+      console.log("request was aborted");
+    }
+  } finally {
+    clearTimeout(timeout);
+  }
+
+  return [];
+}
+
+module.exports = {
+  getKlinesFromCoinGecko,
+};

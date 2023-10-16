@@ -11,6 +11,7 @@ let db = null;
 const mongoUrl = process.env.MONGO_URL || "mongodb://127.0.0.1:27017";
 let ksmUsdtCol = null;
 let dotUsdtCol = null;
+let cfgUsdtCol = null;
 
 async function initDb() {
   client = await MongoClient.connect(mongoUrl, {
@@ -20,6 +21,7 @@ async function initDb() {
   db = client.db(dbName);
   ksmUsdtCol = db.collection(ksmUsdtCollectionName);
   dotUsdtCol = db.collection(dotUsdtCollectionName);
+  cfgUsdtCol = db.collection("cfgUsdt");
 
   await _createIndexes();
 }
@@ -32,6 +34,7 @@ async function _createIndexes() {
 
   ksmUsdtCol.createIndex({ openTime: 1 });
   dotUsdtCol.createIndex({ openTime: 1 });
+  cfgUsdtCol.createIndex({ openTime: 1 });
 }
 
 async function tryInit(col) {
@@ -50,8 +53,14 @@ async function getDotUsdtCollection() {
   return dotUsdtCol;
 }
 
+async function getCfgUsdtCol() {
+  await tryInit(cfgUsdtCol);
+  return cfgUsdtCol;
+}
+
 module.exports = {
   initDb,
   getKsmUsdtCollection,
   getDotUsdtCollection,
+  getCfgUsdtCol,
 };
