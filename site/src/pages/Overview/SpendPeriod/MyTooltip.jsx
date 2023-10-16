@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { p_12_normal } from "../../../styles/text";
 
 const Wrapper = styled.div`
   display: flex;
@@ -9,12 +10,13 @@ const Wrapper = styled.div`
   font-size: 12px;
   line-height: 16px;
 
-  color: #ffffff;
+  color: var(--textPrimaryContrast);
 `;
 
 const Item = styled.div`
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  ${p_12_normal};
 `;
 
 const Title = styled.div`
@@ -33,13 +35,11 @@ const Marker = styled.span`
   display: inline-block;
 `;
 
-const Footer = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-left: 18px;
-`;
-
-export default function MyTooltip({ tooltip, symbol }) {
+export default function MyTooltip({
+  tooltip,
+  symbol,
+  groupSeparateLabels = [],
+}) {
   const titleLines = tooltip.title || [];
 
   const title = titleLines.map((text, i) => <Title key={i}>{text}</Title>);
@@ -49,34 +49,44 @@ export default function MyTooltip({ tooltip, symbol }) {
 
     const colors = tooltip.labelColors[i];
 
-    const count = item.dataset.counts[item.dataIndex];
-    const fiat = item.dataset.fiats[item.dataIndex];
+    const value = Math.abs(item.raw).toFixed(item.raw > 0 ? 3 : 0);
+
+    const count = item.dataset.counts?.[item.dataIndex];
+    const fiat = item.dataset.fiats?.[item.dataIndex];
 
     return (
-      <Item key={i}>
-        <span>
-          <Marker {...colors} />
-          <span>
-            {item.dataset.label} ({count})
-          </span>
-        </span>
-        {count > 0 && (
-          <span style={{ marginLeft: "18px" }}>
-            ≈{item.raw.toFixed(3).toLocaleString()} {symbol} (≈$
-            {fiat.toFixed(0).toLocaleString()})
-          </span>
-        )}
-      </Item>
+      <>
+        {groupSeparateLabels.includes(item.dataset.label) && <div>---</div>}
+
+        <Item key={i}>
+          <div style={{ display: "flex", alignItems: "baseline" }}>
+            <Marker {...colors} />
+            <div>
+              {item.dataset.label} {count > 0 && ` (${count})`}
+            </div>
+          </div>
+          <div style={{ position: "relative", top: -0.5, textAlign: "right" }}>
+            <div>
+              ≈{Number(value).toLocaleString()} {symbol}
+            </div>
+            {count > 0 && (
+              <div>≈${Number(fiat.toFixed(0)).toLocaleString()}</div>
+            )}
+          </div>
+        </Item>
+      </>
     );
   });
 
-  const hasFooter = tooltip.dataPoints.some((item) => item.dataset.label !== "barBg" && item.raw > 0);
+  const hasFooter = tooltip.dataPoints.some(
+    (item) => item.dataset.label !== "barBg" && item.raw > 0,
+  );
 
   const footer = (
-    <Footer>
-      <span>---</span>
-      <span>Fiat value is calculated by award time</span>
-    </Footer>
+    <div>
+      <div>---</div>
+      <div>Fiat value is calculated by award time</div>
+    </div>
   );
 
   return (

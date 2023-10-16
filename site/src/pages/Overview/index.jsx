@@ -148,6 +148,7 @@ const Overview = () => {
       <Summary />
       <DoughnutWrapper count={cards.length}>{cards}</DoughnutWrapper>
       <TotalStacked />
+      {/* <IncomeSpendPeriods /> */}
       <SpendPeriod />
       <TableWrapper>
         <TopBeneficiariesTable />

@@ -8,7 +8,7 @@ import ReactDOMServer from "react-dom/server";
 import MyTooltip from "./MyTooltip";
 import { useState } from "react";
 import { useCallback } from "react";
-import { useTheme } from "../../../context/theme";
+import { abbreviateBigNumber } from "../../../utils";
 
 const ScrollableWrapper = styled.div`
   display: flex;
@@ -43,39 +43,49 @@ const getOrCreateTooltip = (chart) => {
   return tooltipEl;
 };
 
-const externalTooltipHandler = (symbol, scrollLeft) => (context) => {
-  // Tooltip Element
-  const { chart, tooltip } = context;
-  const tooltipEl = getOrCreateTooltip(chart);
+const externalTooltipHandler =
+  (symbol, scrollLeft, groupSeparateLabels = []) =>
+  (context) => {
+    // Tooltip Element
+    const { chart, tooltip } = context;
+    const tooltipEl = getOrCreateTooltip(chart);
 
-  // Hide if no tooltip
-  if (tooltip.opacity === 0) {
-    tooltipEl.style.opacity = 0;
-    return;
-  }
+    // Hide if no tooltip
+    if (tooltip.opacity === 0) {
+      tooltipEl.style.opacity = 0;
+      return;
+    }
 
-  // Set tooltip content
-  if (tooltip.body) {
-    const htmlString = ReactDOMServer.renderToString(
-      <MyTooltip tooltip={tooltip} symbol={symbol} />,
-    );
-    tooltipEl.innerHTML = htmlString;
-  }
+    // Set tooltip content
+    if (tooltip.body) {
+      const htmlString = ReactDOMServer.renderToString(
+        <MyTooltip
+          tooltip={tooltip}
+          symbol={symbol}
+          groupSeparateLabels={groupSeparateLabels}
+        />,
+      );
+      tooltipEl.innerHTML = htmlString;
+    }
 
-  const { offsetLeft: positionX, offsetTop: positionY } = chart.canvas;
+    const { offsetLeft: positionX, offsetTop: positionY } = chart.canvas;
 
-  // Display, position, and set styles for font
-  tooltipEl.style.opacity = 1;
-  tooltipEl.style.left = positionX - scrollLeft + tooltip.caretX + "px";
-  tooltipEl.style.top = positionY + tooltip.caretY + "px";
-  tooltipEl.style.font = tooltip.options.bodyFont.string;
-  tooltipEl.style.padding =
-    tooltip.options.padding + "px " + tooltip.options.padding + "px";
-};
+    // Display, position, and set styles for font
+    tooltipEl.style.opacity = 1;
+    tooltipEl.style.left = positionX - scrollLeft + tooltip.caretX + "px";
+    tooltipEl.style.top = positionY + tooltip.caretY + "px";
+    tooltipEl.style.font = tooltip.options.bodyFont.string;
+    tooltipEl.style.padding =
+      tooltip.options.padding + "px " + tooltip.options.padding + "px";
+  };
 
-export default function Chart({ legends, data = [] }) {
+export default function Chart({
+  incomePeriodsLegends = [],
+  incomePeriodsData = [],
+  spendPeriodsLegends = [],
+  spendPeriodsData = [],
+}) {
   const symbol = useSelector(chainSymbolSelector);
-  const theme = useTheme();
 
   const [scrollLeft, setScrollLeft] = useState(0);
   const onScroll = useCallback((e) => {
@@ -85,42 +95,44 @@ export default function Chart({ legends, data = [] }) {
   const categoryPercentage = 0.7;
   const barPercentage = 0.8;
 
-  const minWidth = (data.length || 0) * 10;
+  const minWidth = (spendPeriodsData.length || 0) * 10;
 
-  const labels = data.map(
+  const labels = spendPeriodsData.map(
     (item) =>
       `${dayjs(item.startIndexer.blockTime).format("YYYY-MM-DD")} ~ ${dayjs(
         item.endIndexer.blockTime,
       ).format("YYYY-MM-DD")}`,
   );
-  let datasets = legends.map((legend) => {
+  const incomePeriodsDatasets = incomePeriodsLegends.map((legend) => {
     return {
       categoryPercentage,
       barPercentage,
       label: legend.label,
-      data: data.map(legend.getValue),
-      counts: data.map(legend.getCount),
-      fiats: data.map(legend.getFiat),
+      data: incomePeriodsData.map(legend.getValue),
+      backgroundColor: legend.color,
+      stack: "period",
+    };
+  });
+  const spendPeriodsDatasets = spendPeriodsLegends.map((legend) => {
+    return {
+      categoryPercentage,
+      barPercentage,
+      label: legend.label,
+      data: spendPeriodsData.map(legend.getValue),
+      counts: spendPeriodsData.map(legend.getCount),
+      fiats: spendPeriodsData.map(legend.getFiat),
       backgroundColor: legend.color,
       stack: "period",
     };
   });
 
-  const barHeights = data.map((_, i) =>
-    datasets.reduce((prev, curr) => prev + curr.data[i], 0),
-  );
-  const maxBarHeight = Math.max(...barHeights);
-  const bgBarHeight = barHeights.map((h) => maxBarHeight - h);
+  // const barHeights = data.map((_, i) =>
+  //   datasets.reduce((prev, curr) => prev + curr.data[i], 0),
+  // );
+  // const maxBarHeight = Math.max(...barHeights);
+  // const bgBarHeight = barHeights.map((h) => maxBarHeight - h);
 
-  datasets = [
-    ...datasets,
-    {
-      label: "barBg",
-      backgroundColor: theme.neutral200,
-      data: data.map((_, i) => bgBarHeight[i]),
-      stack: "period",
-    },
-  ];
+  const datasets = [...incomePeriodsDatasets, ...spendPeriodsDatasets];
 
   return (
     <ScrollableWrapper onScroll={onScroll}>
@@ -153,14 +165,14 @@ export default function Chart({ legends, data = [] }) {
                 },
               },
               y: {
+                position: "right",
                 stacked: true,
                 ticks: {
-                  display: false,
+                  callback(value) {
+                    return abbreviateBigNumber(Math.abs(value));
+                  },
                 },
                 border: {
-                  display: false,
-                },
-                grid: {
                   display: false,
                 },
               },
@@ -172,7 +184,9 @@ export default function Chart({ legends, data = [] }) {
               tooltip: {
                 enabled: false,
                 position: "nearest",
-                external: externalTooltipHandler(symbol, scrollLeft),
+                external: externalTooltipHandler(symbol, scrollLeft, [
+                  spendPeriodsDatasets[0].label,
+                ]),
                 padding: 8,
               },
             },
