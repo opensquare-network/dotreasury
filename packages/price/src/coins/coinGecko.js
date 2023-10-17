@@ -17,7 +17,7 @@ async function getKlinesFromCoinGecko(startTime = '1582329600', lastPrice) {
     const res = await fetch(url, { signal: controller.signal });
     const result = await res.json();
     const prices = result?.prices || [];
-    if (prices.length <= 0 && lastPrice) {
+    if (prices.length <= 0 && lastPrice && to * 1000 + 9000 < new Date().getTime()) {
       return [[to * 1000, lastPrice]];
     } else {
       return prices;
