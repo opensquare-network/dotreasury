@@ -7,7 +7,11 @@ const kusamaJsonPriceData = require("./kusamaPrice.json");
 // Polkadot price data downloaded from: https://cryptopro.app/graph.php?m=86648
 // Ref: https://cryptopro.app/price/polkadot/
 const polkadotJsonPriceData = require("./polkadotPrice.json");
-const { getDotUsdtCollection, getKsmUsdtCollection } = require("../mongo");
+const {
+  getDotUsdtCollection,
+  getKsmUsdtCollection,
+  getCfgUsdtCol,
+} = require("../mongo");
 
 const kusamaPriceData = new Map(
   Object.entries(kusamaJsonPriceData).map((item) => {
@@ -33,6 +37,8 @@ function getPriceCollection(chain) {
     return getDotUsdtCollection();
   } else if (chain === "kusama") {
     return getKsmUsdtCollection();
+  } else if (chain === "centrifuge") {
+    return getCfgUsdtCol();
   } else {
     throw new Error("Unsupport chain " + chain);
   }

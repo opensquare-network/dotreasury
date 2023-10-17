@@ -3,6 +3,7 @@ const BigNumber = require("bignumber.js");
 const decimals = {
   kusama: 12,
   polkadot: 10,
+  centrifuge: 18,
 }
 
 function normalizeTokenValue(value, chain) {
