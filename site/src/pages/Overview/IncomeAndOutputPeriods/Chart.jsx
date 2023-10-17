@@ -119,7 +119,7 @@ export default function IncomeAndOutputPeriodsChart({
       stack: "period",
     };
   });
-  const spendPeriodsDatasets = outputPeriodsLegends.map((legend) => {
+  const outputPeriodsDatasets = outputPeriodsLegends.map((legend) => {
     return {
       categoryPercentage,
       barPercentage,
@@ -133,10 +133,10 @@ export default function IncomeAndOutputPeriodsChart({
   });
 
   const incomeValues = flatten(incomePeriodsDatasets.map((i) => i.data));
-  const spendValues = flatten(spendPeriodsDatasets.map((i) => i.data));
-  const max = Math.max(...[...incomeValues, ...spendValues].map(Math.abs));
+  const outputValues = flatten(outputPeriodsDatasets.map((i) => i.data));
+  const max = Math.max(...[...incomeValues, ...outputValues].map(Math.abs));
 
-  const datasets = [...spendPeriodsDatasets, ...incomePeriodsDatasets];
+  const datasets = [...outputPeriodsDatasets, ...incomePeriodsDatasets];
 
   return (
     <ScrollableWrapper onScroll={onScroll}>
