@@ -18,10 +18,7 @@ async function getKlinesFromCoinGecko(startTime = '1582329600', lastPrice) {
     const result = await res.json();
     const prices = result?.prices || [];
     if (prices.length <= 0 && lastPrice) {
-      return [{
-        openTime: to,
-        open: lastPrice,
-      }]
+      return [[to, lastPrice]];
     } else {
       return prices;
     }
