@@ -17,7 +17,7 @@ async function tick() {
   let klines;
   if (latestItem) {
     const nextStartTime = new BigNumber(latestItem.openTime).div(1000).plus(1).toFixed(0);
-    klines = await getKlinesFromCoinGecko(nextStartTime);
+    klines = await getKlinesFromCoinGecko(nextStartTime, latestItem.open);
   } else {
     klines = await getKlinesFromCoinGecko('1622160000');
   }
