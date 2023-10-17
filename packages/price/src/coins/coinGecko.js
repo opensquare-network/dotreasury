@@ -1,5 +1,6 @@
 const fetch = require("node-fetch");
 const AbortController = require("abort-controller");
+const BigNumber = require("bignumber.js");
 
 async function getKlinesFromCoinGecko(startTime = '1582329600', lastPrice) {
   const url = new URL("/api/v3/coins/centrifuge/market_chart/range", "https://api.coingecko.com");
@@ -18,7 +19,7 @@ async function getKlinesFromCoinGecko(startTime = '1582329600', lastPrice) {
     const result = await res.json();
     const prices = result?.prices || [];
     if (prices.length <= 0 && lastPrice) {
-      return [[to, lastPrice]];
+      return [[new BigNumber(to).multipliedBy(1000).toString(), lastPrice]];
     } else {
       return prices;
     }
