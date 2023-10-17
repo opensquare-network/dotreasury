@@ -11,6 +11,7 @@ import { useCallback } from "react";
 import { abbreviateBigNumber } from "../../../utils";
 import flatten from "lodash.flatten";
 import { useTheme } from "../../../context/theme";
+import merge from "lodash.merge";
 
 const ScrollableWrapper = styled.div`
   display: flex;
@@ -86,6 +87,7 @@ export default function IncomeAndOutputPeriodsChart({
   incomePeriodsData = [],
   outputPeriodsLegends = [],
   outputPeriodsData = [],
+  options = {},
 }) {
   const theme = useTheme();
   const symbol = useSelector(chainSymbolSelector);
@@ -144,65 +146,68 @@ export default function IncomeAndOutputPeriodsChart({
             labels,
             datasets,
           }}
-          options={{
-            responsive: true,
-            maintainAspectRatio: false,
-            interaction: {
-              mode: "index",
-              intersect: false,
-            },
-            animation: {
-              duration: 0,
-            },
-            scales: {
-              x: {
-                stacked: true,
-                ticks: {
-                  display: false,
-                },
-                border: {
-                  display: false,
-                },
-                grid: {
-                  display: false,
-                },
+          options={merge(
+            {
+              responsive: true,
+              maintainAspectRatio: false,
+              interaction: {
+                mode: "index",
+                intersect: false,
               },
-              y: {
-                position: "right",
-                stacked: true,
-                suggestedMin: -max,
-                suggestedMax: max,
-                ticks: {
-                  display: !!minWidth,
-                  callback(value) {
-                    return abbreviateBigNumber(Math.abs(value));
+              animation: {
+                duration: 0,
+              },
+              scales: {
+                x: {
+                  stacked: true,
+                  ticks: {
+                    display: false,
+                  },
+                  border: {
+                    display: false,
+                  },
+                  grid: {
+                    display: false,
                   },
                 },
-                border: {
-                  display: false,
-                },
-                grid: {
-                  display: !!minWidth,
-                  color() {
-                    return theme.neutral300;
+                y: {
+                  position: "right",
+                  stacked: true,
+                  suggestedMin: -max,
+                  suggestedMax: max,
+                  ticks: {
+                    display: !!minWidth,
+                    callback(value) {
+                      return abbreviateBigNumber(Math.abs(value));
+                    },
+                  },
+                  border: {
+                    display: false,
+                  },
+                  grid: {
+                    display: !!minWidth,
+                    color() {
+                      return theme.neutral300;
+                    },
                   },
                 },
               },
-            },
-            plugins: {
-              legend: {
-                display: false,
+              plugins: {
+                legend: {
+                  display: false,
+                },
+                tooltip: {
+                  enabled: false,
+                  position: "nearest",
+                  external: externalTooltipHandler(symbol, scrollLeft, [
+                    incomePeriodsDatasets?.[0]?.label,
+                  ]),
+                  padding: 8,
+                },
               },
-              tooltip: {
-                enabled: false,
-                position: "nearest",
-                external: externalTooltipHandler(symbol, scrollLeft, [
-                  incomePeriodsDatasets?.[0]?.label,
-                ]),
-                padding: 8,
-              },
             },
-          }}
+            options,
+          )}
         />
       </Wrapper>
     </ScrollableWrapper>
