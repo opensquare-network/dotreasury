@@ -22,11 +22,17 @@ const CardWrapper = styled(Card)`
 
 const ContentWrapper = styled.div`
   display: flex;
-  height: 168px;
   gap: 24px;
   @media screen and (max-width: 800px) {
     flex-direction: column;
   }
+`;
+
+const ChartWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  height: 178px;
+  overflow-x: auto;
 `;
 
 const Title = styled(Text)`
@@ -68,25 +74,27 @@ export default function OutputPeriods() {
           legends={outputPeriodsLegends}
           setLegends={setOutputPeriodsLegends}
         />
-        <IncomeAndOutputPeriodsChart
-          outputPeriodsLegends={outputPeriodsLegends.filter((i) => i.enabled)}
-          outputPeriodsData={outputPeriodsData}
-          extraDatasets={[bgDatasets]}
-          options={{
-            scales: {
-              y: {
-                suggestedMin: null,
-                suggestedMax: null,
-                ticks: {
-                  display: false,
-                },
-                grid: {
-                  display: false,
+        <ChartWrapper>
+          <IncomeAndOutputPeriodsChart
+            outputPeriodsLegends={outputPeriodsLegends.filter((i) => i.enabled)}
+            outputPeriodsData={outputPeriodsData}
+            extraDatasets={[bgDatasets]}
+            options={{
+              scales: {
+                y: {
+                  suggestedMin: null,
+                  suggestedMax: null,
+                  ticks: {
+                    display: false,
+                  },
+                  grid: {
+                    display: false,
+                  },
                 },
               },
-            },
-          }}
-        />
+            }}
+          />
+        </ChartWrapper>
       </ContentWrapper>
     </CardWrapper>
   );
