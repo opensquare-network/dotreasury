@@ -239,7 +239,7 @@ export default function IncomeAndOutputPeriods() {
           incomePeriodsLegends={incomeLegends.filter((item) => item.enabled)}
           incomePeriodsData={incomeData}
           outputPeriodsLegends={outputLegends.filter((item) => item.enabled)}
-          outputOutputsData={outputData}
+          outputPeriodsData={outputData}
         />
       </ContentWrapper>
     </CardWrapper>

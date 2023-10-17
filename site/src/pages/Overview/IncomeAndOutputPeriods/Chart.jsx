@@ -85,7 +85,7 @@ export default function IncomeAndOutputPeriodsChart({
   incomePeriodsLegends = [],
   incomePeriodsData = [],
   outputPeriodsLegends = [],
-  outputOutputsData = [],
+  outputPeriodsData = [],
 }) {
   const theme = useTheme();
   const symbol = useSelector(chainSymbolSelector);
@@ -99,9 +99,9 @@ export default function IncomeAndOutputPeriodsChart({
   const barPercentage = 0.8;
 
   const minWidth =
-    (incomePeriodsData.length || outputOutputsData.length || 0) * 10;
+    (incomePeriodsData.length || outputPeriodsData.length || 0) * 10;
 
-  const labels = outputOutputsData.map(
+  const labels = outputPeriodsData.map(
     (item) =>
       `${dayjs(item.startIndexer.blockTime).format("YYYY-MM-DD")} ~ ${dayjs(
         item.endIndexer.blockTime,
@@ -122,9 +122,9 @@ export default function IncomeAndOutputPeriodsChart({
       categoryPercentage,
       barPercentage,
       label: legend.label,
-      data: outputOutputsData.map(legend.getValue),
-      counts: outputOutputsData.map(legend.getCount),
-      fiats: outputOutputsData.map(legend.getFiat),
+      data: outputPeriodsData.map(legend.getValue),
+      counts: outputPeriodsData.map(legend.getCount),
+      fiats: outputPeriodsData.map(legend.getFiat),
       backgroundColor: legend.color,
       stack: "period",
     };
