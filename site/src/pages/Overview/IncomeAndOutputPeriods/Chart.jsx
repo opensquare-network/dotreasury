@@ -133,7 +133,6 @@ export default function IncomeAndOutputPeriodsChart({
               maintainAspectRatio: false,
               interaction: {
                 mode: "index",
-                intersect: false,
               },
               animation: {
                 duration: 0,
