@@ -1,19 +1,10 @@
 import styled, { css } from "styled-components";
-import { smcss } from "../../../styles/responsive";
 
 const Wrapper = styled.div`
   display: flex;
-  justify-content: space-between;
-`;
-
-const Group = styled.div`
-  display: flex;
-  gap: 16px;
-  flex: 1;
-
-  ${smcss(css`
-    flex-direction: column;
-  `)}
+  column-gap: 16px;
+  row-gap: 8px;
+  flex-wrap: wrap;
 `;
 
 const LegendItem = styled.div`
@@ -62,30 +53,26 @@ export default function IncomeAndSpendPeriodsLegend({
 
   return (
     <Wrapper>
-      <Group>
-        {outputLegends.map((legend, index) => (
-          <LegendItem
-            key={legend.label}
-            enabled={legend.enabled}
-            onClick={() => onSpendLegendClick(index)}
-          >
-            <LegendMark color={legend.color} />
-            <span>{legend.label}</span>
-          </LegendItem>
-        ))}
-      </Group>
-      <Group>
-        {incomeLegends.map((legend, index) => (
-          <LegendItem
-            key={legend.label}
-            enabled={legend.enabled}
-            onClick={() => onIncomeLegendClick(index)}
-          >
-            <LegendMark color={legend.color} />
-            <span>{legend.label}</span>
-          </LegendItem>
-        ))}
-      </Group>
+      {outputLegends.map((legend, index) => (
+        <LegendItem
+          key={legend.label}
+          enabled={legend.enabled}
+          onClick={() => onSpendLegendClick(index)}
+        >
+          <LegendMark color={legend.color} />
+          <span>{legend.label}</span>
+        </LegendItem>
+      ))}
+      {incomeLegends.map((legend, index) => (
+        <LegendItem
+          key={legend.label}
+          enabled={legend.enabled}
+          onClick={() => onIncomeLegendClick(index)}
+        >
+          <LegendMark color={legend.color} />
+          <span>{legend.label}</span>
+        </LegendItem>
+      ))}
     </Wrapper>
   );
 }

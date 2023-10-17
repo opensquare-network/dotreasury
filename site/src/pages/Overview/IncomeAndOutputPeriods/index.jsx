@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import Text from "../../../components/Text";
-import { gap } from "../../../styles/tailwindcss";
 import Card from "../../../components/Card";
 import { h4_16_semibold } from "../../../styles/text";
 import IncomeAndOutputPeriodsChart from "./Chart";
@@ -33,7 +32,8 @@ const CardWrapper = styled(Card)`
 const ContentWrapper = styled.div`
   display: flex;
   height: 266px;
-  ${gap(24)};
+  gap: 24px;
+  margin-top: 8px;
   @media screen and (max-width: 800px) {
     flex-direction: column;
   }
@@ -226,15 +226,6 @@ export default function IncomeAndOutputPeriods() {
   return (
     <CardWrapper>
       <Title>Income & Output Periods</Title>
-      <ContentWrapper>
-        <IncomeAndOutputPeriodsChart
-          incomePeriodsLegends={incomeLegends.filter((item) => item.enabled)}
-          incomePeriodsData={incomeData}
-          outputPeriodsLegends={outputLegends.filter((item) => item.enabled)}
-          outputOutputsData={outputData}
-        />
-      </ContentWrapper>
-
       <LegendWrapper>
         <IncomeAndSpendPeriodsLegend
           incomeLegends={incomeLegends}
@@ -243,6 +234,14 @@ export default function IncomeAndOutputPeriods() {
           setOutputLegends={setOutputLegends}
         />
       </LegendWrapper>
+      <ContentWrapper>
+        <IncomeAndOutputPeriodsChart
+          incomePeriodsLegends={incomeLegends.filter((item) => item.enabled)}
+          incomePeriodsData={incomeData}
+          outputPeriodsLegends={outputLegends.filter((item) => item.enabled)}
+          outputOutputsData={outputData}
+        />
+      </ContentWrapper>
     </CardWrapper>
   );
 }
