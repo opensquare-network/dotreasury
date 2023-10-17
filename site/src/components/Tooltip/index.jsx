@@ -19,14 +19,13 @@ export default function Tooltip({ children, tooltipContent }) {
 
   const arrowRef = useRef(null);
 
-  const { middlewareData, placement, x, y, reference, floating, strategy } =
-    useFloating({
-      open,
-      onOpenChange: setOpen,
-      placement: "top",
-      middleware: [offset(8), flip(), shift(), arrow({ element: arrowRef })],
-      whileElementsMounted: autoUpdate,
-    });
+  const { middlewareData, placement, refs, floatingStyles } = useFloating({
+    open,
+    onOpenChange: setOpen,
+    placement: "top",
+    middleware: [offset(8), flip(), shift(), arrow({ element: arrowRef })],
+    whileElementsMounted: autoUpdate,
+  });
 
   function show() {
     setOpen(true);
@@ -38,7 +37,7 @@ export default function Tooltip({ children, tooltipContent }) {
 
   return (
     <Wrapper
-      ref={reference}
+      ref={refs.setReference}
       onMouseEnter={show}
       onFocus={show}
       onMouseLeave={hide}
@@ -47,15 +46,10 @@ export default function Tooltip({ children, tooltipContent }) {
       {children}
       {open && tooltipContent && (
         <TooltipContainer
-          ref={floating}
+          ref={refs.setFloating}
           data-show={open}
           data-placement={placement}
-          style={{
-            position: strategy,
-            top: y ?? 0,
-            left: x ?? 0,
-            width: "max-content",
-          }}
+          style={floatingStyles}
         >
           {tooltipContent}
           <TooltipArrow x={middlewareData?.arrow?.x} ref={arrowRef} />
