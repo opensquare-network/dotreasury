@@ -49,11 +49,14 @@ async function getPrice(chain, time) {
   const [price] = await priceCol
     .find({
       openTime: { $lte: time },
-      volume: { $ne: "0.00000000" },
     })
     .sort({ openTime: -1 })
     .limit(1)
     .toArray();
+
+  if ("centrifuge" === chain) {
+    return price.open;
+  }
 
   if (price) {
     return price.quoteAssetVolume / price.volume;

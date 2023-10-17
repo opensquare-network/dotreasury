@@ -3,12 +3,12 @@ const { getPrice } = require("./price");
 async function saveOnePeriod(chain, col, period) {
   const { endIndexer: { blockTime }, endHeight } = period;
   if (!blockTime) {
-    console.error(`Can not get blockTime of period, ${ endHeight }`);
+    console.error(`Can not ${ chain } get blockTime of period, ${ endHeight }`);
   }
 
   const symbolPrice = await getPrice(chain, blockTime);
   if (!symbolPrice) {
-    console.error(`Can not get price for period ${ endHeight }`);
+    console.error(`Can not get ${ chain } price for period ${ endHeight }`);
   }
   await col.updateOne({ endHeight }, { $set: { symbolPrice } });
 }
