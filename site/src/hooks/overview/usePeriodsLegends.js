@@ -103,7 +103,7 @@ export function useOutputPeriodsLegends() {
         color: colors[legend.label],
       })),
     );
-  }, [theme, colors]);
+  }, [theme]);
 
   return [outputLegends, setOutputLegends];
 }
