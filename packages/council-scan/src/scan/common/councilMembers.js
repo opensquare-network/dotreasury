@@ -31,6 +31,8 @@ async function getTermDuration(blockHash, blockHeight) {
     return blockApi.consts.electionsPhragmen.termDuration.toNumber();
   } else if (blockApi.consts.phragmenElection) {
     return blockApi.consts.phragmenElection.termDuration.toNumber();
+  } else if (blockApi.consts.elections) {
+    return blockApi.consts.elections.termDuration.toNumber();
   }
 
   throw new Error(`Can not get term duration at ${ blockHeight }`)
