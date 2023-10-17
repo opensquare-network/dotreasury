@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+
 import { useEffect } from "react";
 import { useTheme } from "../../context/theme";
 import { useState } from "react";
@@ -101,7 +103,7 @@ export function useOutputPeriodsLegends() {
         color: colors[legend.label],
       })),
     );
-  }, [theme]);
+  }, [theme, colors]);
 
   return [outputLegends, setOutputLegends];
 }
