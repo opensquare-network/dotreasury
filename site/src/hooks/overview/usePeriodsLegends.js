@@ -105,3 +105,35 @@ export function useOutputPeriodsLegends() {
 
   return [outputLegends, setOutputLegends];
 }
+
+export function useOutputSinglePeriodsLegends() {
+  const theme = useTheme();
+  const colors = {
+    Proposals: theme.pink300,
+    Tips: theme.yellow300,
+    Bounties: theme.purple300,
+    Burnt: theme.orange300,
+  };
+
+  const [origLegends] = useOutputPeriodsLegends();
+
+  const [outputLegends, setOutputLegends] = useState(
+    origLegends.map((legend) => {
+      return {
+        ...legend,
+        color: colors[legend.label],
+      };
+    }),
+  );
+
+  useEffect(() => {
+    setOutputLegends((legends) =>
+      legends.map((legend) => ({
+        ...legend,
+        color: colors[legend.label],
+      })),
+    );
+  }, [theme]);
+
+  return [outputLegends, setOutputLegends];
+}

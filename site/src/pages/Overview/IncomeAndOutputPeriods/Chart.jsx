@@ -3,15 +3,19 @@ import { Bar } from "react-chartjs-2";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { chainSymbolSelector } from "../../../store/reducers/chainSlice";
-import dayjs from "dayjs";
 import ReactDOMServer from "react-dom/server";
 import MyTooltip from "./MyTooltip";
 import { useState } from "react";
 import { useCallback } from "react";
 import { abbreviateBigNumber } from "../../../utils";
-import flatten from "lodash.flatten";
 import { useTheme } from "../../../context/theme";
 import merge from "lodash.merge";
+import {
+  useIncomePeriodsChartDatasets,
+  useOutputPeriodsChartDatasets,
+  usePeriodsChartLabels,
+  usePeriodsDatasetsMaxValue,
+} from "../../../hooks/overview/usePeriodsChart";
 
 const ScrollableWrapper = styled.div`
   display: flex;
@@ -88,6 +92,7 @@ export default function IncomeAndOutputPeriodsChart({
   outputPeriodsLegends = [],
   outputPeriodsData = [],
   options = {},
+  extraDatasets = [],
 }) {
   const theme = useTheme();
   const symbol = useSelector(chainSymbolSelector);
@@ -97,44 +102,20 @@ export default function IncomeAndOutputPeriodsChart({
     setScrollLeft(e.target.scrollLeft);
   }, []);
 
-  const categoryPercentage = 0.7;
-  const barPercentage = 0.8;
-
   const minWidth =
     (incomePeriodsData.length || outputPeriodsData.length || 0) * 10;
 
-  const labels = outputPeriodsData.map(
-    (item) =>
-      `${dayjs(item.startIndexer.blockTime).format("YYYY-MM-DD")} ~ ${dayjs(
-        item.endIndexer.blockTime,
-      ).format("YYYY-MM-DD")}`,
-  );
-  const incomePeriodsDatasets = incomePeriodsLegends.map((legend) => {
-    return {
-      categoryPercentage,
-      barPercentage,
-      label: legend.label,
-      data: incomePeriodsData.map(legend.getValue),
-      backgroundColor: legend.color,
-      stack: "period",
-    };
-  });
-  const outputPeriodsDatasets = outputPeriodsLegends.map((legend) => {
-    return {
-      categoryPercentage,
-      barPercentage,
-      label: legend.label,
-      data: outputPeriodsData.map(legend.getValue),
-      counts: outputPeriodsData.map(legend.getCount),
-      fiats: outputPeriodsData.map(legend.getFiat),
-      backgroundColor: legend.color,
-      stack: "period",
-    };
-  });
+  const labels = usePeriodsChartLabels();
+  const incomePeriodsDatasets =
+    useIncomePeriodsChartDatasets(incomePeriodsLegends);
 
-  const incomeValues = flatten(incomePeriodsDatasets.map((i) => i.data));
-  const outputValues = flatten(outputPeriodsDatasets.map((i) => i.data));
-  const max = Math.max(...[...incomeValues, ...outputValues].map(Math.abs));
+  const outputPeriodsDatasets =
+    useOutputPeriodsChartDatasets(outputPeriodsLegends);
+
+  const max = usePeriodsDatasetsMaxValue(
+    ...incomePeriodsDatasets,
+    ...outputPeriodsDatasets,
+  );
 
   const datasets = [...outputPeriodsDatasets, ...incomePeriodsDatasets];
 
@@ -144,7 +125,7 @@ export default function IncomeAndOutputPeriodsChart({
         <Bar
           data={{
             labels,
-            datasets,
+            datasets: [...datasets, ...extraDatasets],
           }}
           options={merge(
             {
