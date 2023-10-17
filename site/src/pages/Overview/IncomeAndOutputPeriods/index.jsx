@@ -31,7 +31,7 @@ const CardWrapper = styled(Card)`
 
 const ContentWrapper = styled.div`
   display: flex;
-  height: 266px;
+  height: 168px;
   gap: 24px;
   margin-top: 8px;
   @media screen and (max-width: 800px) {
