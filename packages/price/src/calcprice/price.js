@@ -59,7 +59,8 @@ async function getPrice(chain, time) {
   }
 
   if (price) {
-    return price.quoteAssetVolume / price.volume;
+    const value = price.quoteAssetVolume / price.volume;
+    return value || price.open;
   }
 
   const date = dayjs(time).format("YYYY-MM-DD");
