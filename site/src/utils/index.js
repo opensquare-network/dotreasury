@@ -26,6 +26,10 @@ export function getPrecision(chainSymbol) {
     return 10;
   }
 
+  if (strEqualIgnoreCase(SYMBOLS.CFG, chainSymbol)) {
+    return 18;
+  }
+
   return 12;
 }
 
@@ -108,6 +112,8 @@ export function networkFromSymbol(symbol) {
     return CHAINS.KUSAMA;
   } else if (symbol.toLowerCase() === SYMBOLS.DOT) {
     return CHAINS.POLKADOT;
+  } else if (symbol.toLowerCase() === SYMBOLS.CFG) {
+    return CHAINS.CENTRIFUGE;
   } else {
     return null;
   }
@@ -118,6 +124,8 @@ export function symbolFromNetwork(network) {
     return SYMBOLS.KSM;
   } else if (network === CHAINS.POLKADOT) {
     return SYMBOLS.DOT;
+  } else if (network === CHAINS.CENTRIFUGE) {
+    return SYMBOLS.CFG;
   } else {
     return null;
   }
