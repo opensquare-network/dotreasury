@@ -10,6 +10,10 @@ import { phala } from "./phala";
 import { moonbeam } from "./moonbeam";
 import { moonriver } from "./moonriver";
 
+export const CHAIN = import.meta.env.VITE_APP_CHAIN;
+
+export const CHAIN_SETTINGS = getChainSettings(CHAIN);
+
 export const CHAINS = {
   polkadot,
   kusama,
@@ -30,8 +34,4 @@ export const CHAINS = {
  */
 export function getChainSettings(value = "") {
   return CHAINS[value] ?? {};
-}
-
-export function isSupportOpenGov(chain = "") {
-  return [kusama.value, polkadot.value].includes(chain);
 }
