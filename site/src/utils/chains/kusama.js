@@ -7,5 +7,6 @@ export const kusama = {
   name: capitalizeFirstLetter(value),
   symbol: "KSM",
   decimals: 12,
+  supportOpenGov: true,
   hasDotreasury: true,
 };

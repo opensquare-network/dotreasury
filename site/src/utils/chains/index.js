@@ -24,6 +24,10 @@ export const CHAINS = {
   moonbeam,
 };
 
+/**
+ * @param {string} value
+ * @returns {Partial<typeof CHAINS['kusama'] & typeof CHAINS['polkadot'] & typeof CHAINS['centrifuge']>}
+ */
 export function getChainSettings(value = "") {
   return CHAINS[value] ?? {};
 }
