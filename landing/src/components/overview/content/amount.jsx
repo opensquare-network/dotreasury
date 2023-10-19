@@ -6,7 +6,7 @@ import {
   useOverviewOutputChartData,
 } from "../../../hooks/overview/useChartData";
 import { cn } from "../../../utils";
-import { getChainSettings } from "../../../utils/chains";
+import { getChainSettings } from "@site/src/utils/chains";
 import { useState } from "react";
 
 export default function OverviewAmount({ chain = "" }) {

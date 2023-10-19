@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useTheme } from "@site/src/context/theme";
 import { useEffect } from "react";
-import { getChainSettings } from "../../utils/chains";
+import { getChainSettings } from "@site/src/utils/chains";
 import { createChartStatusToggleClickEvent } from "../../utils/chart/statusToggleClickEvent";
 import { useTreasuriesData } from "../useTreasuriesData";
 import sumBy from "lodash.sumby";

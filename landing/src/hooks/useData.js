@@ -4,7 +4,7 @@ import { createGlobalState } from "react-use";
 import { DEFAULT_OVERVIEW_DATA } from "../utils/consts";
 import { estimateBlocksTime, getApi } from "@site/src/services/chainApi";
 import { TreasuryAccount } from "@site/src/constants";
-import { getChainSettings } from "../utils/chains";
+import { getChainSettings } from "@site/src/utils/chains";
 import { toPrecision } from "@site/src/utils";
 import scanApi from "@site/src/services/scanApi";
 

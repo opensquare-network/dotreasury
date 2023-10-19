@@ -1,6 +1,6 @@
 import { abbreviateBigNumber } from "@site/src/utils";
 import { cn } from "../../utils";
-import { getChainSettings } from "../../utils/chains";
+import { getChainSettings } from "@site/src/utils/chains";
 
 const SHOW_INFO_SIZE = 80;
 const SHOULD_SCALE_INFO_SIZE = 200;

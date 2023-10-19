@@ -5,7 +5,7 @@ import { renderToString } from "react-dom/server";
 import { useEffect, useMemo, useState } from "react";
 import { MD_SIZE, SM_SIZE } from "@site/src/styles/responsive";
 import { useWindowSize } from "usehooks-ts";
-import { getChainSettings } from "../../utils/chains";
+import { getChainSettings } from "@site/src/utils/chains";
 import { sleep, toPrecision } from "@site/src/utils";
 import { cn } from "../../utils";
 

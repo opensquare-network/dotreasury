@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
 import Card from "@site/src/components/Card";
 import { cn } from "../../utils";
-import { CHAINS } from "../../utils/chains";
+import { CHAINS } from "@site/src/utils/chains";
 import ImageWithDark from "@site/src/components/ImageWithDark";
 
 const HeaderExplorer = forwardRef(function HeaderExplorerComponent(props, ref) {
