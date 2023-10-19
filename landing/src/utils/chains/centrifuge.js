@@ -7,4 +7,5 @@ export const centrifuge = {
   name: capitalizeFirstLetter(value),
   symbol: "CFG",
   decimals: 18,
+  hasDotreasury: true,
 };
