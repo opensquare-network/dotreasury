@@ -141,11 +141,13 @@ export const DEFAULT_POLKADOT_NODES = [
 export const CHAINS = {
   POLKADOT: "polkadot",
   KUSAMA: "kusama",
+  CENTRIFUGE: "centrifuge",
 };
 
 export const SYMBOLS = {
   DOT: "dot",
   KSM: "ksm",
+  CFG: "cfg",
 };
 
 export const DEFAULT_PAGE_SIZE = 20;
