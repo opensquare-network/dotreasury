@@ -3,7 +3,7 @@ import Container from "@site/src/components/Container";
 import ImageWithDark from "@site/src/components/ImageWithDark";
 import Tabs from "../tabs";
 import OverviewContent from "./content";
-import { CHAINS } from "../../utils/chains";
+import { CHAINS } from "@site/src/utils/chains";
 import { cn } from "../../utils";
 import { usePrepareSiteData } from "../../hooks/useData";
 

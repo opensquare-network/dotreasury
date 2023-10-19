@@ -1,5 +1,5 @@
 import { gql, useLazyQuery } from "@apollo/client";
-import { getChainSettings } from "../utils/chains";
+import { getChainSettings } from "@site/src/utils/chains";
 import { toPrecision } from "@site/src/utils";
 import sumBy from "lodash.sumby";
 import { useEffect } from "react";

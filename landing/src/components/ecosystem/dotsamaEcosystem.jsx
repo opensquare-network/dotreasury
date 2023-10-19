@@ -5,7 +5,7 @@ import ImageWithDark from "@site/src/components/ImageWithDark";
 import { abbreviateBigNumber } from "@site/src/utils";
 import { useTreasuriesData } from "../../hooks/useTreasuriesData";
 import { cn } from "../../utils";
-import { getChainSettings } from "../../utils/chains";
+import { getChainSettings } from "@site/src/utils/chains";
 
 export default function EcosystemDotsama(props) {
   const { data } = useTreasuriesData();

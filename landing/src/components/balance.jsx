@@ -10,7 +10,7 @@ import {
   abbreviateBigNumber,
 } from "@site/src/utils";
 import { toLocaleStringWithFixed } from "@site/src/utils";
-import { getChainSettings } from "../utils/chains";
+import { getChainSettings } from "@site/src/utils/chains";
 
 const Wrapper = styled.div`
   display: flex;

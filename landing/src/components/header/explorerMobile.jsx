@@ -4,7 +4,7 @@ import ContactUsLink from "./contactUsLink";
 import Button from "../button";
 import { Select } from "semantic-ui-react";
 import { useState } from "react";
-import { CHAINS } from "../../utils/chains";
+import { CHAINS } from "@site/src/utils/chains";
 import ImageWithDark from "@site/src/components/ImageWithDark";
 import { cn } from "src/utils";
 import ExternalLink from "@site/src/components/ExternalLink";

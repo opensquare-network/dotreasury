@@ -12,7 +12,7 @@ import {
   useSpendPeriodData,
   useTreasuryData,
 } from "../../../hooks/useData";
-import { getChainSettings } from "../../../utils/chains";
+import { getChainSettings } from "@site/src/utils/chains";
 import BlocksTime from "../../BlocksTime";
 import Button from "../../button";
 import { extractTime } from "@polkadot/util";

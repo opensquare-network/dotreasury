@@ -1,7 +1,7 @@
 import { useTheme } from "@site/src/context/theme";
 import { toPrecision } from "@site/src/utils";
 import { useState, useEffect } from "react";
-import { getChainSettings } from "../../utils/chains";
+import { getChainSettings } from "@site/src/utils/chains";
 import { sumBy } from "@site/src/utils/math";
 import { createChartStatusToggleClickEvent } from "../../utils/chart/statusToggleClickEvent";
 import { useOverviewData } from "../useData";
