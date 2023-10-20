@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import Pagination from "./Pagination";
 import { Dropdown } from "semantic-ui-react";
+import { useQueryParams } from "../utils/hooks";
+import { useEffect } from "react";
 
 const Container = styled.div`
   padding: 16px 24px;
@@ -136,6 +138,19 @@ const ResponsivePagination = ({
   pageSize,
   setPageSize,
 }) => {
+  const { page = activePage } = useQueryParams();
+
+  useEffect(() => {
+    onPageChange(
+      {},
+      {
+        activePage: page,
+        totalPages,
+      },
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page]);
+
   return (
     <Container>
       <Pagination

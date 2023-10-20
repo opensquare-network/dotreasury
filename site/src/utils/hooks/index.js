@@ -152,3 +152,11 @@ export function useIsAdminQuery() {
   const isAdmin = q.admin === "true";
   return isAdmin;
 }
+
+export function useQueryParams() {
+  const location = useLocation();
+  return queryString.parse(location.search, {
+    parseNumbers: true,
+    parseBooleans: true,
+  });
+}
