@@ -30,7 +30,7 @@ export const CHAIN_SETTINGS = getChainSettings(CHAIN);
 
 /**
  * @param {string} value
- * @returns {Partial<typeof CHAINS['kusama'] & typeof CHAINS['polkadot'] & typeof CHAINS['centrifuge']>}
+ * @returns {Partial<typeof kusama & typeof polkadot & typeof centrifuge>}
  */
 export function getChainSettings(value = "") {
   return CHAINS[value] ?? {};
