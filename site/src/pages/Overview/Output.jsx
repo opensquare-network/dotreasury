@@ -9,6 +9,7 @@ import { getPrecision, toPrecision } from "../../utils";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import { sumBy } from "../../utils/math";
 import { useTheme } from "../../context/theme";
+import { CHAIN_SETTINGS } from "../../utils/chains";
 
 const Output = () => {
   const overview = useSelector(overviewSelector);
@@ -69,9 +70,7 @@ const Output = () => {
             }
           : null),
       },
-      {
-        name: "Tips",
-      },
+      ...(CHAIN_SETTINGS.hasTips ? [{ name: "Tips" }] : []),
       {
         name: "Bounties",
       },
@@ -105,23 +104,35 @@ const Output = () => {
               }
             : null),
         },
-        {
-          name: "Tips",
-          value: tipSpent,
-          fiatValue: tipSpentFiatValue,
-          color: theme.yellow500,
-        },
-        {
-          name: "Bounties",
-          value: bountySpent,
-          fiatValue: bountySpentFiatValue,
-          color: theme.purple500,
-        },
-        {
-          name: "Burnt",
-          value: burntTotal,
-          color: theme.orange500,
-        },
+        ...(CHAIN_SETTINGS.hasTips
+          ? [
+              {
+                name: "Tips",
+                value: tipSpent,
+                fiatValue: tipSpentFiatValue,
+                color: theme.yellow500,
+              },
+            ]
+          : []),
+        ...(CHAIN_SETTINGS.hasBounties
+          ? [
+              {
+                name: "Bounties",
+                value: bountySpent,
+                fiatValue: bountySpentFiatValue,
+                color: theme.purple500,
+              },
+            ]
+          : []),
+        ...(CHAIN_SETTINGS.hasBurnt
+          ? [
+              {
+                name: "Burnt",
+                value: burntTotal,
+                color: theme.orange500,
+              },
+            ]
+          : []),
       ],
     });
   }, [
