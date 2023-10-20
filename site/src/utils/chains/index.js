@@ -12,8 +12,6 @@ import { moonriver } from "./moonriver";
 
 export const CHAIN = import.meta.env.VITE_APP_CHAIN;
 
-export const CHAIN_SETTINGS = getChainSettings(CHAIN);
-
 export const CHAINS = {
   polkadot,
   kusama,
@@ -27,6 +25,8 @@ export const CHAINS = {
   moonriver,
   moonbeam,
 };
+
+export const CHAIN_SETTINGS = getChainSettings(CHAIN);
 
 /**
  * @param {string} value
