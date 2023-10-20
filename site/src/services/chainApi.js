@@ -17,6 +17,7 @@ const apiInstanceMap = new Map();
 export const nodesDefinition = {
   kusama: DEFAULT_KUSAMA_NODES,
   polkadot: DEFAULT_POLKADOT_NODES,
+  centrifuge: [],
 };
 
 export const getApi = async (chain, queryUrl) => {
