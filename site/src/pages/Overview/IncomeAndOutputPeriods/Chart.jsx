@@ -158,7 +158,9 @@ export default function IncomeAndOutputPeriodsChart({
                   ticks: {
                     display: !!minWidth,
                     callback(value) {
-                      return abbreviateBigNumber(Math.abs(value));
+                      value = Math.abs(value);
+                      value = value + (value ? 1 : 0) || 0;
+                      return abbreviateBigNumber(value);
                     },
                   },
                   border: {
