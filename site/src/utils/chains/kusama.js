@@ -10,6 +10,8 @@ export const kusama = {
   supportOpenGov: true,
   hasDotreasury: true,
 
+  hasOutputPeriods: true,
+
   hasTips: true,
   hasBounties: true,
   hasTransfers: true,
