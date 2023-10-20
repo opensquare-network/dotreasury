@@ -25,6 +25,7 @@ import Container from "../../components/Container";
 import SlashMenu from "./SlashMenu";
 import { useSupportOpenGov } from "../../utils/hooks/chain";
 import { SYMBOLS } from "../../constants";
+import { CHAIN_SETTINGS } from "../../utils/chains";
 
 const Wrapper = styled.div`
   position: relative;
@@ -189,7 +190,7 @@ const TabExampleSecondaryPointing = () => {
                 pathname.indexOf("/proposals") === 0,
             },
           },
-          {
+          CHAIN_SETTINGS.hasTips && {
             menuItem: {
               as: NavLink,
               id: "tipsTab",
@@ -200,7 +201,7 @@ const TabExampleSecondaryPointing = () => {
               active: "/tips" === pathname || pathname.indexOf("/tips") === 0,
             },
           },
-          {
+          CHAIN_SETTINGS.hasBounties && {
             menuItem: {
               as: NavLink,
               id: "bountiesTab",
@@ -213,7 +214,7 @@ const TabExampleSecondaryPointing = () => {
                 pathname.indexOf("/child-bounties") === 0,
             },
           },
-          {
+          CHAIN_SETTINGS.hasBurnt && {
             menuItem: {
               as: NavLink,
               id: "burntTab",
@@ -224,7 +225,7 @@ const TabExampleSecondaryPointing = () => {
               active: "/burnt" === pathname || pathname.indexOf("/burnt") === 0,
             },
           },
-          {
+          CHAIN_SETTINGS.hasTransfers && {
             menuItem: {
               as: NavLink,
               id: "transfersTab",
@@ -235,7 +236,7 @@ const TabExampleSecondaryPointing = () => {
               active: "/transfers" === pathname,
             },
           },
-        ]
+        ].filter(Boolean)
       : showMenuTabs === "Income"
       ? [
           {
