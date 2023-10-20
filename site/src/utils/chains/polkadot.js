@@ -10,6 +10,8 @@ export const polkadot = {
   supportOpenGov: true,
   hasDotreasury: true,
 
+  hasOutputPeriods: true,
+
   hasTips: true,
   hasBounties: true,
   hasTransfers: true,

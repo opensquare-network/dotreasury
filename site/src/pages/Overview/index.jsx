@@ -151,7 +151,7 @@ const Overview = () => {
       <DoughnutWrapper count={cards.length}>{cards}</DoughnutWrapper>
       <TotalStacked />
       <IncomeAndOutputPeriods />
-      <OutputPeriods />
+      {CHAIN_SETTINGS.hasOutputPeriods && <OutputPeriods />}
       <TableWrapper>
         <TopBeneficiariesTable />
         <BeneficiaryTable />
