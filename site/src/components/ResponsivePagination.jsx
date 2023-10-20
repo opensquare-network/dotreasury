@@ -145,6 +145,7 @@ const ResponsivePagination = ({
       {},
       {
         activePage: page,
+        totalPages,
       },
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
