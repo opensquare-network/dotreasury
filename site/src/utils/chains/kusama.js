@@ -9,4 +9,9 @@ export const kusama = {
   decimals: 12,
   supportOpenGov: true,
   hasDotreasury: true,
+
+  hasTips: true,
+  hasBounties: true,
+  hasTransfers: true,
+  hasBurnt: true,
 };

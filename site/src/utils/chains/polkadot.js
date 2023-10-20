@@ -9,4 +9,9 @@ export const polkadot = {
   decimals: 10,
   supportOpenGov: true,
   hasDotreasury: true,
+
+  hasTips: true,
+  hasBounties: true,
+  hasTransfers: true,
+  hasBurnt: true,
 };

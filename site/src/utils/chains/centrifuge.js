@@ -10,4 +10,7 @@ export const centrifuge = {
   hasDotreasury: true,
 
   hasTips: false,
+  hasBounties: false,
+  hasTransfers: false,
+  hasBurnt: false,
 };
