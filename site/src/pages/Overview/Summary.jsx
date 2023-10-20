@@ -37,6 +37,7 @@ import { parseEstimateTime } from "../../utils/parseEstimateTime";
 import BigNumber from "bignumber.js";
 import SummaryItem from "../../components/Summary/Item";
 import ImageWithDark from "../../components/ImageWithDark";
+import { CHAIN_SETTINGS } from "../../utils/chains";
 
 const Wrapper = styled(Card)`
   margin-bottom: 16px;
@@ -112,151 +113,170 @@ const Summary = () => {
     toPrecision(toBeAwarded, precision),
   ).toNumber();
 
+  const avaliableitem = (
+    <SummaryItem
+      icon={<ImageWithDark src="/imgs/data-available.svg" />}
+      title="Available"
+      content={
+        <div>
+          <ValueWrapper>
+            <TextBold>{abbreviateBigNumber(treasury.free)}</TextBold>
+            <TextAccessoryBold>{symbol}</TextAccessoryBold>
+          </ValueWrapper>
+          <ValueInfo>
+            {!!treasury.free && "≈ "}$
+            {abbreviateBigNumber(treasury.free * symbolPrice)}
+          </ValueInfo>
+        </div>
+      }
+    />
+  );
+  const toBeAwardedItem = (
+    <SummaryItem
+      icon={<ImageWithDark src="/imgs/data-approved.svg" />}
+      title="To be awarded"
+      content={
+        <div>
+          <ValueWrapper>
+            <TextBold>{abbreviateBigNumber(toBeAwardedValue)}</TextBold>
+            <TextAccessoryBold>{symbol}</TextAccessoryBold>
+          </ValueWrapper>
+          <ValueInfo>
+            {!!toBeAwardedValue && "≈ "}$
+            {abbreviateBigNumber(toBeAwardedValue * symbolPrice)}
+          </ValueInfo>
+        </div>
+      }
+    />
+  );
+  const burntItem = CHAIN_SETTINGS.hasBurnt && (
+    <SummaryItem
+      icon={<ImageWithDark src="/imgs/data-next-burn.svg" />}
+      title="Next burn"
+      content={
+        <div>
+          <ValueWrapper>
+            <TextBold>
+              {abbreviateBigNumber(treasury.burnPercent * treasury.free)}
+            </TextBold>
+            <TextAccessoryBold>{symbol}</TextAccessoryBold>
+          </ValueWrapper>
+        </div>
+      }
+    />
+  );
+  const spendPeriodItem = (
+    <SummaryItem
+      icon={<CountDown percent={spendPeriod.progress} />}
+      title="Spend period"
+      content={
+        <div>
+          <BlocksTime
+            blocks={spendPeriod.restBlocks}
+            ValueWrapper={TextBold}
+            UnitWrapper={TextAccessoryBold}
+            SectionWrapper={Fragment}
+            TimeWrapper={ValueWrapper}
+            unitMapper={{ d: "Day" }}
+            pluralUnitMapper={{ d: "Days" }}
+          />
+          <ValueInfo>
+            {parseEstimateTime(extractTime(spendPeriod.periodTime))}
+          </ValueInfo>
+        </div>
+      }
+    />
+  );
+  const opengovItem = supportOpenGov && (
+    <SummaryItem
+      icon={<ImageWithDark src="/imgs/data-opengov.svg" />}
+      title="OpenGov"
+      content={
+        <div>
+          <ValueWrapper>
+            <TextBold>{overview.count.referenda.unFinished ?? 0}</TextBold>
+            <TextAccessoryBold>/</TextAccessoryBold>
+            <StyledLink to={"/referenda"}>
+              <TextAccessoryBold>
+                {overview.count.referenda.all}
+              </TextAccessoryBold>
+            </StyledLink>
+          </ValueWrapper>
+        </div>
+      }
+    />
+  );
+  const proposalsItem = (
+    <SummaryItem
+      icon={<ImageWithDark src="/imgs/data-proposals.svg" />}
+      title="Proposals"
+      content={
+        <div>
+          <ValueWrapper>
+            <TextBold>{overview.count.proposal.unFinished}</TextBold>
+            <TextAccessoryBold>/</TextAccessoryBold>
+            <StyledLink to={"/proposals"}>
+              <TextAccessoryBold>
+                {overview.count.proposal.all}
+              </TextAccessoryBold>
+            </StyledLink>
+          </ValueWrapper>
+        </div>
+      }
+    />
+  );
+  const tipsItem = CHAIN_SETTINGS.hasTips && (
+    <SummaryItem
+      icon={<ImageWithDark src="/imgs/data-tips.svg" />}
+      title="Tips"
+      content={
+        <div>
+          <ValueWrapper>
+            <StyledLinkMajor
+              to={{
+                pathname: "/tips",
+                search: "?status=NewTip||tip",
+              }}
+            >
+              <TextBold>{overview.count.tip.unFinished}</TextBold>
+            </StyledLinkMajor>
+            <TextAccessoryBold>/</TextAccessoryBold>
+            <StyledLink to={"/tips"}>
+              <TextAccessoryBold>{overview.count.tip.all}</TextAccessoryBold>
+            </StyledLink>
+          </ValueWrapper>
+        </div>
+      }
+    />
+  );
+  const bountiesItem = CHAIN_SETTINGS.hasBounties && (
+    <SummaryItem
+      icon={<ImageWithDark src="/imgs/data-bounties.svg" />}
+      title="Bounties"
+      content={
+        <div>
+          <ValueWrapper>
+            <TextBold>{overview.count.bounty.unFinished}</TextBold>
+            <TextAccessoryBold>/</TextAccessoryBold>
+            <StyledLink to={"/bounties"}>
+              <TextAccessoryBold>{overview.count.bounty.all}</TextAccessoryBold>
+            </StyledLink>
+          </ValueWrapper>
+        </div>
+      }
+    />
+  );
+
   return (
     <Wrapper>
-      <SummaryItem
-        icon={<ImageWithDark src="/imgs/data-available.svg" />}
-        title="Available"
-        content={
-          <div>
-            <ValueWrapper>
-              <TextBold>{abbreviateBigNumber(treasury.free)}</TextBold>
-              <TextAccessoryBold>{symbol}</TextAccessoryBold>
-            </ValueWrapper>
-            <ValueInfo>
-              {!!treasury.free && "≈ "}$
-              {abbreviateBigNumber(treasury.free * symbolPrice)}
-            </ValueInfo>
-          </div>
-        }
-      />
-      <SummaryItem
-        icon={<ImageWithDark src="/imgs/data-approved.svg" />}
-        title="To be awarded"
-        content={
-          <div>
-            <ValueWrapper>
-              <TextBold>{abbreviateBigNumber(toBeAwardedValue)}</TextBold>
-              <TextAccessoryBold>{symbol}</TextAccessoryBold>
-            </ValueWrapper>
-            <ValueInfo>
-              {!!toBeAwardedValue && "≈ "}$
-              {abbreviateBigNumber(toBeAwardedValue * symbolPrice)}
-            </ValueInfo>
-          </div>
-        }
-      />
-      <SummaryItem
-        icon={<ImageWithDark src="/imgs/data-next-burn.svg" />}
-        title="Next burn"
-        content={
-          <div>
-            <ValueWrapper>
-              <TextBold>
-                {abbreviateBigNumber(treasury.burnPercent * treasury.free)}
-              </TextBold>
-              <TextAccessoryBold>{symbol}</TextAccessoryBold>
-            </ValueWrapper>
-          </div>
-        }
-      />
-      <SummaryItem
-        icon={<CountDown percent={spendPeriod.progress} />}
-        title="Spend period"
-        content={
-          <div>
-            <BlocksTime
-              blocks={spendPeriod.restBlocks}
-              ValueWrapper={TextBold}
-              UnitWrapper={TextAccessoryBold}
-              SectionWrapper={Fragment}
-              TimeWrapper={ValueWrapper}
-              unitMapper={{ d: "Day" }}
-              pluralUnitMapper={{ d: "Days" }}
-            />
-            <ValueInfo>
-              {parseEstimateTime(extractTime(spendPeriod.periodTime))}
-            </ValueInfo>
-          </div>
-        }
-      />
-
-      {supportOpenGov && (
-        <SummaryItem
-          icon={<ImageWithDark src="/imgs/data-opengov.svg" />}
-          title="OpenGov"
-          content={
-            <div>
-              <ValueWrapper>
-                <TextBold>{overview.count.referenda.unFinished ?? 0}</TextBold>
-                <TextAccessoryBold>/</TextAccessoryBold>
-                <StyledLink to={"/referenda"}>
-                  <TextAccessoryBold>
-                    {overview.count.referenda.all}
-                  </TextAccessoryBold>
-                </StyledLink>
-              </ValueWrapper>
-            </div>
-          }
-        />
-      )}
-
-      <SummaryItem
-        icon={<ImageWithDark src="/imgs/data-proposals.svg" />}
-        title="Proposals"
-        content={
-          <div>
-            <ValueWrapper>
-              <TextBold>{overview.count.proposal.unFinished}</TextBold>
-              <TextAccessoryBold>/</TextAccessoryBold>
-              <StyledLink to={"/proposals"}>
-                <TextAccessoryBold>
-                  {overview.count.proposal.all}
-                </TextAccessoryBold>
-              </StyledLink>
-            </ValueWrapper>
-          </div>
-        }
-      />
-      <SummaryItem
-        icon={<ImageWithDark src="/imgs/data-tips.svg" />}
-        title="Tips"
-        content={
-          <div>
-            <ValueWrapper>
-              <StyledLinkMajor
-                to={{
-                  pathname: "/tips",
-                  search: "?status=NewTip||tip",
-                }}
-              >
-                <TextBold>{overview.count.tip.unFinished}</TextBold>
-              </StyledLinkMajor>
-              <TextAccessoryBold>/</TextAccessoryBold>
-              <StyledLink to={"/tips"}>
-                <TextAccessoryBold>{overview.count.tip.all}</TextAccessoryBold>
-              </StyledLink>
-            </ValueWrapper>
-          </div>
-        }
-      />
-      <SummaryItem
-        icon={<ImageWithDark src="/imgs/data-bounties.svg" />}
-        title="Bounties"
-        content={
-          <div>
-            <ValueWrapper>
-              <TextBold>{overview.count.bounty.unFinished}</TextBold>
-              <TextAccessoryBold>/</TextAccessoryBold>
-              <StyledLink to={"/bounties"}>
-                <TextAccessoryBold>
-                  {overview.count.bounty.all}
-                </TextAccessoryBold>
-              </StyledLink>
-            </ValueWrapper>
-          </div>
-        }
-      />
+      {avaliableitem}
+      {toBeAwardedItem}
+      {burntItem}
+      {spendPeriodItem}
+      {opengovItem}
+      {proposalsItem}
+      {tipsItem}
+      {bountiesItem}
     </Wrapper>
   );
 };
