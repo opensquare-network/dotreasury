@@ -31,6 +31,7 @@ import { breakpoint } from "../../../styles/responsive";
 import { useSupportOpenGov } from "../../../utils/hooks/chain";
 import Slider from "../../../components/Slider";
 import { CHAINS } from "../../../constants";
+import { CHAIN_SETTINGS } from "../../../utils/chains";
 
 const CardWrapper = styled(Card)`
   padding: 24px;
@@ -172,22 +173,38 @@ const TotalStacked = () => {
         name: "Proposal",
         value: 0,
       },
-      {
-        name: "Tips",
-        value: 0,
-      },
-      {
-        name: "Bounties",
-        value: 0,
-      },
-      {
-        name: "Burnt",
-        value: 0,
-      },
-      {
-        name: "Transfer",
-        value: 0,
-      },
+      ...(CHAIN_SETTINGS.hasTips
+        ? [
+            {
+              name: "Tips",
+              value: 0,
+            },
+          ]
+        : []),
+      ...(CHAIN_SETTINGS.hasBounties
+        ? [
+            {
+              name: "Bounties",
+              value: 0,
+            },
+          ]
+        : []),
+      ...(CHAIN_SETTINGS.hasBurnt
+        ? [
+            {
+              name: "Burnt",
+              value: 0,
+            },
+          ]
+        : []),
+      ...(CHAIN_SETTINGS.hasTransfers
+        ? [
+            {
+              name: "Transfer",
+              value: 0,
+            },
+          ]
+        : []),
     ],
   });
   const [treasuryData, setTreasuryData] = useState({
@@ -227,15 +244,15 @@ const TotalStacked = () => {
       .map((bn) => toPrecision(bn, precision, false));
     setIncomeHistory(incomeHistory);
 
-    const outputHistory = statsHistory
-      .map((statsItem) =>
-        bnToBn(statsItem.output.tip)
-          .add(bnToBn(statsItem.output.proposal))
-          .add(bnToBn(statsItem.output.bounty))
-          .add(bnToBn(statsItem.output.burnt))
-          .add(bnToBn(statsItem.output.transfer)),
-      )
-      .map((bn) => toPrecision(bn, precision, false));
+    const outputHistory = statsHistory.map((statsItem) => {
+      return (
+        toPrecision(statsItem.output.tip, precision, false) +
+        toPrecision(statsItem.output.proposal, precision, false) +
+        toPrecision(statsItem.output.bounty, precision, false) +
+        toPrecision(statsItem.output.burnt, precision, false) +
+        toPrecision(statsItem.output.transfer, precision, false)
+      );
+    });
     setOutputHistory(outputHistory);
 
     const treasuryHistory = statsHistory.map((statsItem) =>
@@ -349,26 +366,46 @@ const TotalStacked = () => {
             color: theme.yellow500,
             value: toPrecision(statsData.output.proposal, precision, false),
           },
-          {
-            name: "Tips",
-            color: theme.yellow500,
-            value: toPrecision(statsData.output.tip, precision, false),
-          },
-          {
-            name: "Bounties",
-            color: theme.yellow500,
-            value: toPrecision(statsData.output.bounty, precision, false),
-          },
-          {
-            name: "Burnt",
-            color: theme.yellow500,
-            value: toPrecision(statsData.output.burnt, precision, false),
-          },
-          {
-            name: "Transfer",
-            color: theme.yellow500,
-            value: toPrecision(statsData.output.transfer, precision, false),
-          },
+          ...(CHAIN_SETTINGS.hasTips
+            ? [
+                {
+                  name: "Tips",
+                  color: theme.yellow500,
+                  value: toPrecision(statsData.output.tip, precision, false),
+                },
+              ]
+            : []),
+          ...(CHAIN_SETTINGS.hasBounties
+            ? [
+                {
+                  name: "Bounties",
+                  color: theme.yellow500,
+                  value: toPrecision(statsData.output.bounty, precision, false),
+                },
+              ]
+            : []),
+          ...(CHAIN_SETTINGS.hasBurnt
+            ? [
+                {
+                  name: "Burnt",
+                  color: theme.yellow500,
+                  value: toPrecision(statsData.output.burnt, precision, false),
+                },
+              ]
+            : []),
+          ...(CHAIN_SETTINGS.hasTransfers
+            ? [
+                {
+                  name: "Transfer",
+                  color: theme.yellow500,
+                  value: toPrecision(
+                    statsData.output.transfer,
+                    precision,
+                    false,
+                  ),
+                },
+              ]
+            : []),
         ],
       });
 
