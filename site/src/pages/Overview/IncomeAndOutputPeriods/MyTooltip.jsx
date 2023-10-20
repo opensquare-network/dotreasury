@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { p_12_normal } from "../../../styles/text";
+import { Fragment } from "react";
 
 const Wrapper = styled.div`
   display: flex;
@@ -55,10 +56,10 @@ export default function MyTooltip({
     const fiat = item.dataset.fiats?.[item.dataIndex];
 
     return (
-      <>
+      <Fragment key={i}>
         {groupSeparateLabels.includes(item.dataset.label) && <div>---</div>}
 
-        <Item key={i}>
+        <Item>
           <div style={{ display: "flex", alignItems: "baseline" }}>
             <Marker {...colors} />
             <div>
@@ -74,7 +75,7 @@ export default function MyTooltip({
             )}
           </div>
         </Item>
-      </>
+      </Fragment>
     );
   });
 
