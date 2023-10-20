@@ -21,6 +21,9 @@ export function useEcosystemAssetsDistributionData() {
       theme.purple500,
       theme.purple300,
       theme.blue500,
+      theme.blue300,
+      theme.skyblue500,
+      theme.skyblue300,
     ],
     [theme],
   );

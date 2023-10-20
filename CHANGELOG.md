@@ -2,6 +2,13 @@
 
 Notable changes to this project will be documented in this file, started from 4.0.0
 
+### 4.0.3
+Date: 2023-10-20
+
+- Calculate treasury income by spend periods.
+- Fix councilor heatmap tooltip position.
+- Upgrade dependencies.
+
 ### 4.0.2
 Date: 2023-10-13
 
