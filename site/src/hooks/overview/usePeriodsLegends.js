@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useTheme } from "../../context/theme";
 import { useState } from "react";
+import { CHAIN_SETTINGS } from "../../utils/chains";
 
 export function useIncomePeriodsLegends() {
   const theme = useTheme();
@@ -61,40 +62,42 @@ export function useOutputPeriodsLegends() {
     Burnt: theme.yellow200,
   };
 
-  const [outputLegends, setOutputLegends] = useState([
-    {
-      label: "Proposals",
-      color: colors["Proposals"],
-      enabled: true,
-      getValue: (period) => period.totalProposalsValue,
-      getCount: (period) => period.proposals.length,
-      getFiat: (period) => period.totalProposalsFiat,
-    },
-    {
-      label: "Tips",
-      color: colors["Tips"],
-      enabled: true,
-      getValue: (period) => period.totalTipsValue,
-      getCount: (period) => period.tips.length,
-      getFiat: (period) => period.totalTipsFiat,
-    },
-    {
-      label: "Bounties",
-      color: colors["Bounties"],
-      enabled: true,
-      getValue: (period) => period.totalBountiesValue,
-      getCount: (period) => period.bounties.length,
-      getFiat: (period) => period.totalBountiesFiat,
-    },
-    {
-      label: "Burnt",
-      color: colors["Burnt"],
-      enabled: true,
-      getValue: (period) => period.totalBurntValue,
-      getCount: (period) => period.burnt.length,
-      getFiat: (period) => period.totalBurntFiat,
-    },
-  ]);
+  const [outputLegends, setOutputLegends] = useState(
+    [
+      {
+        label: "Proposals",
+        color: colors["Proposals"],
+        enabled: true,
+        getValue: (period) => period.totalProposalsValue,
+        getCount: (period) => period.proposals.length,
+        getFiat: (period) => period.totalProposalsFiat,
+      },
+      CHAIN_SETTINGS.hasTips && {
+        label: "Tips",
+        color: colors["Tips"],
+        enabled: true,
+        getValue: (period) => period.totalTipsValue,
+        getCount: (period) => period.tips.length,
+        getFiat: (period) => period.totalTipsFiat,
+      },
+      CHAIN_SETTINGS.hasBounties && {
+        label: "Bounties",
+        color: colors["Bounties"],
+        enabled: true,
+        getValue: (period) => period.totalBountiesValue,
+        getCount: (period) => period.bounties.length,
+        getFiat: (period) => period.totalBountiesFiat,
+      },
+      CHAIN_SETTINGS.hasBurnt && {
+        label: "Burnt",
+        color: colors["Burnt"],
+        enabled: true,
+        getValue: (period) => period.totalBurntValue,
+        getCount: (period) => period.burnt.length,
+        getFiat: (period) => period.totalBurntFiat,
+      },
+    ].filter(Boolean),
+  );
 
   useEffect(() => {
     setOutputLegends((legends) =>
