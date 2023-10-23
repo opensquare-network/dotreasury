@@ -140,7 +140,7 @@ export const DEFAULT_POLKADOT_NODES = [
 
 export const DEFAULT_CENTRIFUGE_NODES = [
   {
-    name: "TODO",
+    name: "Parity",
     url: "wss://fullnode.centrifuge.io/",
   },
   {
