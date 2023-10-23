@@ -25,7 +25,8 @@ import Container from "../../components/Container";
 import SlashMenu from "./SlashMenu";
 import { useSupportOpenGov } from "../../utils/hooks/chain";
 import { SYMBOLS } from "../../constants";
-import { CHAIN_SETTINGS } from "../../utils/chains";
+import { CHAIN_SETTINGS, IS_CENTRIFUGE } from "../../utils/chains";
+import GasFeeIncomeMenu from "./GasFeeIncomeMenu";
 
 const Wrapper = styled.div`
   position: relative;
@@ -246,7 +247,7 @@ const TabExampleSecondaryPointing = () => {
               content: <InflationMenu />,
               to: "/income",
               exact: true,
-              key: "inflation",
+              key: IS_CENTRIFUGE ? "blockRewards" : "inflation",
               active: "/income" === pathname,
             },
           },
@@ -258,7 +259,7 @@ const TabExampleSecondaryPointing = () => {
               active: pathname.includes("/income/slash/"),
             },
           },
-          {
+          CHAIN_SETTINGS.hasTransfers && {
             menuItem: {
               as: NavLink,
               id: "transfersSlashTab",
@@ -269,6 +270,19 @@ const TabExampleSecondaryPointing = () => {
               active:
                 "/income/transfers" === pathname ||
                 pathname.indexOf("/income/transfers") === 0,
+            },
+          },
+          IS_CENTRIFUGE && {
+            menuItem: {
+              as: NavLink,
+              id: "gasFeeTab",
+              content: <GasFeeIncomeMenu />,
+              to: "/income/gasfee",
+              exact: true,
+              key: "gasfeeIncome",
+              active:
+                "/income/gasfee" === pathname ||
+                pathname.indexOf("/income/gasfee") === 0,
             },
           },
           {
@@ -284,7 +298,7 @@ const TabExampleSecondaryPointing = () => {
                 pathname.indexOf("/income/others") === 0,
             },
           },
-        ]
+        ].filter(Boolean)
       : showMenuTabs === "Projects"
       ? [
           {
