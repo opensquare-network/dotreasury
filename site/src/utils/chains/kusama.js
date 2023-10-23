@@ -13,6 +13,7 @@ export const kusama = {
   hasProjects: true,
   hasOutputPeriods: true,
 
+  hasStaking: true,
   hasTips: true,
   hasBounties: true,
   hasTransfers: true,

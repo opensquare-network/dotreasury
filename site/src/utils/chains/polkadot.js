@@ -13,6 +13,7 @@ export const polkadot = {
   hasProjects: true,
   hasOutputPeriods: true,
 
+  hasStaking: true,
   hasTips: true,
   hasBounties: true,
   hasTransfers: true,
