@@ -17,4 +17,10 @@ export const kusama = {
   hasBounties: true,
   hasTransfers: true,
   hasBurnt: true,
+
+  ui: {
+    totalStacked: {
+      yStepSize: 200000,
+    },
+  },
 };
