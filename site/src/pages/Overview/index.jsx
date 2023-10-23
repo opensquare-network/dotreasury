@@ -127,6 +127,18 @@ const Overview = () => {
   );
   const others = toPrecision(overview.income.others || 0, precision, false);
 
+  // centrifuge
+  const centrifugeBlockReward = toPrecision(
+    overview.income.centrifugeBlockReward || 0,
+    precision,
+    false,
+  );
+  const centrifugeTxFee = toPrecision(
+    overview.income.centrifugeTxFee || 0,
+    precision,
+    false,
+  );
+
   const cards = [
     <Income
       key="income"
@@ -139,6 +151,8 @@ const Overview = () => {
       slashReferenda={slashReferenda}
       slashFellowshipReferenda={slashFellowshipReferenda}
       others={others}
+      centrifugeBlockReward={centrifugeBlockReward}
+      centrifugeTxFee={centrifugeTxFee}
     />,
     <Output key="output" />,
 
