@@ -267,7 +267,7 @@ const Summary = () => {
     />
   );
 
-  const items = [
+  const sortedItems = [
     avaliableitem,
     toBeAwardedItem,
     burntItem,
@@ -281,7 +281,7 @@ const Summary = () => {
     .filter(Boolean)
     .map((item, idx) => <Fragment key={idx}>{item}</Fragment>);
 
-  return <Wrapper>{items}</Wrapper>;
+  return <Wrapper>{sortedItems}</Wrapper>;
 };
 
 export default Summary;
