@@ -28,6 +28,8 @@ export const CHAINS = {
 
 export const CHAIN_SETTINGS = getChainSettings(CHAIN);
 
+export const IS_CENTRIFUGE = CHAIN === CHAINS.centrifuge.value;
+
 /**
  * @param {string} value
  * @returns {Partial<typeof kusama & typeof polkadot & typeof centrifuge>}
