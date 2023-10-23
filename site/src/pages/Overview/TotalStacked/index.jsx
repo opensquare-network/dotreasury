@@ -15,10 +15,7 @@ import {
   fetchStatsHistory,
   statsHistorySelector,
 } from "../../../store/reducers/overviewSlice";
-import {
-  chainSelector,
-  chainSymbolSelector,
-} from "../../../store/reducers/chainSlice";
+import { chainSymbolSelector } from "../../../store/reducers/chainSlice";
 import { h4_16_semibold, p_12_normal } from "../../../styles/text";
 import {
   gap,
@@ -30,7 +27,7 @@ import {
 import { breakpoint } from "../../../styles/responsive";
 import { useSupportOpenGov } from "../../../utils/hooks/chain";
 import Slider from "../../../components/Slider";
-import { CHAIN_SETTINGS } from "../../../utils/chains";
+import { CHAIN_SETTINGS, IS_CENTRIFUGE } from "../../../utils/chains";
 
 const CardWrapper = styled(Card)`
   padding: 24px;
@@ -104,7 +101,6 @@ const SecondListWrapper = styled.div`
 
 const TotalStacked = () => {
   const theme = useTheme();
-  const chain = useSelector(chainSelector);
   const supportOpenGov = useSupportOpenGov();
   const dispatch = useDispatch();
   const [dateLabels, setDateLabels] = useState([]);
@@ -117,14 +113,19 @@ const TotalStacked = () => {
     title: "Income",
     icon: "square",
     labels: [
-      {
-        name: "Inflation",
-        value: 0,
-      },
+      !IS_CENTRIFUGE
+        ? {
+            name: "Inflation",
+            value: 0,
+          }
+        : {
+            name: "Block Reward",
+            value: 0,
+          },
       {
         name: "Slashes",
         children: [
-          {
+          CHAIN_SETTINGS.hasStaking && {
             name: "Staking",
             value: 0,
           },
@@ -156,13 +157,13 @@ const TotalStacked = () => {
                 },
               ]
             : []),
-        ],
+        ].filter(Boolean),
       },
       {
         name: "Others",
         value: 0,
       },
-    ],
+    ].filter(Boolean),
   });
   const [outputData, setOutputData] = useState({
     title: "Output",
@@ -233,14 +234,20 @@ const TotalStacked = () => {
     setDateLabels(dateLabels);
     setChartRange([0, dateLabels.length - 1]);
 
-    const incomeHistory = statsHistory
-      .map((statsItem) =>
-        bnToBn(statsItem.income.inflation)
-          .add(bnToBn(statsItem.income.slash))
-          .add(bnToBn(statsItem.income.transfer))
-          .add(bnToBn(statsItem.income.others)),
-      )
-      .map((bn) => toPrecision(bn, precision, false));
+    const incomeHistory = statsHistory.map((statsItem) => {
+      return (
+        toPrecision(statsItem.income.inflation, precision, false) +
+        toPrecision(statsItem.income.slash, precision, false) +
+        toPrecision(statsItem.income.transfer, precision, false) +
+        toPrecision(statsItem.income.others, precision, false) +
+        toPrecision(
+          statsItem.income?.centrifugeBlockReward || 0,
+          precision,
+          false,
+        ) +
+        toPrecision(statsItem.income?.centrifugeTxFee || 0, precision, false)
+      );
+    });
     setIncomeHistory(incomeHistory);
 
     const outputHistory = statsHistory.map((statsItem) => {
@@ -269,16 +276,30 @@ const TotalStacked = () => {
         date: dayjs(dateLabels?.[index]).format("YYYY-MM-DD hh:mm"),
         icon: "square",
         labels: [
-          {
-            name: "Inflation",
-            color: theme.pink500,
-            value: toPrecision(statsData.income.inflation, precision, false),
-          },
+          !IS_CENTRIFUGE
+            ? {
+                name: "Inflation",
+                color: theme.pink500,
+                value: toPrecision(
+                  statsData.income.inflation,
+                  precision,
+                  false,
+                ),
+              }
+            : {
+                name: "Block Reward",
+                color: theme.pink500,
+                value: toPrecision(
+                  statsData.income.centrifugeBlockReward,
+                  precision,
+                  false,
+                ),
+              },
           {
             name: "Slashes",
             color: theme.pink500,
             children: [
-              {
+              CHAIN_SETTINGS.hasStaking && {
                 name: "Staking",
                 color: "transparent",
                 value: toPrecision(
@@ -345,14 +366,23 @@ const TotalStacked = () => {
                     },
                   ]
                 : []),
-            ],
+            ].filter(Boolean),
+          },
+          IS_CENTRIFUGE && {
+            name: "Gas Fee",
+            color: theme.purple500,
+            value: toPrecision(
+              statsData.income.centrifugeTxFee,
+              precision,
+              false,
+            ),
           },
           {
             name: "Others",
             color: theme.pink500,
             value: toPrecision(statsData.income.others, precision, false),
           },
-        ],
+        ].filter(Boolean),
       });
 
       setOutputData({
