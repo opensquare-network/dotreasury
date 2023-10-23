@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Label, Menu } from "semantic-ui-react";
 import { useSelector } from "react-redux";
 import { incomeCountSelector } from "../../store/reducers/incomeSlice";
+import { IS_CENTRIFUGE } from "../../utils/chains";
 
 const Divider = styled.div`
   position: relative;
@@ -17,7 +18,8 @@ function InflationMenu() {
 
   return (
     <Menu.Item key="Inflation">
-      Inflation<Label>{incomeCount.inflation}</Label>
+      {IS_CENTRIFUGE ? "Block Rewards" : "Inflation"}
+      <Label>{incomeCount.inflation}</Label>
       <Divider />
     </Menu.Item>
   );

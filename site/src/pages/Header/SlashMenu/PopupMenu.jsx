@@ -11,6 +11,7 @@ import TreasurySlashMenu from "./TreasurySlashMenu";
 import styled from "styled-components";
 import { rounded_4, shadow_200 } from "../../../styles/tailwindcss";
 import { useSupportOpenGov } from "../../../utils/hooks/chain";
+import { CHAIN_SETTINGS } from "../../../utils/chains";
 
 const Popup = styled(PopupOrigin)`
   width: 220px;
@@ -34,7 +35,9 @@ export default function PopupMenu({ trigger }) {
 
   const popupContent = (
     <div>
-      <StakingSlashMenu onClick={() => navigate("/income/slash/staking")} />
+      {CHAIN_SETTINGS.hasStaking && (
+        <StakingSlashMenu onClick={() => navigate("/income/slash/staking")} />
+      )}
       <TreasurySlashMenu onClick={() => navigate("/income/slash/treasury")} />
       <ElectionPhragmenSlashMenu
         onClick={() => navigate("/income/slash/electionphragmen")}
