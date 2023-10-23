@@ -13,4 +13,10 @@ export const centrifuge = {
   hasBounties: false,
   hasTransfers: false,
   hasBurnt: false,
+
+  ui: {
+    totalStacked: {
+      yStepSize: 3000000,
+    },
+  },
 };

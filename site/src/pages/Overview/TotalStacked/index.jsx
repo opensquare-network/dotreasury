@@ -30,7 +30,6 @@ import {
 import { breakpoint } from "../../../styles/responsive";
 import { useSupportOpenGov } from "../../../utils/hooks/chain";
 import Slider from "../../../components/Slider";
-import { CHAINS } from "../../../constants";
 import { CHAIN_SETTINGS } from "../../../utils/chains";
 
 const CardWrapper = styled(Card)`
@@ -477,7 +476,7 @@ const TotalStacked = () => {
         <Chart
           data={chartData}
           onHover={onHover}
-          yStepSize={chain === CHAINS.KUSAMA ? 200000 : 8000000}
+          yStepSize={CHAIN_SETTINGS.ui?.totalStacked?.yStepSize || 8000000}
         />
         <SliderWrapper>
           <Slider
