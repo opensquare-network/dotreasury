@@ -12,6 +12,7 @@ import { items_center } from "../../styles/tailwindcss";
 import { useSupportOpenGov } from "../../utils/hooks/chain";
 import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
+import { CHAIN_SETTINGS, IS_CENTRIFUGE } from "../../utils/chains";
 
 const LinkButton = styled(TextMinor)`
   display: flex;
@@ -36,6 +37,8 @@ const Income = ({
   slashReferenda,
   slashFellowshipReferenda,
   others,
+  centrifugeBlockReward,
+  centrifugeTxFee,
 }) => {
   const theme = useTheme();
   const supportOpenGov = useSupportOpenGov();
@@ -46,13 +49,17 @@ const Income = ({
   });
   const [incomeStatus, setIncomeStatus] = useState({
     labels: [
-      {
-        name: "Inflation",
-      },
+      !IS_CENTRIFUGE
+        ? {
+            name: "Inflation",
+          }
+        : {
+            name: "Block Reward",
+          },
       {
         name: "Slashes",
         children: [
-          {
+          CHAIN_SETTINGS.hasStaking && {
             name: "Staking",
           },
           {
@@ -77,27 +84,36 @@ const Income = ({
                 },
               ]
             : []),
-        ],
+        ].filter(Boolean),
+      },
+      IS_CENTRIFUGE && {
+        name: "Gas Fee",
       },
       {
         name: "Others",
       },
-    ],
+    ].filter(Boolean),
   });
 
   useEffect(() => {
     setIncomeData({
       icon: "circle",
       labels: [
-        {
-          name: "Inflation",
-          value: inflation,
-          color: theme.pink500,
-        },
+        !IS_CENTRIFUGE
+          ? {
+              name: "Inflation",
+              value: inflation,
+              color: theme.pink500,
+            }
+          : {
+              name: "Block Reward",
+              value: centrifugeBlockReward,
+              color: theme.pink500,
+            },
         {
           name: "Slashes",
           children: [
-            {
+            CHAIN_SETTINGS.hasStaking && {
               name: "Staking",
               value: slashStaking,
               color: theme.yellow400,
@@ -136,14 +152,19 @@ const Income = ({
                   },
                 ]
               : []),
-          ],
+          ].filter(Boolean),
+        },
+        IS_CENTRIFUGE && {
+          name: "Gas Fee",
+          value: centrifugeTxFee,
+          color: theme.purple500,
         },
         {
           name: "Others",
           value: others,
           color: theme.neutral500,
         },
-      ],
+      ].filter(Boolean),
     });
   }, [
     inflation,
@@ -157,6 +178,8 @@ const Income = ({
     others,
     supportOpenGov,
     theme,
+    centrifugeBlockReward,
+    centrifugeTxFee,
   ]);
 
   const clickEvent = (name) => {
