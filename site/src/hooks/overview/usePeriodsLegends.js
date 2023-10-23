@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useTheme } from "../../context/theme";
 import { useState } from "react";
-import { CHAIN_SETTINGS } from "../../utils/chains";
+import { CHAIN_SETTINGS, IS_CENTRIFUGE } from "../../utils/chains";
 
 export function useIncomePeriodsLegends() {
   const theme = useTheme();
@@ -12,34 +12,60 @@ export function useIncomePeriodsLegends() {
     Slashes: theme.pink400,
     Transfers: theme.pink300,
     "Big Others": theme.pink200,
+    Others: theme.pink200,
+    // centrifuge
+    "Block Rewards": theme.pink500,
+    "Gas Fee": theme.pink300,
   };
 
-  const [incomeLegends, setIncomeLegends] = useState([
-    {
-      label: "Inflation",
-      color: colors["Inflation"],
-      enabled: true,
-      getValue: (period) => 0 - period.totalInflationValue,
-    },
-    {
-      label: "Slashes",
-      color: colors["Slashes"],
-      enabled: true,
-      getValue: (period) => 0 - period.totalSlashesValue,
-    },
-    {
-      label: "Transfers",
-      color: colors["Transfers"],
-      enabled: true,
-      getValue: (period) => 0 - period.totalTransfersValue,
-    },
-    {
-      label: "Big Others",
-      color: colors["Big Others"],
-      enabled: true,
-      getValue: (period) => 0 - period.totalBigOthersValue,
-    },
-  ]);
+  const [incomeLegends, setIncomeLegends] = useState(
+    [
+      !IS_CENTRIFUGE
+        ? {
+            label: "Inflation",
+            color: colors["Inflation"],
+            enabled: true,
+            getValue: (period) => 0 - period.totalInflationValue,
+          }
+        : {
+            label: "Block Rewards",
+            color: colors["Block Rewards"],
+            enabled: true,
+            getValue: (period) => 0 - period.totalCentrifugeBlockRewardValue,
+          },
+      {
+        label: "Slashes",
+        color: colors["Slashes"],
+        enabled: true,
+        getValue: (period) => 0 - period.totalSlashesValue,
+      },
+      CHAIN_SETTINGS.hasTransfers && {
+        label: "Transfers",
+        color: colors["Transfers"],
+        enabled: true,
+        getValue: (period) => 0 - period.totalTransfersValue,
+      },
+      IS_CENTRIFUGE && {
+        label: "Gas Fee",
+        color: colors["Gas Fee"],
+        enabled: true,
+        getValue: (period) => 0 - period.totalCentrifugeTxFeeValue,
+      },
+      !IS_CENTRIFUGE
+        ? {
+            label: "Big Others",
+            color: colors["Big Others"],
+            enabled: true,
+            getValue: (period) => 0 - period.totalBigOthersValue,
+          }
+        : {
+            label: "Others",
+            color: colors.Others,
+            enabled: true,
+            getValue: (period) => 0 - period.totalOthersValue,
+          },
+    ].filter(Boolean),
+  );
 
   useEffect(() => {
     setIncomeLegends((legends) =>
