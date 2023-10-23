@@ -107,6 +107,7 @@ export const getBlockTime = async (chain, number) => {
 };
 
 export const estimateBlocksTime = async (chain, blocks) => {
+  // FIXME: centrifuge estimate blocks time
   const api = await getApi(chain);
   const nsPerBlock = api.consts.babe.expectedBlockTime.toNumber();
   return nsPerBlock * blocks;
