@@ -8,6 +8,7 @@ import { stringToHex } from "@polkadot/util";
 import { encodeAddress } from "@polkadot/keyring";
 import {
   CHAINS,
+  DEFAULT_CENTRIFUGE_NODES,
   DEFAULT_KUSAMA_NODES,
   DEFAULT_POLKADOT_NODES,
 } from "../constants";
@@ -17,7 +18,7 @@ const apiInstanceMap = new Map();
 export const nodesDefinition = {
   kusama: DEFAULT_KUSAMA_NODES,
   polkadot: DEFAULT_POLKADOT_NODES,
-  centrifuge: [],
+  centrifuge: DEFAULT_CENTRIFUGE_NODES,
 };
 
 export const getApi = async (chain, queryUrl) => {

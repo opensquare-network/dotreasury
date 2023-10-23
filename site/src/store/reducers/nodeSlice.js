@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { nodesDefinition } from "../../services/chainApi";
 import { CHAINS } from "../../constants";
 
-const chain = import.meta.env.VITE_APP_PUBLIC_CHAIN || CHAINS.POLKADOT;
+const chain = import.meta.env.VITE_APP_CHAIN || CHAINS.POLKADOT;
 const chainNodes = nodesDefinition[chain];
 
 function getInitNodeUrl() {

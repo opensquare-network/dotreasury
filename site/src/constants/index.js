@@ -138,6 +138,17 @@ export const DEFAULT_POLKADOT_NODES = [
   },
 ];
 
+export const DEFAULT_CENTRIFUGE_NODES = [
+  {
+    name: "TODO",
+    url: "wss://fullnode.centrifuge.io/",
+  },
+  {
+    name: "LuckFriday",
+    url: "wss://rpc-centrifuge.luckyfriday.io/",
+  },
+];
+
 export const CHAINS = {
   POLKADOT: "polkadot",
   KUSAMA: "kusama",
