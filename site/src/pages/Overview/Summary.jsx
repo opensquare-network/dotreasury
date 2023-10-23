@@ -37,7 +37,7 @@ import { parseEstimateTime } from "../../utils/parseEstimateTime";
 import BigNumber from "bignumber.js";
 import SummaryItem from "../../components/Summary/Item";
 import ImageWithDark from "../../components/ImageWithDark";
-import { CHAIN_SETTINGS } from "../../utils/chains";
+import { CHAIN_SETTINGS, IS_CENTRIFUGE } from "../../utils/chains";
 
 const Wrapper = styled(Card)`
   margin-bottom: 16px;
@@ -267,18 +267,21 @@ const Summary = () => {
     />
   );
 
-  return (
-    <Wrapper>
-      {avaliableitem}
-      {toBeAwardedItem}
-      {burntItem}
-      {spendPeriodItem}
-      {opengovItem}
-      {proposalsItem}
-      {tipsItem}
-      {bountiesItem}
-    </Wrapper>
-  );
+  const items = [
+    avaliableitem,
+    toBeAwardedItem,
+    burntItem,
+    !IS_CENTRIFUGE && spendPeriodItem,
+    opengovItem,
+    proposalsItem,
+    IS_CENTRIFUGE && spendPeriodItem,
+    tipsItem,
+    bountiesItem,
+  ]
+    .filter(Boolean)
+    .map((item, idx) => <Fragment key={idx}>{item}</Fragment>);
+
+  return <Wrapper>{items}</Wrapper>;
 };
 
 export default Summary;
