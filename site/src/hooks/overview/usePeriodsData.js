@@ -37,6 +37,23 @@ export function useIncomePeriodsData() {
         precision,
         false,
       );
+      const totalOthersValue = toPrecision(
+        period.income.others,
+        precision,
+        false,
+      );
+
+      // centrifuge
+      const totalCentrifugeBlockRewardValue = toPrecision(
+        period.income.centrifugeBlockReward,
+        precision,
+        false,
+      );
+      const totalCentrifugeTxFeeValue = toPrecision(
+        period.income.centrifugeTxFee,
+        precision,
+        false,
+      );
 
       return {
         ...period,
@@ -44,6 +61,9 @@ export function useIncomePeriodsData() {
         totalSlashesValue,
         totalTransfersValue,
         totalBigOthersValue,
+        totalOthersValue,
+        totalCentrifugeBlockRewardValue,
+        totalCentrifugeTxFeeValue,
       };
     });
   }, [incomePeriods, precision]);
