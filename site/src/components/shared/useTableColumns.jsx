@@ -403,6 +403,15 @@ const burntValue = (symbol) => {
     },
   };
 };
+const incomeBalance = {
+  key: "balance",
+  title: "Balance",
+  headerCellProps: { textAlign: "right" },
+  cellProps: { textAlign: "right" },
+  cellRender(_, item) {
+    return <Balance value={item.balance} />;
+  },
+};
 
 export function useTableColumns(options) {
   const symbol = useSelector(chainSymbolSelector);
@@ -432,5 +441,6 @@ export function useTableColumns(options) {
     tipsValue: tipsValue(symbol),
     burntValue: burntValue(symbol),
     referendaStatus,
+    incomeBalance,
   };
 }
