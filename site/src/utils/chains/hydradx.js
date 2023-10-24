@@ -5,4 +5,5 @@ export const hydradx = {
   name: "HydraDX",
   symbol: "HDX",
   decimals: 12,
+  hasSubscan: true,
 };

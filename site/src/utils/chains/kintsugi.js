@@ -7,4 +7,5 @@ export const kintsugi = {
   name: capitalizeFirstLetter(value),
   symbol: "KINT",
   decimals: 12,
+  hasSubscan: true,
 };

@@ -7,4 +7,5 @@ export const interlay = {
   name: capitalizeFirstLetter(value),
   symbol: "INTR",
   decimals: 10,
+  hasSubscan: true,
 };

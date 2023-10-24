@@ -7,4 +7,5 @@ export const moonbeam = {
   name: capitalizeFirstLetter(value),
   symbol: "GLMR",
   decimals: 18,
+  hasSubscan: true,
 };

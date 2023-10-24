@@ -7,4 +7,5 @@ export const basilisk = {
   name: capitalizeFirstLetter(value),
   symbol: "BSX",
   decimals: 12,
+  hasSubscan: true,
 };
