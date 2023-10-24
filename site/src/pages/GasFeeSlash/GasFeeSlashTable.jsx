@@ -4,6 +4,7 @@ import { useTableColumns } from "../../components/shared/useTableColumns";
 import styled from "styled-components";
 import Card from "../../components/Card";
 import TableLoading from "../../components/TableLoading";
+import Balance from "../../components/Balance";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -36,8 +37,8 @@ export default function GasFeeTable({ data, loading, header, footer }) {
       title: "Balance",
       headerCellProps: { textAlign: "right" },
       cellProps: { textAlign: "right" },
-      cellRender(_, data) {
-        return <div>TODO</div>;
+      cellRender(_, item) {
+        return <Balance value={item.balance} />;
       },
     },
   ];

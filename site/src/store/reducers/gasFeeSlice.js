@@ -35,7 +35,7 @@ export const fetchGasFeeList =
     dispatch(setLoadingGasFeeList(true));
 
     try {
-      const { result } = await api.fetch("/outputgasfee", {
+      const { result } = await api.fetch("/centrifuge/tx-fees", {
         page,
         pageSize,
       });
