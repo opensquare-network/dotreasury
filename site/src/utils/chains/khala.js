@@ -7,4 +7,5 @@ export const khala = {
   name: capitalizeFirstLetter(value),
   symbol: "PHA",
   decimals: 12,
+  hasSubscan: true,
 };

@@ -9,6 +9,8 @@ export const polkadot = {
   decimals: 10,
   supportOpenGov: true,
   hasDotreasury: true,
+  hasPolkascan: true,
+  hasSubscan: true,
 
   hasProjects: true,
   hasOutputPeriods: true,

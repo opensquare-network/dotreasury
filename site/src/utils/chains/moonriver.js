@@ -7,4 +7,5 @@ export const moonriver = {
   name: capitalizeFirstLetter(value),
   symbol: "MOVR",
   decimals: 18,
+  hasSubscan: true,
 };

@@ -8,6 +8,7 @@ export const centrifuge = {
   symbol: "CFG",
   decimals: 18,
   hasDotreasury: true,
+  hasSubscan: true,
 
   hasTips: false,
   hasBounties: false,

@@ -9,6 +9,8 @@ export const kusama = {
   decimals: 12,
   supportOpenGov: true,
   hasDotreasury: true,
+  hasPolkascan: true,
+  hasSubscan: true,
 
   hasProjects: true,
   hasOutputPeriods: true,
