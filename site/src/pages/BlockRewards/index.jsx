@@ -12,7 +12,7 @@ import {
   blockRewardListSelector,
   fetchBlockRewardList,
   loadingBlockRewardListSelector,
-} from "../../store/reducers/blockRewardSlice";
+} from "../../store/reducers/centrifugeBlockRewardSlice";
 
 const HeaderWrapper = styled.div`
   padding: 20px 24px;
