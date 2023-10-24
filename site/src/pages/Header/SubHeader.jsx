@@ -27,6 +27,7 @@ import { useSupportOpenGov } from "../../utils/hooks/chain";
 import { SYMBOLS } from "../../constants";
 import { CHAIN_SETTINGS, IS_CENTRIFUGE } from "../../utils/chains";
 import GasFeeIncomeMenu from "./GasFeeIncomeMenu";
+import BlockRewardsIncomeMenu from "./BlockRewardsMenu";
 
 const Wrapper = styled.div`
   position: relative;
@@ -240,17 +241,29 @@ const TabExampleSecondaryPointing = () => {
         ].filter(Boolean)
       : showMenuTabs === "Income"
       ? [
-          {
-            menuItem: {
-              as: NavLink,
-              id: "inflationTab",
-              content: <InflationMenu />,
-              to: "/income",
-              exact: true,
-              key: IS_CENTRIFUGE ? "blockRewards" : "inflation",
-              active: "/income" === pathname,
-            },
-          },
+          !IS_CENTRIFUGE
+            ? {
+                menuItem: {
+                  as: NavLink,
+                  id: "inflationTab",
+                  content: <InflationMenu />,
+                  to: "/income",
+                  exact: true,
+                  key: "inflation",
+                  active: "/income" === pathname,
+                },
+              }
+            : {
+                menuItem: {
+                  as: NavLink,
+                  id: "gasFeeTab",
+                  content: <BlockRewardsIncomeMenu />,
+                  to: "/income",
+                  exact: true,
+                  key: "blockRewards",
+                  active: "/income" === pathname,
+                },
+              },
           {
             menuItem: {
               id: "slashDropdownTab",

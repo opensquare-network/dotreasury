@@ -12,16 +12,16 @@ const Divider = styled.div`
   left: 16px;
 `;
 
-function GasFeeIncomeMenu() {
+function BlockRewardsIncomeMenu() {
   const incomeCount = useSelector(incomeCountSelector);
 
   return (
     <Menu.Item key="GasFeeIncome">
-      Gas Fee
-      <Label>{incomeCount.centrifugeTxFees}</Label>
+      Block Rewards
+      <Label>{incomeCount.centrifugeBlockRewards}</Label>
       <Divider />
     </Menu.Item>
   );
 }
 
-export default GasFeeIncomeMenu;
+export default BlockRewardsIncomeMenu;

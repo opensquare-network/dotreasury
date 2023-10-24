@@ -193,6 +193,8 @@ export const fetchIncomeCount = () => async (dispatch) => {
         inflation: 0,
         others: 0,
         transfer: 0,
+        centrifugeBlockRewards: 0,
+        centrifugeTxFees: 0,
       },
     ),
   );
