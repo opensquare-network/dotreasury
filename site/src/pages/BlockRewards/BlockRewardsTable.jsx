@@ -4,7 +4,6 @@ import { useTableColumns } from "../../components/shared/useTableColumns";
 import styled from "styled-components";
 import Card from "../../components/Card";
 import TableLoading from "../../components/TableLoading";
-import Balance from "../../components/Balance";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -27,21 +26,9 @@ const TableWrapper = styled.div`
 `;
 
 export default function BlockRewardsTable({ data, loading, header, footer }) {
-  const { time, eventId } = useTableColumns();
+  const { time, eventId, incomeBalance } = useTableColumns();
 
-  const columns = [
-    time,
-    eventId,
-    {
-      key: "balance",
-      title: "Balance",
-      headerCellProps: { textAlign: "right" },
-      cellProps: { textAlign: "right" },
-      cellRender(_, item) {
-        return <Balance value={item.balance} />;
-      },
-    },
-  ];
+  const columns = [time, eventId, incomeBalance];
 
   return (
     <CardWrapper>
