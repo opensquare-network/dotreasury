@@ -113,7 +113,7 @@ const Summary = () => {
     toPrecision(toBeAwarded, precision),
   ).toNumber();
 
-  const avaliableitem = (
+  const availableItem = (
     <SummaryItem
       icon={<ImageWithDark src="/imgs/data-available.svg" />}
       title="Available"
@@ -268,7 +268,7 @@ const Summary = () => {
   );
 
   const sortedItems = [
-    avaliableitem,
+    availableItem,
     toBeAwardedItem,
     burntItem,
     !IS_CENTRIFUGE && spendPeriodItem,
