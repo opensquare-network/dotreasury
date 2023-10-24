@@ -1,8 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import api from "../../services/scanApi";
 
-const blockRewardSlice = createSlice({
-  name: "blockReward",
+const name = "centrifugeBlockReward";
+
+const centrifugeBlockRewardSlice = createSlice({
+  name,
   initialState: {
     blockRewardList: {
       items: [],
@@ -30,7 +32,7 @@ export const {
   setBlockRewardList,
   setLoadingBlockRewardList,
   setBlockRewardListCount,
-} = blockRewardSlice.actions;
+} = centrifugeBlockRewardSlice.actions;
 
 export const fetchBlockRewardList =
   (page = 0, pageSize = 30) =>
@@ -57,11 +59,10 @@ export const fetchBlockRewardList =
     }
   };
 
-export const blockRewardListSelector = (state) =>
-  state.blockReward.blockRewardList;
+export const blockRewardListSelector = (state) => state[name].blockRewardList;
 export const loadingBlockRewardListSelector = (state) =>
-  state.blockReward.loadingBlockRewardList;
+  state[name].loadingBlockRewardList;
 export const blockRewardListCountSelector = (state) =>
-  state.blockReward.blockRewardListCount;
+  state[name].blockRewardListCount;
 
-export default blockRewardSlice.reducer;
+export default centrifugeBlockRewardSlice.reducer;

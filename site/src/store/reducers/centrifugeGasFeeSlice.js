@@ -1,8 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import api from "../../services/scanApi";
 
-const gasFeeSlice = createSlice({
-  name: "gasFee",
+const name = "centrifugeGasFee";
+
+const centrifugeGasFeeSlice = createSlice({
+  name,
   initialState: {
     gasFeeList: {
       items: [],
@@ -27,7 +29,7 @@ const gasFeeSlice = createSlice({
 });
 
 export const { setGasFeeList, setLoadingGasFeeList, setGasFeeListCount } =
-  gasFeeSlice.actions;
+  centrifugeGasFeeSlice.actions;
 
 export const fetchGasFeeList =
   (page = 0, pageSize = 30) =>
@@ -54,9 +56,8 @@ export const fetchGasFeeList =
     }
   };
 
-export const gasFeeListSelector = (state) => state.gasFee.gasFeeList;
-export const loadingGasFeeListSelector = (state) =>
-  state.gasFee.loadingGasFeeList;
-export const gasFeeListCountSelector = (state) => state.gasFee.gasFeeListCount;
+export const gasFeeListSelector = (state) => state[name].gasFeeList;
+export const loadingGasFeeListSelector = (state) => state[name].loadingGasFeeList;
+export const gasFeeListCountSelector = (state) => state[name].gasFeeListCount;
 
-export default gasFeeSlice.reducer;
+export default centrifugeGasFeeSlice.reducer;

@@ -11,7 +11,7 @@ import {
   fetchGasFeeList,
   gasFeeListSelector,
   loadingGasFeeListSelector,
-} from "../../store/reducers/gasFeeSlice";
+} from "../../store/reducers/centrifugeGasFeeSlice";
 import { useEffect } from "react";
 
 const HeaderWrapper = styled.div`

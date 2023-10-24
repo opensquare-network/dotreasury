@@ -23,8 +23,8 @@ import proposalBeneficiariesReducer from "./proposalBeneficiariesSlice";
 import usersReducer from "./usersSlice";
 import usersDetailReducer from "./usersDetailSlice";
 import openGovApplicationsReducer from "./openGovApplicationsSlice";
-import gasFeeReducer from "./gasFeeSlice";
-import blockRewardReducer from "./blockRewardSlice";
+import centrifugeGasFeeReducer from "./centrifugeGasFeeSlice";
+import centrifugeBlockRewardReducer from "./centrifugeBlockRewardSlice";
 
 export default combineReducers({
   test: testReducer,
@@ -51,6 +51,6 @@ export default combineReducers({
   users: usersReducer,
   usersDetail: usersDetailReducer,
   openGovApplications: openGovApplicationsReducer,
-  gasFee: gasFeeReducer,
-  blockReward: blockRewardReducer,
+  centrifugeGasFee: centrifugeGasFeeReducer,
+  centrifugeBlockReward: centrifugeBlockRewardReducer,
 });
