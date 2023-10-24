@@ -6,6 +6,7 @@ const {
 } = require("@polkadot/util-crypto");
 const BigNumber = require("bignumber.js");
 const { HttpError } = require("../exc");
+const { chainDecimals } = require("./consts/chains");
 
 function extractPage(ctx) {
   const { page_size: queryPageSize, page: queryPage } = ctx.query;
@@ -94,7 +95,7 @@ async function verifyAdminSignature(addressAndSignature, message, admins) {
 }
 
 function fromUint(value) {
-  const decimals = process.env.CHAIN === "polkadot" ? 10 : 12;
+  const decimals = chainDecimals[process.env.CHAIN];
   return new BigNumber(value).div(Math.pow(10, decimals));
 }
 
