@@ -12,6 +12,7 @@ import {
   DEFAULT_KUSAMA_NODES,
   DEFAULT_POLKADOT_NODES,
 } from "../constants";
+import { IS_CENTRIFUGE } from "../utils/chains";
 
 const apiInstanceMap = new Map();
 
@@ -107,8 +108,14 @@ export const getBlockTime = async (chain, number) => {
 };
 
 export const estimateBlocksTime = async (chain, blocks) => {
-  // FIXME: centrifuge estimate blocks time
   const api = await getApi(chain);
+
+  // FIXME: centrifuge estimate blocks time
+  if (IS_CENTRIFUGE) {
+    return api.consts.timestamp.minimumPeriod.toNumber() * blocks;
+    // return api.consts.treasury.spendPeriod.toNumber() * blocks;
+  }
+
   const nsPerBlock = api.consts.babe.expectedBlockTime.toNumber();
   return nsPerBlock * blocks;
 };
