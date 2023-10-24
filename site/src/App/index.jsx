@@ -44,6 +44,7 @@ import Referenda from "../pages/Referenda";
 import { usePreload } from "../utils/hooks";
 import ReferendaSlash from "../pages/ReferendaSlash";
 import FellowshipReferendaSlash from "../pages/FellowshipReferendaSlash";
+import GasFeeSlash from "../pages/GasFeeSlash";
 
 export default function App() {
   usePreload();
@@ -140,6 +141,7 @@ export default function App() {
                 path="/income/transfers"
                 component={TransfersSlash}
               />
+              <Route exact path="/income/gasfee" component={GasFeeSlash} />
               <Route exact path="/income/others" component={OthersIncome} />
               <Route exact path="/users" component={Users} />
               <Route exact path="/users/:address" component={UsersDetail} />
