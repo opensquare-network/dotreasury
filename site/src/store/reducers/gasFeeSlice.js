@@ -56,7 +56,7 @@ export const fetchGasFeeList =
 
 export const gasFeeListSelector = (state) => state.gasFee.gasFeeList;
 export const loadingGasFeeListSelector = (state) =>
-  state.gasFee.LoadingGasFeeList;
+  state.gasFee.loadingGasFeeList;
 export const gasFeeListCountSelector = (state) => state.gasFee.gasFeeListCount;
 
 export default gasFeeSlice.reducer;
