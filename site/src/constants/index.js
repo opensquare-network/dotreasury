@@ -101,6 +101,10 @@ export const DEFAULT_KUSAMA_NODES = [
     name: "RadiumBlock",
     url: "wss://kusama.public.curie.radiumblock.co/ws",
   },
+  {
+    name: "Stakeworld",
+    url: "wss://ksm-rpc.stakeworld.io",
+  },
 ];
 
 export const DEFAULT_POLKADOT_NODES = [
@@ -135,6 +139,14 @@ export const DEFAULT_POLKADOT_NODES = [
   {
     name: "RadiumBlock",
     url: "wss://polkadot.public.curie.radiumblock.co/ws",
+  },
+  {
+    name: "Stakeworld",
+    url: "wss://dot-rpc.stakeworld.io",
+  },
+  {
+    name: "LuckyFriday",
+    url: "wss://rpc-polkadot.luckyfriday.io",
   },
 ];
 
