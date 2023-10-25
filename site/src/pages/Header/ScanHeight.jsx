@@ -332,13 +332,6 @@ const ScanHeight = () => {
                     <div className="unit">{item.symbol}</div>
                   </SymbolItem>
                 ))}
-                <ExternalLink href="https://edg.dotreasury.com/">
-                  <SymbolItem onClick={() => setNodeOpen(false)}>
-                    <ImageWithDark src="/imgs/logo-edgeware.svg" />
-                    <div>Edgeware</div>
-                    <div className="unit">EDG</div>
-                  </SymbolItem>
-                </ExternalLink>
               </SymbolWrapper>
             )}
           </Button>
