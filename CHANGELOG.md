@@ -2,6 +2,15 @@
 
 Notable changes to this project will be documented in this file, started from 4.0.0
 
+### 4.1.0
+
+Date: 2023-10-25
+
+- [Big] Support centrifuge.
+- Fix list pages query params not work.
+- Fix the key warnings about chart tooltip components.
+- Improve income and output period charts Y axis label.
+
 ### 4.0.3
 Date: 2023-10-20
 
