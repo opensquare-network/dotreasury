@@ -10,7 +10,6 @@ import StakingSlashMenu from "./StakingSlashMenu";
 import TreasurySlashMenu from "./TreasurySlashMenu";
 import styled from "styled-components";
 import { rounded_4, shadow_200 } from "../../../styles/tailwindcss";
-import { useSupportOpenGov } from "../../../utils/hooks/chain";
 import { currentChainSettings } from "../../../utils/chains";
 
 const Popup = styled(PopupOrigin)`
@@ -26,7 +25,6 @@ const Popup = styled(PopupOrigin)`
 export default function PopupMenu({ trigger }) {
   const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
-  const supportOpenGov = useSupportOpenGov();
 
   const navigate = (path) => {
     history.push(path);
@@ -44,7 +42,7 @@ export default function PopupMenu({ trigger }) {
       />
       <DemocracySlashMenu onClick={() => navigate("/income/slash/democracy")} />
       <IdentitySlashMenu onClick={() => navigate("/income/slash/identity")} />
-      {supportOpenGov && (
+      {currentChainSettings.supportOpenGov && (
         <>
           <ReferendaSlashMenu
             onClick={() => navigate("/income/slash/referenda")}

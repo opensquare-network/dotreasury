@@ -7,12 +7,11 @@ import {
 import { stringToHex } from "@polkadot/util";
 import { encodeAddress } from "@polkadot/keyring";
 import {
-  CHAINS,
   DEFAULT_CENTRIFUGE_NODES,
   DEFAULT_KUSAMA_NODES,
   DEFAULT_POLKADOT_NODES,
 } from "../constants";
-import { getChainSettings } from "../utils/chains";
+import { CHAINS, getChainSettings } from "../utils/chains";
 
 const apiInstanceMap = new Map();
 
@@ -147,9 +146,9 @@ export const encodeSubstrateAddress = (address) => {
 export const encodeChainAddress = (address, chain) => {
   let encodedAddress = encodeSubstrateAddress(address);
 
-  if (chain === CHAINS.KUSAMA) {
+  if (chain === CHAINS.kusama.value) {
     encodedAddress = encodeKusamaAddress(address);
-  } else if (chain === CHAINS.POLKADOT) {
+  } else if (chain === CHAINS.polkadot.value) {
     encodedAddress = encodePolkadotAddress(address);
   }
 

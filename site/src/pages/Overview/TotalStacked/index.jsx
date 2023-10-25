@@ -24,7 +24,6 @@ import {
   w_full,
 } from "../../../styles/tailwindcss";
 import { breakpoint } from "../../../styles/responsive";
-import { useSupportOpenGov } from "../../../utils/hooks/chain";
 import Slider from "../../../components/Slider";
 import { currentChainSettings, isCentrifuge } from "../../../utils/chains";
 
@@ -100,7 +99,6 @@ const SecondListWrapper = styled.div`
 
 const TotalStacked = () => {
   const theme = useTheme();
-  const supportOpenGov = useSupportOpenGov();
   const dispatch = useDispatch();
   const [dateLabels, setDateLabels] = useState([]);
   const [incomeHistory, setIncomeHistory] = useState([]);
@@ -144,7 +142,7 @@ const TotalStacked = () => {
             name: "Identity",
             value: 0,
           },
-          ...(supportOpenGov
+          ...(currentChainSettings.supportOpenGov
             ? [
                 {
                   name: "Referenda",
@@ -343,7 +341,7 @@ const TotalStacked = () => {
                   false,
                 ),
               },
-              ...(supportOpenGov
+              ...(currentChainSettings.supportOpenGov
                 ? [
                     {
                       name: "Referenda",
@@ -450,7 +448,7 @@ const TotalStacked = () => {
         ],
       });
     }
-  }, [showIndex, statsHistory, dateLabels, precision, supportOpenGov, theme]);
+  }, [showIndex, statsHistory, dateLabels, precision, theme]);
 
   const sliceRangeData = (data) => {
     return data.slice(chartRange[0], chartRange[1] + 1);

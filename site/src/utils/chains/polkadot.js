@@ -7,6 +7,7 @@ export const polkadot = {
   name: capitalizeFirstLetter(value),
   symbol: "DOT",
   decimals: 10,
+  ss58Format: 0,
   supportOpenGov: true,
   hasDotreasury: true,
   hasPolkascan: true,

@@ -28,6 +28,8 @@ export const CHAINS = {
 
 export const currentChainSettings = getChainSettings(currentChain);
 
+export const isPolkadot = currentChain === CHAINS.polkadot.value;
+export const isKusama = currentChain === CHAINS.kusama.value;
 export const isCentrifuge = currentChain === CHAINS.centrifuge.value;
 
 /**

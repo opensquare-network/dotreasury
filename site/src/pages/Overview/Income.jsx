@@ -9,7 +9,6 @@ import DoughnutCardLinkTitle from "./DoughnutCardLinkTitle";
 import { useTheme } from "../../context/theme";
 import IconMask from "../../components/Icon/Mask";
 import { items_center } from "../../styles/tailwindcss";
-import { useSupportOpenGov } from "../../utils/hooks/chain";
 import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import { currentChainSettings, isCentrifuge } from "../../utils/chains";
@@ -41,7 +40,6 @@ const Income = ({
   centrifugeTxFee,
 }) => {
   const theme = useTheme();
-  const supportOpenGov = useSupportOpenGov();
   const symbol = useSelector(chainSymbolSelector);
   const [incomeData, setIncomeData] = useState({
     icon: "circle",
@@ -74,7 +72,7 @@ const Income = ({
           {
             name: "Identity",
           },
-          ...(supportOpenGov
+          ...(currentChainSettings.supportOpenGov
             ? [
                 {
                   name: "Referenda",
@@ -138,7 +136,7 @@ const Income = ({
               value: slashIdentity,
               color: theme.yellow100,
             },
-            ...(supportOpenGov
+            ...(currentChainSettings.supportOpenGov
               ? [
                   {
                     name: "Referenda",
@@ -176,7 +174,6 @@ const Income = ({
     slashReferenda,
     slashFellowshipReferenda,
     others,
-    supportOpenGov,
     theme,
     centrifugeBlockReward,
     centrifugeTxFee,

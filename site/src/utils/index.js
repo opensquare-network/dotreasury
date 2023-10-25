@@ -9,7 +9,8 @@ import { decodeAddress, encodeAddress } from "@polkadot/util-crypto";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import md5 from "md5";
-import { CHAINS, SYMBOLS } from "../constants";
+import { SYMBOLS } from "../constants";
+import { CHAINS } from "./chains";
 
 dayjs.extend(duration);
 
@@ -108,27 +109,19 @@ export const getGravatarSrc = (email) => {
 };
 
 export function networkFromSymbol(symbol) {
-  if (symbol.toLowerCase() === SYMBOLS.KSM) {
-    return CHAINS.KUSAMA;
-  } else if (symbol.toLowerCase() === SYMBOLS.DOT) {
-    return CHAINS.POLKADOT;
-  } else if (symbol.toLowerCase() === SYMBOLS.CFG) {
-    return CHAINS.CENTRIFUGE;
-  } else {
-    return null;
-  }
+  const chain = Object.values(CHAINS).find(
+    (chain) => chain.symbol.toLowerCase() === symbol?.toLowerCase?.(),
+  );
+
+  return chain?.value || null;
 }
 
 export function symbolFromNetwork(network) {
-  if (network === CHAINS.KUSAMA) {
-    return SYMBOLS.KSM;
-  } else if (network === CHAINS.POLKADOT) {
-    return SYMBOLS.DOT;
-  } else if (network === CHAINS.CENTRIFUGE) {
-    return SYMBOLS.CFG;
-  } else {
-    return null;
-  }
+  const chain = Object.values(CHAINS).find(
+    (chain) => chain.value.toLowerCase() === network?.toLowerCase?.(),
+  );
+
+  return chain?.symbol?.toLowerCase?.() || null;
 }
 
 export function capitalizeFirstLetter(string) {

@@ -23,7 +23,6 @@ import Card from "../../components/Card";
 import Container from "../../components/Container";
 
 import SlashMenu from "./SlashMenu";
-import { useSupportOpenGov } from "../../utils/hooks/chain";
 import { SYMBOLS } from "../../constants";
 import { currentChainSettings, isCentrifuge } from "../../utils/chains";
 import GasFeeIncomeMenu from "./GasFeeIncomeMenu";
@@ -148,8 +147,6 @@ const TabExampleSecondaryPointing = () => {
     dispatch(fetchIncomeCount());
   }, [dispatch]);
 
-  const supportOpenGov = useSupportOpenGov();
-
   const panes =
     showMenuTabs === "Home"
       ? [
@@ -164,7 +161,7 @@ const TabExampleSecondaryPointing = () => {
               active: "/" === pathname,
             },
           },
-          ...(supportOpenGov
+          ...(currentChainSettings.supportOpenGov
             ? [
                 {
                   menuItem: {

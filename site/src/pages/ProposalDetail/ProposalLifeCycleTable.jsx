@@ -12,7 +12,6 @@ import RelatedLinks from "../../components/RelatedLinks";
 
 import { proposalDetailSelector } from "../../store/reducers/proposalSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
-import { CHAINS } from "../../constants";
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -27,7 +26,7 @@ const ProposalLifeCycleTable = ({ loading }) => {
   const proposalDetail = useSelector(proposalDetailSelector);
 
   const links = [];
-  if ([CHAINS.KUSAMA, CHAINS.POLKADOT].includes(chain) && proposalDetail) {
+  if (proposalDetail) {
     links.push({
       link: `https://${chain}.subsquare.io/treasury/proposal/${proposalDetail.proposalIndex}`,
       description: "Treasury proposal discusssion",

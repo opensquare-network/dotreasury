@@ -21,7 +21,6 @@ import {
   m_t,
 } from "../../styles/tailwindcss";
 import OpenGovSpend from "./OpenGovSpend";
-import { useSupportOpenGov } from "../../utils/hooks/chain";
 import { mdcss, smcss } from "@osn/common";
 import IncomeAndOutputPeriods from "./IncomeAndOutputPeriods";
 import TopBeneficiariesTable from "./TopBeneficiariesTable/index.jsx";
@@ -81,7 +80,6 @@ const TableWrapper = styled.div`
 const Overview = () => {
   const overview = useSelector(overviewSelector);
   const symbol = useSelector(chainSymbolSelector);
-  const supportOpenGov = useSupportOpenGov();
 
   const precision = getPrecision(symbol);
 
@@ -156,7 +154,7 @@ const Overview = () => {
     />,
     <Output key="output" />,
 
-    supportOpenGov && <OpenGovSpend key="openGovSpend" />,
+    currentChainSettings.supportOpenGov && <OpenGovSpend key="openGovSpend" />,
   ].filter(Boolean);
 
   return (

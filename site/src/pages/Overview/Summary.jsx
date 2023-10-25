@@ -31,7 +31,6 @@ import {
   rounded_none,
 } from "../../styles/tailwindcss";
 import { breakpoint, smcss, mdcss, lgcss } from "../../styles/responsive";
-import { useSupportOpenGov } from "../../utils/hooks/chain";
 import { extractTime } from "@polkadot/util";
 import { parseEstimateTime } from "../../utils/parseEstimateTime";
 import BigNumber from "bignumber.js";
@@ -104,7 +103,6 @@ const Summary = () => {
   const spendPeriod = useSelector(spendPeriodSelector);
   const treasury = useSelector(treasurySelector);
   const symbol = useSelector(chainSymbolSelector);
-  const supportOpenGov = useSupportOpenGov();
 
   const precision = getPrecision(symbol);
 
@@ -188,7 +186,7 @@ const Summary = () => {
       }
     />
   );
-  const opengovItem = supportOpenGov && (
+  const opengovItem = currentChainSettings.supportOpenGov && (
     <SummaryItem
       icon={<ImageWithDark src="/imgs/data-opengov.svg" />}
       title="OpenGov"

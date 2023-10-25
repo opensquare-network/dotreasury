@@ -7,6 +7,7 @@ export const centrifuge = {
   name: capitalizeFirstLetter(value),
   symbol: "CFG",
   decimals: 18,
+  ss58Format: 36,
   hasDotreasury: true,
   hasSubscan: true,
 

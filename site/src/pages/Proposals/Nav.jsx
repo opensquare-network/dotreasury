@@ -9,7 +9,7 @@ import {
 } from "../../store/reducers/overviewSlice";
 import { NavItem, NavLabel, NavWrapper } from "../../components/Nav/styled";
 import { useQuery } from "../../utils/hooks";
-import { useSupportOpenGov } from "../../utils/hooks/chain";
+import { currentChainSettings } from "../../utils/chains";
 
 function Nav() {
   const history = useHistory();
@@ -21,7 +21,6 @@ function Nav() {
   const totalProposalCount = useSelector(totalProposalCountSelector);
   const openGovProposalCount = useSelector(openGovProposalCountSelector);
   const gov1ProposalCount = totalProposalCount - openGovProposalCount;
-  const supportOpenGov = useSupportOpenGov();
 
   useEffect(() => {
     const searchParams = new URLSearchParams();
@@ -49,7 +48,7 @@ function Nav() {
     },
   ];
 
-  if (supportOpenGov) {
+  if (currentChainSettings.supportOpenGov) {
     items.push(
       {
         name: "OpenGov",

@@ -153,12 +153,6 @@ export const DEFAULT_CENTRIFUGE_NODES = [
   },
 ];
 
-export const CHAINS = {
-  POLKADOT: "polkadot",
-  KUSAMA: "kusama",
-  CENTRIFUGE: "centrifuge",
-};
-
 export const SYMBOLS = {
   DOT: "dot",
   KSM: "ksm",

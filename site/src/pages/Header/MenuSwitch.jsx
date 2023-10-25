@@ -7,7 +7,7 @@ import {
   showMenuTabsSelector,
 } from "../../store/reducers/menuSlice";
 import { useChain } from "../../utils/hooks/chain";
-import { CHAINS } from "../../constants";
+import { isKusama } from "../../utils/chains";
 
 const Wrapper = styled.div`
   margin-right: 32px;
@@ -25,8 +25,8 @@ const StyledButton = styled(Button)`
     css`
       color: var(--primary) !important;
     `}
-  ${(p) =>
-    p.chain === CHAINS.KUSAMA &&
+  ${() =>
+    isKusama &&
     css`
       color: var(--textPrimaryContrast) !important;
     `}
@@ -46,11 +46,7 @@ const MenuSwitch = ({ menuTabsName = "Home" }) => {
 
   return (
     <Wrapper>
-      <StyledButton
-        chain={chain}
-        active={showMenuTabs === menuTabsName}
-        onClick={switcher}
-      >
+      <StyledButton active={showMenuTabs === menuTabsName} onClick={switcher}>
         {menuTabsName}
       </StyledButton>
     </Wrapper>
