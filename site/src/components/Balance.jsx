@@ -59,7 +59,6 @@ const Balance = ({
   abbreviate = false,
 }) => {
   const symbol = useSelector(chainSymbolSelector);
-  console.log(symbol);
   let usdtNumber = Number(usdt);
   if (value === null || value === undefined) value = 0;
   const precision = toPrecision(value, getPrecision(currency || symbol), false);
