@@ -13,6 +13,7 @@ import BountiesTable from "./BountiesTable";
 import ChildBountiesTable from "./ChildBountiesTable";
 import ResponsivePagination from "../../../components/ResponsivePagination";
 import { Link } from "react-router-dom";
+import { currentChainSettings } from "../../../utils/chains";
 
 const TABLE_TABS = {
   Proposals: "proposals",
@@ -41,24 +42,25 @@ export default function ProposalsTables({ role }) {
   const counts = useSelector(usersCountsSelector);
 
   const tableTitles = useMemo(
-    () => [
-      {
-        label: TABLE_TABS.Proposals,
-        count: counts?.proposalsCount,
-      },
-      {
-        label: TABLE_TABS.Tips,
-        count: counts?.tipsCount,
-      },
-      {
-        label: TABLE_TABS.Bounties,
-        count: counts?.bountiesCount,
-      },
-      {
-        label: TABLE_TABS.ChildBounties,
-        count: counts?.childBountiesCount,
-      },
-    ],
+    () =>
+      [
+        {
+          label: TABLE_TABS.Proposals,
+          count: counts?.proposalsCount,
+        },
+        currentChainSettings.hasTips && {
+          label: TABLE_TABS.Tips,
+          count: counts?.tipsCount,
+        },
+        currentChainSettings.hasBounties && {
+          label: TABLE_TABS.Bounties,
+          count: counts?.bountiesCount,
+        },
+        currentChainSettings.hasBounties && {
+          label: TABLE_TABS.ChildBounties,
+          count: counts?.childBountiesCount,
+        },
+      ].filter(Boolean),
     [counts],
   );
   const [tableTab, setTableTab] = useState(

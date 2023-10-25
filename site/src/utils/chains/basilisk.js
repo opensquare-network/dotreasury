@@ -1,4 +1,4 @@
-import { capitalizeFirstLetter } from "@site/src/utils";
+import { capitalizeFirstLetter } from "../../utils";
 
 const value = "basilisk";
 
@@ -7,4 +7,5 @@ export const basilisk = {
   name: capitalizeFirstLetter(value),
   symbol: "BSX",
   decimals: 12,
+  hasSubscan: true,
 };

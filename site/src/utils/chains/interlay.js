@@ -1,4 +1,4 @@
-import { capitalizeFirstLetter } from "@site/src/utils";
+import { capitalizeFirstLetter } from "../../utils";
 
 const value = "interlay";
 
@@ -7,4 +7,5 @@ export const interlay = {
   name: capitalizeFirstLetter(value),
   symbol: "INTR",
   decimals: 10,
+  hasSubscan: true,
 };

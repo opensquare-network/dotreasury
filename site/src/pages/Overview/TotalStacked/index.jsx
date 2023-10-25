@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { bnToBn } from "@polkadot/util";
 import dayjs from "dayjs";
 import { useTheme } from "../../../context/theme";
 
@@ -15,10 +14,7 @@ import {
   fetchStatsHistory,
   statsHistorySelector,
 } from "../../../store/reducers/overviewSlice";
-import {
-  chainSelector,
-  chainSymbolSelector,
-} from "../../../store/reducers/chainSlice";
+import { chainSymbolSelector } from "../../../store/reducers/chainSlice";
 import { h4_16_semibold, p_12_normal } from "../../../styles/text";
 import {
   gap,
@@ -28,9 +24,8 @@ import {
   w_full,
 } from "../../../styles/tailwindcss";
 import { breakpoint } from "../../../styles/responsive";
-import { useSupportOpenGov } from "../../../utils/hooks/chain";
 import Slider from "../../../components/Slider";
-import { CHAINS } from "../../../constants";
+import { currentChainSettings, isCentrifuge } from "../../../utils/chains";
 
 const CardWrapper = styled(Card)`
   padding: 24px;
@@ -104,8 +99,6 @@ const SecondListWrapper = styled.div`
 
 const TotalStacked = () => {
   const theme = useTheme();
-  const chain = useSelector(chainSelector);
-  const supportOpenGov = useSupportOpenGov();
   const dispatch = useDispatch();
   const [dateLabels, setDateLabels] = useState([]);
   const [incomeHistory, setIncomeHistory] = useState([]);
@@ -117,14 +110,19 @@ const TotalStacked = () => {
     title: "Income",
     icon: "square",
     labels: [
-      {
-        name: "Inflation",
-        value: 0,
-      },
+      !isCentrifuge
+        ? {
+            name: "Inflation",
+            value: 0,
+          }
+        : {
+            name: "Block Reward",
+            value: 0,
+          },
       {
         name: "Slashes",
         children: [
-          {
+          currentChainSettings.hasStaking && {
             name: "Staking",
             value: 0,
           },
@@ -144,7 +142,7 @@ const TotalStacked = () => {
             name: "Identity",
             value: 0,
           },
-          ...(supportOpenGov
+          ...(currentChainSettings.supportOpenGov
             ? [
                 {
                   name: "Referenda",
@@ -156,13 +154,13 @@ const TotalStacked = () => {
                 },
               ]
             : []),
-        ],
+        ].filter(Boolean),
       },
       {
         name: "Others",
         value: 0,
       },
-    ],
+    ].filter(Boolean),
   });
   const [outputData, setOutputData] = useState({
     title: "Output",
@@ -172,22 +170,38 @@ const TotalStacked = () => {
         name: "Proposal",
         value: 0,
       },
-      {
-        name: "Tips",
-        value: 0,
-      },
-      {
-        name: "Bounties",
-        value: 0,
-      },
-      {
-        name: "Burnt",
-        value: 0,
-      },
-      {
-        name: "Transfer",
-        value: 0,
-      },
+      ...(currentChainSettings.hasTips
+        ? [
+            {
+              name: "Tips",
+              value: 0,
+            },
+          ]
+        : []),
+      ...(currentChainSettings.hasBounties
+        ? [
+            {
+              name: "Bounties",
+              value: 0,
+            },
+          ]
+        : []),
+      ...(currentChainSettings.hasBurnt
+        ? [
+            {
+              name: "Burnt",
+              value: 0,
+            },
+          ]
+        : []),
+      ...(currentChainSettings.hasTransfers
+        ? [
+            {
+              name: "Transfer",
+              value: 0,
+            },
+          ]
+        : []),
     ],
   });
   const [treasuryData, setTreasuryData] = useState({
@@ -217,25 +231,31 @@ const TotalStacked = () => {
     setDateLabels(dateLabels);
     setChartRange([0, dateLabels.length - 1]);
 
-    const incomeHistory = statsHistory
-      .map((statsItem) =>
-        bnToBn(statsItem.income.inflation)
-          .add(bnToBn(statsItem.income.slash))
-          .add(bnToBn(statsItem.income.transfer))
-          .add(bnToBn(statsItem.income.others)),
-      )
-      .map((bn) => toPrecision(bn, precision, false));
+    const incomeHistory = statsHistory.map((statsItem) => {
+      return (
+        toPrecision(statsItem.income.inflation, precision, false) +
+        toPrecision(statsItem.income.slash, precision, false) +
+        toPrecision(statsItem.income.transfer, precision, false) +
+        toPrecision(statsItem.income.others, precision, false) +
+        toPrecision(
+          statsItem.income?.centrifugeBlockReward || 0,
+          precision,
+          false,
+        ) +
+        toPrecision(statsItem.income?.centrifugeTxFee || 0, precision, false)
+      );
+    });
     setIncomeHistory(incomeHistory);
 
-    const outputHistory = statsHistory
-      .map((statsItem) =>
-        bnToBn(statsItem.output.tip)
-          .add(bnToBn(statsItem.output.proposal))
-          .add(bnToBn(statsItem.output.bounty))
-          .add(bnToBn(statsItem.output.burnt))
-          .add(bnToBn(statsItem.output.transfer)),
-      )
-      .map((bn) => toPrecision(bn, precision, false));
+    const outputHistory = statsHistory.map((statsItem) => {
+      return (
+        toPrecision(statsItem.output.tip, precision, false) +
+        toPrecision(statsItem.output.proposal, precision, false) +
+        toPrecision(statsItem.output.bounty, precision, false) +
+        toPrecision(statsItem.output.burnt, precision, false) +
+        toPrecision(statsItem.output.transfer, precision, false)
+      );
+    });
     setOutputHistory(outputHistory);
 
     const treasuryHistory = statsHistory.map((statsItem) =>
@@ -253,16 +273,30 @@ const TotalStacked = () => {
         date: dayjs(dateLabels?.[index]).format("YYYY-MM-DD hh:mm"),
         icon: "square",
         labels: [
-          {
-            name: "Inflation",
-            color: theme.pink500,
-            value: toPrecision(statsData.income.inflation, precision, false),
-          },
+          !isCentrifuge
+            ? {
+                name: "Inflation",
+                color: theme.pink500,
+                value: toPrecision(
+                  statsData.income.inflation,
+                  precision,
+                  false,
+                ),
+              }
+            : {
+                name: "Block Reward",
+                color: theme.pink500,
+                value: toPrecision(
+                  statsData.income.centrifugeBlockReward,
+                  precision,
+                  false,
+                ),
+              },
           {
             name: "Slashes",
             color: theme.pink500,
             children: [
-              {
+              currentChainSettings.hasStaking && {
                 name: "Staking",
                 color: "transparent",
                 value: toPrecision(
@@ -307,7 +341,7 @@ const TotalStacked = () => {
                   false,
                 ),
               },
-              ...(supportOpenGov
+              ...(currentChainSettings.supportOpenGov
                 ? [
                     {
                       name: "Referenda",
@@ -329,14 +363,23 @@ const TotalStacked = () => {
                     },
                   ]
                 : []),
-            ],
+            ].filter(Boolean),
+          },
+          isCentrifuge && {
+            name: "Gas Fee",
+            color: theme.purple500,
+            value: toPrecision(
+              statsData.income.centrifugeTxFee,
+              precision,
+              false,
+            ),
           },
           {
             name: "Others",
             color: theme.pink500,
             value: toPrecision(statsData.income.others, precision, false),
           },
-        ],
+        ].filter(Boolean),
       });
 
       setOutputData({
@@ -349,26 +392,46 @@ const TotalStacked = () => {
             color: theme.yellow500,
             value: toPrecision(statsData.output.proposal, precision, false),
           },
-          {
-            name: "Tips",
-            color: theme.yellow500,
-            value: toPrecision(statsData.output.tip, precision, false),
-          },
-          {
-            name: "Bounties",
-            color: theme.yellow500,
-            value: toPrecision(statsData.output.bounty, precision, false),
-          },
-          {
-            name: "Burnt",
-            color: theme.yellow500,
-            value: toPrecision(statsData.output.burnt, precision, false),
-          },
-          {
-            name: "Transfer",
-            color: theme.yellow500,
-            value: toPrecision(statsData.output.transfer, precision, false),
-          },
+          ...(currentChainSettings.hasTips
+            ? [
+                {
+                  name: "Tips",
+                  color: theme.yellow500,
+                  value: toPrecision(statsData.output.tip, precision, false),
+                },
+              ]
+            : []),
+          ...(currentChainSettings.hasBounties
+            ? [
+                {
+                  name: "Bounties",
+                  color: theme.yellow500,
+                  value: toPrecision(statsData.output.bounty, precision, false),
+                },
+              ]
+            : []),
+          ...(currentChainSettings.hasBurnt
+            ? [
+                {
+                  name: "Burnt",
+                  color: theme.yellow500,
+                  value: toPrecision(statsData.output.burnt, precision, false),
+                },
+              ]
+            : []),
+          ...(currentChainSettings.hasTransfers
+            ? [
+                {
+                  name: "Transfer",
+                  color: theme.yellow500,
+                  value: toPrecision(
+                    statsData.output.transfer,
+                    precision,
+                    false,
+                  ),
+                },
+              ]
+            : []),
         ],
       });
 
@@ -385,7 +448,7 @@ const TotalStacked = () => {
         ],
       });
     }
-  }, [showIndex, statsHistory, dateLabels, precision, supportOpenGov, theme]);
+  }, [showIndex, statsHistory, dateLabels, precision, theme]);
 
   const sliceRangeData = (data) => {
     return data.slice(chartRange[0], chartRange[1] + 1);
@@ -440,7 +503,9 @@ const TotalStacked = () => {
         <Chart
           data={chartData}
           onHover={onHover}
-          yStepSize={chain === CHAINS.KUSAMA ? 200000 : 8000000}
+          yStepSize={
+            currentChainSettings.ui?.totalStacked?.yStepSize || 8000000
+          }
         />
         <SliderWrapper>
           <Slider

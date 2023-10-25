@@ -21,7 +21,8 @@ import { bountyDetailSelector } from "../../store/reducers/bountySlice";
 import RelatedLinks from "../../components/RelatedLinks";
 import EstimateBlockTimeCountDown from "../../components/EstimateBlockTimeCountdown";
 import BountyPendingPayoutCountDown from "../../components/BountyPendingPayoutCountDown";
-import { CHAINS, USER_ROLES } from "../../constants";
+import { USER_ROLES } from "../../constants";
+import { currentChainSettings } from "../../utils/chains";
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -81,7 +82,7 @@ const BountyLifeCycleTable = ({ loading }) => {
   }, [chain, bountyDetail, scanHeight, isMounted]);
 
   const links = [];
-  if ([CHAINS.KUSAMA, CHAINS.POLKADOT].includes(chain) && bountyDetail) {
+  if (currentChainSettings.hasBounties && bountyDetail) {
     links.push({
       link: `https://${chain}.subsquare.io/treasury/bounty/${bountyDetail.bountyIndex}`,
       description: "Bounty discusssion",

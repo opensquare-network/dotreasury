@@ -17,7 +17,8 @@ function InflationMenu() {
 
   return (
     <Menu.Item key="Inflation">
-      Inflation<Label>{incomeCount.inflation}</Label>
+      Inflation
+      <Label>{incomeCount.inflation}</Label>
       <Divider />
     </Menu.Item>
   );

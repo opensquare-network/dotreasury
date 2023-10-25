@@ -5,13 +5,10 @@ import NewProposalModal from "./NewProposalModal";
 import { accountSelector } from "../../store/reducers/accountSlice";
 import Tooltip from "../../components/Tooltip";
 import { TooltipInfoText } from "../../components/Tooltip/styled";
-import { chainSelector } from "../../store/reducers/chainSlice";
-import { SYMBOLS } from "../../constants";
-import { networkFromSymbol } from "../../utils";
+import { isKusama } from "../../utils/chains";
 
 export default function NewProposalButton({ onFinalized }) {
   const account = useSelector(accountSelector);
-  const chain = useSelector(chainSelector);
   const [showNewProposalModel, setShowNewProposalModel] = useState(false);
 
   const isLoggedIn = !!account;
@@ -21,7 +18,7 @@ export default function NewProposalButton({ onFinalized }) {
   if (!isLoggedIn) {
     tooltipContent = "Please connect wallet first";
     disabled = true;
-  } else if (networkFromSymbol(SYMBOLS.KSM) === chain) {
+  } else if (isKusama) {
     tooltipContent = "Treasury proposal should be submitted through OpenGov";
     disabled = true;
   }

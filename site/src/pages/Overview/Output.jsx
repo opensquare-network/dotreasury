@@ -2,17 +2,16 @@ import React, { useState, useEffect } from "react";
 
 import DoughnutCard from "./DoughnutCard";
 import DoughnutCardLinkTitle from "./DoughnutCardLinkTitle";
-import { useSupportOpenGov } from "../../utils/hooks/chain";
 import { useSelector } from "react-redux";
 import { overviewSelector } from "../../store/reducers/overviewSlice";
 import { getPrecision, toPrecision } from "../../utils";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import { sumBy } from "../../utils/math";
 import { useTheme } from "../../context/theme";
+import { currentChainSettings } from "../../utils/chains";
 
 const Output = () => {
   const overview = useSelector(overviewSelector);
-  const supportOpenGov = useSupportOpenGov();
   const symbol = useSelector(chainSymbolSelector);
   const theme = useTheme();
 
@@ -59,7 +58,7 @@ const Output = () => {
     labels: [
       {
         name: "Proposals",
-        ...(supportOpenGov
+        ...(currentChainSettings.supportOpenGov
           ? {
               children: [
                 {
@@ -69,9 +68,7 @@ const Output = () => {
             }
           : null),
       },
-      {
-        name: "Tips",
-      },
+      ...(currentChainSettings.hasTips ? [{ name: "Tips" }] : []),
       {
         name: "Bounties",
       },
@@ -90,7 +87,7 @@ const Output = () => {
           value: proposalSpent,
           fiatValue: proposalFiatValue,
           color: theme.pink500,
-          ...(supportOpenGov
+          ...(currentChainSettings.supportOpenGov
             ? {
                 children: [
                   {
@@ -105,23 +102,35 @@ const Output = () => {
               }
             : null),
         },
-        {
-          name: "Tips",
-          value: tipSpent,
-          fiatValue: tipSpentFiatValue,
-          color: theme.yellow500,
-        },
-        {
-          name: "Bounties",
-          value: bountySpent,
-          fiatValue: bountySpentFiatValue,
-          color: theme.purple500,
-        },
-        {
-          name: "Burnt",
-          value: burntTotal,
-          color: theme.orange500,
-        },
+        ...(currentChainSettings.hasTips
+          ? [
+              {
+                name: "Tips",
+                value: tipSpent,
+                fiatValue: tipSpentFiatValue,
+                color: theme.yellow500,
+              },
+            ]
+          : []),
+        ...(currentChainSettings.hasBounties
+          ? [
+              {
+                name: "Bounties",
+                value: bountySpent,
+                fiatValue: bountySpentFiatValue,
+                color: theme.purple500,
+              },
+            ]
+          : []),
+        ...(currentChainSettings.hasBurnt
+          ? [
+              {
+                name: "Burnt",
+                value: burntTotal,
+                color: theme.orange500,
+              },
+            ]
+          : []),
       ],
     });
   }, [
@@ -134,7 +143,6 @@ const Output = () => {
     bountySpent,
     bountySpentFiatValue,
     burntTotal,
-    supportOpenGov,
     theme,
   ]);
 

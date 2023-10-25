@@ -1,9 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { nodesDefinition } from "../../services/chainApi";
-import { CHAINS } from "../../constants";
+import { currentChain } from "../../utils/chains";
 
-const chain = import.meta.env.VITE_APP_PUBLIC_CHAIN || CHAINS.POLKADOT;
-const chainNodes = nodesDefinition[chain];
+const chainNodes = nodesDefinition[currentChain];
 
 function getInitNodeUrl() {
   const localNodeUrl = localStorage.getItem("nodeUrlV2");
@@ -14,7 +13,7 @@ function getInitNodeUrl() {
     return chainNodes[0].url;
   }
 
-  throw new Error(`Can not find nodes for ${chain}`);
+  throw new Error(`Can not find nodes for ${currentChain}`);
 }
 
 const nodeSlice = createSlice({

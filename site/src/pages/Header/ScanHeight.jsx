@@ -19,7 +19,7 @@ import { useOnClickOutside } from "@osn/common";
 import IconMask from "../../components/Icon/Mask";
 import { inline_flex, items_center } from "../../styles/tailwindcss";
 import ImageWithDark from "../../components/ImageWithDark";
-import { CHAINS } from "../../constants";
+import { CHAINS, currentChainSettings } from "../../utils/chains";
 
 const Wrapper = styled.div`
   position: relative;
@@ -240,6 +240,10 @@ const ScanHeight = () => {
   const symbolRef = useRef(null);
   const netWorkRef = useRef(null);
 
+  const supportedDotreasuryChains = Object.values(CHAINS).filter(
+    (chain) => chain.hasDotreasury,
+  );
+
   const currentNetwork = (nodesSetting || []).find(
     (item) => item.url === currentNode,
   );
@@ -298,12 +302,7 @@ const ScanHeight = () => {
         >
           <div className="blockHeight">
             <ImageWithDark
-              src={
-                chain === CHAINS.POLKADOT
-                  ? "/imgs/logo-polkadot.svg"
-                  : "/imgs/logo-kusama.svg"
-              }
-              style={{ position: "relative", top: -1 }}
+              src={`/imgs/logo-${currentChainSettings.value}.svg`}
             />
             <DarkMinorLabel>Height</DarkMinorLabel>
             <DarkMajorLabel>{`#${scanHeight.toLocaleString()}`}</DarkMajorLabel>
@@ -320,33 +319,19 @@ const ScanHeight = () => {
             />
             {symbolOpen && (
               <SymbolWrapper>
-                <SymbolItem
-                  isActive={chain === CHAINS.POLKADOT}
-                  onClick={() => {
-                    switchNetwork(CHAINS.POLKADOT);
-                  }}
-                >
-                  <ImageWithDark src="/imgs/logo-polkadot.svg" />
-                  <div>Polkadot</div>
-                  <div className="unit">DOT</div>
-                </SymbolItem>
-                <SymbolItem
-                  isActive={chain === CHAINS.KUSAMA}
-                  onClick={() => {
-                    switchNetwork(CHAINS.KUSAMA);
-                  }}
-                >
-                  <ImageWithDark src="/imgs/logo-kusama.svg" />
-                  <div>Kusama</div>
-                  <div className="unit">KSM</div>
-                </SymbolItem>
-                <ExternalLink href="https://edg.dotreasury.com/">
-                  <SymbolItem onClick={() => setNodeOpen(false)}>
-                    <ImageWithDark src="/imgs/logo-edgeware.svg" />
-                    <div>Edgeware</div>
-                    <div className="unit">EDG</div>
+                {supportedDotreasuryChains.map((item) => (
+                  <SymbolItem
+                    key={item.value}
+                    isActive={chain === item.value}
+                    onClick={() => {
+                      switchNetwork(item.value);
+                    }}
+                  >
+                    <ImageWithDark src={`/imgs/logo-${item.value}.svg`} />
+                    <div>{item.name}</div>
+                    <div className="unit">{item.symbol}</div>
                   </SymbolItem>
-                </ExternalLink>
+                ))}
               </SymbolWrapper>
             )}
           </Button>

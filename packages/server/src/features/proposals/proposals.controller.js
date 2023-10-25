@@ -12,6 +12,7 @@ const descriptionService = require("../../services/description.service");
 const { HttpError } = require("../../exc");
 const { ProposalQueryFieldsMap } = require("../common/query");
 const { getRangeCondition } = require("../common/getRangeCondition");
+const BigNumber = require("bignumber.js");
 
 async function getProposalMotions(proposal) {
   const motionHashes = (proposal.motions || []).map(
@@ -202,7 +203,7 @@ class ProposalsController {
         },
         isByGov2: item.isByGov2,
         trackInfo: item.track,
-        dValue: item.dValue?.toString(),
+        dValue: new BigNumber(item.dValue).toString(),
         fiatValue: item.fiatValue,
       })),
       page,

@@ -6,7 +6,7 @@ import { encodeAddress } from "@polkadot/util-crypto";
 import Text from "../Text";
 import AccountItem from "./AccountItem";
 import { bg, hover } from "../../styles/tailwindcss";
-import { CHAINS } from "../../constants";
+import { getChainSettings } from "../../utils/chains";
 
 const Wrapper = styled.div``;
 
@@ -47,13 +47,7 @@ const StyledDropdown = styled(Dropdown)`
 `;
 
 const getSS58Prefix = (chain) => {
-  if (chain === CHAINS.KUSAMA) {
-    return 2;
-  } else if (chain === CHAINS.POLKADOT) {
-    return 0;
-  } else {
-    return 42;
-  }
+  return getChainSettings(chain).ss58Format || 42;
 };
 
 const AccountSelector = ({ chain, accounts, onSelect = () => {} }) => {

@@ -1,6 +1,7 @@
 const {
   getKsmUsdtCollection,
   getDotUsdtCollection,
+  getCfgUsdtCol,
 } = require("../../../mongo-price");
 
 async function getLatestSymbolPrice() {
@@ -11,6 +12,8 @@ async function getLatestSymbolPrice() {
     col = await getKsmUsdtCollection();
   } else if (chain === "polkadot") {
     col = await getDotUsdtCollection();
+  } else if (chain === "centrifuge") {
+    col = await getCfgUsdtCol();
   }
 
   if (!col) {
@@ -18,7 +21,7 @@ async function getLatestSymbolPrice() {
   }
 
   const [latestItem] = await col
-    .find({ volume: { $ne: "0.00000000" } })
+    .find()
     .sort({ openTime: -1 })
     .limit(1)
     .toArray();
@@ -26,7 +29,8 @@ async function getLatestSymbolPrice() {
     return 0;
   }
 
-  return latestItem.quoteAssetVolume / latestItem.volume;
+  const price = latestItem.quoteAssetVolume / latestItem.volume;
+  return price || latestItem.open;
 }
 
 module.exports = {

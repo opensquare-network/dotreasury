@@ -2,7 +2,7 @@ import Card from "@site/src/components/Card";
 import { useTheme } from "@site/src/context/theme";
 import { bnToBn } from "@polkadot/util";
 import { toPrecision } from "@site/src/utils";
-import { getChainSettings } from "../../../utils/chains";
+import { getChainSettings } from "@site/src/utils/chains";
 import Chart from "@site/src/pages/Overview/TotalStacked/Chart";
 import { useStatsHistory } from "../../../hooks/useData";
 import { useWindowSize } from "react-use";

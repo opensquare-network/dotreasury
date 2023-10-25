@@ -29,7 +29,7 @@ import useListFilter from "../../components/OpenGovFilter/useListFilter";
 import Filter from "../../components/Filter";
 import OpenGovFilter from "../../components/OpenGovFilter";
 import Nav from "./Nav";
-import { useSupportOpenGov } from "../../utils/hooks/chain";
+import { currentChainSettings } from "../../utils/chains";
 
 const HeaderWrapper = styled.div`
   padding: 20px 24px;
@@ -81,7 +81,6 @@ const Proposals = () => {
   const { items: proposals, total } = useSelector(proposalListSelector);
   const loading = useSelector(loadingSelector);
   const chain = useSelector(chainSelector);
-  const supportOpenGov = useSupportOpenGov();
 
   useEffect(() => {
     let filterData = getFilterData();
@@ -138,7 +137,7 @@ const Proposals = () => {
     />
   );
 
-  if (supportOpenGov) {
+  if (currentChainSettings.supportOpenGov) {
     if (tab === "opengov") {
       filter = (
         <OpenGovFilter

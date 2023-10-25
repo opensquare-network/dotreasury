@@ -7,16 +7,18 @@ import {
 import { stringToHex } from "@polkadot/util";
 import { encodeAddress } from "@polkadot/keyring";
 import {
-  CHAINS,
+  DEFAULT_CENTRIFUGE_NODES,
   DEFAULT_KUSAMA_NODES,
   DEFAULT_POLKADOT_NODES,
 } from "../constants";
+import { CHAINS, getChainSettings } from "../utils/chains";
 
 const apiInstanceMap = new Map();
 
 export const nodesDefinition = {
   kusama: DEFAULT_KUSAMA_NODES,
   polkadot: DEFAULT_POLKADOT_NODES,
+  centrifuge: DEFAULT_CENTRIFUGE_NODES,
 };
 
 export const getApi = async (chain, queryUrl) => {
@@ -105,7 +107,14 @@ export const getBlockTime = async (chain, number) => {
 };
 
 export const estimateBlocksTime = async (chain, blocks) => {
+  const { blockTime } = getChainSettings(chain);
+
+  if (blockTime) {
+    return blockTime * blocks;
+  }
+
   const api = await getApi(chain);
+
   const nsPerBlock = api.consts.babe.expectedBlockTime.toNumber();
   return nsPerBlock * blocks;
 };
@@ -137,9 +146,9 @@ export const encodeSubstrateAddress = (address) => {
 export const encodeChainAddress = (address, chain) => {
   let encodedAddress = encodeSubstrateAddress(address);
 
-  if (chain === CHAINS.KUSAMA) {
+  if (chain === CHAINS.kusama.value) {
     encodedAddress = encodeKusamaAddress(address);
-  } else if (chain === CHAINS.POLKADOT) {
+  } else if (chain === CHAINS.polkadot.value) {
     encodedAddress = encodePolkadotAddress(address);
   }
 

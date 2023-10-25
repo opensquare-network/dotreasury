@@ -1,4 +1,4 @@
-import { capitalizeFirstLetter } from "@site/src/utils";
+import { capitalizeFirstLetter } from "../../utils";
 
 const value = "moonriver";
 
@@ -7,4 +7,5 @@ export const moonriver = {
   name: capitalizeFirstLetter(value),
   symbol: "MOVR",
   decimals: 18,
+  hasSubscan: true,
 };

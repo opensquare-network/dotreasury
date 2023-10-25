@@ -7,8 +7,10 @@ import { interlay } from "./interlay";
 import { khala } from "./khala";
 import { kintsugi } from "./kintsugi";
 import { phala } from "./phala";
-import { moonbeam } from "src/utils/chains/moonbeam.js";
-import { moonriver } from "src/utils/chains/moonriver.js";
+import { moonbeam } from "./moonbeam";
+import { moonriver } from "./moonriver";
+
+export const currentChain = import.meta.env.VITE_APP_CHAIN;
 
 export const CHAINS = {
   polkadot,
@@ -24,10 +26,16 @@ export const CHAINS = {
   moonbeam,
 };
 
+export const currentChainSettings = getChainSettings(currentChain);
+
+export const isPolkadot = currentChain === CHAINS.polkadot.value;
+export const isKusama = currentChain === CHAINS.kusama.value;
+export const isCentrifuge = currentChain === CHAINS.centrifuge.value;
+
+/**
+ * @param {string} value
+ * @returns {Partial<typeof kusama & typeof polkadot & typeof centrifuge>}
+ */
 export function getChainSettings(value = "") {
   return CHAINS[value] ?? {};
-}
-
-export function isSupportOpenGov(chain = "") {
-  return [kusama.value, polkadot.value].includes(chain);
 }

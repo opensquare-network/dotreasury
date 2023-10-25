@@ -44,6 +44,9 @@ import Referenda from "../pages/Referenda";
 import { usePreload } from "../utils/hooks";
 import ReferendaSlash from "../pages/ReferendaSlash";
 import FellowshipReferendaSlash from "../pages/FellowshipReferendaSlash";
+import GasFeeSlash from "../pages/GasFeeSlash";
+import { isCentrifuge } from "../utils/chains";
+import BlockRewardsSlash from "../pages/BlockRewards";
 
 export default function App() {
   usePreload();
@@ -99,7 +102,11 @@ export default function App() {
                 path="/projects/:projectId"
                 component={ProjectDetail}
               />
-              <Route exact path="/income" component={Inflation} />
+              {!isCentrifuge ? (
+                <Route exact path="/income" component={Inflation} />
+              ) : (
+                <Route exact path="/income" component={BlockRewardsSlash} />
+              )}
               <Route
                 exact
                 path="/income/slash/treasury"
@@ -140,6 +147,7 @@ export default function App() {
                 path="/income/transfers"
                 component={TransfersSlash}
               />
+              <Route exact path="/income/gasfee" component={GasFeeSlash} />
               <Route exact path="/income/others" component={OthersIncome} />
               <Route exact path="/users" component={Users} />
               <Route exact path="/users/:address" component={UsersDetail} />

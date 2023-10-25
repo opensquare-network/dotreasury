@@ -10,6 +10,8 @@ const {
   getIncomeTransferCollection,
   getReferendaSlashCollection,
   getFellowshipReferendaSlashCollection,
+  getCfgTxFeeCol,
+  getCfgBlockRewardCol,
 } = require("../../mongo");
 
 class IncomeController {
@@ -300,6 +302,16 @@ class IncomeController {
     col = await getIncomeTransferCollection();
     const transfer = await col.estimatedDocumentCount();
 
+    let centrifugeBlockRewards = 0;
+    let centrifugeTxFees = 0;
+    if ("centrifuge" === process.env.CHAIN) {
+      col = await getCfgBlockRewardCol();
+      centrifugeBlockRewards = await col.estimatedDocumentCount();
+
+      col = await getCfgTxFeeCol();
+      centrifugeTxFees = await col.estimatedDocumentCount();
+    }
+
     ctx.body = {
       treasurySlash,
       democracySlash,
@@ -308,6 +320,8 @@ class IncomeController {
       stakingSlash,
       inflation,
       transfer,
+      centrifugeBlockRewards,
+      centrifugeTxFees,
       others,
     };
   }

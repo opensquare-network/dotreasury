@@ -7,11 +7,9 @@ import { NavLink } from "react-router-dom";
 import ScanHeight from "./ScanHeight";
 import MenuSwitch from "./MenuSwitch";
 import { useMenuTab } from "../../utils/hooks";
-import { useSelector } from "react-redux";
-import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import ConnectWallet from "../../components/ConnectWallet";
 import { useDark } from "../../context/theme";
-import { SYMBOLS } from "../../constants";
+import { currentChainSettings, isKusama } from "../../utils/chains";
 
 const Wrapper = styled.header`
   height: 76px;
@@ -41,8 +39,8 @@ const Right = styled.div`
   button.ui {
     background-color: transparent !important;
     color: var(--textPrimary) !important;
-    ${(p) =>
-      p.symbol === SYMBOLS.KSM &&
+    ${() =>
+      isKusama &&
       css`
         color: var(--textPrimaryContrast) !important;
       `}
@@ -114,7 +112,6 @@ const ScanHeightWrapper = styled.div`
 
 const HeaderExamplePage = () => {
   const dark = useDark();
-  const symbol = useSelector(chainSymbolSelector)?.toLowerCase();
   const [menuShow, setMenuShow] = useState(false);
   useMenuTab();
 
@@ -124,15 +121,13 @@ const HeaderExamplePage = () => {
       setMenuShow(false);
     }
   };
-  let menuIconSrc =
-    symbol === SYMBOLS.KSM
-      ? "/imgs/icon-ham-white.svg"
-      : "/imgs/icon-ham-black.svg";
+  let menuIconSrc = isKusama
+    ? "/imgs/icon-ham-white.svg"
+    : "/imgs/icon-ham-black.svg";
   if (menuShow) {
-    menuIconSrc =
-      symbol === SYMBOLS.KSM
-        ? "/imgs/menu-icon-close-white.svg"
-        : "/imgs/menu-icon-close.svg";
+    menuIconSrc = isKusama
+      ? "/imgs/menu-icon-close-white.svg"
+      : "/imgs/menu-icon-close.svg";
   }
   if (dark) {
     menuIconSrc = "/imgs/icon-ham-white.svg";
@@ -141,15 +136,14 @@ const HeaderExamplePage = () => {
     }
   }
   return (
-    <Wrapper symbol={symbol}>
+    <Wrapper>
       <Left>
         <NavLink to="/">
-          <Logo symbol={symbol} />
+          <Logo />
         </NavLink>
       </Left>
       <FlexWrapper>
         <Right
-          symbol={symbol}
           style={{ display: menuShow ? "flex" : "" }}
           onClick={menuClick}
           ref={menuWrap}
@@ -157,9 +151,11 @@ const HeaderExamplePage = () => {
           <NavLink to={"/income"}>
             <MenuSwitch menuTabsName="Income" />
           </NavLink>
-          <NavLink to={"/projects"}>
-            <MenuSwitch menuTabsName="Projects" />
-          </NavLink>
+          {currentChainSettings.hasProjects && (
+            <NavLink to={"/projects"}>
+              <MenuSwitch menuTabsName="Projects" />
+            </NavLink>
+          )}
           <NavLink to={"/users"}>
             <MenuSwitch menuTabsName="Users" />
           </NavLink>

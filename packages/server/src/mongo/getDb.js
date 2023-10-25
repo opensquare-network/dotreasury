@@ -35,6 +35,10 @@ function getDb({ inputDbName, outputDbName, councilDbName }) {
   const termsCollectionName = "terms";
   const termCouncilorCollectionName = "termCouncilor";
 
+  // for centrifuge income
+  let cfgBlockRewardCol = null;
+  let cfgTxFeeCol = null;
+
   // stats collections
   const weeklyStatsCollectionName = "weeklyStats";
 
@@ -105,6 +109,9 @@ function getDb({ inputDbName, outputDbName, councilDbName }) {
     othersIncomeCol = inputDb.collection(othersIncomeCollectionName);
     inputWeeklyStatsCol = inputDb.collection(weeklyStatsCollectionName);
     incomePeriodCol = inputDb.collection("period");
+
+    cfgBlockRewardCol = inputDb.collection("cfgBlockReward");
+    cfgTxFeeCol = inputDb.collection("cfgTxFee");
 
     outputDb = client.db(outputDbName);
     referendaReferendumCol = outputDb.collection(
@@ -328,6 +335,16 @@ function getDb({ inputDbName, outputDbName, councilDbName }) {
     return periodCol;
   }
 
+  async function getCfgBlockRewardCol() {
+    await tryInit(cfgBlockRewardCol);
+    return cfgBlockRewardCol;
+  }
+
+  async function getCfgTxFeeCol() {
+    await tryInit(cfgTxFeeCol);
+    return cfgTxFeeCol;
+  }
+
   return {
     initDb,
     getStatusCollection,
@@ -343,6 +360,8 @@ function getDb({ inputDbName, outputDbName, councilDbName }) {
     getBurntCollection,
     getOutputTransferCollection,
     getIncomeInflationCollection,
+    getCfgBlockRewardCol,
+    getCfgTxFeeCol,
     getStakingSlashCollection,
     getTreasurySlashCollection,
     getElectionSlashCollection,

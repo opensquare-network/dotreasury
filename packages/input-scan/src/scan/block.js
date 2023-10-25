@@ -1,6 +1,7 @@
 const { getNowIncomeSeats } = require("../mongo/scanHeight");
 const { handleEvents } = require("../business/event");
 const {
+  env: { currentChain },
   chain: {
     getBlockIndexer,
   },
@@ -22,7 +23,7 @@ async function scanNormalizedBlock(block, blockEvents) {
 
   const nowSeats = await getNowIncomeSeats();
   const others = bigAdd(nowSeats.others, details.others);
-  return {
+  const result = {
     inflation: bigAdd(nowSeats.inflation, details.inflation),
     transfer: bigAdd(nowSeats.transfer, details.transfer),
     slash: bigAdd(nowSeats.slash, detailSlash),
@@ -37,6 +38,15 @@ async function scanNormalizedBlock(block, blockEvents) {
       fellowshipReferenda: bigAdd(nowSeats.slashSeats.fellowshipReferenda || 0, details.fellowshipReferendaSlash),
     }
   }
+
+  if ("centrifuge" === currentChain()) {
+    Object.assign(result, {
+      centrifugeBlockReward: bigAdd(nowSeats.centrifugeBlockReward || 0, details.centrifugeBlockReward || 0),
+      centrifugeTxFee: bigAdd(nowSeats.centrifugeTxFee || 0, details.centrifugeTxFee || 0),
+    });
+  }
+
+  return result;
 }
 
 module.exports = {

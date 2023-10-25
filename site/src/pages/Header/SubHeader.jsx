@@ -18,13 +18,17 @@ import ReferendaMenu from "./ReferendaMenu";
 import { fetchIncomeCount } from "../../store/reducers/incomeSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { showMenuTabsSelector } from "../../store/reducers/menuSlice";
-import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import Card from "../../components/Card";
 import Container from "../../components/Container";
 
 import SlashMenu from "./SlashMenu";
-import { useSupportOpenGov } from "../../utils/hooks/chain";
-import { SYMBOLS } from "../../constants";
+import {
+  currentChainSettings,
+  isCentrifuge,
+  isKusama,
+} from "../../utils/chains";
+import GasFeeIncomeMenu from "./GasFeeIncomeMenu";
+import BlockRewardsIncomeMenu from "./BlockRewardsMenu";
 
 const Wrapper = styled.div`
   position: relative;
@@ -37,8 +41,7 @@ const WrapperBackground = styled.div`
   height: 42px;
   width: 100%;
   z-index: -1;
-  background-color: ${(p) =>
-    p.symbol === SYMBOLS.KSM ? "#000" : "var(--neutral100)"};
+  background-color: ${(p) => (isKusama ? "#000" : "var(--neutral100)")};
 `;
 
 const TabWrapper = styled(Tab)`
@@ -139,13 +142,10 @@ const TabExampleSecondaryPointing = () => {
   const { pathname } = useLocation();
   const dispatch = useDispatch();
   const showMenuTabs = useSelector(showMenuTabsSelector);
-  const symbol = useSelector(chainSymbolSelector)?.toLowerCase();
 
   useEffect(() => {
     dispatch(fetchIncomeCount());
   }, [dispatch]);
-
-  const supportOpenGov = useSupportOpenGov();
 
   const panes =
     showMenuTabs === "Home"
@@ -161,7 +161,7 @@ const TabExampleSecondaryPointing = () => {
               active: "/" === pathname,
             },
           },
-          ...(supportOpenGov
+          ...(currentChainSettings.supportOpenGov
             ? [
                 {
                   menuItem: {
@@ -189,7 +189,7 @@ const TabExampleSecondaryPointing = () => {
                 pathname.indexOf("/proposals") === 0,
             },
           },
-          {
+          currentChainSettings.hasTips && {
             menuItem: {
               as: NavLink,
               id: "tipsTab",
@@ -200,7 +200,7 @@ const TabExampleSecondaryPointing = () => {
               active: "/tips" === pathname || pathname.indexOf("/tips") === 0,
             },
           },
-          {
+          currentChainSettings.hasBounties && {
             menuItem: {
               as: NavLink,
               id: "bountiesTab",
@@ -213,7 +213,7 @@ const TabExampleSecondaryPointing = () => {
                 pathname.indexOf("/child-bounties") === 0,
             },
           },
-          {
+          currentChainSettings.hasBurnt && {
             menuItem: {
               as: NavLink,
               id: "burntTab",
@@ -224,7 +224,7 @@ const TabExampleSecondaryPointing = () => {
               active: "/burnt" === pathname || pathname.indexOf("/burnt") === 0,
             },
           },
-          {
+          currentChainSettings.hasTransfers && {
             menuItem: {
               as: NavLink,
               id: "transfersTab",
@@ -235,20 +235,32 @@ const TabExampleSecondaryPointing = () => {
               active: "/transfers" === pathname,
             },
           },
-        ]
+        ].filter(Boolean)
       : showMenuTabs === "Income"
       ? [
-          {
-            menuItem: {
-              as: NavLink,
-              id: "inflationTab",
-              content: <InflationMenu />,
-              to: "/income",
-              exact: true,
-              key: "inflation",
-              active: "/income" === pathname,
-            },
-          },
+          !isCentrifuge
+            ? {
+                menuItem: {
+                  as: NavLink,
+                  id: "inflationTab",
+                  content: <InflationMenu />,
+                  to: "/income",
+                  exact: true,
+                  key: "inflation",
+                  active: "/income" === pathname,
+                },
+              }
+            : {
+                menuItem: {
+                  as: NavLink,
+                  id: "gasFeeTab",
+                  content: <BlockRewardsIncomeMenu />,
+                  to: "/income",
+                  exact: true,
+                  key: "blockRewards",
+                  active: "/income" === pathname,
+                },
+              },
           {
             menuItem: {
               id: "slashDropdownTab",
@@ -257,7 +269,7 @@ const TabExampleSecondaryPointing = () => {
               active: pathname.includes("/income/slash/"),
             },
           },
-          {
+          currentChainSettings.hasTransfers && {
             menuItem: {
               as: NavLink,
               id: "transfersSlashTab",
@@ -268,6 +280,19 @@ const TabExampleSecondaryPointing = () => {
               active:
                 "/income/transfers" === pathname ||
                 pathname.indexOf("/income/transfers") === 0,
+            },
+          },
+          isCentrifuge && {
+            menuItem: {
+              as: NavLink,
+              id: "gasFeeTab",
+              content: <GasFeeIncomeMenu />,
+              to: "/income/gasfee",
+              exact: true,
+              key: "gasfeeIncome",
+              active:
+                "/income/gasfee" === pathname ||
+                pathname.indexOf("/income/gasfee") === 0,
             },
           },
           {
@@ -283,7 +308,7 @@ const TabExampleSecondaryPointing = () => {
                 pathname.indexOf("/income/others") === 0,
             },
           },
-        ]
+        ].filter(Boolean)
       : showMenuTabs === "Projects"
       ? [
           {
@@ -340,7 +365,7 @@ const TabExampleSecondaryPointing = () => {
 
   return (
     <Wrapper>
-      <WrapperBackground symbol={symbol} />
+      <WrapperBackground />
       <Container>
         <CustomCard>
           <TopWrapper>

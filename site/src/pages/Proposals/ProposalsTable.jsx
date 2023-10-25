@@ -12,7 +12,7 @@ import api from "../../services/scanApi";
 import SortableIndex from "../../components/SortableIndex";
 import SortableValue from "../../components/SortableValue";
 import useSort from "../../hooks/useSort";
-import { CHAINS } from "../../constants";
+import { isKusama, isPolkadot } from "../../utils/chains";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -77,7 +77,7 @@ const ProposalsTable = ({ data, loading, header, footer }) => {
 
   const getRelatedLinks = (item) => {
     const links = [...item.links];
-    if ([CHAINS.KUSAMA, CHAINS.POLKADOT].includes(chain)) {
+    if ([isKusama, isPolkadot].includes(chain)) {
       links.unshift({
         link: `https://${chain}.subsquare.io/treasury/proposal/${item.proposalIndex}`,
         description: "Treasury proposal page",

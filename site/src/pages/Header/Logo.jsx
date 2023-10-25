@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Image } from "semantic-ui-react";
 import { useDark } from "../../context/theme";
-import { SYMBOLS } from "../../constants";
+import { isKusama } from "../../utils/chains";
 
 const Wrapper = styled.div`
   height: 32px;
@@ -24,7 +24,7 @@ const ImgShortWrapper = styled.div`
   }
 `;
 
-const Logo = ({ symbol }) => {
+const Logo = () => {
   const dark = useDark();
 
   return (
@@ -32,9 +32,7 @@ const Logo = ({ symbol }) => {
       <ImgFullWrapper>
         <Image
           src={
-            symbol === SYMBOLS.KSM || dark
-              ? "/imgs/logo-white.svg"
-              : "/imgs/logo-black.svg"
+            isKusama || dark ? "/imgs/logo-white.svg" : "/imgs/logo-black.svg"
           }
         />
       </ImgFullWrapper>

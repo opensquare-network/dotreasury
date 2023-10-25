@@ -21,11 +21,11 @@ import {
   m_t,
 } from "../../styles/tailwindcss";
 import OpenGovSpend from "./OpenGovSpend";
-import { useSupportOpenGov } from "../../utils/hooks/chain";
 import { mdcss, smcss } from "@osn/common";
 import IncomeAndOutputPeriods from "./IncomeAndOutputPeriods";
 import TopBeneficiariesTable from "./TopBeneficiariesTable/index.jsx";
 import OutputPeriods from "./OutputPeriods";
+import { currentChainSettings, isCentrifuge } from "../../utils/chains";
 
 const DoughnutWrapper = styled.div`
   display: grid;
@@ -80,7 +80,6 @@ const TableWrapper = styled.div`
 const Overview = () => {
   const overview = useSelector(overviewSelector);
   const symbol = useSelector(chainSymbolSelector);
-  const supportOpenGov = useSupportOpenGov();
 
   const precision = getPrecision(symbol);
 
@@ -126,6 +125,18 @@ const Overview = () => {
   );
   const others = toPrecision(overview.income.others || 0, precision, false);
 
+  // centrifuge
+  const centrifugeBlockReward = toPrecision(
+    overview.income.centrifugeBlockReward || 0,
+    precision,
+    false,
+  );
+  const centrifugeTxFee = toPrecision(
+    overview.income.centrifugeTxFee || 0,
+    precision,
+    false,
+  );
+
   const cards = [
     <Income
       key="income"
@@ -138,10 +149,12 @@ const Overview = () => {
       slashReferenda={slashReferenda}
       slashFellowshipReferenda={slashFellowshipReferenda}
       others={others}
+      centrifugeBlockReward={centrifugeBlockReward}
+      centrifugeTxFee={centrifugeTxFee}
     />,
     <Output key="output" />,
 
-    supportOpenGov && <OpenGovSpend key="openGovSpend" />,
+    currentChainSettings.supportOpenGov && <OpenGovSpend key="openGovSpend" />,
   ].filter(Boolean);
 
   return (
@@ -150,11 +163,11 @@ const Overview = () => {
       <DoughnutWrapper count={cards.length}>{cards}</DoughnutWrapper>
       <TotalStacked />
       <IncomeAndOutputPeriods />
-      <OutputPeriods />
+      {currentChainSettings.hasOutputPeriods && <OutputPeriods />}
       <TableWrapper>
-        <TopBeneficiariesTable />
+        {!isCentrifuge && <TopBeneficiariesTable />}
         <BeneficiaryTable />
-        <ProposerTable />
+        {currentChainSettings.hasTips && <ProposerTable />}
       </TableWrapper>
     </>
   );

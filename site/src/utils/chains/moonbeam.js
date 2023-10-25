@@ -1,4 +1,4 @@
-import { capitalizeFirstLetter } from "@site/src/utils";
+import { capitalizeFirstLetter } from "../../utils";
 
 const value = "moonbeam";
 
@@ -7,4 +7,5 @@ export const moonbeam = {
   name: capitalizeFirstLetter(value),
   symbol: "GLMR",
   decimals: 18,
+  hasSubscan: true,
 };

@@ -42,6 +42,10 @@ let fellowshipReferendaSlashCol = null;
 let othersIncomeCol = null;
 let incomeTransferCol = null;
 
+// for centrifuge income
+let cfgBlockRewardCol = null;
+let cfgTxFeeCol = null;
+
 // stats collections
 let weeklyStatsCol = null;
 let periodCol = null; // spend periods
@@ -65,6 +69,8 @@ async function initDb() {
   incomeTransferCol = db.collection(incomeTransferCollectionName);
   weeklyStatsCol = db.collection(weeklyStatsCollectionName);
   periodCol = db.collection("period");
+  cfgBlockRewardCol = db.collection("cfgBlockReward");
+  cfgTxFeeCol = db.collection("cfgTxFee");
 
   await _createIndexes();
 }
@@ -92,6 +98,16 @@ async function getStatusCollection() {
 async function getIncomeInflationCollection() {
   await tryInit(incomeInflationCol);
   return incomeInflationCol;
+}
+
+async function getCfgBlockRewardCol() {
+  await tryInit(cfgBlockRewardCol);
+  return cfgBlockRewardCol;
+}
+
+async function getCfgTxFeeCol() {
+  await tryInit(cfgTxFeeCol);
+  return cfgTxFeeCol;
 }
 
 async function getStakingSlashCollection() {
@@ -169,5 +185,7 @@ module.exports = {
   getIncomeTransferCollection,
   getWeeklyStatsCollection,
   getPeriodCol,
+  getCfgBlockRewardCol,
+  getCfgTxFeeCol,
   closeDb,
 };

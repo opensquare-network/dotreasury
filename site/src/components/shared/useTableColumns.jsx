@@ -18,6 +18,7 @@ import TextWrapper from "./TextWrapper";
 import TextLinks from "./TextLinks";
 import { TipStatus, USER_ROLES } from "../../constants";
 import IconMask from "../Icon/Mask";
+import { Flex } from "../styled";
 
 const ProposeTimeWrapper = styled.div`
   display: flex;
@@ -126,14 +127,16 @@ const eventId = {
   key: "event-id",
   title: "Event ID",
   cellRender: (_, item) => (
-    <ExplorerLink
-      href={`/extrinsic/${item.indexer.blockHeight}-0?event=${item.indexer.blockHeight}-${item.indexer.eventIndex}`}
-    >
-      <EventWrapper>
-        <IconMask src="/imgs/event.svg" size={16} color="textDisable" />
-        <EventID>{`${item.indexer.blockHeight}-${item.indexer.eventIndex}`}</EventID>
-      </EventWrapper>
-    </ExplorerLink>
+    <Flex>
+      <ExplorerLink
+        href={`/extrinsic/${item.indexer.blockHeight}-0?event=${item.indexer.blockHeight}-${item.indexer.eventIndex}`}
+      >
+        <EventWrapper>
+          <IconMask src="/imgs/event.svg" size={16} color="textDisable" />
+          <EventID>{`${item.indexer.blockHeight}-${item.indexer.eventIndex}`}</EventID>
+        </EventWrapper>
+      </ExplorerLink>
+    </Flex>
   ),
 };
 const value = (symbol) => ({
@@ -289,7 +292,11 @@ const description = {
 };
 const relatedLinks = (options) => ({
   key: "related-links",
-  title: <span style={{ whiteSpace: "nowrap" }}>{options?.compact ? "Links" : "Related Links"}</span>,
+  title: (
+    <span style={{ whiteSpace: "nowrap" }}>
+      {options?.compact ? "Links" : "Related Links"}
+    </span>
+  ),
   cellClassName: "proposal-related-links-cell",
   cellRender: (_, item) => (
     <RelatedLinks links={options?.getRelatedLinks?.(item)} />
@@ -396,6 +403,15 @@ const burntValue = (symbol) => {
     },
   };
 };
+const incomeBalance = {
+  key: "balance",
+  title: "Balance",
+  headerCellProps: { textAlign: "right" },
+  cellProps: { textAlign: "right" },
+  cellRender(_, item) {
+    return <Balance value={item.balance} />;
+  },
+};
 
 export function useTableColumns(options) {
   const symbol = useSelector(chainSymbolSelector);
@@ -425,5 +441,6 @@ export function useTableColumns(options) {
     tipsValue: tipsValue(symbol),
     burntValue: burntValue(symbol),
     referendaStatus,
+    incomeBalance,
   };
 }

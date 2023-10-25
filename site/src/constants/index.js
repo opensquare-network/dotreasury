@@ -138,15 +138,24 @@ export const DEFAULT_POLKADOT_NODES = [
   },
 ];
 
-export const CHAINS = {
-  POLKADOT: "polkadot",
-  KUSAMA: "kusama",
-};
-
-export const SYMBOLS = {
-  DOT: "dot",
-  KSM: "ksm",
-};
+export const DEFAULT_CENTRIFUGE_NODES = [
+  {
+    name: "Centrifuge",
+    url: "wss://fullnode.centrifuge.io",
+  },
+  {
+    name: "Dwellir",
+    url: "wss://centrifuge-rpc.dwellir.com/",
+  },
+  {
+    name: "LuckyFriday",
+    url: "wss://rpc-centrifuge.luckyfriday.io",
+  },
+  {
+    name: "OnFinality",
+    url: "wss://centrifuge-parachain.api.onfinality.io/public-ws",
+  },
+];
 
 export const DEFAULT_PAGE_SIZE = 20;
 export const DEFAULT_QUERY_PAGE = 1;

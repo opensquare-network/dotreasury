@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { getPrecision, toLocaleStringWithFixed, toPrecision } from "../utils";
-import { SYMBOLS } from "../constants";
+import { CHAINS } from "../utils/chains";
 
 const ExpenseWrapper = styled.div`
   display: flex;
@@ -47,13 +47,16 @@ export default function ProjectExpense({ expenseDot, expenseKsm, dollar }) {
       <ExpenseWrapper className="project-expense-wrapper">
         {expenseDot > 0 && (
           <div>
-            <NormalizedValue value={expenseDot} symbol={SYMBOLS.DOT} />
+            <NormalizedValue
+              value={expenseDot}
+              symbol={CHAINS.polkadot.symbol}
+            />
           </div>
         )}
         <PlusWrapper>+</PlusWrapper>
         {expenseKsm > 0 && (
           <div>
-            <NormalizedValue value={expenseKsm} symbol={SYMBOLS.KSM} />
+            <NormalizedValue value={expenseKsm} symbol={CHAINS.kusama.symbol} />
           </div>
         )}
       </ExpenseWrapper>

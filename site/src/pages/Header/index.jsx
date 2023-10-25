@@ -1,17 +1,14 @@
 import React from "react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 
 import Container from "../../components/Container";
 import MainHeader from "./MainHeader";
 import SubHeader from "./SubHeader";
-import { chainSymbolSelector } from "../../store/reducers/chainSlice";
-import { SYMBOLS } from "../../constants";
+import { isKusama } from "../../utils/chains";
 
 const Wrapper = styled.header`
-  background-color: ${(p) =>
-    p.symbol === SYMBOLS.KSM ? "#000" : "var(--neutral100)"};
+  background-color: ${() => (isKusama ? "#000" : "var(--neutral100)")};
   max-height: 136px;
 `;
 
@@ -29,11 +26,9 @@ const Header = () => {
       "/privacy",
     ].includes(location.pathname) || location.pathname.includes("/settings");
 
-  const symbol = useSelector(chainSymbolSelector)?.toLowerCase();
-
   return (
     <>
-      <Wrapper symbol={symbol}>
+      <Wrapper>
         <Container>
           <MainHeader />
         </Container>
