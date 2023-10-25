@@ -15,6 +15,8 @@ export const centrifuge = {
   hasTransfers: false,
   hasBurnt: false,
 
+  blockTime: 12000,
+
   ui: {
     totalStacked: {
       yStepSize: 3000000,
