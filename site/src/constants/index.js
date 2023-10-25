@@ -141,15 +141,15 @@ export const DEFAULT_POLKADOT_NODES = [
 export const DEFAULT_CENTRIFUGE_NODES = [
   {
     name: "Centrifuge",
-    url: "wss://fullnode.centrifuge.io/",
+    url: "wss://fullnode.centrifuge.io",
+  },
+  {
+    name: "LuckyFriday",
+    url: "wss://rpc-centrifuge.luckyfriday.io",
   },
   {
     name: "OnFinality",
     url: "wss://centrifuge-parachain.api.onfinality.io/public-ws",
-  },
-  {
-    name: "LuckFriday",
-    url: "wss://rpc-centrifuge.luckyfriday.io/",
   },
 ];
 
