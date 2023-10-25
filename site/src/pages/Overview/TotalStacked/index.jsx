@@ -26,7 +26,7 @@ import {
 import { breakpoint } from "../../../styles/responsive";
 import { useSupportOpenGov } from "../../../utils/hooks/chain";
 import Slider from "../../../components/Slider";
-import { CHAIN_SETTINGS, IS_CENTRIFUGE } from "../../../utils/chains";
+import { currentChainSettings, isCentrifuge } from "../../../utils/chains";
 
 const CardWrapper = styled(Card)`
   padding: 24px;
@@ -112,7 +112,7 @@ const TotalStacked = () => {
     title: "Income",
     icon: "square",
     labels: [
-      !IS_CENTRIFUGE
+      !isCentrifuge
         ? {
             name: "Inflation",
             value: 0,
@@ -124,7 +124,7 @@ const TotalStacked = () => {
       {
         name: "Slashes",
         children: [
-          CHAIN_SETTINGS.hasStaking && {
+          currentChainSettings.hasStaking && {
             name: "Staking",
             value: 0,
           },
@@ -172,7 +172,7 @@ const TotalStacked = () => {
         name: "Proposal",
         value: 0,
       },
-      ...(CHAIN_SETTINGS.hasTips
+      ...(currentChainSettings.hasTips
         ? [
             {
               name: "Tips",
@@ -180,7 +180,7 @@ const TotalStacked = () => {
             },
           ]
         : []),
-      ...(CHAIN_SETTINGS.hasBounties
+      ...(currentChainSettings.hasBounties
         ? [
             {
               name: "Bounties",
@@ -188,7 +188,7 @@ const TotalStacked = () => {
             },
           ]
         : []),
-      ...(CHAIN_SETTINGS.hasBurnt
+      ...(currentChainSettings.hasBurnt
         ? [
             {
               name: "Burnt",
@@ -196,7 +196,7 @@ const TotalStacked = () => {
             },
           ]
         : []),
-      ...(CHAIN_SETTINGS.hasTransfers
+      ...(currentChainSettings.hasTransfers
         ? [
             {
               name: "Transfer",
@@ -275,7 +275,7 @@ const TotalStacked = () => {
         date: dayjs(dateLabels?.[index]).format("YYYY-MM-DD hh:mm"),
         icon: "square",
         labels: [
-          !IS_CENTRIFUGE
+          !isCentrifuge
             ? {
                 name: "Inflation",
                 color: theme.pink500,
@@ -298,7 +298,7 @@ const TotalStacked = () => {
             name: "Slashes",
             color: theme.pink500,
             children: [
-              CHAIN_SETTINGS.hasStaking && {
+              currentChainSettings.hasStaking && {
                 name: "Staking",
                 color: "transparent",
                 value: toPrecision(
@@ -367,7 +367,7 @@ const TotalStacked = () => {
                 : []),
             ].filter(Boolean),
           },
-          IS_CENTRIFUGE && {
+          isCentrifuge && {
             name: "Gas Fee",
             color: theme.purple500,
             value: toPrecision(
@@ -394,7 +394,7 @@ const TotalStacked = () => {
             color: theme.yellow500,
             value: toPrecision(statsData.output.proposal, precision, false),
           },
-          ...(CHAIN_SETTINGS.hasTips
+          ...(currentChainSettings.hasTips
             ? [
                 {
                   name: "Tips",
@@ -403,7 +403,7 @@ const TotalStacked = () => {
                 },
               ]
             : []),
-          ...(CHAIN_SETTINGS.hasBounties
+          ...(currentChainSettings.hasBounties
             ? [
                 {
                   name: "Bounties",
@@ -412,7 +412,7 @@ const TotalStacked = () => {
                 },
               ]
             : []),
-          ...(CHAIN_SETTINGS.hasBurnt
+          ...(currentChainSettings.hasBurnt
             ? [
                 {
                   name: "Burnt",
@@ -421,7 +421,7 @@ const TotalStacked = () => {
                 },
               ]
             : []),
-          ...(CHAIN_SETTINGS.hasTransfers
+          ...(currentChainSettings.hasTransfers
             ? [
                 {
                   name: "Transfer",
@@ -505,7 +505,9 @@ const TotalStacked = () => {
         <Chart
           data={chartData}
           onHover={onHover}
-          yStepSize={CHAIN_SETTINGS.ui?.totalStacked?.yStepSize || 8000000}
+          yStepSize={
+            currentChainSettings.ui?.totalStacked?.yStepSize || 8000000
+          }
         />
         <SliderWrapper>
           <Slider

@@ -13,7 +13,7 @@ import BountiesTable from "./BountiesTable";
 import ChildBountiesTable from "./ChildBountiesTable";
 import ResponsivePagination from "../../../components/ResponsivePagination";
 import { Link } from "react-router-dom";
-import { CHAIN_SETTINGS } from "../../../utils/chains";
+import { currentChainSettings } from "../../../utils/chains";
 
 const TABLE_TABS = {
   Proposals: "proposals",
@@ -48,15 +48,15 @@ export default function ProposalsTables({ role }) {
           label: TABLE_TABS.Proposals,
           count: counts?.proposalsCount,
         },
-        CHAIN_SETTINGS.hasTips && {
+        currentChainSettings.hasTips && {
           label: TABLE_TABS.Tips,
           count: counts?.tipsCount,
         },
-        CHAIN_SETTINGS.hasBounties && {
+        currentChainSettings.hasBounties && {
           label: TABLE_TABS.Bounties,
           count: counts?.bountiesCount,
         },
-        CHAIN_SETTINGS.hasBounties && {
+        currentChainSettings.hasBounties && {
           label: TABLE_TABS.ChildBounties,
           count: counts?.childBountiesCount,
         },

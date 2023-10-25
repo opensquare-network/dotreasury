@@ -14,7 +14,7 @@ import {
 } from "../../store/reducers/incomeSlice";
 import Text from "../../components/Text";
 import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../constants";
-import { IS_CENTRIFUGE } from "../../utils/chains";
+import { isCentrifuge } from "../../utils/chains";
 
 const HeaderWrapper = styled.div`
   padding: 20px 24px;
@@ -59,7 +59,7 @@ const OthersIncome = () => {
         loading={loading}
         header={
           <HeaderWrapper>
-            <Title>{IS_CENTRIFUGE ? "Others" : "Big others"}</Title>
+            <Title>{isCentrifuge ? "Others" : "Big others"}</Title>
           </HeaderWrapper>
         }
         footer={

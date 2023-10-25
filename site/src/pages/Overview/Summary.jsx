@@ -37,7 +37,7 @@ import { parseEstimateTime } from "../../utils/parseEstimateTime";
 import BigNumber from "bignumber.js";
 import SummaryItem from "../../components/Summary/Item";
 import ImageWithDark from "../../components/ImageWithDark";
-import { CHAIN_SETTINGS, IS_CENTRIFUGE } from "../../utils/chains";
+import { currentChainSettings, isCentrifuge } from "../../utils/chains";
 
 const Wrapper = styled(Card)`
   margin-bottom: 16px;
@@ -150,7 +150,7 @@ const Summary = () => {
       }
     />
   );
-  const burntItem = CHAIN_SETTINGS.hasBurnt && (
+  const burntItem = currentChainSettings.hasBurnt && (
     <SummaryItem
       icon={<ImageWithDark src="/imgs/data-next-burn.svg" />}
       title="Next burn"
@@ -226,7 +226,7 @@ const Summary = () => {
       }
     />
   );
-  const tipsItem = CHAIN_SETTINGS.hasTips && (
+  const tipsItem = currentChainSettings.hasTips && (
     <SummaryItem
       icon={<ImageWithDark src="/imgs/data-tips.svg" />}
       title="Tips"
@@ -250,7 +250,7 @@ const Summary = () => {
       }
     />
   );
-  const bountiesItem = CHAIN_SETTINGS.hasBounties && (
+  const bountiesItem = currentChainSettings.hasBounties && (
     <SummaryItem
       icon={<ImageWithDark src="/imgs/data-bounties.svg" />}
       title="Bounties"
@@ -272,10 +272,10 @@ const Summary = () => {
     availableItem,
     toBeAwardedItem,
     burntItem,
-    !IS_CENTRIFUGE && spendPeriodItem,
+    !isCentrifuge && spendPeriodItem,
     opengovItem,
     proposalsItem,
-    IS_CENTRIFUGE && spendPeriodItem,
+    isCentrifuge && spendPeriodItem,
     tipsItem,
     bountiesItem,
   ]

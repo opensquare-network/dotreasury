@@ -12,7 +12,7 @@ import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import ConnectWallet from "../../components/ConnectWallet";
 import { useDark } from "../../context/theme";
 import { SYMBOLS } from "../../constants";
-import { CHAIN_SETTINGS } from "../../utils/chains";
+import { currentChainSettings } from "../../utils/chains";
 
 const Wrapper = styled.header`
   height: 76px;
@@ -158,7 +158,7 @@ const HeaderExamplePage = () => {
           <NavLink to={"/income"}>
             <MenuSwitch menuTabsName="Income" />
           </NavLink>
-          {CHAIN_SETTINGS.hasProjects && (
+          {currentChainSettings.hasProjects && (
             <NavLink to={"/projects"}>
               <MenuSwitch menuTabsName="Projects" />
             </NavLink>

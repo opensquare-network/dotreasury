@@ -12,7 +12,7 @@ import { items_center } from "../../styles/tailwindcss";
 import { useSupportOpenGov } from "../../utils/hooks/chain";
 import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
-import { CHAIN_SETTINGS, IS_CENTRIFUGE } from "../../utils/chains";
+import { currentChainSettings, isCentrifuge } from "../../utils/chains";
 
 const LinkButton = styled(TextMinor)`
   display: flex;
@@ -49,7 +49,7 @@ const Income = ({
   });
   const [incomeStatus, setIncomeStatus] = useState({
     labels: [
-      !IS_CENTRIFUGE
+      !isCentrifuge
         ? {
             name: "Inflation",
           }
@@ -59,7 +59,7 @@ const Income = ({
       {
         name: "Slashes",
         children: [
-          CHAIN_SETTINGS.hasStaking && {
+          currentChainSettings.hasStaking && {
             name: "Staking",
           },
           {
@@ -86,7 +86,7 @@ const Income = ({
             : []),
         ].filter(Boolean),
       },
-      IS_CENTRIFUGE && {
+      isCentrifuge && {
         name: "Gas Fee",
       },
       {
@@ -99,7 +99,7 @@ const Income = ({
     setIncomeData({
       icon: "circle",
       labels: [
-        !IS_CENTRIFUGE
+        !isCentrifuge
           ? {
               name: "Inflation",
               value: inflation,
@@ -113,7 +113,7 @@ const Income = ({
         {
           name: "Slashes",
           children: [
-            CHAIN_SETTINGS.hasStaking && {
+            currentChainSettings.hasStaking && {
               name: "Staking",
               value: slashStaking,
               color: theme.yellow400,
@@ -154,7 +154,7 @@ const Income = ({
               : []),
           ].filter(Boolean),
         },
-        IS_CENTRIFUGE && {
+        isCentrifuge && {
           name: "Gas Fee",
           value: centrifugeTxFee,
           color: theme.purple500,

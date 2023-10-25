@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useTheme } from "../../context/theme";
 import { useState } from "react";
-import { CHAIN_SETTINGS, IS_CENTRIFUGE } from "../../utils/chains";
+import { currentChainSettings, isCentrifuge } from "../../utils/chains";
 
 export function useIncomePeriodsLegends() {
   const theme = useTheme();
@@ -20,7 +20,7 @@ export function useIncomePeriodsLegends() {
 
   const [incomeLegends, setIncomeLegends] = useState(
     [
-      !IS_CENTRIFUGE
+      !isCentrifuge
         ? {
             label: "Inflation",
             color: colors["Inflation"],
@@ -39,19 +39,19 @@ export function useIncomePeriodsLegends() {
         enabled: true,
         getValue: (period) => 0 - period.totalSlashesValue,
       },
-      CHAIN_SETTINGS.hasTransfers && {
+      currentChainSettings.hasTransfers && {
         label: "Transfers",
         color: colors["Transfers"],
         enabled: true,
         getValue: (period) => 0 - period.totalTransfersValue,
       },
-      IS_CENTRIFUGE && {
+      isCentrifuge && {
         label: "Gas Fee",
         color: colors["Gas Fee"],
         enabled: true,
         getValue: (period) => 0 - period.totalCentrifugeTxFeeValue,
       },
-      !IS_CENTRIFUGE
+      !isCentrifuge
         ? {
             label: "Big Others",
             color: colors["Big Others"],
@@ -98,7 +98,7 @@ export function useOutputPeriodsLegends() {
         getCount: (period) => period.proposals.length,
         getFiat: (period) => period.totalProposalsFiat,
       },
-      CHAIN_SETTINGS.hasTips && {
+      currentChainSettings.hasTips && {
         label: "Tips",
         color: colors["Tips"],
         enabled: true,
@@ -106,7 +106,7 @@ export function useOutputPeriodsLegends() {
         getCount: (period) => period.tips.length,
         getFiat: (period) => period.totalTipsFiat,
       },
-      CHAIN_SETTINGS.hasBounties && {
+      currentChainSettings.hasBounties && {
         label: "Bounties",
         color: colors["Bounties"],
         enabled: true,
@@ -114,7 +114,7 @@ export function useOutputPeriodsLegends() {
         getCount: (period) => period.bounties.length,
         getFiat: (period) => period.totalBountiesFiat,
       },
-      CHAIN_SETTINGS.hasBurnt && {
+      currentChainSettings.hasBurnt && {
         label: "Burnt",
         color: colors["Burnt"],
         enabled: true,

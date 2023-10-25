@@ -8,7 +8,7 @@ import { useIsMounted } from "@osn/common";
 import { useSelector } from "react-redux";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import { TimelineItemType } from "../../constants";
-import { CHAIN_SETTINGS } from "../../utils/chains";
+import { currentChainSettings } from "../../utils/chains";
 
 const Wrapper = styled.div`
   margin-top: 8px;
@@ -57,9 +57,9 @@ const ButtonList = ({ extrinsicIndexer, eventIndexer, polkassembly, type }) => {
 
   return (
     <Wrapper>
-      {CHAIN_SETTINGS.hasPolkascan && (
+      {currentChainSettings.hasPolkascan && (
         <ExplorerLink
-          base={`https://polkascan.io/${CHAIN_SETTINGS.value}/`}
+          base={`https://polkascan.io/${currentChainSettings.value}/`}
           href={`${isExtrinsic ? "transaction" : "event"}/${blockHeight}-${
             isExtrinsic ? extrinsicIndex : eventSort
           }`}
@@ -67,9 +67,9 @@ const ButtonList = ({ extrinsicIndexer, eventIndexer, polkassembly, type }) => {
           <ImageButton src={"/imgs/polkascan-logo.svg"} />
         </ExplorerLink>
       )}
-      {CHAIN_SETTINGS.hasSubscan && (
+      {currentChainSettings.hasSubscan && (
         <ExplorerLink
-          base={`https://${CHAIN_SETTINGS.value}.subscan.io/`}
+          base={`https://${currentChainSettings.value}.subscan.io/`}
           href={subscanLink}
         >
           <ImageButton src={"/imgs/subscan-logo.svg"} />

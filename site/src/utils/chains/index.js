@@ -10,7 +10,7 @@ import { phala } from "./phala";
 import { moonbeam } from "./moonbeam";
 import { moonriver } from "./moonriver";
 
-export const CHAIN = import.meta.env.VITE_APP_CHAIN;
+export const currentChain = import.meta.env.VITE_APP_CHAIN;
 
 export const CHAINS = {
   polkadot,
@@ -26,9 +26,9 @@ export const CHAINS = {
   moonbeam,
 };
 
-export const CHAIN_SETTINGS = getChainSettings(CHAIN);
+export const currentChainSettings = getChainSettings(currentChain);
 
-export const IS_CENTRIFUGE = CHAIN === CHAINS.centrifuge.value;
+export const isCentrifuge = currentChain === CHAINS.centrifuge.value;
 
 /**
  * @param {string} value

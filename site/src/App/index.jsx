@@ -45,7 +45,7 @@ import { usePreload } from "../utils/hooks";
 import ReferendaSlash from "../pages/ReferendaSlash";
 import FellowshipReferendaSlash from "../pages/FellowshipReferendaSlash";
 import GasFeeSlash from "../pages/GasFeeSlash";
-import { IS_CENTRIFUGE } from "../utils/chains";
+import { isCentrifuge } from "../utils/chains";
 import BlockRewardsSlash from "../pages/BlockRewards";
 
 export default function App() {
@@ -102,7 +102,7 @@ export default function App() {
                 path="/projects/:projectId"
                 component={ProjectDetail}
               />
-              {!IS_CENTRIFUGE ? (
+              {!isCentrifuge ? (
                 <Route exact path="/income" component={Inflation} />
               ) : (
                 <Route exact path="/income" component={BlockRewardsSlash} />

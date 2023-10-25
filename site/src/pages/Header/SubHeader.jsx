@@ -25,7 +25,7 @@ import Container from "../../components/Container";
 import SlashMenu from "./SlashMenu";
 import { useSupportOpenGov } from "../../utils/hooks/chain";
 import { SYMBOLS } from "../../constants";
-import { CHAIN_SETTINGS, IS_CENTRIFUGE } from "../../utils/chains";
+import { currentChainSettings, isCentrifuge } from "../../utils/chains";
 import GasFeeIncomeMenu from "./GasFeeIncomeMenu";
 import BlockRewardsIncomeMenu from "./BlockRewardsMenu";
 
@@ -192,7 +192,7 @@ const TabExampleSecondaryPointing = () => {
                 pathname.indexOf("/proposals") === 0,
             },
           },
-          CHAIN_SETTINGS.hasTips && {
+          currentChainSettings.hasTips && {
             menuItem: {
               as: NavLink,
               id: "tipsTab",
@@ -203,7 +203,7 @@ const TabExampleSecondaryPointing = () => {
               active: "/tips" === pathname || pathname.indexOf("/tips") === 0,
             },
           },
-          CHAIN_SETTINGS.hasBounties && {
+          currentChainSettings.hasBounties && {
             menuItem: {
               as: NavLink,
               id: "bountiesTab",
@@ -216,7 +216,7 @@ const TabExampleSecondaryPointing = () => {
                 pathname.indexOf("/child-bounties") === 0,
             },
           },
-          CHAIN_SETTINGS.hasBurnt && {
+          currentChainSettings.hasBurnt && {
             menuItem: {
               as: NavLink,
               id: "burntTab",
@@ -227,7 +227,7 @@ const TabExampleSecondaryPointing = () => {
               active: "/burnt" === pathname || pathname.indexOf("/burnt") === 0,
             },
           },
-          CHAIN_SETTINGS.hasTransfers && {
+          currentChainSettings.hasTransfers && {
             menuItem: {
               as: NavLink,
               id: "transfersTab",
@@ -241,7 +241,7 @@ const TabExampleSecondaryPointing = () => {
         ].filter(Boolean)
       : showMenuTabs === "Income"
       ? [
-          !IS_CENTRIFUGE
+          !isCentrifuge
             ? {
                 menuItem: {
                   as: NavLink,
@@ -272,7 +272,7 @@ const TabExampleSecondaryPointing = () => {
               active: pathname.includes("/income/slash/"),
             },
           },
-          CHAIN_SETTINGS.hasTransfers && {
+          currentChainSettings.hasTransfers && {
             menuItem: {
               as: NavLink,
               id: "transfersSlashTab",
@@ -285,7 +285,7 @@ const TabExampleSecondaryPointing = () => {
                 pathname.indexOf("/income/transfers") === 0,
             },
           },
-          IS_CENTRIFUGE && {
+          isCentrifuge && {
             menuItem: {
               as: NavLink,
               id: "gasFeeTab",

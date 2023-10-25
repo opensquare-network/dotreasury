@@ -26,7 +26,7 @@ import { mdcss, smcss } from "@osn/common";
 import IncomeAndOutputPeriods from "./IncomeAndOutputPeriods";
 import TopBeneficiariesTable from "./TopBeneficiariesTable/index.jsx";
 import OutputPeriods from "./OutputPeriods";
-import { CHAIN_SETTINGS, IS_CENTRIFUGE } from "../../utils/chains";
+import { currentChainSettings, isCentrifuge } from "../../utils/chains";
 
 const DoughnutWrapper = styled.div`
   display: grid;
@@ -165,11 +165,11 @@ const Overview = () => {
       <DoughnutWrapper count={cards.length}>{cards}</DoughnutWrapper>
       <TotalStacked />
       <IncomeAndOutputPeriods />
-      {CHAIN_SETTINGS.hasOutputPeriods && <OutputPeriods />}
+      {currentChainSettings.hasOutputPeriods && <OutputPeriods />}
       <TableWrapper>
-        {!IS_CENTRIFUGE && <TopBeneficiariesTable />}
+        {!isCentrifuge && <TopBeneficiariesTable />}
         <BeneficiaryTable />
-        {CHAIN_SETTINGS.hasTips && <ProposerTable />}
+        {currentChainSettings.hasTips && <ProposerTable />}
       </TableWrapper>
     </>
   );

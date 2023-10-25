@@ -9,7 +9,7 @@ import { getPrecision, toPrecision } from "../../utils";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import { sumBy } from "../../utils/math";
 import { useTheme } from "../../context/theme";
-import { CHAIN_SETTINGS } from "../../utils/chains";
+import { currentChainSettings } from "../../utils/chains";
 
 const Output = () => {
   const overview = useSelector(overviewSelector);
@@ -70,7 +70,7 @@ const Output = () => {
             }
           : null),
       },
-      ...(CHAIN_SETTINGS.hasTips ? [{ name: "Tips" }] : []),
+      ...(currentChainSettings.hasTips ? [{ name: "Tips" }] : []),
       {
         name: "Bounties",
       },
@@ -104,7 +104,7 @@ const Output = () => {
               }
             : null),
         },
-        ...(CHAIN_SETTINGS.hasTips
+        ...(currentChainSettings.hasTips
           ? [
               {
                 name: "Tips",
@@ -114,7 +114,7 @@ const Output = () => {
               },
             ]
           : []),
-        ...(CHAIN_SETTINGS.hasBounties
+        ...(currentChainSettings.hasBounties
           ? [
               {
                 name: "Bounties",
@@ -124,7 +124,7 @@ const Output = () => {
               },
             ]
           : []),
-        ...(CHAIN_SETTINGS.hasBurnt
+        ...(currentChainSettings.hasBurnt
           ? [
               {
                 name: "Burnt",

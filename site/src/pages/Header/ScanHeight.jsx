@@ -19,7 +19,7 @@ import { useOnClickOutside } from "@osn/common";
 import IconMask from "../../components/Icon/Mask";
 import { inline_flex, items_center } from "../../styles/tailwindcss";
 import ImageWithDark from "../../components/ImageWithDark";
-import { CHAINS, CHAIN_SETTINGS } from "../../utils/chains";
+import { CHAINS, currentChainSettings } from "../../utils/chains";
 
 const Wrapper = styled.div`
   position: relative;
@@ -301,7 +301,9 @@ const ScanHeight = () => {
           ref={symbolRef}
         >
           <div className="blockHeight">
-            <ImageWithDark src={`/imgs/logo-${CHAIN_SETTINGS.value}.svg`} />
+            <ImageWithDark
+              src={`/imgs/logo-${currentChainSettings.value}.svg`}
+            />
             <DarkMinorLabel>Height</DarkMinorLabel>
             <DarkMajorLabel>{`#${scanHeight.toLocaleString()}`}</DarkMajorLabel>
           </div>
