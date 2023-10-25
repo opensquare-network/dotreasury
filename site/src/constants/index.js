@@ -153,12 +153,6 @@ export const DEFAULT_CENTRIFUGE_NODES = [
   },
 ];
 
-export const SYMBOLS = {
-  DOT: "dot",
-  KSM: "ksm",
-  CFG: "cfg",
-};
-
 export const DEFAULT_PAGE_SIZE = 20;
 export const DEFAULT_QUERY_PAGE = 1;
 

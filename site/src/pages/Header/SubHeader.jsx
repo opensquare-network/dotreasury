@@ -18,13 +18,15 @@ import ReferendaMenu from "./ReferendaMenu";
 import { fetchIncomeCount } from "../../store/reducers/incomeSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { showMenuTabsSelector } from "../../store/reducers/menuSlice";
-import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import Card from "../../components/Card";
 import Container from "../../components/Container";
 
 import SlashMenu from "./SlashMenu";
-import { SYMBOLS } from "../../constants";
-import { currentChainSettings, isCentrifuge } from "../../utils/chains";
+import {
+  currentChainSettings,
+  isCentrifuge,
+  isKusama,
+} from "../../utils/chains";
 import GasFeeIncomeMenu from "./GasFeeIncomeMenu";
 import BlockRewardsIncomeMenu from "./BlockRewardsMenu";
 
@@ -39,8 +41,7 @@ const WrapperBackground = styled.div`
   height: 42px;
   width: 100%;
   z-index: -1;
-  background-color: ${(p) =>
-    p.symbol === SYMBOLS.KSM ? "#000" : "var(--neutral100)"};
+  background-color: ${(p) => (isKusama ? "#000" : "var(--neutral100)")};
 `;
 
 const TabWrapper = styled(Tab)`
@@ -141,7 +142,6 @@ const TabExampleSecondaryPointing = () => {
   const { pathname } = useLocation();
   const dispatch = useDispatch();
   const showMenuTabs = useSelector(showMenuTabsSelector);
-  const symbol = useSelector(chainSymbolSelector)?.toLowerCase();
 
   useEffect(() => {
     dispatch(fetchIncomeCount());
@@ -365,7 +365,7 @@ const TabExampleSecondaryPointing = () => {
 
   return (
     <Wrapper>
-      <WrapperBackground symbol={symbol} />
+      <WrapperBackground />
       <Container>
         <CustomCard>
           <TopWrapper>

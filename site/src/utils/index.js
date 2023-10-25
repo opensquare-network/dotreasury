@@ -9,29 +9,15 @@ import { decodeAddress, encodeAddress } from "@polkadot/util-crypto";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import md5 from "md5";
-import { SYMBOLS } from "../constants";
-import { CHAINS } from "./chains";
+import { CHAINS, getChainSettings } from "./chains";
 
 dayjs.extend(duration);
 
-function strEqualIgnoreCase(str1 = "", str2 = "") {
-  return str1.toLowerCase() === str2.toLowerCase();
-}
-
 export function getPrecision(chainSymbol) {
-  if (strEqualIgnoreCase(SYMBOLS.KSM, chainSymbol)) {
-    return 12;
-  }
+  const chain = networkFromSymbol(chainSymbol);
+  const chainSettings = getChainSettings(chain);
 
-  if (strEqualIgnoreCase(SYMBOLS.DOT, chainSymbol)) {
-    return 10;
-  }
-
-  if (strEqualIgnoreCase(SYMBOLS.CFG, chainSymbol)) {
-    return 18;
-  }
-
-  return 12;
+  return chainSettings?.decimals || 12;
 }
 
 export function toPrecision(value, precision = 0, paddingZero = true) {
