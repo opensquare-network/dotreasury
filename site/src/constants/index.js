@@ -144,6 +144,10 @@ export const DEFAULT_CENTRIFUGE_NODES = [
     url: "wss://fullnode.centrifuge.io",
   },
   {
+    name: "Dwellir",
+    url: "wss://centrifuge-rpc.dwellir.com/",
+  },
+  {
     name: "LuckyFriday",
     url: "wss://rpc-centrifuge.luckyfriday.io",
   },
