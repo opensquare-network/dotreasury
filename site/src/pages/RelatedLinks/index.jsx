@@ -18,6 +18,7 @@ import Table from "../../components/Table";
 import { addToast } from "../../store/reducers/toastSlice";
 import { useIsAdminQuery } from "../../utils/hooks";
 import { isSameAddress } from "../../utils";
+import isNil from "lodash.isnil";
 
 const Wrapper = styled.div`
   table {
@@ -44,7 +45,7 @@ const RelatedLinks = ({ type, index, owner }) => {
   const chain = useSelector(chainSelector);
 
   useDeepCompareEffect(() => {
-    if (index) {
+    if (!isNil(index)) {
       dispatch(fetchLinks(type, index));
     }
     return () => {
