@@ -5,28 +5,28 @@ import Text from "./Text";
 
 const CircleWrapper = styled.div`
   position: relative;
-  width: 56px;
-  height: 56px;
+  width: ${(p) => p.size}px;
+  height: ${(p) => p.size}px;
 `;
 
 const BackCircle = styled.div`
   position: absolute;
-  width: 56px;
-  height: 56px;
+  width: ${(p) => p.size}px;
+  height: ${(p) => p.size}px;
   border-radius: 50%;
   border: 8px solid var(--secondary);
 `;
 
 const InnerCircleWrapper = styled.div`
   position: absolute;
-  width: 56px;
-  height: 56px;
+  width: ${(p) => p.size}px;
+  height: ${(p) => p.size}px;
 `;
 
 const InnerCircle = styled.div`
   position: absolute;
-  width: 54px;
-  height: 54px;
+  width: ${(p) => p.size - 1}px;
+  height: ${(p) => p.size - 1}px;
   left: 1px;
   top: 1px;
   border-radius: 50%;
@@ -60,7 +60,7 @@ const PercentLable = styled(Text)`
   font-size: 12px;
 `;
 
-const CountDown = ({ percent = 0 }) => {
+const CountDown = ({ percent = 0, size = 60 }) => {
   let percentInt = parseInt(percent);
   if (isNaN(percentInt) || percentInt < 0) {
     percentInt = 0;
@@ -71,13 +71,13 @@ const CountDown = ({ percent = 0 }) => {
   }
   const overHalf = percentInt > 50;
   return (
-    <CircleWrapper>
-      <BackCircle />
-      <InnerCircleWrapper>
-        <InnerCircleLeft turn={turn} overHalf={overHalf} />
-        <InnerCircleMaskLeft overHalf={overHalf} />
-        <InnerCircleMaskRight overHalf={overHalf} />
-        <InnerCircleRight overHalf={overHalf} />
+    <CircleWrapper size={size}>
+      <BackCircle size={size} />
+      <InnerCircleWrapper size={size}>
+        <InnerCircleLeft turn={turn} overHalf={overHalf} size={size} />
+        <InnerCircleMaskLeft overHalf={overHalf} size={size} />
+        <InnerCircleMaskRight overHalf={overHalf} size={size} />
+        <InnerCircleRight overHalf={overHalf} size={size} />
       </InnerCircleWrapper>
       <PercentLable>{`${percentInt}%`}</PercentLable>
     </CircleWrapper>
