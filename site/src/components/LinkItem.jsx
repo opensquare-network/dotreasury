@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { Image } from "semantic-ui-react";
 import ExternalLink from "./ExternalLink";
 
 import Table from "../components/Table";
 import TextMinor from "./TextMinor";
 import getLinkNameAndSrc from "../utils/link";
+import ImageWithDark from "./ImageWithDark";
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -42,7 +42,7 @@ const Link = ({ link, text, button }) => {
       <Table.Cell>
         <FlexWrapper>
           <LinkWrapper>
-            <Image src={src} />
+            <ImageWithDark src={src} />
             <TextMinor>{name}</TextMinor>
             {button}
           </LinkWrapper>
