@@ -32,6 +32,7 @@ const ChartWrapper = styled.div`
   display: flex;
   width: 100%;
   height: 178px;
+  overflow-x: auto;
 `;
 
 const Title = styled(Text)`
