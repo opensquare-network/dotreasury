@@ -10,7 +10,7 @@ import OutputPeriodsLegend from "./Legend";
 import IncomeAndOutputPeriodsChart from "../IncomeAndOutputPeriods/Chart";
 import { useOutputPeriodsData } from "../../../hooks/overview/usePeriodsData";
 import { useTheme } from "../../../context/theme";
-import { useOutputPeriodsChartDatasets } from "../../../hooks/overview/usePeriodsChart";
+import { backgroundBarPlugin } from "../../../utils/chartjs/backgroundBarPlugin";
 
 const CardWrapper = styled(Card)`
   margin-top: 16px;
@@ -46,21 +46,6 @@ export default function OutputPeriods() {
   const [outputPeriodsLegends, setOutputPeriodsLegends] =
     useOutputSinglePeriodsLegends();
   const outputPeriodsData = useOutputPeriodsData();
-  const outputPeriodsDatasets =
-    useOutputPeriodsChartDatasets(outputPeriodsLegends);
-
-  const barHeights = outputPeriodsData.map((_, i) =>
-    outputPeriodsDatasets.reduce((prev, curr) => prev + curr.data[i], 0),
-  );
-  const maxBarHeight = Math.max(...barHeights);
-  const bgBarHeight = barHeights.map((h) => maxBarHeight - h);
-
-  const bgDatasets = {
-    label: "barBg",
-    data: outputPeriodsData.map((_, i) => bgBarHeight[i]),
-    backgroundColor: theme.neutral200,
-    stack: "period",
-  };
 
   useEffect(() => {
     dispatch(fetchSpendPeriods());
@@ -78,7 +63,6 @@ export default function OutputPeriods() {
           <IncomeAndOutputPeriodsChart
             outputPeriodsLegends={outputPeriodsLegends.filter((i) => i.enabled)}
             outputPeriodsData={outputPeriodsData}
-            extraDatasets={[bgDatasets]}
             options={{
               scales: {
                 y: {
@@ -92,7 +76,13 @@ export default function OutputPeriods() {
                   },
                 },
               },
+              plugins: {
+                backgroundBar: {
+                  backgroundColor: theme.neutral200,
+                },
+              },
             }}
+            plugins={[backgroundBarPlugin]}
           />
         </ChartWrapper>
       </ContentWrapper>

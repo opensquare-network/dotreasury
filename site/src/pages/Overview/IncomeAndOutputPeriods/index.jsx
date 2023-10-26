@@ -61,14 +61,6 @@ export default function IncomeAndOutputPeriods() {
   return (
     <CardWrapper>
       <Title>Income & Output Periods</Title>
-      <LegendWrapper>
-        <IncomeAndSpendPeriodsLegend
-          incomeLegends={incomeLegends}
-          setIncomeLegends={setIncomeLegends}
-          outputLegends={outputLegends}
-          setOutputLegends={setOutputLegends}
-        />
-      </LegendWrapper>
       <ContentWrapper>
         <IncomeAndOutputPeriodsChart
           incomePeriodsLegends={incomeLegends.filter((item) => item.enabled)}
@@ -77,6 +69,14 @@ export default function IncomeAndOutputPeriods() {
           outputPeriodsData={outputPeriodsData}
         />
       </ContentWrapper>
+      <LegendWrapper>
+        <IncomeAndSpendPeriodsLegend
+          incomeLegends={incomeLegends}
+          setIncomeLegends={setIncomeLegends}
+          outputLegends={outputLegends}
+          setOutputLegends={setOutputLegends}
+        />
+      </LegendWrapper>
     </CardWrapper>
   );
 }

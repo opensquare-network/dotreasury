@@ -92,6 +92,7 @@ export default function IncomeAndOutputPeriodsChart({
   outputPeriodsLegends = [],
   outputPeriodsData = [],
   options = {},
+  plugins = [],
   extraDatasets = [],
 }) {
   const theme = useTheme();
@@ -190,6 +191,7 @@ export default function IncomeAndOutputPeriodsChart({
             },
             options,
           )}
+          plugins={plugins}
         />
       </Wrapper>
     </ScrollableWrapper>
