@@ -17,6 +17,13 @@ export const h4_16_semibold = css`
 `;
 
 // paragraphs
+export const p_14_semibold = css`
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+`;
 export const p_14_medium = css`
   font-family: "Inter";
   font-style: normal;
