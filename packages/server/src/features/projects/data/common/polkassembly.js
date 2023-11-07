@@ -21,6 +21,11 @@ const proposals = [
   {
     type: "proposal",
     token: "dot",
+    proposalId: 475,
+  },
+  {
+    type: "proposal",
+    token: "dot",
     proposalId: 353,
   },
   {
