@@ -76,6 +76,11 @@ const settings = [
     img: "subscan-logo.svg",
     name: "Subscan",
   },
+  {
+    host: "statescan.io",
+    img: "statescan-logo.svg",
+    name: "Statescan",
+  },
 ];
 
 function getNameFromHost(host) {
@@ -103,7 +108,7 @@ export default function getLinkNameAndSrc(link) {
     return ["Email", "/imgs/email-logo.svg"];
   }
 
-  const setting = settings.find(setting => url.host.endsWith(setting.host));
+  const setting = settings.find((setting) => url.host.endsWith(setting.host));
   if (setting) {
     return [setting.name, `/imgs/${setting.img}`];
   }
