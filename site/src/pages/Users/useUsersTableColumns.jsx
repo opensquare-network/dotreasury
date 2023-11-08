@@ -127,7 +127,7 @@ const awardedValue = {
   },
 };
 
-export function useTableColumns(userRole) {
+export function useUsersTableColumns(userRole) {
   const chainSymbol = useSelector(chainSymbolSelector);
   const options = {
     chainSymbol: chainSymbol?.toLowerCase(),
