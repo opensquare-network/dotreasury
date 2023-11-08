@@ -68,11 +68,15 @@ const role = {
   key: "role",
   title: "Role",
   cellRender(_, data) {
+    const roles = getRolesOptions(data);
+
     return (
       <Tags>
-        {data?.isCouncilor && <Tag rounded>Councilor</Tag>}
-        {data?.isBeneficiary && <Tag rounded>Beneficiary</Tag>}
-        {data?.isProposer && <Tag rounded>Proposer</Tag>}
+        {roles.map((role) => (
+          <Tag key={role.name} rounded>
+            {role.name}
+          </Tag>
+        ))}
       </Tags>
     );
   },
