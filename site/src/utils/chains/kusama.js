@@ -12,6 +12,7 @@ export const kusama = {
   hasDotreasury: true,
   hasPolkascan: true,
   hasSubscan: true,
+  hasStatescan: true,
 
   hasProjects: true,
   hasOutputPeriods: true,

@@ -12,6 +12,7 @@ export const polkadot = {
   hasDotreasury: true,
   hasPolkascan: true,
   hasSubscan: true,
+  hasStatescan: true,
 
   hasProjects: true,
   hasOutputPeriods: true,
