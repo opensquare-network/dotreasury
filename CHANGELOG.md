@@ -8,6 +8,7 @@ Date: 2023-11-08
 
 - Improve user link on users page.
 - Update funded project proposals.
+- Add statescan link on user detail page.
 
 ### 4.1.0
 
