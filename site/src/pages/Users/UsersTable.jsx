@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Table } from "../../components/Table";
 import TableLoading from "../../components/TableLoading";
 import Card from "../../components/Card";
-import { useTableColumns } from "./useTableColumns";
+import { useUsersTableColumns } from "./useUsersTableColumns";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -37,7 +37,7 @@ export default function ParticipantsTable({
   header,
   footer,
 }) {
-  const { id, role, proposals, value } = useTableColumns(userRole);
+  const { id, role, proposals, value } = useUsersTableColumns(userRole);
 
   const columns = [id, role, proposals, value];
 

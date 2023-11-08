@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import {
   fetchTopBeneficiaries,
   overviewSelector,
-  topBeneficiariesSelector
+  topBeneficiariesSelector,
 } from "../../../store/reducers/overviewSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -12,7 +12,7 @@ import {
   TableRow,
   TableWrapper,
   Title,
-  TitleContainer
+  TitleContainer,
 } from "../BeneficiaryTable.jsx";
 import { NavLink } from "react-router-dom";
 import GrayImage from "../../../components/GrayImage.jsx";
@@ -22,7 +22,7 @@ import User from "../../../components/User/index.jsx";
 import { USER_ROLES } from "../../../constants/index.js";
 import Balance from "../../../components/Balance.jsx";
 import ProposalsCount from "../../../components/ProposalsCount.jsx";
-import { ProposalsWrapper } from "../../Users/useTableColumns.jsx";
+import { ProposalsWrapper } from "../../Users/useUsersTableColumns.jsx";
 
 export default function TopBeneficiariesTable() {
   const dispatch = useDispatch();
@@ -52,17 +52,17 @@ export default function TopBeneficiariesTable() {
               <Table.HeaderCell textAlign={"right"}>
                 Total value
               </Table.HeaderCell>
-              <Table.HeaderCell textAlign={"right"}>
-                Proposals
-              </Table.HeaderCell>
+              <Table.HeaderCell textAlign={"right"}>Proposals</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
 
           <Table.Body>
-            {
-              topBeneficiaries && topBeneficiaries.length <= 0 ? <TableNoDataCell /> : (
-                topBeneficiaries.slice(0, 10).map((item, index) => {
-                  return <TableRow key={index}>
+            {topBeneficiaries && topBeneficiaries.length <= 0 ? (
+              <TableNoDataCell />
+            ) : (
+              topBeneficiaries.slice(0, 10).map((item, index) => {
+                return (
+                  <TableRow key={index}>
                     <Table.Cell>
                       <User
                         role={USER_ROLES.Beneficiary}
@@ -89,12 +89,12 @@ export default function TopBeneficiariesTable() {
                       </ProposalsWrapper>
                     </TableCell>
                   </TableRow>
-                })
-              )
-            }
+                );
+              })
+            )}
           </Table.Body>
         </Table>
       </TableWrapper>
     </CardWrapper>
-  )
+  );
 }
