@@ -22,15 +22,40 @@ const Tags = styled.div`
   }
 `;
 
+function getRolesOptions(data = {}) {
+  return [
+    data.isCouncilor && {
+      name: "Councilor",
+      link: "/councilor",
+    },
+    data.isBeneficiary && {
+      name: "Beneficiary",
+      link: "/beneficiary",
+    },
+    data.isProposer && {
+      name: "Proposer",
+      link: "/proposer",
+    },
+  ].filter(Boolean);
+}
+
 const id = (options) => {
   return {
     key: "id",
     title: "ID",
     width: "320px",
     cellRender(_, data) {
+      const roles = getRolesOptions(data);
+
+      let link = `/users/${data?.address}`;
+      if (roles.length === 1) {
+        const role = roles[0];
+        link = `${link}${role.link}`;
+      }
+
       return (
         <IDWrapper>
-          <NavLink to={`/users/${data?.address}`}>
+          <NavLink to={link}>
             <User noLink address={data?.address} />
           </NavLink>
         </IDWrapper>
