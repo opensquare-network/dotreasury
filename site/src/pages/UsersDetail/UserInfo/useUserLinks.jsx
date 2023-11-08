@@ -4,9 +4,11 @@ import { useParams } from "react-router";
 import { chainSelector } from "../../../store/reducers/chainSlice";
 import {
   ensureLinkProtocol,
+  makeStatescanLink,
   makeSubscanLink,
   makeSubsquareLink,
 } from "../../../utils/url";
+import { currentChainSettings } from "../../../utils/chains";
 
 export function useUserLinks() {
   const { address } = useParams();
@@ -23,7 +25,10 @@ export function useUserLinks() {
       {
         link: makeSubscanLink(chain, "account", address),
       },
-    ];
+      currentChainSettings.hasStatescan && {
+        link: makeStatescanLink(chain, "#", "accounts", address),
+      },
+    ].filter(Boolean);
 
     if (email) {
       items.push({

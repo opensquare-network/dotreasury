@@ -20,6 +20,15 @@ export function makeSubsquareLink(chain, ...pathnames) {
   });
 }
 
+export function makeStatescanLink(chain, ...pathnames) {
+  const hostname = `${chain}.statescan.io`;
+
+  return makeUrl({
+    hostname,
+    pathname: makeUrlPathname(...pathnames),
+  });
+}
+
 export function makeInSiteTipLink(page, tipHeight, tipHash) {
   return makeUrlPathname(page, `${tipHeight}_${tipHash}`);
 }
