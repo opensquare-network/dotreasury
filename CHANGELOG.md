@@ -2,6 +2,13 @@
 
 Notable changes to this project will be documented in this file, started from 4.0.0
 
+### 4.1.1
+
+Date: 2023-11-08
+
+- Improve user link on users page.
+- Update funded project proposals.
+
 ### 4.1.0
 
 Date: 2023-10-25
