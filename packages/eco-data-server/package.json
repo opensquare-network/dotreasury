@@ -11,6 +11,6 @@
     "graphql": "^16.8.1",
     "graphql-yoga": "^4.0.4",
     "log4js": "^6.9.1",
-    "mongodb": "5.8.0"
+    "mongodb": "6.1.0"
   }
 }

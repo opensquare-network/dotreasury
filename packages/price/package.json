@@ -16,7 +16,7 @@
     "dayjs": "^1.10.4",
     "dotenv": "16.1.4",
     "minimist": "^1.2.6",
-    "mongodb": "5.8.0",
+    "mongodb": "6.1.0",
     "node-fetch": "^2.6.7"
   }
 }
