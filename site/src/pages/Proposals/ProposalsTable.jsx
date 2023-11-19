@@ -77,12 +77,10 @@ const ProposalsTable = ({ data, loading, header, footer }) => {
 
   const getRelatedLinks = (item) => {
     const links = [...item.links];
-    if ([isKusama, isPolkadot].includes(chain)) {
-      links.unshift({
-        link: `https://${chain}.subsquare.io/treasury/proposal/${item.proposalIndex}`,
-        description: "Treasury proposal page",
-      });
-    }
+    links.unshift({
+      link: `https://${chain}.subsquare.io/treasury/proposal/${item.proposalIndex}`,
+      description: "Treasury proposal page",
+    });
     return links;
   };
   const getDetailRoute = (row) => {
