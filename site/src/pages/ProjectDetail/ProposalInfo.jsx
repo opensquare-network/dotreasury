@@ -125,7 +125,7 @@ export default function ProposalInfo({ item }) {
 
   return (
     <div>
-      <ProposalLink href={`${siteLink}/${link}`} target="_blank">
+      <ProposalLink href={`${siteLink}/#/${link}`} target="_blank">
         <ImageWithDark
           width={24}
           src={isKSM ? "/imgs/logo-kusama.svg" : "/imgs/logo-polkadot.svg"}
