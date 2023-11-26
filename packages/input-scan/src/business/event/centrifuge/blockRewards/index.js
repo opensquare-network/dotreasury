@@ -1,4 +1,6 @@
 const { getCfgBlockRewardCol } = require("../../../../mongo/data");
+const { findRewardFromNextEvent } = require("./nextEvent");
+const { findRewardFromNoExtrinsicEvents } = require("./noExtrinsicEvent");
 
 function extractCollatorRewardInfo(blockEvents, treasuryDepositSort) {
   const groupRewardedEvent = blockEvents[treasuryDepositSort - 2];
@@ -21,16 +23,16 @@ async function handleCentrifugeBlockRewards(event, indexer, blockEvents) {
     return;
   }
 
-  const nextEvent = blockEvents[sort + 1];
-  const { event: { section, method } } = nextEvent;
-  if (section !== "blockRewards" || method !== "NewSession") {
+  let rewardInfo = findRewardFromNextEvent(blockEvents, sort);
+  if (!rewardInfo) {
+    rewardInfo = findRewardFromNoExtrinsicEvents(blockEvents, sort);
+  }
+  if (!rewardInfo) {
     return;
   }
 
   const balance = event.data[0].toString();
-  const eachCollatorReward = nextEvent.event.data[0].toString();
-  const totalReward = nextEvent.event.data[1].toString();
-
+  const { eachCollatorReward, totalReward } = rewardInfo;
   const collatorRewardInfo = extractCollatorRewardInfo(blockEvents, sort);
   if (!collatorRewardInfo) {
     throw new Error(`Can not get centrifuge collator reward info at ${ indexer.blockHeight }`);
@@ -38,8 +40,8 @@ async function handleCentrifugeBlockRewards(event, indexer, blockEvents) {
 
   const obj = {
     indexer,
-    section,
-    method,
+    section: "blockRewards",
+    method: "NewSession",
     balance,
     totalReward,
     eachCollatorReward,
