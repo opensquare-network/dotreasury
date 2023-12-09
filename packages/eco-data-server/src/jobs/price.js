@@ -1,4 +1,4 @@
-const { endpoints, CHAINS } = require("../apis/endpoints");
+const { CHAINS } = require("../apis/endpoints");
 const { upsertChainPrice } = require("../mongo/service");
 
 async function coingeckoGet(api) {
@@ -54,7 +54,7 @@ function getCoinId(chain) {
 }
 
 async function updateTokensPrice() {
-  const chains = Object.keys(endpoints);
+  const chains = Object.keys(CHAINS);
   try {
     const promises = [];
     for (const chain of chains) {
