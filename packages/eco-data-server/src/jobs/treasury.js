@@ -1,8 +1,8 @@
-const { endpoints } = require("../apis/endpoints");
+const { CHAINS } = require("../apis/endpoints");
 const { updateTreasuryBalance } = require("../apis/treasury");
 
 async function updateChainsTreasuryBalance() {
-  const chains = Object.keys(endpoints);
+  const chains = Object.keys(CHAINS);
   try {
     const promises = [];
     for (const chain of chains) {

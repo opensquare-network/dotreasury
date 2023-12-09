@@ -47,7 +47,7 @@ async function updateTokenPrice(chain, coinId) {
 function getCoinId(chain) {
   if (["phala", "khala"].includes(chain)) {
     return "pha";
-  } else if ([CHAINS.bifrostPolkadot].includes(chain)) {
+  } else if ([CHAINS.bifrost].includes(chain)) {
     return "bifrost-native-coin";
   }
   return chain;
