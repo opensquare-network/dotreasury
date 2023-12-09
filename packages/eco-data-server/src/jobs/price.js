@@ -24,7 +24,14 @@ async function fetchPrice(coinId) {
 }
 
 async function updateTokenPrice(chain, coinId) {
-  const data = await fetchPrice(coinId);
+  let data;
+  try {
+    data = await fetchPrice(coinId);
+  } catch (e) {
+    console.log(`Failed to fetch price of ${ chain }`);
+    return;
+  }
+
   const ticker = data?.tickers?.find(
     (item) => item.coin_id === coinId && item.target === "USD",
   );
