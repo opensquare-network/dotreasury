@@ -1,4 +1,4 @@
-const { endpoints } = require("../apis/endpoints");
+const { endpoints, CHAINS } = require("../apis/endpoints");
 const { upsertChainPrice } = require("../mongo/service");
 
 async function coingeckoGet(api) {
@@ -40,6 +40,8 @@ async function updateTokenPrice(chain, coinId) {
 function getCoinId(chain) {
   if (["phala", "khala"].includes(chain)) {
     return "pha";
+  } else if ([CHAINS.bifrostPolkadot].includes(chain)) {
+    return "bifrost-native-coin";
   }
   return chain;
 }

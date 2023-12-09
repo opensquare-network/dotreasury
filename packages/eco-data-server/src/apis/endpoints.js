@@ -8,6 +8,9 @@ const CHAINS = Object.freeze({
   hydradx: "hydradx",
   interlay: "interlay",
   kintsugi: "kintsugi",
+  acala: "acala",
+  karura: "karura",
+  bifrostPolkadot: "bifrostPolkadot",
 });
 
 const endpoints = Object.freeze({
@@ -49,11 +52,23 @@ const endpoints = Object.freeze({
   ],
   moonriver: [
     "wss://wss.api.moonriver.moonbeam.network",
-    "wss://moonriver-rpc.dwellir.com" ,
+    "wss://moonriver-rpc.dwellir.com",
   ],
   moonbeam: [
     "wss://wss.api.moonbeam.network/",
     "wss://moonbeam-rpc.dwellir.com/",
+  ],
+  acala: [
+    "wss://acala-rpc-0.aca-api.network",
+    "wss://acala-rpc-1.aca-api.network",
+  ],
+  karura: [
+    "wss://karura-rpc-1.aca-api.network",
+    "wss://karura-rpc-2.aca-api.network/ws",
+  ],
+  [CHAINS.bifrostPolkadot]: [
+    "wss://hk.p.bifrost-rpc.liebi.com/ws",
+    "wss://eu.bifrost-polkadot-rpc.liebi.com/ws"
   ],
 });
 
