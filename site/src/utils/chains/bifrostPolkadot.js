@@ -2,7 +2,7 @@ import { capitalizeFirstLetter } from "../../utils";
 
 const value = "bifrost";
 
-export const bifrostPolkadot = {
+export const bifrost = {
   value,
   name: capitalizeFirstLetter(value),
   symbol: "BNC",
