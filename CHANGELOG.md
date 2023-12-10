@@ -2,6 +2,14 @@
 
 Notable changes to this project will be documented in this file, started from 4.0.0
 
+### 4.1.2
+
+Date: 2023-12-10
+
+- Add acala/karura/bifrost to landing page.
+- Fix centrifuge block rewards check.
+- Upgrade dependencies.
+
 ### 4.1.1
 
 Date: 2023-11-08
