@@ -1,5 +1,5 @@
 import { gql, useLazyQuery } from "@apollo/client";
-import { getChainSettings } from "@site/src/utils/chains";
+import { CHAINS, getChainSettings } from "@site/src/utils/chains";
 import { toPrecision } from "@site/src/utils";
 import sumBy from "lodash.sumby";
 import { useEffect } from "react";
@@ -24,7 +24,7 @@ export function useTreasuriesData() {
   useEffect(() => {
     fetch().then((resp) => {
       const treasuries = resp.data?.treasuries || [];
-      const data = treasuries.map((treasury) => {
+      const data = treasuries.filter(item => Object.keys(CHAINS).includes(item.chain)).map((treasury) => {
         const { decimals } = getChainSettings(treasury.chain);
         const amount = toPrecision(treasury.balance, decimals, false);
         const fiatValue = amount * treasury.price;

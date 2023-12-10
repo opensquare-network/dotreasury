@@ -3,6 +3,9 @@ const { getApis } = require("@osn/polkadot-api-container");
 const { upsertChainTreasury } = require("../mongo/service");
 const { CHAINS } = require("./endpoints");
 const { Kintsugi, Interlay } = require("@interlay/monetary-js");
+const {
+  utils: { bigAdd },
+} = require("@osn/scan-common");
 
 const EMPTY_U8A_32 = new Uint8Array(32);
 
@@ -36,14 +39,29 @@ async function queryBalanceFromApi(api, chain) {
   return accountData ? accountData.data.free.toString() : "0";
 }
 
-async function updateTreasuryBalance(chain) {
+async function queryChainTreasuryBalance(chain) {
   const promises = [];
   const apis = getApis(chain);
   for (const api of apis) {
     promises.push(queryBalanceFromApi(api, chain));
   }
 
-  const balance = await Promise.any(promises);
+  return await Promise.any(promises);
+}
+
+async function queryBifrostTreasuryBalance() {
+  const balanceOnKusama = await queryChainTreasuryBalance("bifrostKusama");
+  const balanceOnPolkadot = await queryChainTreasuryBalance("bifrostPolkadot");
+  return bigAdd(balanceOnKusama, balanceOnPolkadot);
+}
+
+async function updateTreasuryBalance(chain) {
+  let balance;
+  if (CHAINS.bifrost === chain) {
+    balance = await queryBifrostTreasuryBalance();
+  } else {
+    balance = await queryChainTreasuryBalance(chain);
+  }
   await upsertChainTreasury(chain, balance);
 }
 

@@ -9,6 +9,9 @@ import { kintsugi } from "./kintsugi";
 import { phala } from "./phala";
 import { moonbeam } from "./moonbeam";
 import { moonriver } from "./moonriver";
+import { acala } from "./acala.js";
+import { karura } from "./karura.js";
+import { bifrost } from "./bifrostPolkadot.js";
 
 export const currentChain = import.meta.env.VITE_APP_CHAIN;
 
@@ -24,6 +27,9 @@ export const CHAINS = {
   phala,
   moonriver,
   moonbeam,
+  acala,
+  karura,
+  bifrost,
 };
 
 export const currentChainSettings = getChainSettings(currentChain);

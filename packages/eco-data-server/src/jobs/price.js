@@ -1,4 +1,4 @@
-const { endpoints } = require("../apis/endpoints");
+const { CHAINS } = require("../apis/endpoints");
 const { upsertChainPrice } = require("../mongo/service");
 
 async function coingeckoGet(api) {
@@ -24,7 +24,14 @@ async function fetchPrice(coinId) {
 }
 
 async function updateTokenPrice(chain, coinId) {
-  const data = await fetchPrice(coinId);
+  let data;
+  try {
+    data = await fetchPrice(coinId);
+  } catch (e) {
+    console.log(`Failed to fetch price of ${ chain }`);
+    return;
+  }
+
   const ticker = data?.tickers?.find(
     (item) => item.coin_id === coinId && item.target === "USD",
   );
@@ -40,12 +47,14 @@ async function updateTokenPrice(chain, coinId) {
 function getCoinId(chain) {
   if (["phala", "khala"].includes(chain)) {
     return "pha";
+  } else if ([CHAINS.bifrost].includes(chain)) {
+    return "bifrost-native-coin";
   }
   return chain;
 }
 
 async function updateTokensPrice() {
-  const chains = Object.keys(endpoints);
+  const chains = Object.keys(CHAINS);
   try {
     const promises = [];
     for (const chain of chains) {
