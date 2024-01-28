@@ -15,6 +15,9 @@ function normalizeTokenValue(value, chain) {
   return new BigNumber(value).div(Math.pow(10, decimal)).toString();
 }
 
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 module.exports = {
   normalizeTokenValue,
+  sleep,
 }
