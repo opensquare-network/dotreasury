@@ -27,7 +27,7 @@ const endpoints = Object.freeze({
     "wss://rpc-centrifuge.luckyfriday.io/",
   ],
   khala: [
-    "wss://khala-api.phala.network/ws",
+    "wss://khala.api.onfinality.io/public-ws",
     "wss://khala-rpc.dwellir.com/",
   ],
   phala: [
