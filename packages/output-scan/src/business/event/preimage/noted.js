@@ -1,6 +1,6 @@
 const { toDecimal128 } = require("../../../utils");
 const { extractTreasuryCalls } = require("../referenda/common/extractTreasury");
-const { queryPreimage } = require("../referenda/query/preimage");
+const { queryCallFromPreimage } = require("../referenda/query/preimage");
 const {
   findReferendaPendingReferendum,
   insertReferendaReferendum,
@@ -18,7 +18,7 @@ async function handlePreimageNoted(event, indexer) {
     return
   }
 
-  const call = await queryPreimage(hash, indexer.blockHash);
+  const call = await queryCallFromPreimage(hash, indexer.blockHash);
   const { calls, amount, beneficiary, beneficiaries } = await extractTreasuryCalls(call, indexer);
   if (calls) {
     await insertReferendaReferendum({

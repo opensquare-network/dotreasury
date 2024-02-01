@@ -3,11 +3,43 @@ const {
   utils: { bigAdd },
 } = require("@osn/scan-common");
 
+function checkArgNames(call, argNames = []) {
+  const argsMeta = call.meta.args;
+  if (argsMeta.length !== argNames.length) {
+    return false;
+  }
+
+  for (let i = 0; i < argNames.length; i++) {
+    if (argsMeta[i].name.toString() !== argNames[i]) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function isSpendAmountCall(call = {}) {
+  const { section, method } = call;
+  if ("treasury" !== section || "spend" !== method) {
+    return false;
+  }
+
+  return checkArgNames(call, ["amount", "beneficiary"]);
+}
+
+function isSpendLocal(call = {}) {
+  const { section, method } = call;
+  if ("treasury" !== section || "spendLocal" !== method) {
+    return false;
+  }
+
+  return checkArgNames(call, ["amount", "beneficiary"]);
+}
+
 async function extractTreasuryCalls(call, indexer) {
   const spendCalls = [];
   await handleWrappedCall(call, null, indexer, [], innerCall => {
-    const { section, method } = innerCall;
-    if ("treasury" === section && "spend" === method) {
+    if (isSpendAmountCall(innerCall) || isSpendLocal(innerCall)) {
       spendCalls.push(innerCall);
     }
   });
