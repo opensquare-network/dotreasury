@@ -1,7 +1,7 @@
 const {
   chain: { findBlockApi },
 } = require("@osn/scan-common");
-const { queryPreimage } = require("../query/preimage");
+const { queryCallFromPreimage } = require("../query/preimage");
 
 async function getCall(proposal, blockHash) {
   let proposalHash, call;
@@ -13,7 +13,7 @@ async function getCall(proposal, blockHash) {
   }
 
   if (proposalHash) {
-    call = await queryPreimage(proposalHash, blockHash);
+    call = await queryCallFromPreimage(proposalHash, blockHash);
   }
 
   if (proposal?.inline) {
