@@ -36,14 +36,27 @@ function isSpendLocal(call = {}) {
   return checkArgNames(call, ["amount", "beneficiary"]);
 }
 
-async function extractTreasuryCalls(call, indexer) {
+function isScheduleNamed(call = {}) {
+  const { section, method } = call;
+  return "scheduler" === section && "scheduleNamedAfter" === method;
+}
+
+async function extractSpendCalls(call, indexer) {
   const spendCalls = [];
-  await handleWrappedCall(call, null, indexer, [], innerCall => {
+  await handleWrappedCall(call, null, indexer, [], async innerCall => {
     if (isSpendAmountCall(innerCall) || isSpendLocal(innerCall)) {
       spendCalls.push(innerCall);
+    } else if (isScheduleNamed(innerCall)) {
+      const calls = await extractSpendCalls(innerCall.args[4], indexer);
+      spendCalls.push(...calls);
     }
   });
 
+  return spendCalls;
+}
+
+async function extractTreasuryCalls(call, indexer) {
+  const spendCalls = await extractSpendCalls(call, indexer);
   if (spendCalls.length <= 0) {
     return {};
   }
