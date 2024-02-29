@@ -78,4 +78,5 @@ async function queryAndUpdateFinalInfo(event, indexer, stateKey) {
 
 module.exports = {
   queryAndUpdateFinalInfo,
+  getTrackInfo,
 }

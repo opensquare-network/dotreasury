@@ -8,7 +8,7 @@ async function handleConfirmed(event, indexer, extrinsic, blockEvents) {
   const referendumIndex = event.data[0].toNumber();
   let enactment;
   try {
-    enactment = findScheduled(event, indexer, blockEvents);
+    enactment = await findScheduled(event, indexer, blockEvents);
   } catch (e) {
     busLogger.error(`Can not get referendum enactment info when confirmed`, e);
   }
