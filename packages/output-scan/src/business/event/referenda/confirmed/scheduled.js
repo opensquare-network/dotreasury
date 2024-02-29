@@ -1,6 +1,6 @@
 const isNil = require("lodash.isnil");
 const { getReferendaReferendumCol } = require("../../../../mongo");
-const { getTrackInfo } = require("../common/final/queryAndUpdateFinalInfo");
+const { queryTrackInfo } = require("../query/trackInfo");
 
 function calcEnactmentHeight(trackInfo, enactment, confirmedAt) {
   const { after, at } = enactment;
@@ -32,6 +32,16 @@ function getEnactmentByEstimation(estimatedEnactmentHeight, indexer, blockEvents
 
     eventIndex--;
   }
+}
+
+async function getTrackInfo(indexer, referendumIndex) {
+  const referendumCol = await getReferendaReferendumCol();
+  const referendum = await referendumCol.findOne({ referendumIndex });
+  if (!referendum) {
+    return null;
+  }
+
+  return await queryTrackInfo(referendum.trackId, indexer.blockHash);
 }
 
 async function findScheduled(event, indexer, blockEvents) {
