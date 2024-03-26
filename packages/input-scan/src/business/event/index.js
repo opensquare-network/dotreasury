@@ -22,6 +22,7 @@ const { handleRollover } = require("./treasury/rollover");
 const { handleCentrifugeBlockRewards } = require("./centrifuge/blockRewards");
 const BigNumber = require("bignumber.js");
 const { handleCentrifugeTxFee } = require("./centrifuge/txFee");
+const { handleBalancesMinted } = require("./centrifuge/minted");
 
 async function handleDeposit(
   indexer,
@@ -94,6 +95,7 @@ async function handleCommon(
 
   return {
     transfer,
+    cfgMinted: handleBalancesMinted(event, indexer, blockEvents),
   }
 }
 
@@ -127,6 +129,7 @@ async function handleEvents(events, extrinsics, blockIndexer) {
 
     const commonObj = await handleCommon(indexer, event, events);
     transfer = bigAdd(transfer, commonObj.transfer);
+    centrifugeBlockReward = bigAdd(centrifugeBlockReward, commonObj.cfgMinted || 0);
 
     if (Modules.Treasury !== section || TreasuryCommonEvent.Deposit !== method) {
       continue;
