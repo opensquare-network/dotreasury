@@ -95,7 +95,7 @@ async function handleCommon(
 
   return {
     transfer,
-    cfgMinted: handleBalancesMinted(event, indexer, blockEvents),
+    cfgMinted: await handleBalancesMinted(event, indexer, blockEvents),
   }
 }
 

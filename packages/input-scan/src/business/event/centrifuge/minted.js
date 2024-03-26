@@ -4,6 +4,7 @@ const {
     Modules,
   }
 } = require("@osn/scan-common");
+const { getCfgBlockRewardCol } = require("../../../mongo/data");
 
 function isNextEventValid(indexer, blockEvents) {
   const nextEvent = blockEvents[indexer.eventIndex + 1];
@@ -11,7 +12,7 @@ function isNextEventValid(indexer, blockEvents) {
   return "blockRewards" === section && "NewSession" === method;
 }
 
-function handleBalancesMinted(event, indexer, blockEvents) {
+async function handleBalancesMinted(event, indexer, blockEvents) {
   if ("centrifuge" !== currentChain()) {
     return;
   }
@@ -35,6 +36,8 @@ function handleBalancesMinted(event, indexer, blockEvents) {
     balance: data[1].toString(),
   }
 
+  const col = await getCfgBlockRewardCol();
+  await col.insertOne(obj);
   return data[1].toString();
 }
 
