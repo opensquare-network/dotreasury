@@ -1,7 +1,7 @@
 import react from "@vitejs/plugin-react";
 import path from "node:path";
 import url from "url";
-import { defineConfig } from "vite";
+import { defineConfig, normalizePath } from "vite";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 import siteConfig from "../site/vite.config";
 import sitePkgJson from "../site/package.json";
@@ -31,7 +31,7 @@ export default defineConfig({
     viteStaticCopy({
       targets: [
         {
-          src: path.resolve(__dirname, "../site/public/imgs"),
+          src: normalizePath(path.resolve(__dirname, "../site/public/imgs")),
           dest: ".",
         },
       ],

@@ -11,6 +11,7 @@ const CHAINS = Object.freeze({
   acala: "acala",
   karura: "karura",
   bifrost: "bifrost",
+  darwinia: "darwinia",
 });
 
 const endpoints = Object.freeze({
@@ -73,6 +74,10 @@ const endpoints = Object.freeze({
   bifrostKusama: [
     "wss://bifrost-rpc.dwellir.com",
     "wss://bifrost-rpc.liebi.com/ws",
+  ],
+  darwinia: [
+    "wss://rpc.darwinia.network",
+    "wss://darwinia-rpc.dwellir.com",
   ],
 });
 
