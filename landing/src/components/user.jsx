@@ -4,12 +4,6 @@ import Badge from "@site/src/components/User/Badge";
 import { useIdentity } from "../hooks/useIdentity";
 import DeletedAccount from "@site/src/components/User/DeletedAccount";
 import ExternalLink from "@site/src/components/ExternalLink";
-import styled from "styled-components";
-import { truncate } from "@site/src/styles/tailwindcss";
-
-const UsernameLink = styled(ExternalLink)`
-  ${truncate};
-`;
 
 export default function User({
   address,
@@ -36,11 +30,12 @@ export default function User({
 
   if (!noLink) {
     username = (
-      <UsernameLink
+      <ExternalLink
+        className="truncate"
         href={`https://${chain}.dotreasury.com/users/${address}/${role}`}
       >
         {username}
-      </UsernameLink>
+      </ExternalLink>
     );
   }
 
