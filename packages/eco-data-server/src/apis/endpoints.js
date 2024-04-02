@@ -12,6 +12,7 @@ const CHAINS = Object.freeze({
   karura: "karura",
   bifrost: "bifrost",
   darwinia: "darwinia",
+  integritee: "integritee",
 });
 
 const endpoints = Object.freeze({
@@ -78,6 +79,10 @@ const endpoints = Object.freeze({
   darwinia: [
     "wss://rpc.darwinia.network",
     "wss://darwinia-rpc.dwellir.com",
+  ],
+  integritee: [
+    "wss://integritee-kusama.api.onfinality.io/public-ws",
+    "wss://integritee-rpc.dwellir.com",
   ],
 });
 
