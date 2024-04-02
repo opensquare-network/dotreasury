@@ -31,6 +31,7 @@ export default function User({
   if (!noLink) {
     username = (
       <ExternalLink
+        className="truncate"
         href={`https://${chain}.dotreasury.com/users/${address}/${role}`}
       >
         {username}
