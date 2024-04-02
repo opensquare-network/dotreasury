@@ -16,6 +16,7 @@ export default function OverviewTopBeneficiaries({ chain = "" }) {
     {
       id: "beneficiary",
       title: "Beneficiary",
+      cellClassName: cn("md:max-w-[237px]", "max-sm:max-w-[184px]"),
       cellRender: (_, item) => (
         <User
           chain={chain}
@@ -28,6 +29,7 @@ export default function OverviewTopBeneficiaries({ chain = "" }) {
       id: "totalValue",
       title: "Total Value",
       headerCellClassName: "!text-right",
+      cellClassName: "w-40 max-w-[160px]",
       cellRender: (_, item) => (
         <Balance
           chain={chain}
