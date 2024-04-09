@@ -80,7 +80,7 @@ export default function OverviewTotalStacked({ chain = "" }) {
 
   return (
     <Card className="!p-6 h-full space-y-6 !pb-12">
-      <h4 className="h4-16-semibold">Total Stacked</h4>
+      <h4 className="h4-16-semibold">Treasury Stats Chart</h4>
       <div className="h-56">
         <Chart
           data={chartData}
