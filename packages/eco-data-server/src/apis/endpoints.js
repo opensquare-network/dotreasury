@@ -78,11 +78,11 @@ const endpoints = Object.freeze({
   ],
   darwinia: [
     "wss://rpc.darwinia.network",
-    "wss://darwinia-rpc.dwellir.com",
+    "wss://darwinia-rpc.darwiniacommunitydao.xyz/",
   ],
   integritee: [
-    "wss://integritee-kusama.api.onfinality.io/public-ws",
-    "wss://integritee-rpc.dwellir.com",
+    "wss://polkadot.api.integritee.network/",
+    "wss://integritee-rpc.dwellir.com/",
   ],
 });
 
