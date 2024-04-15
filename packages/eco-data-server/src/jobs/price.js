@@ -33,7 +33,7 @@ async function updateTokenPrice(chain, coinId) {
   }
 
   const ticker = data?.tickers?.find(
-    (item) => item.coin_id === coinId && item.target === "USD",
+    (item) => item.coin_id === coinId && item.target === "USDT",
   );
   if (!ticker) {
     return;
@@ -49,6 +49,8 @@ function getCoinId(chain) {
     return "pha";
   } else if ([CHAINS.bifrost].includes(chain)) {
     return "bifrost-native-coin";
+  } else if ([CHAINS.darwinia].includes(chain)) {
+    return "darwinia-network-native-token";
   }
   return chain;
 }

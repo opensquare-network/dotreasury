@@ -28,6 +28,10 @@ export function useEcosystemAssetsDistributionData() {
       theme.pieChart2,
       theme.pieChart3,
       theme.pieChart4,
+      theme.pieChart5,
+      theme.pieChart6,
+      theme.pieChart7,
+      theme.pieChart8,
     ],
     [theme],
   );

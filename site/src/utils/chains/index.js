@@ -12,6 +12,8 @@ import { moonriver } from "./moonriver";
 import { acala } from "./acala.js";
 import { karura } from "./karura.js";
 import { bifrost } from "./bifrostPolkadot.js";
+import { darwinia } from "./darwinia";
+import { integritee } from "./integritee";
 
 export const currentChain = import.meta.env.VITE_APP_CHAIN;
 
@@ -30,6 +32,8 @@ export const CHAINS = {
   acala,
   karura,
   bifrost,
+  darwinia,
+  integritee,
 };
 
 export const currentChainSettings = getChainSettings(currentChain);
