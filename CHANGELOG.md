@@ -2,6 +2,20 @@
 
 Notable changes to this project will be documented in this file, started from 4.0.0
 
+### 4.1.3
+
+Date: 2024-04-16
+
+- scan: support treasury spend by scheduler.
+- scan: support `spend_local` method.
+- scan: support new refactored preimage pallet.
+- scan: fix referenda enactment info extraction.
+- scan: fix centrifuge block rewards. They changed the code.
+- Fix landing page scroll bar on beneficiary section.
+- Support darwinia and integritee on landing page.
+- Refactor price ticker script.
+- Fix styles.
+
 ### 4.1.2
 
 Date: 2023-12-10
