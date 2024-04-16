@@ -1,9 +1,11 @@
 require("dotenv").config();
-const { updateTokenPriceByGate } = require("../jobs/ccxt/gate");
-const { CHAINS } = require("../apis/endpoints");
+// const { updateTokenPriceByGate } = require("../jobs/ccxt/gate");
+// const { CHAINS } = require("../apis/endpoints");
+const { updateTokenPriceByBinance } = require("../jobs/ccxt/binance");
 
 ;(async () => {
-  await updateTokenPriceByGate(CHAINS.bifrost);
+  await updateTokenPriceByBinance();
+  // await updateTokenPriceByGate(CHAINS.bifrost);
   // await updateTokenPricesByGate();
   // const ticker = await fetchKrakenTicker("KINT_USDT");
   // console.log("ticker", ticker);
