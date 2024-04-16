@@ -1,5 +1,6 @@
 const { CHAINS } = require("../apis/endpoints");
 const { upsertChainPrice } = require("../mongo/service");
+const { gateCoinIdMap } = require("./ccxt/gate");
 
 async function coingeckoGet(api) {
   const url = `https://api.coingecko.com/api/${api}`;
@@ -57,9 +58,12 @@ function getCoinId(chain) {
 
 async function updateTokensPrice() {
   const chains = Object.keys(CHAINS);
+  const chainsByGate = Object.keys(gateCoinIdMap);
+  const filteredChains = chains.filter(c => !chainsByGate.includes(c));
+
   try {
     const promises = [];
-    for (const chain of chains) {
+    for (const chain of filteredChains) {
       const coinId = getCoinId(chain);
       promises.push(updateTokenPrice(chain, coinId));
     }

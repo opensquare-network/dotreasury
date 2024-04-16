@@ -6,6 +6,7 @@ const { schema } = require("./schema");
 const { createChainApis } = require("./apis");
 const { updateChainsTreasuryBalance } = require("./jobs/treasury");
 const { updateTokensPrice } = require("./jobs/price");
+const { startGateTickerCronJob } = require("./jobs/ccxt/gate");
 
 const port = parseInt(process.env.PORT) || 5011;
 
@@ -14,6 +15,7 @@ function main() {
     console.log("Chain node apis initialized");
     updateChainsTreasuryBalance().catch(console.error);
     updateTokensPrice().catch(console.error);
+    startGateTickerCronJob();
   });
 
   const yoga = createYoga({ schema });

@@ -3,7 +3,7 @@ const CHAINS = Object.freeze({
   kusama: "kusama",
   centrifuge: "centrifuge",
   khala: "khala",
-  phala: "phal",
+  phala: "phala",
   basilisk: "basilisk",
   hydradx: "hydradx",
   interlay: "interlay",
@@ -13,6 +13,8 @@ const CHAINS = Object.freeze({
   bifrost: "bifrost",
   darwinia: "darwinia",
   integritee: "integritee",
+  moonbeam: "moonbeam",
+  moonriver: "moonriver",
 });
 
 const endpoints = Object.freeze({
