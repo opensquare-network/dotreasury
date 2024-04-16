@@ -68,7 +68,7 @@ async function updateTokenPricesByGate() {
 }
 
 function startGateTickerCronJob() {
-  new CronJob("0 */1 * * * *", updateTokenPriceByGate, null, true, "Asia/Shanghai");
+  new CronJob("0 */1 * * * *", updateTokenPricesByGate, null, true, "Asia/Shanghai");
 }
 
 module.exports = {
