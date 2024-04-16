@@ -17,6 +17,7 @@ const gateCoinIdMap = {
   [CHAINS.acala]: "ACA_USDT",
   [CHAINS.karura]: "KAR_USDT",
   [CHAINS.bifrost]: "BNC_USDT",
+  [CHAINS.integritee]: "TEER_USDT",
 };
 
 async function updateTokenPriceByGate(chain) {
