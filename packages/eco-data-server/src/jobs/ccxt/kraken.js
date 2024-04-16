@@ -21,12 +21,14 @@ const revertMap = Object.entries(krakenCoinIdMap).reduce((result, [key, value]) 
 async function updateTokenPricesByKraken() {
   const symbols = Object.values(krakenCoinIdMap);
   const tickers = await fetchTickers(kraken, symbols);
+  const chains = [];
   for (const ticker of tickers) {
     const { symbol, price, priceUpdateAt } = ticker;
     const chain = revertMap[symbol];
     await upsertChainPrice(chain, price, priceUpdateAt);
-    console.log(`${ chain } price by kraken updated`);
+    chains.push(chain);
   }
+  console.log(`${ chains.join(",") } price by kraken updated`);
 }
 
 function startKrakenTickerCronJob() {

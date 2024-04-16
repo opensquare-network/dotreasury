@@ -22,12 +22,14 @@ const revertMap = Object.entries(gateCoinIdMap).reduce((result, [key, value]) =>
 async function updateTokenPricesByGate() {
   const symbols = Object.values(gateCoinIdMap);
   const tickers = await fetchTickers(gate, symbols);
+  const chains = [];
   for (const ticker of tickers) {
     const { symbol, price, priceUpdateAt } = ticker;
     const chain = revertMap[symbol];
     await upsertChainPrice(chain, price, priceUpdateAt);
-    console.log(`${ chain } price by gate updated`);
+    chains.push(chain);
   }
+  console.log(`${ chains.join(",") } price by gate updated`);
 }
 
 function startGateTickerCronJob() {

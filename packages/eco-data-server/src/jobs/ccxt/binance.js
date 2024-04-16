@@ -20,12 +20,14 @@ const revertMap = Object.entries(binanceCoinIdMap).reduce((result, [key, value])
 async function updateTokenPricesByBinance() {
   const symbols = Object.values(binanceCoinIdMap);
   const tickers = await fetchTickers(binance, symbols);
+  const chains = [];
   for (const ticker of tickers) {
     const { symbol, price, priceUpdateAt } = ticker;
     const chain = revertMap[symbol];
     await upsertChainPrice(chain, price, priceUpdateAt);
-    console.log(`${ chain } price by binance updated`);
+    chains.push(chain);
   }
+  console.log(`${ chains.join(",") } price by binance updated`);
 }
 
 function startBinanceTickerCronJob() {
