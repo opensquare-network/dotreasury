@@ -3,6 +3,7 @@ const { CHAINS } = require("../../apis/endpoints");
 const { upsertChainPrice } = require("../../mongo/service");
 const chunk = require("lodash.chunk");
 const { CronJob } = require("cron");
+const { fetchTicker } = require("./common");
 
 const gate = new Gate();
 
@@ -15,29 +16,8 @@ const gateCoinIdMap = {
   [CHAINS.darwinia]: "RING_USDT",
   [CHAINS.acala]: "ACA_USDT",
   [CHAINS.karura]: "KAR_USDT",
-  [CHAINS.interlay]: "INTR_USDT",
-  [CHAINS.kintsugi]: "KINT_USDT",
+  [CHAINS.bifrost]: "BNC_USDT",
 };
-
-async function fetchTicker(coinId) {
-  let ticker;
-
-  try {
-    ticker = await gate.fetchTicker(coinId);
-  } catch (e) {
-    console.log(`Failed to fetch price of ${ coinId }`, e);
-    return;
-  }
-
-  if (!ticker) {
-    return;
-  }
-
-  return {
-    price: ticker.last,
-    priceUpdateAt: ticker.last_traded_at || new Date(),
-  }
-}
 
 async function updateTokenPriceByGate(chain) {
   const coinId = gateCoinIdMap[chain];
@@ -45,7 +25,7 @@ async function updateTokenPriceByGate(chain) {
     return
   }
 
-  const ticker = await fetchTicker(coinId);
+  const ticker = await fetchTicker(gate, coinId);
   if (!ticker) {
     return
   }
@@ -73,7 +53,7 @@ function startGateTickerCronJob() {
 
 module.exports = {
   gateCoinIdMap,
-  fetchTicker,
   updateTokenPricesByGate,
+  updateTokenPriceByGate,
   startGateTickerCronJob,
 }
