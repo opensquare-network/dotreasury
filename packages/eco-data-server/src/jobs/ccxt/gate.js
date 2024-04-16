@@ -8,13 +8,9 @@ const { fetchTicker } = require("./common");
 const gate = new Gate();
 
 const gateCoinIdMap = {
-  [CHAINS.polkadot]: "DOT_USDT",
   [CHAINS.centrifuge]: "CFG_USDT",
-  [CHAINS.kusama]: "KSM_USDT",
   [CHAINS.moonbeam]: "GLMR_USDT",
-  [CHAINS.moonriver]: "MOVR_USDT",
   [CHAINS.darwinia]: "RING_USDT",
-  [CHAINS.acala]: "ACA_USDT",
   [CHAINS.karura]: "KAR_USDT",
   [CHAINS.bifrost]: "BNC_USDT",
   [CHAINS.integritee]: "TEER_USDT",
