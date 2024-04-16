@@ -1,8 +1,8 @@
 const { binance: Binance } = require("ccxt");
-const { fetchTicker } = require("./common");
 const { upsertChainPrice } = require("../../mongo/service");
 const { CHAINS } = require("../../apis/endpoints");
 const { CronJob } = require("cron");
+const { fetchTickers } = require("./comm/tickers");
 
 const binance = new Binance();
 
@@ -13,30 +13,19 @@ const binanceCoinIdMap = {
   [CHAINS.moonriver]: "MOVR/USDT",
 };
 
-async function updateTokenPriceByBinance(chain) {
-  await binance.loadMarkets();
-  const coinId = binanceCoinIdMap[chain];
-  if (!coinId) {
-    return
-  }
-
-  const ticker = await fetchTicker(binance, coinId);
-  if (!ticker) {
-    return
-  }
-  const { price, priceUpdateAt } = ticker;
-  await upsertChainPrice(chain, price, priceUpdateAt);
-  console.log(`${ chain } price by binance updated`);
-}
+const revertMap = Object.entries(binanceCoinIdMap).reduce((result, [key, value]) => {
+  return { ...result, [value]: key };
+}, {});
 
 async function updateTokenPricesByBinance() {
-  const chains = Object.keys(binanceCoinIdMap);
-  let promises = [];
-  for (const chain of chains) {
-    promises.push(updateTokenPriceByBinance(chain));
+  const symbols = Object.values(binanceCoinIdMap);
+  const tickers = await fetchTickers(binance, symbols);
+  for (const ticker of tickers) {
+    const { symbol, price, priceUpdateAt } = ticker;
+    const chain = revertMap[symbol];
+    await upsertChainPrice(chain, price, priceUpdateAt);
+    console.log(`${ chain } price by binance updated`);
   }
-
-  await Promise.all(promises);
 }
 
 function startBinanceTickerCronJob() {
@@ -44,6 +33,5 @@ function startBinanceTickerCronJob() {
 }
 
 module.exports = {
-  updateTokenPriceByBinance,
   startBinanceTickerCronJob,
 }

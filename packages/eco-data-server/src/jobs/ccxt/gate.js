@@ -1,47 +1,33 @@
 const { gate: Gate } = require("ccxt");
 const { CHAINS } = require("../../apis/endpoints");
 const { upsertChainPrice } = require("../../mongo/service");
-const chunk = require("lodash.chunk");
 const { CronJob } = require("cron");
-const { fetchTicker } = require("./common");
+const { fetchTickers } = require("./comm/tickers");
 
 const gate = new Gate();
 
 const gateCoinIdMap = {
-  [CHAINS.centrifuge]: "CFG_USDT",
-  [CHAINS.moonbeam]: "GLMR_USDT",
-  [CHAINS.darwinia]: "RING_USDT",
-  [CHAINS.karura]: "KAR_USDT",
-  [CHAINS.bifrost]: "BNC_USDT",
-  [CHAINS.integritee]: "TEER_USDT",
+  [CHAINS.centrifuge]: "CFG/USDT",
+  [CHAINS.moonbeam]: "GLMR/USDT",
+  [CHAINS.darwinia]: "RING/USDT",
+  [CHAINS.karura]: "KAR/USDT",
+  [CHAINS.bifrost]: "BNC/USDT",
+  [CHAINS.integritee]: "TEER/USDT",
 };
 
-async function updateTokenPriceByGate(chain) {
-  const coinId = gateCoinIdMap[chain];
-  if (!coinId) {
-    return
-  }
-
-  const ticker = await fetchTicker(gate, coinId);
-  if (!ticker) {
-    return
-  }
-  const { price, priceUpdateAt } = ticker;
-  await upsertChainPrice(chain, price, priceUpdateAt);
-  console.log(`${ chain } price by gate updated`);
-}
+const revertMap = Object.entries(gateCoinIdMap).reduce((result, [key, value]) => {
+  return { ...result, [value]: key };
+}, {});
 
 async function updateTokenPricesByGate() {
-  const chains = Object.keys(gateCoinIdMap);
-  const chunks = chunk(chains, chains.length / 2);
-  const minutes = new Date().getMinutes();
-  const selectedChains = minutes % 2 === 0 ? chunks[1] : chunks[0];
-  let promises = [];
-  for (const chain of selectedChains) {
-    promises.push(updateTokenPriceByGate(chain));
+  const symbols = Object.values(gateCoinIdMap);
+  const tickers = await fetchTickers(gate, symbols);
+  for (const ticker of tickers) {
+    const { symbol, price, priceUpdateAt } = ticker;
+    const chain = revertMap[symbol];
+    await upsertChainPrice(chain, price, priceUpdateAt);
+    console.log(`${ chain } price by gate updated`);
   }
-
-  await Promise.all(promises);
 }
 
 function startGateTickerCronJob() {
@@ -51,6 +37,5 @@ function startGateTickerCronJob() {
 module.exports = {
   gateCoinIdMap,
   updateTokenPricesByGate,
-  updateTokenPriceByGate,
   startGateTickerCronJob,
 }

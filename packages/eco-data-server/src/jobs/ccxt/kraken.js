@@ -1,8 +1,8 @@
 const { kraken: Kraken } = require("ccxt");
 const { CHAINS } = require("../../apis/endpoints");
-const { fetchTicker } = require("./common");
 const { upsertChainPrice } = require("../../mongo/service");
 const { CronJob } = require("cron");
+const { fetchTickers } = require("./comm/tickers");
 
 const kraken = new Kraken();
 
@@ -14,29 +14,19 @@ const krakenCoinIdMap = {
   [CHAINS.phala]: "PHA/USD",
 };
 
-async function updateTokenPriceByKraken(chain) {
-  const coinId = krakenCoinIdMap[chain];
-  if (!coinId) {
-    return
-  }
-
-  const ticker = await fetchTicker(kraken, coinId);
-  if (!ticker) {
-    return
-  }
-  const { price, priceUpdateAt } = ticker;
-  await upsertChainPrice(chain, price, priceUpdateAt);
-  console.log(`${ chain } price by kraken updated`);
-}
+const revertMap = Object.entries(krakenCoinIdMap).reduce((result, [key, value]) => {
+  return { ...result, [value]: key };
+}, {});
 
 async function updateTokenPricesByKraken() {
-  const chains = Object.keys(krakenCoinIdMap);
-  let promises = [];
-  for (const chain of chains) {
-    promises.push(updateTokenPriceByKraken(chain));
+  const symbols = Object.values(krakenCoinIdMap);
+  const tickers = await fetchTickers(kraken, symbols);
+  for (const ticker of tickers) {
+    const { symbol, price, priceUpdateAt } = ticker;
+    const chain = revertMap[symbol];
+    await upsertChainPrice(chain, price, priceUpdateAt);
+    console.log(`${ chain } price by kraken updated`);
   }
-
-  await Promise.all(promises);
 }
 
 function startKrakenTickerCronJob() {
