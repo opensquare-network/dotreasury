@@ -1,5 +1,7 @@
 const { CHAINS } = require("../apis/endpoints");
 const { upsertChainPrice } = require("../mongo/service");
+const { gateCoinIdMap } = require("./ccxt/gate");
+const { CronJob } = require("cron");
 
 async function coingeckoGet(api) {
   const url = `https://api.coingecko.com/api/${api}`;
@@ -42,6 +44,7 @@ async function updateTokenPrice(chain, coinId) {
   const priceUpdateAt = ticker.last_traded_at;
 
   await upsertChainPrice(chain, price, priceUpdateAt);
+  console.log(`${ chain } price by coingecko updated`);
 }
 
 function getCoinId(chain) {
@@ -57,20 +60,22 @@ function getCoinId(chain) {
 
 async function updateTokensPrice() {
   const chains = Object.keys(CHAINS);
-  try {
-    const promises = [];
-    for (const chain of chains) {
-      const coinId = getCoinId(chain);
-      promises.push(updateTokenPrice(chain, coinId));
-    }
-    await Promise.all(promises);
-  } catch (e) {
-    console.error(e);
-  } finally {
-    setTimeout(updateTokensPrice, 180 * 1000);
+  const chainsByGate = Object.keys(gateCoinIdMap);
+  const filteredChains = chains.filter(c => !chainsByGate.includes(c));
+
+  const promises = [];
+  for (const chain of filteredChains) {
+    const coinId = getCoinId(chain);
+    promises.push(updateTokenPrice(chain, coinId));
   }
+  await Promise.all(promises);
+}
+
+function startCoingeckoTickerCronJob() {
+  new CronJob("0 */3 * * * *", updateTokensPrice, null, true, "Asia/Shanghai");
 }
 
 module.exports = {
   updateTokensPrice,
+  startCoingeckoTickerCronJob,
 };

@@ -1469,9 +1469,12 @@ __metadata:
     "@interlay/monetary-js": ^0.5.4
     "@osn/polkadot-api-container": ^1.1.11
     "@osn/scan-common": 0.6.3
+    ccxt: ^4.2.98
+    cron: ^3.1.7
     dotenv: ^16.3.1
     graphql: ^16.8.1
     graphql-yoga: ^4.0.4
+    lodash.chunk: ^4.2.0
     log4js: ^6.9.1
     mongodb: 6.1.0
   languageName: unknown
@@ -3496,6 +3499,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/luxon@npm:~3.4.0":
+  version: 3.4.2
+  resolution: "@types/luxon@npm:3.4.2"
+  checksum: 6f92d5bd02e89f310395753506bcd9cef3a56f5940f7a50db2a2b9822bce753553ac767d143cb5b4f9ed5ddd4a84e64f89ff538082ceb4d18739af7781b56925
+  languageName: node
+  linkType: hard
+
 "@types/mime@npm:*":
   version: 3.0.1
   resolution: "@types/mime@npm:3.0.1"
@@ -4231,6 +4241,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ccxt@npm:^4.2.98":
+  version: 4.2.98
+  resolution: "ccxt@npm:4.2.98"
+  dependencies:
+    ws: ^8.8.1
+  bin:
+    ccxt: examples/js/cli.js
+  checksum: a2f61b3811aa83d1742ecd5aabba80c21e9a65c0af8111f3f78989295bc43f711a0ac03bcaea98c971a1ba9de169b648546eb90db93587e592220351c218ac43
+  languageName: node
+  linkType: hard
+
 "chalk@npm:^2.4.2":
   version: 2.4.2
   resolution: "chalk@npm:2.4.2"
@@ -4461,6 +4482,16 @@ __metadata:
     object-assign: ^4
     vary: ^1
   checksum: ced838404ccd184f61ab4fdc5847035b681c90db7ac17e428f3d81d69e2989d2b680cc254da0e2554f5ed4f8a341820a1ce3d1c16b499f6e2f47a1b9b07b5006
+  languageName: node
+  linkType: hard
+
+"cron@npm:^3.1.7":
+  version: 3.1.7
+  resolution: "cron@npm:3.1.7"
+  dependencies:
+    "@types/luxon": ~3.4.0
+    luxon: ~3.4.0
+  checksum: d98ee5297543c138221d96dd49270bf6576db80134e6041f4ce4a3c0cb6060863d76910209b34fee66fbf134461449ec3bd283d6a76d1c50da220cde7fc10c65
   languageName: node
   linkType: hard
 
@@ -6788,6 +6819,13 @@ __metadata:
   version: 7.18.3
   resolution: "lru-cache@npm:7.18.3"
   checksum: e550d772384709deea3f141af34b6d4fa392e2e418c1498c078de0ee63670f1f46f5eee746e8ef7e69e1c895af0d4224e62ee33e66a543a14763b0f2e74c1356
+  languageName: node
+  linkType: hard
+
+"luxon@npm:~3.4.0":
+  version: 3.4.4
+  resolution: "luxon@npm:3.4.4"
+  checksum: 36c1f99c4796ee4bfddf7dc94fa87815add43ebc44c8934c924946260a58512f0fd2743a629302885df7f35ccbd2d13f178c15df046d0e3b6eb71db178f1c60c
   languageName: node
   linkType: hard
 
