@@ -56,7 +56,7 @@ async function updateTokenPriceByGate(chain) {
 
 async function updateTokenPricesByGate() {
   const chains = Object.keys(gateCoinIdMap);
-  const chunks = chunk(chains, 2);
+  const chunks = chunk(chains, chains.length / 2);
   const minutes = new Date().getMinutes();
   const selectedChains = minutes % 2 === 0 ? chunks[1] : chunks[0];
   let promises = [];
