@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import {
   openGovProposalCountSelector,
   totalProposalCountSelector,
+  failedProposalCountSelector,
 } from "../../store/reducers/overviewSlice";
 import { NavItem, NavLabel, NavWrapper } from "../../components/Nav/styled";
 import { useQuery } from "../../utils/hooks";
@@ -16,10 +17,17 @@ function Nav() {
   const query = useQuery();
   const tab = query.get("tab");
   const defaultActiveTab =
-    tab === "gov1" ? "Gov1" : tab === "opengov" ? "OpenGov" : "All";
+    tab === "gov1"
+      ? "Gov1"
+      : tab === "opengov"
+      ? "OpenGov"
+      : tab === "failed"
+      ? "Failed"
+      : "All";
   const [active, setActive] = useState(defaultActiveTab);
   const totalProposalCount = useSelector(totalProposalCountSelector);
   const openGovProposalCount = useSelector(openGovProposalCountSelector);
+  const failedProposalCount = useSelector(failedProposalCountSelector);
   const gov1ProposalCount = totalProposalCount - openGovProposalCount;
 
   useEffect(() => {
@@ -29,6 +37,8 @@ function Nav() {
       searchParams.set("tab", "gov1");
     } else if (active === "OpenGov") {
       searchParams.set("tab", "opengov");
+    } else if (active === "Failed") {
+      searchParams.set("tab", "failed");
     } else {
       searchParams.delete("gov");
     }
@@ -65,6 +75,15 @@ function Nav() {
           <NavLabel>
             <span>Gov1</span>
             <Label>{gov1ProposalCount}</Label>
+          </NavLabel>
+        ),
+      },
+      {
+        name: "Failed",
+        label: (
+          <NavLabel>
+            <span>Failed</span>
+            <Label>{failedProposalCount || 50}</Label>
           </NavLabel>
         ),
       },

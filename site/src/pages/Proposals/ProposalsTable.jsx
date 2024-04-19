@@ -52,7 +52,7 @@ const completeProposalsWithTitle = (data = [], chain) => {
   });
 };
 
-const ProposalsTable = ({ data, loading, header, footer }) => {
+const ProposalsTable = ({ data, tab, loading, header, footer }) => {
   const history = useHistory();
   const chain = useSelector(chainSelector);
   const [isBeneficiary, setIsBeneficiary] = useState(true);
@@ -94,6 +94,7 @@ const ProposalsTable = ({ data, loading, header, footer }) => {
     proposer,
     description,
     relatedLinks,
+    resson,
     value,
     proposalStatus,
     detailRoute,
@@ -154,17 +155,33 @@ const ProposalsTable = ({ data, loading, header, footer }) => {
     ),
   };
 
-  const columns = [
-    sortableProposalIndex,
-    proposeTime,
-    beneficiary,
-    proposer,
-    description,
-    relatedLinks,
-    sortByValue,
-    proposalStatus,
-    detailRoute,
-  ];
+  let columns;
+
+  if (tab === "failed") {
+    columns = [
+      sortableProposalIndex,
+      proposeTime,
+      beneficiary,
+      proposer,
+      description,
+      resson,
+      sortByValue,
+      proposalStatus,
+      detailRoute,
+    ];
+  } else {
+    columns = [
+      sortableProposalIndex,
+      proposeTime,
+      beneficiary,
+      proposer,
+      description,
+      relatedLinks,
+      sortByValue,
+      proposalStatus,
+      detailRoute,
+    ];
+  }
 
   return (
     <CardWrapper>

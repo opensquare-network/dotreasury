@@ -109,8 +109,12 @@ export const fetchTopBeneficiaries = () => async (dispatch) => {
 
 export const totalProposalCountSelector = (state) =>
   state.overview.overview.count.proposal.all;
+
 export const openGovProposalCountSelector = (state) =>
   state.overview.overview.count.proposal.openGov;
+
+export const failedProposalCountSelector = (state) =>
+  state.overview.overview.count.proposal.failed;
 export const gov1ProposalCountSelector = (state) =>
   state.overview.overview.count.proposal.all -
   state.overview.overview.count.proposal.openGov;

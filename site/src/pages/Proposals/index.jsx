@@ -30,6 +30,7 @@ import Filter from "../../components/Filter";
 import OpenGovFilter from "../../components/OpenGovFilter";
 import Nav from "./Nav";
 import { currentChainSettings } from "../../utils/chains";
+import Range from "../../components/Filter/Range.jsx";
 
 const HeaderWrapper = styled.div`
   padding: 20px 24px;
@@ -60,7 +61,14 @@ const Proposals = () => {
   const sort = query.get("sort");
   const tab = query.get("tab");
 
-  const gov = tab === "gov1" ? "1" : tab === "opengov" ? "2" : "";
+  const gov =
+    tab === "gov1"
+      ? "1"
+      : tab === "opengov"
+      ? "2"
+      : tab === "failed"
+      ? "3"
+      : "";
 
   const {
     filterStatus,
@@ -105,7 +113,6 @@ const Proposals = () => {
       if (gov) {
         filterData = { ...filterData, gov };
       }
-
       dispatch(
         fetchProposals(tablePage - 1, pageSize, filterData, sort && { sort }),
       );
@@ -155,6 +162,18 @@ const Proposals = () => {
           statusMap={gov2ProposalStatusMap}
         />
       );
+    } else if (tab === "failed") {
+      filter = (
+        <Range
+          chain={chain}
+          rangeType={rangeType}
+          setRangeType={setRangeType}
+          min={min}
+          setMin={setMin}
+          max={max}
+          setMax={setMax}
+        />
+      );
     } else if (!tab) {
       filter = (
         <OpenGovFilter
@@ -191,6 +210,7 @@ const Proposals = () => {
             <FilterWrapper>{filter}</FilterWrapper>
           </div>
         }
+        tab={tab}
         data={proposals}
         loading={loading}
         footer={
