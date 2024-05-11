@@ -34,7 +34,10 @@ async function main() {
         },
       });
   }
-  await bulk.execute();
+
+  if (bulk.length > 0) {
+    await bulk.execute();
+  }
 }
 
 main()
