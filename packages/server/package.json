@@ -6,7 +6,7 @@
     "node": ">=15.0.0"
   },
   "dependencies": {
-    "@koa/cors": "^3.1.0",
+    "@koa/cors": "^5.0.0",
     "@osn/ipfs": "^0.1.0",
     "@polkadot/util": "12.5.1",
     "@polkadot/util-crypto": "12.5.1",
