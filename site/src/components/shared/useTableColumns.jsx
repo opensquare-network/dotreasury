@@ -43,7 +43,7 @@ const ProposeTimeWrapper = styled.div`
   }
 `;
 const ReasonWrapper = styled.div`
-  color: var(--light-textPrimary, rgba(0, 0, 0, 0.9));
+  color: var(--textPrimary);
   /* p-14-normal */
   font-family: Inter;
   font-size: 14px;
