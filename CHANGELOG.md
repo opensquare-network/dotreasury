@@ -2,6 +2,16 @@
 
 Notable changes to this project will be documented in this file, started from 4.0.0
 
+# 4.1.4
+
+Date: 2024-05-11
+
+- Add cron job to update token prices.
+- Improve price tickers by introducing more exchanges API and fetching multiple paris one time.
+- Update dependencies.
+- Add a new tab to show treasury proposals which are failed to deliver.
+- Fix styles.
+
 ### 4.1.3
 
 Date: 2024-04-16
