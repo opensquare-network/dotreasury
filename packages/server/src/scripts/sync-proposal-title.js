@@ -4,7 +4,10 @@ dotenv.config();
 const chunk = require("lodash.chunk");
 const negate = require("lodash.negate");
 const isNil = require("lodash.isnil");
-const { getReferendaReferendumCollection } = require("../mongo");
+const {
+  getProposalCollection,
+  getReferendaReferendumCollection,
+} = require("../mongo");
 const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
@@ -41,6 +44,10 @@ async function syncTitle({ col, fetchTitle, updateTitle }) {
       if (isNil(titles[i])) {
         continue;
       }
+      // Skip Untitled
+      if (titles[i] === "Untitled") {
+        continue;
+      }
 
       updateTitle(bulk, items[i], titles[i]);
     }
@@ -66,6 +73,25 @@ async function syncGov2ReferendaTitle() {
   });
 }
 
+function fetchProposalTitle(proposalIndex) {
+  return fetchTitle(
+    `https://${process.env.CHAIN}.subsquare.io/api/treasury/proposals/${proposalIndex}`,
+  );
+}
+
+async function syncProposalTitle() {
+  console.log(`Sync treasury proposal title`);
+  await syncTitle({
+    col: await getProposalCollection(),
+    fetchTitle: (item) => fetchProposalTitle(item.proposalIndex),
+    updateTitle: (bulk, item, title) =>
+      bulk.find({ proposalIndex: item.proposalIndex }).updateOne({
+        $set: { description: title },
+      }),
+  });
+}
+
 module.exports = {
   syncGov2ReferendaTitle,
-}
+  syncProposalTitle,
+};
