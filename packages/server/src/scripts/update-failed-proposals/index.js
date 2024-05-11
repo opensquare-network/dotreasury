@@ -18,6 +18,8 @@ const getFailedProposalData = () => {
 
 async function main() {
   const failedProposalCol = await getFailedProposalCollection();
+  await failedProposalCol.deleteMany({});
+
   const failedProposals = getFailedProposalData();
 
   const bulk = failedProposalCol.initializeUnorderedBulkOp();
