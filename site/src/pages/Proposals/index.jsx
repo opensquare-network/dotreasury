@@ -9,6 +9,9 @@ import { useQuery, useLocalStorage } from "../../utils/hooks";
 import Summary from "./Summary";
 
 import {
+  failedProposalListSelector,
+  failedProposalsLoadingSelector,
+  fetchFailedProposals,
   fetchProposals,
   loadingSelector,
   proposalListSelector,
@@ -45,89 +48,25 @@ const FilterWrapper = styled.div`
   padding: 24px;
 `;
 
-const Proposals = () => {
+const useQueryTab = () => {
   const query = useQuery();
+  return query.get("tab");
+};
 
-  const searchPage = parseInt(query.get("page"));
-  const queryPage =
-    searchPage && !isNaN(searchPage) && searchPage > 0
-      ? searchPage
-      : DEFAULT_QUERY_PAGE;
-  const [tablePage, setTablePage] = useState(queryPage);
-  const [pageSize, setPageSize] = useLocalStorage(
-    "proposalsPageSize",
-    DEFAULT_PAGE_SIZE,
-  );
-  const sort = query.get("sort");
-  const tab = query.get("tab");
-
-  const gov =
-    tab === "gov1"
-      ? "1"
-      : tab === "opengov"
-      ? "2"
-      : tab === "failed"
-      ? "3"
-      : "";
-
-  const {
-    filterStatus,
-    setFilterStatus,
-    filterTrack,
-    setFilterTrack,
-    rangeType,
-    setRangeType,
-    min,
-    setMin,
-    max,
-    setMax,
-    getFilterData,
-  } = useListFilter();
-
-  const dispatch = useDispatch();
-  const history = useHistory();
-  const { items: proposals, total } = useSelector(proposalListSelector);
-  const loading = useSelector(loadingSelector);
+const TableFilter = ({
+  filterStatus,
+  setFilterStatus,
+  filterTrack,
+  setFilterTrack,
+  rangeType,
+  setRangeType,
+  min,
+  setMin,
+  max,
+  setMax,
+}) => {
+  const tab = useQueryTab();
   const chain = useSelector(chainSelector);
-
-  useEffect(() => {
-    let filterData = getFilterData();
-    if (gov) {
-      filterData = { ...filterData, gov };
-    }
-
-    dispatch(
-      fetchProposals(tablePage - 1, pageSize, filterData, sort && { sort }),
-    );
-
-    return () => {
-      dispatch(resetProposals());
-    };
-  }, [dispatch, tablePage, pageSize, getFilterData, sort, gov]);
-
-  const totalPages = Math.ceil(total / pageSize);
-
-  const refreshProposals = useCallback(
-    (reachingFinalizedBlock) => {
-      let filterData = getFilterData();
-      if (gov) {
-        filterData = { ...filterData, gov };
-      }
-      dispatch(
-        fetchProposals(tablePage - 1, pageSize, filterData, sort && { sort }),
-      );
-      if (reachingFinalizedBlock) {
-        dispatch(
-          newSuccessToast(
-            "Sync finished. Please provide context info for your proposal on subsquare or polkassembly.",
-          ),
-        );
-      }
-    },
-    [dispatch, tablePage, pageSize, getFilterData, sort, gov],
-  );
-
-  const onFinalized = useWaitSyncBlock("Proposal created", refreshProposals);
 
   let filter = (
     <Filter
@@ -194,6 +133,115 @@ const Proposals = () => {
     }
   }
 
+  return filter;
+};
+
+const useListData = () => {
+  const tab = useQueryTab();
+  const isFailed = tab === "failed";
+
+  const { items: proposals, total } = useSelector(proposalListSelector);
+  const loading = useSelector(loadingSelector);
+
+  const { items: failedProposals, total: failedTotal } = useSelector(
+    failedProposalListSelector,
+  );
+  const failedProposalsLoading = useSelector(failedProposalsLoadingSelector);
+
+  if (isFailed) {
+    return {
+      proposals: failedProposals,
+      total: failedTotal,
+      loading: failedProposalsLoading,
+    };
+  }
+
+  return { proposals, total, loading };
+};
+
+const Proposals = () => {
+  const query = useQuery();
+
+  const searchPage = parseInt(query.get("page"));
+  const queryPage =
+    searchPage && !isNaN(searchPage) && searchPage > 0
+      ? searchPage
+      : DEFAULT_QUERY_PAGE;
+  const [tablePage, setTablePage] = useState(queryPage);
+  const [pageSize, setPageSize] = useLocalStorage(
+    "proposalsPageSize",
+    DEFAULT_PAGE_SIZE,
+  );
+  const sort = query.get("sort");
+  const tab = query.get("tab");
+
+  const isFailed = tab === "failed";
+  const gov = tab === "gov1" ? "1" : tab === "opengov" ? "2" : "";
+
+  const {
+    filterStatus,
+    setFilterStatus,
+    filterTrack,
+    setFilterTrack,
+    rangeType,
+    setRangeType,
+    min,
+    setMin,
+    max,
+    setMax,
+    getFilterData,
+  } = useListFilter();
+
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const { proposals, total, loading } = useListData();
+
+  const doFetchProposal = useCallback(() => {
+    let filterData = getFilterData();
+    if (isFailed) {
+      dispatch(
+        fetchFailedProposals(
+          tablePage - 1,
+          pageSize,
+          filterData,
+          sort && { sort },
+        ),
+      );
+    } else {
+      if (gov) {
+        filterData = { ...filterData, gov };
+      }
+      dispatch(
+        fetchProposals(tablePage - 1, pageSize, filterData, sort && { sort }),
+      );
+    }
+  }, [dispatch, tablePage, pageSize, getFilterData, sort, gov, isFailed]);
+
+  useEffect(() => {
+    doFetchProposal();
+    return () => {
+      dispatch(resetProposals());
+    };
+  }, [dispatch, doFetchProposal]);
+
+  const totalPages = Math.ceil(total / pageSize);
+
+  const refreshProposals = useCallback(
+    (reachingFinalizedBlock) => {
+      doFetchProposal();
+      if (reachingFinalizedBlock) {
+        dispatch(
+          newSuccessToast(
+            "Sync finished. Please provide context info for your proposal on subsquare or polkassembly.",
+          ),
+        );
+      }
+    },
+    [dispatch, doFetchProposal],
+  );
+
+  const onFinalized = useWaitSyncBlock("Proposal created", refreshProposals);
+
   return (
     <>
       <Summary />
@@ -207,7 +255,20 @@ const Proposals = () => {
               </div>
             </HeaderWrapper>
             <Divider />
-            <FilterWrapper>{filter}</FilterWrapper>
+            <FilterWrapper>
+              <TableFilter
+                filterStatus={filterStatus}
+                setFilterStatus={setFilterStatus}
+                filterTrack={filterTrack}
+                setFilterTrack={setFilterTrack}
+                rangeType={rangeType}
+                setRangeType={setRangeType}
+                min={min}
+                setMin={setMin}
+                max={max}
+                setMax={setMax}
+              />
+            </FilterWrapper>
           </div>
         }
         tab={tab}

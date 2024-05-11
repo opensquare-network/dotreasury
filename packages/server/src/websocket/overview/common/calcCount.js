@@ -1,5 +1,6 @@
 async function calcCount(
   proposals = [],
+  failedProposals = [],
   tips = [],
   bounties = [],
   childBounties = [],
@@ -8,17 +9,21 @@ async function calcCount(
   referendaList = [],
 ) {
   const unFinishedProposals = proposals.filter(
-    ({ state: { name, state } }) => (name || state) !== "Awarded" && (name || state) !== "Rejected"
+    ({ state: { name, state } }) =>
+      (name || state) !== "Awarded" && (name || state) !== "Rejected",
   );
+
   const openGovProposals = proposals.filter(({ isByGov2 }) => isByGov2);
   const proposal = {
     unFinished: unFinishedProposals.length,
     all: proposals.length,
     openGov: openGovProposals.length,
+    failed: failedProposals.length,
   };
 
   const unFinishedTips = tips.filter(
-    ({ state: { state } }) => !["TipClosed", "TipRetracted", "TipSlashed"].includes(state)
+    ({ state: { state } }) =>
+      !["TipClosed", "TipRetracted", "TipSlashed"].includes(state),
   );
   const tip = {
     unFinished: unFinishedTips.length,
@@ -27,10 +32,8 @@ async function calcCount(
 
   const unFinishedBounties = bounties.filter(
     ({ state: { state: stateName } }) => {
-      return !["Rejected", "Claimed", "Canceled"].includes(
-        stateName
-      );
-    }
+      return !["Rejected", "Claimed", "Canceled"].includes(stateName);
+    },
   );
 
   const bounty = {
@@ -40,10 +43,8 @@ async function calcCount(
 
   const unFinishedChildBounties = childBounties.filter(
     ({ state: { state: stateName } }) => {
-      return !["Rejected", "Claimed", "Canceled"].includes(
-        stateName
-      );
-    }
+      return !["Rejected", "Claimed", "Canceled"].includes(stateName);
+    },
   );
 
   const childBounty = {
@@ -61,21 +62,16 @@ async function calcCount(
 
   const unFinishedReferenda = referendaList.filter(
     ({ state: { name: stateName } }) => {
-      return [
-        "Confirming",
-        "Deciding",
-        "Queueing",
-        "Submitted",
-      ].includes(
-        stateName
+      return ["Confirming", "Deciding", "Queueing", "Submitted"].includes(
+        stateName,
       );
-    }
+    },
   );
 
   const referenda = {
     unFinished: unFinishedReferenda.length,
     all: referendaList.length,
-  }
+  };
 
   return { proposal, tip, bounty, childBounty, burnt, transfer, referenda };
 }

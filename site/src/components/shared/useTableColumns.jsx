@@ -42,7 +42,7 @@ const ProposeTimeWrapper = styled.div`
     }
   }
 `;
-const RessonWrapper = styled.div`
+const ReasonWrapper = styled.div`
   color: var(--light-textPrimary, rgba(0, 0, 0, 0.9));
   /* p-14-normal */
   font-family: Inter;
@@ -311,13 +311,11 @@ const relatedLinks = (options) => ({
     <RelatedLinks links={options?.getRelatedLinks?.(item)} />
   ),
 });
-const resson = {
-  key: "resson",
-  title: "Resson",
+const failedReason = {
+  key: "reason",
+  title: "Reason",
   cellClassName: "proposal-description-cell",
-  cellRender: (_, item) => (
-    <RessonWrapper>{item.resson || "No delivery"}</RessonWrapper>
-  ),
+  cellRender: (_, item) => <ReasonWrapper>{item.failedReason}</ReasonWrapper>,
 };
 
 const proposalStatus = {
@@ -451,11 +449,11 @@ export function useTableColumns(options) {
     proposalIndex,
     description,
     relatedLinks: relatedLinks(options),
-    resson,
+    reason,
+    failedReason,
     proposalStatus,
     tipsBeneficiary,
     finder,
-    reason,
     tipsStatus,
     tipsValue: tipsValue(symbol),
     burntValue: burntValue(symbol),

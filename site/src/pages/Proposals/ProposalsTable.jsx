@@ -12,7 +12,6 @@ import api from "../../services/scanApi";
 import SortableIndex from "../../components/SortableIndex";
 import SortableValue from "../../components/SortableValue";
 import useSort from "../../hooks/useSort";
-import { isKusama, isPolkadot } from "../../utils/chains";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -94,7 +93,7 @@ const ProposalsTable = ({ data, tab, loading, header, footer }) => {
     proposer,
     description,
     relatedLinks,
-    resson,
+    failedReason,
     value,
     proposalStatus,
     detailRoute,
@@ -164,7 +163,7 @@ const ProposalsTable = ({ data, tab, loading, header, footer }) => {
       beneficiary,
       proposer,
       description,
-      resson,
+      failedReason,
       sortByValue,
       proposalStatus,
       detailRoute,

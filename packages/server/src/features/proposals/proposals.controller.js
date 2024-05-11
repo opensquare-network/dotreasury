@@ -3,6 +3,7 @@ const {
   getMotionCollection,
   getReferendumCollection,
   getProposalBeneficiaryCollection,
+  getFailedProposalCollection,
 } = require("../../mongo");
 const { extractPage, ADMINS } = require("../../utils");
 const linkService = require("../../services/link.service");
@@ -109,7 +110,88 @@ function getCondition(ctx) {
   return { ...condition, ...rangeCond };
 }
 
+const normalizeProposal = (item) => ({
+  indexer: item.indexer,
+  proposalIndex: item.proposalIndex,
+  proposeTime: item.indexer.blockTime,
+  proposeAtBlockHeight: item.indexer.blockHeight,
+  proposer: item.proposer,
+  value: item.value,
+  symbolPrice: item.symbolPrice,
+  beneficiary: item.beneficiary,
+  links: item.links || [],
+  description: item.description,
+  tags: item.tags ?? {},
+  latestState: {
+    state: item.state?.state || item.state?.name,
+    time: (
+      item.state?.eventIndexer ||
+      item.state?.extrinsicIndexer ||
+      item.state?.indexer
+    ).blockTime,
+    motionVoting: item.state?.data?.motionVoting,
+  },
+  isByGov2: item.isByGov2,
+  trackInfo: item.track,
+  dValue: new BigNumber(item.dValue).toString(),
+  fiatValue: item.fiatValue,
+  failedReason: item.reason,
+});
+
 class ProposalsController {
+  async getFailedProposals(ctx) {
+    const { page, pageSize } = extractPage(ctx);
+    if (pageSize === 0 || page < 0) {
+      ctx.status = 400;
+      return;
+    }
+
+    const rangeCond = getRangeCondition(ctx);
+    const condition = { ...rangeCond };
+    const failedProposalCol = await getFailedProposalCollection();
+
+    const [{ total: [{ value: total = 0 } = {}] = [], proposals = [] } = {}] =
+      await failedProposalCol
+        .aggregate([
+          {
+            $lookup: {
+              from: "proposal",
+              localField: "proposalIndex",
+              foreignField: "proposalIndex",
+              as: "proposal",
+            },
+          },
+          {
+            $replaceRoot: {
+              newRoot: {
+                $mergeObjects: [{ $first: "$proposal" }, "$$ROOT"],
+              },
+            },
+          },
+          { $match: condition },
+          {
+            $project: {
+              proposal: 0,
+              timeline: 0,
+            },
+          },
+          {
+            $facet: {
+              total: [{ $count: "value" }],
+              proposals: [{ $skip: page * pageSize }, { $limit: pageSize }],
+            },
+          },
+        ])
+        .toArray();
+
+    ctx.body = {
+      items: proposals.map(normalizeProposal),
+      page,
+      pageSize,
+      total,
+    };
+  }
+
   async getProposals(ctx) {
     const { page, pageSize } = extractPage(ctx);
     if (pageSize === 0 || page < 0) {
@@ -180,32 +262,7 @@ class ProposalsController {
     const [total, proposals] = await Promise.all([totalQuery, proposalsQuery]);
 
     ctx.body = {
-      items: proposals.map((item) => ({
-        indexer: item.indexer,
-        proposalIndex: item.proposalIndex,
-        proposeTime: item.indexer.blockTime,
-        proposeAtBlockHeight: item.indexer.blockHeight,
-        proposer: item.proposer,
-        value: item.value,
-        symbolPrice: item.symbolPrice,
-        beneficiary: item.beneficiary,
-        links: item.links || [],
-        description: item.description,
-        tags: item.tags ?? {},
-        latestState: {
-          state: item.state?.state || item.state?.name,
-          time: (
-            item.state?.eventIndexer ||
-            item.state?.extrinsicIndexer ||
-            item.state?.indexer
-          ).blockTime,
-          motionVoting: item.state?.data?.motionVoting,
-        },
-        isByGov2: item.isByGov2,
-        trackInfo: item.track,
-        dValue: new BigNumber(item.dValue).toString(),
-        fiatValue: item.fiatValue,
-      })),
+      items: proposals.map(normalizeProposal),
       page,
       pageSize,
       total,

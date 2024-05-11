@@ -20,6 +20,7 @@ const overviewSlice = createSlice({
           unFinished: 0,
           all: 0,
           openGov: 0,
+          failed: 0,
         },
         tip: {
           unFinished: 0,
