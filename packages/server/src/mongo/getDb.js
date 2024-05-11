@@ -6,6 +6,7 @@ function getDb({ inputDbName, outputDbName, councilDbName }) {
   // output collections
   const tipCollectionName = "tip";
   const proposalCollectionName = "proposal";
+  const failedProposalCollectionName = "failedProposal";
   const bountyCollectionName = "bounty";
   const childBountyCollectionName = "childBounty";
   const motionCollectionName = "motion";
@@ -55,6 +56,7 @@ function getDb({ inputDbName, outputDbName, councilDbName }) {
   let referendaReferendumCol = null;
   let tipCol = null;
   let proposalCol = null;
+  let failedProposalCol = null;
   let bountyCol = null;
   let childBountyCol = null;
   let motionCol = null;
@@ -119,6 +121,7 @@ function getDb({ inputDbName, outputDbName, councilDbName }) {
     );
     tipCol = outputDb.collection(tipCollectionName);
     proposalCol = outputDb.collection(proposalCollectionName);
+    failedProposalCol = outputDb.collection(failedProposalCollectionName);
     bountyCol = outputDb.collection(bountyCollectionName);
     childBountyCol = outputDb.collection(childBountyCollectionName);
     motionCol = outputDb.collection(motionCollectionName);
@@ -193,6 +196,11 @@ function getDb({ inputDbName, outputDbName, councilDbName }) {
   async function getProposalCollection() {
     await tryInit(proposalCol);
     return proposalCol;
+  }
+
+  async function getFailedProposalCollection() {
+    await tryInit(failedProposalCol);
+    return failedProposalCol;
   }
 
   async function getBountyCollection() {
@@ -351,6 +359,7 @@ function getDb({ inputDbName, outputDbName, councilDbName }) {
     getReferendaReferendumCollection,
     getTipCollection,
     getProposalCollection,
+    getFailedProposalCollection,
     getBountyCollection,
     getChildBountyCollection,
     getMotionCollection,

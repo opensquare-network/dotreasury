@@ -3,6 +3,7 @@ import Text from "../../components/Text";
 
 export const NavWrapper = styled.div`
   display: flex;
+  align-items: center;
   gap: 32px;
 `;
 

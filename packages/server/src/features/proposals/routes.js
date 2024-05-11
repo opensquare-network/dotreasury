@@ -4,32 +4,33 @@ const proposalsController = require("./proposals.controller");
 const router = new Router();
 
 router.get("/proposals", proposalsController.getProposals);
+router.get("/proposals/failed", proposalsController.getFailedProposals);
 router.get("/proposals/summary", proposalsController.getProposalSummary);
-router.get("/proposals/beneficiaries", proposalsController.getProposalBeneficiaries);
+router.get(
+  "/proposals/beneficiaries",
+  proposalsController.getProposalBeneficiaries,
+);
 router.get("/proposals/:proposalIndex", proposalsController.getProposalDetail);
 
 router.get(
   "/proposals/:proposalIndex/links",
-  proposalsController.getProposalLinks
+  proposalsController.getProposalLinks,
 );
 router.post(
   "/proposals/:proposalIndex/links",
-  proposalsController.createProposalLink
+  proposalsController.createProposalLink,
 );
 router.delete(
   "/proposals/:proposalIndex/links/:linkIndex",
-  proposalsController.deleteProposalLink
+  proposalsController.deleteProposalLink,
 );
 
 router.get(
   "/proposals/:proposalIndex/comments",
-  proposalsController.getProposalComments
+  proposalsController.getProposalComments,
 );
 
-router.get(
-  "/proposals/:proposalIndex/rates",
-  proposalsController.getRates,
-);
+router.get("/proposals/:proposalIndex/rates", proposalsController.getRates);
 
 router.get(
   "/proposals/:proposalIndex/ratestats",
@@ -38,12 +39,11 @@ router.get(
 
 router.get(
   "/proposals/:proposalIndex/description",
-  proposalsController.getProposalDescription
+  proposalsController.getProposalDescription,
 );
 router.put(
   "/proposals/:proposalIndex/description",
-  proposalsController.setProposalDescription
+  proposalsController.setProposalDescription,
 );
-
 
 module.exports = router;

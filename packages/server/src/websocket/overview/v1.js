@@ -1,5 +1,6 @@
 const {
   getProposalCollection,
+  getFailedProposalCollection,
   getBountyCollection,
   getTipCollection,
   getBurntCollection,
@@ -68,8 +69,12 @@ async function calcOverview() {
   const referendaCol = await getReferendaReferendumCollection();
   const referendaList = await referendaCol.find({}).toArray();
 
+  const failedProposalCol = await getFailedProposalCollection();
+  const failedProposals = await failedProposalCol.find({}).toArray();
+
   const count = await calcCount(
     proposals,
+    failedProposals,
     tips,
     bounties,
     childBounties,

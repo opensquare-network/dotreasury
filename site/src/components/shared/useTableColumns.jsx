@@ -42,6 +42,15 @@ const ProposeTimeWrapper = styled.div`
     }
   }
 `;
+const ReasonWrapper = styled.div`
+  color: var(--light-textPrimary, rgba(0, 0, 0, 0.9));
+  /* p-14-normal */
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px; /* 142.857% */
+`;
 
 const EventWrapper = styled.div`
   display: flex;
@@ -302,6 +311,13 @@ const relatedLinks = (options) => ({
     <RelatedLinks links={options?.getRelatedLinks?.(item)} />
   ),
 });
+const failedReason = {
+  key: "reason",
+  title: "Reason",
+  cellClassName: "proposal-description-cell",
+  cellRender: (_, item) => <ReasonWrapper>{item.failedReason}</ReasonWrapper>,
+};
+
 const proposalStatus = {
   key: "proposal-status",
   title: "Status",
@@ -433,10 +449,11 @@ export function useTableColumns(options) {
     proposalIndex,
     description,
     relatedLinks: relatedLinks(options),
+    reason,
+    failedReason,
     proposalStatus,
     tipsBeneficiary,
     finder,
-    reason,
     tipsStatus,
     tipsValue: tipsValue(symbol),
     burntValue: burntValue(symbol),

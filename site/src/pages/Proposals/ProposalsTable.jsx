@@ -12,7 +12,6 @@ import api from "../../services/scanApi";
 import SortableIndex from "../../components/SortableIndex";
 import SortableValue from "../../components/SortableValue";
 import useSort from "../../hooks/useSort";
-import { isKusama, isPolkadot } from "../../utils/chains";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -52,7 +51,7 @@ const completeProposalsWithTitle = (data = [], chain) => {
   });
 };
 
-const ProposalsTable = ({ data, loading, header, footer }) => {
+const ProposalsTable = ({ data, tab, loading, header, footer }) => {
   const history = useHistory();
   const chain = useSelector(chainSelector);
   const [isBeneficiary, setIsBeneficiary] = useState(true);
@@ -94,6 +93,7 @@ const ProposalsTable = ({ data, loading, header, footer }) => {
     proposer,
     description,
     relatedLinks,
+    failedReason,
     value,
     proposalStatus,
     detailRoute,
@@ -154,17 +154,33 @@ const ProposalsTable = ({ data, loading, header, footer }) => {
     ),
   };
 
-  const columns = [
-    sortableProposalIndex,
-    proposeTime,
-    beneficiary,
-    proposer,
-    description,
-    relatedLinks,
-    sortByValue,
-    proposalStatus,
-    detailRoute,
-  ];
+  let columns;
+
+  if (tab === "failed") {
+    columns = [
+      sortableProposalIndex,
+      proposeTime,
+      beneficiary,
+      proposer,
+      description,
+      failedReason,
+      sortByValue,
+      proposalStatus,
+      detailRoute,
+    ];
+  } else {
+    columns = [
+      sortableProposalIndex,
+      proposeTime,
+      beneficiary,
+      proposer,
+      description,
+      relatedLinks,
+      sortByValue,
+      proposalStatus,
+      detailRoute,
+    ];
+  }
 
   return (
     <CardWrapper>
