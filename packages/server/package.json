@@ -8,8 +8,7 @@
   "dependencies": {
     "@koa/cors": "^5.0.0",
     "@osn/ipfs": "^0.1.0",
-    "@polkadot/util": "12.5.1",
-    "@polkadot/util-crypto": "12.5.1",
+    "@polkadot/util": "12.6.2",
     "bignumber.js": "^9.1.1",
     "dotenv": "16.1.4",
     "ipfs-only-hash": "^4.0.0",
