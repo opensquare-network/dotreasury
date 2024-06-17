@@ -26,6 +26,11 @@ async function handleTransferOutWithoutExtrinsic(event, indexer) {
   const eventData = event.data.toJSON();
 
   const col = await getOutTransferCollection()
+  const maybeInDb = await col.findOne({ awardHeight: indexer.blockHeight, "indexer.eventIndex": indexer.eventIndex });
+  if (maybeInDb) {
+    return;
+  }
+
   await col.insertOne({
     indexer,
     awardHeight: indexer.blockHeight,
