@@ -17,9 +17,9 @@ import {
 import { chainSymbolSelector } from "../../../store/reducers/chainSlice";
 import { h4_16_semibold, p_12_normal } from "../../../styles/text";
 import {
-  gap,
   justify_between,
   p_b,
+  space_y,
   w,
   w_full,
 } from "../../../styles/tailwindcss";
@@ -27,27 +27,31 @@ import { breakpoint } from "../../../styles/responsive";
 import Slider from "../../../components/Slider";
 import { currentChainSettings, isCentrifuge } from "../../../utils/chains";
 
+const Wrapper = styled.div`
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+`;
+
+const ChartCardsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 16px;
+`;
+
 const CardWrapper = styled(Card)`
+  width: 100%;
+  height: 100%;
   padding: 24px;
   @media screen and (max-width: 600px) {
     border-radius: 0;
   }
-  margin-bottom: 16px;
 `;
 
 const Title = styled(Text)`
   margin-bottom: 16px;
   ${h4_16_semibold};
-`;
-
-const ContentWrapper = styled.div`
-  display: flex;
-  ${justify_between};
-  ${gap(72)};
-  @media screen and (max-width: 1140px) {
-    flex-direction: column;
-    ${gap(24)};
-  }
 `;
 
 const SliderWrapper = styled.div`
@@ -72,29 +76,7 @@ const List = styled(ListOrigin)`
   ${breakpoint(600, w_full)};
 `;
 const ListWrapper = styled.div`
-  display: flex;
-  @media screen and (min-width: 600px) {
-    & > :first-child {
-      margin-right: 24px;
-    }
-  }
-  @media screen and (max-width: 600px) {
-    flex-direction: column;
-    & > :first-child {
-      margin-bottom: 24px;
-    }
-  }
-`;
-
-const SecondListWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  @media screen and (max-width: 600px) {
-    & > :first-child {
-      margin-bottom: 24px;
-    }
-  }
+  ${space_y(24)};
 `;
 
 const TotalStacked = () => {
@@ -520,19 +502,30 @@ const TotalStacked = () => {
   }
 
   return (
-    <CardWrapper>
-      <Title>Total Stacked</Title>
-      <ContentWrapper>
-        <ListWrapper>
-          <List symbol={symbol} data={incomeData}></List>
-          <SecondListWrapper>
+    <Wrapper>
+      <div>
+        <CardWrapper>
+          <Title>Treasury Stats</Title>
+          <ListWrapper>
+            <List symbol={symbol} data={incomeData}></List>
             <List symbol={symbol} data={outputData}></List>
             <List symbol={symbol} data={treasuryData}></List>
-          </SecondListWrapper>
-        </ListWrapper>
-        {chartComponent}
-      </ContentWrapper>
-    </CardWrapper>
+          </ListWrapper>
+        </CardWrapper>
+      </div>
+
+      <ChartCardsWrapper>
+        <CardWrapper>
+          <Title>Treasury Stats Chart</Title>
+          {chartComponent}
+        </CardWrapper>
+
+        <CardWrapper>
+          <Title>Treasury Stats Chart</Title>
+          {chartComponent}
+        </CardWrapper>
+      </ChartCardsWrapper>
+    </Wrapper>
   );
 };
 
