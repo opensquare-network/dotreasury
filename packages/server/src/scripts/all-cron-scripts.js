@@ -4,6 +4,7 @@ dotenv.config();
 const migrateLinks = require("./migrate-links");
 const pinRateToIpfs = require("./pin-rate-to-ipfs");
 const updateSort = require("./update-sort");
+const syncWeeklyPrice = require("./sync-weekly-price");
 const { updateParticipants } = require("./update-participants");
 const {
   syncGov2ReferendaTitle,
@@ -43,6 +44,12 @@ async function main() {
 
   try {
     await syncProposalTitle();
+  } catch (e) {
+    console.error(e.message);
+  }
+
+  try {
+    await syncWeeklyPrice();
   } catch (e) {
     console.error(e.message);
   }

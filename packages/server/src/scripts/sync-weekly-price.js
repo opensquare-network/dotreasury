@@ -1,6 +1,3 @@
-const dotenv = require("dotenv");
-dotenv.config();
-
 const isNil = require("lodash.isnil");
 const {
   getInputWeeklyStatsCollection,
@@ -34,6 +31,4 @@ async function main() {
   await syncWeeklyPrice(inputWeeklyStats);
 }
 
-main()
-  .catch(console.error)
-  .finally(() => process.exit());
+module.exports = main;
