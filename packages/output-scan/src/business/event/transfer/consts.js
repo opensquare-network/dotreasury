@@ -1,0 +1,5 @@
+const treasuryPubKey = "0x6d6f646c70792f74727372790000000000000000000000000000000000000000";
+
+module.exports = {
+  treasuryPubKey,
+}
