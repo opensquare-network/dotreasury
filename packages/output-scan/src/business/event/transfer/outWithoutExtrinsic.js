@@ -3,8 +3,19 @@
 const { treasuryPubKey } = require("./consts");
 const { getOutTransferCollection } = require("../../../mongo");
 const { toDecimal128 } = require("../../../utils");
+const {
+  consts: {
+    Modules,
+    BalancesEvents,
+  }
+} = require("@osn/scan-common");
 
 async function handleTransferOutWithoutExtrinsic(event, indexer) {
+  const { section, method, } = event;
+  if (section !== Modules.Balances || BalancesEvents.Transfer !== method) {
+    return;
+  }
+
   const fromPubKey = event.data[0].toHex();
   if (treasuryPubKey !== fromPubKey) {
     return;
