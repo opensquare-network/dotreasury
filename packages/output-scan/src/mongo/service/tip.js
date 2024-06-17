@@ -39,8 +39,26 @@ async function updateTipByHash(hash, updates, timelineItem) {
   await tipCol.updateOne({ hash: hash, isFinal: false }, update);
 }
 
+async function updateAllTips(updates, timelineItem) {
+  const tipCol = await getTipCollection();
+
+  let update = {
+    $set: updates,
+  };
+
+  if (timelineItem) {
+    update = {
+      ...update,
+      $push: { timeline: timelineItem },
+    };
+  }
+
+  await tipCol.updateMany({ isFinal: false }, update);
+}
+
 module.exports = {
   insertTip,
   getActiveTipByHash,
   updateTipByHash,
+  updateAllTips,
 }
