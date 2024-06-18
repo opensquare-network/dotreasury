@@ -95,7 +95,7 @@ const TransfersTable = ({ data, loading, header, footer }) => {
                       </Table.Cell>
                       <Table.Cell>
                         <ExplorerLink
-                          href={`/extrinsic/${item.indexer.blockHeight}-${item.indexer.extrinsicIndex}?event=${item.indexer.blockHeight}-${item.indexer.eventIndex}`}
+                          href={`/block/${item.indexer.blockHeight}?tab=event&event=${item.indexer.blockHeight}-${item.indexer.eventIndex}`}
                         >
                           <EventWrapper>
                             <IconMask
