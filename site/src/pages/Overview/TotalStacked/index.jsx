@@ -546,7 +546,6 @@ const TotalStacked = () => {
       <ChartAndSlider>
         <ValueChart
           data={valueChartData}
-          onHover={onHover}
           yStepSize={
             currentChainSettings.ui?.totalStacked?.yStepSize || 8000000
           }
