@@ -11,6 +11,7 @@ export const tipStatusMap = {
   TipRetracted: "Retracted",
   TipClosed: "Closed",
   TipSlashed: "Slashed",
+  Removed: "Removed",
 };
 
 export const bountyStatusMap = {
