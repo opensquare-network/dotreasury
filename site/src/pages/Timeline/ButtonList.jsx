@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import ImageButton from "./ImageButton";
-import ExplorerLink from "../../components/ExplorerLink";
-import ExternalLink from "../../components/ExternalLink";
 import { useIsMounted } from "@osn/common";
 import { useSelector } from "react-redux";
-import { chainSelector } from "../../store/reducers/chainSlice";
+import ExplorerLink from "../../components/ExplorerLink";
+import ExternalLink from "../../components/ExternalLink";
 import { TimelineItemType } from "../../constants";
+import { chainSelector } from "../../store/reducers/chainSlice";
 import { currentChainSettings } from "../../utils/chains";
+import ImageButton from "./ImageButton";
 
 const Wrapper = styled.div`
   margin-top: 8px;
@@ -55,16 +55,18 @@ const ButtonList = ({ extrinsicIndexer, eventIndexer, polkassembly, type }) => {
     ? `extrinsic/${blockHeight}-${extrinsicIndex}`
     : `extrinsic/${blockHeight}-${extrinsicIndex}?event=${blockHeight}-${eventSort}`;
 
+  const statescanLink = isExtrinsic
+    ? `#/extrinsics/${blockHeight}-${extrinsicIndex}`
+    : `#/events/${blockHeight}-${eventSort}`;
+
   return (
     <Wrapper>
-      {currentChainSettings.hasPolkascan && (
+      {currentChainSettings.hasStatescan && (
         <ExplorerLink
-          base={`https://polkascan.io/${currentChainSettings.value}/`}
-          href={`${isExtrinsic ? "transaction" : "event"}/${blockHeight}-${
-            isExtrinsic ? extrinsicIndex : eventSort
-          }`}
+          base={`https://${currentChainSettings.value}.statescan.io/`}
+          href={statescanLink}
         >
-          <ImageButton src={"/imgs/polkascan-logo.svg"} />
+          <ImageButton src={"/imgs/statescan-logo.svg"} />
         </ExplorerLink>
       )}
       {currentChainSettings.hasSubscan && (

@@ -10,7 +10,7 @@ export const polkadot = {
   ss58Format: 0,
   supportOpenGov: true,
   hasDotreasury: true,
-  hasPolkascan: true,
+  hasStatescan: true,
   hasSubscan: true,
   hasStatescan: true,
 

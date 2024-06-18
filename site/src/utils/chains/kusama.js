@@ -10,7 +10,7 @@ export const kusama = {
   ss58Format: 2,
   supportOpenGov: true,
   hasDotreasury: true,
-  hasPolkascan: true,
+  hasStatescan: true,
   hasSubscan: true,
   hasStatescan: true,
 
