@@ -3,10 +3,10 @@ const {
   getStatusCollection,
   getWeeklyStatsCollection,
 } = require("../mongo");
-const { calcOutputStatsAt } = require("./output");
 const {
   chain: { getLatestHeight },
 } = require("@osn/scan-common");
+const { getOutputStatsAt } = require("./calc");
 
 const lastStatsHeight = "last-outputstats-height";
 
@@ -38,7 +38,7 @@ async function updateStatHeight(height) {
 }
 
 async function createStatAt(indexer, isWeekPoint = true) {
-  const output = await calcOutputStatsAt(indexer);
+  const output = await getOutputStatsAt(indexer);
 
   const weeklyStatsCol = await getWeeklyStatsCollection();
   if (!isWeekPoint) {
