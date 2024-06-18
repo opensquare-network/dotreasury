@@ -103,19 +103,6 @@ export default function TreasuryValueChart({
       },
     },
     scales: {
-      usd: {
-        position: "right",
-        beginAtZero: true,
-        ticks: {
-          stepSize: 200000000,
-          callback(y) {
-            return "$" + abbreviateBigNumber(y);
-          },
-        },
-        grid: {
-          drawTicks: false,
-        },
-      },
       dot: {
         position: "left",
         beginAtZero: true,
@@ -123,6 +110,19 @@ export default function TreasuryValueChart({
           stepSize: yStepSize,
           callback(y) {
             return abbreviateBigNumber(y);
+          },
+        },
+        grid: {
+          drawTicks: false,
+        },
+      },
+      usd: {
+        position: "right",
+        beginAtZero: true,
+        ticks: {
+          stepSize: 200000000,
+          callback(y) {
+            return "$" + abbreviateBigNumber(y);
           },
         },
         grid: {
