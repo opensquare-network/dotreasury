@@ -56,7 +56,7 @@ jobs:
           cache-dependency-path: |
             site/yarn.lock
 
-      - name: install
+      - name: install site
         uses: borales/actions-yarn@v4
         with:
           cmd: install
@@ -68,6 +68,12 @@ jobs:
           cmd: build
           dir: site
 
+      - name: install landing
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install
+          dir: landing
+          
       - name: build landing
         uses: borales/actions-yarn@v4
         with:
