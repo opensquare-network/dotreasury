@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import dayjs from "dayjs";
 import { useTheme } from "../../../context/theme";
 
@@ -18,27 +18,28 @@ import {
 import { chainSymbolSelector } from "../../../store/reducers/chainSlice";
 import { h4_16_semibold, p_12_normal } from "../../../styles/text";
 import {
+  col_span,
+  grid_cols,
   justify_between,
   space_y,
-  w,
   w_full,
 } from "../../../styles/tailwindcss";
-import { breakpoint, smcss } from "../../../styles/responsive";
+import { breakpoint, mdcss } from "../../../styles/responsive";
 import Slider from "../../../components/Slider";
 import { currentChainSettings, isCentrifuge } from "../../../utils/chains";
 import BigNumber from "bignumber.js";
 
 const Wrapper = styled.div`
-  display: flex;
+  display: grid;
   gap: 16px;
   margin-bottom: 16px;
-
-  ${smcss(css`
-    flex-direction: column;
-  `)}
+  ${grid_cols(3)};
+  ${mdcss(grid_cols(1))};
 `;
 
 const ChartCardsWrapper = styled.div`
+  ${col_span(2)};
+  ${mdcss(col_span(1))};
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -78,7 +79,6 @@ const ChartAndSlider = styled.div`
 `;
 
 const List = styled(ListOrigin)`
-  ${w(276)};
   ${breakpoint(600, w_full)};
 `;
 const ListWrapper = styled.div`
