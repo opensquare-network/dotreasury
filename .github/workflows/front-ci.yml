@@ -28,6 +28,7 @@ jobs:
           cache: yarn
           cache-dependency-path: |
             site/yarn.lock
+            landing/yarn.lock
 
       - name: install
         uses: borales/actions-yarn@v4
