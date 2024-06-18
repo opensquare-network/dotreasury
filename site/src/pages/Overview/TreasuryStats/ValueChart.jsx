@@ -91,11 +91,15 @@ export default function TreasuryValueChart({
             );
           },
           label(tooltipItem) {
+            const isUSD = tooltipItem.dataset.yAxisID === "usd";
+
             return `${tooltipItem.dataset.label} ${
               Math.round(tooltipItem.raw) === tooltipItem.raw ? "" : "≈"
-            } ${tooltipItem.dataset.yAxisID === "usd" ? "$" : ""}${parseInt(
-              tooltipItem.raw,
-            ).toLocaleString()}`;
+            } ${isUSD ? "$" : ""}${
+              isUSD
+                ? abbreviateBigNumber(tooltipItem.raw)
+                : parseInt(tooltipItem.raw).toLocaleString()
+            }`;
           },
         },
         itemSort(a, b) {
