@@ -57,7 +57,12 @@ const ChartWrapper = styled.div`
   min-width: 252px;
 `;
 
-const LineChart = ({ data, onHover = noop, yStepSize, xStepSize = 3 }) => {
+const TreasuryStatsChart = ({
+  data,
+  onHover = noop,
+  yStepSize,
+  xStepSize = 3,
+}) => {
   const { dates, values } = data;
 
   /** @type {import("react-chartjs-2").ChartProps} */
@@ -173,4 +178,4 @@ const LineChart = ({ data, onHover = noop, yStepSize, xStepSize = 3 }) => {
   );
 };
 
-export default LineChart;
+export default TreasuryStatsChart;

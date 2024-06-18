@@ -7,7 +7,7 @@ import { useTheme } from "../../../context/theme";
 import Text from "../../../components/Text";
 import Card from "../../../components/Card";
 import ListOrigin from "../CustomList";
-import Chart from "./Chart";
+import StatsChart from "./StatsChart";
 import ValueChart from "./ValueChart";
 import { getPrecision, toPrecision } from "../../../utils";
 
@@ -85,7 +85,7 @@ const ListWrapper = styled.div`
   ${space_y(24)};
 `;
 
-const TotalStacked = () => {
+const TreasuryStats = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const [dateLabels, setDateLabels] = useState([]);
@@ -524,7 +524,7 @@ const TotalStacked = () => {
   if (dateLabels?.length > 0) {
     statsChartComponent = (
       <ChartAndSlider>
-        <Chart
+        <StatsChart
           data={statsChartData}
           onHover={onStatsHover}
           yStepSize={
@@ -592,4 +592,4 @@ const TotalStacked = () => {
   );
 };
 
-export default TotalStacked;
+export default TreasuryStats;
