@@ -3,12 +3,12 @@ import { useTheme } from "@site/src/context/theme";
 import { bnToBn } from "@polkadot/util";
 import { toPrecision } from "@site/src/utils";
 import { getChainSettings } from "@site/src/utils/chains";
-import Chart from "@site/src/pages/Overview/TotalStacked/Chart";
+import TreasuryStatsChart from "@site/src/pages/Overview/TreasuryStats/StatsChart";
 import { useStatsHistory } from "../../../hooks/useData";
 import { useWindowSize } from "react-use";
 import { SM_SIZE } from "@site/src/styles/responsive";
 
-export default function OverviewTotalStacked({ chain = "" }) {
+export default function OverviewTreasuryStatsChart({ chain = "" }) {
   const { decimals } = getChainSettings(chain);
   const statsHistory = useStatsHistory(chain);
   const { width } = useWindowSize();
@@ -82,7 +82,7 @@ export default function OverviewTotalStacked({ chain = "" }) {
     <Card className="!p-6 h-full space-y-6 !pb-12">
       <h4 className="h4-16-semibold">Treasury Stats Chart</h4>
       <div className="h-56">
-        <Chart
+        <TreasuryStatsChart
           data={chartData}
           onHover={() => {}}
           yStepSize={chain === "kusama" ? 200000 : 8000000}

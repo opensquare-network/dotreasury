@@ -2,7 +2,7 @@ import { cn } from "../../../utils";
 import OverviewAmount from "./amount";
 import OverviewSummary from "./summary";
 import OverviewTopBeneficiaries from "./topBeneficiaries";
-import OverviewTotalStacked from "./totalStacked";
+import OverviewTreasuryStatsChart from "./treasuryStatsChart";
 
 export default function OverviewContent({ chain = "" }) {
   return (
@@ -18,7 +18,7 @@ export default function OverviewContent({ chain = "" }) {
 
       <div className="space-y-4 col-span-2">
         <div className="col-span-2">
-          <OverviewTotalStacked chain={chain} />
+          <OverviewTreasuryStatsChart chain={chain} />
         </div>
 
         <div
