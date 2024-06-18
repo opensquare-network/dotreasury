@@ -2,6 +2,19 @@
 
 Notable changes to this project will be documented in this file, started from 4.0.0
 
+# 4.2.0
+
+Date: 2024-06-18
+
+- Add chart on home page to show treasury fiat value trend.
+- Handle treasury output by transfer without an extrinsic.
+- Add statescan external link and remove polkascan external link.
+- Add scripts to append missed polkadot/kusama out transfers from treasury.
+- Add script to update treasury output statistics.
+- Add script to mark tips removed due to pallet removal and support tip removed status.
+- Sync treasury proposal title from subsquare.
+- Update dependencies and fix styles.
+
 # 4.1.4
 
 Date: 2024-05-11
