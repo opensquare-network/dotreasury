@@ -1,18 +1,20 @@
 require("dotenv").config();
-const { handleEvents, getIndexerAndEvents } = require("./common");
+const { getIndexerAndEvents, handleEvents } = require("./common");
 
 const blocks = [
-  3628800,
-  10557894,
-  12477299,
-  12749846,
-  14592406,
-  15559418,
-  16263631,
-  16548113,
-  18454214,
-  19729007,
-  20094002,
+  5457600,
+  10890388,
+  10920288,
+  10990684,
+  11273421,
+  12816000,
+  13118400,
+  13320000,
+  14025600,
+  14126400,
+  15547366,
+  17198169,
+  18770106,
 ];
 
 (async () => {
