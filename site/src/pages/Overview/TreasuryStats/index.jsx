@@ -492,7 +492,7 @@ const TreasuryStats = () => {
     dates: sliceValueRangeData(dateLabels),
     values: [
       {
-        label: "DOT Amount",
+        label: `${currentChainSettings.symbol} Amount`,
         primaryColor: theme.pink300,
         data: sliceValueRangeData(treasuryHistory),
         icon: "square",
