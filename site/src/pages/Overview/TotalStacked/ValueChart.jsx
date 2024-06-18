@@ -56,7 +56,12 @@ const ChartWrapper = styled.div`
   min-width: 252px;
 `;
 
-const LineChart = ({ data, onHover, yStepSize, xStepSize = 3 }) => {
+export default function TreasuryValueChart({
+  data,
+  onHover,
+  yStepSize,
+  xStepSize = 3,
+}) {
   const { dates, values } = data;
 
   /** @type {import("react-chartjs-2").ChartProps} */
@@ -87,23 +92,42 @@ const LineChart = ({ data, onHover, yStepSize, xStepSize = 3 }) => {
           label(tooltipItem) {
             return `${tooltipItem.dataset.label} ${
               Math.round(tooltipItem.raw) === tooltipItem.raw ? "" : "≈"
-            } ${parseInt(tooltipItem.raw).toLocaleString()}`;
+            } ${tooltipItem.dataset.yAxisID === "usd" ? "$" : ""}${parseInt(
+              tooltipItem.raw,
+            ).toLocaleString()}`;
           },
         },
-        itemSort: function (a, b) {
+        itemSort(a, b) {
           return a.datasetIndex - b.datasetIndex;
         },
       },
     },
     scales: {
-      y: {
+      usd: {
         position: "right",
+        beginAtZero: true,
         ticks: {
-          stepSize: yStepSize,
-          callback: (y) => abbreviateBigNumber(y),
+          stepSize: 200000000,
+          callback(y) {
+            return "$" + abbreviateBigNumber(y);
+          },
         },
         grid: {
           drawTicks: false,
+        },
+      },
+      dot: {
+        position: "left",
+        beginAtZero: true,
+        ticks: {
+          stepSize: yStepSize,
+          callback(y) {
+            return abbreviateBigNumber(y);
+          },
+        },
+        grid: {
+          drawTicks: false,
+          drawOnChartArea: false,
         },
       },
       x: {
@@ -123,7 +147,7 @@ const LineChart = ({ data, onHover, yStepSize, xStepSize = 3 }) => {
         },
       },
     },
-    onHover: function (_, array) {
+    onHover(_, array) {
       const index = array?.[0]?.index;
       onHover(index);
     },
@@ -170,6 +194,4 @@ const LineChart = ({ data, onHover, yStepSize, xStepSize = 3 }) => {
       </ChartWrapper>
     </>
   );
-};
-
-export default LineChart;
+}

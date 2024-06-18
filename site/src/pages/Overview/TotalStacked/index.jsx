@@ -8,6 +8,7 @@ import Text from "../../../components/Text";
 import Card from "../../../components/Card";
 import ListOrigin from "../CustomList";
 import Chart from "./Chart";
+import ValueChart from "./ValueChart";
 import { getPrecision, toPrecision } from "../../../utils";
 
 import {
@@ -18,7 +19,6 @@ import { chainSymbolSelector } from "../../../store/reducers/chainSlice";
 import { h4_16_semibold, p_12_normal } from "../../../styles/text";
 import {
   justify_between,
-  p_b,
   space_y,
   w,
   w_full,
@@ -26,6 +26,7 @@ import {
 import { breakpoint } from "../../../styles/responsive";
 import Slider from "../../../components/Slider";
 import { currentChainSettings, isCentrifuge } from "../../../utils/chains";
+import BigNumber from "bignumber.js";
 
 const Wrapper = styled.div`
   display: flex;
@@ -41,6 +42,8 @@ const ChartCardsWrapper = styled.div`
 `;
 
 const CardWrapper = styled(Card)`
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
   padding: 24px;
@@ -67,7 +70,6 @@ const ChartAndSlider = styled.div`
   flex-direction: column;
   ${justify_between};
   flex-grow: 1;
-  ${p_b(24)};
   overflow: auto;
 `;
 
@@ -86,8 +88,10 @@ const TotalStacked = () => {
   const [incomeHistory, setIncomeHistory] = useState([]);
   const [outputHistory, setOutputHistory] = useState([]);
   const [treasuryHistory, setTreasuryHistory] = useState([]);
+  const [fiatHistory, setFiatHistory] = useState([]);
   const [showIndex, setShowIndex] = useState();
-  const [chartRange, setChartRange] = useState([0, 0]);
+  const [statsChartRange, setStatsChartRange] = useState([0, 0]);
+  const [valueChartRange, setValueChartRange] = useState([0, 0]);
   const [incomeData, setIncomeData] = useState({
     title: "Income",
     icon: "square",
@@ -211,7 +215,7 @@ const TotalStacked = () => {
       (statsItem) => statsItem.indexer.blockTime,
     );
     setDateLabels(dateLabels);
-    setChartRange([0, dateLabels.length - 1]);
+    setStatsChartRange([0, dateLabels.length - 1]);
 
     const incomeHistory = statsHistory.map((statsItem) => {
       return (
@@ -244,6 +248,13 @@ const TotalStacked = () => {
       toPrecision(statsItem.treasuryBalance, precision, false),
     );
     setTreasuryHistory(treasuryHistory);
+
+    const fiatHistory = statsHistory.map((statsItem) => {
+      return BigNumber(toPrecision(statsItem.treasuryBalance, precision))
+        .times(statsItem.price)
+        .toNumber();
+    });
+    setFiatHistory(fiatHistory);
   }, [statsHistory, precision]);
 
   useEffect(() => {
@@ -432,18 +443,22 @@ const TotalStacked = () => {
     }
   }, [showIndex, statsHistory, dateLabels, precision, theme]);
 
-  const sliceRangeData = (data) => {
-    return data.slice(chartRange[0], chartRange[1] + 1);
+  const sliceStatsRangeData = (data) => {
+    return data.slice(statsChartRange[0], statsChartRange[1] + 1);
   };
 
-  const chartData = {
-    dates: sliceRangeData(dateLabels),
+  const sliceValueRangeData = (data) => {
+    return data.slice(valueChartRange[0], valueChartRange[1] + 1);
+  };
+
+  const statsChartData = {
+    dates: sliceStatsRangeData(dateLabels),
     values: [
       {
         label: "Income",
         primaryColor: theme.pink300,
         secondaryColor: theme.pink100,
-        data: sliceRangeData(incomeHistory),
+        data: sliceStatsRangeData(incomeHistory),
         fill: true,
         icon: "square",
         order: 2,
@@ -452,7 +467,7 @@ const TotalStacked = () => {
         label: "Output",
         primaryColor: theme.yellow300,
         secondaryColor: theme.yellow100,
-        data: sliceRangeData(outputHistory),
+        data: sliceStatsRangeData(outputHistory),
         fill: true,
         icon: "square",
         order: 1,
@@ -461,10 +476,32 @@ const TotalStacked = () => {
         label: "Treasury",
         primaryColor: theme.orange300,
         secondaryColor: theme.orange300,
-        data: sliceRangeData(treasuryHistory),
+        data: sliceStatsRangeData(treasuryHistory),
         fill: false,
         icon: "bar",
         order: 0,
+      },
+    ],
+  };
+
+  const valueChartData = {
+    dates: sliceValueRangeData(dateLabels),
+    values: [
+      {
+        label: "DOT Amount",
+        primaryColor: theme.pink300,
+        data: sliceValueRangeData(treasuryHistory),
+        icon: "square",
+        fill: false,
+        yAxisID: "dot",
+      },
+      {
+        label: "USD Value",
+        primaryColor: theme.green300,
+        data: sliceValueRangeData(fiatHistory),
+        icon: "square",
+        fill: false,
+        yAxisID: "usd",
       },
     ],
   };
@@ -474,16 +511,17 @@ const TotalStacked = () => {
       setShowIndex();
       return;
     }
-    setShowIndex(index + chartRange[0]);
+    setShowIndex(index + statsChartRange[0]);
   };
 
-  let chartComponent = null;
+  let statsChartComponent = null;
+  let valueChartComponent = null;
 
   if (dateLabels?.length > 0) {
-    chartComponent = (
+    statsChartComponent = (
       <ChartAndSlider>
         <Chart
-          data={chartData}
+          data={statsChartData}
           onHover={onHover}
           yStepSize={
             currentChainSettings.ui?.totalStacked?.yStepSize || 8000000
@@ -494,7 +532,29 @@ const TotalStacked = () => {
             min={0}
             max={dateLabels.length - 1 || 0}
             formatValue={(val) => dayjs(dateLabels[val]).format("YYYY-MM")}
-            onChange={setChartRange}
+            onChange={setStatsChartRange}
+          />
+        </SliderWrapper>
+      </ChartAndSlider>
+    );
+
+    valueChartComponent = (
+      <ChartAndSlider>
+        <ValueChart
+          data={valueChartData}
+          onHover={onHover}
+          yStepSize={
+            currentChainSettings.ui?.totalStacked?.yStepSize || 8000000
+          }
+        />
+        <SliderWrapper>
+          <Slider
+            min={0}
+            max={dateLabels.length - 1 || 0}
+            formatValue={(val) => {
+              return dayjs(dateLabels[val]).format("YYYY-MM");
+            }}
+            onChange={setValueChartRange}
           />
         </SliderWrapper>
       </ChartAndSlider>
@@ -517,12 +577,12 @@ const TotalStacked = () => {
       <ChartCardsWrapper>
         <CardWrapper>
           <Title>Treasury Stats Chart</Title>
-          {chartComponent}
+          {statsChartComponent}
         </CardWrapper>
 
         <CardWrapper>
-          <Title>Treasury Stats Chart</Title>
-          {chartComponent}
+          <Title>Treasury Value Chart</Title>
+          {valueChartComponent}
         </CardWrapper>
       </ChartCardsWrapper>
     </Wrapper>
