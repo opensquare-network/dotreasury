@@ -8,7 +8,7 @@ import ProposerTable from "./ProposerTable";
 import BeneficiaryTable from "./BeneficiaryTable";
 import { overviewSelector } from "../../store/reducers/overviewSlice";
 import { getPrecision, toPrecision } from "../../utils";
-import TotalStacked from "./TotalStacked";
+import TreasuryStats from "./TreasuryStats";
 import Income from "./Income";
 import Output from "./Output";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
@@ -161,7 +161,7 @@ const Overview = () => {
     <>
       <Summary />
       <DoughnutWrapper count={cards.length}>{cards}</DoughnutWrapper>
-      <TotalStacked />
+      <TreasuryStats />
       <IncomeAndOutputPeriods />
       {currentChainSettings.hasOutputPeriods && <OutputPeriods />}
       <TableWrapper>

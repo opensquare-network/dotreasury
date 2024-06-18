@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import dayjs from "dayjs";
@@ -7,7 +7,8 @@ import { useTheme } from "../../../context/theme";
 import Text from "../../../components/Text";
 import Card from "../../../components/Card";
 import ListOrigin from "../CustomList";
-import Chart from "./Chart";
+import StatsChart from "./StatsChart";
+import FiatValueChart from "./FiatValueChart";
 import { getPrecision, toPrecision } from "../../../utils";
 
 import {
@@ -17,37 +18,48 @@ import {
 import { chainSymbolSelector } from "../../../store/reducers/chainSlice";
 import { h4_16_semibold, p_12_normal } from "../../../styles/text";
 import {
-  gap,
+  col_span,
+  grid_cols,
   justify_between,
-  p_b,
-  w,
+  space_y,
   w_full,
 } from "../../../styles/tailwindcss";
-import { breakpoint } from "../../../styles/responsive";
+import { breakpoint, mdcss } from "../../../styles/responsive";
 import Slider from "../../../components/Slider";
 import { currentChainSettings, isCentrifuge } from "../../../utils/chains";
+import BigNumber from "bignumber.js";
+
+const Wrapper = styled.div`
+  display: grid;
+  gap: 16px;
+  margin-bottom: 16px;
+  ${grid_cols(3)};
+  ${mdcss(grid_cols(1))};
+`;
+
+const ChartCardsWrapper = styled.div`
+  ${col_span(2)};
+  ${mdcss(col_span(1))};
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 16px;
+`;
 
 const CardWrapper = styled(Card)`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
   padding: 24px;
   @media screen and (max-width: 600px) {
     border-radius: 0;
   }
-  margin-bottom: 16px;
 `;
 
 const Title = styled(Text)`
   margin-bottom: 16px;
   ${h4_16_semibold};
-`;
-
-const ContentWrapper = styled.div`
-  display: flex;
-  ${justify_between};
-  ${gap(72)};
-  @media screen and (max-width: 1140px) {
-    flex-direction: column;
-    ${gap(24)};
-  }
 `;
 
 const SliderWrapper = styled.div`
@@ -63,49 +75,27 @@ const ChartAndSlider = styled.div`
   flex-direction: column;
   ${justify_between};
   flex-grow: 1;
-  ${p_b(24)};
   overflow: auto;
 `;
 
 const List = styled(ListOrigin)`
-  ${w(276)};
   ${breakpoint(600, w_full)};
 `;
 const ListWrapper = styled.div`
-  display: flex;
-  @media screen and (min-width: 600px) {
-    & > :first-child {
-      margin-right: 24px;
-    }
-  }
-  @media screen and (max-width: 600px) {
-    flex-direction: column;
-    & > :first-child {
-      margin-bottom: 24px;
-    }
-  }
+  ${space_y(24)};
 `;
 
-const SecondListWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  @media screen and (max-width: 600px) {
-    & > :first-child {
-      margin-bottom: 24px;
-    }
-  }
-`;
-
-const TotalStacked = () => {
+const TreasuryStats = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const [dateLabels, setDateLabels] = useState([]);
   const [incomeHistory, setIncomeHistory] = useState([]);
   const [outputHistory, setOutputHistory] = useState([]);
   const [treasuryHistory, setTreasuryHistory] = useState([]);
+  const [fiatHistory, setFiatHistory] = useState([]);
   const [showIndex, setShowIndex] = useState();
-  const [chartRange, setChartRange] = useState([0, 0]);
+  const [statsChartRange, setStatsChartRange] = useState([0, 0]);
+  const [valueChartRange, setValueChartRange] = useState([0, 0]);
   const [incomeData, setIncomeData] = useState({
     title: "Income",
     icon: "square",
@@ -229,7 +219,7 @@ const TotalStacked = () => {
       (statsItem) => statsItem.indexer.blockTime,
     );
     setDateLabels(dateLabels);
-    setChartRange([0, dateLabels.length - 1]);
+    setStatsChartRange([0, dateLabels.length - 1]);
 
     const incomeHistory = statsHistory.map((statsItem) => {
       return (
@@ -262,6 +252,13 @@ const TotalStacked = () => {
       toPrecision(statsItem.treasuryBalance, precision, false),
     );
     setTreasuryHistory(treasuryHistory);
+
+    const fiatHistory = statsHistory.map((statsItem) => {
+      return BigNumber(toPrecision(statsItem.treasuryBalance, precision))
+        .times(statsItem.price)
+        .toNumber();
+    });
+    setFiatHistory(fiatHistory);
   }, [statsHistory, precision]);
 
   useEffect(() => {
@@ -450,18 +447,22 @@ const TotalStacked = () => {
     }
   }, [showIndex, statsHistory, dateLabels, precision, theme]);
 
-  const sliceRangeData = (data) => {
-    return data.slice(chartRange[0], chartRange[1] + 1);
+  const sliceStatsRangeData = (data) => {
+    return data.slice(statsChartRange[0], statsChartRange[1] + 1);
   };
 
-  const chartData = {
-    dates: sliceRangeData(dateLabels),
+  const sliceValueRangeData = (data) => {
+    return data.slice(valueChartRange[0], valueChartRange[1] + 1);
+  };
+
+  const statsChartData = {
+    dates: sliceStatsRangeData(dateLabels),
     values: [
       {
         label: "Income",
         primaryColor: theme.pink300,
         secondaryColor: theme.pink100,
-        data: sliceRangeData(incomeHistory),
+        data: sliceStatsRangeData(incomeHistory),
         fill: true,
         icon: "square",
         order: 2,
@@ -470,7 +471,7 @@ const TotalStacked = () => {
         label: "Output",
         primaryColor: theme.yellow300,
         secondaryColor: theme.yellow100,
-        data: sliceRangeData(outputHistory),
+        data: sliceStatsRangeData(outputHistory),
         fill: true,
         icon: "square",
         order: 1,
@@ -479,7 +480,7 @@ const TotalStacked = () => {
         label: "Treasury",
         primaryColor: theme.orange300,
         secondaryColor: theme.orange300,
-        data: sliceRangeData(treasuryHistory),
+        data: sliceStatsRangeData(treasuryHistory),
         fill: false,
         icon: "bar",
         order: 0,
@@ -487,22 +488,45 @@ const TotalStacked = () => {
     ],
   };
 
-  const onHover = (index) => {
+  const valueChartData = {
+    dates: sliceValueRangeData(dateLabels),
+    values: [
+      {
+        label: `${currentChainSettings.symbol} Amount`,
+        primaryColor: theme.pink300,
+        data: sliceValueRangeData(treasuryHistory),
+        icon: "square",
+        fill: false,
+        yAxisID: "dot",
+      },
+      {
+        label: "USD Value",
+        primaryColor: theme.green300,
+        data: sliceValueRangeData(fiatHistory),
+        icon: "square",
+        fill: false,
+        yAxisID: "usd",
+      },
+    ],
+  };
+
+  const onStatsHover = (index) => {
     if (index === undefined) {
       setShowIndex();
       return;
     }
-    setShowIndex(index + chartRange[0]);
+    setShowIndex(index + statsChartRange[0]);
   };
 
-  let chartComponent = null;
+  let statsChartComponent = null;
+  let fiatChartComponent = null;
 
   if (dateLabels?.length > 0) {
-    chartComponent = (
+    statsChartComponent = (
       <ChartAndSlider>
-        <Chart
-          data={chartData}
-          onHover={onHover}
+        <StatsChart
+          data={statsChartData}
+          onHover={onStatsHover}
           yStepSize={
             currentChainSettings.ui?.totalStacked?.yStepSize || 8000000
           }
@@ -512,7 +536,28 @@ const TotalStacked = () => {
             min={0}
             max={dateLabels.length - 1 || 0}
             formatValue={(val) => dayjs(dateLabels[val]).format("YYYY-MM")}
-            onChange={setChartRange}
+            onChange={setStatsChartRange}
+          />
+        </SliderWrapper>
+      </ChartAndSlider>
+    );
+
+    fiatChartComponent = (
+      <ChartAndSlider>
+        <FiatValueChart
+          data={valueChartData}
+          yStepSize={
+            currentChainSettings.ui?.totalStacked?.yStepSize || 8000000
+          }
+        />
+        <SliderWrapper>
+          <Slider
+            min={0}
+            max={dateLabels.length - 1 || 0}
+            formatValue={(val) => {
+              return dayjs(dateLabels[val]).format("YYYY-MM");
+            }}
+            onChange={setValueChartRange}
           />
         </SliderWrapper>
       </ChartAndSlider>
@@ -520,20 +565,31 @@ const TotalStacked = () => {
   }
 
   return (
-    <CardWrapper>
-      <Title>Total Stacked</Title>
-      <ContentWrapper>
-        <ListWrapper>
-          <List symbol={symbol} data={incomeData}></List>
-          <SecondListWrapper>
+    <Wrapper>
+      <div>
+        <CardWrapper>
+          <Title>Treasury Stats</Title>
+          <ListWrapper>
+            <List symbol={symbol} data={incomeData}></List>
             <List symbol={symbol} data={outputData}></List>
             <List symbol={symbol} data={treasuryData}></List>
-          </SecondListWrapper>
-        </ListWrapper>
-        {chartComponent}
-      </ContentWrapper>
-    </CardWrapper>
+          </ListWrapper>
+        </CardWrapper>
+      </div>
+
+      <ChartCardsWrapper>
+        <CardWrapper>
+          <Title>Treasury Fiat Value</Title>
+          {fiatChartComponent}
+        </CardWrapper>
+
+        <CardWrapper>
+          <Title>Treasury Stats Chart</Title>
+          {statsChartComponent}
+        </CardWrapper>
+      </ChartCardsWrapper>
+    </Wrapper>
   );
 };
 
-export default TotalStacked;
+export default TreasuryStats;

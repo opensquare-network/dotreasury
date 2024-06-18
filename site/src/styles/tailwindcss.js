@@ -150,6 +150,11 @@ export function grid_cols(repeat, min = 0) {
     grid-template-columns: repeat(${repeat}, minmax(${min}px, 1fr));
   `;
 }
+export function col_span(repeat) {
+  return `
+    grid-column: span ${repeat} / span ${repeat};
+  `;
+}
 /**
  * @param {100|200} n shadow level
  * @description shortcut for `box-shadow: var(--shadow100)`
