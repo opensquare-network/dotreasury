@@ -8,7 +8,7 @@ import Text from "../../../components/Text";
 import Card from "../../../components/Card";
 import ListOrigin from "../CustomList";
 import StatsChart from "./StatsChart";
-import ValueChart from "./ValueChart";
+import FiatValueChart from "./FiatValueChart";
 import { getPrecision, toPrecision } from "../../../utils";
 
 import {
@@ -519,7 +519,7 @@ const TreasuryStats = () => {
   };
 
   let statsChartComponent = null;
-  let valueChartComponent = null;
+  let fiatChartComponent = null;
 
   if (dateLabels?.length > 0) {
     statsChartComponent = (
@@ -542,9 +542,9 @@ const TreasuryStats = () => {
       </ChartAndSlider>
     );
 
-    valueChartComponent = (
+    fiatChartComponent = (
       <ChartAndSlider>
-        <ValueChart
+        <FiatValueChart
           data={valueChartData}
           yStepSize={
             currentChainSettings.ui?.totalStacked?.yStepSize || 8000000
@@ -579,13 +579,13 @@ const TreasuryStats = () => {
 
       <ChartCardsWrapper>
         <CardWrapper>
-          <Title>Treasury Stats Chart</Title>
-          {statsChartComponent}
+          <Title>Treasury Fiat Value</Title>
+          {fiatChartComponent}
         </CardWrapper>
 
         <CardWrapper>
-          <Title>Treasury Value Chart</Title>
-          {valueChartComponent}
+          <Title>Treasury Stats Chart</Title>
+          {statsChartComponent}
         </CardWrapper>
       </ChartCardsWrapper>
     </Wrapper>

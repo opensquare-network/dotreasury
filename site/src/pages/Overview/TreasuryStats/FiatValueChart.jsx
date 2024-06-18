@@ -57,7 +57,7 @@ const ChartWrapper = styled.div`
   min-width: 252px;
 `;
 
-export default function TreasuryValueChart({
+export default function TreasuryFiatValueChart({
   data,
   onHover = noop,
   yStepSize,
