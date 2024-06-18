@@ -81,7 +81,7 @@ export const fetchTipCountdown = () => async (dispatch, getState) => {
   dispatch(setTipCountdown(tipCountdown || 14400));
 };
 
-const tipFinalStates = ["TipRetracted", "TipClosed", "TipSlashed"];
+const tipFinalStates = ["TipRetracted", "TipClosed", "TipSlashed", "Removed"];
 const showStatusMap = tipStatusMap;
 
 export function normalizeTip(tip) {
