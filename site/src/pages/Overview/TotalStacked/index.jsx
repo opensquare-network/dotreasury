@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import dayjs from "dayjs";
 import { useTheme } from "../../../context/theme";
 
@@ -23,7 +23,7 @@ import {
   w,
   w_full,
 } from "../../../styles/tailwindcss";
-import { breakpoint } from "../../../styles/responsive";
+import { breakpoint, smcss } from "../../../styles/responsive";
 import Slider from "../../../components/Slider";
 import { currentChainSettings, isCentrifuge } from "../../../utils/chains";
 import BigNumber from "bignumber.js";
@@ -32,6 +32,10 @@ const Wrapper = styled.div`
   display: flex;
   gap: 16px;
   margin-bottom: 16px;
+
+  ${smcss(css`
+    flex-direction: column;
+  `)}
 `;
 
 const ChartCardsWrapper = styled.div`
