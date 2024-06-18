@@ -62,8 +62,14 @@ jobs:
           cmd: install
           dir: site
 
-      - name: build
+      - name: build site
         uses: borales/actions-yarn@v4
         with:
           cmd: build
           dir: site
+
+      - name: build landing
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: build
+          dir: landing
