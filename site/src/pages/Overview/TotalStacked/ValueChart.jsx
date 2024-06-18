@@ -7,6 +7,7 @@ import "../../../components/Charts/globalConfig";
 import Text from "../../../components/Text";
 import { abbreviateBigNumber } from "../../../utils";
 import { h_full } from "../../../styles/tailwindcss";
+import noop from "lodash.noop";
 
 const LegendWrapper = styled.div`
   display: flex;
@@ -58,7 +59,7 @@ const ChartWrapper = styled.div`
 
 export default function TreasuryValueChart({
   data,
-  onHover,
+  onHover = noop,
   yStepSize,
   xStepSize = 3,
 }) {
