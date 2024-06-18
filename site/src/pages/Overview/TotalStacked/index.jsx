@@ -510,7 +510,7 @@ const TotalStacked = () => {
     ],
   };
 
-  const onHover = (index) => {
+  const onStatsHover = (index) => {
     if (index === undefined) {
       setShowIndex();
       return;
@@ -526,7 +526,7 @@ const TotalStacked = () => {
       <ChartAndSlider>
         <Chart
           data={statsChartData}
-          onHover={onHover}
+          onHover={onStatsHover}
           yStepSize={
             currentChainSettings.ui?.totalStacked?.yStepSize || 8000000
           }
