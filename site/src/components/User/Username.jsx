@@ -5,6 +5,10 @@ import { Popup } from "semantic-ui-react";
 import TextMinor from "../TextMinor";
 import { useDisablePopup } from "../../utils/hooks";
 import { truncate } from "../../styles/tailwindcss";
+import { KNOWN_ADDR_MATCHERS } from "../../utils/knownAddr";
+import { ReactComponent as IdentitySpecial } from "../Icon/identity-special.svg";
+import Tooltip from "../Tooltip";
+import { p_12_medium } from "../../styles/text";
 
 const TextUsername = styled(TextMinor)`
   white-space: nowrap;
@@ -27,8 +31,20 @@ const TextUsername = styled(TextMinor)`
         `}
 `;
 
+const SpecialAccountWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+`;
+
+const Text = styled.span`
+  ${p_12_medium}
+  color: var(--textPrimaryContrast);
+`;
+
 const Username = ({ address, name, ellipsis, popup, popupContent, noLink }) => {
   const disabledPopup = useDisablePopup();
+
   let displayAddress;
   if (typeof address === "string") {
     if (ellipsis) {
@@ -50,16 +66,27 @@ const Username = ({ address, name, ellipsis, popup, popupContent, noLink }) => {
     }
   }
 
-  const displayName = name ? name : displayAddress;
+  const knownAddr = KNOWN_ADDR_MATCHERS.map((matcher) => matcher(address)).find(
+    Boolean,
+  );
+
+  const displayName = name ? name : knownAddr ? knownAddr : displayAddress;
   return (
-    <Popup
-      content={
-        popupContent ? popupContent : name ? `${name} ${address}` : address
-      }
-      size="mini"
-      disabled={!popup || disabledPopup}
-      trigger={<TextUsername noLink={noLink}>{displayName}</TextUsername>}
-    />
+    <SpecialAccountWrapper>
+      {knownAddr && (
+        <Tooltip tooltipContent={<Text>Special account</Text>}>
+          <IdentitySpecial />
+        </Tooltip>
+      )}
+      <Popup
+        content={
+          popupContent ? popupContent : name ? `${name} ${address}` : address
+        }
+        size="mini"
+        disabled={!popup || disabledPopup}
+        trigger={<TextUsername noLink={noLink}>{displayName}</TextUsername>}
+      />
+    </SpecialAccountWrapper>
   );
 };
 
