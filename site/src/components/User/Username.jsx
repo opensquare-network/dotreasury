@@ -6,7 +6,7 @@ import TextMinor from "../TextMinor";
 import { useDisablePopup } from "../../utils/hooks";
 import { truncate } from "../../styles/tailwindcss";
 import { KNOWN_ADDR_MATCHERS } from "../../utils/knownAddr";
-import { ReactComponent as IdentitySpecial } from "../Icon/identity-special.svg";
+import IdentitySpecial from "../Icon/identity-special.svg";
 import Tooltip from "../Tooltip";
 import { p_12_medium } from "../../styles/text";
 
@@ -75,7 +75,7 @@ const Username = ({ address, name, ellipsis, popup, popupContent, noLink }) => {
     <SpecialAccountWrapper>
       {knownAddr && (
         <Tooltip tooltipContent={<Text>Special account</Text>}>
-          <IdentitySpecial />
+          <img src={IdentitySpecial} alt="special" width={12} height={12} />
         </Tooltip>
       )}
       <Popup
