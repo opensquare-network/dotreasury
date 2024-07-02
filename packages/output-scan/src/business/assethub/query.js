@@ -2,6 +2,12 @@ const { getAssetHubApi } = require("./api");
 require("bignumber.js")
 const { getStatusCollection } = require("../../mongo");
 const { CronJob } = require("cron");
+const {
+  env: { currentChain },
+  consts: {
+    CHAINS,
+  }
+} = require("@osn/scan-common");
 
 const account = "14xmwinmCEz6oRrFdczHKqHgWNMiCysE2KrA4jXXAAM1Eogk";
 const usdtAssetId = 1984;
@@ -41,7 +47,9 @@ async function queryAndSaveAssetHubAssets() {
 }
 
 function startAssetHubJob() {
-  new CronJob("0 */1 * * * *", queryAndSaveAssetHubAssets, null, true, "Asia/Shanghai");
+  if (CHAINS.POLKADOT === currentChain()) {
+    new CronJob("0 */1 * * * *", queryAndSaveAssetHubAssets, null, true, "Asia/Shanghai");
+  }
 }
 
 module.exports = {
