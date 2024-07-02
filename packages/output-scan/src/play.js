@@ -10,8 +10,6 @@ async function test() {
     3628800,
   ];
 
-  await queryAndSaveAssetHubAssets();
-
   for (const height of blockHeights) {
     await setSpecHeights([height - 1]);
 
