@@ -3,11 +3,14 @@ const { handleBlock } = require("./scan/block");
 const {
   chain: { getApi, setSpecHeights }
 } = require("@osn/scan-common");
+const { queryAndSaveAssetHubAssets } = require("./business/assethub/query");
 
 async function test() {
   const blockHeights = [
     3628800,
   ];
+
+  await queryAndSaveAssetHubAssets();
 
   for (const height of blockHeights) {
     await setSpecHeights([height - 1]);
