@@ -23,7 +23,7 @@ async function calcCount(
 
   const unFinishedTips = tips.filter(
     ({ state: { state } }) =>
-      !["TipClosed", "TipRetracted", "TipSlashed"].includes(state),
+      !["TipClosed", "TipRetracted", "TipSlashed", "Removed"].includes(state),
   );
   const tip = {
     unFinished: unFinishedTips.length,
