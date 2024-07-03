@@ -9,6 +9,7 @@ const {
   },
   env: { isUseMetaDb },
 } = require("@osn/scan-common");
+const { startAssetHubJob } = require("./business/assethub/query");
 
 async function main() {
   await subscribeChainHeight();
@@ -16,6 +17,7 @@ async function main() {
     await updateSpecs();
     checkSpecs();
   }
+  startAssetHubJob();
 
   await beginScan();
 }
