@@ -103,19 +103,15 @@ export default function AssetHub() {
 
   const symbolPrice = overview?.latestSymbolPrice ?? 0;
 
-  const availableItem = (
+  const totalItem = (
     <SummaryItem
       icon={<ImageWithDark src="/imgs/data-fiat-money.svg" />}
-      title="Available"
+      title="Total"
       content={
         <div>
           <ValueWrapper>
             <TextBold>{abbreviateBigNumber(1)}</TextBold>
-            <TextAccessoryBold>{symbol}</TextAccessoryBold>
           </ValueWrapper>
-          <ValueInfo>
-            {!!1 && "≈ "}${abbreviateBigNumber(1 * symbolPrice)}
-          </ValueInfo>
         </div>
       }
     />
@@ -192,7 +188,7 @@ export default function AssetHub() {
     />
   );
 
-  const sortedItems = [availableItem, dotItem, usdcItem, usdtItem].map(
+  const sortedItems = [totalItem, dotItem, usdcItem, usdtItem].map(
     (item, idx) => <Fragment key={idx}>{item}</Fragment>,
   );
 
