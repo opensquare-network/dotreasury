@@ -21,7 +21,7 @@ import {
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import { mrgap } from "../../styles";
 import { abbreviateBigNumber, getPrecision, toPrecision } from "../../utils";
-import { h3_18_semibold, p_12_normal } from "../../styles/text";
+import { h3_18_semibold, h4_16_semibold, p_12_normal } from "../../styles/text";
 import {
   gap_x,
   gap_y,
@@ -42,6 +42,16 @@ const Wrapper = styled(Card)`
   margin-bottom: 16px;
 
   ${p(24)};
+`;
+
+const Title = styled.h4`
+  ${h4_16_semibold};
+  display: flex;
+  column-gap: 8px;
+  margin-bottom: 24px;
+`;
+
+const SummaryWrapper = styled.div`
   ${grid};
   ${gap_x(128)};
   ${gap_y(8)};
@@ -280,7 +290,18 @@ const Summary = () => {
     .filter(Boolean)
     .map((item, idx) => <Fragment key={idx}>{item}</Fragment>);
 
-  return <Wrapper>{sortedItems}</Wrapper>;
+  return (
+    <Wrapper>
+      {currentChainSettings.hasAssetHub && (
+        <Title>
+          <img src="/imgs/chains-polkadot.svg" alt="" />
+          Polkadot
+        </Title>
+      )}
+
+      <SummaryWrapper>{sortedItems}</SummaryWrapper>
+    </Wrapper>
+  );
 };
 
 export default Summary;
