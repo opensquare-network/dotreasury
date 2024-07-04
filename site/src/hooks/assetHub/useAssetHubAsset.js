@@ -17,7 +17,7 @@ export function useAssetHubAsset(assetId) {
     assetHubApi.query.assets
       .account(assetId, ASSET_HUB_ACCOUNT, (optionalStorage) => {
         if (optionalStorage.isNone) {
-          setValue(0);
+          setValue("0");
           return;
         }
 
