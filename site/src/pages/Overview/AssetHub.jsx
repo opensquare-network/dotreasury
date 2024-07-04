@@ -29,6 +29,7 @@ import ExternalLink from "../../components/ExternalLink";
 import { USDC } from "../../utils/chains/usdc";
 import IconMask from "../../components/Icon/Mask";
 import { USDt } from "../../utils/chains/usdt";
+import { Fragment } from "react";
 
 const Wrapper = styled(Card)`
   margin-bottom: 16px;
@@ -191,7 +192,9 @@ export default function AssetHub() {
     />
   );
 
-  const sortedItems = [availableItem, dotItem, usdcItem, usdtItem];
+  const sortedItems = [availableItem, dotItem, usdcItem, usdtItem].map(
+    (item, idx) => <Fragment key={idx}>{item}</Fragment>,
+  );
 
   return (
     <Wrapper>
