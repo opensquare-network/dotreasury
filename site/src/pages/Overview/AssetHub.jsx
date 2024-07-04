@@ -138,31 +138,6 @@ export default function AssetHub() {
     />
   );
 
-  const usdcItem = (
-    <SummaryItem
-      icon={<ImageWithDark src="/imgs/data-asset-usdc.svg" />}
-      title={
-        <TitleLink href={"https://statemint.statescan.io/#/assets/1337"}>
-          {USDC.symbol}
-        </TitleLink>
-      }
-      content={
-        <div>
-          <ValueWrapper>
-            <TextBold>
-              {abbreviateBigNumber(toPrecision(usdcValue, USDC.decimals))}
-            </TextBold>
-            <TextAccessoryBold>{USDC.symbol}</TextAccessoryBold>
-          </ValueWrapper>
-          <ValueInfo>
-            {!!usdcValue && "≈ "}$
-            {abbreviateBigNumber(toPrecision(usdcValue, USDC.decimals))}
-          </ValueInfo>
-        </div>
-      }
-    />
-  );
-
   const usdtItem = (
     <SummaryItem
       icon={<ImageWithDark src="/imgs/data-asset-usdt.svg" />}
@@ -188,7 +163,32 @@ export default function AssetHub() {
     />
   );
 
-  const sortedItems = [totalItem, dotItem, usdcItem, usdtItem].map(
+  const usdcItem = (
+    <SummaryItem
+      icon={<ImageWithDark src="/imgs/data-asset-usdc.svg" />}
+      title={
+        <TitleLink href={"https://statemint.statescan.io/#/assets/1337"}>
+          {USDC.symbol}
+        </TitleLink>
+      }
+      content={
+        <div>
+          <ValueWrapper>
+            <TextBold>
+              {abbreviateBigNumber(toPrecision(usdcValue, USDC.decimals))}
+            </TextBold>
+            <TextAccessoryBold>{USDC.symbol}</TextAccessoryBold>
+          </ValueWrapper>
+          <ValueInfo>
+            {!!usdcValue && "≈ "}$
+            {abbreviateBigNumber(toPrecision(usdcValue, USDC.decimals))}
+          </ValueInfo>
+        </div>
+      }
+    />
+  );
+
+  const sortedItems = [totalItem, dotItem, usdtItem, usdcItem].map(
     (item, idx) => <Fragment key={idx}>{item}</Fragment>,
   );
 
