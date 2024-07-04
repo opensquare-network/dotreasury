@@ -31,6 +31,8 @@ import IconMask from "../../components/Icon/Mask";
 import { USDt } from "../../utils/chains/usdt";
 import { Fragment } from "react";
 import BigNumber from "bignumber.js";
+import SkeletonBar from "../../components/skeleton/bar";
+import { useMemo } from "react";
 
 const Wrapper = styled(Card)`
   margin-bottom: 16px;
@@ -100,11 +102,31 @@ function TitleLink({ children, href, iconSize = 16 }) {
   );
 }
 
+function SummarySkeletonTitle({ loading, children }) {
+  if (loading) {
+    return <SkeletonBar width={40} height={16} />;
+  }
+
+  return children;
+}
+
+function SummarySkeletonContent({ loading, children }) {
+  if (loading) {
+    return (
+      <div style={{ padding: "6px 12px 6px 0px" }}>
+        <SkeletonBar width={"100%"} height={16} />
+      </div>
+    );
+  }
+
+  return children;
+}
+
 export default function AssetHub() {
   const overview = useSelector(overviewSelector);
-  const dotValue = useAssetHubDot();
-  const usdtValue = useAssetHubAsset(ASSET_HUB_USDT_ASSET_ID);
-  const usdcValue = useAssetHubAsset(ASSET_HUB_USDC_ASSET_ID);
+  const [dotValue, dotLoading] = useAssetHubDot();
+  const [usdtValue, usdtLoading] = useAssetHubAsset(ASSET_HUB_USDT_ASSET_ID);
+  const [usdcValue, usdcLoading] = useAssetHubAsset(ASSET_HUB_USDC_ASSET_ID);
   const { decimals, symbol } = currentChainSettings;
 
   const symbolPrice = overview?.latestSymbolPrice ?? 0;
@@ -113,22 +135,26 @@ export default function AssetHub() {
   const usdtPriceValue = toPrecision(usdtValue, USDt.decimals);
   const usdcPriceValue = toPrecision(usdcValue, USDC.decimals);
 
-  const totalPriceValue = BigNumber.sum(
-    dotPriceValue,
-    usdtPriceValue,
-    usdcPriceValue,
+  const totalPriceValue = useMemo(
+    () => BigNumber.sum(dotPriceValue, usdtPriceValue, usdcPriceValue),
+    [dotPriceValue, usdtPriceValue, usdcPriceValue],
   );
+  const totalLoading = dotLoading || usdtLoading || usdcLoading;
 
   const totalItem = (
     <SummaryItem
       icon={<ImageWithDark src="/imgs/data-fiat-money.svg" />}
-      title="Total"
+      title={
+        <SummarySkeletonTitle loading={totalLoading}>
+          Total
+        </SummarySkeletonTitle>
+      }
       content={
-        <div>
+        <SummarySkeletonContent loading={totalLoading}>
           <ValueWrapper>
             <TextBold>≈ ${abbreviateBigNumber(totalPriceValue)}</TextBold>
           </ValueWrapper>
-        </div>
+        </SummarySkeletonContent>
       }
     />
   );
@@ -136,19 +162,23 @@ export default function AssetHub() {
   const dotItem = (
     <SummaryItem
       icon={<ImageWithDark src="/imgs/data-asset-dot.svg" />}
-      title="DOT"
+      title={
+        <SummarySkeletonTitle loading={dotLoading}>DOT</SummarySkeletonTitle>
+      }
       content={
-        <div>
-          <ValueWrapper>
-            <TextBold>
-              {abbreviateBigNumber(toPrecision(dotValue, decimals))}
-            </TextBold>
-            <TextAccessoryBold>{symbol}</TextAccessoryBold>
-          </ValueWrapper>
-          <ValueInfo>
-            {!!dotValue && "≈ "}${abbreviateBigNumber(dotPriceValue)}
-          </ValueInfo>
-        </div>
+        <SummarySkeletonContent loading={dotLoading}>
+          <div>
+            <ValueWrapper>
+              <TextBold>
+                {abbreviateBigNumber(toPrecision(dotValue, decimals))}
+              </TextBold>
+              <TextAccessoryBold>{symbol}</TextAccessoryBold>
+            </ValueWrapper>
+            <ValueInfo>
+              {!!dotValue && "≈ "}${abbreviateBigNumber(dotPriceValue)}
+            </ValueInfo>
+          </div>
+        </SummarySkeletonContent>
       }
     />
   );
@@ -157,22 +187,26 @@ export default function AssetHub() {
     <SummaryItem
       icon={<ImageWithDark src="/imgs/data-asset-usdt.svg" />}
       title={
-        <TitleLink href={"https://statemint.statescan.io/#/assets/1984"}>
-          {USDt.symbol}
-        </TitleLink>
+        <SummarySkeletonTitle loading={usdtLoading}>
+          <TitleLink href={"https://statemint.statescan.io/#/assets/1984"}>
+            {USDt.symbol}
+          </TitleLink>
+        </SummarySkeletonTitle>
       }
       content={
-        <div>
-          <ValueWrapper>
-            <TextBold>
-              {abbreviateBigNumber(toPrecision(usdtValue, USDt.decimals))}
-            </TextBold>
-            <TextAccessoryBold>{USDt.symbol}</TextAccessoryBold>
-          </ValueWrapper>
-          <ValueInfo>
-            {!!usdtValue && "≈ "}${abbreviateBigNumber(usdtPriceValue)}
-          </ValueInfo>
-        </div>
+        <SummarySkeletonContent loading={usdtLoading}>
+          <div>
+            <ValueWrapper>
+              <TextBold>
+                {abbreviateBigNumber(toPrecision(usdtValue, USDt.decimals))}
+              </TextBold>
+              <TextAccessoryBold>{USDt.symbol}</TextAccessoryBold>
+            </ValueWrapper>
+            <ValueInfo>
+              {!!usdtValue && "≈ "}${abbreviateBigNumber(usdtPriceValue)}
+            </ValueInfo>
+          </div>
+        </SummarySkeletonContent>
       }
     />
   );
@@ -181,22 +215,26 @@ export default function AssetHub() {
     <SummaryItem
       icon={<ImageWithDark src="/imgs/data-asset-usdc.svg" />}
       title={
-        <TitleLink href={"https://statemint.statescan.io/#/assets/1337"}>
-          {USDC.symbol}
-        </TitleLink>
+        <SummarySkeletonTitle loading={usdcLoading}>
+          <TitleLink href={"https://statemint.statescan.io/#/assets/1337"}>
+            {USDC.symbol}
+          </TitleLink>
+        </SummarySkeletonTitle>
       }
       content={
-        <div>
-          <ValueWrapper>
-            <TextBold>
-              {abbreviateBigNumber(toPrecision(usdcValue, USDC.decimals))}
-            </TextBold>
-            <TextAccessoryBold>{USDC.symbol}</TextAccessoryBold>
-          </ValueWrapper>
-          <ValueInfo>
-            {!!usdcValue && "≈ "}${abbreviateBigNumber(usdcPriceValue)}
-          </ValueInfo>
-        </div>
+        <SummarySkeletonContent loading={usdcLoading}>
+          <div>
+            <ValueWrapper>
+              <TextBold>
+                {abbreviateBigNumber(toPrecision(usdcValue, USDC.decimals))}
+              </TextBold>
+              <TextAccessoryBold>{USDC.symbol}</TextAccessoryBold>
+            </ValueWrapper>
+            <ValueInfo>
+              {!!usdcValue && "≈ "}${abbreviateBigNumber(usdcPriceValue)}
+            </ValueInfo>
+          </div>
+        </SummarySkeletonContent>
       }
     />
   );

@@ -6,6 +6,7 @@ import { ASSET_HUB_ACCOUNT } from "../../constants/assetHub";
 export function useAssetHubAsset(assetId) {
   const assetHubApi = useAssetHubApi();
   const [value, setValue] = useState("0");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!assetHubApi || !assetId) {
@@ -25,6 +26,9 @@ export function useAssetHubAsset(assetId) {
       })
       .then((un) => {
         unSub = un;
+      })
+      .finally(() => {
+        setLoading(false);
       });
 
     return () => {
@@ -32,5 +36,5 @@ export function useAssetHubAsset(assetId) {
     };
   }, [assetHubApi, assetId]);
 
-  return value;
+  return [value, loading];
 }
