@@ -21,4 +21,6 @@ export const polkadot = {
   hasBounties: true,
   hasTransfers: true,
   hasBurnt: true,
+
+  hasAssetHub: true,
 };

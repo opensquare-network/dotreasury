@@ -26,6 +26,7 @@ import IncomeAndOutputPeriods from "./IncomeAndOutputPeriods";
 import TopBeneficiariesTable from "./TopBeneficiariesTable/index.jsx";
 import OutputPeriods from "./OutputPeriods";
 import { currentChainSettings, isCentrifuge } from "../../utils/chains";
+import AssetHub from "./AssetHub";
 
 const DoughnutWrapper = styled.div`
   display: grid;
@@ -160,6 +161,7 @@ const Overview = () => {
   return (
     <>
       <Summary />
+      {currentChainSettings.hasAssetHub && <AssetHub />}
       <DoughnutWrapper count={cards.length}>{cards}</DoughnutWrapper>
       <TreasuryStats />
       <IncomeAndOutputPeriods />
