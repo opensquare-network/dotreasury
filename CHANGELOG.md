@@ -2,6 +2,15 @@
 
 Notable changes to this project will be documented in this file, started from 4.0.0
 
+# 4.2.1
+
+Date: 2024-07-04
+
+- Update identity view for para chain address.
+- Upgrade dependencies.
+- Fix tips count on home page summary panel.
+- Show treasury assets on polkadot assethub.
+
 # 4.2.0
 
 Date: 2024-06-18
