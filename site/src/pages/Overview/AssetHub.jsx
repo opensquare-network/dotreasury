@@ -83,14 +83,19 @@ const TitleLinkWrapper = styled(ExternalLink)`
   color: inherit;
   &:hover {
     color: inherit;
+    text-decoration: underline;
   }
 `;
 
-function TitleLink({ children, href }) {
+function TitleLink({ children, href, iconSize = 16 }) {
   return (
     <TitleLinkWrapper href={href}>
       {children}
-      <IconMask src="/imgs/caret-up-right.svg" color="textTertiary" size={16} />
+      <IconMask
+        src="/imgs/caret-up-right.svg"
+        color="textTertiary"
+        size={iconSize}
+      />
     </TitleLinkWrapper>
   );
 }
@@ -204,7 +209,12 @@ export default function AssetHub() {
     <Wrapper>
       <Title>
         <img src="/imgs/chains-assethub.svg" alt="" />
-        AssetHub
+        <TitleLink
+          href="https://statemint.statescan.io/#/accounts/14xmwinmCEz6oRrFdczHKqHgWNMiCysE2KrA4jXXAAM1Eogk"
+          iconSize={24}
+        >
+          AssetHub
+        </TitleLink>
       </Title>
 
       <SummaryWrapper>{sortedItems}</SummaryWrapper>
