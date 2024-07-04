@@ -30,6 +30,7 @@ import { USDC } from "../../utils/chains/usdc";
 import IconMask from "../../components/Icon/Mask";
 import { USDt } from "../../utils/chains/usdt";
 import { Fragment } from "react";
+import BigNumber from "bignumber.js";
 
 const Wrapper = styled(Card)`
   margin-bottom: 16px;
@@ -103,6 +104,16 @@ export default function AssetHub() {
 
   const symbolPrice = overview?.latestSymbolPrice ?? 0;
 
+  const dotPriceValue = toPrecision(dotValue, decimals) * symbolPrice;
+  const usdtPriceValue = toPrecision(usdtValue, USDt.decimals);
+  const usdcPriceValue = toPrecision(usdcValue, USDC.decimals);
+
+  const totalPriceValue = BigNumber.sum(
+    dotPriceValue,
+    usdtPriceValue,
+    usdcPriceValue,
+  );
+
   const totalItem = (
     <SummaryItem
       icon={<ImageWithDark src="/imgs/data-fiat-money.svg" />}
@@ -110,7 +121,7 @@ export default function AssetHub() {
       content={
         <div>
           <ValueWrapper>
-            <TextBold>{abbreviateBigNumber(1)}</TextBold>
+            <TextBold>≈ ${abbreviateBigNumber(totalPriceValue)}</TextBold>
           </ValueWrapper>
         </div>
       }
@@ -130,8 +141,7 @@ export default function AssetHub() {
             <TextAccessoryBold>{symbol}</TextAccessoryBold>
           </ValueWrapper>
           <ValueInfo>
-            {!!dotValue && "≈ "}$
-            {abbreviateBigNumber(toPrecision(dotValue, decimals) * symbolPrice)}
+            {!!dotValue && "≈ "}${abbreviateBigNumber(dotPriceValue)}
           </ValueInfo>
         </div>
       }
@@ -155,8 +165,7 @@ export default function AssetHub() {
             <TextAccessoryBold>{USDt.symbol}</TextAccessoryBold>
           </ValueWrapper>
           <ValueInfo>
-            {!!usdtValue && "≈ "}$
-            {abbreviateBigNumber(toPrecision(usdtValue, USDt.decimals))}
+            {!!usdtValue && "≈ "}${abbreviateBigNumber(usdtPriceValue)}
           </ValueInfo>
         </div>
       }
@@ -180,8 +189,7 @@ export default function AssetHub() {
             <TextAccessoryBold>{USDC.symbol}</TextAccessoryBold>
           </ValueWrapper>
           <ValueInfo>
-            {!!usdcValue && "≈ "}$
-            {abbreviateBigNumber(toPrecision(usdcValue, USDC.decimals))}
+            {!!usdcValue && "≈ "}${abbreviateBigNumber(usdcPriceValue)}
           </ValueInfo>
         </div>
       }
