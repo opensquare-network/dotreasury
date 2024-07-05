@@ -1,9 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import { Popup } from "semantic-ui-react";
 
 import TextMinor from "../TextMinor";
-import { useDisablePopup } from "../../utils/hooks";
 import { truncate } from "../../styles/tailwindcss";
 import { KNOWN_ADDR_MATCHERS } from "../../utils/knownAddr";
 import IdentitySpecial from "../Icon/identity-special.svg";
@@ -42,9 +40,7 @@ const Text = styled.span`
   color: var(--textPrimaryContrast);
 `;
 
-const Username = ({ address, name, ellipsis, popup, popupContent, noLink }) => {
-  const disabledPopup = useDisablePopup();
-
+const Username = ({ address, name, ellipsis, popupContent, noLink }) => {
   let displayAddress;
   if (typeof address === "string") {
     if (ellipsis) {
@@ -78,14 +74,22 @@ const Username = ({ address, name, ellipsis, popup, popupContent, noLink }) => {
           <img src={IdentitySpecial} alt="special" width={12} height={12} />
         </Tooltip>
       )}
-      <Popup
-        content={
-          popupContent ? popupContent : name ? `${name} ${address}` : address
+      <Tooltip
+        tooltipContent={
+          popupContent ? (
+            popupContent
+          ) : name ? (
+            <div>
+              <div>{name}</div>
+              <div>{address}</div>
+            </div>
+          ) : (
+            address
+          )
         }
-        size="mini"
-        disabled={!popup || disabledPopup}
-        trigger={<TextUsername noLink={noLink}>{displayName}</TextUsername>}
-      />
+      >
+        <TextUsername noLink={noLink}>{displayName}</TextUsername>
+      </Tooltip>
     </SpecialAccountWrapper>
   );
 };

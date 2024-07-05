@@ -1,6 +1,5 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import { Popup } from "semantic-ui-react";
 
 import Text from "../../../components/Text";
 import TextMinor from "../../../components/TextMinor";
@@ -15,6 +14,7 @@ import {
 } from "../../../styles/tailwindcss";
 import { sumBy } from "../../../utils/math";
 import Icon from "./icon";
+import Tooltip from "../../../components/Tooltip";
 
 const Wrapper = styled.div`
   min-width: 224px;
@@ -121,17 +121,13 @@ const Label = ({ data, icon, status, clickEvent, symbol }) => {
           )}
           <Title disabled={disabled}>{name}</Title>
           {count && <TitleCount disabled={disabled}>{count}</TitleCount>}
-          <Popup
-            content={`${value} ${symbol}`}
-            size="mini"
-            trigger={
-              <ValueWrapper disabled={disabled}>
-                <TextMinor>{`${
-                  Math.round(value) === value ? "" : "≈ "
-                }${Math.round(value).toLocaleString()} ${symbol}`}</TextMinor>
-              </ValueWrapper>
-            }
-          />
+          <ValueWrapper disabled={disabled}>
+            <Tooltip tooltipContent={`${value} ${symbol}`}>
+              <TextMinor>{`${
+                Math.round(value) === value ? "" : "≈ "
+              }${Math.round(value).toLocaleString()} ${symbol}`}</TextMinor>
+            </Tooltip>
+          </ValueWrapper>
         </TitleWrapper>
 
         {!!fiatValue && (
@@ -162,19 +158,15 @@ const Label = ({ data, icon, status, clickEvent, symbol }) => {
               <ChildTitle disabled={status?.children?.[index]?.disabled}>
                 {item.name}
               </ChildTitle>
-              <Popup
-                content={`${item.value} ${symbol}`}
-                size="mini"
-                trigger={
-                  <ValueWrapper disabled={status?.children?.[index]?.disabled}>
-                    <TextMinor>{`${
-                      Math.round(item.value) === item.value ? "" : "≈ "
-                    }${Math.round(
-                      item.value,
-                    ).toLocaleString()} ${symbol}`}</TextMinor>
-                  </ValueWrapper>
-                }
-              />
+              <ValueWrapper disabled={status?.children?.[index]?.disabled}>
+                <Tooltip tooltipContent={`${item.value} ${symbol}`}>
+                  <TextMinor>{`${
+                    Math.round(item.value) === item.value ? "" : "≈ "
+                  }${Math.round(
+                    item.value,
+                  ).toLocaleString()} ${symbol}`}</TextMinor>
+                </Tooltip>
+              </ValueWrapper>
             </TitleWrapper>
 
             {!!item.fiatValue && (

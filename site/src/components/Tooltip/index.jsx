@@ -14,7 +14,7 @@ const Wrapper = styled.div`
   display: inline-flex;
 `;
 
-export default function Tooltip({ children, tooltipContent }) {
+export default function Tooltip({ children, tooltipContent, className = "" }) {
   const [open, setOpen] = useState(false);
 
   const arrowRef = useRef(null);
@@ -42,6 +42,7 @@ export default function Tooltip({ children, tooltipContent }) {
       onFocus={show}
       onMouseLeave={hide}
       onBlur={hide}
+      className={className}
     >
       {children}
       {open && tooltipContent && (

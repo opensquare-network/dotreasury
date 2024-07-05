@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { p_12_normal } from "../../styles/text";
 
 const triangleWidth = 6;
 
@@ -12,7 +13,7 @@ export const TooltipArrow = styled.div`
 export const TooltipContainer = styled.div`
   background-color: var(--tooltipBg);
   color: var(--textPrimaryContrast);
-  font-weight: bold;
+  ${p_12_normal};
   padding: 8px;
   border-radius: 4px;
   display: none;
