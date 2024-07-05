@@ -1,12 +1,4 @@
 /**
- * @link `/:symbol/users/:address`
- * @description page user detail
- */
-export function makeInSiteUserDetailLink(address, role, tableTab) {
-  return makeUrlPathname("users", address, role, tableTab);
-}
-
-/**
  * @description ensure link protocol
  * @example google.com -> https://google.com
  */
