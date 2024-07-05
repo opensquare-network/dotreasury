@@ -20,7 +20,6 @@ import {
 } from "./styled";
 import HeatMap from "../../../components/HeatMap";
 import { Link } from "react-router-dom";
-import { makeInSiteTipLink } from "../../../utils/url";
 import { ellipsis } from "../../../utils/ellipsis";
 import { toPrecision, getPrecision } from "../../../utils";
 import { sortBy } from "lodash";
@@ -66,11 +65,7 @@ export default function TipAttendance() {
                 </TooltipContentDetailItemLabel>
                 <TooltipContentDetailItemValue>
                   <Link
-                    to={makeInSiteTipLink(
-                      "tips",
-                      data.meta.tipHeight,
-                      data.meta.tipHash,
-                    )}
+                    to={`/tips/${data.meta.tipHeight}_${data.meta.tipHash}`}
                   >
                     {ellipsis(data.meta.tipHash)}
                   </Link>

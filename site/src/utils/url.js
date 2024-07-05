@@ -1,7 +1,3 @@
-export function makeInSiteTipLink(page, tipHeight, tipHash) {
-  return makeUrlPathname(page, `${tipHeight}_${tipHash}`);
-}
-
 /**
  * @link `/:symbol/users/:address`
  * @description page user detail
