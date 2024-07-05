@@ -5,7 +5,6 @@ import { chainSelector } from "../../../store/reducers/chainSlice";
 import {
   ensureLinkProtocol,
   makeStatescanLink,
-  makeSubscanLink,
   makeSubsquareLink,
 } from "../../../utils/url";
 import { currentChainSettings } from "../../../utils/chains";
@@ -23,7 +22,7 @@ export function useUserLinks() {
         link: makeSubsquareLink(chain, "user", address),
       },
       {
-        link: makeSubscanLink(chain, "account", address),
+        link: `https://${chain}.subscan.io/account/${address}`,
       },
       currentChainSettings.hasStatescan && {
         link: makeStatescanLink(chain, "#", "accounts", address),
