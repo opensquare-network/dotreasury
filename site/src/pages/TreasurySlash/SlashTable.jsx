@@ -1,7 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
-import { Popup } from "semantic-ui-react";
 
 import Table from "../../components/Table";
 import TableLoading from "../../components/TableLoading";
@@ -12,6 +11,7 @@ import TableNoDataCell from "../../components/TableNoDataCell";
 import Card from "../../components/Card";
 import IconMask from "../../components/Icon/Mask";
 import { useTableColumns } from "../../components/shared/useTableColumns";
+import Tooltip from "../../components/Tooltip";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -115,29 +115,27 @@ const SlashTable = ({ data, loading, header, footer }) => {
                       </Table.Cell>
                       <Table.Cell>{`${item.section}(${item.method})`}</Table.Cell>
                       <Table.Cell>
-                        <Popup
-                          content={
+                        <Tooltip
+                          tooltipContent={
                             item.method === "Rejected"
                               ? "Proposal ID"
                               : item.method === "BountyRejected"
                               ? "Bounty ID"
                               : "Tip ID"
                           }
-                          size="mini"
-                          trigger={
-                            item.method === "Rejected" ? (
-                              <NavLink to={`/proposals/${item.proposalId}`}>
-                                <ProposalID>#{item.proposalId}</ProposalID>
-                              </NavLink>
-                            ) : item.method === "BountyRejected" ? (
-                              <NavLink to={`/bounties/${item.bountyIndex}`}>
-                                <ProposalID>#{item.bountyIndex}</ProposalID>
-                              </NavLink>
-                            ) : (
-                              ""
-                            )
-                          }
-                        />
+                        >
+                          {item.method === "Rejected" ? (
+                            <NavLink to={`/proposals/${item.proposalId}`}>
+                              <ProposalID>#{item.proposalId}</ProposalID>
+                            </NavLink>
+                          ) : item.method === "BountyRejected" ? (
+                            <NavLink to={`/bounties/${item.bountyIndex}`}>
+                              <ProposalID>#{item.bountyIndex}</ProposalID>
+                            </NavLink>
+                          ) : (
+                            ""
+                          )}
+                        </Tooltip>
                       </Table.Cell>
                       <Table.Cell textAlign={"right"}>
                         <Balance value={item.balance} />
