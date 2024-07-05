@@ -20,6 +20,7 @@ import { overviewSelector } from "../../store/reducers/overviewSlice";
 import { useSelector } from "react-redux";
 import { useAssetHubAsset } from "../../hooks/assetHub/useAssetHubAsset";
 import {
+  ASSET_HUB_ACCOUNT_LINK,
   ASSET_HUB_USDC_ASSET_ID,
   ASSET_HUB_USDT_ASSET_ID,
 } from "../../constants/assetHub";
@@ -247,10 +248,7 @@ export default function AssetHub() {
     <Wrapper>
       <Title>
         <img src="/imgs/chains-assethub.svg" alt="" />
-        <TitleLink
-          href="https://statemint.statescan.io/#/accounts/14xmwinmCEz6oRrFdczHKqHgWNMiCysE2KrA4jXXAAM1Eogk"
-          iconSize={24}
-        >
+        <TitleLink href={ASSET_HUB_ACCOUNT_LINK} iconSize={24}>
           AssetHub
         </TitleLink>
       </Title>

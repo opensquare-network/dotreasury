@@ -5,10 +5,10 @@ import { signMessageWithExtension } from "../../services/chainApi";
 import { addToast } from "./toastSlice";
 import { REACTION_THUMBUP } from "../../constants";
 import {
-  userDetailCouncilorRates,
-  userDetailCouncilorRateStats,
-  userDetailRates,
-  userDetailRateStats,
+  userDetailCouncilorRatesApi,
+  userDetailCouncilorRateStatsApi,
+  userDetailRatesApi,
+  userDetailRateStatsApi,
 } from "../../services/urls";
 
 const rateSlice = createSlice({
@@ -106,9 +106,9 @@ export const addRate =
 export const fetchRateStats = (type, index) => async (dispatch) => {
   let url = `/${pluralize(type)}/${index}/ratestats`;
   if (type === "councilor") {
-    url = userDetailCouncilorRateStats(index);
+    url = userDetailCouncilorRateStatsApi(index);
   } else if (type === "user") {
-    url = userDetailRateStats(index);
+    url = userDetailRateStatsApi(index);
   }
 
   const { result } = await api.fetch(url);
@@ -128,9 +128,9 @@ export const fetchRateStats = (type, index) => async (dispatch) => {
 export const fetchRates = (type, index, page, pageSize) => async (dispatch) => {
   let url = `/${pluralize(type)}/${index}/rates`;
   if (type === "councilor") {
-    url = userDetailCouncilorRates(index);
+    url = userDetailCouncilorRatesApi(index);
   } else if (type === "user") {
-    url = userDetailRates(index);
+    url = userDetailRatesApi(index);
   }
 
   const { result } = await api.maybeAuthFetch(url, { page, pageSize });

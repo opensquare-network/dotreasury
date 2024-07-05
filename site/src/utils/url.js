@@ -1,47 +1,4 @@
 /**
- * @description compose subscan link
- * @example makeSubscanLink("kusama", "user", :address) -> "https://kusama.subscan.io/user/:address"
- */
-export function makeSubscanLink(chain, ...pathnames) {
-  const hostname = `${chain}.subscan.io`;
-
-  return makeUrl({
-    hostname,
-    pathname: makeUrlPathname(...pathnames),
-  });
-}
-
-export function makeSubsquareLink(chain, ...pathnames) {
-  const hostname = `${chain}.subsquare.io`;
-
-  return makeUrl({
-    hostname,
-    pathname: makeUrlPathname(...pathnames),
-  });
-}
-
-export function makeStatescanLink(chain, ...pathnames) {
-  const hostname = `${chain}.statescan.io`;
-
-  return makeUrl({
-    hostname,
-    pathname: makeUrlPathname(...pathnames),
-  });
-}
-
-export function makeInSiteTipLink(page, tipHeight, tipHash) {
-  return makeUrlPathname(page, `${tipHeight}_${tipHash}`);
-}
-
-/**
- * @link `/:symbol/users/:address`
- * @description page user detail
- */
-export function makeInSiteUserDetailLink(address, role, tableTab) {
-  return makeUrlPathname("users", address, role, tableTab);
-}
-
-/**
  * @description ensure link protocol
  * @example google.com -> https://google.com
  */
@@ -56,10 +13,6 @@ export function ensureLinkProtocol(link = "", protocol = "https:") {
       };
 
   return makeUrl(value);
-}
-
-export function makeUrlPathname(...paths) {
-  return "/" + paths.filter(Boolean).join("/");
 }
 
 /**

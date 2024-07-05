@@ -4,10 +4,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import api from "../../services/scanApi";
 import {
-  userDetailProposalCounts,
-  userDetailCouncilorTerms,
-  userDetailCouncilorMotions,
-  userDetailCouncilorTips,
+  userDetailProposalCountsApi,
+  userDetailCouncilorTermsApi,
+  userDetailCouncilorMotionsApi,
+  userDetailCouncilorTipsApi,
 } from "../../services/urls";
 
 const usersDetailSlice = createSlice({
@@ -68,7 +68,9 @@ export const {
 export const fetchUsersCounts = (address, role) => async (dispatch) => {
   dispatch(setCountsLoading(true));
   try {
-    const { result } = await api.fetch(userDetailProposalCounts(address, role));
+    const { result } = await api.fetch(
+      userDetailProposalCountsApi(address, role),
+    );
     dispatch(setCounts(result));
   } finally {
     dispatch(setCountsLoading(false));
@@ -81,7 +83,7 @@ export const resetUsersCounts = () => (dispatch) => {
 export const fetchCouncilorShipTerms = (address) => async (dispatch) => {
   dispatch(setCouncilorShipLoading(true));
   try {
-    const { result } = await api.fetch(userDetailCouncilorTerms(address));
+    const { result } = await api.fetch(userDetailCouncilorTermsApi(address));
     dispatch(setCouncilorShip(result));
   } finally {
     dispatch(setCouncilorShipLoading(false));
@@ -92,7 +94,7 @@ export const resetCouncilorShipTerms = makeReset(setCouncilorShip, null);
 export const fetchMotionAttendance = (address) => async (dispatch) => {
   dispatch(setMotionAttendanceLoading(true));
   try {
-    const { result } = await api.fetch(userDetailCouncilorMotions(address));
+    const { result } = await api.fetch(userDetailCouncilorMotionsApi(address));
     dispatch(setMotionAttendance(result));
   } finally {
     dispatch(setMotionAttendanceLoading(false));
@@ -103,7 +105,7 @@ export const resetMotionAttendance = makeReset(setMotionAttendance, null);
 export const fetchTipAttendance = (address) => async (dispatch) => {
   dispatch(setTipAttendanceLoading(true));
   try {
-    const { result } = await api.fetch(userDetailCouncilorTips(address));
+    const { result } = await api.fetch(userDetailCouncilorTipsApi(address));
     dispatch(setTipAttendance(result));
   } finally {
     dispatch(setTipAttendanceLoading(false));

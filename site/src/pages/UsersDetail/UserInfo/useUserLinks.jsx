@@ -2,12 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { chainSelector } from "../../../store/reducers/chainSlice";
-import {
-  ensureLinkProtocol,
-  makeStatescanLink,
-  makeSubscanLink,
-  makeSubsquareLink,
-} from "../../../utils/url";
+import { ensureLinkProtocol } from "../../../utils/url";
 import { currentChainSettings } from "../../../utils/chains";
 
 export function useUserLinks() {
@@ -20,13 +15,13 @@ export function useUserLinks() {
     const items = [];
     const fixedItems = [
       {
-        link: makeSubsquareLink(chain, "user", address),
+        link: `https://${chain}.subsquare.io/user/${address}`,
       },
       {
-        link: makeSubscanLink(chain, "account", address),
+        link: `https://${chain}.subscan.io/account/${address}`,
       },
       currentChainSettings.hasStatescan && {
-        link: makeStatescanLink(chain, "#", "accounts", address),
+        link: `https://${chain}.statescan.io/#/accounts/${address}`,
       },
     ].filter(Boolean);
 

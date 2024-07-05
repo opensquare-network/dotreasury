@@ -9,7 +9,6 @@ import { useResetTableData } from "./useResetTableData";
 import Councilor from "./Councilor";
 import { useHistory, useParams } from "react-router";
 import { isProposalsRole } from "./utils";
-import { makeInSiteUserDetailLink } from "../../utils/url";
 import Grade from "./Councilor/Grade";
 
 export default function UsersDetail() {
@@ -25,9 +24,7 @@ export default function UsersDetail() {
 
   useEffect(() => {
     if (!tableTab && isProposalsRole(roleParam)) {
-      history.replace(
-        makeInSiteUserDetailLink(address, roleParam, "proposals"),
-      );
+      history.replace(`/users/${address}/${roleParam}/proposals`);
     }
   }, [roleParam, tableTab, address, history]);
 

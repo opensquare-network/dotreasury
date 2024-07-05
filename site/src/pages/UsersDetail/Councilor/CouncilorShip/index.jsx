@@ -22,7 +22,6 @@ import { CouncilorShipLoading } from "./styled";
 import { sortBy } from "lodash";
 import HeatMap from "../../../../components/HeatMap";
 import ExternalLink from "../../../../components/ExternalLink";
-import { makeSubscanLink } from "../../../../utils/url";
 
 export default function CouncilorShip() {
   const dispatch = useDispatch();
@@ -80,11 +79,7 @@ function CouncilorInfo({ chain, data }) {
         </TooltipContentDetailItemLabel>
         <TooltipContentDetailItemValue>
           <ExternalLink
-            href={makeSubscanLink(
-              chain,
-              "block",
-              data.meta?.indexer?.blockHeight,
-            )}
+            href={`https://${chain}.subscan.io/block/${data.meta?.indexer?.blockHeight}`}
           >
             {data.meta?.indexer?.blockHeight?.toLocaleString?.() || "-"}
           </ExternalLink>
