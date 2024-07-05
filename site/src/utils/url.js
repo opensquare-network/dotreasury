@@ -15,10 +15,6 @@ export function ensureLinkProtocol(link = "", protocol = "https:") {
   return makeUrl(value);
 }
 
-export function makeUrlPathname(...paths) {
-  return "/" + paths.filter(Boolean).join("/");
-}
-
 /**
  * @description get url file extension, otherwise returns `''`
  * @example returns `.svg` or `svg`
