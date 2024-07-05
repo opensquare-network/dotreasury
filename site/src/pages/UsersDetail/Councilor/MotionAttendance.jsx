@@ -19,7 +19,6 @@ import { chainSelector } from "../../../store/reducers/chainSlice";
 import { useEffect } from "react";
 import { useParams } from "react-router";
 import Loading from "../../../components/TableLoading";
-import { makeSubsquareLink } from "../../../utils/url";
 import ExternalLink from "../../../components/ExternalLink";
 import { sortBy } from "lodash";
 
@@ -65,12 +64,7 @@ export default function MotionAttendance() {
                 </TooltipContentDetailItemLabel>
                 <TooltipContentDetailItemValue>
                   <ExternalLink
-                    href={makeSubsquareLink(
-                      chain,
-                      "council",
-                      "motion",
-                      data.meta.motionIndex,
-                    )}
+                    href={`https://${chain}.subsquare.io/council/motion/${data.meta.motionIndex}`}
                   >
                     #{data.meta.motionIndex}
                   </ExternalLink>

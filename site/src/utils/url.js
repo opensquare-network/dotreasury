@@ -1,12 +1,3 @@
-export function makeSubsquareLink(chain, ...pathnames) {
-  const hostname = `${chain}.subsquare.io`;
-
-  return makeUrl({
-    hostname,
-    pathname: makeUrlPathname(...pathnames),
-  });
-}
-
 export function makeStatescanLink(chain, ...pathnames) {
   const hostname = `${chain}.statescan.io`;
 
