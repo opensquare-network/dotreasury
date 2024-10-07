@@ -12,7 +12,7 @@ async function handleAwarded(event, indexer) {
   const data = event.data.toJSON();
   const [parentBountyId, childBountyId, beneficiary] = data;
   const meta = await getChildBounty(parentBountyId, childBountyId, indexer);
-  const { curator, unlockAt } = meta?.status?.pendingPayout;
+  const { curator, unlockAt } = meta?.status?.pendingPayout || {};
 
   const updates = {
     meta,
