@@ -21,21 +21,21 @@ async function handleBountyExtended(event, indexer, extrinsic) {
     const caller = getRealCaller(extrinsic.method, extrinsic.signer.toString());
     args = { caller };
 
-    const call = findCallInSections(
-      extrinsic.method,
-      [Modules.Treasury, Modules.Bounties],
-      BountyMethods.extendBountyExpiry
-    );
-
-    if (!call) {
-      throw new Error(
-        `can not find target ${BountyMethods.extendBountyExpiry} call`
+    let call;
+    try {
+      call = findCallInSections(
+        extrinsic.method,
+        [Modules.Treasury, Modules.Bounties],
+        BountyMethods.extendBountyExpiry
       );
+    } catch (e) {
+      // todo: find reasons and handle them
     }
-    const remarkHex = call.args[1].toHex();
-    args = {
-      caller,
-      remark: hexToString(remarkHex),
+
+    args = { caller };
+    if (call) {
+      const remarkHex = call.args[1].toHex();
+      Object.assign(args, { remark: hexToString(remarkHex) });
     }
   }
 
