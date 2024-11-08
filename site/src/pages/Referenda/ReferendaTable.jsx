@@ -96,6 +96,7 @@ export default function ReferendaTable() {
   useEffect(() => {
     setDataList(applicationList?.items || []);
 
+    return;
     const dataListPromises = (applicationList?.items || []).map(
       async (item) => {
         if (item.description) {
@@ -118,9 +119,7 @@ export default function ReferendaTable() {
     Promise.all(dataListPromises).then((dataList) => setDataList(dataList));
   }, [chain, applicationList]);
 
-  const { proposeTime, beneficiary, value, referendaStatus } = useTableColumns(
-    {},
-  );
+  const { proposeTime, proposer, value, referendaStatus } = useTableColumns({});
 
   const index = {
     key: "index",
@@ -134,13 +133,15 @@ export default function ReferendaTable() {
     key: "description",
     title: "Description",
     cellClassName: "opengov-description-cell",
-    cellRender: (_, item) => (
-      <DescriptionCell
-        description={item.description}
-        trackInfo={item.trackInfo}
-        tally={item.tally}
-      />
-    ),
+    cellRender: (_, item) => {
+      return (
+        <DescriptionCell
+          description={item.title}
+          trackInfo={item.onchainData?.trackInfo}
+          tally={item.onchainData?.tally}
+        />
+      );
+    },
   };
 
   const linkToSubSquare = {
@@ -185,7 +186,7 @@ export default function ReferendaTable() {
   const columns = [
     sortableProposalIndex,
     proposeTime,
-    beneficiary,
+    proposer,
     description,
     sortByValue,
     referendaStatus,
@@ -193,17 +194,18 @@ export default function ReferendaTable() {
   ];
 
   const tableData = (dataList || []).map((item) => ({
+    ...item,
     referendumIndex: item.referendumIndex,
     proposeAtBlockHeight: item.indexer.blockHeight,
     proposeTime: item.indexer.blockTime,
-    beneficiary: item.beneficiary,
-    proposer: item.proposer,
+    // beneficiary: item.beneficiary,
+    // proposer: item.proposer,
     value: item.amount,
     symbolPrice: item.symbolPrice,
     state: item.state,
     description: item.description,
     trackInfo: item.trackInfo,
-    tally: item.tally,
+    // tally: item.tally,
   }));
 
   return (
