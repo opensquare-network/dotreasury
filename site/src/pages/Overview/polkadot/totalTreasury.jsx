@@ -46,19 +46,23 @@ const TokenGroup = styled.div`
 `;
 
 const Item = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
   padding: 12px;
   ${p_14_medium}
   background-color: var(--neutral200);
   border-radius: 4px;
 `;
 
-function TokenItem({ isLoading, totalValue, precision, symbol }) {
+function TokenItem({ icon, isLoading, totalValue, precision, symbol }) {
   if (isLoading) {
     return <SkeletonBar width={117} height={44} />;
   }
 
   return (
     <Item>
+      <img src={`/imgs/${icon}`} alt={symbol} />
       <ValueDisplay value={totalValue} precision={precision} /> {symbol}
     </Item>
   );
@@ -102,18 +106,21 @@ export default function OverviewTotalTreasury() {
 
       <TokenGroup>
         <TokenItem
+          icon="asset-dot.svg"
           isLoading={isLoading}
           totalValue={totalDot}
           precision={polkadot.decimals}
           symbol={polkadot.symbol}
         />
         <TokenItem
+          icon="asset-usdt.svg"
           isLoading={isLoading}
           totalValue={totalUSDt}
           precision={USDt.decimals}
           symbol={USDt.symbol}
         />
         <TokenItem
+          icon="asset-usdc.svg"
           isLoading={isLoading}
           totalValue={totalUSDC}
           precision={USDC.decimals}
@@ -121,6 +128,7 @@ export default function OverviewTotalTreasury() {
         />
         {/* TODO */}
         <TokenItem
+          icon="asset-myth.svg"
           isLoading={isLoading}
           totalValue={0}
           precision={0}
