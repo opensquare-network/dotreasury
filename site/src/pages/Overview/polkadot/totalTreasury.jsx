@@ -16,6 +16,8 @@ import SkeletonBar from "../../../components/skeleton/bar";
 import { useSelector } from "react-redux";
 import { overviewSelector } from "../../../store/reducers/overviewSlice";
 import { toPrecision } from "../../../utils";
+import { useBountiesTotalBalance } from "../../../hooks/bounties/useBountiesBalances";
+import { useBountiesData } from "../../../hooks/bounties/useBountiesData";
 
 const Wrapper = styled(Card)`
   padding: 24px;
@@ -65,10 +67,15 @@ function TokenItem({ isLoading, totalValue, precision, symbol }) {
 export default function OverviewTotalTreasury() {
   const overview = useSelector(overviewSelector);
   const hydration = useHydrationTreasuryBalances();
+  const { bounties } = useBountiesData();
+  const bountiesTotalBalance = useBountiesTotalBalance(bounties);
 
   const dotPrice = overview?.latestSymbolPrice ?? 0;
 
-  const totalDot = BigNumber.sum(hydration.dot || 0);
+  const totalDot = BigNumber.sum(
+    hydration.dot || 0,
+    bountiesTotalBalance.balance || 0,
+  );
   const totalUSDt = BigNumber.sum(hydration.usdt || 0);
   const totalUSDC = BigNumber.sum(hydration.usdc || 0);
 
@@ -78,7 +85,7 @@ export default function OverviewTotalTreasury() {
     toPrecision(totalUSDC, USDC.decimals),
   ).toString();
 
-  const isLoading = hydration.isLoading;
+  const isLoading = hydration.isLoading || bountiesTotalBalance.isLoading;
 
   return (
     <Wrapper>
