@@ -2,11 +2,20 @@
 
 import styled from "styled-components";
 import Card from "../../../../components/Card";
+import TreasuryDetailHydration from "./hydration";
+import { grid, grid_cols } from "../../../../styles/tailwindcss";
 
 const Wrapper = styled(Card)`
   padding: 24px;
+  ${grid}
+  ${grid_cols(3)}
+  gap: 48px;
 `;
 
 export default function OverviewTreasuryDetail() {
-  return <Wrapper>assethub</Wrapper>;
+  return (
+    <Wrapper>
+      <TreasuryDetailHydration />
+    </Wrapper>
+  );
 }
