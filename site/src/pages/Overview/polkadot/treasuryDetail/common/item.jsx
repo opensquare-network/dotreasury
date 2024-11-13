@@ -4,6 +4,7 @@ import { space_y } from "../../../../../styles/tailwindcss";
 import ImageWithDark from "../../../../../components/ImageWithDark";
 import { h3_18_semibold, p_12_medium } from "../../../../../styles/text";
 import Tooltip from "../../../../../components/Tooltip";
+import SkeletonBar from "../../../../../components/skeleton/bar";
 
 const Wrapper = styled.div`
   ${space_y(12)}
@@ -32,9 +33,19 @@ export default function TreasuryDetailItem({
   title = "",
   titleTooltipContent = "",
   iconSrc,
-  content,
+  content: contentProp,
   footer,
+  isLoading,
 }) {
+  let content;
+  if (isLoading) {
+    content = (
+      <SkeletonBar width={160} height={22} style={{ margin: "3px 0" }} />
+    );
+  } else if (contentProp) {
+    content = <ContentWrapper>{contentProp}</ContentWrapper>;
+  }
+
   return (
     <Wrapper>
       <SummaryItem
@@ -47,7 +58,7 @@ export default function TreasuryDetailItem({
           </TitleWrapper>
         }
         icon={iconSrc && <ImageWithDark src={iconSrc} width={48} height={48} />}
-        content={content && <ContentWrapper>{content}</ContentWrapper>}
+        content={content}
         footer={footer}
       />
 
