@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Tooltip from "../../../../components/Tooltip";
 import { h3_18_semibold, p_12_medium } from "../../../../styles/text";
 import { text_primary, text_secondary } from "../../../../styles/tailwindcss";
+import ImageWithDark from "../../../../components/ImageWithDark";
 
 const Wrapper = styled.div`
   display: flex;
@@ -13,6 +14,7 @@ const Wrapper = styled.div`
 const Info = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 4px;
 `;
 
 const Icon = styled.div``;
@@ -36,7 +38,9 @@ export default function CellHeader({ label, description, value, icon }) {
       <Info>
         <Title>
           {label}
-          <Tooltip tooltipContent={description} />
+          <Tooltip tooltipContent={description}>
+            <ImageWithDark src="/imgs/info.svg" alt="info" />
+          </Tooltip>
         </Title>
         <Value>{value}</Value>
       </Info>

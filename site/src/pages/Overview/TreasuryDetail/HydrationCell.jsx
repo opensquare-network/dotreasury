@@ -1,32 +1,35 @@
 import CellHeader from "./common/CellHeader";
-import AddressAssetBlock from "./common/AddressAssetBlock";
+import { AddressAssetBlockMultiLabal } from "./common/AddressAssetBlock";
 import ImageWithDark from "../../../components/ImageWithDark";
 import { CellAssetBlocks, CellWrapper } from "./common/styleds";
 
-export default function AssetsCell() {
+export default function HydrationCell() {
   return (
     <CellWrapper>
       <CellHeader
-        label="Assets"
-        description="Funds of DOT & stablecoin"
+        label="Hydration"
+        description="Treasury stablecoin acquisition"
         value="≈ $84,527,100"
         icon={
           <ImageWithDark
-            src="/imgs/data-available.svg"
+            src="/imgs/data-hydration.svg"
             width={48}
             height={48}
           />
         }
       />
       <CellAssetBlocks>
-        <AddressAssetBlock
-          label="Main"
-          href="https://polkadot.js.org/apps/#/explorer"
-          assets={[{ symbol: "DOT", value: "≈ 1,680,000" }]}
-        />
-        <AddressAssetBlock
-          label="Asset Hub"
-          href="https://polkadot.js.org/apps/#/explorer"
+        <AddressAssetBlockMultiLabal
+          labels={[
+            {
+              label: "Acquisition Addr #1",
+              href: "https://polkadot.js.org/apps/#/explorer",
+            },
+            {
+              label: "Acquisition Addr #2",
+              href: "https://polkadot.js.org/apps/#/explorer",
+            },
+          ]}
           assets={[
             { symbol: "DOT", value: "≈ 1,680,000" },
             { symbol: "USDt", value: "≈ 1,680,000" },

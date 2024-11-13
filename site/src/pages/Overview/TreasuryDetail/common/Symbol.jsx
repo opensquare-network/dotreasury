@@ -6,14 +6,18 @@ const Wrapper = styled.div`
   gap: 8px;
 `;
 
-function SymbolIcon({ symbol }) {
-  return null;
-}
+const SymbolIcon = {
+  DOT: "dot.svg",
+  USDt: "usdt.svg",
+  USDC: "usdc.svg",
+  MYTH: "myth.svg",
+};
 
 export default function Symbol({ symbol }) {
+  const src = SymbolIcon[symbol];
   return (
     <Wrapper>
-      <SymbolIcon symbol={symbol} />
+      {src && <img src={`/imgs/symbols/${SymbolIcon[symbol]}`} alt={symbol} />}
       <span>{symbol}</span>
     </Wrapper>
   );

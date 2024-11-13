@@ -3,35 +3,32 @@ import AddressAssetBlock from "./common/AddressAssetBlock";
 import ImageWithDark from "../../../components/ImageWithDark";
 import { CellAssetBlocks, CellWrapper } from "./common/styleds";
 
-export default function AssetsCell() {
+export default function LoansCell() {
   return (
     <CellWrapper>
       <CellHeader
-        label="Assets"
-        description="Funds of DOT & stablecoin"
+        label="Loans"
+        description="Loans receivable"
         value="≈ $84,527,100"
         icon={
-          <ImageWithDark
-            src="/imgs/data-available.svg"
-            width={48}
-            height={48}
-          />
+          <ImageWithDark src="/imgs/data-approved.svg" width={48} height={48} />
         }
       />
       <CellAssetBlocks>
         <AddressAssetBlock
-          label="Main"
+          label="Centrifuge"
+          href="https://polkadot.js.org/apps/#/explorer"
+          assets={[{ symbol: "USDC", value: "≈ 1,680,000" }]}
+        />
+        <AddressAssetBlock
+          label="Bifrost"
           href="https://polkadot.js.org/apps/#/explorer"
           assets={[{ symbol: "DOT", value: "≈ 1,680,000" }]}
         />
         <AddressAssetBlock
-          label="Asset Hub"
+          label="Pendulum"
           href="https://polkadot.js.org/apps/#/explorer"
-          assets={[
-            { symbol: "DOT", value: "≈ 1,680,000" },
-            { symbol: "USDt", value: "≈ 1,680,000" },
-            { symbol: "USDC", value: "≈ 1,680,000" },
-          ]}
+          assets={[{ symbol: "DOT", value: "≈ 1,680,000" }]}
         />
       </CellAssetBlocks>
     </CellWrapper>

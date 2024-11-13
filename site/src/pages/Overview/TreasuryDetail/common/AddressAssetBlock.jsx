@@ -35,6 +35,11 @@ const TitleWrapper = styled.a`
   }
 `;
 
+const LabelsWrapper = styled.div`
+  display: flex;
+  gap: 8px;
+`;
+
 function Title({ label, href }) {
   return (
     <TitleWrapper href={href} target="_blank">
@@ -55,8 +60,21 @@ function AssetListItem({ symbol, value }) {
 
 export default function AddressAssetBlock({ label, href, assets = [] }) {
   return (
+    <AddressAssetBlockMultiLabal
+      labels={label ? [{ label, href }] : []}
+      assets={assets}
+    />
+  );
+}
+
+export function AddressAssetBlockMultiLabal({ labels, assets = [] }) {
+  return (
     <Wrapper>
-      <Title label={label} href={href} />
+      <LabelsWrapper>
+        {(labels || []).map(({ label, href }) => (
+          <Title label={label} href={href} />
+        ))}
+      </LabelsWrapper>
       <AssetList>
         {assets.map(({ symbol, value }) => (
           <AssetListItem key={symbol} symbol={symbol} value={value} />
