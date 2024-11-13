@@ -18,6 +18,9 @@ import { overviewSelector } from "../../../store/reducers/overviewSlice";
 import { toPrecision } from "../../../utils";
 import { useBountiesTotalBalance } from "../../../hooks/bounties/useBountiesBalances";
 import { useBountiesData } from "../../../hooks/bounties/useBountiesData";
+import { useQueryAssetHubTreasuryFree } from "../../../hooks/treasury/useQueryAssetHubTreasuryFree";
+import useQueryFellowshipSalaryBalance from "../../../hooks/treasury/useTreasuryFree";
+import { STATEMINT_FELLOWSHIP_TREASURY_ACCOUNT } from "../../../constants/statemint";
 
 const Wrapper = styled(Card)`
   padding: 24px;
@@ -73,14 +76,22 @@ export default function OverviewTotalTreasury() {
   const hydration = useHydrationTreasuryBalances();
   const { bounties } = useBountiesData();
   const bountiesTotalBalance = useBountiesTotalBalance(bounties);
+  const fellowshipSalaryUsdtBalance = useQueryFellowshipSalaryBalance("USDt");
+  const fellowshipTreasuryDotBalance = useQueryAssetHubTreasuryFree(
+    STATEMINT_FELLOWSHIP_TREASURY_ACCOUNT,
+  );
 
   const dotPrice = overview?.latestSymbolPrice ?? 0;
 
   const totalDot = BigNumber.sum(
     hydration.dot || 0,
     bountiesTotalBalance.balance || 0,
+    fellowshipTreasuryDotBalance.balance || 0,
   );
-  const totalUSDt = BigNumber.sum(hydration.usdt || 0);
+  const totalUSDt = BigNumber.sum(
+    hydration.usdt || 0,
+    fellowshipSalaryUsdtBalance.balance || 0,
+  );
   const totalUSDC = BigNumber.sum(hydration.usdc || 0);
 
   const total = BigNumber.sum(
@@ -89,7 +100,11 @@ export default function OverviewTotalTreasury() {
     toPrecision(totalUSDC, USDC.decimals),
   ).toString();
 
-  const isLoading = hydration.isLoading || bountiesTotalBalance.isLoading;
+  const isLoading =
+    hydration.isLoading ||
+    bountiesTotalBalance.isLoading ||
+    fellowshipSalaryUsdtBalance.isLoading ||
+    fellowshipTreasuryDotBalance.isLoading;
 
   return (
     <Wrapper>

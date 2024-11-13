@@ -3,7 +3,7 @@ import useAssetHubApi from "./useAssetHubApi";
 import { useState } from "react";
 import { ASSET_HUB_ACCOUNT } from "../../constants/assetHub";
 
-export function useAssetHubAsset(assetId) {
+export function useAssetHubAsset(assetId, account = ASSET_HUB_ACCOUNT) {
   const assetHubApi = useAssetHubApi();
   const [value, setValue] = useState("0");
   const [loading, setLoading] = useState(true);
@@ -16,7 +16,7 @@ export function useAssetHubAsset(assetId) {
     let unSub;
 
     assetHubApi.query.assets
-      .account(assetId, ASSET_HUB_ACCOUNT, (optionalStorage) => {
+      .account(assetId, account, (optionalStorage) => {
         if (optionalStorage.isNone) {
           setValue("0");
           return;
@@ -34,7 +34,7 @@ export function useAssetHubAsset(assetId) {
     return () => {
       unSub?.();
     };
-  }, [assetHubApi, assetId]);
+  }, [assetHubApi, assetId, account]);
 
   return [value, loading];
 }
