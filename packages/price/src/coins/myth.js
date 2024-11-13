@@ -1,7 +1,7 @@
 const dotenv = require("dotenv");
 dotenv.config();
 
-const { getCfgUsdtCol } = require("../mongo");
+const { getMythUsdtCol } = require("../mongo");
 const { getLatestPrice } = require("../utils/getLatestPrice");
 const { getKlinesFromCoinGecko } = require("./coinGecko");
 const { saveCoinGeckoKlines } = require("./save");
@@ -11,7 +11,7 @@ const { formatTime } = require("../utils/formatTime");
 const BigNumber = require("bignumber.js");
 
 async function tick() {
-  const col = await getCfgUsdtCol();
+  const col = await getMythUsdtCol();
 
   const latestItem = await getLatestPrice(col);
   let klines;
@@ -21,12 +21,12 @@ async function tick() {
       .plus(1)
       .toFixed(0);
     klines = await getKlinesFromCoinGecko(
-      "centrifuge",
+      "mythos",
       nextStartTime,
       latestItem.open,
     );
   } else {
-    klines = await getKlinesFromCoinGecko("centrifuge", "1622160000");
+    klines = await getKlinesFromCoinGecko("mythos", "1722441600");
   }
   await saveCoinGeckoKlines(col, klines);
 
@@ -39,7 +39,7 @@ async function main() {
 
     try {
       latestOpenTime = await tick();
-      console.log(`CFG price saved: ${formatTime(latestOpenTime)}`);
+      console.log(`MYTH price saved: ${formatTime(latestOpenTime)}`);
     } catch (e) {
       console.error(e.message);
     }

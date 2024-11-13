@@ -1559,6 +1559,7 @@ __metadata:
     lodash.isnil: ^4.0.0
     lodash.negate: ^3.0.2
     lodash.omit: ^4.5.0
+    lodash.pick: ^4.4.0
     markdown-it: ^12.3.2
     mongodb: 6.1.0
     multiformats: ^9.7.1
@@ -7141,6 +7142,13 @@ __metadata:
   version: 4.5.0
   resolution: "lodash.omit@npm:4.5.0"
   checksum: 434645e49fe84ab315719bd5a9a3a585a0f624aa4160bc09157dd041a414bcc287c15840365c1379476a3f3eda41fbe838976c3f7bdecbbf4c5478e86c471a30
+  languageName: node
+  linkType: hard
+
+"lodash.pick@npm:^4.4.0":
+  version: 4.4.0
+  resolution: "lodash.pick@npm:4.4.0"
+  checksum: 2c36cab7da6b999a20bd3373b40e31a3ef81fa264f34a6979c852c5bc8ac039379686b27380f0cb8e3781610844fafec6949c6fbbebc059c98f8fa8570e3675f
   languageName: node
   linkType: hard
 
