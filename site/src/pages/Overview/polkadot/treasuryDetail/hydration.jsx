@@ -59,6 +59,8 @@ export default function TreasuryDetailHydration() {
               base={EXPLORER_LINK_BASE}
               href={`account/${PolkadotTreasuryOnHydrationAccount1}`}
               externalIcon
+              externalIconColor="textSecondary"
+              externalIconSize={20}
             >
               Acquistion Addr #1
             </ExplorerLink>
@@ -66,7 +68,9 @@ export default function TreasuryDetailHydration() {
             <ExplorerLink
               base={EXPLORER_LINK_BASE}
               href={`account/${PolkadotTreasuryOnHydrationAccount2}`}
+              externalIconColor="textSecondary"
               externalIcon
+              externalIconSize={20}
             >
               Acquistion Addr #2
             </ExplorerLink>

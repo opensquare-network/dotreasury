@@ -9,6 +9,8 @@ export default function ExplorerLink({
   children,
   className = "",
   externalIcon = false,
+  externalIconColor = "textTertiary",
+  externalIconSize = 16,
 }) {
   const chain = useSelector(chainSelector);
   const defaultExplorerSite = `https://${chain}.subscan.io/`;
@@ -18,6 +20,8 @@ export default function ExplorerLink({
       href={new URL(href, baseHref).href}
       className={className}
       externalIcon={externalIcon}
+      externalIconColor={externalIconColor}
+      externalIconSize={externalIconSize}
     >
       {children}
     </ExternalLink>
