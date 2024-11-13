@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Card from "../../../../components/Card";
 import TreasuryDetailHydration from "./hydration";
 import { grid, grid_cols } from "../../../../styles/tailwindcss";
+import TreasuryDetailBounties from "./bounties";
 
 const Wrapper = styled(Card)`
   padding: 24px;
@@ -16,6 +17,7 @@ export default function OverviewTreasuryDetail() {
   return (
     <Wrapper>
       <TreasuryDetailHydration />
+      <TreasuryDetailBounties />
     </Wrapper>
   );
 }
