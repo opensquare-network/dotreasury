@@ -7,6 +7,6 @@ const Wrapper = styled(Card)`
   padding: 24px;
 `;
 
-export default function OverviewAssets() {
+export default function OverviewTreasuryDetail() {
   return <Wrapper>assethub</Wrapper>;
 }
