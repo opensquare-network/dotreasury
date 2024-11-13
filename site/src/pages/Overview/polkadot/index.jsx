@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import OverviewAssethub from "./assethub";
+import OverviewAssets from "./assets";
 import OverviewTotalTreasury from "./totalTreasury";
 import { space_y } from "../../../styles/tailwindcss";
 
@@ -12,7 +12,7 @@ export default function OverviewPolkadot() {
     <Wrapper>
       <OverviewTotalTreasury />
 
-      <OverviewAssethub />
+      <OverviewAssets />
     </Wrapper>
   );
 }
