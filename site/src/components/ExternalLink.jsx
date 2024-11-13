@@ -1,6 +1,11 @@
 import React from "react";
 
-export default function ExternalLink({ href, children, className }) {
+export default function ExternalLink({
+  href,
+  children,
+  className,
+  externalIcon = false,
+}) {
   return (
     <a
       href={href}
@@ -13,6 +18,13 @@ export default function ExternalLink({ href, children, className }) {
       }}
     >
       {children}
+
+      {externalIcon && (
+        <>
+          {" "}
+          <span>↗</span>
+        </>
+      )}
     </a>
   );
 }
