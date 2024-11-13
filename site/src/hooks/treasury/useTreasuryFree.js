@@ -1,5 +1,4 @@
-import { useChain } from "../../utils/hooks/chain";
-import { CHAINS } from "../../utils/chains";
+import { isPolkadot } from "../../utils/chains";
 import { useAssetHubAsset } from "../assetHub/useAssetHubAsset";
 
 export const StatemintAssets = [
@@ -21,15 +20,21 @@ export const getAssetBySymbol = (symbol) =>
 export const StatemintFellowShipSalaryAccount =
   "13w7NdvSR1Af8xsQTArDtZmVvjE8XhWNdL4yed3iFHrUNCnS";
 
-export default function useQueryFellowshipSalaryBalance(symbol) {
-  const chain = useChain();
+export const StatemintFellowShipTreasuryAccount =
+  "16VcQSRcMFy6ZHVjBvosKmo7FKqTb8ZATChDYo8ibutzLnos";
 
+export default function useQueryFellowshipSalaryBalance(symbol) {
   let salaryAccount = null;
 
-  if (chain === CHAINS.polkadot) {
+  if (isPolkadot) {
     salaryAccount = StatemintFellowShipSalaryAccount;
   }
 
   const asset = getAssetBySymbol(symbol);
-  return useAssetHubAsset(asset.id, salaryAccount);
+  const [value, loading] = useAssetHubAsset(asset.id, salaryAccount);
+
+  return {
+    balance: value,
+    isLoading: loading,
+  };
 }

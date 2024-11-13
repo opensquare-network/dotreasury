@@ -5,7 +5,7 @@ export function useQueryAccountFree(api, address) {
   const { loaded, value } = useCall(api?.query.system?.account, [address]);
 
   return {
-    free: value?.data?.free?.toJSON() || 0,
+    balance: value?.data?.free?.toJSON() || 0,
     isLoading: !loaded,
   };
 }
