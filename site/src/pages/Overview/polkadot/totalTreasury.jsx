@@ -76,26 +76,21 @@ export default function OverviewTotalTreasury() {
   const hydration = useHydrationTreasuryBalances();
   const { bounties } = useBountiesData();
   const bountiesTotalBalance = useBountiesTotalBalance(bounties);
-  const {
-    balance: fellowshipSalaryUsdtBalance,
-    // isLoading: isFellowshipSalaryUsdtBalanceLoading,
-  } = useQueryFellowshipSalaryBalance("USDt");
-
-  const {
-    balance: fellowshipTreasuryDotBalance,
-    // isLoading: isFellowshipTreasuryDotBalanceLoading,
-  } = useQueryAssetHubTreasuryFree(STATEMINT_FELLOWSHIP_TREASURY_ACCOUNT);
+  const fellowshipSalaryUsdtBalance = useQueryFellowshipSalaryBalance("USDt");
+  const fellowshipTreasuryDotBalance = useQueryAssetHubTreasuryFree(
+    STATEMINT_FELLOWSHIP_TREASURY_ACCOUNT,
+  );
 
   const dotPrice = overview?.latestSymbolPrice ?? 0;
 
   const totalDot = BigNumber.sum(
     hydration.dot || 0,
     bountiesTotalBalance.balance || 0,
-    fellowshipTreasuryDotBalance || 0,
+    fellowshipTreasuryDotBalance.balance || 0,
   );
   const totalUSDt = BigNumber.sum(
     hydration.usdt || 0,
-    fellowshipSalaryUsdtBalance || 0,
+    fellowshipSalaryUsdtBalance.balance || 0,
   );
   const totalUSDC = BigNumber.sum(hydration.usdc || 0);
 
@@ -105,7 +100,11 @@ export default function OverviewTotalTreasury() {
     toPrecision(totalUSDC, USDC.decimals),
   ).toString();
 
-  const isLoading = hydration.isLoading || bountiesTotalBalance.isLoading;
+  const isLoading =
+    hydration.isLoading ||
+    bountiesTotalBalance.isLoading ||
+    fellowshipSalaryUsdtBalance.isLoading ||
+    fellowshipTreasuryDotBalance.isLoading;
 
   return (
     <Wrapper>
