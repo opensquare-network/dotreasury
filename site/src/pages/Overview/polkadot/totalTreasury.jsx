@@ -19,8 +19,13 @@ import { toPrecision } from "../../../utils";
 import { useBountiesTotalBalance } from "../../../hooks/bounties/useBountiesBalances";
 import { useBountiesData } from "../../../hooks/bounties/useBountiesData";
 import { useQueryAssetHubTreasuryFree } from "../../../hooks/treasury/useQueryAssetHubTreasuryFree";
-import useQueryFellowshipSalaryBalance from "../../../hooks/treasury/useTreasuryFree";
+import useQueryFellowshipSalaryBalance from "../../../hooks/treasury/useQueryFellowshipSalaryBalance";
 import { STATEMINT_FELLOWSHIP_TREASURY_ACCOUNT } from "../../../constants/statemint";
+import {
+  useLoansCentrifugeUsdcBalance,
+  useLoansBifrostDotBalance,
+  useLoansPendulumDotBalance,
+} from "../../../hooks/treasury/useLoansBalances";
 
 const Wrapper = styled(Card)`
   padding: 24px;
@@ -80,6 +85,9 @@ export default function OverviewTotalTreasury() {
   const fellowshipTreasuryDotBalance = useQueryAssetHubTreasuryFree(
     STATEMINT_FELLOWSHIP_TREASURY_ACCOUNT,
   );
+  const loansCentrifugeUsdcBalance = useLoansCentrifugeUsdcBalance();
+  const loansBifrostDotBalance = useLoansBifrostDotBalance();
+  const loansPendulumDotBalance = useLoansPendulumDotBalance();
 
   const dotPrice = overview?.latestSymbolPrice ?? 0;
 
@@ -87,12 +95,17 @@ export default function OverviewTotalTreasury() {
     hydration.dot || 0,
     bountiesTotalBalance.balance || 0,
     fellowshipTreasuryDotBalance.balance || 0,
+    loansBifrostDotBalance.balance,
+    loansPendulumDotBalance.balance,
   );
   const totalUSDt = BigNumber.sum(
     hydration.usdt || 0,
     fellowshipSalaryUsdtBalance.balance || 0,
   );
-  const totalUSDC = BigNumber.sum(hydration.usdc || 0);
+  const totalUSDC = BigNumber.sum(
+    hydration.usdc || 0,
+    loansCentrifugeUsdcBalance.balance,
+  );
 
   const total = BigNumber.sum(
     toPrecision(BigNumber(totalDot).multipliedBy(dotPrice), polkadot.decimals),
@@ -104,7 +117,10 @@ export default function OverviewTotalTreasury() {
     hydration.isLoading ||
     bountiesTotalBalance.isLoading ||
     fellowshipSalaryUsdtBalance.isLoading ||
-    fellowshipTreasuryDotBalance.isLoading;
+    fellowshipTreasuryDotBalance.isLoading ||
+    loansCentrifugeUsdcBalance.isLoading ||
+    loansBifrostDotBalance.isLoading ||
+    loansPendulumDotBalance.isLoading;
 
   return (
     <Wrapper>
