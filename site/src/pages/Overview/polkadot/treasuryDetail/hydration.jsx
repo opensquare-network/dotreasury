@@ -33,8 +33,6 @@ const ExplorerLink = styled(ExplorerLinkOrigin)`
   }
 `;
 
-const EXPLORER_LINK_BASE = "https://hydration.subscan.io/";
-
 export default function TreasuryDetailHydration() {
   const { usdc, usdt, dot } = useHydrationTreasuryBalances();
   const overview = useSelector(overviewSelector);
@@ -55,25 +53,15 @@ export default function TreasuryDetailHydration() {
       footer={
         <AssetWrapper>
           <AddressGroup>
-            <ExplorerLink
-              base={EXPLORER_LINK_BASE}
-              href={`account/${PolkadotTreasuryOnHydrationAccount1}`}
-              externalIcon
-              externalIconColor="textSecondary"
-              externalIconSize={20}
-            >
-              Acquistion Addr #1
-            </ExplorerLink>
+            <AddressLink
+              index={1}
+              address={PolkadotTreasuryOnHydrationAccount1}
+            />
 
-            <ExplorerLink
-              base={EXPLORER_LINK_BASE}
-              href={`account/${PolkadotTreasuryOnHydrationAccount2}`}
-              externalIconColor="textSecondary"
-              externalIcon
-              externalIconSize={20}
-            >
-              Acquistion Addr #2
-            </ExplorerLink>
+            <AddressLink
+              index={2}
+              address={PolkadotTreasuryOnHydrationAccount2}
+            />
           </AddressGroup>
 
           <AssetValueDisplay
@@ -94,5 +82,19 @@ export default function TreasuryDetailHydration() {
         </AssetWrapper>
       }
     />
+  );
+}
+
+function AddressLink({ index, address }) {
+  return (
+    <ExplorerLink
+      base="https://hydration.subscan.io/"
+      href={`account/${address}`}
+      externalIconColor="textSecondary"
+      externalIcon
+      externalIconSize={20}
+    >
+      Acquistion Addr #{index}
+    </ExplorerLink>
   );
 }
