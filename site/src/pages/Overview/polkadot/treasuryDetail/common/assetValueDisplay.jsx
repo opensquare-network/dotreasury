@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import ValueDisplay from "../../../../../components/ValueDisplay";
 import { p_14_medium, p_14_semibold } from "../../../../../styles/text";
+import SkeletonBar from "../../../../../components/skeleton/bar";
 
 const Wrapper = styled.div`
   display: flex;
@@ -18,7 +19,8 @@ const SymbolWrapper = styled.div`
 
 const ValueWrapper = styled.div`
   width: 100%;
-  text-align: right;
+  display: flex;
+  justify-content: flex-end;
   ${p_14_medium}
 `;
 
@@ -27,6 +29,7 @@ export default function AssetValueDisplay({
   value,
   precision,
   fixed = 2,
+  isLoading,
 }) {
   return (
     <Wrapper>
@@ -36,7 +39,11 @@ export default function AssetValueDisplay({
       </SymbolWrapper>
 
       <ValueWrapper>
-        <ValueDisplay value={value} precision={precision} fixed={fixed} />
+        {isLoading ? (
+          <SkeletonBar width={80} height={16} />
+        ) : (
+          <ValueDisplay value={value} precision={precision} fixed={fixed} />
+        )}
       </ValueWrapper>
     </Wrapper>
   );
