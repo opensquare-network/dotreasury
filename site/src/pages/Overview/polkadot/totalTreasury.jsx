@@ -27,7 +27,7 @@ import {
   useLoansPendulumDotBalance,
 } from "../../../hooks/treasury/useLoansBalances";
 import useAssetHubForeignAssets from "../../../hooks/assetHub/useAssetHubForeignAssets";
-import { MYTH } from "../../../utils/chains/mythToken";
+import { MYTH } from "../../../constants/foreignAssets";
 import { MYTH_TOKEN_ACCOUNT } from "../../../constants/foreignAssets";
 
 const Wrapper = styled(Card)`
@@ -176,7 +176,7 @@ export default function OverviewTotalTreasury() {
           isLoading={isLoading}
           totalValue={totalMythToken}
           precision={MYTH.decimals}
-          symbol="MYTH"
+          symbol={MYTH.symbol}
         />
       </TokenGroup>
     </Wrapper>
