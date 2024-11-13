@@ -11,6 +11,7 @@ export default function ExternalLink({
   href,
   children,
   className,
+  style,
   externalIcon = false,
   externalIconColor = "textTertiary",
   externalIconSize = 16,
@@ -21,6 +22,7 @@ export default function ExternalLink({
       title={href}
       target="_blank"
       rel="noopener noreferrer"
+      style={style}
       className={className}
       onClick={(e) => {
         e.stopPropagation();
