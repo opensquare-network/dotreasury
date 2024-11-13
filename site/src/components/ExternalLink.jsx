@@ -1,8 +1,22 @@
 import React from "react";
+import IconMask from "./Icon/Mask";
+import styled from "styled-components";
 
-export default function ExternalLink({ href, children, className }) {
+const A = styled.a`
+  display: inline-flex;
+  align-items: center;
+`;
+
+export default function ExternalLink({
+  href,
+  children,
+  className,
+  externalIcon = false,
+  externalIconColor = "textTertiary",
+  externalIconSize = 16,
+}) {
   return (
-    <a
+    <A
       href={href}
       title={href}
       target="_blank"
@@ -13,6 +27,14 @@ export default function ExternalLink({ href, children, className }) {
       }}
     >
       {children}
-    </a>
+
+      {externalIcon && (
+        <IconMask
+          src="/imgs/caret-up-right.svg"
+          color={externalIconColor}
+          size={externalIconSize}
+        />
+      )}
+    </A>
   );
 }
