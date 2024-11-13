@@ -19,9 +19,8 @@ import { toPrecision } from "../../../utils";
 import { useBountiesTotalBalance } from "../../../hooks/bounties/useBountiesBalances";
 import { useBountiesData } from "../../../hooks/bounties/useBountiesData";
 import { useQueryAssetHubTreasuryFree } from "../../../hooks/treasury/useQueryAssetHubTreasuryFree";
-import useQueryFellowshipSalaryBalance, {
-  StatemintFellowShipTreasuryAccount,
-} from "../../../hooks/treasury/useTreasuryFree";
+import useQueryFellowshipSalaryBalance from "../../../hooks/treasury/useTreasuryFree";
+import { STATEMINT_FELLOWSHIP_TREASURY_ACCOUNT } from "../../../constants/statemint";
 
 const Wrapper = styled(Card)`
   padding: 24px;
@@ -85,7 +84,7 @@ export default function OverviewTotalTreasury() {
   const {
     balance: fellowshipTreasuryDotBalance,
     // isLoading: isFellowshipTreasuryDotBalanceLoading,
-  } = useQueryAssetHubTreasuryFree(StatemintFellowShipTreasuryAccount);
+  } = useQueryAssetHubTreasuryFree(STATEMINT_FELLOWSHIP_TREASURY_ACCOUNT);
 
   const dotPrice = overview?.latestSymbolPrice ?? 0;
 
