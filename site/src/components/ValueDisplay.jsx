@@ -15,7 +15,7 @@ function checkApproximateEqual(value, rawValue) {
 export default function ValueDisplay({ value, precision, fixed = 2 }) {
   const balance = toPrecision(value, precision);
 
-  if (Number(balance) > 1000000) {
+  if (Number(balance) > 100000) {
     const abbreviateNum = abbreviateBigNumber(balance, fixed);
     const isApproximateEqual = checkApproximateEqual(balance, abbreviateNum);
     return (

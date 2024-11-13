@@ -25,10 +25,13 @@ import { mdcss, smcss } from "@osn/common";
 import IncomeAndOutputPeriods from "./IncomeAndOutputPeriods";
 import TopBeneficiariesTable from "./TopBeneficiariesTable/index.jsx";
 import OutputPeriods from "./OutputPeriods";
-import { currentChainSettings, isCentrifuge } from "../../utils/chains";
+import {
+  currentChainSettings,
+  isCentrifuge,
+  isPolkadot,
+} from "../../utils/chains";
 import AssetHub from "./AssetHub";
-import { useChain } from "../../utils/hooks/chain";
-import TreasuryDetail from "./TreasuryDetail";
+import OverviewPolkadot from "./polkadot";
 
 const DoughnutWrapper = styled.div`
   display: grid;
@@ -81,9 +84,12 @@ const TableWrapper = styled.div`
 `;
 
 const Overview = () => {
-  const chain = useChain();
   const overview = useSelector(overviewSelector);
   const symbol = useSelector(chainSymbolSelector);
+
+  if (isPolkadot) {
+    return <OverviewPolkadot />;
+  }
 
   const precision = getPrecision(symbol);
 
@@ -164,7 +170,6 @@ const Overview = () => {
   return (
     <>
       <Summary />
-      {chain === "polkadot" && <TreasuryDetail />}
       {currentChainSettings.hasAssetHub && <AssetHub />}
       <DoughnutWrapper count={cards.length}>{cards}</DoughnutWrapper>
       <TreasuryStats />
