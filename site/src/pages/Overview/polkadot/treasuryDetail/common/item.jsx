@@ -2,7 +2,7 @@ import styled from "styled-components";
 import SummaryItemOrigin from "../../../../../components/Summary/Item";
 import { space_y } from "../../../../../styles/tailwindcss";
 import ImageWithDark from "../../../../../components/ImageWithDark";
-import { h3_18_semibold } from "../../../../../styles/text";
+import { h3_18_semibold, p_12_medium } from "../../../../../styles/text";
 import Tooltip from "../../../../../components/Tooltip";
 
 const Wrapper = styled.div`
@@ -22,6 +22,7 @@ const SummaryItem = styled(SummaryItemOrigin)`
 `;
 
 const TitleWrapper = styled.div`
+  ${p_12_medium}
   display: flex;
   align-items: center;
   gap: 4px;
@@ -45,7 +46,7 @@ export default function TreasuryDetailItem({
             </Tooltip>
           </TitleWrapper>
         }
-        icon={iconSrc && <ImageWithDark src={iconSrc} />}
+        icon={iconSrc && <ImageWithDark src={iconSrc} width={48} height={48} />}
         content={content && <ContentWrapper>{content}</ContentWrapper>}
         footer={footer}
       />
