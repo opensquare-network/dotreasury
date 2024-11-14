@@ -21,10 +21,10 @@ const Wrapper = styled(Card)`
 export default function OverviewTreasuryDetail() {
   return (
     <Wrapper>
-      <TreasuryDetailHydration />
       <TreasuryDetailBounties />
       <TreasuryDetailFellowship />
       <TreasuryDetailLoans />
+      <TreasuryDetailHydration />
     </Wrapper>
   );
 }
