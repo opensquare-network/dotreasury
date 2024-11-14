@@ -18,12 +18,14 @@ import { useAssetHubDot } from "../../../../hooks/assetHub/useAssetHubDot";
 import { useAssetHubAsset } from "../../../../hooks/assetHub/useAssetHubAsset";
 import { USDt } from "../../../../utils/chains/usdt";
 import { USDC } from "../../../../utils/chains/usdc";
+import useQueryRelayChainFree from "../../../../hooks/treasury/useQueryRelayChainFree";
 
 const AssetGroup = styled.div`
   ${space_y(8)}
 `;
 
 export default function TreasuryDetailAssets() {
+  const relayChainFree = useQueryRelayChainFree();
   const [dotValue, dotLoading] = useAssetHubDot();
   const [usdtValue, usdtLoading] = useAssetHubAsset(ASSET_HUB_USDT_ASSET_ID);
   const [usdcValue, usdcLoading] = useAssetHubAsset(ASSET_HUB_USDC_ASSET_ID);
@@ -32,12 +34,16 @@ export default function TreasuryDetailAssets() {
   const dotPrice = overview?.latestSymbolPrice ?? 0;
 
   const total = BigNumber.sum(
+    BigNumber(
+      toPrecision(relayChainFree.balance, polkadot.decimals),
+    ).multipliedBy(dotPrice),
     BigNumber(toPrecision(dotValue, polkadot.decimals)).multipliedBy(dotPrice),
     toPrecision(usdtValue, USDt.decimals),
     toPrecision(usdcValue, USDC.decimals),
   ).toString();
 
-  const isLoading = dotLoading || usdtLoading || usdcLoading;
+  const isLoading =
+    relayChainFree.isLoading || dotLoading || usdtLoading || usdcLoading;
 
   return (
     <TreasuryDetailItem
@@ -54,8 +60,9 @@ export default function TreasuryDetailAssets() {
           >
             <AssetValueDisplay
               symbol="dot"
-              value={0}
+              value={relayChainFree.balance}
               precision={polkadot.decimals}
+              isLoading={relayChainFree.isLoading}
             />
           </AssetItem>
 
