@@ -20,14 +20,13 @@ const Link = styled(LinkOrigin)`
   }
 `;
 
-// TODO: overview, loading effects
 export default function TreasuryDetailBounties() {
   const { bounties, bountiesCount } = useBountiesData();
   const { balance, isLoading } = useBountiesTotalBalance(bounties);
   const overview = useSelector(overviewSelector);
   const dotPrice = overview?.latestSymbolPrice ?? 0;
 
-  const total = toPrecision(
+  const totalValue = toPrecision(
     BigNumber(balance).multipliedBy(dotPrice),
     polkadot.decimals,
   );
@@ -41,7 +40,7 @@ export default function TreasuryDetailBounties() {
       }
       titleTooltipContent="Funds for bounty programs"
       iconSrc="/imgs/data-bounties.svg"
-      content={<ValueDisplay value={total} precision={0} />}
+      content={<ValueDisplay value={totalValue} prefix="$" />}
       isLoading={isLoading}
       footer={
         <AssetWrapper>
@@ -50,6 +49,7 @@ export default function TreasuryDetailBounties() {
             value={balance}
             precision={polkadot.decimals}
             isLoading={isLoading}
+            valueTooltipContent={<ValueDisplay value={totalValue} prefix="$" />}
           />
         </AssetWrapper>
       }

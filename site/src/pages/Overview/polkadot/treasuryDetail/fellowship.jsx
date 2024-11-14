@@ -23,17 +23,19 @@ const AssetGroup = styled.div`
 `;
 
 export default function TreasuryDetailFellowship() {
+  const overview = useSelector(overviewSelector);
+  const dotPrice = overview?.latestSymbolPrice ?? 0;
+
   const usdt = useQueryFellowshipSalaryBalance("USDt");
   const treasury = useQueryAssetHubTreasuryFree(
     STATEMINT_FELLOWSHIP_TREASURY_ACCOUNT,
   );
-  const overview = useSelector(overviewSelector);
-  const dotPrice = overview?.latestSymbolPrice ?? 0;
+  const totalTreasuryValue = BigNumber(
+    toPrecision(treasury.balance, polkadot.decimals),
+  ).multipliedBy(dotPrice);
 
   const total = BigNumber.sum(
-    BigNumber(toPrecision(treasury.balance, polkadot.decimals)).multipliedBy(
-      dotPrice,
-    ),
+    totalTreasuryValue,
     toPrecision(usdt.balance, USDt.decimals),
   ).toString();
 
@@ -44,7 +46,7 @@ export default function TreasuryDetailFellowship() {
       title="Fellowship"
       titleTooltipContent="Fellowship spending account & salary treasury"
       iconSrc="/imgs/data-collectives.svg"
-      content={<ValueDisplay value={total} precision={0} />}
+      content={<ValueDisplay value={total} prefix="$" />}
       isLoading={isLoading}
       footer={
         <AssetGroup>
@@ -57,6 +59,9 @@ export default function TreasuryDetailFellowship() {
               value={treasury.balance}
               precision={currentChainSettings.decimals}
               isLoading={treasury.isLoading}
+              valueTooltipContent={
+                <ValueDisplay value={totalTreasuryValue} prefix="$" />
+              }
             />
           </AssetItem>
 

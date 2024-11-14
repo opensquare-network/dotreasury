@@ -25,19 +25,23 @@ const AssetGroup = styled.div`
 `;
 
 export default function TreasuryDetailAssets() {
-  const relayChainFree = useQueryRelayChainFree();
-  const [dotValue, dotLoading] = useAssetHubDot();
-  const [usdtValue, usdtLoading] = useAssetHubAsset(ASSET_HUB_USDT_ASSET_ID);
-  const [usdcValue, usdcLoading] = useAssetHubAsset(ASSET_HUB_USDC_ASSET_ID);
-
   const overview = useSelector(overviewSelector);
   const dotPrice = overview?.latestSymbolPrice ?? 0;
 
+  const relayChainFree = useQueryRelayChainFree();
+  const totalRelayChainFreeValue = BigNumber(
+    toPrecision(relayChainFree.balance, polkadot.decimals),
+  ).multipliedBy(dotPrice);
+  const [dotValue, dotLoading] = useAssetHubDot();
+  const totalDotValue = BigNumber(
+    toPrecision(dotValue, polkadot.decimals),
+  ).multipliedBy(dotPrice);
+  const [usdtValue, usdtLoading] = useAssetHubAsset(ASSET_HUB_USDT_ASSET_ID);
+  const [usdcValue, usdcLoading] = useAssetHubAsset(ASSET_HUB_USDC_ASSET_ID);
+
   const total = BigNumber.sum(
-    BigNumber(
-      toPrecision(relayChainFree.balance, polkadot.decimals),
-    ).multipliedBy(dotPrice),
-    BigNumber(toPrecision(dotValue, polkadot.decimals)).multipliedBy(dotPrice),
+    totalRelayChainFreeValue,
+    totalDotValue,
     toPrecision(usdtValue, USDt.decimals),
     toPrecision(usdcValue, USDC.decimals),
   ).toString();
@@ -50,7 +54,7 @@ export default function TreasuryDetailAssets() {
       title="Assets"
       titleTooltipContent="Funds of DOT & stablecoin"
       iconSrc="/imgs/data-asset-1.svg"
-      content={<ValueDisplay value={total} precision={0} />}
+      content={<ValueDisplay value={total} prefix="$" />}
       isLoading={isLoading}
       footer={
         <AssetGroup>
@@ -63,6 +67,9 @@ export default function TreasuryDetailAssets() {
               value={relayChainFree.balance}
               precision={polkadot.decimals}
               isLoading={relayChainFree.isLoading}
+              valueTooltipContent={
+                <ValueDisplay value={totalRelayChainFreeValue} prefix="$" />
+              }
             />
           </AssetItem>
 
@@ -75,6 +82,9 @@ export default function TreasuryDetailAssets() {
               value={dotValue}
               precision={polkadot.decimals}
               isLoading={dotLoading}
+              valueTooltipContent={
+                <ValueDisplay value={totalDotValue} prefix="$" />
+              }
             />
             <AssetValueDisplay
               symbol="usdt"
