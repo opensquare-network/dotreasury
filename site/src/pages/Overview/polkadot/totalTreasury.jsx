@@ -30,6 +30,7 @@ import useAssetHubForeignAssets from "../../../hooks/assetHub/useAssetHubForeign
 import { MYTH } from "../../../constants/foreignAssets";
 import { MYTH_TOKEN_ACCOUNT } from "../../../constants/foreignAssets";
 import useFiatPrice from "../../../hooks/useFiatPrice";
+import useQueryRelayChainFree from "../../../hooks/treasury/useQueryRelayChainFree";
 
 const Wrapper = styled(Card)`
   padding: 24px;
@@ -95,12 +96,14 @@ export default function OverviewTotalTreasury() {
   const loansBifrostDotBalance = useLoansBifrostDotBalance();
   const loansPendulumDotBalance = useLoansPendulumDotBalance();
   const mythTokenAssetsBalance = useAssetHubForeignAssets(MYTH_TOKEN_ACCOUNT);
+  const relayChainAssetsBalance = useQueryRelayChainFree();
 
   const { price: mythTokenPrice, isLoading: isFiatPriceLoading } =
     useFiatPrice("mythos");
   const dotPrice = overview?.latestSymbolPrice ?? 0;
 
   const totalDot = BigNumber.sum(
+    relayChainAssetsBalance.balance || 0,
     hydration.dot || 0,
     bountiesTotalBalance.balance || 0,
     fellowshipTreasuryDotBalance.balance || 0,
@@ -127,6 +130,7 @@ export default function OverviewTotalTreasury() {
   ).toString();
 
   const isLoading =
+    relayChainAssetsBalance.isLoading ||
     hydration.isLoading ||
     bountiesTotalBalance.isLoading ||
     fellowshipSalaryUsdtBalance.isLoading ||

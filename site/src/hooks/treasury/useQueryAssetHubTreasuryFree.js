@@ -1,12 +1,24 @@
 import useAssetHubApi from "../assetHub/useAssetHubApi";
-import useCall from "../useCall";
+import { useEffect, useState } from "react";
 
 export function useQueryAccountFree(api, address) {
-  const { loaded, value } = useCall(api?.query.system?.account, [address]);
+  const [balance, setBalance] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (!api || !address) {
+      return;
+    }
+
+    api?.query.system.account?.(address).then((accountData) => {
+      setBalance(accountData?.data?.free?.toJSON() || 0);
+      setIsLoading(false);
+    });
+  }, [api, address]);
 
   return {
-    balance: value?.data?.free?.toJSON() || 0,
-    isLoading: !loaded,
+    balance,
+    isLoading,
   };
 }
 
