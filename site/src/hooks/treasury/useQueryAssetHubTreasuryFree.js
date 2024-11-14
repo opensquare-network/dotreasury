@@ -1,6 +1,7 @@
 import useAssetHubApi from "../assetHub/useAssetHubApi";
 import useCall from "../useCall";
 
+// TODO: guard
 export function useQueryAccountFree(api, address) {
   const { loaded, value } = useCall(api?.query.system?.account, [address]);
 
