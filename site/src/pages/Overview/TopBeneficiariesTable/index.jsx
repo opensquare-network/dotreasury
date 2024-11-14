@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import {
   fetchTopBeneficiaries,
-  overviewSelector,
   topBeneficiariesSelector,
 } from "../../../store/reducers/overviewSlice.js";
 import { useDispatch, useSelector } from "react-redux";
@@ -49,10 +48,10 @@ export default function TopBeneficiariesTable() {
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell>Beneficiary</Table.HeaderCell>
+              <Table.HeaderCell textAlign={"right"}>Proposals</Table.HeaderCell>
               <Table.HeaderCell textAlign={"right"}>
                 Total value
               </Table.HeaderCell>
-              <Table.HeaderCell textAlign={"right"}>Proposals</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
 
@@ -70,15 +69,6 @@ export default function TopBeneficiariesTable() {
                       />
                     </Table.Cell>
                     <TableCell textAlign={"right"}>
-                      <Balance
-                        value={item.totalValue.totalBenefit}
-                        usdt={item.totalFiatValue.totalBenefit}
-                        reverse
-                        isUnitPrice={false}
-                      />
-                    </TableCell>
-
-                    <TableCell textAlign={"right"}>
                       <ProposalsWrapper>
                         <ProposalsCount
                           proposals={item?.proposals?.benefitCount}
@@ -87,6 +77,15 @@ export default function TopBeneficiariesTable() {
                           tips={item?.tips?.benefitCount}
                         />
                       </ProposalsWrapper>
+                    </TableCell>
+
+                    <TableCell textAlign={"right"}>
+                      <Balance
+                        value={item.totalValue.totalBenefit}
+                        usdt={item.totalFiatValue.totalBenefit}
+                        reverse
+                        isUnitPrice={false}
+                      />
                     </TableCell>
                   </TableRow>
                 );
