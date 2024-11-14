@@ -29,6 +29,7 @@ const dbNames = {
   polkadot: dotDbName,
   centrifuge: cfgDbName,
 };
+
 const dbUrls = {
   kusama: process.env.KSM_MONGO_URL,
   polkadot: process.env.DOT_MONGO_URL,
@@ -70,11 +71,7 @@ async function savePrice(chain, col) {
 }
 
 async function main() {
-  for (const chain of [
-    "kusama",
-    "polkadot",
-    "centrifuge",
-  ]) {
+  for (const chain of ["kusama", "polkadot", "centrifuge"]) {
     const dbUrl = dbUrls[chain];
     const dbName = dbNames[chain];
     const {

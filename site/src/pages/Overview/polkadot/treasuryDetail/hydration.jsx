@@ -34,7 +34,7 @@ const ExplorerLink = styled(ExplorerLinkOrigin)`
 `;
 
 export default function TreasuryDetailHydration() {
-  const { usdc, usdt, dot } = useHydrationTreasuryBalances();
+  const { usdc, usdt, dot, isLoading } = useHydrationTreasuryBalances();
   const overview = useSelector(overviewSelector);
   const dotPrice = overview?.latestSymbolPrice ?? 0;
 
@@ -50,6 +50,7 @@ export default function TreasuryDetailHydration() {
       titleTooltipContent="Treasury stablecoin acquisition"
       iconSrc="/imgs/data-hydration.svg"
       content={<ValueDisplay value={total} precision={0} />}
+      isLoading={isLoading}
       footer={
         <AssetWrapper>
           <AddressGroup>
@@ -68,16 +69,19 @@ export default function TreasuryDetailHydration() {
             symbol="dot"
             value={dot}
             precision={polkadot.decimals}
+            isLoading={isLoading}
           />
           <AssetValueDisplay
             symbol="usdt"
             value={usdt}
             precision={USDt.decimals}
+            isLoading={isLoading}
           />
           <AssetValueDisplay
             symbol="usdc"
             value={usdc}
             precision={USDC.decimals}
+            isLoading={isLoading}
           />
         </AssetWrapper>
       }

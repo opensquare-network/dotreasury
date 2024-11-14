@@ -11,7 +11,6 @@ import { overviewSelector } from "../../../../store/reducers/overviewSlice";
 import { useSelector } from "react-redux";
 import { toPrecision } from "../../../../utils";
 import BigNumber from "bignumber.js";
-import SkeletonBar from "../../../../components/skeleton/bar";
 
 const Link = styled(LinkOrigin)`
   color: var(--textSecondary);
@@ -42,19 +41,15 @@ export default function TreasuryDetailBounties() {
       }
       titleTooltipContent="Funds for bounty programs"
       iconSrc="/imgs/data-bounties.svg"
-      content={
-        isLoading ? (
-          <SkeletonBar width={64} height={28} />
-        ) : (
-          <ValueDisplay value={total} precision={0} />
-        )
-      }
+      content={<ValueDisplay value={total} precision={0} />}
+      isLoading={isLoading}
       footer={
         <AssetWrapper>
           <AssetValueDisplay
             symbol="dot"
             value={balance}
             precision={currentChainSettings.decimals}
+            isLoading={isLoading}
           />
         </AssetWrapper>
       }
