@@ -1,5 +1,5 @@
 const pick = require("lodash.pick");
-const { getSubsquareTipCollection } = require("../../mongo/polkadot");
+const { getSubsquareTreasurySpendCollection } = require("../../mongo/polkadot");
 
 async function fetchTipDetail(hash) {
   console.log(`Fetching tip detail for hash ${hash}`);
@@ -26,9 +26,9 @@ async function fetchPagedTipsFromSubsquare(page) {
 }
 
 async function saveTip(detail) {
-  const tipCol = await getSubsquareTipCollection();
-  await tipCol.updateOne(
-    { hash: detail.hash },
+  const col = await getSubsquareTreasurySpendCollection();
+  await col.updateOne(
+    { type: "tip", hash: detail.hash },
     {
       $set: {
         ...pick(detail, ["title"]),
@@ -42,6 +42,7 @@ async function saveTip(detail) {
           "state",
           "isFinal",
         ]),
+        value: detail.onchainData.medianValue,
       },
     },
     { upsert: true },

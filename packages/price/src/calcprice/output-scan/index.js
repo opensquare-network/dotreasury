@@ -6,6 +6,7 @@ function DB(dbUrl, dbName) {
   const proposalCollectionName = "proposal";
   const childBountyCollectionName = "childBounty";
   const referendaReferendumCollectionName = "referendaReferendum";
+  const subsquareTreasurySpendCollectionName = "subsquareTreasurySpend";
 
   let client = null;
   let db = null;
@@ -16,13 +17,14 @@ function DB(dbUrl, dbName) {
   let referendaReferendumCol = null;
   let childBountyCol = null;
   let periodCol = null; // spend periods
+  let subsquareTreasurySpendCol = null;
 
   async function initDb() {
     client = await MongoClient.connect(dbUrl, {
       useUnifiedTopology: true,
     });
 
-    console.log('dbName', dbName);
+    console.log("dbName", dbName);
     db = client.db(dbName);
     tipCol = db.collection(tipCollectionName);
     bountyCol = db.collection(bountyCollectionName);
@@ -30,6 +32,9 @@ function DB(dbUrl, dbName) {
     proposalCol = db.collection(proposalCollectionName);
     referendaReferendumCol = db.collection(referendaReferendumCollectionName);
     periodCol = db.collection("period");
+    subsquareTreasurySpendCol = db.collection(
+      subsquareTreasurySpendCollectionName,
+    );
   }
 
   async function tryInit(col) {
@@ -68,6 +73,11 @@ function DB(dbUrl, dbName) {
     return periodCol;
   }
 
+  async function getSubsquareTreasurySpendCollection() {
+    await tryInit(subsquareTreasurySpendCol);
+    return subsquareTreasurySpendCol;
+  }
+
   return {
     getTipCollection,
     getBountyCollection,
@@ -75,6 +85,7 @@ function DB(dbUrl, dbName) {
     getProposalCollection,
     getReferendaReferendumCollection,
     getPeriodCol,
+    getSubsquareTreasurySpendCollection,
   };
 }
 

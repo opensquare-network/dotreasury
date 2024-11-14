@@ -42,31 +42,39 @@ function calcPriceByToken(tokenValue, symbolPrice) {
 
 const { getPrice } = require("./price");
 
+async function savePriceToItem(chain, col, item) {
+  if (item.symbolPrice !== undefined) {
+    return;
+  }
+
+  const blockTime = item.indexer?.blockTime;
+  if (!blockTime) {
+    return;
+  }
+
+  const price = await getPrice(chain, blockTime);
+  if (!price) {
+    return;
+  }
+
+  const tokenValue = normalizeTokenValue(item.value, chain);
+  const allPrice = calcPriceByToken(tokenValue, price);
+
+  await col.updateOne(
+    { _id: item._id },
+    {
+      $set: {
+        symbolPrice: price,
+        fiatValue: parseFloat(allPrice),
+      },
+    },
+  );
+}
+
 async function savePrice(chain, col) {
   const items = await col.find({}).toArray();
-
   for (const item of items) {
-    if (item.symbolPrice !== undefined) {
-      continue;
-    }
-    const blockTime = item.indexer?.blockTime;
-    if (blockTime) {
-      const price = await getPrice(chain, blockTime);
-      if (price) {
-        const tokenValue = normalizeTokenValue(item.value, chain);
-        const allPrice = calcPriceByToken(tokenValue, price);
-
-        await col.updateOne(
-          { _id: item._id },
-          {
-            $set: {
-              symbolPrice: price,
-              fiatValue: parseFloat(allPrice),
-            },
-          },
-        );
-      }
-    }
+    await savePriceToItem(chain, col, item);
   }
 }
 
@@ -81,6 +89,7 @@ async function main() {
       getChildBountyCollection,
       getReferendaReferendumCollection,
       getPeriodCol,
+      getSubsquareTreasurySpendCollection,
     } = DB(dbUrl, dbName);
 
     const tipCol = await getTipCollection();
@@ -101,6 +110,45 @@ async function main() {
     if (["kusama", "polkadot"].includes(chain)) {
       const referendaCol = await getReferendaReferendumCollection();
       await savePrice(chain, referendaCol);
+    }
+
+    if (chain === "polkadot") {
+      const subsquareTreasurySpendCol =
+        await getSubsquareTreasurySpendCollection();
+
+      const items = await subsquareTreasurySpendCol
+        .find({
+          $or: [
+            { type: { $in: ["treasuryProposal", "tip"] } },
+            { type: "treasurySpend", "assetType.type": "native" },
+          ],
+        })
+        .toArray();
+
+      console.log("save price to subsquare treasury spends", items.length);
+      for (const item of items) {
+        await savePriceToItem(chain, subsquareTreasurySpendCol, item);
+      }
+
+      const usdItems = await subsquareTreasurySpendCol
+        .find({
+          type: "treasurySpend",
+          "assetType.symbol": { $in: ["USDt", "USDC"] },
+        })
+        .toArray();
+      for (const item of usdItems) {
+        await subsquareTreasurySpendCol.updateOne(
+          { _id: item._id },
+          {
+            $set: {
+              symbolPrice: 1,
+              fiatValue: new BigNumber(item.value)
+                .div(Math.pow(10, 6))
+                .toNumber(),
+            },
+          },
+        );
+      }
     }
 
     console.log("Update price successful:", dbName);

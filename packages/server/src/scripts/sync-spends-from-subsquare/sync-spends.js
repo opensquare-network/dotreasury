@@ -1,5 +1,6 @@
 const pick = require("lodash.pick");
 const { getSubsquareTreasurySpendCollection } = require("../../mongo/polkadot");
+const { getAssetByMeta } = require("./spendMeta");
 
 async function fetchTreasurySpendDetail(index) {
   console.log(`Fetching spend detail for index ${index}`);
@@ -30,7 +31,7 @@ async function fetchPagedSpendsFromSubsquare(page) {
 async function saveTreasurySpend(detail) {
   const spendCol = await getSubsquareTreasurySpendCollection();
   await spendCol.updateOne(
-    { index: detail.index },
+    { type: "treasurySpend", index: detail.index },
     {
       $set: {
         ...pick(detail, ["title"]),
@@ -45,6 +46,8 @@ async function saveTreasurySpend(detail) {
           "gov2Referendum",
           "track",
         ]),
+        value: detail.onchainData?.meta?.amount,
+        assetType: getAssetByMeta(detail.onchainData?.meta),
       },
     },
     { upsert: true },
