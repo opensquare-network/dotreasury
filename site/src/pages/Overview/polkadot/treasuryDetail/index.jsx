@@ -7,6 +7,7 @@ import { grid, grid_cols } from "../../../../styles/tailwindcss";
 import TreasuryDetailBounties from "./bounties";
 import TreasuryDetailFellowship from "./fellowship";
 import { mdcss, smcss } from "../../../../styles/responsive";
+import TreasuryDetailLoans from "./loans";
 
 const Wrapper = styled(Card)`
   padding: 24px;
@@ -23,6 +24,7 @@ export default function OverviewTreasuryDetail() {
       <TreasuryDetailHydration />
       <TreasuryDetailBounties />
       <TreasuryDetailFellowship />
+      <TreasuryDetailLoans />
     </Wrapper>
   );
 }
