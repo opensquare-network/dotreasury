@@ -31,6 +31,7 @@ import { MYTH } from "../../../constants/foreignAssets";
 import { MYTH_TOKEN_ACCOUNT } from "../../../constants/foreignAssets";
 import useFiatPrice from "../../../hooks/useFiatPrice";
 import useQueryRelayChainFree from "../../../hooks/treasury/useQueryRelayChainFree";
+import Tooltip from "../../../components/Tooltip";
 
 const Wrapper = styled(Card)`
   padding: 24px;
@@ -110,6 +111,10 @@ export default function OverviewTotalTreasury() {
     loansBifrostDotBalance.balance,
     loansPendulumDotBalance.balance,
   );
+  const totalDotValue = BigNumber(
+    toPrecision(totalDot, polkadot.decimals),
+  ).multipliedBy(dotPrice);
+
   const totalUSDt = BigNumber.sum(
     hydration.usdt || 0,
     fellowshipSalaryUsdtBalance.balance || 0,
@@ -119,14 +124,15 @@ export default function OverviewTotalTreasury() {
     loansCentrifugeUsdcBalance.balance,
   );
   const totalMythToken = mythTokenAssetsBalance.balance;
+  const totalMythTokenValue = BigNumber(
+    toPrecision(totalMythToken, MYTH.decimals),
+  ).multipliedBy(mythTokenPrice);
 
   const total = BigNumber.sum(
-    BigNumber(toPrecision(totalDot, polkadot.decimals)).multipliedBy(dotPrice),
+    totalDotValue,
     toPrecision(totalUSDt, USDt.decimals),
     toPrecision(totalUSDC, USDC.decimals),
-    BigNumber(toPrecision(totalMythToken, MYTH.decimals)).multipliedBy(
-      mythTokenPrice,
-    ),
+    totalMythTokenValue,
   ).toString();
 
   const isLoading =
@@ -143,25 +149,29 @@ export default function OverviewTotalTreasury() {
 
   return (
     <Wrapper>
-      <div>
+      <div style={{ padding: "0 12px" }}>
         <Title>Total Treasury</Title>
         <TotalPrice>
           {isLoading ? (
             <SkeletonBar width={120} height={36} />
           ) : (
-            <ValueDisplay value={total} precision={0} />
+            <ValueDisplay value={total} prefix="$" />
           )}
         </TotalPrice>
       </div>
 
       <TokenGroup>
-        <TokenItem
-          icon="asset-dot.svg"
-          isLoading={isLoading}
-          totalValue={totalDot}
-          precision={polkadot.decimals}
-          symbol={polkadot.symbol}
-        />
+        <Tooltip
+          tooltipContent={<ValueDisplay value={totalDotValue} prefix="$" />}
+        >
+          <TokenItem
+            icon="asset-dot.svg"
+            isLoading={isLoading}
+            totalValue={totalDot}
+            precision={polkadot.decimals}
+            symbol={polkadot.symbol}
+          />
+        </Tooltip>
         <TokenItem
           icon="asset-usdt.svg"
           isLoading={isLoading}
@@ -176,13 +186,19 @@ export default function OverviewTotalTreasury() {
           precision={USDC.decimals}
           symbol={USDC.symbol}
         />
-        <TokenItem
-          icon="asset-myth.svg"
-          isLoading={isLoading}
-          totalValue={totalMythToken}
-          precision={MYTH.decimals}
-          symbol={MYTH.symbol}
-        />
+        <Tooltip
+          tooltipContent={
+            <ValueDisplay value={totalMythTokenValue} prefix="$" />
+          }
+        >
+          <TokenItem
+            icon="asset-myth.svg"
+            isLoading={isLoading}
+            totalValue={totalMythToken}
+            precision={MYTH.decimals}
+            symbol={MYTH.symbol}
+          />
+        </Tooltip>
       </TokenGroup>
     </Wrapper>
   );

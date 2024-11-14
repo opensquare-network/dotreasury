@@ -21,23 +21,25 @@ const AssetGroup = styled.div`
 `;
 
 export default function TreasuryDetailLoans() {
-  const bifrost = useLoansBifrostDotBalance();
-  const pendulum = useLoansPendulumDotBalance();
-  const centrifuge = useLoansCentrifugeUsdcBalance();
-
   const overview = useSelector(overviewSelector);
   const dotPrice = overview?.latestSymbolPrice ?? 0;
+
+  const bifrost = useLoansBifrostDotBalance();
+  const totalBifrostValue = BigNumber(
+    toPrecision(bifrost.balance, polkadot.decimals),
+  ).multipliedBy(dotPrice);
+  const pendulum = useLoansPendulumDotBalance();
+  const totalPendulumValue = BigNumber(
+    toPrecision(pendulum.balance, polkadot.decimals),
+  ).multipliedBy(dotPrice);
+  const centrifuge = useLoansCentrifugeUsdcBalance();
 
   const isLoading =
     bifrost.isLoading || pendulum.isLoading || centrifuge.isLoading;
 
   const total = BigNumber.sum(
-    BigNumber(toPrecision(bifrost.balance, polkadot.decimals)).multipliedBy(
-      dotPrice,
-    ),
-    BigNumber(toPrecision(pendulum.balance, polkadot.decimals)).multipliedBy(
-      dotPrice,
-    ),
+    totalBifrostValue,
+    totalPendulumValue,
     toPrecision(centrifuge.balance, USDt.decimals),
   ).toString();
 
@@ -46,7 +48,7 @@ export default function TreasuryDetailLoans() {
       title="Loans"
       titleTooltipContent="Loans receivable"
       iconSrc="/imgs/data-asset-2.svg"
-      content={<ValueDisplay value={total} precision={0} />}
+      content={<ValueDisplay value={total} prefix="$" />}
       isLoading={isLoading}
       footer={
         <AssetGroup>
@@ -70,6 +72,9 @@ export default function TreasuryDetailLoans() {
               value={bifrost.balance}
               precision={polkadot.decimals}
               isLoading={bifrost.isLoading}
+              valueTooltipContent={
+                <ValueDisplay value={totalBifrostValue} prefix="$" />
+              }
             />
           </AssetItem>
           <AssetItem
@@ -81,6 +86,9 @@ export default function TreasuryDetailLoans() {
               value={pendulum.balance}
               precision={polkadot.decimals}
               isLoading={pendulum.isLoading}
+              valueTooltipContent={
+                <ValueDisplay value={totalPendulumValue} prefix="$" />
+              }
             />
           </AssetItem>
         </AssetGroup>

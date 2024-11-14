@@ -34,12 +34,16 @@ const ExplorerLink = styled(ExplorerLinkOrigin)`
 `;
 
 export default function TreasuryDetailHydration() {
-  const { usdc, usdt, dot, isLoading } = useHydrationTreasuryBalances();
   const overview = useSelector(overviewSelector);
   const dotPrice = overview?.latestSymbolPrice ?? 0;
 
+  const { usdc, usdt, dot, isLoading } = useHydrationTreasuryBalances();
+  const totalDotValue = BigNumber(
+    toPrecision(dot, polkadot.decimals),
+  ).multipliedBy(dotPrice);
+
   const total = BigNumber.sum(
-    BigNumber(toPrecision(dot, polkadot.decimals)).multipliedBy(dotPrice),
+    totalDotValue,
     toPrecision(usdt, USDt.decimals),
     toPrecision(usdc, USDC.decimals),
   ).toString();
@@ -49,7 +53,7 @@ export default function TreasuryDetailHydration() {
       title="Hydration"
       titleTooltipContent="Treasury stablecoin acquisition"
       iconSrc="/imgs/data-hydration.svg"
-      content={<ValueDisplay value={total} precision={0} />}
+      content={<ValueDisplay value={total} prefix="$" />}
       isLoading={isLoading}
       footer={
         <AssetWrapper>
@@ -70,6 +74,9 @@ export default function TreasuryDetailHydration() {
             value={dot}
             precision={polkadot.decimals}
             isLoading={isLoading}
+            valueTooltipContent={
+              <ValueDisplay value={totalDotValue} prefix="$" />
+            }
           />
           <AssetValueDisplay
             symbol="usdt"
