@@ -6,27 +6,16 @@ import { USDt } from "../../../../utils/chains/usdt";
 import ValueDisplay from "../../../../components/ValueDisplay";
 import styled from "styled-components";
 import { space_y } from "../../../../styles/tailwindcss";
-import AssetWrapper from "./common/assetWrapper";
-import ExternalLinkOrigin from "../../../../components/ExternalLink";
 import {
   STATEMINT_FELLOWSHIP_SALARY_ACCOUNT,
   STATEMINT_FELLOWSHIP_TREASURY_ACCOUNT,
 } from "../../../../constants/statemint";
 import AssetValueDisplay from "./common/assetValueDisplay";
-import { p_12_medium } from "../../../../styles/text";
 import { useQueryAssetHubTreasuryFree } from "../../../../hooks/treasury/useQueryAssetHubTreasuryFree";
 import { overviewSelector } from "../../../../store/reducers/overviewSlice";
 import { useSelector } from "react-redux";
 import { currentChainSettings } from "../../../../utils/chains";
-
-const ExternalLink = styled(ExternalLinkOrigin)`
-  ${p_12_medium}
-  color: var(--textSecondary);
-  &:hover {
-    color: var(--textSecondary);
-    text-decoration: underline;
-  }
-`;
+import AssetItem from "./common/assetItem";
 
 const AssetGroup = styled.div`
   ${space_y(8)}
@@ -85,17 +74,5 @@ export default function TreasuryDetailFellowship() {
         </AssetGroup>
       }
     />
-  );
-}
-
-function AssetItem({ title, titleLink, children }) {
-  return (
-    <AssetWrapper>
-      <ExternalLink style={{ marginBottom: 8 }} href={titleLink} externalIcon>
-        {title}
-      </ExternalLink>
-
-      {children}
-    </AssetWrapper>
   );
 }
