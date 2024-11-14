@@ -91,8 +91,6 @@ function getDb({ inputDbName, outputDbName, councilDbName }) {
   let periodCol = null;
 
   // Collections sync from subsquare
-  let subsquareTipCol = null;
-  let subsquareTreasuryProposalCol = null;
   let subsquareTreasurySpendCol = null;
 
   async function initDb() {
@@ -150,10 +148,6 @@ function getDb({ inputDbName, outputDbName, councilDbName }) {
     councilStatusCol = councilDb.collection(statusCollectionName);
 
     // Collections sync from subsquare
-    subsquareTipCol = outputDb.collection("subsquareTip");
-    subsquareTreasuryProposalCol = outputDb.collection(
-      "subsquareTreasuryProposal",
-    );
     subsquareTreasurySpendCol = outputDb.collection("subsquareTreasurySpend");
 
     await _createIndexes();
@@ -365,16 +359,6 @@ function getDb({ inputDbName, outputDbName, councilDbName }) {
     return cfgTxFeeCol;
   }
 
-  async function getSubsquareTipCollection() {
-    await tryInit(subsquareTipCol);
-    return subsquareTipCol;
-  }
-
-  async function getSubsquareTreasuryProposalCollection() {
-    await tryInit(subsquareTreasuryProposalCol);
-    return subsquareTreasuryProposalCol;
-  }
-
   async function getSubsquareTreasurySpendCollection() {
     await tryInit(subsquareTreasurySpendCol);
     return subsquareTreasurySpendCol;
@@ -418,8 +402,6 @@ function getDb({ inputDbName, outputDbName, councilDbName }) {
     getTipperCollection,
     getCouncilStatusCol,
     getPeriodCollection,
-    getSubsquareTipCollection,
-    getSubsquareTreasuryProposalCollection,
     getSubsquareTreasurySpendCollection,
   };
 }

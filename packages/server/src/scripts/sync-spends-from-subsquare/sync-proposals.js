@@ -1,7 +1,5 @@
 const pick = require("lodash.pick");
-const {
-  getSubsquareTreasuryProposalCollection,
-} = require("../../mongo/polkadot");
+const { getSubsquareTreasurySpendCollection } = require("../../mongo/polkadot");
 
 async function fetchTreasuryProposalDetail(index) {
   console.log(`Fetching treasury proposal detail for index ${index}`);
@@ -30,9 +28,9 @@ async function fetchPagedTreasuryProposalsFromSubsquare(page) {
 }
 
 async function saveTreasuryProposal(detail) {
-  const treasuryProposalCol = await getSubsquareTreasuryProposalCollection();
-  await treasuryProposalCol.updateOne(
-    { proposalIndex: detail.proposalIndex },
+  const col = await getSubsquareTreasurySpendCollection();
+  await col.updateOne(
+    { type: "treasuryProposal", proposalIndex: detail.proposalIndex },
     {
       $set: {
         ...pick(detail, ["title"]),
