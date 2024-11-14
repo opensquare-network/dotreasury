@@ -3,7 +3,6 @@ import { useBountiesData } from "../../../../hooks/bounties/useBountiesData";
 import TreasuryDetailItem from "./common/item";
 import { useBountiesTotalBalance } from "../../../../hooks/bounties/useBountiesBalances";
 import ValueDisplay from "../../../../components/ValueDisplay";
-import { currentChainSettings } from "../../../../utils/chains";
 import styled from "styled-components";
 import AssetWrapper from "./common/assetWrapper";
 import AssetValueDisplay from "./common/assetValueDisplay";
@@ -11,6 +10,7 @@ import { overviewSelector } from "../../../../store/reducers/overviewSlice";
 import { useSelector } from "react-redux";
 import { toPrecision } from "../../../../utils";
 import BigNumber from "bignumber.js";
+import { polkadot } from "../../../../utils/chains/polkadot";
 
 const Link = styled(LinkOrigin)`
   color: var(--textSecondary);
@@ -29,7 +29,7 @@ export default function TreasuryDetailBounties() {
 
   const total = toPrecision(
     BigNumber(balance).multipliedBy(dotPrice),
-    currentChainSettings.decimals,
+    polkadot.decimals,
   );
 
   return (
@@ -48,7 +48,7 @@ export default function TreasuryDetailBounties() {
           <AssetValueDisplay
             symbol="dot"
             value={balance}
-            precision={currentChainSettings.decimals}
+            precision={polkadot.decimals}
             isLoading={isLoading}
           />
         </AssetWrapper>

@@ -16,6 +16,7 @@ import { overviewSelector } from "../../../../store/reducers/overviewSlice";
 import { useSelector } from "react-redux";
 import { currentChainSettings } from "../../../../utils/chains";
 import AssetItem from "./common/assetItem";
+import { polkadot } from "../../../../utils/chains/polkadot";
 
 const AssetGroup = styled.div`
   ${space_y(8)}
@@ -30,9 +31,8 @@ export default function TreasuryDetailFellowship() {
   const dotPrice = overview?.latestSymbolPrice ?? 0;
 
   const total = BigNumber.sum(
-    toPrecision(
-      BigNumber(treasury.balance).multipliedBy(dotPrice),
-      currentChainSettings.decimals,
+    BigNumber(toPrecision(treasury.balance, polkadot.decimals)).multipliedBy(
+      dotPrice,
     ),
     toPrecision(usdt.balance, USDt.decimals),
   ).toString();

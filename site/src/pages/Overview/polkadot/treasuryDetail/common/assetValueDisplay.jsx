@@ -20,6 +20,7 @@ const SymbolWrapper = styled.div`
 const ValueWrapper = styled.div`
   width: 100%;
   display: flex;
+  align-items: center;
   justify-content: flex-end;
   ${p_14_medium}
 `;
@@ -42,7 +43,9 @@ export default function AssetValueDisplay({
         {isLoading ? (
           <SkeletonBar width={80} height={16} />
         ) : (
-          <ValueDisplay value={value} precision={precision} fixed={fixed} />
+          <div>
+            <ValueDisplay value={value} precision={precision} fixed={fixed} />
+          </div>
         )}
       </ValueWrapper>
     </Wrapper>
