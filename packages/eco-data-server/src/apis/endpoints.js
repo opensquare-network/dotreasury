@@ -15,17 +15,12 @@ const CHAINS = Object.freeze({
   integritee: "integritee",
   moonbeam: "moonbeam",
   moonriver: "moonriver",
+  mythos: "mythos",
 });
 
 const endpoints = Object.freeze({
-  polkadot: [
-    "wss://rpc.polkadot.io",
-    "wss://polkadot-rpc.dwellir.com",
-  ],
-  kusama: [
-    "wss://kusama-rpc.polkadot.io",
-    "wss://kusama-rpc.dwellir.com"
-  ],
+  polkadot: ["wss://rpc.polkadot.io", "wss://polkadot-rpc.dwellir.com"],
+  kusama: ["wss://kusama-rpc.polkadot.io", "wss://kusama-rpc.dwellir.com"],
   centrifuge: [
     "wss://fullnode.centrifuge.io/",
     "wss://rpc-centrifuge.luckyfriday.io/",
@@ -34,21 +29,12 @@ const endpoints = Object.freeze({
     "wss://khala.api.onfinality.io/public-ws",
     "wss://khala-rpc.dwellir.com/",
   ],
-  phala: [
-    "wss://api.phala.network/ws",
-    "wss://phala-rpc.dwellir.com/",
-  ],
-  hydradx: [
-    "wss://hydradx-rpc.dwellir.com/",
-    "wss://rpc.hydradx.cloud/"
-  ],
-  basilisk: [
-    "wss://basilisk-rpc.dwellir.com/",
-    "wss://rpc.basilisk.cloud/"
-  ],
+  phala: ["wss://api.phala.network/ws", "wss://phala-rpc.dwellir.com/"],
+  hydradx: ["wss://hydradx-rpc.dwellir.com/", "wss://rpc.hydradx.cloud/"],
+  basilisk: ["wss://basilisk-rpc.dwellir.com/", "wss://rpc.basilisk.cloud/"],
   interlay: [
     "wss://api.interlay.io/parachain",
-    "wss://interlay-rpc.dwellir.com/"
+    "wss://interlay-rpc.dwellir.com/",
   ],
   kintsugi: [
     "wss://kintsugi-rpc.dwellir.com/",
@@ -72,7 +58,7 @@ const endpoints = Object.freeze({
   ],
   bifrostPolkadot: [
     "wss://hk.p.bifrost-rpc.liebi.com/ws",
-    "wss://eu.bifrost-polkadot-rpc.liebi.com/ws"
+    "wss://eu.bifrost-polkadot-rpc.liebi.com/ws",
   ],
   bifrostKusama: [
     "wss://bifrost-rpc.dwellir.com",
@@ -86,9 +72,10 @@ const endpoints = Object.freeze({
     "wss://kusama.api.integritee.network/",
     "wss://integritee-kusama.api.onfinality.io/public-ws",
   ],
+  mythos: ["wss://polkadot-mythos-rpc.polkadot.io"],
 });
 
 module.exports = {
   endpoints,
   CHAINS,
-}
+};
