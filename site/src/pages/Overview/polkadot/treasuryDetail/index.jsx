@@ -8,6 +8,7 @@ import TreasuryDetailBounties from "./bounties";
 import TreasuryDetailFellowship from "./fellowship";
 import { mdcss, smcss } from "../../../../styles/responsive";
 import TreasuryDetailLoans from "./loans";
+import TreasuryDetailAssets from "./assets";
 
 const Wrapper = styled(Card)`
   padding: 24px;
@@ -21,6 +22,7 @@ const Wrapper = styled(Card)`
 export default function OverviewTreasuryDetail() {
   return (
     <Wrapper>
+      <TreasuryDetailAssets />
       <TreasuryDetailBounties />
       <TreasuryDetailFellowship />
       <TreasuryDetailLoans />
