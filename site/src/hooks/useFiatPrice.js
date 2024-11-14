@@ -15,19 +15,16 @@ const GET_TREASURIES = gql`
 export default function useFiatPrice(chain) {
   const [getTreasuries, { data, loading }] =
     useDoTreasuryEcoLazyQuery(GET_TREASURIES);
-  const params = {
-    variables: { chain },
-  };
 
   useEffect(() => {
-    getTreasuries(params);
+    getTreasuries({ variables: { chain } });
 
     const intervalId = setInterval(() => {
-      getTreasuries(params);
+      getTreasuries({ variables: { chain } });
     }, 60000);
 
     return () => clearInterval(intervalId);
-  }, [getTreasuries]);
+  }, [getTreasuries, chain]);
 
   const treasury = find(data?.treasuries, {
     chain: chain,
