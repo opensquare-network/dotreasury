@@ -1725,6 +1725,7 @@ __metadata:
     eslint-config-react-app: ^7.0.1
     eslint-plugin-unused-imports: ^2.0.0
     gh-pages: ^5.0.0
+    graphql: ^16.9.0
     lodash-es: ^4.17.21
     lodash.camelcase: ^4.3.0
     lodash.debounce: ^4.0.8
@@ -5791,6 +5792,13 @@ __metadata:
   peerDependencies:
     graphql: ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
   checksum: b15162a3d62f17b9b79302445b9ee330e041582f1c7faca74b9dec5daa74272c906ec1c34e1c50592bb6215e5c3eba80a309103f6ba9e4c1cddc350c46f010df
+  languageName: node
+  linkType: hard
+
+"graphql@npm:^16.9.0":
+  version: 16.9.0
+  resolution: "graphql@npm:16.9.0"
+  checksum: 8cb3d54100e9227310383ce7f791ca48d12f15ed9f2021f23f8735f1121aafe4e5e611a853081dd935ce221724ea1ae4638faef5d2921fb1ad7c26b5f46611e9
   languageName: node
   linkType: hard
 

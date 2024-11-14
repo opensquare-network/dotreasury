@@ -20,6 +20,7 @@
     "d3-shape": "^3.1.0",
     "dayjs": "^1.9.7",
     "gh-pages": "^5.0.0",
+    "graphql": "^16.9.0",
     "lodash-es": "^4.17.21",
     "lodash.camelcase": "^4.3.0",
     "lodash.debounce": "^4.0.8",
