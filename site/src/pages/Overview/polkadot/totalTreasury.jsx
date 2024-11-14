@@ -26,6 +26,10 @@ import {
   useLoansBifrostDotBalance,
   useLoansPendulumDotBalance,
 } from "../../../hooks/treasury/useLoansBalances";
+import useAssetHubForeignAssets from "../../../hooks/assetHub/useAssetHubForeignAssets";
+import { MYTH } from "../../../constants/foreignAssets";
+import { MYTH_TOKEN_ACCOUNT } from "../../../constants/foreignAssets";
+import useFiatPrice from "../../../hooks/useFiatPrice";
 
 const Wrapper = styled(Card)`
   padding: 24px;
@@ -88,7 +92,10 @@ export default function OverviewTotalTreasury() {
   const loansCentrifugeUsdcBalance = useLoansCentrifugeUsdcBalance();
   const loansBifrostDotBalance = useLoansBifrostDotBalance();
   const loansPendulumDotBalance = useLoansPendulumDotBalance();
+  const mythTokenAssetsBalance = useAssetHubForeignAssets(MYTH_TOKEN_ACCOUNT);
 
+  const { price: mythTokenPrice, isLoading: isFiatPriceLoading } =
+    useFiatPrice("mythos");
   const dotPrice = overview?.latestSymbolPrice ?? 0;
 
   const totalDot = BigNumber.sum(
@@ -106,11 +113,16 @@ export default function OverviewTotalTreasury() {
     hydration.usdc || 0,
     loansCentrifugeUsdcBalance.balance,
   );
+  const totalMythToken = BigNumber.sum(mythTokenAssetsBalance.balance || 0);
 
   const total = BigNumber.sum(
     toPrecision(BigNumber(totalDot).multipliedBy(dotPrice), polkadot.decimals),
     toPrecision(totalUSDt, USDt.decimals),
     toPrecision(totalUSDC, USDC.decimals),
+    toPrecision(
+      BigNumber(totalMythToken).multipliedBy(mythTokenPrice),
+      MYTH.decimals,
+    ),
   ).toString();
 
   const isLoading =
@@ -120,7 +132,9 @@ export default function OverviewTotalTreasury() {
     fellowshipTreasuryDotBalance.isLoading ||
     loansCentrifugeUsdcBalance.isLoading ||
     loansBifrostDotBalance.isLoading ||
-    loansPendulumDotBalance.isLoading;
+    loansPendulumDotBalance.isLoading ||
+    mythTokenAssetsBalance.isLoading ||
+    isFiatPriceLoading;
 
   return (
     <Wrapper>
@@ -157,13 +171,12 @@ export default function OverviewTotalTreasury() {
           precision={USDC.decimals}
           symbol={USDC.symbol}
         />
-        {/* TODO */}
         <TokenItem
           icon="asset-myth.svg"
           isLoading={isLoading}
-          totalValue={0}
-          precision={0}
-          symbol="MYTH"
+          totalValue={totalMythToken}
+          precision={MYTH.decimals}
+          symbol={MYTH.symbol}
         />
       </TokenGroup>
     </Wrapper>
