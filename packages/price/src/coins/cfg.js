@@ -16,10 +16,17 @@ async function tick() {
   const latestItem = await getLatestPrice(col);
   let klines;
   if (latestItem) {
-    const nextStartTime = new BigNumber(latestItem.openTime).div(1000).plus(1).toFixed(0);
-    klines = await getKlinesFromCoinGecko(nextStartTime, latestItem.open);
+    const nextStartTime = new BigNumber(latestItem.openTime)
+      .div(1000)
+      .plus(1)
+      .toFixed(0);
+    klines = await getKlinesFromCoinGecko(
+      "centrifuge",
+      nextStartTime,
+      latestItem.open,
+    );
   } else {
-    klines = await getKlinesFromCoinGecko('1622160000');
+    klines = await getKlinesFromCoinGecko("centrifuge", "1622160000");
   }
   await saveCoinGeckoKlines(col, klines);
 
@@ -32,7 +39,7 @@ async function main() {
 
     try {
       latestOpenTime = await tick();
-      console.log(`CFG price saved: ${ formatTime(latestOpenTime) }`);
+      console.log(`CFG price saved: ${formatTime(latestOpenTime)}`);
     } catch (e) {
       console.error(e.message);
     }

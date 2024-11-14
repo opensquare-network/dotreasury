@@ -13,11 +13,15 @@ const gateCoinIdMap = {
   [CHAINS.karura]: "KAR/USDT",
   [CHAINS.bifrost]: "BNC/USDT",
   [CHAINS.integritee]: "TEER/USDT",
+  [CHAINS.mythos]: "MYTH/USDT",
 };
 
-const revertMap = Object.entries(gateCoinIdMap).reduce((result, [key, value]) => {
-  return { ...result, [value]: key };
-}, {});
+const revertMap = Object.entries(gateCoinIdMap).reduce(
+  (result, [key, value]) => {
+    return { ...result, [value]: key };
+  },
+  {},
+);
 
 async function updateTokenPricesByGate() {
   const symbols = Object.values(gateCoinIdMap);
@@ -29,15 +33,21 @@ async function updateTokenPricesByGate() {
     await upsertChainPrice(chain, price, priceUpdateAt);
     chains.push(chain);
   }
-  console.log(`${ chains.join(",") } price by gate updated`);
+  console.log(`${chains.join(",")} price by gate updated`);
 }
 
 function startGateTickerCronJob() {
-  new CronJob("0 */1 * * * *", updateTokenPricesByGate, null, true, "Asia/Shanghai");
+  new CronJob(
+    "0 */1 * * * *",
+    updateTokenPricesByGate,
+    null,
+    true,
+    "Asia/Shanghai",
+  );
 }
 
 module.exports = {
   gateCoinIdMap,
   updateTokenPricesByGate,
   startGateTickerCronJob,
-}
+};

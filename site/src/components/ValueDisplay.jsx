@@ -12,15 +12,21 @@ function checkApproximateEqual(value, rawValue) {
   return getEffectiveNumbers(value) !== getEffectiveNumbers(rawValue);
 }
 
-export default function ValueDisplay({ value, precision, fixed = 2 }) {
+export default function ValueDisplay({
+  value,
+  precision = 0,
+  fixed = 2,
+  prefix = "",
+}) {
   const balance = toPrecision(value, precision);
 
-  if (Number(balance) > 1000000) {
+  if (Number(balance) > 100000) {
     const abbreviateNum = abbreviateBigNumber(balance, fixed);
     const isApproximateEqual = checkApproximateEqual(balance, abbreviateNum);
     return (
       <>
         <span>{isApproximateEqual ? "≈ " : ""}</span>
+        {prefix}
         <span>{abbreviateNum}</span>
       </>
     );
@@ -32,6 +38,7 @@ export default function ValueDisplay({ value, precision, fixed = 2 }) {
   return (
     <>
       <span>{isApproximateEqual ? "≈ " : ""}</span>
+      {prefix}
       <span>{fixedNum.toLocaleString()}</span>
     </>
   );

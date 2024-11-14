@@ -90,6 +90,9 @@ function getDb({ inputDbName, outputDbName, councilDbName }) {
   let councilStatusCol = null;
   let periodCol = null;
 
+  // Collections sync from subsquare
+  let subsquareTreasurySpendCol = null;
+
   async function initDb() {
     client = await MongoClient.connect(mongoUrl, {
       useUnifiedTopology: true,
@@ -143,6 +146,9 @@ function getDb({ inputDbName, outputDbName, councilDbName }) {
     termsCol = councilDb.collection(termsCollectionName);
     termCouncilorCol = councilDb.collection(termCouncilorCollectionName);
     councilStatusCol = councilDb.collection(statusCollectionName);
+
+    // Collections sync from subsquare
+    subsquareTreasurySpendCol = outputDb.collection("subsquareTreasurySpend");
 
     await _createIndexes();
   }
@@ -353,6 +359,11 @@ function getDb({ inputDbName, outputDbName, councilDbName }) {
     return cfgTxFeeCol;
   }
 
+  async function getSubsquareTreasurySpendCollection() {
+    await tryInit(subsquareTreasurySpendCol);
+    return subsquareTreasurySpendCol;
+  }
+
   return {
     initDb,
     getStatusCollection,
@@ -391,6 +402,7 @@ function getDb({ inputDbName, outputDbName, councilDbName }) {
     getTipperCollection,
     getCouncilStatusCol,
     getPeriodCollection,
+    getSubsquareTreasurySpendCollection,
   };
 }
 
