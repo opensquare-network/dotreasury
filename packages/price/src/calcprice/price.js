@@ -22,14 +22,14 @@ const kusamaPriceData = new Map(
       },
     ] = item;
     return [date.split("T")[0], USDT];
-  })
+  }),
 );
 
 const polkadotPriceData = new Map(
   polkadotJsonPriceData.map((item) => {
     const [tempstemp, USD] = item;
     return [dayjs(tempstemp * 1000).format("YYYY-MM-DD"), USD];
-  })
+  }),
 );
 
 function getPriceCollection(chain) {
