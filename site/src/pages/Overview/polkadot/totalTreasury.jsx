@@ -133,7 +133,8 @@ export default function OverviewTotalTreasury() {
     loansCentrifugeUsdcBalance.isLoading ||
     loansBifrostDotBalance.isLoading ||
     loansPendulumDotBalance.isLoading ||
-    mythTokenAssetsBalance.isLoading;
+    mythTokenAssetsBalance.isLoading ||
+    isFiatPriceLoading;
 
   return (
     <Wrapper>
@@ -172,7 +173,7 @@ export default function OverviewTotalTreasury() {
         />
         <TokenItem
           icon="asset-myth.svg"
-          isLoading={isLoading || isFiatPriceLoading}
+          isLoading={isLoading}
           totalValue={totalMythToken}
           precision={MYTH.decimals}
           symbol={MYTH.symbol}
