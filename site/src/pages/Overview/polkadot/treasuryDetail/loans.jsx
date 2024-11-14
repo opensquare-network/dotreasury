@@ -32,13 +32,11 @@ export default function TreasuryDetailLoans() {
     bifrost.isLoading || pendulum.isLoading || centrifuge.isLoading;
 
   const total = BigNumber.sum(
-    toPrecision(
-      BigNumber(bifrost.balance).multipliedBy(dotPrice),
-      polkadot.decimals,
+    BigNumber(toPrecision(bifrost.balance, polkadot.decimals)).multipliedBy(
+      dotPrice,
     ),
-    toPrecision(
-      BigNumber(pendulum.balance).multipliedBy(dotPrice),
-      polkadot.decimals,
+    BigNumber(toPrecision(pendulum.balance, polkadot.decimals)).multipliedBy(
+      dotPrice,
     ),
     toPrecision(centrifuge.balance, USDt.decimals),
   ).toString();

@@ -31,7 +31,7 @@ export default function useFiatPrice(chain) {
   });
 
   return {
-    price: treasury?.price,
+    price: treasury?.price ?? 0,
     isLoading: loading,
   };
 }

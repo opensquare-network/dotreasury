@@ -75,7 +75,9 @@ function TokenItem({ icon, isLoading, totalValue, precision, symbol }) {
   return (
     <Item>
       <img src={`/imgs/${icon}`} alt={symbol} />
-      <ValueDisplay value={totalValue} precision={precision} /> {symbol}
+      <div>
+        <ValueDisplay value={totalValue} precision={precision} /> {symbol}
+      </div>
     </Item>
   );
 }
@@ -113,15 +115,14 @@ export default function OverviewTotalTreasury() {
     hydration.usdc || 0,
     loansCentrifugeUsdcBalance.balance,
   );
-  const totalMythToken = BigNumber.sum(mythTokenAssetsBalance.balance || 0);
+  const totalMythToken = mythTokenAssetsBalance.balance;
 
   const total = BigNumber.sum(
-    toPrecision(BigNumber(totalDot).multipliedBy(dotPrice), polkadot.decimals),
+    BigNumber(toPrecision(totalDot, polkadot.decimals)).multipliedBy(dotPrice),
     toPrecision(totalUSDt, USDt.decimals),
     toPrecision(totalUSDC, USDC.decimals),
-    toPrecision(
-      BigNumber(totalMythToken).multipliedBy(mythTokenPrice),
-      MYTH.decimals,
+    BigNumber(toPrecision(totalMythToken, MYTH.decimals)).multipliedBy(
+      mythTokenPrice,
     ),
   ).toString();
 

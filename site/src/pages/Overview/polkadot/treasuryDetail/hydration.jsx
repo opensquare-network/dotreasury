@@ -39,7 +39,7 @@ export default function TreasuryDetailHydration() {
   const dotPrice = overview?.latestSymbolPrice ?? 0;
 
   const total = BigNumber.sum(
-    toPrecision(BigNumber(dot).multipliedBy(dotPrice), polkadot.decimals),
+    BigNumber(toPrecision(dot, polkadot.decimals)).multipliedBy(dotPrice),
     toPrecision(usdt, USDt.decimals),
     toPrecision(usdc, USDC.decimals),
   ).toString();
