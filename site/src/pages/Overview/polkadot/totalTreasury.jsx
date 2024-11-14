@@ -29,6 +29,7 @@ import {
 import useAssetHubForeignAssets from "../../../hooks/assetHub/useAssetHubForeignAssets";
 import { MYTH } from "../../../constants/foreignAssets";
 import { MYTH_TOKEN_ACCOUNT } from "../../../constants/foreignAssets";
+import useFiatPrice from "../../../hooks/useFiatPrice";
 
 const Wrapper = styled(Card)`
   padding: 24px;
@@ -93,10 +94,9 @@ export default function OverviewTotalTreasury() {
   const loansPendulumDotBalance = useLoansPendulumDotBalance();
   const mythTokenAssetsBalance = useAssetHubForeignAssets(MYTH_TOKEN_ACCOUNT);
 
+  const { price: mythTokenPrice, isLoading: isFiatPriceLoading } =
+    useFiatPrice("mythos");
   const dotPrice = overview?.latestSymbolPrice ?? 0;
-  // TODO: get price from backend.
-  // const mythTokenPrice = overview?.latestMythTokenPrice ?? 0;
-  const mythTokenPrice = 0.1878;
 
   const totalDot = BigNumber.sum(
     hydration.dot || 0,
@@ -170,10 +170,9 @@ export default function OverviewTotalTreasury() {
           precision={USDC.decimals}
           symbol={USDC.symbol}
         />
-        {/* TODO */}
         <TokenItem
           icon="asset-myth.svg"
-          isLoading={isLoading}
+          isLoading={isLoading || isFiatPriceLoading}
           totalValue={totalMythToken}
           precision={MYTH.decimals}
           symbol={MYTH.symbol}
