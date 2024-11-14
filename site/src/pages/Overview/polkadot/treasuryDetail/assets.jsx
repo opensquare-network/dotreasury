@@ -51,7 +51,13 @@ export default function TreasuryDetailAssets() {
           <AssetItem
             title="Main"
             titleLink="https://polkadot.subscan.io/account/13UVJyLnbVp9RBZYFwFGyDvVd1y27Tt8tkntv6Q7JVPhFsTB"
-          ></AssetItem>
+          >
+            <AssetValueDisplay
+              symbol="dot"
+              value={0}
+              precision={polkadot.decimals}
+            />
+          </AssetItem>
 
           <AssetItem
             title="AssetHub"
