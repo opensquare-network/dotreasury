@@ -1,5 +1,4 @@
 import AssetValueDisplay from "./common/assetValueDisplay";
-import AssetWrapper from "./common/assetWrapper";
 import TreasuryDetailItem from "./common/item";
 import BigNumber from "bignumber.js";
 import { toPrecision } from "../../../../utils";
@@ -32,22 +31,18 @@ export default function TreasuryDetailMythToken() {
       content={<ValueDisplay value={totalValue} prefix="$" />}
       isLoading={isLoading}
       footer={
-        <AssetWrapper>
-          <AssetItem
-            title="Distribution Addr"
-            titleLink={`https://assethub-polkadot.subscan.io/account/${MYTH_TOKEN_ACCOUNT}`}
-          >
-            <AssetValueDisplay
-              value={mythTokenBalance}
-              isLoading={isLoading}
-              precision={MYTH.decimals}
-              symbol={MYTH.symbol}
-              valueTooltipContent={
-                <ValueDisplay value={totalValue} prefix="$" />
-              }
-            />
-          </AssetItem>
-        </AssetWrapper>
+        <AssetItem
+          title="Distribution Addr"
+          titleLink={`https://assethub-polkadot.subscan.io/account/${MYTH_TOKEN_ACCOUNT}`}
+        >
+          <AssetValueDisplay
+            value={mythTokenBalance}
+            isLoading={isLoading}
+            precision={MYTH.decimals}
+            symbol={MYTH.symbol}
+            valueTooltipContent={<ValueDisplay value={totalValue} prefix="$" />}
+          />
+        </AssetItem>
       }
     />
   );
