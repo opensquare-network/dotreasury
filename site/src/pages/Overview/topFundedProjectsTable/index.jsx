@@ -15,7 +15,7 @@ import {
   projectsSelector,
 } from "../../../store/reducers/projectSlice";
 import NameCellOrigin from "../../Projects/NameCell";
-import ProjectProposals from "../../../components/ProjectProposals";
+import ProjectProposalsOrigin from "../../../components/ProjectProposals";
 import ValueDisplay from "../../../components/ValueDisplay";
 import styled from "styled-components";
 import { p_14_medium } from "../../../styles/text";
@@ -25,16 +25,13 @@ const NameCell = styled(NameCellOrigin)`
   ${truncate}
 `;
 
-const ProposalsWrapper = styled.div`
-  width: 112px;
-  display: flex;
+const ProjectProposals = styled(ProjectProposalsOrigin)`
   justify-content: flex-end;
 `;
 
 const TotalValueCellWrapper = styled.div`
   ${p_14_medium}
   color: var(--textSecondary);
-  width: 152px;
 `;
 
 const Table = styled(TableOrigin)`
@@ -64,12 +61,10 @@ export default function TopFundedProjectsTable() {
       cellProps: { textAlign: "right" },
       cellRender(_, item) {
         return (
-          <ProposalsWrapper>
-            <ProjectProposals
-              dotProposalsCount={item.fundsCount.polkadot}
-              ksmProposalsCount={item.fundsCount.kusama}
-            />
-          </ProposalsWrapper>
+          <ProjectProposals
+            dotProposalsCount={item.fundsCount.polkadot}
+            ksmProposalsCount={item.fundsCount.kusama}
+          />
         );
       },
     },
