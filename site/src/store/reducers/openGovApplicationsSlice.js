@@ -43,16 +43,14 @@ export const fetchApplicationList =
     dispatch(setLoadingApplicationList(true));
 
     try {
-      const { result } = await api.fetch(
-        "https://polkadot.subsquare.io/api/gov2/referendums",
-        {
-          simple: true,
-          page,
-          pageSize,
-          ...filterData,
-          ...sort,
-        },
-      );
+      const { result } = await api.fetch(`${import.meta.env.VITE_APP_SUBSQUARE_SERVER}/gov2/referendums`, {
+        isActive: true,
+        is_treasury: true,
+        page,
+        pageSize,
+        ...filterData,
+        ...sort,
+      });
       dispatch(
         setApplicationList(
           result || {
