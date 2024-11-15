@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Table } from "../../../../components/Table";
 import TableLoading from "../../../../components/TableLoading";
-import Card from "../../../../components/Card";
-import TableHeader from "./header";
-import { useTableColumns } from "../../../../components/shared/useTableColumns";
+import Filter from "../filter";
+import ResponsivePagination from "../../../../components/ResponsivePagination";
 import { useDispatch, useSelector } from "react-redux";
 import {
   applicationListSelector,
@@ -17,31 +16,12 @@ import {
   DEFAULT_QUERY_PAGE,
   polkadotOpenGovReferendumStatusMap,
 } from "../../../../constants";
-import ResponsivePagination from "../../../../components/ResponsivePagination";
+import Columns from "./columns";
 import { useHistory } from "react-router";
 import api from "../../../../services/scanApi";
-import TextMinor from "../../../../components/TextMinor";
-import JumpToLink from "../../Link";
-import DescriptionCell from "../../../Proposals/DescriptionCell";
-import Divider from "../../../../components/Divider";
-import SortableValue from "../../../../components/SortableValue";
 import useSort from "../../../../hooks/useSort";
-import SortableIndex from "../../../../components/SortableIndex";
-import { useQuery } from "../../../../utils/hooks";
-import startCase from "lodash.startcase";
 import useListFilter from "../filter/useFilter";
-import Filter from "../filter";
-
-const CardWrapper = styled(Card)`
-  padding: 0;
-  table {
-    border-radius: 0 !important;
-    border: none !important;
-  }
-  @media screen and (max-width: 600px) {
-    border-radius: 0;
-  }
-`;
+import { useQuery } from "../../../../utils/hooks";
 
 const Wrapper = styled.div``;
 
@@ -55,8 +35,6 @@ const fetchGov2ReferendaTitle = async (chain, referendumIndex) => {
   return result?.title || "";
 };
 
-// TODO: split code.
-// TODO: fetch data from subsquare.
 export default function ReferendaTable() {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -85,7 +63,6 @@ export default function ReferendaTable() {
 
   useEffect(() => {
     const filterData = getFilterData();
-
     dispatch(
       fetchApplicationList(page - 1, pageSize, filterData, sort && { sort }),
     );
@@ -93,123 +70,30 @@ export default function ReferendaTable() {
 
   useEffect(() => {
     setDataList(applicationList?.items || []);
+  }, [applicationList]);
 
-    return;
-    const dataListPromises = (applicationList?.items || []).map(
-      async (item) => {
-        if (item.description) {
-          return item;
-        }
-
-        let description = await fetchGov2ReferendaTitle(
-          chain,
-          item.referendumIndex,
-        );
-        description =
-          description ||
-          `[${startCase(item.trackInfo.name)}] Referendum #${
-            item.referendumIndex
-          }`;
-        return { ...item, description };
-      },
-    );
-
-    Promise.all(dataListPromises).then((dataList) => setDataList(dataList));
-  }, [chain, applicationList]);
-
-  const { proposeTime, proposer, value, referendaStatus } = useTableColumns({});
-
-  const index = {
-    key: "index",
-    title: "Index",
-    dataIndex: "referendumIndex",
-    cellClassName: "index-cell",
-    cellRender: (value) => <TextMinor>#{value}</TextMinor>,
-  };
-
-  const description = {
-    key: "description",
-    title: "Description",
-    cellClassName: "opengov-description-cell",
-    cellRender: (_, item) => {
-      return (
-        <DescriptionCell
-          description={item.title}
-          trackInfo={item.onchainData?.trackInfo}
-          tally={item.onchainData?.tally}
-        />
-      );
-    },
-  };
-
-  const linkToSubSquare = {
-    key: "link-to-subsquare",
-    title: "",
-    headerCellClassName: "hidden",
-    cellClassName: "link-cell hidden",
-    cellRender: (_, item) => (
-      <JumpToLink
-        href={`https://${chain}.subsquare.io/referenda/referendum/${item.referendumIndex}`}
-      />
-    ),
-  };
-
-  const sortByValue = {
-    ...value,
-    title: (
-      <SortableValue
-        sortField={sortField}
-        setSortField={setSortField}
-        sortDirection={sortDirection}
-        setSortDirection={setSortDirection}
-      />
-    ),
-  };
-
-  const sortableProposalIndex = {
-    ...index,
-    title: (
-      <SortableIndex
-        direction={sortField === "index" ? sortDirection : ""}
-        onClick={() => {
-          setSortField("index");
-          setSortDirection(
-            sortField === "index" && sortDirection === "asc" ? "desc" : "asc",
-          );
-        }}
-      />
-    ),
-  };
-
-  const columns = [
-    sortableProposalIndex,
-    proposeTime,
-    proposer,
-    description,
-    sortByValue,
-    referendaStatus,
-    linkToSubSquare,
-  ];
+  const columns = Columns({
+    sortField,
+    setSortField,
+    sortDirection,
+    setSortDirection,
+    chain,
+  });
 
   const tableData = (dataList || []).map((item) => ({
     ...item,
     referendumIndex: item.referendumIndex,
     proposeAtBlockHeight: item.indexer.blockHeight,
     proposeTime: item.indexer.blockTime,
-    // beneficiary: item.beneficiary,
-    // proposer: item.proposer,
     value: item.amount,
     symbolPrice: item.symbolPrice,
     state: item.state,
     description: item.description,
     trackInfo: item.trackInfo,
-    // tally: item.tally,
   }));
 
   return (
-    <CardWrapper>
-      <TableHeader />
-      <Divider />
+    <>
       <Wrapper>
         <div style={{ display: "flex", padding: "24px", gap: "16px" }}>
           <Filter
@@ -252,6 +136,6 @@ export default function ReferendaTable() {
           setPage(activePage);
         }}
       />
-    </CardWrapper>
+    </>
   );
 }
