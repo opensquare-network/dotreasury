@@ -42,6 +42,7 @@ async function saveTip(detail) {
           "state",
           "isFinal",
         ]),
+        beneficiary: detail.onchainData.meta.who,
         value: detail.onchainData.medianValue,
       },
     },
