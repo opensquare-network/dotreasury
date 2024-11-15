@@ -26,10 +26,11 @@ const CustomTable = styled(SemanticTable)`
     border-bottom: 1px solid var(--neutral300);
     padding: 12px 24px !important;
     color: var(--textTertiary) !important;
+    font-weight: 500 !important;
   }
   th {
     font-style: normal !important;
-    font-weight: normal !important;
+    font-weight: 500 !important;
     font-size: 13px !important;
     font-family: "Inter" !important;
     border-bottom: 0 !important;
@@ -57,6 +58,7 @@ const CustomTable = styled(SemanticTable)`
   .index-cell {
     width: 80px !important;
     max-width: 80px !important;
+    color: var(--textPrimary) !important;
   }
   .title-cell {
     min-width: 208px !important;
@@ -105,7 +107,7 @@ const CustomTable = styled(SemanticTable)`
     max-width: 420px !important;
   }
   td:first-child {
-    font-weight: 400 !important;
+    font-weight: 500 !important;
   }
 
   .short-padding {
