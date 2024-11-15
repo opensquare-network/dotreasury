@@ -47,6 +47,7 @@ import FellowshipReferendaSlash from "../pages/FellowshipReferendaSlash";
 import GasFeeSlash from "../pages/GasFeeSlash";
 import { isCentrifuge } from "../utils/chains";
 import BlockRewardsSlash from "../pages/BlockRewards";
+import Spends from "../pages/Spends";
 
 export default function App() {
   usePreload();
@@ -69,6 +70,7 @@ export default function App() {
               <Route exact path="/" component={Overview} />
               <Route exact path="/tips" component={Tips} />
               <Route exact path="/referenda" component={Referenda} />
+              <Route exact path="/spends" component={Spends} />
               <Route exact path="/proposals" component={Proposals} />
               <Route exact path="/bounties" component={Bounties} />
               <Route exact path="/child-bounties" component={ChildBounties} />
