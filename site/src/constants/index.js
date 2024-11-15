@@ -50,18 +50,11 @@ export const gov2ProposalStatusMap = {
   Awarded: "Awarded",
 };
 
-// TODO: active status
 export const openGovReferendumStatusMap = {
   Confirming: "Confirming",
   Deciding: "Deciding",
   Queueing: "Queueing",
-  Submitted: "Submitted",
-  Approved: "Approved",
-  Cancelled: "Cancelled",
-  Killed: "Killed",
-  TimedOut: "TimedOut",
-  Rejected: "Rejected",
-  Executed: "Executed",
+  Preparing: "Preparing",
 };
 
 export const TreasuryAccount =
