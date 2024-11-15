@@ -50,6 +50,7 @@ export const gov2ProposalStatusMap = {
   Awarded: "Awarded",
 };
 
+// TODO: active status
 export const openGovReferendumStatusMap = {
   Confirming: "Confirming",
   Deciding: "Deciding",

@@ -5,7 +5,7 @@ import { Form } from "semantic-ui-react";
 import Select from "../Select";
 import Range from "../Filter/Range";
 
-const FormWrapper = styled(Form)`
+export const FormWrapper = styled(Form)`
   display: flex;
   gap: 16px;
   flex-grow: 1;
@@ -48,7 +48,7 @@ const Divider = styled.div`
   }
 `;
 
-const tracksOptions = [
+export const tracksOptions = [
   { key: "all", value: "-1", text: "All tracks" },
   ...[
     "Treasurer",
@@ -64,6 +64,67 @@ const tracksOptions = [
   })),
 ];
 
+export function getStatusOptions(statusMap) {
+  return [
+    { key: "all", value: "-1", text: "All status" },
+    ...Array.from(new Set(Object.values(statusMap))).map((key) => ({
+      key,
+      value: Object.entries(statusMap)
+        .filter(([, v]) => v === key)
+        .map(([k]) => k)
+        .join("||"),
+      text: key,
+    })),
+  ];
+}
+
+export const assetsOptions = [
+  { key: "all", value: "-1", text: "All assets" },
+  ...["DOT", "USDC", "USDT", "MYTH"].map((item) => ({
+    key: item,
+    value: item,
+    text: <span style={{ whiteSpace: "nowrap" }}>{item}</span>,
+  })),
+];
+
+export function TrackSelector({ track, setTrack }) {
+  return (
+    <TrackSelect
+      name="tracks"
+      fluid
+      options={tracksOptions}
+      value={track}
+      onChange={(e, { name, value }) => setTrack(value)}
+    />
+  );
+}
+
+export function StatusSelector({ status, setStatus, statusMap }) {
+  const options = getStatusOptions(statusMap);
+
+  return (
+    <StatusSelect
+      name="status"
+      fluid
+      options={options}
+      value={status}
+      onChange={(e, { name, value }) => setStatus(value)}
+    />
+  );
+}
+
+export function AssetsSelector({ assets, setAssets }) {
+  return (
+    <StatusSelect
+      name="status"
+      fluid
+      options={assetsOptions}
+      value={assets}
+      onChange={(e, { name, value }) => setAssets(value)}
+    />
+  );
+}
+
 const Filter = ({
   chain,
   track,
@@ -78,33 +139,13 @@ const Filter = ({
   setMax,
   statusMap,
 }) => {
-  const statusOptions = [
-    { key: "all", value: "-1", text: "All status" },
-    ...Array.from(new Set(Object.values(statusMap))).map((key) => ({
-      key,
-      value: Object.entries(statusMap)
-        .filter(([, v]) => v === key)
-        .map(([k]) => k)
-        .join("||"),
-      text: key,
-    })),
-  ];
-
   return (
     <FormWrapper>
-      <TrackSelect
-        name="tracks"
-        fluid
-        options={tracksOptions}
-        value={track}
-        onChange={(e, { name, value }) => setTrack(value)}
-      />
-      <StatusSelect
-        name="status"
-        fluid
-        options={statusOptions}
-        value={status}
-        onChange={(e, { name, value }) => setStatus(value)}
+      <TrackSelector track={track} setTrack={setTrack} />
+      <StatusSelector
+        status={status}
+        setStatus={setStatus}
+        statusMap={statusMap}
       />
       <Divider />
       <Range

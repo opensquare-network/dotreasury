@@ -14,6 +14,7 @@ export default function useListFilter() {
   const query = new URLSearchParams(search);
   const defaultTrack = query.get("track") || "-1";
   const defaultStatus = getQueryStatus(query);
+  const defaultAssets = query.get("assets") || "-1";
   const defaultRangeType = query.get("range_type") || RangeTypes.Token;
   const defaultMin = query.get("min") || "";
   const defaultMax = query.get("max") || "";
@@ -21,6 +22,7 @@ export default function useListFilter() {
   const history = useHistory();
   const [filterStatus, setFilterStatus] = useState(defaultStatus);
   const [filterTrack, setFilterTrack] = useState(defaultTrack);
+  const [filterAssets, setFilterAssets] = useState(defaultAssets);
   const [rangeType, setRangeType] = useState(defaultRangeType);
   const [min, setMin] = useState(defaultMin);
   const [max, setMax] = useState(defaultMax);
@@ -28,10 +30,18 @@ export default function useListFilter() {
   useEffect(() => {
     setFilterStatus(defaultStatus);
     setFilterTrack(defaultTrack);
+    setFilterAssets(defaultAssets);
     setRangeType(defaultRangeType);
     setMin(defaultMin);
     setMax(defaultMax);
-  }, [defaultStatus, defaultTrack, defaultRangeType, defaultMin, defaultMax]);
+  }, [
+    defaultStatus,
+    defaultTrack,
+    defaultAssets,
+    defaultRangeType,
+    defaultMin,
+    defaultMax,
+  ]);
 
   const symbol = useSelector(chainSymbolSelector);
   const precision = getPrecision(symbol);
@@ -49,6 +59,12 @@ export default function useListFilter() {
       query.set("track", filterTrack);
     } else {
       query.delete("track");
+    }
+
+    if (filterAssets !== "-1") {
+      query.set("assets", filterAssets);
+    } else {
+      query.delete("assets");
     }
 
     if (rangeType !== RangeTypes.Token) {
@@ -72,7 +88,7 @@ export default function useListFilter() {
     history.push({
       search: query.toString(),
     });
-  }, [history, filterStatus, filterTrack, rangeType, min, max]);
+  }, [history, filterStatus, filterTrack, filterAssets, rangeType, min, max]);
 
   const getFilterData = useCallback(() => {
     let filterData = {};
@@ -83,6 +99,10 @@ export default function useListFilter() {
 
     if (filterTrack !== "-1") {
       filterData.track = filterTrack;
+    }
+
+    if (filterAssets !== "-1") {
+      filterData.assets = filterAssets;
     }
 
     let minMax = {};
@@ -105,13 +125,15 @@ export default function useListFilter() {
       ...filterData,
       ...minMax,
     };
-  }, [filterStatus, filterTrack, rangeType, min, max, precision]);
+  }, [filterStatus, filterTrack, filterAssets, rangeType, min, max, precision]);
 
   return {
     filterStatus,
     setFilterStatus,
     filterTrack,
     setFilterTrack,
+    filterAssets,
+    setFilterAssets,
     rangeType,
     setRangeType,
     min,

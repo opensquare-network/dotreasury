@@ -25,13 +25,18 @@ import TextMinor from "../../components/TextMinor";
 import JumpToLink from "./Link";
 import DescriptionCell from "../Proposals/DescriptionCell";
 import Divider from "../../components/Divider";
-import Filter from "../../components/OpenGovFilter";
 import useListFilter from "../../components/OpenGovFilter/useListFilter";
 import SortableValue from "../../components/SortableValue";
 import useSort from "../../hooks/useSort";
 import SortableIndex from "../../components/SortableIndex";
 import { useQuery } from "../../utils/hooks";
 import startCase from "lodash.startcase";
+import {
+  FormWrapper,
+  TrackSelector,
+  StatusSelector,
+  AssetsSelector,
+} from "../../components/OpenGovFilter";
 
 const CardWrapper = styled(Card)`
   padding: 0;
@@ -77,17 +82,14 @@ export default function ReferendaTable() {
     setFilterStatus,
     filterTrack,
     setFilterTrack,
-    rangeType,
-    setRangeType,
-    min,
-    setMin,
-    max,
-    setMax,
+    filterAssets,
+    setFilterAssets,
     getFilterData,
   } = useListFilter();
 
   useEffect(() => {
     const filterData = getFilterData();
+
     dispatch(
       fetchApplicationList(page - 1, pageSize, filterData, sort && { sort }),
     );
@@ -214,20 +216,15 @@ export default function ReferendaTable() {
       <Divider />
       <Wrapper>
         <div style={{ display: "flex", padding: "24px", gap: "16px" }}>
-          <Filter
-            chain={chain}
-            track={filterTrack}
-            setTrack={setFilterTrack}
-            status={filterStatus}
-            setStatus={setFilterStatus}
-            rangeType={rangeType}
-            setRangeType={setRangeType}
-            min={min}
-            setMin={setMin}
-            max={max}
-            setMax={setMax}
-            statusMap={openGovReferendumStatusMap}
-          />
+          <FormWrapper>
+            <TrackSelector track={filterTrack} setTrack={setFilterTrack} />
+            <AssetsSelector assets={filterAssets} setAssets={setFilterAssets} />
+            <StatusSelector
+              status={filterStatus}
+              setStatus={setFilterStatus}
+              statusMap={openGovReferendumStatusMap}
+            />
+          </FormWrapper>
         </div>
         <TableWrapper>
           <TableLoading loading={applicationListLoading}>
