@@ -63,6 +63,13 @@ export const openGovReferendumStatusMap = {
   Executed: "Executed",
 };
 
+export const polkadotOpenGovReferendumStatusMap = {
+  Confirming: "Confirming",
+  Deciding: "Deciding",
+  Queueing: "Queueing",
+  Preparing: "Preparing",
+};
+
 export const TreasuryAccount =
   "F3opxRbN5ZbjJNU511Kj2TLuzFcDq9BGduA9TgiECafpg29";
 

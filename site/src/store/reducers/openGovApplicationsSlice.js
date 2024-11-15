@@ -64,6 +64,7 @@ export const fetchApplicationList =
     }
   };
 
+// TODO: isPolkadot, use Polkadot subsquare api.
 export const fetchApplicationSummary = () => async (dispatch) => {
   const { result } = await api.fetch("/referenda/summary");
   dispatch(setSummary(result || {}));

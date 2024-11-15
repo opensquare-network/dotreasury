@@ -8,8 +8,9 @@ const Wrapper = styled.div``;
 
 export default function Referenda() {
   if (isPolkadot) {
-    return <ReferendaPolkadot />
+    return <ReferendaPolkadot />;
   }
+
   return (
     <Wrapper>
       <Summary />
