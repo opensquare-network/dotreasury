@@ -49,14 +49,6 @@ export default function TableHeader() {
       label: "Passing",
       value: all?.passing ?? 0,
     },
-    {
-      label: "Approved",
-      value: all?.approved ?? 0,
-    },
-    {
-      label: "Rejected",
-      value: all?.rejected ?? 0,
-    },
   ];
 
   return (
