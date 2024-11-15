@@ -4,12 +4,7 @@ import { Table } from "../../../../components/Table";
 import TableLoading from "../../../../components/TableLoading";
 import Filter from "../filter";
 import ResponsivePagination from "../../../../components/ResponsivePagination";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  applicationListSelector,
-  fetchApplicationList,
-  loadingApplicationListSelector,
-} from "../../../../store/reducers/openGovApplicationsSlice";
+import { useSelector } from "react-redux";
 import { chainSelector } from "../../../../store/reducers/chainSlice";
 import {
   DEFAULT_PAGE_SIZE,
@@ -18,35 +13,23 @@ import {
 } from "../../../../constants";
 import Columns from "./columns";
 import { useHistory } from "react-router";
-import api from "../../../../services/scanApi";
 import useSort from "../../../../hooks/useSort";
 import useListFilter from "../filter/useFilter";
 import { useQuery } from "../../../../utils/hooks";
-
-const Wrapper = styled.div``;
+import useFetchReferendumsList from "../useFetchReferendumsList";
 
 const TableWrapper = styled.div`
   overflow: scroll;
 `;
 
-const fetchGov2ReferendaTitle = async (chain, referendumIndex) => {
-  const apiUrl = `https://${chain}.subsquare.io/api/gov2/referendums/${referendumIndex}`;
-  const { result } = await api.fetch(apiUrl);
-  return result?.title || "";
-};
-
 export default function ReferendaTable() {
-  const dispatch = useDispatch();
   const history = useHistory();
   const chain = useSelector(chainSelector);
-  const applicationList = useSelector(applicationListSelector);
-  const applicationListLoading = useSelector(loadingApplicationListSelector);
-  const [dataList, setDataList] = useState(applicationList?.items || []);
   const [page, setPage] = useState(DEFAULT_QUERY_PAGE);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
-  const totalPages = Math.ceil((applicationList?.total || 0) / pageSize);
   const query = useQuery();
   const sort = query.get("sort");
+  const [dataList, setDataList] = useState([]);
 
   const { sortField, setSortField, sortDirection, setSortDirection } =
     useSort();
@@ -61,16 +44,21 @@ export default function ReferendaTable() {
     getFilterData,
   } = useListFilter();
 
-  useEffect(() => {
-    const filterData = getFilterData();
-    dispatch(
-      fetchApplicationList(page - 1, pageSize, filterData, sort && { sort }),
-    );
-  }, [dispatch, page, pageSize, sort, getFilterData]);
+  const filterData = getFilterData();
+  const { data: applicationList, isLoading } = useFetchReferendumsList(
+    page,
+    pageSize,
+    filterData,
+    sort && { sort },
+  );
+
+  const totalPages = Math.ceil((applicationList?.total || 0) / pageSize);
 
   useEffect(() => {
-    setDataList(applicationList?.items || []);
-  }, [applicationList]);
+    if (!isLoading) {
+      setDataList(applicationList?.items || []);
+    }
+  }, [applicationList, isLoading]);
 
   const columns = Columns({
     sortField,
@@ -92,9 +80,30 @@ export default function ReferendaTable() {
     trackInfo: item.trackInfo,
   }));
 
+  const handlePageSizeChange = (newPageSize) => {
+    const searchParams = new URLSearchParams(history.location.search);
+    searchParams.delete("page");
+    history.push({ search: searchParams.toString() });
+
+    setPage(DEFAULT_QUERY_PAGE);
+    setPageSize(newPageSize);
+  };
+
+  const handlePageChange = (_, { activePage }) => {
+    const searchParams = new URLSearchParams(history.location.search);
+    if (activePage === DEFAULT_QUERY_PAGE) {
+      searchParams.delete("page");
+    } else {
+      searchParams.set("page", activePage);
+    }
+    history.push({ search: searchParams.toString() });
+
+    setPage(activePage);
+  };
+
   return (
     <>
-      <Wrapper>
+      <div>
         <div style={{ display: "flex", padding: "24px", gap: "16px" }}>
           <Filter
             track={filterTrack}
@@ -107,34 +116,17 @@ export default function ReferendaTable() {
           />
         </div>
         <TableWrapper>
-          <TableLoading loading={applicationListLoading}>
+          <TableLoading loading={isLoading}>
             <Table columns={columns} data={tableData} />
           </TableLoading>
         </TableWrapper>
-      </Wrapper>
+      </div>
       <ResponsivePagination
         activePage={page}
         totalPages={totalPages}
         pageSize={pageSize}
-        setPageSize={(pageSize) => {
-          const searchParams = new URLSearchParams(history.location.search);
-          searchParams.delete("page");
-          history.push({ search: searchParams.toString() });
-
-          setPage(DEFAULT_QUERY_PAGE);
-          setPageSize(pageSize);
-        }}
-        onPageChange={(_, { activePage }) => {
-          const searchParams = new URLSearchParams(history.location.search);
-          if (activePage === DEFAULT_QUERY_PAGE) {
-            searchParams.delete("page");
-          } else {
-            searchParams.set("page", activePage);
-          }
-          history.push({ search: searchParams.toString() });
-
-          setPage(activePage);
-        }}
+        setPageSize={handlePageSizeChange}
+        onPageChange={handlePageChange}
       />
     </>
   );
