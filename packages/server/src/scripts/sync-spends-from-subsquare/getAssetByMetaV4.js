@@ -1,6 +1,5 @@
-const {
-  KnownPolkadotAssetHubAssets,
-} = require("./knownPolkadotAssetHubAssets");
+const { AssetHubParaChainId, MythosParaChainId } = require("./consts");
+const { KnownPolkadotAssetHubAssets, MYTH } = require("./knownAssets");
 
 function getParachainIdV4(location) {
   const { parents, interior } = location || {};
@@ -10,14 +9,30 @@ function getParachainIdV4(location) {
   return interior?.x1?.[0]?.parachain;
 }
 
-function isLocationFromRelayToAssetHub(location = {}) {
+function isLocationFromRelayToPara(location = {}, parachainId) {
   const { parents, interior } = location || {};
-  return parents === 0 && interior?.x1?.[0]?.parachain === 1000;
+  return parents === 0 && interior?.x1?.[0]?.parachain === parachainId;
+}
+
+function isLocationFromParaToPara(location = {}, parachainId) {
+  const { parents, interior } = location || {};
+  return parents === 1 && interior?.x1?.[0]?.parachain === parachainId;
+}
+
+function isLocationFromRelayToAssetHub(location = {}) {
+  return isLocationFromRelayToPara(location, AssetHubParaChainId);
 }
 
 function isLocationFromParaToAssetHub(location = {}) {
-  const { parents, interior } = location || {};
-  return parents === 1 && interior?.x1?.[0]?.parachain === 1000;
+  return isLocationFromParaToPara(location, AssetHubParaChainId);
+}
+
+function isLocationFromRelayToMythos(location = {}) {
+  return isLocationFromRelayToPara(location, MythosParaChainId);
+}
+
+function isLocationFromParaToMythos(location = {}) {
+  return isLocationFromParaToPara(location, MythosParaChainId);
 }
 
 function _isAssetHubX2(assetId = {}) {
@@ -50,15 +65,30 @@ function getAssetHubAsset(assetId = {}) {
   );
 }
 
+function getMythosAsset(assetId = {}) {
+  if (!isNativeAsset(assetId)) {
+    return null;
+  }
+  return MYTH;
+}
+
 function getAssetByMetaV4(v4 = {}) {
   const { location, assetId } = v4;
   if (
-    !isLocationFromRelayToAssetHub(location) &&
-    !isLocationFromParaToAssetHub(location)
+    isLocationFromRelayToAssetHub(location) ||
+    isLocationFromParaToAssetHub(location)
   ) {
-    return null;
+    return getAssetHubAsset(assetId);
   }
-  return getAssetHubAsset(assetId);
+
+  if (
+    isLocationFromRelayToMythos(location) ||
+    isLocationFromParaToMythos(location)
+  ) {
+    return getMythosAsset(assetId);
+  }
+
+  return null;
 }
 
 module.exports = {

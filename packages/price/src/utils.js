@@ -4,6 +4,7 @@ const decimals = {
   kusama: 12,
   polkadot: 10,
   centrifuge: 18,
+  mythos: 18,
 };
 
 function normalizeTokenValue(value, chain) {
