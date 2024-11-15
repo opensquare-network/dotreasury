@@ -14,7 +14,6 @@ import {
   TitleContainer,
 } from "../BeneficiaryTable.jsx";
 import { NavLink } from "react-router-dom";
-import GrayImage from "../../../components/GrayImage.jsx";
 import Table from "../../../components/Table";
 import TableNoDataCell from "../../../components/TableNoDataCell.jsx";
 import User from "../../../components/User/index.jsx";
@@ -22,6 +21,17 @@ import { USER_ROLES } from "../../../constants/index.js";
 import Balance from "../../../components/Balance.jsx";
 import ProposalsCount from "../../../components/ProposalsCount.jsx";
 import { ProposalsWrapper } from "../../Users/useUsersTableColumns.jsx";
+import { isPolkadot } from "../../../utils/chains/index.js";
+import ValueDisplay from "../../../components/ValueDisplay.jsx";
+import { p_14_medium } from "../../../styles/text.js";
+import styled from "styled-components";
+import IconMask from "../../../components/Icon/Mask.jsx";
+
+const TotalValueCellWrapper = styled.div`
+  ${p_14_medium}
+  color: var(--textSecondary);
+  white-space: nowrap;
+`;
 
 export default function TopBeneficiariesTable() {
   const dispatch = useDispatch();
@@ -38,7 +48,11 @@ export default function TopBeneficiariesTable() {
         <NavLink to={"/users?role=beneficiary"}>
           <LinkButton>
             View All
-            <GrayImage src="/imgs/caret-right.svg" width={24} />
+            <IconMask
+              src="/imgs/caret-right.svg"
+              size={24}
+              color="textSecondary"
+            />
           </LinkButton>
         </NavLink>
       </TitleContainer>
@@ -47,9 +61,11 @@ export default function TopBeneficiariesTable() {
         <Table unstackable>
           <Table.Header>
             <Table.Row>
-              <Table.HeaderCell>Beneficiary</Table.HeaderCell>
-              <Table.HeaderCell textAlign={"right"}>Proposals</Table.HeaderCell>
-              <Table.HeaderCell textAlign={"right"}>
+              <Table.HeaderCell width={3}>Beneficiary</Table.HeaderCell>
+              <Table.HeaderCell textAlign={"right"} width={4}>
+                Proposals
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign={"right"} width={5}>
                 Total value
               </Table.HeaderCell>
             </Table.Row>
@@ -80,12 +96,22 @@ export default function TopBeneficiariesTable() {
                     </TableCell>
 
                     <TableCell textAlign={"right"}>
-                      <Balance
-                        value={item.totalValue.totalBenefit}
-                        usdt={item.totalFiatValue.totalBenefit}
-                        reverse
-                        isUnitPrice={false}
-                      />
+                      {isPolkadot ? (
+                        <TotalValueCellWrapper>
+                          <ValueDisplay
+                            value={item.totalFiatValue.totalBenefit}
+                            prefix="$"
+                            abbreviate={false}
+                          />
+                        </TotalValueCellWrapper>
+                      ) : (
+                        <Balance
+                          value={item.totalValue.totalBenefit}
+                          usdt={item.totalFiatValue.totalBenefit}
+                          reverse
+                          isUnitPrice={false}
+                        />
+                      )}
                     </TableCell>
                   </TableRow>
                 );

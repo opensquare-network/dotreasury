@@ -244,9 +244,10 @@ export function Table({
   treeDataTransform = (data) => data,
   onRowClick = () => {},
   colgroup,
+  className = "",
 }) {
   return (
-    <CustomTable unstackable>
+    <CustomTable unstackable className={className}>
       {colgroup}
       <TableHeader>
         <TableRow>

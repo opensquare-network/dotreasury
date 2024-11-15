@@ -17,10 +17,11 @@ export default function ValueDisplay({
   precision = 0,
   fixed = 2,
   prefix = "",
+  abbreviate = true,
 }) {
   const balance = toPrecision(value, precision);
 
-  if (Number(balance) > 100000) {
+  if (Number(balance) > 100000 && abbreviate) {
     const abbreviateNum = abbreviateBigNumber(balance, fixed);
     const isApproximateEqual = checkApproximateEqual(balance, abbreviateNum);
     return (
