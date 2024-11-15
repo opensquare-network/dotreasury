@@ -78,6 +78,52 @@ async function savePrice(chain, col) {
   }
 }
 
+async function savePriceForTreasurySpend(chain, col) {
+  // Save price for DOT
+  const items = await col
+    .find({
+      $or: [
+        { type: { $in: ["treasuryProposal", "tip"] } },
+        { type: "treasurySpend", "assetType.type": "native" },
+      ],
+    })
+    .toArray();
+
+  for (const item of items) {
+    await savePriceToItem(chain, col, item);
+  }
+
+  // Save price for USDt and USDC
+  const usdItems = await col
+    .find({
+      type: "treasurySpend",
+      "assetType.symbol": { $in: ["USDt", "USDC"] },
+    })
+    .toArray();
+  for (const item of usdItems) {
+    await col.updateOne(
+      { _id: item._id },
+      {
+        $set: {
+          symbolPrice: 1,
+          fiatValue: new BigNumber(item.value).div(Math.pow(10, 6)).toNumber(),
+        },
+      },
+    );
+  }
+
+  // Save price for MYTH
+  const mythItems = await col
+    .find({
+      type: "treasurySpend",
+      "assetType.symbol": "MYTH",
+    })
+    .toArray();
+  for (const item of mythItems) {
+    await savePriceToItem("mythos", col, item);
+  }
+}
+
 async function main() {
   for (const chain of ["kusama", "polkadot", "centrifuge"]) {
     const dbUrl = dbUrls[chain];
@@ -115,40 +161,7 @@ async function main() {
     if (chain === "polkadot") {
       const subsquareTreasurySpendCol =
         await getSubsquareTreasurySpendCollection();
-
-      const items = await subsquareTreasurySpendCol
-        .find({
-          $or: [
-            { type: { $in: ["treasuryProposal", "tip"] } },
-            { type: "treasurySpend", "assetType.type": "native" },
-          ],
-        })
-        .toArray();
-
-      console.log("save price to subsquare treasury spends", items.length);
-      for (const item of items) {
-        await savePriceToItem(chain, subsquareTreasurySpendCol, item);
-      }
-
-      const usdItems = await subsquareTreasurySpendCol
-        .find({
-          type: "treasurySpend",
-          "assetType.symbol": { $in: ["USDt", "USDC"] },
-        })
-        .toArray();
-      for (const item of usdItems) {
-        await subsquareTreasurySpendCol.updateOne(
-          { _id: item._id },
-          {
-            $set: {
-              symbolPrice: 1,
-              fiatValue: new BigNumber(item.value)
-                .div(Math.pow(10, 6))
-                .toNumber(),
-            },
-          },
-        );
-      }
+      await savePriceForTreasurySpend(chain, subsquareTreasurySpendCol);
     }
 
     console.log("Update price successful:", dbName);

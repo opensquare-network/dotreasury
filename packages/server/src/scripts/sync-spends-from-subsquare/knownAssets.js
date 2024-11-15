@@ -1,3 +1,5 @@
+const { MythosParaChainId } = require("./consts");
+
 const KnownPolkadotAssetHubAssets = [
   {
     type: "native",
@@ -24,6 +26,14 @@ const KnownPolkadotAssetHubAssets = [
   },
 ];
 
+const MYTH = {
+  type: "parachain-native",
+  parachainId: MythosParaChainId,
+  symbol: "MYTH",
+  decimals: 18,
+};
+
 module.exports = {
   KnownPolkadotAssetHubAssets,
+  MYTH,
 };

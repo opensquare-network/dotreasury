@@ -11,6 +11,7 @@ const {
   getDotUsdtCollection,
   getKsmUsdtCollection,
   getCfgUsdtCol,
+  getMythUsdtCol,
 } = require("../mongo");
 
 const kusamaPriceData = new Map(
@@ -39,6 +40,8 @@ function getPriceCollection(chain) {
     return getKsmUsdtCollection();
   } else if (chain === "centrifuge") {
     return getCfgUsdtCol();
+  } else if (chain === "mythos") {
+    return getMythUsdtCol();
   } else {
     throw new Error("Unsupport chain " + chain);
   }
@@ -54,7 +57,7 @@ async function getPrice(chain, time) {
     .limit(1)
     .toArray();
 
-  if ("centrifuge" === chain) {
+  if (["centrifuge", "mythos"].includes(chain)) {
     return price.open;
   }
 
