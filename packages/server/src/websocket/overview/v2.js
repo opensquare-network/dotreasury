@@ -20,6 +20,7 @@ const { getLatestSymbolPrice } = require("./common/getLatestSymbolPrice");
 const { calcToBeAwarded } = require("./common/calcToBeAwarded");
 const { calcOutput } = require("./common/calcOutput");
 const { calcCount } = require("./common/calcCount");
+const { getSubsquareTreasurySpendCollection } = require("../../mongo/polkadot");
 
 async function feedOverviewV2(io) {
   try {
@@ -102,6 +103,11 @@ async function calcOverview() {
   const failedProposalCol = await getFailedProposalCollection();
   const failedProposals = await failedProposalCol.find({}).toArray();
 
+  const subsquareTreasurySpendCol = await getSubsquareTreasurySpendCollection();
+  const subsquareTreasurySpends = await subsquareTreasurySpendCol
+    .find({})
+    .toArray();
+
   const count = await calcCount(
     proposals,
     failedProposals,
@@ -111,6 +117,7 @@ async function calcOverview() {
     burntList,
     outputTransferList,
     referendaList,
+    subsquareTreasurySpends,
   );
   const output = await calcOutput(
     proposals,
