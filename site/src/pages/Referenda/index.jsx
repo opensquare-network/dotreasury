@@ -2,15 +2,19 @@ import styled from "styled-components";
 import ReferendaTable from "./ReferendaTable";
 import Summary from "./Summary";
 import { isPolkadot } from "../../utils/chains";
-import PolkadotReferendaTable from "./polkadot";
+import PolkadotReferenda from "./polkadot";
 
 const Wrapper = styled.div``;
 
 export default function Referenda() {
+  if (isPolkadot) {
+    return <PolkadotReferenda />;
+  }
+
   return (
     <Wrapper>
       <Summary />
-      {isPolkadot ? <PolkadotReferendaTable /> : <ReferendaTable />}
+      <ReferendaTable />
     </Wrapper>
   );
 }

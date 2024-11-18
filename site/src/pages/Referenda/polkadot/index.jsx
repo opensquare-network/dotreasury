@@ -3,6 +3,7 @@ import Card from "../../../components/Card";
 import Divider from "../../../components/Divider";
 import TableHeader from "./table/header";
 import Table from "./table";
+import Summary from "./summary";
 
 const CardWrapper = styled(Card)`
   padding: 0;
@@ -15,12 +16,15 @@ const CardWrapper = styled(Card)`
   }
 `;
 
-export default function PolkadotReferendaTable() {
+export default function PolkadotReferenda() {
   return (
-    <CardWrapper>
-      <TableHeader />
-      <Divider />
-      <Table />
-    </CardWrapper>
+    <div>
+      <Summary />
+      <CardWrapper>
+        <TableHeader />
+        <Divider />
+        <Table />
+      </CardWrapper>
+    </div>
   );
 }

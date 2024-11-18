@@ -5,8 +5,6 @@ import DescriptionCell from "../../../Proposals/DescriptionCell";
 import JumpToLink from "../../Link";
 import { useTableColumns } from "../../../../components/shared/useTableColumns";
 import TreasurySpendValueDisplay from "../../../../components/treasurySpendValueDisplay";
-import { getPrecision } from "../../../../utils";
-import Balance from "../../../../components/Balance";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
