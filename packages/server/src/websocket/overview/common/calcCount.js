@@ -7,6 +7,7 @@ async function calcCount(
   burntList = [],
   outputTransferList = [],
   referendaList = [],
+  subsquareTreasurySpends = [],
 ) {
   const unFinishedProposals = proposals.filter(
     ({ state: { name, state } }) =>
@@ -68,12 +69,25 @@ async function calcCount(
     },
   );
 
+  const treasurySpend = {
+    all: subsquareTreasurySpends.length,
+  };
+
   const referenda = {
     unFinished: unFinishedReferenda.length,
     all: referendaList.length,
   };
 
-  return { proposal, tip, bounty, childBounty, burnt, transfer, referenda };
+  return {
+    proposal,
+    tip,
+    bounty,
+    childBounty,
+    burnt,
+    transfer,
+    referenda,
+    treasurySpend,
+  };
 }
 
 module.exports = {
