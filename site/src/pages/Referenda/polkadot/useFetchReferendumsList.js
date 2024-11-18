@@ -41,7 +41,7 @@ export default function useFetchReferendumsList(
     };
 
     fetchData();
-  }, [page, pageSize, filterData, sort]);
+  }, [page, pageSize, JSON.stringify(filterData), JSON.stringify(sort)]);
 
   return { data, isLoading };
 }
