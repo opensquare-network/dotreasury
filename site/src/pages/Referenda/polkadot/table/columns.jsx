@@ -4,8 +4,15 @@ import TextMinor from "../../../../components/TextMinor";
 import DescriptionCell from "../../../Proposals/DescriptionCell";
 import JumpToLink from "../../Link";
 import { useTableColumns } from "../../../../components/shared/useTableColumns";
-import ValueDisplay from "../../../../components/ValueDisplay";
-import { polkadot } from "../../../../utils/chains/polkadot";
+import TreasurySpendValueDisplay from "../../../../components/treasurySpendValueDisplay";
+import { getPrecision } from "../../../../utils";
+import Balance from "../../../../components/Balance";
+import styled from "styled-components";
+
+const Wrapper = styled.div`
+  width: 112px;
+  color: var(--textPrimary);
+`;
 
 const Columns = ({
   sortField,
@@ -49,20 +56,32 @@ const Columns = ({
     ),
   };
 
-  // TODO: multi symbols display
   const amount = {
     key: "amount",
     title: "Value",
-    cellClassName: "index-cell",
+    cellClassName: "balance-cell",
     cellRender: (v_, item) => {
-      if (item?.allSpends) {
-        const { amount, isSpendLocal, symbol = "" } = item?.allSpends[0];
-        const decimals = isSpendLocal ? polkadot.decimals : 0;
+      if (item?.allSpends && item?.allSpends.length > 0) {
         return (
-          <ValueDisplay symbol={symbol} value={amount} precision={decimals} />
+          <div>
+            {item.allSpends.map((spend, index) => {
+              const { amount, isSpendLocal, symbol, assetKind = {} } = spend;
+
+              const displaySymbol = isSpendLocal ? symbol : assetKind?.symbol;
+
+              return (
+                <TreasurySpendValueDisplay
+                  key={index}
+                  isNative={isSpendLocal}
+                  value={amount}
+                  symbol={displaySymbol}
+                />
+              );
+            })}
+          </div>
         );
       }
-      return <div>-</div>;
+      return <Wrapper>-</Wrapper>;
     },
   };
 
