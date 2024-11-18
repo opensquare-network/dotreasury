@@ -6,7 +6,11 @@ import { Table } from "../../components/Table";
 import TableLoading from "../../components/TableLoading";
 import ResponsivePagination from "../../components/ResponsivePagination";
 import { useState } from "react";
-import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../constants";
+import {
+  DEFAULT_PAGE_SIZE,
+  DEFAULT_QUERY_PAGE,
+  openGovReferendumStatusMap,
+} from "../../constants";
 import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -23,10 +27,18 @@ import SortableValue from "../../components/SortableValue";
 import useSort from "../../hooks/useSort";
 import DescriptionCell from "../Proposals/DescriptionCell";
 import TextMinor from "../../components/TextMinor";
+import Filter from "../../components/Filter";
+import useListFilter from "../../components/Filter/useListFilter";
 
 const Header = styled.div`
   padding: 24px;
   ${h4_16_semibold}
+`;
+
+const FilterWrapper = styled.div`
+  display: flex;
+  gap: 16px;
+  padding: 24px;
 `;
 
 const TableWrapper = styled.div`
@@ -54,9 +66,25 @@ export default function TreasurySpendsTable() {
   const { sortField, setSortField, sortDirection, setSortDirection } =
     useSort();
 
+  const {
+    filterStatus,
+    setFilterStatus,
+    rangeType,
+    setRangeType,
+    min,
+    setMin,
+    max,
+    setMax,
+    getFilterData,
+  } = useListFilter();
+
   useEffect(() => {
-    dispatch(fetchTreasurySpendsList(page - 1, pageSize, {}, sort && { sort }));
-  }, [dispatch, page, pageSize, sort]);
+    const filterData = getFilterData();
+
+    dispatch(
+      fetchTreasurySpendsList(page - 1, pageSize, filterData, sort && { sort }),
+    );
+  }, [dispatch, page, pageSize, sort, getFilterData]);
 
   const { proposeTime, beneficiary, value, referendaStatus } = useTableColumns(
     {},
@@ -134,6 +162,21 @@ export default function TreasurySpendsTable() {
       <Header>Treasury Spends</Header>
 
       <Divider />
+
+      <FilterWrapper>
+        <Filter
+          chain={currentChain}
+          status={filterStatus}
+          setStatus={setFilterStatus}
+          rangeType={rangeType}
+          setRangeType={setRangeType}
+          min={min}
+          setMin={setMin}
+          max={max}
+          setMax={setMax}
+          statusMap={openGovReferendumStatusMap}
+        />
+      </FilterWrapper>
 
       <TableWrapper>
         <TableLoading loading={loadingTreasurySpendsList}>
