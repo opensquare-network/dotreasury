@@ -1,10 +1,11 @@
 import React from "react";
-import SortableValue from "../../../../components/SortableValue";
 import SortableIndex from "../../../../components/SortableIndex";
 import TextMinor from "../../../../components/TextMinor";
 import DescriptionCell from "../../../Proposals/DescriptionCell";
 import JumpToLink from "../../Link";
 import { useTableColumns } from "../../../../components/shared/useTableColumns";
+import ValueDisplay from "../../../../components/ValueDisplay";
+import { polkadot } from "../../../../utils/chains/polkadot";
 
 const Columns = ({
   sortField,
@@ -13,7 +14,7 @@ const Columns = ({
   setSortDirection,
   chain,
 }) => {
-  const { proposeTime, proposer, value, referendaStatus } = useTableColumns({});
+  const { proposeTime, proposer, referendaStatus } = useTableColumns({});
 
   const index = {
     key: "index",
@@ -48,16 +49,21 @@ const Columns = ({
     ),
   };
 
-  const sortByValue = {
-    ...value,
-    title: (
-      <SortableValue
-        sortField={sortField}
-        setSortField={setSortField}
-        sortDirection={sortDirection}
-        setSortDirection={setSortDirection}
-      />
-    ),
+  // TODO: multi symbols display
+  const amount = {
+    key: "amount",
+    title: "Value",
+    cellClassName: "index-cell",
+    cellRender: (v_, item) => {
+      if (item?.allSpends) {
+        const { amount, isSpendLocal, symbol = "" } = item?.allSpends[0];
+        const decimals = isSpendLocal ? polkadot.decimals : 0;
+        return (
+          <ValueDisplay symbol={symbol} value={amount} precision={decimals} />
+        );
+      }
+      return <div>-</div>;
+    },
   };
 
   const sortableProposalIndex = {
@@ -80,7 +86,7 @@ const Columns = ({
     proposeTime,
     proposer,
     description,
-    sortByValue,
+    amount,
     referendaStatus,
     linkToSubSquare,
   ];
