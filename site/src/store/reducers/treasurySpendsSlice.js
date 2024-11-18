@@ -14,6 +14,8 @@ const treasurySpendsSlice = createSlice({
     },
     loadingTreasurySpendsList: false,
     treasurySpendsListCount: 0,
+    totalExpenditure: 0,
+    loadingTotalExpenditure: false,
   },
   reducers: {
     setTreasurySpendsList(state, action) {
@@ -24,6 +26,12 @@ const treasurySpendsSlice = createSlice({
     },
     setTreasurySpendsListCount(state, action) {
       state.treasurySpendsListCount = action.payload;
+    },
+    setTotalExpenditure(state, action) {
+      state.totalExpenditure = action.payload;
+    },
+    setLoadingTotalExpenditure(state, action) {
+      state.loadingTotalExpenditure = action.payload;
     },
   },
 });
@@ -59,10 +67,26 @@ export const fetchTreasurySpendsList = (
   };
 };
 
+export const fetchTreasurySpendsTotalExpenditure = () => {
+  return async (dispatch) => {
+    dispatch(setLoadingTotalExpenditure(true));
+    try {
+      const { result } = await api.fetch(
+        "/v2/treasury/spends/total-expenditure",
+      );
+      dispatch(setTotalExpenditure(result?.totalFiatValue || 0));
+    } finally {
+      dispatch(setLoadingTotalExpenditure(false));
+    }
+  };
+};
+
 export const {
   setTreasurySpendsList,
   setLoadingTreasurySpendsList,
   setTreasurySpendsListCount,
+  setTotalExpenditure,
+  setLoadingTotalExpenditure,
 } = treasurySpendsSlice.actions;
 
 export const treasurySpendsListSelector = (state) =>
@@ -71,5 +95,8 @@ export const loadingTreasurySpendsListSelector = (state) =>
   state[name].loadingTreasurySpendsList;
 export const treasurySpendsListCountSelector = (state) =>
   state[name].treasurySpendsListCount;
+export const totalExpenditureSelector = (state) => state[name].totalExpenditure;
+export const loadingTotalExpenditureSelector = (state) =>
+  state[name].loadingTotalExpenditure;
 
 export default treasurySpendsSlice.reducer;
