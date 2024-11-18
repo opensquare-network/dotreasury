@@ -11,7 +11,7 @@ export default function useListFilter() {
   const query = new URLSearchParams(search);
   const defaultTrack = query.get("track") || "-1";
   const defaultStatus = getQueryStatus(query);
-  const defaultAssets = query.get("assets") || "-1";
+  const defaultAssets = query.get("asset") || "-1";
 
   const history = useHistory();
   const [filterStatus, setFilterStatus] = useState(defaultStatus);
@@ -40,9 +40,9 @@ export default function useListFilter() {
     }
 
     if (filterAssets !== "-1") {
-      query.set("assets", filterAssets);
+      query.set("asset", filterAssets);
     } else {
-      query.delete("assets");
+      query.delete("asset");
     }
 
     history.push({
@@ -62,7 +62,7 @@ export default function useListFilter() {
     }
 
     if (filterAssets !== "-1") {
-      filterData.assets = filterAssets;
+      filterData.asset = filterAssets;
     }
 
     return {
