@@ -24,6 +24,7 @@ async function updateTokenPricesByKraken() {
     const chains = Object.values(CHAINS).filter(chain => ChainTokenMap[chain] === token);
     for (const chain of chains) {
       await upsertChainPrice(chain, price, priceUpdateAt);
+      console.log(`${chains} price by kraken updated`);
     }
   }
 }
