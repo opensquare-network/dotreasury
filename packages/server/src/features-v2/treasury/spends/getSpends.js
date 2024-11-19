@@ -36,6 +36,27 @@ function getAssetFilter(ctx) {
   return { type: "treasurySpend", "assetType.symbol": asset };
 }
 
+function getSort(ctx) {
+  const { sort } = ctx.query;
+  if (!sort) {
+    return;
+  }
+
+  let [sortField, sortDirection] = sort.split("_");
+
+  let fieldName;
+  if (sortField === "fiat") {
+    fieldName = "fiatValue";
+  } else {
+    throw new HttpError(400, "Invalid sort field");
+  }
+
+  return {
+    [fieldName]: sortDirection === "desc" ? -1 : 1,
+    "indexer.blockHeight": -1,
+  };
+}
+
 async function getSpends(ctx) {
   const { page, pageSize } = extractPage(ctx);
   if (pageSize === 0 || page < 0) {
@@ -49,10 +70,13 @@ async function getSpends(ctx) {
     ...getRangeCondition(ctx),
   };
 
+  const sort = getSort(ctx);
+
   const col = await getSubsquareTreasurySpendCollection();
   const total = await col.countDocuments(q);
   const items = await col
     .find(q)
+    .sort(sort)
     .skip(page * pageSize)
     .limit(pageSize)
     .toArray();
