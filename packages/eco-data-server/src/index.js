@@ -5,9 +5,10 @@ const { createServer } = require("http");
 const { schema } = require("./schema");
 const { createChainApis } = require("./apis");
 const { updateChainsTreasuryBalance } = require("./jobs/treasury");
-const { startGateTickerCronJob } = require("./jobs/ccxt/gate");
-const { startKrakenTickerCronJob } = require("./jobs/ccxt/kraken");
-const { startBinanceTickerCronJob } = require("./jobs/ccxt/binance");
+const {
+  startGateTickerCronJob,
+  startKrakenTickerCronJob,
+} = require("./jobs/ccxt/cron");
 
 const port = parseInt(process.env.PORT) || 5011;
 
@@ -17,7 +18,6 @@ function main() {
     updateChainsTreasuryBalance().catch(console.error);
     startGateTickerCronJob();
     startKrakenTickerCronJob();
-    startBinanceTickerCronJob();
   });
 
   const yoga = createYoga({ schema });

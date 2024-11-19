@@ -1,9 +1,9 @@
-const { CHAINS } = require("../endpoints");
 const { Kintsugi, Interlay } = require("@interlay/monetary-js");
 const {
   utils: { bigAdd },
 } = require("@osn/scan-common");
 const { getApis } = require("@osn/polkadot-api-container");
+const { CHAINS } = require("../../consts");
 
 const treasuryAccounts = [
   "wd9yNSwR5jsJWJoLHrMKt4K2T7R5392YmZoRdpqijnpLGzEcT", // modlmod/trsy
