@@ -1,6 +1,10 @@
 require("dotenv").config();
-const { updateTokenPricesByKraken } = require("./jobs/ccxt/tokens");
+const {
+  // updateTokenPricesByKraken,
+  updateTokenPricesByGate,
+} = require("./jobs/ccxt/tokens");
 
 (async () => {
-  await updateTokenPricesByKraken();
+  await updateTokenPricesByGate();
+  process.exit(0);
 })();

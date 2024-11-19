@@ -1,7 +1,13 @@
-const { gateTokenIdMap, revertGateTokenIdMap } = require("../../../consts");
+const {
+  gateTokenIdMap,
+  revertGateTokenIdMap,
+  CHAINS,
+  ChainTokenMap,
+} = require("../../../consts");
 const { fetchTickers } = require("../comm/tickers");
 const { gate: Gate } = require("ccxt");
 const { batchUpdateTokenPrices } = require("../../../mongo");
+const { upsertChainPrice } = require("../../../mongo/service");
 
 const gate = new Gate();
 
@@ -17,6 +23,14 @@ async function updateTokenPricesByGate() {
   });
 
   await batchUpdateTokenPrices(tokenPriceArr);
+
+  for (const tokenPrice of tokenPriceArr) {
+    const { token, price, priceUpdateAt } = tokenPrice;
+    const chains = Object.values(CHAINS).filter(chain => ChainTokenMap[chain] === token);
+    for (const chain of chains) {
+      await upsertChainPrice(chain, price, priceUpdateAt);
+    }
+  }
 }
 
 module.exports = {

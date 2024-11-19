@@ -1,7 +1,8 @@
 const { kraken: Kraken } = require("ccxt");
-const { krakenTokenIdMap, revertKrakenTokenIdMap } = require("../../../consts");
+const { krakenTokenIdMap, revertKrakenTokenIdMap, CHAINS, ChainTokenMap } = require("../../../consts");
 const { fetchTickers } = require("../comm/tickers");
 const { batchUpdateTokenPrices } = require("../../../mongo");
+const { upsertChainPrice } = require("../../../mongo/service");
 
 const kraken = new Kraken();
 
@@ -16,8 +17,15 @@ async function updateTokenPricesByKraken() {
     return { token, price, priceUpdateAt, source };
   });
 
-  console.log("tokenPriceArr", tokenPriceArr);
   await batchUpdateTokenPrices(tokenPriceArr);
+
+  for (const tokenPrice of tokenPriceArr) {
+    const { token, price, priceUpdateAt } = tokenPrice;
+    const chains = Object.values(CHAINS).filter(chain => ChainTokenMap[chain] === token);
+    for (const chain of chains) {
+      await upsertChainPrice(chain, price, priceUpdateAt);
+    }
+  }
 }
 
 module.exports = {
