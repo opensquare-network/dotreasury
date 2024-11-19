@@ -16,6 +16,7 @@ const tokens = Object.freeze({
   "PHA": "PHA",
   "ACA": "ACA",
   "MOVR": "MOVR",
+  "MYTH": "MYTH",
 });
 
 const ChainTokenMap = Object.freeze({
@@ -51,6 +52,7 @@ const gateTokenIdMap = Object.freeze({
   [tokens.INTR]: "INTR/USDT",
   [tokens.KINT]: "KINT/USDT",
   [tokens.PHA]: "PHA/USDT",
+  [tokens.MYTH]: "MYTH/USDT",
 });
 
 const krakenTokenIdMap = Object.freeze({
