@@ -61,7 +61,7 @@ const endpoints = Object.freeze({
   ],
   darwinia: [
     "wss://rpc.darwinia.network",
-    "wss://darwinia-rpc.darwiniacommunitydao.xyz/",
+    "wss://darwinia.rpc.subquery.network/public/ws",
   ],
   integritee: [
     "wss://kusama.api.integritee.network/",
