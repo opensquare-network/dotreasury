@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: setup node LTS
         uses: actions/setup-node@v3
@@ -47,7 +47,7 @@ jobs:
     needs: [lint]
     steps:
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: setup node LTS
         uses: actions/setup-node@v3
@@ -74,7 +74,7 @@ jobs:
         with:
           cmd: install
           dir: landing
-          
+
       - name: build landing
         uses: borales/actions-yarn@v4
         with:
