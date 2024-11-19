@@ -18,9 +18,7 @@ let statusCol = null;
 let priceCol = null;
 
 async function initDb() {
-  client = await MongoClient.connect(mongoUrl, {
-    useUnifiedTopology: true,
-  });
+  client = await MongoClient.connect(mongoUrl);
 
   const dbName = getDbName()
   db = client.db(dbName);
