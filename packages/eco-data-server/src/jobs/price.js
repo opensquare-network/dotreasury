@@ -1,7 +1,7 @@
-const { CHAINS } = require("../apis/endpoints");
 const { upsertChainPrice } = require("../mongo/service");
 const { gateCoinIdMap } = require("./ccxt/gate");
 const { CronJob } = require("cron");
+const { CHAINS } = require("../consts");
 
 async function coingeckoGet(api) {
   const url = `https://api.coingecko.com/api/${api}`;

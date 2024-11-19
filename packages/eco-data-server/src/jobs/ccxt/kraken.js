@@ -1,8 +1,8 @@
 const { kraken: Kraken } = require("ccxt");
-const { CHAINS } = require("../../apis/endpoints");
 const { upsertChainPrice } = require("../../mongo/service");
 const { CronJob } = require("cron");
 const { fetchTickers } = require("./comm/tickers");
+const { CHAINS } = require("../../consts");
 
 const kraken = new Kraken();
 

@@ -1,8 +1,8 @@
 const { binance: Binance } = require("ccxt");
 const { upsertChainPrice } = require("../../mongo/service");
-const { CHAINS } = require("../../apis/endpoints");
 const { CronJob } = require("cron");
 const { fetchTickers } = require("./comm/tickers");
+const { CHAINS } = require("../../consts");
 
 const binance = new Binance();
 
