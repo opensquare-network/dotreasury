@@ -6,21 +6,34 @@ const {
   getSubsquareTreasurySpendCollection,
 } = require("../../../mongo/polkadot");
 
-function getCondition(ctx) {
-  const { status, track } = ctx.request.query;
-
-  const condition = {};
-  if (status) {
-    condition["state.state"] = status;
+function getStatusFilter(ctx) {
+  const { status } = ctx.request.query;
+  if (!status) {
+    return {};
   }
 
-  if (track) {
-    condition["track.name"] = track;
+  return { "state.state": status };
+}
+
+function getAssetFilter(ctx) {
+  const { asset } = ctx.request.query;
+  if (!asset) {
+    return {};
   }
 
-  const rangeCond = getRangeCondition(ctx);
+  if (asset === "native") {
+    return {
+      $or: [
+        { type: { $in: ["tip", "treasuryProposal"] } },
+        {
+          type: "treasurySpend",
+          "assetType.type": "native",
+        },
+      ],
+    };
+  }
 
-  return { ...condition, ...rangeCond };
+  return { type: "treasurySpend", "assetType.symbol": asset };
 }
 
 async function getSpends(ctx) {
@@ -30,15 +43,18 @@ async function getSpends(ctx) {
     return;
   }
 
-  const condition = getCondition(ctx);
+  const q = {
+    ...getStatusFilter(ctx),
+    ...getAssetFilter(ctx),
+    ...getRangeCondition(ctx),
+  };
+
   const col = await getSubsquareTreasurySpendCollection();
-  const total = await col.countDocuments(condition);
+  const total = await col.countDocuments(q);
   const items = await col
-    .aggregate([
-      { $match: condition },
-      { $skip: page * pageSize },
-      { $limit: pageSize },
-    ])
+    .find(q)
+    .skip(page * pageSize)
+    .limit(pageSize)
     .toArray();
 
   ctx.body = {
