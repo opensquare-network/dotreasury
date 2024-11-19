@@ -1,8 +1,8 @@
 const { upsertChainTreasury } = require("../../mongo/service");
-const { CHAINS } = require("../endpoints");
 const { queryBifrostTreasuryBalance } = require("./bifrost");
 const { queryChainTreasuryBalance } = require("./balance");
 const { queryKintsugiTreasuryBalance } = require("./kintsugi");
+const { CHAINS } = require("../../consts");
 
 async function updateTreasuryBalance(chain) {
   let balance;

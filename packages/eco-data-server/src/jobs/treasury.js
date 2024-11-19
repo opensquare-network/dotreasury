@@ -1,5 +1,5 @@
-const { CHAINS } = require("../apis/endpoints");
 const { updateTreasuryBalance } = require("../apis/treasury");
+const { CHAINS } = require("../consts");
 
 async function updateChainsTreasuryBalance() {
   const chains = Object.keys(CHAINS);

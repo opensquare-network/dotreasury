@@ -1,22 +1,3 @@
-const CHAINS = Object.freeze({
-  polkadot: "polkadot",
-  kusama: "kusama",
-  centrifuge: "centrifuge",
-  khala: "khala",
-  phala: "phala",
-  basilisk: "basilisk",
-  hydradx: "hydradx",
-  interlay: "interlay",
-  kintsugi: "kintsugi",
-  acala: "acala",
-  karura: "karura",
-  bifrost: "bifrost",
-  darwinia: "darwinia",
-  integritee: "integritee",
-  moonbeam: "moonbeam",
-  moonriver: "moonriver",
-});
-
 const endpoints = Object.freeze({
   polkadot: [
     "wss://rpc.polkadot.io",
@@ -80,7 +61,7 @@ const endpoints = Object.freeze({
   ],
   darwinia: [
     "wss://rpc.darwinia.network",
-    "wss://darwinia-rpc.darwiniacommunitydao.xyz/",
+    "wss://darwinia.rpc.subquery.network/public/ws",
   ],
   integritee: [
     "wss://kusama.api.integritee.network/",
@@ -90,5 +71,4 @@ const endpoints = Object.freeze({
 
 module.exports = {
   endpoints,
-  CHAINS,
 }

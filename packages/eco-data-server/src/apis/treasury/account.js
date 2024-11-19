@@ -1,4 +1,3 @@
-const { CHAINS } = require("../endpoints");
 const { u8aConcat } = require("@polkadot/util");
 
 const EMPTY_U8A_32 = new Uint8Array(32);
