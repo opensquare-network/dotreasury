@@ -1,5 +1,5 @@
 const { kraken: Kraken } = require("ccxt");
-const { krakenTokenIdMap, revertGateTokenIdMap } = require("../../../consts");
+const { krakenTokenIdMap, revertKrakenTokenIdMap } = require("../../../consts");
 const { fetchTickers } = require("../comm/tickers");
 const { batchUpdateTokenPrices } = require("../../../mongo");
 
@@ -12,7 +12,7 @@ async function updateTokenPricesByKraken() {
   const tickers = await fetchTickers(kraken, symbols);
   const tokenPriceArr = tickers.map(ticker => {
     const { symbol, price, priceUpdateAt } = ticker;
-    const token = revertGateTokenIdMap[symbol];
+    const token = revertKrakenTokenIdMap[symbol];
     return { token, price, priceUpdateAt, source };
   });
 
