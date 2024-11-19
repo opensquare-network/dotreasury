@@ -100,7 +100,7 @@ export default function OverviewTotalTreasury() {
   const relayChainAssetsBalance = useQueryRelayChainFree();
 
   const { price: mythTokenPrice, isLoading: isFiatPriceLoading } =
-    useFiatPrice("mythos");
+    useFiatPrice("MYTH");
   const dotPrice = overview?.latestSymbolPrice ?? 0;
 
   const totalDot = BigNumber.sum(

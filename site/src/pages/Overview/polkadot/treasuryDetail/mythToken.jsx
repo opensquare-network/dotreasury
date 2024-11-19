@@ -12,7 +12,7 @@ import AssetItem from "./common/assetItem";
 export default function TreasuryDetailMythToken() {
   const mythTokenAssetsBalance = useAssetHubForeignAssets(MYTH_TOKEN_ACCOUNT);
   const { price: mythTokenPrice, isLoading: isFiatPriceLoading } =
-    useFiatPrice("mythos");
+    useFiatPrice("MYTH");
 
   const mythTokenBalance = mythTokenAssetsBalance.balance;
 
