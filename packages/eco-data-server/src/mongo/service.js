@@ -36,7 +36,7 @@ async function batchUpdateTokenPrices(arr = []) {
   const bulk = col.initializeUnorderedBulkOp();
   for (const item of arr) {
     const { token, price, priceUpdateAt, source } = item;
-    bulk.find({ token }).upsert().updateOne({ $set: { price, priceUpdateAt, source } });
+    bulk.find({ token }).upsert().updateOne({ $set: { token, price, priceUpdateAt, source } });
   }
 
   await bulk.execute();
