@@ -23,7 +23,6 @@ import { useQuery } from "../../utils/hooks";
 import { useTableColumns } from "../../components/shared/useTableColumns";
 import JumpToLink from "../Referenda/Link";
 import { currentChain } from "../../utils/chains";
-import SortableValue from "../../components/SortableValue";
 import useSort from "../../hooks/useSort";
 import DescriptionCell from "../Proposals/DescriptionCell";
 import TextMinor from "../../components/TextMinor";
@@ -31,6 +30,7 @@ import TreasurySpendsFilter from "../../components/TreasurySpendsFilter";
 import { useTreasurySpendsFilter } from "../../components/TreasurySpendsFilter/useListFilter";
 import ValueDisplay from "../../components/ValueDisplay";
 import { space_y } from "../../styles/tailwindcss";
+import SortableSingleFiatValue from "../../components/SortableValue/SortableSingleFiatValue";
 
 const Header = styled.div`
   padding: 24px;
@@ -131,7 +131,7 @@ export default function TreasurySpendsTable() {
     ...value,
     cellClassName: "treasury-spends-value-cell",
     title: (
-      <SortableValue
+      <SortableSingleFiatValue
         sortField={sortField}
         setSortField={setSortField}
         sortDirection={sortDirection}
