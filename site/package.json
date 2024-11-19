@@ -10,6 +10,7 @@
     "@osn/constants": "^1.1.2",
     "@osn/polkadot-react-identicon": "1.0.10",
     "@polkadot/api": "12.0.2",
+    "@polkadot/types": "12.0.2",
     "@polkadot/extension-dapp": "0.48.1",
     "@reduxjs/toolkit": "^1.7.2",
     "bignumber.js": "^9.1.1",
