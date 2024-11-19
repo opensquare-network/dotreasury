@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { find } from "lodash-es";
 
 import Select from "../../components/Select";
 import CompactInput from "../../components/CompactInput";
 import { useEffect } from "react";
 import { symbolFromNetwork } from "../../utils";
+import { p_12_medium } from "../../styles/text";
 
 const Wrapper = styled.div`
   display: flex;
@@ -30,6 +32,10 @@ const RangeSelect = styled(Select)`
   @media screen and (max-width: 800px) {
     width: 100%;
   }
+`;
+
+const RangeLabel = styled.div`
+  ${p_12_medium}
 `;
 
 const RangeWrapper = styled.div`
@@ -120,6 +126,7 @@ const Range = ({
   chain,
   rangeType,
   setRangeType,
+  rangeReadonly = false,
   min,
   setMin,
   max,
@@ -153,13 +160,17 @@ const Range = ({
 
   return (
     <Wrapper>
-      <RangeSelect
-        name="range"
-        fluid
-        options={rangeOptions}
-        value={rangeType}
-        onChange={(e, { name, value }) => setRangeType(value)}
-      />
+      {rangeReadonly ? (
+        <RangeLabel>{find(rangeOptions, { value: rangeType }).text}</RangeLabel>
+      ) : (
+        <RangeSelect
+          name="range"
+          fluid
+          options={rangeOptions}
+          value={rangeType}
+          onChange={(e, { name, value }) => setRangeType(value)}
+        />
+      )}
       <RangeInput
         prefix={prefix}
         suffix={suffix}

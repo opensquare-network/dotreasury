@@ -63,6 +63,13 @@ export const openGovReferendumStatusMap = {
   Executed: "Executed",
 };
 
+export const treasurySpendsStatusMap = {
+  Approved: "Approved",
+  Paid: "Paid",
+  Processed: "Processed",
+  Voided: "Voided",
+};
+
 export const TreasuryAccount =
   "F3opxRbN5ZbjJNU511Kj2TLuzFcDq9BGduA9TgiECafpg29";
 

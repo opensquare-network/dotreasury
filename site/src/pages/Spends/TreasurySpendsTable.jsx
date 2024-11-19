@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Card from "../../components/Card";
-import { h4_16_semibold } from "../../styles/text";
+import { h4_16_semibold, p_12_medium } from "../../styles/text";
 import Divider from "../../components/Divider";
 import { Table } from "../../components/Table";
 import TableLoading from "../../components/TableLoading";
@@ -9,7 +9,7 @@ import { useState } from "react";
 import {
   DEFAULT_PAGE_SIZE,
   DEFAULT_QUERY_PAGE,
-  openGovReferendumStatusMap,
+  treasurySpendsStatusMap,
 } from "../../constants";
 import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,8 +27,10 @@ import SortableValue from "../../components/SortableValue";
 import useSort from "../../hooks/useSort";
 import DescriptionCell from "../Proposals/DescriptionCell";
 import TextMinor from "../../components/TextMinor";
-import Filter from "../../components/Filter";
-import useListFilter from "../../components/Filter/useListFilter";
+import TreasurySpendsFilter from "../../components/TreasurySpendsFilter";
+import { useTreasurySpendsFilter } from "../../components/TreasurySpendsFilter/useListFilter";
+import ValueDisplay from "../../components/ValueDisplay";
+import { space_y } from "../../styles/tailwindcss";
 
 const Header = styled.div`
   padding: 24px;
@@ -50,6 +52,16 @@ const TableWrapper = styled.div`
   }
 `;
 
+const ValueCellWrapper = styled.div`
+  ${space_y(2)}
+`;
+const ValueDisplayWrapper = styled.div`
+  color: var(--textPrimary);
+`;
+const ValueDisplayFiatWrapper = styled.div`
+  ${p_12_medium}
+`;
+
 export default function TreasurySpendsTable() {
   const [page, setPage] = useState(DEFAULT_QUERY_PAGE);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
@@ -69,14 +81,14 @@ export default function TreasurySpendsTable() {
   const {
     filterStatus,
     setFilterStatus,
-    rangeType,
-    setRangeType,
+    filterAsset,
+    setFilterAsset,
     min,
     setMin,
     max,
     setMax,
     getFilterData,
-  } = useListFilter();
+  } = useTreasurySpendsFilter();
 
   useEffect(() => {
     const filterData = getFilterData();
@@ -117,6 +129,7 @@ export default function TreasurySpendsTable() {
 
   const sortByValue = {
     ...value,
+    cellClassName: "treasury-spends-value-cell",
     title: (
       <SortableValue
         sortField={sortField}
@@ -125,6 +138,26 @@ export default function TreasurySpendsTable() {
         setSortDirection={setSortDirection}
       />
     ),
+    cellRender(_, item) {
+      const asset = item?.assetType;
+      if (!asset) {
+        return null;
+      }
+
+      return (
+        <ValueCellWrapper>
+          <ValueDisplayWrapper>
+            <ValueDisplay value={item.value} precision={asset?.decimals} />{" "}
+            {asset.symbol}
+          </ValueDisplayWrapper>
+          {!!item.fiatValue && (
+            <ValueDisplayFiatWrapper>
+              <ValueDisplay value={item.fiatValue} prefix="$" />
+            </ValueDisplayFiatWrapper>
+          )}
+        </ValueCellWrapper>
+      );
+    },
   };
 
   const linkToSubSquare = {
@@ -164,17 +197,17 @@ export default function TreasurySpendsTable() {
       <Divider />
 
       <FilterWrapper>
-        <Filter
+        <TreasurySpendsFilter
           chain={currentChain}
           status={filterStatus}
           setStatus={setFilterStatus}
-          rangeType={rangeType}
-          setRangeType={setRangeType}
+          asset={filterAsset}
+          setAsset={setFilterAsset}
           min={min}
           setMin={setMin}
           max={max}
           setMax={setMax}
-          statusMap={openGovReferendumStatusMap}
+          statusMap={treasurySpendsStatusMap}
         />
       </FilterWrapper>
 

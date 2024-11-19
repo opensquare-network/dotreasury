@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import api from "../../services/scanApi";
+import { RangeTypes } from "../../components/Filter/Range";
 
 const name = "treasurySpends";
 
@@ -48,6 +49,7 @@ export const fetchTreasurySpendsList = (
       const { result } = await api.fetch("/v2/treasury/spends", {
         page,
         pageSize,
+        range_type: RangeTypes.Fiat,
         ...filterData,
         ...sort,
       });
