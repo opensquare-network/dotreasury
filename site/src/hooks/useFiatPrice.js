@@ -3,35 +3,34 @@ import useDoTreasuryEcoLazyQuery from "./useDoTreasuryEcoLazyQuery";
 import { find } from "lodash-es";
 import { useEffect } from "react";
 
-const GET_TREASURIES = gql`
-  query GetTreasuries($chain: String!) {
-    treasuries(chain: $chain) {
+const GET_PRICE = gql`
+  query GetPrice($symbol: String!) {
+    prices(symbol: $symbol) {
       price
-      chain
+      symbol
     }
   }
 `;
 
-export default function useFiatPrice(chain) {
-  const [getTreasuries, { data, loading }] =
-    useDoTreasuryEcoLazyQuery(GET_TREASURIES);
+export default function useFiatPrice(symbol) {
+  const [getPrice, { data, loading }] = useDoTreasuryEcoLazyQuery(GET_PRICE);
 
   useEffect(() => {
-    getTreasuries({ variables: { chain } });
+    getPrice({ variables: { symbol } });
 
     const intervalId = setInterval(() => {
-      getTreasuries({ variables: { chain } });
+      getPrice({ variables: { symbol } });
     }, 60000);
 
     return () => clearInterval(intervalId);
-  }, [getTreasuries, chain]);
+  }, [getPrice, symbol]);
 
-  const treasury = find(data?.treasuries, {
-    chain: chain,
+  const price = find(data?.prices, {
+    symbol,
   });
 
   return {
-    price: treasury?.price ?? 0,
+    price: price?.price ?? 0,
     isLoading: loading,
   };
 }
