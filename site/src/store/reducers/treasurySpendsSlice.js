@@ -50,8 +50,9 @@ export const fetchTreasurySpendsList = (
 
     const filterAsset = filterData?.asset;
     const asset =
-      find(treasurySpendsAssetsFilterOptions, { value: filterAsset }).asset ||
-      filterAsset;
+      find(treasurySpendsAssetsFilterOptions, { value: filterAsset })?.asset ||
+      filterAsset ||
+      "";
 
     try {
       const { result } = await api.fetch("/v2/treasury/spends", {
