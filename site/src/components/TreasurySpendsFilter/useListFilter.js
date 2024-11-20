@@ -81,7 +81,7 @@ export function useTreasurySpendsFilter() {
       ...filterData,
       ...minMax,
     };
-  }, [filterStatus, filterAsset, min, max, precision]);
+  }, [filterStatus, filterAsset, min, max]);
 
   return {
     filterStatus,
