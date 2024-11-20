@@ -67,16 +67,29 @@ export const openGovReferendumStatusMap = {
   Executed: "Executed",
 };
 
-export const treasurySpendsStatusMap = {
+export const treasuryTipStatusMap = {
+  NewTip: "NewTip",
+  Tipping: "Tipping",
+  TipClosed: "TipClosed",
+  TipRetracted: "TipRetracted",
+  TipSlashed: "TipSlashed",
+};
+
+export const treasuryProposalStatusMap = {
+  ApproveVoting: "ApproveVoting",
+  RejectVoting: "RejectVoting",
+  Proposed: "Proposed",
+  Approved: "Approved",
+  Awarded: "Awarded",
+  Rejected: "Rejected",
+  Removed: "Removed",
+};
+
+export const treasurySpendStatusMap = {
   Approved: "Approved",
   Paid: "Paid",
   Processed: "Processed",
-  Proposed: "Proposed",
-  Awarded: "Awarded",
-  Rejected: "Rejected",
-  TipClosed: "TipClosed",
-  TipRetracted: "TipRetracted",
-  Removed: "Removed",
+  Voided: "Voided",
 };
 
 export const treasurySpendsAssetsFilterOptions = [

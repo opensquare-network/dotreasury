@@ -9,7 +9,9 @@ import { useState } from "react";
 import {
   DEFAULT_PAGE_SIZE,
   DEFAULT_QUERY_PAGE,
-  treasurySpendsStatusMap,
+  treasuryProposalStatusMap,
+  treasurySpendStatusMap,
+  treasuryTipStatusMap,
 } from "../../constants";
 import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
@@ -219,7 +221,11 @@ export default function TreasurySpendsTable() {
           setMin={setMin}
           max={max}
           setMax={setMax}
-          statusMap={treasurySpendsStatusMap}
+          statusMap={{
+            ...treasurySpendStatusMap,
+            ...treasuryProposalStatusMap,
+            ...treasuryTipStatusMap,
+          }}
         />
       </FilterWrapper>
 
