@@ -135,17 +135,24 @@ export default function OverviewTotalTreasury() {
     totalMythTokenValue,
   ).toString();
 
-  const isLoading =
+  const isDotLoading =
     relayChainAssetsBalance.isLoading ||
     hydration.isLoading ||
     bountiesTotalBalance.isLoading ||
-    fellowshipSalaryUsdtBalance.isLoading ||
     fellowshipTreasuryDotBalance.isLoading ||
-    loansCentrifugeUsdcBalance.isLoading ||
     loansBifrostDotBalance.isLoading ||
-    loansPendulumDotBalance.isLoading ||
-    mythTokenAssetsBalance.isLoading ||
-    isFiatPriceLoading;
+    loansPendulumDotBalance.isLoading;
+
+  const isUSDtLoading =
+    hydration.isLoading || fellowshipSalaryUsdtBalance.isLoading;
+
+  const isUSDCLoading =
+    hydration.isLoading || loansCentrifugeUsdcBalance.isLoading;
+
+  const isMYTHLoading = mythTokenAssetsBalance.isLoading;
+
+  const isLoading =
+    isDotLoading || isUSDtLoading || isUSDCLoading || isMYTHLoading;
 
   return (
     <Wrapper>
@@ -166,7 +173,7 @@ export default function OverviewTotalTreasury() {
         >
           <TokenItem
             icon="asset-dot.svg"
-            isLoading={isLoading}
+            isLoading={isDotLoading}
             totalValue={totalDot}
             precision={polkadot.decimals}
             symbol={polkadot.symbol}
@@ -174,14 +181,14 @@ export default function OverviewTotalTreasury() {
         </Tooltip>
         <TokenItem
           icon="asset-usdt.svg"
-          isLoading={isLoading}
+          isLoading={isUSDtLoading}
           totalValue={totalUSDt}
           precision={USDt.decimals}
           symbol={USDt.symbol}
         />
         <TokenItem
           icon="asset-usdc.svg"
-          isLoading={isLoading}
+          isLoading={isUSDCLoading}
           totalValue={totalUSDC}
           precision={USDC.decimals}
           symbol={USDC.symbol}
@@ -193,7 +200,7 @@ export default function OverviewTotalTreasury() {
         >
           <TokenItem
             icon="asset-myth.svg"
-            isLoading={isLoading}
+            isLoading={isMYTHLoading}
             totalValue={totalMythToken}
             precision={MYTH.decimals}
             symbol={MYTH.symbol}
