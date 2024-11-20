@@ -31,6 +31,7 @@ import ValueDisplay from "../../components/ValueDisplay";
 import { space_y } from "../../styles/tailwindcss";
 import SortableSingleFiatValue from "../../components/SortableValue/SortableSingleFiatValue";
 import { useEffect } from "react";
+import { isNil } from "lodash-es";
 
 const Header = styled.div`
   padding: 24px;
@@ -107,7 +108,12 @@ export default function TreasurySpendsTable() {
     title: "Index",
     cellClassName: "index-cell",
     cellRender(_, item) {
-      return <TextMinor>#{item.index || item.proposalIndex}</TextMinor>;
+      const index = item.index || item.proposalIndex;
+      if (!isNil(index)) {
+        return <TextMinor>#{index}</TextMinor>;
+      }
+
+      return "--";
     },
   };
 
@@ -138,6 +144,10 @@ export default function TreasurySpendsTable() {
       />
     ),
     cellRender(_, item) {
+      if (isNil(item.value)) {
+        return "--";
+      }
+
       let asset = item?.assetType;
       if (!asset) {
         asset = {
