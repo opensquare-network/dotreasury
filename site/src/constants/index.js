@@ -71,7 +71,12 @@ export const treasurySpendsStatusMap = {
   Approved: "Approved",
   Paid: "Paid",
   Processed: "Processed",
-  Voided: "Voided",
+  Proposed: "Proposed",
+  Awarded: "Awarded",
+  Rejected: "Rejected",
+  TipClosed: "TipClosed",
+  TipRetracted: "TipRetracted",
+  Removed: "Removed",
 };
 
 export const treasurySpendsAssetsFilterOptions = [
