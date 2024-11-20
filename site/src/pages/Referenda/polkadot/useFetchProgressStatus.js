@@ -18,8 +18,9 @@ export default function useFetchProgressStatus() {
 
       try {
         const { result } = await api.fetch(
-          // TODO: `https://${chain}.subsquare.io/api/gov2/referendums/progress-stats`
-          "http://127.0.0.1:7071/gov2/referendums/progress-stats",
+          `${
+            import.meta.env.VITE_APP_SUBSQUARE_API_END_POINT
+          }/gov2/referendums/progress-stats`,
           {
             is_treasury: true,
           },

@@ -18,8 +18,9 @@ export default function useFetchSummary() {
 
       try {
         const { result } = await api.fetch(
-          // TODO: `https://${chain}.subsquare.io/api/gov2/tracks/active-and-total`
-          "http://127.0.0.1:7071/gov2/tracks/active-and-total",
+          `${
+            import.meta.env.VITE_APP_SUBSQUARE_API_END_POINT
+          }/gov2/tracks/active-and-total`,
         );
 
         setData(result);

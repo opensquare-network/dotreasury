@@ -28,8 +28,9 @@ export default function useFetchReferendumsList(
 
       try {
         const { result } = await api.fetch(
-          // TODO: `https://${chain}.subsquare.io/api/gov2/referendums`
-          "http://127.0.0.1:7071/gov2/referendums",
+          `${
+            import.meta.env.VITE_APP_SUBSQUARE_API_END_POINT
+          }/gov2/referendums`,
           {
             is_active: true,
             is_treasury: true,
