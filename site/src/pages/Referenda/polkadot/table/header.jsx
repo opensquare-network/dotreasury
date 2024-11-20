@@ -1,11 +1,10 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import Text from "../../../../components/Text";
-import { useSelector } from "react-redux";
-import { applicationSummarySelector } from "../../../../store/reducers/openGovApplicationsSlice";
 import { Flex } from "../../../../components/styled";
 import { p_12_normal, p_14_medium } from "../../../../styles/text";
 import { smcss } from "../../../../styles/responsive";
+import useFetchProgressStatus from "../useFetchProgressStatus";
 
 const HeaderWrapper = styled.div`
   padding: 24px;
@@ -37,8 +36,11 @@ const BriefValue = styled.span`
 `;
 
 export default function TableHeader() {
-  const applicationSummary = useSelector(applicationSummarySelector);
+  const { data: applicationSummary, isLoading } = useFetchProgressStatus();
   const all = applicationSummary?.all;
+  if (isLoading) {
+    return null;
+  }
 
   const briefs = [
     {
