@@ -1,3 +1,4 @@
+import { isNil } from "lodash-es";
 import { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router";
 
@@ -15,9 +16,13 @@ export default function useSort() {
   const history = useHistory();
 
   useEffect(() => {
+    const searchParams = new URLSearchParams(history.location.search);
+
     if (sortField && sortDirection) {
-      const searchParams = new URLSearchParams(history.location.search);
       searchParams.set("sort", `${sortField}_${sortDirection}`);
+      history.push({ search: searchParams.toString() });
+    } else if (isNil(sortField)) {
+      searchParams.delete("sort");
       history.push({ search: searchParams.toString() });
     }
   }, [history, sortField, sortDirection]);

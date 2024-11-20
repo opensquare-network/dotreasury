@@ -104,6 +104,10 @@ const CustomTable = styled(SemanticTable)`
     width: 420px !important;
     max-width: 420px !important;
   }
+  .treasury-spends-value-cell {
+    width: 170px !important;
+    max-width: 170px !important;
+  }
   td:first-child {
     font-weight: 400 !important;
   }
