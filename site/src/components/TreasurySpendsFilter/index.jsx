@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { StatusSelect, FormWrapper, Divider } from "../../components/Filter";
 import Range, { RangeTypes } from "../../components/Filter/Range";
 import Select from "../../components/Select";
+import { treasurySpendsAssetsFilterOptions } from "../../constants";
 
 const AssetsSelect = styled(Select)`
   width: 160px;
@@ -9,14 +10,6 @@ const AssetsSelect = styled(Select)`
     width: 100%;
   }
 `;
-
-const assetsOptions = [
-  { key: "all", value: "-1", text: "All assets" },
-  { key: "native", value: "native", text: "DOT" },
-  { key: "USDC", value: "USDC", text: "USDC" },
-  { key: "USDt", value: "USDt", text: "USDT" },
-  { key: "MYTH", value: "MYTH", text: "MYTH" },
-];
 
 export default function TreasurySpendsFilter({
   chain,
@@ -56,7 +49,7 @@ export default function TreasurySpendsFilter({
       <AssetsSelect
         name="assets"
         fluid
-        options={assetsOptions}
+        options={treasurySpendsAssetsFilterOptions}
         value={asset}
         onChange={(_, { value }) => {
           setAsset(value);

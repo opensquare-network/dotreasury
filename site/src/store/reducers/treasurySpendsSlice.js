@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import api from "../../services/scanApi";
 import { RangeTypes } from "../../components/Filter/Range";
+import { find } from "lodash-es";
+import { treasurySpendsAssetsFilterOptions } from "../../constants";
 
 const name = "treasurySpends";
 
@@ -45,12 +47,19 @@ export const fetchTreasurySpendsList = (
 ) => {
   return async (dispatch) => {
     dispatch(setLoadingTreasurySpendsList(true));
+
+    const filterAsset = filterData?.asset;
+    const asset =
+      find(treasurySpendsAssetsFilterOptions, { value: filterAsset }).asset ||
+      filterAsset;
+
     try {
       const { result } = await api.fetch("/v2/treasury/spends", {
         page,
         pageSize,
         range_type: RangeTypes.Fiat,
         ...filterData,
+        asset,
         ...sort,
       });
       dispatch(

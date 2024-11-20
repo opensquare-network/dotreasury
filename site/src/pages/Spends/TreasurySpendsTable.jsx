@@ -18,11 +18,10 @@ import {
   loadingTreasurySpendsListSelector,
   treasurySpendsListSelector,
 } from "../../store/reducers/treasurySpendsSlice";
-import { useEffect } from "react";
 import { useQuery } from "../../utils/hooks";
 import { useTableColumns } from "../../components/shared/useTableColumns";
 import JumpToLink from "../Referenda/Link";
-import { currentChain } from "../../utils/chains";
+import { currentChain, currentChainSettings } from "../../utils/chains";
 import useSort from "../../hooks/useSort";
 import DescriptionCell from "../Proposals/DescriptionCell";
 import TextMinor from "../../components/TextMinor";
@@ -31,6 +30,7 @@ import { useTreasurySpendsFilter } from "../../components/TreasurySpendsFilter/u
 import ValueDisplay from "../../components/ValueDisplay";
 import { space_y } from "../../styles/tailwindcss";
 import SortableSingleFiatValue from "../../components/SortableValue/SortableSingleFiatValue";
+import { useEffect } from "react";
 
 const Header = styled.div`
   padding: 24px;
@@ -105,10 +105,9 @@ export default function TreasurySpendsTable() {
   const index = {
     key: "index",
     title: "Index",
-    dataIndex: "index",
     cellClassName: "index-cell",
-    cellRender(value) {
-      return <TextMinor>#{value}</TextMinor>;
+    cellRender(_, item) {
+      return <TextMinor>#{item.index || item.proposalIndex}</TextMinor>;
     },
   };
 
@@ -120,7 +119,7 @@ export default function TreasurySpendsTable() {
     cellRender(_, item) {
       return (
         <DescriptionCell
-          description={item.title}
+          description={item.title || "Untitled"}
           tags={{ proposalType: item.type }}
         />
       );
@@ -139,9 +138,12 @@ export default function TreasurySpendsTable() {
       />
     ),
     cellRender(_, item) {
-      const asset = item?.assetType;
+      let asset = item?.assetType;
       if (!asset) {
-        return null;
+        asset = {
+          decimals: currentChainSettings.decimals,
+          symbol: currentChainSettings.symbol,
+        };
       }
 
       return (
