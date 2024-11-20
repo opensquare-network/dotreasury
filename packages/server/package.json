@@ -8,6 +8,7 @@
   "dependencies": {
     "@koa/cors": "^5.0.0",
     "@osn/ipfs": "^0.1.0",
+    "@polkadot/keyring": "^13.2.3",
     "@polkadot/util": "12.6.2",
     "bignumber.js": "^9.1.1",
     "dotenv": "16.1.4",

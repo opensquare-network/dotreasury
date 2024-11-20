@@ -1,6 +1,7 @@
 const pick = require("lodash.pick");
 const { getSubsquareTreasurySpendCollection } = require("../../mongo/polkadot");
 const { getAssetByMeta } = require("./spendMeta");
+const { encodeAddress } = require("@polkadot/keyring");
 
 async function fetchTreasurySpendDetail(index) {
   console.log(`Fetching spend detail for index ${index}`);
@@ -28,6 +29,16 @@ async function fetchPagedSpendsFromSubsquare(page) {
   return await resp.json();
 }
 
+function getBeneficiary(meta = {}) {
+  const v3AccountId = meta.beneficiary?.v3?.interior.x1?.accountId32?.id;
+  const v4AccountId = meta.beneficiary?.v4?.interior.x1?.[0]?.accountId32?.id;
+  const accountId32 = v3AccountId || v4AccountId;
+  if (!accountId32) {
+    return null;
+  }
+  return encodeAddress(accountId32, 0);
+}
+
 async function saveTreasurySpend(detail) {
   const spendCol = await getSubsquareTreasurySpendCollection();
   await spendCol.updateOne(
@@ -47,6 +58,7 @@ async function saveTreasurySpend(detail) {
           "track",
         ]),
         value: detail.onchainData?.meta?.amount,
+        beneficiary: getBeneficiary(detail.onchainData?.meta),
         assetType: getAssetByMeta(detail.onchainData?.meta),
       },
     },

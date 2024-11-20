@@ -339,7 +339,7 @@ const referendaStatus = {
   cellClassName: "referenda-status-cell proposal-status-cell",
   cellRender: (_, item) => (
     <PairTextVertical
-      value={item?.state?.name}
+      value={item?.state?.name || item?.state?.state}
       detail={dayjs(parseInt(item?.state?.indexer?.blockTime)).format(
         "YYYY-MM-DD HH:mm",
       )}

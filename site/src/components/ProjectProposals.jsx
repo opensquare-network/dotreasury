@@ -35,9 +35,10 @@ const Item = styled.div`
 export default function ProjectProposals({
   dotProposalsCount,
   ksmProposalsCount,
+  className = "",
 }) {
   return (
-    <Wrapper>
+    <Wrapper className={className}>
       {dotProposalsCount > 0 && (
         <Item>
           {dotProposalsCount}

@@ -129,6 +129,8 @@ export const totalBurntCountSelector = (state) =>
   state.overview.overview.count.burnt.all;
 export const totalTransferCountSelector = (state) =>
   state.overview.overview.count.transfer.all;
+export const totalSpendsCountSelector = (state) =>
+  state.overview.overview.count.treasurySpend?.all || 0;
 export const totalOpenGovApplicationCountSelector = (state) =>
   state.overview.overview.count.referenda.all || 0;
 export const overviewSelector = (state) => state.overview.overview;

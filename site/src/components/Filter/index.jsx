@@ -5,7 +5,7 @@ import { Form } from "semantic-ui-react";
 import Select from "../../components/Select";
 import Range from "../../components/Filter/Range";
 
-const FormWrapper = styled(Form)`
+export const FormWrapper = styled(Form)`
   display: flex;
   gap: 16px;
   flex-grow: 1;
@@ -24,14 +24,14 @@ const FormWrapper = styled(Form)`
   }
 `;
 
-const StatusSelect = styled(Select)`
+export const StatusSelect = styled(Select)`
   width: 145px;
   @media screen and (max-width: 800px) {
     width: 100%;
   }
 `;
 
-const Divider = styled.div`
+export const Divider = styled.div`
   width: 1px;
   height: 20px;
   background: var(--neutral300);
@@ -53,7 +53,6 @@ const Filter = ({
   setMax,
   statusMap,
 }) => {
-
   const statusOptions = [
     { key: "all", value: "-1", text: "All status" },
     ...Array.from(new Set(Object.values(statusMap))).map((key) => ({
