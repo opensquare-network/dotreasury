@@ -62,7 +62,7 @@ export default function useListFilter() {
     }
 
     if (filterAssets !== "-1") {
-      filterData.asset = filterAssets;
+      filterData.asset = filterAssets.toLocaleUpperCase();
     }
 
     return {

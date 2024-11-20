@@ -1,11 +1,20 @@
 import React from "react";
 import {
   FormWrapper,
-  StatusSelect,
   tracksStatusList,
   StatusSelector,
   TrackSelector,
 } from "../../../../components/OpenGovFilter";
+import Select from "../../../../components/Select";
+import { treasurySpendsAssetsFilterOptions } from "../../../../constants";
+import styled from "styled-components";
+
+const AssetsSelect = styled(Select)`
+  width: 160px;
+  @media screen and (max-width: 800px) {
+    width: 100%;
+  }
+`;
 
 export const tracksOptions = [
   { key: "all", value: "-1", text: "All tracks" },
@@ -16,23 +25,16 @@ export const tracksOptions = [
   })),
 ];
 
-const assetsOptions = [
-  { key: "all", value: "-1", text: "All assets" },
-  ...["DOT", "USDC", "USDT", "MYTH"].map((item) => ({
-    key: item,
-    value: item,
-    text: <span style={{ whiteSpace: "nowrap" }}>{item}</span>,
-  })),
-];
-
 function AssetsSelector({ assets, setAssets }) {
   return (
-    <StatusSelect
-      name="status"
+    <AssetsSelect
+      name="assets"
       fluid
-      options={assetsOptions}
+      options={treasurySpendsAssetsFilterOptions}
       value={assets}
-      onChange={(e, { name, value }) => setAssets(value)}
+      onChange={(_, { value }) => {
+        setAssets(value);
+      }}
     />
   );
 }
