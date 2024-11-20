@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { flex, gap_x, hidden, items_center, m } from "../../styles/tailwindcss";
-import { p_12_normal } from "../../styles/text";
+import { p_12_medium } from "../../styles/text";
 import { smcss } from "../../styles/responsive";
 
 const Wrapper = styled.div`
@@ -12,7 +12,7 @@ const Wrapper = styled.div`
 const Title = styled.h4`
   ${m(0)};
   color: var(--textSecondary);
-  ${p_12_normal};
+  ${p_12_medium};
 `;
 const InfoWrapper = styled.div`
   min-width: 138px;
