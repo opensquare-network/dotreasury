@@ -58,6 +58,8 @@ const Columns = ({
     key: "amount",
     title: "Value",
     cellClassName: "balance-cell",
+    headerCellProps: { textAlign: "right" },
+    cellProps: { textAlign: "right" },
     cellRender: (v_, item) => {
       if (item?.allSpends && item?.allSpends.length > 0) {
         return (
