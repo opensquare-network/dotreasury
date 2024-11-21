@@ -1,8 +1,6 @@
 const BigNumber = require("bignumber.js");
-const { getTipCollection } = require("../../mongo");
-const { getSubsquareTreasurySpendCollection } = require("../../mongo/polkadot");
 
-async function getStatsOfTipItems(tips) {
+async function getStatsOfTreasurySpendItems(spends) {
   const counts = {};
   const proposeCounts = {};
   const proposers = new Set();
@@ -11,30 +9,30 @@ async function getStatsOfTipItems(tips) {
   const totalBenefitFiatValues = {};
   const totalBenefitValues = {};
 
-  for (const tip of tips) {
-    const finder = tip.finder;
-    proposers.add(finder);
-    counts[finder] = (counts[finder] ?? 0) + 1;
-    proposeCounts[finder] = (proposeCounts[finder] ?? 0) + 1;
+  for (const spend of spends) {
+    const proposer = spend.proposer;
+    proposers.add(proposer);
+    counts[proposer] = (counts[proposer] ?? 0) + 1;
+    proposeCounts[proposer] = (proposeCounts[proposer] ?? 0) + 1;
 
-    const beneficiary = tip.meta?.who;
+    const beneficiary = spend.beneficiary;
     if (beneficiary) {
       beneficiaries.add(beneficiary);
       beneficiaryCounts[beneficiary] =
         (beneficiaryCounts[beneficiary] ?? 0) + 1;
 
-      if (tip.state?.state === "TipClosed") {
+      if (spend.state?.state === "Awarded") {
         totalBenefitValues[beneficiary] = new BigNumber(
           totalBenefitValues[beneficiary] ?? 0,
         )
-          .plus(tip.value || 0)
+          .plus(spend.value || 0)
           .toString();
 
         totalBenefitFiatValues[beneficiary] =
-          (totalBenefitFiatValues[beneficiary] ?? 0) + (tip.fiatValue || 0);
+          (totalBenefitFiatValues[beneficiary] ?? 0) + (spend.fiatValue || 0);
       }
 
-      if (beneficiary !== finder) {
+      if (beneficiary !== proposer) {
         counts[beneficiary] = (counts[beneficiary] ?? 0) + 1;
       }
     }
@@ -51,21 +49,13 @@ async function getStatsOfTipItems(tips) {
   };
 }
 
-async function statTips() {
-  const tipCol = await getTipCollection();
-  const tips = await tipCol.find().toArray();
-
-  return await getStatsOfTipItems(tips);
-}
-
-async function statTipsV2() {
+async function statSpendsV2() {
   const col = await getSubsquareTreasurySpendCollection();
-  const tips = await col.find({ type: "tip" }).toArray();
+  const spends = await col.find({ type: "treasurySpend" }).toArray();
 
-  return await getStatsOfTipItems(tips);
+  return await getStatsOfTreasurySpendItems(spends);
 }
 
 module.exports = {
-  statTips,
-  statTipsV2,
+  statSpendsV2,
 };
