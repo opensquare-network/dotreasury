@@ -168,7 +168,9 @@ export default function OverviewTotalTreasury() {
 
       <TokenGroup>
         <Tooltip
-          tooltipContent={<ValueDisplay value={totalDotValue} prefix="$" />}
+          tooltipContent={
+            !isDotLoading && <ValueDisplay value={totalDotValue} prefix="$" />
+          }
         >
           <TokenItem
             icon="asset-dot.svg"
@@ -194,7 +196,9 @@ export default function OverviewTotalTreasury() {
         />
         <Tooltip
           tooltipContent={
-            <ValueDisplay value={totalMythTokenValue} prefix="$" />
+            !isMYTHLoading && (
+              <ValueDisplay value={totalMythTokenValue} prefix="$" />
+            )
           }
         >
           <TokenItem
