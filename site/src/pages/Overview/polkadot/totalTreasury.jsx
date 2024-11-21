@@ -32,6 +32,12 @@ import { MYTH_TOKEN_ACCOUNT } from "../../../constants/foreignAssets";
 import useFiatPrice from "../../../hooks/useFiatPrice";
 import useQueryRelayChainFree from "../../../hooks/treasury/useQueryRelayChainFree";
 import Tooltip from "../../../components/Tooltip";
+import { useAssetHubAsset } from "../../../hooks/assetHub/useAssetHubAsset";
+import { useAssetHubDot } from "../../../hooks/assetHub/useAssetHubDot";
+import {
+  ASSET_HUB_USDC_ASSET_ID,
+  ASSET_HUB_USDT_ASSET_ID,
+} from "../../../constants/assetHub";
 
 const Wrapper = styled(Card)`
   padding: 24px;
@@ -86,24 +92,34 @@ function TokenItem({ icon, isLoading, totalValue, precision, symbol }) {
 
 export default function OverviewTotalTreasury() {
   const overview = useSelector(overviewSelector);
-  const hydration = useHydrationTreasuryBalances();
+  const dotPrice = overview?.latestSymbolPrice ?? 0;
+
+  const relayChainAssetsBalance = useQueryRelayChainFree();
+  const [dotValue, dotLoading] = useAssetHubDot();
+  const [usdtValue, usdtLoading] = useAssetHubAsset(ASSET_HUB_USDT_ASSET_ID);
+  const [usdcValue, usdcLoading] = useAssetHubAsset(ASSET_HUB_USDC_ASSET_ID);
+
   const { bounties } = useBountiesData();
   const bountiesTotalBalance = useBountiesTotalBalance(bounties);
+
+  const hydration = useHydrationTreasuryBalances();
+
   const fellowshipSalaryUsdtBalance = useQueryFellowshipSalaryBalance("USDt");
   const fellowshipTreasuryDotBalance = useQueryAssetHubTreasuryFree(
     STATEMINT_FELLOWSHIP_TREASURY_ACCOUNT,
   );
+
   const loansCentrifugeUsdcBalance = useLoansCentrifugeUsdcBalance();
   const loansBifrostDotBalance = useLoansBifrostDotBalance();
   const loansPendulumDotBalance = useLoansPendulumDotBalance();
+
   const mythTokenAssetsBalance = useAssetHubForeignAssets(MYTH_TOKEN_ACCOUNT);
-  const relayChainAssetsBalance = useQueryRelayChainFree();
 
   const { price: mythTokenPrice } = useFiatPrice("MYTH");
-  const dotPrice = overview?.latestSymbolPrice ?? 0;
 
   const totalDot = BigNumber.sum(
     relayChainAssetsBalance.balance || 0,
+    dotValue || 0,
     hydration.dot || 0,
     bountiesTotalBalance.balance || 0,
     fellowshipTreasuryDotBalance.balance || 0,
@@ -115,10 +131,12 @@ export default function OverviewTotalTreasury() {
   ).multipliedBy(dotPrice);
 
   const totalUSDt = BigNumber.sum(
+    usdtValue || 0,
     hydration.usdt || 0,
     fellowshipSalaryUsdtBalance.balance || 0,
   );
   const totalUSDC = BigNumber.sum(
+    usdcValue || 0,
     hydration.usdc || 0,
     loansCentrifugeUsdcBalance.balance,
   );
@@ -136,6 +154,7 @@ export default function OverviewTotalTreasury() {
 
   const isDotLoading =
     relayChainAssetsBalance.isLoading ||
+    dotLoading ||
     hydration.isLoading ||
     bountiesTotalBalance.isLoading ||
     fellowshipTreasuryDotBalance.isLoading ||
@@ -143,10 +162,10 @@ export default function OverviewTotalTreasury() {
     loansPendulumDotBalance.isLoading;
 
   const isUSDtLoading =
-    hydration.isLoading || fellowshipSalaryUsdtBalance.isLoading;
+    usdtLoading || hydration.isLoading || fellowshipSalaryUsdtBalance.isLoading;
 
   const isUSDCLoading =
-    hydration.isLoading || loansCentrifugeUsdcBalance.isLoading;
+    usdcLoading || hydration.isLoading || loansCentrifugeUsdcBalance.isLoading;
 
   const isMYTHLoading = mythTokenAssetsBalance.isLoading;
 
