@@ -1,6 +1,5 @@
 import { useHistory, useLocation } from "react-router";
-import { useCallback, useState } from "react";
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   getQueryStatus,
   toStatusQuery,

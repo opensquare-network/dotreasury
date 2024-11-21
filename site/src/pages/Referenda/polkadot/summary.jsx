@@ -13,7 +13,7 @@ import SummaryItem from "../../../components/Summary/Item";
 import { lgcss, smcss } from "../../../styles/responsive";
 import SummaryOngoingItemWrapper from "../../../components/Summary/OngoingItemWrapper";
 import SummaryReferendaWrapper from "../../../components/Summary/ReferendaWrapper";
-import useFetchSummary from "./useFetchSummary";
+import useFetchSummary from "./hooks/useFetchSummary";
 import SkeletonBar from "../../../components/skeleton/bar";
 
 const ItemsWrapper = styled.div`
