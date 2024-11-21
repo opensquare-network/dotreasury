@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
-import api from "../../../services/scanApi";
-import { chainSelector } from "../../../store/reducers/chainSlice";
-import { useSelector } from "react-redux";
+import api from "../../../../services/scanApi";
 
 export default function useFetchReferendumsList(
   page = 0,
   pageSize = 20,
-  filterData = {},
-  sort = {},
+  filterData,
+  sort,
 ) {
   const [data, setData] = useState({
     items: [],
@@ -15,17 +13,10 @@ export default function useFetchReferendumsList(
     pageSize: 20,
     total: 0,
   });
-  const [isLoading, setIsLoading] = useState(false);
-  const chain = useSelector(chainSelector);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (!chain) {
-      return;
-    }
-
     const fetchData = async () => {
-      setIsLoading(true);
-
       try {
         const { result } = await api.fetch(
           `${
@@ -50,7 +41,8 @@ export default function useFetchReferendumsList(
     };
 
     fetchData();
-  }, [page, pageSize, JSON.stringify(filterData), JSON.stringify(sort), chain]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, pageSize, JSON.stringify(filterData), JSON.stringify(sort)]);
 
   return { data, isLoading };
 }

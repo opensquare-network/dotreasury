@@ -4,7 +4,7 @@ import Text from "../../../../components/Text";
 import { Flex } from "../../../../components/styled";
 import { p_12_normal, p_14_medium } from "../../../../styles/text";
 import { smcss } from "../../../../styles/responsive";
-import useFetchProgressStatus from "../useFetchProgressStatus";
+import useFetchProgressStatus from "../hooks/useFetchProgressStatus";
 
 const HeaderWrapper = styled.div`
   padding: 24px;

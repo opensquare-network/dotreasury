@@ -14,9 +14,9 @@ import {
 import Columns from "./columns";
 import { useHistory } from "react-router";
 import useSort from "../../../../hooks/useSort";
-import useListFilter from "../filter/useFilter";
+import useListFilter from "../hooks/useFilter";
 import { useQuery } from "../../../../utils/hooks";
-import useFetchReferendumsList from "../useFetchReferendumsList";
+import useFetchReferendumsList from "../hooks/useFetchReferendumsList";
 
 const TableWrapper = styled.div`
   overflow: scroll;
