@@ -7,10 +7,11 @@ export const treasurySpendsIndexColumn = {
   cellClassName: "index-cell",
   cellRender(_, item) {
     const index = item.index ?? item.proposalIndex;
-    if (!isNil(index)) {
-      return <TextMinor>#{index}</TextMinor>;
+
+    if (isNil(index)) {
+      return null;
     }
 
-    return "--";
+    return <TextMinor>#{index}</TextMinor>;
   },
 };
