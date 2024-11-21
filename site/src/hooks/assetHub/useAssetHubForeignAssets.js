@@ -20,9 +20,11 @@ export default function useAssetHubForeignAssets(
       {
         parents: parentId,
         interior: {
-          X1: {
-            ParaChain: paraChainId,
-          },
+          X1: [
+            {
+              ParaChain: paraChainId,
+            },
+          ],
         },
       },
       address,
