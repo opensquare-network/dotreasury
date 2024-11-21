@@ -19,11 +19,11 @@ import ExplorerLinkOrigin from "../../../../components/ExplorerLink";
 import { p_12_medium } from "../../../../styles/text";
 import { space_x } from "../../../../styles/tailwindcss";
 
-const AddressGroup = styled.div`
+export const AddressGroup = styled.div`
   ${space_x(8)}
 `;
 
-const ExplorerLink = styled(ExplorerLinkOrigin)`
+export const ExplorerLink = styled(ExplorerLinkOrigin)`
   color: var(--textSecondary);
   ${p_12_medium}
 

@@ -44,7 +44,6 @@ export default function TreasuryDetailFellowship() {
   return (
     <TreasuryDetailItem
       title="Fellowship"
-      titleTooltipContent="Fellowship spending account & salary treasury"
       iconSrc="/imgs/data-collectives.svg"
       content={<ValueDisplay value={total} prefix="$" />}
       isLoading={isLoading}

@@ -52,7 +52,7 @@ export default function TreasuryDetailAssets() {
   return (
     <TreasuryDetailItem
       title="Assets"
-      titleTooltipContent="Funds of DOT & stablecoin"
+      titleTooltipContent="Funds on relay chain and Asset Hub"
       iconSrc="/imgs/data-asset-1.svg"
       content={<ValueDisplay value={total} prefix="$" />}
       isLoading={isLoading}
