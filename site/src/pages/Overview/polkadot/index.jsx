@@ -2,10 +2,10 @@ import styled from "styled-components";
 import OverviewTreasuryDetail from "./treasuryDetail";
 import OverviewTotalTreasury from "./totalTreasury";
 import { grid, grid_cols, space_y } from "../../../styles/tailwindcss";
-// import { isCentrifuge, isPolkadot } from "../../../utils/chains";
-// import TopBeneficiariesTable from "../TopBeneficiariesTable";
+import { isCentrifuge } from "../../../utils/chains";
+import TopBeneficiariesTable from "../TopBeneficiariesTable";
 import { mdcss } from "../../../styles/responsive";
-// import TopFundedProjectsTable from "../topFundedProjectsTable";
+import TopFundedProjectsTable from "../topFundedProjectsTable";
 
 const Wrapper = styled.div`
   ${space_y(16)}
@@ -25,10 +25,10 @@ export default function OverviewPolkadot() {
 
       <OverviewTreasuryDetail />
 
-      {/* <TableWrapper> */}
-      {/* {!isCentrifuge && <TopBeneficiariesTable />} */}
-      {/* <TopFundedProjectsTable /> */}
-      {/* </TableWrapper> */}
+      <TableWrapper>
+        {!isCentrifuge && <TopBeneficiariesTable />}
+        <TopFundedProjectsTable />
+      </TableWrapper>
     </Wrapper>
   );
 }
