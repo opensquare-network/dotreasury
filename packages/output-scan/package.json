@@ -10,8 +10,8 @@
     "scan": "node src/index.js"
   },
   "dependencies": {
-    "@osn/scan-common": "0.6.11",
-    "@polkadot/api": "12.0.2",
+    "@osn/scan-common": "0.6.22",
+    "@polkadot/api": "14.3.1",
     "bignumber.js": "^9.1.1",
     "dotenv": "16.1.4",
     "lodash.findlast": "^4.6.0",
