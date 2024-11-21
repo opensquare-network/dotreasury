@@ -1,5 +1,6 @@
 const BigNumber = require("bignumber.js");
 const { getProposalCollection } = require("../../mongo");
+const { getSubsquareTreasurySpendCollection } = require("../../mongo/polkadot");
 
 async function getStatsOfTreasuryProposalItems(proposals) {
   const counts = {};

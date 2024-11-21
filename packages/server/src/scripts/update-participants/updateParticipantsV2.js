@@ -7,6 +7,8 @@ const { statProposalsV2 } = require("./statProposals");
 const { statBounties } = require("./statBounties");
 const { statChildBounties } = require("./statChildBounties");
 const { statCouncilors } = require("./statCouncilors");
+const { statSpends } = require("./statSpends");
+const { saveParticipant } = require("./common");
 
 async function updateParticipantsV2() {
   console.log(`Update participants of ${process.env.CHAIN}`);
@@ -39,7 +41,7 @@ async function updateParticipantsV2() {
     beneficiaryCounts: spendsBeneficiaryCounts,
     totalBenefitFiatValues: totalSpendBenefitFiatValues,
     totalBenefitValues: totalSpendBenefitValues,
-  } = await statSpendsV2();
+  } = await statSpends();
 
   const {
     counts: bountiesCounts,

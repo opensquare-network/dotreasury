@@ -1,4 +1,5 @@
 const BigNumber = require("bignumber.js");
+const { getSubsquareTreasurySpendCollection } = require("../../mongo/polkadot");
 
 async function getStatsOfTreasurySpendItems(spends) {
   const counts = {};
@@ -21,7 +22,7 @@ async function getStatsOfTreasurySpendItems(spends) {
       beneficiaryCounts[beneficiary] =
         (beneficiaryCounts[beneficiary] ?? 0) + 1;
 
-      if (spend.state?.state === "Awarded") {
+      if (["Paid", "Processed"].includes(spend.state?.state)) {
         totalBenefitValues[beneficiary] = new BigNumber(
           totalBenefitValues[beneficiary] ?? 0,
         )
@@ -49,7 +50,7 @@ async function getStatsOfTreasurySpendItems(spends) {
   };
 }
 
-async function statSpendsV2() {
+async function statSpends() {
   const col = await getSubsquareTreasurySpendCollection();
   const spends = await col.find({ type: "treasurySpend" }).toArray();
 
@@ -57,5 +58,5 @@ async function statSpendsV2() {
 }
 
 module.exports = {
-  statSpendsV2,
+  statSpends,
 };
