@@ -2,21 +2,15 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const BigNumber = require("bignumber.js");
-const { statTips } = require("./statTips");
-const { statProposals } = require("./statProposals");
+const { statTipsV2 } = require("./statTips");
+const { statProposalsV2 } = require("./statProposals");
 const { statBounties } = require("./statBounties");
 const { statChildBounties } = require("./statChildBounties");
 const { statCouncilors } = require("./statCouncilors");
-// const { updateParticipantsV2 } = require("./updateParticipantsV2");
+const { statSpends } = require("./statSpends");
 const { saveParticipant } = require("./common");
 
-async function updateParticipants() {
-  // const chain = process.env.CHAIN;
-  // if (chain === "polkadot") {
-  //   await updateParticipantsV2();
-  //   return;
-  // }
-
+async function updateParticipantsV2() {
   console.log(`Update participants of ${process.env.CHAIN}`);
 
   const {
@@ -27,7 +21,7 @@ async function updateParticipants() {
     beneficiaryCounts: tipsBeneficiaryCounts,
     totalBenefitFiatValues: totalTipBenefitFiatValues,
     totalBenefitValues: totalTipBenefitValues,
-  } = await statTips();
+  } = await statTipsV2();
 
   const {
     counts: proposalsCounts,
@@ -37,7 +31,17 @@ async function updateParticipants() {
     beneficiaryCounts: proposalsBeneficiaryCounts,
     totalBenefitFiatValues: totalProposalBenefitFiatValues,
     totalBenefitValues: totalProposalBenefitValues,
-  } = await statProposals();
+  } = await statProposalsV2();
+
+  const {
+    counts: spendsCounts,
+    proposers: spendProposers,
+    proposeCounts: spendsProposeCounts,
+    beneficiaries: spendBeneficiaries,
+    beneficiaryCounts: spendsBeneficiaryCounts,
+    totalBenefitFiatValues: totalSpendBenefitFiatValues,
+    totalBenefitValues: totalSpendBenefitValues,
+  } = await statSpends();
 
   const {
     counts: bountiesCounts,
@@ -64,6 +68,7 @@ async function updateParticipants() {
   const participants = new Set([
     ...Object.keys(tipsCounts),
     ...Object.keys(proposalsCounts),
+    ...Object.keys(spendsCounts),
     ...Object.keys(bountiesCounts),
     ...Object.keys(childBountiesCounts),
     ...councilors,
@@ -82,6 +87,13 @@ async function updateParticipants() {
     const totalProposalBenefitFiatValue =
       totalProposalBenefitFiatValues[address] ?? 0;
     const totalProposalBenefitValue = totalProposalBenefitValues[address] ?? 0;
+
+    const spendsCount = spendsCounts[address] ?? 0;
+    const spendsProposeCount = spendsProposeCounts[address] ?? 0;
+    const spendsBeneficiaryCount = spendsBeneficiaryCounts[address] ?? 0;
+    const totalSpendBenefitFiatValue =
+      totalSpendBenefitFiatValues[address] ?? 0;
+    const totalSpendBenefitValue = totalSpendBenefitValues[address] ?? 0;
 
     const bountiesCount = bountiesCounts[address] ?? 0;
     const bountiesProposedCount = bountiesProposedCounts[address] ?? 0;
@@ -102,12 +114,14 @@ async function updateParticipants() {
     const isProposer =
       tipProposers.has(address) ||
       proposalProposers.has(address) ||
+      spendProposers.has(address) ||
       bountyProposers.has(address) ||
       childBountyProposers.has(address);
 
     const isBeneficiary =
       tipBeneficiaries.has(address) ||
       proposalBeneficiaries.has(address) ||
+      spendBeneficiaries.has(address) ||
       bountyBeneficiaries.has(address) ||
       childBountyBeneficiaries.has(address);
 
@@ -128,6 +142,13 @@ async function updateParticipants() {
         benefitValue: totalProposalBenefitValue,
         benefitFiatValue: totalProposalBenefitFiatValue,
       },
+      spends: {
+        count: spendsCount,
+        proposedCount: spendsProposeCount,
+        benefitCount: spendsBeneficiaryCount,
+        benefitValue: totalSpendBenefitValue,
+        benefitFiatValue: totalSpendBenefitFiatValue,
+      },
       bounties: {
         count: bountiesCount,
         proposedCount: bountiesProposedCount,
@@ -145,6 +166,7 @@ async function updateParticipants() {
       totalValue: {
         totalBenefit: new BigNumber(totalTipBenefitValue)
           .plus(totalProposalBenefitValue)
+          .plus(totalSpendBenefitValue)
           .plus(totalBountyBenefitValue)
           .plus(totalChildBountyBenefitValue)
           .toString(),
@@ -153,21 +175,29 @@ async function updateParticipants() {
         totalBenefit:
           totalTipBenefitFiatValue +
           totalProposalBenefitFiatValue +
+          totalSpendBenefitFiatValue +
           totalBountyBenefitFiatValue +
           totalChildBountyBenefitFiatValue,
       },
       totalCount: {
-        total: tipsCount + proposalsCount + bountiesCount + childBountiesCount,
+        total:
+          tipsCount +
+          proposalsCount +
+          spendsCount +
+          bountiesCount +
+          childBountiesCount,
 
         totalProposedCount:
           tipsProposeCount +
           proposalsProposeCount +
+          spendsProposeCount +
           bountiesProposedCount +
           childBountyProposeCount,
 
         totalBenefitCount:
           tipsBeneficiaryCount +
           proposalsBeneficiaryCount +
+          spendsBeneficiaryCount +
           bountiesBeneficiaryCount +
           childBountyBeneficiaryCount,
       },
@@ -179,5 +209,5 @@ async function updateParticipants() {
 }
 
 module.exports = {
-  updateParticipants,
+  updateParticipantsV2,
 };
