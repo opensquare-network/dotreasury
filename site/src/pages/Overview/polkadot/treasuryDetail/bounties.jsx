@@ -38,7 +38,6 @@ export default function TreasuryDetailBounties() {
           <Link to="/bounties">Bounties</Link> · {bountiesCount}
         </>
       }
-      titleTooltipContent="Funds for bounty programs"
       iconSrc="/imgs/data-bounties.svg"
       content={<ValueDisplay value={totalValue} prefix="$" />}
       isLoading={isLoading}

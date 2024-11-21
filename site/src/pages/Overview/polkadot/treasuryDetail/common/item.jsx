@@ -52,9 +52,11 @@ export default function TreasuryDetailItem({
         title={
           <TitleWrapper>
             {title}
-            <Tooltip tooltipContent={titleTooltipContent}>
-              <ImageWithDark src="/imgs/info.svg" />
-            </Tooltip>
+            {titleTooltipContent && (
+              <Tooltip tooltipContent={titleTooltipContent}>
+                <ImageWithDark src="/imgs/info.svg" />
+              </Tooltip>
+            )}
           </TitleWrapper>
         }
         icon={iconSrc && <ImageWithDark src={iconSrc} width={48} height={48} />}

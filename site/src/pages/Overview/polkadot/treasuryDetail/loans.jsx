@@ -46,7 +46,7 @@ export default function TreasuryDetailLoans() {
   return (
     <TreasuryDetailItem
       title="Loans"
-      titleTooltipContent="Loans receivable"
+      titleTooltipContent="Loans to ecosystem projects"
       iconSrc="/imgs/data-asset-2.svg"
       content={<ValueDisplay value={total} prefix="$" />}
       isLoading={isLoading}
