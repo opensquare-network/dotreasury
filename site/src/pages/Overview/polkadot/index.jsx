@@ -6,6 +6,7 @@ import { isCentrifuge } from "../../../utils/chains";
 import TopBeneficiariesTable from "../TopBeneficiariesTable";
 import { mdcss } from "../../../styles/responsive";
 import TopFundedProjectsTable from "../topFundedProjectsTable";
+import PolkadotTreasuryProvider from "../../../context/PolkadotTreasury";
 
 const Wrapper = styled.div`
   ${space_y(16)}
@@ -20,15 +21,17 @@ const TableWrapper = styled.div`
 
 export default function OverviewPolkadot() {
   return (
-    <Wrapper>
-      <OverviewTotalTreasury />
+    <PolkadotTreasuryProvider>
+      <Wrapper>
+        <OverviewTotalTreasury />
 
-      <OverviewTreasuryDetail />
+        <OverviewTreasuryDetail />
 
-      <TableWrapper>
-        {!isCentrifuge && <TopBeneficiariesTable />}
-        <TopFundedProjectsTable />
-      </TableWrapper>
-    </Wrapper>
+        <TableWrapper>
+          {!isCentrifuge && <TopBeneficiariesTable />}
+          <TopFundedProjectsTable />
+        </TableWrapper>
+      </Wrapper>
+    </PolkadotTreasuryProvider>
   );
 }
