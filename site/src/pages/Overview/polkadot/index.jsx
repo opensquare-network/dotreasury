@@ -25,10 +25,10 @@ export default function OverviewPolkadot() {
 
       <OverviewTreasuryDetail />
 
-      <TableWrapper>
-        {/* {!isCentrifuge && <TopBeneficiariesTable />} */}
-        {/* <TopFundedProjectsTable /> */}
-      </TableWrapper>
+      {/* <TableWrapper> */}
+      {/* {!isCentrifuge && <TopBeneficiariesTable />} */}
+      {/* <TopFundedProjectsTable /> */}
+      {/* </TableWrapper> */}
     </Wrapper>
   );
 }
