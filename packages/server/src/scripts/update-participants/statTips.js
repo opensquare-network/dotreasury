@@ -1,7 +1,8 @@
 const BigNumber = require("bignumber.js");
 const { getTipCollection } = require("../../mongo");
+const { getSubsquareTreasurySpendCollection } = require("../../mongo/polkadot");
 
-async function statTips() {
+async function getStatsOfTipItems(tips) {
   const counts = {};
   const proposeCounts = {};
   const proposers = new Set();
@@ -9,9 +10,6 @@ async function statTips() {
   const beneficiaries = new Set();
   const totalBenefitFiatValues = {};
   const totalBenefitValues = {};
-
-  const tipCol = await getTipCollection();
-  const tips = await tipCol.find().toArray();
 
   for (const tip of tips) {
     const finder = tip.finder;
@@ -53,6 +51,21 @@ async function statTips() {
   };
 }
 
+async function statTips() {
+  const tipCol = await getTipCollection();
+  const tips = await tipCol.find().toArray();
+
+  return await getStatsOfTipItems(tips);
+}
+
+async function statTipsV2() {
+  const col = await getSubsquareTreasurySpendCollection();
+  const tips = await col.find({ type: "tip" }).toArray();
+
+  return await getStatsOfTipItems(tips);
+}
+
 module.exports = {
   statTips,
+  statTipsV2,
 };

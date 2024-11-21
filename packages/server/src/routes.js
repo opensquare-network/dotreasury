@@ -19,6 +19,7 @@ const chainFeatureRouters = [
   require("./features/overview/routes"),
   require("./features/period/routes"),
   require("./features/centrifuge/routes"),
+  require("./features-v2/treasury/spends/routes"),
 ];
 
 const commonFeatureRouters = [

@@ -104,6 +104,10 @@ const CustomTable = styled(SemanticTable)`
     width: 420px !important;
     max-width: 420px !important;
   }
+  .treasury-spends-value-cell {
+    width: 170px !important;
+    max-width: 170px !important;
+  }
   td:first-child {
     font-weight: 400 !important;
   }
@@ -244,9 +248,10 @@ export function Table({
   treeDataTransform = (data) => data,
   onRowClick = () => {},
   colgroup,
+  className = "",
 }) {
   return (
-    <CustomTable unstackable>
+    <CustomTable unstackable className={className}>
       {colgroup}
       <TableHeader>
         <TableRow>

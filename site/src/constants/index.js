@@ -1,3 +1,7 @@
+import { USDC } from "../utils/chains/usdc";
+import { USDt } from "../utils/chains/usdt";
+import { MYTH } from "./foreignAssets";
+
 export const TipStatus = {
   Tipping: "Tipping",
   Closing: "Closing",
@@ -62,6 +66,46 @@ export const openGovReferendumStatusMap = {
   Rejected: "Rejected",
   Executed: "Executed",
 };
+
+export const polkadotOpenGovReferendumStatusMap = {
+  Confirming: "Confirming",
+  Deciding: "Deciding",
+  Queueing: "Queueing",
+  Preparing: "Preparing",
+};
+
+export const treasuryTipStatusMap = {
+  NewTip: "NewTip",
+  Tipping: "Tipping",
+  TipClosed: "TipClosed",
+  TipRetracted: "TipRetracted",
+  TipSlashed: "TipSlashed",
+};
+
+export const treasuryProposalStatusMap = {
+  ApproveVoting: "ApproveVoting",
+  RejectVoting: "RejectVoting",
+  Proposed: "Proposed",
+  Approved: "Approved",
+  Awarded: "Awarded",
+  Rejected: "Rejected",
+  Removed: "Removed",
+};
+
+export const treasurySpendStatusMap = {
+  Approved: "Approved",
+  Paid: "Paid",
+  Processed: "Processed",
+  Voided: "Voided",
+};
+
+export const treasurySpendsAssetsFilterOptions = [
+  { key: "all", value: "-1", text: "All assets" },
+  { key: "dot", value: "dot", text: "DOT", asset: "native" },
+  { key: "usdc", value: "usdc", text: USDC.name, asset: USDC.symbol },
+  { key: "usdt", value: "usdt", text: USDt.name, asset: USDt.symbol },
+  { key: "myth", value: "myth", text: MYTH.name, asset: MYTH.symbol },
+];
 
 export const TreasuryAccount =
   "F3opxRbN5ZbjJNU511Kj2TLuzFcDq9BGduA9TgiECafpg29";

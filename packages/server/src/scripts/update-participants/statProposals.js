@@ -1,7 +1,8 @@
 const BigNumber = require("bignumber.js");
 const { getProposalCollection } = require("../../mongo");
+const { getSubsquareTreasurySpendCollection } = require("../../mongo/polkadot");
 
-async function statProposals() {
+async function getStatsOfTreasuryProposalItems(proposals) {
   const counts = {};
   const proposeCounts = {};
   const proposers = new Set();
@@ -9,9 +10,6 @@ async function statProposals() {
   const beneficiaries = new Set();
   const totalBenefitFiatValues = {};
   const totalBenefitValues = {};
-
-  const proposalCol = await getProposalCollection();
-  const proposals = await proposalCol.find().toArray();
 
   for (const proposal of proposals) {
     const proposer = proposal.proposer;
@@ -54,6 +52,21 @@ async function statProposals() {
   };
 }
 
+async function statProposals() {
+  const proposalCol = await getProposalCollection();
+  const proposals = await proposalCol.find().toArray();
+
+  return await getStatsOfTreasuryProposalItems(proposals);
+}
+
+async function statProposalsV2() {
+  const col = await getSubsquareTreasurySpendCollection();
+  const proposals = await col.find({ type: "treasuryProposal" }).toArray();
+
+  return await getStatsOfTreasuryProposalItems(proposals);
+}
+
 module.exports = {
   statProposals,
+  statProposalsV2,
 };

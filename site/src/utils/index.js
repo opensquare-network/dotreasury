@@ -10,6 +10,7 @@ import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import md5 from "md5";
 import { CHAINS, getChainSettings } from "./chains";
+import { STATEMINT_ASSETS } from "../constants/statemint";
 
 dayjs.extend(duration);
 
@@ -203,3 +204,6 @@ export function checkInputAddress(address, addressName) {
 
   return null;
 }
+
+export const getAssetBySymbol = (symbol) =>
+  STATEMINT_ASSETS.find((asset) => asset.symbol === symbol);

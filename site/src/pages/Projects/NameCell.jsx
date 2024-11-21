@@ -16,9 +16,9 @@ const TextWrapper = styled(Text)`
   /* white-space: nowrap;  */
 `;
 
-const NameCell = ({ logo, name }) => {
+const NameCell = ({ logo, name, className = "" }) => {
   return (
-    <Wrapper>
+    <Wrapper className={className}>
       <ImageWithDark
         src={
           logo ? `/imgs/projects/${logo}` : "/imgs/projects/default-logo.svg"

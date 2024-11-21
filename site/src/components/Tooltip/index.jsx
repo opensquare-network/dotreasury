@@ -12,6 +12,7 @@ import {
 
 const Wrapper = styled.div`
   display: inline-flex;
+  max-width: 100%;
 `;
 
 export default function Tooltip({ children, tooltipContent, className = "" }) {

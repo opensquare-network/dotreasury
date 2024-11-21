@@ -2,19 +2,21 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const BigNumber = require("bignumber.js");
-const { getParticipantCollection } = require("../../mongo");
 const { statTips } = require("./statTips");
 const { statProposals } = require("./statProposals");
 const { statBounties } = require("./statBounties");
 const { statChildBounties } = require("./statChildBounties");
 const { statCouncilors } = require("./statCouncilors");
-
-async function saveParticipant(address, data) {
-  const participantCol = await getParticipantCollection();
-  await participantCol.updateOne({ address }, { $set: data }, { upsert: true });
-}
+// const { updateParticipantsV2 } = require("./updateParticipantsV2");
+const { saveParticipant } = require("./common");
 
 async function updateParticipants() {
+  // const chain = process.env.CHAIN;
+  // if (chain === "polkadot") {
+  //   await updateParticipantsV2();
+  //   return;
+  // }
+
   console.log(`Update participants of ${process.env.CHAIN}`);
 
   const {
@@ -178,4 +180,4 @@ async function updateParticipants() {
 
 module.exports = {
   updateParticipants,
-}
+};
