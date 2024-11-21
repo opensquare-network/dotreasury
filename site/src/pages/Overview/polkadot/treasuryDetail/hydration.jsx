@@ -2,7 +2,6 @@ import { useSelector } from "react-redux";
 import {
   PolkadotTreasuryOnHydrationAccount1,
   PolkadotTreasuryOnHydrationAccount2,
-  useHydrationTreasuryBalances,
 } from "../../../../hooks/hydration/useHydrationTreasuryBalances";
 import { polkadot } from "../../../../utils/chains/polkadot";
 import AssetValueDisplay from "./common/assetValueDisplay";
@@ -18,6 +17,7 @@ import styled from "styled-components";
 import ExplorerLinkOrigin from "../../../../components/ExplorerLink";
 import { p_12_medium } from "../../../../styles/text";
 import { space_x } from "../../../../styles/tailwindcss";
+import { usePolkadotTreasuryData } from "../../../../context/PolkadotTreasury";
 
 export const AddressGroup = styled.div`
   ${space_x(8)}
@@ -34,18 +34,23 @@ export const ExplorerLink = styled(ExplorerLinkOrigin)`
 `;
 
 export default function TreasuryDetailHydration() {
+  const {
+    hydrationDotBalance,
+    hydrationUSDtBalance,
+    hydrationUSDCBalance,
+    isHydrationLoading,
+  } = usePolkadotTreasuryData();
   const overview = useSelector(overviewSelector);
   const dotPrice = overview?.latestSymbolPrice ?? 0;
 
-  const { usdc, usdt, dot, isLoading } = useHydrationTreasuryBalances();
   const totalDotValue = BigNumber(
-    toPrecision(dot, polkadot.decimals),
+    toPrecision(hydrationDotBalance, polkadot.decimals),
   ).multipliedBy(dotPrice);
 
   const total = BigNumber.sum(
     totalDotValue,
-    toPrecision(usdt, USDt.decimals),
-    toPrecision(usdc, USDC.decimals),
+    toPrecision(hydrationUSDtBalance, USDt.decimals),
+    toPrecision(hydrationUSDCBalance, USDC.decimals),
   ).toString();
 
   return (
@@ -54,7 +59,7 @@ export default function TreasuryDetailHydration() {
       titleTooltipContent="Treasury stablecoin acquisition"
       iconSrc="/imgs/data-hydration.svg"
       content={<ValueDisplay value={total} prefix="$" />}
-      isLoading={isLoading}
+      isLoading={isHydrationLoading}
       footer={
         <AssetWrapper>
           <AddressGroup>
@@ -71,24 +76,24 @@ export default function TreasuryDetailHydration() {
 
           <AssetValueDisplay
             symbol="dot"
-            value={dot}
+            value={hydrationDotBalance}
             precision={polkadot.decimals}
-            isLoading={isLoading}
+            isLoading={isHydrationLoading}
             valueTooltipContent={
               <ValueDisplay value={totalDotValue} prefix="$" />
             }
           />
           <AssetValueDisplay
             symbol="usdt"
-            value={usdt}
+            value={hydrationUSDtBalance}
             precision={USDt.decimals}
-            isLoading={isLoading}
+            isLoading={isHydrationLoading}
           />
           <AssetValueDisplay
             symbol="usdc"
-            value={usdc}
+            value={hydrationUSDCBalance}
             precision={USDC.decimals}
-            isLoading={isLoading}
+            isLoading={isHydrationLoading}
           />
         </AssetWrapper>
       }

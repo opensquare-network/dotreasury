@@ -3,51 +3,54 @@ import ValueDisplay from "../../../../components/ValueDisplay";
 import { space_y } from "../../../../styles/tailwindcss";
 import TreasuryDetailItem from "./common/item";
 import AssetItem from "./common/assetItem";
-import {
-  ASSET_HUB_ACCOUNT,
-  ASSET_HUB_USDC_ASSET_ID,
-  ASSET_HUB_USDT_ASSET_ID,
-} from "../../../../constants/assetHub";
+import { ASSET_HUB_ACCOUNT } from "../../../../constants/assetHub";
 import AssetValueDisplay from "./common/assetValueDisplay";
 import { polkadot } from "../../../../utils/chains/polkadot";
 import BigNumber from "bignumber.js";
 import { useSelector } from "react-redux";
 import { overviewSelector } from "../../../../store/reducers/overviewSlice";
 import { toPrecision } from "../../../../utils";
-import { useAssetHubDot } from "../../../../hooks/assetHub/useAssetHubDot";
-import { useAssetHubAsset } from "../../../../hooks/assetHub/useAssetHubAsset";
 import { USDt } from "../../../../utils/chains/usdt";
 import { USDC } from "../../../../utils/chains/usdc";
-import useQueryRelayChainFree from "../../../../hooks/treasury/useQueryRelayChainFree";
+import { usePolkadotTreasuryData } from "../../../../context/PolkadotTreasury";
 
 const AssetGroup = styled.div`
   ${space_y(8)}
 `;
 
 export default function TreasuryDetailAssets() {
+  const {
+    relayChainFreeBalance,
+    isRelayChainFreeLoading,
+    assetHubDotBalance,
+    isAssetHubDotLoading,
+    assetHubUSDtBalance,
+    isAssetHubUSDtLoading,
+    assetHubUSDCBalance,
+    isAssetHubUSDCLoading,
+  } = usePolkadotTreasuryData();
   const overview = useSelector(overviewSelector);
   const dotPrice = overview?.latestSymbolPrice ?? 0;
 
-  const relayChainFree = useQueryRelayChainFree();
   const totalRelayChainFreeValue = BigNumber(
-    toPrecision(relayChainFree.balance, polkadot.decimals),
+    toPrecision(relayChainFreeBalance, polkadot.decimals),
   ).multipliedBy(dotPrice);
-  const [dotValue, dotLoading] = useAssetHubDot();
   const totalDotValue = BigNumber(
-    toPrecision(dotValue, polkadot.decimals),
+    toPrecision(assetHubDotBalance, polkadot.decimals),
   ).multipliedBy(dotPrice);
-  const [usdtValue, usdtLoading] = useAssetHubAsset(ASSET_HUB_USDT_ASSET_ID);
-  const [usdcValue, usdcLoading] = useAssetHubAsset(ASSET_HUB_USDC_ASSET_ID);
 
   const total = BigNumber.sum(
     totalRelayChainFreeValue,
     totalDotValue,
-    toPrecision(usdtValue, USDt.decimals),
-    toPrecision(usdcValue, USDC.decimals),
+    toPrecision(assetHubUSDtBalance, USDt.decimals),
+    toPrecision(assetHubUSDCBalance, USDC.decimals),
   ).toString();
 
   const isLoading =
-    relayChainFree.isLoading || dotLoading || usdtLoading || usdcLoading;
+    isRelayChainFreeLoading ||
+    isAssetHubDotLoading ||
+    isAssetHubUSDtLoading ||
+    isAssetHubUSDCLoading;
 
   return (
     <TreasuryDetailItem
@@ -64,9 +67,9 @@ export default function TreasuryDetailAssets() {
           >
             <AssetValueDisplay
               symbol="dot"
-              value={relayChainFree.balance}
+              value={relayChainFreeBalance}
               precision={polkadot.decimals}
-              isLoading={relayChainFree.isLoading}
+              isLoading={isRelayChainFreeLoading}
               valueTooltipContent={
                 <ValueDisplay value={totalRelayChainFreeValue} prefix="$" />
               }
@@ -79,24 +82,24 @@ export default function TreasuryDetailAssets() {
           >
             <AssetValueDisplay
               symbol="dot"
-              value={dotValue}
+              value={assetHubDotBalance}
               precision={polkadot.decimals}
-              isLoading={dotLoading}
+              isLoading={isAssetHubDotLoading}
               valueTooltipContent={
                 <ValueDisplay value={totalDotValue} prefix="$" />
               }
             />
             <AssetValueDisplay
               symbol="usdt"
-              value={usdtValue}
+              value={assetHubUSDtBalance}
               precision={USDt.decimals}
-              isLoading={usdtLoading}
+              isLoading={isAssetHubUSDtLoading}
             />
             <AssetValueDisplay
               symbol="usdc"
-              value={usdcValue}
+              value={assetHubUSDCBalance}
               precision={USDC.decimals}
-              isLoading={usdcLoading}
+              isLoading={isAssetHubUSDCLoading}
             />
           </AssetItem>
         </AssetGroup>
