@@ -7,7 +7,22 @@ import useAssetHubForeignAssets from "../../../../hooks/assetHub/useAssetHubFore
 import { MYTH } from "../../../../constants/foreignAssets";
 import { MYTH_TOKEN_ACCOUNT } from "../../../../constants/foreignAssets";
 import useFiatPrice from "../../../../hooks/useFiatPrice";
-import AssetItem from "./common/assetItem";
+import AssetWrapper from "./common/assetWrapper";
+import { ExplorerLink, AddressGroup } from "./hydration";
+
+function AddressLink({ title, address, base }) {
+  return (
+    <ExplorerLink
+      base={base}
+      href={address}
+      externalIconColor="textSecondary"
+      externalIcon
+      externalIconSize={20}
+    >
+      {title}
+    </ExplorerLink>
+  );
+}
 
 export default function TreasuryDetailMythToken() {
   const mythTokenAssetsBalance = useAssetHubForeignAssets(MYTH_TOKEN_ACCOUNT);
@@ -31,10 +46,20 @@ export default function TreasuryDetailMythToken() {
       content={<ValueDisplay value={totalValue} prefix="$" />}
       isLoading={isLoading}
       footer={
-        <AssetItem
-          title="Distribution Addr"
-          titleLink={`https://assethub-polkadot.subscan.io/account/${MYTH_TOKEN_ACCOUNT}`}
-        >
+        <AssetWrapper>
+          <AddressGroup>
+            <AddressLink
+              title="Referendum"
+              base="https://polkadot.subsquare.io/"
+              address="referenda/643"
+            />
+
+            <AddressLink
+              title="Distribution Addr"
+              base="https://assethub-polkadot.subscan.io/"
+              address={`account/${MYTH_TOKEN_ACCOUNT}`}
+            />
+          </AddressGroup>
           <AssetValueDisplay
             value={mythTokenBalance}
             isLoading={isLoading}
@@ -42,7 +67,7 @@ export default function TreasuryDetailMythToken() {
             symbol={MYTH.symbol}
             valueTooltipContent={<ValueDisplay value={totalValue} prefix="$" />}
           />
-        </AssetItem>
+        </AssetWrapper>
       }
     />
   );
