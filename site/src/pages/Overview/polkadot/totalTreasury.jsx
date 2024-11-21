@@ -114,7 +114,6 @@ export default function OverviewTotalTreasury() {
   const loansPendulumDotBalance = useLoansPendulumDotBalance();
 
   const mythTokenAssetsBalance = useAssetHubForeignAssets(MYTH_TOKEN_ACCOUNT);
-
   const { price: mythTokenPrice } = useFiatPrice("MYTH");
 
   const totalDot = BigNumber.sum(
