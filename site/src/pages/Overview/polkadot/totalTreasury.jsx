@@ -99,8 +99,7 @@ export default function OverviewTotalTreasury() {
   const mythTokenAssetsBalance = useAssetHubForeignAssets(MYTH_TOKEN_ACCOUNT);
   const relayChainAssetsBalance = useQueryRelayChainFree();
 
-  const { price: mythTokenPrice, isLoading: isFiatPriceLoading } =
-    useFiatPrice("MYTH");
+  const { price: mythTokenPrice } = useFiatPrice("MYTH");
   const dotPrice = overview?.latestSymbolPrice ?? 0;
 
   const totalDot = BigNumber.sum(
