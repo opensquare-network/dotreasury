@@ -149,7 +149,7 @@ const TabExampleSecondaryPointing = () => {
     dispatch(fetchIncomeCount());
   }, [dispatch]);
 
-  let polkadotTreasuryMenus = [
+  let treasurySpendMenus = [
     {
       menuItem: {
         as: NavLink,
@@ -176,7 +176,7 @@ const TabExampleSecondaryPointing = () => {
   ];
   // TODO: Uncomment when spends are ready
   // if (isPolkadot) {
-  //   polkadotTreasuryMenus = [
+  //   treasurySpendMenus = [
   //     {
   //       menuItem: {
   //         as: NavLink,
@@ -220,7 +220,7 @@ const TabExampleSecondaryPointing = () => {
                 },
               ]
             : []),
-          ...polkadotTreasuryMenus,
+          ...treasurySpendMenus,
           currentChainSettings.hasBounties && {
             menuItem: {
               as: NavLink,
