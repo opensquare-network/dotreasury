@@ -6,6 +6,7 @@ import JumpToLink from "../../Link";
 import { useTableColumns } from "../../../../components/shared/useTableColumns";
 import TreasurySpendValueDisplay from "../../../../components/treasurySpendValueDisplay";
 import styled from "styled-components";
+import PairTextVertical from "../../../../components/PairTextVertical";
 
 const Wrapper = styled.div`
   width: 112px;
@@ -19,7 +20,7 @@ const Columns = ({
   setSortDirection,
   chain,
 }) => {
-  const { proposeTime, proposer, referendaStatus } = useTableColumns({});
+  const { proposeTime, proposer } = useTableColumns({});
 
   const index = {
     key: "index",
@@ -58,6 +59,8 @@ const Columns = ({
     key: "amount",
     title: "Value",
     cellClassName: "balance-cell",
+    headerCellProps: { textAlign: "right" },
+    cellProps: { textAlign: "right" },
     cellRender: (v_, item) => {
       if (item?.allSpends && item?.allSpends.length > 0) {
         return (
@@ -81,6 +84,17 @@ const Columns = ({
       }
       return <Wrapper>-</Wrapper>;
     },
+  };
+
+  const referendaStatus = {
+    key: "referenda-status",
+    title: "Status",
+    headerCellProps: { textAlign: "right" },
+    cellProps: { textAlign: "right" },
+    cellClassName: "referenda-status-cell proposal-status-cell",
+    cellRender: (_, item) => (
+      <PairTextVertical value={item?.state?.name || item?.state?.state} />
+    ),
   };
 
   const sortableProposalIndex = {

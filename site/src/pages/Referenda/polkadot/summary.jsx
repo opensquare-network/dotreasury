@@ -13,7 +13,8 @@ import SummaryItem from "../../../components/Summary/Item";
 import { lgcss, smcss } from "../../../styles/responsive";
 import SummaryOngoingItemWrapper from "../../../components/Summary/OngoingItemWrapper";
 import SummaryReferendaWrapper from "../../../components/Summary/ReferendaWrapper";
-import useFetchSummary from "./useFetchSummary";
+import useFetchReferendumsSummary from "../../../hooks/applications/polkadot/useFetchReferendumsSummary";
+import SkeletonBar from "../../../components/skeleton/bar";
 
 const ItemsWrapper = styled.div`
   ${flex_1};
@@ -53,8 +54,12 @@ function formatToTitleCase(str) {
     .join(" ");
 }
 
+function LoadableContent({ children, isLoading }) {
+  return <>{isLoading ? <SkeletonBar width={114} height={28} /> : children}</>;
+}
+
 export default function ReferendaSummary() {
-  const { data: rawSummary } = useFetchSummary();
+  const { data: rawSummary, isLoading } = useFetchReferendumsSummary();
 
   const applicationSummary = useMemo(
     () => (Array.isArray(rawSummary) ? rawSummary : []),
@@ -80,7 +85,11 @@ export default function ReferendaSummary() {
       <SummaryOngoingItemWrapper>
         <SummaryItem
           title="Ongoing"
-          content={<Value>{activeCount || 0}</Value>}
+          content={
+            <LoadableContent isLoading={isLoading}>
+              <Value>{activeCount || 0}</Value>
+            </LoadableContent>
+          }
         />
       </SummaryOngoingItemWrapper>
 
@@ -90,10 +99,12 @@ export default function ReferendaSummary() {
             key={item.id}
             title={formatToTitleCase(item.name)}
             content={
-              <Value>
-                {item?.activeCount || 0}
-                <span className="light"> / {item?.total || 0}</span>
-              </Value>
+              <LoadableContent isLoading={isLoading}>
+                <Value>
+                  {item?.activeCount || 0}
+                  <span className="light"> / {item?.total || 0}</span>
+                </Value>
+              </LoadableContent>
             }
           />
         ))}
