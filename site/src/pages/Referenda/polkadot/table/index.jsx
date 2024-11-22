@@ -1,39 +1,48 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import styled from "styled-components";
 import { Table } from "../../../../components/Table";
 import TableLoading from "../../../../components/TableLoading";
-import Filter from "../filter";
-import ResponsivePagination from "../../../../components/ResponsivePagination";
+import Filter from "./filter";
 import { useSelector } from "react-redux";
 import { chainSelector } from "../../../../store/reducers/chainSlice";
-import {
-  DEFAULT_PAGE_SIZE,
-  DEFAULT_QUERY_PAGE,
-  polkadotOpenGovReferendumStatusMap,
-} from "../../../../constants";
+import { polkadotOpenGovReferendumStatusMap } from "../../../../constants";
 import Columns from "./columns";
 import { useHistory } from "react-router";
 import useSort from "../../../../hooks/useSort";
-import useListFilter from "../filter/useFilter";
+import useListFilter from "../../../../hooks/applications/polkadot/useFilter";
 import { useQuery } from "../../../../utils/hooks";
-import useFetchReferendumsList from "../useFetchReferendumsList";
+import Divider from "../../../../components/Divider";
+import TableHeader from "./header";
+import Card from "../../../../components/Card";
+import {
+  usePolkadotApplicationsData,
+  DISPLAY_TRACKS_ITEMS,
+} from "../../../../context/PolkadotApplications";
 
 const TableWrapper = styled.div`
   overflow: scroll;
 `;
 
+const CardWrapper = styled(Card)`
+  padding: 0;
+  table {
+    border-radius: 0 !important;
+    border: none !important;
+  }
+  @media screen and (max-width: 600px) {
+    border-radius: 0;
+  }
+`;
+
 export default function ReferendaTable() {
   const history = useHistory();
   const chain = useSelector(chainSelector);
-  const [page, setPage] = useState(DEFAULT_QUERY_PAGE);
-  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const query = useQuery();
   const sort = query.get("sort");
   const [dataList, setDataList] = useState([]);
 
   const { sortField, setSortField, sortDirection, setSortDirection } =
     useSort();
-
   const {
     filterStatus,
     setFilterStatus,
@@ -41,18 +50,9 @@ export default function ReferendaTable() {
     setFilterTrack,
     filterAssets,
     setFilterAssets,
-    getFilterData,
   } = useListFilter();
 
-  const filterData = getFilterData();
-  const { data: applicationList, isLoading } = useFetchReferendumsList(
-    page,
-    pageSize,
-    filterData,
-    sort && { sort },
-  );
-
-  const totalPages = Math.ceil((applicationList?.total || 0) / pageSize);
+  const { data: applicationList, isLoading } = usePolkadotApplicationsData();
 
   useEffect(() => {
     if (!isLoading) {
@@ -68,7 +68,51 @@ export default function ReferendaTable() {
     chain,
   });
 
-  const tableData = (dataList || []).map((item) => ({
+  const filteredData = useMemo(() => {
+    const data = dataList.filter((item) => {
+      const matchesStatus =
+        filterStatus === "-1" || item?.state?.name === filterStatus;
+
+      const matchesTrack = (() => {
+        if (filterTrack === "-1") return true;
+
+        if (filterTrack === "others") {
+          return !DISPLAY_TRACKS_ITEMS.includes(item?.trackInfo?.name);
+        }
+
+        return item?.trackInfo?.name === filterTrack;
+      })();
+
+      const matchesAssets = (() => {
+        if (filterAssets === "-1") return true;
+
+        if (!Array.isArray(item?.allSpends)) return false;
+
+        return item.allSpends.some((asset) => {
+          const currentSymbol = asset?.isSpendLocal
+            ? asset?.symbol
+            : asset?.assetKind?.symbol;
+
+          return (
+            currentSymbol?.toLocaleUpperCase() ===
+            filterAssets.toLocaleUpperCase()
+          );
+        });
+      })();
+
+      return matchesStatus && matchesTrack && matchesAssets;
+    });
+
+    if (sort === "index_desc") {
+      return data.sort((a, b) => {
+        return b.referendumIndex - a.referendumIndex;
+      });
+    }
+
+    return data;
+  }, [dataList, filterStatus, filterTrack, filterAssets, sort]);
+
+  const tableData = (filteredData || []).map((item) => ({
     ...item,
     referendumIndex: item.referendumIndex,
     proposeAtBlockHeight: item.indexer.blockHeight,
@@ -80,29 +124,10 @@ export default function ReferendaTable() {
     trackInfo: item.trackInfo,
   }));
 
-  const handlePageSizeChange = (newPageSize) => {
-    const searchParams = new URLSearchParams(history.location.search);
-    searchParams.delete("page");
-    history.push({ search: searchParams.toString() });
-
-    setPage(DEFAULT_QUERY_PAGE);
-    setPageSize(newPageSize);
-  };
-
-  const handlePageChange = (_, { activePage }) => {
-    const searchParams = new URLSearchParams(history.location.search);
-    if (activePage === DEFAULT_QUERY_PAGE) {
-      searchParams.delete("page");
-    } else {
-      searchParams.set("page", activePage);
-    }
-    history.push({ search: searchParams.toString() });
-
-    setPage(activePage);
-  };
-
   return (
-    <>
+    <CardWrapper>
+      <TableHeader />
+      <Divider />
       <div>
         <div style={{ display: "flex", padding: "24px", gap: "16px" }}>
           <Filter
@@ -121,13 +146,6 @@ export default function ReferendaTable() {
           </TableLoading>
         </TableWrapper>
       </div>
-      <ResponsivePagination
-        activePage={page}
-        totalPages={totalPages}
-        pageSize={pageSize}
-        setPageSize={handlePageSizeChange}
-        onPageChange={handlePageChange}
-      />
-    </>
+    </CardWrapper>
   );
 }

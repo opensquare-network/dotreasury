@@ -13,7 +13,11 @@ import SummaryItem from "../../../components/Summary/Item";
 import { lgcss, smcss } from "../../../styles/responsive";
 import SummaryOngoingItemWrapper from "../../../components/Summary/OngoingItemWrapper";
 import SummaryReferendaWrapper from "../../../components/Summary/ReferendaWrapper";
-import useFetchSummary from "./useFetchSummary";
+import SkeletonBar from "../../../components/skeleton/bar";
+import {
+  DISPLAY_TRACKS_ITEMS,
+  usePolkadotApplicationsSummary,
+} from "../../../context/PolkadotApplications";
 
 const ItemsWrapper = styled.div`
   ${flex_1};
@@ -33,15 +37,6 @@ const Value = styled(Text)`
   }
 `;
 
-const DISPLAY_ITEMS = [
-  "treasurer",
-  "small_tipper",
-  "big_tipper",
-  "small_spender",
-  "medium_spender",
-  "big_spender",
-];
-
 function formatToTitleCase(str) {
   if (!str) {
     return "";
@@ -53,15 +48,40 @@ function formatToTitleCase(str) {
     .join(" ");
 }
 
-export default function ReferendaSummary() {
-  const { data: rawSummary, isLoading } = useFetchSummary();
+function LoadableContent({ children, isLoading }) {
+  return <>{isLoading ? <SkeletonBar width={114} height={28} /> : children}</>;
+}
 
-  const applicationSummary = Array.isArray(rawSummary) ? rawSummary : [];
+export default function ReferendaSummary() {
+  const { data: rawSummary, isLoading } = usePolkadotApplicationsSummary();
+
+  const applicationSummary = useMemo(
+    () => (Array.isArray(rawSummary) ? rawSummary : []),
+    [rawSummary],
+  );
 
   const filteredData = useMemo(() => {
-    return applicationSummary.filter((item) =>
-      DISPLAY_ITEMS.includes(item?.name),
+    const filteredSummary = applicationSummary.filter((item) =>
+      DISPLAY_TRACKS_ITEMS.includes(item?.name),
     );
+
+    const otherSummary = applicationSummary.filter(
+      (item) => !DISPLAY_TRACKS_ITEMS.includes(item?.name),
+    );
+
+    const othersActiveCount = otherSummary.reduce(
+      (sum, item) => sum + (item.activeCount || 0),
+      0,
+    );
+
+    if (othersActiveCount > 0) {
+      filteredSummary.push({
+        name: "others",
+        activeCount: othersActiveCount,
+      });
+    }
+
+    return filteredSummary;
   }, [applicationSummary]);
 
   const activeCount = useMemo(() => {
@@ -77,20 +97,23 @@ export default function ReferendaSummary() {
       <SummaryOngoingItemWrapper>
         <SummaryItem
           title="Ongoing"
-          content={<Value>{activeCount || 0}</Value>}
+          content={
+            <LoadableContent isLoading={isLoading}>
+              <Value>{activeCount || 0}</Value>
+            </LoadableContent>
+          }
         />
       </SummaryOngoingItemWrapper>
 
       <ItemsWrapper>
         {filteredData.map((item) => (
           <SummaryItem
-            key={item.id}
+            key={item.name}
             title={formatToTitleCase(item.name)}
             content={
-              <Value>
-                {item?.activeCount || 0}
-                <span className="light"> / {item?.total || 0}</span>
-              </Value>
+              <LoadableContent isLoading={isLoading}>
+                <Value>{item?.activeCount || 0}</Value>
+              </LoadableContent>
             }
           />
         ))}

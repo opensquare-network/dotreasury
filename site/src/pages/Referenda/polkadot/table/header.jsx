@@ -4,7 +4,7 @@ import Text from "../../../../components/Text";
 import { Flex } from "../../../../components/styled";
 import { p_12_normal, p_14_medium } from "../../../../styles/text";
 import { smcss } from "../../../../styles/responsive";
-import useFetchProgressStatus from "../useFetchProgressStatus";
+import useReferendumsProcess from "../../../../hooks/applications/polkadot/useReferendumsProcess";
 
 const HeaderWrapper = styled.div`
   padding: 24px;
@@ -36,8 +36,7 @@ const BriefValue = styled.span`
 `;
 
 export default function TableHeader() {
-  const { data: applicationSummary, isLoading } = useFetchProgressStatus();
-  const all = applicationSummary?.all;
+  const { voting, passing, isLoading } = useReferendumsProcess();
   if (isLoading) {
     return null;
   }
@@ -45,11 +44,11 @@ export default function TableHeader() {
   const briefs = [
     {
       label: "Voting",
-      value: all?.voting ?? 0,
+      value: voting,
     },
     {
       label: "Passing",
-      value: all?.passing ?? 0,
+      value: passing,
     },
   ];
 
