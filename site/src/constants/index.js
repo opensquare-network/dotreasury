@@ -72,6 +72,7 @@ export const polkadotOpenGovReferendumStatusMap = {
   Deciding: "Deciding",
   Queueing: "Queueing",
   Preparing: "Preparing",
+  Submitted: "Submitted",
 };
 
 export const treasuryTipStatusMap = {

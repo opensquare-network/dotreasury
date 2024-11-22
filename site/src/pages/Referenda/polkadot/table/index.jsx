@@ -17,9 +17,23 @@ import useSort from "../../../../hooks/useSort";
 import useListFilter from "../hooks/useFilter";
 import { useQuery } from "../../../../utils/hooks";
 import useFetchReferendumsList from "../hooks/useFetchReferendumsList";
+import Divider from "../../../../components/Divider";
+import TableHeader from "./header";
+import Card from "../../../../components/Card";
 
 const TableWrapper = styled.div`
   overflow: scroll;
+`;
+
+const CardWrapper = styled(Card)`
+  padding: 0;
+  table {
+    border-radius: 0 !important;
+    border: none !important;
+  }
+  @media screen and (max-width: 600px) {
+    border-radius: 0;
+  }
 `;
 
 export default function ReferendaTable() {
@@ -104,7 +118,9 @@ export default function ReferendaTable() {
   };
 
   return (
-    <>
+    <CardWrapper>
+      <TableHeader />
+      <Divider />
       <div>
         <div style={{ display: "flex", padding: "24px", gap: "16px" }}>
           <Filter
@@ -130,6 +146,6 @@ export default function ReferendaTable() {
         setPageSize={handlePageSizeChange}
         onPageChange={handlePageChange}
       />
-    </>
+    </CardWrapper>
   );
 }
