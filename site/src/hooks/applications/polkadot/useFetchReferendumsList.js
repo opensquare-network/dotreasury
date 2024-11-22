@@ -9,6 +9,8 @@ export default function useFetchReferendumsList(filterData, sort) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
+
     const fetchData = async () => {
       try {
         const { result = [] } = await api.fetch(
