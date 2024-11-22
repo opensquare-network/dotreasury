@@ -20,7 +20,6 @@ export function useBountiesTotalBalance(bounties) {
           if (!id) return new BigNumber(0);
 
           try {
-            // TODO: overview, bounties api
             const response = await fetch(
               `https://${currentChain}.subsquare.io/api/treasury/bounties/${id}`,
             );

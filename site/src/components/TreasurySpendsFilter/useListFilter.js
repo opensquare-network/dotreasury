@@ -1,9 +1,6 @@
 import { useHistory, useLocation } from "react-router";
 import { useCallback, useState } from "react";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { getPrecision } from "../../utils";
-import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import { getQueryStatus, toStatusQuery } from "../Filter/useListFilter";
 
 export function useTreasurySpendsFilter() {
@@ -26,9 +23,6 @@ export function useTreasurySpendsFilter() {
     setMin(defaultMin);
     setMax(defaultMax);
   }, [defaultStatus, defaultAsset, defaultMin, defaultMax]);
-
-  const symbol = useSelector(chainSymbolSelector);
-  const precision = getPrecision(symbol);
 
   useEffect(() => {
     const query = new URLSearchParams(history.location.search);
