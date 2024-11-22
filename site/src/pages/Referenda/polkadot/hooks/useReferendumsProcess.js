@@ -14,8 +14,6 @@ export default function useReferendumsProcess() {
       const { name: state } = item?.state || {};
       const { tally } = item?.onchainData || {};
 
-      polkadotOpenGovReferendumStatusMap;
-
       if (
         [
           polkadotOpenGovReferendumStatusMap.Confirming,
