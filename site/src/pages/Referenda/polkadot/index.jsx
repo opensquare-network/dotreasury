@@ -1,11 +1,14 @@
 import ReferendaTable from "./table";
 import Summary from "./summary";
+import PolkadotApplicationsProvider from "../../../context/PolkadotApplications";
 
 export default function PolkadotReferenda() {
   return (
     <div>
-      <Summary />
-      <ReferendaTable />
+      <PolkadotApplicationsProvider>
+        <Summary />
+        <ReferendaTable />
+      </PolkadotApplicationsProvider>
     </div>
   );
 }

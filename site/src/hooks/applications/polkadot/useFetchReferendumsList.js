@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../../../services/scanApi";
 
-export default function useFetchReferendumsList(filterData, sort) {
+export default function useFetchReferendumsList() {
   const [data, setData] = useState({
     items: [],
     total: 0,
@@ -17,10 +17,6 @@ export default function useFetchReferendumsList(filterData, sort) {
           `${
             import.meta.env.VITE_APP_SUBSQUARE_API_END_POINT
           }/gov2/referendums/treasury-applications`,
-          {
-            ...filterData,
-            ...sort,
-          },
         );
         setData({ items: result, total: result.length });
       } catch (err) {
@@ -31,8 +27,7 @@ export default function useFetchReferendumsList(filterData, sort) {
     };
 
     fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(filterData), JSON.stringify(sort)]);
+  }, []);
 
   return { data, isLoading };
 }
