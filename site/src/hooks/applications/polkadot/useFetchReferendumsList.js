@@ -16,7 +16,7 @@ export default function useFetchReferendumsList() {
         const { result = [] } = await api.fetch(
           `${
             import.meta.env.VITE_APP_SUBSQUARE_API_END_POINT
-          }/gov2/referendums/treasury-applications`,
+          }/gov2/referenda/treasury-applications`,
         );
         setData({ items: result, total: result.length });
       } catch (err) {

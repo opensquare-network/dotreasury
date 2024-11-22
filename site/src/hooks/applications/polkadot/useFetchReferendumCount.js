@@ -11,7 +11,7 @@ export default function useFetchReferendumCount() {
         const { result } = await api.fetch(
           `${
             import.meta.env.VITE_APP_SUBSQUARE_API_END_POINT
-          }/gov2/referendums/treasury-applications/count`,
+          }/gov2/referenda/treasury-applications/count`,
         );
 
         const total = result?.total || 0;
