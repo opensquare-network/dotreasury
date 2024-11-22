@@ -3,14 +3,9 @@ import styled from "styled-components";
 import { Table } from "../../../../components/Table";
 import TableLoading from "../../../../components/TableLoading";
 import Filter from "./filter";
-import ResponsivePagination from "../../../../components/ResponsivePagination";
 import { useSelector } from "react-redux";
 import { chainSelector } from "../../../../store/reducers/chainSlice";
-import {
-  DEFAULT_PAGE_SIZE,
-  DEFAULT_QUERY_PAGE,
-  polkadotOpenGovReferendumStatusMap,
-} from "../../../../constants";
+import { polkadotOpenGovReferendumStatusMap } from "../../../../constants";
 import Columns from "./columns";
 import { useHistory } from "react-router";
 import useSort from "../../../../hooks/useSort";
@@ -39,8 +34,6 @@ const CardWrapper = styled(Card)`
 export default function ReferendaTable() {
   const history = useHistory();
   const chain = useSelector(chainSelector);
-  const [page, setPage] = useState(DEFAULT_QUERY_PAGE);
-  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const query = useQuery();
   const sort = query.get("sort");
   const [dataList, setDataList] = useState([]);
@@ -63,29 +56,11 @@ export default function ReferendaTable() {
     sort && { sort },
   );
 
-  const totalPages = Math.ceil((applicationList?.total || 0) / pageSize);
-
-  const currentData = applicationList.items.slice(
-    (page - 1) * pageSize,
-    page * pageSize,
-  );
-
   useEffect(() => {
     if (!isLoading) {
-      setDataList(currentData);
+      setDataList(applicationList?.items || []);
     }
-  }, [applicationList, isLoading, page, pageSize]);
-
-  useEffect(() => {
-    if (page === 1) {
-      return;
-    }
-
-    setPage(DEFAULT_QUERY_PAGE);
-    const searchParams = new URLSearchParams(history.location.search);
-    searchParams.delete("page");
-    history.push({ search: searchParams.toString() });
-  }, [JSON.stringify(filterData), history]);
+  }, [applicationList, isLoading]);
 
   const columns = Columns({
     sortField,
@@ -106,27 +81,6 @@ export default function ReferendaTable() {
     description: item.description,
     trackInfo: item.trackInfo,
   }));
-
-  const handlePageSizeChange = (newPageSize) => {
-    const searchParams = new URLSearchParams(history.location.search);
-    searchParams.delete("page");
-    history.push({ search: searchParams.toString() });
-
-    setPage(DEFAULT_QUERY_PAGE);
-    setPageSize(newPageSize);
-  };
-
-  const handlePageChange = (_, { activePage }) => {
-    const searchParams = new URLSearchParams(history.location.search);
-    if (activePage === DEFAULT_QUERY_PAGE) {
-      searchParams.delete("page");
-    } else {
-      searchParams.set("page", activePage);
-    }
-    history.push({ search: searchParams.toString() });
-
-    setPage(activePage);
-  };
 
   return (
     <CardWrapper>
@@ -150,13 +104,6 @@ export default function ReferendaTable() {
           </TableLoading>
         </TableWrapper>
       </div>
-      <ResponsivePagination
-        activePage={page}
-        totalPages={totalPages}
-        pageSize={pageSize}
-        setPageSize={handlePageSizeChange}
-        onPageChange={handlePageChange}
-      />
     </CardWrapper>
   );
 }
