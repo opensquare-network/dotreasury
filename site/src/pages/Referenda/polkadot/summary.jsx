@@ -67,9 +67,33 @@ export default function ReferendaSummary() {
   );
 
   const filteredData = useMemo(() => {
-    return applicationSummary.filter((item) =>
+    const filteredSummary = applicationSummary.filter((item) =>
       DISPLAY_ITEMS.includes(item?.name),
     );
+
+    const otherSummary = applicationSummary.filter(
+      (item) => !DISPLAY_ITEMS.includes(item?.name),
+    );
+
+    const othersActiveCount = otherSummary.reduce(
+      (sum, item) => sum + (item.activeCount || 0),
+      0,
+    );
+
+    const othersTotal = otherSummary.reduce(
+      (sum, item) => sum + (item.total || 0),
+      0,
+    );
+
+    if (othersActiveCount > 0) {
+      filteredSummary.push({
+        name: "others",
+        activeCount: othersActiveCount,
+        total: othersTotal,
+      });
+    }
+
+    return filteredSummary;
   }, [applicationSummary]);
 
   const activeCount = useMemo(() => {
@@ -96,7 +120,7 @@ export default function ReferendaSummary() {
       <ItemsWrapper>
         {filteredData.map((item) => (
           <SummaryItem
-            key={item.id}
+            key={item.name}
             title={formatToTitleCase(item.name)}
             content={
               <LoadableContent isLoading={isLoading}>
