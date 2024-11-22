@@ -13,7 +13,7 @@ import SummaryItem from "../../../components/Summary/Item";
 import { lgcss, smcss } from "../../../styles/responsive";
 import SummaryOngoingItemWrapper from "../../../components/Summary/OngoingItemWrapper";
 import SummaryReferendaWrapper from "../../../components/Summary/ReferendaWrapper";
-import useFetchSummary from "./hooks/useFetchSummary";
+import useFetchReferendumsSummary from "../../../hooks/applications/polkadot/useFetchReferendumsSummary";
 import SkeletonBar from "../../../components/skeleton/bar";
 
 const ItemsWrapper = styled.div`
@@ -59,7 +59,7 @@ function LoadableContent({ children, isLoading }) {
 }
 
 export default function ReferendaSummary() {
-  const { data: rawSummary, isLoading } = useFetchSummary();
+  const { data: rawSummary, isLoading } = useFetchReferendumsSummary();
 
   const applicationSummary = useMemo(
     () => (Array.isArray(rawSummary) ? rawSummary : []),

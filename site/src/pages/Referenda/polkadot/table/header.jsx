@@ -4,7 +4,7 @@ import Text from "../../../../components/Text";
 import { Flex } from "../../../../components/styled";
 import { p_12_normal, p_14_medium } from "../../../../styles/text";
 import { smcss } from "../../../../styles/responsive";
-import useReferendumsProcess from "../hooks/useReferendumsProcess";
+import useReferendumsProcess from "../../../../hooks/applications/polkadot/useReferendumsProcess";
 
 const HeaderWrapper = styled.div`
   padding: 24px;

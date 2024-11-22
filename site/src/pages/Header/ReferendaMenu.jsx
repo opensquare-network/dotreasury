@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { totalOpenGovApplicationCountSelector } from "../../store/reducers/overviewSlice";
 import { ReactComponent as ApplicationSVG } from "./applications.svg";
 import { isPolkadot } from "../../utils/chains";
-import useFetchReferendumCount from "../Referenda/polkadot/hooks/useFetchReferendumCount";
+import useFetchReferendumCount from "../../hooks/applications/polkadot/useFetchReferendumCount";
 
 const Divider = styled.div`
   position: relative;

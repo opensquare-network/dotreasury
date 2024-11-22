@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js";
-import { polkadotOpenGovReferendumStatusMap } from "../../../../constants";
+import { polkadotOpenGovReferendumStatusMap } from "../../../constants";
 import useFetchReferendumsList from "./useFetchReferendumsList";
 
 export default function useReferendumsProcess() {

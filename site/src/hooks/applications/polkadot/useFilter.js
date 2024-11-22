@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import {
   getQueryStatus,
   toStatusQuery,
-} from "../../../../components/Filter/useListFilter";
+} from "../../../components/Filter/useListFilter";
 
 export default function useListFilter() {
   const { search } = useLocation();

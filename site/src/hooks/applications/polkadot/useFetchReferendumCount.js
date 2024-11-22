@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import api from "../../../../services/scanApi";
+import api from "../../../services/scanApi";
 
-export default function useFetchSummary() {
-  const [data, setData] = useState({});
+export default function useFetchReferendumCount() {
+  const [count, setCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -11,12 +11,13 @@ export default function useFetchSummary() {
         const { result } = await api.fetch(
           `${
             import.meta.env.VITE_APP_SUBSQUARE_API_END_POINT
-          }/gov2/tracks/active-and-total?is_treasury=true`,
+          }/gov2/referendums/treasury-applications/count`,
         );
 
-        setData(result);
+        const total = result?.total || 0;
+        setCount(total);
       } catch (err) {
-        console.error("Fetching referendums summary failed.", err);
+        console.error("Fetching referendums active count failed.", err);
       } finally {
         setIsLoading(false);
       }
@@ -25,5 +26,5 @@ export default function useFetchSummary() {
     fetchData();
   }, []);
 
-  return { data, isLoading };
+  return { count, isLoading };
 }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import api from "../../../../services/scanApi";
+import api from "../../../services/scanApi";
 
 export default function useFetchReferendumsList(filterData, sort) {
   const [data, setData] = useState({
