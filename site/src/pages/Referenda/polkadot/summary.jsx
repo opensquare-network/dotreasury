@@ -59,7 +59,7 @@ function LoadableContent({ children, isLoading }) {
 }
 
 export default function ReferendaSummary() {
-  const { data: rawSummary } = useFetchSummary();
+  const { data: rawSummary, isLoading } = useFetchSummary();
 
   const applicationSummary = useMemo(
     () => (Array.isArray(rawSummary) ? rawSummary : []),
