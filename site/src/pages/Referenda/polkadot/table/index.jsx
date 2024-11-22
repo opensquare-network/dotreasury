@@ -76,6 +76,17 @@ export default function ReferendaTable() {
     }
   }, [applicationList, isLoading, page, pageSize]);
 
+  useEffect(() => {
+    if (page === 1) {
+      return;
+    }
+
+    setPage(DEFAULT_QUERY_PAGE);
+    const searchParams = new URLSearchParams(history.location.search);
+    searchParams.delete("page");
+    history.push({ search: searchParams.toString() });
+  }, [JSON.stringify(filterData), history]);
+
   const columns = Columns({
     sortField,
     setSortField,
