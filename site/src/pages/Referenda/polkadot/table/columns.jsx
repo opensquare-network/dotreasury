@@ -7,6 +7,7 @@ import { useTableColumns } from "../../../../components/shared/useTableColumns";
 import TreasurySpendValueDisplay from "../../../../components/treasurySpendValueDisplay";
 import styled from "styled-components";
 import PairTextVertical from "../../../../components/PairTextVertical";
+import startCase from "lodash.startcase";
 
 const Wrapper = styled.div`
   width: 112px;
@@ -36,7 +37,12 @@ const Columns = ({
     cellClassName: "opengov-description-cell",
     cellRender: (_, item) => (
       <DescriptionCell
-        description={item.title}
+        description={
+          item.title ||
+          `[${startCase(item.onchainData?.trackInfo?.name)}] Referendum #${
+            item.referendumIndex
+          }`
+        }
         trackInfo={item.onchainData?.trackInfo}
         tally={item.onchainData?.tally}
       />
