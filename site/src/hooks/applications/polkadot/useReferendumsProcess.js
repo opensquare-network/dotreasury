@@ -1,9 +1,9 @@
 import BigNumber from "bignumber.js";
 import { polkadotOpenGovReferendumStatusMap } from "../../../constants";
-import useFetchReferendumsList from "./useFetchReferendumsList";
+import { usePolkadotApplicationsData } from "../../../context/PolkadotApplications";
 
 export default function useReferendumsProcess() {
-  const { data, isLoading } = useFetchReferendumsList();
+  const { data, isLoading } = usePolkadotApplicationsData();
   const referendums = data?.items || [];
 
   let voting = 0;

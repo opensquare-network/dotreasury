@@ -11,10 +11,13 @@ import { useHistory } from "react-router";
 import useSort from "../../../../hooks/useSort";
 import useListFilter from "../../../../hooks/applications/polkadot/useFilter";
 import { useQuery } from "../../../../utils/hooks";
-import useFetchReferendumsList from "../../../../hooks/applications/polkadot/useFetchReferendumsList";
 import Divider from "../../../../components/Divider";
 import TableHeader from "./header";
 import Card from "../../../../components/Card";
+import {
+  usePolkadotApplicationsData,
+  DISPLAY_TRACKS_ITEMS,
+} from "../../../../context/PolkadotApplications";
 
 const TableWrapper = styled.div`
   overflow: scroll;
@@ -49,7 +52,7 @@ export default function ReferendaTable() {
     setFilterAssets,
   } = useListFilter();
 
-  const { data: applicationList, isLoading } = useFetchReferendumsList();
+  const { data: applicationList, isLoading } = usePolkadotApplicationsData();
 
   useEffect(() => {
     if (!isLoading) {
@@ -70,8 +73,15 @@ export default function ReferendaTable() {
       const matchesStatus =
         filterStatus === "-1" || item?.state?.name === filterStatus;
 
-      const matchesTrack =
-        filterTrack === "-1" || item.trackInfo?.name === filterTrack;
+      const matchesTrack = (() => {
+        if (filterTrack === "-1") return true;
+
+        if (filterTrack === "others") {
+          return !DISPLAY_TRACKS_ITEMS.includes(item?.trackInfo?.name);
+        }
+
+        return item?.trackInfo?.name === filterTrack;
+      })();
 
       const matchesAssets = (() => {
         if (filterAssets === "-1") return true;

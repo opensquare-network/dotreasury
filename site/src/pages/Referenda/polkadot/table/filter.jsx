@@ -3,11 +3,11 @@ import {
   FormWrapper,
   tracksStatusList,
   StatusSelector,
-  TrackSelector,
 } from "../../../../components/OpenGovFilter";
 import Select from "../../../../components/Select";
 import { treasurySpendsAssetsFilterOptions } from "../../../../constants";
 import styled from "styled-components";
+import { usePolkadotApplicationsTrackOptions } from "../../../../context/PolkadotApplications";
 
 const AssetsSelect = styled(Select)`
   width: 160px;
@@ -16,14 +16,38 @@ const AssetsSelect = styled(Select)`
   }
 `;
 
-export const tracksOptions = [
-  { key: "all", value: "-1", text: "All tracks" },
-  ...tracksStatusList.map((item) => ({
-    key: item,
-    value: item,
-    text: <span style={{ whiteSpace: "nowrap" }}>{item}</span>,
-  })),
-];
+function translateTracksOptions(tracksStatusList) {
+  return [
+    { key: "all", value: "-1", text: "All tracks" },
+    ...tracksStatusList.map((item) => ({
+      key: item,
+      value: item.toLowerCase().replace(" ", "_"),
+      text: <span style={{ whiteSpace: "nowrap" }}>{item}</span>,
+    })),
+  ];
+}
+
+const TrackSelect = styled(Select)`
+  width: 160px;
+  @media screen and (max-width: 800px) {
+    width: 100%;
+  }
+`;
+
+function TrackSelector({ track, setTrack }) {
+  const tracksOptions = usePolkadotApplicationsTrackOptions();
+
+  const options = translateTracksOptions(tracksOptions);
+  return (
+    <TrackSelect
+      name="tracks"
+      fluid
+      options={options}
+      value={track}
+      onChange={(e, { name, value }) => setTrack(value)}
+    />
+  );
+}
 
 function AssetsSelector({ assets, setAssets }) {
   return (

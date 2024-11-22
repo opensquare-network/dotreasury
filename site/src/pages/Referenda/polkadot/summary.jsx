@@ -15,6 +15,7 @@ import SummaryOngoingItemWrapper from "../../../components/Summary/OngoingItemWr
 import SummaryReferendaWrapper from "../../../components/Summary/ReferendaWrapper";
 import useFetchReferendumsSummary from "../../../hooks/applications/polkadot/useFetchReferendumsSummary";
 import SkeletonBar from "../../../components/skeleton/bar";
+import { DISPLAY_TRACKS_ITEMS } from "../../../context/PolkadotApplications";
 
 const ItemsWrapper = styled.div`
   ${flex_1};
@@ -33,15 +34,6 @@ const Value = styled(Text)`
     color: var(--textTertiary);
   }
 `;
-
-const DISPLAY_ITEMS = [
-  "treasurer",
-  "small_tipper",
-  "big_tipper",
-  "small_spender",
-  "medium_spender",
-  "big_spender",
-];
 
 function formatToTitleCase(str) {
   if (!str) {
@@ -68,11 +60,11 @@ export default function ReferendaSummary() {
 
   const filteredData = useMemo(() => {
     const filteredSummary = applicationSummary.filter((item) =>
-      DISPLAY_ITEMS.includes(item?.name),
+      DISPLAY_TRACKS_ITEMS.includes(item?.name),
     );
 
     const otherSummary = applicationSummary.filter(
-      (item) => !DISPLAY_ITEMS.includes(item?.name),
+      (item) => !DISPLAY_TRACKS_ITEMS.includes(item?.name),
     );
 
     const othersActiveCount = otherSummary.reduce(
