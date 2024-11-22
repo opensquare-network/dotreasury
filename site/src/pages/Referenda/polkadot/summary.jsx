@@ -124,10 +124,7 @@ export default function ReferendaSummary() {
             title={formatToTitleCase(item.name)}
             content={
               <LoadableContent isLoading={isLoading}>
-                <Value>
-                  {item?.activeCount || 0}
-                  <span className="light"> / {item?.total || 0}</span>
-                </Value>
+                <Value>{item?.activeCount || 0}</Value>
               </LoadableContent>
             }
           />
