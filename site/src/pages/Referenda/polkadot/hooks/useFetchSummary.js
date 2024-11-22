@@ -11,7 +11,7 @@ export default function useFetchSummary() {
         const { result } = await api.fetch(
           `${
             import.meta.env.VITE_APP_SUBSQUARE_API_END_POINT
-          }/gov2/tracks/active-and-total`,
+          }/gov2/tracks/active-and-total?is_treasury=true`,
         );
 
         setData(result);

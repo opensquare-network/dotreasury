@@ -59,9 +59,12 @@ function LoadableContent({ children, isLoading }) {
 }
 
 export default function ReferendaSummary() {
-  const { data: rawSummary, isLoading } = useFetchSummary();
+  const { data: rawSummary } = useFetchSummary();
 
-  const applicationSummary = Array.isArray(rawSummary) ? rawSummary : [];
+  const applicationSummary = useMemo(
+    () => (Array.isArray(rawSummary) ? rawSummary : []),
+    [rawSummary],
+  );
 
   const filteredData = useMemo(() => {
     return applicationSummary.filter((item) =>
