@@ -33,7 +33,6 @@ export default function ReferendaTable() {
 
   const { sortField, setSortField, sortDirection, setSortDirection } =
     useSort();
-
   const {
     filterStatus,
     setFilterStatus,
@@ -46,19 +45,22 @@ export default function ReferendaTable() {
 
   const filterData = getFilterData();
   const { data: applicationList, isLoading } = useFetchReferendumsList(
-    page,
-    pageSize,
     filterData,
     sort && { sort },
   );
 
   const totalPages = Math.ceil((applicationList?.total || 0) / pageSize);
 
+  const currentData = applicationList.items.slice(
+    (page - 1) * pageSize,
+    page * pageSize,
+  );
+
   useEffect(() => {
     if (!isLoading) {
-      setDataList(applicationList?.items || []);
+      setDataList(currentData);
     }
-  }, [applicationList, isLoading]);
+  }, [applicationList, isLoading, page, pageSize]);
 
   const columns = Columns({
     sortField,
