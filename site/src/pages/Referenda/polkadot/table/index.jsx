@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import styled from "styled-components";
 import { Table } from "../../../../components/Table";
 import TableLoading from "../../../../components/TableLoading";
@@ -47,14 +47,9 @@ export default function ReferendaTable() {
     setFilterTrack,
     filterAssets,
     setFilterAssets,
-    getFilterData,
   } = useListFilter();
 
-  const filterData = getFilterData();
-  const { data: applicationList, isLoading } = useFetchReferendumsList(
-    filterData,
-    sort && { sort },
-  );
+  const { data: applicationList, isLoading } = useFetchReferendumsList();
 
   useEffect(() => {
     if (!isLoading) {
@@ -70,7 +65,44 @@ export default function ReferendaTable() {
     chain,
   });
 
-  const tableData = (dataList || []).map((item) => ({
+  const filteredData = useMemo(() => {
+    const data = dataList.filter((item) => {
+      const matchesStatus =
+        filterStatus === "-1" || item?.state?.name === filterStatus;
+
+      const matchesTrack =
+        filterTrack === "-1" || item.trackInfo?.name === filterTrack;
+
+      const matchesAssets = (() => {
+        if (filterAssets === "-1") return true;
+
+        if (!Array.isArray(item?.allSpends)) return false;
+
+        return item.allSpends.some((asset) => {
+          const currentSymbol = asset?.isSpendLocal
+            ? asset?.symbol
+            : asset?.assetKind?.symbol;
+
+          return (
+            currentSymbol?.toLocaleUpperCase() ===
+            filterAssets.toLocaleUpperCase()
+          );
+        });
+      })();
+
+      return matchesStatus && matchesTrack && matchesAssets;
+    });
+
+    if (sort === "index_desc") {
+      return data.sort((a, b) => {
+        return b.referendumIndex - a.referendumIndex;
+      });
+    }
+
+    return data;
+  }, [dataList, filterStatus, filterTrack, filterAssets, sort]);
+
+  const tableData = (filteredData || []).map((item) => ({
     ...item,
     referendumIndex: item.referendumIndex,
     proposeAtBlockHeight: item.indexer.blockHeight,
