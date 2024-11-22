@@ -13,9 +13,11 @@ import SummaryItem from "../../../components/Summary/Item";
 import { lgcss, smcss } from "../../../styles/responsive";
 import SummaryOngoingItemWrapper from "../../../components/Summary/OngoingItemWrapper";
 import SummaryReferendaWrapper from "../../../components/Summary/ReferendaWrapper";
-import useFetchReferendumsSummary from "../../../hooks/applications/polkadot/useFetchReferendumsSummary";
 import SkeletonBar from "../../../components/skeleton/bar";
-import { DISPLAY_TRACKS_ITEMS } from "../../../context/PolkadotApplications";
+import {
+  DISPLAY_TRACKS_ITEMS,
+  usePolkadotApplicationsSummary,
+} from "../../../context/PolkadotApplications";
 
 const ItemsWrapper = styled.div`
   ${flex_1};
@@ -51,7 +53,7 @@ function LoadableContent({ children, isLoading }) {
 }
 
 export default function ReferendaSummary() {
-  const { data: rawSummary, isLoading } = useFetchReferendumsSummary();
+  const { data: rawSummary, isLoading } = usePolkadotApplicationsSummary();
 
   const applicationSummary = useMemo(
     () => (Array.isArray(rawSummary) ? rawSummary : []),
@@ -72,16 +74,10 @@ export default function ReferendaSummary() {
       0,
     );
 
-    const othersTotal = otherSummary.reduce(
-      (sum, item) => sum + (item.total || 0),
-      0,
-    );
-
     if (othersActiveCount > 0) {
       filteredSummary.push({
         name: "others",
         activeCount: othersActiveCount,
-        total: othersTotal,
       });
     }
 

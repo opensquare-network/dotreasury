@@ -17,6 +17,36 @@ export function usePolkadotApplicationsData() {
   return useContext(Context);
 }
 
+export function usePolkadotApplicationsSummary() {
+  const { data, isLoading } = useContext(Context) || {};
+
+  const summaryData = data?.items?.map((item) => {
+    return item.trackInfo?.name;
+  });
+
+  const countMap = summaryData.reduce((acc, name) => {
+    if (!acc[name]) {
+      acc[name] = { name, activeCount: 0 };
+    }
+
+    acc[name].activeCount++;
+    return acc;
+  }, {});
+
+  const result = Object.values(countMap).map(
+    ({ name, activeCount, total }) => ({
+      name,
+      activeCount,
+      total,
+    }),
+  );
+
+  return {
+    isLoading,
+    data: result,
+  };
+}
+
 export function usePolkadotApplicationsTrackOptions() {
   const { data } = useContext(Context) || {};
 
