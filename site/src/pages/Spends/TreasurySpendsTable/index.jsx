@@ -69,11 +69,33 @@ export default function TreasurySpendsTable() {
   } = useTreasurySpendsFilter();
 
   useEffect(() => {
+    const searchParams = new URLSearchParams(history.location.search);
+    searchParams.delete("page");
+    history.push({ search: searchParams.toString() });
+
+    setPage(DEFAULT_QUERY_PAGE);
+  }, [getFilterData]);
+
+  useEffect(() => {
     const filterData = getFilterData();
+    const controller = new AbortController();
+
+    const params = {
+      ...filterData,
+    };
+    if (sort) {
+      params.sort = sort;
+    }
 
     dispatch(
-      fetchTreasurySpendsList(page - 1, pageSize, filterData, sort && { sort }),
+      fetchTreasurySpendsList(page - 1, pageSize, params, {
+        signal: controller.signal,
+      }),
     );
+
+    return () => {
+      controller.abort();
+    };
   }, [dispatch, page, pageSize, sort, getFilterData]);
 
   const { proposeTime, beneficiary, referendaStatus } = useTableColumns({});
