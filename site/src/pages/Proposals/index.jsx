@@ -196,30 +196,44 @@ const Proposals = () => {
   const history = useHistory();
   const { proposals, total, loading } = useListData();
 
-  const doFetchProposal = useCallback(() => {
-    let filterData = getFilterData();
-    if (isFailed) {
-      dispatch(
-        fetchFailedProposals(
-          tablePage - 1,
-          pageSize,
-          filterData,
-          sort && { sort },
-        ),
-      );
-    } else {
-      if (gov) {
-        filterData = { ...filterData, gov };
+  const doFetchProposal = useCallback(
+    (options) => {
+      let filterData = getFilterData();
+
+      const params = {
+        ...filterData,
+      };
+      if (sort) {
+        params.sort = sort;
       }
-      dispatch(
-        fetchProposals(tablePage - 1, pageSize, filterData, sort && { sort }),
-      );
-    }
-  }, [dispatch, tablePage, pageSize, getFilterData, sort, gov, isFailed]);
+
+      if (isFailed) {
+        dispatch(
+          fetchFailedProposals(tablePage - 1, pageSize, params, options),
+        );
+      } else {
+        if (gov) {
+          filterData = { ...filterData, gov };
+        }
+        dispatch(fetchProposals(tablePage - 1, pageSize, params, options));
+      }
+    },
+    [dispatch, tablePage, pageSize, getFilterData, sort, gov, isFailed],
+  );
 
   useEffect(() => {
-    doFetchProposal();
+    const searchParams = new URLSearchParams(history.location.search);
+    searchParams.delete("page");
+    history.push({ search: searchParams.toString() });
+
+    setTablePage(DEFAULT_QUERY_PAGE);
+  }, [getFilterData]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    doFetchProposal({ signal: controller.signal });
     return () => {
+      controller.abort();
       dispatch(resetProposals());
     };
   }, [dispatch, doFetchProposal]);
