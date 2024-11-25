@@ -197,7 +197,7 @@ const Proposals = () => {
   const { proposals, total, loading } = useListData();
 
   const doFetchProposal = useCallback(
-    (options) => {
+    (options = {}) => {
       let filterData = getFilterData();
 
       const params = {
@@ -213,7 +213,7 @@ const Proposals = () => {
         );
       } else {
         if (gov) {
-          filterData = { ...filterData, gov };
+          params.gov = gov;
         }
         dispatch(fetchProposals(tablePage - 1, pageSize, params, options));
       }
