@@ -84,17 +84,45 @@ const Tips = () => {
   const chain = useSelector(chainSelector);
 
   useEffect(() => {
+    const searchParams = new URLSearchParams(history.location.search);
+    searchParams.delete("page");
+    history.push({ search: searchParams.toString() });
+
+    setTablePage(DEFAULT_QUERY_PAGE);
+  }, [getFilterData]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
     const filterData = getFilterData();
-    dispatch(fetchTips(tablePage - 1, pageSize, filterData, sort && { sort }));
+    const params = {
+      ...filterData,
+    };
+    if (sort) {
+      params.sort = sort;
+    }
+
+    dispatch(
+      fetchTips(tablePage - 1, pageSize, params, {
+        signal: controller.signal,
+      }),
+    );
 
     return () => {
+      controller.abort();
       dispatch(resetTips());
     };
   }, [dispatch, tablePage, pageSize, getFilterData, sort]);
 
   const refreshTips = useCallback(() => {
     const filterData = getFilterData();
-    dispatch(fetchTips(tablePage - 1, pageSize, filterData, sort && { sort }));
+    const params = {
+      ...filterData,
+    };
+    if (sort) {
+      params.sort = sort;
+    }
+    dispatch(fetchTips(tablePage - 1, pageSize, params));
   }, [dispatch, tablePage, pageSize, getFilterData, sort]);
 
   const onFinalized = useWaitSyncBlock("Tips created", refreshTips);

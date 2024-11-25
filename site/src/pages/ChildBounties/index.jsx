@@ -1,4 +1,3 @@
-// @ts-check
 import React, { useEffect, useMemo, useState } from "react";
 
 import Pagination from "../Bounties/Pagination";
@@ -24,6 +23,7 @@ import styled from "styled-components";
 import Divider from "../../components/Divider";
 import Filter from "../../components/Filter";
 import useListFilter from "../../components/Filter/useListFilter";
+import { useHistory } from "react-router";
 
 const QUERY_PAGE_KEY = "page";
 
@@ -43,8 +43,10 @@ const FilterWrapper = styled.div`
   padding: 24px;
 `;
 
-const ChildBounties = () => {
+function ChildBounties() {
   const query = useQuery();
+
+  const history = useHistory();
 
   const searchPage = parseInt(query.get(QUERY_PAGE_KEY) || "1");
   const queryPage =
@@ -76,12 +78,33 @@ const ChildBounties = () => {
   } = useListFilter();
 
   useEffect(() => {
+    const searchParams = new URLSearchParams(history.location.search);
+    searchParams.delete("page");
+    history.push({ search: searchParams.toString() });
+
+    setTablePage(DEFAULT_QUERY_PAGE);
+  }, [getFilterData]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
     const filterData = getFilterData();
+
+    const params = {
+      ...filterData,
+    };
+    if (sort) {
+      params.sort = sort;
+    }
+
     dispatch(
-      fetchChildBounties(tablePage - 1, pageSize, filterData, sort && { sort }),
+      fetchChildBounties(tablePage - 1, pageSize, params, {
+        signal: controller.signal,
+      }),
     );
 
     return () => {
+      controller.abort();
       dispatch(resetChildBounties());
     };
   }, [dispatch, tablePage, pageSize, getFilterData, sort]);
@@ -92,7 +115,7 @@ const ChildBounties = () => {
   );
 
   const tableData = useMemo(
-    () => childBounties.map(compatChildBountyData),
+    () => childBounties?.map(compatChildBountyData),
     [childBounties],
   );
 
@@ -139,6 +162,6 @@ const ChildBounties = () => {
       footer={footer}
     />
   );
-};
+}
 
 export default ChildBounties;

@@ -64,17 +64,20 @@ export const {
 } = proposalSlice.actions;
 
 export const fetchProposals =
-  (page = 0, pageSize = 30, filterData = {}, sort) =>
+  (page = 0, pageSize = 30, params, options = {}) =>
   async (dispatch) => {
     dispatch(setLoading(true));
 
     try {
-      const { result } = await api.fetch("/proposals", {
-        page,
-        pageSize,
-        ...filterData,
-        ...sort,
-      });
+      const { result } = await api.fetch(
+        "/proposals",
+        {
+          page,
+          pageSize,
+          ...params,
+        },
+        options,
+      );
       dispatch(setProposals(result || {}));
     } finally {
       dispatch(setLoading(false));
@@ -82,17 +85,20 @@ export const fetchProposals =
   };
 
 export const fetchFailedProposals =
-  (page = 0, pageSize = 30, filterData = {}, sort) =>
+  (page = 0, pageSize = 30, params, options = {}) =>
   async (dispatch) => {
     dispatch(setFailedProposalsLoading(true));
 
     try {
-      const { result } = await api.fetch("/proposals/failed", {
-        page,
-        pageSize,
-        ...filterData,
-        ...sort,
-      });
+      const { result } = await api.fetch(
+        "/proposals/failed",
+        {
+          page,
+          pageSize,
+          ...params,
+        },
+        options,
+      );
       dispatch(setFailedProposals(result || {}));
     } finally {
       dispatch(setFailedProposalsLoading(false));
