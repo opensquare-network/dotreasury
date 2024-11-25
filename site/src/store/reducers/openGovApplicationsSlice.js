@@ -38,17 +38,20 @@ export const {
 } = openGovApplicationsSlice.actions;
 
 export const fetchApplicationList =
-  (page = 0, pageSize = 30, filterData = {}, sort = {}) =>
+  (page = 0, pageSize = 30, params, options = {}) =>
   async (dispatch) => {
     dispatch(setLoadingApplicationList(true));
 
     try {
-      const { result } = await api.fetch("/referenda", {
-        page,
-        pageSize,
-        ...filterData,
-        ...sort,
-      });
+      const { result } = await api.fetch(
+        "/referenda",
+        {
+          page,
+          pageSize,
+          ...params,
+        },
+        options,
+      );
       dispatch(
         setApplicationList(
           result || {
