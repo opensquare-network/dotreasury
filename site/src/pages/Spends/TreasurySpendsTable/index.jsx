@@ -65,8 +65,6 @@ export default function TreasurySpendsTable() {
   const dispatch = useDispatch();
 
   const {
-    filterStatus,
-    setFilterStatus,
     filterAsset,
     setFilterAsset,
     min,
@@ -115,8 +113,6 @@ export default function TreasurySpendsTable() {
       <FilterWrapper>
         <TreasurySpendsFilter
           chain={currentChain}
-          status={filterStatus}
-          setStatus={setFilterStatus}
           asset={filterAsset}
           setAsset={setFilterAsset}
           min={min}
