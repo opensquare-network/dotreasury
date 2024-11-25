@@ -6,13 +6,7 @@ import { Table } from "../../../components/Table";
 import TableLoading from "../../../components/TableLoading";
 import ResponsivePagination from "../../../components/ResponsivePagination";
 import { useState } from "react";
-import {
-  DEFAULT_PAGE_SIZE,
-  DEFAULT_QUERY_PAGE,
-  treasuryProposalStatusMap,
-  treasurySpendStatusMap,
-  treasuryTipStatusMap,
-} from "../../../constants";
+import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../../constants";
 import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -119,11 +113,6 @@ export default function TreasurySpendsTable() {
           setMin={setMin}
           max={max}
           setMax={setMax}
-          statusMap={{
-            ...treasurySpendStatusMap,
-            ...treasuryProposalStatusMap,
-            ...treasuryTipStatusMap,
-          }}
         />
       </FilterWrapper>
 
