@@ -51,8 +51,27 @@ export default function Participants() {
   const { role, setRole, getFilterData } = useListFilter();
 
   useEffect(() => {
+    const searchParams = new URLSearchParams(history.location.search);
+    searchParams.delete("page");
+    history.push({ search: searchParams.toString() });
+
+    setTablePage(DEFAULT_QUERY_PAGE);
+  }, [getFilterData]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
     const filterData = getFilterData();
-    dispatch(fetchUsers(tablePage - 1, pageSize, filterData));
+
+    dispatch(
+      fetchUsers(tablePage - 1, pageSize, filterData, {
+        signal: controller.signal,
+      }),
+    );
+
+    return () => {
+      controller.abort();
+    };
   }, [dispatch, tablePage, pageSize, getFilterData]);
 
   const header = (
