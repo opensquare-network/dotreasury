@@ -6,15 +6,6 @@ const {
   getSubsquareTreasurySpendCollection,
 } = require("../../../mongo/polkadot");
 
-function getStatusFilter(ctx) {
-  const { status } = ctx.request.query;
-  if (!status) {
-    return {};
-  }
-
-  return { "state.state": status };
-}
-
 function getAssetFilter(ctx) {
   const { asset } = ctx.request.query;
   if (!asset) {
@@ -65,7 +56,6 @@ async function getSpends(ctx) {
   }
 
   const q = {
-    ...getStatusFilter(ctx),
     ...getAssetFilter(ctx),
     ...getRangeCondition(ctx),
   };
