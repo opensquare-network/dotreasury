@@ -45,17 +45,20 @@ export const {
 } = tipSlice.actions;
 
 export const fetchTips =
-  (page = 0, pageSize = 30, filterData = {}, sort) =>
+  (page = 0, pageSize = 30, params, options = {}) =>
   async (dispatch) => {
     dispatch(setLoading(true));
 
     try {
-      const { result } = await api.fetch("/tips", {
-        page,
-        pageSize,
-        ...filterData,
-        ...sort,
-      });
+      const { result } = await api.fetch(
+        "/tips",
+        {
+          page,
+          pageSize,
+          ...params,
+        },
+        options,
+      );
       dispatch(setTips(result || {}));
     } finally {
       dispatch(setLoading(false));
@@ -99,7 +102,7 @@ export const tipListSelector = (state) => state.tips.tips;
 export const normalizedTipListSelector = createSelector(
   tipListSelector,
   (tips) => {
-    const items = tips.items.map(normalizeTip);
+    const items = tips?.items?.map(normalizeTip);
     return {
       ...tips,
       items,
