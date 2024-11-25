@@ -1,4 +1,3 @@
-// @ts-check
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import Nav from "./Nav";
@@ -26,6 +25,7 @@ import Divider from "../../components/Divider";
 import Filter from "../../components/Filter";
 import useListFilter from "../../components/Filter/useListFilter";
 import styled from "styled-components";
+import { useHistory } from "react-router";
 
 const QUERY_PAGE_KEY = "page";
 
@@ -59,6 +59,7 @@ const Bounties = () => {
     DEFAULT_PAGE_SIZE,
   );
   const sort = query.get("sort");
+  const history = useHistory();
 
   const {
     filterStatus,
@@ -79,12 +80,33 @@ const Bounties = () => {
   const chain = useSelector(chainSelector);
 
   useEffect(() => {
+    const searchParams = new URLSearchParams(history.location.search);
+    searchParams.delete("page");
+    history.push({ search: searchParams.toString() });
+
+    setTablePage(DEFAULT_QUERY_PAGE);
+  }, [getFilterData]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
     const filterData = getFilterData();
+
+    const params = {
+      ...filterData,
+    };
+    if (sort) {
+      params.sort = sort;
+    }
+
     dispatch(
-      fetchBounties(tablePage - 1, pageSize, filterData, sort && { sort }),
+      fetchBounties(tablePage - 1, pageSize, params, {
+        signal: controller.signal,
+      }),
     );
 
     return () => {
+      controller.abort();
       dispatch(resetBounties());
     };
   }, [dispatch, tablePage, pageSize, getFilterData, sort]);
