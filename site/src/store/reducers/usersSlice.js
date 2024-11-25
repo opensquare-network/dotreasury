@@ -25,20 +25,26 @@ const usersSlice = createSlice({
 
 export const { setLoading, setUsers } = usersSlice.actions;
 
-export const fetchUsers = (page, pageSize, filterData) => async (dispatch) => {
-  dispatch(setLoading(true));
+export const fetchUsers =
+  (page, pageSize, params, options = {}) =>
+  async (dispatch) => {
+    dispatch(setLoading(true));
 
-  try {
-    const { result } = await api.fetch("/participants", {
-      page,
-      pageSize,
-      ...filterData,
-    });
-    dispatch(setUsers(result || {}));
-  } finally {
-    dispatch(setLoading(false));
-  }
-};
+    try {
+      const { result } = await api.fetch(
+        "/participants",
+        {
+          page,
+          pageSize,
+          ...params,
+        },
+        options,
+      );
+      dispatch(setUsers(result || {}));
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
 
 export const usersSelector = (state) => state.users.users;
 export const loadingSelector = (state) => state.users.loading;
