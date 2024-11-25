@@ -26,11 +26,11 @@ import {
   currentChainSettings,
   isCentrifuge,
   isKusama,
-  // isPolkadot,
+  isPolkadot,
 } from "../../utils/chains";
 import GasFeeIncomeMenu from "./GasFeeIncomeMenu";
 import BlockRewardsIncomeMenu from "./BlockRewardsMenu";
-// import SpendsMenu from "./SpendsMenu";
+import SpendsMenu from "./SpendsMenu";
 
 const Wrapper = styled.div`
   position: relative;
@@ -174,22 +174,21 @@ const TabExampleSecondaryPointing = () => {
       },
     },
   ];
-  // TODO: Uncomment when spends are ready
-  // if (isPolkadot) {
-  //   treasurySpendMenus = [
-  //     {
-  //       menuItem: {
-  //         as: NavLink,
-  //         id: "spendsTab",
-  //         content: <SpendsMenu />,
-  //         to: "/spends",
-  //         exact: true,
-  //         key: "spends",
-  //         active: "/spends" === pathname,
-  //       },
-  //     },
-  //   ];
-  // }
+  if (isPolkadot) {
+    treasurySpendMenus = [
+      {
+        menuItem: {
+          as: NavLink,
+          id: "spendsTab",
+          content: <SpendsMenu />,
+          to: "/spends",
+          exact: true,
+          key: "spends",
+          active: "/spends" === pathname,
+        },
+      },
+    ];
+  }
 
   const panes =
     showMenuTabs === "Home"
