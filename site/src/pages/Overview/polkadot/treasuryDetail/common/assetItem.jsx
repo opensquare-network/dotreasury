@@ -16,7 +16,6 @@ export default function AssetItem({ title, titleLink, children }) {
   return (
     <AssetWrapper>
       <ExternalLink
-        style={{ marginBottom: 8 }}
         href={titleLink}
         externalIcon
         externalIconColor="textSecondary"

@@ -64,17 +64,20 @@ export const {
 } = bountySlice.actions;
 
 export const fetchBounties =
-  (page = 0, pageSize = 30, filterData, sort) =>
+  (page = 0, pageSize = 30, params, options = {}) =>
   async (dispatch) => {
     dispatch(setLoading(true));
 
     try {
-      const { result } = await api.fetch("/bounties", {
-        page,
-        pageSize,
-        ...filterData,
-        ...sort,
-      });
+      const { result } = await api.fetch(
+        "/bounties",
+        {
+          page,
+          pageSize,
+          ...params,
+        },
+        options,
+      );
       dispatch(setBounties(result || {}));
     } finally {
       dispatch(setLoading(false));
@@ -122,17 +125,20 @@ export const fetchChildBountyDetail = (bountyIndex) => async (dispatch) => {
   }
 };
 export const fetchChildBounties =
-  (page = 0, pageSize = 30, filterData, sort) =>
+  (page = 0, pageSize = 30, params, options = {}) =>
   async (dispatch) => {
     dispatch(setLoading(true));
 
     try {
-      const { result } = await api.fetch("/child-bounties", {
-        page,
-        pageSize,
-        ...filterData,
-        ...sort,
-      });
+      const { result } = await api.fetch(
+        "/child-bounties",
+        {
+          page,
+          pageSize,
+          ...params,
+        },
+        options,
+      );
       dispatch(setChildBounties(result || {}));
     } finally {
       dispatch(setLoading(false));

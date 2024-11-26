@@ -87,11 +87,35 @@ export default function ReferendaTable() {
   } = useListFilter();
 
   useEffect(() => {
+    const searchParams = new URLSearchParams(history.location.search);
+    searchParams.delete("page");
+    history.push({ search: searchParams.toString() });
+
+    setPage(DEFAULT_QUERY_PAGE);
+  }, [getFilterData]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
     const filterData = getFilterData();
+
+    const params = {
+      ...filterData,
+    };
+    if (sort) {
+      params.sort = sort;
+    }
+
     dispatch(
-      fetchApplicationList(page - 1, pageSize, filterData, sort && { sort }),
+      fetchApplicationList(page - 1, pageSize, params, {
+        signal: controller.signal,
+      }),
     );
-  }, [dispatch, page, pageSize, sort, getFilterData]);
+
+    return () => {
+      controller.abort();
+    };
+  }, [dispatch, page, pageSize, getFilterData, sort]);
 
   useEffect(() => {
     setDataList(applicationList?.items || []);
