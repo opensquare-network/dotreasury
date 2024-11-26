@@ -9,7 +9,7 @@ export const treasurySpendsIndexColumn = {
     const index = item.index ?? item.proposalIndex;
 
     if (isNil(index)) {
-      return null;
+      return "--";
     }
 
     return <TextMinor>#{index}</TextMinor>;
