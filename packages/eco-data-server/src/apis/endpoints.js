@@ -53,6 +53,14 @@ const endpoints = Object.freeze({
     "wss://integritee-kusama.api.onfinality.io/public-ws",
   ],
   mythos: ["wss://polkadot-mythos-rpc.polkadot.io"],
+  polkadotAssetHub: [
+    "wss://dot-rpc.stakeworld.io/assethub",
+    "wss://statemint.public.curie.radiumblock.co/ws",
+  ],
+  hydration: [
+    "wss://hydration.dotters.network",
+    "wss://hydradx.paras.ibp.network",
+  ],
 });
 
 module.exports = {
