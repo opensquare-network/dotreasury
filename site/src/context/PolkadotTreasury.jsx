@@ -17,6 +17,7 @@ import {
   useLoansBifrostDotBalance,
   useLoansCentrifugeUsdcBalance,
   useLoansPendulumDotBalance,
+  useLoansHydrationDotBalance,
 } from "../hooks/treasury/useLoansBalances";
 import useAssetHubForeignAssets from "../hooks/assetHub/useAssetHubForeignAssets";
 import { MYTH, MYTH_TOKEN_ACCOUNT } from "../constants/foreignAssets";
@@ -83,6 +84,10 @@ export default function PolkadotTreasuryProvider({ children }) {
     balance: loansPendulumDotBalance,
     isLoading: isLoansPendulumDotLoading,
   } = useLoansPendulumDotBalance();
+  const {
+    balance: loansHydrationDotBalance,
+    isLoading: isLoansHydrationDotLoading,
+  } = useLoansHydrationDotBalance();
 
   const { balance: mythTokenBalance, isLoading: isMythTokenLoading } =
     useAssetHubForeignAssets(MYTH_TOKEN_ACCOUNT);
@@ -96,6 +101,7 @@ export default function PolkadotTreasuryProvider({ children }) {
     fellowshipTreasuryDotBalance || 0,
     loansBifrostDotBalance || 0,
     loansPendulumDotBalance || 0,
+    loansHydrationDotBalance || 0,
   ).toString();
   const totalDotFiatValue = BigNumber(
     toPrecision(totalDotValue, polkadot.decimals),
@@ -141,7 +147,8 @@ export default function PolkadotTreasuryProvider({ children }) {
     isBountiesTotalBalanceLoading ||
     isFellowshipTreasuryDotLoading ||
     isLoansBifrostDotLoading ||
-    isLoansPendulumDotLoading;
+    isLoansPendulumDotLoading ||
+    isLoansHydrationDotLoading;
 
   const isTotalUSDtLoading =
     isAssetHubUSDtLoading ||
@@ -182,6 +189,8 @@ export default function PolkadotTreasuryProvider({ children }) {
         isLoansBifrostDotLoading,
         loansPendulumDotBalance,
         isLoansPendulumDotLoading,
+        loansHydrationDotBalance,
+        isLoansHydrationDotLoading,
         mythTokenBalance,
         isMythTokenLoading,
 

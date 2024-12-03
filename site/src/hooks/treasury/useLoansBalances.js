@@ -18,3 +18,10 @@ export function useLoansPendulumDotBalance() {
     isLoading: false,
   };
 }
+
+export function useLoansHydrationDotBalance() {
+  return {
+    balance: 10000000000000000,
+    isLoading: false,
+  };
+}
