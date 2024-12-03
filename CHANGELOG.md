@@ -2,6 +2,16 @@
 
 Notable changes to this project will be documented in this file, started from 4.0.0
 
+# 4.3.0
+
+Date: 2024-12-03
+
+- Refactor polkadot home page and show multi-chain, multi-assets treasury.
+- Fix eco data API to fix polkadot treasury balance on landing page.
+- Use subsquare API for polkadot treasury applications page.
+- Fix scan scripts for bounties.
+- Update dependencies.
+
 # 4.2.1
 
 Date: 2024-07-04
