@@ -45,7 +45,7 @@ async function treasuries(_, _args) {
 
   const treasuries = await col.find(q, { projection: { _id: 0 } }).toArray();
   const filtered = treasuries.filter(
-    (item) => !["polkadotAssetHub", "mythos"].includes(item.chain),
+    (item) => !["polkadotAssetHub"].includes(item.chain),
   );
 
   return await Promise.all(
