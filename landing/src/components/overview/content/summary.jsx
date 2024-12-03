@@ -49,28 +49,12 @@ export default function OverviewSummary({ chain = "" }) {
 
         <div>
           {chain === "polkadot" ? (
-            <SummaryItem
-              className="justify-between py-2"
-              title="Total"
-              icon={<ImageWithDark src="/imgs/data-available.svg" />}
-              content={
-                <PolkadotSummaryItemContent
-                  fiatValue={treasuryData?.fiatValue}
-                />
-              }
-            />
+            <SummaryItemTotal fiatValue={treasuryData?.fiatValue} />
           ) : (
-            <SummaryItem
-              className="justify-between py-2"
-              title="Available"
-              icon={<ImageWithDark src="/imgs/data-available.svg" />}
-              content={
-                <SummaryItemValueContent
-                  amount={toPrecision(treasuryData?.balance, decimals, false)}
-                  symbol={symbol}
-                  symbolPrice={symbolPrice}
-                />
-              }
+            <SummaryItemAvailable
+              amount={toPrecision(treasuryData?.balance, decimals, false)}
+              symbol={symbol}
+              symbolPrice={symbolPrice}
             />
           )}
           <SummaryItem
@@ -153,6 +137,23 @@ export default function OverviewSummary({ chain = "" }) {
   );
 }
 
+function SummaryItemAvailable({ amount = 0, symbol = "", symbolPrice = 0 }) {
+  return (
+    <SummaryItem
+      className="justify-between py-2"
+      title="Available"
+      icon={<ImageWithDark src="/imgs/data-available.svg" />}
+      content={
+        <SummaryItemValueContent
+          amount={amount}
+          symbol={symbol}
+          symbolPrice={symbolPrice}
+        />
+      }
+    />
+  );
+}
+
 function SummaryItemValueContent({ amount = 0, symbol = "", symbolPrice = 0 }) {
   return (
     <div>
@@ -167,10 +168,17 @@ function SummaryItemValueContent({ amount = 0, symbol = "", symbolPrice = 0 }) {
   );
 }
 
-function PolkadotSummaryItemContent({ fiatValue = 0 }) {
+function SummaryItemTotal({ fiatValue = 0 }) {
   return (
-    <div className="flex items-center h3-18-semibold">
-      <div className="mr-1">≈ ${abbreviateBigNumber(fiatValue)}</div>
-    </div>
+    <SummaryItem
+      className="justify-between py-2"
+      title="Total"
+      icon={<ImageWithDark src="/imgs/data-available.svg" />}
+      content={
+        <div className="flex items-center h3-18-semibold">
+          <div className="mr-1">≈ ${abbreviateBigNumber(fiatValue)}</div>
+        </div>
+      }
+    />
   );
 }
