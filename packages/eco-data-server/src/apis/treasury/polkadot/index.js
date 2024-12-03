@@ -12,6 +12,12 @@ const {
 } = require("./treasuryOnRelay");
 const { getMythTreasuryOnMythos } = require("./treasuryOnMythos");
 const { getTreasuryOnAssetHub } = require("./treasuryOnAssetHub");
+const {
+  loansCentrifugeUsdcBalance,
+  loansBifrostDotBalance,
+  loansPendulumDotBalance,
+  loansHydrationDotBalance,
+} = require("./loans");
 
 async function getPolkadotTreasuryData() {
   const treasuryDotOnRelay = await getTreasuryDotOnRelayChain();
@@ -52,18 +58,28 @@ async function getPolkadotTreasuryData() {
     .plus(fellowshipTreasuryDotOnAssetHub?.data.free || 0)
     .plus(dotTreasuryBalanceOnAssetHub?.data.free || 0)
     .plus(hydrationAccount1Dot?.free || 0)
+    .plus(hydrationAccount1Dot?.reserved || 0)
     .plus(hydrationAccount2Dot?.free || 0)
+    .plus(hydrationAccount2Dot?.reserved || 0)
+    .plus(loansBifrostDotBalance || 0)
+    .plus(loansPendulumDotBalance || 0)
+    .plus(loansHydrationDotBalance || 0)
     .toFixed();
 
   const usdt = new BigNumber(fellowshipSalaryUsdtBalance?.balance || 0)
     .plus(usdtTreasuryBalanceOnAssetHub?.balance || 0)
     .plus(hydrationAccount1Usdt?.free || 0)
+    .plus(hydrationAccount1Usdt?.reserved || 0)
     .plus(hydrationAccount2Usdt?.free || 0)
+    .plus(hydrationAccount2Usdt?.reserved || 0)
     .toFixed();
 
   const usdc = new BigNumber(usdcTreasuryBalanceOnAssetHub?.balance || 0)
     .plus(hydrationAccount1Usdc?.free || 0)
+    .plus(hydrationAccount1Usdc?.reserved || 0)
     .plus(hydrationAccount2Usdc?.free || 0)
+    .plus(hydrationAccount2Usdc?.reserved || 0)
+    .plus(loansCentrifugeUsdcBalance || 0)
     .toFixed();
 
   const myth = new BigNumber(mythTreasuryBalance?.balance || 0).toFixed();
