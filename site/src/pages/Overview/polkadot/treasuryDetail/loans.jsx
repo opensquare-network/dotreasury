@@ -25,6 +25,8 @@ export default function TreasuryDetailLoans() {
     isLoansBifrostDotLoading,
     loansPendulumDotBalance,
     isLoansPendulumDotLoading,
+    loansHydrationDotBalance,
+    isLoansHydrationDotLoading,
   } = usePolkadotTreasuryData();
   const overview = useSelector(overviewSelector);
   const dotPrice = overview?.latestSymbolPrice ?? 0;
@@ -35,15 +37,20 @@ export default function TreasuryDetailLoans() {
   const totalPendulumValue = BigNumber(
     toPrecision(loansPendulumDotBalance, polkadot.decimals),
   ).multipliedBy(dotPrice);
+  const totalHydrationValue = BigNumber(
+    toPrecision(loansHydrationDotBalance, polkadot.decimals),
+  ).multipliedBy(dotPrice);
 
   const isLoading =
     isLoansBifrostDotLoading ||
     isLoansPendulumDotLoading ||
-    isLoansCentrifugeUSDCLoading;
+    isLoansCentrifugeUSDCLoading ||
+    isLoansHydrationDotLoading;
 
   const total = BigNumber.sum(
     totalBifrostValue,
     totalPendulumValue,
+    totalHydrationValue,
     toPrecision(loansCentrifugeUSDCBalance, USDt.decimals),
   ).toString();
 
@@ -92,6 +99,20 @@ export default function TreasuryDetailLoans() {
               isLoading={isLoansPendulumDotLoading}
               valueTooltipContent={
                 <ValueDisplay value={totalPendulumValue} prefix="$" />
+              }
+            />
+          </AssetItem>
+          <AssetItem
+            title="Hydration"
+            titleLink="https://polkadot.subsquare.io/referenda/560"
+          >
+            <AssetValueDisplay
+              symbol="dot"
+              value={loansHydrationDotBalance}
+              precision={polkadot.decimals}
+              isLoading={isLoansHydrationDotLoading}
+              valueTooltipContent={
+                <ValueDisplay value={totalHydrationValue} prefix="$" />
               }
             />
           </AssetItem>
