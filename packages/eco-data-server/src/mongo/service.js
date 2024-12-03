@@ -1,5 +1,14 @@
 const { getStatusCol, getPriceCol } = require("./db");
 
+async function upsertChainTreasuryWithDetail(chain, balance, balances) {
+  const col = await getStatusCol();
+  await col.updateOne(
+    { chain },
+    { $set: { balance, balances, balanceUpdateAt: new Date() } },
+    { upsert: true },
+  );
+}
+
 async function upsertChainTreasury(chain, balance) {
   const col = await getStatusCol();
   await col.updateOne(
@@ -36,7 +45,10 @@ async function batchUpdateTokenPrices(arr = []) {
   const bulk = col.initializeUnorderedBulkOp();
   for (const item of arr) {
     const { token, price, priceUpdateAt, source } = item;
-    bulk.find({ token }).upsert().updateOne({ $set: { token, price, priceUpdateAt, source } });
+    bulk
+      .find({ token })
+      .upsert()
+      .updateOne({ $set: { token, price, priceUpdateAt, source } });
   }
 
   await bulk.execute();
@@ -44,6 +56,7 @@ async function batchUpdateTokenPrices(arr = []) {
 
 module.exports = {
   upsertChainTreasury,
+  upsertChainTreasuryWithDetail,
   upsertChainPrice,
   upsertTokenPrice,
   batchUpdateTokenPrices,

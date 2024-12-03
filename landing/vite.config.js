@@ -1,6 +1,7 @@
 import react from "@vitejs/plugin-react";
 import path from "node:path";
 import url from "url";
+import svgr from "vite-plugin-svgr";
 import { defineConfig, normalizePath } from "vite";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 import siteConfig from "../site/vite.config";
@@ -28,6 +29,7 @@ export default defineConfig({
   },
   plugins: [
     react(),
+    svgr(),
     viteStaticCopy({
       targets: [
         {

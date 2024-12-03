@@ -1,4 +1,39 @@
-const { getStatusCol } = require("../../mongo");
+const { getStatusCol, getPriceCol } = require("../../mongo");
+
+async function normalizeBalancesItem(balance) {
+  if (["USDt", "USDC"].includes(balance.token)) {
+    return {
+      ...balance,
+      price: 1,
+    };
+  }
+
+  const priceCol = await getPriceCol();
+  const tokenPrice = await priceCol.findOne({ token: balance.token });
+  if (!tokenPrice) {
+    return balance;
+  }
+
+  return {
+    ...balance,
+    price: tokenPrice.price,
+    priceUpdateAt: tokenPrice.priceUpdateAt.getTime(),
+  };
+}
+
+async function normalizeTreasury(treasury) {
+  const balances =
+    treasury.balances &&
+    (await Promise.all(
+      treasury.balances.map((item) => normalizeBalancesItem(item)),
+    ));
+
+  return {
+    ...treasury,
+    balances,
+    balanceUpdateAt: treasury.balanceUpdateAt.getTime(),
+  };
+}
 
 async function treasuries(_, _args) {
   const { chain } = _args;
@@ -9,15 +44,15 @@ async function treasuries(_, _args) {
   }
 
   const treasuries = await col.find(q, { projection: { _id: 0 } }).toArray();
-  // const filtered = treasuries.filter(item => !["darwinia", "integritee"].includes(item.chain));
-  return treasuries.map(treasury => {
-    return {
-      ...treasury,
-      balanceUpdateAt: treasury.balanceUpdateAt.getTime(),
-    }
-  });
+  const filtered = treasuries.filter(
+    (item) => !["polkadotAssetHub"].includes(item.chain),
+  );
+
+  return await Promise.all(
+    filtered.map(async (treasury) => normalizeTreasury(treasury)),
+  );
 }
 
 module.exports = {
   treasuries,
-}
+};
