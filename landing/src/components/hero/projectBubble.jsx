@@ -66,17 +66,20 @@ export default function ProjectBubble({ node }) {
                 lineHeight: "150%",
               }}
             >
-              ≈ ${abbreviateBigNumber(node.value)}
+              ≈ ${abbreviateBigNumber(node.fiatValue)}
             </h4>
-            <p
-              className="p-14-medium text-textTertiary"
-              style={{
-                fontSize: size < SHOULD_SCALE_INFO_SIZE ? size / 16 : undefined,
-                lineHeight: "142%",
-              }}
-            >
-              {abbreviateBigNumber(node.amount)} {chainSettings.symbol}
-            </p>
+            {!node.balances && (
+              <p
+                className="p-14-medium text-textTertiary"
+                style={{
+                  fontSize:
+                    size < SHOULD_SCALE_INFO_SIZE ? size / 16 : undefined,
+                  lineHeight: "142%",
+                }}
+              >
+                {abbreviateBigNumber(node.amount)} {chainSettings.symbol}
+              </p>
+            )}
           </div>
         )}
       </div>

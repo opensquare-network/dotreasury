@@ -1,3 +1,4 @@
+import { toPrecision } from "@osn/common";
 import Card from "@site/src/components/Card";
 import CountDown from "@site/src/components/CountDown";
 import ExternalLink from "@site/src/components/ExternalLink";
@@ -10,19 +11,20 @@ import {
   useOverviewData,
   useScanHeight,
   useSpendPeriodData,
-  useTreasuryData,
 } from "../../../hooks/useData";
+import { useTreasuriesData } from "../../../hooks/useTreasuriesData";
 import { getChainSettings } from "@site/src/utils/chains";
 import BlocksTime from "../../BlocksTime";
 import Button from "../../button";
 import { extractTime } from "@polkadot/util";
 
 export default function OverviewSummary({ chain = "" }) {
-  const { symbol, name, value } = getChainSettings(chain);
+  const { symbol, decimals, name, value } = getChainSettings(chain);
   const height = useScanHeight(chain);
   const { totalIncome, totalOutput } = useOverviewTotalAmount(chain);
   const overviewData = useOverviewData(chain);
-  const treasuryData = useTreasuryData(chain);
+  const { data: treasuries } = useTreasuriesData();
+  const treasuryData = treasuries.find((item) => item.chain === chain);
   const spendPeriodData = useSpendPeriodData(chain);
   const symbolPrice = overviewData?.latestSymbolPrice ?? 0;
 
@@ -51,11 +53,18 @@ export default function OverviewSummary({ chain = "" }) {
             title="Available"
             icon={<ImageWithDark src="/imgs/data-available.svg" />}
             content={
-              <SummaryItemValueContent
-                amount={treasuryData.free}
-                symbol={symbol}
-                symbolPrice={symbolPrice}
-              />
+              chain === "polkadot" ? (
+                <SummaryItemTokenAmount
+                  amount={treasuryData?.fiatValue}
+                  symbol={"USDT"}
+                />
+              ) : (
+                <SummaryItemValueContent
+                  amount={toPrecision(treasuryData?.balance, decimals, false)}
+                  symbol={symbol}
+                  symbolPrice={symbolPrice}
+                />
+              )
             }
           />
           <SummaryItem
@@ -143,13 +152,19 @@ export default function OverviewSummary({ chain = "" }) {
 function SummaryItemValueContent({ amount = 0, symbol = "", symbolPrice = 0 }) {
   return (
     <div>
-      <div className="flex items-center h3-18-semibold">
-        <div className="mr-1">{abbreviateBigNumber(amount)}</div>
-        <div className="text-textTertiary">{symbol}</div>
-      </div>
+      <SummaryItemTokenAmount amount={amount} symbol={symbol} />
       <div className="text-textTertiary p-12-normal">
         {!!amount && "≈ "}${abbreviateBigNumber(amount * symbolPrice)}
       </div>
+    </div>
+  );
+}
+
+function SummaryItemTokenAmount({ amount = 0, symbol = "" }) {
+  return (
+    <div className="flex items-center h3-18-semibold">
+      <div className="mr-1">{abbreviateBigNumber(amount)}</div>
+      <div className="text-textTertiary">{symbol}</div>
     </div>
   );
 }
