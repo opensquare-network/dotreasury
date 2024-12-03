@@ -30,10 +30,10 @@ async function getHydrationTreasuryBalances(api, treasuryAccount) {
 }
 
 async function getTreasuryOnHydration() {
-  const hydrationTreasuryAccount1 = await multiApiQuery("hydration", (api) =>
+  const hydrationTreasuryAccount1 = await multiApiQuery("hydradx", (api) =>
     getHydrationTreasuryBalances(api, PolkadotTreasuryOnHydrationAccount1),
   );
-  const hydrationTreasuryAccount2 = await multiApiQuery("hydration", (api) =>
+  const hydrationTreasuryAccount2 = await multiApiQuery("hydradx", (api) =>
     getHydrationTreasuryBalances(api, PolkadotTreasuryOnHydrationAccount2),
   );
 

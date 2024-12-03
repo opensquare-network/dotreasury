@@ -57,10 +57,6 @@ const endpoints = Object.freeze({
     "wss://dot-rpc.stakeworld.io/assethub",
     "wss://statemint.public.curie.radiumblock.co/ws",
   ],
-  hydration: [
-    "wss://hydration.dotters.network",
-    "wss://hydradx.paras.ibp.network",
-  ],
 });
 
 module.exports = {
