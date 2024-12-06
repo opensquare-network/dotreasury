@@ -42,27 +42,30 @@ const treasurySpendsSlice = createSlice({
 export const fetchTreasurySpendsList = (
   page = 0,
   pageSize = 30,
-  filterData = {},
-  sort = {},
+  params = {},
+  options = {},
 ) => {
   return async (dispatch) => {
     dispatch(setLoadingTreasurySpendsList(true));
 
-    const filterAsset = filterData?.asset;
+    const filterAsset = params?.asset;
     const asset =
       find(treasurySpendsAssetsFilterOptions, { value: filterAsset })?.asset ||
       filterAsset ||
       "";
 
     try {
-      const { result } = await api.fetch("/v2/treasury/spends", {
-        page,
-        pageSize,
-        range_type: RangeTypes.Fiat,
-        ...filterData,
-        asset,
-        ...sort,
-      });
+      const { result } = await api.fetch(
+        "/v2/treasury/spends",
+        {
+          page,
+          pageSize,
+          range_type: RangeTypes.Fiat,
+          ...params,
+          asset,
+        },
+        options,
+      );
       dispatch(
         setTreasurySpendsList(
           result || {
