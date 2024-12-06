@@ -13,9 +13,9 @@ import Divider from "../../../../components/Divider";
 import TableHeader from "./header";
 import Card from "../../../../components/Card";
 import {
-  usePolkadotApplicationsData,
+  useApplicationsData,
   DISPLAY_TRACKS_ITEMS,
-} from "../../../../context/PolkadotApplications";
+} from "../../../../context/Applications";
 
 const TableWrapper = styled.div`
   overflow: scroll;
@@ -57,7 +57,7 @@ export default function ReferendaTable() {
     setFilterAssets,
   } = useListFilter();
 
-  const { data: applicationList, isLoading } = usePolkadotApplicationsData();
+  const { data: applicationList, isLoading } = useApplicationsData();
 
   useEffect(() => {
     if (!isLoading) {

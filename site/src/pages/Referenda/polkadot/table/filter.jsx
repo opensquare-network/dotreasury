@@ -5,7 +5,7 @@ import {
 } from "../../../../components/OpenGovFilter";
 import Select from "../../../../components/Select";
 import styled from "styled-components";
-import { usePolkadotApplicationsTrackOptions } from "../../../../context/PolkadotApplications";
+import { useApplicationsTrackOptions } from "../../../../context/Applications";
 import { useTreasurySpendAssetsFilterOptions } from "../../../../hooks/useTreasurySpendsAssetsFilterOptions";
 
 const AssetsSelect = styled(Select)`
@@ -34,7 +34,7 @@ const TrackSelect = styled(Select)`
 `;
 
 function TrackSelector({ track, setTrack }) {
-  const tracksOptions = usePolkadotApplicationsTrackOptions();
+  const tracksOptions = useApplicationsTrackOptions();
 
   const options = translateTracksOptions(tracksOptions);
   return (

@@ -16,8 +16,8 @@ import SummaryReferendaWrapper from "../../../components/Summary/ReferendaWrappe
 import SkeletonBar from "../../../components/skeleton/bar";
 import {
   DISPLAY_TRACKS_ITEMS,
-  usePolkadotApplicationsSummary,
-} from "../../../context/PolkadotApplications";
+  useApplicationsSummary,
+} from "../../../context/Applications";
 
 const ItemsWrapper = styled.div`
   ${flex_1};
@@ -53,7 +53,7 @@ function LoadableContent({ children, isLoading }) {
 }
 
 export default function ReferendaSummary() {
-  const { data: rawSummary, isLoading } = usePolkadotApplicationsSummary();
+  const { data: rawSummary, isLoading } = useApplicationsSummary();
 
   const applicationSummary = useMemo(
     () => (Array.isArray(rawSummary) ? rawSummary : []),
