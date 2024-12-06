@@ -8,6 +8,8 @@ import TreasurySpendValueDisplay from "../../../../components/treasurySpendValue
 import styled from "styled-components";
 import PairTextVertical from "../../../../components/PairTextVertical";
 import startCase from "lodash.startcase";
+import { getChainSettings } from "../../../../utils/chains";
+import { toPrecision } from "../../../../utils";
 
 const Wrapper = styled.div`
   width: 112px;
@@ -88,6 +90,19 @@ const Columns = ({
           </div>
         );
       }
+
+      if (item?.onchainData?.treasuryInfo) {
+        const { decimals, symbol } = getChainSettings(chain);
+        const { amount } = item.onchainData.treasuryInfo;
+        return (
+          <TreasurySpendValueDisplay
+            isNative={true}
+            value={toPrecision(amount, decimals, false)}
+            symbol={symbol}
+          />
+        );
+      }
+
       return <Wrapper>-</Wrapper>;
     },
   };

@@ -13,11 +13,11 @@ export const DISPLAY_TRACKS_ITEMS = [
   "big_spender",
 ];
 
-export function usePolkadotApplicationsData() {
+export function useApplicationsData() {
   return useContext(Context);
 }
 
-export function usePolkadotApplicationsSummary() {
+export function useApplicationsSummary() {
   const { data, isLoading } = useContext(Context) || {};
 
   const summaryData = data?.items?.map((item) => {
@@ -47,7 +47,7 @@ export function usePolkadotApplicationsSummary() {
   };
 }
 
-export function usePolkadotApplicationsTrackOptions() {
+export function useApplicationsTrackOptions() {
   const { data } = useContext(Context) || {};
 
   const trackNames = Array.from(
@@ -70,7 +70,7 @@ export function usePolkadotApplicationsTrackOptions() {
   return trackNames;
 }
 
-export default function PolkadotApplicationsProvider({ children }) {
+export default function ApplicationsProvider({ children }) {
   const { data, isLoading } = useFetchReferendumsList();
 
   return (

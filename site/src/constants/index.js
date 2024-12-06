@@ -67,14 +67,6 @@ export const openGovReferendumStatusMap = {
   Executed: "Executed",
 };
 
-export const polkadotOpenGovReferendumStatusMap = {
-  Confirming: "Confirming",
-  Deciding: "Deciding",
-  Queueing: "Queueing",
-  Preparing: "Preparing",
-  Submitted: "Submitted",
-};
-
 export const treasuryTipStatusMap = {
   NewTip: "NewTip",
   Tipping: "Tipping",
@@ -100,12 +92,17 @@ export const treasurySpendStatusMap = {
   Voided: "Voided",
 };
 
-export const treasurySpendsAssetsFilterOptions = [
+export const polkadotTreasurySpendsAssetsFilterOptions = [
   { key: "all", value: "-1", text: "All assets" },
-  { key: "dot", value: "dot", text: "DOT", asset: "native" },
+  { key: "native", value: "native", text: "DOT", asset: "native" },
   { key: "usdc", value: "usdc", text: USDC.name, asset: USDC.symbol },
   { key: "usdt", value: "usdt", text: USDt.name, asset: USDt.symbol },
   { key: "myth", value: "myth", text: MYTH.name, asset: MYTH.symbol },
+];
+
+export const kusamaTreasurySpendsAssetsFilterOptions = [
+  { key: "all", value: "-1", text: "All assets" },
+  { key: "native", value: "native", text: "KSM", asset: "native" },
 ];
 
 export const TreasuryAccount =

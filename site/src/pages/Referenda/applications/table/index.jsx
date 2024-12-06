@@ -5,9 +5,7 @@ import TableLoading from "../../../../components/TableLoading";
 import Filter from "./filter";
 import { useSelector } from "react-redux";
 import { chainSelector } from "../../../../store/reducers/chainSlice";
-import { polkadotOpenGovReferendumStatusMap } from "../../../../constants";
 import Columns from "./columns";
-import { useHistory } from "react-router";
 import useSort from "../../../../hooks/useSort";
 import useListFilter from "../../../../hooks/applications/polkadot/useFilter";
 import { useQuery } from "../../../../utils/hooks";
@@ -15,9 +13,9 @@ import Divider from "../../../../components/Divider";
 import TableHeader from "./header";
 import Card from "../../../../components/Card";
 import {
-  usePolkadotApplicationsData,
+  useApplicationsData,
   DISPLAY_TRACKS_ITEMS,
-} from "../../../../context/PolkadotApplications";
+} from "../../../../context/Applications";
 
 const TableWrapper = styled.div`
   overflow: scroll;
@@ -34,8 +32,15 @@ const CardWrapper = styled(Card)`
   }
 `;
 
+const statusFilters = {
+  Confirming: "Confirming",
+  Deciding: "Deciding",
+  Queueing: "Queueing",
+  Preparing: "Preparing",
+  Submitted: "Submitted",
+};
+
 export default function ReferendaTable() {
-  const history = useHistory();
   const chain = useSelector(chainSelector);
   const query = useQuery();
   const sort = query.get("sort");
@@ -52,7 +57,7 @@ export default function ReferendaTable() {
     setFilterAssets,
   } = useListFilter();
 
-  const { data: applicationList, isLoading } = usePolkadotApplicationsData();
+  const { data: applicationList, isLoading } = useApplicationsData();
 
   useEffect(() => {
     if (!isLoading) {
@@ -85,6 +90,10 @@ export default function ReferendaTable() {
 
       const matchesAssets = (() => {
         if (filterAssets === "-1") return true;
+
+        if (!Array.isArray(item?.allSpends) && filterAssets === "native") {
+          return true;
+        }
 
         if (!Array.isArray(item?.allSpends)) return false;
 
@@ -137,7 +146,7 @@ export default function ReferendaTable() {
             setAssets={setFilterAssets}
             status={filterStatus}
             setStatus={setFilterStatus}
-            statusMap={polkadotOpenGovReferendumStatusMap}
+            statusMap={statusFilters}
           />
         </div>
         <TableWrapper>

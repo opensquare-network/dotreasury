@@ -4,7 +4,7 @@ import { Label, Menu } from "semantic-ui-react";
 import { useSelector } from "react-redux";
 import { totalOpenGovApplicationCountSelector } from "../../store/reducers/overviewSlice";
 import { ReactComponent as ApplicationSVG } from "./applications.svg";
-import { isPolkadot } from "../../utils/chains";
+import { isKusama, isPolkadot } from "../../utils/chains";
 import useFetchReferendumCount from "../../hooks/applications/polkadot/useFetchReferendumCount";
 
 const Divider = styled.div`
@@ -35,7 +35,7 @@ function PolkadotReferendaMenu() {
 
 function ReferendaMenu() {
   const applicationCount = useSelector(totalOpenGovApplicationCountSelector);
-  if (isPolkadot) {
+  if (isPolkadot || isKusama) {
     return <PolkadotReferendaMenu />;
   }
 

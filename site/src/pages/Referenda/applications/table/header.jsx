@@ -8,6 +8,8 @@ import useReferendumsProcess from "../../../../hooks/applications/polkadot/useRe
 import IconMask from "../../../../components/Icon/Mask";
 import ExternalLink from "../../../../components/ExternalLink";
 import TextMinor from "../../../../components/TextMinor";
+import { useSelector } from "react-redux";
+import { chainSelector } from "../../../../store/reducers/chainSlice";
 
 const HeaderWrapper = styled.div`
   padding: 24px;
@@ -60,6 +62,7 @@ const Divider = styled.div`
 `;
 
 export default function TableHeader() {
+  const chain = useSelector(chainSelector);
   const { voting, passing, isLoading } = useReferendumsProcess();
   if (isLoading) {
     return null;
@@ -88,7 +91,7 @@ export default function TableHeader() {
           </Flex>
         ))}
         <Divider />
-        <ExternalLink href={`https://polkadot.subsquare.io/referenda`}>
+        <ExternalLink href={`https://${chain}.subsquare.io/referenda`}>
           <LinkButton>
             View All
             <IconMask

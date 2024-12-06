@@ -2,7 +2,10 @@ import { createSlice } from "@reduxjs/toolkit";
 import api from "../../services/scanApi";
 import { RangeTypes } from "../../components/Filter/Range";
 import { find } from "lodash-es";
-import { treasurySpendsAssetsFilterOptions } from "../../constants";
+import {
+  kusamaTreasurySpendsAssetsFilterOptions,
+  polkadotTreasurySpendsAssetsFilterOptions,
+} from "../../constants";
 
 const name = "treasurySpends";
 
@@ -45,8 +48,17 @@ export const fetchTreasurySpendsList = (
   filterData = {},
   sort = {},
 ) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const {
+      chain: { chain },
+    } = getState();
+
     dispatch(setLoadingTreasurySpendsList(true));
+
+    const treasurySpendsAssetsFilterOptions =
+      chain === "polkadot"
+        ? polkadotTreasurySpendsAssetsFilterOptions
+        : kusamaTreasurySpendsAssetsFilterOptions;
 
     const filterAsset = filterData?.asset;
     const asset =

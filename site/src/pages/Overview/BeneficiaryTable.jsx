@@ -13,7 +13,6 @@ import { NavLink } from "react-router-dom";
 import TextMinor from "../../components/TextMinor";
 import GrayImage from "../../components/GrayImage";
 import { USER_ROLES } from "../../constants";
-import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 
 export const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -65,7 +64,6 @@ export const TableCell = styled(Table.Cell)`
 `;
 
 const BeneficiaryTable = () => {
-  const symbol = useSelector(chainSymbolSelector)?.toLowerCase();
   const overview = useSelector(overviewSelector);
   const data = overview.bestProposalBeneficiaries || [];
 
