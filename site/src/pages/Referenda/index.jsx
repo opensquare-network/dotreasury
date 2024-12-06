@@ -2,7 +2,7 @@ import styled from "styled-components";
 import ReferendaTable from "./ReferendaTable";
 import Summary from "./Summary";
 import { isKusama, isPolkadot } from "../../utils/chains";
-import Applications from "./polkadot";
+import Applications from "./applications";
 
 const Wrapper = styled.div``;
 
