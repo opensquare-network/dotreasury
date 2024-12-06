@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 import { chainSelector } from "../../../../store/reducers/chainSlice";
 import { polkadotOpenGovReferendumStatusMap } from "../../../../constants";
 import Columns from "./columns";
-import { useHistory } from "react-router";
 import useSort from "../../../../hooks/useSort";
 import useListFilter from "../../../../hooks/applications/polkadot/useFilter";
 import { useQuery } from "../../../../utils/hooks";
@@ -35,7 +34,6 @@ const CardWrapper = styled(Card)`
 `;
 
 export default function ReferendaTable() {
-  const history = useHistory();
   const chain = useSelector(chainSelector);
   const query = useQuery();
   const sort = query.get("sort");
@@ -85,6 +83,10 @@ export default function ReferendaTable() {
 
       const matchesAssets = (() => {
         if (filterAssets === "-1") return true;
+
+        if (!Array.isArray(item?.allSpends) && filterAssets === "native") {
+          return true;
+        }
 
         if (!Array.isArray(item?.allSpends)) return false;
 
