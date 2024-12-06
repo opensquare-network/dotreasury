@@ -5,7 +5,6 @@ import TableLoading from "../../../../components/TableLoading";
 import Filter from "./filter";
 import { useSelector } from "react-redux";
 import { chainSelector } from "../../../../store/reducers/chainSlice";
-import { polkadotOpenGovReferendumStatusMap } from "../../../../constants";
 import Columns from "./columns";
 import useSort from "../../../../hooks/useSort";
 import useListFilter from "../../../../hooks/applications/polkadot/useFilter";
@@ -32,6 +31,14 @@ const CardWrapper = styled(Card)`
     border-radius: 0;
   }
 `;
+
+const statusFilters = {
+  Confirming: "Confirming",
+  Deciding: "Deciding",
+  Queueing: "Queueing",
+  Preparing: "Preparing",
+  Submitted: "Submitted",
+};
 
 export default function ReferendaTable() {
   const chain = useSelector(chainSelector);
@@ -139,7 +146,7 @@ export default function ReferendaTable() {
             setAssets={setFilterAssets}
             status={filterStatus}
             setStatus={setFilterStatus}
-            statusMap={polkadotOpenGovReferendumStatusMap}
+            statusMap={statusFilters}
           />
         </div>
         <TableWrapper>

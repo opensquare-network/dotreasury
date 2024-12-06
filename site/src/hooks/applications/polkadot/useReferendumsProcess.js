@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js";
-import { polkadotOpenGovReferendumStatusMap } from "../../../constants";
+import { openGovReferendumStatusMap } from "../../../constants";
 import { usePolkadotApplicationsData } from "../../../context/PolkadotApplications";
 
 export default function useReferendumsProcess() {
@@ -16,10 +16,10 @@ export default function useReferendumsProcess() {
 
       if (
         [
-          polkadotOpenGovReferendumStatusMap.Confirming,
-          polkadotOpenGovReferendumStatusMap.Deciding,
-          polkadotOpenGovReferendumStatusMap.Queueing,
-          polkadotOpenGovReferendumStatusMap.Submitted,
+          openGovReferendumStatusMap.Confirming,
+          openGovReferendumStatusMap.Deciding,
+          openGovReferendumStatusMap.Queueing,
+          openGovReferendumStatusMap.Submitted,
         ].includes(state)
       ) {
         voting++;
