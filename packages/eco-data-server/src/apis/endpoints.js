@@ -1,4 +1,6 @@
+const { CHAINS } = require("../consts");
 const endpoints = Object.freeze({
+  [CHAINS.astar]: ["wss://rpc.astar.network/", "wss://astar-rpc.dwellir.com/"],
   polkadot: ["wss://rpc.polkadot.io", "wss://polkadot-rpc.dwellir.com"],
   kusama: ["wss://kusama-rpc.polkadot.io", "wss://kusama-rpc.dwellir.com"],
   centrifuge: [
