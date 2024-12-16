@@ -1,4 +1,5 @@
 const { getStatusCol, getPriceCol } = require("../../mongo");
+const { omitChains } = require("../../consts/chains");
 
 async function normalizeBalancesItem(balance) {
   if (["USDt", "USDC"].includes(balance.token)) {
@@ -45,7 +46,10 @@ async function treasuries(_, _args) {
 
   const treasuries = await col.find(q, { projection: { _id: 0 } }).toArray();
   const filtered = treasuries.filter(
-    (item) => !["polkadotAssetHub"].includes(item.chain),
+    (item) => ![
+      "polkadotAssetHub",
+      ...omitChains,
+    ].includes(item.chain),
   );
 
   return await Promise.all(
