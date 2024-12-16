@@ -9,7 +9,7 @@ const endpoints = Object.freeze({
     "wss://khala.api.onfinality.io/public-ws",
     "wss://khala-rpc.dwellir.com/",
   ],
-  phala: ["wss://api.phala.network/ws", "wss://phala-rpc.dwellir.com/"],
+  phala: ["wss://rpc.helikon.io/phala", "wss://phala-rpc.dwellir.com/"],
   hydradx: ["wss://hydradx-rpc.dwellir.com/", "wss://rpc.hydradx.cloud/"],
   basilisk: ["wss://basilisk-rpc.dwellir.com/", "wss://rpc.basilisk.cloud/"],
   interlay: [
