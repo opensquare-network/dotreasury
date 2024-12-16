@@ -17,6 +17,7 @@ const tokens = Object.freeze({
   "ACA": "ACA",
   "MOVR": "MOVR",
   "MYTH": "MYTH",
+  "ASTR": "ASTR",
 });
 
 const ChainTokenMap = Object.freeze({
@@ -36,6 +37,7 @@ const ChainTokenMap = Object.freeze({
   [CHAINS.integritee]: tokens.TEER,
   [CHAINS.moonbeam]: tokens.GLMR,
   [CHAINS.moonriver]: tokens.MOVR,
+  [CHAINS.astar]: tokens.ASTR,
 });
 
 const gateTokenIdMap = Object.freeze({
@@ -53,6 +55,7 @@ const gateTokenIdMap = Object.freeze({
   [tokens.KINT]: "KINT/USDT",
   [tokens.PHA]: "PHA/USDT",
   [tokens.MYTH]: "MYTH/USDT",
+  [tokens.ASTR]: "ASTR/USDT",
 });
 
 const krakenTokenIdMap = Object.freeze({

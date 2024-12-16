@@ -15,8 +15,14 @@ const CHAINS = Object.freeze({
   integritee: "integritee",
   moonbeam: "moonbeam",
   moonriver: "moonriver",
+  astar: "astar",
 });
+
+const omitChains = [
+  CHAINS.astar,
+];
 
 module.exports = {
   CHAINS,
+  omitChains,
 }
