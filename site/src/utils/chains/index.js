@@ -14,6 +14,7 @@ import { karura } from "./karura.js";
 import { bifrost } from "./bifrostPolkadot.js";
 import { darwinia } from "./darwinia";
 import { integritee } from "./integritee";
+import { astar } from "./astar";
 
 export const currentChain = import.meta.env.VITE_APP_CHAIN;
 
@@ -34,6 +35,7 @@ export const CHAINS = {
   bifrost,
   darwinia,
   integritee,
+  astar,
 };
 
 export const currentChainSettings = getChainSettings(currentChain);

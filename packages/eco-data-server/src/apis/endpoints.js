@@ -57,6 +57,10 @@ const endpoints = Object.freeze({
     "wss://dot-rpc.stakeworld.io/assethub",
     "wss://statemint.public.curie.radiumblock.co/ws",
   ],
+  astar: [
+    "wss://rpc.astar.network",
+    "wss://astar.public.curie.radiumblock.co/ws",
+  ],
 });
 
 module.exports = {
