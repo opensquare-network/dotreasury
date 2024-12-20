@@ -55,12 +55,12 @@ const gateTokenIdMap = Object.freeze({
   [tokens.KINT]: "KINT/USDT",
   [tokens.PHA]: "PHA/USDT",
   [tokens.MYTH]: "MYTH/USDT",
-  [tokens.ASTR]: "ASTR/USDT",
 });
 
 const krakenTokenIdMap = Object.freeze({
   [tokens.HDX]: "HDX/USD",
   [tokens.BSX]: "BSX/USD",
+  [tokens.ASTR]: "ASTR/USD",
 });
 
 const revertGateTokenIdMap = Object.entries(gateTokenIdMap).reduce(
