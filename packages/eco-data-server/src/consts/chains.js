@@ -18,11 +18,9 @@ const CHAINS = Object.freeze({
   astar: "astar",
 });
 
-const omitChains = [
-  CHAINS.astar,
-];
+const omitChains = [];
 
 module.exports = {
   CHAINS,
   omitChains,
-}
+};
