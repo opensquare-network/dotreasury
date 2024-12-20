@@ -2,6 +2,13 @@
 
 Notable changes to this project will be documented in this file, started from 4.0.0
 
+# 4.3.1
+
+Date: 2024-12-20
+
+- Support astar on landing page.
+- Update phala endpoints
+
 # 4.3.0
 
 Date: 2024-12-03
