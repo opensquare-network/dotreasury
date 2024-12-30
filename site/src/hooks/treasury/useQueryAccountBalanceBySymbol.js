@@ -1,13 +1,12 @@
 import { isPolkadot } from "../../utils/chains";
 import { useAssetHubAsset } from "../assetHub/useAssetHubAsset";
-import { STATEMINT_AMBASSADOR_TREASURY_ACCOUNT } from "../../constants/statemint";
 import { getAssetBySymbol } from "../../utils";
 
-export default function useQueryAmbassadorBalance(symbol) {
+export default function useQueryAccountBalanceBySymbol(symbol, account) {
   let salaryAccount = null;
 
   if (isPolkadot) {
-    salaryAccount = STATEMINT_AMBASSADOR_TREASURY_ACCOUNT;
+    salaryAccount = account;
   }
 
   const asset = getAssetBySymbol(symbol);

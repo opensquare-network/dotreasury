@@ -10,9 +10,12 @@ import {
 import { useBountiesData } from "../hooks/bounties/useBountiesData";
 import { useBountiesTotalBalance } from "../hooks/bounties/useBountiesBalances";
 import { useHydrationTreasuryBalances } from "../hooks/hydration/useHydrationTreasuryBalances";
-import useQueryFellowshipSalaryBalance from "../hooks/treasury/useQueryFellowshipSalaryBalance";
 import { useQueryAssetHubTreasuryFree } from "../hooks/treasury/useQueryAssetHubTreasuryFree";
-import { STATEMINT_FELLOWSHIP_TREASURY_ACCOUNT } from "../constants/statemint";
+import {
+  STATEMINT_FELLOWSHIP_TREASURY_ACCOUNT,
+  STATEMINT_FELLOWSHIP_SALARY_ACCOUNT,
+  STATEMINT_AMBASSADOR_TREASURY_ACCOUNT,
+} from "../constants/statemint";
 import {
   useLoansBifrostDotBalance,
   useLoansCentrifugeUsdcBalance,
@@ -29,7 +32,7 @@ import { USDt } from "../utils/chains/usdt";
 import { USDC } from "../utils/chains/usdc";
 import { createContext } from "react";
 import { useContext } from "react";
-import useQueryAmbassadorBalance from "../hooks/treasury/useQueryAmbassadorBalance";
+import useQueryAccountBalanceBySymbol from "../hooks/treasury/useQueryAccountBalanceBySymbol";
 
 const Context = createContext({});
 
@@ -67,14 +70,20 @@ export default function PolkadotTreasuryProvider({ children }) {
   const {
     balance: fellowshipSalaryUSDtBalance,
     isLoading: isFellowshipSalaryUSDtLoading,
-  } = useQueryFellowshipSalaryBalance("USDt");
+  } = useQueryAccountBalanceBySymbol(
+    "USDt",
+    STATEMINT_FELLOWSHIP_SALARY_ACCOUNT,
+  );
   const {
     balance: fellowshipTreasuryDotBalance,
     isLoading: isFellowshipTreasuryDotLoading,
   } = useQueryAssetHubTreasuryFree(STATEMINT_FELLOWSHIP_TREASURY_ACCOUNT);
 
   const { balance: ambassadorUSDtBalance, isLoading: isAmbassadorUSDtLoading } =
-    useQueryAmbassadorBalance("USDt");
+    useQueryAccountBalanceBySymbol(
+      "USDt",
+      STATEMINT_AMBASSADOR_TREASURY_ACCOUNT,
+    );
 
   const {
     balance: loansCentrifugeUSDCBalance,
