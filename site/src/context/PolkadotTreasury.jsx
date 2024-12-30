@@ -29,6 +29,7 @@ import { USDt } from "../utils/chains/usdt";
 import { USDC } from "../utils/chains/usdc";
 import { createContext } from "react";
 import { useContext } from "react";
+import useQueryAmbassadorBalance from "../hooks/treasury/useQueryAmbassadorBalance";
 
 const Context = createContext({});
 
@@ -72,6 +73,9 @@ export default function PolkadotTreasuryProvider({ children }) {
     isLoading: isFellowshipTreasuryDotLoading,
   } = useQueryAssetHubTreasuryFree(STATEMINT_FELLOWSHIP_TREASURY_ACCOUNT);
 
+  const { balance: ambassadorUSDtBalance, isLoading: isAmbassadorUSDtLoading } =
+    useQueryAmbassadorBalance("USDt");
+
   const {
     balance: loansCentrifugeUSDCBalance,
     isLoading: isLoansCentrifugeUSDCLoading,
@@ -114,6 +118,7 @@ export default function PolkadotTreasuryProvider({ children }) {
       assetHubUSDtBalance || 0,
       hydrationUSDtBalance || 0,
       fellowshipSalaryUSDtBalance || 0,
+      ambassadorUSDtBalance || 0,
     ).toString(),
     USDt.decimals,
   );
@@ -153,7 +158,8 @@ export default function PolkadotTreasuryProvider({ children }) {
   const isTotalUSDtLoading =
     isAssetHubUSDtLoading ||
     isHydrationLoading ||
-    isFellowshipSalaryUSDtLoading;
+    isFellowshipSalaryUSDtLoading ||
+    isAmbassadorUSDtLoading;
 
   const isTotalUSDCLoading =
     isAssetHubUSDCLoading || isHydrationLoading || isLoansCentrifugeUSDCLoading;
@@ -181,6 +187,8 @@ export default function PolkadotTreasuryProvider({ children }) {
         isHydrationLoading,
         fellowshipSalaryUSDtBalance,
         isFellowshipSalaryUSDtLoading,
+        ambassadorUSDtBalance,
+        isAmbassadorUSDtLoading,
         fellowshipTreasuryDotBalance,
         isFellowshipTreasuryDotLoading,
         loansCentrifugeUSDCBalance,
