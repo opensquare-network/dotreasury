@@ -30,7 +30,6 @@ import {
   grid_cols,
 } from "../../styles/tailwindcss";
 import { h3_18_semibold, p_12_normal } from "../../styles/text";
-import { overviewSelector } from "../../store/reducers/overviewSlice";
 import { parseEstimateTime } from "../../utils/parseEstimateTime";
 import { extractTime } from "@polkadot/util";
 import SummaryItem from "../../components/Summary/Item";
@@ -79,7 +78,6 @@ const Summary = () => {
     dispatch(fetchTreasury());
   }, [dispatch]);
 
-  const overview = useSelector(overviewSelector);
   const summary = useSelector(proposalSummarySelector);
   const spendPeriod = useSelector(spendPeriodSelector);
   const treasury = useSelector(treasurySelector);
