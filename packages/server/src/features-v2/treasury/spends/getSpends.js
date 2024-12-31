@@ -5,6 +5,7 @@ const {
 const {
   getSubsquareTreasurySpendCollection,
 } = require("../../../mongo/polkadot");
+const { HttpError } = require("../../../exc");
 
 function getStatusFilter(ctx) {
   const { status } = ctx.request.query;
