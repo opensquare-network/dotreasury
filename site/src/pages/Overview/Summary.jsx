@@ -37,6 +37,7 @@ import BigNumber from "bignumber.js";
 import SummaryItem from "../../components/Summary/Item";
 import ImageWithDark from "../../components/ImageWithDark";
 import { currentChainSettings, isCentrifuge } from "../../utils/chains";
+import useFiatPrice from "../../hooks/useFiatPrice";
 
 const Wrapper = styled(Card)`
   margin-bottom: 16px;
@@ -113,10 +114,9 @@ const Summary = () => {
   const spendPeriod = useSelector(spendPeriodSelector);
   const treasury = useSelector(treasurySelector);
   const symbol = useSelector(chainSymbolSelector);
+  const { price: symbolPrice } = useFiatPrice();
 
   const precision = getPrecision(symbol);
-
-  const symbolPrice = overview?.latestSymbolPrice ?? 0;
   const toBeAwarded = BigNumber(overview?.toBeAwarded?.total ?? 0).toNumber();
   const toBeAwardedValue = BigNumber(
     toPrecision(toBeAwarded, precision),

@@ -10,12 +10,11 @@ import {
   STATEMINT_FELLOWSHIP_TREASURY_ACCOUNT,
 } from "../../../../constants/statemint";
 import AssetValueDisplay from "./common/assetValueDisplay";
-import { overviewSelector } from "../../../../store/reducers/overviewSlice";
-import { useSelector } from "react-redux";
 import { currentChainSettings } from "../../../../utils/chains";
 import AssetItem from "./common/assetItem";
 import { polkadot } from "../../../../utils/chains/polkadot";
 import { usePolkadotTreasuryData } from "../../../../context/PolkadotTreasury";
+import useFiatPrice from "../../../../hooks/useFiatPrice";
 
 const AssetGroup = styled.div`
   ${space_y(8)}
@@ -28,8 +27,7 @@ export default function TreasuryDetailFellowship() {
     fellowshipTreasuryDotBalance,
     isFellowshipTreasuryDotLoading,
   } = usePolkadotTreasuryData();
-  const overview = useSelector(overviewSelector);
-  const dotPrice = overview?.latestSymbolPrice ?? 0;
+  const { price: dotPrice } = useFiatPrice();
 
   const totalTreasuryValue = BigNumber(
     toPrecision(fellowshipTreasuryDotBalance, polkadot.decimals),

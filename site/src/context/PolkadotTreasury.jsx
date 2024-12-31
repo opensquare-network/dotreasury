@@ -1,5 +1,3 @@
-import { useSelector } from "react-redux";
-import { overviewSelector } from "../store/reducers/overviewSlice";
 import useQueryRelayChainFree from "../hooks/treasury/useQueryRelayChainFree";
 import { useAssetHubDot } from "../hooks/assetHub/useAssetHubDot";
 import { useAssetHubAsset } from "../hooks/assetHub/useAssetHubAsset";
@@ -24,7 +22,7 @@ import {
 } from "../hooks/treasury/useLoansBalances";
 import useAssetHubForeignAssets from "../hooks/assetHub/useAssetHubForeignAssets";
 import { MYTH, MYTH_TOKEN_ACCOUNT } from "../constants/foreignAssets";
-import useFiatPrice from "../hooks/useFiatPrice";
+import useFiatPrice, { useFiatPriceBySymbol } from "../hooks/useFiatPrice";
 import BigNumber from "bignumber.js";
 import { polkadot } from "../utils/chains/polkadot";
 import { toPrecision } from "../utils";
@@ -41,8 +39,7 @@ export function usePolkadotTreasuryData() {
 }
 
 export default function PolkadotTreasuryProvider({ children }) {
-  const overview = useSelector(overviewSelector);
-  const dotPrice = overview?.latestSymbolPrice ?? 0;
+  const { price: dotPrice } = useFiatPrice();
 
   const { balance: relayChainFreeBalance, isLoading: isRelayChainFreeLoading } =
     useQueryRelayChainFree();
@@ -104,7 +101,7 @@ export default function PolkadotTreasuryProvider({ children }) {
 
   const { balance: mythTokenBalance, isLoading: isMythTokenLoading } =
     useAssetHubForeignAssets(MYTH_TOKEN_ACCOUNT);
-  const { price: mythTokenPrice } = useFiatPrice("MYTH");
+  const { price: mythTokenPrice } = useFiatPriceBySymbol("MYTH");
 
   const totalDotValue = BigNumber.sum(
     relayChainFreeBalance || 0,

@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import {
   PolkadotTreasuryOnHydrationAccount1,
   PolkadotTreasuryOnHydrationAccount2,
@@ -7,7 +6,6 @@ import { polkadot } from "../../../../utils/chains/polkadot";
 import AssetValueDisplay from "./common/assetValueDisplay";
 import AssetWrapper from "./common/assetWrapper";
 import TreasuryDetailItem from "./common/item";
-import { overviewSelector } from "../../../../store/reducers/overviewSlice";
 import BigNumber from "bignumber.js";
 import { USDt } from "../../../../utils/chains/usdt";
 import { USDC } from "../../../../utils/chains/usdc";
@@ -18,6 +16,7 @@ import ExplorerLinkOrigin from "../../../../components/ExplorerLink";
 import { p_12_medium } from "../../../../styles/text";
 import { space_x } from "../../../../styles/tailwindcss";
 import { usePolkadotTreasuryData } from "../../../../context/PolkadotTreasury";
+import useFiatPrice from "../../../../hooks/useFiatPrice";
 
 export const AddressGroup = styled.div`
   ${space_x(8)}
@@ -40,8 +39,7 @@ export default function TreasuryDetailHydration() {
     hydrationUSDCBalance,
     isHydrationLoading,
   } = usePolkadotTreasuryData();
-  const overview = useSelector(overviewSelector);
-  const dotPrice = overview?.latestSymbolPrice ?? 0;
+  const { price: dotPrice } = useFiatPrice();
 
   const totalDotValue = BigNumber(
     toPrecision(hydrationDotBalance, polkadot.decimals),

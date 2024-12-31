@@ -5,7 +5,7 @@ import { toPrecision } from "../../../../utils";
 import ValueDisplay from "../../../../components/ValueDisplay";
 import { MYTH } from "../../../../constants/foreignAssets";
 import { MYTH_TOKEN_ACCOUNT } from "../../../../constants/foreignAssets";
-import useFiatPrice from "../../../../hooks/useFiatPrice";
+import { useFiatPriceBySymbol } from "../../../../hooks/useFiatPrice";
 import AssetWrapper from "./common/assetWrapper";
 import { ExplorerLink, AddressGroup } from "./hydration";
 import { usePolkadotTreasuryData } from "../../../../context/PolkadotTreasury";
@@ -27,7 +27,7 @@ function AddressLink({ title, address, base }) {
 export default function TreasuryDetailMythToken() {
   const { mythTokenBalance, isMythTokenLoading } = usePolkadotTreasuryData();
   const { price: mythTokenPrice, isLoading: isFiatPriceLoading } =
-    useFiatPrice("MYTH");
+    useFiatPriceBySymbol("MYTH");
 
   const totalValue = toPrecision(
     BigNumber(mythTokenBalance).multipliedBy(mythTokenPrice),
