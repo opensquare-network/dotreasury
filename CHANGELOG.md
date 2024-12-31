@@ -2,6 +2,15 @@
 
 Notable changes to this project will be documented in this file, started from 4.0.0
 
+# 4.3.2
+
+Date: 2024-12-31
+
+- Add ambassador section to the polkadot treasury.
+- Fix value display to show 1M instead of 1,000K.
+- Enable new application page for kusama.
+- User eco data API to get DOT price.
+
 # 4.3.1
 
 Date: 2024-12-20
