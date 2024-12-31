@@ -18,6 +18,9 @@ const {
   loansPendulumDotBalance,
   loansHydrationDotBalance,
 } = require("./loans");
+const {
+  getAmbassadorTreasuryOnAssetHub,
+} = require("./ambassadorTreasuryOnAssetHub");
 
 async function getPolkadotTreasuryData() {
   const treasuryDotOnRelay = await getTreasuryDotOnRelayChain();
@@ -28,6 +31,8 @@ async function getPolkadotTreasuryData() {
     await getFellowshipTreasuryDotOnAssetHub();
 
   const fellowshipSalaryUsdtBalance = await getFellowshipSalaryUsdtOnAssetHub();
+
+  const ambassadorTreasuryUsdtBalance = await getAmbassadorTreasuryOnAssetHub();
 
   const {
     dotTreasuryBalanceOnAssetHub,
@@ -68,6 +73,7 @@ async function getPolkadotTreasuryData() {
 
   const usdt = new BigNumber(fellowshipSalaryUsdtBalance?.balance || 0)
     .plus(usdtTreasuryBalanceOnAssetHub?.balance || 0)
+    .plus(ambassadorTreasuryUsdtBalance?.balance || 0)
     .plus(hydrationAccount1Usdt?.free || 0)
     .plus(hydrationAccount1Usdt?.reserved || 0)
     .plus(hydrationAccount2Usdt?.free || 0)
