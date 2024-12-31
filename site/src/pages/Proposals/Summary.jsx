@@ -6,6 +6,7 @@ import TextMinor from "../../components/TextMinor";
 import CountDown from "../../components/CountDown";
 import BlocksTime from "../../components/BlocksTime";
 import { mrgap } from "../../styles";
+import useFiatPrice from "../../hooks/useFiatPrice";
 
 import {
   fetchProposalsSummary,
@@ -83,8 +84,7 @@ const Summary = () => {
   const spendPeriod = useSelector(spendPeriodSelector);
   const treasury = useSelector(treasurySelector);
   const symbol = useSelector(chainSymbolSelector);
-
-  const symbolPrice = overview?.latestSymbolPrice ?? 0;
+  const { price: symbolPrice } = useFiatPrice();
 
   return (
     <SummaryProposalsWrapper>

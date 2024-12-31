@@ -5,13 +5,12 @@ import { toPrecision } from "../../../../utils";
 import TreasuryDetailItem from "./common/item";
 import { polkadot } from "../../../../utils/chains/polkadot";
 import { USDt } from "../../../../utils/chains/usdt";
-import { useSelector } from "react-redux";
-import { overviewSelector } from "../../../../store/reducers/overviewSlice";
 import { space_y } from "../../../../styles/tailwindcss";
 import styled from "styled-components";
 import AssetValueDisplay from "./common/assetValueDisplay";
 import AssetItem from "./common/assetItem";
 import { usePolkadotTreasuryData } from "../../../../context/PolkadotTreasury";
+import useFiatPrice from "../../../../hooks/useFiatPrice";
 
 const AssetGroup = styled.div`
   ${space_y(8)}
@@ -28,8 +27,7 @@ export default function TreasuryDetailLoans() {
     loansHydrationDotBalance,
     isLoansHydrationDotLoading,
   } = usePolkadotTreasuryData();
-  const overview = useSelector(overviewSelector);
-  const dotPrice = overview?.latestSymbolPrice ?? 0;
+  const { price: dotPrice } = useFiatPrice();
 
   const totalBifrostValue = BigNumber(
     toPrecision(loansBifrostDotBalance, polkadot.decimals),

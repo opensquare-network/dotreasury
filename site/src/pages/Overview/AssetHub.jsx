@@ -16,8 +16,6 @@ import { mrgap } from "../../styles";
 import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
 import { abbreviateBigNumber, toPrecision } from "../../utils";
-import { overviewSelector } from "../../store/reducers/overviewSlice";
-import { useSelector } from "react-redux";
 import { useAssetHubAsset } from "../../hooks/assetHub/useAssetHubAsset";
 import {
   ASSET_HUB_ACCOUNT_LINK,
@@ -34,6 +32,7 @@ import { Fragment } from "react";
 import BigNumber from "bignumber.js";
 import SkeletonBar from "../../components/skeleton/bar";
 import { useMemo } from "react";
+import useFiatPrice from "../../hooks/useFiatPrice";
 
 const Wrapper = styled(Card)`
   margin-bottom: 16px;
@@ -124,13 +123,11 @@ function SummarySkeletonContent({ loading, children }) {
 }
 
 export default function AssetHub() {
-  const overview = useSelector(overviewSelector);
   const [dotValue, dotLoading] = useAssetHubDot();
   const [usdtValue, usdtLoading] = useAssetHubAsset(ASSET_HUB_USDT_ASSET_ID);
   const [usdcValue, usdcLoading] = useAssetHubAsset(ASSET_HUB_USDC_ASSET_ID);
   const { decimals, symbol } = currentChainSettings;
-
-  const symbolPrice = overview?.latestSymbolPrice ?? 0;
+  const { price: symbolPrice } = useFiatPrice();
 
   const dotPriceValue = toPrecision(dotValue, decimals) * symbolPrice;
   const usdtPriceValue = toPrecision(usdtValue, USDt.decimals);
