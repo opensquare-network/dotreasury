@@ -4,9 +4,9 @@ import {
   StatusSelector,
 } from "../../../../components/OpenGovFilter";
 import Select from "../../../../components/Select";
-import { treasurySpendsAssetsFilterOptions } from "../../../../constants";
 import styled from "styled-components";
-import { usePolkadotApplicationsTrackOptions } from "../../../../context/PolkadotApplications";
+import { useApplicationsTrackOptions } from "../../../../context/Applications";
+import { useTreasurySpendAssetsFilterOptions } from "../../../../hooks/useTreasurySpendsAssetsFilterOptions";
 
 const AssetsSelect = styled(Select)`
   width: 160px;
@@ -34,7 +34,7 @@ const TrackSelect = styled(Select)`
 `;
 
 function TrackSelector({ track, setTrack }) {
-  const tracksOptions = usePolkadotApplicationsTrackOptions();
+  const tracksOptions = useApplicationsTrackOptions();
 
   const options = translateTracksOptions(tracksOptions);
   return (
@@ -49,6 +49,8 @@ function TrackSelector({ track, setTrack }) {
 }
 
 function AssetsSelector({ assets, setAssets }) {
+  const treasurySpendsAssetsFilterOptions =
+    useTreasurySpendAssetsFilterOptions();
   return (
     <AssetsSelect
       name="assets"
