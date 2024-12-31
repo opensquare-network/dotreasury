@@ -6,13 +6,7 @@ import { Table } from "../../../components/Table";
 import TableLoading from "../../../components/TableLoading";
 import ResponsivePagination from "../../../components/ResponsivePagination";
 import { useState } from "react";
-import {
-  DEFAULT_PAGE_SIZE,
-  DEFAULT_QUERY_PAGE,
-  treasuryProposalStatusMap,
-  treasurySpendStatusMap,
-  treasuryTipStatusMap,
-} from "../../../constants";
+import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../../constants";
 import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -65,8 +59,6 @@ export default function TreasurySpendsTable() {
   const dispatch = useDispatch();
 
   const {
-    filterStatus,
-    setFilterStatus,
     filterAsset,
     setFilterAsset,
     min,
@@ -77,11 +69,33 @@ export default function TreasurySpendsTable() {
   } = useTreasurySpendsFilter();
 
   useEffect(() => {
+    const searchParams = new URLSearchParams(history.location.search);
+    searchParams.delete("page");
+    history.push({ search: searchParams.toString() });
+
+    setPage(DEFAULT_QUERY_PAGE);
+  }, [getFilterData]);
+
+  useEffect(() => {
     const filterData = getFilterData();
+    const controller = new AbortController();
+
+    const params = {
+      ...filterData,
+    };
+    if (sort) {
+      params.sort = sort;
+    }
 
     dispatch(
-      fetchTreasurySpendsList(page - 1, pageSize, filterData, sort && { sort }),
+      fetchTreasurySpendsList(page - 1, pageSize, params, {
+        signal: controller.signal,
+      }),
     );
+
+    return () => {
+      controller.abort();
+    };
   }, [dispatch, page, pageSize, sort, getFilterData]);
 
   const { proposeTime, beneficiary, referendaStatus } = useTableColumns({});
@@ -115,19 +129,12 @@ export default function TreasurySpendsTable() {
       <FilterWrapper>
         <TreasurySpendsFilter
           chain={currentChain}
-          status={filterStatus}
-          setStatus={setFilterStatus}
           asset={filterAsset}
           setAsset={setFilterAsset}
           min={min}
           setMin={setMin}
           max={max}
           setMax={setMax}
-          statusMap={{
-            ...treasurySpendStatusMap,
-            ...treasuryProposalStatusMap,
-            ...treasuryTipStatusMap,
-          }}
         />
       </FilterWrapper>
 
