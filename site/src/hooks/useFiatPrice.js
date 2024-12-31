@@ -44,7 +44,7 @@ export default function useFiatPrice() {
   });
 
   return {
-    price: treasury?.price,
+    price: treasury?.price || 0,
     loading,
   };
 }
