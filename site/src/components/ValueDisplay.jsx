@@ -1,4 +1,4 @@
-import { abbreviateBigNumber, toPrecision } from "@osn/common";
+import { abbreviateBigNumber, toPrecision } from "../utils";
 
 function getEffectiveNumbers(value) {
   const effectiveNumbers = value
