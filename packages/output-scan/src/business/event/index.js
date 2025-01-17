@@ -66,7 +66,7 @@ async function handleCommon(
   blockEvents,
 ) {
   await handleBurntEvent(event, indexer, extrinsic);
-  await handleChildBountiesEvents(event, indexer, extrinsic);
+  await handleChildBountiesEvents(event, indexer, extrinsic, blockEvents);
   await handleReferendumEvent(...arguments);
   await handleReferendaEvent(event, indexer, extrinsic, blockEvents);
   await handleSchedulerEvents(event, indexer, extrinsic, blockEvents);
