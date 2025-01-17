@@ -18,20 +18,7 @@ const { handleRollover } = require("./period")
 const { handleReferendaDelegation } = require("./convictionVoting");
 const { handleTransferOutWithoutExtrinsic } = require("./transfer/outWithoutExtrinsic");
 
-async function handleEventWithExtrinsic(
-  blockIndexer,
-  event,
-  eventSort,
-  extrinsic,
-  extrinsicIndex,
-  blockEvents
-) {
-  const indexer = {
-    ...blockIndexer,
-    eventIndex: eventSort,
-    extrinsicIndex,
-  };
-
+async function handleEventWithExtrinsic(indexer, event, extrinsic, blockEvents) {
   await handleTipEvent(event, extrinsic, indexer);
   await handleTreasuryProposalEvent(event, extrinsic, indexer);
   await handleMotionEvent(event, extrinsic, indexer, blockEvents);
@@ -40,17 +27,7 @@ async function handleEventWithExtrinsic(
   await handleTreasuryTransferOut(event, indexer, extrinsic);
 }
 
-async function handleEventWithoutExtrinsic(
-  blockIndexer,
-  event,
-  eventSort,
-  blockEvents
-) {
-  const indexer = {
-    ...blockIndexer,
-    eventIndex: eventSort,
-  };
-
+async function handleEventWithoutExtrinsic(indexer, event, blockEvents) {
   await handleTreasuryProposalEventWithoutExtrinsic(event, indexer);
   await handleBountyEventWithoutExtrinsic(event, indexer);
   await handleTipEventWithoutExtrinsic(event, indexer);
@@ -93,20 +70,16 @@ async function handleEvents(events, extrinsics, blockIndexer) {
     await handleCommon(event, indexer, extrinsic, events);
 
     if (phase.isNone) {
-      await handleEventWithoutExtrinsic(blockIndexer, event, sort, events);
+      await handleEventWithoutExtrinsic(indexer, event, events);
     } else {
-      await handleEventWithExtrinsic(
-        blockIndexer,
-        event,
-        sort,
-        extrinsic,
-        extrinsicIndex,
-        events
-      );
+      await handleEventWithExtrinsic(indexer, event, extrinsic, events);
     }
   }
 }
 
 module.exports = {
+  handleCommonEvents: handleCommon,
   handleEvents,
+  handleEventWithoutExtrinsic,
+  handleEventWithExtrinsic,
 };
