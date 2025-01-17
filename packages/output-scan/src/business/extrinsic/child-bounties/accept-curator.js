@@ -1,4 +1,4 @@
-const { updateChildBounty } = require("../../../mongo/service/childBounty");
+const { updateChildBounty, updateChildBountyTimeline } = require("../../../mongo/service/childBounty");
 const { getChildBounty } = require("../../common/child-bounties/child-bounty");
 const {
   consts: {
@@ -9,6 +9,8 @@ const {
     BalancesEvents,
   }
 } = require("@osn/scan-common");
+const { getHeightBlockEvents } = require("../../../store/block");
+const { isChildBountyFinished } = require("./common");
 
 function getDeposit(wrappedEvents, curator) {
   const reservedEvent = wrappedEvents.events.find(({ event }) => {
@@ -39,18 +41,14 @@ async function handleAcceptCurator(call, author, indexer, wrappedEvents) {
   const childBountyId = call.args[1].toNumber();
 
   const deposit = getDeposit(wrappedEvents, author);
-  const meta = await getChildBounty(parentBountyId, childBountyId, indexer);
-
   const updates = {
-    meta,
     curator: author,
     deposit,
     state: {
       indexer,
       state: ChildBountyState.Active,
     }
-  }
-
+  };
   const timelineItem = {
     type: TimelineItemTypes.extrinsic,
     name: ChildBountiesMethods.acceptCurator,
@@ -61,6 +59,16 @@ async function handleAcceptCurator(call, author, indexer, wrappedEvents) {
     indexer,
   };
 
+  const meta = await getChildBounty(parentBountyId, childBountyId, indexer);
+  const blockEvents = getHeightBlockEvents(indexer.blockHeight);
+  if (!meta && isChildBountyFinished(childBountyId, blockEvents)) {
+    await updateChildBountyTimeline(childBountyId, timelineItem);
+    return;
+  }
+
+  if (meta) {
+    Object.assign(updates, { meta });
+  }
   await updateChildBounty(childBountyId, updates, timelineItem);
 }
 
