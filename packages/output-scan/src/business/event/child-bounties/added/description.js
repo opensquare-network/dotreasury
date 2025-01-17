@@ -29,4 +29,5 @@ async function getValueAndDescriptionFromCall(blockEvents, indexer, extrinsic, c
 
 module.exports = {
   getValueAndDescriptionFromCall,
+  getChildBountyAddedEventIndex,
 }
