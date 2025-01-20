@@ -1,6 +1,6 @@
 export function useLoansCentrifugeUsdcBalance() {
   return {
-    balance: 3000000000000,
+    balance: 1500000000000,
     isLoading: false,
   };
 }
