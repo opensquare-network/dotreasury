@@ -2,6 +2,13 @@
 
 Notable changes to this project will be documented in this file, started from 4.0.0
 
+# 4.3.3
+
+Date: 2025-01-20
+
+- Handle child bounties whole lifecycle in one block.
+- Update centrifuge treasury loan to $1.5M.
+
 # 4.3.2
 
 Date: 2024-12-31
