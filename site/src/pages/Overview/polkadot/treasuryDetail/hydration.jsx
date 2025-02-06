@@ -62,12 +62,12 @@ export default function TreasuryDetailHydration() {
         <AssetWrapper>
           <AddressGroup>
             <AddressLink
-              index={1}
+              content="Acquistion Addr #1"
               address={PolkadotTreasuryOnHydrationAccount1}
             />
 
             <AddressLink
-              index={2}
+              content="Addr #2"
               address={PolkadotTreasuryOnHydrationAccount2}
             />
           </AddressGroup>
@@ -99,7 +99,7 @@ export default function TreasuryDetailHydration() {
   );
 }
 
-function AddressLink({ index, address }) {
+function AddressLink({ content, address }) {
   return (
     <ExplorerLink
       base="https://hydration.subscan.io/"
@@ -108,7 +108,7 @@ function AddressLink({ index, address }) {
       externalIcon
       externalIconSize={20}
     >
-      Acquistion Addr #{index}
+      {content}
     </ExplorerLink>
   );
 }
