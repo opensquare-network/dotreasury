@@ -102,16 +102,46 @@ const StyledLinkMajor = styled(Link)`
   }
 `;
 
+export function SpendPeriodItem() {
+  const dispatch = useDispatch();
+  const spendPeriod = useSelector(spendPeriodSelector);
+
+  useEffect(() => {
+    dispatch(fetchSpendPeriod());
+  }, [dispatch]);
+
+  return (
+    <SummaryItem
+      icon={<CountDown percent={spendPeriod.progress} />}
+      title="Spend period"
+      content={
+        <div>
+          <BlocksTime
+            blocks={spendPeriod.restBlocks}
+            ValueWrapper={TextBold}
+            UnitWrapper={TextAccessoryBold}
+            SectionWrapper={Fragment}
+            TimeWrapper={ValueWrapper}
+            unitMapper={{ d: "Day" }}
+            pluralUnitMapper={{ d: "Days" }}
+          />
+          <ValueInfo>
+            {parseEstimateTime(extractTime(spendPeriod.periodTime))}
+          </ValueInfo>
+        </div>
+      }
+    />
+  );
+}
+
 const Summary = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchSpendPeriod());
     dispatch(fetchTreasury());
   }, [dispatch]);
 
   const overview = useSelector(overviewSelector);
-  const spendPeriod = useSelector(spendPeriodSelector);
   const treasury = useSelector(treasurySelector);
   const symbol = useSelector(chainSymbolSelector);
   const { price: symbolPrice } = useFiatPrice();
@@ -170,28 +200,6 @@ const Summary = () => {
             </TextBold>
             <TextAccessoryBold>{symbol}</TextAccessoryBold>
           </ValueWrapper>
-        </div>
-      }
-    />
-  );
-  const spendPeriodItem = (
-    <SummaryItem
-      icon={<CountDown percent={spendPeriod.progress} />}
-      title="Spend period"
-      content={
-        <div>
-          <BlocksTime
-            blocks={spendPeriod.restBlocks}
-            ValueWrapper={TextBold}
-            UnitWrapper={TextAccessoryBold}
-            SectionWrapper={Fragment}
-            TimeWrapper={ValueWrapper}
-            unitMapper={{ d: "Day" }}
-            pluralUnitMapper={{ d: "Days" }}
-          />
-          <ValueInfo>
-            {parseEstimateTime(extractTime(spendPeriod.periodTime))}
-          </ValueInfo>
         </div>
       }
     />
@@ -280,10 +288,10 @@ const Summary = () => {
     availableItem,
     toBeAwardedItem,
     burntItem,
-    !isCentrifuge && spendPeriodItem,
+    !isCentrifuge && <SpendPeriodItem />,
     opengovItem,
     proposalsItem,
-    isCentrifuge && spendPeriodItem,
+    isCentrifuge && <SpendPeriodItem />,
     tipsItem,
     bountiesItem,
   ]

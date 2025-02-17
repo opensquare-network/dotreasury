@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import { grid, grid_cols } from "../../../../styles/tailwindcss";
-import { mdcss, smcss } from "../../../../styles/responsive";
+import { mdcss } from "../../../../styles/responsive";
 import TreasuryDetailOnRelayChain from "./relayChain";
 import TreasuryDetailOnAssetHub from "./assetHub";
-// import TreasuryDetailLoans from "./loans";
+import TreasuryDetailLoans from "./loans";
+import { SpendPeriodItem } from "../../Summary";
 
 const Wrapper = styled.div`
   ${grid}
@@ -17,7 +18,8 @@ export default function OverviewTreasuryDetail() {
     <Wrapper>
       <TreasuryDetailOnRelayChain />
       <TreasuryDetailOnAssetHub />
-      {/* <TreasuryDetailLoans /> */}
+      <TreasuryDetailLoans />
+      <SpendPeriodItem />
     </Wrapper>
   );
 }

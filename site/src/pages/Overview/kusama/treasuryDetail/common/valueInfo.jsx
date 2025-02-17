@@ -9,13 +9,14 @@ const Wrapper = styled(Text)`
   color: var(--textTertiary);
 `;
 
-export default function ValueInfo({ balance, isLoading }) {
+export default function ValueInfo({ balance, isLoading, prefix = "" }) {
   if (isLoading) {
     return <SkeletonBar width={160} height={22} style={{ margin: "3px 0" }} />;
   }
 
   return (
     <Wrapper>
+      {prefix}
       {balance && "≈ "}${abbreviateBigNumber(balance)}
     </Wrapper>
   );
