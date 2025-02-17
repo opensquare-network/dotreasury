@@ -24,7 +24,7 @@ const TextAccessoryBold = styled(TextMinor)`
   color: var(--textTertiary);
 `;
 
-export default function ValueWrap({ balance, symbol, isLoading, decimals }) {
+export default function AssetContent({ balance, symbol, isLoading, decimals }) {
   if (isLoading) {
     return <SkeletonBar width={160} height={22} style={{ margin: "3px 0" }} />;
   }

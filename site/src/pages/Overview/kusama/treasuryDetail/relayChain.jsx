@@ -5,8 +5,8 @@ import SummaryItem from "../../../../components/Summary/Item";
 import ImageWithDark from "../../../../components/ImageWithDark";
 import { toPrecision } from "../../../../utils";
 import { currentChainSettings } from "../../../../utils/chains";
-import ValueInfo from "./common/valueInfo";
-import ValueWrap from "./common/valueWrap";
+import AssetFooter from "./common/assetFooter";
+import AssetContent from "./common/assetContent";
 
 export default function TreasuryDetailOnRelayChain() {
   const { relayChainFreeBalance, isRelayChainFreeLoading } =
@@ -25,13 +25,13 @@ export default function TreasuryDetailOnRelayChain() {
       title="KSM on Relay chain"
       content={
         <div>
-          <ValueWrap
+          <AssetContent
             balance={relayChainFreeBalance}
             isLoading={isRelayChainFreeLoading}
             symbol={symbol}
             decimals={decimals}
           />
-          <ValueInfo
+          <AssetFooter
             balance={totalFiatValue}
             isLoading={isRelayChainFreeLoading}
           />

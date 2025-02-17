@@ -5,8 +5,8 @@ import SummaryItem from "../../../../components/Summary/Item";
 import ImageWithDark from "../../../../components/ImageWithDark";
 import { toPrecision } from "../../../../utils";
 import { currentChainSettings } from "../../../../utils/chains";
-import ValueInfo from "./common/valueInfo";
-import ValueWrap from "./common/valueWrap";
+import AssetFooter from "./common/assetFooter";
+import AssetContent from "./common/assetContent";
 import { ExternalLink } from "../../polkadot/treasuryDetail/common/assetItem";
 import { KUSAMA_ASSETHUB_ACCOUNT } from "../../../../constants/kusama";
 
@@ -37,13 +37,13 @@ export default function TreasuryDetailOnAssetHub() {
       }
       content={
         <div>
-          <ValueWrap
+          <AssetContent
             balance={ksmTreasuryBalanceOnAssetHub}
             isLoading={isKsmTreasuryBalanceOnAssetHubLoading}
             symbol={symbol}
             decimals={decimals}
           />
-          <ValueInfo
+          <AssetFooter
             balance={totalFiatValue}
             isLoading={isKsmTreasuryBalanceOnAssetHubLoading}
           />

@@ -9,12 +9,13 @@ const Wrapper = styled(Text)`
   color: var(--textTertiary);
 `;
 
-export default function ValueInfo({
+export default function AssetFooter({
   balance,
   isLoading,
   prefix = "",
   suffix = "",
   showApproximationSymbol = true,
+  showPrefixSymbol = true,
 }) {
   if (isLoading) {
     return <SkeletonBar width={160} height={22} style={{ margin: "3px 0" }} />;
@@ -23,7 +24,8 @@ export default function ValueInfo({
   return (
     <Wrapper>
       {prefix}
-      {showApproximationSymbol && balance && "≈ "}$
+      {showApproximationSymbol && balance && "≈ "}
+      {showPrefixSymbol && "$"}
       {abbreviateBigNumber(balance)}
       {suffix}
     </Wrapper>
