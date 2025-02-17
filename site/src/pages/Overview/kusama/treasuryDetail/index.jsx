@@ -15,7 +15,7 @@ import { useEffect } from "react";
 const Wrapper = styled.div`
   ${grid}
   ${grid_cols(4)}
-  gap: 48px;
+  gap: 16px 64px;
   ${mdcss(grid_cols(2))}
 `;
 
