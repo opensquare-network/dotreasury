@@ -16,7 +16,7 @@ const Line = styled.div`
   width: 100%;
   height: 1px;
   background: var(--neutral300);
-`
+`;
 
 export default function OverviewKusama() {
   return (

@@ -1,14 +1,19 @@
 import BigNumber from "bignumber.js";
 import { useKusamaTreasuryData } from "../../../../context/KusamaTreasury";
 import useFiatPrice from "../../../../hooks/useFiatPrice";
-import SummaryItem from "../../../../components/Summary/Item";
-import ImageWithDark from "../../../../components/ImageWithDark";
 import { toPrecision } from "../../../../utils";
 import { currentChainSettings } from "../../../../utils/chains";
 import ValueInfo from "./common/valueInfo";
-import ValueWrap from "./common/valueWrap";
 import { ExternalLink } from "../../polkadot/treasuryDetail/common/assetItem";
-import { KUSAMA_ASSETHUB_ACCOUNT } from "../../../../constants/kusama";
+import TreasuryDetailItem from "../../polkadot/treasuryDetail/common/item";
+import ValueDisplay from "../../../../components/ValueDisplay";
+import styled from "styled-components";
+
+const LinkLabel = styled.p`
+  display: inline-flex;
+  margin-right: 4px;
+  margin-bottom: 0;
+`;
 
 export default function TreasuryDetailLoans() {
   const { loansHydrationKsmBalance, isLoansHydrationKsmLoading } =
@@ -22,32 +27,34 @@ export default function TreasuryDetailLoans() {
   );
 
   return (
-    <SummaryItem
-      icon={<ImageWithDark src="/imgs/data-approved.svg" />}
-      title="Loans"
-      content={
-        <div>
-          <ValueWrap
-            balance={loansHydrationKsmBalance}
-            isLoading={isLoansHydrationKsmLoading}
-            symbol={symbol}
-            decimals={decimals}
-          />
-          <ValueInfo
-            balance={totalFiatValue}
-            isLoading={isLoansHydrationKsmLoading}
-            prefix={
-              <ExternalLink
-                href="https://kusama.subsquare.io/referenda/490"
-                externalIcon
-                externalIconColor="textSecondary"
-              >
-                Hydration
-              </ExternalLink>
-            }
-          />
-        </div>
-      }
-    />
+    <>
+      <TreasuryDetailItem
+        title="Loans"
+        iconSrc="/imgs/data-approved.svg"
+        content={
+          <>
+            <ValueDisplay value={totalFiatValue} prefix="$" />
+            <ValueInfo
+              balance={loansHydrationKsmBalance}
+              isLoading={isLoansHydrationKsmLoading}
+              showApproximationSymbol={false}
+              prefix={
+                <LinkLabel>
+                  <ExternalLink
+                    href="https://kusama.subsquare.io/referenda/490"
+                    externalIcon
+                    externalIconColor="textSecondary"
+                  >
+                    Hydration
+                  </ExternalLink>
+                </LinkLabel>
+              }
+              suffix={<span>&nbsp;{symbol}</span>}
+            />
+          </>
+        }
+        isLoading={isLoansHydrationKsmLoading}
+      />
+    </>
   );
 }

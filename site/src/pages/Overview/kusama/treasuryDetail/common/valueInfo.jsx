@@ -2,14 +2,20 @@ import SkeletonBar from "../../../../../components/skeleton/bar";
 import { abbreviateBigNumber } from "../../../../../utils";
 import styled from "styled-components";
 import Text from "../../../../../components/Text";
-import { p_12_normal } from "../../../../../styles/text";
+import { p_12_medium } from "../../../../../styles/text";
 
 const Wrapper = styled(Text)`
-  ${p_12_normal};
+  ${p_12_medium};
   color: var(--textTertiary);
 `;
 
-export default function ValueInfo({ balance, isLoading, prefix = "" }) {
+export default function ValueInfo({
+  balance,
+  isLoading,
+  prefix = "",
+  suffix = "",
+  showApproximationSymbol = true,
+}) {
   if (isLoading) {
     return <SkeletonBar width={160} height={22} style={{ margin: "3px 0" }} />;
   }
@@ -17,7 +23,9 @@ export default function ValueInfo({ balance, isLoading, prefix = "" }) {
   return (
     <Wrapper>
       {prefix}
-      {balance && "≈ "}${abbreviateBigNumber(balance)}
+      {showApproximationSymbol && balance && "≈ "}$
+      {abbreviateBigNumber(balance)}
+      {suffix}
     </Wrapper>
   );
 }
