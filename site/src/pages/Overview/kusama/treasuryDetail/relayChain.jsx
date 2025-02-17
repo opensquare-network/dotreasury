@@ -11,7 +11,7 @@ import AssetContent from "./common/assetContent";
 export default function TreasuryDetailOnRelayChain() {
   const { relayChainFreeBalance, isRelayChainFreeLoading } =
     useKusamaTreasuryData();
-  const { price } = useFiatPrice();
+  const { price, loading: isPriceLoading } = useFiatPrice();
   const { decimals, symbol } = currentChainSettings;
 
   const totalFiatValue = toPrecision(
@@ -27,7 +27,7 @@ export default function TreasuryDetailOnRelayChain() {
         <div>
           <AssetContent
             balance={relayChainFreeBalance}
-            isLoading={isRelayChainFreeLoading}
+            isLoading={isRelayChainFreeLoading || isPriceLoading}
             symbol={symbol}
             decimals={decimals}
           />

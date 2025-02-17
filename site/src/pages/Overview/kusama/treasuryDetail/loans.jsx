@@ -8,6 +8,8 @@ import { ExternalLink } from "../../polkadot/treasuryDetail/common/assetItem";
 import TreasuryDetailItem from "./common/item";
 import ValueDisplay from "../../../../components/ValueDisplay";
 import styled from "styled-components";
+import SkeletonBar from "../../../../components/skeleton/bar";
+import { useMemo } from "react";
 
 const LinkLabel = styled.p`
   display: inline-flex;
@@ -18,13 +20,17 @@ const LinkLabel = styled.p`
 export default function TreasuryDetailLoans() {
   const { loansHydrationKsmBalance, isLoansHydrationKsmLoading } =
     useKusamaTreasuryData();
-  const { price } = useFiatPrice();
+  const { price, loading: isPriceLoading } = useFiatPrice();
   const { decimals, symbol } = currentChainSettings;
 
   const totalFiatValue = toPrecision(
     BigNumber(loansHydrationKsmBalance).multipliedBy(price),
     decimals,
   );
+
+  const isTotalFiatPrice = useMemo(() => {
+    return isPriceLoading || isLoansHydrationKsmLoading || price == 0;
+  }, [isPriceLoading, isLoansHydrationKsmLoading, price]);
 
   return (
     <>
@@ -34,7 +40,16 @@ export default function TreasuryDetailLoans() {
         customStyle={{ padding: 0 }}
         content={
           <>
-            <ValueDisplay value={totalFiatValue} prefix="$" />
+            {isTotalFiatPrice ? (
+              <SkeletonBar
+                width={160}
+                height={22}
+                style={{ margin: "3px 0" }}
+              />
+            ) : (
+              <ValueDisplay value={totalFiatValue} prefix="$" />
+            )}
+
             <AssetFooter
               balance={loansHydrationKsmBalance}
               isLoading={isLoansHydrationKsmLoading}
