@@ -9,14 +9,14 @@ const Wrapper = styled(Text)`
   color: var(--textTertiary);
 `;
 
-export default function ValueInfo({ balance, symbolPrice, isLoading }) {
+export default function ValueInfo({ balance, isLoading }) {
   if (isLoading) {
     return <SkeletonBar width={160} height={22} style={{ margin: "3px 0" }} />;
   }
 
   return (
     <Wrapper>
-      {balance && "≈ "}${abbreviateBigNumber(balance * symbolPrice)}
+      {balance && "≈ "}${abbreviateBigNumber(balance)}
     </Wrapper>
   );
 }

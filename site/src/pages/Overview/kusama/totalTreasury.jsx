@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Card from "../../../components/Card";
 import {
   h4_16_semibold,
   p_14_medium,
@@ -12,8 +11,7 @@ import SkeletonBar from "../../../components/skeleton/bar";
 import Tooltip from "../../../components/Tooltip";
 import { useKusamaTreasuryData } from "../../../context/KusamaTreasury";
 
-const Wrapper = styled(Card)`
-  padding: 24px;
+const Wrapper = styled.div`
   ${text_primary}
 `;
 
@@ -35,7 +33,7 @@ const TokenGroup = styled.div`
   align-items: center;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 24px;
+  margin-top: 12px;
 `;
 
 const Item = styled.div`
@@ -64,11 +62,8 @@ function TokenItem({ icon, isLoading, totalValue, precision, symbol }) {
 }
 
 export default function OverviewTotalTreasury() {
-  const {
-    totalKsmValue,
-    totalKsmFiatValue,
-    isTotalKsmLoading,
-  } = useKusamaTreasuryData();
+  const { totalKsmValue, totalKsmFiatValue, isTotalKsmLoading } =
+    useKusamaTreasuryData();
 
   return (
     <Wrapper>
