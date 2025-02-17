@@ -17,12 +17,6 @@ export default function TreasuryDetailOnAssetHub() {
   } = useKusamaTreasuryData();
   const { price } = useFiatPrice();
   const { decimals, symbol } = currentChainSettings;
-  console.log(
-    ":::ksmTreasuryBalanceOnAssetHub",
-    price,
-    ksmTreasuryBalanceOnAssetHub,
-    isKsmTreasuryBalanceOnAssetHubLoading,
-  );
 
   const totalFiatValue = toPrecision(
     BigNumber(ksmTreasuryBalanceOnAssetHub).multipliedBy(price),
