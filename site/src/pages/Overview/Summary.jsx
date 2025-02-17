@@ -134,15 +134,8 @@ export function SpendPeriodItem() {
   );
 }
 
-const Summary = () => {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchTreasury());
-  }, [dispatch]);
-
+export function ToBeAwardedItem() {
   const overview = useSelector(overviewSelector);
-  const treasury = useSelector(treasurySelector);
   const symbol = useSelector(chainSymbolSelector);
   const { price: symbolPrice } = useFiatPrice();
 
@@ -152,25 +145,7 @@ const Summary = () => {
     toPrecision(toBeAwarded, precision),
   ).toNumber();
 
-  const availableItem = (
-    <SummaryItem
-      icon={<ImageWithDark src="/imgs/data-available.svg" />}
-      title="Available"
-      content={
-        <div>
-          <ValueWrapper>
-            <TextBold>{abbreviateBigNumber(treasury.free)}</TextBold>
-            <TextAccessoryBold>{symbol}</TextAccessoryBold>
-          </ValueWrapper>
-          <ValueInfo>
-            {!!treasury.free && "≈ "}$
-            {abbreviateBigNumber(treasury.free * symbolPrice)}
-          </ValueInfo>
-        </div>
-      }
-    />
-  );
-  const toBeAwardedItem = (
+  return (
     <SummaryItem
       icon={<ImageWithDark src="/imgs/data-approved.svg" />}
       title="To be awarded"
@@ -188,7 +163,16 @@ const Summary = () => {
       }
     />
   );
-  const burntItem = currentChainSettings.hasBurnt && (
+}
+
+export function BurntItem({ treasury }) {
+  const symbol = useSelector(chainSymbolSelector);
+
+  if (!currentChainSettings?.hasBurnt) {
+    return null;
+  }
+
+  return (
     <SummaryItem
       icon={<ImageWithDark src="/imgs/data-next-burn.svg" />}
       title="Next burn"
@@ -200,6 +184,38 @@ const Summary = () => {
             </TextBold>
             <TextAccessoryBold>{symbol}</TextAccessoryBold>
           </ValueWrapper>
+        </div>
+      }
+    />
+  );
+}
+
+const Summary = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchTreasury());
+  }, [dispatch]);
+
+  const overview = useSelector(overviewSelector);
+  const treasury = useSelector(treasurySelector);
+  const symbol = useSelector(chainSymbolSelector);
+  const { price: symbolPrice } = useFiatPrice();
+
+  const availableItem = (
+    <SummaryItem
+      icon={<ImageWithDark src="/imgs/data-available.svg" />}
+      title="Available"
+      content={
+        <div>
+          <ValueWrapper>
+            <TextBold>{abbreviateBigNumber(treasury.free)}</TextBold>
+            <TextAccessoryBold>{symbol}</TextAccessoryBold>
+          </ValueWrapper>
+          <ValueInfo>
+            {!!treasury.free && "≈ "}$
+            {abbreviateBigNumber(treasury.free * symbolPrice)}
+          </ValueInfo>
         </div>
       }
     />
@@ -286,8 +302,8 @@ const Summary = () => {
 
   const sortedItems = [
     availableItem,
-    toBeAwardedItem,
-    burntItem,
+    <ToBeAwardedItem />,
+    <BurntItem treasury={treasury} />,
     !isCentrifuge && <SpendPeriodItem />,
     opengovItem,
     proposalsItem,
