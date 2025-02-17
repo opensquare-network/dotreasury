@@ -25,3 +25,10 @@ export function useLoansHydrationDotBalance() {
     isLoading: false,
   };
 }
+
+export function useLoansHydrationKsmBalance() {
+  return {
+    balance: 33333000000000000,
+    isLoading: false,
+  };
+}
