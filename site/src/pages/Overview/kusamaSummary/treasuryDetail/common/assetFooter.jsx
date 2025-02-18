@@ -14,8 +14,6 @@ export default function AssetFooter({
   isLoading,
   prefix = "",
   suffix = "",
-  showApproximationSymbol = true,
-  showPrefixSymbol = true,
 }) {
   if (isLoading) {
     return <SkeletonBar width={160} height={22} style={{ margin: "3px 0" }} />;
@@ -24,9 +22,7 @@ export default function AssetFooter({
   return (
     <Wrapper>
       {prefix}
-      {showApproximationSymbol && balance && "≈ "}
-      {showPrefixSymbol && "$"}
-      {abbreviateBigNumber(balance)}
+      {balance && "≈ "}${abbreviateBigNumber(balance)}
       {suffix}
     </Wrapper>
   );
