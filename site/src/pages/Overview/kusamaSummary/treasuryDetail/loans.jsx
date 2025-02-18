@@ -28,7 +28,7 @@ export default function TreasuryDetailLoans() {
     decimals,
   );
 
-  const isTotalFiatPrice = useMemo(() => {
+  const isTotalFiatPriceLoading = useMemo(() => {
     return isPriceLoading || isLoansHydrationKsmLoading || price == 0;
   }, [isPriceLoading, isLoansHydrationKsmLoading, price]);
 
@@ -40,7 +40,7 @@ export default function TreasuryDetailLoans() {
         customStyle={{ padding: 0 }}
         content={
           <>
-            {isTotalFiatPrice ? (
+            {isTotalFiatPriceLoading ? (
               <SkeletonBar
                 width={160}
                 height={22}
