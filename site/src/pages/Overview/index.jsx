@@ -33,7 +33,7 @@ import {
 } from "../../utils/chains";
 import AssetHub from "./AssetHub";
 import OverviewPolkadot from "./polkadot";
-import OverviewKusamaSummary from "./kusama";
+import OverviewKusamaSummary from "./kusamaSummary";
 
 const DoughnutWrapper = styled.div`
   display: grid;

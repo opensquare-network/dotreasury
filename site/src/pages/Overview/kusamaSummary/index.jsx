@@ -18,7 +18,7 @@ const Line = styled.div`
   background: var(--neutral300);
 `;
 
-export default function OverviewKusama() {
+export default function OverviewKusamaSummary() {
   return (
     <KusamaTreasuryProvider>
       <Wrapper>
