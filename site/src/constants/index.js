@@ -113,20 +113,20 @@ export const REACTION_THUMBDOWN = 2;
 
 export const DEFAULT_KUSAMA_NODES = [
   {
-    name: "Parity",
-    url: "wss://kusama-rpc.polkadot.io",
-  },
-  {
     name: "IBP1",
     url: "wss://rpc.ibp.network/kusama",
   },
   {
-    name: "SubQuery",
-    url: "wss://kusama.rpc.subquery.network/public/ws",
-  },
-  {
     name: "OnFinality",
     url: "wss://kusama.api.onfinality.io/public-ws",
+  },
+  {
+    name: "Parity",
+    url: "wss://kusama-rpc.polkadot.io",
+  },
+  {
+    name: "SubQuery",
+    url: "wss://kusama.rpc.subquery.network/public/ws",
   },
   {
     name: "Helixstreet",
@@ -168,20 +168,20 @@ export const DEFAULT_KUSAMA_NODES = [
 
 export const DEFAULT_POLKADOT_NODES = [
   {
-    name: "Parity",
-    url: "wss://rpc.polkadot.io",
-  },
-  {
     name: "IBP1",
     url: "wss://rpc.ibp.network/polkadot",
   },
   {
-    name: "SubQuery",
-    url: "wss://polkadot.rpc.subquery.network/public/ws",
-  },
-  {
     name: "OnFinality",
     url: "wss://polkadot.api.onfinality.io/public-ws",
+  },
+  {
+    name: "Parity",
+    url: "wss://rpc.polkadot.io",
+  },
+  {
+    name: "SubQuery",
+    url: "wss://polkadot.rpc.subquery.network/public/ws",
   },
   {
     name: "Permanence DAO EU",
