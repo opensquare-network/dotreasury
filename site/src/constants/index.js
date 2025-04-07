@@ -117,36 +117,52 @@ export const DEFAULT_KUSAMA_NODES = [
     url: "wss://kusama-rpc.polkadot.io",
   },
   {
+    name: "IBP1",
+    url: "wss://rpc.ibp.network/kusama",
+  },
+  {
+    name: "SubQuery",
+    url: "wss://kusama.rpc.subquery.network/public/ws",
+  },
+  {
     name: "OnFinality",
     url: "wss://kusama.api.onfinality.io/public-ws",
+  },
+  {
+    name: "Helixstreet",
+    url: "wss://rpc-kusama.helixstreet.io",
   },
   {
     name: "Dwellir",
     url: "wss://kusama-rpc.dwellir.com",
   },
   {
+    name: "Allnodes",
+    url: "wss://kusama-rpc.publicnode.com",
+  },
+  {
     name: "Dwellir Tunisia",
     url: "wss://kusama-rpc-tn.dwellir.com",
   },
   {
-    name: "Automata 1RPC",
-    url: "wss://1rpc.io/ksm",
-  },
-  {
-    name: "IBP-GeoDNS1",
-    url: "wss://rpc.ibp.network/kusama",
-  },
-  {
-    name: "IBP-GeoDNS2",
-    url: "wss://rpc.dotters.network/kusama",
+    name: "IBP2",
+    url: "wss://kusama.dotters.network",
   },
   {
     name: "RadiumBlock",
     url: "wss://kusama.public.curie.radiumblock.co/ws",
   },
   {
+    name: "RockX",
+    url: "wss://rockx-ksm.w3node.com/polka-public-ksm/ws",
+  },
+  {
     name: "Stakeworld",
     url: "wss://ksm-rpc.stakeworld.io",
+  },
+  {
+    name: "LuckyFriday",
+    url: "wss://rpc-kusama.luckyfriday.io",
   },
 ];
 
@@ -156,32 +172,48 @@ export const DEFAULT_POLKADOT_NODES = [
     url: "wss://rpc.polkadot.io",
   },
   {
+    name: "IBP1",
+    url: "wss://rpc.ibp.network/polkadot",
+  },
+  {
+    name: "SubQuery",
+    url: "wss://polkadot.rpc.subquery.network/public/ws",
+  },
+  {
     name: "OnFinality",
     url: "wss://polkadot.api.onfinality.io/public-ws",
+  },
+  {
+    name: "Permanence DAO EU",
+    url: "wss://polkadot.rpc.permanence.io",
   },
   {
     name: "Dwellir",
     url: "wss://polkadot-rpc.dwellir.com",
   },
   {
+    name: "Helixstreet",
+    url: "wss://rpc-polkadot.helixstreet.io",
+  },
+  {
+    name: "Allnodes",
+    url: "wss://polkadot-rpc.publicnode.com",
+  },
+  {
+    name: "Blockops",
+    url: "wss://polkadot-public-rpc.blockops.network/ws",
+  },
+  {
     name: "Dwellir Tunisia",
     url: "wss://polkadot-rpc-tn.dwellir.com",
   },
   {
-    name: "Automata 1RPC",
-    url: "wss://1rpc.io/dot",
-  },
-  {
-    name: "IBP-GeoDNS1",
-    url: "wss://rpc.ibp.network/polkadot",
-  },
-  {
-    name: "IBP-GeoDNS2",
-    url: "wss://rpc.dotters.network/polkadot",
-  },
-  {
     name: "RadiumBlock",
     url: "wss://polkadot.public.curie.radiumblock.co/ws",
+  },
+  {
+    name: "RockX",
+    url: "wss://rockx-dot.w3node.com/polka-public-dot/ws",
   },
   {
     name: "Stakeworld",
