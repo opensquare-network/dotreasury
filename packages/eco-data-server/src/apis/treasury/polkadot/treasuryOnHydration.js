@@ -10,6 +10,9 @@ const PolkadotTreasuryOnHydrationAccount1 =
 const PolkadotTreasuryOnHydrationAccount2 =
   "7KCp4eenFS4CowF9SpQE5BBCj5MtoBA3K811tNyRmhLfH1aV";
 
+const PolkadotTreasuryOnHydrationAccount3 =
+  "7KATdGaecnKi4zDAMWQxpB2s59N2RE1JgLuugCjTsRZHgP24";
+
 async function getHydrationTreasuryBalance(api, treasuryAccount, tokenId) {
   const account = await api.query.tokens.accounts(treasuryAccount, tokenId);
   return account.toJSON();
@@ -36,10 +39,14 @@ async function getTreasuryOnHydration() {
   const hydrationTreasuryAccount2 = await multiApiQuery("hydradx", (api) =>
     getHydrationTreasuryBalances(api, PolkadotTreasuryOnHydrationAccount2),
   );
+  const hydrationTreasuryAccount3 = await multiApiQuery("hydradx", (api) =>
+    getHydrationTreasuryBalances(api, PolkadotTreasuryOnHydrationAccount3),
+  );
 
   return {
     hydrationTreasuryAccount1,
     hydrationTreasuryAccount2,
+    hydrationTreasuryAccount3,
   };
 }
 
