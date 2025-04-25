@@ -42,8 +42,11 @@ async function getPolkadotTreasuryData() {
 
   const mythTreasuryBalance = await getMythTreasuryOnMythos();
 
-  const { hydrationTreasuryAccount1, hydrationTreasuryAccount2 } =
-    await getTreasuryOnHydration();
+  const {
+    hydrationTreasuryAccount1,
+    hydrationTreasuryAccount2,
+    hydrationTreasuryAccount3,
+  } = await getTreasuryOnHydration();
 
   const {
     accountUsdt: hydrationAccount1Usdt,
@@ -57,6 +60,12 @@ async function getPolkadotTreasuryData() {
     accountDot: hydrationAccount2Dot,
   } = hydrationTreasuryAccount2;
 
+  const {
+    accountUsdt: hydrationAccount3Usdt,
+    accountUsdc: hydrationAccount3Usdc,
+    accountDot: hydrationAccount3Dot,
+  } = hydrationTreasuryAccount3;
+
   const dot = bountyTreasuryOnRelay
     .reduce((acc, item) => acc.plus(item.data.free || 0), new BigNumber(0))
     .plus(treasuryDotOnRelay?.data.free || 0)
@@ -66,6 +75,8 @@ async function getPolkadotTreasuryData() {
     .plus(hydrationAccount1Dot?.reserved || 0)
     .plus(hydrationAccount2Dot?.free || 0)
     .plus(hydrationAccount2Dot?.reserved || 0)
+    .plus(hydrationAccount3Dot?.free || 0)
+    .plus(hydrationAccount3Dot?.reserved || 0)
     .plus(loansBifrostDotBalance || 0)
     .plus(loansPendulumDotBalance || 0)
     .plus(loansHydrationDotBalance || 0)
@@ -78,6 +89,8 @@ async function getPolkadotTreasuryData() {
     .plus(hydrationAccount1Usdt?.reserved || 0)
     .plus(hydrationAccount2Usdt?.free || 0)
     .plus(hydrationAccount2Usdt?.reserved || 0)
+    .plus(hydrationAccount3Usdt?.free || 0)
+    .plus(hydrationAccount3Usdt?.reserved || 0)
     .toFixed();
 
   const usdc = new BigNumber(usdcTreasuryBalanceOnAssetHub?.balance || 0)
@@ -85,6 +98,8 @@ async function getPolkadotTreasuryData() {
     .plus(hydrationAccount1Usdc?.reserved || 0)
     .plus(hydrationAccount2Usdc?.free || 0)
     .plus(hydrationAccount2Usdc?.reserved || 0)
+    .plus(hydrationAccount3Usdc?.free || 0)
+    .plus(hydrationAccount3Usdc?.reserved || 0)
     .plus(loansCentrifugeUsdcBalance || 0)
     .toFixed();
 
