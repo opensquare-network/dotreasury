@@ -1,6 +1,7 @@
 import {
   PolkadotTreasuryOnHydrationAccount1,
   PolkadotTreasuryOnHydrationAccount2,
+  PolkadotTreasuryOnHydrationAccount3,
 } from "../../../../hooks/hydration/useHydrationTreasuryBalances";
 import { polkadot } from "../../../../utils/chains/polkadot";
 import AssetValueDisplay from "./common/assetValueDisplay";
@@ -17,6 +18,7 @@ import { p_12_medium } from "../../../../styles/text";
 import { space_x } from "../../../../styles/tailwindcss";
 import { usePolkadotTreasuryData } from "../../../../context/PolkadotTreasury";
 import useFiatPrice from "../../../../hooks/useFiatPrice";
+import Tooltip from "../../../../components/Tooltip";
 
 export const AddressGroup = styled.div`
   ${space_x(8)}
@@ -31,6 +33,14 @@ export const ExplorerLink = styled(ExplorerLinkOrigin)`
     text-decoration: underline;
   }
 `;
+
+function AddressLinkTooltip({ address, index }) {
+  return (
+    <Tooltip key={index} tooltipContent={`Treasury stablecoin acquisition #${index}`}>
+      <AddressLink content={`Addr #${index}`} address={address} />
+    </Tooltip>
+  );
+}
 
 export default function TreasuryDetailHydration() {
   const {
@@ -61,14 +71,17 @@ export default function TreasuryDetailHydration() {
       footer={
         <AssetWrapper>
           <AddressGroup>
-            <AddressLink
-              content="Acquistion Addr #1"
+            <AddressLinkTooltip
               address={PolkadotTreasuryOnHydrationAccount1}
+              index={1}
             />
-
-            <AddressLink
-              content="Addr #2"
+            <AddressLinkTooltip
               address={PolkadotTreasuryOnHydrationAccount2}
+              index={2}
+            />
+            <AddressLinkTooltip
+              address={PolkadotTreasuryOnHydrationAccount3}
+              index={3}
             />
           </AddressGroup>
 
