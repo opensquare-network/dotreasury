@@ -67,14 +67,6 @@ export const openGovReferendumStatusMap = {
   Executed: "Executed",
 };
 
-export const polkadotOpenGovReferendumStatusMap = {
-  Confirming: "Confirming",
-  Deciding: "Deciding",
-  Queueing: "Queueing",
-  Preparing: "Preparing",
-  Submitted: "Submitted",
-};
-
 export const treasuryTipStatusMap = {
   NewTip: "NewTip",
   Tipping: "Tipping",
@@ -100,12 +92,17 @@ export const treasurySpendStatusMap = {
   Voided: "Voided",
 };
 
-export const treasurySpendsAssetsFilterOptions = [
+export const polkadotTreasurySpendsAssetsFilterOptions = [
   { key: "all", value: "-1", text: "All assets" },
-  { key: "dot", value: "dot", text: "DOT", asset: "native" },
+  { key: "native", value: "native", text: "DOT", asset: "native" },
   { key: "usdc", value: "usdc", text: USDC.name, asset: USDC.symbol },
   { key: "usdt", value: "usdt", text: USDt.name, asset: USDt.symbol },
   { key: "myth", value: "myth", text: MYTH.name, asset: MYTH.symbol },
+];
+
+export const kusamaTreasurySpendsAssetsFilterOptions = [
+  { key: "all", value: "-1", text: "All assets" },
+  { key: "native", value: "native", text: "KSM", asset: "native" },
 ];
 
 export const TreasuryAccount =
@@ -116,75 +113,107 @@ export const REACTION_THUMBDOWN = 2;
 
 export const DEFAULT_KUSAMA_NODES = [
   {
-    name: "Parity",
-    url: "wss://kusama-rpc.polkadot.io",
+    name: "IBP1",
+    url: "wss://rpc.ibp.network/kusama",
   },
   {
     name: "OnFinality",
     url: "wss://kusama.api.onfinality.io/public-ws",
   },
   {
+    name: "Parity",
+    url: "wss://kusama-rpc.polkadot.io",
+  },
+  {
+    name: "SubQuery",
+    url: "wss://kusama.rpc.subquery.network/public/ws",
+  },
+  {
+    name: "Helixstreet",
+    url: "wss://rpc-kusama.helixstreet.io",
+  },
+  {
     name: "Dwellir",
     url: "wss://kusama-rpc.dwellir.com",
+  },
+  {
+    name: "Allnodes",
+    url: "wss://kusama-rpc.publicnode.com",
   },
   {
     name: "Dwellir Tunisia",
     url: "wss://kusama-rpc-tn.dwellir.com",
   },
   {
-    name: "Automata 1RPC",
-    url: "wss://1rpc.io/ksm",
-  },
-  {
-    name: "IBP-GeoDNS1",
-    url: "wss://rpc.ibp.network/kusama",
-  },
-  {
-    name: "IBP-GeoDNS2",
-    url: "wss://rpc.dotters.network/kusama",
+    name: "IBP2",
+    url: "wss://kusama.dotters.network",
   },
   {
     name: "RadiumBlock",
     url: "wss://kusama.public.curie.radiumblock.co/ws",
   },
   {
+    name: "RockX",
+    url: "wss://rockx-ksm.w3node.com/polka-public-ksm/ws",
+  },
+  {
     name: "Stakeworld",
     url: "wss://ksm-rpc.stakeworld.io",
+  },
+  {
+    name: "LuckyFriday",
+    url: "wss://rpc-kusama.luckyfriday.io",
   },
 ];
 
 export const DEFAULT_POLKADOT_NODES = [
   {
-    name: "Parity",
-    url: "wss://rpc.polkadot.io",
+    name: "IBP1",
+    url: "wss://rpc.ibp.network/polkadot",
   },
   {
     name: "OnFinality",
     url: "wss://polkadot.api.onfinality.io/public-ws",
   },
   {
+    name: "Parity",
+    url: "wss://rpc.polkadot.io",
+  },
+  {
+    name: "SubQuery",
+    url: "wss://polkadot.rpc.subquery.network/public/ws",
+  },
+  {
+    name: "Permanence DAO EU",
+    url: "wss://polkadot.rpc.permanence.io",
+  },
+  {
     name: "Dwellir",
     url: "wss://polkadot-rpc.dwellir.com",
+  },
+  {
+    name: "Helixstreet",
+    url: "wss://rpc-polkadot.helixstreet.io",
+  },
+  {
+    name: "Allnodes",
+    url: "wss://polkadot-rpc.publicnode.com",
+  },
+  {
+    name: "Blockops",
+    url: "wss://polkadot-public-rpc.blockops.network/ws",
   },
   {
     name: "Dwellir Tunisia",
     url: "wss://polkadot-rpc-tn.dwellir.com",
   },
   {
-    name: "Automata 1RPC",
-    url: "wss://1rpc.io/dot",
-  },
-  {
-    name: "IBP-GeoDNS1",
-    url: "wss://rpc.ibp.network/polkadot",
-  },
-  {
-    name: "IBP-GeoDNS2",
-    url: "wss://rpc.dotters.network/polkadot",
-  },
-  {
     name: "RadiumBlock",
     url: "wss://polkadot.public.curie.radiumblock.co/ws",
+  },
+  {
+    name: "RockX",
+    url: "wss://rockx-dot.w3node.com/polka-public-dot/ws",
   },
   {
     name: "Stakeworld",

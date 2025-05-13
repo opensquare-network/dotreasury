@@ -28,10 +28,12 @@ import OutputPeriods from "./OutputPeriods";
 import {
   currentChainSettings,
   isCentrifuge,
+  isKusama,
   isPolkadot,
 } from "../../utils/chains";
 import AssetHub from "./AssetHub";
 import OverviewPolkadot from "./polkadot";
+import OverviewKusamaSummary from "./kusamaSummary";
 
 const DoughnutWrapper = styled.div`
   display: grid;
@@ -169,7 +171,7 @@ const Overview = () => {
 
   return (
     <>
-      <Summary />
+      {isKusama ? <OverviewKusamaSummary /> : <Summary />}
       {currentChainSettings.hasAssetHub && <AssetHub />}
       <DoughnutWrapper count={cards.length}>{cards}</DoughnutWrapper>
       <TreasuryStats />

@@ -1,3 +1,4 @@
+import { toPrecision } from "@osn/common";
 import Card from "@site/src/components/Card";
 import CountDown from "@site/src/components/CountDown";
 import ExternalLink from "@site/src/components/ExternalLink";
@@ -10,19 +11,20 @@ import {
   useOverviewData,
   useScanHeight,
   useSpendPeriodData,
-  useTreasuryData,
 } from "../../../hooks/useData";
+import { useTreasuriesData } from "../../../hooks/useTreasuriesData";
 import { getChainSettings } from "@site/src/utils/chains";
 import BlocksTime from "../../BlocksTime";
 import Button from "../../button";
 import { extractTime } from "@polkadot/util";
 
 export default function OverviewSummary({ chain = "" }) {
-  const { symbol, name, value } = getChainSettings(chain);
+  const { symbol, decimals, name, value } = getChainSettings(chain);
   const height = useScanHeight(chain);
   const { totalIncome, totalOutput } = useOverviewTotalAmount(chain);
   const overviewData = useOverviewData(chain);
-  const treasuryData = useTreasuryData(chain);
+  const { data: treasuries } = useTreasuriesData();
+  const treasuryData = treasuries.find((item) => item.chain === chain);
   const spendPeriodData = useSpendPeriodData(chain);
   const symbolPrice = overviewData?.latestSymbolPrice ?? 0;
 
@@ -46,18 +48,15 @@ export default function OverviewSummary({ chain = "" }) {
         </div>
 
         <div>
-          <SummaryItem
-            className="justify-between py-2"
-            title="Available"
-            icon={<ImageWithDark src="/imgs/data-available.svg" />}
-            content={
-              <SummaryItemValueContent
-                amount={treasuryData.free}
-                symbol={symbol}
-                symbolPrice={symbolPrice}
-              />
-            }
-          />
+          {chain === "polkadot" ? (
+            <SummaryItemTotal fiatValue={treasuryData?.fiatValue} />
+          ) : (
+            <SummaryItemAvailable
+              amount={toPrecision(treasuryData?.balance, decimals, false)}
+              symbol={symbol}
+              symbolPrice={symbolPrice}
+            />
+          )}
           <SummaryItem
             className="justify-between py-2"
             title="Spend Period"
@@ -88,9 +87,7 @@ export default function OverviewSummary({ chain = "" }) {
               </div>
             }
           />
-
           <hr className="my-4" />
-
           <SummaryItem
             className="justify-between py-2"
             title="Total Income"
@@ -140,6 +137,23 @@ export default function OverviewSummary({ chain = "" }) {
   );
 }
 
+function SummaryItemAvailable({ amount = 0, symbol = "", symbolPrice = 0 }) {
+  return (
+    <SummaryItem
+      className="justify-between py-2"
+      title="Available"
+      icon={<ImageWithDark src="/imgs/data-available.svg" />}
+      content={
+        <SummaryItemValueContent
+          amount={amount}
+          symbol={symbol}
+          symbolPrice={symbolPrice}
+        />
+      }
+    />
+  );
+}
+
 function SummaryItemValueContent({ amount = 0, symbol = "", symbolPrice = 0 }) {
   return (
     <div>
@@ -151,5 +165,20 @@ function SummaryItemValueContent({ amount = 0, symbol = "", symbolPrice = 0 }) {
         {!!amount && "≈ "}${abbreviateBigNumber(amount * symbolPrice)}
       </div>
     </div>
+  );
+}
+
+function SummaryItemTotal({ fiatValue = 0 }) {
+  return (
+    <SummaryItem
+      className="justify-between py-2"
+      title="Total"
+      icon={<ImageWithDark src="/imgs/data-available.svg" />}
+      content={
+        <div className="flex items-center h3-18-semibold">
+          <div className="mr-1">≈ ${abbreviateBigNumber(fiatValue)}</div>
+        </div>
+      }
+    />
   );
 }

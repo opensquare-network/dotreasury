@@ -2,6 +2,39 @@
 
 Notable changes to this project will be documented in this file, started from 4.0.0
 
+# 4.3.3
+
+Date: 2025-01-20
+
+- Handle child bounties whole lifecycle in one block.
+- Update centrifuge treasury loan to $1.5M.
+
+# 4.3.2
+
+Date: 2024-12-31
+
+- Add ambassador section to the polkadot treasury.
+- Fix value display to show 1M instead of 1,000K.
+- Enable new application page for kusama.
+- User eco data API to get DOT price.
+
+# 4.3.1
+
+Date: 2024-12-20
+
+- Support astar on landing page.
+- Update phala endpoints
+
+# 4.3.0
+
+Date: 2024-12-03
+
+- Refactor polkadot home page and show multi-chain, multi-assets treasury.
+- Fix eco data API to fix polkadot treasury balance on landing page.
+- Use subsquare API for polkadot treasury applications page.
+- Fix scan scripts for bounties.
+- Update dependencies.
+
 # 4.2.1
 
 Date: 2024-07-04

@@ -37,6 +37,7 @@ import BigNumber from "bignumber.js";
 import SummaryItem from "../../components/Summary/Item";
 import ImageWithDark from "../../components/ImageWithDark";
 import { currentChainSettings, isCentrifuge } from "../../utils/chains";
+import useFiatPrice from "../../hooks/useFiatPrice";
 
 const Wrapper = styled(Card)`
   margin-bottom: 16px;
@@ -101,46 +102,50 @@ const StyledLinkMajor = styled(Link)`
   }
 `;
 
-const Summary = () => {
+export function SpendPeriodItem() {
   const dispatch = useDispatch();
+  const spendPeriod = useSelector(spendPeriodSelector);
 
   useEffect(() => {
     dispatch(fetchSpendPeriod());
-    dispatch(fetchTreasury());
   }, [dispatch]);
 
-  const overview = useSelector(overviewSelector);
-  const spendPeriod = useSelector(spendPeriodSelector);
-  const treasury = useSelector(treasurySelector);
-  const symbol = useSelector(chainSymbolSelector);
-
-  const precision = getPrecision(symbol);
-
-  const symbolPrice = overview?.latestSymbolPrice ?? 0;
-  const toBeAwarded = BigNumber(overview?.toBeAwarded?.total ?? 0).toNumber();
-  const toBeAwardedValue = BigNumber(
-    toPrecision(toBeAwarded, precision),
-  ).toNumber();
-
-  const availableItem = (
+  return (
     <SummaryItem
-      icon={<ImageWithDark src="/imgs/data-available.svg" />}
-      title="Available"
+      icon={<CountDown percent={spendPeriod.progress} />}
+      title="Spend period"
       content={
         <div>
-          <ValueWrapper>
-            <TextBold>{abbreviateBigNumber(treasury.free)}</TextBold>
-            <TextAccessoryBold>{symbol}</TextAccessoryBold>
-          </ValueWrapper>
+          <BlocksTime
+            blocks={spendPeriod.restBlocks}
+            ValueWrapper={TextBold}
+            UnitWrapper={TextAccessoryBold}
+            SectionWrapper={Fragment}
+            TimeWrapper={ValueWrapper}
+            unitMapper={{ d: "Day" }}
+            pluralUnitMapper={{ d: "Days" }}
+          />
           <ValueInfo>
-            {!!treasury.free && "≈ "}$
-            {abbreviateBigNumber(treasury.free * symbolPrice)}
+            {parseEstimateTime(extractTime(spendPeriod.periodTime))}
           </ValueInfo>
         </div>
       }
     />
   );
-  const toBeAwardedItem = (
+}
+
+export function ToBeAwardedItem() {
+  const overview = useSelector(overviewSelector);
+  const symbol = useSelector(chainSymbolSelector);
+  const { price: symbolPrice } = useFiatPrice();
+
+  const precision = getPrecision(symbol);
+  const toBeAwarded = BigNumber(overview?.toBeAwarded?.total ?? 0).toNumber();
+  const toBeAwardedValue = BigNumber(
+    toPrecision(toBeAwarded, precision),
+  ).toNumber();
+
+  return (
     <SummaryItem
       icon={<ImageWithDark src="/imgs/data-approved.svg" />}
       title="To be awarded"
@@ -158,7 +163,16 @@ const Summary = () => {
       }
     />
   );
-  const burntItem = currentChainSettings.hasBurnt && (
+}
+
+export function BurntItem({ treasury }) {
+  const symbol = useSelector(chainSymbolSelector);
+
+  if (!currentChainSettings?.hasBurnt) {
+    return null;
+  }
+
+  return (
     <SummaryItem
       icon={<ImageWithDark src="/imgs/data-next-burn.svg" />}
       title="Next burn"
@@ -174,23 +188,33 @@ const Summary = () => {
       }
     />
   );
-  const spendPeriodItem = (
+}
+
+const Summary = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchTreasury());
+  }, [dispatch]);
+
+  const overview = useSelector(overviewSelector);
+  const treasury = useSelector(treasurySelector);
+  const symbol = useSelector(chainSymbolSelector);
+  const { price: symbolPrice } = useFiatPrice();
+
+  const availableItem = (
     <SummaryItem
-      icon={<CountDown percent={spendPeriod.progress} />}
-      title="Spend period"
+      icon={<ImageWithDark src="/imgs/data-available.svg" />}
+      title="Available"
       content={
         <div>
-          <BlocksTime
-            blocks={spendPeriod.restBlocks}
-            ValueWrapper={TextBold}
-            UnitWrapper={TextAccessoryBold}
-            SectionWrapper={Fragment}
-            TimeWrapper={ValueWrapper}
-            unitMapper={{ d: "Day" }}
-            pluralUnitMapper={{ d: "Days" }}
-          />
+          <ValueWrapper>
+            <TextBold>{abbreviateBigNumber(treasury.free)}</TextBold>
+            <TextAccessoryBold>{symbol}</TextAccessoryBold>
+          </ValueWrapper>
           <ValueInfo>
-            {parseEstimateTime(extractTime(spendPeriod.periodTime))}
+            {!!treasury.free && "≈ "}$
+            {abbreviateBigNumber(treasury.free * symbolPrice)}
           </ValueInfo>
         </div>
       }
@@ -278,12 +302,12 @@ const Summary = () => {
 
   const sortedItems = [
     availableItem,
-    toBeAwardedItem,
-    burntItem,
-    !isCentrifuge && spendPeriodItem,
+    <ToBeAwardedItem />,
+    <BurntItem treasury={treasury} />,
+    !isCentrifuge && <SpendPeriodItem />,
     opengovItem,
     proposalsItem,
-    isCentrifuge && spendPeriodItem,
+    isCentrifuge && <SpendPeriodItem />,
     tipsItem,
     bountiesItem,
   ]

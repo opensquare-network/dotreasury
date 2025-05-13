@@ -25,7 +25,27 @@ async function updateChildBounty(index, updates, timelineItem) {
   await col.updateOne({ index }, update);
 }
 
+async function updateChildBountyTimeline(childBountyId, timelineItem) {
+  const col = await getChildBountyCollection();
+  const childBounty = await col.findOne({ index: childBountyId });
+  if (!childBounty) {
+    return;
+  }
+
+  const { indexer: { blockHeight } } = timelineItem || {};
+  const timeline = childBounty.timeline || [];
+  const awardedItemIndex = timeline.findIndex(item =>
+    item.name === "Awarded" &&
+    item.indexer.blockHeight === blockHeight
+  );
+  if (awardedItemIndex >= 0) {
+    timeline.splice(awardedItemIndex, 0, timelineItem);
+    await col.updateOne({ index: childBounty.index }, { $set: { timeline } });
+  }
+}
+
 module.exports = {
   insertChildBounty,
   updateChildBounty,
+  updateChildBountyTimeline,
 }

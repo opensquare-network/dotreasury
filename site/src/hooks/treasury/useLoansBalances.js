@@ -1,20 +1,34 @@
 export function useLoansCentrifugeUsdcBalance() {
   return {
-    balance: 3000000000000,
+    balance: 150 * Math.pow(10, 10),
     isLoading: false,
   };
 }
 
 export function useLoansBifrostDotBalance() {
   return {
-    balance: 5000000000000000,
+    balance: 500000 * Math.pow(10, 10),
     isLoading: false,
   };
 }
 
 export function useLoansPendulumDotBalance() {
   return {
-    balance: 500000000000000,
+    balance: 50000 * Math.pow(10, 10),
+    isLoading: false,
+  };
+}
+
+export function useLoansHydrationDotBalance() {
+  return {
+    balance: 1000000 * Math.pow(10, 10),
+    isLoading: false,
+  };
+}
+
+export function useLoansHydrationKsmBalance() {
+  return {
+    balance: 33333 * Math.pow(10, 12),
     isLoading: false,
   };
 }

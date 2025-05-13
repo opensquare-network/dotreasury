@@ -4,12 +4,11 @@ import ValueDisplay from "../../../../components/ValueDisplay";
 import styled from "styled-components";
 import AssetWrapper from "./common/assetWrapper";
 import AssetValueDisplay from "./common/assetValueDisplay";
-import { overviewSelector } from "../../../../store/reducers/overviewSlice";
-import { useSelector } from "react-redux";
 import { toPrecision } from "../../../../utils";
 import BigNumber from "bignumber.js";
 import { polkadot } from "../../../../utils/chains/polkadot";
 import { usePolkadotTreasuryData } from "../../../../context/PolkadotTreasury";
+import useFiatPrice from "../../../../hooks/useFiatPrice";
 
 const Link = styled(LinkOrigin)`
   color: var(--textSecondary);
@@ -22,8 +21,7 @@ const Link = styled(LinkOrigin)`
 export default function TreasuryDetailBounties() {
   const { bountiesTotalBalance, bountiesCount, isBountiesTotalBalanceLoading } =
     usePolkadotTreasuryData();
-  const overview = useSelector(overviewSelector);
-  const dotPrice = overview?.latestSymbolPrice ?? 0;
+  const { price: dotPrice } = useFiatPrice();
 
   const totalValue = toPrecision(
     BigNumber(bountiesTotalBalance).multipliedBy(dotPrice),

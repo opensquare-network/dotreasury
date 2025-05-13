@@ -6,6 +6,7 @@ import TextMinor from "../../components/TextMinor";
 import CountDown from "../../components/CountDown";
 import BlocksTime from "../../components/BlocksTime";
 import { mrgap } from "../../styles";
+import useFiatPrice from "../../hooks/useFiatPrice";
 
 import {
   fetchProposalsSummary,
@@ -29,7 +30,6 @@ import {
   grid_cols,
 } from "../../styles/tailwindcss";
 import { h3_18_semibold, p_12_normal } from "../../styles/text";
-import { overviewSelector } from "../../store/reducers/overviewSlice";
 import { parseEstimateTime } from "../../utils/parseEstimateTime";
 import { extractTime } from "@polkadot/util";
 import SummaryItem from "../../components/Summary/Item";
@@ -78,13 +78,11 @@ const Summary = () => {
     dispatch(fetchTreasury());
   }, [dispatch]);
 
-  const overview = useSelector(overviewSelector);
   const summary = useSelector(proposalSummarySelector);
   const spendPeriod = useSelector(spendPeriodSelector);
   const treasury = useSelector(treasurySelector);
   const symbol = useSelector(chainSymbolSelector);
-
-  const symbolPrice = overview?.latestSymbolPrice ?? 0;
+  const { price: symbolPrice } = useFiatPrice();
 
   return (
     <SummaryProposalsWrapper>

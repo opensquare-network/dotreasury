@@ -1,5 +1,3 @@
-import { useSelector } from "react-redux";
-import { overviewSelector } from "../store/reducers/overviewSlice";
 import useQueryRelayChainFree from "../hooks/treasury/useQueryRelayChainFree";
 import { useAssetHubDot } from "../hooks/assetHub/useAssetHubDot";
 import { useAssetHubAsset } from "../hooks/assetHub/useAssetHubAsset";
@@ -10,17 +8,21 @@ import {
 import { useBountiesData } from "../hooks/bounties/useBountiesData";
 import { useBountiesTotalBalance } from "../hooks/bounties/useBountiesBalances";
 import { useHydrationTreasuryBalances } from "../hooks/hydration/useHydrationTreasuryBalances";
-import useQueryFellowshipSalaryBalance from "../hooks/treasury/useQueryFellowshipSalaryBalance";
 import { useQueryAssetHubTreasuryFree } from "../hooks/treasury/useQueryAssetHubTreasuryFree";
-import { STATEMINT_FELLOWSHIP_TREASURY_ACCOUNT } from "../constants/statemint";
+import {
+  STATEMINT_FELLOWSHIP_TREASURY_ACCOUNT,
+  STATEMINT_FELLOWSHIP_SALARY_ACCOUNT,
+  STATEMINT_AMBASSADOR_TREASURY_ACCOUNT,
+} from "../constants/statemint";
 import {
   useLoansBifrostDotBalance,
   useLoansCentrifugeUsdcBalance,
   useLoansPendulumDotBalance,
+  useLoansHydrationDotBalance,
 } from "../hooks/treasury/useLoansBalances";
 import useAssetHubForeignAssets from "../hooks/assetHub/useAssetHubForeignAssets";
 import { MYTH, MYTH_TOKEN_ACCOUNT } from "../constants/foreignAssets";
-import useFiatPrice from "../hooks/useFiatPrice";
+import useFiatPrice, { useFiatPriceBySymbol } from "../hooks/useFiatPrice";
 import BigNumber from "bignumber.js";
 import { polkadot } from "../utils/chains/polkadot";
 import { toPrecision } from "../utils";
@@ -28,6 +30,7 @@ import { USDt } from "../utils/chains/usdt";
 import { USDC } from "../utils/chains/usdc";
 import { createContext } from "react";
 import { useContext } from "react";
+import useQueryAccountBalanceBySymbol from "../hooks/treasury/useQueryAccountBalanceBySymbol";
 
 const Context = createContext({});
 
@@ -36,8 +39,7 @@ export function usePolkadotTreasuryData() {
 }
 
 export default function PolkadotTreasuryProvider({ children }) {
-  const overview = useSelector(overviewSelector);
-  const dotPrice = overview?.latestSymbolPrice ?? 0;
+  const { price: dotPrice } = useFiatPrice();
 
   const { balance: relayChainFreeBalance, isLoading: isRelayChainFreeLoading } =
     useQueryRelayChainFree();
@@ -65,11 +67,20 @@ export default function PolkadotTreasuryProvider({ children }) {
   const {
     balance: fellowshipSalaryUSDtBalance,
     isLoading: isFellowshipSalaryUSDtLoading,
-  } = useQueryFellowshipSalaryBalance("USDt");
+  } = useQueryAccountBalanceBySymbol(
+    "USDt",
+    STATEMINT_FELLOWSHIP_SALARY_ACCOUNT,
+  );
   const {
     balance: fellowshipTreasuryDotBalance,
     isLoading: isFellowshipTreasuryDotLoading,
   } = useQueryAssetHubTreasuryFree(STATEMINT_FELLOWSHIP_TREASURY_ACCOUNT);
+
+  const { balance: ambassadorUSDtBalance, isLoading: isAmbassadorUSDtLoading } =
+    useQueryAccountBalanceBySymbol(
+      "USDt",
+      STATEMINT_AMBASSADOR_TREASURY_ACCOUNT,
+    );
 
   const {
     balance: loansCentrifugeUSDCBalance,
@@ -83,10 +94,14 @@ export default function PolkadotTreasuryProvider({ children }) {
     balance: loansPendulumDotBalance,
     isLoading: isLoansPendulumDotLoading,
   } = useLoansPendulumDotBalance();
+  const {
+    balance: loansHydrationDotBalance,
+    isLoading: isLoansHydrationDotLoading,
+  } = useLoansHydrationDotBalance();
 
   const { balance: mythTokenBalance, isLoading: isMythTokenLoading } =
     useAssetHubForeignAssets(MYTH_TOKEN_ACCOUNT);
-  const { price: mythTokenPrice } = useFiatPrice("MYTH");
+  const { price: mythTokenPrice } = useFiatPriceBySymbol("MYTH");
 
   const totalDotValue = BigNumber.sum(
     relayChainFreeBalance || 0,
@@ -96,6 +111,7 @@ export default function PolkadotTreasuryProvider({ children }) {
     fellowshipTreasuryDotBalance || 0,
     loansBifrostDotBalance || 0,
     loansPendulumDotBalance || 0,
+    loansHydrationDotBalance || 0,
   ).toString();
   const totalDotFiatValue = BigNumber(
     toPrecision(totalDotValue, polkadot.decimals),
@@ -108,6 +124,7 @@ export default function PolkadotTreasuryProvider({ children }) {
       assetHubUSDtBalance || 0,
       hydrationUSDtBalance || 0,
       fellowshipSalaryUSDtBalance || 0,
+      ambassadorUSDtBalance || 0,
     ).toString(),
     USDt.decimals,
   );
@@ -141,12 +158,14 @@ export default function PolkadotTreasuryProvider({ children }) {
     isBountiesTotalBalanceLoading ||
     isFellowshipTreasuryDotLoading ||
     isLoansBifrostDotLoading ||
-    isLoansPendulumDotLoading;
+    isLoansPendulumDotLoading ||
+    isLoansHydrationDotLoading;
 
   const isTotalUSDtLoading =
     isAssetHubUSDtLoading ||
     isHydrationLoading ||
-    isFellowshipSalaryUSDtLoading;
+    isFellowshipSalaryUSDtLoading ||
+    isAmbassadorUSDtLoading;
 
   const isTotalUSDCLoading =
     isAssetHubUSDCLoading || isHydrationLoading || isLoansCentrifugeUSDCLoading;
@@ -174,6 +193,8 @@ export default function PolkadotTreasuryProvider({ children }) {
         isHydrationLoading,
         fellowshipSalaryUSDtBalance,
         isFellowshipSalaryUSDtLoading,
+        ambassadorUSDtBalance,
+        isAmbassadorUSDtLoading,
         fellowshipTreasuryDotBalance,
         isFellowshipTreasuryDotLoading,
         loansCentrifugeUSDCBalance,
@@ -182,6 +203,8 @@ export default function PolkadotTreasuryProvider({ children }) {
         isLoansBifrostDotLoading,
         loansPendulumDotBalance,
         isLoansPendulumDotLoading,
+        loansHydrationDotBalance,
+        isLoansHydrationDotLoading,
         mythTokenBalance,
         isMythTokenLoading,
 

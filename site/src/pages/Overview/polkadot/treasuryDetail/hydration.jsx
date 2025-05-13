@@ -1,13 +1,12 @@
-import { useSelector } from "react-redux";
 import {
   PolkadotTreasuryOnHydrationAccount1,
   PolkadotTreasuryOnHydrationAccount2,
+  PolkadotTreasuryOnHydrationAccount3,
 } from "../../../../hooks/hydration/useHydrationTreasuryBalances";
 import { polkadot } from "../../../../utils/chains/polkadot";
 import AssetValueDisplay from "./common/assetValueDisplay";
 import AssetWrapper from "./common/assetWrapper";
 import TreasuryDetailItem from "./common/item";
-import { overviewSelector } from "../../../../store/reducers/overviewSlice";
 import BigNumber from "bignumber.js";
 import { USDt } from "../../../../utils/chains/usdt";
 import { USDC } from "../../../../utils/chains/usdc";
@@ -18,6 +17,8 @@ import ExplorerLinkOrigin from "../../../../components/ExplorerLink";
 import { p_12_medium } from "../../../../styles/text";
 import { space_x } from "../../../../styles/tailwindcss";
 import { usePolkadotTreasuryData } from "../../../../context/PolkadotTreasury";
+import useFiatPrice from "../../../../hooks/useFiatPrice";
+import Tooltip from "../../../../components/Tooltip";
 
 export const AddressGroup = styled.div`
   ${space_x(8)}
@@ -33,6 +34,14 @@ export const ExplorerLink = styled(ExplorerLinkOrigin)`
   }
 `;
 
+function AddressLinkTooltip({ address, index }) {
+  return (
+    <Tooltip key={index} tooltipContent={`Treasury stablecoin acquisition #${index}`}>
+      <AddressLink content={`Addr #${index}`} address={address} />
+    </Tooltip>
+  );
+}
+
 export default function TreasuryDetailHydration() {
   const {
     hydrationDotBalance,
@@ -40,8 +49,7 @@ export default function TreasuryDetailHydration() {
     hydrationUSDCBalance,
     isHydrationLoading,
   } = usePolkadotTreasuryData();
-  const overview = useSelector(overviewSelector);
-  const dotPrice = overview?.latestSymbolPrice ?? 0;
+  const { price: dotPrice } = useFiatPrice();
 
   const totalDotValue = BigNumber(
     toPrecision(hydrationDotBalance, polkadot.decimals),
@@ -63,14 +71,17 @@ export default function TreasuryDetailHydration() {
       footer={
         <AssetWrapper>
           <AddressGroup>
-            <AddressLink
-              index={1}
+            <AddressLinkTooltip
               address={PolkadotTreasuryOnHydrationAccount1}
+              index={1}
             />
-
-            <AddressLink
-              index={2}
+            <AddressLinkTooltip
               address={PolkadotTreasuryOnHydrationAccount2}
+              index={2}
+            />
+            <AddressLinkTooltip
+              address={PolkadotTreasuryOnHydrationAccount3}
+              index={3}
             />
           </AddressGroup>
 
@@ -101,7 +112,7 @@ export default function TreasuryDetailHydration() {
   );
 }
 
-function AddressLink({ index, address }) {
+function AddressLink({ content, address }) {
   return (
     <ExplorerLink
       base="https://hydration.subscan.io/"
@@ -110,7 +121,7 @@ function AddressLink({ index, address }) {
       externalIcon
       externalIconSize={20}
     >
-      Acquistion Addr #{index}
+      {content}
     </ExplorerLink>
   );
 }

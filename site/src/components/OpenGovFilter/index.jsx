@@ -120,18 +120,6 @@ const Filter = ({
   setMax,
   statusMap,
 }) => {
-  const statusOptions = [
-    { key: "all", value: "-1", text: "All status" },
-    ...Array.from(new Set(Object.values(statusMap))).map((key) => ({
-      key,
-      value: Object.entries(statusMap)
-        .filter(([, v]) => v === key)
-        .map(([k]) => k)
-        .join("||"),
-      text: key,
-    })),
-  ];
-
   return (
     <FormWrapper>
       <TrackSelector track={track} setTrack={setTrack} />

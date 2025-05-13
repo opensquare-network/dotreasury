@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { FormWrapper, Divider } from "../../components/Filter";
 import Range, { RangeTypes } from "../../components/Filter/Range";
 import Select from "../../components/Select";
-import { treasurySpendsAssetsFilterOptions } from "../../constants";
+import { useTreasurySpendAssetsFilterOptions } from "../../hooks/useTreasurySpendsAssetsFilterOptions";
 
 const AssetsSelect = styled(Select)`
   width: 160px;
@@ -21,12 +21,27 @@ export default function TreasurySpendsFilter({
   setMax,
   statusMap,
 }) {
+  const treasurySpendAssetsFilterOptions =
+    useTreasurySpendAssetsFilterOptions();
+
+  const statusOptions = [
+    { key: "all", value: "-1", text: "All status" },
+    ...Array.from(new Set(Object.values(statusMap))).map((key) => ({
+      key,
+      value: Object.entries(statusMap)
+        .filter(([, v]) => v === key)
+        .map(([k]) => k)
+        .join("||"),
+      text: key,
+    })),
+  ];
+
   return (
     <FormWrapper>
       <AssetsSelect
         name="assets"
         fluid
-        options={treasurySpendsAssetsFilterOptions}
+        options={treasurySpendAssetsFilterOptions}
         value={asset}
         onChange={(_, { value }) => {
           setAsset(value);

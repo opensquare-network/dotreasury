@@ -6,14 +6,14 @@ import { useEffect, useMemo, useState } from "react";
 import { MD_SIZE, SM_SIZE } from "@site/src/styles/responsive";
 import { useWindowSize } from "usehooks-ts";
 import { getChainSettings } from "@site/src/utils/chains";
-import { sleep, toPrecision } from "@site/src/utils";
+import { sleep } from "@site/src/utils";
 import { cn } from "../../utils";
 
 export default function ProjectBubbleGroup({
   width,
   height,
   data = [],
-  sizeField = "value",
+  sizeField = "fiatValue",
   renderBubbleToHTMLString = () => {},
 }) {
   const [loaded, setLoaded] = useState(false);
@@ -34,15 +34,9 @@ export default function ProjectBubbleGroup({
 
   const nodes = data
     .map((d) => {
-      const { decimals } = getChainSettings(d.chain);
-      const amount = toPrecision(d.balance, decimals, false);
-      const value = amount * d.price;
-
       return {
         ...d,
         [sizeField]: Number(d[sizeField]),
-        amount,
-        value,
       };
     })
     .sort((a, b) => b[sizeField] - a[sizeField]);
@@ -107,7 +101,7 @@ export default function ProjectBubbleGroup({
             }
           })
           .html((node) => {
-            const r = size(node.value);
+            const r = size(node.fiatValue);
             const d = r * 2;
             const nodeData = { ...node, r, d };
 

@@ -3,7 +3,7 @@ import { p_12_medium } from "../../../../../styles/text";
 import AssetWrapper from "./assetWrapper";
 import styled from "styled-components";
 
-const ExternalLink = styled(ExternalLinkOrigin)`
+export const ExternalLink = styled(ExternalLinkOrigin)`
   ${p_12_medium}
   color: var(--textSecondary);
   &:hover {

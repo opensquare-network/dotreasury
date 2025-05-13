@@ -4,6 +4,7 @@ const { HttpError } = require("../../../exc");
 const {
   getSubsquareTreasurySpendCollection,
 } = require("../../../mongo/polkadot");
+const { HttpError } = require("../../../exc");
 
 function getRangeCondition(ctx) {
   const { range_type, min, max } = ctx.request.query;

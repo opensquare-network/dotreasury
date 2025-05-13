@@ -7,12 +7,11 @@ import { ASSET_HUB_ACCOUNT } from "../../../../constants/assetHub";
 import AssetValueDisplay from "./common/assetValueDisplay";
 import { polkadot } from "../../../../utils/chains/polkadot";
 import BigNumber from "bignumber.js";
-import { useSelector } from "react-redux";
-import { overviewSelector } from "../../../../store/reducers/overviewSlice";
 import { toPrecision } from "../../../../utils";
 import { USDt } from "../../../../utils/chains/usdt";
 import { USDC } from "../../../../utils/chains/usdc";
 import { usePolkadotTreasuryData } from "../../../../context/PolkadotTreasury";
+import useFiatPrice from "../../../../hooks/useFiatPrice";
 
 const AssetGroup = styled.div`
   ${space_y(8)}
@@ -29,8 +28,7 @@ export default function TreasuryDetailAssets() {
     assetHubUSDCBalance,
     isAssetHubUSDCLoading,
   } = usePolkadotTreasuryData();
-  const overview = useSelector(overviewSelector);
-  const dotPrice = overview?.latestSymbolPrice ?? 0;
+  const { price: dotPrice } = useFiatPrice();
 
   const totalRelayChainFreeValue = BigNumber(
     toPrecision(relayChainFreeBalance, polkadot.decimals),

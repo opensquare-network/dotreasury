@@ -6,6 +6,10 @@ import { abbreviateBigNumber } from "@site/src/utils";
 import { useTreasuriesData } from "../../hooks/useTreasuriesData";
 import { cn } from "../../utils";
 import { getChainSettings } from "@site/src/utils/chains";
+import Tooltip from "@site/src/components/Tooltip";
+import TooltipIcon from "../icons/TooltipIcon";
+import styled from "styled-components";
+import { toPrecision } from "@osn/common";
 
 export default function EcosystemDotsama(props) {
   const { data } = useTreasuriesData();
@@ -23,6 +27,36 @@ export default function EcosystemDotsama(props) {
         ))}
       </div>
     </Card>
+  );
+}
+
+const TokenDetailItemWrapper = styled.div`
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+`;
+
+function TreasuryTokenAmount({ treasury }) {
+  if (treasury.balances) {
+    const tooltipContent = treasury.balances.map((balance) => (
+      <TokenDetailItemWrapper key={balance.token}>
+        ≈ {abbreviateBigNumber(toPrecision(balance.balance, balance.decimals))}{" "}
+        {balance.token}
+      </TokenDetailItemWrapper>
+    ));
+    return (
+      <Tooltip tooltipContent={tooltipContent}>
+        <TooltipIcon />
+      </Tooltip>
+    );
+  }
+
+  const chainSettings = getChainSettings(treasury.chain);
+  return (
+    <div className="flex items-center text-textTertiary">
+      <div className="mr-1">{abbreviateBigNumber(treasury.amount)}</div>
+      <div className="text-textTertiary">{chainSettings.symbol}</div>
+    </div>
   );
 }
 
@@ -80,10 +114,7 @@ function TreasuryItem({ max, ...treasury }) {
             {!!treasury.fiatValue && "≈ "}$
             {abbreviateBigNumber(treasury.fiatValue)}
           </div>
-          <div className="flex items-center text-textTertiary">
-            <div className="mr-1">{abbreviateBigNumber(treasury.amount)}</div>
-            <div className="text-textTertiary">{chainSettings.symbol}</div>
-          </div>
+          <TreasuryTokenAmount treasury={treasury} />
         </div>
       </div>
     </div>
