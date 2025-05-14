@@ -1,9 +1,18 @@
 import { Label, Menu } from "semantic-ui-react";
-import { totalSpendsCountSelector } from "../../store/reducers/overviewSlice";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
+import {
+  treasurySpendsCountSelector,
+  fetchTreasurySpendsCount,
+} from "../../store/reducers/treasurySpendsSlice";
 
 export default function SpendsMenu() {
-  const treasurySpendsCount = useSelector(totalSpendsCountSelector);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchTreasurySpendsCount());
+  }, [dispatch]);
+
+  const treasurySpendsCount = useSelector(treasurySpendsCountSelector);
 
   return (
     <Menu.Item key="Proposals">

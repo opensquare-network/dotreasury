@@ -340,9 +340,13 @@ const referendaStatus = {
   cellRender: (_, item) => (
     <PairTextVertical
       value={item?.state?.name || item?.state?.state}
-      detail={dayjs(parseInt(item?.state?.indexer?.blockTime)).format(
-        "YYYY-MM-DD HH:mm",
-      )}
+      detail={
+        item?.state?.indexer?.blockTime
+          ? dayjs(parseInt(item?.state?.indexer?.blockTime)).format(
+              "YYYY-MM-DD HH:mm",
+            )
+          : ""
+      }
     />
   ),
 };

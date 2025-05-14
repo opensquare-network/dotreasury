@@ -2,7 +2,6 @@ import styled from "styled-components";
 import OverviewTreasuryDetail from "./treasuryDetail";
 import OverviewTotalTreasury from "./totalTreasury";
 import { grid, grid_cols, space_y } from "../../../styles/tailwindcss";
-import { isCentrifuge } from "../../../utils/chains";
 import TopBeneficiariesTable from "../TopBeneficiariesTable";
 import { mdcss } from "../../../styles/responsive";
 import TopFundedProjectsTable from "../topFundedProjectsTable";
@@ -28,7 +27,7 @@ export default function OverviewPolkadot() {
         <OverviewTreasuryDetail />
 
         <TableWrapper>
-          {!isCentrifuge && <TopBeneficiariesTable />}
+          <TopBeneficiariesTable />
           <TopFundedProjectsTable />
         </TableWrapper>
       </Wrapper>
