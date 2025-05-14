@@ -24,7 +24,6 @@ import { treasurySpendsIndexColumn } from "./IndexColumn";
 import { treasurySpendsDescriptionColumn } from "./DescriptionColumn";
 import { useTreasurySpendsSortByValueColumn } from "./SortByValueColumn";
 import { useMemo } from "react";
-import dayjs from "dayjs";
 
 const Header = styled.div`
   padding: 24px;
@@ -114,9 +113,6 @@ export default function TreasurySpendsTable() {
           proposeTime: item.indexer.blockTime,
           state: {
             name: item.state,
-            indexer: {
-              blockTime: dayjs(item.lastActivityAt).valueOf(),
-            },
           },
         };
       }) || [],
