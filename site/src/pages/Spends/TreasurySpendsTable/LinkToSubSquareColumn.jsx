@@ -5,19 +5,19 @@ const subsquareTreasuryLink = `https://${currentChain}.subsquare.io/treasury`;
 
 export const treasurySpendsLinkToSubSquareColumn = {
   key: "link-to-subsquare",
-  title: "",
-  headerCellClassName: "hidden",
-  cellClassName: "link-cell hidden",
+  title: " ",
+  headerCellClassName: "",
+  cellClassName: "link-cell ",
   cellRender: (_, item) => {
-    const type = item?.type;
+    const type = item?.polkassemblyPostType;
 
     let href = "";
 
-    if (type === "treasurySpend") {
+    if (type === "ReferendumV2") {
       href = `${subsquareTreasuryLink}/spends/${item.index}`;
-    } else if (type === "treasuryProposal") {
+    } else if (type === "TreasuryProposal") {
       href = `${subsquareTreasuryLink}/proposals/${item.proposalIndex}`;
-    } else if (type === "tip") {
+    } else if (type === "Tip") {
       href = `${subsquareTreasuryLink}/tip/${item.hash}`;
     }
 

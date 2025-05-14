@@ -16,7 +16,6 @@ import {
 } from "../../../store/reducers/treasurySpendsSlice";
 import { useQuery } from "../../../utils/hooks";
 import { useTableColumns } from "../../../components/shared/useTableColumns";
-import { currentChain } from "../../../utils/chains";
 import TreasurySpendsFilter from "../../../components/TreasurySpendsFilter";
 import { useTreasurySpendsFilter } from "../../../components/TreasurySpendsFilter/useListFilter";
 import { useEffect } from "react";
@@ -24,6 +23,8 @@ import { treasurySpendsLinkToSubSquareColumn } from "./LinkToSubSquareColumn";
 import { treasurySpendsIndexColumn } from "./IndexColumn";
 import { treasurySpendsDescriptionColumn } from "./DescriptionColumn";
 import { useTreasurySpendsSortByValueColumn } from "./SortByValueColumn";
+import { useMemo } from "react";
+import dayjs from "dayjs";
 
 const Header = styled.div`
   padding: 24px;
@@ -58,15 +59,7 @@ export default function TreasurySpendsTable() {
   const sort = query.get("sort");
   const dispatch = useDispatch();
 
-  const {
-    filterAsset,
-    setFilterAsset,
-    min,
-    setMin,
-    max,
-    setMax,
-    getFilterData,
-  } = useTreasurySpendsFilter();
+  const { status, setStatus, getFilterData } = useTreasurySpendsFilter();
 
   useEffect(() => {
     const searchParams = new URLSearchParams(history.location.search);
@@ -74,7 +67,7 @@ export default function TreasurySpendsTable() {
     history.push({ search: searchParams.toString() });
 
     setPage(DEFAULT_QUERY_PAGE);
-  }, [getFilterData]);
+  }, [getFilterData, history]);
 
   useEffect(() => {
     const filterData = getFilterData();
@@ -98,27 +91,39 @@ export default function TreasurySpendsTable() {
     };
   }, [dispatch, page, pageSize, sort, getFilterData]);
 
-  const { proposeTime, beneficiary, referendaStatus } = useTableColumns({});
+  const { proposeTime, proposer, referendaStatus } = useTableColumns({});
 
   const sortByValue = useTreasurySpendsSortByValueColumn();
 
   const columns = [
     treasurySpendsIndexColumn,
     proposeTime,
-    beneficiary,
+    proposer,
     treasurySpendsDescriptionColumn,
     sortByValue,
     referendaStatus,
     treasurySpendsLinkToSubSquareColumn,
   ];
 
-  const tableData = (treasurySpendsList?.items || []).map((item) => {
-    return {
-      ...item,
-      proposeAtBlockHeight: item.indexer.blockHeight,
-      proposeTime: item.indexer.blockTime,
-    };
-  });
+  const tableData = useMemo(
+    () =>
+      treasurySpendsList?.items?.map((item) => {
+        return {
+          ...item,
+          proposeAtBlockHeight: item.indexer.blockHeight,
+          proposeTime: item.indexer.blockTime,
+          state: {
+            name: item.state,
+            indexer: {
+              blockTime: dayjs(item.updatedAt).valueOf(),
+            },
+          },
+        };
+      }) || [],
+    [treasurySpendsList?.items],
+  );
+
+  console.log(tableData);
 
   return (
     <Card>
@@ -127,15 +132,7 @@ export default function TreasurySpendsTable() {
       <Divider />
 
       <FilterWrapper>
-        <TreasurySpendsFilter
-          chain={currentChain}
-          asset={filterAsset}
-          setAsset={setFilterAsset}
-          min={min}
-          setMin={setMin}
-          max={max}
-          setMax={setMax}
-        />
+        <TreasurySpendsFilter status={status} setStatus={setStatus} />
       </FilterWrapper>
 
       <TableWrapper>

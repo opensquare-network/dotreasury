@@ -1,61 +1,24 @@
-import styled from "styled-components";
-import { FormWrapper, Divider } from "../../components/Filter";
-import Range, { RangeTypes } from "../../components/Filter/Range";
-import Select from "../../components/Select";
-import { useTreasurySpendAssetsFilterOptions } from "../../hooks/useTreasurySpendsAssetsFilterOptions";
+import { StatusSelect, FormWrapper } from "../../components/Filter";
 
-const AssetsSelect = styled(Select)`
-  width: 160px;
-  @media screen and (max-width: 800px) {
-    width: 100%;
-  }
-`;
+const statusOptions = [
+  { key: "all", value: "-1", text: "All status" },
+  { key: "Approved", value: "Approved", text: "Approved" },
+  { key: "Paid", value: "Paid", text: "Paid" },
+  { key: "Processed", value: "Processed", text: "Processed" },
+  { key: "Voided", value: "Voided", text: "Voided" },
+];
 
-export default function TreasurySpendsFilter({
-  chain,
-  asset,
-  setAsset,
-  min,
-  setMin,
-  max,
-  setMax,
-  statusMap,
-}) {
-  const treasurySpendAssetsFilterOptions =
-    useTreasurySpendAssetsFilterOptions();
-
-  const statusOptions = [
-    { key: "all", value: "-1", text: "All status" },
-    ...Array.from(new Set(Object.values(statusMap))).map((key) => ({
-      key,
-      value: Object.entries(statusMap)
-        .filter(([, v]) => v === key)
-        .map(([k]) => k)
-        .join("||"),
-      text: key,
-    })),
-  ];
-
+export default function TreasurySpendsFilter({ status, setStatus }) {
   return (
     <FormWrapper>
-      <AssetsSelect
-        name="assets"
+      <StatusSelect
+        name="status"
         fluid
-        options={treasurySpendAssetsFilterOptions}
-        value={asset}
+        options={statusOptions}
+        value={status}
         onChange={(_, { value }) => {
-          setAsset(value);
+          setStatus(value);
         }}
-      />
-      <Divider />
-      <Range
-        chain={chain}
-        rangeType={RangeTypes.Fiat}
-        rangeReadonly
-        min={min}
-        setMin={setMin}
-        max={max}
-        setMax={setMax}
       />
     </FormWrapper>
   );

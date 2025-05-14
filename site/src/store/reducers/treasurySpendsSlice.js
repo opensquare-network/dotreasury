@@ -1,11 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import api from "../../services/scanApi";
-import { RangeTypes } from "../../components/Filter/Range";
-import { find } from "lodash-es";
-import {
-  kusamaTreasurySpendsAssetsFilterOptions,
-  polkadotTreasurySpendsAssetsFilterOptions,
-} from "../../constants";
+import api from "../../services/subsquareApi";
 
 const name = "treasurySpends";
 
@@ -19,20 +13,21 @@ const treasurySpendsSlice = createSlice({
       total: 0,
     },
     loadingTreasurySpendsList: false,
-    treasurySpendsListCount: 0,
+    treasurySpendsCount: 0,
     totalExpenditure: 0,
     loadingTotalExpenditure: false,
   },
   reducers: {
+    setTreasurySpendsCount(state, action) {
+      state.treasurySpendsCount = action.payload;
+    },
     setTreasurySpendsList(state, action) {
       state.treasurySpendsList = action.payload;
     },
     setLoadingTreasurySpendsList(state, action) {
       state.loadingTreasurySpendsList = action.payload;
     },
-    setTreasurySpendsListCount(state, action) {
-      state.treasurySpendsListCount = action.payload;
-    },
+
     setTotalExpenditure(state, action) {
       state.totalExpenditure = action.payload;
     },
@@ -48,33 +43,16 @@ export const fetchTreasurySpendsList = (
   params = {},
   options = {},
 ) => {
-  return async (dispatch, getState) => {
-    const {
-      chain: { chain },
-    } = getState();
-
+  return async (dispatch) => {
     dispatch(setLoadingTreasurySpendsList(true));
-
-    const treasurySpendsAssetsFilterOptions =
-      chain === "polkadot"
-        ? polkadotTreasurySpendsAssetsFilterOptions
-        : kusamaTreasurySpendsAssetsFilterOptions;
-
-    const filterAsset = params?.asset;
-    const asset =
-      find(treasurySpendsAssetsFilterOptions, { value: filterAsset })?.asset ||
-      filterAsset ||
-      "";
 
     try {
       const { result } = await api.fetch(
-        "/v2/treasury/spends",
+        "/treasury/spends",
         {
           page,
           pageSize,
-          range_type: RangeTypes.Fiat,
           ...params,
-          asset,
         },
         options,
       );
@@ -108,20 +86,30 @@ export const fetchTreasurySpendsTotalExpenditure = () => {
   };
 };
 
+export const fetchTreasurySpendsCount = () => {
+  return async (dispatch) => {
+    try {
+      const { result } = await api.fetch("/treasury/spends");
+      dispatch(setTreasurySpendsCount(result?.total || 0));
+    } finally {
+    }
+  };
+};
+
 export const {
   setTreasurySpendsList,
   setLoadingTreasurySpendsList,
-  setTreasurySpendsListCount,
   setTotalExpenditure,
   setLoadingTotalExpenditure,
+  setTreasurySpendsCount,
 } = treasurySpendsSlice.actions;
 
 export const treasurySpendsListSelector = (state) =>
   state[name].treasurySpendsList;
 export const loadingTreasurySpendsListSelector = (state) =>
   state[name].loadingTreasurySpendsList;
-export const treasurySpendsListCountSelector = (state) =>
-  state[name].treasurySpendsListCount;
+export const treasurySpendsCountSelector = (state) =>
+  state[name].treasurySpendsCount;
 export const totalExpenditureSelector = (state) => state[name].totalExpenditure;
 export const loadingTotalExpenditureSelector = (state) =>
   state[name].loadingTotalExpenditure;

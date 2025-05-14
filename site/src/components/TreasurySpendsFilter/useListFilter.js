@@ -5,71 +5,44 @@ import { useEffect } from "react";
 export function useTreasurySpendsFilter() {
   const { search } = useLocation();
   const query = new URLSearchParams(search);
-  const defaultAsset = query.get("asset") || "-1";
-  const defaultMin = query.get("min") || "";
-  const defaultMax = query.get("max") || "";
+  const defaultStatus = query.get("status") || "-1";
 
   const history = useHistory();
-  const [filterAsset, setFilterAsset] = useState(defaultAsset);
-  const [min, setMin] = useState(defaultMin);
-  const [max, setMax] = useState(defaultMax);
+  const [status, setStatus] = useState(defaultStatus);
 
   useEffect(() => {
-    setFilterAsset(defaultAsset);
-    setMin(defaultMin);
-    setMax(defaultMax);
-  }, [defaultAsset, defaultMin, defaultMax]);
+    setStatus(defaultStatus);
+  }, [defaultStatus]);
 
   useEffect(() => {
     const query = new URLSearchParams(history.location.search);
 
-    if (filterAsset !== "-1") {
-      query.set("asset", filterAsset);
+    if (status !== "-1") {
+      query.set("status", status);
     } else {
-      query.delete("asset");
-    }
-
-    if (min) {
-      query.set("min", min);
-    } else {
-      query.delete("min");
-    }
-
-    if (max) {
-      query.set("max", max);
-    } else {
-      query.delete("max");
+      query.delete("status");
     }
 
     history.push({
       search: query.toString(),
     });
-  }, [history, filterAsset, min, max]);
+  }, [history, status]);
 
   const getFilterData = useCallback(() => {
     let filterData = {};
 
-    if (filterAsset !== "-1") {
-      filterData.asset = filterAsset;
+    if (status !== "-1") {
+      filterData.status = status;
     }
-
-    let minMax = {};
-    if (min) minMax.min = min;
-    if (max) minMax.max = max;
 
     return {
       ...filterData,
-      ...minMax,
     };
-  }, [filterAsset, min, max]);
+  }, [status]);
 
   return {
-    filterAsset,
-    setFilterAsset,
-    min,
-    setMin,
-    max,
-    setMax,
+    status,
+    setStatus,
     getFilterData,
   };
 }

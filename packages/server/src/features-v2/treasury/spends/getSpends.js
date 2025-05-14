@@ -1,6 +1,5 @@
 const isEmpty = require("lodash.isempty");
 const { extractPage } = require("../../../utils");
-const { HttpError } = require("../../../exc");
 const {
   getSubsquareTreasurySpendCollection,
 } = require("../../../mongo/polkadot");
