@@ -1,4 +1,4 @@
-import { KnownPolkadotAssetHubAssets } from "./";
+import { KnownPolkadotAssetHubAssets } from "../../constants";
 
 export function getParachainIdV3(location) {
   const { parents, interior } = location || {};

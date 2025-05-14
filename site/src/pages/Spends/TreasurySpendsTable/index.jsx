@@ -115,15 +115,13 @@ export default function TreasurySpendsTable() {
           state: {
             name: item.state,
             indexer: {
-              blockTime: dayjs(item.updatedAt).valueOf(),
+              blockTime: dayjs(item.lastActivityAt).valueOf(),
             },
           },
         };
       }) || [],
     [treasurySpendsList?.items],
   );
-
-  console.log(tableData);
 
   return (
     <Card>
