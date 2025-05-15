@@ -9,6 +9,8 @@ async function updateChainsTreasuryBalance() {
       promises.push(updateTreasuryBalance(chain));
     }
     await Promise.all(promises);
+  } catch (error) {
+    console.error("Error updating chains treasury balance:", error);
   } finally {
     setTimeout(updateChainsTreasuryBalance, 6 * 1000);
   }

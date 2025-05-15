@@ -2,6 +2,7 @@ import {
   PolkadotTreasuryOnHydrationAccount1,
   PolkadotTreasuryOnHydrationAccount2,
   PolkadotTreasuryOnHydrationAccount3,
+  PolkadotTreasuryOnHydrationAccount4,
 } from "../../../../hooks/hydration/useHydrationTreasuryBalances";
 import { polkadot } from "../../../../utils/chains/polkadot";
 import AssetValueDisplay from "./common/assetValueDisplay";
@@ -21,6 +22,9 @@ import useFiatPrice from "../../../../hooks/useFiatPrice";
 import Tooltip from "../../../../components/Tooltip";
 
 export const AddressGroup = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   ${space_x(8)}
 `;
 
@@ -36,11 +40,19 @@ export const ExplorerLink = styled(ExplorerLinkOrigin)`
 
 function AddressLinkTooltip({ address, index }) {
   return (
-    <Tooltip key={index} tooltipContent={`Treasury stablecoin acquisition #${index}`}>
-      <AddressLink content={`Addr #${index}`} address={address} />
+    <Tooltip
+      key={index}
+      tooltipContent={`Treasury stablecoin acquisition #${index}`}
+    >
+      <AddressLink content={`#${index}`} address={address} />
     </Tooltip>
   );
 }
+
+const Label = styled.span`
+  color: var(--textSecondary);
+  ${p_12_medium};
+`;
 
 export default function TreasuryDetailHydration() {
   const {
@@ -71,6 +83,7 @@ export default function TreasuryDetailHydration() {
       footer={
         <AssetWrapper>
           <AddressGroup>
+            <Label>Address</Label>
             <AddressLinkTooltip
               address={PolkadotTreasuryOnHydrationAccount1}
               index={1}
@@ -82,6 +95,10 @@ export default function TreasuryDetailHydration() {
             <AddressLinkTooltip
               address={PolkadotTreasuryOnHydrationAccount3}
               index={3}
+            />
+            <AddressLinkTooltip
+              address={PolkadotTreasuryOnHydrationAccount4}
+              index={4}
             />
           </AddressGroup>
 
