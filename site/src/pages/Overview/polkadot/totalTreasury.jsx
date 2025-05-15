@@ -14,12 +14,17 @@ import SkeletonBar from "../../../components/skeleton/bar";
 
 import { MYTH } from "../../../constants/foreignAssets";
 import Tooltip from "../../../components/Tooltip";
-
+import TreasuryHistoryLineChart from "../../../components/TreasuryHistoryLineChart";
 import { usePolkadotTreasuryData } from "../../../context/PolkadotTreasury";
 
 const Wrapper = styled(Card)`
   padding: 24px;
   ${text_primary}
+  display: flex;
+  justify-content: space-between;
+  @media screen and (max-width: 768px) {
+    flex-wrap: wrap;
+  }
 `;
 
 const Title = styled.h4`
@@ -86,61 +91,64 @@ export default function OverviewTotalTreasury() {
 
   return (
     <Wrapper>
-      <div style={{ padding: "0 12px" }}>
-        <Title>Total Treasury</Title>
-        <TotalPrice>
-          {isTotalLoading ? (
-            <SkeletonBar width={120} height={36} />
-          ) : (
-            <ValueDisplay value={totalFiatValue} prefix="$" />
-          )}
-        </TotalPrice>
-      </div>
+      <div>
+        <div style={{ padding: "0 12px" }}>
+          <Title>Total Treasury</Title>
+          <TotalPrice>
+            {isTotalLoading ? (
+              <SkeletonBar width={120} height={36} />
+            ) : (
+              <ValueDisplay value={totalFiatValue} prefix="$" />
+            )}
+          </TotalPrice>
+        </div>
 
-      <TokenGroup>
-        <Tooltip
-          tooltipContent={
-            !isTotalDotLoading && (
-              <ValueDisplay value={totalDotFiatValue} prefix="$" />
-            )
-          }
-        >
+        <TokenGroup>
+          <Tooltip
+            tooltipContent={
+              !isTotalDotLoading && (
+                <ValueDisplay value={totalDotFiatValue} prefix="$" />
+              )
+            }
+          >
+            <TokenItem
+              icon="asset-dot.svg"
+              isLoading={isTotalDotLoading}
+              totalValue={totalDotValue}
+              precision={polkadot.decimals}
+              symbol={polkadot.symbol}
+            />
+          </Tooltip>
           <TokenItem
-            icon="asset-dot.svg"
-            isLoading={isTotalDotLoading}
-            totalValue={totalDotValue}
-            precision={polkadot.decimals}
-            symbol={polkadot.symbol}
+            icon="asset-usdt.svg"
+            isLoading={isTotalUSDtLoading}
+            totalValue={totalUSDtValue}
+            symbol={USDt.symbol}
           />
-        </Tooltip>
-        <TokenItem
-          icon="asset-usdt.svg"
-          isLoading={isTotalUSDtLoading}
-          totalValue={totalUSDtValue}
-          symbol={USDt.symbol}
-        />
-        <TokenItem
-          icon="asset-usdc.svg"
-          isLoading={isTotalUSDCLoading}
-          totalValue={totalUSDCValue}
-          symbol={USDC.symbol}
-        />
-        <Tooltip
-          tooltipContent={
-            !isMythTokenLoading && (
-              <ValueDisplay value={totalMythTokenFiatValue} prefix="$" />
-            )
-          }
-        >
           <TokenItem
-            icon="asset-myth.svg"
-            isLoading={isMythTokenLoading}
-            totalValue={mythTokenBalance}
-            precision={MYTH.decimals}
-            symbol={MYTH.symbol}
+            icon="asset-usdc.svg"
+            isLoading={isTotalUSDCLoading}
+            totalValue={totalUSDCValue}
+            symbol={USDC.symbol}
           />
-        </Tooltip>
-      </TokenGroup>
+          <Tooltip
+            tooltipContent={
+              !isMythTokenLoading && (
+                <ValueDisplay value={totalMythTokenFiatValue} prefix="$" />
+              )
+            }
+          >
+            <TokenItem
+              icon="asset-myth.svg"
+              isLoading={isMythTokenLoading}
+              totalValue={mythTokenBalance}
+              precision={MYTH.decimals}
+              symbol={MYTH.symbol}
+            />
+          </Tooltip>
+        </TokenGroup>
+      </div>
+      <TreasuryHistoryLineChart />
     </Wrapper>
   );
 }

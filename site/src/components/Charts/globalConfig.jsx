@@ -14,10 +14,12 @@ import {
   RadialLinearScale,
 } from "chart.js";
 import "./adapterDayjs";
+import gradient from "chartjs-plugin-gradient";
 
 Chart.defaults.font.family = "Inter";
 
 Chart.register(
+  gradient,
   CategoryScale,
   LinearScale,
   PointElement,
@@ -29,5 +31,5 @@ Chart.register(
   ArcElement,
   BarElement,
   Legend,
-  RadialLinearScale
+  RadialLinearScale,
 );

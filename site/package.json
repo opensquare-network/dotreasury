@@ -16,6 +16,7 @@
     "@reduxjs/toolkit": "^1.7.2",
     "bignumber.js": "^9.1.1",
     "chart.js": "^4.0.1",
+    "chartjs-plugin-gradient": "^0.6.1",
     "copy-to-clipboard": "^3.3.1",
     "d3-selection": "^3.0.0",
     "d3-shape": "^3.1.0",
