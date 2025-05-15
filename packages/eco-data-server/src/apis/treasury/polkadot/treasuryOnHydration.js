@@ -1,7 +1,7 @@
 const { multiApiQuery } = require("./common");
 
 const DotTokenId = 5;
-const aDotTokenId = 1001;
+const ADotTokenId = 1001;
 const UsdtTokenIdFromAssetHub = 10;
 const UsdcTokenIdFromAssetHub = 22;
 
@@ -36,7 +36,7 @@ async function getHydrationTreasuryBalances(api, treasuryAccount) {
         UsdcTokenIdFromAssetHub,
       ),
       getHydrationTreasuryBalance(api, treasuryAccount, DotTokenId),
-      getHydrationTreasuryBalance(api, treasuryAccount, aDotTokenId),
+      getHydrationTreasuryBalance(api, treasuryAccount, ADotTokenId),
     ],
   );
 
