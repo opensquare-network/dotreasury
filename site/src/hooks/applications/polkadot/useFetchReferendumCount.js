@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import api from "../../../services/scanApi";
+import api from "../../../services/subsquareApi";
 
 export default function useFetchReferendumCount() {
   const [count, setCount] = useState(0);
@@ -9,9 +9,7 @@ export default function useFetchReferendumCount() {
     const fetchData = async () => {
       try {
         const { result } = await api.fetch(
-          `${
-            import.meta.env.VITE_APP_SUBSQUARE_API_END_POINT
-          }/gov2/referenda/treasury-applications/count`,
+          "/gov2/referenda/treasury-applications/count",
         );
 
         const total = result?.total || 0;
