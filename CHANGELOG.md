@@ -2,6 +2,16 @@
 
 Notable changes to this project will be documented in this file, started from 4.0.0
 
+# 4.3.4
+
+Date: 2025-05-15
+
+- Add treasury spends tab and load data from subsquare API.
+- Redesign overview page for kusama. Add assets on assethub and loans.
+- Update polkadot/kusama end points.
+- Update polkadot treasury with more stable acquisition address on hydration.
+- UI fixes, [#1496](https://github.com/opensquare-network/dotreasury/issues/1496).
+
 # 4.3.3
 
 Date: 2025-01-20
