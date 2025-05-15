@@ -6,13 +6,7 @@ import { Table } from "../../../components/Table";
 import TableLoading from "../../../components/TableLoading";
 import ResponsivePagination from "../../../components/ResponsivePagination";
 import { useState } from "react";
-import {
-  DEFAULT_PAGE_SIZE,
-  DEFAULT_QUERY_PAGE,
-  treasuryProposalStatusMap,
-  treasurySpendStatusMap,
-  treasuryTipStatusMap,
-} from "../../../constants";
+import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../../constants";
 import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -22,7 +16,6 @@ import {
 } from "../../../store/reducers/treasurySpendsSlice";
 import { useQuery } from "../../../utils/hooks";
 import { useTableColumns } from "../../../components/shared/useTableColumns";
-import { currentChain } from "../../../utils/chains";
 import TreasurySpendsFilter from "../../../components/TreasurySpendsFilter";
 import { useTreasurySpendsFilter } from "../../../components/TreasurySpendsFilter/useListFilter";
 import { useEffect } from "react";
@@ -30,6 +23,7 @@ import { treasurySpendsLinkToSubSquareColumn } from "./LinkToSubSquareColumn";
 import { treasurySpendsIndexColumn } from "./IndexColumn";
 import { treasurySpendsDescriptionColumn } from "./DescriptionColumn";
 import { useTreasurySpendsSortByValueColumn } from "./SortByValueColumn";
+import { useMemo } from "react";
 
 const Header = styled.div`
   padding: 24px;
@@ -64,47 +58,66 @@ export default function TreasurySpendsTable() {
   const sort = query.get("sort");
   const dispatch = useDispatch();
 
-  const {
-    filterStatus,
-    setFilterStatus,
-    filterAsset,
-    setFilterAsset,
-    min,
-    setMin,
-    max,
-    setMax,
-    getFilterData,
-  } = useTreasurySpendsFilter();
+  const { status, setStatus, getFilterData } = useTreasurySpendsFilter();
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(history.location.search);
+    searchParams.delete("page");
+    history.push({ search: searchParams.toString() });
+
+    setPage(DEFAULT_QUERY_PAGE);
+  }, [getFilterData, history]);
 
   useEffect(() => {
     const filterData = getFilterData();
+    const controller = new AbortController();
+
+    const params = {
+      ...filterData,
+    };
+    if (sort) {
+      params.sort = sort;
+    }
 
     dispatch(
-      fetchTreasurySpendsList(page - 1, pageSize, filterData, sort && { sort }),
+      fetchTreasurySpendsList(page - 1, pageSize, params, {
+        signal: controller.signal,
+      }),
     );
+
+    return () => {
+      controller.abort();
+    };
   }, [dispatch, page, pageSize, sort, getFilterData]);
 
-  const { proposeTime, beneficiary, referendaStatus } = useTableColumns({});
+  const { proposeTime, proposer, referendaStatus } = useTableColumns({});
 
   const sortByValue = useTreasurySpendsSortByValueColumn();
 
   const columns = [
     treasurySpendsIndexColumn,
     proposeTime,
-    beneficiary,
+    proposer,
     treasurySpendsDescriptionColumn,
     sortByValue,
     referendaStatus,
     treasurySpendsLinkToSubSquareColumn,
   ];
 
-  const tableData = (treasurySpendsList?.items || []).map((item) => {
-    return {
-      ...item,
-      proposeAtBlockHeight: item.indexer.blockHeight,
-      proposeTime: item.indexer.blockTime,
-    };
-  });
+  const tableData = useMemo(
+    () =>
+      treasurySpendsList?.items?.map((item) => {
+        return {
+          ...item,
+          proposeAtBlockHeight: item.indexer.blockHeight,
+          proposeTime: item.indexer.blockTime,
+          state: {
+            name: item.state,
+          },
+        };
+      }) || [],
+    [treasurySpendsList?.items],
+  );
 
   return (
     <Card>
@@ -113,22 +126,7 @@ export default function TreasurySpendsTable() {
       <Divider />
 
       <FilterWrapper>
-        <TreasurySpendsFilter
-          chain={currentChain}
-          status={filterStatus}
-          setStatus={setFilterStatus}
-          asset={filterAsset}
-          setAsset={setFilterAsset}
-          min={min}
-          setMin={setMin}
-          max={max}
-          setMax={setMax}
-          statusMap={{
-            ...treasurySpendStatusMap,
-            ...treasuryProposalStatusMap,
-            ...treasuryTipStatusMap,
-          }}
-        />
+        <TreasurySpendsFilter status={status} setStatus={setStatus} />
       </FilterWrapper>
 
       <TableWrapper>

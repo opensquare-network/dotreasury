@@ -12,6 +12,9 @@ export const PolkadotTreasuryOnHydrationAccount1 =
 export const PolkadotTreasuryOnHydrationAccount2 =
   "7KCp4eenFS4CowF9SpQE5BBCj5MtoBA3K811tNyRmhLfH1aV";
 
+export const PolkadotTreasuryOnHydrationAccount3 =
+  "7KATdGaecnKi4zDAMWQxpB2s59N2RE1JgLuugCjTsRZHgP24";
+
 function getTotal(account) {
   return (
     (account?.free?.toBigInt() || 0n) + (account?.reserved?.toBigInt() || 0n)
@@ -63,11 +66,20 @@ export function useHydrationTreasuryBalances() {
     PolkadotTreasuryOnHydrationAccount2,
   );
 
-  const isLoading = isLoading1 || isLoading2;
+  const {
+    dot: dot3,
+    usdt: usdt3,
+    usdc: usdc3,
+    isLoading: isLoading3,
+  } = useHydrationTreasuryBalanceForAccount(
+    PolkadotTreasuryOnHydrationAccount3,
+  );
 
-  const dot = BigNumber.sum(dot1, dot2).toString();
-  const usdt = BigNumber.sum(usdt1, usdt2).toString();
-  const usdc = BigNumber.sum(usdc1, usdc2).toString();
+  const isLoading = isLoading1 || isLoading2 || isLoading3;
+
+  const dot = BigNumber.sum(dot1, dot2, dot3).toString();
+  const usdt = BigNumber.sum(usdt1, usdt2, usdt3).toString();
+  const usdc = BigNumber.sum(usdc1, usdc2, usdc3).toString();
 
   return {
     dot,

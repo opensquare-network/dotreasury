@@ -1,91 +1,48 @@
 import { useHistory, useLocation } from "react-router";
 import { useCallback, useState } from "react";
 import { useEffect } from "react";
-import { getQueryStatus, toStatusQuery } from "../Filter/useListFilter";
 
 export function useTreasurySpendsFilter() {
   const { search } = useLocation();
   const query = new URLSearchParams(search);
-  const defaultAsset = query.get("asset") || "-1";
-  const defaultStatus = getQueryStatus(query);
-  const defaultMin = query.get("min") || "";
-  const defaultMax = query.get("max") || "";
+  const defaultStatus = query.get("status") || "-1";
 
   const history = useHistory();
-  const [filterStatus, setFilterStatus] = useState(defaultStatus);
-  const [filterAsset, setFilterAsset] = useState(defaultAsset);
-  const [min, setMin] = useState(defaultMin);
-  const [max, setMax] = useState(defaultMax);
+  const [status, setStatus] = useState(defaultStatus);
 
   useEffect(() => {
-    setFilterStatus(defaultStatus);
-    setFilterAsset(defaultAsset);
-    setMin(defaultMin);
-    setMax(defaultMax);
-  }, [defaultStatus, defaultAsset, defaultMin, defaultMax]);
+    setStatus(defaultStatus);
+  }, [defaultStatus]);
 
   useEffect(() => {
     const query = new URLSearchParams(history.location.search);
 
-    if (filterStatus !== "-1") {
-      query.set("status", toStatusQuery(filterStatus));
+    if (status !== "-1") {
+      query.set("status", status);
     } else {
       query.delete("status");
-    }
-
-    if (filterAsset !== "-1") {
-      query.set("asset", filterAsset);
-    } else {
-      query.delete("asset");
-    }
-
-    if (min) {
-      query.set("min", min);
-    } else {
-      query.delete("min");
-    }
-
-    if (max) {
-      query.set("max", max);
-    } else {
-      query.delete("max");
     }
 
     history.push({
       search: query.toString(),
     });
-  }, [history, filterStatus, filterAsset, min, max]);
+  }, [history, status]);
 
   const getFilterData = useCallback(() => {
     let filterData = {};
 
-    if (filterStatus !== "-1") {
-      filterData.status = filterStatus;
+    if (status !== "-1") {
+      filterData.status = status;
     }
-
-    if (filterAsset !== "-1") {
-      filterData.asset = filterAsset;
-    }
-
-    let minMax = {};
-    if (min) minMax.min = min;
-    if (max) minMax.max = max;
 
     return {
       ...filterData,
-      ...minMax,
     };
-  }, [filterStatus, filterAsset, min, max]);
+  }, [status]);
 
   return {
-    filterStatus,
-    setFilterStatus,
-    filterAsset,
-    setFilterAsset,
-    min,
-    setMin,
-    max,
-    setMax,
+    status,
+    setStatus,
     getFilterData,
   };
 }

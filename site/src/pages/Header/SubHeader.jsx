@@ -20,17 +20,15 @@ import { useSelector, useDispatch } from "react-redux";
 import { showMenuTabsSelector } from "../../store/reducers/menuSlice";
 import Card from "../../components/Card";
 import Container from "../../components/Container";
-
+import SpendsMenu from "./SpendsMenu";
 import SlashMenu from "./SlashMenu";
 import {
   currentChainSettings,
   isCentrifuge,
   isKusama,
-  // isPolkadot,
 } from "../../utils/chains";
 import GasFeeIncomeMenu from "./GasFeeIncomeMenu";
 import BlockRewardsIncomeMenu from "./BlockRewardsMenu";
-// import SpendsMenu from "./SpendsMenu";
 
 const Wrapper = styled.div`
   position: relative;
@@ -149,48 +147,6 @@ const TabExampleSecondaryPointing = () => {
     dispatch(fetchIncomeCount());
   }, [dispatch]);
 
-  let treasurySpendMenus = [
-    {
-      menuItem: {
-        as: NavLink,
-        id: "proposalsTab",
-        content: <ProposalsMenu />,
-        to: "/proposals",
-        exact: true,
-        key: "proposals",
-        active:
-          "/proposals" === pathname || pathname.indexOf("/proposals") === 0,
-      },
-    },
-    currentChainSettings.hasTips && {
-      menuItem: {
-        as: NavLink,
-        id: "tipsTab",
-        content: <TipsMenu />,
-        to: "/tips",
-        exact: true,
-        key: "tips",
-        active: "/tips" === pathname || pathname.indexOf("/tips") === 0,
-      },
-    },
-  ];
-  // TODO: Uncomment when spends are ready
-  // if (isPolkadot) {
-  //   treasurySpendMenus = [
-  //     {
-  //       menuItem: {
-  //         as: NavLink,
-  //         id: "spendsTab",
-  //         content: <SpendsMenu />,
-  //         to: "/spends",
-  //         exact: true,
-  //         key: "spends",
-  //         active: "/spends" === pathname,
-  //       },
-  //     },
-  //   ];
-  // }
-
   const panes =
     showMenuTabs === "Home"
       ? [
@@ -220,7 +176,44 @@ const TabExampleSecondaryPointing = () => {
                 },
               ]
             : []),
-          ...treasurySpendMenus,
+
+          {
+            menuItem: {
+              as: NavLink,
+              id: "proposalsTab",
+              content: <ProposalsMenu />,
+              to: "/proposals",
+              exact: true,
+              key: "proposals",
+              active:
+                "/proposals" === pathname ||
+                pathname.indexOf("/proposals") === 0,
+            },
+          },
+          currentChainSettings.hasTips && {
+            menuItem: {
+              as: NavLink,
+              id: "tipsTab",
+              content: <TipsMenu />,
+              to: "/tips",
+              exact: true,
+              key: "tips",
+              active: "/tips" === pathname || pathname.indexOf("/tips") === 0,
+            },
+          },
+
+          currentChainSettings.hasSpends && {
+            menuItem: {
+              as: NavLink,
+              id: "spendsTab",
+              content: <SpendsMenu />,
+              to: "/spends",
+              exact: true,
+              key: "spends",
+              active: "/spends" === pathname,
+            },
+          },
+
           currentChainSettings.hasBounties && {
             menuItem: {
               as: NavLink,

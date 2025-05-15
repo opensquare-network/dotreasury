@@ -17,6 +17,7 @@ export const kusama = {
   hasOutputPeriods: true,
 
   hasStaking: true,
+  hasSpends: true,
   hasTips: true,
   hasBounties: true,
   hasTransfers: true,

@@ -1,19 +1,34 @@
+const isEmpty = require("lodash.isempty");
 const { extractPage } = require("../../../utils");
-const {
-  getRangeCondition,
-} = require("../../../features/common/getRangeCondition");
 const {
   getSubsquareTreasurySpendCollection,
 } = require("../../../mongo/polkadot");
 const { HttpError } = require("../../../exc");
 
-function getStatusFilter(ctx) {
-  const { status } = ctx.request.query;
-  if (!status) {
+function getRangeCondition(ctx) {
+  const { range_type, min, max } = ctx.request.query;
+
+  if (!range_type) {
     return {};
   }
 
-  return { "state.state": status };
+  if (range_type !== "fiat") {
+    throw new HttpError(400, `Invalid range_type: ${range_type}`);
+  }
+
+  const fiatValue = {};
+  if (min) {
+    fiatValue.$gte = Number(min);
+  }
+  if (max) {
+    fiatValue.$lte = Number(max);
+  }
+
+  if (isEmpty(fiatValue)) {
+    return {};
+  }
+
+  return { fiatValue };
 }
 
 function getAssetFilter(ctx) {
@@ -66,7 +81,6 @@ async function getSpends(ctx) {
   }
 
   const q = {
-    ...getStatusFilter(ctx),
     ...getAssetFilter(ctx),
     ...getRangeCondition(ctx),
   };
