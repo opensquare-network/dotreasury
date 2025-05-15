@@ -176,7 +176,17 @@ const TabExampleSecondaryPointing = () => {
                 },
               ]
             : []),
-
+          currentChainSettings.hasSpends && {
+            menuItem: {
+              as: NavLink,
+              id: "spendsTab",
+              content: <SpendsMenu />,
+              to: "/spends",
+              exact: true,
+              key: "spends",
+              active: "/spends" === pathname,
+            },
+          },
           {
             menuItem: {
               as: NavLink,
@@ -201,19 +211,6 @@ const TabExampleSecondaryPointing = () => {
               active: "/tips" === pathname || pathname.indexOf("/tips") === 0,
             },
           },
-
-          currentChainSettings.hasSpends && {
-            menuItem: {
-              as: NavLink,
-              id: "spendsTab",
-              content: <SpendsMenu />,
-              to: "/spends",
-              exact: true,
-              key: "spends",
-              active: "/spends" === pathname,
-            },
-          },
-
           currentChainSettings.hasBounties && {
             menuItem: {
               as: NavLink,
