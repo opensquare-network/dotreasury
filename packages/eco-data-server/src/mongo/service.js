@@ -1,10 +1,26 @@
-const { getStatusCol, getPriceCol } = require("./db");
+const dayjs = require("dayjs");
+const { getStatusCol, getPriceCol, getTreasuryHistoryCol } = require("./db");
+const { CHAINS } = require("../consts");
 
 async function upsertChainTreasuryWithDetail(chain, balance, balances) {
+  const now = new Date();
   const col = await getStatusCol();
   await col.updateOne(
     { chain },
-    { $set: { balance, balances, balanceUpdateAt: new Date() } },
+    { $set: { balance, balances, balanceUpdateAt: now } },
+    { upsert: true },
+  );
+
+  const date = dayjs().format("YYYY-MM-DD");
+  const treasuryHistoryCol = await getTreasuryHistoryCol();
+  await treasuryHistoryCol.updateOne(
+    { chain, date },
+    {
+      $set: {
+        balance,
+        balanceUpdateAt: now,
+      },
+    },
     { upsert: true },
   );
 }
@@ -19,12 +35,29 @@ async function upsertChainTreasury(chain, balance) {
 }
 
 async function upsertChainPrice(chain, price, priceUpdateAt) {
+  const now = new Date();
   const col = await getStatusCol();
   await col.updateOne(
     { chain },
-    { $set: { price, priceUpdateAt: new Date(priceUpdateAt) } },
+    { $set: { price, priceUpdateAt: now } },
     { upsert: true },
   );
+
+  // Update price to treasury history for Polkadot chain
+  if (chain === CHAINS.polkadot) {
+    const date = dayjs().format("YYYY-MM-DD");
+    const treasuryHistoryCol = await getTreasuryHistoryCol();
+    await treasuryHistoryCol.updateOne(
+      { chain, date },
+      {
+        $set: {
+          price,
+          priceUpdateAt: now,
+        },
+      },
+      { upsert: true },
+    );
+  }
 }
 
 async function upsertTokenPrice(token, price, priceUpdateAt, source) {

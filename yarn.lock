@@ -1472,6 +1472,7 @@ __metadata:
     bignumber.js: ^9.1.2
     ccxt: ^4.2.98
     cron: ^3.1.7
+    dayjs: ^1.11.13
     dotenv: ^16.3.1
     graphql: ^16.8.1
     graphql-yoga: ^4.0.4
@@ -4265,6 +4266,13 @@ __metadata:
   version: 1.11.9
   resolution: "dayjs@npm:1.11.9"
   checksum: a4844d83dc87f921348bb9b1b93af851c51e6f71fa259604809cfe1b49d1230e6b0212dab44d1cb01994c096ad3a77ea1cf18fa55154da6efcc9d3610526ac38
+  languageName: node
+  linkType: hard
+
+"dayjs@npm:^1.11.13":
+  version: 1.11.13
+  resolution: "dayjs@npm:1.11.13"
+  checksum: f388db88a6aa93956c1f6121644e783391c7b738b73dbc54485578736565c8931bdfba4bb94e9b1535c6e509c97d5deb918bbe1ae6b34358d994de735055cca9
   languageName: node
   linkType: hard
 
