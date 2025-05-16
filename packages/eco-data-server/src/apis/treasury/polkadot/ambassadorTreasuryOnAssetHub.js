@@ -12,12 +12,17 @@ async function getAssetHubAsset(api, assetId) {
   return account.toJSON();
 }
 
+async function getAmbassadorTreasuryOnAssetHubFromApi(api) {
+  return getAssetHubAsset(api, USDT_ASSET_ID);
+}
+
 async function getAmbassadorTreasuryOnAssetHub() {
   return await multiApiQuery("polkadotAssetHub", (api) =>
-    getAssetHubAsset(api, USDT_ASSET_ID),
+    getAmbassadorTreasuryOnAssetHubFromApi(api),
   );
 }
 
 module.exports = {
   getAmbassadorTreasuryOnAssetHub,
+  getAmbassadorTreasuryOnAssetHubFromApi,
 };

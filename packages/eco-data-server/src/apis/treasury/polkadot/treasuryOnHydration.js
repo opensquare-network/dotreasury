@@ -48,18 +48,22 @@ async function getHydrationTreasuryBalances(api, treasuryAccount) {
   };
 }
 
-async function getTreasuryOnHydration() {
-  const hydrationTreasuryAccount1 = await multiApiQuery("hydradx", (api) =>
-    getHydrationTreasuryBalances(api, PolkadotTreasuryOnHydrationAccount1),
+async function getTreasuryOnHydrationFromApi(api) {
+  const hydrationTreasuryAccount1 = await getHydrationTreasuryBalances(
+    api,
+    PolkadotTreasuryOnHydrationAccount1,
   );
-  const hydrationTreasuryAccount2 = await multiApiQuery("hydradx", (api) =>
-    getHydrationTreasuryBalances(api, PolkadotTreasuryOnHydrationAccount2),
+  const hydrationTreasuryAccount2 = await getHydrationTreasuryBalances(
+    api,
+    PolkadotTreasuryOnHydrationAccount2,
   );
-  const hydrationTreasuryAccount3 = await multiApiQuery("hydradx", (api) =>
-    getHydrationTreasuryBalances(api, PolkadotTreasuryOnHydrationAccount3),
+  const hydrationTreasuryAccount3 = await getHydrationTreasuryBalances(
+    api,
+    PolkadotTreasuryOnHydrationAccount3,
   );
-  const hydrationTreasuryAccount4 = await multiApiQuery("hydradx", (api) =>
-    getHydrationTreasuryBalances(api, PolkadotTreasuryOnHydrationAccount4),
+  const hydrationTreasuryAccount4 = await getHydrationTreasuryBalances(
+    api,
+    PolkadotTreasuryOnHydrationAccount4,
   );
 
   return {
@@ -70,6 +74,13 @@ async function getTreasuryOnHydration() {
   };
 }
 
+async function getTreasuryOnHydration() {
+  return await multiApiQuery("hydradx", (api) =>
+    getTreasuryOnHydrationFromApi(api),
+  );
+}
+
 module.exports = {
   getTreasuryOnHydration,
+  getTreasuryOnHydrationFromApi,
 };
