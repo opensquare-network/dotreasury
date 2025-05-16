@@ -2,10 +2,9 @@ const treasuryHistoryData = /* GraphQL */ `
   type TreasuryHistoryItemData {
     chain: String!
     date: Float
-    balance: String
+    balance: Float
+    balances: [BalanceDetail]
     balanceUpdateAt: Float
-    price: Float
-    priceUpdateAt: Float
   }
 `;
 
