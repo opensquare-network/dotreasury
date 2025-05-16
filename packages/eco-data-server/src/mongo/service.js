@@ -1,6 +1,9 @@
-const dayjs = require("dayjs");
 const { getStatusCol, getPriceCol, getTreasuryHistoryCol } = require("./db");
 const { CHAINS } = require("../consts");
+
+const dayjs = require("dayjs");
+const utc = require("dayjs/plugin/utc");
+dayjs.extend(utc);
 
 async function upsertChainTreasuryWithDetail(chain, balance, balances) {
   const now = new Date();
@@ -11,7 +14,7 @@ async function upsertChainTreasuryWithDetail(chain, balance, balances) {
     { upsert: true },
   );
 
-  const date = dayjs().startOf("day").valueOf();
+  const date = dayjs().utc().startOf("day").valueOf();
   const treasuryHistoryCol = await getTreasuryHistoryCol();
   await treasuryHistoryCol.updateOne(
     { chain, date },
@@ -44,7 +47,7 @@ async function upsertChainPrice(chain, price, priceUpdateAt) {
 
   // Update price to treasury history for Polkadot chain
   if (chain === CHAINS.polkadot) {
-    const date = dayjs().startOf("day").valueOf();
+    const date = dayjs().utc().startOf("day").valueOf();
     const treasuryHistoryCol = await getTreasuryHistoryCol();
     await treasuryHistoryCol.updateOne(
       { chain, date },
