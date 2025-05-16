@@ -35,11 +35,10 @@ async function upsertChainTreasury(chain, balance) {
 }
 
 async function upsertChainPrice(chain, price, priceUpdateAt) {
-  const now = new Date();
   const col = await getStatusCol();
   await col.updateOne(
     { chain },
-    { $set: { price, priceUpdateAt: now } },
+    { $set: { price, priceUpdateAt: new Date(priceUpdateAt) } },
     { upsert: true },
   );
 
@@ -52,7 +51,7 @@ async function upsertChainPrice(chain, price, priceUpdateAt) {
       {
         $set: {
           price,
-          priceUpdateAt: now,
+          priceUpdateAt: new Date(priceUpdateAt),
         },
       },
       { upsert: true },
