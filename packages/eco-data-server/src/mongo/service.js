@@ -11,7 +11,7 @@ async function upsertChainTreasuryWithDetail(chain, balance, balances) {
     { upsert: true },
   );
 
-  const date = dayjs().format("YYYY-MM-DD");
+  const date = dayjs().startOf("day").valueOf();
   const treasuryHistoryCol = await getTreasuryHistoryCol();
   await treasuryHistoryCol.updateOne(
     { chain, date },
@@ -44,7 +44,7 @@ async function upsertChainPrice(chain, price, priceUpdateAt) {
 
   // Update price to treasury history for Polkadot chain
   if (chain === CHAINS.polkadot) {
-    const date = dayjs().format("YYYY-MM-DD");
+    const date = dayjs().startOf("day").valueOf();
     const treasuryHistoryCol = await getTreasuryHistoryCol();
     await treasuryHistoryCol.updateOne(
       { chain, date },
