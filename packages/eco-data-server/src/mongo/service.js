@@ -123,4 +123,5 @@ module.exports = {
   upsertTokenPrice,
   batchUpdateTokenPrices,
   normalizeBalancesItem,
+  getTotalFiatValue,
 };
