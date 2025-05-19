@@ -168,7 +168,7 @@ async function normalizeBalancesItem(balance, timestamp) {
   return balance;
 }
 
-async function generateTreasuryItem(daysAgo) {
+async function generateTreasuryHistoryItem(daysAgo) {
   const onchainTreasuries = await getTreasuryBalance(daysAgo);
   const treasuryData = calcTotalBalance(onchainTreasuries);
   const balances = getTreasuryBalancesArray(treasuryData);
@@ -200,7 +200,7 @@ async function generateTreasuryItem(daysAgo) {
 
 async function generateTreasuryHistory() {
   for (let i = 0; i < 30; i++) {
-    await generateTreasuryItem(i);
+    await generateTreasuryHistoryItem(i);
   }
 }
 
