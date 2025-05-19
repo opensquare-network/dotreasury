@@ -16,7 +16,7 @@ const source = "gate";
 async function updateTokenPricesByGate() {
   const symbols = Object.values(gateTokenIdMap);
   const tickers = await fetchTickers(gate, symbols);
-  const tokenPriceArr = tickers.map(ticker => {
+  const tokenPriceArr = tickers.map((ticker) => {
     const { symbol, price, priceUpdateAt } = ticker;
     const token = revertGateTokenIdMap[symbol];
     return { token, price, priceUpdateAt, source };
@@ -26,7 +26,9 @@ async function updateTokenPricesByGate() {
 
   for (const tokenPrice of tokenPriceArr) {
     const { token, price, priceUpdateAt } = tokenPrice;
-    const chains = Object.values(CHAINS).filter(chain => ChainTokenMap[chain] === token);
+    const chains = Object.values(CHAINS).filter(
+      (chain) => ChainTokenMap[chain] === token,
+    );
     for (const chain of chains) {
       await upsertChainPrice(chain, price, priceUpdateAt);
       console.log(`${chains} price by gate updated`);
@@ -36,4 +38,4 @@ async function updateTokenPricesByGate() {
 
 module.exports = {
   updateTokenPricesByGate,
-}
+};

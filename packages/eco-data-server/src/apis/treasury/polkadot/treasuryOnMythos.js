@@ -3,7 +3,7 @@ const { multiApiQuery } = require("./common");
 const MYTHOS_PARACHAIN_ID = 3369;
 const MythTokenAccount = "13gYFscwJFJFqFMNnttzuTtMrApUEmcUARtgFubbChU9g6mh";
 
-async function getMythTreasuryAccount(api) {
+async function getMythTreasuryOnMythosFromApi(api) {
   const account = await api.query.foreignAssets.account(
     {
       parents: 1,
@@ -22,10 +22,11 @@ async function getMythTreasuryAccount(api) {
 
 async function getMythTreasuryOnMythos() {
   return await multiApiQuery("polkadotAssetHub", (api) =>
-    getMythTreasuryAccount(api),
+    getMythTreasuryOnMythosFromApi(api),
   );
 }
 
 module.exports = {
   getMythTreasuryOnMythos,
+  getMythTreasuryOnMythosFromApi,
 };

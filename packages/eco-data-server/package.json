@@ -11,10 +11,12 @@
     "bignumber.js": "^9.1.2",
     "ccxt": "^4.2.98",
     "cron": "^3.1.7",
+    "dayjs": "^1.11.13",
     "dotenv": "^16.3.1",
     "graphql": "^16.8.1",
     "graphql-yoga": "^4.0.4",
     "lodash.chunk": "^4.2.0",
+    "lodash.zip": "^4.2.0",
     "log4js": "^6.9.1",
     "mongodb": "6.1.0"
   }

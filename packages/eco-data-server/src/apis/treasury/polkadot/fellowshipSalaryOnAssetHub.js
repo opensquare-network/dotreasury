@@ -12,12 +12,17 @@ async function getAssetHubSalaryAsset(api, assetId) {
   return account.toJSON();
 }
 
+async function getFellowshipSalaryUsdtOnAssetHubFromApi(api) {
+  return getAssetHubSalaryAsset(api, USDT_ASSET_ID);
+}
+
 async function getFellowshipSalaryUsdtOnAssetHub() {
   return await multiApiQuery("polkadotAssetHub", (api) =>
-    getAssetHubSalaryAsset(api, USDT_ASSET_ID),
+    getFellowshipSalaryUsdtOnAssetHubFromApi(api),
   );
 }
 
 module.exports = {
   getFellowshipSalaryUsdtOnAssetHub,
+  getFellowshipSalaryUsdtOnAssetHubFromApi,
 };
