@@ -22,33 +22,21 @@ const {
   getAmbassadorTreasuryOnAssetHub,
 } = require("./ambassadorTreasuryOnAssetHub");
 
-async function getPolkadotTreasuryData() {
-  const treasuryDotOnRelay = await getTreasuryDotOnRelayChain();
-
-  const bountyTreasuryOnRelay = await getBountyTreasuryOnRelayChain();
-
-  const fellowshipTreasuryDotOnAssetHub =
-    await getFellowshipTreasuryDotOnAssetHub();
-
-  const fellowshipSalaryUsdtBalance = await getFellowshipSalaryUsdtOnAssetHub();
-
-  const ambassadorTreasuryUsdtBalance = await getAmbassadorTreasuryOnAssetHub();
-
-  const {
-    dotTreasuryBalanceOnAssetHub,
-    usdtTreasuryBalanceOnAssetHub,
-    usdcTreasuryBalanceOnAssetHub,
-  } = await getTreasuryOnAssetHub();
-
-  const mythTreasuryBalance = await getMythTreasuryOnMythos();
-
-  const {
-    hydrationTreasuryAccount1,
-    hydrationTreasuryAccount2,
-    hydrationTreasuryAccount3,
-    hydrationTreasuryAccount4,
-  } = await getTreasuryOnHydration();
-
+function calcTotalBalance({
+  treasuryDotOnRelay,
+  bountyTreasuryOnRelay,
+  fellowshipTreasuryDotOnAssetHub,
+  fellowshipSalaryUsdtBalance,
+  ambassadorTreasuryUsdtBalance,
+  dotTreasuryBalanceOnAssetHub,
+  usdtTreasuryBalanceOnAssetHub,
+  usdcTreasuryBalanceOnAssetHub,
+  mythTreasuryBalance,
+  hydrationTreasuryAccount1,
+  hydrationTreasuryAccount2,
+  hydrationTreasuryAccount3,
+  hydrationTreasuryAccount4,
+}) {
   const {
     accountUsdt: hydrationAccount1Usdt,
     accountUsdc: hydrationAccount1Usdc,
@@ -125,6 +113,51 @@ async function getPolkadotTreasuryData() {
   };
 }
 
+async function getPolkadotTreasuryData() {
+  const treasuryDotOnRelay = await getTreasuryDotOnRelayChain();
+
+  const bountyTreasuryOnRelay = await getBountyTreasuryOnRelayChain();
+
+  const fellowshipTreasuryDotOnAssetHub =
+    await getFellowshipTreasuryDotOnAssetHub();
+
+  const fellowshipSalaryUsdtBalance = await getFellowshipSalaryUsdtOnAssetHub();
+
+  const ambassadorTreasuryUsdtBalance = await getAmbassadorTreasuryOnAssetHub();
+
+  const {
+    dotTreasuryBalanceOnAssetHub,
+    usdtTreasuryBalanceOnAssetHub,
+    usdcTreasuryBalanceOnAssetHub,
+  } = await getTreasuryOnAssetHub();
+
+  const mythTreasuryBalance = await getMythTreasuryOnMythos();
+
+  const {
+    hydrationTreasuryAccount1,
+    hydrationTreasuryAccount2,
+    hydrationTreasuryAccount3,
+    hydrationTreasuryAccount4,
+  } = await getTreasuryOnHydration();
+
+  return calcTotalBalance({
+    treasuryDotOnRelay,
+    bountyTreasuryOnRelay,
+    fellowshipTreasuryDotOnAssetHub,
+    fellowshipSalaryUsdtBalance,
+    ambassadorTreasuryUsdtBalance,
+    dotTreasuryBalanceOnAssetHub,
+    usdtTreasuryBalanceOnAssetHub,
+    usdcTreasuryBalanceOnAssetHub,
+    mythTreasuryBalance,
+    hydrationTreasuryAccount1,
+    hydrationTreasuryAccount2,
+    hydrationTreasuryAccount3,
+    hydrationTreasuryAccount4,
+  });
+}
+
 module.exports = {
+  calcTotalBalance,
   getPolkadotTreasuryData,
 };

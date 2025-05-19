@@ -3,12 +3,37 @@ const { multiApiQuery } = require("../apis/treasury/polkadot/common");
 const dayjs = require("dayjs");
 const utc = require("dayjs/plugin/utc");
 const { createChainApis } = require("../apis");
+const {
+  getTreasuryOnHydrationFromApi,
+} = require("../apis/treasury/polkadot/treasuryOnHydration");
+const {
+  getTreasuryDotOnRelayChainFromApi,
+  getBountyTreasuryOnRelayChainFromApi,
+} = require("../apis/treasury/polkadot/treasuryOnRelay");
+const {
+  getFellowshipTreasuryDotOnAssetHubFromApi,
+} = require("../apis/treasury/polkadot/fellowshipTreasuryOnAssetHub");
+const {
+  getFellowshipSalaryUsdtOnAssetHubFromApi,
+} = require("../apis/treasury/polkadot/fellowshipSalaryOnAssetHub");
+const {
+  getAmbassadorTreasuryOnAssetHubFromApi,
+} = require("../apis/treasury/polkadot/ambassadorTreasuryOnAssetHub");
+const {
+  getTreasuryOnAssetHubFromApi,
+} = require("../apis/treasury/polkadot/treasuryOnAssetHub");
+const {
+  getMythTreasuryOnMythosFromApi,
+} = require("../apis/treasury/polkadot/treasuryOnMythos");
+const { calcTotalBalance } = require("../apis/treasury/polkadot");
 dayjs.extend(utc);
 
 const oneDay = 24 * 60 * 60 * 1000;
 
 const BlockIntervals = {
   polkadot: 6,
+  polkadotAssetHub: 12,
+  hydradx: 12,
 };
 
 async function getBlockHash(api, blockInterval, daysAgo) {
@@ -18,30 +43,88 @@ async function getBlockHash(api, blockInterval, daysAgo) {
   }
 
   const blocksAgo = (daysAgo * oneDay) / (blockInterval * 1000);
-  console.log("blocksAgo", blocksAgo);
   const blockNumber = await api.query.system.number.at(blockHash);
-  console.log("blockNumber", blockNumber.toNumber());
   const targetBlockNumber = blockNumber.toNumber() - blocksAgo;
-  console.log("targetBlockNumber", targetBlockNumber);
-  const targetBlockHash = await api.rpc.chain.getBlockHash(targetBlockNumber);
-  return targetBlockHash;
+  return await api.rpc.chain.getBlockHash(targetBlockNumber);
 }
 
-async function getBlockInfo(chain, daysAgo) {
-  const blockHash = await multiApiQuery(chain, (api) =>
-    getBlockHash(api, BlockIntervals[chain], daysAgo),
+async function getTreasuryBalance(daysAgo) {
+  const polkadotTreasuries = await multiApiQuery("polkadot", async (api) => {
+    const blockHash = await getBlockHash(api, BlockIntervals.polkadot, daysAgo);
+    const blockApi = await api.at(blockHash);
+
+    const treasuryDotOnRelay = await getTreasuryDotOnRelayChainFromApi(
+      blockApi,
+    );
+    const bountyTreasuryOnRelay = await getBountyTreasuryOnRelayChainFromApi(
+      blockApi,
+    );
+
+    return {
+      treasuryDotOnRelay,
+      bountyTreasuryOnRelay,
+    };
+  });
+
+  const polkadotAssetHubTreasuries = await multiApiQuery(
+    "polkadotAssetHub",
+    async (api) => {
+      const blockHash = await getBlockHash(
+        api,
+        BlockIntervals.polkadotAssetHub,
+        daysAgo,
+      );
+      const blockApi = await api.at(blockHash);
+
+      const fellowshipTreasuryDotOnAssetHub =
+        await getFellowshipTreasuryDotOnAssetHubFromApi(blockApi);
+
+      const fellowshipSalaryUsdtBalance =
+        await getFellowshipSalaryUsdtOnAssetHubFromApi(blockApi);
+
+      const ambassadorTreasuryUsdtBalance =
+        await getAmbassadorTreasuryOnAssetHubFromApi(blockApi);
+
+      const {
+        dotTreasuryBalanceOnAssetHub,
+        usdtTreasuryBalanceOnAssetHub,
+        usdcTreasuryBalanceOnAssetHub,
+      } = await getTreasuryOnAssetHubFromApi(blockApi);
+
+      const mythTreasuryBalance = await getMythTreasuryOnMythosFromApi(
+        blockApi,
+      );
+
+      return {
+        fellowshipTreasuryDotOnAssetHub,
+        fellowshipSalaryUsdtBalance,
+        ambassadorTreasuryUsdtBalance,
+        dotTreasuryBalanceOnAssetHub,
+        usdtTreasuryBalanceOnAssetHub,
+        usdcTreasuryBalanceOnAssetHub,
+        mythTreasuryBalance,
+      };
+    },
   );
-  console.log("blockHash", blockHash.toJSON());
-}
 
-async function getTreasuryBalance(chain, daysAgo) {
-  const blockHeight = await getBlockInfo(chain, daysAgo);
-  console.log({ blockHeight });
+  const hydrationTreasuries = await multiApiQuery("hydradx", async (api) => {
+    const blockHash = await getBlockHash(api, BlockIntervals.hydradx, daysAgo);
+    const blockApi = await api.at(blockHash);
+
+    return await getTreasuryOnHydrationFromApi(blockApi);
+  });
+
+  return {
+    ...polkadotTreasuries,
+    ...polkadotAssetHubTreasuries,
+    ...hydrationTreasuries,
+  };
 }
 
 async function generateTreasuryItemAtDaysAgo(daysAgo) {
-  const balance = await getTreasuryBalance("polkadot", daysAgo);
-  console.log("balance", balance);
+  const balances = await getTreasuryBalance(daysAgo);
+  const totalBalances = calcTotalBalance(balances);
+  console.log(daysAgo, totalBalances);
 }
 
 async function generateTreasuryHistory() {
