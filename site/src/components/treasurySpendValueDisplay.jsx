@@ -1,5 +1,5 @@
 import { getPrecision } from "../utils";
-import { STATEMINT_ASSETS } from "../constants/statemint";
+import { KnownPolkadotAssetHubAssets } from "../constants";
 import { MYTH } from "../constants/foreignAssets";
 import ValueDisplay from "./ValueDisplay";
 import styled from "styled-components";
@@ -11,7 +11,7 @@ const Wrapper = styled.div`
 
 export default function TreasurySpendValueDisplay({ isNative, value, symbol }) {
   let { decimals } = getPrecision(symbol);
-  const SYMBOL_DECIMALS = STATEMINT_ASSETS.concat(MYTH);
+  const SYMBOL_DECIMALS = KnownPolkadotAssetHubAssets.concat(MYTH);
 
   if (!isNative) {
     decimals = SYMBOL_DECIMALS.find(
