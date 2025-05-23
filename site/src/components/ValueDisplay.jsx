@@ -24,7 +24,6 @@ export default function ValueDisplay({
   if (Number(balance) > 100000 && abbreviate) {
     const abbreviateNum = abbreviateBigNumber(balance, fixed);
     const isApproximateEqual = checkApproximateEqual(balance, abbreviateNum);
-    console.log(abbreviateNum);
     return (
       <>
         <span>{isApproximateEqual ? "≈ " : ""}</span>

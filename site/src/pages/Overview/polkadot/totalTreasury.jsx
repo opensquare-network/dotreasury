@@ -21,9 +21,10 @@ const Wrapper = styled(Card)`
   padding: 24px;
   ${text_primary}
   display: flex;
+  gap: 24px;
   justify-content: space-between;
   @media screen and (max-width: 768px) {
-    flex-wrap: wrap;
+    flex-direction: column;
   }
 `;
 

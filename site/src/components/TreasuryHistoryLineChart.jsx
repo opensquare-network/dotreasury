@@ -1,8 +1,13 @@
-import { Line } from "react-chartjs-2";
 import styled from "styled-components";
 import dayjs from "dayjs";
+import { useMemo } from "react";
 import { useWindowSize } from "react-use";
 import { abbreviateBigNumber } from "../utils";
+import { useEffect } from "react";
+import { Line } from "react-chartjs-2";
+import { useState } from "react";
+import SkeletonBar from "./skeleton/bar";
+
 const HistoricalLineChartWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -39,28 +44,61 @@ const ChartWrapper = styled.div`
   flex: 1;
 `;
 
-const generateData = () => {
+function generateRandomBigNumber(length = 22) {
+  let result = "";
+  result += Math.floor(1 + Math.random() * 9).toString();
+  for (let i = 1; i < length; i++) {
+    result += Math.floor(Math.random() * 10).toString();
+  }
+  return result;
+}
+
+const generateData = (key = "balance", rang = 1000) => {
   const data = [];
   const now = new Date().getTime();
   const oneDay = 24 * 60 * 60 * 1000;
 
-  let lastAmount = Math.floor(Math.random() * 2000);
-
   for (let i = 29; i >= 0; i--) {
-    const amount = lastAmount + (Math.random() * 10 - 5);
     data.push({
-      amount: Math.round(amount * 10) / 10,
+      [key]: generateRandomBigNumber(),
       time: now - i * oneDay,
     });
-    lastAmount = amount;
   }
   return data;
 };
 
-const sourceData = generateData();
+const sourceData = generateData("balance", 10000);
+
+const useFetchData = () => {
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, []);
+  return {
+    loading,
+    data: loading ? [] : sourceData,
+  };
+};
 
 export default function TreasuryHistoryLineChart() {
   const windowSize = useWindowSize();
+  const { loading, data: sourceData } = useFetchData();
+  const { label: labels, data } = useMemo(() => {
+    return sourceData.reduce(
+      (result, item) => {
+        result.data.push(item.balance);
+        result.label.push(item.time);
+        return result;
+      },
+      {
+        label: [],
+        data: [],
+      },
+    );
+  }, [sourceData]);
 
   const chartOptions = {
     type: "line",
@@ -113,7 +151,7 @@ export default function TreasuryHistoryLineChart() {
           source: "data",
           maxTicksLimit: 30,
           callback: (value, index, values) => {
-            if ([0, 14, 29].includes(index)) {
+            if ([2, 14, 27].includes(index)) {
               return dayjs(value).format("MMM DD");
             } else {
               return null;
@@ -124,16 +162,12 @@ export default function TreasuryHistoryLineChart() {
     },
   };
 
-  const labels = sourceData.map?.(({ time }) => time);
-  const data = sourceData.map?.(({ amount }) => amount);
-  console.log(data.length, labels.length);
-
   const chartData = {
     labels,
     datasets: [
       {
         data,
-        label: "Amount",
+        label: "Balance",
         borderWidth: 2,
         borderColor: "#FC7C91",
         pointBorderWidth: 0,
@@ -142,14 +176,23 @@ export default function TreasuryHistoryLineChart() {
         pointHitRadius: 10,
         pointBackgroundColor: "#FC7C91",
         fill: true,
-        gradient: {
-          backgroundColor: {
-            axis: "y",
-            colors: {
-              0: "rgba(255, 240, 243, 0.00)",
-              100: "#FFF0F3",
-            },
-          },
+        backgroundColor: function (context) {
+          const chart = context.chart;
+          const { ctx, chartArea } = chart;
+
+          if (!chartArea) {
+            return null;
+          }
+          const gradient = ctx.createLinearGradient(
+            0,
+            chartArea.bottom,
+            0,
+            chartArea.top,
+          );
+          gradient.addColorStop(0, "rgba(255, 240, 243, 0.00)");
+          gradient.addColorStop(1, "#FFF0F3");
+
+          return gradient;
         },
       },
     ],
@@ -161,7 +204,11 @@ export default function TreasuryHistoryLineChart() {
       </ChartTitle>
       {/* - */}
       <ChartWrapper>
-        <Line key={windowSize} options={chartOptions} data={chartData} />
+        {loading ? (
+          <SkeletonBar width={"100%"} height={"100%"} />
+        ) : (
+          <Line key={windowSize} options={chartOptions} data={chartData} />
+        )}
       </ChartWrapper>
     </HistoricalLineChartWrapper>
   );
