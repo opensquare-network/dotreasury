@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import Card from "../../components/Card";
 import { useTableColumns } from "../../components/shared/useTableColumns";
-import api from "../../services/scanApi";
+import api from "../../services/subsquareApi";
 import SortableIndex from "../../components/SortableIndex";
 import SortableValue from "../../components/SortableValue";
 import useSort from "../../hooks/useSort";
@@ -43,8 +43,9 @@ const completeProposalsWithTitle = (data = [], chain) => {
   return data.map(async (proposal) => {
     if (!proposal.description) {
       //improve: implement a brief API for this to speed up the loading
-      const apiUrl = `https://${chain}.subsquare.io/api/treasury/proposals/${proposal.proposalIndex}`;
-      const { result } = await api.fetch(apiUrl);
+      const { result } = await api.fetch(
+        `/treasury/proposals/${proposal.proposalIndex}`,
+      );
       return { ...proposal, description: result?.title };
     }
     return proposal;

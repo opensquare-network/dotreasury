@@ -81,7 +81,7 @@ const Columns = ({
               return (
                 <TreasurySpendValueDisplay
                   key={index}
-                  isNative={isSpendLocal}
+                  isNative={isSpendLocal || assetKind.type === "native"}
                   value={amount}
                   symbol={displaySymbol}
                 />
