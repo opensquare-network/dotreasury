@@ -1,4 +1,4 @@
-const { updateChildBounty, updateChildBountyTimeline } = require("../../../mongo/service/childBounty");
+const { updateChildBountyTimeline, updateChildBountyWithParentId } = require("../../../mongo/service/childBounty");
 const { getChildBounty } = require("../../common/child-bounties/child-bounty");
 const {
   consts: {
@@ -52,7 +52,7 @@ async function handleProposeCurator(call, author, indexer) {
     Object.assign(updates, { meta });
   }
 
-  await updateChildBounty(childBountyId, updates, timelineItem);
+  await updateChildBountyWithParentId(parentBountyId, childBountyId, updates, timelineItem);
 }
 
 module.exports = {

@@ -16,7 +16,7 @@ async function handleAdded(event, indexer, extrinsic, blockEvents) {
 
   const [meta, description] = await Promise.all([
     getChildBounty(parentBountyId, childBountyId, indexer),
-    getChildBountyDescriptions(childBountyId, indexer),
+    getChildBountyDescriptions(parentBountyId, childBountyId, indexer),
   ]);
 
   let childBountyValue = meta?.value;
