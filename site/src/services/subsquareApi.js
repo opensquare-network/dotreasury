@@ -1,9 +1,10 @@
 const paramsKeyConvert = (str = "") =>
   str.replace(/[A-Z]/g, ([s]) => `_${s.toLowerCase()}`);
+
 class Api {
   endpoint = null;
 
-  constructor(endpoint) {
+  constructor(endpoint = "") {
     this.endpoint = endpoint.replace(/\/+$/, "");
   }
 
