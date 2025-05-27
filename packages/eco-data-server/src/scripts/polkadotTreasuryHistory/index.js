@@ -4,7 +4,10 @@ const dayjs = require("dayjs");
 const utc = require("dayjs/plugin/utc");
 dayjs.extend(utc);
 
+const pick = require("lodash.pick");
 const { createChainApis } = require("../../apis");
+const { endpoints } = require("../../apis/endpoints");
+
 const { calcTotalBalance } = require("../../apis/treasury/polkadot");
 const { getTotalFiatValue, getTreasuryHistoryCol } = require("../../mongo");
 const { getTreasuryBalancesArray } = require("../../apis/treasury");
@@ -12,6 +15,7 @@ const {
   getDotUsdtCollection,
   getMythUsdtCol,
 } = require("@dotreasury/price/src/mongo");
+const { getTreasuryBalance } = require("./getTreasuryBalance");
 
 async function normalizeBalancesItem(balance, timestamp) {
   if (["USDt", "USDC"].includes(balance.token)) {
@@ -88,6 +92,7 @@ async function generateTreasuryHistory() {
   }
 }
 
-createChainApis()
+createChainApis(pick(endpoints, ["polkadot", "polkadotAssetHub", "hydradx"]))
   .then(generateTreasuryHistory)
+  .catch(console.error)
   .finally(() => process.exit(0));
