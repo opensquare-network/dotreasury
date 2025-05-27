@@ -4,9 +4,7 @@ const dayjs = require("dayjs");
 const utc = require("dayjs/plugin/utc");
 dayjs.extend(utc);
 
-const pick = require("lodash.pick");
 const { createChainApis } = require("../../apis");
-const { endpoints } = require("../../apis/endpoints");
 
 const { calcTotalBalance } = require("../../apis/treasury/polkadot");
 const { getTotalFiatValue, getTreasuryHistoryCol } = require("../../mongo");
@@ -88,11 +86,16 @@ async function generateTreasuryHistoryItem(daysAgo) {
 
 async function generateTreasuryHistory() {
   for (let i = 0; i < 30; i++) {
+    console.log(`Generating treasury history for ${i} days ago...`);
     await generateTreasuryHistoryItem(i);
   }
 }
 
-createChainApis(pick(endpoints, ["polkadot", "polkadotAssetHub", "hydradx"]))
+createChainApis({
+  polkadot: ["wss://rpc.polkadot.io", "wss://polkadot-rpc.dwellir.com"],
+  hydradx: ["wss://hydradx-rpc.dwellir.com/", "wss://rpc.hydradx.cloud/"],
+  polkadotAssetHub: ["wss://dot-rpc.stakeworld.io/assethub"],
+})
   .then(generateTreasuryHistory)
   .catch(console.error)
   .finally(() => process.exit(0));
