@@ -22,7 +22,7 @@ const {
   getMythTreasuryOnMythosFromApi,
 } = require("../../apis/treasury/polkadot/treasuryOnMythos");
 const {
-  getLoansBifrostDotBalanceByBlockHeight,
+  getLoansBifrostDotBalanceByTimestamp,
 } = require("../../apis/treasury/polkadot/loans");
 
 const oneDay = 24 * 60 * 60 * 1000;
@@ -104,20 +104,10 @@ async function getHydrationTreasuries(api, daysAgo) {
   return await getTreasuryOnHydrationFromApi(blockApi);
 }
 
-async function getLoansBifrostDotBalance(api, daysAgo) {
-  const blockHash = await api.rpc.chain.getFinalizedHead();
-  if (daysAgo === 0) {
-    return blockHash;
-  }
-
-  const blocksAgo =
-    (daysAgo * oneDay) / (BlockIntervals.bifrostPolkadot * 1000);
-  const blockNumber = await api.query.system.number.at(blockHash);
-  const targetBlockNumber = blockNumber.toNumber() - blocksAgo;
-
-  const loansBifrostDotBalance = await getLoansBifrostDotBalanceByBlockHeight(
-    targetBlockNumber,
-  );
+function getLoansBifrostDotBalance(daysAgo) {
+  const timestamp = Date.now() - daysAgo * oneDay;
+  const loansBifrostDotBalance =
+    getLoansBifrostDotBalanceByTimestamp(timestamp);
   return {
     loansBifrostDotBalance,
   };
@@ -137,9 +127,7 @@ async function getTreasuryBalance(daysAgo) {
     getHydrationTreasuries(api, daysAgo),
   );
 
-  const bifrostTreasuries = await multiApiQuery("bifrostPolkadot", (api) =>
-    getLoansBifrostDotBalance(api, daysAgo),
-  );
+  const bifrostTreasuries = getLoansBifrostDotBalance(daysAgo);
 
   return {
     ...polkadotTreasuries,

@@ -3,12 +3,12 @@ const loansBifrostDotBalance = 0;
 const loansPendulumDotBalance = 500000000000000;
 const loansHydrationDotBalance = 10000000000000000;
 
-async function getLoansBifrostDotBalanceByBlockHeight(blockHeight) {
-  // if (blockHeight > ?) {
+function getLoansBifrostDotBalanceByTimestamp(timestamp) {
+  // if (timestamp > ?) {
   //   return 100000000000000000;
   // }
 
-  if (blockHeight > 6910429) {
+  if (timestamp > 1742984040000) {
     return 0;
   }
 
@@ -20,5 +20,5 @@ module.exports = {
   loansBifrostDotBalance,
   loansPendulumDotBalance,
   loansHydrationDotBalance,
-  getLoansBifrostDotBalanceByBlockHeight,
+  getLoansBifrostDotBalanceByTimestamp,
 };
