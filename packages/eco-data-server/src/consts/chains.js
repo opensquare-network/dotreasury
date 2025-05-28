@@ -18,7 +18,7 @@ const CHAINS = Object.freeze({
   astar: "astar",
 });
 
-const omitChains = [];
+const omitChains = ["polkadotAssetHub", "khala"];
 
 module.exports = {
   CHAINS,
