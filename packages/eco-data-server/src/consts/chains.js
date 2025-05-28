@@ -2,7 +2,6 @@ const CHAINS = Object.freeze({
   polkadot: "polkadot",
   kusama: "kusama",
   centrifuge: "centrifuge",
-  khala: "khala",
   phala: "phala",
   basilisk: "basilisk",
   hydradx: "hydradx",
