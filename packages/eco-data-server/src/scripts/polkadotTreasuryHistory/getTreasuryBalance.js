@@ -21,6 +21,9 @@ const {
 const {
   getMythTreasuryOnMythosFromApi,
 } = require("../../apis/treasury/polkadot/treasuryOnMythos");
+const {
+  getLoansBifrostDotBalanceByBlockHeight,
+} = require("../../apis/treasury/polkadot/loans");
 
 const oneDay = 24 * 60 * 60 * 1000;
 
@@ -28,6 +31,7 @@ const BlockIntervals = {
   polkadot: 6,
   polkadotAssetHub: 12,
   hydradx: 12,
+  bifrostPolkadot: 6,
 };
 
 async function getBlockHash(api, blockInterval, daysAgo) {
@@ -100,6 +104,25 @@ async function getHydrationTreasuries(api, daysAgo) {
   return await getTreasuryOnHydrationFromApi(blockApi);
 }
 
+async function getLoansBifrostDotBalance(api, daysAgo) {
+  const blockHash = await api.rpc.chain.getFinalizedHead();
+  if (daysAgo === 0) {
+    return blockHash;
+  }
+
+  const blocksAgo =
+    (daysAgo * oneDay) / (BlockIntervals.bifrostPolkadot * 1000);
+  const blockNumber = await api.query.system.number.at(blockHash);
+  const targetBlockNumber = blockNumber.toNumber() - blocksAgo;
+
+  const loansBifrostDotBalance = await getLoansBifrostDotBalanceByBlockHeight(
+    targetBlockNumber,
+  );
+  return {
+    loansBifrostDotBalance,
+  };
+}
+
 async function getTreasuryBalance(daysAgo) {
   const polkadotTreasuries = await multiApiQuery("polkadot", (api) =>
     getPolkadotTreasuries(api, daysAgo),
@@ -114,10 +137,15 @@ async function getTreasuryBalance(daysAgo) {
     getHydrationTreasuries(api, daysAgo),
   );
 
+  const bifrostTreasuries = await multiApiQuery("bifrostPolkadot", (api) =>
+    getLoansBifrostDotBalance(api, daysAgo),
+  );
+
   return {
     ...polkadotTreasuries,
     ...polkadotAssetHubTreasuries,
     ...hydrationTreasuries,
+    ...bifrostTreasuries,
   };
 }
 

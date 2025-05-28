@@ -36,6 +36,7 @@ function calcTotalBalance({
   hydrationTreasuryAccount2,
   hydrationTreasuryAccount3,
   hydrationTreasuryAccount4,
+  loansBifrostDotBalance,
 }) {
   const {
     accountUsdt: hydrationAccount1Usdt,
@@ -154,6 +155,7 @@ async function getPolkadotTreasuryData() {
     hydrationTreasuryAccount2,
     hydrationTreasuryAccount3,
     hydrationTreasuryAccount4,
+    loansBifrostDotBalance,
   });
 }
 

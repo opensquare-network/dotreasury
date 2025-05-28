@@ -95,6 +95,10 @@ createChainApis({
   polkadot: ["wss://rpc.polkadot.io", "wss://polkadot-rpc.dwellir.com"],
   hydradx: ["wss://hydradx-rpc.dwellir.com/", "wss://rpc.hydradx.cloud/"],
   polkadotAssetHub: ["wss://dot-rpc.stakeworld.io/assethub"],
+  bifrostPolkadot: [
+    "wss://hk.p.bifrost-rpc.liebi.com/ws",
+    "wss://eu.bifrost-polkadot-rpc.liebi.com/ws",
+  ],
 })
   .then(generateTreasuryHistory)
   .catch(console.error)
