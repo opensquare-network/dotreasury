@@ -8,6 +8,7 @@ function getLoansBifrostDotBalanceByTimestamp(timestamp) {
   //   return 100000000000000000;
   // }
 
+  // https://bifrost.subsquare.io/referenda/110?tab=timeline
   if (timestamp > 1742984040000) {
     return 0;
   }
