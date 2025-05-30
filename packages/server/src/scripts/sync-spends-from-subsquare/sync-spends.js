@@ -6,7 +6,7 @@ const { encodeAddress } = require("@polkadot/keyring");
 async function fetchTreasurySpendDetail(index) {
   console.log(`Fetching spend detail for index ${index}`);
   const resp = await fetch(
-    `https://polkadot.subsquare.io/api/treasury/spends/${index}`,
+    `https://polkadot-api.subsquare.io/treasury/spends/${index}`,
   );
   if (!resp.ok) {
     throw new Error(
@@ -19,7 +19,7 @@ async function fetchTreasurySpendDetail(index) {
 async function fetchPagedSpendsFromSubsquare(page) {
   console.log(`Fetching spends from subsquare page ${page}`);
   const resp = await fetch(
-    `https://polkadot.subsquare.io/api/treasury/spends?page=${page}`,
+    `https://polkadot-api.subsquare.io/treasury/spends?page=${page}`,
   );
   if (!resp.ok) {
     throw new Error(

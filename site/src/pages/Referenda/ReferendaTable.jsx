@@ -51,7 +51,7 @@ const TableWrapper = styled.div`
 `;
 
 const fetchGov2ReferendaTitle = async (chain, referendumIndex) => {
-  const apiUrl = `https://${chain}.subsquare.io/api/gov2/referendums/${referendumIndex}`;
+  const apiUrl = `https://${chain}-api.subsquare.io/gov2/referendums/${referendumIndex}`;
   const { result } = await api.fetch(apiUrl);
   return result?.title || "";
 };

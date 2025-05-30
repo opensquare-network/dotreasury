@@ -4,7 +4,7 @@ const { getSubsquareTreasurySpendCollection } = require("../../mongo/polkadot");
 async function fetchTipDetail(hash) {
   console.log(`Fetching tip detail for hash ${hash}`);
   const resp = await fetch(
-    `https://polkadot.subsquare.io/api/treasury/tips/${hash}`,
+    `https://polkadot-api.subsquare.io/treasury/tips/${hash}`,
   );
   if (!resp.ok) {
     throw new Error(
@@ -17,7 +17,7 @@ async function fetchTipDetail(hash) {
 async function fetchPagedTipsFromSubsquare(page) {
   console.log(`Fetching tips from subsquare page ${page}`);
   const resp = await fetch(
-    `https://polkadot.subsquare.io/api/treasury/tips?page=${page}`,
+    `https://polkadot-api.subsquare.io/treasury/tips?page=${page}`,
   );
   if (!resp.ok) {
     throw new Error(`Failed to fetch tips from subsquare: ${resp.statusText}`);
