@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import BigNumber from "bignumber.js";
 import { querySystemAccountBalance } from "../../utils/useBalance";
 import { useEffect } from "react";
-import { currentChain } from "../../utils/chains";
+import subsquareApi from "../../services/subsquareApi";
 
 export function useBountiesTotalBalance(bounties) {
   const api = useApi();
@@ -20,15 +20,13 @@ export function useBountiesTotalBalance(bounties) {
           if (!id) return new BigNumber(0);
 
           try {
-            const response = await fetch(
-              `https://${currentChain}.subsquare.io/api/treasury/bounties/${id}`,
+            const { result } = await subsquareApi.fetch(
+              `/treasury/bounties/${id}`,
             );
-            const result = await response.json();
             const address = result?.onchainData?.address;
 
             if (!address) {
-              const metadataValue =
-                response?.result?.onchainData?.meta?.value || 0;
+              const metadataValue = result?.onchainData?.meta?.value || 0;
               return new BigNumber(metadataValue);
             }
 

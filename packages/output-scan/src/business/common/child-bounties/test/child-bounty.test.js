@@ -38,7 +38,7 @@ describe("Child bounty", () => {
     const api = await getApi();
     const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
 
-    const descriptions = await getChildBountyDescriptions(0, { blockHeight, blockHash })
+    const descriptions = await getChildBountyDescriptions(11, 0, { blockHeight, blockHash })
     expect(descriptions).toEqual("Child Bounty 1 - March 2022 - Dubstard");
   })
 })

@@ -24,7 +24,6 @@ const ChainTokenMap = Object.freeze({
   [CHAINS.polkadot]: tokens.DOT,
   [CHAINS.kusama]: tokens.KSM,
   [CHAINS.centrifuge]: tokens.CFG,
-  [CHAINS.khala]: tokens.PHA,
   [CHAINS.phala]: tokens.PHA,
   [CHAINS.basilisk]: tokens.BSX,
   [CHAINS.hydradx]: tokens.HDX,

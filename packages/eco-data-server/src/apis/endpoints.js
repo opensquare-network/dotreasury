@@ -5,10 +5,6 @@ const endpoints = Object.freeze({
     "wss://fullnode.centrifuge.io/",
     "wss://rpc-centrifuge.luckyfriday.io/",
   ],
-  khala: [
-    "wss://khala.api.onfinality.io/public-ws",
-    "wss://khala-rpc.dwellir.com/",
-  ],
   phala: [
     "wss://phala.api.onfinality.io/public-ws",
     "wss://phala-rpc.dwellir.com/",

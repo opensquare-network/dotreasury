@@ -1,4 +1,4 @@
-const { updateChildBounty } = require("../../../mongo/service/childBounty");
+const { updateChildBountyWithParentId } = require("../../../mongo/service/childBounty");
 const {
   consts: {
     ChildBountyState,
@@ -9,7 +9,7 @@ const {
 
 async function handleCanceled(event, indexer) {
   const data = event.data.toJSON();
-  const [, childBountyId] = data;
+  const [parentBountyId, childBountyId] = data;
 
   const state = {
     indexer,
@@ -23,7 +23,7 @@ async function handleCanceled(event, indexer) {
     indexer,
   };
 
-  await updateChildBounty(childBountyId, {
+  await updateChildBountyWithParentId(parentBountyId, childBountyId, {
     state,
     isFinal: true,
   }, timelineItem);

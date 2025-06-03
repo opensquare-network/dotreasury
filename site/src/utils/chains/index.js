@@ -4,7 +4,6 @@ import { basilisk } from "./basilisk";
 import { centrifuge } from "./centrifuge";
 import { hydradx } from "./hydradx";
 import { interlay } from "./interlay";
-import { khala } from "./khala";
 import { kintsugi } from "./kintsugi";
 import { phala } from "./phala";
 import { moonbeam } from "./moonbeam";
@@ -25,7 +24,6 @@ export const CHAINS = {
   centrifuge,
   hydradx,
   interlay,
-  khala,
   kintsugi,
   phala,
   moonriver,
