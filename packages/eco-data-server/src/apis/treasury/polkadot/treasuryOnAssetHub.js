@@ -17,20 +17,15 @@ async function getAssetHubAssetTreasuryBalance(api, assetId) {
   return account.toJSON();
 }
 
-async function getTreasuryOnAssetHub() {
-  const dotTreasuryBalanceOnAssetHub = await multiApiQuery(
-    "polkadotAssetHub",
-    (api) => getAssetHubTreasuryAccount(api),
+async function getTreasuryOnAssetHubFromApi(api) {
+  const dotTreasuryBalanceOnAssetHub = await getAssetHubTreasuryAccount(api);
+  const usdtTreasuryBalanceOnAssetHub = await getAssetHubAssetTreasuryBalance(
+    api,
+    USDT_ASSET_ID,
   );
-
-  const usdtTreasuryBalanceOnAssetHub = await multiApiQuery(
-    "polkadotAssetHub",
-    (api) => getAssetHubAssetTreasuryBalance(api, USDT_ASSET_ID),
-  );
-
-  const usdcTreasuryBalanceOnAssetHub = await multiApiQuery(
-    "polkadotAssetHub",
-    (api) => getAssetHubAssetTreasuryBalance(api, USDC_ASSET_ID),
+  const usdcTreasuryBalanceOnAssetHub = await getAssetHubAssetTreasuryBalance(
+    api,
+    USDC_ASSET_ID,
   );
 
   return {
@@ -40,6 +35,13 @@ async function getTreasuryOnAssetHub() {
   };
 }
 
+async function getTreasuryOnAssetHub() {
+  return await multiApiQuery("polkadotAssetHub", (api) =>
+    getTreasuryOnAssetHubFromApi(api),
+  );
+}
+
 module.exports = {
   getTreasuryOnAssetHub,
+  getTreasuryOnAssetHubFromApi,
 };

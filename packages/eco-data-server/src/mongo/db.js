@@ -16,15 +16,18 @@ const statusCollectionName = "status";
 const mongoUrl = process.env.MONGO_URL || "mongodb://127.0.0.1:27017";
 let statusCol = null;
 let priceCol = null;
+let treasuryHistoryCol = null;
 
 async function initDb() {
   client = await MongoClient.connect(mongoUrl);
 
-  const dbName = getDbName()
+  const dbName = getDbName();
   db = client.db(dbName);
 
   statusCol = db.collection(statusCollectionName);
   priceCol = db.collection("price");
+  treasuryHistoryCol = db.collection("treasuryHistory");
+
   await _createIndexes();
 }
 
@@ -53,6 +56,11 @@ async function getPriceCol() {
   return priceCol;
 }
 
+async function getTreasuryHistoryCol() {
+  await tryInit(treasuryHistoryCol);
+  return treasuryHistoryCol;
+}
+
 async function close() {
   if (client) {
     await client.close();
@@ -63,4 +71,5 @@ module.exports = {
   getStatusCol,
   close,
   getPriceCol,
-}
+  getTreasuryHistoryCol,
+};

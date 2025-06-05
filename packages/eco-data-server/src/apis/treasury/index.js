@@ -8,10 +8,8 @@ const { queryKintsugiTreasuryBalance } = require("./kintsugi");
 const { getPolkadotTreasuryData } = require("./polkadot");
 const { CHAINS } = require("../../consts");
 
-async function updatePolkadotTreasuryBalance() {
-  const balance = await queryChainTreasuryBalance(CHAINS.polkadot);
-  const treasuryData = await getPolkadotTreasuryData();
-  const balances = [
+function getTreasuryBalancesArray(treasuryData) {
+  return [
     {
       token: "DOT",
       decimals: 10,
@@ -25,6 +23,12 @@ async function updatePolkadotTreasuryBalance() {
       balance: treasuryData.myth,
     },
   ];
+}
+
+async function updatePolkadotTreasuryBalance() {
+  const balance = await queryChainTreasuryBalance(CHAINS.polkadot);
+  const treasuryData = await getPolkadotTreasuryData();
+  const balances = getTreasuryBalancesArray(treasuryData);
   await upsertChainTreasuryWithDetail(CHAINS.polkadot, balance, balances);
 }
 
@@ -46,5 +50,6 @@ async function updateTreasuryBalance(chain) {
 }
 
 module.exports = {
+  getTreasuryBalancesArray,
   updateTreasuryBalance,
 };

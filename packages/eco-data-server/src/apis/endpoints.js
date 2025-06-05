@@ -1,6 +1,6 @@
 const endpoints = Object.freeze({
-  polkadot: ["wss://rpc.polkadot.io", "wss://polkadot-rpc.dwellir.com"],
-  kusama: ["wss://kusama-rpc.polkadot.io", "wss://kusama-rpc.dwellir.com"],
+  polkadot: ["wss://rpc.polkadot.io", "wss://rpc.ibp.network/polkadot"],
+  kusama: ["wss://kusama-rpc.polkadot.io", "wss://rpc.ibp.network/kusama"],
   centrifuge: [
     "wss://fullnode.centrifuge.io/",
     "wss://rpc-centrifuge.luckyfriday.io/",
@@ -9,15 +9,15 @@ const endpoints = Object.freeze({
     "wss://phala.api.onfinality.io/public-ws",
     "wss://phala-rpc.dwellir.com/",
   ],
-  hydradx: ["wss://hydradx-rpc.dwellir.com/", "wss://rpc.hydradx.cloud/"],
+  hydradx: ["wss://rpc.hydradx.cloud/", "wss://hydration.ibp.network/"],
   basilisk: ["wss://basilisk-rpc.dwellir.com/", "wss://rpc.basilisk.cloud/"],
   interlay: [
     "wss://api.interlay.io/parachain",
-    "wss://interlay-rpc.dwellir.com/",
+    "wss://rpc-interlay.luckyfriday.io",
   ],
   kintsugi: [
-    "wss://kintsugi-rpc.dwellir.com/",
     "wss://api-kusama.interlay.io/parachain",
+    "wss://kintsugi.api.onfinality.io/public-ws",
   ],
   moonriver: [
     "wss://wss.api.moonriver.moonbeam.network",
@@ -53,8 +53,8 @@ const endpoints = Object.freeze({
   ],
   mythos: ["wss://polkadot-mythos-rpc.polkadot.io"],
   polkadotAssetHub: [
-    "wss://dot-rpc.stakeworld.io/assethub",
-    "wss://statemint.public.curie.radiumblock.co/ws",
+    "wss://polkadot-asset-hub-rpc.polkadot.io",
+    "wss://sys.ibp.network/asset-hub-polkadot",
   ],
   astar: ["wss://rpc.astar.network/", "wss://astar-rpc.dwellir.com/"],
 });

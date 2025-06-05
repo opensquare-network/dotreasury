@@ -4,7 +4,7 @@ const {
   getBountyTreasuryAddress,
 } = require("./common");
 
-async function getPolkadotTreasuryAccount(api) {
+async function getTreasuryDotOnRelayChainFromApi(api) {
   const address = getTreasuryAddress();
   const account = await api.query.system.account(address);
   return account.toJSON();
@@ -12,7 +12,7 @@ async function getPolkadotTreasuryAccount(api) {
 
 async function getTreasuryDotOnRelayChain() {
   return await multiApiQuery("polkadot", (api) =>
-    getPolkadotTreasuryAccount(api),
+    getTreasuryDotOnRelayChainFromApi(api),
   );
 }
 
@@ -22,7 +22,7 @@ async function getBountyTreasuryAccount(api, bountyIndex) {
   return account.toJSON();
 }
 
-async function getBountyTreasuryAccounts(api) {
+async function getBountyTreasuryOnRelayChainFromApi(api) {
   const bounties = await api.query.bounties.bounties.entries();
   const bountyIndexes = bounties.map(([key]) => key.args[0].toNumber());
   const promises = bountyIndexes.map((index) =>
@@ -33,11 +33,13 @@ async function getBountyTreasuryAccounts(api) {
 
 async function getBountyTreasuryOnRelayChain() {
   return await multiApiQuery("polkadot", (api) =>
-    getBountyTreasuryAccounts(api),
+    getBountyTreasuryOnRelayChainFromApi(api),
   );
 }
 
 module.exports = {
   getTreasuryDotOnRelayChain,
+  getTreasuryDotOnRelayChainFromApi,
   getBountyTreasuryOnRelayChain,
+  getBountyTreasuryOnRelayChainFromApi,
 };
