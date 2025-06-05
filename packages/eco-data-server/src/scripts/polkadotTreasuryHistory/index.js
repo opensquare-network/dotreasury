@@ -84,6 +84,7 @@ async function generateTreasuryHistoryItem(daysAgo) {
     },
     { upsert: true },
   );
+  console.log(`Polkadot treasury updated for date ${date}`);
 }
 
 async function generateTreasuryHistory() {
