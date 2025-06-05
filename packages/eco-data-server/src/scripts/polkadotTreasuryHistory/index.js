@@ -63,7 +63,9 @@ async function generateTreasuryHistoryItem(daysAgo) {
   const normalizedBalances = await Promise.all(
     balances.map((item) => normalizeBalancesItem(item, timestamp)),
   );
-  if (!normalizedBalances.every((item) => item.price)) {
+  const noPriceItem = normalizedBalances.find(item => !item.price);
+  if (!noPriceItem) {
+    console.log(`Can not find price for token ${noPriceItem.token}`);
     return;
   }
 
