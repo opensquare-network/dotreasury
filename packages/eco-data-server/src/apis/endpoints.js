@@ -40,8 +40,8 @@ const endpoints = Object.freeze({
     "wss://eu.bifrost-polkadot-rpc.liebi.com/ws",
   ],
   bifrostKusama: [
-    "wss://bifrost-rpc.dwellir.com",
     "wss://bifrost-rpc.liebi.com/ws",
+    "wss://us.bifrost-rpc.liebi.com/ws",
   ],
   darwinia: [
     "wss://rpc.darwinia.network",
