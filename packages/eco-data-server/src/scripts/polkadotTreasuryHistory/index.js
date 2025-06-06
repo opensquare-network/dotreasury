@@ -64,7 +64,7 @@ async function generateTreasuryHistoryItem(daysAgo) {
     balances.map((item) => normalizeBalancesItem(item, timestamp)),
   );
   const noPriceItem = normalizedBalances.find(item => !item.price);
-  if (!noPriceItem) {
+  if (noPriceItem) {
     console.log(`Can not find price for token ${noPriceItem.token}`);
     return;
   }
@@ -84,6 +84,7 @@ async function generateTreasuryHistoryItem(daysAgo) {
     },
     { upsert: true },
   );
+  console.log(`Polkadot treasury updated for date ${date}`);
 }
 
 async function generateTreasuryHistory() {
