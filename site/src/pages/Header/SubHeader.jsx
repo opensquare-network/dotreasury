@@ -73,6 +73,9 @@ const TabWrapper = styled(Tab)`
       padding-left: 0 !important;
       padding-right: 0 !important;
       color: var(--textSecondary) !important;
+      a {
+        margin: 0 !important;
+      }
     }
     & div.ui.label,
     & div > div.ui.label {

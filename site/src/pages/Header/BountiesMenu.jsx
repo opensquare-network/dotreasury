@@ -25,11 +25,7 @@ function BountiesMenuExternalLink() {
 
   return (
     <Menu.Item key="Bounties">
-      <ExternalLink
-        href={`https://${chain}.subsquare.io/treasury/bounties`}
-        target="_blank"
-        rel="noreferrer"
-      >
+      <ExternalLink href={`https://${chain}.subsquare.io/treasury/bounties`}>
         Bounties
         <IconMask
           src="/imgs/caret-up-right.svg"
