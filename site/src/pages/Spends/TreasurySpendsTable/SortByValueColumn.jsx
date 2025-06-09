@@ -27,7 +27,7 @@ export function useTreasurySpendsSortByValueColumn() {
         <ValueCellWrapper>
           <ValueDisplayWrapper>
             <ValueDisplay value={value} precision={asset?.decimals} />{" "}
-            {asset.symbol}
+            {asset?.symbol}
           </ValueDisplayWrapper>
         </ValueCellWrapper>
       );
