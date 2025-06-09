@@ -26,6 +26,7 @@ import {
   currentChainSettings,
   isCentrifuge,
   isKusama,
+  isPolkadot,
 } from "../../utils/chains";
 import GasFeeIncomeMenu from "./GasFeeIncomeMenu";
 import BlockRewardsIncomeMenu from "./BlockRewardsMenu";
@@ -222,6 +223,13 @@ const TabExampleSecondaryPointing = () => {
               active:
                 pathname.indexOf("/bounties") === 0 ||
                 pathname.indexOf("/child-bounties") === 0,
+              onClick: (e) => {
+                if (isPolkadot || isKusama) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  return false;
+                }
+              },
             },
           },
           currentChainSettings.hasBurnt && {
