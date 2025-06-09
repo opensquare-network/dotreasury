@@ -9,10 +9,12 @@ class Api {
   }
 
   fetch = (path, params = {}, options) => {
-    const url = this.endpoint + path;
+    let url = this.endpoint + path;
+    const searchParams = new URLSearchParams();
     for (const key of Object.keys(params)) {
-      url.searchParams.set(paramsKeyConvert(key), params[key]);
+      searchParams.set(paramsKeyConvert(key), params[key]);
     }
+    url += `?${searchParams.toString()}`;
 
     return new Promise(async (resolve, reject) => {
       try {
