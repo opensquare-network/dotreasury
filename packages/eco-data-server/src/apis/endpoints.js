@@ -56,6 +56,10 @@ const endpoints = Object.freeze({
     "wss://polkadot-asset-hub-rpc.polkadot.io",
     "wss://sys.ibp.network/asset-hub-polkadot",
   ],
+  kusamaAssetHub: [
+    "wss://asset-hub-kusama-rpc.dwellir.com/",
+    "wss://statemine-rpc-tn.dwellir.com/",
+  ],
   astar: ["wss://rpc.astar.network/", "wss://astar-rpc.dwellir.com/"],
 });
 

@@ -1,17 +1,27 @@
 const BigNumber = require("bignumber.js");
 const { getTreasuryKsmOnRelayChain } = require("./treasuryOnRelay");
+const { getTreasuryKsmOnAssetHub } = require("./treasuryOnAssethub");
+const { loansHydrationKsmBalance } = require("./loans");
 
-function calcTotalBalance({ treasuryKsmOnRelay }) {
-  return new BigNumber(treasuryKsmOnRelay?.data.free || 0).toFixed();
+function calcTotalBalance({
+  treasuryKsmOnRelay,
+  treasuryKsmOnAssetHub,
+  loansHydrationKsmBalance,
+}) {
+  return new BigNumber(treasuryKsmOnRelay?.data.free || 0)
+    .plus(treasuryKsmOnAssetHub?.data.free || 0)
+    .plus(loansHydrationKsmBalance)
+    .toFixed();
 }
 
 async function getKusamaTreasuryData() {
   const treasuryKsmOnRelay = await getTreasuryKsmOnRelayChain();
+  const treasuryKsmOnAssetHub = await getTreasuryKsmOnAssetHub();
 
   return calcTotalBalance({
     treasuryKsmOnRelay,
-    //TODO: Add KSM on Asset hub
-    //TODO: Add Loans KSM on Hydration
+    treasuryKsmOnAssetHub,
+    loansHydrationKsmBalance,
   });
 }
 
