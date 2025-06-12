@@ -1,8 +1,8 @@
-const value = "hydradx";
+const value = "hydration";
 
 export const hydradx = {
   value,
-  name: "HydraDX",
+  name: "Hydration",
   symbol: "HDX",
   decimals: 12,
   hasSubscan: true,
