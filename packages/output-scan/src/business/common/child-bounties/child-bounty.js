@@ -8,9 +8,16 @@ async function getChildBounty(parentBountyId, childBountyId, indexer) {
   return bounty.toJSON();
 }
 
-async function getChildBountyDescriptions(childBountyId, indexer) {
+async function getChildBountyDescriptions(parentBountyId, childBountyId, indexer) {
   const blockApi = await findBlockApi(indexer.blockHash);
-  const descriptions = await blockApi.query.childBounties.childBountyDescriptions(childBountyId);
+  let descriptions;
+  if (blockApi.query.childBounties?.childBountyDescriptions) {
+    descriptions = await blockApi.query.childBounties.childBountyDescriptions(childBountyId);
+  } else if (blockApi.query.childBounties?.childBountyDescriptionsV1) {
+    descriptions = await blockApi.query.childBounties.childBountyDescriptionsV1(parentBountyId, childBountyId);
+  } else {
+    return null;
+  }
   return descriptions.toHuman();
 }
 

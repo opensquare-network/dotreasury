@@ -2,9 +2,9 @@ const { getChildBountyCollection } = require("../index");
 const isEmpty = require("lodash.isempty");
 
 async function insertChildBounty(childBountyObj = {}) {
-  const { index } = childBountyObj;
+  const { index, parentBountyId } = childBountyObj;
   const col = await getChildBountyCollection();
-  const maybeInDb = await col.findOne({ index });
+  const maybeInDb = await col.findOne({ index, parentBountyId });
   if (maybeInDb) {
     return;
   }
@@ -23,6 +23,19 @@ async function updateChildBounty(index, updates, timelineItem) {
 
   const col = await getChildBountyCollection();
   await col.updateOne({ index }, update);
+}
+
+async function updateChildBountyWithParentId(parentBountyIndex, index, updates, timelineItem) {
+  let update = isEmpty(updates) ? null : { $set: updates };
+  if (timelineItem) {
+    update = {
+      ...update,
+      $push: { timeline: timelineItem },
+    };
+  }
+
+  const col = await getChildBountyCollection();
+  await col.updateOne({ parentBountyId: parentBountyIndex, index }, update);
 }
 
 async function updateChildBountyTimeline(childBountyId, timelineItem) {
@@ -48,4 +61,5 @@ module.exports = {
   insertChildBounty,
   updateChildBounty,
   updateChildBountyTimeline,
+  updateChildBountyWithParentId,
 }

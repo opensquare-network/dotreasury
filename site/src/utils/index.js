@@ -206,4 +206,4 @@ export function checkInputAddress(address, addressName) {
 }
 
 export const getAssetBySymbol = (symbol) =>
-  STATEMINT_ASSETS.find((asset) => asset.symbol === symbol);
+  STATEMINT_ASSETS.find((asset) => asset?.symbol === symbol);

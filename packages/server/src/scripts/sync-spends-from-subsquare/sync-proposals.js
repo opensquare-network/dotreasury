@@ -4,7 +4,7 @@ const { getSubsquareTreasurySpendCollection } = require("../../mongo/polkadot");
 async function fetchTreasuryProposalDetail(index) {
   console.log(`Fetching treasury proposal detail for index ${index}`);
   const resp = await fetch(
-    `https://polkadot.subsquare.io/api/treasury/proposals/${index}`,
+    `https://polkadot-api.subsquare.io/treasury/proposals/${index}`,
   );
   if (!resp.ok) {
     throw new Error(
@@ -17,7 +17,7 @@ async function fetchTreasuryProposalDetail(index) {
 async function fetchPagedTreasuryProposalsFromSubsquare(page) {
   console.log(`Fetching treasury proposals from subsquare page ${page}`);
   const resp = await fetch(
-    `https://polkadot.subsquare.io/api/treasury/proposals?page=${page}`,
+    `https://polkadot-api.subsquare.io/treasury/proposals?page=${page}`,
   );
   if (!resp.ok) {
     throw new Error(

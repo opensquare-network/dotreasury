@@ -1,4 +1,4 @@
-const { updateChildBounty } = require("../../../mongo/service/childBounty");
+const { updateChildBountyWithParentId } = require("../../../mongo/service/childBounty");
 const { getChildBounty } = require("../../common/child-bounties/child-bounty");
 const {
   consts: {
@@ -35,7 +35,7 @@ async function handleAwarded(event, indexer) {
     indexer,
   };
 
-  await updateChildBounty(childBountyId, updates, timelineItem);
+  await updateChildBountyWithParentId(parentBountyId, childBountyId, updates, timelineItem);
 }
 
 module.exports = {

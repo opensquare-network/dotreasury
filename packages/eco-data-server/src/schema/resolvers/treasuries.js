@@ -1,40 +1,6 @@
-const { getStatusCol, getPriceCol } = require("../../mongo");
+const { getStatusCol } = require("../../mongo");
 const { omitChains } = require("../../consts/chains");
-
-async function normalizeBalancesItem(balance) {
-  if (["USDt", "USDC"].includes(balance.token)) {
-    return {
-      ...balance,
-      price: 1,
-    };
-  }
-
-  const priceCol = await getPriceCol();
-  const tokenPrice = await priceCol.findOne({ token: balance.token });
-  if (!tokenPrice) {
-    return balance;
-  }
-
-  return {
-    ...balance,
-    price: tokenPrice.price,
-    priceUpdateAt: tokenPrice.priceUpdateAt.getTime(),
-  };
-}
-
-async function normalizeTreasury(treasury) {
-  const balances =
-    treasury.balances &&
-    (await Promise.all(
-      treasury.balances.map((item) => normalizeBalancesItem(item)),
-    ));
-
-  return {
-    ...treasury,
-    balances,
-    balanceUpdateAt: treasury.balanceUpdateAt.getTime(),
-  };
-}
+const { normalizeTreasury } = require("./common");
 
 async function treasuries(_, _args) {
   const { chain } = _args;
@@ -46,10 +12,7 @@ async function treasuries(_, _args) {
 
   const treasuries = await col.find(q, { projection: { _id: 0 } }).toArray();
   const filtered = treasuries.filter(
-    (item) => ![
-      "polkadotAssetHub",
-      ...omitChains,
-    ].includes(item.chain),
+    (item) => !omitChains.includes(item.chain),
   );
 
   return await Promise.all(

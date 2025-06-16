@@ -57,7 +57,7 @@ async function syncTitle({ col, fetchTitle, updateTitle }) {
 
 function fetchGov2ReferendaTitle(referendumIndex) {
   return fetchTitle(
-    `https://${process.env.CHAIN}.subsquare.io/api/gov2/referendums/${referendumIndex}`,
+    `https://${process.env.CHAIN}-api.subsquare.io/gov2/referendums/${referendumIndex}`,
   );
 }
 
@@ -75,7 +75,7 @@ async function syncGov2ReferendaTitle() {
 
 function fetchProposalTitle(proposalIndex) {
   return fetchTitle(
-    `https://${process.env.CHAIN}.subsquare.io/api/treasury/proposals/${proposalIndex}`,
+    `https://${process.env.CHAIN}-api.subsquare.io/treasury/proposals/${proposalIndex}`,
   );
 }
 

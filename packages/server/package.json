@@ -13,7 +13,7 @@
     "bignumber.js": "^9.1.1",
     "dotenv": "16.1.4",
     "ipfs-only-hash": "^4.0.0",
-    "koa": "^2.13.0",
+    "koa": "^2.16.1",
     "koa-bodyparser": "^4.3.0",
     "koa-helmet": "^6.0.0",
     "koa-logger": "^3.2.1",

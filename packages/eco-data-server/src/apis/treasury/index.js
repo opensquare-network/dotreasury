@@ -1,36 +1,23 @@
-const {
-  upsertChainTreasury,
-  upsertChainTreasuryWithDetail,
-} = require("../../mongo/service");
+const { upsertChainTreasury } = require("../../mongo/service");
 const { queryBifrostTreasuryBalance } = require("./bifrost");
 const { queryChainTreasuryBalance } = require("./balance");
 const { queryKintsugiTreasuryBalance } = require("./kintsugi");
-const { getPolkadotTreasuryData } = require("./polkadot");
 const { CHAINS } = require("../../consts");
-
-async function updatePolkadotTreasuryBalance() {
-  const balance = await queryChainTreasuryBalance(CHAINS.polkadot);
-  const treasuryData = await getPolkadotTreasuryData();
-  const balances = [
-    {
-      token: "DOT",
-      decimals: 10,
-      balance: treasuryData.dot,
-    },
-    { token: "USDt", decimals: 6, balance: treasuryData.usdt },
-    { token: "USDC", decimals: 6, balance: treasuryData.usdc },
-    {
-      token: "MYTH",
-      decimals: 18,
-      balance: treasuryData.myth,
-    },
-  ];
-  await upsertChainTreasuryWithDetail(CHAINS.polkadot, balance, balances);
-}
+const {
+  updatePolkadotTreasuryBalance,
+} = require("./polkadot/updatePolkadotTreasuryBalance");
+const {
+  updateKusamaTreasuryBalance,
+} = require("./kusama/updateKusamaTreasuryBalance");
 
 async function updateTreasuryBalance(chain) {
   if (CHAINS.polkadot === chain) {
     await updatePolkadotTreasuryBalance();
+    return;
+  }
+
+  if (CHAINS.kusama === chain) {
+    await updateKusamaTreasuryBalance();
     return;
   }
 

@@ -1,8 +1,8 @@
 const { createApiForChain } = require("@osn/polkadot-api-container");
 const { statusLogger } = require("../logger");
-const { endpoints: chainEndpoints } = require("./endpoints");
+const { endpoints: defaultEndpoints } = require("./endpoints");
 
-async function createChainApis() {
+async function createChainApis(chainEndpoints = defaultEndpoints) {
   const promises = [];
   for (const [chain, endpoints] of Object.entries(chainEndpoints)) {
     if ((endpoints || []).length > 0) {
@@ -15,4 +15,4 @@ async function createChainApis() {
 
 module.exports = {
   createChainApis,
-}
+};
