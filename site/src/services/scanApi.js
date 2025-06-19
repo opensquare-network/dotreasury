@@ -101,6 +101,7 @@ class ScanApi extends Api {
         );
 
         if (refreshResult) {
+          // eslint-disable-next-line no-console
           console.log("New access token is acquired.");
           localStorage.setItem(
             "token",
