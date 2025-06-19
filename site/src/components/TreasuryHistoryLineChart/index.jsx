@@ -7,17 +7,13 @@ const HistoricalLineChartWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  flex-shrink: 0;
+  // flex-shrink: 0;
   gap: 8px;
-  width: calc((100% - (48px * 3)) / 4);
-  @media screen and (max-width: 1024px) {
-    width: calc((100% - (48px * 1)) / 2);
-    min-height: 132px;
-  }
+  height: 132px;
+  width: 270px;
   @media screen and (max-width: 768px) {
     margin-top: 24px;
     width: 100%;
-    min-height: 132px;
   }
 `;
 
@@ -36,6 +32,7 @@ const ChartTitle = styled.div`
 const ChartWrapper = styled.div`
   weidth: 100%;
   flex: 1;
+  overflow: hidden;
 `;
 
 export default function TreasuryHistoryLineChart() {
