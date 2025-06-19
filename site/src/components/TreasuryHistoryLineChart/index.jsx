@@ -7,7 +7,6 @@ const HistoricalLineChartWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  // flex-shrink: 0;
   gap: 8px;
   height: 132px;
   width: 270px;
@@ -18,7 +17,7 @@ const HistoricalLineChartWrapper = styled.div`
 `;
 
 const ChartTitle = styled.div`
-  color: rgba(27, 32, 44, 0.6);
+  color: var(--textSecondary);
   text-align: end;
   width: 100%;
   text-align: right;
@@ -26,7 +25,7 @@ const ChartTitle = styled.div`
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
-  line-height: 20px; /* 142.857% */
+  line-height: 20px;
 `;
 
 const ChartWrapper = styled.div`
@@ -40,7 +39,7 @@ export default function TreasuryHistoryLineChart() {
 
   return (
     <HistoricalLineChartWrapper>
-      <ChartTitle>
+      <ChartTitle className="p-14-medium">
         Treasury History($) <span>·</span> Last 30d
       </ChartTitle>
       <ChartWrapper>
