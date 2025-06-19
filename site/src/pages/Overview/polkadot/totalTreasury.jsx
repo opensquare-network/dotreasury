@@ -108,7 +108,11 @@ export default function OverviewTotalTreasury() {
           <Tooltip
             tooltipContent={
               !isTotalDotLoading && (
-                <ValueDisplay value={totalDotFiatValue} prefix="$" />
+                <ValueDisplay
+                  abbreviate={false}
+                  value={totalDotFiatValue}
+                  prefix="$"
+                />
               )
             }
           >
@@ -135,7 +139,11 @@ export default function OverviewTotalTreasury() {
           <Tooltip
             tooltipContent={
               !isMythTokenLoading && (
-                <ValueDisplay value={totalMythTokenFiatValue} prefix="$" />
+                <ValueDisplay
+                  abbreviate={false}
+                  value={totalMythTokenFiatValue}
+                  prefix="$"
+                />
               )
             }
           >

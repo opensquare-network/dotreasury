@@ -84,7 +84,11 @@ export default function TreasuryDetailAssets() {
               precision={polkadot.decimals}
               isLoading={isAssetHubDotLoading}
               valueTooltipContent={
-                <ValueDisplay value={totalDotValue} prefix="$" />
+                <ValueDisplay
+                  abbreviate={false}
+                  value={totalDotValue}
+                  prefix="$"
+                />
               }
             />
             <AssetValueDisplay

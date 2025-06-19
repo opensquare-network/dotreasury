@@ -45,7 +45,9 @@ export default function TreasuryDetailBounties() {
             value={bountiesTotalBalance}
             precision={polkadot.decimals}
             isLoading={isBountiesTotalBalanceLoading}
-            valueTooltipContent={<ValueDisplay value={totalValue} prefix="$" />}
+            valueTooltipContent={
+              <ValueDisplay abbreviate={false} value={totalValue} prefix="$" />
+            }
           />
         </AssetWrapper>
       }

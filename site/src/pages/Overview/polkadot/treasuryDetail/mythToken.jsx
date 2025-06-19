@@ -63,7 +63,9 @@ export default function TreasuryDetailMythToken() {
             isLoading={isLoading}
             precision={MYTH.decimals}
             symbol={MYTH.symbol}
-            valueTooltipContent={<ValueDisplay value={totalValue} prefix="$" />}
+            valueTooltipContent={
+              <ValueDisplay abbreviate={false} value={totalValue} prefix="$" />
+            }
           />
         </AssetWrapper>
       }
