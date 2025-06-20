@@ -82,7 +82,11 @@ export default function OverviewTotalTreasury() {
         <Tooltip
           tooltipContent={
             !isTotalKsmLoading && (
-              <ValueDisplay value={totalKsmValue} prefix="$" />
+              <ValueDisplay
+                abbreviate={false}
+                value={totalKsmValue}
+                prefix="$"
+              />
             )
           }
         >

@@ -26,6 +26,9 @@ const ChartTitle = styled.div`
   font-style: normal;
   font-weight: 500;
   line-height: 20px;
+  display: flex;
+  justify-content: end;
+  gap: 8px;
 `;
 
 const ChartWrapper = styled.div`
