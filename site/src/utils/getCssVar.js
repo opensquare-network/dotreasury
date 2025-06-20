@@ -5,10 +5,10 @@ export default function getCssVar(property, element) {
 }
 
 export function changeColorAlpha(color, alpha) {
-  // alpha 范围限制在 0-1
+  // alpha round 0-1
   alpha = Math.max(0, Math.min(1, alpha));
 
-  // 处理 RGBA 格式
+  //  RGBA format
   if (color.startsWith("rgba(")) {
     return color.replace(
       /rgba\(([^,]+),([^,]+),([^,]+),[^)]+\)/,
@@ -16,7 +16,7 @@ export function changeColorAlpha(color, alpha) {
     );
   }
 
-  // 处理 RGB 格式
+  // RGB format
   if (color.startsWith("rgb(")) {
     return color.replace(
       /rgb\(([^,]+),([^,]+),([^)]+)\)/,
@@ -24,7 +24,7 @@ export function changeColorAlpha(color, alpha) {
     );
   }
 
-  // 处理十六进制格式
+  // hexadecimal format
   if (color.startsWith("#")) {
     let hex = color.replace("#", "");
     if (hex.length === 3) {
@@ -34,7 +34,7 @@ export function changeColorAlpha(color, alpha) {
         .join("");
     }
     if (hex.length === 6) {
-      // 转为8位hex
+      // Turn to 8-bit hex
       const a = Math.round(alpha * 255)
         .toString(16)
         .padStart(2, "0");
@@ -58,7 +58,7 @@ export function changeColorAlpha(color, alpha) {
     }
   }
 
-  // 处理 HSLA 格式
+  // HSLA format
   if (color.startsWith("hsla(")) {
     return color.replace(
       /hsla\(([^,]+),([^,]+),([^,]+),[^)]+\)/,
@@ -66,7 +66,7 @@ export function changeColorAlpha(color, alpha) {
     );
   }
 
-  // 处理 HSL 格式
+  // HSL format
   if (color.startsWith("hsl(")) {
     return color.replace(
       /hsl\(([^,]+),([^,]+),([^)]+)\)/,
@@ -74,18 +74,15 @@ export function changeColorAlpha(color, alpha) {
     );
   }
 
-  // 处理颜色名称（如red, blue等）
+  // Process the color name（(e.g., red, blue...)
   const ctx = document.createElement("canvas").getContext("2d");
   ctx.fillStyle = color;
   const rgba = ctx.fillStyle;
-  // 解析rgba字符串
-  const match = rgba.match(
-    /rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d\.]+))?\)/,
-  );
+  // Parse rgba strings
+  const match = rgba.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/);
   if (match) {
-    const [_, r, g, b] = match;
+    const [, r, g, b] = match;
     return `rgba(${r},${g},${b},${alpha})`;
   }
-  // 如果无法识别，直接返回原色值
   return color;
 }
