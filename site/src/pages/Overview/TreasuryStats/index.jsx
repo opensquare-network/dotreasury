@@ -530,6 +530,15 @@ const TreasuryStats = () => {
           yStepSize={
             currentChainSettings.ui?.totalStacked?.yStepSize || 8000000
           }
+          options={{
+            plugins: {
+              tooltip: {
+                backgroundColor: theme.tooltipBg,
+                titleColor: theme.textPrimaryContrast,
+                bodyColor: theme.textPrimaryContrast,
+              },
+            },
+          }}
         />
         <SliderWrapper>
           <Slider
@@ -549,6 +558,15 @@ const TreasuryStats = () => {
           yStepSize={
             currentChainSettings.ui?.totalStacked?.yStepSize || 8000000
           }
+          options={{
+            plugins: {
+              tooltip: {
+                backgroundColor: theme.tooltipBg,
+                titleColor: theme.textPrimaryContrast,
+                bodyColor: theme.textPrimaryContrast,
+              },
+            },
+          }}
         />
         <SliderWrapper>
           <Slider

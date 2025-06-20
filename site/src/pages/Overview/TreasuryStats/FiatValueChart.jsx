@@ -8,6 +8,7 @@ import Text from "../../../components/Text";
 import { abbreviateBigNumber } from "../../../utils";
 import { h_full } from "../../../styles/tailwindcss";
 import noop from "lodash.noop";
+import merge from "lodash.merge";
 
 const LegendWrapper = styled.div`
   display: flex;
@@ -62,11 +63,12 @@ export default function TreasuryFiatValueChart({
   onHover = noop,
   yStepSize,
   xStepSize = 3,
+  options,
 }) {
   const { dates, values } = data;
 
   /** @type {import("react-chartjs-2").ChartProps} */
-  const options = {
+  const defaultOptions = {
     type: "line",
     responsive: true,
     maintainAspectRatio: false,
@@ -195,7 +197,7 @@ export default function TreasuryFiatValueChart({
         ))}
       </LegendWrapper>
       <ChartWrapper>
-        <Line data={chartData} options={options} />
+        <Line data={chartData} options={merge(defaultOptions, options)} />
       </ChartWrapper>
     </>
   );
