@@ -1,10 +1,4 @@
-export default function getCssVar(property, element) {
-  return getComputedStyle(element || document.documentElement)
-    .getPropertyValue(property)
-    .trim();
-}
-
-export function changeColorAlpha(color, alpha) {
+export default function changeColorAlpha(color, alpha) {
   // alpha round 0-1
   alpha = Math.max(0, Math.min(1, alpha));
 
@@ -74,15 +68,5 @@ export function changeColorAlpha(color, alpha) {
     );
   }
 
-  // Process the color name（(e.g., red, blue...)
-  const ctx = document.createElement("canvas").getContext("2d");
-  ctx.fillStyle = color;
-  const rgba = ctx.fillStyle;
-  // Parse rgba strings
-  const match = rgba.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/);
-  if (match) {
-    const [, r, g, b] = match;
-    return `rgba(${r},${g},${b},${alpha})`;
-  }
   return color;
 }

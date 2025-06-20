@@ -3,7 +3,7 @@ import { Line } from "react-chartjs-2";
 import { useMemo } from "react";
 import dayjs from "dayjs";
 import { useWindowSize } from "react-use";
-import { changeColorAlpha } from "../../utils/getCssVar";
+import changeColorAlpha from "../../utils/changeColorAlpha";
 import { useTheme } from "styled-components";
 
 export default function HistoryLineChart({ labels, data }) {
