@@ -138,9 +138,6 @@ export function useWhyDidYouUpdate(name, props) {
           };
         }
       });
-      if (Object.keys(changesObj).length) {
-        console.log("[why-did-you-update]", name, changesObj);
-      }
     }
     previousProps.current = props;
   });

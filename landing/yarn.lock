@@ -464,6 +464,7 @@ __metadata:
     autoprefixer: ^10.4.15
     bignumber.js: ^9.1.2
     chart.js: ^4.0.1
+    chartjs-plugin-gradient: ^0.6.1
     clsx: ^2.0.0
     d3: ^7.8.5
     d3-selection: ^3.0.0
@@ -2420,6 +2421,15 @@ __metadata:
   dependencies:
     "@kurkle/color": ^0.3.0
   checksum: 5ee2d99b78608025525b5790af17178fdaa5adc3294e082deba2718029b0496109ba124f1b08dd1e4c8a04d6e842be7f384f2cfe9a11df8d1c6fe884acece52b
+  languageName: node
+  linkType: hard
+
+"chartjs-plugin-gradient@npm:^0.6.1":
+  version: 0.6.1
+  resolution: "chartjs-plugin-gradient@npm:0.6.1"
+  peerDependencies:
+    chart.js: ">=2.6.0"
+  checksum: 27c72c040708bd1e25316cc096a2f622d4d8ccd3f75fbce21d832728c8b95cca865b26bc884b012000a2e67aa303d258e20c225ac9ecc767299aac9ab5114dca
   languageName: node
   linkType: hard
 

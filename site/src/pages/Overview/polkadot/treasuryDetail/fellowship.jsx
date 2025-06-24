@@ -59,7 +59,11 @@ export default function TreasuryDetailFellowship() {
               precision={currentChainSettings.decimals}
               isLoading={isFellowshipTreasuryDotLoading}
               valueTooltipContent={
-                <ValueDisplay value={totalTreasuryValue} prefix="$" />
+                <ValueDisplay
+                  abbreviate={false}
+                  value={totalTreasuryValue}
+                  prefix="$"
+                />
               }
             />
           </AssetItem>

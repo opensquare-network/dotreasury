@@ -101,7 +101,6 @@ class ScanApi extends Api {
         );
 
         if (refreshResult) {
-          console.log("New access token is acquired.");
           localStorage.setItem(
             "token",
             JSON.stringify({

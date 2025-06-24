@@ -108,7 +108,11 @@ export default function TreasuryDetailHydration() {
             precision={polkadot.decimals}
             isLoading={isHydrationLoading}
             valueTooltipContent={
-              <ValueDisplay value={totalDotValue} prefix="$" />
+              <ValueDisplay
+                abbreviate={false}
+                value={totalDotValue}
+                prefix="$"
+              />
             }
           />
           <AssetValueDisplay

@@ -82,7 +82,11 @@ export default function TreasuryDetailLoans() {
               precision={polkadot.decimals}
               isLoading={isLoansBifrostDotLoading}
               valueTooltipContent={
-                <ValueDisplay value={totalBifrostValue} prefix="$" />
+                <ValueDisplay
+                  abbreviate={false}
+                  value={totalBifrostValue}
+                  prefix="$"
+                />
               }
             />
           </AssetItem>
@@ -96,7 +100,11 @@ export default function TreasuryDetailLoans() {
               precision={polkadot.decimals}
               isLoading={isLoansPendulumDotLoading}
               valueTooltipContent={
-                <ValueDisplay value={totalPendulumValue} prefix="$" />
+                <ValueDisplay
+                  abbreviate={false}
+                  value={totalPendulumValue}
+                  prefix="$"
+                />
               }
             />
           </AssetItem>
@@ -110,7 +118,11 @@ export default function TreasuryDetailLoans() {
               precision={polkadot.decimals}
               isLoading={isLoansHydrationDotLoading}
               valueTooltipContent={
-                <ValueDisplay value={totalHydrationValue} prefix="$" />
+                <ValueDisplay
+                  abbreviate={false}
+                  value={totalHydrationValue}
+                  prefix="$"
+                />
               }
             />
           </AssetItem>
