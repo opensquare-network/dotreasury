@@ -9,7 +9,7 @@ import styled from "styled-components";
 import PairTextVertical from "../../../../components/PairTextVertical";
 import startCase from "lodash.startcase";
 import { getChainSettings } from "../../../../utils/chains";
-import { toPrecision } from "../../../../utils";
+import ValueDisplay from "../../../../components/ValueDisplay";
 
 const Wrapper = styled.div`
   width: 112px;
@@ -95,11 +95,9 @@ const Columns = ({
         const { decimals, symbol } = getChainSettings(chain);
         const { amount } = item.onchainData.treasuryInfo;
         return (
-          <TreasurySpendValueDisplay
-            isNative={true}
-            value={toPrecision(amount, decimals, false)}
-            symbol={symbol}
-          />
+          <Wrapper>
+            <ValueDisplay value={amount} precision={decimals} /> {symbol}
+          </Wrapper>
         );
       }
 
