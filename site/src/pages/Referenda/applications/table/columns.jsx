@@ -75,9 +75,7 @@ const Columns = ({
           <div>
             {item.allSpends.map((spend, index) => {
               const { amount, isSpendLocal, symbol, assetKind = {} } = spend;
-
               const displaySymbol = isSpendLocal ? symbol : assetKind?.symbol;
-
               return (
                 <TreasurySpendValueDisplay
                   key={index}
@@ -98,6 +96,26 @@ const Columns = ({
           <Wrapper>
             <ValueDisplay value={amount} precision={decimals} /> {symbol}
           </Wrapper>
+        );
+      }
+
+      if (item?.onchainData?.stableTreasuryInfo) {
+        return (
+          <div>
+            {item?.onchainData?.stableTreasuryInfo.spends?.map(
+              (spend, index) => {
+                const { amount, symbol } = spend;
+                return (
+                  <TreasurySpendValueDisplay
+                    key={index}
+                    isNative={false}
+                    value={amount}
+                    symbol={symbol}
+                  />
+                );
+              },
+            )}
+          </div>
         );
       }
 
