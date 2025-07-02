@@ -9,7 +9,6 @@ import styled from "styled-components";
 import PairTextVertical from "../../../../components/PairTextVertical";
 import startCase from "lodash.startcase";
 import { getChainSettings } from "../../../../utils/chains";
-import ValueDisplay from "../../../../components/ValueDisplay";
 
 const Wrapper = styled.div`
   width: 112px;
@@ -90,31 +89,31 @@ const Columns = ({
       }
 
       if (item?.onchainData?.treasuryInfo) {
-        const { decimals, symbol } = getChainSettings(chain);
+        const { symbol } = getChainSettings(chain);
         const { amount } = item.onchainData.treasuryInfo;
         return (
-          <Wrapper>
-            <ValueDisplay value={amount} precision={decimals} /> {symbol}
-          </Wrapper>
+          <TreasurySpendValueDisplay
+            isNative={true}
+            value={amount}
+            symbol={symbol}
+          />
         );
       }
 
-      if (item?.onchainData?.stableTreasuryInfo) {
+      if (item?.onchainData?.stableTreasuryInfo?.spends?.length > 0) {
         return (
           <div>
-            {item?.onchainData?.stableTreasuryInfo.spends?.map(
-              (spend, index) => {
-                const { amount, symbol } = spend;
-                return (
-                  <TreasurySpendValueDisplay
-                    key={index}
-                    isNative={false}
-                    value={amount}
-                    symbol={symbol}
-                  />
-                );
-              },
-            )}
+            {item.onchainData.stableTreasuryInfo.spends.map((spend, index) => {
+              const { amount, symbol } = spend;
+              return (
+                <TreasurySpendValueDisplay
+                  key={index}
+                  isNative={false}
+                  value={amount}
+                  symbol={symbol}
+                />
+              );
+            })}
           </div>
         );
       }
