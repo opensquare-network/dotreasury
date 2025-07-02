@@ -10,7 +10,7 @@ const Wrapper = styled.div`
 `;
 
 export default function TreasurySpendValueDisplay({ isNative, value, symbol }) {
-  let { decimals } = getPrecision(symbol);
+  let decimals = getPrecision(symbol);
   const SYMBOL_DECIMALS = STATEMINT_ASSETS.concat(MYTH);
 
   if (!isNative) {
