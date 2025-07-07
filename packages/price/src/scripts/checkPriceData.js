@@ -66,9 +66,7 @@ async function main() {
         "YYYY-MM-DD",
       )}`;
       console.log(message);
-      await sendFeishuNotification({
-        message,
-      });
+      await sendFeishuNotification(message);
 
       // We don't need to check further days if we found a missing day
       break;
