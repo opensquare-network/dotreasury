@@ -8,6 +8,7 @@ const {
   getCfgUsdtCol,
   getMythUsdtCol,
 } = require("../mongo");
+const { sendFeishuNotification } = require("../utils/feishu");
 
 const args = minimist(process.argv.slice(2));
 
@@ -61,9 +62,16 @@ async function main() {
       openTime: { $gte: timestampStart, $lte: timestampEnd },
     });
     if (!exists) {
-      console.log(
-        `No ${args.symbol} data found at ${theDay.format("YYYY-MM-DD")}`,
-      );
+      const message = `Missing ${args.symbol} price data on ${theDay.format(
+        "YYYY-MM-DD",
+      )}`;
+      console.log(message);
+      await sendFeishuNotification({
+        message,
+      });
+
+      // We don't need to check further days if we found a missing day
+      break;
     }
 
     numOfDays++;
