@@ -42,9 +42,10 @@ async function main() {
 
   const earliestOpenTime = earliestDoc.openTime;
 
-  let numOfDays = 1;
+  let numOfDays = 0;
+  let latestDay = dayjs().subtract(1, "hour");
   while (true) {
-    const theDay = dayjs().subtract(numOfDays, "day");
+    const theDay = latestDay.subtract(numOfDays, "day");
     const timestampStart = theDay.startOf("day").valueOf();
     if (timestampStart < earliestOpenTime) {
       console.log(
