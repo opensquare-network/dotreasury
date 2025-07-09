@@ -19,3 +19,8 @@ export const STATEMINT_ASSETS = [
     decimals: 6,
   },
 ];
+
+export const SYMBOL_DECIMALS = {
+  USDT: STATEMINT_ASSETS[0].decimals,
+  USDC: STATEMINT_ASSETS[1].decimals,
+};
