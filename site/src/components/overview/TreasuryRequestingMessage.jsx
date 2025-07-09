@@ -8,6 +8,7 @@ import { useSessionStorage } from "react-use";
 import SkeletonBar from "../skeleton/bar";
 import { currentChain } from "../../utils/chains";
 import { CHAINS } from "../../utils/chains";
+import { memo } from "react";
 
 const Wrapper = styled.div`
   margin-top: 24px;
@@ -46,22 +47,6 @@ const Link = styled(ExternalLink)`
     text-decoration: underline;
   }
 `;
-
-export default function TreasuryRequestingMessageWrapper() {
-  const [visible, setVisible] = useSessionStorage(
-    "TreasuryRequestingMessage",
-    true,
-  );
-
-  if (
-    ![CHAINS.polkadot.value, CHAINS.kusama.value].includes(currentChain) ||
-    !visible
-  ) {
-    return null;
-  }
-
-  return <TreasuryRequestingMessage onClose={() => setVisible(false)} />;
-}
 
 function TreasuryRequestingMessage({ onClose }) {
   const { requestingValue, confirmingValue, loading } =
@@ -105,3 +90,16 @@ function TreasuryRequestingMessage({ onClose }) {
     </Wrapper>
   );
 }
+
+export default memo(function TreasuryRequestingMessageWrapper() {
+  const [visible, setVisible] = useSessionStorage(
+    "TreasuryRequestingMessage",
+    true,
+  );
+
+  if (![CHAINS.polkadot.value].includes(currentChain) || !visible) {
+    return null;
+  }
+
+  return <TreasuryRequestingMessage onClose={() => setVisible(false)} />;
+});
