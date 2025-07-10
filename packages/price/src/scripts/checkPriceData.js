@@ -68,8 +68,15 @@ async function checkTokenPrice(symbol) {
   }
 }
 
+const symbols = [
+  "DOT", // polkadot
+  "KSM", // kusama
+  // "CFG", // centrifuge
+  // "MYTH", // mythos
+];
+
 async function main() {
-  for (const symbol of ["DOT", "KSM", "CFG", "MYTH"]) {
+  for (const symbol of symbols) {
     try {
       console.log(`Checking price data for ${symbol}...`);
       await checkTokenPrice(symbol);
