@@ -53,15 +53,16 @@ async function checkTokenPrice(symbol) {
     const exists = await priceCol.findOne({
       openTime: { $gte: timestampStart, $lte: timestampEnd },
     });
+    const dateStr = theDay.format("YYYY-MM-DD");
     if (!exists) {
-      const message = `Missing ${symbol} price data on ${theDay.format(
-        "YYYY-MM-DD",
-      )}`;
+      const message = `Missing ${symbol} price data on ${dateStr}`;
       console.log(message);
       await sendFeishuNotification(message);
 
       // We don't need to check further days if we found a missing day
       break;
+    } else {
+      console.log(`Price data for ${symbol} on ${dateStr} is ok`);
     }
 
     numOfDays++;
