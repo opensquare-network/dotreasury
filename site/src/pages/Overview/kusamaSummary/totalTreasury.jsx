@@ -10,6 +10,7 @@ import ValueDisplay from "../../../components/ValueDisplay";
 import SkeletonBar from "../../../components/skeleton/bar";
 import Tooltip from "../../../components/Tooltip";
 import { useKusamaTreasuryData } from "../../../context/KusamaTreasury";
+import TreasuryRequestingMessage from "../../../components/overview/TreasuryRequestingMessage";
 
 const Wrapper = styled.div`
   ${text_primary}
@@ -99,6 +100,7 @@ export default function OverviewTotalTreasury() {
           />
         </Tooltip>
       </TokenGroup>
+      <TreasuryRequestingMessage />
     </Wrapper>
   );
 }

@@ -7,7 +7,7 @@ import IconMask from "../Icon/Mask";
 import { useSessionStorage } from "react-use";
 import SkeletonBar from "../skeleton/bar";
 import { currentChain } from "../../utils/chains";
-import { isPolkadot } from "../../utils/chains";
+import { isPolkadot, isKusama } from "../../utils/chains";
 import { memo } from "react";
 
 const Wrapper = styled.div`
@@ -97,7 +97,7 @@ export default memo(function TreasuryRequestingMessageWrapper() {
     true,
   );
 
-  if (!isPolkadot || !visible) {
+  if (!(isPolkadot || isKusama) || !visible) {
     return null;
   }
 
