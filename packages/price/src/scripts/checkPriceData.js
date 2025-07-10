@@ -1,6 +1,5 @@
 require("dotenv").config();
 
-const minimist = require("minimist");
 const dayjs = require("dayjs");
 const {
   getDotUsdtCollection,
@@ -10,34 +9,27 @@ const {
 } = require("../mongo");
 const { sendFeishuNotification } = require("../utils/feishu");
 
-const args = minimist(process.argv.slice(2));
-
-if (!args.symbol) {
-  console.log("Must specify symbol with argument --symbol=[DOT|KSM|CFG|MYTH]");
-  return;
-}
-
-async function getPriceCol() {
-  if (args.symbol === "DOT") {
+async function getPriceCol(symbol) {
+  if (symbol === "DOT") {
     return await getDotUsdtCollection();
-  } else if (args.symbol === "KSM") {
+  } else if (symbol === "KSM") {
     return await getKsmUsdtCollection();
-  } else if (args.symbol === "CFG") {
+  } else if (symbol === "CFG") {
     return await getCfgUsdtCol();
-  } else if (args.symbol === "MYTH") {
+  } else if (symbol === "MYTH") {
     return await getMythUsdtCol();
   } else {
-    throw new Error("Unsupported symbol: " + args.symbol);
+    throw new Error("Unsupported symbol: " + symbol);
   }
 }
 
-async function main() {
-  const priceCol = await getPriceCol();
+async function checkTokenPrice(symbol) {
+  const priceCol = await getPriceCol(symbol);
 
   // Get earliest openTime from priceCol
   const earliestDoc = await priceCol.findOne({}, { sort: { openTime: 1 } });
   if (!earliestDoc) {
-    console.log(`No data found for symbol: ${args.symbol}`);
+    console.log(`No data found for symbol: ${symbol}`);
     return;
   }
 
@@ -50,9 +42,9 @@ async function main() {
     const timestampStart = theDay.startOf("day").valueOf();
     if (timestampStart < earliestOpenTime) {
       console.log(
-        `Finish checking price data. Reached earliest data for ${
-          args.symbol
-        } on ${dayjs(earliestOpenTime).format("YYYY-MM-DD")}`,
+        `Finish checking price data. Reached earliest data for ${symbol} on ${dayjs(
+          earliestOpenTime,
+        ).format("YYYY-MM-DD")}`,
       );
       break;
     }
@@ -62,7 +54,7 @@ async function main() {
       openTime: { $gte: timestampStart, $lte: timestampEnd },
     });
     if (!exists) {
-      const message = `Missing ${args.symbol} price data on ${theDay.format(
+      const message = `Missing ${symbol} price data on ${theDay.format(
         "YYYY-MM-DD",
       )}`;
       console.log(message);
@@ -73,6 +65,19 @@ async function main() {
     }
 
     numOfDays++;
+  }
+}
+
+async function main() {
+  for (const symbol of ["DOT", "KSM", "CFG", "MYTH"]) {
+    try {
+      console.log(`Checking price data for ${symbol}...`);
+      await checkTokenPrice(symbol);
+    } catch (error) {
+      const message = `Error checking price data for ${symbol}: ${error.message}`;
+      console.error(message);
+      await sendFeishuNotification(message);
+    }
   }
 }
 

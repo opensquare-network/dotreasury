@@ -5,7 +5,6 @@ async function sendFeishuNotification(message) {
     throw new HttpError(500, "FEISHU_WEBHOOK_URL is not set");
   }
 
-  console.log({ webhookUrl });
   const resp = await fetch(webhookUrl, {
     method: "POST",
     headers: {
