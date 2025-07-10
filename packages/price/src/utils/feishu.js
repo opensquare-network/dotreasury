@@ -2,7 +2,8 @@ const webhookUrl = process.env.FEISHU_WEBHOOK_URL;
 
 async function sendFeishuNotification(message) {
   if (!webhookUrl) {
-    throw new HttpError(500, "FEISHU_WEBHOOK_URL is not set");
+    console.error("FEISHU_WEBHOOK_URL is not set");
+    return;
   }
 
   const resp = await fetch(webhookUrl, {
