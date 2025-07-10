@@ -75,7 +75,11 @@ async function loopQueryAndSave(symbol) {
 
     try {
       latestOpenTime = await tick(symbol);
-      console.log(`${symbol} price saved: ${dayjs(latestOpenTime).format("YYYY-MM-DD HH:mm:ss")}`);
+      console.log(
+        `${symbol} price saved: ${dayjs(latestOpenTime).format(
+          "YYYY-MM-DD HH:mm:ss",
+        )}`,
+      );
     } catch (e) {
       console.error(e.message);
     }
@@ -95,4 +99,4 @@ async function loopQueryAndSave(symbol) {
 module.exports = {
   tick,
   loopQueryAndSave,
-}
+};
