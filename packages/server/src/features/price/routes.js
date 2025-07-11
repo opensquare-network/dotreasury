@@ -1,5 +1,8 @@
 const Router = require("koa-router");
-const { getPrice } = require("./price.controller");
+const priceController = require("./price.controller");
+
 const router = new Router();
-router.get("/price", getPrice);
+
+router.get("/price", priceController.getPrice);
+
 module.exports = router;

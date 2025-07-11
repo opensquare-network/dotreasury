@@ -38,9 +38,9 @@ async function getPrice(ctx) {
     ctx.body = { error: "symbol and timestamp are required" };
     return;
   }
+
   const col = await getPriceCol(symbol);
-  const ts = Number(timestamp);
-  const price = await getPriceFrom(col, ts);
+  const price = await getPriceFrom(col, Number(timestamp));
 
   ctx.body = { price };
 }
