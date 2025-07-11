@@ -78,4 +78,6 @@ async function getPrice(chain, time) {
 
 module.exports = {
   getPrice,
+  polkadotPriceData,
+  kusamaPriceData,
 };

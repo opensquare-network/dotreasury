@@ -4,6 +4,11 @@ const {
   getCfgUsdtCol,
   getMythUsdtCol,
 } = require("../../mongo-price/index");
+const dayjs = require("dayjs");
+const {
+  polkadotPriceData,
+  kusamaPriceData,
+} = require("../../../../price/src/calcprice/price");
 
 function getPriceCol(symbol) {
   if (symbol === "DOT") return getDotUsdtCollection();
@@ -42,7 +47,24 @@ async function getPrice(ctx) {
   const col = await getPriceCol(symbol);
   const price = await getPriceFrom(col, Number(timestamp));
 
-  ctx.body = { price };
+  if (price) {
+    ctx.body = { price };
+    return;
+  }
+
+  const date = dayjs(Number(timestamp)).format("YYYY-MM-DD");
+
+  if (symbol === "KSM") {
+    ctx.body = { price: kusamaPriceData.get(date) || null };
+    return;
+  }
+
+  if (symbol === "DOT") {
+    ctx.body = { price: polkadotPriceData.get(date) || null };
+    return;
+  }
+
+  ctx.body = { price: null };
 }
 
 module.exports = { getPrice };
