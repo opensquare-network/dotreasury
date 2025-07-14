@@ -25,6 +25,7 @@ const chainFeatureRouters = [
 const commonFeatureRouters = [
   require("./features/rate/routes"),
   require("./features/scan/routes"),
+  require("./features/price/routes"),
 ];
 
 module.exports = (app) => {
