@@ -1,7 +1,6 @@
 import {
   PolkadotTreasuryOnHydrationAccount1,
   PolkadotTreasuryOnHydrationAccount2,
-  PolkadotTreasuryOnHydrationAccount3,
   PolkadotTreasuryOnHydrationAccount4,
 } from "../../../../hooks/hydration/useHydrationTreasuryBalances";
 import { polkadot } from "../../../../utils/chains/polkadot";
@@ -93,12 +92,8 @@ export default function TreasuryDetailHydration() {
               index={2}
             />
             <AddressLinkTooltip
-              address={PolkadotTreasuryOnHydrationAccount3}
-              index={3}
-            />
-            <AddressLinkTooltip
               address={PolkadotTreasuryOnHydrationAccount4}
-              index={4}
+              index={3}
             />
           </AddressGroup>
 
