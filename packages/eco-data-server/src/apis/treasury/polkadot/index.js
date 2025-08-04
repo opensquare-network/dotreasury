@@ -34,7 +34,6 @@ function calcTotalBalance({
   mythTreasuryBalance,
   hydrationTreasuryAccount1,
   hydrationTreasuryAccount2,
-  hydrationTreasuryAccount3,
   hydrationTreasuryAccount4,
   loansBifrostDotBalance,
 }) {
@@ -51,13 +50,6 @@ function calcTotalBalance({
     accountDot: hydrationAccount2Dot,
     accountADot: hydrationAccount2ADot,
   } = hydrationTreasuryAccount2;
-
-  const {
-    accountUsdt: hydrationAccount3Usdt,
-    accountUsdc: hydrationAccount3Usdc,
-    accountDot: hydrationAccount3Dot,
-    accountADot: hydrationAccount3ADot,
-  } = hydrationTreasuryAccount3;
 
   const {
     accountUsdt: hydrationAccount4Usdt,
@@ -78,8 +70,6 @@ function calcTotalBalance({
     .plus(getTotal(hydrationAccount1ADot))
     .plus(getTotal(hydrationAccount2Dot))
     .plus(getTotal(hydrationAccount2ADot))
-    .plus(getTotal(hydrationAccount3Dot))
-    .plus(getTotal(hydrationAccount3ADot))
     .plus(getTotal(hydrationAccount4Dot))
     .plus(getTotal(hydrationAccount4ADot))
     .plus(loansBifrostDotBalance || 0)
@@ -92,14 +82,12 @@ function calcTotalBalance({
     .plus(ambassadorTreasuryUsdtBalance?.balance || 0)
     .plus(getTotal(hydrationAccount1Usdt))
     .plus(getTotal(hydrationAccount2Usdt))
-    .plus(getTotal(hydrationAccount3Usdt))
     .plus(getTotal(hydrationAccount4Usdt))
     .toFixed();
 
   const usdc = new BigNumber(usdcTreasuryBalanceOnAssetHub?.balance || 0)
     .plus(getTotal(hydrationAccount1Usdc))
     .plus(getTotal(hydrationAccount2Usdc))
-    .plus(getTotal(hydrationAccount3Usdc))
     .plus(getTotal(hydrationAccount4Usdc))
     .plus(loansCentrifugeUsdcBalance || 0)
     .toFixed();
@@ -137,7 +125,6 @@ async function getPolkadotTreasuryData() {
   const {
     hydrationTreasuryAccount1,
     hydrationTreasuryAccount2,
-    hydrationTreasuryAccount3,
     hydrationTreasuryAccount4,
   } = await getTreasuryOnHydration();
 
@@ -153,7 +140,6 @@ async function getPolkadotTreasuryData() {
     mythTreasuryBalance,
     hydrationTreasuryAccount1,
     hydrationTreasuryAccount2,
-    hydrationTreasuryAccount3,
     hydrationTreasuryAccount4,
     loansBifrostDotBalance,
   });

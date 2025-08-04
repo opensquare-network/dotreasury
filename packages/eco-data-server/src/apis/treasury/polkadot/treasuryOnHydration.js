@@ -11,9 +11,6 @@ const PolkadotTreasuryOnHydrationAccount1 =
 const PolkadotTreasuryOnHydrationAccount2 =
   "7KCp4eenFS4CowF9SpQE5BBCj5MtoBA3K811tNyRmhLfH1aV";
 
-const PolkadotTreasuryOnHydrationAccount3 =
-  "7KATdGaecnKi4zDAMWQxpB2s59N2RE1JgLuugCjTsRZHgP24";
-
 const PolkadotTreasuryOnHydrationAccount4 =
   "7N4oFqXKgeTXo6CMSY9BVZdHP5J3RhQXY77Fe7qmQwjcxa1w";
 
@@ -57,10 +54,6 @@ async function getTreasuryOnHydrationFromApi(api) {
     api,
     PolkadotTreasuryOnHydrationAccount2,
   );
-  const hydrationTreasuryAccount3 = await getHydrationTreasuryBalances(
-    api,
-    PolkadotTreasuryOnHydrationAccount3,
-  );
   const hydrationTreasuryAccount4 = await getHydrationTreasuryBalances(
     api,
     PolkadotTreasuryOnHydrationAccount4,
@@ -69,7 +62,6 @@ async function getTreasuryOnHydrationFromApi(api) {
   return {
     hydrationTreasuryAccount1,
     hydrationTreasuryAccount2,
-    hydrationTreasuryAccount3,
     hydrationTreasuryAccount4,
   };
 }
