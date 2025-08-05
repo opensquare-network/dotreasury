@@ -1,11 +1,11 @@
 import BigNumber from "bignumber.js";
 import useHydrationApi from "./useHydrationApi";
 import useCall from "../useCall";
+import useHydrationADotBalance from "./useHydrationADotBalance";
 
 const DotTokenId = 5;
 const UsdtTokenIdFromAssetHub = 10;
 const UsdcTokenIdFromAssetHub = 22;
-const ADotTokenId = 1001;
 
 export const PolkadotTreasuryOnHydrationAccount1 =
   "7LcF8b5GSvajXkSChhoMFcGDxF9Yn9unRDceZj1Q6NYox8HY";
@@ -37,13 +37,12 @@ function useHydrationTreasuryBalanceForAccount(address) {
     api?.query.tokens?.accounts,
     [address, DotTokenId],
   );
-  const { loaded: isADotLoaded, value: accountADot } = useCall(
-    api?.query.tokens?.accounts,
-    [address, ADotTokenId],
-  );
+
+  const { value: accountADot, isLoading: isADotLoading } =
+    useHydrationADotBalance(address);
 
   const isLoading =
-    !isUsdtLoaded || !isUsdcLoaded || !isDotLoaded || !isADotLoaded;
+    !isUsdtLoaded || !isUsdcLoaded || !isDotLoaded || isADotLoading;
 
   return {
     dot: getTotal(accountDot),
