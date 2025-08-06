@@ -5,6 +5,9 @@ const ADotTokenId = 1001;
 const UsdtTokenIdFromAssetHub = 10;
 const UsdcTokenIdFromAssetHub = 22;
 
+const CURRENCIES_API_METHOD = "CurrenciesApi_account";
+const RUNTIME_API_TYPE = "PalletCurrenciesRpcRuntimeApiAccountData";
+
 const PolkadotTreasuryOnHydrationAccount1 =
   "7LcF8b5GSvajXkSChhoMFcGDxF9Yn9unRDceZj1Q6NYox8HY";
 
@@ -13,6 +16,33 @@ const PolkadotTreasuryOnHydrationAccount2 =
 
 const PolkadotTreasuryOnHydrationAccount4 =
   "7N4oFqXKgeTXo6CMSY9BVZdHP5J3RhQXY77Fe7qmQwjcxa1w";
+
+async function getADotBalanceByRuntimeApi(api, address) {
+  try {
+    const assetId = api.registry.createType("u32", ADotTokenId);
+    const accountId = api.registry.createType("AccountId", address);
+    const callParams = new Uint8Array([
+      ...assetId.toU8a(),
+      ...accountId.toU8a(),
+    ]);
+
+    const resultRaw = await api.rpc.state.call(
+      CURRENCIES_API_METHOD,
+      Array.from(callParams),
+    );
+
+    const accountData = api.registry.createType(RUNTIME_API_TYPE, resultRaw);
+    return {
+      free: BigInt(accountData?.free || 0n).toString(),
+      reserved: BigInt(accountData?.reserved || 0n).toString(),
+    };
+  } catch (error) {
+    console.error(
+      `Error fetching aDot balance via Runtime API for ${address}:`,
+    );
+    return null;
+  }
+}
 
 async function getHydrationTreasuryBalance(api, treasuryAccount, tokenId) {
   const account = await api.query.tokens.accounts(treasuryAccount, tokenId);
@@ -33,7 +63,8 @@ async function getHydrationTreasuryBalances(api, treasuryAccount) {
         UsdcTokenIdFromAssetHub,
       ),
       getHydrationTreasuryBalance(api, treasuryAccount, DotTokenId),
-      getHydrationTreasuryBalance(api, treasuryAccount, ADotTokenId),
+
+      getADotBalanceByRuntimeApi(api, treasuryAccount),
     ],
   );
 
