@@ -47,9 +47,9 @@ export async function getHydrationApi() {
 
   api = await ApiPromise.create({
     provider,
-    types: runtimeApiTypes,
   });
 
+  api.registry.register(runtimeApiTypes);
   api.registry.register(runtimeApiMethods);
 
   return api;
