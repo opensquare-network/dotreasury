@@ -28,7 +28,6 @@ export default function useHydrationADotBalance(address) {
 
   const fetchADotBalance = useCallback(async () => {
     if (!api?.rpc?.state || !address || !callParams) {
-      setIsLoading(false);
       return null;
     }
 
@@ -41,7 +40,6 @@ export default function useHydrationADotBalance(address) {
 
       const accountData = api.registry.createType(RUNTIME_API_TYPE, resultRaw);
       setValue(accountData);
-      return accountData;
     } catch (error) {
       console.error("Error fetching aDot value:", error);
       return null;
