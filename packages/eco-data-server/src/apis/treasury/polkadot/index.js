@@ -13,7 +13,6 @@ const {
 const { getMythTreasuryOnMythos } = require("./treasuryOnMythos");
 const { getTreasuryOnAssetHub } = require("./treasuryOnAssetHub");
 const {
-  loansCentrifugeUsdcBalance,
   loansBifrostDotBalance,
   loansPendulumDotBalance,
   loansHydrationDotBalance,
@@ -89,7 +88,6 @@ function calcTotalBalance({
     .plus(getTotal(hydrationAccount1Usdc))
     .plus(getTotal(hydrationAccount2Usdc))
     .plus(getTotal(hydrationAccount4Usdc))
-    .plus(loansCentrifugeUsdcBalance || 0)
     .toFixed();
 
   const myth = new BigNumber(mythTreasuryBalance?.balance || 0).toFixed();

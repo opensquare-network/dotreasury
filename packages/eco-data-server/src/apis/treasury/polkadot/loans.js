@@ -1,4 +1,3 @@
-const loansCentrifugeUsdcBalance = 1500000000000;
 const loansBifrostDotBalance = 10000000000000000;
 const loansPendulumDotBalance = 500000000000000;
 const loansHydrationDotBalance = 10000000000000000;
@@ -18,7 +17,6 @@ function getLoansBifrostDotBalanceByTimestamp(timestamp) {
 }
 
 module.exports = {
-  loansCentrifugeUsdcBalance,
   loansBifrostDotBalance,
   loansPendulumDotBalance,
   loansHydrationDotBalance,

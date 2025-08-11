@@ -1,10 +1,3 @@
-export function useLoansCentrifugeUsdcBalance() {
-  return {
-    balance: 150 * Math.pow(10, 10),
-    isLoading: false,
-  };
-}
-
 export function useLoansBifrostDotBalance() {
   return {
     balance: 1000000 * Math.pow(10, 10),

@@ -18,8 +18,6 @@ const AssetGroup = styled.div`
 
 export default function TreasuryDetailLoans() {
   const {
-    loansCentrifugeUSDCBalance,
-    isLoansCentrifugeUSDCLoading,
     loansBifrostDotBalance,
     isLoansBifrostDotLoading,
     loansPendulumDotBalance,
@@ -42,14 +40,12 @@ export default function TreasuryDetailLoans() {
   const isLoading =
     isLoansBifrostDotLoading ||
     isLoansPendulumDotLoading ||
-    isLoansCentrifugeUSDCLoading ||
     isLoansHydrationDotLoading;
 
   const total = BigNumber.sum(
     totalBifrostValue,
     totalPendulumValue,
     totalHydrationValue,
-    toPrecision(loansCentrifugeUSDCBalance, USDt.decimals),
   ).toString();
 
   return (
@@ -61,17 +57,6 @@ export default function TreasuryDetailLoans() {
       isLoading={isLoading}
       footer={
         <AssetGroup>
-          <AssetItem
-            title="Centrifuge"
-            titleLink="https://polkadot.subsquare.io/referenda/1122"
-          >
-            <AssetValueDisplay
-              symbol="usdc"
-              value={loansCentrifugeUSDCBalance}
-              precision={USDt.decimals}
-              isLoading={isLoansCentrifugeUSDCLoading}
-            />
-          </AssetItem>
           <AssetItem
             title="Bifrost"
             titleLink="https://polkadot.subsquare.io/referenda/432"

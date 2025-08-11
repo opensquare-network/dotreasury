@@ -16,7 +16,6 @@ import {
 } from "../constants/statemint";
 import {
   useLoansBifrostDotBalance,
-  useLoansCentrifugeUsdcBalance,
   useLoansPendulumDotBalance,
   useLoansHydrationDotBalance,
 } from "../hooks/treasury/useLoansBalances";
@@ -83,10 +82,6 @@ export default function PolkadotTreasuryProvider({ children }) {
     );
 
   const {
-    balance: loansCentrifugeUSDCBalance,
-    isLoading: isLoansCentrifugeUSDCLoading,
-  } = useLoansCentrifugeUsdcBalance();
-  const {
     balance: loansBifrostDotBalance,
     isLoading: isLoansBifrostDotLoading,
   } = useLoansBifrostDotBalance();
@@ -133,7 +128,6 @@ export default function PolkadotTreasuryProvider({ children }) {
     BigNumber.sum(
       assetHubUSDCBalance || 0,
       hydrationUSDCBalance || 0,
-      loansCentrifugeUSDCBalance || 0,
     ).toString(),
     USDC.decimals,
   );
@@ -167,8 +161,7 @@ export default function PolkadotTreasuryProvider({ children }) {
     isFellowshipSalaryUSDtLoading ||
     isAmbassadorUSDtLoading;
 
-  const isTotalUSDCLoading =
-    isAssetHubUSDCLoading || isHydrationLoading || isLoansCentrifugeUSDCLoading;
+  const isTotalUSDCLoading = isAssetHubUSDCLoading || isHydrationLoading;
 
   const isTotalLoading =
     isTotalDotLoading || isTotalUSDtLoading || isTotalUSDCLoading;
@@ -197,8 +190,6 @@ export default function PolkadotTreasuryProvider({ children }) {
         isAmbassadorUSDtLoading,
         fellowshipTreasuryDotBalance,
         isFellowshipTreasuryDotLoading,
-        loansCentrifugeUSDCBalance,
-        isLoansCentrifugeUSDCLoading,
         loansBifrostDotBalance,
         isLoansBifrostDotLoading,
         loansPendulumDotBalance,
