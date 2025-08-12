@@ -12,21 +12,19 @@ export const ProposalsWrapper = styled.div`
   display: inline-flex;
 `;
 
-export const colId = (options) => {
-  return {
-    key: "id",
-    title: "ID",
-    width: "320px",
-    cellRender(_, data) {
-      return (
-        <IDWrapper>
-          <NavLink to={`/users/${data?.address}`}>
-            <User noLink address={data?.address} />
-          </NavLink>
-        </IDWrapper>
-      );
-    },
-  };
+export const colId = {
+  key: "id",
+  title: "ID",
+  width: "320px",
+  cellRender(_, data) {
+    return (
+      <IDWrapper>
+        <NavLink to={`/users/${data?.address}`}>
+          <User noLink address={data?.address} />
+        </NavLink>
+      </IDWrapper>
+    );
+  },
 };
 
 export const colBeneficiaryProposals = {

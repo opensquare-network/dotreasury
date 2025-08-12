@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
+import styled from "styled-components";
+import { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
-import styled from "styled-components";
 import BeneficiariesTable from "./BeneficiariesTable";
-import { h4_16_semibold } from "../../styles/text";
 import ResponsivePagination from "../../components/ResponsivePagination";
 import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../constants";
 import { useQuery, useLocalStorage } from "../../utils/hooks";
@@ -12,11 +11,25 @@ import {
   fetchBeneficiaries,
   loadingSelector,
 } from "../../store/reducers/beneficiariesSlice";
+import Card from "../../components/Card";
+import { h4_16_semibold } from "../../styles/text";
 
 const Title = styled.div`
   ${h4_16_semibold};
   padding: 20px 24px;
   color: var(--textPrimary);
+`;
+
+const CardWrapper = styled(Card)`
+  overflow-x: hidden;
+  padding: 0;
+  table {
+    border-radius: 0 !important;
+    border: none !important;
+  }
+  @media screen and (max-width: 600px) {
+    border-radius: 0;
+  }
 `;
 
 export default function Beneficiaries() {
@@ -64,45 +77,50 @@ export default function Beneficiaries() {
     };
   }, [dispatch, tablePage, pageSize]);
 
-  const header = (
-    <div style={{ width: "100%" }}>
-      <Title>Beneficiaries</Title>
-    </div>
+  const onPageSizeChange = useCallback(
+    (size) => {
+      const searchParams = new URLSearchParams(history.location.search);
+      searchParams.delete("page");
+      history.push({ search: searchParams.toString() });
+
+      setTablePage(DEFAULT_QUERY_PAGE);
+      setPageSize(size);
+    },
+    [history, setPageSize],
+  );
+
+  const onPageChange = useCallback(
+    (_, { activePage }) => {
+      const searchParams = new URLSearchParams(history.location.search);
+      if (activePage === DEFAULT_QUERY_PAGE) {
+        searchParams.delete("page");
+      } else {
+        searchParams.set("page", activePage);
+      }
+      history.push({ search: searchParams.toString() });
+
+      setTablePage(activePage);
+    },
+    [history],
   );
 
   return (
-    <BeneficiariesTable
-      data={tableData}
-      loading={loading}
-      header={header}
-      footer={
-        !!tableData?.length && (
-          <ResponsivePagination
-            activePage={tablePage}
-            totalPages={totalPages}
-            pageSize={pageSize}
-            setPageSize={(size) => {
-              const searchParams = new URLSearchParams(history.location.search);
-              searchParams.delete("page");
-              history.push({ search: searchParams.toString() });
+    <CardWrapper>
+      <div style={{ width: "100%" }}>
+        <Title>Beneficiaries</Title>
+      </div>
 
-              setTablePage(DEFAULT_QUERY_PAGE);
-              setPageSize(size);
-            }}
-            onPageChange={(_, { activePage }) => {
-              const searchParams = new URLSearchParams(history.location.search);
-              if (activePage === DEFAULT_QUERY_PAGE) {
-                searchParams.delete("page");
-              } else {
-                searchParams.set("page", activePage);
-              }
-              history.push({ search: searchParams.toString() });
+      <BeneficiariesTable data={tableData} loading={loading} />
 
-              setTablePage(activePage);
-            }}
-          />
-        )
-      }
-    />
+      {!!tableData?.length && (
+        <ResponsivePagination
+          activePage={tablePage}
+          totalPages={totalPages}
+          pageSize={pageSize}
+          setPageSize={onPageSizeChange}
+          onPageChange={onPageChange}
+        />
+      )}
+    </CardWrapper>
   );
 }
