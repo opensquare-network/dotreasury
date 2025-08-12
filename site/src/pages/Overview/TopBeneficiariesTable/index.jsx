@@ -87,6 +87,7 @@ export default function TopBeneficiariesTable() {
                     <TableCell textAlign={"right"}>
                       <ProposalsWrapper>
                         <ProposalsCount
+                          spends={item?.spends?.benefitCount}
                           proposals={item?.proposals?.benefitCount}
                           bounties={item?.bounties?.benefitCount}
                           childBounties={item?.childBounties?.benefitCount}

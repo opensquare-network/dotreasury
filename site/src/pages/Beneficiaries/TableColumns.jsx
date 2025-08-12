@@ -37,6 +37,7 @@ export const colBeneficiaryProposals = {
     return (
       <ProposalsWrapper>
         <ProposalsCount
+          spends={data?.spends?.benefitCount}
           proposals={data?.proposals?.benefitCount}
           bounties={data?.bounties?.benefitCount}
           childBounties={data?.childBounties?.benefitCount}

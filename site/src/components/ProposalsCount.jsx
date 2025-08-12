@@ -30,6 +30,7 @@ const SymbolWrapper = styled.span`
  * @example 2P(roposals) + 4T(ips) + 1B(ounties) + 2b(child bounties)
  */
 export default function ProposalsCount({
+  spends,
   proposals,
   bounties,
   tips,
@@ -37,6 +38,10 @@ export default function ProposalsCount({
   showZero = false,
 }) {
   const symbols = [
+    {
+      count: spends,
+      icon: "/imgs/symbol-spends.svg",
+    },
     {
       count: proposals,
       icon: "/imgs/symbol-proposals.svg",

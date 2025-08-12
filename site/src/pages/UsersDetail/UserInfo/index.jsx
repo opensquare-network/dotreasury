@@ -112,6 +112,7 @@ export default function UserInfo({ role, setRole = () => {} }) {
             <InfoCardExtraItem label="Proposals">
               {hasCounts ? (
                 <ProposalsCount
+                  spends={counts?.spendsCount}
                   proposals={counts?.proposalsCount}
                   bounties={counts?.bountiesCount}
                   childBounties={counts?.childBountiesCount}
