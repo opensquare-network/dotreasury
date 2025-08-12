@@ -103,8 +103,22 @@ export const fetchSpendPeriods = () => async (dispatch) => {
   dispatch(setSendPeriods(result || []));
 };
 
-export const fetchTopBeneficiaries = () => async (dispatch) => {
-  const { result } = await api.fetch("/participants", { role: "beneficiary" });
+export const fetchTopBeneficiaries = () => async (dispatch, getState) => {
+  const {
+    chain: { chain },
+  } = getState();
+
+  if (["polkadot", "kusama"].includes(chain)) {
+    const { result } = await api.fetch(
+      `https://${chain}-api.subsquare.io/treasury/beneficiaries`,
+    );
+    dispatch(setTopBeneficiaries(result?.items));
+    return;
+  }
+
+  const { result } = await api.fetch("/participants", {
+    role: "beneficiary",
+  });
   dispatch(setTopBeneficiaries(result?.items));
 };
 

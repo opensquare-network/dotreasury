@@ -21,7 +21,7 @@ import { USER_ROLES } from "../../../constants/index.js";
 import Balance from "../../../components/Balance.jsx";
 import ProposalsCount from "../../../components/ProposalsCount.jsx";
 import { ProposalsWrapper } from "../../Users/useUsersTableColumns.jsx";
-import { isPolkadot } from "../../../utils/chains/index.js";
+import { isPolkadot, isKusama } from "../../../utils/chains/index.js";
 import ValueDisplay from "../../../components/ValueDisplay.jsx";
 import { p_14_medium } from "../../../styles/text.js";
 import styled from "styled-components";
@@ -45,7 +45,7 @@ export default function TopBeneficiariesTable() {
     <CardWrapper>
       <TitleContainer>
         <Title>Top Beneficiaries</Title>
-        <NavLink to={"/users?role=beneficiary"}>
+        <NavLink to={"/beneficiaries"}>
           <LinkButton>
             View All
             <IconMask
@@ -96,10 +96,10 @@ export default function TopBeneficiariesTable() {
                     </TableCell>
 
                     <TableCell textAlign={"right"}>
-                      {isPolkadot ? (
+                      {isPolkadot || isKusama ? (
                         <TotalValueCellWrapper>
                           <ValueDisplay
-                            value={item.totalFiatValue.totalBenefit}
+                            value={item.totalBenefitFiatValue}
                             prefix="$"
                             abbreviate={false}
                           />
