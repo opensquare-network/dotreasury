@@ -38,6 +38,7 @@ import Transfers from "../pages/Transfers";
 import TransfersSlash from "../pages/TransfersSlash";
 import ProposalBeneficiaries from "../pages/ProposalBeneficiaries";
 import Users from "../pages/Users";
+import Beneficiaries from "../pages/Beneficiaries";
 import UsersDetail from "../pages/UsersDetail";
 import Referenda from "../pages/Referenda";
 
@@ -151,6 +152,7 @@ export default function App() {
               />
               <Route exact path="/income/gasfee" component={GasFeeSlash} />
               <Route exact path="/income/others" component={OthersIncome} />
+              <Route exact path="/beneficiaries" component={Beneficiaries} />
               <Route exact path="/users" component={Users} />
               <Route exact path="/users/:address" component={UsersDetail} />
               <Route

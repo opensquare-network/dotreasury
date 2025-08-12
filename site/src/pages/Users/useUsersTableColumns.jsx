@@ -96,6 +96,7 @@ const allProposals = {
     return (
       <ProposalsWrapper>
         <ProposalsCount
+          spends={data?.spends?.count}
           proposals={data?.proposals?.count}
           bounties={data?.bounties?.count}
           childBounties={data?.childBounties?.count}
@@ -112,6 +113,7 @@ const proposedProposals = {
     return (
       <ProposalsWrapper>
         <ProposalsCount
+          spends={data?.spends?.proposedCount}
           proposals={data?.proposals?.proposedCount}
           bounties={data?.bounties?.proposedCount}
           childBounties={data?.childBounties?.proposedCount}
@@ -128,6 +130,7 @@ const beneficiaryProposals = {
     return (
       <ProposalsWrapper>
         <ProposalsCount
+          spends={data?.spends?.benefitCount}
           proposals={data?.proposals?.benefitCount}
           bounties={data?.bounties?.benefitCount}
           childBounties={data?.childBounties?.benefitCount}

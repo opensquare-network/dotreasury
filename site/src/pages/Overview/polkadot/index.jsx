@@ -4,7 +4,6 @@ import OverviewTotalTreasury from "./totalTreasury";
 import { grid, grid_cols, space_y } from "../../../styles/tailwindcss";
 import TopBeneficiariesTable from "../TopBeneficiariesTable";
 import { mdcss } from "../../../styles/responsive";
-import TopFundedProjectsTable from "../topFundedProjectsTable";
 import PolkadotTreasuryProvider from "../../../context/PolkadotTreasury";
 
 const Wrapper = styled.div`
@@ -28,7 +27,6 @@ export default function OverviewPolkadot() {
 
         <TableWrapper>
           <TopBeneficiariesTable />
-          <TopFundedProjectsTable />
         </TableWrapper>
       </Wrapper>
     </PolkadotTreasuryProvider>
