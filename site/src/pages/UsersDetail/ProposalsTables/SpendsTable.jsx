@@ -33,10 +33,6 @@ export default function SpendsTable({ header, footer = noop }) {
     setPage(activePage);
   };
 
-  const headerComponent = header && (
-    <TableHeaderWrapper>{header}</TableHeaderWrapper>
-  );
-
   const footerComponent = (
     <>
       <ResponsivePagination
@@ -54,7 +50,7 @@ export default function SpendsTable({ header, footer = noop }) {
     <TreasurySpendsTableOrigin
       data={tableData}
       loading={loading}
-      header={headerComponent}
+      header={<TableHeaderWrapper>{header}</TableHeaderWrapper>}
       footer={footerComponent}
       showFilter={false}
     />

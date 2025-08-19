@@ -15,9 +15,7 @@ import SpendsTable from "./SpendsTable";
 import ResponsivePagination from "../../../components/ResponsivePagination";
 import { Link } from "react-router-dom";
 import { currentChainSettings } from "../../../utils/chains";
-import UserTreasurySpendsProvider, {
-  useUserTreasurySpendsCount,
-} from "../../../context/userTreasurySpends";
+import { useUserTreasurySpendsCount } from "../../../context/userTreasurySpends";
 
 const TABLE_TABS = {
   Proposals: "proposals",
@@ -27,7 +25,7 @@ const TABLE_TABS = {
   Spends: "spends",
 };
 
-function ProposalsTablesImpl({ role }) {
+export default function ProposalsTables({ role }) {
   const history = useHistory();
   const location = useLocation();
   const { address, tableTab: tableTabParam } = useParams();
@@ -142,16 +140,6 @@ function ProposalsTablesImpl({ role }) {
         address={address}
       />
     </>
-  );
-}
-
-export default function ProposalsTables({ role }) {
-  const { address } = useParams();
-
-  return (
-    <UserTreasurySpendsProvider address={address}>
-      <ProposalsTablesImpl role={role} />
-    </UserTreasurySpendsProvider>
   );
 }
 
