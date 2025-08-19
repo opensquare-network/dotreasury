@@ -15,7 +15,11 @@ export default function useUserTreasurySpends(
   const fetchData = useCallback(async () => {
     try {
       const { result } = await subsquareApi.fetch(
-        `/users/${address}/treasury-spends?page=${page}&page_size=${pageSize}`,
+        `/users/${address}/treasury-spends`,
+        {
+          page,
+          pageSize,
+        },
       );
 
       if (result) {
