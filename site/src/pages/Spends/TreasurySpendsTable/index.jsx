@@ -140,7 +140,7 @@ export default function TreasurySpendsTable() {
     }
 
     dispatch(
-      fetchTreasurySpendsList(page - 1, pageSize, params, {
+      fetchTreasurySpendsList(page, pageSize, params, {
         signal: controller.signal,
       }),
     );
