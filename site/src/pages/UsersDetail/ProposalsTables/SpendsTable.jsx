@@ -51,7 +51,7 @@ export default function SpendsTable({ header, footer = noop }) {
       data={tableData}
       loading={loading}
       header={<TableHeaderWrapper>{header}</TableHeaderWrapper>}
-      footer={footerComponent}
+      footer={!!tableData.length && footerComponent}
       showFilter={false}
     />
   );
