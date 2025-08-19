@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { TooltipArrow, TooltipContainer } from "./styled";
 import {
   useFloating,
@@ -26,6 +27,7 @@ export default function Tooltip({ children, tooltipContent, className = "" }) {
     placement: "top",
     middleware: [offset(8), flip(), shift(), arrow({ element: arrowRef })],
     whileElementsMounted: autoUpdate,
+    strategy: "fixed",
   });
 
   function show() {
@@ -35,6 +37,18 @@ export default function Tooltip({ children, tooltipContent, className = "" }) {
   function hide() {
     setOpen(false);
   }
+
+  const tooltipElement = open && tooltipContent && (
+    <TooltipContainer
+      ref={refs.setFloating}
+      data-show={open}
+      data-placement={placement}
+      style={floatingStyles}
+    >
+      {tooltipContent}
+      <TooltipArrow x={middlewareData?.arrow?.x} ref={arrowRef} />
+    </TooltipContainer>
+  );
 
   return (
     <Wrapper
@@ -46,17 +60,7 @@ export default function Tooltip({ children, tooltipContent, className = "" }) {
       className={className}
     >
       {children}
-      {open && tooltipContent && (
-        <TooltipContainer
-          ref={refs.setFloating}
-          data-show={open}
-          data-placement={placement}
-          style={floatingStyles}
-        >
-          {tooltipContent}
-          <TooltipArrow x={middlewareData?.arrow?.x} ref={arrowRef} />
-        </TooltipContainer>
-      )}
+      {tooltipElement && createPortal(tooltipElement, document.body)}
     </Wrapper>
   );
 }
