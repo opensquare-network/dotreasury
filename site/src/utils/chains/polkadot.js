@@ -24,4 +24,9 @@ export const polkadot = {
   hasBurnt: true,
 
   hasAssetHub: true,
+
+  api: {
+    scanServer: "https://polkadot-api.dotreasury.com",
+    socketIOUrl: "https://polkadot-api.dotreasury.com",
+  },
 };

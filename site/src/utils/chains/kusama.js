@@ -28,4 +28,9 @@ export const kusama = {
       yStepSize: 200000,
     },
   },
+
+  api: {
+    scanServer: "https://kusama-api.dotreasury.com",
+    socketIOUrl: "polkadot-api.dotreasury.com",
+  },
 };
