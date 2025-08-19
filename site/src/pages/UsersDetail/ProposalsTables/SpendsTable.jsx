@@ -1,20 +1,62 @@
 import { noop } from "lodash";
+import { useMemo } from "react";
 import { TableHeaderWrapper } from "./styled";
+import { TreasurySpendsTableOrigin } from "../../../pages/Spends/TreasurySpendsTable";
+import ResponsivePagination from "../../../components/ResponsivePagination";
+import { useUserTreasurySpendsData } from "../../../context/userTreasurySpends";
 
-// TODO
-export default function SpendsTable({
-  header,
-  footer = noop,
-  // tablePage,
-  // pageSize,
-  // filterData,
-  // role,
-  // address,
-}) {
+export default function SpendsTable({ header, footer = noop }) {
+  const { data, loading, page, setPage, pageSize, setPageSize } =
+    useUserTreasurySpendsData();
+
+  const tableData = useMemo(() => {
+    if (!data?.items) return [];
+
+    return data.items.map((item) => ({
+      ...item,
+      proposeAtBlockHeight: item.indexer?.blockHeight,
+      proposeTime: item.indexer?.blockTime,
+      state: {
+        name: item.state,
+      },
+    }));
+  }, [data?.items]);
+
+  const totalPages = Math.ceil((data?.total || 0) / pageSize);
+
+  const handlePageSizeChange = (newPageSize) => {
+    setPageSize(newPageSize);
+    setPage(1);
+  };
+
+  const handlePageChange = (_, { activePage }) => {
+    setPage(activePage);
+  };
+
+  const headerComponent = header && (
+    <TableHeaderWrapper>{header}</TableHeaderWrapper>
+  );
+
+  const footerComponent = (
+    <>
+      <ResponsivePagination
+        activePage={page}
+        pageSize={pageSize}
+        totalPages={totalPages}
+        setPageSize={handlePageSizeChange}
+        onPageChange={handlePageChange}
+      />
+      {footer}
+    </>
+  );
+
   return (
-    <div>
-      <TableHeaderWrapper>{header}</TableHeaderWrapper>
-      <div>Spends Table</div>
-    </div>
+    <TreasurySpendsTableOrigin
+      data={tableData}
+      loading={loading}
+      header={headerComponent}
+      footer={footerComponent}
+      showFilter={false}
+    />
   );
 }
