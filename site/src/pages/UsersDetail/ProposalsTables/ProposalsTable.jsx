@@ -1,47 +1,63 @@
 import { noop } from "lodash";
-import { useDispatch, useSelector } from "react-redux";
-import { resolveFilterData } from "./resolveFilterData";
-import ProposalsTableOrigin from "../../Proposals/ProposalsTable";
-import { useEffect } from "react";
-import {
-  fetchProposals,
-  loadingSelector,
-  proposalListSelector,
-} from "../../../store/reducers/proposalSlice";
+import { useMemo } from "react";
 import { TableHeaderWrapper } from "./styled";
+import ProposalsTableOrigin from "../../Proposals/ProposalsTable";
+import ResponsivePagination from "../../../components/ResponsivePagination";
+import { useUserTreasuryProposalsData } from "../../../context/userTreasuryProposals";
 
-export default function ProposalsTable({
-  header,
-  footer = noop,
-  tablePage,
-  pageSize,
-  filterData,
-  role,
-  address,
-}) {
-  const dispatch = useDispatch();
+export default function ProposalsTable({ header, footer = noop }) {
+  const { data, loading, page, setPage, pageSize, setPageSize } =
+    useUserTreasuryProposalsData();
 
-  const { items, total } = useSelector(proposalListSelector);
-  const loading = useSelector(loadingSelector);
+  const tableData = useMemo(() => {
+    if (!data?.items) return [];
 
-  const totalPages = Math.ceil(total / pageSize);
+    return data.items.map((item) => ({
+      ...item,
+      links: item?.links || [],
+      latestState: {
+        state: item?.state,
+        time: item?.onchainData?.indexer?.blockTime,
+      },
+      proposeTime: item?.indexer?.blockTime,
+      proposeAtBlockHeight: item?.indexer?.blockHeight,
+      description: item?.title || "",
+      trackInfo: item?.onchainData?.track,
+      value: item?.onchainData?.value,
+      symbolPrice: item?.onchainData?.price?.submission,
+    }));
+  }, [data?.items]);
 
-  useEffect(() => {
-    dispatch(
-      fetchProposals(
-        tablePage - 1,
-        pageSize,
-        resolveFilterData(filterData, { role, address }),
-      ),
-    );
-  }, [dispatch, tablePage, pageSize, filterData, role, address]);
+  const totalPages = Math.ceil((data?.total || 0) / pageSize);
+
+  const handlePageSizeChange = (newPageSize) => {
+    setPageSize(newPageSize);
+    setPage(1);
+  };
+
+  const handlePageChange = (_, { activePage }) => {
+    setPage(activePage);
+  };
+
+  const footerComponent = (
+    <>
+      <ResponsivePagination
+        activePage={page}
+        pageSize={pageSize}
+        totalPages={totalPages}
+        setPageSize={handlePageSizeChange}
+        onPageChange={handlePageChange}
+      />
+      {footer}
+    </>
+  );
 
   return (
     <ProposalsTableOrigin
       header={<TableHeaderWrapper>{header}</TableHeaderWrapper>}
       loading={loading}
-      data={items}
-      footer={!!items.length && footer(totalPages)}
+      data={tableData}
+      footer={!!tableData.length && footerComponent}
     />
   );
 }

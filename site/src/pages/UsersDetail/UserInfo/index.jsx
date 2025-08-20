@@ -20,6 +20,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { useUserLinks } from "./useUserLinks";
 import { isProposalsRole } from "../utils";
 import { useUserTreasurySpendsCount } from "../../../context/userTreasurySpends";
+import { useUserTreasuryProposalsCount } from "../../../context/userTreasuryProposals";
 
 const InfoCardTitleWrapper = styled.div`
   display: flex;
@@ -48,6 +49,7 @@ export default function UserInfo({ role, setRole = () => {} }) {
   const counts = useSelector(usersCountsSelector);
   const countsLoading = useSelector(countsLoadingSelector);
   const spendsCount = useUserTreasurySpendsCount();
+  const proposalsCount = useUserTreasuryProposalsCount();
 
   const shouldShowProposals = useMemo(() => isProposalsRole(role), [role]);
 
@@ -55,12 +57,13 @@ export default function UserInfo({ role, setRole = () => {} }) {
 
   const hasCounts = useMemo(() => {
     return [
-      counts?.proposalsCount,
+      spendsCount,
+      proposalsCount,
       counts?.bountiesCount,
       counts?.childBountiesCount,
       counts?.tipsCount,
     ].some((n) => n);
-  }, [counts]);
+  }, [counts, spendsCount, proposalsCount]);
 
   useEffect(() => {
     if (!shouldShowProposals) {
