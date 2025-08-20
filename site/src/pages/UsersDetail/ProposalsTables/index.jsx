@@ -11,15 +11,18 @@ import ProposalsTable from "./ProposalsTable";
 import TipsTable from "./TipsTable";
 import BountiesTable from "./BountiesTable";
 import ChildBountiesTable from "./ChildBountiesTable";
+import SpendsTable from "./SpendsTable";
 import ResponsivePagination from "../../../components/ResponsivePagination";
 import { Link } from "react-router-dom";
 import { currentChainSettings } from "../../../utils/chains";
+import { useUserTreasurySpendsCount } from "../../../context/userTreasurySpends";
 
 const TABLE_TABS = {
   Proposals: "proposals",
   Tips: "tips",
   Bounties: "bounties",
   ChildBounties: "child-bounties",
+  Spends: "spends",
 };
 
 export default function ProposalsTables({ role }) {
@@ -40,10 +43,15 @@ export default function ProposalsTables({ role }) {
 
   const [filterData] = useState({});
   const counts = useSelector(usersCountsSelector);
+  const spendsCount = useUserTreasurySpendsCount();
 
   const tableTitles = useMemo(
     () =>
       [
+        currentChainSettings.hasSpends && {
+          label: TABLE_TABS.Spends,
+          count: spendsCount,
+        },
         {
           label: TABLE_TABS.Proposals,
           count: counts?.proposalsCount,
@@ -61,7 +69,7 @@ export default function ProposalsTables({ role }) {
           count: counts?.childBountiesCount,
         },
       ].filter(Boolean),
-    [counts],
+    [counts, spendsCount],
   );
   const [tableTab, setTableTab] = useState(
     tableTabParam || tableTitles[0].label,
@@ -159,6 +167,7 @@ function Tables({
     () => tableTab === TABLE_TABS.ChildBounties,
     [tableTab],
   );
+  const isSpends = useMemo(() => tableTab === TABLE_TABS.Spends, [tableTab]);
 
   return (
     <>
@@ -200,6 +209,18 @@ function Tables({
 
       {isChildBounties && (
         <ChildBountiesTable
+          header={header}
+          footer={footer}
+          tablePage={tablePage}
+          pageSize={pageSize}
+          filterData={filterData}
+          role={role}
+          address={address}
+        />
+      )}
+
+      {isSpends && (
+        <SpendsTable
           header={header}
           footer={footer}
           tablePage={tablePage}

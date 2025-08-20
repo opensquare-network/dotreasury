@@ -36,6 +36,22 @@ const FilterWrapper = styled.div`
   padding: 24px;
 `;
 
+const CardWrapper = styled(Card)`
+  overflow-x: hidden;
+  padding: 0;
+  table {
+    border-radius: 0 !important;
+    border: none !important;
+  }
+  @media screen and (max-width: 600px) {
+    border-radius: 0;
+  }
+`;
+
+const Wrapper = styled.div`
+  overflow: hidden;
+`;
+
 const TableWrapper = styled.div`
   overflow: scroll;
 
@@ -44,6 +60,50 @@ const TableWrapper = styled.div`
     border: none !important;
   }
 `;
+
+export function TreasurySpendsTableOrigin({
+  data,
+  loading,
+  header,
+  footer,
+  showFilter = false,
+}) {
+  const [status, setStatus] = useState("");
+  const { proposeTime, proposer, referendaStatus } = useTableColumns({});
+  const sortByValue = useTreasurySpendsSortByValueColumn();
+
+  const columns = [
+    treasurySpendsIndexColumn,
+    proposeTime,
+    proposer,
+    treasurySpendsDescriptionColumn,
+    sortByValue,
+    referendaStatus,
+    treasurySpendsLinkToSubSquareColumn,
+  ];
+
+  return (
+    <CardWrapper>
+      {header}
+
+      {showFilter && (
+        <FilterWrapper>
+          <TreasurySpendsFilter status={status} setStatus={setStatus} />
+        </FilterWrapper>
+      )}
+
+      <Wrapper>
+        <TableWrapper>
+          <TableLoading loading={loading}>
+            <Table columns={columns} data={data} />
+          </TableLoading>
+        </TableWrapper>
+      </Wrapper>
+
+      {footer}
+    </CardWrapper>
+  );
+}
 
 export default function TreasurySpendsTable() {
   const [page, setPage] = useState(DEFAULT_QUERY_PAGE);
@@ -80,7 +140,7 @@ export default function TreasurySpendsTable() {
     }
 
     dispatch(
-      fetchTreasurySpendsList(page - 1, pageSize, params, {
+      fetchTreasurySpendsList(page, pageSize, params, {
         signal: controller.signal,
       }),
     );
@@ -89,20 +149,6 @@ export default function TreasurySpendsTable() {
       controller.abort();
     };
   }, [dispatch, page, pageSize, sort, getFilterData]);
-
-  const { proposeTime, proposer, referendaStatus } = useTableColumns({});
-
-  const sortByValue = useTreasurySpendsSortByValueColumn();
-
-  const columns = [
-    treasurySpendsIndexColumn,
-    proposeTime,
-    proposer,
-    treasurySpendsDescriptionColumn,
-    sortByValue,
-    referendaStatus,
-    treasurySpendsLinkToSubSquareColumn,
-  ];
 
   const tableData = useMemo(
     () =>
@@ -119,46 +165,54 @@ export default function TreasurySpendsTable() {
     [treasurySpendsList?.items],
   );
 
-  return (
-    <Card>
+  const handlePageSizeChange = (pageSize) => {
+    const searchParams = new URLSearchParams(history.location.search);
+    searchParams.delete("page");
+    history.push({ search: searchParams.toString() });
+
+    setPage(DEFAULT_QUERY_PAGE);
+    setPageSize(pageSize);
+  };
+
+  const handlePageChange = (_, { activePage }) => {
+    const searchParams = new URLSearchParams(history.location.search);
+    if (activePage === DEFAULT_QUERY_PAGE) {
+      searchParams.delete("page");
+    } else {
+      searchParams.set("page", activePage);
+    }
+    history.push({ search: searchParams.toString() });
+
+    setPage(activePage);
+  };
+
+  const header = (
+    <>
       <Header>Treasury Spends</Header>
-
       <Divider />
-
       <FilterWrapper>
         <TreasurySpendsFilter status={status} setStatus={setStatus} />
       </FilterWrapper>
+    </>
+  );
 
-      <TableWrapper>
-        <TableLoading loading={loadingTreasurySpendsList}>
-          <Table columns={columns} data={tableData} />
-        </TableLoading>
-      </TableWrapper>
+  const footer = (
+    <ResponsivePagination
+      activePage={page}
+      pageSize={pageSize}
+      totalPages={totalPages}
+      setPageSize={handlePageSizeChange}
+      onPageChange={handlePageChange}
+    />
+  );
 
-      <ResponsivePagination
-        activePage={page}
-        pageSize={pageSize}
-        totalPages={totalPages}
-        setPageSize={(pageSize) => {
-          const searchParams = new URLSearchParams(history.location.search);
-          searchParams.delete("page");
-          history.push({ search: searchParams.toString() });
-
-          setPage(DEFAULT_QUERY_PAGE);
-          setPageSize(pageSize);
-        }}
-        onPageChange={(_, { activePage }) => {
-          const searchParams = new URLSearchParams(history.location.search);
-          if (activePage === DEFAULT_QUERY_PAGE) {
-            searchParams.delete("page");
-          } else {
-            searchParams.set("page", activePage);
-          }
-          history.push({ search: searchParams.toString() });
-
-          setPage(activePage);
-        }}
-      />
-    </Card>
+  return (
+    <TreasurySpendsTableOrigin
+      data={tableData}
+      loading={loadingTreasurySpendsList}
+      header={header}
+      footer={footer}
+      showFilter={false}
+    />
   );
 }
