@@ -1,5 +1,6 @@
 import Api from "./api";
 import { Subject } from "rxjs";
+import { currentChainSettings } from "../utils/chains";
 
 class ScanApi extends Api {
   jwtExpire = new Subject();
@@ -133,7 +134,7 @@ class ScanApi extends Api {
 }
 
 const scanApi = new ScanApi(
-  import.meta.env.VITE_APP_SCAN_SERVER || "https://api.dotreasury.com/",
+  currentChainSettings?.api?.scanServer || "https://api.dotreasury.com/",
 );
 
 export default scanApi;

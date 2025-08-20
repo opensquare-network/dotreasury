@@ -4,6 +4,7 @@ import { useParams } from "react-router";
 import { chainSelector } from "../../../store/reducers/chainSlice";
 import { ensureLinkProtocol } from "../../../utils/url";
 import { currentChainSettings } from "../../../utils/chains";
+import { identityServerHost } from "../../../services/identity";
 
 export function useUserLinks() {
   const { address } = useParams();
@@ -58,18 +59,13 @@ function useFetchIdentity(chain, address) {
   const [info, setInfo] = useState({});
 
   useEffect(() => {
-    fetch(
-      `${
-        import.meta.env.VITE_APP_IDENTITY_SERVER_HOST
-      }/${chain}/identity/${address}`,
-      {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
+    fetch(`${identityServerHost}/${chain}/identity/${address}`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
-    )
+    })
       .then((resp) => resp.json())
       .then((data) => {
         if (data?.info) {

@@ -1,4 +1,5 @@
 import { ApiPromise, WsProvider } from "@polkadot/api";
+import { hydradx } from "../utils/chains/hydradx";
 
 const runtimeApiTypes = {
   PalletCurrenciesRpcRuntimeApiAccountData: {
@@ -25,16 +26,13 @@ let api = null;
 let provider = null;
 
 function getEndPoints() {
-  const wsEndpoint = import.meta.env.VITE_APP_HYDRATION_ENDPOINTS;
-  if (!wsEndpoint) {
-    throw new Error("VITE_APP_HYDRATION_ENDPOINTS not set");
+  const endpoints = hydradx.endpoints;
+  const wsEndpoints = endpoints?.map((item) => item.url);
+  if (!wsEndpoints) {
+    throw new Error("Hydration endpoints not found");
   }
 
-  if ((wsEndpoint || "").includes(";")) {
-    return wsEndpoint.split(";");
-  } else {
-    return wsEndpoint;
-  }
+  return wsEndpoints;
 }
 
 export async function getHydrationApi() {

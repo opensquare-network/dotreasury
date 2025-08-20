@@ -23,4 +23,9 @@ export const centrifuge = {
       yStepSize: 3000000,
     },
   },
+
+  api: {
+    scanServer: "https://centrifuge-api.dotreasury.com",
+    socketIOUrl: "centrifuge-api.dotreasury.com",
+  },
 };

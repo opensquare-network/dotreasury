@@ -1,7 +1,7 @@
 import { ApolloClient, InMemoryCache, useLazyQuery } from "@apollo/client";
 
 const doTreasuryEcoClient = new ApolloClient({
-  uri: import.meta.env.VITE_APP_ECOSYSTEM_API_END_POINT,
+  uri: "https://eco-api.dotreasury.com/graphql",
   cache: new InMemoryCache(),
 });
 

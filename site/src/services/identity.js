@@ -3,6 +3,8 @@ import debounce from "lodash.debounce";
 const cachedIdentities = new Map();
 let pendingQueries = new Map();
 
+export const identityServerHost = "https://id.statescan.io";
+
 const delayQuery = debounce(() => {
   const pending = pendingQueries;
   if (pending.size < 1) {
@@ -24,17 +26,14 @@ const delayQuery = debounce(() => {
     const addresses = chainAddresses[chain];
 
     window
-      .fetch(
-        `${import.meta.env.VITE_APP_IDENTITY_SERVER_HOST}/${chain}/short-ids`,
-        {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ addresses }),
+      .fetch(`${identityServerHost}/${chain}/short-ids`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
-      )
+        body: JSON.stringify({ addresses }),
+      })
       .then((resp) => resp.json())
       .then((data) => {
         const identities = new Map(data.map((item) => [item.address, item]));

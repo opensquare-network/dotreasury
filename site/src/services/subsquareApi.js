@@ -1,3 +1,5 @@
+import { currentChainSettings } from "../utils/chains";
+
 const paramsKeyConvert = (str = "") =>
   str.replace(/[A-Z]/g, ([s]) => `_${s.toLowerCase()}`);
 
@@ -44,5 +46,5 @@ class Api {
     });
   };
 }
-const subsquareApi = new Api(import.meta.env.VITE_APP_SUBSQUARE_API_END_POINT);
+const subsquareApi = new Api(currentChainSettings?.api?.subsquareApi);
 export default subsquareApi;

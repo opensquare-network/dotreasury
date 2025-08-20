@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  BrowserRouter,
-  HashRouter,
-  Redirect,
-  Route,
-  Switch,
-} from "react-router-dom";
+import { HashRouter, Redirect, Route, Switch } from "react-router-dom";
 import { connect } from "../services/websocket";
 
 import Container from "../components/Container";
@@ -55,13 +49,8 @@ export default function App() {
 
   connect();
 
-  const Router =
-    import.meta.env.VITE_APP_ROUTER_TYPE === "HashRouter"
-      ? HashRouter
-      : BrowserRouter;
-
   return (
-    <Router>
+    <HashRouter>
       <Wrapper>
         <Header />
         <PageWrapper>
@@ -167,6 +156,6 @@ export default function App() {
         <Footer />
         <Toast />
       </Wrapper>
-    </Router>
+    </HashRouter>
   );
 }

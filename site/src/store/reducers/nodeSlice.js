@@ -39,8 +39,7 @@ const nodeSlice = createSlice({
       });
 
       if (refresh) {
-        window.location.href =
-          import.meta.env.VITE_APP_ROUTER_TYPE === "HashRouter" ? "/#/" : "/";
+        window.location.href = "/#/";
       }
     },
     setNodesDelay(state, { payload }) {
