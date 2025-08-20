@@ -1,19 +1,18 @@
 import { ApiPromise, WsProvider } from "@polkadot/api";
+import { currentChainSettings } from "../utils/chains";
 
 let api = null;
 let provider = null;
 
 function getEndPoints() {
-  const wsEndpoint = import.meta.env.VITE_APP_ASSET_HUB_ENDPOINTS;
-  if (!wsEndpoint) {
-    throw new Error("VITE_APP_ASSET_HUB_ENDPOINTS not set");
+  const wsEndpoints = currentChainSettings?.assetHubEndpoints?.map(
+    (item) => item.url,
+  );
+  if (!wsEndpoints) {
+    throw new Error("AssetHub endpoints not found");
   }
 
-  if ((wsEndpoint || "").includes(";")) {
-    return wsEndpoint.split(";");
-  } else {
-    return wsEndpoint;
-  }
+  return wsEndpoints;
 }
 
 /**

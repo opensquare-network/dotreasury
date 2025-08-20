@@ -2,7 +2,7 @@ import io from "socket.io-client";
 import store from "../store";
 import { setScanHeight } from "../store/reducers/chainSlice";
 import { setOverview } from "../store/reducers/overviewSlice";
-import { getChainSettings } from "../utils/chains";
+import { currentChainSettings } from "../utils/chains";
 
 const chainStatusRoom = "CHAIN_STATUS_ROOM";
 const overviewRoom = "OVERVIEW_V2_ROOM";
@@ -16,8 +16,8 @@ export function connect() {
     socket.disconnect();
   }
 
-  const { api } = getChainSettings();
-  socket = io(api?.socketIOUrl || "api.dotreasury.com");
+  const { socketIOUrl } = currentChainSettings?.api || {};
+  socket = io(socketIOUrl || "api.dotreasury.com");
   socket.connect();
 
   socket.on("connect", () => {

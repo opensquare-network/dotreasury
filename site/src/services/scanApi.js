@@ -1,6 +1,6 @@
 import Api from "./api";
 import { Subject } from "rxjs";
-import { getChainSettings } from "../utils/chains";
+import { currentChainSettings } from "../utils/chains";
 
 class ScanApi extends Api {
   jwtExpire = new Subject();
@@ -133,8 +133,8 @@ class ScanApi extends Api {
   }
 }
 
-const { api } = getChainSettings();
-
-const scanApi = new ScanApi(api?.scanServer || "https://api.dotreasury.com/");
+const scanApi = new ScanApi(
+  currentChainSettings?.api?.scanServer || "https://api.dotreasury.com/",
+);
 
 export default scanApi;
