@@ -66,7 +66,7 @@ export const polkadot = {
 
   api: {
     scanServer: "https://polkadot-api.dotreasury.com",
-    socketIOUrl: "https://polkadot-api.dotreasury.com",
+    socketIOUrl: "polkadot-api.dotreasury.com",
   },
   assetHubEndpoints,
 };
