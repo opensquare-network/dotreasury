@@ -19,6 +19,7 @@ import TextLinks from "./TextLinks";
 import { TipStatus, USER_ROLES } from "../../constants";
 import IconMask from "../Icon/Mask";
 import { Flex } from "../styled";
+import ExternalLink from "../ExternalLink";
 
 const ProposeTimeWrapper = styled.div`
   display: flex;
@@ -244,6 +245,19 @@ const detailRoute = (options) => ({
     );
   },
 });
+const externalLink = (options) => ({
+  key: "external-link",
+  title: "",
+  headerCellClassName: "hidden",
+  cellClassName: "link-cell hidden",
+  cellRender: (_, item) => {
+    return (
+      <ExternalLink href={options?.getExternalLink?.(item) ?? ""}>
+        <RightButton />
+      </ExternalLink>
+    );
+  },
+});
 const beneficiary = {
   key: "beneficiary",
   title: "Beneficiary",
@@ -448,6 +462,7 @@ export function useTableColumns(options) {
     title: title(options),
     bountiesStatus,
     detailRoute: detailRoute(options),
+    externalLink: externalLink(options),
     beneficiary,
     proposer,
     proposalIndex,

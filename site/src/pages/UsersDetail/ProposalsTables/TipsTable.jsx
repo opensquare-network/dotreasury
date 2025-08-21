@@ -24,6 +24,8 @@ export default function TipsTable({ header, footer = noop }) {
           time: item?.onchainData?.indexer?.blockTime,
         },
         tipsCount: item?.state?.tipsCount,
+        hash: item.onchainData.hash,
+        proposeAtBlockHeight: item.height,
       }),
     );
   }, [data?.items]);
