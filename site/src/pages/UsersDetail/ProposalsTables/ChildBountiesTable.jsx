@@ -1,50 +1,62 @@
 import { noop } from "lodash";
-import { useDispatch, useSelector } from "react-redux";
-import ChildBountiesTableOrigin from "../../ChildBounties/ChildBountiesTable";
-import {
-  fetchChildBounties,
-  loadingSelector,
-  childBountyListSelector,
-} from "../../../store/reducers/bountySlice";
-import { useEffect, useMemo } from "react";
-import { compatChildBountyData } from "../../ChildBounties/utils";
-import { resolveFilterData } from "./resolveFilterData";
+import { useMemo } from "react";
 import { TableHeaderWrapper } from "./styled";
+import BountiesTableOrigin from "../../Bounties/BountiesTable";
+import ResponsivePagination from "../../../components/ResponsivePagination";
+import { useUserChildBountiesData } from "../../../context/userChildBounties";
+import { getBountyCurator } from "./BountiesTable";
 
-export default function ChildBountiesTable({
-  header,
-  footer = noop,
-  tablePage,
-  pageSize,
-  filterData,
-  role,
-  address,
-}) {
-  const dispatch = useDispatch();
+export default function ChildBountiesTable({ header, footer = noop }) {
+  const { data, loading, page, setPage, pageSize, setPageSize } =
+    useUserChildBountiesData();
 
-  const { items: data, total } = useSelector(childBountyListSelector);
-  const loading = useSelector(loadingSelector);
+  const tableData = useMemo(() => {
+    if (!data?.items) return [];
 
-  const totalPages = Math.ceil(total / pageSize);
+    return data.items.map((item) => ({
+      ...item,
+      proposeAtBlockHeight: item.indexer?.blockHeight,
+      proposeTime: item.indexer?.blockTime,
+      state: item?.onchainData?.state,
+      value: item.onchainData.value,
+      symbolPrice: item?.onchainData?.price?.submission,
+      curator: getBountyCurator(item?.onchainData),
+      parentBountyId: item?.onchainData?.parentBountyId,
+      bountyIndex: item?.index,
+    }));
+  }, [data?.items]);
 
-  useEffect(() => {
-    dispatch(
-      fetchChildBounties(
-        tablePage - 1,
-        pageSize,
-        resolveFilterData(filterData, { role, address }),
-      ),
-    );
-  }, [dispatch, tablePage, pageSize, filterData, role, address]);
+  const totalPages = Math.ceil((data?.total || 0) / pageSize);
 
-  const items = useMemo(() => data.map(compatChildBountyData), [data]);
+  const handlePageSizeChange = (newPageSize) => {
+    setPageSize(newPageSize);
+    setPage(1);
+  };
+
+  const handlePageChange = (_, { activePage }) => {
+    setPage(activePage);
+  };
+
+  const footerComponent = (
+    <>
+      <ResponsivePagination
+        activePage={page}
+        pageSize={pageSize}
+        totalPages={totalPages}
+        setPageSize={handlePageSizeChange}
+        onPageChange={handlePageChange}
+      />
+      {footer}
+    </>
+  );
 
   return (
-    <ChildBountiesTableOrigin
-      header={<TableHeaderWrapper>{header}</TableHeaderWrapper>}
+    <BountiesTableOrigin
+      data={tableData}
       loading={loading}
-      data={items}
-      footer={!!items.length && footer(totalPages)}
+      header={<TableHeaderWrapper>{header}</TableHeaderWrapper>}
+      footer={!!tableData.length && footerComponent}
+      showFilter={false}
     />
   );
 }

@@ -5,7 +5,7 @@ import BountiesTableOrigin from "../../Bounties/BountiesTable";
 import ResponsivePagination from "../../../components/ResponsivePagination";
 import { useUserBountiesData } from "../../../context/userBounties";
 
-function getBountyCurator(onchainData) {
+export function getBountyCurator(onchainData) {
   const status = onchainData?.meta?.status;
   if (!status) {
     return null;

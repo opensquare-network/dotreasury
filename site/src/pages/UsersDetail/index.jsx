@@ -12,6 +12,7 @@ import { isProposalsRole } from "./utils";
 import Grade from "./Councilor/Grade";
 import UserTreasurySpendsProvider from "../../context/userTreasurySpends";
 import UserBountiesProvider from "../../context/userBounties";
+import UserChildBountiesProvider from "../../context/userChildBounties";
 
 export default function UsersDetail() {
   useEnsureUsersCount();
@@ -41,13 +42,15 @@ export default function UsersDetail() {
       <DetailGoBack />
 
       <UserBountiesProvider address={address}>
-        <UserTreasurySpendsProvider address={address}>
-          <UserInfo role={role} setRole={setRole} />
+        <UserChildBountiesProvider address={address}>
+          <UserTreasurySpendsProvider address={address}>
+            <UserInfo role={role} setRole={setRole} />
 
-          {councilorRole && <Councilor role={role} />}
+            {councilorRole && <Councilor role={role} />}
 
-          {proposalsRole && <ProposalsTables role={role} />}
-        </UserTreasurySpendsProvider>
+            {proposalsRole && <ProposalsTables role={role} />}
+          </UserTreasurySpendsProvider>
+        </UserChildBountiesProvider>
       </UserBountiesProvider>
 
       <Grade />
