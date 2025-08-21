@@ -1,47 +1,64 @@
-import { useDispatch, useSelector } from "react-redux";
 import { noop } from "lodash";
-import TipsTableOrigin from "../../Tips/TipsTable";
-import {
-  fetchTips,
-  loadingSelector,
-  normalizedTipListSelector,
-} from "../../../store/reducers/tipSlice";
-import { useEffect } from "react";
+import { useMemo } from "react";
 import { TableHeaderWrapper } from "./styled";
-import { resolveFilterData } from "./resolveFilterData";
+import TipsTableOrigin from "../../Tips/TipsTable";
+import ResponsivePagination from "../../../components/ResponsivePagination";
+import { useUserTipsData } from "../../../context/userTips";
+import { normalizeTip } from "../../../store/reducers/tipSlice";
 
-export default function TipsTable({
-  header,
-  footer = noop,
-  tablePage,
-  pageSize,
-  filterData,
-  role,
-  address,
-}) {
-  const dispatch = useDispatch();
+export default function TipsTable({ header, footer = noop }) {
+  const { data, loading, page, setPage, pageSize, setPageSize } =
+    useUserTipsData();
 
-  const { items, total } = useSelector(normalizedTipListSelector);
-  const loading = useSelector(loadingSelector);
+  const tableData = useMemo(() => {
+    if (!data?.items) return [];
 
-  const totalPages = Math.ceil(total / pageSize);
-
-  useEffect(() => {
-    dispatch(
-      fetchTips(
-        tablePage - 1,
-        pageSize,
-        resolveFilterData(filterData, { role, address }),
-      ),
+    return data.items.map((item) =>
+      normalizeTip({
+        ...item,
+        reason: item.title,
+        medianValue: item.onchainData.medianValue,
+        symbolPrice: item?.onchainData?.price?.submission,
+        latestState: {
+          state: item?.state?.state,
+          time: item?.onchainData?.indexer?.blockTime,
+        },
+        tipsCount: item?.state?.tipsCount,
+      }),
     );
-  }, [dispatch, tablePage, pageSize, filterData, role, address]);
+  }, [data?.items]);
+
+  const totalPages = Math.ceil((data?.total || 0) / pageSize);
+
+  const handlePageSizeChange = (newPageSize) => {
+    setPageSize(newPageSize);
+    setPage(1);
+  };
+
+  const handlePageChange = (_, { activePage }) => {
+    setPage(activePage);
+  };
+
+  const footerComponent = (
+    <>
+      <ResponsivePagination
+        activePage={page}
+        pageSize={pageSize}
+        totalPages={totalPages}
+        setPageSize={handlePageSizeChange}
+        onPageChange={handlePageChange}
+      />
+      {footer}
+    </>
+  );
 
   return (
     <TipsTableOrigin
-      header={<TableHeaderWrapper>{header}</TableHeaderWrapper>}
+      data={tableData}
       loading={loading}
-      data={items}
-      footer={!!items?.length && footer(totalPages)}
+      header={<TableHeaderWrapper>{header}</TableHeaderWrapper>}
+      footer={!!tableData.length && footerComponent}
+      showFilter={false}
     />
   );
 }
