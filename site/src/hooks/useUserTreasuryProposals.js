@@ -1,7 +1,8 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { chainSelector } from "../store/reducers/chainSlice";
 import subsquareApi from "../services/subsquareApi";
+import { useQuery } from "../utils/hooks";
 
 export default function useUserTreasuryProposals(
   address,
@@ -11,15 +12,24 @@ export default function useUserTreasuryProposals(
   const [data, setData] = useState({ items: [], total: 0 });
   const [loading, setLoading] = useState(true);
   const chain = useSelector(chainSelector);
+  const query = useQuery();
+  const sort = useMemo(() => {
+    return query.get("sort");
+  }, [query]);
+
+  const queryParams = useMemo(() => {
+    return {
+      page,
+      pageSize,
+      ...(sort && { sort }),
+    };
+  }, [page, pageSize, sort]);
 
   const fetchData = useCallback(async () => {
     try {
       const { result } = await subsquareApi.fetch(
         `/beneficiaries/${address}/treasury-proposals`,
-        {
-          page,
-          pageSize,
-        },
+        queryParams,
       );
 
       if (result) {
@@ -32,7 +42,7 @@ export default function useUserTreasuryProposals(
     } finally {
       setLoading(false);
     }
-  }, [address, page, pageSize]);
+  }, [address, queryParams]);
 
   useEffect(() => {
     if (!address || !chain) {
