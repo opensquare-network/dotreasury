@@ -43,11 +43,11 @@ const ChildBountiesTable = ({
 }) => {
   const history = useHistory();
 
-  const { columns, getDetailRoute } = useColumns({ defaultCurator: false });
+  const { columns, getExternalLink } = useColumns({ defaultCurator: false });
 
   const onRowClick = (row) => {
     if (window.innerWidth < 1140) {
-      const detailRoute = getDetailRoute(row);
+      const detailRoute = getExternalLink(row);
       history.push(detailRoute);
     }
   };

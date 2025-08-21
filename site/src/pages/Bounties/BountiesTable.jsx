@@ -37,11 +37,11 @@ const TableWrapper = styled.div`
 const BountiesTable = ({ data, loading, header, footer }) => {
   const history = useHistory();
 
-  const { columns, getDetailRoute } = useColumns();
+  const { columns, getExternalLink } = useColumns();
 
   const onRowClick = (row) => {
     if (window.innerWidth < 1140) {
-      const detailRoute = getDetailRoute(row);
+      const detailRoute = getExternalLink(row);
       history.push(detailRoute);
     }
   };

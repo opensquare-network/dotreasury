@@ -3,6 +3,8 @@ import { useState } from "react";
 import SortableIndex from "../../components/SortableIndex";
 import SortableValue from "../../components/SortableValue";
 import useSort from "../../hooks/useSort";
+import { useSelector } from "react-redux";
+import { chainSelector } from "../../store/reducers/chainSlice";
 
 export function useColumns(options) {
   const { defaultCurator = true } = options ?? {};
@@ -11,10 +13,11 @@ export function useColumns(options) {
 
   const { sortField, setSortField, sortDirection, setSortDirection } =
     useSort();
+  const chain = useSelector(chainSelector);
 
-  const getDetailRoute = (row) => {
+  const getExternalLink = (row) => {
     const type = row.parentBountyId >= 0 ? "child-bounties" : "bounties";
-    return `/${type}/${row.bountyIndex}`;
+    return `https://${chain}.subsquare.io/treasury/${type}/${row.bountyIndex}`;
   };
 
   let {
@@ -24,9 +27,9 @@ export function useColumns(options) {
     title,
     value,
     bountiesStatus,
-    detailRoute,
+    externalLink,
     beneficiary,
-  } = useTableColumns({ getDetailRoute, recognizeLinks: true });
+  } = useTableColumns({ getExternalLink, recognizeLinks: true });
 
   const toggleCuratorBeneficiary = () => {
     setIsCurator(!isCurator);
@@ -90,11 +93,11 @@ export function useColumns(options) {
     title,
     sortByValue,
     bountiesStatus,
-    detailRoute,
+    externalLink,
   ];
 
   return {
     columns,
-    getDetailRoute,
+    getExternalLink,
   };
 }
