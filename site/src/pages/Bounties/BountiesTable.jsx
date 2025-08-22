@@ -34,7 +34,7 @@ const TableWrapper = styled.div`
   }
 `;
 
-const BountiesTable = ({ data, loading, header, footer }) => {
+export default function BountiesTable({ data, loading, header, footer }) {
   const history = useHistory();
 
   const { columns, getExternalLink } = useColumns();
@@ -68,6 +68,4 @@ const BountiesTable = ({ data, loading, header, footer }) => {
       {footer}
     </CardWrapper>
   );
-};
-
-export default BountiesTable;
+}
