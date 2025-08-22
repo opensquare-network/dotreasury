@@ -1,15 +1,14 @@
-import { noop } from "lodash";
 import { useMemo } from "react";
 import { TableHeaderWrapper } from "./styled";
 import ChildBountiesTableOrigin from "../../ChildBounties/ChildBountiesTable";
-import ResponsivePagination from "../../../components/ResponsivePagination";
 import UserChildBountiesProvider, {
   useUserChildBountiesData,
 } from "../../../context/userChildBounties";
 import { getBountyCurator } from "./BountiesTable";
 import { useParams } from "react-router";
+import CommonFooter from "./commonFooter";
 
-function ChildBountiesTableImpl({ header, footer = noop }) {
+function ChildBountiesTableImpl({ header }) {
   const { data, loading, page, setPage, pageSize, setPageSize } =
     useUserChildBountiesData();
 
@@ -29,47 +28,33 @@ function ChildBountiesTableImpl({ header, footer = noop }) {
     }));
   }, [data?.items]);
 
-  const totalPages = Math.ceil((data?.total || 0) / pageSize);
-
-  const handlePageSizeChange = (newPageSize) => {
-    setPageSize(newPageSize);
-    setPage(1);
-  };
-
-  const handlePageChange = (_, { activePage }) => {
-    setPage(activePage);
-  };
-
-  const footerComponent = (
-    <>
-      <ResponsivePagination
-        activePage={page}
-        pageSize={pageSize}
-        totalPages={totalPages}
-        setPageSize={handlePageSizeChange}
-        onPageChange={handlePageChange}
-      />
-      {footer}
-    </>
-  );
-
   return (
     <ChildBountiesTableOrigin
       data={tableData}
       loading={loading}
       header={<TableHeaderWrapper>{header}</TableHeaderWrapper>}
-      footer={!!tableData.length && footerComponent}
+      footer={
+        !!tableData.length && (
+          <CommonFooter
+            page={page}
+            pageSize={pageSize}
+            setPage={setPage}
+            setPageSize={setPageSize}
+            total={data?.total || 0}
+          />
+        )
+      }
       showFilter={false}
     />
   );
 }
 
-export default function ChildBountiesTable({ header, footer = noop }) {
+export default function ChildBountiesTable({ header }) {
   const { address } = useParams();
 
   return (
     <UserChildBountiesProvider address={address}>
-      <ChildBountiesTableImpl header={header} footer={footer} />
+      <ChildBountiesTableImpl header={header} />
     </UserChildBountiesProvider>
   );
 }

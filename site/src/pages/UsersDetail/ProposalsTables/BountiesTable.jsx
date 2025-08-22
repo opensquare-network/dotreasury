@@ -1,12 +1,11 @@
-import { noop } from "lodash";
 import { useMemo } from "react";
 import { TableHeaderWrapper } from "./styled";
 import BountiesTableOrigin from "../../Bounties/BountiesTable";
-import ResponsivePagination from "../../../components/ResponsivePagination";
 import UserBountiesProvider, {
   useUserBountiesData,
 } from "../../../context/userBounties";
 import { useParams } from "react-router";
+import CommonFooter from "./commonFooter";
 
 export function getBountyCurator(onchainData) {
   const status = onchainData?.meta?.status;
@@ -25,7 +24,7 @@ export function getBountyCurator(onchainData) {
   return null;
 }
 
-function BountiesTableImpl({ header, footer = noop }) {
+function BountiesTableImpl({ header }) {
   const { data, loading, page, setPage, pageSize, setPageSize } =
     useUserBountiesData();
 
@@ -43,47 +42,33 @@ function BountiesTableImpl({ header, footer = noop }) {
     }));
   }, [data?.items]);
 
-  const totalPages = Math.ceil((data?.total || 0) / pageSize);
-
-  const handlePageSizeChange = (newPageSize) => {
-    setPageSize(newPageSize);
-    setPage(1);
-  };
-
-  const handlePageChange = (_, { activePage }) => {
-    setPage(activePage);
-  };
-
-  const footerComponent = (
-    <>
-      <ResponsivePagination
-        activePage={page}
-        pageSize={pageSize}
-        totalPages={totalPages}
-        setPageSize={handlePageSizeChange}
-        onPageChange={handlePageChange}
-      />
-      {footer}
-    </>
-  );
-
   return (
     <BountiesTableOrigin
       data={tableData}
       loading={loading}
       header={<TableHeaderWrapper>{header}</TableHeaderWrapper>}
-      footer={!!tableData.length && footerComponent}
+      footer={
+        !!tableData.length && (
+          <CommonFooter
+            page={page}
+            pageSize={pageSize}
+            setPage={setPage}
+            setPageSize={setPageSize}
+            total={data?.total || 0}
+          />
+        )
+      }
       showFilter={false}
     />
   );
 }
 
-export default function BountiesTable({ header, footer = noop }) {
+export default function BountiesTable({ header }) {
   const { address } = useParams();
 
   return (
     <UserBountiesProvider address={address}>
-      <BountiesTableImpl header={header} footer={footer} />
+      <BountiesTableImpl header={header} />
     </UserBountiesProvider>
   );
 }
