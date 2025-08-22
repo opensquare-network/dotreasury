@@ -34,14 +34,14 @@ const TableWrapper = styled.div`
   }
 `;
 
-const BountiesTable = ({ data, loading, header, footer }) => {
+export default function BountiesTable({ data, loading, header, footer }) {
   const history = useHistory();
 
-  const { columns, getDetailRoute } = useColumns();
+  const { columns, getExternalLink } = useColumns();
 
   const onRowClick = (row) => {
     if (window.innerWidth < 1140) {
-      const detailRoute = getDetailRoute(row);
+      const detailRoute = getExternalLink(row);
       history.push(detailRoute);
     }
   };
@@ -54,8 +54,6 @@ const BountiesTable = ({ data, loading, header, footer }) => {
           <TableLoading loading={loading}>
             {data && (
               <Table
-                tree
-                treeKey="childBounties"
                 treeDataTransform={compatChildBountyData}
                 columns={columns}
                 data={data}
@@ -68,6 +66,4 @@ const BountiesTable = ({ data, loading, header, footer }) => {
       {footer}
     </CardWrapper>
   );
-};
-
-export default BountiesTable;
+}
