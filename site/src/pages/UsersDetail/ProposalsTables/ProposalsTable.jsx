@@ -2,13 +2,13 @@ import { noop } from "lodash";
 import { useMemo } from "react";
 import { TableHeaderWrapper } from "./styled";
 import ProposalsTableOrigin from "../../Proposals/ProposalsTable";
-import ResponsivePagination from "../../../components/ResponsivePagination";
 import UserTreasuryProposalsProvider, {
   useUserTreasuryProposalsData,
 } from "../../../context/userTreasuryProposals";
 import { useParams } from "react-router";
+import CommonFooter from "./commonFooter";
 
-function ProposalsTableImpl({ header, footer = noop }) {
+function ProposalsTableImpl({ header }) {
   const { data, loading, page, setPage, pageSize, setPageSize } =
     useUserTreasuryProposalsData();
 
@@ -31,36 +31,22 @@ function ProposalsTableImpl({ header, footer = noop }) {
     }));
   }, [data?.items]);
 
-  const totalPages = Math.ceil((data?.total || 0) / pageSize);
-
-  const handlePageSizeChange = (newPageSize) => {
-    setPageSize(newPageSize);
-    setPage(1);
-  };
-
-  const handlePageChange = (_, { activePage }) => {
-    setPage(activePage);
-  };
-
-  const footerComponent = (
-    <>
-      <ResponsivePagination
-        activePage={page}
-        pageSize={pageSize}
-        totalPages={totalPages}
-        setPageSize={handlePageSizeChange}
-        onPageChange={handlePageChange}
-      />
-      {footer}
-    </>
-  );
-
   return (
     <ProposalsTableOrigin
       header={<TableHeaderWrapper>{header}</TableHeaderWrapper>}
       loading={loading}
       data={tableData}
-      footer={!!tableData.length && footerComponent}
+      footer={
+        !!tableData.length && (
+          <CommonFooter
+            page={page}
+            pageSize={pageSize}
+            setPage={setPage}
+            setPageSize={setPageSize}
+            total={data?.total || 0}
+          />
+        )
+      }
     />
   );
 }

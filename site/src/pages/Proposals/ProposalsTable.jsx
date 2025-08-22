@@ -52,7 +52,7 @@ const completeProposalsWithTitle = (data = [], chain) => {
   });
 };
 
-const ProposalsTable = ({ data, tab, loading, header, footer }) => {
+export default function ProposalsTable({ data, tab, loading, header, footer }) {
   const history = useHistory();
   const chain = useSelector(chainSelector);
   const [isBeneficiary, setIsBeneficiary] = useState(true);
@@ -197,6 +197,4 @@ const ProposalsTable = ({ data, tab, loading, header, footer }) => {
       {footer}
     </CardWrapper>
   );
-};
-
-export default ProposalsTable;
+}
