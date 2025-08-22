@@ -1,12 +1,14 @@
 import React from "react";
 import styled from "styled-components";
-import { NavLink, useHistory } from "react-router-dom";
-
+import { useHistory } from "react-router-dom";
 import { Table } from "../../components/Table";
 import TableLoading from "../../components/TableLoading";
 import TextMinor from "../../components/TextMinor";
 import Card from "../../components/Card";
 import { useColumns } from "../Bounties/columns";
+import { chainSelector } from "../../store/reducers/chainSlice";
+import { useSelector } from "react-redux";
+import ExternalLink from "../../components/ExternalLink";
 
 const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -34,6 +36,12 @@ const TableWrapper = styled.div`
   }
 `;
 
+const TextMinorLink = styled(TextMinor)`
+  &:hover {
+    text-decoration-line: underline;
+  }
+`;
+
 const ChildBountiesTable = ({
   data,
   loading,
@@ -42,6 +50,7 @@ const ChildBountiesTable = ({
   showParent = true,
 }) => {
   const history = useHistory();
+  const chain = useSelector(chainSelector);
 
   const { columns, getExternalLink } = useColumns({ defaultCurator: false });
 
@@ -61,9 +70,12 @@ const ChildBountiesTable = ({
       // cellProps: "index-cell", // todo: check why this cause an error
       cellClassName: "index-cell",
       cellRender: (value) => (
-        <NavLink to={`./bounties/${value}`} key={value}>
-          <TextMinor>{`#${value}`}</TextMinor>
-        </NavLink>
+        <ExternalLink
+          href={`https://${chain}.subsquare.io/treasury/bounties/${value}`}
+          key={value}
+        >
+          <TextMinorLink>{`#${value}`}</TextMinorLink>
+        </ExternalLink>
       ),
     });
   }
