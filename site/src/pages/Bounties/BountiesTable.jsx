@@ -54,8 +54,6 @@ export default function BountiesTable({ data, loading, header, footer }) {
           <TableLoading loading={loading}>
             {data && (
               <Table
-                tree
-                treeKey="childBounties"
                 treeDataTransform={compatChildBountyData}
                 columns={columns}
                 data={data}
