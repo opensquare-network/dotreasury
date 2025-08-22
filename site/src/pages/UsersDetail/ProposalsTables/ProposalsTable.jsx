@@ -1,4 +1,3 @@
-import { noop } from "lodash";
 import { useMemo } from "react";
 import { TableHeaderWrapper } from "./styled";
 import ProposalsTableOrigin from "../../Proposals/ProposalsTable";
@@ -20,7 +19,7 @@ function ProposalsTableImpl({ header }) {
       links: item?.links || [],
       latestState: {
         state: item?.state,
-        time: item?.onchainData?.indexer?.blockTime,
+        time: item?.onchainData?.state?.indexer?.blockTime,
       },
       proposeTime: item?.indexer?.blockTime,
       proposeAtBlockHeight: item?.indexer?.blockHeight,
@@ -51,12 +50,12 @@ function ProposalsTableImpl({ header }) {
   );
 }
 
-export default function ProposalsTable({ header, footer = noop }) {
+export default function ProposalsTable({ header }) {
   const { address } = useParams();
 
   return (
     <UserTreasuryProposalsProvider address={address}>
-      <ProposalsTableImpl header={header} footer={footer} />
+      <ProposalsTableImpl header={header} />
     </UserTreasuryProposalsProvider>
   );
 }
