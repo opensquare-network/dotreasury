@@ -3,10 +3,11 @@ import { useMemo } from "react";
 import { TableHeaderWrapper } from "./styled";
 import TipsTableOrigin from "../../Tips/TipsTable";
 import ResponsivePagination from "../../../components/ResponsivePagination";
-import { useUserTipsData } from "../../../context/userTips";
+import UserTipsProvider, { useUserTipsData } from "../../../context/userTips";
 import { normalizeTip } from "../../../store/reducers/tipSlice";
+import { useParams } from "react-router";
 
-export default function TipsTable({ header, footer = noop }) {
+function TipsTableImpl({ header, footer = noop }) {
   const { data, loading, page, setPage, pageSize, setPageSize } =
     useUserTipsData();
 
@@ -62,5 +63,15 @@ export default function TipsTable({ header, footer = noop }) {
       footer={!!tableData.length && footerComponent}
       showFilter={false}
     />
+  );
+}
+
+export default function TipsTable({ header, footer = noop }) {
+  const { address } = useParams();
+
+  return (
+    <UserTipsProvider address={address}>
+      <TipsTableImpl header={header} footer={footer} />
+    </UserTipsProvider>
   );
 }

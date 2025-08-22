@@ -11,7 +11,6 @@ import { useHistory, useParams } from "react-router";
 import { isProposalsRole } from "./utils";
 import Grade from "./Councilor/Grade";
 import UserTreasurySpendsProvider from "../../context/userTreasurySpends";
-import UserTipsProvider from "../../context/userTips";
 
 export default function UsersDetail() {
   useEnsureUsersCount();
@@ -40,15 +39,13 @@ export default function UsersDetail() {
     <div>
       <DetailGoBack />
 
-      <UserTipsProvider address={address}>
-        <UserTreasurySpendsProvider address={address}>
-          <UserInfo role={role} setRole={setRole} />
+      <UserTreasurySpendsProvider address={address}>
+        <UserInfo role={role} setRole={setRole} />
 
-          {councilorRole && <Councilor role={role} />}
+        {councilorRole && <Councilor role={role} />}
 
-          {proposalsRole && <ProposalsTables role={role} />}
-        </UserTreasurySpendsProvider>
-      </UserTipsProvider>
+        {proposalsRole && <ProposalsTables role={role} />}
+      </UserTreasurySpendsProvider>
 
       <Grade />
     </div>
