@@ -1,7 +1,7 @@
 import { noop } from "lodash";
 import { useMemo } from "react";
 import { TableHeaderWrapper } from "./styled";
-import BountiesTableOrigin from "../../Bounties/BountiesTable";
+import ChildBountiesTableOrigin from "../../ChildBounties/ChildBountiesTable";
 import ResponsivePagination from "../../../components/ResponsivePagination";
 import UserChildBountiesProvider, {
   useUserChildBountiesData,
@@ -54,7 +54,7 @@ function ChildBountiesTableImpl({ header, footer = noop }) {
   );
 
   return (
-    <BountiesTableOrigin
+    <ChildBountiesTableOrigin
       data={tableData}
       loading={loading}
       header={<TableHeaderWrapper>{header}</TableHeaderWrapper>}
