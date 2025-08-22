@@ -55,12 +55,13 @@ export default function UserInfo({ role, setRole = () => {} }) {
 
   const hasCounts = useMemo(() => {
     return [
+      spendsCount,
       counts?.proposalsCount,
       counts?.bountiesCount,
       counts?.childBountiesCount,
       counts?.tipsCount,
     ].some((n) => n);
-  }, [counts]);
+  }, [counts, spendsCount]);
 
   useEffect(() => {
     if (!shouldShowProposals) {
