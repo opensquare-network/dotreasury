@@ -39,6 +39,10 @@ const TipsTable = ({ data, loading, header, footer }) => {
   const { sortField, setSortField, sortDirection, setSortDirection } =
     useSort();
 
+  const getExternalLink = (row) => {
+    return `https://${chain}.subsquare.io/treasury/tip/${row.proposeAtBlockHeight}_${row.hash}`;
+  };
+
   const getRelatedLinks = (item) => {
     const links = [];
     if (currentChainSettings.hasTips) {
@@ -47,19 +51,16 @@ const TipsTable = ({ data, loading, header, footer }) => {
         description: "Treasury tip page",
       });
       links.unshift({
-        link: `https://${chain}.subsquare.io/treasury/tip/${item.proposeAtBlockHeight}_${item.hash}`,
+        link: getExternalLink(item),
         description: "Treasury tip page",
       });
     }
     return links;
   };
-  const getDetailRoute = (row) => {
-    return `/tips/${row.proposeAtBlockHeight}_${row.hash}`;
-  };
 
   const onRowClick = (row) => {
     if (window.innerWidth < 1140) {
-      history.push(getDetailRoute(row));
+      history.push(getExternalLink(row));
     }
   };
 
@@ -69,9 +70,9 @@ const TipsTable = ({ data, loading, header, footer }) => {
     reason,
     tipsValue,
     tipsStatus,
-    detailRoute,
+    externalLink,
     relatedLinks,
-  } = useTableColumns({ getRelatedLinks, getDetailRoute, compact: true });
+  } = useTableColumns({ getRelatedLinks, getExternalLink, compact: true });
 
   const sortByValue = {
     ...tipsValue,
@@ -92,7 +93,7 @@ const TipsTable = ({ data, loading, header, footer }) => {
     relatedLinks,
     sortByValue,
     tipsStatus,
-    detailRoute,
+    externalLink,
   ];
 
   return (

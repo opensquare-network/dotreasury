@@ -171,29 +171,9 @@ function Tables({
 
   return (
     <>
-      {isProposals && (
-        <ProposalsTable
-          header={header}
-          footer={footer}
-          tablePage={tablePage}
-          pageSize={pageSize}
-          filterData={filterData}
-          role={role}
-          address={address}
-        />
-      )}
+      {isProposals && <ProposalsTable header={header} />}
 
-      {isTips && (
-        <TipsTable
-          header={header}
-          footer={footer}
-          tablePage={tablePage}
-          pageSize={pageSize}
-          filterData={filterData}
-          role={role}
-          address={address}
-        />
-      )}
+      {isTips && <TipsTable header={header} />}
 
       {isBounties && (
         <BountiesTable
