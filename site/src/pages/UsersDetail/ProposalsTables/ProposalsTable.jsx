@@ -19,7 +19,7 @@ function ProposalsTableImpl({ header }) {
       links: item?.links || [],
       latestState: {
         state: item?.state,
-        time: item?.onchainData?.indexer?.blockTime,
+        time: item?.onchainData?.state?.indexer?.blockTime,
       },
       proposeTime: item?.indexer?.blockTime,
       proposeAtBlockHeight: item?.indexer?.blockHeight,

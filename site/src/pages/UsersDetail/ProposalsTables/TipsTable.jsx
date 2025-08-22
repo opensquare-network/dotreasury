@@ -20,7 +20,7 @@ function TipsTableImpl({ header }) {
         symbolPrice: item?.onchainData?.price?.submission,
         latestState: {
           state: item?.state?.state,
-          time: item?.onchainData?.indexer?.blockTime,
+          time: item?.onchainData?.state?.indexer?.blockTime,
         },
         tipsCount: item?.state?.tipsCount,
         hash: item.onchainData.hash,
