@@ -3,7 +3,10 @@ import { useMemo } from "react";
 import { TableHeaderWrapper } from "./styled";
 import BountiesTableOrigin from "../../Bounties/BountiesTable";
 import ResponsivePagination from "../../../components/ResponsivePagination";
-import { useUserBountiesData } from "../../../context/userBounties";
+import UserBountiesProvider, {
+  useUserBountiesData,
+} from "../../../context/userBounties";
+import { useParams } from "react-router";
 
 export function getBountyCurator(onchainData) {
   const status = onchainData?.meta?.status;
@@ -22,7 +25,7 @@ export function getBountyCurator(onchainData) {
   return null;
 }
 
-export default function BountiesTable({ header, footer = noop }) {
+function BountiesTableImpl({ header, footer = noop }) {
   const { data, loading, page, setPage, pageSize, setPageSize } =
     useUserBountiesData();
 
@@ -72,5 +75,15 @@ export default function BountiesTable({ header, footer = noop }) {
       footer={!!tableData.length && footerComponent}
       showFilter={false}
     />
+  );
+}
+
+export default function BountiesTable({ header, footer = noop }) {
+  const { address } = useParams();
+
+  return (
+    <UserBountiesProvider address={address}>
+      <BountiesTableImpl header={header} footer={footer} />
+    </UserBountiesProvider>
   );
 }

@@ -3,10 +3,13 @@ import { useMemo } from "react";
 import { TableHeaderWrapper } from "./styled";
 import BountiesTableOrigin from "../../Bounties/BountiesTable";
 import ResponsivePagination from "../../../components/ResponsivePagination";
-import { useUserChildBountiesData } from "../../../context/userChildBounties";
+import UserChildBountiesProvider, {
+  useUserChildBountiesData,
+} from "../../../context/userChildBounties";
 import { getBountyCurator } from "./BountiesTable";
+import { useParams } from "react-router";
 
-export default function ChildBountiesTable({ header, footer = noop }) {
+function ChildBountiesTableImpl({ header, footer = noop }) {
   const { data, loading, page, setPage, pageSize, setPageSize } =
     useUserChildBountiesData();
 
@@ -58,5 +61,15 @@ export default function ChildBountiesTable({ header, footer = noop }) {
       footer={!!tableData.length && footerComponent}
       showFilter={false}
     />
+  );
+}
+
+export default function ChildBountiesTable({ header, footer = noop }) {
+  const { address } = useParams();
+
+  return (
+    <UserChildBountiesProvider address={address}>
+      <ChildBountiesTableImpl header={header} footer={footer} />
+    </UserChildBountiesProvider>
   );
 }

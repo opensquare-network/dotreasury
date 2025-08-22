@@ -16,8 +16,6 @@ import ResponsivePagination from "../../../components/ResponsivePagination";
 import { Link } from "react-router-dom";
 import { currentChainSettings } from "../../../utils/chains";
 import { useUserTreasurySpendsCount } from "../../../context/userTreasurySpends";
-import { useUserBountiesCount } from "../../../context/userBounties";
-import { useUserChildBountiesCount } from "../../../context/userChildBounties";
 
 const TABLE_TABS = {
   Proposals: "proposals",
@@ -46,8 +44,6 @@ export default function ProposalsTables({ role }) {
   const [filterData] = useState({});
   const counts = useSelector(usersCountsSelector);
   const spendsCount = useUserTreasurySpendsCount();
-  const bountiesCount = useUserBountiesCount();
-  const childBountiesCount = useUserChildBountiesCount();
 
   const tableTitles = useMemo(
     () =>
@@ -66,14 +62,14 @@ export default function ProposalsTables({ role }) {
         },
         currentChainSettings.hasBounties && {
           label: TABLE_TABS.Bounties,
-          count: bountiesCount,
+          count: counts?.bountiesCount,
         },
         currentChainSettings.hasBounties && {
           label: TABLE_TABS.ChildBounties,
-          count: childBountiesCount,
+          count: counts?.childBountiesCount,
         },
       ].filter(Boolean),
-    [counts, spendsCount, bountiesCount, childBountiesCount],
+    [counts, spendsCount],
   );
   const [tableTab, setTableTab] = useState(
     tableTabParam || tableTitles[0].label,

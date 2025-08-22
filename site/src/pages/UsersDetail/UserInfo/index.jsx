@@ -20,8 +20,6 @@ import { Link as RouterLink } from "react-router-dom";
 import { useUserLinks } from "./useUserLinks";
 import { isProposalsRole } from "../utils";
 import { useUserTreasurySpendsCount } from "../../../context/userTreasurySpends";
-import { useUserBountiesCount } from "../../../context/userBounties";
-import { useUserChildBountiesCount } from "../../../context/userChildBounties";
 
 const InfoCardTitleWrapper = styled.div`
   display: flex;
@@ -50,8 +48,6 @@ export default function UserInfo({ role, setRole = () => {} }) {
   const counts = useSelector(usersCountsSelector);
   const countsLoading = useSelector(countsLoadingSelector);
   const spendsCount = useUserTreasurySpendsCount();
-  const bountiesCount = useUserBountiesCount();
-  const childBountiesCount = useUserChildBountiesCount();
 
   const shouldShowProposals = useMemo(() => isProposalsRole(role), [role]);
 
@@ -61,11 +57,11 @@ export default function UserInfo({ role, setRole = () => {} }) {
     return [
       spendsCount,
       counts?.proposalsCount,
-      bountiesCount,
-      childBountiesCount,
+      counts?.bountiesCount,
+      counts?.childBountiesCount,
       counts?.tipsCount,
     ].some((n) => n);
-  }, [counts, spendsCount, bountiesCount, childBountiesCount]);
+  }, [counts, spendsCount]);
 
   useEffect(() => {
     if (!shouldShowProposals) {
@@ -121,8 +117,8 @@ export default function UserInfo({ role, setRole = () => {} }) {
                 <ProposalsCount
                   spends={spendsCount}
                   proposals={counts?.proposalsCount}
-                  bounties={bountiesCount}
-                  childBounties={childBountiesCount}
+                  bounties={counts?.bountiesCount}
+                  childBounties={counts?.childBountiesCount}
                   tips={counts?.tipsCount}
                 />
               ) : (
