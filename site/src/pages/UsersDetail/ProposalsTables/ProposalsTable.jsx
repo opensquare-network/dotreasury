@@ -3,9 +3,12 @@ import { useMemo } from "react";
 import { TableHeaderWrapper } from "./styled";
 import ProposalsTableOrigin from "../../Proposals/ProposalsTable";
 import ResponsivePagination from "../../../components/ResponsivePagination";
-import { useUserTreasuryProposalsData } from "../../../context/userTreasuryProposals";
+import UserTreasuryProposalsProvider, {
+  useUserTreasuryProposalsData,
+} from "../../../context/userTreasuryProposals";
+import { useParams } from "react-router";
 
-export default function ProposalsTable({ header, footer = noop }) {
+function ProposalsTableImpl({ header, footer = noop }) {
   const { data, loading, page, setPage, pageSize, setPageSize } =
     useUserTreasuryProposalsData();
 
@@ -59,5 +62,15 @@ export default function ProposalsTable({ header, footer = noop }) {
       data={tableData}
       footer={!!tableData.length && footerComponent}
     />
+  );
+}
+
+export default function ProposalsTable({ header, footer = noop }) {
+  const { address } = useParams();
+
+  return (
+    <UserTreasuryProposalsProvider address={address}>
+      <ProposalsTableImpl header={header} footer={footer} />
+    </UserTreasuryProposalsProvider>
   );
 }
