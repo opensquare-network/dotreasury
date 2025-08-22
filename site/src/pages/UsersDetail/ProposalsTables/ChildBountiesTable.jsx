@@ -1,50 +1,60 @@
-import { noop } from "lodash";
-import { useDispatch, useSelector } from "react-redux";
-import ChildBountiesTableOrigin from "../../ChildBounties/ChildBountiesTable";
-import {
-  fetchChildBounties,
-  loadingSelector,
-  childBountyListSelector,
-} from "../../../store/reducers/bountySlice";
-import { useEffect, useMemo } from "react";
-import { compatChildBountyData } from "../../ChildBounties/utils";
-import { resolveFilterData } from "./resolveFilterData";
+import { useMemo } from "react";
 import { TableHeaderWrapper } from "./styled";
+import ChildBountiesTableOrigin from "../../ChildBounties/ChildBountiesTable";
+import UserChildBountiesProvider, {
+  useUserChildBountiesData,
+} from "../../../context/userChildBounties";
+import { getBountyCurator } from "./BountiesTable";
+import { useParams } from "react-router";
+import CommonFooter from "./commonFooter";
 
-export default function ChildBountiesTable({
-  header,
-  footer = noop,
-  tablePage,
-  pageSize,
-  filterData,
-  role,
-  address,
-}) {
-  const dispatch = useDispatch();
+function ChildBountiesTableImpl({ header }) {
+  const { data, loading, page, setPage, pageSize, setPageSize } =
+    useUserChildBountiesData();
 
-  const { items: data, total } = useSelector(childBountyListSelector);
-  const loading = useSelector(loadingSelector);
+  const tableData = useMemo(() => {
+    if (!data?.items) return [];
 
-  const totalPages = Math.ceil(total / pageSize);
-
-  useEffect(() => {
-    dispatch(
-      fetchChildBounties(
-        tablePage - 1,
-        pageSize,
-        resolveFilterData(filterData, { role, address }),
-      ),
-    );
-  }, [dispatch, tablePage, pageSize, filterData, role, address]);
-
-  const items = useMemo(() => data.map(compatChildBountyData), [data]);
+    return data.items.map((item) => ({
+      ...item,
+      proposeAtBlockHeight: item.indexer?.blockHeight,
+      proposeTime: item.indexer?.blockTime,
+      state: item?.onchainData?.state,
+      value: item.onchainData.value,
+      symbolPrice: item?.onchainData?.price?.submission,
+      curator: getBountyCurator(item?.onchainData),
+      parentBountyId: item?.onchainData?.parentBountyId,
+      bountyIndex: item?.index,
+    }));
+  }, [data?.items]);
 
   return (
     <ChildBountiesTableOrigin
-      header={<TableHeaderWrapper>{header}</TableHeaderWrapper>}
+      data={tableData}
       loading={loading}
-      data={items}
-      footer={!!items.length && footer(totalPages)}
+      header={<TableHeaderWrapper>{header}</TableHeaderWrapper>}
+      footer={
+        !!tableData.length && (
+          <CommonFooter
+            page={page}
+            pageSize={pageSize}
+            setPage={setPage}
+            setPageSize={setPageSize}
+            total={data?.total || 0}
+          />
+        )
+      }
+      showFilter={false}
     />
+  );
+}
+
+export default function ChildBountiesTable({ header }) {
+  const { address } = useParams();
+
+  return (
+    <UserChildBountiesProvider address={address}>
+      <ChildBountiesTableImpl header={header} />
+    </UserChildBountiesProvider>
   );
 }

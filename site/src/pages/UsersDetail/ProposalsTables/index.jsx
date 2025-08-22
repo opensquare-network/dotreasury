@@ -1,18 +1,14 @@
-import { parseInt } from "lodash";
 import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory, useLocation, useParams } from "react-router";
-import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../../constants";
 import { TableTitleLabel, TableTitle, TableTitleWrapper } from "./styled";
 import { usersCountsSelector } from "../../../store/reducers/usersDetailSlice";
-import { useLocalStorage, useQuery } from "../../../utils/hooks";
 import Tag from "../../../components/Tag/Tag";
 import ProposalsTable from "./ProposalsTable";
 import TipsTable from "./TipsTable";
 import BountiesTable from "./BountiesTable";
 import ChildBountiesTable from "./ChildBountiesTable";
 import SpendsTable from "./SpendsTable";
-import ResponsivePagination from "../../../components/ResponsivePagination";
 import { Link } from "react-router-dom";
 import { currentChainSettings } from "../../../utils/chains";
 import { useUserTreasurySpendsCount } from "../../../context/userTreasurySpends";
@@ -30,18 +26,6 @@ export default function ProposalsTables({ role }) {
   const location = useLocation();
   const { address, tableTab: tableTabParam } = useParams();
 
-  const searchPage = parseInt(useQuery().get("page"));
-  const queryPage =
-    searchPage && !isNaN(searchPage) && searchPage > 0
-      ? searchPage
-      : DEFAULT_QUERY_PAGE;
-  const [tablePage, setTablePage] = useState(queryPage);
-  const [pageSize, setPageSize] = useLocalStorage(
-    "usersPageSize",
-    DEFAULT_PAGE_SIZE,
-  );
-
-  const [filterData] = useState({});
   const counts = useSelector(usersCountsSelector);
   const spendsCount = useUserTreasurySpendsCount();
 
@@ -106,52 +90,10 @@ export default function ProposalsTables({ role }) {
     </TableTitleWrapper>
   );
 
-  const footer = (totalPages) => (
-    <ResponsivePagination
-      activePage={tablePage}
-      totalPages={totalPages}
-      pageSize={pageSize}
-      setPageSize={(pageSize) => {
-        setTablePage(DEFAULT_QUERY_PAGE);
-        setPageSize(pageSize);
-        history.push({
-          search: null,
-        });
-      }}
-      onPageChange={(_, { activePage }) => {
-        history.push({
-          search:
-            activePage === DEFAULT_QUERY_PAGE ? null : `?page=${activePage}`,
-        });
-        setTablePage(activePage);
-      }}
-    />
-  );
-
-  return (
-    <>
-      <Tables
-        header={header}
-        footer={footer}
-        tablePage={tablePage}
-        pageSize={pageSize}
-        filterData={filterData}
-        role={role}
-        address={address}
-      />
-    </>
-  );
+  return <Tables header={header} />;
 }
 
-function Tables({
-  header,
-  footer,
-  tablePage,
-  pageSize,
-  filterData,
-  role,
-  address,
-}) {
+function Tables({ header }) {
   const { tableTab } = useParams();
 
   const isProposals = useMemo(
@@ -171,65 +113,15 @@ function Tables({
 
   return (
     <>
-      {isProposals && (
-        <ProposalsTable
-          header={header}
-          footer={footer}
-          tablePage={tablePage}
-          pageSize={pageSize}
-          filterData={filterData}
-          role={role}
-          address={address}
-        />
-      )}
+      {isProposals && <ProposalsTable header={header} />}
 
-      {isTips && (
-        <TipsTable
-          header={header}
-          footer={footer}
-          tablePage={tablePage}
-          pageSize={pageSize}
-          filterData={filterData}
-          role={role}
-          address={address}
-        />
-      )}
+      {isTips && <TipsTable header={header} />}
 
-      {isBounties && (
-        <BountiesTable
-          header={header}
-          footer={footer}
-          tablePage={tablePage}
-          pageSize={pageSize}
-          filterData={filterData}
-          role={role}
-          address={address}
-        />
-      )}
+      {isBounties && <BountiesTable header={header} />}
 
-      {isChildBounties && (
-        <ChildBountiesTable
-          header={header}
-          footer={footer}
-          tablePage={tablePage}
-          pageSize={pageSize}
-          filterData={filterData}
-          role={role}
-          address={address}
-        />
-      )}
+      {isChildBounties && <ChildBountiesTable header={header} />}
 
-      {isSpends && (
-        <SpendsTable
-          header={header}
-          footer={footer}
-          tablePage={tablePage}
-          pageSize={pageSize}
-          filterData={filterData}
-          role={role}
-          address={address}
-        />
-      )}
+      {isSpends && <SpendsTable header={header} />}
     </>
   );
 }

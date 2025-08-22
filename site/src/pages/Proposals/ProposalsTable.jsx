@@ -52,7 +52,7 @@ const completeProposalsWithTitle = (data = [], chain) => {
   });
 };
 
-const ProposalsTable = ({ data, tab, loading, header, footer }) => {
+export default function ProposalsTable({ data, tab, loading, header, footer }) {
   const history = useHistory();
   const chain = useSelector(chainSelector);
   const [isBeneficiary, setIsBeneficiary] = useState(true);
@@ -69,22 +69,23 @@ const ProposalsTable = ({ data, tab, loading, header, footer }) => {
     });
   }, [data, chain]);
 
+  const getExternalLink = (row) => {
+    return `https://${chain}.subsquare.io/treasury/proposal/${row.proposalIndex}`;
+  };
+
   const onRowClick = (row) => {
     if (window.innerWidth < 1140) {
-      history.push(getDetailRoute(row));
+      history.push(getExternalLink(row));
     }
   };
 
   const getRelatedLinks = (item) => {
     const links = [...item.links];
     links.unshift({
-      link: `https://${chain}.subsquare.io/treasury/proposal/${item.proposalIndex}`,
+      link: getExternalLink(item),
       description: "Treasury proposal page",
     });
     return links;
-  };
-  const getDetailRoute = (row) => {
-    return `/proposals/${row.proposalIndex}`;
   };
 
   let {
@@ -97,10 +98,10 @@ const ProposalsTable = ({ data, tab, loading, header, footer }) => {
     failedReason,
     value,
     proposalStatus,
-    detailRoute,
+    externalLink,
   } = useTableColumns({
     getRelatedLinks,
-    getDetailRoute,
+    getExternalLink,
   });
 
   const handleSwitchBebeficiaryProposer = () =>
@@ -167,7 +168,7 @@ const ProposalsTable = ({ data, tab, loading, header, footer }) => {
       failedReason,
       sortByValue,
       proposalStatus,
-      detailRoute,
+      externalLink,
     ];
   } else {
     columns = [
@@ -179,7 +180,7 @@ const ProposalsTable = ({ data, tab, loading, header, footer }) => {
       relatedLinks,
       sortByValue,
       proposalStatus,
-      detailRoute,
+      externalLink,
     ];
   }
 
@@ -196,6 +197,4 @@ const ProposalsTable = ({ data, tab, loading, header, footer }) => {
       {footer}
     </CardWrapper>
   );
-};
-
-export default ProposalsTable;
+}
