@@ -108,14 +108,14 @@ export default function ProposalsTable({ data, tab, loading, header, footer }) {
     setIsBeneficiary(!isBeneficiary);
   beneficiary = {
     ...beneficiary,
-    title: <span style={{ color: "var(--pink500)" }}>Beneficiary</span>,
+    title: <span style={{ color: "var(--pink500)" }} role="button">Beneficiary</span>,
     headerCellProps: {
       onClick: handleSwitchBebeficiaryProposer,
     },
   };
   proposer = {
     ...proposer,
-    title: <span style={{ color: "var(--pink500)" }}>Proposer</span>,
+    title: <span style={{ color: "var(--pink500)" }} role="button">Proposer</span>,
     headerCellProps: {
       onClick: handleSwitchBebeficiaryProposer,
     },
