@@ -75,6 +75,7 @@ export default function IncomeAndSpendPeriodsLegend({
         <LegendItemWrapper>
           {outputLegends.map((legend, index) => (
             <LegendItem
+              role="button"
               key={legend.label}
               enabled={legend.enabled}
               onClick={() => onSpendLegendClick(index)}
@@ -90,6 +91,7 @@ export default function IncomeAndSpendPeriodsLegend({
         <LegendItemWrapper>
           {incomeLegends.map((legend, index) => (
             <LegendItem
+              role="button"
               key={legend.label}
               enabled={legend.enabled}
               onClick={() => onIncomeLegendClick(index)}
