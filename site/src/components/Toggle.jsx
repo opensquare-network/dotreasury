@@ -26,7 +26,7 @@ const Circle = styled.div`
 
 const Toggle = ({ checked, onClick }) => {
   return (
-    <Wrapper onClick={onClick} checked={checked}>
+    <Wrapper role="button" onClick={onClick} checked={checked}>
       <Circle />
     </Wrapper>
   );

@@ -19,7 +19,7 @@ const Wrapper = styled.div`
 
 export default function SortableIndex({ direction, onClick }) {
   return (
-    <Wrapper direction={direction} onClick={onClick}>
+    <Wrapper role="button" direction={direction} onClick={onClick}>
       <span>Index</span>
       {direction && (
         <div style={{ display: "inline-flex" }}>

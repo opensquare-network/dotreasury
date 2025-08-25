@@ -321,6 +321,7 @@ const ScanHeight = () => {
               <SymbolWrapper>
                 {supportedDotreasuryChains.map((item) => (
                   <SymbolItem
+                    role="button"
                     key={item.value}
                     isActive={chain === item.value}
                     onClick={() => {
@@ -349,6 +350,7 @@ const ScanHeight = () => {
           <NodeItemWrapper>
             {(nodesSetting || []).map((item, index) => (
               <NodeItem
+                role="button"
                 key={index}
                 delay={item.delay}
                 onClick={() => switchNode(item.url)}

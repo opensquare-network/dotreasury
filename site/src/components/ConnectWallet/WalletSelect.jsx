@@ -126,7 +126,7 @@ const Wallet = ({ wallet, onClick, selected = false, loading = false }) => {
   }, [loadingInjectedWeb3, injectedWeb3, isMounted, wallet?.extensionName]);
 
   return (
-    <WalletOption selected={selected} onClick={onClick} installed={installed}>
+    <WalletOption role="button" selected={selected} onClick={onClick} installed={installed}>
       <WalletTitle>
         <Image src={wallet.logo} srcDark={wallet.logoDark} alt={wallet.title} />
         <span className="wallet-title">{wallet.title}</span>

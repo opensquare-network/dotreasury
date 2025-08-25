@@ -41,7 +41,7 @@ export default function ConnectWallet() {
       {account ? (
         <User address={encodedAddress} />
       ) : (
-        <ConnectButton onClick={() => setModalVisible(true)}>
+        <ConnectButton role="button" onClick={() => setModalVisible(true)}>
           Connect Wallet
         </ConnectButton>
       )}
