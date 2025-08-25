@@ -45,7 +45,7 @@ export default function TipInputs({ index, isCouncilor, canDelete, onDelete, tip
       <Header>
         <span>#{index + 1}</span>
         {canDelete && (
-          <MinusButton onClick={onDelete} />
+          <MinusButton role="button" onClick={onDelete} />
         )}
       </Header>
       <Body>

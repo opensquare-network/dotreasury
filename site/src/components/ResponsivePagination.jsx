@@ -173,6 +173,7 @@ const ResponsivePagination = ({
           </TextWrapper>
           <DropdownWrapper>
             <CustomDropdown
+              role="button"
               value={pageSize}
               options={options}
               selection
