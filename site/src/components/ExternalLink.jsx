@@ -2,9 +2,11 @@ import React from "react";
 import IconMask from "./Icon/Mask";
 import styled from "styled-components";
 
-const A = styled.a`
+const Span = styled.span`
   display: inline-flex;
   align-items: center;
+  cursor: pointer;
+  color: inherit;
 `;
 
 export default function ExternalLink({
@@ -16,17 +18,31 @@ export default function ExternalLink({
   externalIconColor = "textTertiary",
   externalIconSize = 16,
 }) {
+  const handleClick = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    if (href) {
+      window.open(href, "_blank", "noopener,noreferrer");
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      handleClick(e);
+    }
+  };
+
   return (
-    <A
-      href={href}
+    <Span
       title={href}
-      target="_blank"
-      rel="noopener noreferrer"
       style={style}
       className={className}
-      onClick={(e) => {
-        e.stopPropagation();
-      }}
+      onClick={handleClick}
+      onKeyDown={handleKeyDown}
+      role="button"
+      tabIndex={0}
+      aria-label={href}
     >
       {children}
 
@@ -37,6 +53,6 @@ export default function ExternalLink({
           size={externalIconSize}
         />
       )}
-    </A>
+    </Span>
   );
 }
