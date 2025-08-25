@@ -2,7 +2,7 @@ import React from "react";
 import IconMask from "./Icon/Mask";
 import styled from "styled-components";
 
-const Span = styled.span`
+const StyledExternalLink = styled.span`
   display: inline-flex;
   align-items: center;
   cursor: pointer;
@@ -34,7 +34,7 @@ export default function ExternalLink({
   };
 
   return (
-    <Span
+    <StyledExternalLink
       title={href}
       style={style}
       className={className}
@@ -53,6 +53,6 @@ export default function ExternalLink({
           size={externalIconSize}
         />
       )}
-    </Span>
+    </StyledExternalLink>
   );
 }
