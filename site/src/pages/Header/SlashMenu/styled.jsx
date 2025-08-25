@@ -1,6 +1,8 @@
 import styled from "styled-components";
 
-const DropdownMenuItem = styled.div`
+const DropdownMenuItem = styled.div.attrs((props) => ({
+  role: props.disabled ? undefined : "button",
+}))`
   cursor: pointer;
   display: flex;
   align-items: center;
