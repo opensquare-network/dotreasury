@@ -1426,10 +1426,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.1.2, @babel/runtime@npm:^7.10.4, @babel/runtime@npm:^7.10.5, @babel/runtime@npm:^7.12.13, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.15.4, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.9.2":
+"@babel/runtime@npm:^7.1.2, @babel/runtime@npm:^7.10.4, @babel/runtime@npm:^7.12.13, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.15.4, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.9.2":
   version: 7.27.6
   resolution: "@babel/runtime@npm:7.27.6"
   checksum: 3f7b879df1823c0926bd5dbc941c62f5d60faa790c1aab9758c04799e1f04ee8d93553be9ec059d4e5882f19fe03cbe8933ee4f46212dced0f6d8205992c9c9a
+  languageName: node
+  linkType: hard
+
+"@babel/runtime@npm:^7.23.7":
+  version: 7.28.3
+  resolution: "@babel/runtime@npm:7.28.3"
+  checksum: dd22662b9e02b6e66cfb061d6f9730eb0aa3b3a390a7bd70fe9a64116d86a3704df6d54ab978cb4acc13b58dbf63a3d7dd4616b0b87030eb14a22835e0aa602d
   languageName: node
   linkType: hard
 
@@ -1529,7 +1536,7 @@ __metadata:
     redux: ^4.0.5
     rxjs: ^6.6.3
     semantic-ui-css: ^2.4.1
-    semantic-ui-react: ^2.0.1
+    semantic-ui-react: v3.0.0-beta.2
     socket.io-client: ^4.6.1
     styled-components: ^5.2.1
     use-deep-compare-effect: ^1.6.1
@@ -1839,19 +1846,6 @@ __metadata:
     react: ^16.8.0 || ^17 || ^18
     react-dom: ^16.8.0 || ^17 || ^18
   checksum: 9ad5657a0834b934ca2049ec0689e55fcce892b680ca1140ce75872ffa8e455549660e808ae78ebcddb52f2a3b479659e11f5dad5097884f92bf311a015fa904
-  languageName: node
-  linkType: hard
-
-"@fluentui/react-component-ref@npm:~0.63.0":
-  version: 0.63.1
-  resolution: "@fluentui/react-component-ref@npm:0.63.1"
-  dependencies:
-    "@babel/runtime": ^7.10.4
-    react-is: ^16.6.3
-  peerDependencies:
-    react: ^16.8.0 || ^17 || ^18
-    react-dom: ^16.8.0 || ^17 || ^18
-  checksum: e63ab044459ef244cbf32840b3abd883e10051e81257873a64a4be8107145a83a7927e5d5da412fd78ffcb55e79cff0d82fcc8bd135fa3c649cb5fbc29e28cfe
   languageName: node
   linkType: hard
 
@@ -3005,7 +2999,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@popperjs/core@npm:^2.6.0":
+"@popperjs/core@npm:^2.11.8":
   version: 2.11.8
   resolution: "@popperjs/core@npm:2.11.8"
   checksum: e5c69fdebf52a4012f6a1f14817ca8e9599cb1be73dd1387e1785e2ed5e5f0862ff817f420a87c7fc532add1f88a12e25aeb010ffcbdc98eace3d55ce2139cf0
@@ -7764,7 +7758,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-is@npm:^16.13.1, react-is@npm:^16.6.0, react-is@npm:^16.6.3, react-is@npm:^16.7.0, react-is@npm:^16.8.6":
+"react-is@npm:^16.13.1, react-is@npm:^16.6.0, react-is@npm:^16.7.0, react-is@npm:^16.8.6":
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
   checksum: f7a19ac3496de32ca9ae12aa030f00f14a3d45374f1ceca0af707c831b2a6098ef0d6bdae51bd437b0a306d7f01d4677fcc8de7c0d331eb47ad0f46130e53c5f
@@ -8327,14 +8321,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semantic-ui-react@npm:^2.0.1":
-  version: 2.1.5
-  resolution: "semantic-ui-react@npm:2.1.5"
+"semantic-ui-react@npm:v3.0.0-beta.2":
+  version: 3.0.0-beta.2
+  resolution: "semantic-ui-react@npm:3.0.0-beta.2"
   dependencies:
-    "@babel/runtime": ^7.10.5
+    "@babel/runtime": ^7.23.7
     "@fluentui/react-component-event-listener": ~0.63.0
-    "@fluentui/react-component-ref": ~0.63.0
-    "@popperjs/core": ^2.6.0
+    "@popperjs/core": ^2.11.8
     "@semantic-ui-react/event-stack": ^3.1.3
     clsx: ^1.1.1
     keyboard-key: ^1.1.0
@@ -8347,7 +8340,7 @@ __metadata:
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: 9279b986736f78f95d21836e8052d88b88a6cc60b8a6139cff557eae449ff0a7e71ca556bab69ad4c1625251fd0e1ff6fa1613c2c47274681b330a249733b89a
+  checksum: 352bb6014c7ad48b323cf1d38d9f6aa0ccfca45eccff2bb385038da1925c40795a0217853661af1176b0c35dcdeb65b7f9da556853be3d3f798b7178d79b0cde
   languageName: node
   linkType: hard
 
