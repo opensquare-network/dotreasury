@@ -1,6 +1,8 @@
 import styled, { css } from "styled-components";
 
-const OnChainActionButton = styled.div`
+const OnChainActionButton = styled.div.attrs((props) => ({
+  role: props.disabled ? undefined : "button",
+}))`
   cursor: pointer;
   display: flex;
   flex-direction: row;

@@ -88,14 +88,14 @@ export default function User({ address }) {
   const Menu = (
     <MenuWrapper ref={ref} onClick={(e) => e.stopPropagation()}>
       <MenuItem>
-        <LogoutWrapper onClick={onLogout}>Disconnect</LogoutWrapper>
+        <LogoutWrapper role="button" onClick={onLogout}>Disconnect</LogoutWrapper>
       </MenuItem>
     </MenuWrapper>
   );
 
   return (
     <>
-      <Wrapper onClick={() => setShowMenu(true)}>
+      <Wrapper role="button" onClick={() => setShowMenu(true)}>
         <UserIdentity
           address={address}
           avatarSize={20}

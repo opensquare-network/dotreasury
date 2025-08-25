@@ -62,7 +62,7 @@ export default function SortByValuePopup({ trigger, sortField, setSortField, sor
     <Wrapper>
       <Title>Ranked by</Title>
       {Object.keys(SortByFields).map(fieldName =>
-        <MenuItem key={fieldName} onClick={() => {
+        <MenuItem role="button" key={fieldName} onClick={() => {
           setSortField(fieldName);
           setSortDirection(sortField === fieldName && sortDirection === "desc" ? "asc" : "desc");
           setIsOpen(false);

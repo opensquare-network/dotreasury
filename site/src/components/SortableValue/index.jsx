@@ -40,7 +40,7 @@ export default function SortableValue({
               <DirectionSVG />
             </div>
           )}
-          <span>Value</span>
+          <span role="button">Value</span>
         </SortableValueWrapper>
       }
     />

@@ -39,6 +39,7 @@ function Nav({ active = "" }) {
     <NavWrapper>
       {items.map((item) => (
         <NavItem
+          role="button"
           key={item.to}
           active={item.name === active}
           onClick={() => history.push(item.to)}

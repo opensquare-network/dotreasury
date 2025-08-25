@@ -49,12 +49,12 @@ export function useColumns(options) {
   };
   curator = {
     ...curator,
-    title: <span style={{ color: "var(--pink500)" }}>Curator</span>,
+    title: <span style={{ color: "var(--pink500)" }} role="button">Curator</span>,
     show: isCurator,
   };
   beneficiary = {
     ...beneficiary,
-    title: <span style={{ color: "var(--pink500)" }}>Beneficiary</span>,
+    title: <span style={{ color: "var(--pink500)" }} role="button">Beneficiary</span>,
     show: !isCurator,
   };
 

@@ -74,7 +74,7 @@ function SlashMenu() {
     <PopupMenu
       trigger={
         <Wrapper>
-          <Menu.Item key="SlashDropdown">
+          <Menu.Item role="button" key="SlashDropdown">
             {tabName}{" "}
             <IconMask
               src="/imgs/icon-triangle-down.svg"

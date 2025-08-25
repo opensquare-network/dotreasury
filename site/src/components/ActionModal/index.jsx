@@ -70,7 +70,7 @@ export default function ActionModal({
     >
       <Header>
         <Title>{title}</Title>
-        <Close onClick={() => setVisible(false)} />
+        <Close role="button" onClick={() => setVisible(false)} />
       </Header>
       {children}
     </StyledModal>

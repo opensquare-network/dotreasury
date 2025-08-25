@@ -7,7 +7,9 @@ export const NavWrapper = styled.div`
   gap: 32px;
 `;
 
-export const NavItem = styled(Text)`
+export const NavItem = styled(Text).attrs((props) => ({
+  role: props.disabled ? undefined : "button",
+}))`
   cursor: pointer;
   font-size: 16px;
   line-height: 24px;

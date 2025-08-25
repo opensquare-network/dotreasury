@@ -204,8 +204,8 @@ export default function NewTipModal({ visible, setVisible, onFinalized }) {
       </Batch>
       <Footer>
         <div style={{ display: "flex", gap: "8px" }}>
-          <Add onClick={onAdd} />
-          <Minus onClick={onMinus} />
+          <Add role="button" onClick={onAdd} />
+          <Minus role="button" onClick={onMinus} />
         </div>
         <ButtonPrimary disabled={isLoading} onClick={submit}>Submit</ButtonPrimary>
       </Footer>

@@ -106,6 +106,7 @@ const Label = ({ data, icon, status, clickEvent, symbol }) => {
   return (
     <Wrapper>
       <ItemWrapper
+        role="button"
         onClick={() => {
           clickEvent && clickEvent(name);
         }}
@@ -141,6 +142,7 @@ const Label = ({ data, icon, status, clickEvent, symbol }) => {
       <ChildrenWrapper>
         {(children || []).map((item, index) => (
           <ItemWrapper
+            role="button"
             key={index}
             onClick={() => {
               clickEvent && clickEvent(item.name);

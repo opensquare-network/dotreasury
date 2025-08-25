@@ -103,7 +103,7 @@ export default function ConnectWalletModal({ visible, setVisible }) {
     <StyledModal open={visible} onClose={() => setVisible(false)}>
       <Header>
         <Title>Connect Wallet</Title>
-        <Close onClick={() => setVisible(false)} />
+        <Close role="button" onClick={() => setVisible(false)} />
       </Header>
       <Description>
         By connecting wallet, I have read and agree to doTreasury’s the terms of
