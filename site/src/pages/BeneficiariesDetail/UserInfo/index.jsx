@@ -71,6 +71,9 @@ export default function UserInfo({ role }) {
       links={links}
       extra={
         <>
+          <InfoCardExtraItem label="Award value">
+            <AwardValue />
+          </InfoCardExtraItem>
           {!countsLoading && (
             <InfoCardExtraItem label="Proposals">
               {hasCounts ? (
@@ -86,10 +89,6 @@ export default function UserInfo({ role }) {
               )}
             </InfoCardExtraItem>
           )}
-
-          <InfoCardExtraItem label="Award value">
-            <AwardValue />
-          </InfoCardExtraItem>
         </>
       }
     />

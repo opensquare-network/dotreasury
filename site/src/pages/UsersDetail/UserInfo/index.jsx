@@ -111,7 +111,11 @@ export default function UserInfo({ role, setRole = () => {} }) {
               </Link>
             ))}
           </InfoCardExtraItem>
-
+          {shouldShowProposals && (
+            <InfoCardExtraItem label="Award value">
+              <AwardValue />
+            </InfoCardExtraItem>
+          )}
           {shouldShowProposals && !countsLoading && (
             <InfoCardExtraItem label="Proposals">
               {hasCounts ? (
@@ -125,11 +129,6 @@ export default function UserInfo({ role, setRole = () => {} }) {
               ) : (
                 <span>0</span>
               )}
-            </InfoCardExtraItem>
-          )}
-          {shouldShowProposals && (
-            <InfoCardExtraItem label="Award value">
-              <AwardValue />
             </InfoCardExtraItem>
           )}
         </>
