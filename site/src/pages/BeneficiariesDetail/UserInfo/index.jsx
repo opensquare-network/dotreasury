@@ -2,7 +2,6 @@ import { useParams } from "react-router";
 import InfoCard, { InfoCardExtraItem } from "../../../components/InfoCard";
 import Avatar from "../../../components/User/Avatar";
 import Badge from "../../../components/User/Badge";
-import TagOrigin from "../../../components/Tag/Tag";
 import { useIdentity } from "../../../utils/hooks";
 import { ellipsis } from "../../../utils/ellipsis";
 import ProposalsCount from "../../../components/ProposalsCount";
@@ -15,9 +14,7 @@ import {
 } from "../../../store/reducers/usersDetailSlice";
 import { useEffect, useMemo } from "react";
 import styled from "styled-components";
-import { Link as RouterLink } from "react-router-dom";
 import { useUserLinks } from "./useUserLinks";
-import { isProposalsRole } from "../utils";
 import { useUserTreasurySpendsCount } from "../../../context/userTreasurySpends";
 import AwardValue from "./awardValue";
 
@@ -30,15 +27,13 @@ const InfoCardDescriptionAddress = styled.span`
   word-break: break-all;
 `;
 
-export default function UserInfo({ role, setRole = () => {} }) {
+export default function UserInfo({ role }) {
   const { address } = useParams();
   const { name, badgeData } = useIdentity(address);
   const dispatch = useDispatch();
   const counts = useSelector(usersCountsSelector);
   const countsLoading = useSelector(countsLoadingSelector);
   const spendsCount = useUserTreasurySpendsCount();
-
-  const shouldShowProposals = useMemo(() => isProposalsRole(role), [role]);
 
   const links = useUserLinks();
 
@@ -53,16 +48,12 @@ export default function UserInfo({ role, setRole = () => {} }) {
   }, [counts, spendsCount]);
 
   useEffect(() => {
-    if (!shouldShowProposals) {
-      return;
-    }
-
     dispatch(fetchUsersCounts(address, role?.toLowerCase()));
 
     return () => {
       dispatch(resetUsersCounts());
     };
-  }, [dispatch, role, address, shouldShowProposals]);
+  }, [dispatch, role, address]);
 
   return (
     <InfoCard
@@ -80,7 +71,7 @@ export default function UserInfo({ role, setRole = () => {} }) {
       links={links}
       extra={
         <>
-          {shouldShowProposals && !countsLoading && (
+          {!countsLoading && (
             <InfoCardExtraItem label="Proposals">
               {hasCounts ? (
                 <ProposalsCount
@@ -95,11 +86,10 @@ export default function UserInfo({ role, setRole = () => {} }) {
               )}
             </InfoCardExtraItem>
           )}
-          {shouldShowProposals && (
-            <InfoCardExtraItem label="Award value">
-              <AwardValue />
-            </InfoCardExtraItem>
-          )}
+
+          <InfoCardExtraItem label="Award value">
+            <AwardValue />
+          </InfoCardExtraItem>
         </>
       }
     />
