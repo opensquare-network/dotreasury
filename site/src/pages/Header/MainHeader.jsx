@@ -156,7 +156,10 @@ const HeaderExamplePage = () => {
               <MenuSwitch menuTabsName="Projects" />
             </NavLink>
           )}
-          <NavLink to={"/users"}>
+          {/* <NavLink to={"/users"}>
+            <MenuSwitch menuTabsName="Users" />
+          </NavLink> */}
+          <NavLink to={"/beneficiaries"}>
             <MenuSwitch menuTabsName="Users" />
           </NavLink>
           <ConnectWallet />

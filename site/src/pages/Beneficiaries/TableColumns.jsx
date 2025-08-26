@@ -19,7 +19,7 @@ export const colId = {
   cellRender(_, data) {
     return (
       <IDWrapper>
-        <NavLink to={`/users/${data?.address}`}>
+        <NavLink to={`/beneficiaries/${data?.address}`}>
           <User noLink address={data?.address} />
         </NavLink>
       </IDWrapper>
