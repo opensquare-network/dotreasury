@@ -8,6 +8,9 @@ import { useIdentity } from "../../utils/hooks";
 import DeletedAccount from "./DeletedAccount";
 import { Link as RouterLink } from "react-router-dom";
 import { truncate } from "../../styles/tailwindcss";
+import { USER_ROLES } from "../../constants/index.js";
+import { useChain } from "../../utils/hooks/chain";
+import ExternalLink from "../../components/ExternalLink";
 
 const Wrapper = styled.div`
   display: flex;
@@ -41,6 +44,7 @@ const User = ({
   role = "",
 }) => {
   const { name, badgeData } = useIdentity(address);
+  const chain = useChain();
 
   let username = (
     <Username
@@ -54,7 +58,15 @@ const User = ({
   );
 
   if (!noLink) {
-    username = <Link to={`/users/${address}/${role}`}>{username}</Link>;
+    if (role === USER_ROLES.Beneficiary) {
+      username = <Link to={`/beneficiaries/${address}`}>{username}</Link>;
+    } else {
+      username = (
+        <ExternalLink href={`https://${chain}.subsquare.io/user/${address}`}>
+          {username}
+        </ExternalLink>
+      );
+    }
   }
 
   return (
