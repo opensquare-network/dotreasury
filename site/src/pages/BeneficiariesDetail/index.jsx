@@ -6,6 +6,7 @@ import ProposalsTables from "./ProposalsTables";
 import { useHistory, useParams } from "react-router";
 import Grade from "../UsersDetail/Councilor/Grade";
 import UserTreasurySpendsProvider from "../../context/userTreasurySpends";
+import UserBeneficiaryDetailProvider from "../../context/userBeneficiaryDetail";
 import useEnsureBenificiariesCount from "./useEnsureBenificiariesCount";
 
 export default function BeneficiariesDetail() {
@@ -25,10 +26,12 @@ export default function BeneficiariesDetail() {
     <div>
       <DetailGoBack />
 
-      <UserTreasurySpendsProvider address={address}>
-        <UserInfo role={ROLE} />
-        <ProposalsTables role={ROLE} />
-      </UserTreasurySpendsProvider>
+      <UserBeneficiaryDetailProvider address={address}>
+        <UserTreasurySpendsProvider address={address}>
+          <UserInfo role={ROLE} />
+          <ProposalsTables role={ROLE} />
+        </UserTreasurySpendsProvider>
+      </UserBeneficiaryDetailProvider>
 
       <Grade />
     </div>

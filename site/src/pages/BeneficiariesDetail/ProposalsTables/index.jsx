@@ -1,8 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
-import { useSelector } from "react-redux";
 import { useHistory, useLocation, useParams } from "react-router";
 import { TableTitleLabel, TableTitle, TableTitleWrapper } from "./styled";
-import { usersCountsSelector } from "../../../store/reducers/usersDetailSlice";
 import Tag from "../../../components/Tag/Tag";
 import ProposalsTable from "./ProposalsTable";
 import TipsTable from "./TipsTable";
@@ -11,7 +9,7 @@ import ChildBountiesTable from "./ChildBountiesTable";
 import SpendsTable from "./SpendsTable";
 import { Link } from "react-router-dom";
 import { currentChainSettings } from "../../../utils/chains";
-import { useUserTreasurySpendsCount } from "../../../context/userTreasurySpends";
+import { useUserBeneficiaryProposalsCounts } from "../../../context/userBeneficiaryDetail";
 
 const TABLE_TABS = {
   Proposals: "proposals",
@@ -26,15 +24,14 @@ export default function ProposalsTables({ role }) {
   const location = useLocation();
   const { address, tableTab: tableTabParam } = useParams();
 
-  const counts = useSelector(usersCountsSelector);
-  const spendsCount = useUserTreasurySpendsCount();
+  const { counts } = useUserBeneficiaryProposalsCounts();
 
   const tableTitles = useMemo(
     () =>
       [
         currentChainSettings.hasSpends && {
           label: TABLE_TABS.Spends,
-          count: spendsCount,
+          count: counts?.spendsCount,
         },
         {
           label: TABLE_TABS.Proposals,
@@ -53,7 +50,7 @@ export default function ProposalsTables({ role }) {
           count: counts?.childBountiesCount,
         },
       ].filter(Boolean),
-    [counts, spendsCount],
+    [counts],
   );
   const [tableTab, setTableTab] = useState(
     tableTabParam || tableTitles[0].label,
