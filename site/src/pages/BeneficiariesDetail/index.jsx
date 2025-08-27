@@ -15,7 +15,7 @@ export default function BeneficiariesDetail() {
 
   useEffect(() => {
     if (!tableTab) {
-      history.replace(`/beneficiaries/${address}/proposals`);
+      history.replace(`/beneficiaries/${address}/spends`);
     }
   }, [tableTab, address, history]);
 
