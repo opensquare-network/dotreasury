@@ -20,7 +20,6 @@ import { Link as RouterLink } from "react-router-dom";
 import { useUserLinks } from "./useUserLinks";
 import { isProposalsRole } from "../utils";
 import { useUserTreasurySpendsCount } from "../../../context/userTreasurySpends";
-import AwardValue from "./awardValue";
 
 const InfoCardTitleWrapper = styled.div`
   display: flex;
@@ -111,11 +110,6 @@ export default function UserInfo({ role, setRole = () => {} }) {
               </Link>
             ))}
           </InfoCardExtraItem>
-          {shouldShowProposals && (
-            <InfoCardExtraItem label="Award value">
-              <AwardValue />
-            </InfoCardExtraItem>
-          )}
           {shouldShowProposals && !countsLoading && (
             <InfoCardExtraItem label="Proposals">
               {hasCounts ? (
