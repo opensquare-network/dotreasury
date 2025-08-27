@@ -31,7 +31,7 @@ import OthersIncome from "../pages/OthersIncome";
 import Transfers from "../pages/Transfers";
 import TransfersSlash from "../pages/TransfersSlash";
 import ProposalBeneficiaries from "../pages/ProposalBeneficiaries";
-// import Users from "../pages/Users";
+import Users from "../pages/Users";
 import Beneficiaries from "../pages/Beneficiaries";
 import UsersDetail from "../pages/UsersDetail";
 import BeneficiariesDetail from "../pages/BeneficiariesDetail";
@@ -149,7 +149,7 @@ export default function App() {
                 path="/beneficiaries/:address/:tableTab?"
                 component={BeneficiariesDetail}
               />
-              {/* <Route exact path="/users" component={Users} /> */}
+              <Route exact path="/users" component={Users} />
               <Route exact path="/users/:address" component={UsersDetail} />
               <Route
                 exact

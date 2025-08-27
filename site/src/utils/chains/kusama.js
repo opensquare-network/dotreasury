@@ -49,4 +49,5 @@ export const kusama = {
     subsquareApi: "https://kusama-api.subsquare.io",
   },
   assetHubEndpoints,
+  usersMigration: true,
 };
