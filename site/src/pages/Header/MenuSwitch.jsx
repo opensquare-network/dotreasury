@@ -6,7 +6,6 @@ import {
   setShowMenuTabs,
   showMenuTabsSelector,
 } from "../../store/reducers/menuSlice";
-import { useChain } from "../../utils/hooks/chain";
 import { isKusama } from "../../utils/chains";
 
 const Wrapper = styled.div`
@@ -36,9 +35,9 @@ const StyledButton = styled(Button)`
 `;
 
 const MenuSwitch = ({ menuTabsName = "Home" }) => {
-  const chain = useChain();
   const dispatch = useDispatch();
   const showMenuTabs = useSelector(showMenuTabsSelector);
+  const isActive = showMenuTabs === menuTabsName;
 
   const switcher = useCallback(() => {
     dispatch(setShowMenuTabs(menuTabsName));
@@ -47,7 +46,9 @@ const MenuSwitch = ({ menuTabsName = "Home" }) => {
   return (
     <Wrapper>
       <StyledButton active={showMenuTabs === menuTabsName} onClick={switcher}>
-        {menuTabsName}
+        <span style={isActive ? { color: "var(--primary) !important" } : {}}>
+          {menuTabsName}
+        </span>
       </StyledButton>
     </Wrapper>
   );
