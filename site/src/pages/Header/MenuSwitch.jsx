@@ -19,11 +19,6 @@ const StyledButton = styled(Button)`
   padding-left: 0 !important;
   padding-right: 0 !important;
   font-weight: 500 !important;
-  ${(p) =>
-    p.active &&
-    css`
-      color: var(--primary) !important;
-    `}
   ${() =>
     isKusama &&
     css`
@@ -45,7 +40,7 @@ const MenuSwitch = ({ menuTabsName = "Home" }) => {
 
   return (
     <Wrapper>
-      <StyledButton active={showMenuTabs === menuTabsName} onClick={switcher}>
+      <StyledButton onClick={switcher}>
         <span style={isActive ? { color: "var(--primary) !important" } : {}}>
           {menuTabsName}
         </span>
