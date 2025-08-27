@@ -21,7 +21,7 @@ export default function BeneficiariesDetail() {
 
   return (
     <div>
-      <DetailGoBack />
+      <DetailGoBack backTo="/beneficiaries" />
 
       <UserBeneficiaryDetailProvider address={address}>
         <UserInfo />

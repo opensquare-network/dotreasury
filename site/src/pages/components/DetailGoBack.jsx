@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import IconMask from "../../components/Icon/Mask";
 import { inline_flex } from "../../styles/tailwindcss";
 
+
 const HeaderWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -18,15 +19,23 @@ const HeaderWrapper = styled.div`
   }
 `;
 
-export default function DetailGoBack() {
+export default function DetailGoBack({ backTo, title = "Detail" }) {
   const history = useHistory();
+
+  const handleGoBack = () => {
+    if (backTo) {
+      history.push(backTo);
+    } else {
+      history.goBack();
+    }
+  };
 
   return (
     <HeaderWrapper>
-      <div role="button" onClick={() => history.goBack()}>
+      <div role="button" onClick={handleGoBack}>
         <IconMask src="/imgs/back.svg" size={32} color="textPrimary" />
       </div>
-      <Title>Detail</Title>
+      <Title>{title}</Title>
     </HeaderWrapper>
   );
 }
