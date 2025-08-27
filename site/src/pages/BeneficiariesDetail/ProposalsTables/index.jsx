@@ -19,7 +19,7 @@ const TABLE_TABS = {
   Spends: "spends",
 };
 
-export default function ProposalsTables({ role }) {
+export default function ProposalsTables() {
   const history = useHistory();
   const location = useLocation();
   const { address, tableTab: tableTabParam } = useParams();
@@ -68,7 +68,7 @@ export default function ProposalsTables({ role }) {
 
   useEffect(() => {
     setTableTab(tableTabParam);
-  }, [role, tableTabParam]);
+  }, [tableTabParam]);
 
   const header = (
     <TableTitleWrapper>

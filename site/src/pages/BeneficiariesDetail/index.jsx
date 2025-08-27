@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { USER_ROLES } from "../../constants";
 import DetailGoBack from "../components/DetailGoBack";
 import UserInfo from "./UserInfo";
 import ProposalsTables from "./ProposalsTables";
@@ -9,7 +8,6 @@ import UserBeneficiaryDetailProvider from "../../context/userBeneficiaryDetail";
 import useEnsureBenificiariesCount from "./useEnsureBenificiariesCount";
 
 export default function BeneficiariesDetail() {
-  const ROLE = USER_ROLES.Beneficiary;
   useEnsureBenificiariesCount();
 
   const history = useHistory();
@@ -26,8 +24,8 @@ export default function BeneficiariesDetail() {
       <DetailGoBack />
 
       <UserBeneficiaryDetailProvider address={address}>
-        <UserInfo role={ROLE} />
-        <ProposalsTables role={ROLE} />
+        <UserInfo />
+        <ProposalsTables />
       </UserBeneficiaryDetailProvider>
 
       <Grade />

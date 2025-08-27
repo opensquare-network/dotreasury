@@ -20,7 +20,7 @@ const InfoCardDescriptionAddress = styled.span`
   word-break: break-all;
 `;
 
-export default function UserInfo({ role }) {
+export default function UserInfo() {
   const { address } = useParams();
   const { name, badgeData } = useIdentity(address);
   const { counts, loading: countsLoading } =
