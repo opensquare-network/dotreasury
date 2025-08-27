@@ -3,8 +3,10 @@ import { TableHeaderWrapper } from "./styled";
 import { TreasurySpendsTableOrigin } from "../../Spends/TreasurySpendsTable";
 import { useUserTreasurySpendsData } from "../../../context/userTreasurySpends";
 import CommonFooter from "./commonFooter";
+import UserTreasurySpendsProvider from "../../../context/userTreasurySpends";
+import { useParams } from "react-router";
 
-export default function SpendsTable({ header }) {
+function SpendsTableImpl({ header }) {
   const { data, loading, page, setPage, pageSize, setPageSize } =
     useUserTreasurySpendsData();
 
@@ -39,5 +41,15 @@ export default function SpendsTable({ header }) {
       }
       showFilter={false}
     />
+  );
+}
+
+export default function SpendsTable({ header }) {
+  const { address } = useParams();
+
+  return (
+    <UserTreasurySpendsProvider address={address}>
+      <SpendsTableImpl header={header} />
+    </UserTreasurySpendsProvider>
   );
 }
