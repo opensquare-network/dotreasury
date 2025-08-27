@@ -13,7 +13,7 @@ import TransfersMenu from "./TransfersMenu";
 import TansfersSlashMenu from "./TansfersSlashMenu";
 import TipFindersMenu from "./TipFindersMenu";
 import ProposalBeneficiariesMenu from "./ProposalBeneficiariesMenu";
-// import UsersMenu from "./UsersMenu";
+import UsersMenu from "./UsersMenu";
 import ReferendaMenu from "./ReferendaMenu";
 import { fetchIncomeCount } from "../../store/reducers/incomeSlice";
 import { useSelector, useDispatch } from "react-redux";
@@ -371,31 +371,29 @@ const TabExampleSecondaryPointing = () => {
             },
           },
         ]
-      // : showMenuTabs === "Users"
-      // ? [
-      //     {
-      //       menuItem: {
-      //         as: NavLink,
-      //         id: "UsersTab",
-      //         to: "/users",
-      //         key: "users",
-      //         content: <UsersMenu />,
-      //         active: true,
-      //       },
-      //     },
-      //   ]
       : showMenuTabs === "Users"
       ? [
-          {
-            menuItem: {
-              as: NavLink,
-              id: "BeneficiariesTab",
-              to: "/beneficiaries",
-              key: "beneficiaries",
-              content: <BeneficiariesMenu />,
-              active: true,
-            },
-          },
+          currentChainSettings?.usersMigration
+            ? {
+                menuItem: {
+                  as: NavLink,
+                  id: "BeneficiariesTab",
+                  to: "/beneficiaries",
+                  key: "beneficiaries",
+                  content: <BeneficiariesMenu />,
+                  active: true,
+                },
+              }
+            : {
+                menuItem: {
+                  as: NavLink,
+                  id: "UsersTab",
+                  to: "/users",
+                  key: "users",
+                  content: <UsersMenu />,
+                  active: true,
+                },
+              },
         ]
       : [];
 
