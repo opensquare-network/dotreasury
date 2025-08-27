@@ -156,9 +156,15 @@ const HeaderExamplePage = () => {
               <MenuSwitch menuTabsName="Projects" />
             </NavLink>
           )}
-          <NavLink to={"/users"}>
-            <MenuSwitch menuTabsName="Users" />
-          </NavLink>
+          {currentChainSettings?.usersMigration ? (
+            <NavLink to={"/beneficiaries"}>
+              <MenuSwitch menuTabsName="Users" />
+            </NavLink>
+          ) : (
+            <NavLink to={"/users"}>
+              <MenuSwitch menuTabsName="Users" />
+            </NavLink>
+          )}
           <ConnectWallet />
         </Right>
         <ScanHeightWrapper>

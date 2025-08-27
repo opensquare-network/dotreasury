@@ -34,6 +34,7 @@ import ProposalBeneficiaries from "../pages/ProposalBeneficiaries";
 import Users from "../pages/Users";
 import Beneficiaries from "../pages/Beneficiaries";
 import UsersDetail from "../pages/UsersDetail";
+import BeneficiariesDetail from "../pages/BeneficiariesDetail";
 import Referenda from "../pages/Referenda";
 
 import { usePreload } from "../utils/hooks";
@@ -142,6 +143,12 @@ export default function App() {
               <Route exact path="/income/gasfee" component={GasFeeSlash} />
               <Route exact path="/income/others" component={OthersIncome} />
               <Route exact path="/beneficiaries" component={Beneficiaries} />
+              <Route exact path="/beneficiaries/:address" component={BeneficiariesDetail} />
+              <Route
+                exact
+                path="/beneficiaries/:address/:tableTab?"
+                component={BeneficiariesDetail}
+              />
               <Route exact path="/users" component={Users} />
               <Route exact path="/users/:address" component={UsersDetail} />
               <Route

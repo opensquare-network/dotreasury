@@ -110,7 +110,6 @@ export default function UserInfo({ role, setRole = () => {} }) {
               </Link>
             ))}
           </InfoCardExtraItem>
-
           {shouldShowProposals && !countsLoading && (
             <InfoCardExtraItem label="Proposals">
               {hasCounts ? (

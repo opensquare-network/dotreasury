@@ -30,6 +30,7 @@ import {
 } from "../../utils/chains";
 import GasFeeIncomeMenu from "./GasFeeIncomeMenu";
 import BlockRewardsIncomeMenu from "./BlockRewardsMenu";
+import BeneficiariesMenu from "./beneficiariesMenu";
 
 const Wrapper = styled.div`
   position: relative;
@@ -372,16 +373,27 @@ const TabExampleSecondaryPointing = () => {
         ]
       : showMenuTabs === "Users"
       ? [
-          {
-            menuItem: {
-              as: NavLink,
-              id: "UsersTab",
-              to: "/users",
-              key: "users",
-              content: <UsersMenu />,
-              active: true,
-            },
-          },
+          currentChainSettings?.usersMigration
+            ? {
+                menuItem: {
+                  as: NavLink,
+                  id: "BeneficiariesTab",
+                  to: "/beneficiaries",
+                  key: "beneficiaries",
+                  content: <BeneficiariesMenu />,
+                  active: true,
+                },
+              }
+            : {
+                menuItem: {
+                  as: NavLink,
+                  id: "UsersTab",
+                  to: "/users",
+                  key: "users",
+                  content: <UsersMenu />,
+                  active: true,
+                },
+              },
         ]
       : [];
 

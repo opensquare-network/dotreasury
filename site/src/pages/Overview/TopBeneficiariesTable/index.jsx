@@ -79,10 +79,13 @@ export default function TopBeneficiariesTable() {
                 return (
                   <TableRow key={index}>
                     <Table.Cell>
-                      <User
-                        role={USER_ROLES.Beneficiary}
-                        address={item.address}
-                      />
+                      <NavLink to={`/beneficiaries/${item.address}`}>
+                        <User
+                          role={USER_ROLES.Beneficiary}
+                          address={item.address}
+                          noLink
+                        />
+                      </NavLink>
                     </Table.Cell>
                     <TableCell textAlign={"right"}>
                       <ProposalsWrapper>

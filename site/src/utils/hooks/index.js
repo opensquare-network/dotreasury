@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import queryString from "query-string";
@@ -7,6 +7,7 @@ import { fetchIdentity as getIdentity } from "../../services/identity";
 import { setShowMenuTabs } from "../../store/reducers/menuSlice";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import { useWindowSize } from "@osn/common";
+import { currentChainSettings } from "../../utils/chains";
 
 const displayCache = new Map();
 
@@ -85,6 +86,10 @@ export const usePreload = () => {
 export const useMenuTab = () => {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
+  const conditionUsersPath = useMemo(() => {
+    return currentChainSettings?.usersMigration ? "/beneficiaries" : "/users";
+  }, []);
+
   useEffect(() => {
     const menuTabsName = pathname.startsWith("/income")
       ? "Income"
@@ -94,11 +99,11 @@ export const useMenuTab = () => {
       ? "TipFinders"
       : pathname === "/proposal-beneficiaries"
       ? "ProposalBeneficiaries"
-      : pathname.startsWith("/users")
+      : pathname.startsWith(conditionUsersPath)
       ? "Users"
       : "Home";
     dispatch(setShowMenuTabs(menuTabsName));
-  }, [pathname, dispatch]);
+  }, [pathname, dispatch, conditionUsersPath]);
 };
 
 export function useLocalStorage(key, initialValue) {
