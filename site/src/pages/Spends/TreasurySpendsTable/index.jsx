@@ -59,6 +59,12 @@ const TableWrapper = styled.div`
     border-radius: 0 !important;
     border: none !important;
   }
+
+  .proposal-beneficiary-header,
+  .proposal-proposer-header {
+    cursor: pointer !important;
+    color: var(--textSecondary) !important;
+  }
 `;
 
 export function TreasurySpendsTableOrigin({
@@ -69,13 +75,46 @@ export function TreasurySpendsTableOrigin({
   showFilter = false,
 }) {
   const [status, setStatus] = useState("");
-  const { proposeTime, proposer, referendaStatus } = useTableColumns({});
+  const [isProposer, setIsProposer] = useState(true);
+  const { proposeTime, proposer, beneficiary, referendaStatus } =
+    useTableColumns({});
   const sortByValue = useTreasurySpendsSortByValueColumn();
+
+  const handleSwitchProposerBeneficiary = () => {
+    setIsProposer(!isProposer);
+  };
+
+  const enhancedProposer = {
+    ...proposer,
+    title: (
+      <span style={{ color: "var(--pink500)" }} role="button">
+        Proposer
+      </span>
+    ),
+    headerCellProps: {
+      onClick: handleSwitchProposerBeneficiary,
+    },
+    show: isProposer,
+  };
+
+  const enhancedBeneficiary = {
+    ...beneficiary,
+    title: (
+      <span style={{ color: "var(--pink500)" }} role="button">
+        Beneficiary
+      </span>
+    ),
+    headerCellProps: {
+      onClick: handleSwitchProposerBeneficiary,
+    },
+    show: !isProposer,
+  };
 
   const columns = [
     treasurySpendsIndexColumn,
     proposeTime,
-    proposer,
+    enhancedProposer,
+    enhancedBeneficiary,
     treasurySpendsDescriptionColumn,
     sortByValue,
     referendaStatus,
