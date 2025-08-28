@@ -187,7 +187,7 @@ const TabExampleSecondaryPointing = () => {
         },
       },
     ];
-  }, []);
+  }, [pathname]);
 
   useEffect(() => {
     dispatch(fetchIncomeCount());

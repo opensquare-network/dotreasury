@@ -86,9 +86,16 @@ export const usePreload = () => {
 export const useMenuTab = () => {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
-  const conditionUsersPath = useMemo(() => {
-    return currentChainSettings?.usersMigration ? "/beneficiaries" : "/users";
-  }, []);
+  const shouldShowUsersTab = useMemo(() => {
+    if (!currentChainSettings?.usersMigration) {
+      return pathname.startsWith("/users");
+    }
+
+    return (
+      pathname.startsWith("/beneficiaries") ||
+      pathname.startsWith("/councilors")
+    );
+  }, [pathname]);
 
   useEffect(() => {
     const menuTabsName = pathname.startsWith("/income")
@@ -99,11 +106,11 @@ export const useMenuTab = () => {
       ? "TipFinders"
       : pathname === "/proposal-beneficiaries"
       ? "ProposalBeneficiaries"
-      : pathname.startsWith(conditionUsersPath)
+      : shouldShowUsersTab
       ? "Users"
       : "Home";
     dispatch(setShowMenuTabs(menuTabsName));
-  }, [pathname, dispatch, conditionUsersPath]);
+  }, [pathname, dispatch, shouldShowUsersTab]);
 };
 
 export function useLocalStorage(key, initialValue) {

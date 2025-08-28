@@ -1,13 +1,10 @@
-import { useSelector } from "react-redux";
 import { Label, Menu } from "semantic-ui-react";
-import { beneficiariesSelector } from "../../store/reducers/beneficiariesSlice";
 
+// TODO: context total count & data
 export default function CouncilorsMenu() {
-  const councilors = useSelector(beneficiariesSelector);
-
   return (
     <Menu.Item key="Councilors">
-      Councilors<Label>{councilors?.total ?? 0}</Label>
+      Councilors<Label>{0}</Label>
     </Menu.Item>
   );
 }
