@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import styled from "styled-components";
 import { Tab } from "semantic-ui-react";
 import { NavLink, useLocation } from "react-router-dom";
@@ -31,6 +31,7 @@ import {
 import GasFeeIncomeMenu from "./GasFeeIncomeMenu";
 import BlockRewardsIncomeMenu from "./BlockRewardsMenu";
 import BeneficiariesMenu from "./beneficiariesMenu";
+import CouncilorsMenu from "./councilorsMenu";
 
 const Wrapper = styled.div`
   position: relative;
@@ -147,6 +148,46 @@ const TabExampleSecondaryPointing = () => {
   const { pathname } = useLocation();
   const dispatch = useDispatch();
   const showMenuTabs = useSelector(showMenuTabsSelector);
+
+  const conditionUsersMenu = useMemo(() => {
+    if (!currentChainSettings?.usersMigration) {
+      return [
+        {
+          menuItem: {
+            as: NavLink,
+            id: "UsersTab",
+            to: "/users",
+            key: "users",
+            content: <UsersMenu />,
+            active: true,
+          },
+        },
+      ];
+    }
+
+    return [
+      {
+        menuItem: {
+          as: NavLink,
+          id: "BeneficiariesTab",
+          to: "/beneficiaries",
+          key: "beneficiaries",
+          content: <BeneficiariesMenu />,
+          active: "/beneficiaries" === pathname,
+        },
+      },
+      {
+        menuItem: {
+          as: NavLink,
+          id: "CouncilorsTab",
+          to: "/councilors",
+          key: "councilors",
+          content: <CouncilorsMenu />,
+          active: "/councilors" === pathname,
+        },
+      },
+    ];
+  }, []);
 
   useEffect(() => {
     dispatch(fetchIncomeCount());
@@ -372,29 +413,7 @@ const TabExampleSecondaryPointing = () => {
           },
         ]
       : showMenuTabs === "Users"
-      ? [
-          currentChainSettings?.usersMigration
-            ? {
-                menuItem: {
-                  as: NavLink,
-                  id: "BeneficiariesTab",
-                  to: "/beneficiaries",
-                  key: "beneficiaries",
-                  content: <BeneficiariesMenu />,
-                  active: true,
-                },
-              }
-            : {
-                menuItem: {
-                  as: NavLink,
-                  id: "UsersTab",
-                  to: "/users",
-                  key: "users",
-                  content: <UsersMenu />,
-                  active: true,
-                },
-              },
-        ]
+      ? conditionUsersMenu
       : [];
 
   return (

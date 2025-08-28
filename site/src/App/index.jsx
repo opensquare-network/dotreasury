@@ -149,6 +149,13 @@ export default function App() {
                 path="/beneficiaries/:address/:tableTab?"
                 component={BeneficiariesDetail}
               />
+              <Route exact path="/councilors" component={Beneficiaries} />
+              <Route exact path="/councilors/:address" component={BeneficiariesDetail} />
+              <Route
+                exact
+                path="/councilors/:address/:tableTab?"
+                component={BeneficiariesDetail}
+              />
               <Route exact path="/users" component={Users} />
               <Route exact path="/users/:address" component={UsersDetail} />
               <Route
