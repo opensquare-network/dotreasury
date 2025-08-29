@@ -24,9 +24,6 @@ import {
   gov2ProposalStatusMap,
   proposalStatusMap,
 } from "../../constants";
-import useWaitSyncBlock from "../../utils/useWaitSyncBlock";
-import NewProposalButton from "./NewProposalButton";
-import { newSuccessToast } from "../../store/reducers/toastSlice";
 import Divider from "../../components/Divider";
 import useListFilter from "../../components/OpenGovFilter/useListFilter";
 import Filter from "../../components/Filter";
@@ -240,22 +237,6 @@ const Proposals = () => {
 
   const totalPages = Math.ceil(total / pageSize);
 
-  const refreshProposals = useCallback(
-    (reachingFinalizedBlock) => {
-      doFetchProposal();
-      if (reachingFinalizedBlock) {
-        dispatch(
-          newSuccessToast(
-            "Sync finished. Please provide context info for your proposal on subsquare or polkassembly.",
-          ),
-        );
-      }
-    },
-    [dispatch, doFetchProposal],
-  );
-
-  const onFinalized = useWaitSyncBlock("Proposal created", refreshProposals);
-
   return (
     <>
       <Summary />
@@ -264,9 +245,6 @@ const Proposals = () => {
           <div>
             <HeaderWrapper>
               <Nav active="All" />
-              <div style={{ display: "flex", gap: "16px" }}>
-                <NewProposalButton onFinalized={onFinalized} />
-              </div>
             </HeaderWrapper>
             <Divider />
             <FilterWrapper>
