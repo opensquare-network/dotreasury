@@ -1,10 +1,13 @@
 import { Label, Menu } from "semantic-ui-react";
+import { usersSelector } from "../../store/reducers/usersSlice";
+import { useSelector } from "react-redux";
 
-// TODO: context total count & data
 export default function CouncilorsMenu() {
+  const councilors = useSelector(usersSelector);
+
   return (
     <Menu.Item key="Councilors">
-      Councilors<Label>{0}</Label>
+      Councilors<Label>{councilors?.total ?? 0}</Label>
     </Menu.Item>
   );
 }
