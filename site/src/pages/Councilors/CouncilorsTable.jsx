@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { Table } from "../../components/Table";
 import TableLoading from "../../components/TableLoading";
 import { colId, colAwardedValue } from "./TableColumns";
-import { colBeneficiaryProposals as colCouncilorProposals } from "../Beneficiaries/TableColumns";
 
 const Wrapper = styled.div`
   overflow: hidden;
@@ -19,7 +18,7 @@ const TableWrapper = styled.div`
 `;
 
 export default function CouncilorsTable({ data, loading }) {
-  const columns = [colId, colCouncilorProposals, colAwardedValue];
+  const columns = [colId, colAwardedValue];
 
   return (
     <Wrapper>
