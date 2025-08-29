@@ -1,8 +1,8 @@
 import {
-  fetchUsers,
+  fetchCouncilors,
   loadingSelector,
-  usersSelector,
-} from "../store/reducers/usersSlice";
+  councilorsSelector,
+} from "../store/reducers/councilorsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 
@@ -10,15 +10,11 @@ export default function useCouncilors(page = 0, pageSize = 20) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(
-      fetchUsers(page, pageSize, {
-        role: "councilor",
-      }),
-    );
+    dispatch(fetchCouncilors(page, pageSize));
   }, [dispatch, page, pageSize]);
 
   const loading = useSelector(loadingSelector);
-  const councilors = useSelector(usersSelector);
+  const councilors = useSelector(councilorsSelector);
 
   return {
     loading,

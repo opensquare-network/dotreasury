@@ -35,7 +35,7 @@ export default function Councilors() {
       : DEFAULT_QUERY_PAGE;
   const [tablePage, setTablePage] = useState(queryPage);
   const [pageSize, setPageSize] = useLocalStorage(
-    "councilorsPa geSize",
+    "councilorsPageSize",
     DEFAULT_PAGE_SIZE,
   );
 

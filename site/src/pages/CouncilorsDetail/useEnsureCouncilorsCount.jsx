@@ -1,14 +1,17 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { usersSelector, fetchUsers } from "../../store/reducers/usersSlice";
+import {
+  councilorsSelector,
+  fetchCouncilorsCount,
+} from "../../store/reducers/councilorsSlice";
 
 export default function useEnsureCouncilorsCount() {
   const dispatch = useDispatch();
-  const { total } = useSelector(usersSelector);
+  const { total } = useSelector(councilorsSelector);
 
   useEffect(() => {
     if (!total) {
-      dispatch(fetchUsers(0, 1, { role: "councilor" }));
+      dispatch(fetchCouncilorsCount());
     }
   }, [dispatch, total]);
 }

@@ -1,11 +1,11 @@
 import { Label, Menu } from "semantic-ui-react";
-import { usersSelector } from "../../store/reducers/usersSlice";
 import { useSelector } from "react-redux";
+import { councilorsSelector } from "../../store/reducers/councilorsSlice";
 import useEnsureCouncilorsCount from "../CouncilorsDetail/useEnsureCouncilorsCount";
 
 export default function CouncilorsMenu() {
   useEnsureCouncilorsCount();
-  const councilors = useSelector(usersSelector);
+  const councilors = useSelector(councilorsSelector);
 
   return (
     <Menu.Item key="Councilors">
