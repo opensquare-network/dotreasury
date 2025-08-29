@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { h4_16_semibold } from "../../styles/text";
 
 const Header = styled.div`
-  padding: 24px;
+  padding: 24px 0 24px 24px;
   ${h4_16_semibold}
 `;
 
