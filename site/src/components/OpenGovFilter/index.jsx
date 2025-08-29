@@ -119,6 +119,7 @@ const Filter = ({
   max,
   setMax,
   statusMap,
+  showRange = true,
 }) => {
   return (
     <FormWrapper>
@@ -128,16 +129,20 @@ const Filter = ({
         setStatus={setStatus}
         statusMap={statusMap}
       />
-      <Divider />
-      <Range
-        chain={chain}
-        rangeType={rangeType}
-        setRangeType={setRangeType}
-        min={min}
-        setMin={setMin}
-        max={max}
-        setMax={setMax}
-      />
+      {showRange && (
+        <>
+          <Divider />
+          <Range
+            chain={chain}
+            rangeType={rangeType}
+            setRangeType={setRangeType}
+            min={min}
+            setMin={setMin}
+            max={max}
+            setMax={setMax}
+          />
+        </>
+      )}
     </FormWrapper>
   );
 };

@@ -1,13 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router";
-
 import ResponsivePagination from "../../components/ResponsivePagination";
 import ProposalsTable from "./ProposalsTable";
 import { useDispatch, useSelector } from "react-redux";
 import { useQuery, useLocalStorage } from "../../utils/hooks";
 import Summary from "./Summary";
-
 import {
   fetchProposals,
   loadingSelector,
@@ -18,12 +16,11 @@ import { chainSelector } from "../../store/reducers/chainSlice";
 import {
   DEFAULT_PAGE_SIZE,
   DEFAULT_QUERY_PAGE,
-  gov2ProposalStatusMap,
   proposalStatusMap,
 } from "../../constants";
 import Divider from "../../components/Divider";
 import useListFilter from "../../components/OpenGovFilter/useListFilter";
-import Filter from "../../components/Filter";
+import OpenGovFilter from "../../components/OpenGovFilter";
 import Nav from "./Nav";
 
 const FilterWrapper = styled.div`
@@ -32,19 +29,25 @@ const FilterWrapper = styled.div`
   padding: 24px;
 `;
 
-const TableFilter = ({ filterStatus, setFilterStatus }) => {
+const TableFilter = ({
+  filterStatus,
+  setFilterStatus,
+  filterTrack,
+  setFilterTrack,
+}) => {
   const chain = useSelector(chainSelector);
 
-  let filter = (
-    <Filter
+  return (
+    <OpenGovFilter
       chain={chain}
       status={filterStatus}
       setStatus={setFilterStatus}
-      statusMap={{ ...proposalStatusMap, ...gov2ProposalStatusMap }}
+      track={filterTrack}
+      setTrack={setFilterTrack}
+      statusMap={proposalStatusMap}
+      showRange={false}
     />
   );
-
-  return filter;
 };
 
 const useListData = () => {
