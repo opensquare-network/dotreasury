@@ -20,7 +20,6 @@ const overviewSlice = createSlice({
           unFinished: 0,
           all: 0,
           openGov: 0,
-          failed: 0,
         },
         tip: {
           unFinished: 0,
@@ -128,8 +127,6 @@ export const totalProposalCountSelector = (state) =>
 export const openGovProposalCountSelector = (state) =>
   state.overview.overview.count.proposal.openGov;
 
-export const failedProposalCountSelector = (state) =>
-  state.overview.overview.count.proposal.failed;
 export const gov1ProposalCountSelector = (state) =>
   state.overview.overview.count.proposal.all -
   state.overview.overview.count.proposal.openGov;

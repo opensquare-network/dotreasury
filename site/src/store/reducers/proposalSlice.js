@@ -12,13 +12,6 @@ const proposalSlice = createSlice({
       total: 0,
     },
     loading: false,
-    failedProposals: {
-      items: [],
-      page: 0,
-      pageSize: 10,
-      total: 0,
-    },
-    failedProposalsLoading: false,
     proposalDetail: {},
     loadingProposalDetail: false,
     proposalSummary: {
@@ -35,12 +28,6 @@ const proposalSlice = createSlice({
     setLoading(state, { payload }) {
       state.loading = payload;
     },
-    setFailedProposals(state, { payload }) {
-      state.failedProposals = payload;
-    },
-    setFailedProposalsLoading(state, { payload }) {
-      state.failedProposalsLoading = payload;
-    },
     setProposalDetail(state, { payload }) {
       state.proposalDetail = payload;
     },
@@ -56,8 +43,6 @@ const proposalSlice = createSlice({
 export const {
   setProposals,
   setLoading,
-  setFailedProposals,
-  setFailedProposalsLoading,
   setProposalDetail,
   setLoadingProposalDetail,
   setProposalSummary,
@@ -84,30 +69,8 @@ export const fetchProposals =
     }
   };
 
-export const fetchFailedProposals =
-  (page = 0, pageSize = 30, params, options = {}) =>
-  async (dispatch) => {
-    dispatch(setFailedProposalsLoading(true));
-
-    try {
-      const { result } = await api.fetch(
-        "/proposals/failed",
-        {
-          page,
-          pageSize,
-          ...params,
-        },
-        options,
-      );
-      dispatch(setFailedProposals(result || {}));
-    } finally {
-      dispatch(setFailedProposalsLoading(false));
-    }
-  };
-
 export const resetProposals = () => (dispatch) => {
   dispatch(setProposals(EMPTY_TABLE_DATA));
-  dispatch(setFailedProposals(EMPTY_TABLE_DATA));
 };
 
 export const fetchProposalDetail = (proposalIndex) => async (dispatch) => {
@@ -142,10 +105,6 @@ export const fetchProposalsSummary = () => async (dispatch) => {
 
 export const proposalListSelector = (state) => state.proposals.proposals;
 export const loadingSelector = (state) => state.proposals.loading;
-export const failedProposalListSelector = (state) =>
-  state.proposals.failedProposals;
-export const failedProposalsLoadingSelector = (state) =>
-  state.proposals.failedProposalsLoading;
 export const proposalDetailSelector = (state) => state.proposals.proposalDetail;
 export const loadingProposalDetailSelector = (state) =>
   state.proposals.loadingProposalDetail;
