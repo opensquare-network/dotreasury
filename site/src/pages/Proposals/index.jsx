@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useQuery, useLocalStorage } from "../../utils/hooks";
 import Summary from "./Summary";
 import {
-  fetchProposals,
+  fetchProposalsBySubsquare,
   loadingSelector,
   proposalListSelector,
   resetProposals,
@@ -63,7 +63,7 @@ const Proposals = () => {
         params.sort = sort;
       }
 
-      dispatch(fetchProposals(tablePage - 1, pageSize, params, options));
+      dispatch(fetchProposalsBySubsquare(tablePage - 1, pageSize, params, options));
     },
     [dispatch, tablePage, pageSize, getFilterData, sort],
   );
