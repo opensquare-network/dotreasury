@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
-import { useIdentity } from "../../utils/hooks";
-import Badge from "../../components/User/Badge";
+import { useIdentity } from "../utils/hooks";
+import Badge from "./User/Badge";
 
 const Wrapper = styled.div`
   font-size: 12px;

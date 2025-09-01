@@ -10,7 +10,7 @@ import PolygonLabel from "../PolygonLabel";
 import User from "../User";
 import Balance from "../Balance";
 import RightButton from "../RightButton";
-import BeneficiaryContent from "../../pages/CentrifugeProposals/BeneficiaryContent";
+import BeneficiaryContent from "../BeneficiaryContent";
 import DescriptionCell from "../../pages/CentrifugeProposals/DescriptionCell";
 import RelatedLinks from "../RelatedLinks";
 import PairTextVertical from "../PairTextVertical";
