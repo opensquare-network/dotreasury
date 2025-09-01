@@ -1,6 +1,6 @@
 import { Label } from "semantic-ui-react";
 import { useSelector } from "react-redux";
-import { totalProposalCountSelector } from "../../store/reducers/overviewSlice";
+import { totalProposalsCountSelector } from "../../store/reducers/overviewSummarySlice";
 import { NavLabel } from "../../components/Nav/styled";
 import styled from "styled-components";
 import { h4_16_semibold } from "../../styles/text";
@@ -17,7 +17,7 @@ const HeaderWrapper = styled.div`
 `;
 
 export default function TableHeader() {
-  const totalProposalCount = useSelector(totalProposalCountSelector);
+  const totalProposalCount = useSelector(totalProposalsCountSelector);
 
   return (
     <HeaderWrapper>
