@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import {
   beneficiariesSelector,
-  fetchBeneficiaries,
+  fetchBeneficiariesCount,
 } from "../../store/reducers/beneficiariesSlice";
 
 export default function useEnsureBenificiariesCount() {
@@ -11,7 +11,7 @@ export default function useEnsureBenificiariesCount() {
 
   useEffect(() => {
     if (!total) {
-      dispatch(fetchBeneficiaries(0, 1));
+      dispatch(fetchBeneficiariesCount());
     }
   }, [dispatch, total]);
 }

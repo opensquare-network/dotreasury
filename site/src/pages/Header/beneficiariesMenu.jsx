@@ -1,8 +1,10 @@
 import { useSelector } from "react-redux";
 import { Label, Menu } from "semantic-ui-react";
 import { beneficiariesSelector } from "../../store/reducers/beneficiariesSlice";
+import useEnsureBenificiariesCount from "../BeneficiariesDetail/useEnsureBenificiariesCount";
 
 export default function BeneficiariesMenu() {
+  useEnsureBenificiariesCount();
   const beneficiaries = useSelector(beneficiariesSelector);
 
   return (
