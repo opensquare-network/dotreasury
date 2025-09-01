@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from "react";
-import styled from "styled-components";
 import { useHistory } from "react-router";
 import ResponsivePagination from "../../components/ResponsivePagination";
 import ProposalsTable from "./ProposalsTable";
@@ -12,43 +11,11 @@ import {
   proposalListSelector,
   resetProposals,
 } from "../../store/reducers/proposalSlice";
-import { chainSelector } from "../../store/reducers/chainSlice";
-import {
-  DEFAULT_PAGE_SIZE,
-  DEFAULT_QUERY_PAGE,
-  proposalStatusMap,
-} from "../../constants";
+import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../constants";
 import Divider from "../../components/Divider";
 import useListFilter from "../../components/OpenGovFilter/useListFilter";
-import OpenGovFilter from "../../components/OpenGovFilter";
-import Nav from "./Nav";
-
-const FilterWrapper = styled.div`
-  display: flex;
-  align-items: flex-start;
-  padding: 24px;
-`;
-
-const TableFilter = ({
-  filterStatus,
-  setFilterStatus,
-  filterTrack,
-  setFilterTrack,
-}) => {
-  const chain = useSelector(chainSelector);
-
-  return (
-    <OpenGovFilter
-      chain={chain}
-      status={filterStatus}
-      setStatus={setFilterStatus}
-      track={filterTrack}
-      setTrack={setFilterTrack}
-      statusMap={proposalStatusMap}
-      showRange={false}
-    />
-  );
-};
+import TableHeader from "./TableHeader";
+import TableFilter from "./TableFilter";
 
 const useListData = () => {
   const { items: proposals, total } = useSelector(proposalListSelector);
@@ -126,16 +93,14 @@ const Proposals = () => {
       <ProposalsTable
         header={
           <div>
-            <Nav />
+            <TableHeader />
             <Divider />
-            <FilterWrapper>
-              <TableFilter
-                filterStatus={filterStatus}
-                setFilterStatus={setFilterStatus}
-                filterTrack={filterTrack}
-                setFilterTrack={setFilterTrack}
-              />
-            </FilterWrapper>
+            <TableFilter
+              filterStatus={filterStatus}
+              setFilterStatus={setFilterStatus}
+              filterTrack={filterTrack}
+              setFilterTrack={setFilterTrack}
+            />
           </div>
         }
         tab={tab}

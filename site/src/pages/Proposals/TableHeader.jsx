@@ -16,7 +16,7 @@ const HeaderWrapper = styled.div`
   align-items: center;
 `;
 
-export default function Nav() {
+export default function TableHeader() {
   const totalProposalCount = useSelector(totalProposalCountSelector);
 
   return (
