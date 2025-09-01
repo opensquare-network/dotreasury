@@ -1,5 +1,5 @@
 const pick = require("lodash.pick");
-const { getSubsquareTreasurySpendCollection } = require("../../mongo/polkadot");
+const { getSubsquareTreasurySpendCollection } = require("../../mongo");
 
 async function fetchTreasuryProposalDetail(index) {
   console.log(`Fetching treasury proposal detail for index ${index}`);
