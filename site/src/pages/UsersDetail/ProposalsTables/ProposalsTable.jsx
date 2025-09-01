@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { TableHeaderWrapper } from "./styled";
-import ProposalsTableOrigin from "../../Proposals/ProposalsTable";
+import ProposalsTableOrigin from "../../CentrifugeProposals/ProposalsTable";
 import UserTreasuryProposalsProvider, {
   useUserTreasuryProposalsData,
 } from "../../../context/userTreasuryProposals";

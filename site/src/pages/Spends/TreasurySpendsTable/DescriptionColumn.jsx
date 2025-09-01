@@ -1,4 +1,4 @@
-import DescriptionCell from "../../Proposals/DescriptionCell";
+import DescriptionCell from "../../CentrifugeProposals/DescriptionCell";
 
 export const treasurySpendsDescriptionColumn = {
   key: "description",
