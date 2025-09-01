@@ -1,5 +1,5 @@
 const pick = require("lodash.pick");
-const { getSubsquareTreasurySpendCollection } = require("../../mongo/polkadot");
+const { getSubsquareTreasurySpendCollection } = require("../../mongo");
 const { getAssetByMeta } = require("./spendMeta");
 const { encodeAddress } = require("@polkadot/keyring");
 

@@ -1,4 +1,4 @@
-const { getParticipantCollection } = require("../../mongo/polkadot");
+const { getParticipantCollection } = require("../../mongo");
 
 async function saveParticipant(address, data) {
   const participantCol = await getParticipantCollection();

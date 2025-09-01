@@ -1,6 +1,6 @@
 const BigNumber = require("bignumber.js");
 const { getTipCollection } = require("../../mongo");
-const { getSubsquareTreasurySpendCollection } = require("../../mongo/polkadot");
+const { getSubsquareTreasurySpendCollection } = require("../../mongo");
 
 async function getStatsOfTipItems(tips) {
   const counts = {};
