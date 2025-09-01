@@ -2,6 +2,21 @@
 
 Notable changes to this project will be documented in this file, started from 4.0.0
 
+## 4.4.0
+
+Date: 2025-09-01
+
+- Correct treasury beneficiary list and detail data.
+- Refactor polkadot/kusama councilor list and data.
+- Use more Subsquare API as data provider and redirect users to subsquare on more pages.
+- Show the latest 30-day treasury value chart.
+- Remove khala from dotreasury landing page.
+- Calc aDOT asset value on the hydration acquisition address.
+- Fix child bounty data.
+- Update treasury loans.
+- Update polkadot/kusama endpoints.
+- Upgrade dependencies.
+
 # 4.3.4
 
 Date: 2025-05-15
