@@ -1,7 +1,7 @@
 export default function convertProposals(data = []) {
   return data.map((item) => ({
     ...item,
-    description: item?.title || "",
+    description: item?.title || `Treasury proposal #${item?.proposalIndex}`,
     proposeTime: item?.indexer?.blockTime,
     links: item?.links || [],
     latestState: {
