@@ -20,7 +20,7 @@ const { getLatestSymbolPrice } = require("./common/getLatestSymbolPrice");
 const { calcToBeAwarded } = require("./common/calcToBeAwarded");
 const { calcOutput } = require("./common/calcOutput");
 const { calcCount } = require("./common/calcCount");
-const { getSubsquareTreasurySpendCollection } = require("../../mongo/polkadot");
+const { getSubsquareTreasurySpendCollection } = require("../../mongo");
 
 async function feedOverviewV2(io) {
   try {

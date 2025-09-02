@@ -36,6 +36,8 @@ import Users from "../pages/Users";
 import Beneficiaries from "../pages/Beneficiaries";
 import UsersDetail from "../pages/UsersDetail";
 import BeneficiariesDetail from "../pages/BeneficiariesDetail";
+import CouncilorsDetail from "../pages/CouncilorsDetail";
+import Councilors from "../pages/Councilors";
 import Referenda from "../pages/Referenda";
 
 import { usePreload } from "../utils/hooks";
@@ -162,6 +164,8 @@ export default function App() {
                 path="/beneficiaries/:address/:tableTab?"
                 component={BeneficiariesDetail}
               />
+              <Route exact path="/councilors" component={Councilors} />
+              <Route exact path="/councilors/:address" component={CouncilorsDetail} />
               <Route exact path="/users" component={Users} />
               <Route exact path="/users/:address" component={UsersDetail} />
               <Route

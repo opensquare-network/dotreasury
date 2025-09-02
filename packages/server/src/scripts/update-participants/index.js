@@ -9,6 +9,7 @@ const { statChildBounties } = require("./statChildBounties");
 const { statCouncilors } = require("./statCouncilors");
 // const { updateParticipantsV2 } = require("./updateParticipantsV2");
 const { saveParticipant } = require("./common");
+const { getParticipantCollection } = require("../../mongo");
 
 async function updateParticipants() {
   // const chain = process.env.CHAIN;
@@ -176,6 +177,11 @@ async function updateParticipants() {
       isCouncilor,
     });
   }
+
+  const participantCol = await getParticipantCollection();
+  await participantCol.deleteMany({
+    address: { $nin: [...participants] },
+  });
 }
 
 module.exports = {

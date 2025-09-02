@@ -28,6 +28,7 @@ import centrifugeGasFeeReducer from "./centrifugeGasFeeSlice";
 import centrifugeBlockRewardReducer from "./centrifugeBlockRewardSlice";
 import treasurySpendsReducer from "./treasurySpendsSlice";
 import overviewSummaryReducer from "./overviewSummarySlice";
+import councilorsReducer from "./councilorsSlice";
 
 export default combineReducers({
   test: testReducer,
@@ -59,4 +60,5 @@ export default combineReducers({
   centrifugeBlockReward: centrifugeBlockRewardReducer,
   treasurySpends: treasurySpendsReducer,
   beneficiaries: beneficiariesReducer,
+  councilors: councilorsReducer,
 });
