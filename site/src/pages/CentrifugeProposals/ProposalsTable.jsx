@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import Card from "../../components/Card";
 import { useTableColumns } from "../../components/shared/useTableColumns";
+import api from "../../services/subsquareApi";
 import SortableIndex from "../../components/SortableIndex";
 import SortableValue from "../../components/SortableValue";
 import useSort from "../../hooks/useSort";
@@ -38,6 +39,19 @@ const TableWrapper = styled.div`
   }
 `;
 
+const completeProposalsWithTitle = (data = [], chain) => {
+  return data.map(async (proposal) => {
+    if (!proposal.description) {
+      //improve: implement a brief API for this to speed up the loading
+      const { result } = await api.fetch(
+        `/treasury/proposals/${proposal.proposalIndex}`,
+      );
+      return { ...proposal, description: result?.title };
+    }
+    return proposal;
+  });
+};
+
 export default function ProposalsTable({ data, tab, loading, header, footer }) {
   const history = useHistory();
   const chain = useSelector(chainSelector);
@@ -49,6 +63,10 @@ export default function ProposalsTable({ data, tab, loading, header, footer }) {
 
   useEffect(() => {
     setTableData(data);
+
+    Promise.all(completeProposalsWithTitle(data, chain)).then((res) => {
+      setTableData(res);
+    });
   }, [data, chain]);
 
   const getExternalLink = (row) => {
@@ -90,22 +108,14 @@ export default function ProposalsTable({ data, tab, loading, header, footer }) {
     setIsBeneficiary(!isBeneficiary);
   beneficiary = {
     ...beneficiary,
-    title: (
-      <span style={{ color: "var(--pink500)" }} role="button">
-        Beneficiary
-      </span>
-    ),
+    title: <span style={{ color: "var(--pink500)" }} role="button">Beneficiary</span>,
     headerCellProps: {
       onClick: handleSwitchBebeficiaryProposer,
     },
   };
   proposer = {
     ...proposer,
-    title: (
-      <span style={{ color: "var(--pink500)" }} role="button">
-        Proposer
-      </span>
-    ),
+    title: <span style={{ color: "var(--pink500)" }} role="button">Proposer</span>,
     headerCellProps: {
       onClick: handleSwitchBebeficiaryProposer,
     },

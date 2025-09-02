@@ -1,7 +1,7 @@
 import React from "react";
 import SortableIndex from "../../../../components/SortableIndex";
 import TextMinor from "../../../../components/TextMinor";
-import DescriptionCell from "../../../Proposals/DescriptionCell";
+import DescriptionCell from "../../../CentrifugeProposals/DescriptionCell";
 import JumpToLink from "../../Link";
 import { useTableColumns } from "../../../../components/shared/useTableColumns";
 import TreasurySpendValueDisplay from "../../../../components/treasurySpendValueDisplay";

@@ -1,11 +1,12 @@
 import { useMemo } from "react";
 import { TableHeaderWrapper } from "./styled";
-import ProposalsTableOrigin from "../../Proposals/ProposalsTable";
+import ProposalsTableOrigin from "../../CentrifugeProposals/ProposalsTable";
 import UserTreasuryProposalsProvider, {
   useUserTreasuryProposalsData,
 } from "../../../context/userTreasuryProposals";
 import { useParams } from "react-router";
 import CommonFooter from "./commonFooter";
+import convertProposals from "../../Proposals/convertProposals";
 
 function ProposalsTableImpl({ header }) {
   const { data, loading, page, setPage, pageSize, setPageSize } =
@@ -14,20 +15,7 @@ function ProposalsTableImpl({ header }) {
   const tableData = useMemo(() => {
     if (!data?.items) return [];
 
-    return data.items.map((item) => ({
-      ...item,
-      links: item?.links || [],
-      latestState: {
-        state: item?.state,
-        time: item?.onchainData?.state?.indexer?.blockTime,
-      },
-      proposeTime: item?.indexer?.blockTime,
-      proposeAtBlockHeight: item?.indexer?.blockHeight,
-      description: item?.title || "",
-      trackInfo: item?.onchainData?.track,
-      value: item?.onchainData?.value,
-      symbolPrice: item?.onchainData?.price?.submission,
-    }));
+    return convertProposals(data.items);
   }, [data?.items]);
 
   return (

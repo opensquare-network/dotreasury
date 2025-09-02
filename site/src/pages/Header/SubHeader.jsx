@@ -31,6 +31,7 @@ import {
 import GasFeeIncomeMenu from "./GasFeeIncomeMenu";
 import BlockRewardsIncomeMenu from "./BlockRewardsMenu";
 import BeneficiariesMenu from "./beneficiariesMenu";
+import { fetchOverviewSummary } from "../../store/reducers/overviewSummarySlice";
 import CouncilorsMenu from "./councilorsMenu";
 
 const Wrapper = styled.div`
@@ -191,6 +192,9 @@ const TabExampleSecondaryPointing = () => {
 
   useEffect(() => {
     dispatch(fetchIncomeCount());
+    if (isKusama || isPolkadot) {
+      dispatch(fetchOverviewSummary());
+    }
   }, [dispatch]);
 
   const panes =

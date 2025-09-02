@@ -1,8 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { EMPTY_TABLE_DATA } from "../../constants";
 import api from "../../services/scanApi";
-import { isKusama, isPolkadot } from "../../utils/chains";
-import subsquareApi from "../../services/subsquareApi";
 
 const bountySlice = createSlice({
   name: "bounties",
@@ -34,9 +32,6 @@ const bountySlice = createSlice({
     setBounties(state, { payload }) {
       state.bounties = payload;
     },
-    setBountiesTotal(state, { payload }) {
-      state.bounties.total = payload;
-    },
     setChildBounties(state, { payload }) {
       state.childBounties = payload;
     },
@@ -66,7 +61,6 @@ export const {
   setBountyDetail,
   setChildBountyDetail,
   setLoadingBountyDetail,
-  setBountiesTotal,
 } = bountySlice.actions;
 
 export const fetchBounties =
@@ -154,23 +148,6 @@ export const resetChildBounties = () => (dispatch) => {
   dispatch(setChildBounties(EMPTY_TABLE_DATA));
 };
 
-export const fetchBountiesTotal = () => async (dispatch) => {
-  if (!isKusama && !isPolkadot) {
-    return;
-  }
-
-  dispatch(setLoading(true));
-
-  try {
-    const { result } = await subsquareApi.fetch("/overview/summary");
-    dispatch(setBountiesTotal(result?.bounties?.all) || 0);
-  } finally {
-    dispatch(setLoading(false));
-  }
-};
-
-export const totalBountyCountSelector = (state) =>
-  state.bounties.bounties.total;
 export const bountyListSelector = (state) => state.bounties.bounties;
 export const childBountyListSelector = (state) => state.bounties.childBounties;
 export const childBountyByParentIndexListSelector = (state) =>

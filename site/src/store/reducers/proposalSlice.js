@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { EMPTY_TABLE_DATA } from "../../constants";
 import api from "../../services/scanApi";
+import subsquareApi from "../../services/subsquareApi";
 
 const proposalSlice = createSlice({
   name: "proposals",
@@ -71,6 +72,27 @@ export const fetchProposals =
     try {
       const { result } = await api.fetch(
         "/proposals",
+        {
+          page,
+          pageSize,
+          ...params,
+        },
+        options,
+      );
+      dispatch(setProposals(result || {}));
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+export const fetchProposalsBySubsquare =
+  (page = 0, pageSize = 30, params, options = {}) =>
+  async (dispatch) => {
+    dispatch(setLoading(true));
+
+    try {
+      const { result } = await subsquareApi.fetch(
+        "/treasury/proposals/dotreasury-list",
         {
           page,
           pageSize,

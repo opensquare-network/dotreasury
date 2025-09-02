@@ -23,7 +23,7 @@ import { useHistory } from "react-router";
 import api from "../../services/scanApi";
 import TextMinor from "../../components/TextMinor";
 import JumpToLink from "./Link";
-import DescriptionCell from "../Proposals/DescriptionCell";
+import DescriptionCell from "../CentrifugeProposals/DescriptionCell";
 import Divider from "../../components/Divider";
 import Filter from "../../components/OpenGovFilter";
 import useListFilter from "../../components/OpenGovFilter/useListFilter";
