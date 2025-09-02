@@ -1,6 +1,4 @@
 import { Label } from "semantic-ui-react";
-import { useSelector } from "react-redux";
-import { totalProposalsCountSelector } from "../../store/reducers/overviewSummarySlice";
 import { NavLabel } from "../../components/Nav/styled";
 import styled from "styled-components";
 import { h4_16_semibold } from "../../styles/text";
@@ -16,14 +14,12 @@ const HeaderWrapper = styled.div`
   align-items: center;
 `;
 
-export default function TableHeader() {
-  const totalProposalCount = useSelector(totalProposalsCountSelector);
-
+export default function TableHeader({ total }) {
   return (
     <HeaderWrapper>
       <NavLabel>
         <Header>Treasury Proposals</Header>
-        <Label>{totalProposalCount}</Label>
+        <Label>{total}</Label>
       </NavLabel>
     </HeaderWrapper>
   );

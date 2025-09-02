@@ -85,16 +85,14 @@ export const fetchProposals =
     }
   };
 
-// TODO: fetch proposals by subsquare
 export const fetchProposalsBySubsquare =
   (page = 0, pageSize = 30, params, options = {}) =>
   async (dispatch) => {
     dispatch(setLoading(true));
 
     try {
-      //  const { result } = await subsquareApi.fetch(
-      const { result } = await api.fetch(
-        "/proposals",
+      const { result } = await subsquareApi.fetch(
+        "/treasury/proposals/dotreasury-list",
         {
           page,
           pageSize,

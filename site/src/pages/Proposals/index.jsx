@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useMemo } from "react";
 import { useHistory } from "react-router";
 import ResponsivePagination from "../../components/ResponsivePagination";
 import ProposalsTable from "./ProposalsTable";
@@ -16,6 +16,7 @@ import Divider from "../../components/Divider";
 import useListFilter from "../../components/OpenGovFilter/useListFilter";
 import TableHeader from "./TableHeader";
 import TableFilter from "./TableFilter";
+import convertProposals from "./convertProposals";
 
 const useListData = () => {
   const { items: proposals, total } = useSelector(proposalListSelector);
@@ -52,6 +53,12 @@ const Proposals = () => {
   const history = useHistory();
   const { proposals, total, loading } = useListData();
 
+  const tableData = useMemo(() => {
+    if (!proposals) return [];
+
+    return convertProposals(proposals);
+  }, [proposals]);
+
   const doFetchProposal = useCallback(
     (options = {}) => {
       let filterData = getFilterData();
@@ -63,7 +70,7 @@ const Proposals = () => {
         params.sort = sort;
       }
 
-      dispatch(fetchProposalsBySubsquare(tablePage - 1, pageSize, params, options));
+      dispatch(fetchProposalsBySubsquare(tablePage, pageSize, params, options));
     },
     [dispatch, tablePage, pageSize, getFilterData, sort],
   );
@@ -93,7 +100,7 @@ const Proposals = () => {
       <ProposalsTable
         header={
           <div>
-            <TableHeader />
+            <TableHeader total={total} />
             <Divider />
             <TableFilter
               filterStatus={filterStatus}
@@ -104,7 +111,7 @@ const Proposals = () => {
           </div>
         }
         tab={tab}
-        data={proposals}
+        data={tableData}
         loading={loading}
         footer={
           <ResponsivePagination
