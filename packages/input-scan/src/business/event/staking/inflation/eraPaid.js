@@ -1,6 +1,13 @@
 const { getIncomeInflationCollection } = require("../../../../mongo/data");
 const {
-  consts: { Modules, StakingEvents, SessionEvents },
+  consts: {
+    Modules,
+    StakingEvents,
+    SessionEvents,
+    TreasuryCommonEvent,
+    KsmTreasuryAccount,
+    DotTreasuryAccount,
+  },
 } = require("@osn/scan-common");
 
 function isBalancesIssued(section, method) {
@@ -17,6 +24,13 @@ function isEraPaid(section, method) {
 
 function isSessionNewSession(section, method) {
   return section === Modules.Session && method === SessionEvents.NewSession;
+}
+
+function isTreasuryUpdatedInactive(section, method) {
+  return (
+    section === Modules.Treasury &&
+    method === TreasuryCommonEvent.UpdatedInactive
+  );
 }
 
 function getEventSectionMethod(event) {
@@ -109,34 +123,39 @@ async function handleEraPaidWithoutTreasuryDeposit(
   }
 
   const sort = indexer.eventIndex;
-  if (sort < 4) {
+  if (sort + 4 > blockEvents.length - 1) {
     return;
   }
 
-  const { section: pre1Section, method: pre1Method } = getEventSectionMethod(
-    blockEvents[sort - 1],
+  const { section: next1Section, method: next1Method } = getEventSectionMethod(
+    blockEvents[sort + 1],
   );
-  const { section: pre2Section, method: pre2Method } = getEventSectionMethod(
-    blockEvents[sort - 2],
+  const { section: next2Section, method: next2Method } = getEventSectionMethod(
+    blockEvents[sort + 2],
   );
-  const { section: pre3Section, method: pre3Method } = getEventSectionMethod(
-    blockEvents[sort - 3],
+  const { section: next3Section, method: next3Method } = getEventSectionMethod(
+    blockEvents[sort + 3],
   );
-  const { section: pre4Section, method: pre4Method } = getEventSectionMethod(
-    blockEvents[sort - 4],
+  const { section: next4Section, method: next4Method } = getEventSectionMethod(
+    blockEvents[sort + 4],
   );
 
   const isInflation =
-    isSessionNewSession(pre1Section, pre1Method) &&
-    isBalancesDeposit(pre2Section, pre2Method) &&
-    isBalancesIssued(pre3Section, pre3Method) &&
-    isEraPaid(pre4Section, pre4Method);
+    isBalancesIssued(next1Section, next1Method) &&
+    isBalancesDeposit(next2Section, next2Method) &&
+    isSessionNewSession(next3Section, next3Method) &&
+    isTreasuryUpdatedInactive(next4Section, next4Method);
   if (!isInflation) {
     return;
   }
 
-  const balanceDepositEvent = blockEvents[sort - 2];
+  const balanceDepositEvent = blockEvents[sort + 2];
+  const who = balanceDepositEvent.event.data[0].toString();
   const balance = balanceDepositEvent.event.data[1].toString();
+
+  if (![KsmTreasuryAccount, DotTreasuryAccount].includes(who)) {
+    return;
+  }
 
   const obj = {
     indexer,

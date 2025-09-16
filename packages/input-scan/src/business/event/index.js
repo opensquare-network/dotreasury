@@ -2,7 +2,7 @@ const { handleOthers } = require("./others");
 const {
   env: { currentChain },
   utils: { bigAdds, bigAdd, gt },
-  consts: { Modules, TreasuryCommonEvent },
+  consts: { Modules, TreasuryCommonEvent, StakingEvents },
 } = require("@osn/scan-common");
 const { handleElection } = require("./election");
 const { handleStakingSlash } = require("./staking/slash");
@@ -100,12 +100,7 @@ async function handleDeposit(indexer, event, eventSort, blockEvents) {
   };
 }
 
-async function handleTreasuryUpdatedInactive(
-  indexer,
-  event,
-  eventSort,
-  blockEvents,
-) {
+async function handleEraPaid(indexer, event, eventSort, blockEvents) {
   const inflation = await handleEraPaidWithoutTreasuryDeposit(
     event,
     indexer,
@@ -196,15 +191,10 @@ async function handleEvents(events, extrinsics, blockIndexer) {
     ) {
       depositObj = await handleDeposit(indexer, event, sort, events);
     } else if (
-      Modules.Treasury === section &&
-      TreasuryCommonEvent.UpdatedInactive === method
+      Modules.Staking === section &&
+      StakingEvents.EraPaid === method
     ) {
-      depositObj = await handleTreasuryUpdatedInactive(
-        indexer,
-        event,
-        sort,
-        events,
-      );
+      depositObj = await handleEraPaid(indexer, event, sort, events);
     }
 
     if (!depositObj) {
