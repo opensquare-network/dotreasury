@@ -2,10 +2,7 @@ const { handleOthers } = require("./others");
 const {
   env: { currentChain },
   utils: { bigAdds, bigAdd, gt },
-  consts: {
-    Modules,
-    TreasuryCommonEvent,
-  }
+  consts: { Modules, TreasuryCommonEvent, StakingEvents },
 } = require("@osn/scan-common");
 const { handleElection } = require("./election");
 const { handleStakingSlash } = require("./staking/slash");
@@ -23,25 +20,43 @@ const { handleCentrifugeBlockRewards } = require("./centrifuge/blockRewards");
 const BigNumber = require("bignumber.js");
 const { handleCentrifugeTxFee } = require("./centrifuge/txFee");
 const { handleBalancesMinted } = require("./centrifuge/minted");
+const {
+  handleEraPaidWithoutTreasuryDeposit,
+} = require("./staking/inflation/eraPaid");
 
-async function handleDeposit(
-  indexer,
-  event,
-  eventSort,
-  blockEvents,
-) {
+async function handleDeposit(indexer, event, eventSort, blockEvents) {
   const inflation = await handleInflation(event, indexer, blockEvents);
   const treasurySlash = await handleTreasurySlash(event, indexer, blockEvents);
-  const maybeIdSlash = await handleIdentityKilledSlash(event, indexer, blockEvents);
-  const idSlash = maybeIdSlash ? maybeIdSlash.balance : '0';
+  const maybeIdSlash = await handleIdentityKilledSlash(
+    event,
+    indexer,
+    blockEvents,
+  );
+  const idSlash = maybeIdSlash ? maybeIdSlash.balance : "0";
   const electionSlash = await handleElection(event, indexer, blockEvents);
   const stakingSlash = await handleStakingSlash(event, indexer, blockEvents);
-  const maybeDemocracy = await handleCancelProposalSlash(event, indexer, blockEvents);
-  const democracySlash = maybeDemocracy ? maybeDemocracy.balance : '0';
-  const maybeReferendaSlash = await handleReferendaSlash(event, indexer, blockEvents);
-  const referendaSlash = maybeReferendaSlash ? maybeReferendaSlash.balance : '0';
-  const maybeFellowshipReferenda = await handleFellowshipReferendaSlash(event, indexer, blockEvents);
-  const fellowshipReferendaSlash = maybeFellowshipReferenda ? maybeFellowshipReferenda.balance : '0';
+  const maybeDemocracy = await handleCancelProposalSlash(
+    event,
+    indexer,
+    blockEvents,
+  );
+  const democracySlash = maybeDemocracy ? maybeDemocracy.balance : "0";
+  const maybeReferendaSlash = await handleReferendaSlash(
+    event,
+    indexer,
+    blockEvents,
+  );
+  const referendaSlash = maybeReferendaSlash
+    ? maybeReferendaSlash.balance
+    : "0";
+  const maybeFellowshipReferenda = await handleFellowshipReferendaSlash(
+    event,
+    indexer,
+    blockEvents,
+  );
+  const fellowshipReferendaSlash = maybeFellowshipReferenda
+    ? maybeFellowshipReferenda.balance
+    : "0";
 
   const items = {
     inflation,
@@ -52,14 +67,22 @@ async function handleDeposit(
     democracySlash,
     referendaSlash,
     fellowshipReferendaSlash,
-  }
+  };
 
   if ("centrifuge" === currentChain()) {
-    const maybeCentrifugeBlockRewards = await handleCentrifugeBlockRewards(event, indexer, blockEvents);
+    const maybeCentrifugeBlockRewards = await handleCentrifugeBlockRewards(
+      event,
+      indexer,
+      blockEvents,
+    );
     const centrifugeBlockRewards = maybeCentrifugeBlockRewards?.balance || "0";
     Object.assign(items, { centrifugeBlockRewards });
 
-    const maybeCentrifugeTxFee = await handleCentrifugeTxFee(event, indexer, blockEvents);
+    const maybeCentrifugeTxFee = await handleCentrifugeTxFee(
+      event,
+      indexer,
+      blockEvents,
+    );
     const centrifugeTxFee = maybeCentrifugeTxFee?.balance || "0";
     Object.assign(items, { centrifugeTxFee });
   }
@@ -74,21 +97,47 @@ async function handleDeposit(
   return {
     ...items,
     others,
-  }
+  };
 }
 
-async function handleCommon(
-  indexer,
-  event,
-  blockEvents = [],
-) {
+async function handleEraPaid(indexer, event, eventSort, blockEvents) {
+  const inflation = await handleEraPaidWithoutTreasuryDeposit(
+    event,
+    indexer,
+    blockEvents,
+  );
+
+  return {
+    inflation,
+    treasurySlash: 0,
+    idSlash: 0,
+    electionSlash: 0,
+    stakingSlash: 0,
+    democracySlash: 0,
+    referendaSlash: 0,
+    fellowshipReferendaSlash: 0,
+    centrifugeBlockReward: 0,
+    centrifugeTxFee: 0,
+    others: 0,
+  };
+}
+
+async function handleCommon(indexer, event, blockEvents = []) {
   const maybeTransfer = await handleTransfer(event, indexer);
-  let transfer = maybeTransfer ? maybeTransfer.balance : '0';
-  const maybeWithdraw = await handleBalancesWithdraw(event, indexer, blockEvents);
+  let transfer = maybeTransfer ? maybeTransfer.balance : "0";
+  const maybeWithdraw = await handleBalancesWithdraw(
+    event,
+    indexer,
+    blockEvents,
+  );
   if (maybeWithdraw) {
     transfer = bigAdd(transfer, maybeWithdraw.balance);
   }
-  const maybeWithdrawWithoutFee = await handleBalancesWithdrawWithoutFee(event, indexer, blockEvents);
+  const maybeWithdrawWithoutFee = await handleBalancesWithdrawWithoutFee(
+    event,
+    indexer,
+    blockEvents,
+  );
   if (maybeWithdrawWithoutFee) {
     transfer = bigAdd(transfer, maybeWithdrawWithoutFee.balance);
   }
@@ -96,7 +145,7 @@ async function handleCommon(
   return {
     transfer,
     cfgMinted: await handleBalancesMinted(event, indexer, blockEvents),
-  }
+  };
 }
 
 async function handleEvents(events, extrinsics, blockIndexer) {
@@ -129,13 +178,29 @@ async function handleEvents(events, extrinsics, blockIndexer) {
 
     const commonObj = await handleCommon(indexer, event, events);
     transfer = bigAdd(transfer, commonObj.transfer);
-    centrifugeBlockReward = bigAdd(centrifugeBlockReward, commonObj.cfgMinted || 0);
+    centrifugeBlockReward = bigAdd(
+      centrifugeBlockReward,
+      commonObj.cfgMinted || 0,
+    );
 
-    if (Modules.Treasury !== section || TreasuryCommonEvent.Deposit !== method) {
+    let depositObj = null;
+
+    if (
+      Modules.Treasury === section &&
+      TreasuryCommonEvent.Deposit === method
+    ) {
+      depositObj = await handleDeposit(indexer, event, sort, events);
+    } else if (
+      Modules.Staking === section &&
+      StakingEvents.EraPaid === method
+    ) {
+      depositObj = await handleEraPaid(indexer, event, sort, events);
+    }
+
+    if (!depositObj) {
       continue;
     }
 
-    const depositObj = await handleDeposit(indexer, event, sort, events);
     inflation = bigAdd(inflation, depositObj.inflation);
     treasurySlash = bigAdd(treasurySlash, depositObj.treasurySlash);
     idSlash = bigAdd(idSlash, depositObj.idSlash);
@@ -143,8 +208,14 @@ async function handleEvents(events, extrinsics, blockIndexer) {
     democracySlash = bigAdd(democracySlash, depositObj.democracySlash);
     stakingSlash = bigAdd(stakingSlash, depositObj.stakingSlash);
     referendaSlash = bigAdd(referendaSlash, depositObj.referendaSlash);
-    fellowshipReferendaSlash = bigAdd(fellowshipReferendaSlash, depositObj.fellowshipReferendaSlash);
-    centrifugeBlockReward = bigAdd(centrifugeBlockReward, depositObj.centrifugeBlockRewards || 0);
+    fellowshipReferendaSlash = bigAdd(
+      fellowshipReferendaSlash,
+      depositObj.fellowshipReferendaSlash,
+    );
+    centrifugeBlockReward = bigAdd(
+      centrifugeBlockReward,
+      depositObj.centrifugeBlockRewards || 0,
+    );
     centrifugeTxFee = bigAdd(centrifugeTxFee, depositObj.centrifugeTxFee || 0);
     others = bigAdd(others, depositObj.others);
   }
@@ -160,7 +231,7 @@ async function handleEvents(events, extrinsics, blockIndexer) {
     electionSlash,
     referendaSlash,
     fellowshipReferendaSlash,
-  }
+  };
 
   if ("centrifuge" === currentChain()) {
     Object.assign(result, { centrifugeBlockReward, centrifugeTxFee });
@@ -171,4 +242,4 @@ async function handleEvents(events, extrinsics, blockIndexer) {
 
 module.exports = {
   handleEvents,
-}
+};

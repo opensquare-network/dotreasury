@@ -1,18 +1,15 @@
+const isNil = require("lodash.isnil");
 const { getStakingSlashCollection } = require("../../../../mongo/data");
 const {
-  consts: {
-    Modules,
-    StakingEvents,
-    BalancesEvents,
-  }
+  consts: { Modules, StakingEvents, BalancesEvents },
 } = require("@osn/scan-common");
 
 function isSlashedEvent(section, method) {
-  return Modules.Staking === section && StakingEvents.Slashed === method
+  return Modules.Staking === section && StakingEvents.Slashed === method;
 }
 
 function isBalancesDeposit(section, method) {
-  return Modules.Balances === section && BalancesEvents.Deposit === method
+  return Modules.Balances === section && BalancesEvents.Deposit === method;
 }
 
 async function handleSlashedEvent(event, indexer, blockEvents) {
@@ -21,23 +18,29 @@ async function handleSlashedEvent(event, indexer, blockEvents) {
     return;
   }
 
-  if (typeof indexer.extrinsicIndex !== 'undefined') {
-    return
+  if (!isNil(indexer.extrinsicIndex)) {
+    return;
   }
 
   const preEvent = blockEvents[sort - 1];
-  const { event: { section: preSection, method: preMethod, }, } = preEvent;
+  const {
+    event: { section: preSection, method: preMethod },
+  } = preEvent;
   if (isSlashedEvent(preSection, preMethod)) {
-    return saveSlashed(event, indexer)
+    return saveSlashed(event, indexer);
   }
 
   const prePreEvent = blockEvents[sort - 2];
-  const { event: { section: prePreSection, method: prePreMethod, }, } = prePreEvent;
+  const {
+    event: { section: prePreSection, method: prePreMethod },
+  } = prePreEvent;
   const prePrePreEvent = blockEvents[sort - 3];
   if (!prePrePreEvent) {
-    return
+    return;
   }
-  const { event: { section: prePrePreSection, method: prePrePreMethod, }, } = prePrePreEvent;
+  const {
+    event: { section: prePrePreSection, method: prePrePreMethod },
+  } = prePrePreEvent;
 
   if (
     isBalancesDeposit(preSection, preMethod) &&
@@ -54,13 +57,13 @@ async function saveSlashed(event, indexer) {
     section: Modules.Staking,
     method: StakingEvents.Slashed,
     balance: event.data[0].toString(),
-  }
+  };
 
-  const col = await getStakingSlashCollection()
+  const col = await getStakingSlashCollection();
   await col.insertOne(obj);
   return obj;
 }
 
 module.exports = {
   handleSlashedEvent,
-}
+};
