@@ -1,3 +1,4 @@
+const isNil = require("lodash.isnil");
 const { getIncomeInflationCollection } = require("../../../../mongo/data");
 const {
   consts: {
@@ -86,7 +87,7 @@ function checkIsEraPaid(sort, blockEvents) {
 }
 
 async function handleEraPaid(event, indexer, blockEvents) {
-  if (typeof indexer.extrinsicIndex !== "undefined") {
+  if (!isNil(indexer.extrinsicIndex)) {
     return;
   }
 
@@ -118,7 +119,7 @@ async function handleEraPaidWithoutTreasuryDeposit(
   indexer,
   blockEvents,
 ) {
-  if (typeof indexer.extrinsicIndex !== "undefined") {
+  if (!isNil(indexer.extrinsicIndex)) {
     return;
   }
 
