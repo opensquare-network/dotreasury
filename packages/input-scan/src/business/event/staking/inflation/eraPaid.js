@@ -37,6 +37,10 @@ function isTreasuryUpdatedInactive(section, method) {
   );
 }
 
+function isHistoricalEvent(section, method) {
+  return section === "historical";
+}
+
 function getEventSectionMethod(event) {
   const {
     event: { section, method },
@@ -137,16 +141,35 @@ async function handleEraPaidWithoutTreasuryDeposit(
   const { section: next2Section, method: next2Method } = getEventSectionMethod(
     blockEvents[sort + 2],
   );
+
+  if (
+    !isBalancesIssued(next1Section, next1Method) ||
+    !isBalancesDeposit(next2Section, next2Method)
+  ) {
+    return;
+  }
+
+  // Skip historical events
+  let skips = 0;
+  while (true) {
+    const { section, method } = getEventSectionMethod(
+      blockEvents[sort + 3 + skips],
+    );
+    if (isHistoricalEvent(section, method)) {
+      skips++;
+      continue;
+    }
+    break;
+  }
+
   const { section: next3Section, method: next3Method } = getEventSectionMethod(
-    blockEvents[sort + 3],
+    blockEvents[sort + 3 + skips],
   );
   const { section: next4Section, method: next4Method } = getEventSectionMethod(
-    blockEvents[sort + 4],
+    blockEvents[sort + 4 + skips],
   );
 
   const isInflation =
-    isBalancesIssued(next1Section, next1Method) &&
-    isBalancesDeposit(next2Section, next2Method) &&
     isSessionNewSession(next3Section, next3Method) &&
     isTreasuryUpdatedInactive(next4Section, next4Method);
   if (!isInflation) {
