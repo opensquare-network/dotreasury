@@ -1545,6 +1545,7 @@ __metadata:
     "@osn/scan-common": 0.6.22
     "@polkadot/api": 14.3.1
     bignumber.js: ^9.1.1
+    csv: ^6.4.1
     dotenv: 16.1.4
     jest: 29.5.0
     lodash.omit: ^4.5.0
@@ -4290,6 +4291,39 @@ __metadata:
     shebang-command: ^2.0.0
     which: ^2.0.1
   checksum: 8d306efacaf6f3f60e0224c287664093fa9185680b2d195852ba9a863f85d02dcc737094c6e512175f8ee0161f9b87c73c6826034c2422e39de7d6569cf4503b
+  languageName: node
+  linkType: hard
+
+"csv-generate@npm:^4.5.0":
+  version: 4.5.0
+  resolution: "csv-generate@npm:4.5.0"
+  checksum: 66c03e61cb112509293b69af101a24a45b87937fa0392b2c4119208e86d293158ad56a420c086f2ccbdf86902ac3e0aba8f7a8cc00569b31e07e27c06f597f99
+  languageName: node
+  linkType: hard
+
+"csv-parse@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "csv-parse@npm:6.1.0"
+  checksum: af1c24f8632ef8fa75259c6d452fe26b660555cd37ac255a26ad82f8b7ffc1a137258458d499e13a45d0d3cde3f9fce69e68e5deb1c73cbb7cf954d3e05111d3
+  languageName: node
+  linkType: hard
+
+"csv-stringify@npm:^6.6.0":
+  version: 6.6.0
+  resolution: "csv-stringify@npm:6.6.0"
+  checksum: 2566a4213d7bfad92ad8d14ae2bb78f85130329f08ba5116f3f0caa225c4a142a7c7473d26f784206dc58b541e32fd3ea6dd12386b0866c5173d271e7906017a
+  languageName: node
+  linkType: hard
+
+"csv@npm:^6.4.1":
+  version: 6.4.1
+  resolution: "csv@npm:6.4.1"
+  dependencies:
+    csv-generate: ^4.5.0
+    csv-parse: ^6.1.0
+    csv-stringify: ^6.6.0
+    stream-transform: ^3.4.0
+  checksum: 5e37984a7ec4145a4e3f1d791571490cebb6eef93544401954a39f72ff83972202c2d3b2765e95ae8ade53b80230747aeb5d7602af21ded21d9fa732c437b2e6
   languageName: node
   linkType: hard
 
@@ -8228,6 +8262,13 @@ __metadata:
   dependencies:
     get-iterator: ^1.0.2
   checksum: 0725dd8ddb889829cab70b81a883d5a09cd34272ccd44fad195de9fb900a8588fbf801490b6418ae5e234c128743ad829c50cfcd6686fab3b50bb6e76d59238c
+  languageName: node
+  linkType: hard
+
+"stream-transform@npm:^3.4.0":
+  version: 3.4.0
+  resolution: "stream-transform@npm:3.4.0"
+  checksum: 776078490b3b807134654f9200e79b41d3ee110644287d234edda8d024f51c74d5d9674a3f205f5b273c7e381e7b884309c0d5ad21477e8108cb6f9ba8f1b539
   languageName: node
   linkType: hard
 
