@@ -4,12 +4,15 @@ const {
   consts: {
     Modules,
     StakingEvents,
-    SessionEvents,
     TreasuryCommonEvent,
     KsmTreasuryAccount,
     DotTreasuryAccount,
   },
 } = require("@osn/scan-common");
+
+const SessionEvents = Object.freeze({
+  NewSession: "NewSession",
+});
 
 function isBalancesIssued(section, method) {
   return Modules.Balances === section && "Issued" === method;
