@@ -12,7 +12,6 @@
     "@osn/scan-common": "0.6.22",
     "@polkadot/api": "14.3.1",
     "bignumber.js": "^9.1.1",
-    "csv": "^6.4.1",
     "dotenv": "16.1.4",
     "lodash.omit": "^4.5.0",
     "log4js": "^6.9.1",

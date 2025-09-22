@@ -1,8 +1,6 @@
 const dotenv = require("dotenv");
 dotenv.config();
 
-const fs = require("fs");
-const { parse } = require("csv/sync");
 const {
   getIncomeInflationCollection,
   getStatusCollection,
@@ -75,11 +73,8 @@ async function handleOneEraPaid(blockHeight, eventIndex) {
 }
 
 async function main() {
-  const data = fs.readFileSync(`${__dirname}/polkadot_event.csv`, "utf-8");
-  const records = parse(data, { columns: true });
-
-  const eventIndexers = records
-    .map((record) => record.event_index.split("-"))
+  const eventIndexers = require("./polkadot_erapaid_event")
+    .map((eventIndex) => eventIndex.split("-"))
     .map(([blockHeight, eventIndex]) => ({
       blockHeight: parseInt(blockHeight),
       eventIndex: parseInt(eventIndex),
