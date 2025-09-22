@@ -33,7 +33,7 @@ function isSessionNewSession(section, method) {
 function isTreasuryUpdatedInactive(section, method) {
   return (
     section === Modules.Treasury &&
-    method === TreasuryCommonEvent.UpdatedInactive
+    method === "UpdatedInactive"
   );
 }
 
