@@ -93,7 +93,10 @@ async function main() {
 
   const inflationCol = await getIncomeInflationCollection();
   for (const { blockHeight, eventIndex } of eventIndexers) {
-    // await new Promise((resolve) => setTimeout(resolve, 2000));
+    if (29145304 > blockHeight) {
+      break;
+    }
+
     if (blockHeight > scanHeight) {
       console.log(`Skip not scanned height #${blockHeight}`);
       continue;
@@ -102,7 +105,7 @@ async function main() {
       "indexer.blockHeight": blockHeight,
     });
     if (item) {
-      // console.log(`Era paid at # ${blockHeight} already exist, skip`);
+      console.log(`Era paid at # ${blockHeight} already exist, skip`);
       continue;
     }
     await handleOneEraPaid(blockHeight, eventIndex);
