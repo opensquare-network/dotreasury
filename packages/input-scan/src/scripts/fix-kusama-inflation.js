@@ -32,11 +32,12 @@ async function updateInflation(balance) {
   console.log("Current inflation:", seats.inflation);
   const inflation = bigAdd(seats.inflation || 0, balance);
   console.log("Adding inflation:", inflation);
-
-  await statusCol.findOneAndUpdate(
-    { name: mainScanName },
-    { $set: { "seats.inflation": inflation } },
-  );
+  if (inflation) {
+    await statusCol.findOneAndUpdate(
+      { name: mainScanName },
+      { $set: { "seats.inflation": inflation } },
+    );
+  }
 }
 
 async function handleOneEraPaid(blockHeight, eventIndex) {
@@ -85,8 +86,18 @@ async function main() {
       eventIndex: parseInt(eventIndex),
     }));
 
+  const statusCol = await getStatusCollection();
+  const status = await statusCol.findOne({ name: mainScanName });
+  const scanHeight = status.height;
+  console.log("Current scan height:", scanHeight);
+
   const inflationCol = await getIncomeInflationCollection();
   for (const { blockHeight, eventIndex } of eventIndexers) {
+    // await new Promise((resolve) => setTimeout(resolve, 2000));
+    if (blockHeight > scanHeight) {
+      console.log(`Skip not scanned height #${blockHeight}`);
+      continue;
+    }
     const item = await inflationCol.findOne({
       "indexer.blockHeight": blockHeight,
     });
