@@ -102,7 +102,7 @@ async function main() {
       "indexer.blockHeight": blockHeight,
     });
     if (item) {
-      console.log(`Era paid at # ${blockHeight} already exist, skip`);
+      // console.log(`Era paid at # ${blockHeight} already exist, skip`);
       continue;
     }
     await handleOneEraPaid(blockHeight, eventIndex);
