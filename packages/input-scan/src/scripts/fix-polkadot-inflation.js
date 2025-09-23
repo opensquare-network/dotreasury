@@ -88,10 +88,6 @@ async function main() {
 
   const inflationCol = await getIncomeInflationCollection();
   for (const { blockHeight, eventIndex } of eventIndexers) {
-    if (26905641 > blockHeight) {
-      break;
-    }
-
     if (blockHeight > scanHeight) {
       console.log(`Skip not scanned height #${blockHeight}`);
       continue;
