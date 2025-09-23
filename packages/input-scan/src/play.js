@@ -5,9 +5,7 @@ const {
 } = require("@osn/scan-common");
 
 async function test() {
-  const blockHeights = [
-    27823755,
-  ];
+  const blockHeights = [30163609];
 
   for (const height of blockHeights) {
     await setSpecHeights([height]);
