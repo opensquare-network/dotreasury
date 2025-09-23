@@ -30,15 +30,15 @@ async function updateInflation(balance) {
   console.log("Current inflation:", seats.inflation);
   const inflation = bigAdd(seats.inflation || 0, balance);
   console.log("Adding inflation:", inflation);
-
-  await statusCol.findOneAndUpdate(
-    { name: mainScanName },
-    { $set: { "seats.inflation": inflation } },
-  );
+  if (inflation) {
+    await statusCol.findOneAndUpdate(
+      { name: mainScanName },
+      { $set: { "seats.inflation": inflation } },
+    );
+  }
 }
 
 async function handleOneEraPaid(blockHeight, eventIndex) {
-  console.log(`Handling era paid event at #${blockHeight}-${eventIndex}`);
   const api = await getApi();
   const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
 
@@ -60,7 +60,7 @@ async function handleOneEraPaid(blockHeight, eventIndex) {
   const block = await api.rpc.chain.getBlock(blockHash);
   const blockIndexer = getBlockIndexer(block.block);
 
-  console.log("Handle era paid event:", blockIndexer);
+  console.log(`Handle era paid event at #${blockHeight}-${eventIndex}`);
   const balance = await handleEraPaidWithoutTreasuryDeposit(
     eraPaidEvent,
     { ...blockIndexer, eventIndex },
@@ -68,6 +68,7 @@ async function handleOneEraPaid(blockHeight, eventIndex) {
   );
 
   if (balance) {
+    console.log("Found inflation:", balance);
     await updateInflation(balance);
   }
 }
@@ -80,12 +81,21 @@ async function main() {
       eventIndex: parseInt(eventIndex),
     }));
 
+  const statusCol = await getStatusCollection();
+  const status = await statusCol.findOne({ name: mainScanName });
+  const scanHeight = status.height;
+  console.log("Current scan height:", scanHeight);
+
   const inflationCol = await getIncomeInflationCollection();
   for (const { blockHeight, eventIndex } of eventIndexers) {
     if (26905641 > blockHeight) {
       break;
     }
 
+    if (blockHeight > scanHeight) {
+      console.log(`Skip not scanned height #${blockHeight}`);
+      continue;
+    }
     const item = await inflationCol.findOne({
       "indexer.blockHeight": blockHeight,
     });
