@@ -8,6 +8,18 @@ import { useStatsHistory } from "../../../hooks/useData";
 import { useWindowSize } from "react-use";
 import { SM_SIZE } from "@site/src/styles/responsive";
 
+function safeBnToBn(value) {
+  if (isNaN(value)) {
+    return bnToBn(0);
+  }
+
+  try {
+    return bnToBn(value);
+  } catch (error) {
+    return bnToBn(0);
+  }
+}
+
 export default function OverviewTreasuryStatsChart({ chain = "" }) {
   const { decimals } = getChainSettings(chain);
   const statsHistory = useStatsHistory(chain);
@@ -22,19 +34,19 @@ export default function OverviewTreasuryStatsChart({ chain = "" }) {
 
   const incomeHistory = statsHistory
     .map((statsItem) =>
-      bnToBn(statsItem.income.inflation)
-        .add(bnToBn(statsItem.income.slash))
-        .add(bnToBn(statsItem.income.transfer))
-        .add(bnToBn(statsItem.income.others)),
+      safeBnToBn(statsItem.income.inflation)
+        .add(safeBnToBn(statsItem.income.slash))
+        .add(safeBnToBn(statsItem.income.transfer))
+        .add(safeBnToBn(statsItem.income.others)),
     )
     .map((bn) => toPrecision(bn, decimals, false));
   const outputHistory = statsHistory
     .map((statsItem) =>
-      bnToBn(statsItem.output.tip)
-        .add(bnToBn(statsItem.output.proposal))
-        .add(bnToBn(statsItem.output.bounty))
-        .add(bnToBn(statsItem.output.burnt))
-        .add(bnToBn(statsItem.output.transfer)),
+      safeBnToBn(statsItem.output.tip)
+        .add(safeBnToBn(statsItem.output.proposal))
+        .add(safeBnToBn(statsItem.output.bounty))
+        .add(safeBnToBn(statsItem.output.burnt))
+        .add(safeBnToBn(statsItem.output.transfer)),
     )
     .map((bn) => toPrecision(bn, decimals, false));
   const treasuryHistory = statsHistory.map((statsItem) =>
