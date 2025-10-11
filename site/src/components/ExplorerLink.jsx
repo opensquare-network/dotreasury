@@ -36,8 +36,7 @@ export default function ExplorerLink({
   blockTime = null,
 }) {
   const chain = useSelector(chainSelector);
-  const defaultExplorerSite = getConditionalExplorerSite(chain, blockTime);
-  const baseHref = base ?? defaultExplorerSite;
+  const baseHref = base ?? getConditionalExplorerSite(chain, blockTime);
   return (
     <ExternalLink
       href={new URL(href, baseHref).href}
