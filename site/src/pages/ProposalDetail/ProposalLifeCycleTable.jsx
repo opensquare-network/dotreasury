@@ -51,6 +51,7 @@ const ProposalLifeCycleTable = ({ loading }) => {
                   </div>
                   <ExplorerLink
                     href={`/block/${proposalDetail.proposeAtBlockHeight}`}
+                    blockTime={proposalDetail?.indexer?.blockTime}
                   >
                     <PolygonLabel value={proposalDetail.proposeAtBlockHeight} />
                   </ExplorerLink>

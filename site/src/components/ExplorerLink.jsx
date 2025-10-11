@@ -2,6 +2,28 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { chainSelector } from "../store/reducers/chainSlice";
 import ExternalLink from "./ExternalLink";
+import { currentChainSettings } from "../utils/chains";
+import isAssetHubMigrated from "../utils/isAssetHubMigrated";
+import BigNumber from "bignumber.js";
+
+export function getConditionalExplorerSite(chain, blockTime = null) {
+  const { assethubMigration = null } = currentChainSettings;
+  const defaultExplorerSite = `https://${chain}.subscan.io/`;
+  if (!blockTime) {
+    return defaultExplorerSite;
+  }
+
+  if (
+    isAssetHubMigrated() &&
+    new BigNumber(blockTime).isGreaterThanOrEqualTo(
+      assethubMigration?.timestamp || 0,
+    )
+  ) {
+    return `https://assethub-${chain}.subscan.io/`;
+  }
+
+  return defaultExplorerSite;
+}
 
 export default function ExplorerLink({
   href,
@@ -11,10 +33,10 @@ export default function ExplorerLink({
   externalIcon = false,
   externalIconColor = "textTertiary",
   externalIconSize = 16,
+  blockTime = null,
 }) {
   const chain = useSelector(chainSelector);
-  const defaultExplorerSite = `https://${chain}.subscan.io/`;
-  const baseHref = base ?? defaultExplorerSite;
+  const baseHref = base ?? getConditionalExplorerSite(chain, blockTime);
   return (
     <ExternalLink
       href={new URL(href, baseHref).href}

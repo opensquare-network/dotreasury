@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { nodesDefinition } from "../../services/chainApi";
 import { currentChain } from "../../utils/chains";
+import { getConditionalChainNodes } from "../../services/chainApi";
 
-const chainNodes = nodesDefinition[currentChain];
+const chainNodes = getConditionalChainNodes(currentChain);
 
 function getInitNodeUrl() {
   const localNodeUrl = localStorage.getItem("nodeUrlV2");

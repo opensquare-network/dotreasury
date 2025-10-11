@@ -72,6 +72,7 @@ const TipLifeCycleTable = ({ loading }) => {
                   </div>
                   <ExplorerLink
                     href={`/block/${tipDetail.proposeAtBlockHeight}`}
+                    blockTime={tipDetail?.indexer?.blockTime}
                   >
                     <PolygonLabel value={tipDetail.proposeAtBlockHeight} />
                   </ExplorerLink>
@@ -113,6 +114,7 @@ const TipLifeCycleTable = ({ loading }) => {
                   <FlexWrapper>
                     <ExplorerLink
                       href={`/block/${tipDetail.closeFromBlockHeight}`}
+                      blockTime={tipDetail?.indexer?.blockTime}
                     >
                       <PolygonLabel value={tipDetail.closeFromBlockHeight} />
                     </ExplorerLink>

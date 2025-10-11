@@ -7,7 +7,7 @@ async function getTreasuryKsmOnRelayChainFromApi(api) {
 }
 
 async function getTreasuryKsmOnRelayChain() {
-  return await multiApiQuery("kusama", (api) =>
+  return await multiApiQuery("kusamaAssetHub", (api) =>
     getTreasuryKsmOnRelayChainFromApi(api),
   );
 }

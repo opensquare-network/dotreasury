@@ -12,6 +12,7 @@ import {
   DEFAULT_POLKADOT_NODES,
 } from "../constants";
 import { CHAINS, getChainSettings } from "../utils/chains";
+import isAssetHubMigrated from "../utils/isAssetHubMigrated";
 
 const apiInstanceMap = new Map();
 
@@ -21,8 +22,14 @@ export const nodesDefinition = {
   centrifuge: DEFAULT_CENTRIFUGE_NODES,
 };
 
+export function getConditionalChainNodes(chain) {
+  const { assetHubEndpoints } = getChainSettings(chain);
+
+  return isAssetHubMigrated() ? assetHubEndpoints : nodesDefinition[chain];
+}
+
 export const getApi = async (chain, queryUrl) => {
-  const chainNodes = nodesDefinition[chain];
+  const chainNodes = getConditionalChainNodes(chain);
   const url = queryUrl || chainNodes?.[0].url;
   if (!apiInstanceMap.has(url)) {
     apiInstanceMap.set(
