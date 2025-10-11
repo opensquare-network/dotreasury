@@ -95,6 +95,7 @@ const SlashTable = ({ data, loading, header, footer }) => {
                         {item.indexer.eventIndex ? (
                           <ExplorerLink
                             href={`/block/${item.indexer.blockHeight}?tab=event`}
+                            blockTime={item?.indexer?.blockTime}
                           >
                             <EventWrapper>
                               <IconMask
@@ -108,6 +109,7 @@ const SlashTable = ({ data, loading, header, footer }) => {
                         ) : (
                           <ExplorerLink
                             href={`/extrinsic/${item.indexer.blockHeight}-${item.indexer.extrinsicIndex}`}
+                            blockTime={item?.indexer?.blockTime}
                           >
                             <EventWrapper>
                               <IconMask

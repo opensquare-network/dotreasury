@@ -94,6 +94,7 @@ const SlashTable = ({ data, loading, header, footer }) => {
                       <Table.Cell>
                         <ExplorerLink
                           href={`/block/${item.indexer.blockHeight}?tab=event`}
+                          blockTime={item?.indexer?.blockTime}
                         >
                           <EventWrapper>
                             <IconMask

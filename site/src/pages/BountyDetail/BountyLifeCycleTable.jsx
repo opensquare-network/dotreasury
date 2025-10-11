@@ -107,6 +107,7 @@ const BountyLifeCycleTable = ({ loading }) => {
                   </div>
                   <ExplorerLink
                     href={`/block/${bountyDetail.proposeAtBlockHeight}`}
+                    blockTime={bountyDetail?.indexer?.blockTime}
                   >
                     <PolygonLabel value={bountyDetail.proposeAtBlockHeight} />
                   </ExplorerLink>
@@ -194,7 +195,10 @@ const BountyLifeCycleTable = ({ loading }) => {
                         } blocks`}</Label>
                       </>
                     ) : (
-                      <ExplorerLink href={`/block/${bountyDetail.unlockAt}`}>
+                      <ExplorerLink
+                        href={`/block/${bountyDetail.unlockAt}`}
+                        blockTime={bountyDetail?.indexer?.blockTime}
+                      >
                         <PolygonLabel value={bountyDetail.unlockAt} />
                       </ExplorerLink>
                     )}

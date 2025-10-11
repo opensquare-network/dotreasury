@@ -111,7 +111,10 @@ const proposeTime = {
       <TextMinor>
         {dayjs(parseInt(item.proposeTime)).format("YYYY-MM-DD HH:mm:ss")}
       </TextMinor>
-      <ExplorerLink href={`/block/${item.proposeAtBlockHeight}`}>
+      <ExplorerLink
+        href={`/block/${item.proposeAtBlockHeight}`}
+        blockTime={item?.indexer?.blockTime}
+      >
         <PolygonLabel fontSize={12} value={item.proposeAtBlockHeight} />
       </ExplorerLink>
     </ProposeTimeWrapper>
@@ -127,7 +130,10 @@ const time = {
       <Text>
         {dayjs(parseInt(item.indexer.blockTime)).format("YYYY-MM-DD HH:mm:ss")}
       </Text>
-      <ExplorerLink href={`/block/${item.indexer.blockHeight}`}>
+      <ExplorerLink
+        href={`/block/${item.indexer.blockHeight}`}
+        blockTime={item?.indexer?.blockTime}
+      >
         <PolygonLabel fontSize={12} value={item.indexer.blockHeight} />
       </ExplorerLink>
     </ProposeTimeWrapper>
@@ -140,6 +146,7 @@ const eventId = {
     <Flex>
       <ExplorerLink
         href={`/extrinsic/${item.indexer.blockHeight}-0?event=${item.indexer.blockHeight}-${item.indexer.eventIndex}`}
+        blockTime={item?.indexer?.blockTime}
       >
         <EventWrapper>
           <IconMask src="/imgs/event.svg" size={16} color="textDisable" />
