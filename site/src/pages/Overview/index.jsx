@@ -22,9 +22,9 @@ import {
 } from "../../styles/tailwindcss";
 import OpenGovSpend from "./OpenGovSpend";
 import { mdcss, smcss } from "@osn/common";
-import IncomeAndOutputPeriods from "./IncomeAndOutputPeriods";
+// import IncomeAndOutputPeriods from "./IncomeAndOutputPeriods";
 import TopBeneficiariesTable from "./TopBeneficiariesTable/index.jsx";
-import OutputPeriods from "./OutputPeriods";
+// import OutputPeriods from "./OutputPeriods";
 import {
   currentChainSettings,
   isCentrifuge,
@@ -175,8 +175,8 @@ const Overview = () => {
       {currentChainSettings.hasAssetHub && <AssetHub />}
       <DoughnutWrapper count={cards.length}>{cards}</DoughnutWrapper>
       <TreasuryStats />
-      <IncomeAndOutputPeriods />
-      {currentChainSettings.hasOutputPeriods && <OutputPeriods />}
+      {/* <IncomeAndOutputPeriods /> */}
+      {/* {currentChainSettings.hasOutputPeriods && <OutputPeriods />} */}
       <TableWrapper>
         {!isCentrifuge && <TopBeneficiariesTable />}
         <BeneficiaryTable />
