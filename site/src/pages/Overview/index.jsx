@@ -8,7 +8,7 @@ import ProposerTable from "./ProposerTable";
 import BeneficiaryTable from "./BeneficiaryTable";
 import { overviewSelector } from "../../store/reducers/overviewSlice";
 import { getPrecision, toPrecision } from "../../utils";
-import TreasuryStats from "./TreasuryStats";
+// import TreasuryStats from "./TreasuryStats";
 import Income from "./Income";
 import Output from "./Output";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
@@ -174,7 +174,7 @@ const Overview = () => {
       {isKusama ? <OverviewKusamaSummary /> : <Summary />}
       {currentChainSettings.hasAssetHub && <AssetHub />}
       <DoughnutWrapper count={cards.length}>{cards}</DoughnutWrapper>
-      <TreasuryStats />
+      {/* <TreasuryStats /> */}
       {/* <IncomeAndOutputPeriods /> */}
       {/* {currentChainSettings.hasOutputPeriods && <OutputPeriods />} */}
       <TableWrapper>
