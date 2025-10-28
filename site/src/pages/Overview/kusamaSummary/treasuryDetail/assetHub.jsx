@@ -8,44 +8,53 @@ import { currentChainSettings } from "../../../../utils/chains";
 import AssetFooter from "./common/assetFooter";
 import AssetContent from "./common/assetContent";
 import { ExternalLink } from "../../polkadot/treasuryDetail/common/assetItem";
-import { KUSAMA_ASSETHUB_ACCOUNT } from "../../../../constants/kusama";
+import { useTreasuryAccount } from "../../../../hooks/treasury/useQueryRelayChainFree";
+import useApi from "../../../../hooks/useApi";
+
+function Title() {
+  const api = useApi();
+  const account = useTreasuryAccount(api);
+  if (!account) {
+    return "KSM on Asset hub";
+  }
+
+  return (
+    <ExternalLink
+      href={`https://assethub-kusama.subscan.io/account/${account}`}
+      externalIcon
+      externalIconColor="textSecondary"
+    >
+      KSM on Asset hub
+    </ExternalLink>
+  );
+}
 
 export default function TreasuryDetailOnAssetHub() {
-  const {
-    ksmTreasuryBalanceOnAssetHub,
-    isKsmTreasuryBalanceOnAssetHubLoading,
-  } = useKusamaTreasuryData();
-  const { price } = useFiatPrice();
+  const { relayChainFreeBalance, isRelayChainFreeLoading } =
+    useKusamaTreasuryData();
+  const { price, loading: isPriceLoading } = useFiatPrice();
   const { decimals, symbol } = currentChainSettings;
 
   const totalFiatValue = toPrecision(
-    BigNumber(ksmTreasuryBalanceOnAssetHub).multipliedBy(price),
+    BigNumber(relayChainFreeBalance).multipliedBy(price),
     decimals,
   );
 
   return (
     <SummaryItem
       icon={<ImageWithDark src="/imgs/data-available.svg" />}
-      title={
-        <ExternalLink
-          href={`https://assethub-kusama.subscan.io/account/${KUSAMA_ASSETHUB_ACCOUNT}`}
-          externalIcon
-          externalIconColor="textSecondary"
-        >
-          KSM on Asset hub
-        </ExternalLink>
-      }
+      title={<Title />}
       content={
         <div>
           <AssetContent
-            balance={ksmTreasuryBalanceOnAssetHub}
-            isLoading={isKsmTreasuryBalanceOnAssetHubLoading}
+            balance={relayChainFreeBalance}
+            isLoading={isRelayChainFreeLoading || isPriceLoading}
             symbol={symbol}
             decimals={decimals}
           />
           <AssetFooter
             balance={totalFiatValue}
-            isLoading={isKsmTreasuryBalanceOnAssetHubLoading}
+            isLoading={isRelayChainFreeLoading}
           />
         </div>
       }
