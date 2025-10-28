@@ -102,14 +102,7 @@ const StyledLinkMajor = styled(Link)`
   }
 `;
 
-export function SpendPeriodItem() {
-  const dispatch = useDispatch();
-  const spendPeriod = useSelector(spendPeriodSelector);
-
-  useEffect(() => {
-    dispatch(fetchSpendPeriod());
-  }, [dispatch]);
-
+export function SpendPeriodDisplay({ spendPeriod }) {
   return (
     <SummaryItem
       icon={<CountDown percent={spendPeriod.progress} />}
@@ -131,6 +124,19 @@ export function SpendPeriodItem() {
         </div>
       }
     />
+  );
+}
+
+export function SpendPeriodItem() {
+  const dispatch = useDispatch();
+  const spendPeriod = useSelector(spendPeriodSelector);
+
+  useEffect(() => {
+    dispatch(fetchSpendPeriod());
+  }, [dispatch]);
+
+  return (
+    <SpendPeriodDisplay spendPeriod={spendPeriod} />
   );
 }
 

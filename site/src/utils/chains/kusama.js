@@ -22,6 +22,7 @@ export const kusama = {
   symbol: "KSM",
   decimals: 12,
   ss58Format: 2,
+  blockTime: 6000,
   supportOpenGov: true,
   hasDotreasury: true,
   hasSubscan: true,
