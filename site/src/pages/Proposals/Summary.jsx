@@ -1,10 +1,8 @@
-import React, { useEffect, Fragment } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled, { css } from "styled-components";
 import Text from "../../components/Text";
 import TextMinor from "../../components/TextMinor";
-import CountDown from "../../components/CountDown";
-import BlocksTime from "../../components/BlocksTime";
 import { mrgap } from "../../styles";
 import useFiatPrice from "../../hooks/useFiatPrice";
 
@@ -12,11 +10,7 @@ import {
   fetchProposalsSummary,
   proposalSummarySelector,
 } from "../../store/reducers/proposalSlice";
-import {
-  chainSymbolSelector,
-  fetchSpendPeriod,
-  spendPeriodSelector,
-} from "../../store/reducers/chainSlice";
+import { chainSymbolSelector } from "../../store/reducers/chainSlice";
 import {
   fetchTreasury,
   treasurySelector,
@@ -30,12 +24,13 @@ import {
   grid_cols,
 } from "../../styles/tailwindcss";
 import { h3_18_semibold, p_12_normal } from "../../styles/text";
-import { parseEstimateTime } from "../../utils/parseEstimateTime";
-import { extractTime } from "@polkadot/util";
 import SummaryItem from "../../components/Summary/Item";
 import { lgcss, smcss } from "../../styles/responsive";
 import SummaryOngoingItemWrapper from "../../components/Summary/OngoingItemWrapper";
 import SummaryProposalsWrapper from "../../components/Summary/ProposalsWrapper";
+import { SpendPeriodItem } from "../Overview/Summary";
+import KusamaSpendPeriod from "../Overview/kusamaSummary/treasuryDetail/spendPeriod";
+import { isKusama } from "../../utils/chains";
 
 const ItemsWrapper = styled.div`
   ${flex_1};
@@ -74,12 +69,10 @@ const Summary = () => {
 
   useEffect(() => {
     dispatch(fetchProposalsSummary());
-    dispatch(fetchSpendPeriod());
     dispatch(fetchTreasury());
   }, [dispatch]);
 
   const summary = useSelector(proposalSummarySelector);
-  const spendPeriod = useSelector(spendPeriodSelector);
   const treasury = useSelector(treasurySelector);
   const symbol = useSelector(chainSymbolSelector);
   const { price: symbolPrice } = useFiatPrice();
@@ -131,26 +124,7 @@ const Summary = () => {
             </ValueWrapper>
           }
         />
-        <SummaryItem
-          title="Spend period"
-          icon={<CountDown percent={spendPeriod.progress} />}
-          content={
-            <div>
-              <BlocksTime
-                blocks={spendPeriod.restBlocks}
-                ValueWrapper={Value}
-                UnitWrapper={Unit}
-                SectionWrapper={Fragment}
-                TimeWrapper={ValueWrapper}
-                unitMapper={{ d: "Day" }}
-                pluralUnitMapper={{ d: "Days" }}
-              />
-              <ValueInfo>
-                {parseEstimateTime(extractTime(spendPeriod.periodTime))}
-              </ValueInfo>
-            </div>
-          }
-        />
+        {isKusama ? <KusamaSpendPeriod /> : <SpendPeriodItem />}
       </ItemsWrapper>
     </SummaryProposalsWrapper>
   );
