@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { grid, grid_cols } from "../../../../styles/tailwindcss";
 import { mdcss } from "../../../../styles/responsive";
 import TreasuryDetailOnRelayChain from "./relayChain";
-import TreasuryDetailOnAssetHub from "./assetHub";
+// import TreasuryDetailOnAssetHub from "./assetHub";
 import TreasuryDetailLoans from "./loans";
 import { SpendPeriodItem, ToBeAwardedItem, BurntItem } from "../../Summary";
 import {
@@ -30,7 +30,7 @@ export default function OverviewTreasuryDetail() {
   return (
     <Wrapper>
       <TreasuryDetailOnRelayChain />
-      <TreasuryDetailOnAssetHub />
+      {/* <TreasuryDetailOnAssetHub /> */}
       <TreasuryDetailLoans />
       <SpendPeriodItem />
       <ToBeAwardedItem />

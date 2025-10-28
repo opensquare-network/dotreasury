@@ -149,25 +149,29 @@ const Overview = () => {
     false,
   );
 
-  const cards = [
-    <Income
-      key="income"
-      inflation={inflation}
-      slashTreasury={slashTreasury}
-      slashDemocracy={slashDemocracy}
-      slashStaking={slashStaking}
-      slashElection={slashElection}
-      slashIdentity={slashIdentity}
-      slashReferenda={slashReferenda}
-      slashFellowshipReferenda={slashFellowshipReferenda}
-      others={others}
-      centrifugeBlockReward={centrifugeBlockReward}
-      centrifugeTxFee={centrifugeTxFee}
-    />,
-    <Output key="output" />,
+  const cards = isKusama
+    ? []
+    : [
+        <Income
+          key="income"
+          inflation={inflation}
+          slashTreasury={slashTreasury}
+          slashDemocracy={slashDemocracy}
+          slashStaking={slashStaking}
+          slashElection={slashElection}
+          slashIdentity={slashIdentity}
+          slashReferenda={slashReferenda}
+          slashFellowshipReferenda={slashFellowshipReferenda}
+          others={others}
+          centrifugeBlockReward={centrifugeBlockReward}
+          centrifugeTxFee={centrifugeTxFee}
+        />,
+        <Output key="output" />,
 
-    currentChainSettings.supportOpenGov && <OpenGovSpend key="openGovSpend" />,
-  ].filter(Boolean);
+        currentChainSettings.supportOpenGov && (
+          <OpenGovSpend key="openGovSpend" />
+        ),
+      ].filter(Boolean);
 
   return (
     <>
@@ -179,7 +183,7 @@ const Overview = () => {
       {/* {currentChainSettings.hasOutputPeriods && <OutputPeriods />} */}
       <TableWrapper>
         {!isCentrifuge && <TopBeneficiariesTable />}
-        <BeneficiaryTable />
+        {!isKusama && <BeneficiaryTable />}
         {currentChainSettings.hasTips && <ProposerTable />}
       </TableWrapper>
     </>
