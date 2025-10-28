@@ -5,12 +5,13 @@ import { mdcss } from "../../../../styles/responsive";
 // import TreasuryDetailOnRelayChain from "./relayChain";
 import TreasuryDetailOnAssetHub from "./assetHub";
 import TreasuryDetailLoans from "./loans";
-import { SpendPeriodItem, ToBeAwardedItem, BurntItem } from "../../Summary";
+import { ToBeAwardedItem, BurntItem } from "../../Summary";
 import {
   fetchTreasury,
   treasurySelector,
 } from "../../../../store/reducers/burntSlice";
 import { useEffect } from "react";
+import KusamaSpendPeriod from "./spendPeriod";
 
 const Wrapper = styled.div`
   ${grid}
@@ -32,7 +33,7 @@ export default function OverviewTreasuryDetail() {
       {/* <TreasuryDetailOnRelayChain /> */}
       <TreasuryDetailOnAssetHub />
       <TreasuryDetailLoans />
-      <SpendPeriodItem />
+      <KusamaSpendPeriod />
       <ToBeAwardedItem />
       <BurntItem treasury={treasury} />
     </Wrapper>
