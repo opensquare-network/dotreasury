@@ -10,8 +10,6 @@ export function useAssetBalance(api, assetId, address) {
       return;
     }
 
-    let unSub;
-
     api.query?.assets
       ?.account?.(assetId, address, (optionalStorage) => {
         if (optionalStorage.isNone) {
@@ -19,18 +17,13 @@ export function useAssetBalance(api, assetId, address) {
           return;
         }
 
-        setValue(optionalStorage.unwrap().balance.toString());
-      })
-      .then((un) => {
-        unSub = un;
+        const unwrapped = optionalStorage.unwrap();
+
+        setValue(unwrapped.balance?.toString() || "0");
       })
       .finally(() => {
         setLoading(false);
       });
-
-    return () => {
-      unSub?.();
-    };
   }, [api, assetId, address]);
 
   return [value, loading];

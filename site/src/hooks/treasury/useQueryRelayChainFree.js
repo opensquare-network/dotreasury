@@ -51,6 +51,7 @@ export function useQueryRelayChainTotalBalance() {
     ASSET_HUB_USDC_ASSET_ID,
     account,
   );
+
   const [usdtBalance, isUsdtBalanceLoading] = useAssetBalance(
     api,
     ASSET_HUB_USDT_ASSET_ID,
