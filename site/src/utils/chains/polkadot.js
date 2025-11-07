@@ -70,5 +70,9 @@ export const polkadot = {
     subsquareApi: "https://polkadot-api.subsquare.io",
   },
   assetHubEndpoints,
+  assethubMigration: {
+    migrated: true,
+    timestamp: 1762239840000,
+  },
   usersMigration: true,
 };
