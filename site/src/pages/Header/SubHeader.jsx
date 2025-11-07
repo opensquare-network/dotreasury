@@ -290,6 +290,13 @@ const TabExampleSecondaryPointing = () => {
               exact: true,
               key: "burnt",
               active: "/burnt" === pathname || pathname.indexOf("/burnt") === 0,
+              onClick: (e) => {
+                if (isPolkadot || isKusama) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  return false;
+                }
+              },
             },
           },
           currentChainSettings.hasTransfers && {

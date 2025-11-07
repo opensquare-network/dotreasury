@@ -1,4 +1,4 @@
-import useQueryRelayChainFree from "../hooks/treasury/useQueryRelayChainFree";
+import { useQueryRelayChainTotalBalance } from "../hooks/treasury/useQueryRelayChainFree";
 import { useAssetHubDot } from "../hooks/assetHub/useAssetHubDot";
 import { useAssetHubAsset } from "../hooks/assetHub/useAssetHubAsset";
 import {
@@ -40,8 +40,14 @@ export function usePolkadotTreasuryData() {
 export default function PolkadotTreasuryProvider({ children }) {
   const { price: dotPrice } = useFiatPrice();
 
-  const { balance: relayChainFreeBalance, isLoading: isRelayChainFreeLoading } =
-    useQueryRelayChainFree();
+  const {
+    relayChainFreeBalance,
+    isRelayChainFreeLoading,
+    usdcBalance: usdcBalanceOnRelayChain,
+    usdtBalance: usdtBalanceOnRelayChain,
+    isUsdcBalanceLoading: isUsdcBalanceLoadingOnRelayChain,
+    isUsdtBalanceLoading: isUsdtBalanceLoadingOnRelayChain,
+  } = useQueryRelayChainTotalBalance();
   const [assetHubDotBalance, isAssetHubDotLoading] = useAssetHubDot();
   const [assetHubUSDtBalance, isAssetHubUSDtLoading] = useAssetHubAsset(
     ASSET_HUB_USDT_ASSET_ID,
@@ -116,6 +122,7 @@ export default function PolkadotTreasuryProvider({ children }) {
 
   const totalUSDtValue = toPrecision(
     BigNumber.sum(
+      usdtBalanceOnRelayChain || 0,
       assetHubUSDtBalance || 0,
       hydrationUSDtBalance || 0,
       fellowshipSalaryUSDtBalance || 0,
@@ -126,6 +133,7 @@ export default function PolkadotTreasuryProvider({ children }) {
 
   const totalUSDCValue = toPrecision(
     BigNumber.sum(
+      usdcBalanceOnRelayChain || 0,
       assetHubUSDCBalance || 0,
       hydrationUSDCBalance || 0,
     ).toString(),
@@ -156,12 +164,16 @@ export default function PolkadotTreasuryProvider({ children }) {
     isLoansHydrationDotLoading;
 
   const isTotalUSDtLoading =
+    isUsdtBalanceLoadingOnRelayChain ||
     isAssetHubUSDtLoading ||
     isHydrationLoading ||
     isFellowshipSalaryUSDtLoading ||
     isAmbassadorUSDtLoading;
 
-  const isTotalUSDCLoading = isAssetHubUSDCLoading || isHydrationLoading;
+  const isTotalUSDCLoading =
+    isUsdcBalanceLoadingOnRelayChain ||
+    isAssetHubUSDCLoading ||
+    isHydrationLoading;
 
   const isTotalLoading =
     isTotalDotLoading || isTotalUSDtLoading || isTotalUSDCLoading;

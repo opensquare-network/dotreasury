@@ -4,6 +4,11 @@ import { currentChain } from "../../utils/chains";
 import { encodeChainAddress } from "../../services/chainApi";
 import { useEffect, useState } from "react";
 import { u8aConcat } from "@polkadot/util";
+import { useAssetBalance } from "./useAssetBalance";
+import {
+  ASSET_HUB_USDC_ASSET_ID,
+  ASSET_HUB_USDT_ASSET_ID,
+} from "../../constants/assetHub";
 
 const EMPTY_U8A_32 = new Uint8Array(32);
 
@@ -33,4 +38,34 @@ export default function useQueryRelayChainFree() {
   const account = useTreasuryAccount(api);
 
   return useQueryAccountFree(api, account);
+}
+
+export function useQueryRelayChainTotalBalance() {
+  const api = useApi();
+  const account = useTreasuryAccount(api);
+  const { balance: relayChainFreeBalance, isLoading: isRelayChainFreeLoading } =
+    useQueryRelayChainFree();
+
+  const [usdcBalance, isUsdcBalanceLoading] = useAssetBalance(
+    api,
+    ASSET_HUB_USDC_ASSET_ID,
+    account,
+  );
+
+  const [usdtBalance, isUsdtBalanceLoading] = useAssetBalance(
+    api,
+    ASSET_HUB_USDT_ASSET_ID,
+    account,
+  );
+
+  return {
+    relayChainFreeBalance,
+    usdcBalance,
+    usdtBalance,
+    isRelayChainFreeLoading,
+    isUsdcBalanceLoading,
+    isUsdtBalanceLoading,
+    isLoading:
+      isRelayChainFreeLoading || isUsdcBalanceLoading || isUsdtBalanceLoading,
+  };
 }
