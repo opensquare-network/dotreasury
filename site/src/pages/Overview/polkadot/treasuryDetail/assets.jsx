@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import ValueDisplay from "../../../../components/ValueDisplay";
-import { space_y } from "../../../../styles/tailwindcss";
+import { space_x } from "../../../../styles/tailwindcss";
 import TreasuryDetailItem from "./common/item";
-import AssetItem from "./common/assetItem";
 import { ASSET_HUB_ACCOUNT } from "../../../../constants/assetHub";
 import AssetValueDisplay from "./common/assetValueDisplay";
+import AssetWrapper from "./common/assetWrapper";
 import { polkadot } from "../../../../utils/chains/polkadot";
 import BigNumber from "bignumber.js";
 import { toPrecision } from "../../../../utils";
@@ -12,15 +12,53 @@ import { USDt } from "../../../../utils/chains/usdt";
 import { USDC } from "../../../../utils/chains/usdc";
 import { usePolkadotTreasuryData } from "../../../../context/PolkadotTreasury";
 import useFiatPrice from "../../../../hooks/useFiatPrice";
+import ExplorerLinkOrigin from "../../../../components/ExplorerLink";
+import { p_12_medium } from "../../../../styles/text";
 
-const AssetGroup = styled.div`
-  ${space_y(8)}
+const AddressGroup = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  ${space_x(8)}
 `;
+
+const ExplorerLink = styled(ExplorerLinkOrigin)`
+  color: var(--textSecondary);
+  ${p_12_medium}
+
+  &:hover {
+    color: var(--textSecondary);
+    text-decoration: underline;
+  }
+`;
+
+const Label = styled.span`
+  color: var(--textSecondary);
+  ${p_12_medium};
+`;
+
+function AddressLink({ content, address, base }) {
+  return (
+    <ExplorerLink
+      base={base}
+      href={`account/${address}`}
+      externalIconColor="textSecondary"
+      externalIcon
+      externalIconSize={20}
+    >
+      {content}
+    </ExplorerLink>
+  );
+}
 
 export default function TreasuryDetailAssets() {
   const {
     relayChainFreeBalance,
     isRelayChainFreeLoading,
+    usdcBalanceOnRelayChain,
+    usdtBalanceOnRelayChain,
+    isUsdcBalanceLoadingOnRelayChain,
+    isUsdtBalanceLoadingOnRelayChain,
     assetHubDotBalance,
     isAssetHubDotLoading,
     assetHubUSDtBalance,
@@ -30,24 +68,36 @@ export default function TreasuryDetailAssets() {
   } = usePolkadotTreasuryData();
   const { price: dotPrice } = useFiatPrice();
 
-  const totalRelayChainFreeValue = BigNumber(
-    toPrecision(relayChainFreeBalance, polkadot.decimals),
-  ).multipliedBy(dotPrice);
+  const totalDotBalance = BigNumber.sum(
+    relayChainFreeBalance || 0,
+    assetHubDotBalance || 0,
+  ).toString();
   const totalDotValue = BigNumber(
-    toPrecision(assetHubDotBalance, polkadot.decimals),
+    toPrecision(totalDotBalance, polkadot.decimals),
   ).multipliedBy(dotPrice);
 
+  const totalUSDtBalance = BigNumber.sum(
+    usdtBalanceOnRelayChain || 0,
+    assetHubUSDtBalance || 0,
+  ).toString();
+
+  const totalUSDCBalance = BigNumber.sum(
+    usdcBalanceOnRelayChain || 0,
+    assetHubUSDCBalance || 0,
+  ).toString();
+
   const total = BigNumber.sum(
-    totalRelayChainFreeValue,
     totalDotValue,
-    toPrecision(assetHubUSDtBalance, USDt.decimals),
-    toPrecision(assetHubUSDCBalance, USDC.decimals),
+    toPrecision(totalUSDtBalance, USDt.decimals),
+    toPrecision(totalUSDCBalance, USDC.decimals),
   ).toString();
 
   const isLoading =
     isRelayChainFreeLoading ||
     isAssetHubDotLoading ||
+    isUsdtBalanceLoadingOnRelayChain ||
     isAssetHubUSDtLoading ||
+    isUsdcBalanceLoadingOnRelayChain ||
     isAssetHubUSDCLoading;
 
   return (
@@ -58,53 +108,51 @@ export default function TreasuryDetailAssets() {
       content={<ValueDisplay value={total} prefix="$" />}
       isLoading={isLoading}
       footer={
-        <AssetGroup>
-          <AssetItem
-            title="Main"
-            titleLink="https://polkadot.subscan.io/account/13UVJyLnbVp9RBZYFwFGyDvVd1y27Tt8tkntv6Q7JVPhFsTB"
-          >
-            <AssetValueDisplay
-              symbol="dot"
-              value={relayChainFreeBalance}
-              precision={polkadot.decimals}
-              isLoading={isRelayChainFreeLoading}
-              valueTooltipContent={
-                <ValueDisplay value={totalRelayChainFreeValue} prefix="$" />
-              }
+        <AssetWrapper>
+          <AddressGroup>
+            <Label>Address</Label>
+            <AddressLink
+              content="#1"
+              address="13UVJyLnbVp9RBZYFwFGyDvVd1y27Tt8tkntv6Q7JVPhFsTB"
+              base="https://assethub-polkadot.subscan.io/"
             />
-          </AssetItem>
+            <AddressLink
+              content="#2"
+              address={ASSET_HUB_ACCOUNT}
+              base="https://assethub-polkadot.subscan.io/"
+            />
+          </AddressGroup>
 
-          <AssetItem
-            title="AssetHub"
-            titleLink={`https://assethub-polkadot.subscan.io/account/${ASSET_HUB_ACCOUNT}`}
-          >
-            <AssetValueDisplay
-              symbol="dot"
-              value={assetHubDotBalance}
-              precision={polkadot.decimals}
-              isLoading={isAssetHubDotLoading}
-              valueTooltipContent={
-                <ValueDisplay
-                  abbreviate={false}
-                  value={totalDotValue}
-                  prefix="$"
-                />
-              }
-            />
-            <AssetValueDisplay
-              symbol="usdt"
-              value={assetHubUSDtBalance}
-              precision={USDt.decimals}
-              isLoading={isAssetHubUSDtLoading}
-            />
-            <AssetValueDisplay
-              symbol="usdc"
-              value={assetHubUSDCBalance}
-              precision={USDC.decimals}
-              isLoading={isAssetHubUSDCLoading}
-            />
-          </AssetItem>
-        </AssetGroup>
+          <AssetValueDisplay
+            symbol="dot"
+            value={totalDotBalance}
+            precision={polkadot.decimals}
+            isLoading={isRelayChainFreeLoading || isAssetHubDotLoading}
+            valueTooltipContent={
+              <ValueDisplay
+                abbreviate={false}
+                value={totalDotValue}
+                prefix="$"
+              />
+            }
+          />
+          <AssetValueDisplay
+            symbol="usdt"
+            value={totalUSDtBalance}
+            precision={USDt.decimals}
+            isLoading={
+              isUsdtBalanceLoadingOnRelayChain || isAssetHubUSDtLoading
+            }
+          />
+          <AssetValueDisplay
+            symbol="usdc"
+            value={totalUSDCBalance}
+            precision={USDC.decimals}
+            isLoading={
+              isUsdcBalanceLoadingOnRelayChain || isAssetHubUSDCLoading
+            }
+          />
+        </AssetWrapper>
       }
     />
   );
