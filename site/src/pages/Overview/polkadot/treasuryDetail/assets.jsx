@@ -37,10 +37,10 @@ const Label = styled.span`
   ${p_12_medium};
 `;
 
-function AddressLink({ content, address, base }) {
+function AddressLink({ content, address }) {
   return (
     <ExplorerLink
-      base={base}
+      base="https://assethub-polkadot.subscan.io/"
       href={`account/${address}`}
       externalIconColor="textSecondary"
       externalIcon
@@ -114,13 +114,8 @@ export default function TreasuryDetailAssets() {
             <AddressLink
               content="#1"
               address="13UVJyLnbVp9RBZYFwFGyDvVd1y27Tt8tkntv6Q7JVPhFsTB"
-              base="https://assethub-polkadot.subscan.io/"
             />
-            <AddressLink
-              content="#2"
-              address={ASSET_HUB_ACCOUNT}
-              base="https://assethub-polkadot.subscan.io/"
-            />
+            <AddressLink content="#2" address={ASSET_HUB_ACCOUNT} />
           </AddressGroup>
 
           <AssetValueDisplay
