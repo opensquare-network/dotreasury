@@ -183,6 +183,10 @@ export default function PolkadotTreasuryProvider({ children }) {
       value={{
         relayChainFreeBalance,
         isRelayChainFreeLoading,
+        usdcBalanceOnRelayChain,
+        usdtBalanceOnRelayChain,
+        isUsdcBalanceLoadingOnRelayChain,
+        isUsdtBalanceLoadingOnRelayChain,
         assetHubDotBalance,
         isAssetHubDotLoading,
         assetHubUSDtBalance,
