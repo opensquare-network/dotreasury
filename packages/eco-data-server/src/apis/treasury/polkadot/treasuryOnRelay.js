@@ -1,18 +1,40 @@
-const {
-  multiApiQuery,
-  getTreasuryAddress,
-  getBountyTreasuryAddress,
-} = require("./common");
+const { multiApiQuery, getBountyTreasuryAddress } = require("./common");
+const { USDT_ASSET_ID, USDC_ASSET_ID } = require("./consts");
+
+const RelayChainTreasuryAccount =
+  "13UVJyLnbVp9RBZYFwFGyDvVd1y27Tt8tkntv6Q7JVPhFsTB";
 
 async function getTreasuryDotOnRelayChainFromApi(api) {
-  const address = getTreasuryAddress();
-  const account = await api.query.system.account(address);
+  const account = await api.query.system.account(RelayChainTreasuryAccount);
   return account.toJSON();
 }
 
-async function getTreasuryDotOnRelayChain() {
-  return await multiApiQuery("polkadot", (api) =>
-    getTreasuryDotOnRelayChainFromApi(api),
+async function getTreasuryUsdxOnRelayChainFromApi(api, assetId) {
+  const account = await api.query.assets.account(
+    assetId,
+    RelayChainTreasuryAccount,
+  );
+  return account.toJSON();
+}
+
+async function getTreasuryOnRelayChainFromApi(api) {
+  const dotTreasuryBalanceOnRelayChain =
+    await getTreasuryDotOnRelayChainFromApi(api);
+  const usdtTreasuryBalanceOnRelayChain =
+    await getTreasuryUsdxOnRelayChainFromApi(api, USDT_ASSET_ID);
+  const usdcTreasuryBalanceOnRelayChain =
+    await getTreasuryUsdxOnRelayChainFromApi(api, USDC_ASSET_ID);
+
+  return {
+    dotTreasuryBalanceOnRelayChain,
+    usdtTreasuryBalanceOnRelayChain,
+    usdcTreasuryBalanceOnRelayChain,
+  };
+}
+
+async function getTreasuryOnRelayChain() {
+  return await multiApiQuery("polkadotAssetHub", (api) =>
+    getTreasuryOnRelayChainFromApi(api),
   );
 }
 
@@ -32,13 +54,13 @@ async function getBountyTreasuryOnRelayChainFromApi(api) {
 }
 
 async function getBountyTreasuryOnRelayChain() {
-  return await multiApiQuery("polkadot", (api) =>
+  return await multiApiQuery("polkadotAssetHub", (api) =>
     getBountyTreasuryOnRelayChainFromApi(api),
   );
 }
 
 module.exports = {
-  getTreasuryDotOnRelayChain,
+  getTreasuryOnRelayChain,
   getTreasuryDotOnRelayChainFromApi,
   getBountyTreasuryOnRelayChain,
   getBountyTreasuryOnRelayChainFromApi,

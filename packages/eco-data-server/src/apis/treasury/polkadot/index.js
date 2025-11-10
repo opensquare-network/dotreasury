@@ -7,7 +7,7 @@ const {
   getFellowshipSalaryUsdtOnAssetHub,
 } = require("./fellowshipSalaryOnAssetHub");
 const {
-  getTreasuryDotOnRelayChain,
+  getTreasuryOnRelayChain,
   getBountyTreasuryOnRelayChain,
 } = require("./treasuryOnRelay");
 const { getMythTreasuryOnMythos } = require("./treasuryOnMythos");
@@ -22,7 +22,9 @@ const {
 } = require("./ambassadorTreasuryOnAssetHub");
 
 function calcTotalBalance({
-  treasuryDotOnRelay,
+  dotTreasuryBalanceOnRelayChain,
+  usdtTreasuryBalanceOnRelayChain,
+  usdcTreasuryBalanceOnRelayChain,
   bountyTreasuryOnRelay,
   fellowshipTreasuryDotOnAssetHub,
   fellowshipSalaryUsdtBalance,
@@ -62,7 +64,7 @@ function calcTotalBalance({
 
   const dot = bountyTreasuryOnRelay
     .reduce((acc, item) => acc.plus(item.data.free || 0), new BigNumber(0))
-    .plus(treasuryDotOnRelay?.data.free || 0)
+    .plus(dotTreasuryBalanceOnRelayChain?.data.free || 0)
     .plus(fellowshipTreasuryDotOnAssetHub?.data.free || 0)
     .plus(dotTreasuryBalanceOnAssetHub?.data.free || 0)
     .plus(getTotal(hydrationAccount1Dot))
@@ -78,6 +80,7 @@ function calcTotalBalance({
 
   const usdt = new BigNumber(fellowshipSalaryUsdtBalance?.balance || 0)
     .plus(usdtTreasuryBalanceOnAssetHub?.balance || 0)
+    .plus(usdtTreasuryBalanceOnRelayChain?.balance || 0)
     .plus(ambassadorTreasuryUsdtBalance?.balance || 0)
     .plus(getTotal(hydrationAccount1Usdt))
     .plus(getTotal(hydrationAccount2Usdt))
@@ -85,6 +88,7 @@ function calcTotalBalance({
     .toFixed();
 
   const usdc = new BigNumber(usdcTreasuryBalanceOnAssetHub?.balance || 0)
+    .plus(usdcTreasuryBalanceOnRelayChain?.balance || 0)
     .plus(getTotal(hydrationAccount1Usdc))
     .plus(getTotal(hydrationAccount2Usdc))
     .plus(getTotal(hydrationAccount4Usdc))
@@ -101,7 +105,11 @@ function calcTotalBalance({
 }
 
 async function getPolkadotTreasuryData() {
-  const treasuryDotOnRelay = await getTreasuryDotOnRelayChain();
+  const {
+    dotTreasuryBalanceOnRelayChain,
+    usdtTreasuryBalanceOnRelayChain,
+    usdcTreasuryBalanceOnRelayChain,
+  } = await getTreasuryOnRelayChain();
 
   const bountyTreasuryOnRelay = await getBountyTreasuryOnRelayChain();
 
@@ -127,7 +135,9 @@ async function getPolkadotTreasuryData() {
   } = await getTreasuryOnHydration();
 
   return calcTotalBalance({
-    treasuryDotOnRelay,
+    dotTreasuryBalanceOnRelayChain,
+    usdtTreasuryBalanceOnRelayChain,
+    usdcTreasuryBalanceOnRelayChain,
     bountyTreasuryOnRelay,
     fellowshipTreasuryDotOnAssetHub,
     fellowshipSalaryUsdtBalance,
