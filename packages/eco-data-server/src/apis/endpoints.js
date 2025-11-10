@@ -7,10 +7,9 @@ const endpoints = Object.freeze({
   ],
   phala: [
     "wss://phala.api.onfinality.io/public-ws",
-    "wss://phala-rpc.dwellir.com/",
   ],
   hydradx: ["wss://rpc.hydradx.cloud/", "wss://hydration.ibp.network/"],
-  basilisk: ["wss://basilisk-rpc.dwellir.com/", "wss://rpc.basilisk.cloud/"],
+  basilisk: ["wss://rpc.basilisk.cloud/"],
   interlay: [
     "wss://api.interlay.io/parachain",
     "wss://rpc-interlay.luckyfriday.io",
@@ -21,11 +20,9 @@ const endpoints = Object.freeze({
   ],
   moonriver: [
     "wss://wss.api.moonriver.moonbeam.network",
-    "wss://moonriver-rpc.dwellir.com",
   ],
   moonbeam: [
     "wss://wss.api.moonbeam.network/",
-    "wss://moonbeam-rpc.dwellir.com/",
   ],
   acala: [
     "wss://acala-rpc-0.aca-api.network",
@@ -60,7 +57,7 @@ const endpoints = Object.freeze({
     "wss://kusama-asset-hub-rpc.polkadot.io",
     "wss://sys.ibp.network/asset-hub-kusama",
   ],
-  astar: ["wss://rpc.astar.network/", "wss://astar-rpc.dwellir.com/"],
+  astar: ["wss://rpc.astar.network/"],
 });
 
 module.exports = {
