@@ -16,7 +16,7 @@ import Burnt from "../pages/Burnt";
 import TipDetail from "../pages/TipDetail";
 import TipFinders from "../pages/TipFinders";
 import ProposalDetail from "../pages/ProposalDetail";
-import BountyDetail from "../pages/BountyDetail";
+// import BountyDetail from "../pages/BountyDetail";
 import ChildBountyDetail from "../pages/BountyDetail/ChildBountyDetail/index";
 import Overview from "../pages/Overview";
 import Projects from "../pages/Projects";
@@ -47,6 +47,7 @@ import GasFeeSlash from "../pages/GasFeeSlash";
 import { isCentrifuge } from "../utils/chains";
 import BlockRewardsSlash from "../pages/BlockRewards";
 import Spends from "../pages/Spends";
+import BountyDetailRedirect from "../pages/BountyDetail/BountyDetailRedirect";
 
 export default function App() {
   usePreload();
@@ -92,7 +93,7 @@ export default function App() {
               <Route
                 exact
                 path="/bounties/:bountyIndex"
-                component={BountyDetail}
+                component={BountyDetailRedirect}
               />
               <Route
                 exact
@@ -165,7 +166,11 @@ export default function App() {
                 component={BeneficiariesDetail}
               />
               <Route exact path="/councilors" component={Councilors} />
-              <Route exact path="/councilors/:address" component={CouncilorsDetail} />
+              <Route
+                exact
+                path="/councilors/:address"
+                component={CouncilorsDetail}
+              />
               <Route exact path="/users" component={Users} />
               <Route exact path="/users/:address" component={UsersDetail} />
               <Route
