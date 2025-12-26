@@ -14,7 +14,7 @@ import {
 } from "../../store/reducers/nodeSlice";
 import useUpdateNodesDelay from "../../utils/useUpdateNodesDelay";
 import { addToast } from "../../store/reducers/toastSlice";
-import ExternalLink from "../../components/ExternalLink";
+// import ExternalLink from "../../components/ExternalLink";
 import { useOnClickOutside } from "@osn/common";
 import IconMask from "../../components/Icon/Mask";
 import { inline_flex, items_center } from "../../styles/tailwindcss";
