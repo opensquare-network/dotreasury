@@ -10,6 +10,9 @@ import { useMenuTab } from "../../utils/hooks";
 import ConnectWallet from "../../components/ConnectWallet";
 import { useDark } from "../../context/theme";
 import { currentChainSettings, isKusama } from "../../utils/chains";
+import ExternalLink from "../../components/ExternalLink";
+import { useSelector } from "react-redux";
+import { chainSelector } from "../../store/reducers/chainSlice";
 
 const Wrapper = styled.header`
   height: 76px;
@@ -114,6 +117,7 @@ const HeaderExamplePage = () => {
   const dark = useDark();
   const [menuShow, setMenuShow] = useState(false);
   useMenuTab();
+  const chain = useSelector(chainSelector);
 
   const menuWrap = useRef();
   const menuClick = (e) => {
@@ -152,13 +156,15 @@ const HeaderExamplePage = () => {
             <MenuSwitch menuTabsName="Income" />
           </NavLink>
           {currentChainSettings.hasProjects && (
-            <NavLink to={"/projects"}>
-              <MenuSwitch menuTabsName="Projects" />
-            </NavLink>
+            <ExternalLink
+              href={`https://${chain}.subsquare.io/treasury/projects`}
+            >
+              <MenuSwitch menuTabsName="Projects" preventDefault />
+            </ExternalLink>
           )}
           {currentChainSettings?.usersMigration ? (
             <NavLink to={"/beneficiaries"}>
-              <MenuSwitch menuTabsName="Users" />
+              <MenuSwitch menuTabsName="Beneficiaries" />
             </NavLink>
           ) : (
             <NavLink to={"/users"}>
