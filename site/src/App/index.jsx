@@ -28,9 +28,9 @@ import DemocracySlash from "../pages/DemocracySlash";
 import IdentitySlash from "../pages/IdentitySlash";
 import StakingSlash from "../pages/StakingSlash";
 import ElectionPhragmenSlash from "../pages/ElectionPhragmenSlash";
-import Inflation from "../pages/Inflation";
+// import Inflation from "../pages/Inflation";
 import OthersIncome from "../pages/OthersIncome";
-import Transfers from "../pages/Transfers";
+// import Transfers from "../pages/Transfers";
 import TransfersSlash from "../pages/TransfersSlash";
 import ProposalBeneficiaries from "../pages/ProposalBeneficiaries";
 // import Users from "../pages/Users";
@@ -47,7 +47,7 @@ import ReferendaSlash from "../pages/ReferendaSlash";
 import FellowshipReferendaSlash from "../pages/FellowshipReferendaSlash";
 import GasFeeSlash from "../pages/GasFeeSlash";
 import { isCentrifuge, isPolkadot } from "../utils/chains";
-import BlockRewardsSlash from "../pages/BlockRewards";
+// import BlockRewardsSlash from "../pages/BlockRewards";
 import Spends from "../pages/Spends";
 import BountyDetailRedirect from "../pages/BountyDetail/BountyDetailRedirect";
 
@@ -79,7 +79,7 @@ export default function App() {
               )}
               <Route exact path="/bounties" component={Bounties} />
               <Route exact path="/child-bounties" component={ChildBounties} />
-              <Route exact path="/transfers" component={Transfers} />
+              {/* <Route exact path="/transfers" component={Transfers} /> */}
               <Route exact path="/tip-finders" component={TipFinders} />
               <Route exact path="/tips/:tipId" component={TipDetail} />
               <Route
@@ -111,11 +111,11 @@ export default function App() {
                 path="/projects/:projectId"
                 component={ProjectDetail}
               />
-              {!isCentrifuge ? (
+              {/* {!isCentrifuge ? (
                 <Route exact path="/income" component={Inflation} />
               ) : (
                 <Route exact path="/income" component={BlockRewardsSlash} />
-              )}
+              )} */}
               <Route
                 exact
                 path="/income/slash/treasury"

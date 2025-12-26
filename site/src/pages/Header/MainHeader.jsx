@@ -152,9 +152,9 @@ const HeaderExamplePage = () => {
           onClick={menuClick}
           ref={menuWrap}
         >
-          <NavLink to={"/income"}>
+          {/* <NavLink to={"/income"}>
             <MenuSwitch menuTabsName="Income" />
-          </NavLink>
+          </NavLink> */}
           {currentChainSettings.hasProjects && (
             <ExternalLink
               href={`https://${chain}.subsquare.io/treasury/projects`}
