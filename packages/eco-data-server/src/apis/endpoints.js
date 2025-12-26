@@ -5,9 +5,6 @@ const endpoints = Object.freeze({
     "wss://fullnode.centrifuge.io/",
     "wss://rpc-centrifuge.luckyfriday.io/",
   ],
-  phala: [
-    "wss://phala.api.onfinality.io/public-ws",
-  ],
   hydradx: ["wss://rpc.hydradx.cloud/", "wss://hydration.ibp.network/"],
   basilisk: ["wss://rpc.basilisk.cloud/"],
   interlay: [
@@ -39,14 +36,6 @@ const endpoints = Object.freeze({
   bifrostKusama: [
     "wss://bifrost-rpc.liebi.com/ws",
     "wss://us.bifrost-rpc.liebi.com/ws",
-  ],
-  darwinia: [
-    "wss://rpc.darwinia.network",
-    "wss://darwinia.rpc.subquery.network/public/ws",
-  ],
-  integritee: [
-    "wss://kusama.api.integritee.network/",
-    "wss://integritee-kusama.api.onfinality.io/public-ws",
   ],
   mythos: ["wss://polkadot-mythos-rpc.polkadot.io"],
   polkadotAssetHub: [
