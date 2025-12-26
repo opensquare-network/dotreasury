@@ -28,7 +28,7 @@ export const kusama = {
   hasSubscan: true,
   hasStatescan: true,
 
-  hasProjects: true,
+  // hasProjects: true,
   hasOutputPeriods: true,
 
   hasStaking: true,
