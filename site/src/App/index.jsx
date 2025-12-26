@@ -19,7 +19,8 @@ import ProposalDetail from "../pages/ProposalDetail";
 // import BountyDetail from "../pages/BountyDetail";
 import ChildBountyDetail from "../pages/BountyDetail/ChildBountyDetail/index";
 import Overview from "../pages/Overview";
-import Projects from "../pages/Projects";
+// import Projects from "../pages/Projects";
+import ProjectsRedirect from "../pages/Projects/ProjectsRedirect";
 import ProjectDetail from "../pages/ProjectDetail";
 import Toast from "../pages/Toast";
 import TreasurySlash from "../pages/TreasurySlash";
@@ -44,7 +45,7 @@ import { usePreload } from "../utils/hooks";
 import ReferendaSlash from "../pages/ReferendaSlash";
 import FellowshipReferendaSlash from "../pages/FellowshipReferendaSlash";
 import GasFeeSlash from "../pages/GasFeeSlash";
-import { isCentrifuge } from "../utils/chains";
+import { isCentrifuge, isPolkadot } from "../utils/chains";
 import BlockRewardsSlash from "../pages/BlockRewards";
 import Spends from "../pages/Spends";
 import BountyDetailRedirect from "../pages/BountyDetail/BountyDetailRedirect";
@@ -101,7 +102,9 @@ export default function App() {
                 component={ChildBountyDetail}
               />
               <Route exact path="/burnt" component={Burnt} />
-              <Route exact path="/projects" component={Projects} />
+              {isPolkadot && (
+                <Route exact path="/projects" component={ProjectsRedirect} />
+              )}
               <Route
                 exact
                 path="/projects/:projectId"
