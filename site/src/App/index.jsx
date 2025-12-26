@@ -19,7 +19,8 @@ import ProposalDetail from "../pages/ProposalDetail";
 // import BountyDetail from "../pages/BountyDetail";
 import ChildBountyDetail from "../pages/BountyDetail/ChildBountyDetail/index";
 import Overview from "../pages/Overview";
-import Projects from "../pages/Projects";
+// import Projects from "../pages/Projects";
+import ProjectsRedirect from "../pages/Projects/ProjectsRedirect";
 import ProjectDetail from "../pages/ProjectDetail";
 import Toast from "../pages/Toast";
 import TreasurySlash from "../pages/TreasurySlash";
@@ -32,8 +33,9 @@ import OthersIncome from "../pages/OthersIncome";
 import Transfers from "../pages/Transfers";
 import TransfersSlash from "../pages/TransfersSlash";
 import ProposalBeneficiaries from "../pages/ProposalBeneficiaries";
-import Users from "../pages/Users";
-import Beneficiaries from "../pages/Beneficiaries";
+// import Users from "../pages/Users";
+// import Beneficiaries from "../pages/Beneficiaries";
+import BeneficiariesRedirect from "../pages/Beneficiaries/BeneficiariesRedirect";
 import UsersDetail from "../pages/UsersDetail";
 import BeneficiariesDetail from "../pages/BeneficiariesDetail";
 import CouncilorsDetail from "../pages/CouncilorsDetail";
@@ -44,7 +46,7 @@ import { usePreload } from "../utils/hooks";
 import ReferendaSlash from "../pages/ReferendaSlash";
 import FellowshipReferendaSlash from "../pages/FellowshipReferendaSlash";
 import GasFeeSlash from "../pages/GasFeeSlash";
-import { isCentrifuge } from "../utils/chains";
+import { isCentrifuge, isPolkadot } from "../utils/chains";
 import BlockRewardsSlash from "../pages/BlockRewards";
 import Spends from "../pages/Spends";
 import BountyDetailRedirect from "../pages/BountyDetail/BountyDetailRedirect";
@@ -101,7 +103,9 @@ export default function App() {
                 component={ChildBountyDetail}
               />
               <Route exact path="/burnt" component={Burnt} />
-              <Route exact path="/projects" component={Projects} />
+              {isPolkadot && (
+                <Route exact path="/projects" component={ProjectsRedirect} />
+              )}
               <Route
                 exact
                 path="/projects/:projectId"
@@ -154,7 +158,9 @@ export default function App() {
               />
               <Route exact path="/income/gasfee" component={GasFeeSlash} />
               <Route exact path="/income/others" component={OthersIncome} />
-              <Route exact path="/beneficiaries" component={Beneficiaries} />
+              {!isCentrifuge && (
+                <Route exact path="/beneficiaries" component={BeneficiariesRedirect} />
+              )}
               <Route
                 exact
                 path="/beneficiaries/:address"
@@ -171,7 +177,7 @@ export default function App() {
                 path="/councilors/:address"
                 component={CouncilorsDetail}
               />
-              <Route exact path="/users" component={Users} />
+              {/* <Route exact path="/users" component={Users} /> */}
               <Route exact path="/users/:address" component={UsersDetail} />
               <Route
                 exact

@@ -29,14 +29,21 @@ const StyledButton = styled(Button)`
   }
 `;
 
-const MenuSwitch = ({ menuTabsName = "Home" }) => {
+const MenuSwitch = ({ menuTabsName = "Home", preventDefault = false }) => {
   const dispatch = useDispatch();
   const showMenuTabs = useSelector(showMenuTabsSelector);
   const isActive = showMenuTabs === menuTabsName;
 
-  const switcher = useCallback(() => {
-    dispatch(setShowMenuTabs(menuTabsName));
-  }, [dispatch, menuTabsName]);
+  const switcher = useCallback(
+    (e) => {
+      if (preventDefault) {
+        e.preventDefault();
+        return;
+      }
+      dispatch(setShowMenuTabs(menuTabsName));
+    },
+    [dispatch, menuTabsName, preventDefault],
+  );
 
   return (
     <Wrapper>
