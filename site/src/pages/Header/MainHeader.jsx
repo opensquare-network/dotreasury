@@ -109,10 +109,6 @@ const MenuIcon = styled.div`
   }
 `;
 
-const ScanHeightWrapper = styled.div`
-  margin-left: 24px;
-`;
-
 const HeaderExamplePage = () => {
   const dark = useDark();
   const [menuShow, setMenuShow] = useState(false);
@@ -169,9 +165,7 @@ const HeaderExamplePage = () => {
           )}
           {/* <ConnectWallet /> */}
         </Right>
-        <ScanHeightWrapper>
-          <ScanHeight />
-        </ScanHeightWrapper>
+        <ScanHeight />
         <MenuIcon onClick={() => setMenuShow(!menuShow)}>
           <Image src={menuIconSrc} />
         </MenuIcon>
