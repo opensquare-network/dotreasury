@@ -7,7 +7,7 @@ import { NavLink } from "react-router-dom";
 import ScanHeight from "./ScanHeight";
 import MenuSwitch from "./MenuSwitch";
 import { useMenuTab } from "../../utils/hooks";
-import ConnectWallet from "../../components/ConnectWallet";
+// import ConnectWallet from "../../components/ConnectWallet";
 import { useDark } from "../../context/theme";
 import { currentChainSettings, isKusama } from "../../utils/chains";
 import ExternalLink from "../../components/ExternalLink";
@@ -152,9 +152,9 @@ const HeaderExamplePage = () => {
           onClick={menuClick}
           ref={menuWrap}
         >
-          <NavLink to={"/income"}>
+          {/* <NavLink to={"/income"}>
             <MenuSwitch menuTabsName="Income" />
-          </NavLink>
+          </NavLink> */}
           {currentChainSettings.hasProjects && (
             <ExternalLink
               href={`https://${chain}.subsquare.io/treasury/projects`}
@@ -167,7 +167,7 @@ const HeaderExamplePage = () => {
               <MenuSwitch menuTabsName="Beneficiaries" preventDefault />
             </ExternalLink>
           )}
-          <ConnectWallet />
+          {/* <ConnectWallet /> */}
         </Right>
         <ScanHeightWrapper>
           <ScanHeight />

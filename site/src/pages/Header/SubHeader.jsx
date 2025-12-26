@@ -9,7 +9,7 @@ import BurntMenu from "./BurntMenu";
 import InflationMenu from "./InflationMenu";
 import OthersIncomeMenu from "./OthersIncomeMenu";
 import ProjectsMenu from "./ProjectsMenu";
-import TransfersMenu from "./TransfersMenu";
+// import TransfersMenu from "./TransfersMenu";
 import TansfersSlashMenu from "./TansfersSlashMenu";
 import TipFindersMenu from "./TipFindersMenu";
 import ProposalBeneficiariesMenu from "./ProposalBeneficiariesMenu";
@@ -299,17 +299,17 @@ const TabExampleSecondaryPointing = () => {
               },
             },
           },
-          currentChainSettings.hasTransfers && {
-            menuItem: {
-              as: NavLink,
-              id: "transfersTab",
-              content: <TransfersMenu />,
-              to: "/transfers",
-              exact: true,
-              key: "transfers",
-              active: "/transfers" === pathname,
-            },
-          },
+          // currentChainSettings.hasTransfers && {
+          //   menuItem: {
+          //     as: NavLink,
+          //     id: "transfersTab",
+          //     content: <TransfersMenu />,
+          //     to: "/transfers",
+          //     exact: true,
+          //     key: "transfers",
+          //     active: "/transfers" === pathname,
+          //   },
+          // },
         ].filter(Boolean)
       : showMenuTabs === "Income"
       ? [
