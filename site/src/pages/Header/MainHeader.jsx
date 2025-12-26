@@ -162,14 +162,10 @@ const HeaderExamplePage = () => {
               <MenuSwitch menuTabsName="Projects" preventDefault />
             </ExternalLink>
           )}
-          {currentChainSettings?.usersMigration ? (
-            <NavLink to={"/beneficiaries"}>
-              <MenuSwitch menuTabsName="Beneficiaries" />
-            </NavLink>
-          ) : (
-            <NavLink to={"/users"}>
-              <MenuSwitch menuTabsName="Users" />
-            </NavLink>
+          {currentChainSettings?.usersMigration && (
+            <ExternalLink href={`https://${chain}.subsquare.io/treasury`}>
+              <MenuSwitch menuTabsName="Beneficiaries" preventDefault />
+            </ExternalLink>
           )}
           <ConnectWallet />
         </Right>
