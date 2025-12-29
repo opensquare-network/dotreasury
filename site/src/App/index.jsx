@@ -8,8 +8,9 @@ import ScrollToTop from "../components/ScrollToTop";
 import Header from "../pages/Header";
 import Footer from "../pages/Footer";
 import Tips from "../pages/Tips";
-import Proposals from "../pages/Proposals";
-import CentrifugeProposals from "../pages/CentrifugeProposals";
+// import Proposals from "../pages/Proposals";
+import ProposalsRedirect from "../pages/Proposals/ProposalsRedirect";
+// import CentrifugeProposals from "../pages/CentrifugeProposals";
 import Bounties from "../pages/Bounties";
 import ChildBounties from "../pages/ChildBounties";
 import Burnt from "../pages/Burnt";
@@ -68,15 +69,8 @@ export default function App() {
               <Route exact path="/tips" component={Tips} />
               <Route exact path="/referenda" component={Referenda} />
               <Route exact path="/spends" component={Spends} />
-              {isCentrifuge ? (
-                <Route
-                  exact
-                  path="/proposals"
-                  component={CentrifugeProposals}
-                />
-              ) : (
-                <Route exact path="/proposals" component={Proposals} />
-              )}
+
+              <Route exact path="/proposals" component={ProposalsRedirect} />
               <Route exact path="/bounties" component={Bounties} />
               <Route exact path="/child-bounties" component={ChildBounties} />
               {/* <Route exact path="/transfers" component={Transfers} /> */}
@@ -159,7 +153,11 @@ export default function App() {
               <Route exact path="/income/gasfee" component={GasFeeSlash} />
               <Route exact path="/income/others" component={OthersIncome} />
               {!isCentrifuge && (
-                <Route exact path="/beneficiaries" component={BeneficiariesRedirect} />
+                <Route
+                  exact
+                  path="/beneficiaries"
+                  component={BeneficiariesRedirect}
+                />
               )}
               <Route
                 exact
