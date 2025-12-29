@@ -8,6 +8,7 @@ import ScrollToTop from "../components/ScrollToTop";
 import Header from "../pages/Header";
 import Footer from "../pages/Footer";
 import Tips from "../pages/Tips";
+import TipsRedirect from "../pages/Tips/TipsRedirect";
 // import Proposals from "../pages/Proposals";
 import ProposalsRedirect from "../pages/Proposals/ProposalsRedirect";
 // import CentrifugeProposals from "../pages/CentrifugeProposals";
@@ -66,7 +67,11 @@ export default function App() {
             <ScrollToTop />
             <Switch>
               <Route exact path="/" component={Overview} />
-              <Route exact path="/tips" component={Tips} />
+              {isPolkadot ? (
+                <Route exact path="/tips" component={TipsRedirect} />
+              ) : (
+                <Route exact path="/tips" component={Tips} />
+              )}
               <Route exact path="/referenda" component={Referenda} />
               <Route exact path="/spends" component={Spends} />
 
