@@ -4,10 +4,9 @@ import { useSelector } from "react-redux";
 import IconMask from "../../components/Icon/Mask";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import ExternalLink from "../../components/ExternalLink";
-import { isPolkadot } from "../../utils/chains";
 import { totalTipCountSelector } from "../../store/reducers/overviewSlice";
 
-function TipsMenuExternalLink() {
+export default function TipsMenuWrapper() {
   const tipsCount = useSelector(totalTipCountSelector);
   const chain = useSelector(chainSelector);
 
@@ -24,22 +23,4 @@ function TipsMenuExternalLink() {
       </ExternalLink>
     </Menu.Item>
   );
-}
-
-function TipsMenu() {
-  const tipsCount = useSelector(totalTipCountSelector);
-
-  return (
-    <Menu.Item key="Tips">
-      Tips<Label>{tipsCount}</Label>
-    </Menu.Item>
-  );
-}
-
-export default function TipsMenuWrapper() {
-  if (isPolkadot) {
-    return <TipsMenuExternalLink />;
-  }
-
-  return <TipsMenu />;
 }
