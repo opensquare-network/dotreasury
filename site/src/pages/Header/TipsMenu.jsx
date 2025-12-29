@@ -4,10 +4,10 @@ import { useSelector } from "react-redux";
 import IconMask from "../../components/Icon/Mask";
 import { chainSelector } from "../../store/reducers/chainSlice";
 import ExternalLink from "../../components/ExternalLink";
-import { totalTipCountSelector } from "../../store/reducers/overviewSlice";
+import { totalTipsCountSelector } from "../../store/reducers/overviewSummarySlice";
 
 export default function TipsMenuWrapper() {
-  const tipsCount = useSelector(totalTipCountSelector);
+  const tipsCount = useSelector(totalTipsCountSelector);
   const chain = useSelector(chainSelector);
 
   return (

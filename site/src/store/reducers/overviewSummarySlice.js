@@ -49,6 +49,9 @@ export const totalBountyCountSelector = (state) =>
   state.overviewSummary?.data?.bounties?.all || 0;
 export const totalProposalsCountSelector = (state) =>
   state.overviewSummary?.data?.treasuryProposals?.all || 0;
+// TODO: Update selector name to match the actual data structure
+export const totalTipsCountSelector = (state) =>
+  state.overviewSummary?.data?.tips?.total || 0;
 export const overviewSummaryLoadingSelector = (state) =>
   state.overviewSummary.loading;
 export const overviewSummaryErrorSelector = (state) =>
