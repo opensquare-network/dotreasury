@@ -1,34 +1,26 @@
 import React from "react";
 import { Label, Menu } from "semantic-ui-react";
 import { useSelector } from "react-redux";
-import { totalProposalCountSelector } from "../../store/reducers/overviewSlice";
-import { isKusama, isPolkadot } from "../../utils/chains";
+import IconMask from "../../components/Icon/Mask";
+import { chainSelector } from "../../store/reducers/chainSlice";
+import ExternalLink from "../../components/ExternalLink";
 import { totalProposalsCountSelector } from "../../store/reducers/overviewSummarySlice";
 
-function ProposalsMenu() {
-  const proposalsCount = useSelector(totalProposalsCountSelector);
-
-  return (
-    <Menu.Item key="Proposals">
-      Proposals<Label>{proposalsCount}</Label>
-    </Menu.Item>
-  );
-}
-
-function CentrifugeProposalsMenu() {
-  const proposalsCount = useSelector(totalProposalCountSelector);
-
-  return (
-    <Menu.Item key="Proposals">
-      Proposals<Label>{proposalsCount}</Label>
-    </Menu.Item>
-  );
-}
-
 export default function ProposalsMenuWrapper() {
-  if (isPolkadot || isKusama) {
-    return <ProposalsMenu />;
-  }
+  const proposalsCount = useSelector(totalProposalsCountSelector);
+  const chain = useSelector(chainSelector);
 
-  return <CentrifugeProposalsMenu />;
+  return (
+    <Menu.Item key="Proposals">
+      <ExternalLink href={`https://${chain}.subsquare.io/treasury/proposals`}>
+        Proposals
+        <IconMask
+          src="/imgs/caret-up-right.svg"
+          color="textSecondary"
+          size={16}
+        />
+        <Label>{proposalsCount}</Label>
+      </ExternalLink>
+    </Menu.Item>
+  );
 }
