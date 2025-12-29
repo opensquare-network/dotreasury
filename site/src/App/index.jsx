@@ -67,11 +67,8 @@ export default function App() {
             <ScrollToTop />
             <Switch>
               <Route exact path="/" component={Overview} />
-              {isPolkadot ? (
-                <Route exact path="/tips" component={TipsRedirect} />
-              ) : (
-                <Route exact path="/tips" component={Tips} />
-              )}
+
+              <Route exact path="/tips" component={TipsRedirect} />
               <Route exact path="/referenda" component={Referenda} />
               <Route exact path="/spends" component={Spends} />
 
