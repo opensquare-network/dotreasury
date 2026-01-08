@@ -15,7 +15,7 @@ import TipFindersMenu from "./TipFindersMenu";
 import ProposalBeneficiariesMenu from "./ProposalBeneficiariesMenu";
 import UsersMenu from "./UsersMenu";
 import ReferendaMenu from "./ReferendaMenu";
-import { fetchIncomeCount } from "../../store/reducers/incomeSlice";
+// import { fetchIncomeCount } from "../../store/reducers/incomeSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { showMenuTabsSelector } from "../../store/reducers/menuSlice";
 import Card from "../../components/Card";
@@ -191,7 +191,7 @@ const TabExampleSecondaryPointing = () => {
   }, [pathname]);
 
   useEffect(() => {
-    dispatch(fetchIncomeCount());
+    // dispatch(fetchIncomeCount());
     if (isKusama || isPolkadot) {
       dispatch(fetchOverviewSummary());
     }
