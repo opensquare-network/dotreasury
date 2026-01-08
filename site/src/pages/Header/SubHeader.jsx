@@ -32,7 +32,7 @@ import GasFeeIncomeMenu from "./GasFeeIncomeMenu";
 import BlockRewardsIncomeMenu from "./BlockRewardsMenu";
 import BeneficiariesMenu from "./beneficiariesMenu";
 import { fetchOverviewSummary } from "../../store/reducers/overviewSummarySlice";
-import CouncilorsMenu from "./councilorsMenu";
+// import CouncilorsMenu from "./councilorsMenu";
 
 const Wrapper = styled.div`
   position: relative;
@@ -177,16 +177,16 @@ const TabExampleSecondaryPointing = () => {
           active: "/beneficiaries" === pathname,
         },
       },
-      {
-        menuItem: {
-          as: NavLink,
-          id: "CouncilorsTab",
-          to: "/councilors",
-          key: "councilors",
-          content: <CouncilorsMenu />,
-          active: "/councilors" === pathname,
-        },
-      },
+      // {
+      //   menuItem: {
+      //     as: NavLink,
+      //     id: "CouncilorsTab",
+      //     to: "/councilors",
+      //     key: "councilors",
+      //     content: <CouncilorsMenu />,
+      //     active: "/councilors" === pathname,
+      //   },
+      // },
     ];
   }, [pathname]);
 
