@@ -13,7 +13,6 @@ import {
   Title,
   TitleContainer,
 } from "../BeneficiaryTable.jsx";
-import { NavLink } from "react-router-dom";
 import Table from "../../../components/Table";
 import TableNoDataCell from "../../../components/TableNoDataCell.jsx";
 import User from "../../../components/User/index.jsx";
@@ -26,6 +25,8 @@ import ValueDisplay from "../../../components/ValueDisplay.jsx";
 import { p_14_medium } from "../../../styles/text.js";
 import styled from "styled-components";
 import IconMask from "../../../components/Icon/Mask.jsx";
+import ExternalLink from "../../../components/ExternalLink.jsx";
+import { chainSelector } from "../../../store/reducers/chainSlice";
 
 const TotalValueCellWrapper = styled.div`
   ${p_14_medium}
@@ -36,6 +37,7 @@ const TotalValueCellWrapper = styled.div`
 export default function TopBeneficiariesTable() {
   const dispatch = useDispatch();
   const topBeneficiaries = useSelector(topBeneficiariesSelector);
+  const chain = useSelector(chainSelector);
 
   useEffect(() => {
     dispatch(fetchTopBeneficiaries());
@@ -45,7 +47,7 @@ export default function TopBeneficiariesTable() {
     <CardWrapper>
       <TitleContainer>
         <Title>Top Beneficiaries</Title>
-        <NavLink to={"/beneficiaries"}>
+        <ExternalLink href={`https://${chain}.subsquare.io/treasury`}>
           <LinkButton>
             View All
             <IconMask
@@ -54,7 +56,7 @@ export default function TopBeneficiariesTable() {
               color="textSecondary"
             />
           </LinkButton>
-        </NavLink>
+        </ExternalLink>
       </TitleContainer>
 
       <TableWrapper>
@@ -79,13 +81,15 @@ export default function TopBeneficiariesTable() {
                 return (
                   <TableRow key={index}>
                     <Table.Cell>
-                      <NavLink to={`/beneficiaries/${item.address}`}>
+                      <ExternalLink
+                        href={`https://${chain}.subsquare.io/user/${item.address}/treasury`}
+                      >
                         <User
                           role={USER_ROLES.Beneficiary}
                           address={item.address}
                           noLink
                         />
-                      </NavLink>
+                      </ExternalLink>
                     </Table.Cell>
                     <TableCell textAlign={"right"}>
                       <ProposalsWrapper>

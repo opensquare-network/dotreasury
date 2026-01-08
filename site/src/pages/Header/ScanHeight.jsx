@@ -3,10 +3,7 @@ import styled, { css } from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import Card from "../../components/Card";
 
-import {
-  chainSelector,
-  scanHeightSelector,
-} from "../../store/reducers/chainSlice";
+import { chainSelector } from "../../store/reducers/chainSlice";
 import {
   currentNodeSelector,
   setCurrentNode,
@@ -231,7 +228,6 @@ const NodeItem = styled.div`
 const ScanHeight = () => {
   useUpdateNodesDelay();
   const dispatch = useDispatch();
-  const scanHeight = useSelector(scanHeightSelector);
   const chain = useSelector(chainSelector);
   const currentNode = useSelector(currentNodeSelector);
   const nodesSetting = useSelector(nodesSelector);
@@ -304,8 +300,7 @@ const ScanHeight = () => {
             <ImageWithDark
               src={`/imgs/logo-${currentChainSettings.value}.svg`}
             />
-            <DarkMinorLabel>Height</DarkMinorLabel>
-            <DarkMajorLabel>{`#${scanHeight.toLocaleString()}`}</DarkMajorLabel>
+            <DarkMinorLabel>{currentChainSettings.name}</DarkMinorLabel>
           </div>
           <Button isActive={symbolOpen}>
             <IconMask

@@ -9,6 +9,7 @@ import BigNumber from "bignumber.js";
 import { polkadot } from "../../../../utils/chains/polkadot";
 import { usePolkadotTreasuryData } from "../../../../context/PolkadotTreasury";
 import useFiatPrice from "../../../../hooks/useFiatPrice";
+import { ExternalLink } from "./common/assetItem";
 
 const Link = styled(LinkOrigin)`
   color: var(--textSecondary);
@@ -32,7 +33,14 @@ export default function TreasuryDetailBounties() {
     <TreasuryDetailItem
       title={
         <>
-          <Link to="/bounties">Bounties</Link> · {bountiesCount}
+          <ExternalLink
+            href="https://polkadot.subsquare.io/treasury/bounties"
+            externalIcon
+            externalIconColor="textSecondary"
+          >
+            Bounties
+          </ExternalLink>
+          · {bountiesCount}
         </>
       }
       iconSrc="/imgs/data-bounties.svg"

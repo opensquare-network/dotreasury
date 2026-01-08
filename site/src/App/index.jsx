@@ -1,13 +1,13 @@
 import React from "react";
 import { HashRouter, Redirect, Route, Switch } from "react-router-dom";
-import { connect } from "../services/websocket";
+// import { connect } from "../services/websocket";
 
 import Container from "../components/Container";
 import { Wrapper, PageWrapper } from "./components";
 import ScrollToTop from "../components/ScrollToTop";
 import Header from "../pages/Header";
 import Footer from "../pages/Footer";
-import Tips from "../pages/Tips";
+// import Tips from "../pages/Tips";
 import TipsRedirect from "../pages/Tips/TipsRedirect";
 // import Proposals from "../pages/Proposals";
 import ProposalsRedirect from "../pages/Proposals/ProposalsRedirect";
@@ -15,8 +15,8 @@ import ProposalsRedirect from "../pages/Proposals/ProposalsRedirect";
 import Bounties from "../pages/Bounties";
 import ChildBounties from "../pages/ChildBounties";
 import Burnt from "../pages/Burnt";
-import TipDetail from "../pages/TipDetail";
-import TipFinders from "../pages/TipFinders";
+// import TipDetail from "../pages/TipDetail";
+// import TipFinders from "../pages/TipFinders";
 import ProposalDetail from "../pages/ProposalDetail";
 // import BountyDetail from "../pages/BountyDetail";
 import ChildBountyDetail from "../pages/BountyDetail/ChildBountyDetail/index";
@@ -40,8 +40,8 @@ import ProposalBeneficiaries from "../pages/ProposalBeneficiaries";
 import BeneficiariesRedirect from "../pages/Beneficiaries/BeneficiariesRedirect";
 import UsersDetail from "../pages/UsersDetail";
 import BeneficiariesDetail from "../pages/BeneficiariesDetail";
-import CouncilorsDetail from "../pages/CouncilorsDetail";
-import Councilors from "../pages/Councilors";
+// import CouncilorsDetail from "../pages/CouncilorsDetail";
+// import Councilors from "../pages/Councilors";
 import Referenda from "../pages/Referenda";
 
 import { usePreload } from "../utils/hooks";
@@ -56,7 +56,7 @@ import BountyDetailRedirect from "../pages/BountyDetail/BountyDetailRedirect";
 export default function App() {
   usePreload();
 
-  connect();
+  // connect();
 
   return (
     <HashRouter>
@@ -76,8 +76,8 @@ export default function App() {
               <Route exact path="/bounties" component={Bounties} />
               <Route exact path="/child-bounties" component={ChildBounties} />
               {/* <Route exact path="/transfers" component={Transfers} /> */}
-              <Route exact path="/tip-finders" component={TipFinders} />
-              <Route exact path="/tips/:tipId" component={TipDetail} />
+              {/* <Route exact path="/tip-finders" component={TipFinders} /> */}
+              {/* <Route exact path="/tips/:tipId" component={TipDetail} /> */}
               <Route
                 exact
                 path="/proposal-beneficiaries"
@@ -171,12 +171,12 @@ export default function App() {
                 path="/beneficiaries/:address/:tableTab?"
                 component={BeneficiariesDetail}
               />
-              <Route exact path="/councilors" component={Councilors} />
+              {/* <Route exact path="/councilors" component={Councilors} />
               <Route
                 exact
                 path="/councilors/:address"
                 component={CouncilorsDetail}
-              />
+              /> */}
               {/* <Route exact path="/users" component={Users} /> */}
               <Route exact path="/users/:address" component={UsersDetail} />
               <Route

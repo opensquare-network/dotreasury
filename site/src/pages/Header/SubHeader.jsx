@@ -15,7 +15,7 @@ import TipFindersMenu from "./TipFindersMenu";
 import ProposalBeneficiariesMenu from "./ProposalBeneficiariesMenu";
 import UsersMenu from "./UsersMenu";
 import ReferendaMenu from "./ReferendaMenu";
-import { fetchIncomeCount } from "../../store/reducers/incomeSlice";
+// import { fetchIncomeCount } from "../../store/reducers/incomeSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { showMenuTabsSelector } from "../../store/reducers/menuSlice";
 import Card from "../../components/Card";
@@ -32,7 +32,7 @@ import GasFeeIncomeMenu from "./GasFeeIncomeMenu";
 import BlockRewardsIncomeMenu from "./BlockRewardsMenu";
 import BeneficiariesMenu from "./beneficiariesMenu";
 import { fetchOverviewSummary } from "../../store/reducers/overviewSummarySlice";
-import CouncilorsMenu from "./councilorsMenu";
+// import CouncilorsMenu from "./councilorsMenu";
 
 const Wrapper = styled.div`
   position: relative;
@@ -177,21 +177,21 @@ const TabExampleSecondaryPointing = () => {
           active: "/beneficiaries" === pathname,
         },
       },
-      {
-        menuItem: {
-          as: NavLink,
-          id: "CouncilorsTab",
-          to: "/councilors",
-          key: "councilors",
-          content: <CouncilorsMenu />,
-          active: "/councilors" === pathname,
-        },
-      },
+      // {
+      //   menuItem: {
+      //     as: NavLink,
+      //     id: "CouncilorsTab",
+      //     to: "/councilors",
+      //     key: "councilors",
+      //     content: <CouncilorsMenu />,
+      //     active: "/councilors" === pathname,
+      //   },
+      // },
     ];
   }, [pathname]);
 
   useEffect(() => {
-    dispatch(fetchIncomeCount());
+    // dispatch(fetchIncomeCount());
     if (isKusama || isPolkadot) {
       dispatch(fetchOverviewSummary());
     }

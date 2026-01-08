@@ -9,10 +9,11 @@ import Text from "../../components/Text";
 import Card from "../../components/Card";
 import TableNoDataCell from "../../components/TableNoDataCell";
 import { overviewSelector } from "../../store/reducers/overviewSlice";
-import { NavLink } from "react-router-dom";
 import TextMinor from "../../components/TextMinor";
 import GrayImage from "../../components/GrayImage";
 import { USER_ROLES } from "../../constants";
+import ExternalLink from "../../components/ExternalLink.jsx";
+import { chainSelector } from "../../store/reducers/chainSlice";
 
 export const CardWrapper = styled(Card)`
   overflow-x: hidden;
@@ -66,17 +67,18 @@ export const TableCell = styled(Table.Cell)`
 const BeneficiaryTable = () => {
   const overview = useSelector(overviewSelector);
   const data = overview.bestProposalBeneficiaries || [];
+  const chain = useSelector(chainSelector);
 
   return (
     <CardWrapper>
       <TitleContainer>
         <Title>Top Proposal Beneficiaries</Title>
-        <NavLink to={"/proposal-beneficiaries"}>
+        <ExternalLink href={`https://${chain}.subsquare.io/treasury`}>
           <LinkButton>
             View All
             <GrayImage src="/imgs/caret-right.svg" width={24} />
           </LinkButton>
-        </NavLink>
+        </ExternalLink>
       </TitleContainer>
 
       <TableWrapper>

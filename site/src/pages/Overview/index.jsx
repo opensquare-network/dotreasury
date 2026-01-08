@@ -184,7 +184,7 @@ const Overview = () => {
       <TableWrapper>
         {!isCentrifuge && <TopBeneficiariesTable />}
         {!isKusama && <BeneficiaryTable />}
-        {currentChainSettings.hasTips && <ProposerTable />}
+        {/* {currentChainSettings.hasTips && <ProposerTable />} */}
       </TableWrapper>
     </>
   );
