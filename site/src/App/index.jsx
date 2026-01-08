@@ -76,8 +76,8 @@ export default function App() {
               <Route exact path="/bounties" component={Bounties} />
               <Route exact path="/child-bounties" component={ChildBounties} />
               {/* <Route exact path="/transfers" component={Transfers} /> */}
-              <Route exact path="/tip-finders" component={TipFinders} />
-              <Route exact path="/tips/:tipId" component={TipDetail} />
+              {/* <Route exact path="/tip-finders" component={TipFinders} /> */}
+              {/* <Route exact path="/tips/:tipId" component={TipDetail} /> */}
               <Route
                 exact
                 path="/proposal-beneficiaries"

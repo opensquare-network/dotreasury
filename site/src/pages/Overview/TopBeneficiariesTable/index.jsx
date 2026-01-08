@@ -13,7 +13,6 @@ import {
   Title,
   TitleContainer,
 } from "../BeneficiaryTable.jsx";
-import { NavLink } from "react-router-dom";
 import Table from "../../../components/Table";
 import TableNoDataCell from "../../../components/TableNoDataCell.jsx";
 import User from "../../../components/User/index.jsx";
@@ -82,13 +81,15 @@ export default function TopBeneficiariesTable() {
                 return (
                   <TableRow key={index}>
                     <Table.Cell>
-                      <NavLink to={`/beneficiaries/${item.address}`}>
+                      <ExternalLink
+                        href={`https://${chain}.subsquare.io/user/${item.address}/treasury`}
+                      >
                         <User
                           role={USER_ROLES.Beneficiary}
                           address={item.address}
                           noLink
                         />
-                      </NavLink>
+                      </ExternalLink>
                     </Table.Cell>
                     <TableCell textAlign={"right"}>
                       <ProposalsWrapper>
