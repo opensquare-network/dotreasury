@@ -1,6 +1,6 @@
 import React from "react";
 import { HashRouter, Redirect, Route, Switch } from "react-router-dom";
-import { connect } from "../services/websocket";
+// import { connect } from "../services/websocket";
 
 import Container from "../components/Container";
 import { Wrapper, PageWrapper } from "./components";
@@ -15,8 +15,8 @@ import ProposalsRedirect from "../pages/Proposals/ProposalsRedirect";
 import Bounties from "../pages/Bounties";
 import ChildBounties from "../pages/ChildBounties";
 import Burnt from "../pages/Burnt";
-import TipDetail from "../pages/TipDetail";
-import TipFinders from "../pages/TipFinders";
+// import TipDetail from "../pages/TipDetail";
+// import TipFinders from "../pages/TipFinders";
 import ProposalDetail from "../pages/ProposalDetail";
 // import BountyDetail from "../pages/BountyDetail";
 import ChildBountyDetail from "../pages/BountyDetail/ChildBountyDetail/index";
@@ -56,7 +56,7 @@ import BountyDetailRedirect from "../pages/BountyDetail/BountyDetailRedirect";
 export default function App() {
   usePreload();
 
-  connect();
+  // connect();
 
   return (
     <HashRouter>
