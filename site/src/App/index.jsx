@@ -7,7 +7,7 @@ import { Wrapper, PageWrapper } from "./components";
 import ScrollToTop from "../components/ScrollToTop";
 import Header from "../pages/Header";
 import Footer from "../pages/Footer";
-import Tips from "../pages/Tips";
+// import Tips from "../pages/Tips";
 import TipsRedirect from "../pages/Tips/TipsRedirect";
 // import Proposals from "../pages/Proposals";
 import ProposalsRedirect from "../pages/Proposals/ProposalsRedirect";
@@ -40,8 +40,8 @@ import ProposalBeneficiaries from "../pages/ProposalBeneficiaries";
 import BeneficiariesRedirect from "../pages/Beneficiaries/BeneficiariesRedirect";
 import UsersDetail from "../pages/UsersDetail";
 import BeneficiariesDetail from "../pages/BeneficiariesDetail";
-import CouncilorsDetail from "../pages/CouncilorsDetail";
-import Councilors from "../pages/Councilors";
+// import CouncilorsDetail from "../pages/CouncilorsDetail";
+// import Councilors from "../pages/Councilors";
 import Referenda from "../pages/Referenda";
 
 import { usePreload } from "../utils/hooks";
@@ -171,12 +171,12 @@ export default function App() {
                 path="/beneficiaries/:address/:tableTab?"
                 component={BeneficiariesDetail}
               />
-              <Route exact path="/councilors" component={Councilors} />
+              {/* <Route exact path="/councilors" component={Councilors} />
               <Route
                 exact
                 path="/councilors/:address"
                 component={CouncilorsDetail}
-              />
+              /> */}
               {/* <Route exact path="/users" component={Users} /> */}
               <Route exact path="/users/:address" component={UsersDetail} />
               <Route
