@@ -26,6 +26,8 @@ import ValueDisplay from "../../../components/ValueDisplay.jsx";
 import { p_14_medium } from "../../../styles/text.js";
 import styled from "styled-components";
 import IconMask from "../../../components/Icon/Mask.jsx";
+import ExternalLink from "../../../components/ExternalLink.jsx";
+import { chainSelector } from "../../../store/reducers/chainSlice";
 
 const TotalValueCellWrapper = styled.div`
   ${p_14_medium}
@@ -36,6 +38,7 @@ const TotalValueCellWrapper = styled.div`
 export default function TopBeneficiariesTable() {
   const dispatch = useDispatch();
   const topBeneficiaries = useSelector(topBeneficiariesSelector);
+  const chain = useSelector(chainSelector);
 
   useEffect(() => {
     dispatch(fetchTopBeneficiaries());
@@ -45,7 +48,7 @@ export default function TopBeneficiariesTable() {
     <CardWrapper>
       <TitleContainer>
         <Title>Top Beneficiaries</Title>
-        <NavLink to={"/beneficiaries"}>
+        <ExternalLink href={`https://${chain}.subsquare.io/treasury`}>
           <LinkButton>
             View All
             <IconMask
@@ -54,7 +57,7 @@ export default function TopBeneficiariesTable() {
               color="textSecondary"
             />
           </LinkButton>
-        </NavLink>
+        </ExternalLink>
       </TitleContainer>
 
       <TableWrapper>
