@@ -25,9 +25,7 @@ const Wrapper = styled.div`
   background-color: var(--neutral100);
   border: 1px solid var(--neutral400);
   border-radius: 4px;
-  min-width: 200px;
   @media screen and (max-width: 600px) {
-    min-width: 65px;
     position: static;
   }
   :hover {
@@ -43,7 +41,6 @@ const Wrapper = styled.div`
 const ScanHeightWrapper = styled.div`
   display: flex;
   align-items: center;
-  flex: 1 1 auto;
   height: 32px;
   padding: 4px 8px;
   padding-right: 0;
@@ -51,7 +48,7 @@ const ScanHeightWrapper = styled.div`
   div.blockHeight {
     padding-right: 8px;
     display: flex;
-    flex-grow: 1;
+    align-items: center;
   }
 `;
 
@@ -94,9 +91,10 @@ const Button = styled.button`
 const SymbolWrapper = styled(Card)`
   position: absolute;
   padding: 4px 0;
-  left: 0;
+  right: 0;
   top: calc(100% + 8px);
-  width: 100%;
+  width: auto;
+  min-width: 200px;
   z-index: 999;
   @media screen and (max-width: 600px) {
     width: 100vw;
