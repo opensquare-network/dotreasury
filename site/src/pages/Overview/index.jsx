@@ -4,7 +4,7 @@ import styled, { css } from "styled-components";
 import "../../components/Charts/globalConfig";
 
 import Summary from "./Summary";
-import ProposerTable from "./ProposerTable";
+// import ProposerTable from "./ProposerTable";
 import BeneficiaryTable from "./BeneficiaryTable";
 import { overviewSelector } from "../../store/reducers/overviewSlice";
 import { getPrecision, toPrecision } from "../../utils";
@@ -17,6 +17,7 @@ import {
   flex_row_reverse,
   gap_x,
   gap_y,
+  grid,
   grid_cols,
   m_t,
 } from "../../styles/tailwindcss";
@@ -83,6 +84,13 @@ const TableWrapper = styled.div`
   @media screen and (max-width: 556px) {
     grid-template-columns: repeat(auto-fill);
   }
+`;
+
+const TopBeneficiariesTableWrapper = styled.div`
+  ${grid}
+  ${grid_cols(2)}
+  gap: 16px;
+  ${mdcss(grid_cols(1))}
 `;
 
 const Overview = () => {
@@ -182,7 +190,11 @@ const Overview = () => {
       {/* <IncomeAndOutputPeriods /> */}
       {/* {currentChainSettings.hasOutputPeriods && <OutputPeriods />} */}
       <TableWrapper>
-        {!isCentrifuge && <TopBeneficiariesTable />}
+        {!isCentrifuge && (
+          <TopBeneficiariesTableWrapper>
+            <TopBeneficiariesTable />
+          </TopBeneficiariesTableWrapper>
+        )}
         {!isKusama && <BeneficiaryTable />}
         {/* {currentChainSettings.hasTips && <ProposerTable />} */}
       </TableWrapper>
