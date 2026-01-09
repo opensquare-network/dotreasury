@@ -162,9 +162,10 @@ const NodeButton = styled.button`
 const NodeItemWrapper = styled(Card)`
   position: absolute;
   padding: 4px 0;
-  left: 0;
+  right: 0;
   top: calc(100% + 8px);
-  width: 100%;
+  width: auto;
+  min-width: 220px;
   z-index: 999;
   @media screen and (max-width: 600px) {
     width: 100vw;
