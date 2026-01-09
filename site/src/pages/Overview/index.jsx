@@ -5,7 +5,7 @@ import "../../components/Charts/globalConfig";
 
 import Summary from "./Summary";
 // import ProposerTable from "./ProposerTable";
-import BeneficiaryTable from "./BeneficiaryTable";
+// import BeneficiaryTable from "./BeneficiaryTable";
 import { overviewSelector } from "../../store/reducers/overviewSlice";
 import { getPrecision, toPrecision } from "../../utils";
 // import TreasuryStats from "./TreasuryStats";
@@ -195,7 +195,7 @@ const Overview = () => {
             <TopBeneficiariesTable />
           </TopBeneficiariesTableWrapper>
         )}
-        {!isKusama && <BeneficiaryTable />}
+        {/* {!isKusama && <BeneficiaryTable />} */}
         {/* {currentChainSettings.hasTips && <ProposerTable />} */}
       </TableWrapper>
     </>
