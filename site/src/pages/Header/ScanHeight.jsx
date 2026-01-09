@@ -199,6 +199,7 @@ const NodeItem = styled.div`
     p.delay >= 0 &&
     css`
       > .delay {
+        margin-left: 4px;
         color: var(--green500);
       }
     `}
@@ -208,6 +209,7 @@ const NodeItem = styled.div`
     p.delay >= 100 &&
     css`
       > .delay {
+        margin-left: 4px;
         color: var(--yellow500);
       }
     `}
@@ -217,6 +219,7 @@ const NodeItem = styled.div`
     p.delay >= 300 &&
     css`
       > .delay {
+        margin-left: 4px;
         color: var(--red500);
       }
     `}
