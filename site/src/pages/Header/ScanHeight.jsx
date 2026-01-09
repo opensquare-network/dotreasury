@@ -165,7 +165,7 @@ const NodeItemWrapper = styled(Card)`
   right: 0;
   top: calc(100% + 8px);
   width: auto;
-  min-width: 220px;
+  min-width: 200px;
   z-index: 999;
   @media screen and (max-width: 600px) {
     width: 100vw;
@@ -184,6 +184,7 @@ const NodeItem = styled.div`
   font-size: 13px;
   line-height: 18px;
   color: var(--textPrimary);
+  white-space: nowrap;
   :hover {
     background: var(--neutral300);
   }
