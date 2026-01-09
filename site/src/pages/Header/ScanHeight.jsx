@@ -25,9 +25,7 @@ const Wrapper = styled.div`
   background-color: var(--neutral100);
   border: 1px solid var(--neutral400);
   border-radius: 4px;
-  min-width: 200px;
   @media screen and (max-width: 600px) {
-    min-width: 65px;
     position: static;
   }
   :hover {
@@ -43,7 +41,6 @@ const Wrapper = styled.div`
 const ScanHeightWrapper = styled.div`
   display: flex;
   align-items: center;
-  flex: 1 1 auto;
   height: 32px;
   padding: 4px 8px;
   padding-right: 0;
@@ -51,7 +48,7 @@ const ScanHeightWrapper = styled.div`
   div.blockHeight {
     padding-right: 8px;
     display: flex;
-    flex-grow: 1;
+    align-items: center;
   }
 `;
 
@@ -94,9 +91,10 @@ const Button = styled.button`
 const SymbolWrapper = styled(Card)`
   position: absolute;
   padding: 4px 0;
-  left: 0;
+  right: 0;
   top: calc(100% + 8px);
-  width: 100%;
+  width: auto;
+  min-width: 200px;
   z-index: 999;
   @media screen and (max-width: 600px) {
     width: 100vw;
@@ -164,9 +162,10 @@ const NodeButton = styled.button`
 const NodeItemWrapper = styled(Card)`
   position: absolute;
   padding: 4px 0;
-  left: 0;
+  right: 0;
   top: calc(100% + 8px);
-  width: 100%;
+  width: auto;
+  min-width: 200px;
   z-index: 999;
   @media screen and (max-width: 600px) {
     width: 100vw;
@@ -185,6 +184,7 @@ const NodeItem = styled.div`
   font-size: 13px;
   line-height: 18px;
   color: var(--textPrimary);
+  white-space: nowrap;
   :hover {
     background: var(--neutral300);
   }
@@ -199,6 +199,7 @@ const NodeItem = styled.div`
     p.delay >= 0 &&
     css`
       > .delay {
+        margin-left: 4px;
         color: var(--green500);
       }
     `}
@@ -208,6 +209,7 @@ const NodeItem = styled.div`
     p.delay >= 100 &&
     css`
       > .delay {
+        margin-left: 4px;
         color: var(--yellow500);
       }
     `}
@@ -217,6 +219,7 @@ const NodeItem = styled.div`
     p.delay >= 300 &&
     css`
       > .delay {
+        margin-left: 4px;
         color: var(--red500);
       }
     `}
