@@ -13,9 +13,6 @@ const {
   getFellowshipSalaryUsdtOnAssetHubFromApi,
 } = require("../../apis/treasury/polkadot/fellowshipSalaryOnAssetHub");
 const {
-  getAmbassadorTreasuryOnAssetHubFromApi,
-} = require("../../apis/treasury/polkadot/ambassadorTreasuryOnAssetHub");
-const {
   getTreasuryOnAssetHubFromApi,
 } = require("../../apis/treasury/polkadot/treasuryOnAssetHub");
 const {
@@ -75,9 +72,6 @@ async function getPolkadotAssetHubTreasuries(api, daysAgo) {
   const fellowshipSalaryUsdtBalance =
     await getFellowshipSalaryUsdtOnAssetHubFromApi(blockApi);
 
-  const ambassadorTreasuryUsdtBalance =
-    await getAmbassadorTreasuryOnAssetHubFromApi(blockApi);
-
   const {
     dotTreasuryBalanceOnAssetHub,
     usdtTreasuryBalanceOnAssetHub,
@@ -89,7 +83,6 @@ async function getPolkadotAssetHubTreasuries(api, daysAgo) {
   return {
     fellowshipTreasuryDotOnAssetHub,
     fellowshipSalaryUsdtBalance,
-    ambassadorTreasuryUsdtBalance,
     dotTreasuryBalanceOnAssetHub,
     usdtTreasuryBalanceOnAssetHub,
     usdcTreasuryBalanceOnAssetHub,

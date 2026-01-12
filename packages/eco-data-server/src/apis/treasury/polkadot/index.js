@@ -17,10 +17,6 @@ const {
   loansPendulumDotBalance,
   loansHydrationDotBalance,
 } = require("./loans");
-const {
-  getAmbassadorTreasuryOnAssetHub,
-} = require("./ambassadorTreasuryOnAssetHub");
-
 function calcTotalBalance({
   dotTreasuryBalanceOnRelayChain,
   usdtTreasuryBalanceOnRelayChain,
@@ -28,7 +24,6 @@ function calcTotalBalance({
   bountyTreasuryOnRelay,
   fellowshipTreasuryDotOnAssetHub,
   fellowshipSalaryUsdtBalance,
-  ambassadorTreasuryUsdtBalance,
   dotTreasuryBalanceOnAssetHub,
   usdtTreasuryBalanceOnAssetHub,
   usdcTreasuryBalanceOnAssetHub,
@@ -81,7 +76,6 @@ function calcTotalBalance({
   const usdt = new BigNumber(fellowshipSalaryUsdtBalance?.balance || 0)
     .plus(usdtTreasuryBalanceOnAssetHub?.balance || 0)
     .plus(usdtTreasuryBalanceOnRelayChain?.balance || 0)
-    .plus(ambassadorTreasuryUsdtBalance?.balance || 0)
     .plus(getTotal(hydrationAccount1Usdt))
     .plus(getTotal(hydrationAccount2Usdt))
     .plus(getTotal(hydrationAccount4Usdt))
@@ -118,8 +112,6 @@ async function getPolkadotTreasuryData() {
 
   const fellowshipSalaryUsdtBalance = await getFellowshipSalaryUsdtOnAssetHub();
 
-  const ambassadorTreasuryUsdtBalance = await getAmbassadorTreasuryOnAssetHub();
-
   const {
     dotTreasuryBalanceOnAssetHub,
     usdtTreasuryBalanceOnAssetHub,
@@ -141,7 +133,6 @@ async function getPolkadotTreasuryData() {
     bountyTreasuryOnRelay,
     fellowshipTreasuryDotOnAssetHub,
     fellowshipSalaryUsdtBalance,
-    ambassadorTreasuryUsdtBalance,
     dotTreasuryBalanceOnAssetHub,
     usdtTreasuryBalanceOnAssetHub,
     usdcTreasuryBalanceOnAssetHub,
