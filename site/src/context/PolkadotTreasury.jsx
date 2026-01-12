@@ -12,7 +12,6 @@ import { useQueryAssetHubTreasuryFree } from "../hooks/treasury/useQueryAssetHub
 import {
   STATEMINT_FELLOWSHIP_TREASURY_ACCOUNT,
   STATEMINT_FELLOWSHIP_SALARY_ACCOUNT,
-  STATEMINT_AMBASSADOR_TREASURY_ACCOUNT,
 } from "../constants/statemint";
 import {
   useLoansBifrostDotBalance,
@@ -81,12 +80,6 @@ export default function PolkadotTreasuryProvider({ children }) {
     isLoading: isFellowshipTreasuryDotLoading,
   } = useQueryAssetHubTreasuryFree(STATEMINT_FELLOWSHIP_TREASURY_ACCOUNT);
 
-  const { balance: ambassadorUSDtBalance, isLoading: isAmbassadorUSDtLoading } =
-    useQueryAccountBalanceBySymbol(
-      "USDt",
-      STATEMINT_AMBASSADOR_TREASURY_ACCOUNT,
-    );
-
   const {
     balance: loansBifrostDotBalance,
     isLoading: isLoansBifrostDotLoading,
@@ -126,7 +119,6 @@ export default function PolkadotTreasuryProvider({ children }) {
       assetHubUSDtBalance || 0,
       hydrationUSDtBalance || 0,
       fellowshipSalaryUSDtBalance || 0,
-      ambassadorUSDtBalance || 0,
     ).toString(),
     USDt.decimals,
   );
@@ -167,8 +159,7 @@ export default function PolkadotTreasuryProvider({ children }) {
     isUsdtBalanceLoadingOnRelayChain ||
     isAssetHubUSDtLoading ||
     isHydrationLoading ||
-    isFellowshipSalaryUSDtLoading ||
-    isAmbassadorUSDtLoading;
+    isFellowshipSalaryUSDtLoading;
 
   const isTotalUSDCLoading =
     isUsdcBalanceLoadingOnRelayChain ||
@@ -202,8 +193,6 @@ export default function PolkadotTreasuryProvider({ children }) {
         isHydrationLoading,
         fellowshipSalaryUSDtBalance,
         isFellowshipSalaryUSDtLoading,
-        ambassadorUSDtBalance,
-        isAmbassadorUSDtLoading,
         fellowshipTreasuryDotBalance,
         isFellowshipTreasuryDotLoading,
         loansBifrostDotBalance,

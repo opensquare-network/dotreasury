@@ -10,7 +10,6 @@ import { mdcss, smcss } from "../../../../styles/responsive";
 import TreasuryDetailLoans from "./loans";
 import TreasuryDetailAssets from "./assets";
 import TreasuryDetailMythToken from "./mythToken";
-import TreasuryDetailAmbassador from "./ambassador";
 
 const Wrapper = styled(Card)`
   padding: 24px;
@@ -27,7 +26,6 @@ export default function OverviewTreasuryDetail() {
       <TreasuryDetailAssets />
       <TreasuryDetailBounties />
       <TreasuryDetailFellowship />
-      <TreasuryDetailAmbassador />
       <TreasuryDetailLoans />
       <TreasuryDetailHydration />
       <TreasuryDetailMythToken />
