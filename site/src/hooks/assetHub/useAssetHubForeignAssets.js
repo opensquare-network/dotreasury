@@ -34,7 +34,7 @@ export default function useAssetHubForeignAssets(
   }, [api, address, paraChainId, parentId]);
 
   useEffect(() => {
-    if (loading || !value) {
+    if (loading) {
       return;
     }
 
