@@ -18,9 +18,7 @@ import {
   useLoansPendulumDotBalance,
   useLoansHydrationDotBalance,
 } from "../hooks/treasury/useLoansBalances";
-import useAssetHubForeignAssets from "../hooks/assetHub/useAssetHubForeignAssets";
-import { MYTH, MYTH_TOKEN_ACCOUNT } from "../constants/foreignAssets";
-import useFiatPrice, { useFiatPriceBySymbol } from "../hooks/useFiatPrice";
+import useFiatPrice from "../hooks/useFiatPrice";
 import BigNumber from "bignumber.js";
 import { polkadot } from "../utils/chains/polkadot";
 import { toPrecision } from "../utils";
@@ -93,10 +91,6 @@ export default function PolkadotTreasuryProvider({ children }) {
     isLoading: isLoansHydrationDotLoading,
   } = useLoansHydrationDotBalance();
 
-  const { balance: mythTokenBalance, isLoading: isMythTokenLoading } =
-    useAssetHubForeignAssets(MYTH_TOKEN_ACCOUNT);
-  const { price: mythTokenPrice } = useFiatPriceBySymbol("MYTH");
-
   const totalDotValue = BigNumber.sum(
     relayChainFreeBalance || 0,
     assetHubDotBalance || 0,
@@ -132,17 +126,10 @@ export default function PolkadotTreasuryProvider({ children }) {
     USDC.decimals,
   );
 
-  const totalMythTokenFiatValue = BigNumber(
-    toPrecision(mythTokenBalance, MYTH.decimals),
-  )
-    .multipliedBy(mythTokenPrice)
-    .toString();
-
   const totalFiatValue = BigNumber.sum(
     totalDotFiatValue,
     totalUSDtValue,
     totalUSDCValue,
-    totalMythTokenFiatValue,
   ).toString();
 
   const isTotalDotLoading =
@@ -201,8 +188,6 @@ export default function PolkadotTreasuryProvider({ children }) {
         isLoansPendulumDotLoading,
         loansHydrationDotBalance,
         isLoansHydrationDotLoading,
-        mythTokenBalance,
-        isMythTokenLoading,
 
         totalDotValue,
         isTotalDotLoading,
@@ -211,7 +196,6 @@ export default function PolkadotTreasuryProvider({ children }) {
         isTotalUSDtLoading,
         totalUSDCValue,
         isTotalUSDCLoading,
-        totalMythTokenFiatValue,
         totalFiatValue,
         isTotalLoading,
       }}
