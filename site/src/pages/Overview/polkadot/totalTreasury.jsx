@@ -11,8 +11,6 @@ import ValueDisplay from "../../../components/ValueDisplay";
 import { USDt } from "../../../utils/chains/usdt";
 import { USDC } from "../../../utils/chains/usdc";
 import SkeletonBar from "../../../components/skeleton/bar";
-
-import { MYTH } from "../../../constants/foreignAssets";
 import Tooltip from "../../../components/Tooltip";
 import TreasuryHistoryLineChart from "../../../components/TreasuryHistoryLineChart";
 import { usePolkadotTreasuryData } from "../../../context/PolkadotTreasury";
@@ -87,9 +85,6 @@ export default function OverviewTotalTreasury() {
     isTotalUSDtLoading,
     totalUSDCValue,
     isTotalUSDCLoading,
-    mythTokenBalance,
-    isMythTokenLoading,
-    totalMythTokenFiatValue,
     totalFiatValue,
     isTotalLoading,
   } = usePolkadotTreasuryData();
@@ -141,25 +136,6 @@ export default function OverviewTotalTreasury() {
               totalValue={totalUSDCValue}
               symbol={USDC.symbol}
             />
-            <Tooltip
-              tooltipContent={
-                !isMythTokenLoading && (
-                  <ValueDisplay
-                    abbreviate={false}
-                    value={totalMythTokenFiatValue}
-                    prefix="$"
-                  />
-                )
-              }
-            >
-              <TokenItem
-                icon="asset-myth.svg"
-                isLoading={isMythTokenLoading}
-                totalValue={mythTokenBalance}
-                precision={MYTH.decimals}
-                symbol={MYTH.symbol}
-              />
-            </Tooltip>
           </TokenGroup>
         </div>
         <TreasuryHistoryLineChart />
