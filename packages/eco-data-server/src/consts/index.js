@@ -33,24 +33,28 @@ const ChainTokenMap = Object.freeze({
   [CHAINS.astar]: tokens.ASTR,
 });
 
-const gateTokenIdMap = Object.freeze({
-  [tokens.DOT]: "DOT/USDT",
-  [tokens.KSM]: "KSM/USDT",
-  [tokens.ACA]: "ACA/USDT",
-  [tokens.MOVR]: "MOVR/USDT",
-  [tokens.CFG]: "CFG/USDT",
-  [tokens.GLMR]: "GLMR/USDT",
-  [tokens.KAR]: "KAR/USDT",
-  [tokens.BNC]: "BNC/USDT",
-  [tokens.INTR]: "INTR/USDT",
-  [tokens.KINT]: "KINT/USDT",
-  [tokens.MYTH]: "MYTH/USDT",
-});
+const gateTokenIdMap = Object.freeze({});
 
+// Kraken symbol format for ccxt (e.g. DOT/USD)
 const krakenTokenIdMap = Object.freeze({
+  [tokens.DOT]: "DOT/USD",
+  [tokens.KSM]: "KSM/USD",
+  [tokens.ACA]: "ACA/USD",
+  [tokens.MOVR]: "MOVR/USD",
+  [tokens.CFG]: "CFG/USD",
+  [tokens.GLMR]: "GLMR/USD",
+  [tokens.BNC]: "BNC/USD",
   [tokens.HDX]: "HDX/USD",
   [tokens.BSX]: "BSX/USD",
   [tokens.ASTR]: "ASTR/USD",
+});
+
+// CoinGecko coin IDs for tokens not available on Kraken
+const coingeckoTokenIdMap = Object.freeze({
+  [tokens.KAR]: "karura",
+  [tokens.INTR]: "interlay",
+  [tokens.KINT]: "kintsugi",
+  [tokens.MYTH]: "mythos",
 });
 
 const revertGateTokenIdMap = Object.entries(gateTokenIdMap).reduce(
@@ -67,12 +71,21 @@ const revertKrakenTokenIdMap = Object.entries(krakenTokenIdMap).reduce(
   {},
 );
 
+const revertCoingeckoTokenIdMap = Object.entries(coingeckoTokenIdMap).reduce(
+  (result, [key, value]) => {
+    return { ...result, [value]: key };
+  },
+  {},
+);
+
 module.exports = {
   tokens,
   gateTokenIdMap,
   krakenTokenIdMap,
+  coingeckoTokenIdMap,
   revertGateTokenIdMap,
   revertKrakenTokenIdMap,
+  revertCoingeckoTokenIdMap,
   ChainTokenMap,
   CHAINS,
 };

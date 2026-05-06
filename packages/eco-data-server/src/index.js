@@ -8,6 +8,7 @@ const { updateChainsTreasuryBalance } = require("./jobs/treasury");
 const {
   startGateTickerCronJob,
   startKrakenTickerCronJob,
+  startCoingeckoTickerCronJob,
 } = require("./jobs/ccxt/cron");
 
 const port = parseInt(process.env.PORT) || 5011;
@@ -18,6 +19,7 @@ function main() {
     updateChainsTreasuryBalance().catch(console.error);
     startGateTickerCronJob();
     startKrakenTickerCronJob();
+    startCoingeckoTickerCronJob();
   });
 
   const yoga = createYoga({ schema });

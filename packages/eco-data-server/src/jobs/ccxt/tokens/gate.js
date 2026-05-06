@@ -15,6 +15,9 @@ const source = "gate";
 
 async function updateTokenPricesByGate() {
   const symbols = Object.values(gateTokenIdMap);
+  if (symbols.length === 0) {
+    return;
+  }
   const tickers = await fetchTickers(gate, symbols);
   const tokenPriceArr = tickers.map((ticker) => {
     const { symbol, price, priceUpdateAt } = ticker;
