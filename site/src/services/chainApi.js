@@ -6,11 +6,7 @@ import {
 } from "@polkadot/extension-dapp";
 import { stringToHex } from "@polkadot/util";
 import { encodeAddress } from "@polkadot/keyring";
-import {
-  DEFAULT_CENTRIFUGE_NODES,
-  DEFAULT_KUSAMA_NODES,
-  DEFAULT_POLKADOT_NODES,
-} from "../constants";
+import { DEFAULT_KUSAMA_NODES, DEFAULT_POLKADOT_NODES } from "../constants";
 import { CHAINS, getChainSettings } from "../utils/chains";
 import isAssetHubMigrated from "../utils/isAssetHubMigrated";
 
@@ -19,7 +15,6 @@ const apiInstanceMap = new Map();
 export const nodesDefinition = {
   kusama: DEFAULT_KUSAMA_NODES,
   polkadot: DEFAULT_POLKADOT_NODES,
-  centrifuge: DEFAULT_CENTRIFUGE_NODES,
 };
 
 export function getConditionalChainNodes(chain) {

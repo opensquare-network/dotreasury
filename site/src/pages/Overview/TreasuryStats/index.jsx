@@ -26,7 +26,7 @@ import {
 } from "../../../styles/tailwindcss";
 import { breakpoint, mdcss } from "../../../styles/responsive";
 import Slider from "../../../components/Slider";
-import { currentChainSettings, isCentrifuge } from "../../../utils/chains";
+import { currentChainSettings } from "../../../utils/chains";
 import BigNumber from "bignumber.js";
 
 const Wrapper = styled.div`
@@ -100,15 +100,10 @@ const TreasuryStats = () => {
     title: "Income",
     icon: "square",
     labels: [
-      !isCentrifuge
-        ? {
-            name: "Inflation",
-            value: 0,
-          }
-        : {
-            name: "Block Reward",
-            value: 0,
-          },
+      {
+        name: "Inflation",
+        value: 0,
+      },
       {
         name: "Slashes",
         children: [
@@ -226,13 +221,7 @@ const TreasuryStats = () => {
         toPrecision(statsItem.income.inflation, precision, false) +
         toPrecision(statsItem.income.slash, precision, false) +
         toPrecision(statsItem.income.transfer, precision, false) +
-        toPrecision(statsItem.income.others, precision, false) +
-        toPrecision(
-          statsItem.income?.centrifugeBlockReward || 0,
-          precision,
-          false,
-        ) +
-        toPrecision(statsItem.income?.centrifugeTxFee || 0, precision, false)
+        toPrecision(statsItem.income.others, precision, false)
       );
     });
     setIncomeHistory(incomeHistory);
@@ -270,25 +259,11 @@ const TreasuryStats = () => {
         date: dayjs(dateLabels?.[index]).format("YYYY-MM-DD hh:mm"),
         icon: "square",
         labels: [
-          !isCentrifuge
-            ? {
-                name: "Inflation",
-                color: theme.pink500,
-                value: toPrecision(
-                  statsData.income.inflation,
-                  precision,
-                  false,
-                ),
-              }
-            : {
-                name: "Block Reward",
-                color: theme.pink500,
-                value: toPrecision(
-                  statsData.income.centrifugeBlockReward,
-                  precision,
-                  false,
-                ),
-              },
+          {
+            name: "Inflation",
+            color: theme.pink500,
+            value: toPrecision(statsData.income.inflation, precision, false),
+          },
           {
             name: "Slashes",
             color: theme.pink500,
@@ -361,15 +336,6 @@ const TreasuryStats = () => {
                   ]
                 : []),
             ].filter(Boolean),
-          },
-          isCentrifuge && {
-            name: "Gas Fee",
-            color: theme.purple500,
-            value: toPrecision(
-              statsData.income.centrifugeTxFee,
-              precision,
-              false,
-            ),
           },
           {
             name: "Others",

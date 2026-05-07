@@ -1,7 +1,6 @@
 import { kusama } from "./kusama";
 import { polkadot } from "./polkadot";
 import { basilisk } from "./basilisk";
-import { centrifuge } from "./centrifuge";
 import { hydradx } from "./hydradx";
 import { interlay } from "./interlay";
 import { kintsugi } from "./kintsugi";
@@ -18,7 +17,6 @@ export const CHAINS = {
   polkadot,
   kusama,
   basilisk,
-  centrifuge,
   hydradx,
   interlay,
   kintsugi,
@@ -34,11 +32,10 @@ export const currentChainSettings = getChainSettings(currentChain);
 
 export const isPolkadot = currentChain === CHAINS.polkadot.value;
 export const isKusama = currentChain === CHAINS.kusama.value;
-export const isCentrifuge = currentChain === CHAINS.centrifuge.value;
 
 /**
  * @param {string} value
- * @returns {Partial<typeof kusama & typeof polkadot & typeof centrifuge>}
+ * @returns {Partial<typeof kusama & typeof polkadot>}
  */
 export function getChainSettings(value = "") {
   return CHAINS[value] ?? {};

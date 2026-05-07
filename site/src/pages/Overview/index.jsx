@@ -4,11 +4,8 @@ import styled, { css } from "styled-components";
 import "../../components/Charts/globalConfig";
 
 import Summary from "./Summary";
-// import ProposerTable from "./ProposerTable";
-// import BeneficiaryTable from "./BeneficiaryTable";
 import { overviewSelector } from "../../store/reducers/overviewSlice";
 import { getPrecision, toPrecision } from "../../utils";
-// import TreasuryStats from "./TreasuryStats";
 import Income from "./Income";
 import Output from "./Output";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
@@ -23,15 +20,8 @@ import {
 } from "../../styles/tailwindcss";
 import OpenGovSpend from "./OpenGovSpend";
 import { mdcss, smcss } from "@osn/common";
-// import IncomeAndOutputPeriods from "./IncomeAndOutputPeriods";
 import TopBeneficiariesTable from "./TopBeneficiariesTable/index.jsx";
-// import OutputPeriods from "./OutputPeriods";
-import {
-  currentChainSettings,
-  isCentrifuge,
-  isKusama,
-  isPolkadot,
-} from "../../utils/chains";
+import { currentChainSettings, isKusama, isPolkadot } from "../../utils/chains";
 import AssetHub from "./AssetHub";
 import OverviewPolkadot from "./polkadot";
 import OverviewKusamaSummary from "./kusamaSummary";
@@ -145,18 +135,6 @@ const Overview = () => {
   );
   const others = toPrecision(overview.income.others || 0, precision, false);
 
-  // centrifuge
-  const centrifugeBlockReward = toPrecision(
-    overview.income.centrifugeBlockReward || 0,
-    precision,
-    false,
-  );
-  const centrifugeTxFee = toPrecision(
-    overview.income.centrifugeTxFee || 0,
-    precision,
-    false,
-  );
-
   const cards = isKusama
     ? []
     : [
@@ -171,8 +149,6 @@ const Overview = () => {
           slashReferenda={slashReferenda}
           slashFellowshipReferenda={slashFellowshipReferenda}
           others={others}
-          centrifugeBlockReward={centrifugeBlockReward}
-          centrifugeTxFee={centrifugeTxFee}
         />,
         <Output key="output" />,
 
@@ -186,17 +162,10 @@ const Overview = () => {
       {isKusama ? <OverviewKusamaSummary /> : <Summary />}
       {currentChainSettings.hasAssetHub && <AssetHub />}
       <DoughnutWrapper count={cards.length}>{cards}</DoughnutWrapper>
-      {/* <TreasuryStats /> */}
-      {/* <IncomeAndOutputPeriods /> */}
-      {/* {currentChainSettings.hasOutputPeriods && <OutputPeriods />} */}
       <TableWrapper>
-        {!isCentrifuge && (
-          <TopBeneficiariesTableWrapper>
-            <TopBeneficiariesTable />
-          </TopBeneficiariesTableWrapper>
-        )}
-        {/* {!isKusama && <BeneficiaryTable />} */}
-        {/* {currentChainSettings.hasTips && <ProposerTable />} */}
+        <TopBeneficiariesTableWrapper>
+          <TopBeneficiariesTable />
+        </TopBeneficiariesTableWrapper>
       </TableWrapper>
     </>
   );

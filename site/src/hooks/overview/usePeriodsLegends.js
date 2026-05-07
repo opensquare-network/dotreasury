@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useTheme } from "../../context/theme";
 import { useState } from "react";
-import { currentChainSettings, isCentrifuge } from "../../utils/chains";
+import { currentChainSettings } from "../../utils/chains";
 
 export function useIncomePeriodsLegends() {
   const theme = useTheme();
@@ -13,26 +13,16 @@ export function useIncomePeriodsLegends() {
     Transfers: theme.pink300,
     "Big Others": theme.pink200,
     Others: theme.pink200,
-    // centrifuge
-    "Block Rewards": theme.pink500,
-    "Gas Fee": theme.pink300,
   };
 
   const [incomeLegends, setIncomeLegends] = useState(
     [
-      !isCentrifuge
-        ? {
-            label: "Inflation",
-            color: colors["Inflation"],
-            enabled: true,
-            getValue: (period) => 0 - period.totalInflationValue,
-          }
-        : {
-            label: "Block Rewards",
-            color: colors["Block Rewards"],
-            enabled: true,
-            getValue: (period) => 0 - period.totalCentrifugeBlockRewardValue,
-          },
+      {
+        label: "Inflation",
+        color: colors["Inflation"],
+        enabled: true,
+        getValue: (period) => 0 - period.totalInflationValue,
+      },
       {
         label: "Slashes",
         color: colors["Slashes"],
@@ -45,25 +35,12 @@ export function useIncomePeriodsLegends() {
         enabled: true,
         getValue: (period) => 0 - period.totalTransfersValue,
       },
-      isCentrifuge && {
-        label: "Gas Fee",
-        color: colors["Gas Fee"],
+      {
+        label: "Big Others",
+        color: colors["Big Others"],
         enabled: true,
-        getValue: (period) => 0 - period.totalCentrifugeTxFeeValue,
+        getValue: (period) => 0 - period.totalBigOthersValue,
       },
-      !isCentrifuge
-        ? {
-            label: "Big Others",
-            color: colors["Big Others"],
-            enabled: true,
-            getValue: (period) => 0 - period.totalBigOthersValue,
-          }
-        : {
-            label: "Others",
-            color: colors.Others,
-            enabled: true,
-            getValue: (period) => 0 - period.totalOthersValue,
-          },
     ].filter(Boolean),
   );
 

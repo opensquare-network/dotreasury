@@ -9,30 +9,20 @@ import BurntMenu from "./BurntMenu";
 import InflationMenu from "./InflationMenu";
 import OthersIncomeMenu from "./OthersIncomeMenu";
 import ProjectsMenu from "./ProjectsMenu";
-// import TransfersMenu from "./TransfersMenu";
 import TansfersSlashMenu from "./TansfersSlashMenu";
 import TipFindersMenu from "./TipFindersMenu";
 import ProposalBeneficiariesMenu from "./ProposalBeneficiariesMenu";
 import UsersMenu from "./UsersMenu";
 import ReferendaMenu from "./ReferendaMenu";
-// import { fetchIncomeCount } from "../../store/reducers/incomeSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { showMenuTabsSelector } from "../../store/reducers/menuSlice";
 import Card from "../../components/Card";
 import Container from "../../components/Container";
 import SpendsMenu from "./SpendsMenu";
 import SlashMenu from "./SlashMenu";
-import {
-  currentChainSettings,
-  isCentrifuge,
-  isKusama,
-  isPolkadot,
-} from "../../utils/chains";
-import GasFeeIncomeMenu from "./GasFeeIncomeMenu";
-import BlockRewardsIncomeMenu from "./BlockRewardsMenu";
+import { currentChainSettings, isKusama, isPolkadot } from "../../utils/chains";
 import BeneficiariesMenu from "./beneficiariesMenu";
 import { fetchOverviewSummary } from "../../store/reducers/overviewSummarySlice";
-// import CouncilorsMenu from "./councilorsMenu";
 
 const Wrapper = styled.div`
   position: relative;
@@ -313,29 +303,17 @@ const TabExampleSecondaryPointing = () => {
         ].filter(Boolean)
       : showMenuTabs === "Income"
       ? [
-          !isCentrifuge
-            ? {
-                menuItem: {
-                  as: NavLink,
-                  id: "inflationTab",
-                  content: <InflationMenu />,
-                  to: "/income",
-                  exact: true,
-                  key: "inflation",
-                  active: "/income" === pathname,
-                },
-              }
-            : {
-                menuItem: {
-                  as: NavLink,
-                  id: "gasFeeTab",
-                  content: <BlockRewardsIncomeMenu />,
-                  to: "/income",
-                  exact: true,
-                  key: "blockRewards",
-                  active: "/income" === pathname,
-                },
-              },
+          {
+            menuItem: {
+              as: NavLink,
+              id: "inflationTab",
+              content: <InflationMenu />,
+              to: "/income",
+              exact: true,
+              key: "inflation",
+              active: "/income" === pathname,
+            },
+          },
           {
             menuItem: {
               id: "slashDropdownTab",
@@ -355,19 +333,6 @@ const TabExampleSecondaryPointing = () => {
               active:
                 "/income/transfers" === pathname ||
                 pathname.indexOf("/income/transfers") === 0,
-            },
-          },
-          isCentrifuge && {
-            menuItem: {
-              as: NavLink,
-              id: "gasFeeTab",
-              content: <GasFeeIncomeMenu />,
-              to: "/income/gasfee",
-              exact: true,
-              key: "gasfeeIncome",
-              active:
-                "/income/gasfee" === pathname ||
-                pathname.indexOf("/income/gasfee") === 0,
             },
           },
           {

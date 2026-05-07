@@ -14,7 +14,6 @@ import {
 } from "../../store/reducers/incomeSlice";
 import Text from "../../components/Text";
 import { DEFAULT_PAGE_SIZE, DEFAULT_QUERY_PAGE } from "../../constants";
-import { isCentrifuge } from "../../utils/chains";
 
 const HeaderWrapper = styled.div`
   padding: 20px 24px;
@@ -66,7 +65,7 @@ const Inflation = () => {
         loading={loading}
         header={
           <HeaderWrapper>
-            <Title>{isCentrifuge ? "Block Rewards" : "Inflation"}</Title>
+            <Title>Inflation</Title>
             <SubTitle>Staking Remaining</SubTitle>
           </HeaderWrapper>
         }

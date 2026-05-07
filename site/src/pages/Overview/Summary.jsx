@@ -36,7 +36,7 @@ import { parseEstimateTime } from "../../utils/parseEstimateTime";
 import BigNumber from "bignumber.js";
 import SummaryItem from "../../components/Summary/Item";
 import ImageWithDark from "../../components/ImageWithDark";
-import { currentChainSettings, isCentrifuge } from "../../utils/chains";
+import { currentChainSettings } from "../../utils/chains";
 import useFiatPrice from "../../hooks/useFiatPrice";
 
 const Wrapper = styled(Card)`
@@ -135,9 +135,7 @@ export function SpendPeriodItem() {
     dispatch(fetchSpendPeriod());
   }, [dispatch]);
 
-  return (
-    <SpendPeriodDisplay spendPeriod={spendPeriod} />
-  );
+  return <SpendPeriodDisplay spendPeriod={spendPeriod} />;
 }
 
 export function ToBeAwardedItem() {
@@ -310,10 +308,9 @@ const Summary = () => {
     availableItem,
     <ToBeAwardedItem />,
     <BurntItem treasury={treasury} />,
-    !isCentrifuge && <SpendPeriodItem />,
+    <SpendPeriodItem />,
     opengovItem,
     proposalsItem,
-    isCentrifuge && <SpendPeriodItem />,
     tipsItem,
     bountiesItem,
   ]

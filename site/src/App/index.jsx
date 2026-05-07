@@ -1,27 +1,19 @@
 import React from "react";
 import { HashRouter, Redirect, Route, Switch } from "react-router-dom";
-// import { connect } from "../services/websocket";
 
 import Container from "../components/Container";
 import { Wrapper, PageWrapper } from "./components";
 import ScrollToTop from "../components/ScrollToTop";
 import Header from "../pages/Header";
 import Footer from "../pages/Footer";
-// import Tips from "../pages/Tips";
 import TipsRedirect from "../pages/Tips/TipsRedirect";
-// import Proposals from "../pages/Proposals";
 import ProposalsRedirect from "../pages/Proposals/ProposalsRedirect";
-// import CentrifugeProposals from "../pages/CentrifugeProposals";
 import Bounties from "../pages/Bounties";
 import ChildBounties from "../pages/ChildBounties";
 import Burnt from "../pages/Burnt";
-// import TipDetail from "../pages/TipDetail";
-// import TipFinders from "../pages/TipFinders";
 import ProposalDetail from "../pages/ProposalDetail";
-// import BountyDetail from "../pages/BountyDetail";
 import ChildBountyDetail from "../pages/BountyDetail/ChildBountyDetail/index";
 import Overview from "../pages/Overview";
-// import Projects from "../pages/Projects";
 import ProjectsRedirect from "../pages/Projects/ProjectsRedirect";
 import ProjectDetail from "../pages/ProjectDetail";
 import Toast from "../pages/Toast";
@@ -30,33 +22,23 @@ import DemocracySlash from "../pages/DemocracySlash";
 import IdentitySlash from "../pages/IdentitySlash";
 import StakingSlash from "../pages/StakingSlash";
 import ElectionPhragmenSlash from "../pages/ElectionPhragmenSlash";
-// import Inflation from "../pages/Inflation";
 import OthersIncome from "../pages/OthersIncome";
-// import Transfers from "../pages/Transfers";
 import TransfersSlash from "../pages/TransfersSlash";
 import ProposalBeneficiaries from "../pages/ProposalBeneficiaries";
-// import Users from "../pages/Users";
-// import Beneficiaries from "../pages/Beneficiaries";
 import BeneficiariesRedirect from "../pages/Beneficiaries/BeneficiariesRedirect";
 import UsersDetail from "../pages/UsersDetail";
 import BeneficiariesDetail from "../pages/BeneficiariesDetail";
-// import CouncilorsDetail from "../pages/CouncilorsDetail";
-// import Councilors from "../pages/Councilors";
 import Referenda from "../pages/Referenda";
 
 import { usePreload } from "../utils/hooks";
 import ReferendaSlash from "../pages/ReferendaSlash";
 import FellowshipReferendaSlash from "../pages/FellowshipReferendaSlash";
-import GasFeeSlash from "../pages/GasFeeSlash";
-import { isCentrifuge, isPolkadot } from "../utils/chains";
-// import BlockRewardsSlash from "../pages/BlockRewards";
+import { isPolkadot } from "../utils/chains";
 import Spends from "../pages/Spends";
 import BountyDetailRedirect from "../pages/BountyDetail/BountyDetailRedirect";
 
 export default function App() {
   usePreload();
-
-  // connect();
 
   return (
     <HashRouter>
@@ -75,9 +57,6 @@ export default function App() {
               <Route exact path="/proposals" component={ProposalsRedirect} />
               <Route exact path="/bounties" component={Bounties} />
               <Route exact path="/child-bounties" component={ChildBounties} />
-              {/* <Route exact path="/transfers" component={Transfers} /> */}
-              {/* <Route exact path="/tip-finders" component={TipFinders} /> */}
-              {/* <Route exact path="/tips/:tipId" component={TipDetail} /> */}
               <Route
                 exact
                 path="/proposal-beneficiaries"
@@ -107,11 +86,6 @@ export default function App() {
                 path="/projects/:projectId"
                 component={ProjectDetail}
               />
-              {/* {!isCentrifuge ? (
-                <Route exact path="/income" component={Inflation} />
-              ) : (
-                <Route exact path="/income" component={BlockRewardsSlash} />
-              )} */}
               <Route
                 exact
                 path="/income/slash/treasury"
@@ -152,15 +126,12 @@ export default function App() {
                 path="/income/transfers"
                 component={TransfersSlash}
               />
-              <Route exact path="/income/gasfee" component={GasFeeSlash} />
               <Route exact path="/income/others" component={OthersIncome} />
-              {!isCentrifuge && (
-                <Route
-                  exact
-                  path="/beneficiaries"
-                  component={BeneficiariesRedirect}
-                />
-              )}
+              <Route
+                exact
+                path="/beneficiaries"
+                component={BeneficiariesRedirect}
+              />
               <Route
                 exact
                 path="/beneficiaries/:address"
@@ -171,13 +142,6 @@ export default function App() {
                 path="/beneficiaries/:address/:tableTab?"
                 component={BeneficiariesDetail}
               />
-              {/* <Route exact path="/councilors" component={Councilors} />
-              <Route
-                exact
-                path="/councilors/:address"
-                component={CouncilorsDetail}
-              /> */}
-              {/* <Route exact path="/users" component={Users} /> */}
               <Route exact path="/users/:address" component={UsersDetail} />
               <Route
                 exact

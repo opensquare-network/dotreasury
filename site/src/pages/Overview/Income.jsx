@@ -11,7 +11,7 @@ import IconMask from "../../components/Icon/Mask";
 import { items_center } from "../../styles/tailwindcss";
 import { useSelector } from "react-redux";
 import { chainSymbolSelector } from "../../store/reducers/chainSlice";
-import { currentChainSettings, isCentrifuge } from "../../utils/chains";
+import { currentChainSettings } from "../../utils/chains";
 
 const LinkButton = styled(TextMinor)`
   display: flex;
@@ -36,8 +36,6 @@ const Income = ({
   slashReferenda,
   slashFellowshipReferenda,
   others,
-  centrifugeBlockReward,
-  centrifugeTxFee,
 }) => {
   const theme = useTheme();
   const symbol = useSelector(chainSymbolSelector);
@@ -47,13 +45,9 @@ const Income = ({
   });
   const [incomeStatus, setIncomeStatus] = useState({
     labels: [
-      !isCentrifuge
-        ? {
-            name: "Inflation",
-          }
-        : {
-            name: "Block Reward",
-          },
+      {
+        name: "Inflation",
+      },
       {
         name: "Slashes",
         children: [
@@ -84,9 +78,6 @@ const Income = ({
             : []),
         ].filter(Boolean),
       },
-      isCentrifuge && {
-        name: "Gas Fee",
-      },
       {
         name: "Others",
       },
@@ -97,17 +88,11 @@ const Income = ({
     setIncomeData({
       icon: "circle",
       labels: [
-        !isCentrifuge
-          ? {
-              name: "Inflation",
-              value: inflation,
-              color: theme.pink500,
-            }
-          : {
-              name: "Block Reward",
-              value: centrifugeBlockReward,
-              color: theme.pink500,
-            },
+        {
+          name: "Inflation",
+          value: inflation,
+          color: theme.pink500,
+        },
         {
           name: "Slashes",
           children: [
@@ -152,11 +137,6 @@ const Income = ({
               : []),
           ].filter(Boolean),
         },
-        isCentrifuge && {
-          name: "Gas Fee",
-          value: centrifugeTxFee,
-          color: theme.purple500,
-        },
         {
           name: "Others",
           value: others,
@@ -175,8 +155,6 @@ const Income = ({
     slashFellowshipReferenda,
     others,
     theme,
-    centrifugeBlockReward,
-    centrifugeTxFee,
   ]);
 
   const clickEvent = (name) => {
