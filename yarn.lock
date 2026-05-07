@@ -1630,7 +1630,6 @@ __metadata:
     lodash.pick: ^4.4.0
     markdown-it: ^12.3.2
     mongodb: 6.1.0
-    multiformats: ^9.7.1
     node-fetch: ^3.3.0
     pluralize: ^8.0.0
     socket.io: ^4.6.1
@@ -6776,13 +6775,6 @@ __metadata:
   version: 13.4.2
   resolution: "multiformats@npm:13.4.2"
   checksum: 5860f6e1f250916b9a5c389a9d0eafc775a80a6dcfeec6a47a737d7e2de79311f7a12773200cf2fb3698e8965050443bfd6c930f8958fd8c585cd7d94adbbc87
-  languageName: node
-  linkType: hard
-
-"multiformats@npm:^9.7.1":
-  version: 9.9.0
-  resolution: "multiformats@npm:9.9.0"
-  checksum: d3e8c1be400c09a014f557ea02251a2710dbc9fca5aa32cc702ff29f636c5471e17979f30bdcb0a9cbb556f162a8591dc2e1219c24fc21394a56115b820bb84e
   languageName: node
   linkType: hard
 

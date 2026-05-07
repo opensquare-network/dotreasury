@@ -25,7 +25,6 @@
     "lodash.pick": "^4.4.0",
     "markdown-it": "^12.3.2",
     "mongodb": "6.1.0",
-    "multiformats": "^9.7.1",
     "node-fetch": "^3.3.0",
     "pluralize": "^8.0.0",
     "socket.io": "^4.6.1"
