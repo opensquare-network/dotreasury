@@ -10,7 +10,6 @@ const {
   getTreasuryOnRelayChain,
   getBountyTreasuryOnRelayChain,
 } = require("./treasuryOnRelay");
-const { getMythTreasuryOnMythos } = require("./treasuryOnMythos");
 const { getTreasuryOnAssetHub } = require("./treasuryOnAssetHub");
 const {
   loansBifrostDotBalance,
@@ -27,7 +26,6 @@ function calcTotalBalance({
   dotTreasuryBalanceOnAssetHub,
   usdtTreasuryBalanceOnAssetHub,
   usdcTreasuryBalanceOnAssetHub,
-  mythTreasuryBalance,
   hydrationTreasuryAccount1,
   hydrationTreasuryAccount2,
   hydrationTreasuryAccount4,
@@ -88,13 +86,10 @@ function calcTotalBalance({
     .plus(getTotal(hydrationAccount4Usdc))
     .toFixed();
 
-  const myth = new BigNumber(mythTreasuryBalance?.balance || 0).toFixed();
-
   return {
     dot,
     usdt,
     usdc,
-    myth,
   };
 }
 
@@ -118,8 +113,6 @@ async function getPolkadotTreasuryData() {
     usdcTreasuryBalanceOnAssetHub,
   } = await getTreasuryOnAssetHub();
 
-  const mythTreasuryBalance = await getMythTreasuryOnMythos();
-
   const {
     hydrationTreasuryAccount1,
     hydrationTreasuryAccount2,
@@ -136,7 +129,6 @@ async function getPolkadotTreasuryData() {
     dotTreasuryBalanceOnAssetHub,
     usdtTreasuryBalanceOnAssetHub,
     usdcTreasuryBalanceOnAssetHub,
-    mythTreasuryBalance,
     hydrationTreasuryAccount1,
     hydrationTreasuryAccount2,
     hydrationTreasuryAccount4,

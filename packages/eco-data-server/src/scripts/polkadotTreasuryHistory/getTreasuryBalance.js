@@ -16,9 +16,6 @@ const {
   getTreasuryOnAssetHubFromApi,
 } = require("../../apis/treasury/polkadot/treasuryOnAssetHub");
 const {
-  getMythTreasuryOnMythosFromApi,
-} = require("../../apis/treasury/polkadot/treasuryOnMythos");
-const {
   getLoansBifrostDotBalanceByTimestamp,
 } = require("../../apis/treasury/polkadot/loans");
 
@@ -78,15 +75,12 @@ async function getPolkadotAssetHubTreasuries(api, daysAgo) {
     usdcTreasuryBalanceOnAssetHub,
   } = await getTreasuryOnAssetHubFromApi(blockApi);
 
-  const mythTreasuryBalance = await getMythTreasuryOnMythosFromApi(blockApi);
-
   return {
     fellowshipTreasuryDotOnAssetHub,
     fellowshipSalaryUsdtBalance,
     dotTreasuryBalanceOnAssetHub,
     usdtTreasuryBalanceOnAssetHub,
     usdcTreasuryBalanceOnAssetHub,
-    mythTreasuryBalance,
   };
 }
 
