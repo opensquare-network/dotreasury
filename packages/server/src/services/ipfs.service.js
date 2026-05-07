@@ -40,11 +40,11 @@ async function cidOf(obj) {
     Buffer.from(data),
     { put: async () => {} },
     {
-      cidVersion: 0,
+      cidVersion: 1,
       rawLeaves: false,
     },
   );
-  return cid.toV1().toString();
+  return cid.toString();
 }
 
 async function pinJsonToIpfsWithTimeout(data, timeout) {
