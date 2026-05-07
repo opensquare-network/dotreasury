@@ -1,4 +1,5 @@
 const { multiApiQuery } = require("./common");
+const { u8aToHex } = require("@polkadot/util");
 
 const DotTokenId = 5;
 const ADotTokenId = 1001;
@@ -19,6 +20,14 @@ const PolkadotTreasuryOnHydrationAccount4 =
 
 async function getADotBalanceByRuntimeApi(api, address) {
   try {
+    api.registry.register({
+      PalletCurrenciesRpcRuntimeApiAccountData: {
+        free: "u128",
+        reserved: "u128",
+        frozen: "u128",
+      },
+    });
+
     const assetId = api.registry.createType("u32", ADotTokenId);
     const accountId = api.registry.createType("AccountId", address);
     const callParams = new Uint8Array([
@@ -28,7 +37,7 @@ async function getADotBalanceByRuntimeApi(api, address) {
 
     const resultRaw = await api.rpc.state.call(
       CURRENCIES_API_METHOD,
-      Array.from(callParams),
+      u8aToHex(callParams),
     );
 
     const accountData = api.registry.createType(RUNTIME_API_TYPE, resultRaw);
@@ -39,6 +48,7 @@ async function getADotBalanceByRuntimeApi(api, address) {
   } catch (error) {
     console.error(
       `Error fetching aDot balance via Runtime API for ${address}:`,
+      error,
     );
     return null;
   }

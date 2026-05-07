@@ -12,11 +12,6 @@ function getTreasuryBalancesArray(treasuryData) {
     },
     { token: "USDt", decimals: 6, balance: treasuryData.usdt },
     { token: "USDC", decimals: 6, balance: treasuryData.usdc },
-    {
-      token: "MYTH",
-      decimals: 18,
-      balance: treasuryData.myth,
-    },
   ];
 }
 

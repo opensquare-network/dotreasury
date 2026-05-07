@@ -9,10 +9,7 @@ const { createChainApis } = require("../../apis");
 const { calcTotalBalance } = require("../../apis/treasury/polkadot");
 const { getTotalFiatValue, getTreasuryHistoryCol } = require("../../mongo");
 const { getTreasuryBalancesArray } = require("../../apis/treasury");
-const {
-  getDotUsdtCollection,
-  getMythUsdtCol,
-} = require("@dotreasury/price/src/mongo");
+const { getDotUsdtCollection } = require("@dotreasury/price/src/mongo");
 const { getTreasuryBalance } = require("./getTreasuryBalance");
 
 async function normalizeBalancesItem(balance, timestamp) {
@@ -37,20 +34,6 @@ async function normalizeBalancesItem(balance, timestamp) {
     };
   }
 
-  if (balance.token === "MYTH") {
-    const priceCol = await getMythUsdtCol();
-    const [tokenPrice] = await priceCol
-      .find({ openTime: { $lte: timestamp } })
-      .sort({ openTime: -1 })
-      .limit(1)
-      .toArray();
-    return {
-      ...balance,
-      price: tokenPrice?.open,
-      priceUpdateAt: tokenPrice?.openTime,
-    };
-  }
-
   return balance;
 }
 
@@ -63,7 +46,7 @@ async function generateTreasuryHistoryItem(daysAgo) {
   const normalizedBalances = await Promise.all(
     balances.map((item) => normalizeBalancesItem(item, timestamp)),
   );
-  const noPriceItem = normalizedBalances.find(item => !item.price);
+  const noPriceItem = normalizedBalances.find((item) => !item.price);
   if (noPriceItem) {
     console.log(`Can not find price for token ${noPriceItem.token}`);
     return;
@@ -98,10 +81,7 @@ createChainApis({
   polkadot: ["wss://rpc.polkadot.io", "wss://rpc.ibp.network/polkadot"],
   hydradx: ["wss://rpc.hydradx.cloud/", "wss://hydration.ibp.network/"],
   polkadotAssetHub: ["wss://polkadot-asset-hub-rpc.polkadot.io"],
-  bifrostPolkadot: [
-    "wss://hk.p.bifrost-rpc.liebi.com/ws",
-    "wss://eu.bifrost-polkadot-rpc.liebi.com/ws",
-  ],
+  bifrostPolkadot: ["wss://eu.bifrost-polkadot-rpc.liebi.com/ws"],
 })
   .then(generateTreasuryHistory)
   .catch(console.error)

@@ -1,7 +1,6 @@
 const CHAINS = Object.freeze({
   polkadot: "polkadot",
   kusama: "kusama",
-  centrifuge: "centrifuge",
   basilisk: "basilisk",
   hydradx: "hydradx",
   interlay: "interlay",

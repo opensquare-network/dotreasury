@@ -4,7 +4,6 @@ const tokens = Object.freeze({
   DOT: "DOT",
   KSM: "KSM",
   GLMR: "GLMR",
-  CFG: "CFG",
   KAR: "KAR",
   BNC: "BNC",
   INTR: "INTR",
@@ -13,14 +12,12 @@ const tokens = Object.freeze({
   BSX: "BSX",
   ACA: "ACA",
   MOVR: "MOVR",
-  MYTH: "MYTH",
   ASTR: "ASTR",
 });
 
 const ChainTokenMap = Object.freeze({
   [CHAINS.polkadot]: tokens.DOT,
   [CHAINS.kusama]: tokens.KSM,
-  [CHAINS.centrifuge]: tokens.CFG,
   [CHAINS.basilisk]: tokens.BSX,
   [CHAINS.hydradx]: tokens.HDX,
   [CHAINS.interlay]: tokens.INTR,
@@ -41,7 +38,6 @@ const krakenTokenIdMap = Object.freeze({
   [tokens.KSM]: "KSM/USD",
   [tokens.ACA]: "ACA/USD",
   [tokens.MOVR]: "MOVR/USD",
-  [tokens.CFG]: "CFG/USD",
   [tokens.GLMR]: "GLMR/USD",
   [tokens.BNC]: "BNC/USD",
   [tokens.HDX]: "HDX/USD",
@@ -54,7 +50,6 @@ const coingeckoTokenIdMap = Object.freeze({
   [tokens.KAR]: "karura",
   [tokens.INTR]: "interlay",
   [tokens.KINT]: "kintsugi",
-  [tokens.MYTH]: "mythos",
 });
 
 const revertGateTokenIdMap = Object.entries(gateTokenIdMap).reduce(

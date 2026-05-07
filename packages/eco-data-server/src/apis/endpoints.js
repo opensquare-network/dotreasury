@@ -1,10 +1,6 @@
 const endpoints = Object.freeze({
   polkadot: ["wss://rpc.polkadot.io", "wss://rpc.ibp.network/polkadot"],
   kusama: ["wss://kusama-rpc.polkadot.io", "wss://rpc.ibp.network/kusama"],
-  centrifuge: [
-    "wss://fullnode.centrifuge.io/",
-    "wss://rpc-centrifuge.luckyfriday.io/",
-  ],
   hydradx: ["wss://rpc.hydradx.cloud/", "wss://hydration.ibp.network/"],
   basilisk: ["wss://rpc.basilisk.cloud/"],
   interlay: [
@@ -15,12 +11,8 @@ const endpoints = Object.freeze({
     "wss://api-kusama.interlay.io/parachain",
     "wss://kintsugi.api.onfinality.io/public-ws",
   ],
-  moonriver: [
-    "wss://wss.api.moonriver.moonbeam.network",
-  ],
-  moonbeam: [
-    "wss://wss.api.moonbeam.network/",
-  ],
+  moonriver: ["wss://wss.api.moonriver.moonbeam.network"],
+  moonbeam: ["wss://wss.api.moonbeam.network/"],
   acala: [
     "wss://acala-rpc-0.aca-api.network",
     "wss://acala-rpc-1.aca-api.network",
@@ -37,7 +29,6 @@ const endpoints = Object.freeze({
     "wss://bifrost-rpc.liebi.com/ws",
     "wss://us.bifrost-rpc.liebi.com/ws",
   ],
-  mythos: ["wss://polkadot-mythos-rpc.polkadot.io"],
   polkadotAssetHub: [
     "wss://polkadot-asset-hub-rpc.polkadot.io",
     "wss://sys.ibp.network/asset-hub-polkadot",
