@@ -8,10 +8,8 @@ const {
   getOutputTransferCollection,
   getReferendaReferendumCollection,
   getChildBountyCollection,
+  getSubsquareTreasurySpendCollection,
 } = require("../../mongo");
-const { setOverviewV2, getOverviewV2 } = require("./../store");
-const { overviewRoomV2, OVERVIEW_FEED_INTERVAL } = require("../constants");
-const util = require("util");
 const { calcBestTipProposers } = require("./common/calcBestTipProposers");
 const {
   calcBestProposalBeneficiary,
@@ -20,26 +18,6 @@ const { getLatestSymbolPrice } = require("./common/getLatestSymbolPrice");
 const { calcToBeAwarded } = require("./common/calcToBeAwarded");
 const { calcOutput } = require("./common/calcOutput");
 const { calcCount } = require("./common/calcCount");
-const { getSubsquareTreasurySpendCollection } = require("../../mongo");
-
-async function feedOverviewV2(io) {
-  try {
-    const oldStoreOverview = getOverviewV2();
-    const overview = await calcOverview();
-
-    if (util.isDeepStrictEqual(overview, oldStoreOverview)) {
-      return;
-    }
-
-    setOverviewV2(overview);
-
-    io.to(overviewRoomV2).emit("overview", overview);
-  } catch (e) {
-    console.error("feed overview error:", e);
-  } finally {
-    setTimeout(feedOverviewV2.bind(null, io), OVERVIEW_FEED_INTERVAL);
-  }
-}
 
 async function calcOverview() {
   const proposalCol = await getProposalCollection();
@@ -161,6 +139,17 @@ async function calcOverview() {
   };
 }
 
-module.exports = {
-  feedOverviewV2,
-};
+const CACHE_TTL_MS = 30 * 1000;
+let cachedOverview = null;
+let cacheTimestamp = 0;
+
+async function getCachedOverview() {
+  const now = Date.now();
+  if (!cachedOverview || now - cacheTimestamp > CACHE_TTL_MS) {
+    cachedOverview = await calcOverview();
+    cacheTimestamp = now;
+  }
+  return cachedOverview;
+}
+
+module.exports = { calcOverview, getCachedOverview };

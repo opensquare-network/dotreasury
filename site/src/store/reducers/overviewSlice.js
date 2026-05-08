@@ -88,6 +88,13 @@ export const {
   setTopBeneficiaries,
 } = overviewSlice.actions;
 
+export const fetchOverview = () => async (dispatch) => {
+  const { result } = await api.fetch("/overview");
+  if (result) {
+    dispatch(setOverview(result));
+  }
+};
+
 export const fetchStatsHistory = () => async (dispatch) => {
   const { result } = await api.fetch("/stats/weekly");
   dispatch(setStatsHistory(result || []));

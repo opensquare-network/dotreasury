@@ -3,7 +3,7 @@ const {
   getInputWeeklyStatsCollection,
   getOutputWeeklyStatsCollection,
 } = require("../../mongo");
-const { getOverview } = require("../../websocket/store");
+const { getCachedOverview } = require("../overview/calcOverview");
 
 class StatsController {
   async getWeeklyStatsHistory(ctx) {
@@ -43,7 +43,7 @@ class StatsController {
   }
 
   async getTreasuryInOut(ctx) {
-    const overview = getOverview();
+    const overview = await getCachedOverview();
     if (!overview) {
       ctx.body = {};
       return;

@@ -23,6 +23,7 @@ import SlashMenu from "./SlashMenu";
 import { currentChainSettings, isKusama, isPolkadot } from "../../utils/chains";
 import BeneficiariesMenu from "./beneficiariesMenu";
 import { fetchOverviewSummary } from "../../store/reducers/overviewSummarySlice";
+import { fetchOverview } from "../../store/reducers/overviewSlice";
 
 const Wrapper = styled.div`
   position: relative;
@@ -182,6 +183,7 @@ const TabExampleSecondaryPointing = () => {
 
   useEffect(() => {
     // dispatch(fetchIncomeCount());
+    dispatch(fetchOverview());
     if (isKusama || isPolkadot) {
       dispatch(fetchOverviewSummary());
     }

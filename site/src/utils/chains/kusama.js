@@ -46,7 +46,6 @@ export const kusama = {
 
   api: {
     scanServer: "https://kusama-api.dotreasury.com",
-    socketIOUrl: "kusama-api.dotreasury.com",
     subsquareApi: "https://kusama-api.subsquare.io",
   },
   assetHubEndpoints,

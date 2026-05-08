@@ -4,11 +4,9 @@ const Koa = require("koa");
 const bodyParser = require("koa-bodyparser");
 const logger = require("koa-logger");
 const helmet = require("koa-helmet");
-const http = require("http");
 const cors = require("@koa/cors");
 const { initDb } = require("./mongo");
 const { initDb: initAdminDb } = require("./mongo-admin");
-const { listenAndEmitInfo } = require("./websocket");
 
 const app = new Koa();
 
@@ -30,22 +28,13 @@ app.use(async (ctx, next) => {
 });
 
 require("./routes")(app);
-const server = http.createServer(app.callback());
-const io = require("socket.io")(server, {
-  cors: {
-    origin: "*",
-    methods: ["GET", "POST"],
-  },
-});
 
 Promise.all([initDb(), initAdminDb()])
   .then(async (db) => {
-    await listenAndEmitInfo(io);
-
     app.context.db = db;
     const port = process.env.PORT || 3213;
 
-    server.listen(port, () =>
+    app.listen(port, () =>
       console.log(`✅  The server is running at http://127.0.0.1:${port}/`),
     );
   })
