@@ -1,9 +1,8 @@
-const { getOverviewV2 } = require("../../websocket/store");
+const { getCachedOverview } = require("./calcOverview");
 
 async function getOverview(ctx) {
-  ctx.body = {
-    ...getOverviewV2(),
-  };
+  const overview = await getCachedOverview();
+  ctx.body = { ...overview };
 }
 
 module.exports = {
