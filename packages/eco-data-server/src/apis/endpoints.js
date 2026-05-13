@@ -1,16 +1,13 @@
 const endpoints = Object.freeze({
-  polkadot: ["wss://rpc.polkadot.io", "wss://rpc.ibp.network/polkadot"],
-  kusama: ["wss://kusama-rpc.polkadot.io", "wss://rpc.ibp.network/kusama"],
-  hydradx: ["wss://rpc.hydradx.cloud/", "wss://hydration.ibp.network/"],
-  basilisk: ["wss://rpc.basilisk.cloud/"],
+  polkadot: ["wss://rpc.polkadot.io", "wss://polkadot.ibp.network"],
+  kusama: ["wss://kusama-rpc.polkadot.io", "wss://kusama.ibp.network"],
+  hydradx: ["wss://rpc.hydradx.cloud", "wss://hydration.ibp.network"],
+  basilisk: ["wss://rpc.basilisk.cloud"],
   interlay: [
     "wss://api.interlay.io/parachain",
     "wss://rpc-interlay.luckyfriday.io",
   ],
-  kintsugi: [
-    "wss://api-kusama.interlay.io/parachain",
-    "wss://kintsugi.api.onfinality.io/public-ws",
-  ],
+  kintsugi: ["wss://api-kusama.interlay.io/parachain"],
   moonriver: ["wss://wss.api.moonriver.moonbeam.network"],
   moonbeam: ["wss://wss.api.moonbeam.network/"],
   acala: [
@@ -21,21 +18,18 @@ const endpoints = Object.freeze({
     "wss://karura-rpc-1.aca-api.network",
     "wss://karura-rpc-2.aca-api.network/ws",
   ],
-  bifrostPolkadot: [
-    "wss://hk.p.bifrost-rpc.liebi.com/ws",
-    "wss://eu.bifrost-polkadot-rpc.liebi.com/ws",
-  ],
+  bifrostPolkadot: ["wss://eu.bifrost-polkadot-rpc.liebi.com/ws"],
   bifrostKusama: [
     "wss://bifrost-rpc.liebi.com/ws",
     "wss://us.bifrost-rpc.liebi.com/ws",
   ],
   polkadotAssetHub: [
     "wss://polkadot-asset-hub-rpc.polkadot.io",
-    "wss://sys.ibp.network/asset-hub-polkadot",
+    "wss://asset-hub-polkadot.ibp.network",
   ],
   kusamaAssetHub: [
     "wss://kusama-asset-hub-rpc.polkadot.io",
-    "wss://sys.ibp.network/asset-hub-kusama",
+    "wss://asset-hub-kusama.ibp.network",
   ],
   astar: ["wss://rpc.astar.network/"],
 });
