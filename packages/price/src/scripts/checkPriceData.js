@@ -4,7 +4,6 @@ const dayjs = require("dayjs");
 const {
   getDotUsdtCollection,
   getKsmUsdtCollection,
-  getCfgUsdtCol,
   getMythUsdtCol,
 } = require("../mongo");
 const { sendFeishuNotification } = require("../utils/feishu");
@@ -14,8 +13,6 @@ async function getPriceCol(symbol) {
     return await getDotUsdtCollection();
   } else if (symbol === "KSM") {
     return await getKsmUsdtCollection();
-  } else if (symbol === "CFG") {
-    return await getCfgUsdtCol();
   } else if (symbol === "MYTH") {
     return await getMythUsdtCol();
   } else {
@@ -72,7 +69,6 @@ async function checkTokenPrice(symbol) {
 const symbols = [
   "DOT", // polkadot
   "KSM", // kusama
-  // "CFG", // centrifuge
   // "MYTH", // mythos
 ];
 

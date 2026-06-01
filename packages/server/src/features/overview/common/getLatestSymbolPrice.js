@@ -1,7 +1,6 @@
 const {
   getKsmUsdtCollection,
   getDotUsdtCollection,
-  getCfgUsdtCol,
 } = require("../../../mongo-price");
 
 async function getLatestSymbolPrice() {
@@ -12,8 +11,6 @@ async function getLatestSymbolPrice() {
     col = await getKsmUsdtCollection();
   } else if (chain === "polkadot") {
     col = await getDotUsdtCollection();
-  } else if (chain === "centrifuge") {
-    col = await getCfgUsdtCol();
   }
 
   if (!col) {

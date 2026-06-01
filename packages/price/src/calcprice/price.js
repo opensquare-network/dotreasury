@@ -10,7 +10,6 @@ const polkadotJsonPriceData = require("./polkadotPrice.json");
 const {
   getDotUsdtCollection,
   getKsmUsdtCollection,
-  getCfgUsdtCol,
   getMythUsdtCol,
 } = require("../mongo");
 
@@ -38,8 +37,6 @@ function getPriceCollection(chain) {
     return getDotUsdtCollection();
   } else if (chain === "kusama") {
     return getKsmUsdtCollection();
-  } else if (chain === "centrifuge") {
-    return getCfgUsdtCol();
   } else if (chain === "mythos") {
     return getMythUsdtCol();
   } else {
@@ -57,7 +54,7 @@ async function getPrice(chain, time) {
     .limit(1)
     .toArray();
 
-  if (["centrifuge", "mythos"].includes(chain)) {
+  if (["mythos"].includes(chain)) {
     return price.open;
   }
 

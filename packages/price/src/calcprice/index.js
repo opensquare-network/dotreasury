@@ -18,22 +18,14 @@ if (!ksmDbName) {
   process.exit(1);
 }
 
-const cfgDbName = process.env.MONGO_DB_OUTPUT_CFG_NAME;
-if (!cfgDbName) {
-  console.log("MONGO_DB_OUTPUT_CFG_NAME not set");
-  process.exit(1);
-}
-
 const dbNames = {
   kusama: ksmDbName,
   polkadot: dotDbName,
-  centrifuge: cfgDbName,
 };
 
 const dbUrls = {
   kusama: process.env.KSM_MONGO_URL,
   polkadot: process.env.DOT_MONGO_URL,
-  centrifuge: process.env.CFG_MONGO_URL,
 };
 
 function calcPriceByToken(tokenValue, symbolPrice) {
@@ -125,7 +117,7 @@ async function savePriceForTreasurySpend(chain, col) {
 }
 
 async function main() {
-  for (const chain of ["kusama", "polkadot", "centrifuge"]) {
+  for (const chain of ["kusama", "polkadot"]) {
     const dbUrl = dbUrls[chain];
     const dbName = dbNames[chain];
     const {
