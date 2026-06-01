@@ -1,7 +1,6 @@
 const {
   getKsmUsdtCollection,
   getDotUsdtCollection,
-  getCfgUsdtCol,
   getMythUsdtCol,
 } = require("../../mongo-price/index");
 const dayjs = require("dayjs");
@@ -13,7 +12,6 @@ const {
 function getPriceCol(symbol) {
   if (symbol === "DOT") return getDotUsdtCollection();
   if (symbol === "KSM") return getKsmUsdtCollection();
-  if (symbol === "CFG") return getCfgUsdtCol();
   if (symbol === "MYTH") return getMythUsdtCol();
 
   throw new Error("Unsupported symbol: " + symbol);
