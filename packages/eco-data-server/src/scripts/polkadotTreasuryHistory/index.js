@@ -78,9 +78,15 @@ async function generateTreasuryHistory() {
 }
 
 createChainApis({
-  polkadot: ["wss://rpc.polkadot.io"],
-  hydradx: ["wss://rpc.hydradx.cloud/"],
-  polkadotAssetHub: ["wss://polkadot-asset-hub-rpc.polkadot.io"],
+  polkadot: [
+    "wss://rpc.polkadot.io",
+    "wss://polkadot.api.onfinality.io/public-ws",
+  ],
+  hydradx: ["wss://rpc.hydradx.cloud/", "wss://hydration-rpc.n.dwellir.com"],
+  polkadotAssetHub: [
+    "wss://polkadot-asset-hub-rpc.polkadot.io",
+    "wss://asset-hub-polkadot-rpc.n.dwellir.com",
+  ],
   bifrostPolkadot: ["wss://eu.bifrost-polkadot-rpc.liebi.com/ws"],
 })
   .then(generateTreasuryHistory)
