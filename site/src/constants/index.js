@@ -113,10 +113,6 @@ export const REACTION_THUMBDOWN = 2;
 
 export const DEFAULT_KUSAMA_NODES = [
   {
-    name: "IBP1",
-    url: "wss://rpc.ibp.network/kusama",
-  },
-  {
     name: "OnFinality",
     url: "wss://kusama.api.onfinality.io/public-ws",
   },
@@ -145,10 +141,6 @@ export const DEFAULT_KUSAMA_NODES = [
     url: "wss://kusama-rpc-tn.dwellir.com",
   },
   {
-    name: "IBP2",
-    url: "wss://kusama.dotters.network",
-  },
-  {
     name: "RadiumBlock",
     url: "wss://kusama.public.curie.radiumblock.co/ws",
   },
@@ -167,10 +159,6 @@ export const DEFAULT_KUSAMA_NODES = [
 ];
 
 export const DEFAULT_POLKADOT_NODES = [
-  {
-    name: "IBP1",
-    url: "wss://rpc.ibp.network/polkadot",
-  },
   {
     name: "OnFinality",
     url: "wss://polkadot.api.onfinality.io/public-ws",

@@ -78,8 +78,8 @@ async function generateTreasuryHistory() {
 }
 
 createChainApis({
-  polkadot: ["wss://rpc.polkadot.io", "wss://rpc.ibp.network/polkadot"],
-  hydradx: ["wss://rpc.hydradx.cloud/", "wss://hydration.ibp.network/"],
+  polkadot: ["wss://rpc.polkadot.io"],
+  hydradx: ["wss://rpc.hydradx.cloud/"],
   polkadotAssetHub: ["wss://polkadot-asset-hub-rpc.polkadot.io"],
   bifrostPolkadot: ["wss://eu.bifrost-polkadot-rpc.liebi.com/ws"],
 })

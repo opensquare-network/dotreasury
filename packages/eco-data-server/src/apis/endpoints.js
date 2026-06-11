@@ -1,7 +1,7 @@
 const endpoints = Object.freeze({
-  polkadot: ["wss://rpc.polkadot.io", "wss://polkadot.ibp.network"],
-  kusama: ["wss://kusama-rpc.polkadot.io", "wss://kusama.ibp.network"],
-  hydradx: ["wss://rpc.hydradx.cloud", "wss://hydration.ibp.network"],
+  polkadot: ["wss://rpc.polkadot.io"],
+  kusama: ["wss://kusama-rpc.polkadot.io"],
+  hydradx: ["wss://rpc.hydradx.cloud"],
   basilisk: ["wss://rpc.basilisk.cloud"],
   interlay: [
     "wss://api.interlay.io/parachain",
@@ -23,14 +23,8 @@ const endpoints = Object.freeze({
     "wss://bifrost-rpc.liebi.com/ws",
     "wss://us.bifrost-rpc.liebi.com/ws",
   ],
-  polkadotAssetHub: [
-    "wss://polkadot-asset-hub-rpc.polkadot.io",
-    "wss://asset-hub-polkadot.ibp.network",
-  ],
-  kusamaAssetHub: [
-    "wss://kusama-asset-hub-rpc.polkadot.io",
-    "wss://asset-hub-kusama.ibp.network",
-  ],
+  polkadotAssetHub: ["wss://polkadot-asset-hub-rpc.polkadot.io"],
+  kusamaAssetHub: ["wss://kusama-asset-hub-rpc.polkadot.io"],
   astar: ["wss://rpc.astar.network/"],
 });
 
