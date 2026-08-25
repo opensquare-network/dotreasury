@@ -25,7 +25,13 @@ const GET_TREASURIES = gql`
   }
 `;
 
-const hiddenTreasuryChains = new Set(["basilisk"]);
+const hiddenTreasuryChains = new Set([
+  "basilisk",
+  "interlay",
+  "kintsugi",
+  "moonbeam",
+  "moonriver",
+]);
 
 function getTreasuryFiatValue(treasury) {
   const { decimals } = getChainSettings(treasury.chain);
