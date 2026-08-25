@@ -25,6 +25,8 @@ const GET_TREASURIES = gql`
   }
 `;
 
+const hiddenTreasuryChains = new Set(["basilisk"]);
+
 function getTreasuryFiatValue(treasury) {
   const { decimals } = getChainSettings(treasury.chain);
   const balances = treasury.balances || [
@@ -55,7 +57,11 @@ export function useTreasuriesData() {
     fetch().then((resp) => {
       const treasuries = resp.data?.treasuries || [];
       const data = treasuries
-        .filter((item) => Object.keys(CHAINS).includes(item.chain))
+        .filter(
+          (item) =>
+            Object.keys(CHAINS).includes(item.chain) &&
+            !hiddenTreasuryChains.has(item.chain),
+        )
         .map((treasury) => {
           const amount = getTreasuryTokenAmount(treasury);
           const fiatValue = getTreasuryFiatValue(treasury);

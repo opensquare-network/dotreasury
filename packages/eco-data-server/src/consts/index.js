@@ -41,7 +41,7 @@ const krakenTokenIdMap = Object.freeze({
   [tokens.GLMR]: "GLMR/USD",
   [tokens.BNC]: "BNC/USD",
   [tokens.HDX]: "HDX/USD",
-  [tokens.BSX]: "BSX/USD",
+  // [tokens.BSX]: "BSX/USD",
   [tokens.ASTR]: "ASTR/USD",
 });
 
