@@ -8,14 +8,6 @@ const endpoints = Object.freeze({
     "wss://kusama.api.onfinality.io/public-ws",
   ],
   hydradx: ["wss://rpc.hydradx.cloud", "wss://hydration-rpc.n.dwellir.com"],
-  basilisk: ["wss://rpc.basilisk.cloud"],
-  interlay: [
-    "wss://api.interlay.io/parachain",
-    "wss://rpc-interlay.luckyfriday.io",
-  ],
-  kintsugi: ["wss://api-kusama.interlay.io/parachain"],
-  moonriver: ["wss://wss.api.moonriver.moonbeam.network"],
-  moonbeam: ["wss://wss.api.moonbeam.network/"],
   acala: [
     "wss://acala-rpc-0.aca-api.network",
     "wss://acala-rpc-1.aca-api.network",

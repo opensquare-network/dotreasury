@@ -1,15 +1,10 @@
 const CHAINS = Object.freeze({
   polkadot: "polkadot",
   kusama: "kusama",
-  basilisk: "basilisk",
   hydradx: "hydradx",
-  interlay: "interlay",
-  kintsugi: "kintsugi",
   acala: "acala",
   karura: "karura",
   bifrost: "bifrost",
-  moonbeam: "moonbeam",
-  moonriver: "moonriver",
   astar: "astar",
 });
 

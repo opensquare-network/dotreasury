@@ -25,14 +25,6 @@ const GET_TREASURIES = gql`
   }
 `;
 
-const hiddenTreasuryChains = new Set([
-  "basilisk",
-  "interlay",
-  "kintsugi",
-  "moonbeam",
-  "moonriver",
-]);
-
 function getTreasuryFiatValue(treasury) {
   const { decimals } = getChainSettings(treasury.chain);
   const balances = treasury.balances || [
@@ -64,9 +56,7 @@ export function useTreasuriesData() {
       const treasuries = resp.data?.treasuries || [];
       const data = treasuries
         .filter(
-          (item) =>
-            Object.keys(CHAINS).includes(item.chain) &&
-            !hiddenTreasuryChains.has(item.chain),
+          (item) => Object.keys(CHAINS).includes(item.chain),
         )
         .map((treasury) => {
           const amount = getTreasuryTokenAmount(treasury);
