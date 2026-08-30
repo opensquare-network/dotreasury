@@ -32,9 +32,9 @@ async function _createIndexes() {
     process.exit(1);
   }
 
-  ksmUsdtCol.createIndex({ openTime: 1 });
-  dotUsdtCol.createIndex({ openTime: 1 });
-  mythUsdtCol.createIndex({ openTime: 1 });
+  await ksmUsdtCol.createIndex({ openTime: 1 });
+  await dotUsdtCol.createIndex({ openTime: 1 });
+  await mythUsdtCol.createIndex({ openTime: 1 });
 }
 
 async function tryInit(col) {

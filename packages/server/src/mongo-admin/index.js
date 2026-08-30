@@ -46,17 +46,23 @@ async function _createIndexes() {
     process.exit(1);
   }
 
-  userCol.createIndex({ username: 1 }, { unique: true });
-  userCol.createIndex({ email: 1 }, { unique: true });
-  userCol.createIndex({ kusamaAddress: 1 }, { unique: true, sparse: true });
-  userCol.createIndex({ polkadotAddress: 1 }, { unique: true, sparse: true });
+  await userCol.createIndex({ username: 1 }, { unique: true });
+  await userCol.createIndex({ email: 1 }, { unique: true });
+  await userCol.createIndex(
+    { kusamaAddress: 1 },
+    { unique: true, sparse: true },
+  );
+  await userCol.createIndex(
+    { polkadotAddress: 1 },
+    { unique: true, sparse: true },
+  );
 
-  commentCol.createIndex({ indexer: 1, createdAt: 1 });
+  await commentCol.createIndex({ indexer: 1, createdAt: 1 });
 
-  linkCol.createIndex({ indexer: 1 });
-  descriptionCol.createIndex({ indexer: 1 });
+  await linkCol.createIndex({ indexer: 1 });
+  await descriptionCol.createIndex({ indexer: 1 });
 
-  rateCol.createIndex({ indexer: 1, createdAt: -1 });
+  await rateCol.createIndex({ indexer: 1, createdAt: -1 });
 }
 
 async function tryInit(col) {

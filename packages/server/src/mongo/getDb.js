@@ -160,13 +160,13 @@ function getDb({ inputDbName, outputDbName, councilDbName }) {
     }
 
     // TODO: create indexes for better query performance
-    motionVoterCol.createIndex({
+    await motionVoterCol.createIndex({
       motionHash: 1,
       motionHeight: 1,
       voter: 1,
     });
 
-    tipperCol.createIndex({
+    await tipperCol.createIndex({
       tipHash: 1,
       tipHeight: 1,
       tipper: 1,
