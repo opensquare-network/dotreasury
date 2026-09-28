@@ -4,20 +4,22 @@ async function fetchTickers(exchange, symbols) {
   try {
     tickers = await exchange.fetchTickers(symbols);
   } catch (e) {
-    console.error(`Failed to fetch price of ${ JSON.stringify(symbols) }`, e);
+    console.error(`Failed to fetch price of ${JSON.stringify(symbols)}`, e);
     return [];
   }
 
-  return (Object.values(tickers) || []).map(ticker => {
-    const { symbol, last, last_traded_at } = ticker;
-    return {
-      symbol,
-      price: last,
-      priceUpdateAt: last_traded_at || new Date(),
-    }
-  });
+  return (Object.values(tickers) || [])
+    .filter((ticker) => ticker.last > 0)
+    .map((ticker) => {
+      const { symbol, last, last_traded_at } = ticker;
+      return {
+        symbol,
+        price: last,
+        priceUpdateAt: last_traded_at || new Date(),
+      };
+    });
 }
 
 module.exports = {
   fetchTickers,
-}
+};

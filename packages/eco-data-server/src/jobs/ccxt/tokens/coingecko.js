@@ -29,11 +29,13 @@ async function fetchCoingeckoPrices(coinIds) {
     clearTimeout(timeout);
   }
 
-  return Object.entries(data).map(([coinId, priceData]) => ({
-    coinId,
-    price: String(priceData.usd),
-    priceUpdateAt: new Date(),
-  }));
+  return Object.entries(data)
+    .filter(([, priceData]) => priceData.usd != null)
+    .map(([coinId, priceData]) => ({
+      coinId,
+      price: String(priceData.usd),
+      priceUpdateAt: new Date(),
+    }));
 }
 
 async function updateTokenPricesByCoingecko() {

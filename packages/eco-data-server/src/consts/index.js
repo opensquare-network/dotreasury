@@ -26,15 +26,16 @@ const gateTokenIdMap = Object.freeze({});
 const krakenTokenIdMap = Object.freeze({
   [tokens.DOT]: "DOT/USD",
   [tokens.KSM]: "KSM/USD",
-  [tokens.ACA]: "ACA/USD",
-  [tokens.BNC]: "BNC/USD",
-  [tokens.HDX]: "HDX/USD",
   [tokens.ASTR]: "ASTR/USD",
 });
 
 // CoinGecko coin IDs for tokens not available on Kraken
+// HDX/ACA/BNC markets on Kraken are cancel_only (suspended), no ticker data
 const coingeckoTokenIdMap = Object.freeze({
   [tokens.KAR]: "karura",
+  [tokens.HDX]: "hydradx",
+  [tokens.ACA]: "acala",
+  [tokens.BNC]: "bifrost-native-coin",
 });
 
 const revertGateTokenIdMap = Object.entries(gateTokenIdMap).reduce(

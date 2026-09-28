@@ -62,7 +62,7 @@ export function useEcosystemAssetsDistributionData() {
 
         return {
           name: chainSettings.name,
-          value: treasury.fiatValue,
+          value: treasury.fiatValue ?? 0,
           color: COLORS[idx] || theme.neutral500,
         };
       }),
