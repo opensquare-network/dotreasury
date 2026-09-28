@@ -16,7 +16,10 @@ const endpoints = Object.freeze({
     "wss://karura-rpc-1.aca-api.network",
     "wss://karura-rpc-2.aca-api.network/ws",
   ],
-  bifrostPolkadot: ["wss://eu.bifrost-polkadot-rpc.liebi.com/ws"],
+  bifrostPolkadot: [
+    "wss://hk.p.bifrost-rpc.liebi.com/ws",
+    "wss://eu.bifrost-polkadot-rpc.liebi.com/ws",
+  ],
   bifrostKusama: [
     "wss://bifrost-rpc.liebi.com/ws",
     "wss://us.bifrost-rpc.liebi.com/ws",

@@ -30,7 +30,12 @@ function getTreasuryFiatValue(treasury) {
   const balances = treasury.balances || [
     { balance: treasury.balance, price: treasury.price, decimals },
   ];
-  return balances
+  const pricedBalances = balances.filter((item) => item.price != null);
+  if (pricedBalances.length === 0) {
+    return null;
+  }
+
+  return pricedBalances
     .reduce(
       (acc, item) =>
         new BigNumber(item.balance)
@@ -55,9 +60,7 @@ export function useTreasuriesData() {
     fetch().then((resp) => {
       const treasuries = resp.data?.treasuries || [];
       const data = treasuries
-        .filter(
-          (item) => Object.keys(CHAINS).includes(item.chain),
-        )
+        .filter((item) => Object.keys(CHAINS).includes(item.chain))
         .map((treasury) => {
           const amount = getTreasuryTokenAmount(treasury);
           const fiatValue = getTreasuryFiatValue(treasury);
@@ -68,7 +71,9 @@ export function useTreasuriesData() {
           };
         });
 
-      setTreasuriesData(data.sort((a, b) => b.fiatValue - a.fiatValue));
+      setTreasuriesData(
+        data.sort((a, b) => (b.fiatValue ?? -1) - (a.fiatValue ?? -1)),
+      );
     });
   }, [fetch]);
 

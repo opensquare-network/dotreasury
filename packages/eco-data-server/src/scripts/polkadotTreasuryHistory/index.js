@@ -87,7 +87,10 @@ createChainApis({
     "wss://polkadot-asset-hub-rpc.polkadot.io",
     "wss://asset-hub-polkadot-rpc.n.dwellir.com",
   ],
-  bifrostPolkadot: ["wss://eu.bifrost-polkadot-rpc.liebi.com/ws"],
+  bifrostPolkadot: [
+    "wss://hk.p.bifrost-rpc.liebi.com/ws",
+    "wss://eu.bifrost-polkadot-rpc.liebi.com/ws",
+  ],
 })
   .then(generateTreasuryHistory)
   .catch(console.error)

@@ -13,7 +13,10 @@ import { toPrecision } from "@osn/common";
 
 export default function EcosystemDotsama(props) {
   const { data } = useTreasuriesData();
-  const max = Math.max(...data.map((treasury) => treasury.fiatValue));
+  const fiatValues = data
+    .map((treasury) => treasury.fiatValue)
+    .filter(Number.isFinite);
+  const max = Math.max(0, ...fiatValues);
 
   return (
     <Card {...props} className={cn("!p-6", props.className)}>
@@ -62,7 +65,11 @@ function TreasuryTokenAmount({ treasury }) {
 
 function TreasuryItem({ max, ...treasury }) {
   const chainSettings = getChainSettings(treasury.chain);
-  const barWidth = Math.max(0.5, (treasury.fiatValue / max) * 100);
+  const hasFiatValue = Number.isFinite(treasury.fiatValue);
+  const barWidth =
+    hasFiatValue && max > 0
+      ? Math.max(0.5, (treasury.fiatValue / max) * 100)
+      : 0;
 
   return (
     <div className={cn("flex items-center", "max-sm:block")}>
@@ -111,8 +118,9 @@ function TreasuryItem({ max, ...treasury }) {
           className={cn("p-14-medium flex items-center gap-x-2", "max-sm:mt-2")}
         >
           <div className="text-textPrimary whitespace-nowrap">
-            {!!treasury.fiatValue && "≈ "}$
-            {abbreviateBigNumber(treasury.fiatValue)}
+            {hasFiatValue
+              ? `≈ $${abbreviateBigNumber(treasury.fiatValue)}`
+              : "--"}
           </div>
           <TreasuryTokenAmount treasury={treasury} />
         </div>

@@ -11,4 +11,4 @@ async function queryBifrostTreasuryBalance() {
 
 module.exports = {
   queryBifrostTreasuryBalance,
-}
+};
